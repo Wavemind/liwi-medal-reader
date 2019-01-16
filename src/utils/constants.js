@@ -5,6 +5,7 @@ export const liwiColors = {
   redColor: '#db473e',
   blackColor: '#341a2f',
 };
+export const sessionsDuration = 30; // in minutes
 //export const devHost = 'http://192.168.31.190:3000';
 export const devHost = 'https://liwi.wavelab.top';
 export const saltHash =

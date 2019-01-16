@@ -116,5 +116,4 @@ buck-out/
 # pour mac ios
 package-lock.json
 resources/fonts/Pony.ttf
-android
 *.properties

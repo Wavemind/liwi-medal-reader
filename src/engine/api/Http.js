@@ -1,10 +1,10 @@
-import { getCredentials } from 'engine/api/LocalStorage';
 import { Alert } from 'react-native';
 import { devHost } from 'utils/constants';
 import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
+import { getSession } from './LocalStorage';
 
-const getHeaders = async (method = 'GET', body = false) => {
-  const credentials = async () => await getCredentials();
+const getHeaders = async (method = 'GET', body = false, user_id = null) => {
+  const credentials = async () => await getSession(user_id);
   return credentials().then((data) => {
     let header = {
       method: method,
@@ -44,10 +44,15 @@ export const get = async (params) => {
   return data;
 };
 
-export const post = async (params, body = {}, method = 'POST') => {
+export const post = async (
+  params,
+  body = {},
+  user_id = null,
+  method = 'POST'
+) => {
   const response = await fetch(
     devHost + '/api/v1/' + params,
-    await getHeaders(method, body)
+    await getHeaders(method, body, user_id)
   ).catch(function(error) {
     // Find how display error
     Alert.alert('Une erreur est survenue. Veuillez réessayer ultérieurement');

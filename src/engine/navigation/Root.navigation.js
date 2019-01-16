@@ -1,5 +1,9 @@
 import React from 'react';
-import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
+import {
+  createStackNavigator,
+  createSwitchNavigator,
+  createAppContainer,
+} from 'react-navigation';
 
 import MainTabNavigator from './Main.navigation';
 import RootSessions from '../../screens/session/RootSessions';

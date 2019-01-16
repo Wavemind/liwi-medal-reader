@@ -3,13 +3,14 @@
 import * as React from 'react';
 import { Button, Container, Content, Icon, Text, View } from 'native-base';
 import { AppState, Image, ImageBackground, ScrollView } from 'react-native';
-import { postDeviceInfo } from '../../../engine/api/Http';
+import { postDeviceInfo, post } from '../../../engine/api/Http';
 import { styles } from './RootSessions.styles';
 import Sessions from '../../../components/Sessions';
 import type { I18nTypes } from '../../../utils/i18n';
 import { NavigationScreenProps } from 'react-navigation';
 import { clearLocalStorage } from 'engine/api/LocalStorage';
 import { Fragment } from 'react';
+import { GetDeviceInformations } from '../../../engine/api/Device';
 
 type Props = NavigationScreenProps & {
   logged: boolean,
@@ -62,7 +63,7 @@ export default class RootSessions extends React.Component<Props, State> {
               {!isConnected ? (
                 <Icon type={'MaterialCommunityIcons'} name="lan-disconnect" />
               ) : (
-                <Icon type={'Feather'} name="user-plus" />
+                <Icon type={'MaterialCommunityIcons'} name="lan-connect" />
               )}
 
               <Text> {t('add_account')} </Text>
@@ -70,8 +71,10 @@ export default class RootSessions extends React.Component<Props, State> {
             <Button
               iconLeft
               blue
-              onPress={() => {
-                postDeviceInfo();
+              onPress={async () => {
+                await GetDeviceInformations((deviceInfo) => {
+                  post('activities', deviceInfo);
+                });
               }}
             >
               <Icon type={'Octicons'} name="device-mobile" />

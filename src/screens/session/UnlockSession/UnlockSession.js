@@ -14,7 +14,7 @@ type State = {
 };
 
 export default class UnlockSession extends React.Component<Props, State> {
-  state = { code: '', session: {} };
+  state = { code: __DEV__ ? '123456q' : '', session: {} };
 
   componentWillMount() {
     const {

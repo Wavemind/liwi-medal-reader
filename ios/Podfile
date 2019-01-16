@@ -12,6 +12,8 @@ target 'liwi_native' do
     # Pods for testing
     pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+    pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
+
   end
 
   target 'liwi_nativeTests' do

@@ -34,7 +34,7 @@ export const isLogged = async () => {
   return moment(date_expiry).isAfter(moment());
 };
 
-export const getCredentials = async () => {
+export const getCredentials = async (user_id) => {
   const credentials = await AsyncStorage.getItem('credentials');
   return JSON.parse(credentials);
 };
@@ -63,26 +63,46 @@ export const updateSession = async (id, newState) => {
 };
 
 export const clearLocalStorage = async (key) => {
-  await AsyncStorage.setItem('sessions', "[]");
+  await AsyncStorage.setItem('sessions', '[]');
+};
+
+export const SetActiveSession = async (id = null) => {
+  const sessions = await getSessions();
+  await sessions.map((session) => {
+    if (session.active === undefined || session.active === true) {
+      session.active = false;
+      session.active_since = false;
+    }
+
+    if (session.data.id === id) {
+      session.active = true;
+      session.active_since = moment().format();
+    }
+  });
+
+  await setSessions(sessions);
 };
 
 export const getSession = async (id) => {
   let sessions = await AsyncStorage.getItem('sessions');
   sessions = JSON.parse(sessions);
-  console.log(sessions)
+
   if (Array.isArray(sessions)) {
-    return sessions.find((session) => {
+    let findSession = sessions.find((session) => {
       return session.data.id === id;
     });
+
+    if (findSession === undefined) {
+      return { access_token: 'unsecure' };
+    }
+
+    return findSession;
   }
   return {};
 };
 
 export const setSessions = async (newState) => {
-  return await AsyncStorage.setItem(
-    'sessions',
-    JSON.stringify(newState)
-  );
+  return await AsyncStorage.setItem('sessions', JSON.stringify(newState));
 };
 
 export const destroySession = async (session_id) => {

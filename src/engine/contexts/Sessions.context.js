@@ -2,22 +2,18 @@
 /* eslint-disable react/no-unused-state */
 
 import * as React from 'react';
-import find from 'lodash/find';
 
 import {
-  destroyCredentials,
-  getCredentials,
   getSessions,
   updateSession,
   getSession,
   setSessions,
-  isLogged,
-  setCredentials,
   destroySession,
 } from '../api/LocalStorage';
 
-import { auth } from 'engine/api/Http';
+import { auth, post } from '../api/Http';
 import { ToastFactory } from 'utils/ToastFactory';
+import { GetDeviceInformations } from '../api/Device';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
@@ -80,6 +76,13 @@ export class SessionsProvider extends React.Component<
           sessions.push(credentials);
           await setSessions(sessions);
           this.setState({ sessions });
+
+          await GetDeviceInformations((deviceInfo) => {
+            deviceInfo.activity.user_id = credentials.data.id;
+            console.log('New session connected, POST device with user_id');
+            post('activities', deviceInfo, credentials.data.id);
+          });
+
           ToastFactory('Connected successfully', { type: 'success' });
           return credentials.data.id;
         }

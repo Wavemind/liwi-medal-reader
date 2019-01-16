@@ -4,6 +4,8 @@ import { H2, Container, Text, Button } from 'native-base';
 import { withApplication } from '../../contexts/Application.context';
 import { styles } from './Drawer.style';
 import { withSessions } from 'engine/contexts/Sessions.context';
+import moment from 'moment';
+import { sessionsDuration } from '../../../utils/constants';
 
 class Drawer extends Component {
   state = {
@@ -43,17 +45,22 @@ class Drawer extends Component {
       <Container>
         <View style={styles.header}>
           <Text>
-            {user.first_name} {user.last_name}
+            {user.data.first_name} {user.data.last_name}
           </Text>
           <Text light>{user.email}</Text>
         </View>
         <View style={styles.content}>
           <H2>Futur lien 1</H2>
           <H2>Title 2</H2>
+          <Text>
+            La session expire à
+            {moment(user.active_since)
+              .add(sessionsDuration, 'minute')
+              .calendar()}
+          </Text>
           <Button onPress={() => this.props.app.lockSession()}>
             <Text>Changer de session</Text>
           </Button>
-
           <Button onPress={this.logout}>
             <Text>Se déconnecter</Text>
           </Button>

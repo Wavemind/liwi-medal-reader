@@ -18,8 +18,8 @@ type State = {
 
 export default class SetCodeSession extends React.Component<Props, State> {
   state = {
-    codeOne: '',
-    codeTwo: '',
+    codeOne: __DEV__ ? '123456q' : '',
+    codeTwo: __DEV__ ? '123456q' : '',
     error: false,
     success: false,
   };
@@ -54,6 +54,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
     const { navigation, sessions } = this.props;
     const userId = navigation.getParam('user_id');
     const encrypted = sha256.hmac(saltHash, codeOne);
+
     sessions.setLocalCode(encrypted, userId);
     navigation.navigate('SignIn');
   };

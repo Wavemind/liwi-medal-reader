@@ -48,16 +48,23 @@ export const TextExemple = styled(LText).attrs({
 `;
 
 ````
-### 1.3 Composnants statefull
+### 1.3 Composants statefull
 Pour un composant spécifique statefull on préfére mettre les styles dans le dossiers courant
 
 ## 2. Store
 
+
 ### 2.1 React Contexts 
 ### 2.2 Redux
+### 2.3 Sécurité
+react-native-secure-key-store
+
+A définir
+
 
 ## 3. Flow
 ## 5. Import
 Relative path
+
 
 

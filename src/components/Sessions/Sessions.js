@@ -47,7 +47,7 @@ export default class Sessions extends React.Component<Props, State> {
             key={session.data.id}
             onPress={() => this.onClickSession(session)}
           >
-            <Icon type={'Feather'} name="user" />
+            <Icon type={'Ionicons'} name="md-person" />
             <Text>
               {session.data.first_name} {session.data.last_name}
             </Text>

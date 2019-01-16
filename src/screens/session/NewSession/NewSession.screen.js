@@ -22,7 +22,11 @@ type State = {
 };
 
 export default class NewSession extends React.Component<Props, State> {
-  state = { email: 'mickael.lacombe@wavemind.ch', password: '123456', loading: false };
+  state = {
+    email: __DEV__ ? 'mickael.lacombe@wavemind.ch' : '',
+    password: __DEV__ ? '123456' : '',
+    loading: false,
+  };
 
   componentDidMount() {
     // this.setState({ email: 'mickael.lacombe@wavemind.ch', password: '123456' });
@@ -74,7 +78,7 @@ export default class NewSession extends React.Component<Props, State> {
           </Item>
         </Form>
         <Button onPress={() => this.authenticate()}>
-          {loading ? <Spinner color="green" /> : null}
+          {loading ? <Spinner color="white" /> : null}
           <Text> Try to login </Text>
         </Button>
       </View>
