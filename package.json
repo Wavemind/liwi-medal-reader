@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "doc": "react-doc-generator  w./src -o docs/documentation.md",
+    "flow": "flow"
   },
   "dependencies": {
     "@babel/runtime": "^7.2.0",

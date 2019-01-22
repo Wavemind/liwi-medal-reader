@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import Layout from 'template/Layout.template';
+import Layout from './template/Layout.template';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './engine/store';

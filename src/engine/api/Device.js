@@ -17,18 +17,16 @@ export const GetGeo = async (cb) => {
 
 export const GetDeviceInformations = async (cb) => {
   const manufacturer = DeviceInfo.getManufacturer();
-  const brand = DeviceInfo.getDeviceId();
   const deviceName = DeviceInfo.getDeviceName();
   const model = DeviceInfo.getModel();
-  const phoneNumber = DeviceInfo.getPhoneNumber();
   const serialNumber = DeviceInfo.getSerialNumber();
   const systemName = DeviceInfo.getSystemName();
   const systemVersion = DeviceInfo.getSystemVersion();
   const timezone = DeviceInfo.getTimezone();
   const uniqueId = DeviceInfo.getUniqueID();
+  const version = DeviceInfo.getVersion();
 
-  // TODO need to define the real unique id....
-  //console.log(brand, deviceName, phoneNumber, serialNumber, uniqueId);
+  let reference_number = Platform.OS === 'ios' ? uniqueId : serialNumber;
 
   return GetGeo((geo) => {
     cb({
@@ -37,12 +35,12 @@ export const GetDeviceInformations = async (cb) => {
         longitude: geo.coords.longitude,
         timezone: timezone,
         user_id: 'null',
-        version: '',
+        version: version,
         device_attributes: {
-          reference_number: brand,
+          reference_number: reference_number,
           model: model,
           brand: manufacturer,
-          name: 'Constants.deviceName',
+          name: deviceName,
           os: systemName,
           os_version: systemVersion,
         },

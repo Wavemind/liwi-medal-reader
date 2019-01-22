@@ -27,7 +27,6 @@ class LayoutTemplate extends React.Component<Props> {
     } = this.props;
 
     const Navigator = AppNavigator(logged);
-
     const AppContainer = createAppContainer(Navigator);
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
