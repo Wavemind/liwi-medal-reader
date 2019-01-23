@@ -3,12 +3,9 @@
 
 import * as React from 'react';
 import {
-  getCredentials,
   getSession,
   getSessions,
-  isLogged,
   destroySession,
-  setCredentials,
   SetActiveSession,
 } from '../api/LocalStorage';
 import find from 'lodash/find';
