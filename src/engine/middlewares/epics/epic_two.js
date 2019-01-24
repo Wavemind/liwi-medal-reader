@@ -1,8 +1,10 @@
 import { ofType } from 'redux-observable';
-import { mapTo } from 'rxjs/operators';
+import { mapTo, delay } from 'rxjs/operators';
+import { middlewareTest, addTodo } from '../../actions/creators.actions';
 
 export const fetchUserEpic = (action$) =>
   action$.pipe(
-    ofType('fff'),
-    mapTo({ type: 'PONG2' })
+    ofType('actionshere'),
+    // delay(1000), // Asynchronously wait 1000ms then continue
+    mapTo(addTodo('tt'))
   );

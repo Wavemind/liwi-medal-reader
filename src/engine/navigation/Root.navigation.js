@@ -10,6 +10,7 @@ import RootSessions from '../../screens/session/RootSessions';
 import NewSession from 'screens/session/NewSession';
 import UnlockSession from 'screens/session/UnlockSession';
 import SetCodeSession from 'screens/session/SetCodeSession';
+import MedicalCases from '../../screens/medicalCases';
 
 export const SignedOut = createStackNavigator({
   SignIn: {
@@ -42,6 +43,14 @@ export const SignedOut = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         title: 'Code local',
+      };
+    },
+  },
+  MedicalCases: {
+    screen: MedicalCases,
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: 'Vos cas médical',
       };
     },
   },

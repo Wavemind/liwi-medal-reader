@@ -8,7 +8,7 @@ import { styles } from './RootSessions.styles';
 import Sessions from '../../../components/Sessions';
 import type { I18nTypes } from '../../../utils/i18n';
 import { NavigationScreenProps } from 'react-navigation';
-import { clearLocalStorage } from 'engine/api/LocalStorage';
+import { clearSessions, clearMedicalCases } from 'engine/api/LocalStorage';
 import { Fragment } from 'react';
 import { GetDeviceInformations } from '../../../engine/api/Device';
 
@@ -84,12 +84,22 @@ export default class RootSessions extends React.Component<Props, State> {
               iconLeft
               blue
               onPress={async () => {
-                await clearLocalStorage('sessions');
+                await clearSessions('sessions');
                 await sessions.initContext();
               }}
             >
               <Icon type={'MaterialCommunityIcons'} name="delete-forever" />
               <Text>{t('clear_sessions')}</Text>
+            </Button>
+            <Button
+              iconLeft
+              blue
+              onPress={async () => {
+                await clearMedicalCases();
+              }}
+            >
+              <Icon type={'MaterialCommunityIcons'} name="delete-forever" />
+              <Text>Vider les cas médicals</Text>
             </Button>
           </Content>
         </Container>

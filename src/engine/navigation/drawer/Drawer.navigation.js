@@ -50,14 +50,15 @@ class Drawer extends Component {
           <Text light>{user.email}</Text>
         </View>
         <View style={styles.content}>
-          <H2>Futur lien 1</H2>
-          <H2>Title 2</H2>
           <Text>
             La session expire à
             {moment(user.active_since)
               .add(sessionsDuration, 'minute')
               .calendar()}
           </Text>
+          <Button onPress={() => navigation.navigate('MedicalCases')}>
+            <Text>MedicalCases</Text>
+          </Button>
           <Button onPress={() => this.props.app.lockSession()}>
             <Text>Changer de session</Text>
           </Button>

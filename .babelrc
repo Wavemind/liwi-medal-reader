@@ -1,6 +1,8 @@
 {
   "presets": ["module:metro-react-native-babel-preset","@babel/preset-flow"],
   "plugins": [
+//    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true}],
+//    ["@babel/plugin-proposal-class-properties", { "loose" : true }],
     ["module-resolver", {
       "root": ["./src"],
       "extensions": [".js", ".ios.js", ".android.js"],

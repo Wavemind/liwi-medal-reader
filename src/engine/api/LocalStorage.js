@@ -3,8 +3,11 @@ import moment from 'moment';
 import { get, post } from './Http';
 import find from 'lodash/find';
 import remove from 'lodash/remove';
+import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
+import maxBy from 'lodash/maxBy';
 
+// TODO init localstorage, set initial value if undefined
 export const setCredentials = async (newState) => {
   return await AsyncStorage.setItem('credentials', JSON.stringify(newState));
 };
@@ -15,8 +18,6 @@ export const destroyCredentials = async () => {
     // callback to do some action after removal of item
   });
 };
-
-//
 
 export const isLogged = async () => {
   let credentiels = await getCredentials();
@@ -48,6 +49,55 @@ export const getSessions = async () => {
   return sessionsArray;
 };
 
+export const getMedicaleCases = async () => {
+  const medicalCases = await AsyncStorage.getItem('medicalCases');
+  const medicalCasesArray = JSON.parse(medicalCases);
+  if (medicalCasesArray === null) {
+    return [];
+  }
+  return medicalCasesArray;
+};
+
+export const getUserMedicaleCases = async (userId) => {
+  let medicalCases = await getMedicaleCases();
+  let userMedicalCases = filter(medicalCases, (medicalCase) => {
+    return medicalCase.userId === userId;
+  });
+
+  return userMedicalCases;
+};
+
+export const createMedicalCase = async (newMedicalCase) => {
+  let medicalCases = await getMedicaleCases();
+  let maxId = maxBy(medicalCases, 'id');
+
+  if (medicalCases.length === 0) {
+    maxId = { id: 0 };
+  }
+
+  newMedicalCase.id = maxId.id + 1;
+  newMedicalCase.createdDate = moment().format();
+
+  medicalCases.push(newMedicalCase);
+
+  return await AsyncStorage.setItem(
+    'medicalCases',
+    JSON.stringify(medicalCases)
+  );
+};
+export const getMedicalCase = async (id) => {
+  let medicalCases = await getMedicaleCases();
+
+  if (Array.isArray(medicalCases)) {
+    let findMedicalCase = medicalCases.find((medicalCase) => {
+      return medicalCase.id === id;
+    });
+
+    return findMedicalCase;
+  }
+  return {};
+};
+
 export const updateSession = async (id, newState) => {
   let sessions = await AsyncStorage.getItem('sessions');
   sessions = JSON.parse(sessions);
@@ -62,8 +112,12 @@ export const updateSession = async (id, newState) => {
   await setSessions(sessions);
 };
 
-export const clearLocalStorage = async (key) => {
+export const clearSessions = async () => {
   await AsyncStorage.setItem('sessions', '[]');
+};
+
+export const clearMedicalCases = async () => {
+  await AsyncStorage.setItem('medicalCases', '[]');
 };
 
 export const SetActiveSession = async (id = null) => {

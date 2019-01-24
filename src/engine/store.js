@@ -16,7 +16,7 @@ const persistConfig = {
   storage,
   timeout: 10000,
   stateReconciler: autoMergeLevel2, // see "Merge Process" section for details.
-  whitelist: ['medicalCase'],
+  // whitelist: ['increment'],
 };
 
 const epicMiddleware = createEpicMiddleware();
@@ -30,5 +30,5 @@ export const store = createStore(persistedReducer, middleware);
 epicMiddleware.run(rootEpic);
 
 export const persistor = persistStore(store, null, () => {
-  // console.log("Rehydrate finish, here reducer returned", store.getState())
+  console.log('Rehydrate finish, here reducer returned', store.getState());
 });

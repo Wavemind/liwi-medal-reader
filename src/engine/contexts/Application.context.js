@@ -7,6 +7,8 @@ import {
   getSessions,
   destroySession,
   SetActiveSession,
+  createMedicalCase,
+  getUserMedicaleCases,
 } from '../api/LocalStorage';
 import find from 'lodash/find';
 
@@ -21,7 +23,7 @@ import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
 
 const defaultValue = {};
-const ApplicationContext = React.createContext<Object>(defaultValue);
+export const ApplicationContext = React.createContext<Object>(defaultValue);
 
 type Props = NavigationScreenProps & {
   children: React.Node,
@@ -67,6 +69,13 @@ export class ApplicationProvider extends React.Component<Props, State> {
     );
   }
 
+  createMedicalCase = () => {
+    createMedicalCase({
+      ...this.state.medicalCase,
+      userId: this.state.user.data.id,
+    });
+  };
+
   _handleConnectivityChange = async (isConnected) => {
     this.setState({
       isConnected,
@@ -98,11 +107,15 @@ export class ApplicationProvider extends React.Component<Props, State> {
     });
 
     if (finderActiveSession) {
-      this.setState({
-        logged: true,
-        user: finderActiveSession,
-      });
+      this.setUserContext(finderActiveSession);
     }
+  };
+
+  setUserContext = (userData) => {
+    this.setState({
+      logged: true,
+      user: userData,
+    });
   };
 
   unlockSession = async (id: number, code: string) => {
@@ -112,10 +125,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     if (session.local_code === encrypt) {
       await SetActiveSession(id);
       const session = await getSession(id);
-      this.setState({
-        logged: true,
-        user: session,
-      });
+      this.setUserContext(session);
     } else {
       ToastFactory('Pas le bon code', { type: 'danger' });
     }
@@ -135,11 +145,60 @@ export class ApplicationProvider extends React.Component<Props, State> {
     set: this.setValState,
     logged: false,
     initContext: this.initContext,
+    createMedicalCase: this.createMedicalCase,
     user: {},
     deconnexion: this.deconnexion,
     unlockSession: this.unlockSession,
     lockSession: this.lockSession,
     isConnected: '',
+    medicalCase: {
+      id: 1,
+      userId: null,
+      algoId: 1,
+      createdDate: null,
+      algorithmReady: false,
+      patient: {
+        firstname: 'Quentin',
+        lastname: 'Girard',
+        birthdate: '02.03.1994',
+        gender: 1,
+        weight: '',
+        height: '',
+        temperature: '',
+        heartbeat: '',
+        breathingRhythm: '',
+      },
+      trip: {
+        firstSymptomDate: '18.05.2018',
+        startDate: '01.05.2018',
+        endDate: '24.05.2018',
+        countries: [],
+      },
+      comments: {
+        exposures: {
+          content: null,
+        },
+        signs: {
+          content: null,
+        },
+        symptoms: {
+          content: null,
+        },
+        tests: {
+          content: null,
+        },
+        diagnostics: {
+          content: null,
+        },
+      },
+      answers: {},
+      managementsSelected: [],
+      treatmentsSelected: [],
+      workingDiagnostics: {
+        nodes: {},
+        final: {},
+      },
+    },
   };
 
   render() {

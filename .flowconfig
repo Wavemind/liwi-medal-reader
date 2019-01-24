@@ -33,7 +33,7 @@ node_modules/react-native/flow-github/
 
 [options]
 emoji=true
-
+esproposal.decorators=ignore
 esproposal.optional_chaining=enable
 esproposal.nullish_coalescing=enable
 module.system.node.resolve_dirname=node_modules
