@@ -1,23 +1,18 @@
 // @flow
 
 import { actions } from '../../actions/types.actions';
+import { REHYDRATE } from 'redux-persist';
+import { medicalCaseInitialState } from '../../algorithme/medicalCase';
+import { setMedicaleCase } from '../../api/LocalStorage';
 
-export const initialState = {
-  answers: {},
-  managementsSelected: [],
-  treatmentsSelected: [],
-  nodes: {},
-  final: {},
-  increment: 0,
-};
+export const initialState = medicalCaseInitialState;
 
 export default function medicalCaseReducer(
   state: Object = initialState,
   action: Object
 ) {
-  console.log(action);
   switch (action.type) {
-    case actions.MEDICAL_CASES_NEW: {
+    case actions.MEDICAL_CASE_NEW: {
       const { id } = action.payload;
       return {
         ...state,
@@ -25,12 +20,50 @@ export default function medicalCaseReducer(
       };
     }
 
-    case actions.MEDICAL_CASES_INITIATE: {
-      const { id } = action.payload;
+    case actions.MEDICAL_CASE_INITIATE: {
+      const { medicalCase } = action.payload;
+      return {
+        ...medicalCase,
+      };
+    }
+
+    case actions.INTERCEPT_ACTIONS: {
       return {
         ...state,
-        id,
-        increment: state.increment + 1,
+      };
+    }
+
+    case actions.MEDICAL_CASE_SET: {
+      const { medicalCase } = action.payload;
+
+      if (medicalCase.id !== state.id) {
+        setMedicaleCase(state);
+      }
+
+      return {
+        ...medicalCase,
+      };
+    }
+
+    case actions.MEDICAL_CASE_CLEAR: {
+      return {};
+    }
+
+    case REHYDRATE: {
+      // HERE we get all the stores
+      // we must rehydrate all store
+
+      if (
+        action.payload === undefined ||
+        action.payload === null ||
+        action.payload.id === undefined ||
+        action.payload.id === null
+      ) {
+        return initialState;
+      }
+
+      return {
+        ...action.payload,
       };
     }
 

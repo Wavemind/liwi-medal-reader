@@ -1,25 +1,23 @@
-import medicalCases from './medicalCases.screen';
+import medicalCase from './medicalCase.screen';
 import { withSessions } from '../../engine/contexts/Sessions.context';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
 import { setMedicalCase } from '../../engine/actions/creators.actions';
-import { actions } from '../../engine/actions/types.actions';
 import { clearMedicalCases } from '../../engine/api/LocalStorage';
-
-const mapStateToProps = (state, ownProps) => {
+import { actions } from '../../engine/actions/types.actions';
+const mapStateToProps = (medicalCase, ownProps) => {
   return {
-    state,
+    medicalCase,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setMedicalCase: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
-    clear: () => dispatch({ type: actions.MEDICAL_CASE_CLEAR }),
+    updatePatient: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(medicalCases)));
+)(withSessions(withApplication(medicalCase)));

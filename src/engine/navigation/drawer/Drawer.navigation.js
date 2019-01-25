@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Image, View, AppState } from 'react-native';
-import { H2, Container, Text, Button } from 'native-base';
-import { withApplication } from '../../contexts/Application.context';
+import { AppState, Image, View } from 'react-native';
+import { Button, Container, Icon, Text } from 'native-base';
 import { styles } from './Drawer.style';
 import { withSessions } from 'engine/contexts/Sessions.context';
 import moment from 'moment';
 import { sessionsDuration } from '../../../utils/constants';
+import { SeparatorLine } from '../../../template/layout';
 
-class Drawer extends Component {
+export default class Drawer extends Component {
   state = {
     appState: AppState.currentState,
   };
@@ -16,6 +16,7 @@ class Drawer extends Component {
     AppState.addEventListener('change', this._handleAppStateChange);
   }
 
+  // If the app is active or not
   _handleAppStateChange = (nextAppState) => {
     if (
       this.state.appState.match(/inactive|background/) &&
@@ -39,6 +40,7 @@ class Drawer extends Component {
     const {
       navigation,
       app: { user },
+      medicalCase,
     } = this.props;
 
     return (
@@ -49,26 +51,67 @@ class Drawer extends Component {
           </Text>
           <Text light>{user.email}</Text>
         </View>
-        <View style={styles.content}>
+        <View>
           <Text>
             La session expire à
             {moment(user.active_since)
               .add(sessionsDuration, 'minute')
               .calendar()}
           </Text>
-          <Button onPress={() => navigation.navigate('MedicalCases')}>
-            <Text>MedicalCases</Text>
+          {medicalCase.patient !== undefined ? (
+            <Button
+              transparent
+              iconLeft
+              btnDrawer
+              onPress={() =>
+                navigation.navigate('MedicalCase', {
+                  title: `${medicalCase.patient.firstname} ${
+                    medicalCase.patient.lastname
+                  }`,
+                })
+              }
+            >
+              <Icon dark type={'FontAwesome5'} name="briefcase-medical" />
+              <Text dark>
+                {medicalCase.patient.firstname} - {medicalCase.patient.lastname}
+              </Text>
+            </Button>
+          ) : null}
+          <Button
+            transparent
+            iconLeft
+            btnDrawer
+            onPress={() => navigation.navigate('MedicalCases')}
+          >
+            <Icon dark type={'FontAwesome5'} name="boxes" />
+            <Text dark>MedicalCases</Text>
           </Button>
-          <Button onPress={() => this.props.app.lockSession()}>
-            <Text>Changer de session</Text>
+          <Button
+            transparent
+            iconLeft
+            btnDrawer
+            onPress={() => navigation.navigate('MedicalCases')}
+          >
+            <Icon dark type={'Entypo'} name="flow-tree" />
+
+            <Text dark>Algorithmes</Text>
           </Button>
-          <Button onPress={this.logout}>
-            <Text>Se déconnecter</Text>
+          <SeparatorLine />
+          <Button
+            transparent
+            iconLeft
+            btnDrawer
+            onPress={() => this.props.app.lockSession()}
+          >
+            <Icon dark type={'FontAwesome5'} name="exchange-alt" />
+            <Text dark>Changer de session</Text>
+          </Button>
+          <Button transparent iconLeft btnDrawer onPress={this.logout}>
+            <Icon dark type={'AntDesign'} name="logout" />
+            <Text dark>Se déconnecter</Text>
           </Button>
         </View>
       </Container>
     );
   }
 }
-
-export default withApplication(withSessions(Drawer));

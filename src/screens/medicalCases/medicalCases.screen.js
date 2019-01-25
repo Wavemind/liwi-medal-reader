@@ -1,16 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Item,
-  Label,
-  Text,
-  View,
-  Spinner,
-} from 'native-base';
+import { Button, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { getUserMedicaleCases } from '../../engine/api/LocalStorage';
@@ -23,23 +14,26 @@ type State = {};
 export default class MedicalCases extends React.Component<Props, State> {
   state = { medicalCases: [] };
 
-  componentWillMount() {
-    this.createMedicalCase();
-    this.props.addTodo('yeah');
+  async componentWillMount() {
+    await this.getMedicalCases();
   }
+
+  getMedicalCases = async () => {
+    const { app } = this.props;
+    const medicalCases = await getUserMedicaleCases(app.user.data.id);
+
+    this.setState({ medicalCases });
+  };
 
   createMedicalCase = async () => {
     const { app } = this.props;
     app.createMedicalCase();
-    const medicalCases = await getUserMedicaleCases(app.user.data.id);
-    this.setState({ medicalCases });
+    await this.getMedicalCases();
   };
 
   render() {
     const { medicalCases } = this.state;
-    const { app } = this.props;
-
-    console.log(this.props);
+    const { app, clear, setMedicalCase, navigation } = this.props;
 
     return (
       <ScrollView>
@@ -47,8 +41,21 @@ export default class MedicalCases extends React.Component<Props, State> {
         <Button onPress={() => this.createMedicalCase()}>
           <Text>Créer un cas médical</Text>
         </Button>
+        <Button onPress={() => clear()}>
+          <Text>Clear MedicalCase Store Redux</Text>
+        </Button>
         {medicalCases.map((medicalCase) => (
-          <Button onPress={() => {}}>
+          <Button
+            onPress={async () => {
+              await setMedicalCase(medicalCase);
+              // await app.setMedicalCase(medicalCase); // TODO find better way
+              navigation.navigate('MedicalCase', {
+                title: `${medicalCase.patient.firstname} ${
+                  medicalCase.patient.lastname
+                }`,
+              });
+            }}
+          >
             <Text>
               {medicalCase.id} - {medicalCase.patient.firstname}{' '}
               {medicalCase.patient.lastname} -{' '}

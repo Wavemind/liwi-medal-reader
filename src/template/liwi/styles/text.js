@@ -15,5 +15,8 @@ export default {
       paddingBottom: 5,
       paddingRight: 5,
     },
+    '.dark': {
+      color: '#292829',
+    },
   },
 };

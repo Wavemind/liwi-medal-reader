@@ -1,7 +1,5 @@
 import { AsyncStorage } from 'react-native';
 import moment from 'moment';
-import { get, post } from './Http';
-import find from 'lodash/find';
 import remove from 'lodash/remove';
 import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
@@ -10,6 +8,10 @@ import maxBy from 'lodash/maxBy';
 // TODO init localstorage, set initial value if undefined
 export const setCredentials = async (newState) => {
   return await AsyncStorage.setItem('credentials', JSON.stringify(newState));
+};
+
+export const setItem = async (key, item) => {
+  return await AsyncStorage.setItem(key, JSON.stringify(item));
 };
 
 export const destroyCredentials = async () => {
@@ -56,6 +58,19 @@ export const getMedicaleCases = async () => {
     return [];
   }
   return medicalCasesArray;
+};
+
+export const setMedicaleCase = async (medicalCase) => {
+  const medicalCases = await AsyncStorage.getItem('medicalCases');
+  const medicalCasesArray = JSON.parse(medicalCases);
+
+  if (Array.isArray(medicalCasesArray)) {
+    const idMedicalCase = findIndex(medicalCasesArray, (item) => {
+      return item.id === medicalCase.id;
+    });
+    medicalCasesArray[idMedicalCase] = medicalCase;
+    setItem('medicalCases', medicalCasesArray);
+  }
 };
 
 export const getUserMedicaleCases = async (userId) => {

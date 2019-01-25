@@ -3,16 +3,15 @@
 
 import * as React from 'react';
 import {
+  createMedicalCase,
+  destroySession,
   getSession,
   getSessions,
-  destroySession,
   SetActiveSession,
-  createMedicalCase,
-  getUserMedicaleCases,
 } from '../api/LocalStorage';
 import find from 'lodash/find';
 
-import { auth, post } from '../api/Http';
+import { post } from '../api/Http';
 import { sha256 } from 'js-sha256';
 import { saltHash } from 'utils/constants';
 import { ToastFactory } from 'utils/ToastFactory';
@@ -21,6 +20,7 @@ import { NetInfo } from 'react-native';
 import { GetDeviceInformations } from '../api/Device';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
+import { medicalCaseInitialState } from '../algorithme/medicalCase';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -69,10 +69,21 @@ export class ApplicationProvider extends React.Component<Props, State> {
     );
   }
 
-  createMedicalCase = () => {
+  createMedicalCase = async () => {
+    const response = await fetch('https://uinames.com/api/?ext');
+
+    const json = await response.json();
     createMedicalCase({
       ...this.state.medicalCase,
       userId: this.state.user.data.id,
+      patient: {
+        ...this.state.medicalCase.patient,
+        lastname: json.name,
+        firstname: json.surname,
+        birthdate: json.birthday.dmy,
+        email: json.email,
+        photo: json.photo,
+      },
     });
   };
 
@@ -118,6 +129,10 @@ export class ApplicationProvider extends React.Component<Props, State> {
     });
   };
 
+  setMedicalCase = (medicalCase) => {
+    this.setState({ medicalCase });
+  };
+
   unlockSession = async (id: number, code: string) => {
     const session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
@@ -151,54 +166,8 @@ export class ApplicationProvider extends React.Component<Props, State> {
     unlockSession: this.unlockSession,
     lockSession: this.lockSession,
     isConnected: '',
-    medicalCase: {
-      id: 1,
-      userId: null,
-      algoId: 1,
-      createdDate: null,
-      algorithmReady: false,
-      patient: {
-        firstname: 'Quentin',
-        lastname: 'Girard',
-        birthdate: '02.03.1994',
-        gender: 1,
-        weight: '',
-        height: '',
-        temperature: '',
-        heartbeat: '',
-        breathingRhythm: '',
-      },
-      trip: {
-        firstSymptomDate: '18.05.2018',
-        startDate: '01.05.2018',
-        endDate: '24.05.2018',
-        countries: [],
-      },
-      comments: {
-        exposures: {
-          content: null,
-        },
-        signs: {
-          content: null,
-        },
-        symptoms: {
-          content: null,
-        },
-        tests: {
-          content: null,
-        },
-        diagnostics: {
-          content: null,
-        },
-      },
-      answers: {},
-      managementsSelected: [],
-      treatmentsSelected: [],
-      workingDiagnostics: {
-        nodes: {},
-        final: {},
-      },
-    },
+    setMedicalCase: this.setMedicalCase,
+    medicalCase: medicalCaseInitialState,
   };
 
   render() {
