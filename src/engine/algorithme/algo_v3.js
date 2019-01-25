@@ -88,20 +88,92 @@ export const questions = {
       },
     ],
   },
-  s_1: {
-    id: 's_2',
-    priority: 'priority',
-    label: 'Caugh',
-    category: 'symptoms',
+  p_4: {
+    id: 'p_3',
+    priority: 'triage',
+    label: 'Axillary temperature',
+    category: 'physicalExam',
+    question_type: 'numeric',
+    answers: [
+      {
+        id: 'p_4_1',
+        label: ' > 37.5°C',
+        operator: ['>'],
+        value: [37.5],
+      },
+    ],
+  },
+  p_10: {
+    id: 'p_10',
+    priority: 'normal',
+    label: 'Blotchy rash',
+    category: 'physicalExam',
     question_type: 'boolean',
     answers: [
       {
-        id: 's_2_1',
+        id: 'p_10_1',
         label: 'True',
         value: true,
       },
       {
-        id: 's_2_2',
+        id: 'p_10_2',
+        label: 'False',
+        value: false,
+      },
+    ],
+  },
+  p_11: {
+    id: 'p_10',
+    priority: 'normal',
+    label: 'Red, watery eyes',
+    category: 'physicalExam',
+    question_type: 'boolean',
+    answers: [
+      {
+        id: 'p_11_1',
+        label: 'True',
+        value: true,
+      },
+      {
+        id: 'p_11_2',
+        label: 'False',
+        value: false,
+      },
+    ],
+  },
+  p_12: {
+    id: 'p_10',
+    priority: 'normal',
+    label: 'Koplik spots',
+    category: 'physicalExam',
+    question_type: 'boolean',
+    answers: [
+      {
+        id: 'p_12_1',
+        label: 'True',
+        value: true,
+      },
+      {
+        id: 'p_12_2',
+        label: 'False',
+        value: false,
+      },
+    ],
+  },
+  s_1: {
+    id: 's_1',
+    priority: 'priority',
+    label: 'History of fever',
+    category: 'symptoms',
+    question_type: 'boolean',
+    answers: [
+      {
+        id: 's_1_1',
+        label: 'True',
+        value: true,
+      },
+      {
+        id: 's_1_2',
         label: 'False',
         value: false,
       },
@@ -129,9 +201,110 @@ export const questions = {
 };
 
 export const predifinedSyndroms = {
+  ps_1: {
+    id: 'ps_1',
+    label: 'Fever',
+    nodes: {
+      s_1: {
+        id: 's_1',
+        conditions: null,
+        children: ['ps_1'],
+      },
+      p_4: {
+        id: 'p_3',
+        conditions: null,
+        children: ['ps_1'],
+      },
+    },
+    result: {
+      conditions: {
+        ids: ['s_1_1', 'p_4_1'],
+        operator: ['OR'],
+      },
+    },
+  },
+  c_1: {
+    id: 'c_1',
+    label: 'Severe condition',
+    nodes: {
+      dc_1: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+      dc_3: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+      dc_4: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+      dc_5: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+      dc_6: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+      dc_7: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+      ps_6_2: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+      ps_2: {
+        id: 's_1',
+        conditions: null,
+        children: ['c_1'],
+      },
+    },
+    result: {
+      conditions: {
+        ids: ['dc_1', 'dc_3', 'dc_4', 'dc_5', 'dc_6', 'dc_7', 'ps_6', 'ps_2'],
+        operator: ['OR', 'OR', 'OR', 'OR', 'OR', 'OR', 'OR'],
+      },
+    },
+  },
+  ps_3: {
+    id: 'ps_3',
+    label: 'Signs of maesles',
+    nodes: {
+      p_10: {
+        id: 'p_10',
+        conditions: null,
+        children: ['ps_1'],
+      },
+      p_12: {
+        id: 'p_12',
+        conditions: null,
+        children: ['ps_3'],
+      },
+      p_11: {
+        id: 'p_11',
+        conditions: null,
+        children: ['ps_3'],
+      },
+    },
+    result: {
+      conditions: {
+        ids: ['p_10_1', 'p_11_1', 'p_12_1'],
+        operator: ['OR', 'OR'],
+      },
+    },
+  },
   ps_4: {
     id: 'ps_4',
-    label: 'Fever',
+    label: 'Signs of severe measles',
     nodes: {
       s_2: {
         id: 's_2',
