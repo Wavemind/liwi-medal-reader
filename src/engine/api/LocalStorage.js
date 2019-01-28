@@ -14,6 +14,15 @@ export const setItem = async (key, item) => {
   return await AsyncStorage.setItem(key, JSON.stringify(item));
 };
 
+export const getItems = async (key) => {
+  const items = await AsyncStorage.getItem(key);
+  const itemsArray = JSON.parse(items);
+  if (itemsArray === null) {
+    return [];
+  }
+  return itemsArray;
+};
+
 export const destroyCredentials = async () => {
   return await AsyncStorage.removeItem('credentials', (err) => {
     // key 'key' will be removed, if they existed

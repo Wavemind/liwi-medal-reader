@@ -3,8 +3,8 @@ import { devHost } from 'utils/constants';
 import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
 import { getSession } from './LocalStorage';
 
-const getHeaders = async (method = 'GET', body = false, user_id = null) => {
-  const credentials = async () => await getSession(user_id);
+const getHeaders = async (method = 'GET', body = false, userId = null) => {
+  const credentials = async () => await getSession(userId);
   return credentials().then((data) => {
     let header = {
       method: method,
@@ -24,10 +24,10 @@ const getHeaders = async (method = 'GET', body = false, user_id = null) => {
   });
 };
 
-export const get = async (params) => {
+export const get = async (params, userId) => {
   const response = await fetch(
     devHost + '/api/v1/' + params,
-    await getHeaders()
+    await getHeaders('GET', false, userId)
   ).catch(function(error) {
     // Find how display error
     Alert.alert('Une erreur est survenue. Veuillez réessayer ultérieurement');

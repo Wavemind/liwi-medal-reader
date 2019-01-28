@@ -1,18 +1,51 @@
 import { Platform, Linking, Alert, Navi } from 'react-native';
+import { PermissionsAndroid } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
 
-export const GetGeo = async (cb) => {
+const AskGeo = async (enableHighAccuracy, callback) => {
   return navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      cb(position);
-    },
-    async (error) => console.log(error),
+    async (position) => callback(position),
+    async (error) => callback(error),
     {
-      enableHighAccuracy: true,
-      timeout: 20000,
+      enableHighAccuracy: enableHighAccuracy,
+      timeout: 5000,
     }
   );
+};
+
+export const GetGeo = async (cb) => {
+  await AskGeo(true, async (firstCallback) => {
+    if (
+      firstCallback.PERMISSION_DENIED === 1 ||
+      firstCallback.POSITION_UNAVAILABLE === 2
+    ) {
+      await AskGeo(false, (secondCallback) => {
+        if (
+          secondCallback.PERMISSION_DENIED === 1 ||
+          secondCallback.POSITION_UNAVAILABLE === 2
+        ) {
+          Alert.alert(
+            'Vous devez activer votre service de localisation',
+            '',
+            [
+              {
+                text: 'Annuler',
+                onPress: () => {},
+                style: 'cancel',
+              },
+              { text: 'OK', onPress: () => {} },
+            ],
+            { cancelable: false }
+          );
+        } else {
+          cb(secondCallback);
+        }
+      });
+    } else {
+      cb(firstCallback);
+    }
+  });
 };
 
 export const GetDeviceInformations = async (cb) => {
@@ -27,8 +60,6 @@ export const GetDeviceInformations = async (cb) => {
   const version = DeviceInfo.getVersion();
 
   let reference_number = Platform.OS === 'ios' ? uniqueId : serialNumber;
-
-  console.log(DeviceInfo.getSerialNumber());
 
   return GetGeo((geo) => {
     cb({

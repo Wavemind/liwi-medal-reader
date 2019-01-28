@@ -9,11 +9,13 @@ import {
   getSession,
   setSessions,
   destroySession,
+  setItem,
 } from '../api/LocalStorage';
 
 import { auth, post } from '../api/Http';
 import { ToastFactory } from 'utils/ToastFactory';
 import { GetDeviceInformations } from '../api/Device';
+import { get } from 'engine/api/Http';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
@@ -82,6 +84,17 @@ export class SessionsProvider extends React.Component<
             console.log('New session connected, POST device with user_id');
             post('activities', deviceInfo, credentials.data.id);
           });
+
+          let algorithmes = await get(
+            'algorithm_versions',
+            credentials.data.id
+          );
+
+          // TODO shitty workaround from backend developpers
+          await algorithmes.map((algorithme, index) => {
+            algorithmes[index].json = JSON.parse(algorithme.json);
+          });
+          await setItem('algorithmes', algorithmes);
 
           ToastFactory('Connected successfully', { type: 'success' });
           return credentials.data.id;

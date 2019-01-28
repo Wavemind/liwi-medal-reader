@@ -1,5 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import { Button, Icon, Text } from 'native-base';
 
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
@@ -13,7 +14,12 @@ const Stack = createStackNavigator({
     screen: MainScreen,
     navigationOptions: ({ navigation }) => {
       return {
-        title: 'Main page',
+        title: 'Votre espace personnel',
+        headerLeft: (
+          <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
+            <Icon red type={'Entypo'} name="menu" large />
+          </Button>
+        ),
       };
     },
   },

@@ -21,8 +21,6 @@ export default class MedicalCase extends React.Component<Props, State> {
       },
     } = this.props;
 
-    console.log(this.props);
-
     return (
       <ScrollView>
         <Text>Medical Case</Text>

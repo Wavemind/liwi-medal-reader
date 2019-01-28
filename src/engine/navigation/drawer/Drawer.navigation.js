@@ -3,8 +3,6 @@ import { AppState, Image, View } from 'react-native';
 import { Button, Container, Icon, Text } from 'native-base';
 import { styles } from './Drawer.style';
 import { withSessions } from 'engine/contexts/Sessions.context';
-import moment from 'moment';
-import { sessionsDuration } from '../../../utils/constants';
 import { SeparatorLine } from '../../../template/layout';
 
 export default class Drawer extends Component {
@@ -13,7 +11,9 @@ export default class Drawer extends Component {
   };
 
   componentDidMount() {
+    const { app } = this.props;
     AppState.addEventListener('change', this._handleAppStateChange);
+    // delay(() => app.lockSession(), 30000);
   }
 
   // If the app is active or not
@@ -29,7 +29,6 @@ export default class Drawer extends Component {
 
   logout = async () => {
     const {
-      navigation,
       app: { user },
     } = this.props;
     this.props.sessions.deconnexion(user.id);
@@ -52,12 +51,6 @@ export default class Drawer extends Component {
           <Text light>{user.email}</Text>
         </View>
         <View>
-          <Text>
-            La session expire à
-            {moment(user.active_since)
-              .add(sessionsDuration, 'minute')
-              .calendar()}
-          </Text>
           {medicalCase.patient !== undefined ? (
             <Button
               transparent
@@ -104,6 +97,15 @@ export default class Drawer extends Component {
           >
             <Icon dark type={'FontAwesome5'} name="exchange-alt" />
             <Text dark>Changer de session</Text>
+          </Button>
+          <Button
+            transparent
+            iconLeft
+            btnDrawer
+            onPress={() => this.props.app.lockSession()}
+          >
+            <Icon dark type={'AntDesign'} name="setting" />
+            <Text dark>Paramètres</Text>
           </Button>
           <Button transparent iconLeft btnDrawer onPress={this.logout}>
             <Icon dark type={'AntDesign'} name="logout" />

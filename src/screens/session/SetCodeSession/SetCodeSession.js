@@ -24,6 +24,10 @@ export default class SetCodeSession extends React.Component<Props, State> {
     success: false,
   };
 
+  componentWillMount() {
+    this.isTheSame();
+  }
+
   changeCodeOne = (val: string) => {
     this.setState({ codeOne: val }, () => this.isTheSame());
   };
