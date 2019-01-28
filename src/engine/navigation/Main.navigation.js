@@ -6,7 +6,7 @@ import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCases';
 import MedicalCase from '../../screens/medicalCase';
 import RootAlgorithmes from '../../screens/algorithme/RootAlgorithmes';
-import Algorithme from '../../screens/algorithme/DetailAlgorithme';
+import DetailAlgorithme from '../../screens/algorithme/DetailAlgorithme';
 
 const Stack = createStackNavigator({
   Home: {
@@ -42,7 +42,7 @@ const Stack = createStackNavigator({
     },
   },
   DetailAlgorithme: {
-    screen: Algorithme,
+    screen: DetailAlgorithme,
     navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),

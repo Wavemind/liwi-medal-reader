@@ -28,6 +28,8 @@ export const GetDeviceInformations = async (cb) => {
 
   let reference_number = Platform.OS === 'ios' ? uniqueId : serialNumber;
 
+  console.log(DeviceInfo.getSerialNumber());
+
   return GetGeo((geo) => {
     cb({
       activity: {

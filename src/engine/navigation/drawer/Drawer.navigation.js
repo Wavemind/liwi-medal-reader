@@ -90,10 +90,9 @@ export default class Drawer extends Component {
             transparent
             iconLeft
             btnDrawer
-            onPress={() => navigation.navigate('MedicalCases')}
+            onPress={() => navigation.navigate('Algorithmes')}
           >
             <Icon dark type={'Entypo'} name="flow-tree" />
-
             <Text dark>Algorithmes</Text>
           </Button>
           <SeparatorLine />
