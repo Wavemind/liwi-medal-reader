@@ -101,3 +101,16 @@ declare module 'utils/constants' {
 declare module 'lodash/find' {
   declare module.exports: any;
 }
+
+declare module 'RelativeImageStub' {
+  declare module.exports: any;
+}
+declare module 'moment' {
+  declare module.exports: any;
+}
+declare module 'react-native-keep-awake' {
+  declare module.exports: any;
+}
+declare module 'redux-persist' {
+  declare module.exports: any;
+}

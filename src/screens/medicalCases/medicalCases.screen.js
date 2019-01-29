@@ -9,7 +9,7 @@ import moment from 'moment';
 
 type Props = NavigationScreenProps & {};
 
-type State = {};
+type State = { medicalCases: Array<Object> };
 
 export default class MedicalCases extends React.Component<Props, State> {
   state = { medicalCases: [] };

@@ -32,6 +32,7 @@ node_modules/react-native/flow-github/
 ./type-libs
 
 [options]
+
 emoji=true
 esproposal.decorators=ignore
 esproposal.optional_chaining=enable

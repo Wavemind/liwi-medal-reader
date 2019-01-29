@@ -10,7 +10,7 @@ import { getItems } from '../../../engine/api/LocalStorage';
 import { CardView, RightView } from '../../../template/layout';
 type Props = NavigationScreenProps & {};
 
-type State = {};
+type State = { algorithmes: Array<Object> };
 export default class RootAlgorithmes extends React.Component<Props, State> {
   state = { algorithmes: [] };
 

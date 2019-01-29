@@ -60,7 +60,6 @@ export const post = async (
   });
 
   let r = await response;
-  // console.log(r, body);
   return r;
 };
 

@@ -40,6 +40,7 @@ type State = {
   unlockSession: (id: number, code: string) => Promise<any>,
   lockSession: () => Promise<any>,
   isConnected: string,
+  medicalCase: Object,
 };
 
 export class ApplicationProvider extends React.Component<Props, State> {

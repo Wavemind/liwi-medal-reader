@@ -8,6 +8,7 @@ import MedicalCases from '../../screens/medicalCases';
 import MedicalCase from '../../screens/medicalCase';
 import RootAlgorithmes from '../../screens/algorithme/RootAlgorithmes';
 import DetailAlgorithme from '../../screens/algorithme/DetailAlgorithme';
+import Settings from '../../screens/settings/';
 
 const Stack = createStackNavigator({
   Home: {
@@ -52,6 +53,14 @@ const Stack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),
+      };
+    },
+  },
+  Settings: {
+    screen: Settings,
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: 'Paramètres',
       };
     },
   },

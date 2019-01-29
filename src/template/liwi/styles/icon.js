@@ -6,6 +6,10 @@ export default {
       padding: 0,
       color: '#b5b3b7',
     },
+    '.grey': {
+      padding: 0,
+      color: '#4a494b',
+    },
     '.red': {
       padding: 0,
       color: liwiColors.redColor,

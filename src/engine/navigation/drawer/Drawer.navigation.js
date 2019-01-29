@@ -31,8 +31,8 @@ export default class Drawer extends Component {
     const {
       app: { user },
     } = this.props;
-    this.props.sessions.deconnexion(user.id);
-    this.props.app.lockSession();
+    await this.props.sessions.deconnexion(user.id);
+    await this.props.app.lockSession();
   };
 
   render() {
@@ -102,7 +102,7 @@ export default class Drawer extends Component {
             transparent
             iconLeft
             btnDrawer
-            onPress={() => this.props.app.lockSession()}
+            onPress={() => navigation.navigate('Settings')}
           >
             <Icon dark type={'AntDesign'} name="setting" />
             <Text dark>Paramètres</Text>

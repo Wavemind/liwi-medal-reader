@@ -59,8 +59,10 @@ export const GetDeviceInformations = async (cb) => {
   const uniqueId = DeviceInfo.getUniqueID();
   const version = DeviceInfo.getVersion();
 
-  let reference_number = Platform.OS === 'ios' ? uniqueId : serialNumber;
+  //let reference_number = Platform.OS === 'ios' ? uniqueId : serialNumber;
 
+  let mac = await DeviceInfo.getMACAddress();
+  console.log(mac);
   return GetGeo((geo) => {
     cb({
       activity: {
@@ -70,7 +72,7 @@ export const GetDeviceInformations = async (cb) => {
         user_id: 'null',
         version: version,
         device_attributes: {
-          reference_number: reference_number,
+          mac_address: mac,
           model: model,
           brand: manufacturer,
           name: deviceName,

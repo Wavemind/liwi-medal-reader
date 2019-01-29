@@ -36,7 +36,7 @@ export const CardView = styled(LView).attrs({
 })``;
 
 export const SeparatorLine = styled(RNView).attrs({
-  backgroundColor: '#e3e3e3',
+  backgroundColor: '#c9c9c9',
   height: 0.5,
   marginBottom: 5,
   marginTop: 5,
