@@ -1,15 +1,15 @@
 // @flow
 
 import * as React from 'react';
+import { Fragment } from 'react';
 import { Button, Container, Content, Icon, Text, View } from 'native-base';
 import { AppState, Image, ImageBackground, ScrollView } from 'react-native';
-import { postDeviceInfo, post } from '../../../engine/api/Http';
+import { post } from '../../../engine/api/Http';
 import { styles } from './RootSessions.styles';
 import Sessions from '../../../components/Sessions';
 import type { I18nTypes } from '../../../utils/i18n';
 import { NavigationScreenProps } from 'react-navigation';
-import { clearSessions, clearMedicalCases } from 'engine/api/LocalStorage';
-import { Fragment } from 'react';
+import { clearMedicalCases, clearSessions } from 'engine/api/LocalStorage';
 import { GetDeviceInformations } from '../../../engine/api/Device';
 
 type Props = NavigationScreenProps & {

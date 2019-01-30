@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import { liwiColors } from '/utils/constants';
 import { View as RNView } from 'react-native';
 import { Text as LText, View as LView } from 'native-base';
-import { screenWidth } from '../utils/constants';
 
 export const TextExemple = styled(LText).attrs({})`
   color: #4e4e4e;
@@ -35,9 +34,23 @@ export const CardView = styled(LView).attrs({
   shadowOpacity: 1.0,
 })``;
 
+export const QuestionView = styled(LView).attrs({
+  backgroundColor: '#eaeaea',
+  borderRadius: 2,
+  padding: 5,
+  margin: 5,
+  shadowColor: '#7b7b7b',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowRadius: 3,
+  shadowOpacity: 1.0,
+})``;
+
 export const SeparatorLine = styled(RNView).attrs({
-  backgroundColor: '#c9c9c9',
-  height: 0.5,
+  backgroundColor: '#d6d6d6',
+  height: 1,
   marginBottom: 5,
   marginTop: 5,
 })``;

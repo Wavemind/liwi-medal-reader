@@ -7,9 +7,9 @@ import {
   Input,
   Item,
   Label,
+  Spinner,
   Text,
   View,
-  Spinner,
 } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 

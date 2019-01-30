@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Form, Input, Item, Label, Text, View, H1 } from 'native-base';
+import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 import { sha256 } from 'js-sha256';
 import type { NavigationScreenProps } from 'react-navigation';
 import { saltHash } from '../../../utils/constants';

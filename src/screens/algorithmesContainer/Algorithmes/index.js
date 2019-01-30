@@ -1,4 +1,4 @@
-import RootAlgorithmes from './RootAlgorithmes.screen';
+import Algorithmes from './Algorithmes.screen';
 import { withSessions } from 'engine/contexts/Sessions.context';
 import { withApplication } from 'engine/contexts/Application.context';
 import { connect } from 'react-redux';
@@ -14,4 +14,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(RootAlgorithmes)));
+)(withSessions(withApplication(Algorithmes)));

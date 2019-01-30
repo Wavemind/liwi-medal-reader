@@ -17,10 +17,24 @@ export const setItem = async (key, item) => {
 export const getItems = async (key) => {
   const items = await AsyncStorage.getItem(key);
   const itemsArray = JSON.parse(items);
+
   if (itemsArray === null) {
     return [];
   }
   return itemsArray;
+};
+
+export const getItemFromArray = async (key, index, id) => {
+  let items = await getItems(key);
+
+  if (Array.isArray(items)) {
+    let findItem = items.find((item) => {
+      return item[index] === id;
+    });
+
+    return findItem;
+  }
+  return {};
 };
 
 export const destroyCredentials = async () => {
@@ -60,15 +74,6 @@ export const getSessions = async () => {
   return sessionsArray;
 };
 
-export const getMedicaleCases = async () => {
-  const medicalCases = await AsyncStorage.getItem('medicalCases');
-  const medicalCasesArray = JSON.parse(medicalCases);
-  if (medicalCasesArray === null) {
-    return [];
-  }
-  return medicalCasesArray;
-};
-
 export const setMedicaleCase = async (medicalCase) => {
   const medicalCases = await AsyncStorage.getItem('medicalCases');
   const medicalCasesArray = JSON.parse(medicalCases);
@@ -83,7 +88,7 @@ export const setMedicaleCase = async (medicalCase) => {
 };
 
 export const getUserMedicaleCases = async (userId) => {
-  let medicalCases = await getMedicaleCases();
+  let medicalCases = await getItems('medicalCases');
   let userMedicalCases = filter(medicalCases, (medicalCase) => {
     return medicalCase.userId === userId;
   });
@@ -92,7 +97,7 @@ export const getUserMedicaleCases = async (userId) => {
 };
 
 export const createMedicalCase = async (newMedicalCase) => {
-  let medicalCases = await getMedicaleCases();
+  let medicalCases = await getItems('medicalCases');
   let maxId = maxBy(medicalCases, 'id');
 
   if (medicalCases.length === 0) {
@@ -110,7 +115,7 @@ export const createMedicalCase = async (newMedicalCase) => {
   );
 };
 export const getMedicalCase = async (id) => {
-  let medicalCases = await getMedicaleCases();
+  let medicalCases = await getItems('medicalCases');
 
   if (Array.isArray(medicalCases)) {
     let findMedicalCase = medicalCases.find((medicalCase) => {
@@ -145,7 +150,7 @@ export const clearMedicalCases = async () => {
 };
 
 export const SetActiveSession = async (id = null) => {
-  const sessions = await getSessions();
+  const sessions = await getItems('sessions');
   await sessions.map((session) => {
     if (session.active === undefined || session.active === true) {
       session.active = false;

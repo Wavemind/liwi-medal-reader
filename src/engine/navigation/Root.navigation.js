@@ -6,10 +6,10 @@ import {
 } from 'react-navigation';
 
 import MainTabNavigator from './Main.navigation';
-import RootSessions from '../../screens/session/RootSessions';
-import NewSession from 'screens/session/NewSession';
-import UnlockSession from 'screens/session/UnlockSession';
-import SetCodeSession from 'screens/session/SetCodeSession';
+import RootSessions from '../../screens/sessionsContainer/RootSessions';
+import NewSession from 'screens/sessionsContainer/NewSession';
+import UnlockSession from 'screens/sessionsContainer/UnlockSession';
+import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
 
 export const SignedOut = createStackNavigator({
   SignIn: {

@@ -1,13 +1,13 @@
 import React from 'react';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
-import { Button, Icon, Text } from 'native-base';
+import { Button, Icon } from 'native-base';
 
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCases';
 import MedicalCase from '../../screens/medicalCase';
-import RootAlgorithmes from '../../screens/algorithme/RootAlgorithmes';
-import DetailAlgorithme from '../../screens/algorithme/DetailAlgorithme';
+import Algorithmes from '../../screens/algorithmesContainer/Algorithmes';
+import Algorithme from '../../screens/algorithmesContainer/Algorithme';
 import Settings from '../../screens/settings/';
 
 const Stack = createStackNavigator({
@@ -41,15 +41,15 @@ const Stack = createStackNavigator({
     },
   },
   Algorithmes: {
-    screen: RootAlgorithmes,
+    screen: Algorithmes,
     navigationOptions: ({ navigation }) => {
       return {
         title: 'Algorithmes disponible',
       };
     },
   },
-  DetailAlgorithme: {
-    screen: DetailAlgorithme,
+  Algorithme: {
+    screen: Algorithme,
     navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),
