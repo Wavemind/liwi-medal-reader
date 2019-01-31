@@ -44,7 +44,9 @@ export default class NewSession extends React.Component<Props, State> {
     this.setState({ loading: true });
     const { email, password } = this.state;
     const { sessions, navigation } = this.props;
+
     const newSession = await sessions.newSession(email, password);
+
     if (typeof newSession === 'number') {
       navigation.navigate('SetCodeSession', {
         user_id: newSession,

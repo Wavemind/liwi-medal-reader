@@ -41,9 +41,6 @@ export default class MedicalCases extends React.Component<Props, State> {
         <Button onPress={() => this.createMedicalCase()}>
           <Text>Créer un cas médical</Text>
         </Button>
-        <Button onPress={() => clear()}>
-          <Text>Clear MedicalCase Store Redux</Text>
-        </Button>
         {medicalCases.map((medicalCase) => (
           <Button
             onPress={async () => {

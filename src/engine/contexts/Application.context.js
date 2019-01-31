@@ -8,19 +8,21 @@ import {
   getSession,
   getSessions,
   SetActiveSession,
+  setItem,
 } from '../api/LocalStorage';
 import find from 'lodash/find';
 
-import { post } from '../api/Http';
+import { get, post } from '../api/Http';
 import { sha256 } from 'js-sha256';
 import { saltHash } from 'utils/constants';
 import { ToastFactory } from 'utils/ToastFactory';
 import { NavigationScreenProps } from 'react-navigation';
-import { NetInfo } from 'react-native';
+import { AppState, NetInfo } from 'react-native';
 import { GetDeviceInformations } from '../api/Device';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
 import { medicalCaseInitialState } from '../algorithme/medicalCase';
+import isEmpty from 'lodash/isEmpty';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -53,7 +55,8 @@ export class ApplicationProvider extends React.Component<Props, State> {
     this.initContext();
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
     NetInfo.isConnected.addEventListener(
       'change',
       this._handleConnectivityChange
@@ -64,11 +67,53 @@ export class ApplicationProvider extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
+    // TODO twice call ?
     NetInfo.isConnected.removeEventListener(
       'change',
       this._handleConnectivityChange
     );
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
+
+  // If the app is active or not
+  _handleAppStateChange = (nextAppState) => {
+    console.log(nextAppState);
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.log('App has come to the foreground!', nextAppState);
+      this._fetchDataWhenChange();
+      this.setState({ appState: nextAppState });
+    }
+  };
+
+  _fetchDataWhenChange = async () => {
+    const { user } = this.state;
+    if (!isEmpty(user)) {
+      let algorithmes = await get('algorithm_versions', user.data.id);
+      // TODO shitty workaround from backend developpers
+      await algorithmes.map((algorithme, index) => {
+        algorithmes[index].json = JSON.parse(algorithme.json);
+      });
+      await setItem('algorithmes', algorithmes);
+
+      await GetDeviceInformations((deviceInfo) => {
+        console.log('Internet is back ! POST it ');
+        post('activites', deviceInfo, user.data.id);
+      });
+    }
+  };
+
+  _handleConnectivityChange = async (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+
+    if (isConnected) {
+      await this._fetchDataWhenChange();
+    }
+  };
 
   createMedicalCase = async () => {
     const response = await fetch('https://uinames.com/api/?ext');
@@ -86,19 +131,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
         photo: json.photo,
       },
     });
-  };
-
-  _handleConnectivityChange = async (isConnected) => {
-    this.setState({
-      isConnected,
-    });
-
-    if (isConnected) {
-      await GetDeviceInformations((deviceInfo) => {
-        console.log('Internet is back ! POST it ');
-        post('connected', deviceInfo);
-      });
-    }
   };
 
   deconnexion = async () => {
@@ -166,9 +198,10 @@ export class ApplicationProvider extends React.Component<Props, State> {
     deconnexion: this.deconnexion,
     unlockSession: this.unlockSession,
     lockSession: this.lockSession,
-    isConnected: '',
+    isConnected: true,
     setMedicalCase: this.setMedicalCase,
     medicalCase: medicalCaseInitialState,
+    appState: AppState.currentState,
   };
 
   render() {

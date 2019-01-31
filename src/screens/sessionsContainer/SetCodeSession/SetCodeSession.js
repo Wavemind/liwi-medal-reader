@@ -53,14 +53,22 @@ export default class SetCodeSession extends React.Component<Props, State> {
     }
   };
 
-  setLocalCode = () => {
+  setLocalCode = async () => {
     const { codeOne } = this.state;
-    const { navigation, sessions } = this.props;
+    const { navigation, sessions, app } = this.props;
     const userId = navigation.getParam('user_id');
     const encrypted = sha256.hmac(saltHash, codeOne);
 
-    sessions.setLocalCode(encrypted, userId);
-    navigation.navigate('SignIn');
+    await sessions.setLocalCode(encrypted, userId);
+
+    app.unlockSession(userId, codeOne);
+    //
+    // navigation.navigate('UnlockSession', {
+    //   user_id: session.data.id,
+    //   title: `${session.data.first_name} ${session.data.last_name}`,
+    // });
+
+    //navigation.navigate('SignIn');
   };
 
   render() {

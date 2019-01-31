@@ -3,7 +3,13 @@
 import * as React from 'react';
 import AppNavigator from 'engine/navigation/Root.navigation';
 
-import { Platform, StatusBar, StyleSheet } from 'react-native';
+import {
+  AppState,
+  NetInfo,
+  Platform,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { Container, StyleProvider, Root } from 'native-base';
 import getTheme from 'template/liwi/native_components/index.ignore';
@@ -13,6 +19,8 @@ import merge from 'deepmerge';
 import { RootView } from 'template/layout';
 import { withApplication } from '../engine/contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
+import { GetDeviceInformations } from '../engine/api/Device';
+import { post } from '../engine/api/Http';
 
 type Props = {
   app: {
@@ -21,6 +29,10 @@ type Props = {
 };
 
 class LayoutTemplate extends React.Component<Props> {
+  state = {
+    appState: AppState.currentState,
+  };
+
   render() {
     const {
       app: { logged },

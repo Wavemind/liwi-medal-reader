@@ -95,7 +95,6 @@ export class SessionsProvider extends React.Component<
             algorithmes[index].json = JSON.parse(algorithme.json);
           });
           await setItem('algorithmes', algorithmes);
-
           ToastFactory('Connected successfully', { type: 'success' });
           return credentials.data.id;
         }

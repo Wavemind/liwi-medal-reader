@@ -1,30 +1,17 @@
 import React, { Component } from 'react';
-import { AppState, Image, View } from 'react-native';
+import { AppState, Image, NetInfo, View } from 'react-native';
 import { Button, Container, Icon, Text } from 'native-base';
 import { styles } from './Drawer.style';
 import { withSessions } from 'engine/contexts/Sessions.context';
 import { SeparatorLine } from '../../../template/layout';
+import { GetDeviceInformations } from '../../api/Device';
+import { post, get } from '../../api/Http';
+import { setItem } from '../../api/LocalStorage';
 
 export default class Drawer extends Component {
   state = {
+    isConnected: false,
     appState: AppState.currentState,
-  };
-
-  componentDidMount() {
-    const { app } = this.props;
-    AppState.addEventListener('change', this._handleAppStateChange);
-    // delay(() => app.lockSession(), 30000);
-  }
-
-  // If the app is active or not
-  _handleAppStateChange = (nextAppState) => {
-    if (
-      this.state.appState.match(/inactive|background/) &&
-      nextAppState === 'active'
-    ) {
-      // console.log('App has come to the foreground!');
-    }
-    this.setState({ appState: nextAppState });
   };
 
   logout = async () => {

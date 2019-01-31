@@ -20,7 +20,7 @@ export default class Boolean extends React.Component<Props, State> {
 
     return (
       <QuestionView elevation={5} style={styles}>
-        <H2> {question.label}</H2>
+        <H2>{question.label}</H2>
         <Text>{question.id}</Text>
         <RightView>
           <Text style={{ color: liwiColors.redColor }}>

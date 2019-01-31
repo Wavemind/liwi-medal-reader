@@ -38,9 +38,11 @@ export const get = async (params, userId) => {
 
   if (data.status === 200) {
     const json = await data.json();
+    console.log(json);
     return json;
   }
 
+  console.log(data);
   return data;
 };
 
@@ -60,6 +62,7 @@ export const post = async (
   });
 
   let r = await response;
+  console.log(r);
   return r;
 };
 

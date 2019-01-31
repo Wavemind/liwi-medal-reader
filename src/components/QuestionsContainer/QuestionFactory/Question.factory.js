@@ -19,6 +19,8 @@ export default class Question extends React.Component<Props, State> {
   render() {
     const { question } = this.props;
     let specificStyle;
+
+    // TODO Change it to int LOOL
     switch (question.priority) {
       case 'triage':
         specificStyle = styles.triage;
