@@ -51,7 +51,12 @@ export default class Drawer extends Component {
                 })
               }
             >
-              <Icon dark type={'FontAwesome5'} name="briefcase-medical" />
+              <Icon
+                style={styles.icon}
+                dark
+                type={'FontAwesome5'}
+                name="briefcase-medical"
+              />
               <Text dark>
                 {medicalCase.patient.firstname} - {medicalCase.patient.lastname}
               </Text>
@@ -63,7 +68,7 @@ export default class Drawer extends Component {
             btnDrawer
             onPress={() => navigation.navigate('MedicalCases')}
           >
-            <Icon dark type={'FontAwesome5'} name="boxes" />
+            <Icon style={styles.icon} dark type={'FontAwesome5'} name="boxes" />
             <Text dark>MedicalCases</Text>
           </Button>
           <Button
@@ -72,7 +77,7 @@ export default class Drawer extends Component {
             btnDrawer
             onPress={() => navigation.navigate('Algorithmes')}
           >
-            <Icon dark type={'Entypo'} name="flow-tree" />
+            <Icon style={styles.icon} dark type={'Entypo'} name="flow-tree" />
             <Text dark>Algorithmes</Text>
           </Button>
           <SeparatorLine />
@@ -82,7 +87,12 @@ export default class Drawer extends Component {
             btnDrawer
             onPress={() => this.props.app.lockSession()}
           >
-            <Icon dark type={'FontAwesome5'} name="exchange-alt" />
+            <Icon
+              style={styles.icon}
+              dark
+              type={'FontAwesome5'}
+              name="exchange-alt"
+            />
             <Text dark>Changer de session</Text>
           </Button>
           <Button
@@ -91,11 +101,11 @@ export default class Drawer extends Component {
             btnDrawer
             onPress={() => navigation.navigate('Settings')}
           >
-            <Icon dark type={'AntDesign'} name="setting" />
+            <Icon style={styles.icon} dark type={'AntDesign'} name="setting" />
             <Text dark>Paramètres</Text>
           </Button>
           <Button transparent iconLeft btnDrawer onPress={this.logout}>
-            <Icon dark type={'AntDesign'} name="logout" />
+            <Icon style={styles.icon} dark type={'AntDesign'} name="logout" />
             <Text dark>Se déconnecter</Text>
           </Button>
         </View>

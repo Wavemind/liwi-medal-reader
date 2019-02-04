@@ -2,7 +2,7 @@ import medicalCase from './MedicalCase.screen';
 import { withSessions } from '../../engine/contexts/Sessions.context';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
-import { setMedicalCase } from '../../engine/actions/creators.actions';
+import { updatePatient } from '../../engine/actions/creators.actions';
 
 const mapStateToProps = (medicalCase, ownProps) => {
   return {
@@ -12,7 +12,7 @@ const mapStateToProps = (medicalCase, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    updatePatient: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
+    updatePatient: (key, value) => dispatch(updatePatient(key, value)),
   };
 };
 

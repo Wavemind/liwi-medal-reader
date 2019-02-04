@@ -2,7 +2,26 @@ import RootSessions from './RootSessions.screen';
 import { withNamespaces } from 'react-i18next';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
+import {
+  setMedicalCase,
+  updatePatient,
+} from '../../../engine/actions/creators.actions';
+import { actions } from '../../../engine/actions/types.actions';
+import { connect } from 'react-redux';
 
-export default withApplication(
-  withSessions(withNamespaces(['login'])(RootSessions))
-);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    clear: () => dispatch({ type: actions.MC_CLEAR }),
+  };
+};
+
+const mapStateToProps = (medicalCase, ownProps) => {
+  return {
+    medicalCase,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withApplication(withSessions(withNamespaces(['login'])(RootSessions))));

@@ -5,7 +5,8 @@ import { REHYDRATE } from 'redux-persist';
 import { medicalCaseInitialState } from '../../algorithme/medicalCase';
 import { setMedicaleCase } from '../../api/LocalStorage';
 
-export const initialState = medicalCaseInitialState;
+// export const initialState = medicalCaseInitialState;
+export const initialState = {};
 
 export default function medicalCaseReducer(
   state: Object = initialState,
@@ -27,6 +28,18 @@ export default function medicalCaseReducer(
       };
     }
 
+    case actions.MC_UPDATE_PATIENT: {
+      const { index, value } = action.payload;
+
+      return {
+        ...state,
+        patient: {
+          ...state.patient,
+          [index]: value,
+        },
+      };
+    }
+
     case actions.INTERCEPT_ACTIONS: {
       return {
         ...state,
@@ -36,7 +49,7 @@ export default function medicalCaseReducer(
     case actions.MEDICAL_CASE_SET: {
       const { medicalCase } = action.payload;
 
-      if (medicalCase.id !== state.id) {
+      if (state !== {} && medicalCase.id !== state.id) {
         setMedicaleCase(state);
       }
 
@@ -45,7 +58,7 @@ export default function medicalCaseReducer(
       };
     }
 
-    case actions.MEDICAL_CASE_CLEAR: {
+    case actions.MC_CLEAR: {
       return {};
     }
 

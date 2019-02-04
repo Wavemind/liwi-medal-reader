@@ -16,6 +16,7 @@ export const setItem = async (key, item) => {
 
 export const getItems = async (key) => {
   const items = await AsyncStorage.getItem(key);
+
   const itemsArray = JSON.parse(items);
 
   if (itemsArray === null) {
@@ -75,15 +76,14 @@ export const getSessions = async () => {
 };
 
 export const setMedicaleCase = async (medicalCase) => {
-  const medicalCases = await AsyncStorage.getItem('medicalCases');
-  const medicalCasesArray = JSON.parse(medicalCases);
+  let medicalCases = await getItems('medicalCases');
 
-  if (Array.isArray(medicalCasesArray)) {
-    const idMedicalCase = findIndex(medicalCasesArray, (item) => {
+  if (Array.isArray(medicalCases)) {
+    const idMedicalCase = findIndex(medicalCases, (item) => {
       return item.id === medicalCase.id;
     });
-    medicalCasesArray[idMedicalCase] = medicalCase;
-    setItem('medicalCases', medicalCasesArray);
+    medicalCases[idMedicalCase] = medicalCase;
+    await setItem('medicalCases', medicalCases);
   }
 };
 
@@ -106,13 +106,9 @@ export const createMedicalCase = async (newMedicalCase) => {
 
   newMedicalCase.id = maxId.id + 1;
   newMedicalCase.createdDate = moment().format();
-
   medicalCases.push(newMedicalCase);
 
-  return await AsyncStorage.setItem(
-    'medicalCases',
-    JSON.stringify(medicalCases)
-  );
+  return await setItem('medicalCases', medicalCases);
 };
 export const getMedicalCase = async (id) => {
   let medicalCases = await getItems('medicalCases');
@@ -142,11 +138,11 @@ export const updateSession = async (id, newState) => {
 };
 
 export const clearSessions = async () => {
-  await AsyncStorage.setItem('sessions', '[]');
+  return await AsyncStorage.removeItem('sessions');
 };
 
 export const clearMedicalCases = async () => {
-  await AsyncStorage.setItem('medicalCases', '[]');
+  return await AsyncStorage.removeItem('medicalCases');
 };
 
 export const SetActiveSession = async (id = null) => {

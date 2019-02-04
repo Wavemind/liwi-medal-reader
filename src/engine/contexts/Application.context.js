@@ -77,7 +77,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
   // If the app is active or not
   _handleAppStateChange = (nextAppState) => {
-    console.log(nextAppState);
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState === 'active'
@@ -116,7 +115,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
   };
 
   createMedicalCase = async () => {
-    const response = await fetch('https://uinames.com/api/?ext');
+    const response = await fetch('https://uinames.com/api/?ext&region=france');
 
     const json = await response.json();
     createMedicalCase({
@@ -200,7 +199,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     lockSession: this.lockSession,
     isConnected: true,
     setMedicalCase: this.setMedicalCase,
-    medicalCase: medicalCaseInitialState,
+    medicalCase: {},
     appState: AppState.currentState,
   };
 

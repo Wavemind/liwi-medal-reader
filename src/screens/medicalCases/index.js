@@ -5,16 +5,16 @@ import { connect } from 'react-redux';
 import { setMedicalCase } from '../../engine/actions/creators.actions';
 import { actions } from '../../engine/actions/types.actions';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (medicalCase, ownProps) => {
   return {
-    state,
+    medicalCase,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setMedicalCase: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
-    clear: () => dispatch({ type: actions.MEDICAL_CASE_CLEAR }),
+    clear: () => dispatch({ type: actions.MC_CLEAR }),
   };
 };
 

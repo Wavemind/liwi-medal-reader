@@ -31,6 +31,7 @@ export default class RootSessions extends React.Component<Props, State> {
       t,
       app: { isConnected },
       sessions,
+      clear,
     } = this.props;
 
     return (
@@ -96,6 +97,7 @@ export default class RootSessions extends React.Component<Props, State> {
               blue
               onPress={async () => {
                 await clearMedicalCases();
+                clear();
               }}
             >
               <Icon type={'MaterialCommunityIcons'} name="delete-forever" />
