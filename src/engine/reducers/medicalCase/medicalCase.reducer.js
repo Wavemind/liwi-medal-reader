@@ -6,7 +6,7 @@ import { medicalCaseInitialState } from '../../algorithme/medicalCase';
 import { setMedicaleCase } from '../../api/LocalStorage';
 
 // export const initialState = medicalCaseInitialState;
-export const initialState = {};
+export const initialState = null;
 
 export default function medicalCaseReducer(
   state: Object = initialState,

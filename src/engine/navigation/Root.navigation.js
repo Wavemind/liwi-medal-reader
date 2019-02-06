@@ -47,11 +47,11 @@ export const SignedOut = createStackNavigator({
   },
 });
 
-const createRootNavigator = (signedIn = false) => {
+const createRootNavigator = (signedIn = false, medicalCase = null) => {
   return createSwitchNavigator(
     {
       Main: {
-        screen: MainTabNavigator,
+        screen: MainTabNavigator(medicalCase),
       },
       SignedOut: {
         screen: SignedOut,

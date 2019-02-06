@@ -6,6 +6,7 @@ import {
   View as LView,
   H2 as LH2,
   H3 as LH3,
+  Col as LCol,
 } from 'native-base';
 export const TextExemple = styled(LText).attrs({})`
   color: #4e4e4e;
@@ -13,6 +14,11 @@ export const TextExemple = styled(LText).attrs({})`
   font-weight: bold;
   margin: 10px;
 `;
+
+export const ColCenter = styled(LCol).attrs({
+  justifyContent: 'center',
+  alignItems: 'center',
+})``;
 
 export const LiwiTitle2 = styled(LH2).attrs({
   color: liwiColors.redColor,
@@ -67,9 +73,9 @@ export const CardView = styled(LView).attrs({
 })``;
 
 export const QuestionView = styled(LView).attrs({
+  flex: 1,
   backgroundColor: '#eaeaea',
   borderRadius: 2,
-  padding: 5,
   margin: 5,
   shadowColor: '#7b7b7b',
   shadowOffset: {

@@ -38,7 +38,7 @@ export default class Drawer extends Component {
           <Text light>{user.email}</Text>
         </View>
         <View>
-          {medicalCase.patient !== undefined ? (
+          {medicalCase.id !== undefined ? (
             <Button
               transparent
               iconLeft

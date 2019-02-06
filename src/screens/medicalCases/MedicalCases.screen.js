@@ -10,6 +10,7 @@ import {
 } from '../../engine/api/LocalStorage';
 import moment from 'moment';
 import { medicalCaseInitialState } from '../../engine/algorithme/medicalCase';
+import { generateEmptyNodes } from '../../engine/algorithme/initiateAlgo';
 
 type Props = NavigationScreenProps & {};
 
@@ -32,6 +33,10 @@ export default class MedicalCases extends React.Component<Props, State> {
     const response = await fetch('https://uinames.com/api/?ext&region=france');
 
     const json = await response.json();
+
+    // INITIATE ALGO TEMP
+
+    let algo = generateEmptyNodes(medicalCaseInitialState);
 
     await createMedicalCase({
       ...medicalCaseInitialState,

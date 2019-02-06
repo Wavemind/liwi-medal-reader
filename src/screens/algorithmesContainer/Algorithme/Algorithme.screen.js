@@ -35,7 +35,7 @@ export default class Algorithme extends React.Component<Props, State> {
     }
 
     return (
-      <View style={{ height: screenHeight, padding: 20, paddingBottom: 80 }}>
+      <View style={{ height: screenHeight, paddingBottom: 80 }}>
         <Tabs>
           <Tab
             heading="Questions"

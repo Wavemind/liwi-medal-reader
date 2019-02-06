@@ -1,5 +1,11 @@
 import React from 'react';
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import {
+  createDrawerNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
+  createTabNavigator,
+  createMaterialTopTabNavigator,
+} from 'react-navigation';
 import { Button, Icon } from 'native-base';
 
 import Drawer from './drawer';
@@ -9,6 +15,7 @@ import MedicalCase from '../../screens/medicalCase';
 import Algorithmes from '../../screens/algorithmesContainer/Algorithmes';
 import Algorithme from '../../screens/algorithmesContainer/Algorithme';
 import Settings from '../../screens/settings/';
+import TabsNavigation from './tabs';
 
 const Stack = createStackNavigator({
   Home: {
@@ -66,11 +73,31 @@ const Stack = createStackNavigator({
   },
 });
 
-export default createDrawerNavigator(
+const SimpleTabs = createBottomTabNavigator(
   {
-    Home: { screen: Stack },
+    Home: {
+      screen: Stack,
+    },
+    MedicalCase: {
+      screen: MedicalCase,
+    },
+    MedicalCases: {
+      screen: MedicalCases,
+    },
   },
   {
-    contentComponent: (props) => <Drawer {...props} />,
+    tabBarOptions: {
+      activeTintColor: '#e91e63',
+    },
+    // tabBarComponent: TabsNavigation, // TODO nice Tabs menu
   }
 );
+
+export default (medicalCase) => {
+  return createDrawerNavigator(
+    { Home: { screen: medicalCase.id === undefined ? Stack : SimpleTabs } },
+    {
+      contentComponent: (props) => <Drawer {...props} />,
+    }
+  );
+};

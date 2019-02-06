@@ -15,7 +15,7 @@ type State = {};
 export default class LwDatePicker extends React.Component<Props, State> {
   state = { value: '' };
 
-  defaultProps = { iconName: false, iconType: false };
+  static defaultProps = { iconName: false, iconType: false };
 
   shouldComponentUpdate(
     nextProps: Readonly<P>,
@@ -39,7 +39,7 @@ export default class LwDatePicker extends React.Component<Props, State> {
 
   _handleChangeValue = (value) => {
     this.setState({ value: new Date(value).toString() });
-    this.props.change(this.props.index, new Date(value).toString());
+    this.props.change(this.props.index, moment(value).format('DD/MM/YYYY'));
   };
 
   render() {

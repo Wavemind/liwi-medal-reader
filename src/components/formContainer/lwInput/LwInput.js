@@ -13,7 +13,11 @@ type State = {};
 export default class LwInput extends React.Component<Props, State> {
   state = { value: '' };
 
-  defaultProps = { iconName: false, iconType: false, keyboardType: 'default' };
+  static defaultProps = {
+    iconName: false,
+    iconType: false,
+    keyboardType: 'default',
+  };
 
   shouldComponentUpdate(
     nextProps: Readonly<P>,

@@ -1,0 +1,554 @@
+{
+  "name": "ePoct",
+  "version": "first_trial",
+  "description": "loremp ipsum",
+  "author": "Alain Fresco",
+  "created_at": "2019-02-05T16:17:16.000+01:00",
+  "updated_at": "2019-02-05T16:17:16.000+01:00",
+  "diseases": [
+    {
+      "4": {
+        "id": 4,
+        "reference": "DD_7",
+        "label": "Severe LRTI",
+        "differential": {
+          "top_conditions": [
+
+          ],
+          "conditions": [
+
+          ]
+        },
+        "nodes": [
+          {
+            "1": {
+              "top_conditions": [
+
+              ],
+              "conditions": [
+
+              ],
+              "id": 1,
+              "children": [
+                4,
+                5,
+                6,
+                7
+              ]
+            }
+          },
+          {
+            "5": {
+              "top_conditions": [
+                {
+                  "4": {
+                    "first_id": 17,
+                    "first_type": "Answer",
+                    "first_node_id": 13,
+                    "operator": null,
+                    "second_id": null,
+                    "second_type": null
+                  }
+                }
+              ],
+              "conditions": [
+
+              ],
+              "id": 5,
+              "children": [
+                9
+              ]
+            }
+          },
+          {
+            "2": {
+              "top_conditions": [
+                {
+                  "5": {
+                    "first_id": 17,
+                    "first_type": "Answer",
+                    "first_node_id": 13,
+                    "operator": null,
+                    "second_id": null,
+                    "second_type": null
+                  }
+                }
+              ],
+              "conditions": [
+
+              ],
+              "id": 2,
+              "children": [
+                10
+              ]
+            }
+          },
+          {
+            "3": {
+              "top_conditions": [
+                {
+                  "6": {
+                    "first_id": 17,
+                    "first_type": "Answer",
+                    "first_node_id": 13,
+                    "operator": null,
+                    "second_id": null,
+                    "second_type": null
+                  }
+                }
+              ],
+              "conditions": [
+
+              ],
+              "id": 3,
+              "children": [
+                11
+              ]
+            }
+          },
+          {
+            "4": {
+              "top_conditions": [
+                {
+                  "7": {
+                    "first_id": 17,
+                    "first_type": "Answer",
+                    "first_node_id": 13,
+                    "operator": null,
+                    "second_id": null,
+                    "second_type": null
+                  }
+                }
+              ],
+              "conditions": [
+
+              ],
+              "id": 4,
+              "children": [
+                8
+              ]
+            }
+          },
+          {
+            "7": {
+              "top_conditions": [
+                {
+                  "11": {
+                    "first_id": 12,
+                    "first_type": "Node",
+                    "operator": null,
+                    "second_id": null,
+                    "second_type": null
+                  }
+                }
+              ],
+              "conditions": [
+
+              ],
+              "id": 7,
+              "children": [
+                13,
+                14,
+                15
+              ]
+            }
+          },
+          {
+            "diagnosis": {
+              "12": {
+                "top_conditions": [
+                  {
+                    "8": {
+                      "first_id": 28,
+                      "first_type": "Answer",
+                      "first_node_id": 18,
+                      "operator": null,
+                      "second_id": null,
+                      "second_type": null
+                    }
+                  },
+                  {
+                    "9": {
+                      "first_id": 24,
+                      "first_type": "Answer",
+                      "first_node_id": 16,
+                      "operator": "AND",
+                      "second_id": 25,
+                      "second_type": "Answer",
+                      "second_node_id": 17
+                    }
+                  },
+                  {
+                    "10": {
+                      "first_id": 22,
+                      "first_type": "Answer",
+                      "first_node_id": 15,
+                      "operator": null,
+                      "second_id": null,
+                      "second_type": null
+                    }
+                  }
+                ],
+                "conditions": [
+
+                ],
+                "name": "Severe lower respiratory tract infection",
+                "treatments": {
+                  "20": {
+                    "top_conditions": [
+                      {
+                        "13": {
+                          "first_id": 31,
+                          "first_type": "Answer",
+                          "first_node_id": 24,
+                          "operator": null,
+                          "second_id": null,
+                          "second_type": null
+                        }
+                      }
+                    ],
+                    "conditions": [
+
+                    ],
+                    "id": 20
+                  },
+                  "21": {
+                    "top_conditions": [
+                      {
+                        "14": {
+                          "first_id": 32,
+                          "first_type": "Answer",
+                          "first_node_id": 24,
+                          "operator": null,
+                          "second_id": null,
+                          "second_type": null
+                        }
+                      }
+                    ],
+                    "conditions": [
+
+                    ],
+                    "id": 21
+                  },
+                  "22": {
+                    "top_conditions": [
+                      {
+                        "12": {
+                          "first_id": 31,
+                          "first_type": "Answer",
+                          "first_node_id": 24,
+                          "operator": null,
+                          "second_id": null,
+                          "second_type": null
+                        }
+                      }
+                    ],
+                    "conditions": [
+
+                    ],
+                    "id": 22
+                  }
+                },
+                "managements": {
+                  "23": {
+                    "top_conditions": [
+                      {
+                        "15": {
+                          "first_id": 32,
+                          "first_type": "Answer",
+                          "first_node_id": 24,
+                          "operator": null,
+                          "second_id": 31,
+                          "second_type": "Answer",
+                          "second_node_id": 24
+                        }
+                      }
+                    ],
+                    "conditions": [
+
+                    ],
+                    "id": 23
+                  }
+                },
+                "excluding_diagnosis": null
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "questions": {
+    "13": {
+      "id": 13,
+      "reference": "S_2",
+      "label": "Cough",
+      "description": null,
+      "priority": "priority",
+      "category": "Symptom",
+      "display_format": "Radiobutton",
+      "value_format": "Array",
+      "answers": [
+        {
+          "17": {
+            "id": 17,
+            "reference": "S_2_1",
+            "label": "yes",
+            "value": null,
+            "operator": null
+          }
+        },
+        {
+          "18": {
+            "id": 18,
+            "reference": "S_2_2",
+            "label": "no",
+            "value": null,
+            "operator": null
+          }
+        }
+      ]
+    },
+    "15": {
+      "id": 15,
+      "reference": "P_1",
+      "label": "SAO2",
+      "description": null,
+      "priority": "triage",
+      "category": "Physical exam",
+      "display_format": "Input",
+      "value_format": "Integer",
+      "answers": [
+        {
+          "21": {
+            "id": 21,
+            "reference": "P_1_1",
+            "label": ">/= 90%",
+            "value": "90",
+            "operator": ">="
+          }
+        },
+        {
+          "22": {
+            "id": 22,
+            "reference": "P_1_2",
+            "label": "< 90%",
+            "value": "90",
+            "operator": "<"
+          }
+        }
+      ]
+    },
+    "16": {
+      "id": 16,
+      "reference": "P_3",
+      "label": "Respiratory rate",
+      "description": null,
+      "priority": "triage",
+      "category": "Physical exam",
+      "display_format": "Input",
+      "value_format": "Integer",
+      "answers": [
+        {
+          "23": {
+            "id": 23,
+            "reference": "P_3_1",
+            "label": "< 97th%ile",
+            "value": "97",
+            "operator": "<"
+          }
+        },
+        {
+          "24": {
+            "id": 24,
+            "reference": "P_3_2",
+            "label": ">/= 97th%ile",
+            "value": "97",
+            "operator": ">="
+          }
+        }
+      ]
+    },
+    "17": {
+      "id": 17,
+      "reference": "P_13",
+      "label": "Lower chest indrawing",
+      "description": null,
+      "priority": "basic",
+      "category": "Physical exam",
+      "display_format": "Radiobutton",
+      "value_format": "Array",
+      "answers": [
+        {
+          "25": {
+            "id": 25,
+            "reference": "P_13_1",
+            "label": "yes",
+            "value": null,
+            "operator": null
+          }
+        },
+        {
+          "26": {
+            "id": 26,
+            "reference": "P_13_2",
+            "label": "no",
+            "value": null,
+            "operator": null
+          }
+        }
+      ]
+    },
+    "18": {
+      "id": 18,
+      "reference": "P_14",
+      "label": "Sever respiratory distress",
+      "description": null,
+      "priority": "basic",
+      "category": "Physical exam",
+      "display_format": "Radiobutton",
+      "value_format": "Array",
+      "answers": [
+        {
+          "27": {
+            "id": 27,
+            "reference": "P_14_1",
+            "label": "yes",
+            "value": null,
+            "operator": null
+          }
+        },
+        {
+          "28": {
+            "id": 28,
+            "reference": "P_14_2",
+            "label": "no",
+            "value": null,
+            "operator": null
+          }
+        }
+      ]
+    }
+  },
+  "treatments": {
+    "20": {
+      "id": 20,
+      "reference": "T_1",
+      "label": "Amoxicillin",
+      "description": null
+    },
+    "21": {
+      "id": 21,
+      "reference": "T_2",
+      "label": "IM ceftriaxone",
+      "description": null
+    },
+    "22": {
+      "id": 22,
+      "reference": "T_9",
+      "label": "Oral rehydration",
+      "description": null
+    }
+  },
+  "managements": {
+    "23": {
+      "id": 23,
+      "reference": "M_2",
+      "label": "Refer",
+      "description": null
+    }
+  },
+  "predefined_syndromes": {
+    "24": {
+      "nodes": [
+        {
+          "12": {
+            "top_conditions": [
+
+            ],
+            "conditions": [
+
+            ],
+            "id": 12,
+            "children": [
+              1,
+              2
+            ]
+          }
+        },
+        {
+          "13": {
+            "top_conditions": [
+              {
+                "1": {
+                  "first_id": 20,
+                  "first_type": "Answer",
+                  "first_node_id": 14,
+                  "operator": null,
+                  "second_id": null,
+                  "second_type": null
+                }
+              }
+            ],
+            "conditions": [
+
+            ],
+            "id": 13,
+            "children": [
+              3
+            ]
+          }
+        },
+        {
+          "14": {
+            "top_conditions": [
+              {
+                "2": {
+                  "first_id": 17,
+                  "first_type": "Answer",
+                  "first_node_id": 13,
+                  "operator": null,
+                  "second_id": null,
+                  "second_type": null
+                }
+              },
+              {
+                "3": {
+                  "first_id": 17,
+                  "first_type": "Answer",
+                  "first_node_id": 13,
+                  "operator": null,
+                  "second_id": null,
+                  "second_type": null
+                }
+              }
+            ],
+            "conditions": [
+
+            ],
+            "id": 14,
+            "children": [
+
+            ]
+          }
+        }
+      ],
+      "answers": [
+        {
+          "31": {
+            "id": 31,
+            "reference": "PS_6_1",
+            "label": "yes"
+          }
+        },
+        {
+          "32": {
+            "id": 32,
+            "reference": "PS_6_2",
+            "label": "no"
+          }
+        }
+      ]
+    }
+  }
+}

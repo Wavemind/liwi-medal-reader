@@ -16,5 +16,12 @@ export default {
       paddingTop: 10,
       paddingLeft: 10,
     },
+    '.question': {
+      borderColor: liwiColors.greyColor,
+      borderWidth: 1,
+      width: '100%',
+      flex: 1,
+      margin: 0,
+    },
   },
 };

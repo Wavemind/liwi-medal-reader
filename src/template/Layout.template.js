@@ -21,11 +21,18 @@ import { withApplication } from '../engine/contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
 import { GetDeviceInformations } from '../engine/api/Device';
 import { post } from '../engine/api/Http';
+import { connect } from 'react-redux';
 
 type Props = {
   app: {
     logged: boolean,
   },
+};
+
+const mapStateToProps = (medicalCase, ownProps) => {
+  return {
+    medicalCase,
+  };
 };
 
 class LayoutTemplate extends React.Component<Props> {
@@ -36,9 +43,10 @@ class LayoutTemplate extends React.Component<Props> {
   render() {
     const {
       app: { logged },
+      medicalCase,
     } = this.props;
 
-    const Navigator = AppNavigator(logged);
+    const Navigator = AppNavigator(logged, medicalCase);
     const AppContainer = createAppContainer(Navigator);
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
@@ -58,4 +66,4 @@ class LayoutTemplate extends React.Component<Props> {
   }
 }
 
-export default withApplication(LayoutTemplate);
+export default connect(mapStateToProps)(withApplication(LayoutTemplate));

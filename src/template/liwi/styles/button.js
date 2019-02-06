@@ -1,3 +1,5 @@
+import { liwiColors } from '../../../utils/constants';
+
 export default {
   'NativeBase.Button': {
     '.btnLiwi': {
@@ -27,7 +29,15 @@ export default {
       borderWidth: 0,
       borderRadius: 0,
     },
+    '.square': {
+      backgroundColor: 'none',
+      shadowOffset: { height: 1, width: 1 },
+      shadowOpacity: 1,
+      elevation: 1,
+      padding: 4,
+      borderColor: liwiColors.blackColor,
+    },
     // Tous les buttons sont affectés !
-    margin: 10,
+    margin: 5,
   },
 };

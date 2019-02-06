@@ -14,4 +14,11 @@ export const styles = StyleSheet.create({
     borderColor: '#3e3e3e',
     borderWidth: 3,
   },
+  borderRight: {
+    borderRightWidth: 1,
+    borderRightColor: '#ffffff',
+  },
+  icon: {
+    color: liwiColors.redColor,
+  },
 });
