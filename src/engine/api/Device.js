@@ -1,5 +1,4 @@
-import { Platform, Linking, Alert, Navi } from 'react-native';
-import { PermissionsAndroid } from 'react-native';
+import { Alert } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
 
@@ -52,11 +51,9 @@ export const GetDeviceInformations = async (cb) => {
   const manufacturer = DeviceInfo.getManufacturer();
   const deviceName = DeviceInfo.getDeviceName();
   const model = DeviceInfo.getModel();
-  const serialNumber = DeviceInfo.getSerialNumber();
   const systemName = DeviceInfo.getSystemName();
   const systemVersion = DeviceInfo.getSystemVersion();
   const timezone = DeviceInfo.getTimezone();
-  const uniqueId = DeviceInfo.getUniqueID();
   const version = DeviceInfo.getVersion();
 
   //let reference_number = Platform.OS === 'ios' ? uniqueId : serialNumber;

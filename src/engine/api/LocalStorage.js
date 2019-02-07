@@ -6,9 +6,8 @@ import findIndex from 'lodash/findIndex';
 import maxBy from 'lodash/maxBy';
 
 // TODO init localstorage, set initial value if undefined
-export const setCredentials = async (newState) => {
-  return await AsyncStorage.setItem('credentials', JSON.stringify(newState));
-};
+export const setCredentials = async (newState) =>
+  await AsyncStorage.setItem('credentials', JSON.stringify(newState));
 
 export const setItem = async (key, item) => {
   return await AsyncStorage.setItem(key, JSON.stringify(item));
@@ -26,33 +25,30 @@ export const getItems = async (key) => {
 };
 
 export const getItemFromArray = async (key, index, id) => {
-  let items = await getItems(key);
+  const items = await getItems(key);
 
   if (Array.isArray(items)) {
-    let findItem = items.find((item) => {
+    return items.find((item) => {
       return item[index] === id;
     });
-
-    return findItem;
   }
   return {};
 };
 
-export const destroyCredentials = async () => {
-  return await AsyncStorage.removeItem('credentials', (err) => {
+export const destroyCredentials = async () =>
+  await AsyncStorage.removeItem('credentials', (err) => {
     // key 'key' will be removed, if they existed
     // callback to do some action after removal of item
   });
-};
 
 export const isLogged = async () => {
-  let credentiels = await getCredentials();
+  let credentials = await getCredentials();
 
-  if (credentiels === null) {
+  if (credentials === null) {
     return false;
   }
 
-  let date_expiry = new Date(credentiels.expiry * 1000);
+  let date_expiry = new Date(credentials.expiry * 1000);
   // TODO validate_token
   // if (!moment(date_expiry).isAfter(moment())) {
   //   return await get('auth/validate_token');
@@ -88,12 +84,10 @@ export const setMedicaleCase = async (medicalCase) => {
 };
 
 export const getUserMedicaleCases = async (userId) => {
-  let medicalCases = await getItems('medicalCases');
-  let userMedicalCases = filter(medicalCases, (medicalCase) => {
+  const medicalCases = await getItems('medicalCases');
+  return filter(medicalCases, (medicalCase) => {
     return medicalCase.userId === userId;
   });
-
-  return userMedicalCases;
 };
 
 export const createMedicalCase = async (newMedicalCase) => {
@@ -111,14 +105,12 @@ export const createMedicalCase = async (newMedicalCase) => {
   return await setItem('medicalCases', medicalCases);
 };
 export const getMedicalCase = async (id) => {
-  let medicalCases = await getItems('medicalCases');
+  const medicalCases = await getItems('medicalCases');
 
   if (Array.isArray(medicalCases)) {
-    let findMedicalCase = medicalCases.find((medicalCase) => {
+    return medicalCases.find((medicalCase) => {
       return medicalCase.id === id;
     });
-
-    return findMedicalCase;
   }
   return {};
 };
@@ -138,11 +130,15 @@ export const updateSession = async (id, newState) => {
 };
 
 export const clearSessions = async () => {
-  return await AsyncStorage.removeItem('sessions');
+  await AsyncStorage.removeItem('sessions');
 };
 
 export const clearMedicalCases = async () => {
-  return await AsyncStorage.removeItem('medicalCases');
+  await AsyncStorage.removeItem('medicalCases');
+};
+
+export const setSessions = async (newState) => {
+  await AsyncStorage.setItem('sessions', JSON.stringify(newState));
 };
 
 export const SetActiveSession = async (id = null) => {
@@ -178,10 +174,6 @@ export const getSession = async (id) => {
     return findSession;
   }
   return {};
-};
-
-export const setSessions = async (newState) => {
-  return await AsyncStorage.setItem('sessions', JSON.stringify(newState));
 };
 
 export const destroySession = async (session_id) => {

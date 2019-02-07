@@ -79,23 +79,28 @@ export class SessionsProvider extends React.Component<
           await setSessions(sessions);
           this.setState({ sessions });
 
-          await GetDeviceInformations((deviceInfo) => {
+          await GetDeviceInformations(async (deviceInfo) => {
             deviceInfo.activity.user_id = credentials.data.id;
             console.log('New session connected, POST device with user_id');
             post('activities', deviceInfo, credentials.data.id);
+
+            let algorithmes = await get(
+              `algorithm_versions?mac_address=${
+                deviceInfo.activity.device_attributes.mac_address
+              }`,
+              credentials.data.id
+            );
+
+            console.log(algorithmes);
+
+            // TODO shitty workaround from backend developpers
+            await algorithmes.map((algorithme, index) => {
+              algorithmes[index].json = JSON.parse(algorithme.json);
+            });
+            await setItem('algorithmes', algorithmes);
+            ToastFactory('Connected successfully', { type: 'success' });
           });
 
-          let algorithmes = await get(
-            'algorithm_versions',
-            credentials.data.id
-          );
-
-          // TODO shitty workaround from backend developpers
-          await algorithmes.map((algorithme, index) => {
-            algorithmes[index].json = JSON.parse(algorithme.json);
-          });
-          await setItem('algorithmes', algorithmes);
-          ToastFactory('Connected successfully', { type: 'success' });
           return credentials.data.id;
         }
         ToastFactory('Already connected', { type: 'danger' });

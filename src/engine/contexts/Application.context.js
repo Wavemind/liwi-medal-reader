@@ -21,7 +21,6 @@ import { AppState, NetInfo } from 'react-native';
 import { GetDeviceInformations } from '../api/Device';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
-import { medicalCaseInitialState } from '../algorithme/medicalCase';
 import isEmpty from 'lodash/isEmpty';
 
 const defaultValue = {};
@@ -46,15 +45,6 @@ type State = {
 };
 
 export class ApplicationProvider extends React.Component<Props, State> {
-  setValState = async (prop: any, value: any) => {
-    await this.setState({ [prop]: value });
-  };
-
-  constructor(props: Props) {
-    super(props);
-    this.initContext();
-  }
-
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     NetInfo.isConnected.addEventListener(
@@ -64,6 +54,14 @@ export class ApplicationProvider extends React.Component<Props, State> {
     NetInfo.isConnected.fetch().done((isConnected) => {
       this.setState({ isConnected });
     });
+  }
+  setValState = async (prop: any, value: any) => {
+    await this.setState({ [prop]: value });
+  };
+
+  constructor(props: Props) {
+    super(props);
+    this.initContext();
   }
 
   componentWillUnmount() {
@@ -91,6 +89,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     const { user } = this.state;
     if (!isEmpty(user)) {
       let algorithmes = await get('algorithm_versions', user.data.id);
+
       // TODO shitty workaround from backend developpers
       await algorithmes.map((algorithme, index) => {
         algorithmes[index].json = JSON.parse(algorithme.json);
@@ -143,7 +142,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
   initContext = async () => {
     const sessions = await getSessions();
     let finderActiveSession = find(sessions, (session) => {
-      let isStillActive = moment().isBefore(
+      const isStillActive = moment().isBefore(
         moment(session.active_since).add(sessionsDuration, 'minute')
       );
       return session.active && isStillActive;
@@ -166,12 +165,12 @@ export class ApplicationProvider extends React.Component<Props, State> {
   };
 
   unlockSession = async (id: number, code: string) => {
-    const session = await getSession(id);
+    let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
 
     if (session.local_code === encrypt) {
       await SetActiveSession(id);
-      const session = await getSession(id);
+      session = await getSession(id);
       this.setUserContext(session);
     } else {
       ToastFactory('Pas le bon code', { type: 'danger' });

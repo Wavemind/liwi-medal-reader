@@ -1,17 +1,20 @@
 {
+  "env": {
+    "es6": true,
+    "node": true
+  },
   "parser": "babel-eslint",
+  "extends": "eslint:recommended",
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
   },
-  "extends": ["airbnb"],
-  "plugins": ["react", "jsx-a11y", "import"],
-  "env": {
-    "jest": true
-  },
+  "plugins": [
+    "react"
+  ],
   "settings": {
     "import/resolver": {
       "node": {
@@ -20,13 +23,50 @@
     }
   },
   "rules": {
-    "react/forbid-prop-types": [0],
-    "jsx-a11y/anchor-is-valid": [0],
-    "function-paren-newline": [2, "consistent"],
-    "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
-    "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
-    "import/no-extraneous-dependencies": [2, { "devDependencies": ["__tests__/**"] }],
-    "quotes": [2, "single"],
-    "max-len": 0
+    "react/forbid-prop-types": [
+      0
+    ],
+    "jsx-a11y/anchor-is-valid": [
+      0
+    ],
+    "function-paren-newline": [
+      2,
+      "consistent"
+    ],
+    "react/prefer-stateless-function": [
+      2,
+      {
+        "ignorePureComponents": true
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js"
+        ]
+      }
+    ],
+    "max-len": 0,
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "globals": {
+      "navigator": "true",
+      "fetch": "true"
+    },
+    "semi": [
+      "error",
+      "always"
+    ]
   }
 }

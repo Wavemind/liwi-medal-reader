@@ -41,6 +41,12 @@ export const get = async (params, userId) => {
     return json;
   }
 
+  if (data.status === 422) {
+    const json = await data.json();
+    ToastFactory(json);
+    return json;
+  }
+
   return data;
 };
 
