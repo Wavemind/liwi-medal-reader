@@ -40,6 +40,7 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     await createMedicalCase({
       ...medicalCaseInitialState,
+      ...algo,
       userId: this.props.app.user.data.id,
       patient: {
         ...medicalCaseInitialState.patient,

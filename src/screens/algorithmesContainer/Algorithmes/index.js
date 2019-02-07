@@ -11,7 +11,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {};
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(Algorithmes)));
+export default withSessions(withApplication(Algorithmes));

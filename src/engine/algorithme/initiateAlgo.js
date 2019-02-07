@@ -54,6 +54,11 @@ export const generateEmptyNodes = (medicalCaseInitialState) => {
         reference: diseases[id_diseases].reference,
       });
     });
+
+    Object.keys(diseases[id_diseases].diagnosis).map((idDiag) => {
+      workingDiagnostics.final[idDiag] =
+        diseases[id_diseases].diagnosis[idDiag];
+    });
   });
 
   // Map syndromes
@@ -65,5 +70,10 @@ export const generateEmptyNodes = (medicalCaseInitialState) => {
         });
       }
     );
+
+    workingDiagnostics.syndromes[id_predefined_syndromes] =
+      predefined_syndromes[id_predefined_syndromes];
   });
+
+  return workingDiagnostics;
 };

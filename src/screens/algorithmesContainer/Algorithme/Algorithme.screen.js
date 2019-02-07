@@ -1,13 +1,14 @@
 // @flow
 
 import * as React from 'react';
-import { Text, View, Tab, Tabs } from 'native-base';
+import { Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 import { QuestionView } from '../../../template/layout';
+
 type Props = NavigationScreenProps & {};
 
 type State = {};
@@ -82,6 +83,7 @@ export default class Algorithme extends React.Component<Props, State> {
                   <Text>{json.diseases[id].name}</Text>
                 </QuestionView>
               ))}
+              <MyComponent />
             </View>
           </Tab>
         </Tabs>

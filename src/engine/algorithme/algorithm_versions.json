@@ -133,7 +133,6 @@
         }
       },
       "diagnosis": {
-        "6": {
           "1": {
             "top_conditions": [
               {
@@ -246,7 +245,6 @@
             },
             "excluding_diagnosis": null
           }
-        }
       }
     }
   },

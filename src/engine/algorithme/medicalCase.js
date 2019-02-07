@@ -44,4 +44,5 @@ export const medicalCaseInitialState = {
   treatmentsSelected: [],
   nodes: {},
   final: {},
+  syndromes: {},
 };
