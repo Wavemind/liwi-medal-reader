@@ -482,7 +482,8 @@
           "operator": null
         }
       }
-    },"12": {
+    },
+    "12": {
       "id": 7,
       "reference": "P_14",
       "label": "Sever respiratory distress",

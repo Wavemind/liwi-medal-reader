@@ -1,29 +1,28 @@
 // @flow
 
 import * as React from 'react';
-import { View, Grid, Col, Row, Text, Icon, Button } from 'native-base';
+import { Grid, Icon, Text } from 'native-base';
 import { styles } from './Question.style';
 import type { NavigationScreenProps } from 'react-navigation';
-import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
-import { getSession } from 'engine/api/LocalStorage';
 import Boolean from '../Question/Boolean';
 import Numeric from '../Question/Numeric';
-import { QuestionView, ColCenter } from '../../../template/layout';
+import { ColCenter, QuestionView } from '../../../template/layout';
 import { liwiColors } from '../../../utils/constants';
-import Modal from '../../LiwiModal';
 import ModalWrapper from './ModalWrapper';
+import Radio from '../Question/Radio/Radio';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Question extends React.Component<Props, State> {
+export default class Question extends React.PureComponent<Props, State> {
   render() {
     const { question } = this.props;
     let specificStyle;
 
     let WrapperAnswer = () => null;
     let WrapperCategory = () => null;
+    let WrapperRadiobutton = () => null;
 
     // TODO Change it to int LOOL
     switch (question.priority) {
@@ -41,13 +40,14 @@ export default class Question extends React.Component<Props, State> {
         break;
     }
 
-    switch (question.question_type) {
-      case 'boolean':
+    switch (question.display_format) {
+      case 'Radiobutton':
         WrapperAnswer = () => (
           <Boolean question={question} styles={specificStyle} />
         );
+        WrapperRadiobutton = () => <Radio question={question} />;
         break;
-      case 'numeric':
+      case 'Input':
         WrapperAnswer = () => (
           <Numeric question={question} styles={specificStyle} />
         );
@@ -57,7 +57,7 @@ export default class Question extends React.Component<Props, State> {
     }
 
     switch (question.category) {
-      case 'comorbidities':
+      case 'Comorbidity':
         WrapperCategory = () => (
           <Icon
             style={styles.icon}
@@ -66,7 +66,7 @@ export default class Question extends React.Component<Props, State> {
           />
         );
         break;
-      case 'exposure':
+      case 'Exposure':
         WrapperCategory = () => (
           <Icon
             style={styles.icon}
@@ -75,7 +75,7 @@ export default class Question extends React.Component<Props, State> {
           />
         );
         break;
-      case 'physicalExam':
+      case 'Physical exam':
         WrapperCategory = () => (
           <Icon
             style={styles.icon}
@@ -84,7 +84,16 @@ export default class Question extends React.Component<Props, State> {
           />
         );
         break;
-      case 'symptoms':
+      case 'Assessment/Test':
+        WrapperCategory = () => (
+          <Icon
+            style={styles.icon}
+            name={'test-tube'}
+            type={'MaterialCommunityIcons'}
+          />
+        );
+        break;
+      case 'Symptom':
         WrapperCategory = () => (
           <Icon style={styles.icon} name={'infocirlceo'} type={'AntDesign'} />
         );
@@ -94,9 +103,10 @@ export default class Question extends React.Component<Props, State> {
     }
 
     return (
-      <QuestionView elevation={1}>
+      <QuestionView elevation={1} key={question.id}>
         <Grid>
           <ColCenter
+            key={question.id + '_cat'}
             size={1}
             style={{
               ...styles.borderRight,
@@ -106,18 +116,27 @@ export default class Question extends React.Component<Props, State> {
           >
             <WrapperCategory />
           </ColCenter>
-          <ColCenter size={4} style={styles.borderRight}>
+          <ColCenter
+            size={4}
+            style={styles.borderRight}
+            key={question.id + '_label'}
+          >
             <Text style={{ color: liwiColors.blackColor }}>
               {question.label}
             </Text>
           </ColCenter>
-          <ColCenter size={3} style={styles.borderRight}>
+          <ColCenter
+            size={3}
+            style={styles.borderRight}
+            key={question.id + '_answer'}
+          >
             <WrapperAnswer />
           </ColCenter>
-          <ColCenter size={1}>
-            <ModalWrapper />
+          <ColCenter size={1} key={question.id + '_modal'}>
+            <ModalWrapper content={question.label} />
           </ColCenter>
         </Grid>
+        <WrapperRadiobutton />
       </QuestionView>
     );
   }

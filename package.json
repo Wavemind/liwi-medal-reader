@@ -87,6 +87,7 @@
     "prettier": "^1.15.3",
     "react-devtools": "^3.4.3",
     "react-doc-generator": "^1.2.5",
+    "react-native-debugger-open": "^0.3.17",
     "react-test-renderer": "16.6.3"
   },
   "jest": {

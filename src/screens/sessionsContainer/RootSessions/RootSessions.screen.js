@@ -101,7 +101,7 @@ export default class RootSessions extends React.Component<Props, State> {
               }}
             >
               <Icon type={'MaterialCommunityIcons'} name="delete-forever" />
-              <Text>Vider les cas médicals</Text>
+              <Text>Vider les cas médicals et algo</Text>
             </Button>
           </Content>
         </Container>

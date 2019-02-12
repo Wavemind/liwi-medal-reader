@@ -1,5 +1,3 @@
-import algo from './algorithm_versions';
-
 /*
 * e_1:
 answer: null
@@ -26,7 +24,7 @@ matchWithTrip: false
 treatments: {}
 * */
 
-export const generateEmptyNodes = (medicalCaseInitialState) => {
+export const generateEmptyNodes = (algo) => {
   let workingDiagnostics = {
     nodes: {},
     final: {},
@@ -74,6 +72,5 @@ export const generateEmptyNodes = (medicalCaseInitialState) => {
     workingDiagnostics.syndromes[id_predefined_syndromes] =
       predefined_syndromes[id_predefined_syndromes];
   });
-
   return workingDiagnostics;
 };

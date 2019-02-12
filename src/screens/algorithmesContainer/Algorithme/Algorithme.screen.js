@@ -8,6 +8,7 @@ import { getItemFromArray } from '../../../engine/api/LocalStorage';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 import { QuestionView } from '../../../template/layout';
+import find from 'lodash/find';
 
 type Props = NavigationScreenProps & {};
 
@@ -19,9 +20,12 @@ export default class Algorithme extends React.Component<Props, State> {
   async componentWillMount() {
     const { navigation } = this.props;
     let algoId = navigation.getParam('algoId');
+    let algoVersion = navigation.getParam('algoVersion');
     let algo = await getItemFromArray('algorithmes', 'algorithm_id', algoId);
+    let version = find(algo.versions, (al) => al.version === algoVersion);
+
     await this.setState({
-      ...algo,
+      ...version,
       ready: true,
     });
   }
@@ -29,7 +33,7 @@ export default class Algorithme extends React.Component<Props, State> {
   render() {
     const { navigation } = this.props;
 
-    const { json, ready } = this.state;
+    const { questions, ready, predefined_syndromes, diseases } = this.state;
 
     if (!ready) {
       return null;
@@ -47,7 +51,7 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <Questions questions={json.questions} />
+            <Questions questions={questions} />
           </Tab>
           <Tab
             heading="Syndroms"
@@ -59,10 +63,13 @@ export default class Algorithme extends React.Component<Props, State> {
             }}
           >
             <View>
-              {Object.keys(json.predifinedSyndroms).map((predefId) => (
-                <QuestionView style={{ margin: 10, padding: 10 }}>
-                  <Text>{json.predifinedSyndroms[predefId].id}</Text>
-                  <Text>{json.predifinedSyndroms[predefId].label}</Text>
+              {Object.keys(predefined_syndromes).map((predefId) => (
+                <QuestionView
+                  style={{ margin: 10, padding: 10 }}
+                  key={predefId + '_predefined_syndromes'}
+                >
+                  <Text>{predefined_syndromes[predefId].id}</Text>
+                  <Text>{predefined_syndromes[predefId].label}</Text>
                 </QuestionView>
               ))}
             </View>
@@ -77,13 +84,15 @@ export default class Algorithme extends React.Component<Props, State> {
             }}
           >
             <View>
-              {Object.keys(json.diseases).map((id) => (
-                <QuestionView style={{ margin: 10, padding: 10 }}>
-                  <Text>{json.diseases[id].id}</Text>
-                  <Text>{json.diseases[id].name}</Text>
+              {Object.keys(diseases).map((id) => (
+                <QuestionView
+                  style={{ margin: 10, padding: 10 }}
+                  key={id + '_diseases'}
+                >
+                  <Text>{diseases[id].id}</Text>
+                  <Text>{diseases[id].name}</Text>
                 </QuestionView>
               ))}
-              <MyComponent />
             </View>
           </Tab>
         </Tabs>

@@ -12,7 +12,7 @@ import {
 } from '../api/LocalStorage';
 import find from 'lodash/find';
 
-import { get, post } from '../api/Http';
+import { get, post, fetchAlgorithmes } from '../api/Http';
 import { sha256 } from 'js-sha256';
 import { saltHash } from 'utils/constants';
 import { ToastFactory } from 'utils/ToastFactory';
@@ -47,13 +47,18 @@ type State = {
 export class ApplicationProvider extends React.Component<Props, State> {
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.isConnected.addEventListener(
-      'change',
+    // NetInfo.isConnected.addEventListener(
+    //   'change',
+    //   this._handleConnectivityChange
+    // );
+
+    NetInfo.addEventListener(
+      'connectionChange',
       this._handleConnectivityChange
     );
-    NetInfo.isConnected.fetch().done((isConnected) => {
-      this.setState({ isConnected });
-    });
+    // NetInfo.isConnected.fetch().done((isConnected) => {
+    //   this.setState({ isConnected });
+    // });
   }
   setValState = async (prop: any, value: any) => {
     await this.setState({ [prop]: value });
@@ -65,11 +70,16 @@ export class ApplicationProvider extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    // TODO twice call ?
-    NetInfo.isConnected.removeEventListener(
-      'change',
+    NetInfo.removeEventListener(
+      'connectionChange',
       this._handleConnectivityChange
     );
+
+    // TODO twice call ?
+    // NetInfo.isConnected.removeEventListener(
+    //   'change',
+    //   this._handleConnectivityChange
+    // );
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
@@ -79,8 +89,16 @@ export class ApplicationProvider extends React.Component<Props, State> {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      console.log('App has come to the foreground!', nextAppState);
+      console.log('---> Liwi is come back from background', nextAppState);
       this._fetchDataWhenChange();
+      this.setState({ appState: nextAppState });
+    }
+
+    if (
+      this.state.appState.match(/active/) &&
+      nextAppState.match(/inactive|background/)
+    ) {
+      console.log('---> Liwi is hidding');
       this.setState({ appState: nextAppState });
     }
   };
@@ -88,28 +106,20 @@ export class ApplicationProvider extends React.Component<Props, State> {
   _fetchDataWhenChange = async () => {
     const { user } = this.state;
     if (!isEmpty(user)) {
-      let algorithmes = await get('algorithm_versions', user.data.id);
-
-      // TODO shitty workaround from backend developpers
-      await algorithmes.map((algorithme, index) => {
-        algorithmes[index].json = JSON.parse(algorithme.json);
-      });
-      await setItem('algorithmes', algorithmes);
-
-      await GetDeviceInformations((deviceInfo) => {
-        console.log('Internet is back ! POST it ');
-        post('activites', deviceInfo, user.data.id);
-      });
+      await fetchAlgorithmes(user.data.id);
     }
   };
 
   _handleConnectivityChange = async (isConnected) => {
-    this.setState({
-      isConnected,
-    });
-
-    if (isConnected) {
+    if (isConnected.type.match(/wifi|cellular/)) {
+      this.setState({
+        isConnected: true,
+      });
       await this._fetchDataWhenChange();
+    } else if (isConnected.type.match(/unknown|none/)) {
+      this.setState({
+        isConnected: false,
+      });
     }
   };
 

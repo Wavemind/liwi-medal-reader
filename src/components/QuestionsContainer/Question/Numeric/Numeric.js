@@ -1,19 +1,17 @@
 // @flow
 
 import * as React from 'react';
-import { H2, Text, View, Button, Icon, Input, Item, Label } from 'native-base';
+import { Input, Item, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
 import { getSession } from 'engine/api/LocalStorage';
-import { QuestionView, RightView } from '../../../../template/layout';
 import { liwiColors } from '../../../../utils/constants';
-import LwInput from '../../../formContainer/lwInput/LwInput';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Numeric extends React.Component<Props, State> {
+export default class Numeric extends React.PureComponent<Props, State> {
   state = { style: {} };
 
   _focus = () =>

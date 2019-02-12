@@ -1,7 +1,9 @@
 import { Alert } from 'react-native';
 import { devHost } from 'utils/constants';
 import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
-import { getSession } from './LocalStorage';
+import { getItems, getSession, setItem } from './LocalStorage';
+import { GetDeviceInformations } from './Device';
+import find from 'lodash/find';
 
 const getHeaders = async (method = 'GET', body = false, userId = null) => {
   const credentials = async () => await getSession(userId);
@@ -42,6 +44,12 @@ export const get = async (params, userId) => {
   }
 
   if (data.status === 422) {
+    const json = await data.json();
+    ToastFactory(json);
+    return json;
+  }
+
+  if (data.status === 401) {
     const json = await data.json();
     ToastFactory(json);
     return json;
@@ -117,4 +125,47 @@ export const auth = async (email, password) => {
     expiry: await response.headers.get('expiry'),
     uid: await response.headers.get('uid'),
   };
+};
+
+export const fetchAlgorithmes = async (userId) => {
+  await GetDeviceInformations(async (deviceInfo) => {
+    console.log('---- fetchAlgorithmes -----');
+    deviceInfo.activity.user_id = userId;
+    post('activities', deviceInfo, userId);
+
+    let algorithme = await get(
+      `algorithm_versions?mac_address=${
+        deviceInfo.activity.device_attributes.mac_address
+      }`,
+      userId
+    );
+
+    let localAlgorithmes = await getItems('algorithmes');
+
+    let findAlgo = find(localAlgorithmes, (a) => a.id === algorithme.id);
+    let findVersion;
+
+    if (findAlgo !== undefined) {
+      // Cet algo est déja en local, on cherche la version
+      findVersion = find(
+        findAlgo.versions,
+        (a) => a.version === algorithme.version
+      );
+
+      if (findVersion === undefined) {
+        // cette version existe pas encore !!!
+        findAlgo.versions.push(algorithme);
+      }
+    } else {
+      // Cet algo n'existe pas
+      localAlgorithmes.push({
+        id: algorithme.id,
+        name: algorithme.name,
+        versions: [algorithme],
+      });
+    }
+
+    ToastFactory('Algo Updated', { type: 'success' });
+    await setItem('algorithmes', localAlgorithmes);
+  });
 };

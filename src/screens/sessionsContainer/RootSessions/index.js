@@ -2,10 +2,6 @@ import RootSessions from './RootSessions.screen';
 import { withNamespaces } from 'react-i18next';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
-import {
-  setMedicalCase,
-  updatePatient,
-} from '../../../engine/actions/creators.actions';
 import { actions } from '../../../engine/actions/types.actions';
 import { connect } from 'react-redux';
 

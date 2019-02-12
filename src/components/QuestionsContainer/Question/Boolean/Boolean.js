@@ -12,7 +12,7 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Boolean extends React.Component<Props, State> {
+export default class Boolean extends React.PureComponent<Props, State> {
   state = {
     answer: null,
   };

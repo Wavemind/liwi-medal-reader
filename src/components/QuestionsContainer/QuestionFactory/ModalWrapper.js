@@ -6,6 +6,10 @@ import Modal from '../../LiwiModal';
 export default class ModalWrapper extends React.Component {
   state = { isModalVisible: false };
 
+  static defaultProps = {
+    content: 'Modal content',
+  };
+
   _toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
@@ -17,6 +21,7 @@ export default class ModalWrapper extends React.Component {
           <Text style={{ color: liwiColors.greyColor }}>?</Text>
         </Button>
         <Modal
+          content={this.props.content}
           _toggleModal={this._toggleModal}
           isModalVisible={this.state.isModalVisible}
         />

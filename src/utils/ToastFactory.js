@@ -15,6 +15,7 @@ export const ToastFactory = (text: string = 'Default', params: ToastType) => {
     position = 'bottom',
     duration = 2000,
   } = params;
+
   Toast.show({
     text,
     buttonText,

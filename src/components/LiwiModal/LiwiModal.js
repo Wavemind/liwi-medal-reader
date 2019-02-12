@@ -15,7 +15,7 @@ export default class LiwiModal extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
 
   render() {
-    const { _toggleModal, isModalVisible } = this.props;
+    const { _toggleModal, isModalVisible, content } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Modal
@@ -32,8 +32,7 @@ export default class LiwiModal extends Component {
               margin: 20,
             }}
           >
-            <Text>f2f3f</Text>
-            <Text>Hello!</Text>
+            <Text>{content}</Text>
             <TouchableWithoutFeedback onPress={() => _toggleModal()}>
               <Text>Hide me!</Text>
             </TouchableWithoutFeedback>

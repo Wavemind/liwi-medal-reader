@@ -12,7 +12,7 @@ import {
   setItem,
 } from '../api/LocalStorage';
 
-import { auth, post } from '../api/Http';
+import { auth, fetchAlgorithmes, post } from '../api/Http';
 import { ToastFactory } from 'utils/ToastFactory';
 import { GetDeviceInformations } from '../api/Device';
 import { get } from 'engine/api/Http';
@@ -79,27 +79,7 @@ export class SessionsProvider extends React.Component<
           await setSessions(sessions);
           this.setState({ sessions });
 
-          await GetDeviceInformations(async (deviceInfo) => {
-            deviceInfo.activity.user_id = credentials.data.id;
-            console.log('New session connected, POST device with user_id');
-            post('activities', deviceInfo, credentials.data.id);
-
-            let algorithmes = await get(
-              `algorithm_versions?mac_address=${
-                deviceInfo.activity.device_attributes.mac_address
-              }`,
-              credentials.data.id
-            );
-
-            console.log(algorithmes);
-
-            // TODO shitty workaround from backend developpers
-            await algorithmes.map((algorithme, index) => {
-              algorithmes[index].json = JSON.parse(algorithme.json);
-            });
-            await setItem('algorithmes', algorithmes);
-            ToastFactory('Connected successfully', { type: 'success' });
-          });
+          await fetchAlgorithmes(credentials.data.id);
 
           return credentials.data.id;
         }
