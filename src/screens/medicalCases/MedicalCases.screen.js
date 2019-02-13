@@ -3,7 +3,9 @@
 import * as React from 'react';
 import { Button, H3, Picker, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import LottieView from 'lottie-react-native';
+
 import {
   createMedicalCase,
   getItems,
@@ -110,6 +112,23 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     return (
       <ScrollView>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 20,
+          }}
+        >
+          <LottieView
+            source={require('../../utils/animations/blood_1.json')}
+            autoPlay
+            style={{
+              height: 100,
+            }}
+            loop
+          />
+        </View>
         <H3>Actions</H3>
         <Button
           onPress={() => this.createMedicalCase()}

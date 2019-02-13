@@ -128,44 +128,49 @@ export const auth = async (email, password) => {
 };
 
 export const fetchAlgorithmes = async (userId) => {
-  await GetDeviceInformations(async (deviceInfo) => {
-    console.log('---- fetchAlgorithmes -----');
-    deviceInfo.activity.user_id = userId;
-    post('activities', deviceInfo, userId);
+  return new Promise(async (resolve, reject) => {
+    await GetDeviceInformations(async (deviceInfo) => {
+      console.log('---- fetchAlgorithmes -----');
+      deviceInfo.activity.user_id = userId;
+      post('activities', deviceInfo, userId);
 
-    let algorithme = await get(
-      `algorithm_versions?mac_address=${
-        deviceInfo.activity.device_attributes.mac_address
-      }`,
-      userId
-    );
-
-    let localAlgorithmes = await getItems('algorithmes');
-
-    let findAlgo = find(localAlgorithmes, (a) => a.id === algorithme.id);
-    let findVersion;
-
-    if (findAlgo !== undefined) {
-      // Cet algo est déja en local, on cherche la version
-      findVersion = find(
-        findAlgo.versions,
-        (a) => a.version === algorithme.version
+      let algorithme = await get(
+        `algorithm_versions?mac_address=${
+          deviceInfo.activity.device_attributes.mac_address
+        }`,
+        userId
       );
 
-      if (findVersion === undefined) {
-        // cette version existe pas encore !!!
-        findAlgo.versions.push(algorithme);
-      }
-    } else {
-      // Cet algo n'existe pas
-      localAlgorithmes.push({
-        id: algorithme.id,
-        name: algorithme.name,
-        versions: [algorithme],
-      });
-    }
+      let localAlgorithmes = await getItems('algorithmes');
 
-    ToastFactory('Algo Updated', { type: 'success' });
-    await setItem('algorithmes', localAlgorithmes);
+      let findAlgo = find(localAlgorithmes, (a) => a.id === algorithme.id);
+      let findVersion;
+
+      if (findAlgo !== undefined) {
+        // Cet algo est déja en local, on cherche la version
+        findVersion = find(
+          findAlgo.versions,
+          (a) => a.version === algorithme.version
+        );
+
+        if (findVersion === undefined) {
+          // cette version existe pas encore !!!
+          findAlgo.versions.push(algorithme);
+        } else {
+          findVersion = algorithme;
+        }
+      } else if (algorithme.id !== undefined) {
+        // Cet algo n'existe pas
+        localAlgorithmes.push({
+          id: algorithme.id,
+          name: algorithme.name,
+          versions: [algorithme],
+        });
+      }
+
+      ToastFactory('Algo Updated', { type: 'success' });
+      await setItem('algorithmes', localAlgorithmes);
+      resolve();
+    });
   });
 };

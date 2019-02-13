@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Tab, Tabs, Text, View } from 'native-base';
+import { Tab, Tabs, Text, View, H2 } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
@@ -23,7 +23,6 @@ export default class Algorithme extends React.Component<Props, State> {
     let algoVersion = navigation.getParam('algoVersion');
     let algo = await getItemFromArray('algorithmes', 'algorithm_id', algoId);
     let version = find(algo.versions, (al) => al.version === algoVersion);
-
     await this.setState({
       ...version,
       ready: true,
@@ -31,19 +30,22 @@ export default class Algorithme extends React.Component<Props, State> {
   }
 
   render() {
-    const { navigation } = this.props;
-
-    const { questions, ready, predefined_syndromes, diseases } = this.state;
+    const { questions, ready, diseases } = this.state;
 
     if (!ready) {
       return null;
     }
 
+    let questiontriage = Object.keys(questions).map(
+      (id) => questions[id].priority === 'triage'
+    );
+
     return (
       <View style={{ height: screenHeight, paddingBottom: 80 }}>
+        <H2>Questions</H2>
         <Tabs>
           <Tab
-            heading="Questions"
+            heading="Questions triage"
             tabStyle={{
               backgroundColor: liwiColors.redColor,
             }}
@@ -54,7 +56,7 @@ export default class Algorithme extends React.Component<Props, State> {
             <Questions questions={questions} />
           </Tab>
           <Tab
-            heading="Syndroms"
+            heading="Questions normales"
             tabStyle={{
               backgroundColor: liwiColors.redColor,
             }}
@@ -62,20 +64,10 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <View>
-              {Object.keys(predefined_syndromes).map((predefId) => (
-                <QuestionView
-                  style={{ margin: 10, padding: 10 }}
-                  key={predefId + '_predefined_syndromes'}
-                >
-                  <Text>{predefined_syndromes[predefId].id}</Text>
-                  <Text>{predefined_syndromes[predefId].label}</Text>
-                </QuestionView>
-              ))}
-            </View>
+            <Questions questions={questions} />
           </Tab>
           <Tab
-            heading="Diseases"
+            heading="Diagnostic"
             tabStyle={{
               backgroundColor: liwiColors.redColor,
             }}
@@ -86,11 +78,12 @@ export default class Algorithme extends React.Component<Props, State> {
             <View>
               {Object.keys(diseases).map((id) => (
                 <QuestionView
-                  style={{ margin: 10, padding: 10 }}
+                  style={{ margin: 10, padding: 10, flex: 1 }}
                   key={id + '_diseases'}
                 >
                   <Text>{diseases[id].id}</Text>
-                  <Text>{diseases[id].name}</Text>
+                  <Text>{diseases[id].reference}</Text>
+                  <Text>{diseases[id].label}</Text>
                 </QuestionView>
               ))}
             </View>

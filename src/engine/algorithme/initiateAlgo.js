@@ -1,3 +1,4 @@
+// import algo from './algorithm_versions.json';
 /*
 * e_1:
 answer: null

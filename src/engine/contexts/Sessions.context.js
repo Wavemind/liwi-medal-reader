@@ -78,10 +78,9 @@ export class SessionsProvider extends React.Component<
           sessions.push(credentials);
           await setSessions(sessions);
           this.setState({ sessions });
-
-          await fetchAlgorithmes(credentials.data.id);
-
-          return credentials.data.id;
+          return fetchAlgorithmes(credentials.data.id).then((done) => {
+            return credentials.data.id;
+          });
         }
         ToastFactory('Already connected', { type: 'danger' });
       }

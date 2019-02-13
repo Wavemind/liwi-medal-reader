@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 import { sha256 } from 'js-sha256';
 import type { NavigationScreenProps } from 'react-navigation';
-import { saltHash } from '../../../utils/constants';
+import { liwiColors, saltHash, screenHeight } from '../../../utils/constants';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
@@ -75,39 +75,59 @@ export default class SetCodeSession extends React.Component<Props, State> {
     const { codeOne, codeTwo, error, success } = this.state;
 
     return (
-      <View>
-        <Form>
-          <Item success={success} error={error} login-input floatingLabel>
-            <Label>Votre code</Label>
-            <Input
-              onChangeText={this.changeCodeOne}
-              value={codeOne}
-              textContentType="emailAddress"
-              secureTextEntry
-            />
-          </Item>
-          <Item success={success} error={error} login-input floatingLabel>
-            <Label>Retaper votre code</Label>
-            <Input
-              onChangeText={this.changeCodeTwo}
-              value={codeTwo}
-              secureTextEntry
-            />
-          </Item>
-          {error ? (
-            <React.Fragment>
-              <Text padded error>
-                - Minimum 6 caractères
-              </Text>
-              <Text padded error>
-                - Au moins une lettre et un chiffre
-              </Text>
-            </React.Fragment>
-          ) : null}
-        </Form>
-        <Button onPress={() => this.setLocalCode()} disabled={success !== true}>
-          <Text> Définir ce code </Text>
-        </Button>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={{
+            width: 380,
+            borderColor: liwiColors.redColor,
+            borderWidth: 2,
+            borderRadius: 10,
+            padding: 30,
+            marginTop: screenHeight * 0.3,
+          }}
+        >
+          <Form>
+            <Item success={success} error={error} login-input floatingLabel>
+              <Label>Votre code</Label>
+              <Input
+                onChangeText={this.changeCodeOne}
+                value={codeOne}
+                textContentType="emailAddress"
+                secureTextEntry
+              />
+            </Item>
+            <Item success={success} error={error} login-input floatingLabel>
+              <Label>Retaper votre code</Label>
+              <Input
+                onChangeText={this.changeCodeTwo}
+                value={codeTwo}
+                secureTextEntry
+              />
+            </Item>
+            {error ? (
+              <React.Fragment>
+                <Text padded error>
+                  - Minimum 6 caractères
+                </Text>
+                <Text padded error>
+                  - Au moins une lettre et un chiffre
+                </Text>
+              </React.Fragment>
+            ) : null}
+          </Form>
+          <Button
+            style={{ marginTop: 20 }}
+            onPress={() => this.setLocalCode()}
+            disabled={success !== true}
+          >
+            <Text> Définir ce code </Text>
+          </Button>
+        </View>
       </View>
     );
   }

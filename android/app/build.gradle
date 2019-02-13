@@ -94,6 +94,10 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
+    compileOptions {
+      sourceCompatibility JavaVersion.VERSION_1_8
+      targetCompatibility JavaVersion.VERSION_1_8
+    }
     compileSdkVersion 28
        buildToolsVersion '28.0.3'
 
@@ -148,6 +152,7 @@ android {
 }
 
 dependencies {
+    compile project(':lottie-react-native')
     compile project(':react-native-keep-awake')
     compile project(':react-native-device-info')
     compile project(':react-native-vector-icons')

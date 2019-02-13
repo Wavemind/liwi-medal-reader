@@ -14,6 +14,8 @@ target 'liwi_native' do
 
     pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
 
+    pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
   end
 
   target 'liwi_nativeTests' do
