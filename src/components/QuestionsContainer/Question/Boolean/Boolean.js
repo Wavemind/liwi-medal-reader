@@ -51,7 +51,6 @@ export default class Boolean extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { question, styles } = this.props;
     const { answer } = this.state;
 
     return (

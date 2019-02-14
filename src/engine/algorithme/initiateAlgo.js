@@ -1,4 +1,4 @@
-// import algo from './algorithm_versions.json';
+import algo from './algorithm_versions.json';
 /*
 * e_1:
 answer: null
@@ -25,7 +25,7 @@ matchWithTrip: false
 treatments: {}
 * */
 
-export const generateEmptyNodes = (algo) => {
+export const generateEmptyNodes = () => {
   let workingDiagnostics = {
     nodes: {},
     final: {},

@@ -37,6 +37,8 @@ export const GetGeo = async (cb) => {
             ],
             { cancelable: false }
           );
+          console.log('active ');
+          cb(false);
         } else {
           cb(secondCallback);
         }
@@ -60,6 +62,9 @@ export const GetDeviceInformations = async (cb) => {
 
   let mac = await DeviceInfo.getMACAddress();
   return GetGeo((geo) => {
+    if (geo === false) {
+      cb(false);
+    }
     cb({
       activity: {
         latitude: geo.coords.latitude,

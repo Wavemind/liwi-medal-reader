@@ -95,7 +95,8 @@ const SimpleTabs = createBottomTabNavigator(
 
 export default (medicalCase) => {
   return createDrawerNavigator(
-    { Home: { screen: medicalCase.id === undefined ? Stack : SimpleTabs } },
+    // { Home: { screen: medicalCase.id === undefined ? Stack : SimpleTabs } },
+    { Home: { screen: Stack } },
     {
       contentComponent: (props) => <Drawer {...props} />,
     }

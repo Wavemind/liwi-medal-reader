@@ -1,20 +1,16 @@
 // @flow
 
 import * as React from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Item,
-  Label,
-  Spinner,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import delay from 'lodash/delay';
-import { liwiColors, screenHeight } from '../../../utils/constants';
+import {
+  liwiColors,
+  screenHeight,
+  screenWidth,
+} from '../../../utils/constants';
+import { ToastFactory } from '../../../utils/ToastFactory';
+
 type Props = NavigationScreenProps & {};
 
 type State = {
@@ -49,11 +45,21 @@ export default class NewSession extends React.Component<Props, State> {
     const { email, password } = this.state;
     const { sessions, navigation } = this.props;
 
-    await sessions.newSession(email, password).then(async (id) => {
-      if (typeof id === 'number') {
-        this.setState({ success: true, loading: false, id });
-      }
-    });
+    await sessions
+      .newSession(email, password)
+      .then(async (data) => {
+        if (typeof data.uid === 'string') {
+          this.setState({ success: true, loading: false, id: data.data.id });
+        }
+
+        if (data === false) {
+          this.setState({ success: false, loading: false });
+        }
+      })
+      .catch((err) => {
+        ToastFactory(err, { type: 'danger' });
+        this.setState({ success: false, loading: false });
+      });
   };
 
   render() {
@@ -69,7 +75,7 @@ export default class NewSession extends React.Component<Props, State> {
       >
         <View
           style={{
-            width: 380,
+            width: screenWidth * 0.8,
             borderColor: liwiColors.redColor,
             borderWidth: 2,
             borderRadius: 10,

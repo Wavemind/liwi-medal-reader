@@ -75,12 +75,17 @@ export class SessionsProvider extends React.Component<
           return session.data.id === credentials.data.id;
         });
         if (!exist) {
-          sessions.push(credentials);
-          await setSessions(sessions);
-          this.setState({ sessions });
-          return fetchAlgorithmes(credentials.data.id).then((done) => {
-            return credentials.data.id;
-          });
+          return fetchAlgorithmes(credentials.data.id)
+            .then(async (done) => {
+              sessions.push(credentials);
+              await setSessions(sessions);
+              this.setState({ sessions });
+
+              return credentials;
+            })
+            .catch((err) => {
+              return Promise.reject(err);
+            });
         }
         ToastFactory('Already connected', { type: 'danger' });
       }

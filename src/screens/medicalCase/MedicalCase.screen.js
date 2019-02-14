@@ -16,8 +16,6 @@ type State = {};
 export default class MedicalCase extends React.Component<Props, State> {
   state = { medicalCases: [] };
 
-  componentWillMount() {}
-
   render() {
     const {
       medicalCase: {

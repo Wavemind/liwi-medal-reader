@@ -11,7 +11,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { createAppContainer } from 'react-navigation';
-import { Container, StyleProvider, Root } from 'native-base';
+import { Container, Root, StyleProvider } from 'native-base';
 import getTheme from 'template/liwi/native_components/index.ignore';
 import material from 'template/liwi/variables/material';
 import liwi from 'template/liwi/styles';
@@ -19,8 +19,6 @@ import merge from 'deepmerge';
 import { RootView } from 'template/layout';
 import { withApplication } from '../engine/contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
-import { GetDeviceInformations } from '../engine/api/Device';
-import { post } from '../engine/api/Http';
 import { connect } from 'react-redux';
 
 type Props = {
@@ -39,6 +37,25 @@ class LayoutTemplate extends React.Component<Props> {
   state = {
     appState: AppState.currentState,
   };
+
+  // shouldComponentUpdate(
+  //   nextProps: Readonly<P>,
+  //   nextState: Readonly<S>,
+  //   nextContext: any
+  // ): boolean {
+  //   console.log(this.props, nextProps);
+  //   console.log(
+  //     this.props.medicalCase.id === undefined,
+  //     nextProps.medicalCase.id !== this.props.medicalCase.id
+  //   );
+  //
+  //   if (
+  //     this.props.medicalCase.id === undefined ||
+  //     nextProps.medicalCase.id !== this.props.medicalCase.id
+  //   ) {
+  //     return true;
+  //   }
+  // }
 
   render() {
     const {
@@ -66,4 +83,5 @@ class LayoutTemplate extends React.Component<Props> {
   }
 }
 
-export default connect(mapStateToProps)(withApplication(LayoutTemplate));
+// export default connect(mapStateToProps)(withApplication(LayoutTemplate));
+export default withApplication(LayoutTemplate);

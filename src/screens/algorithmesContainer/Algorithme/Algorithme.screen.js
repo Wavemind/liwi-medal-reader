@@ -1,13 +1,13 @@
 // @flow
 
 import * as React from 'react';
-import { Tab, Tabs, Text, View, H2 } from 'native-base';
+import { Tab, Tabs, Text, View, H2, H3 } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { liwiColors, screenHeight } from '../../../utils/constants';
-import { QuestionView } from '../../../template/layout';
+import { LiwiTitle2, LiwiTitle3, QuestionView } from '../../../template/layout';
 import find from 'lodash/find';
 
 type Props = NavigationScreenProps & {};
@@ -30,19 +30,31 @@ export default class Algorithme extends React.Component<Props, State> {
   }
 
   render() {
-    const { questions, ready, diseases } = this.state;
+    const { nodes, ready, diseases, version, description, author } = this.state;
 
     if (!ready) {
       return null;
     }
 
-    let questiontriage = Object.keys(questions).map(
-      (id) => questions[id].priority === 'triage'
-    );
+    let questionTriage = {};
+    let questionNormals = {};
+    Object.keys(nodes).map((id) => {
+      switch (nodes[id].type) {
+        case 'Question':
+          nodes[id].priority === 'triage'
+            ? (questionTriage[id] = nodes[id])
+            : (questionNormals[id] = nodes[id]);
+          break;
+      }
+    });
 
     return (
       <View style={{ height: screenHeight, paddingBottom: 80 }}>
-        <H2>Questions</H2>
+        <LiwiTitle2>Version : {version}</LiwiTitle2>
+        <View style={{ padding: 20 }}>
+          <Text>description : {description}</Text>
+          <Text>Par : {author}</Text>
+        </View>
         <Tabs>
           <Tab
             heading="Questions triage"
@@ -53,7 +65,7 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <Questions questions={questions} />
+            <Questions questions={questionTriage} />
           </Tab>
           <Tab
             heading="Questions normales"
@@ -64,7 +76,7 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <Questions questions={questions} />
+            <Questions questions={questionNormals} />
           </Tab>
           <Tab
             heading="Diagnostic"
@@ -75,16 +87,20 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <View>
+            <View style={{ flex: 1 }}>
               {Object.keys(diseases).map((id) => (
-                <QuestionView
-                  style={{ margin: 10, padding: 10, flex: 1 }}
+                <View
+                  style={{
+                    margin: 10,
+                    padding: 20,
+                    backgroundColor: liwiColors.greyColor,
+                  }}
                   key={id + '_diseases'}
                 >
-                  <Text>{diseases[id].id}</Text>
-                  <Text>{diseases[id].reference}</Text>
-                  <Text>{diseases[id].label}</Text>
-                </QuestionView>
+                  <Text>id : {diseases[id].id}</Text>
+                  <Text>reference : {diseases[id].reference}</Text>
+                  <Text>label : {diseases[id].label}</Text>
+                </View>
               ))}
             </View>
           </Tab>

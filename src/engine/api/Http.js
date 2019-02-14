@@ -45,7 +45,7 @@ export const get = async (params, userId) => {
 
   if (data.status === 422) {
     const json = await data.json();
-    ToastFactory(json);
+    ToastFactory(json.errors, { type: 'danger' });
     return json;
   }
 
@@ -130,7 +130,11 @@ export const auth = async (email, password) => {
 export const fetchAlgorithmes = async (userId) => {
   return new Promise(async (resolve, reject) => {
     await GetDeviceInformations(async (deviceInfo) => {
+      if (deviceInfo === false) {
+        reject('Autorisations nécessaire');
+      }
       console.log('---- fetchAlgorithmes -----');
+
       deviceInfo.activity.user_id = userId;
       post('activities', deviceInfo, userId);
 
@@ -146,31 +150,36 @@ export const fetchAlgorithmes = async (userId) => {
       let findAlgo = find(localAlgorithmes, (a) => a.id === algorithme.id);
       let findVersion;
 
-      if (findAlgo !== undefined) {
-        // Cet algo est déja en local, on cherche la version
-        findVersion = find(
-          findAlgo.versions,
-          (a) => a.version === algorithme.version
-        );
+      if (algorithme.errors) {
+        resolve(algorithme.errors);
+        return null;
+      } else {
+        if (findAlgo !== undefined) {
+          // Cet algo est déja en local, on cherche la version
+          findVersion = find(
+            findAlgo.versions,
+            (a) => a.version === algorithme.version
+          );
 
-        if (findVersion === undefined) {
-          // cette version existe pas encore !!!
-          findAlgo.versions.push(algorithme);
-        } else {
-          findVersion = algorithme;
+          if (findVersion === undefined) {
+            // cette version existe pas encore !!!
+            findAlgo.versions.push(algorithme);
+          } else {
+            findVersion = algorithme;
+          }
+        } else if (algorithme.id !== undefined) {
+          // Cet algo n'existe pas
+          localAlgorithmes.push({
+            id: algorithme.id,
+            name: algorithme.name,
+            versions: [algorithme],
+          });
         }
-      } else if (algorithme.id !== undefined) {
-        // Cet algo n'existe pas
-        localAlgorithmes.push({
-          id: algorithme.id,
-          name: algorithme.name,
-          versions: [algorithme],
-        });
-      }
 
-      ToastFactory('Algo Updated', { type: 'success' });
-      await setItem('algorithmes', localAlgorithmes);
-      resolve();
+        ToastFactory('Algo Updated', { type: 'success' });
+        await setItem('algorithmes', localAlgorithmes);
+        resolve();
+      }
     });
   });
 };

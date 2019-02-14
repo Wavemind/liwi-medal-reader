@@ -1,10 +1,16 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Form, Input, Item, Label, Text } from 'native-base';
+import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 import { PaddedView } from '../../../template/layout';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
 import type { NavigationScreenProps } from 'react-navigation';
+import {
+  liwiColors,
+  screenHeight,
+  screenWidth,
+} from '../../../utils/constants';
+import LottieView from 'lottie-react-native';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 
@@ -41,20 +47,43 @@ export default class UnlockSession extends React.Component<Props, State> {
     const { code } = this.state;
 
     return (
-      <PaddedView>
-        <Form>
-          <Item login-input floatingLabel>
-            <Label>Code</Label>
-            <Input
-              onChangeText={this.changeCode}
-              value={code}
-              secureTextEntry
-            />
-          </Item>
-        </Form>
-        <Button onPress={this.unLock}>
-          <Text> Dévérouiller la session </Text>
-        </Button>
+      <PaddedView
+        style={{
+          alignItems: 'center',
+          flex: 1,
+        }}
+      >
+        <LottieView
+          source={require('../../../utils/animations/unlock.json')}
+          autoPlay
+          style={{
+            height: 200,
+          }}
+          loop
+        />
+        <View
+          style={{
+            width: screenWidth * 0.8,
+            borderColor: liwiColors.redColor,
+            borderWidth: 2,
+            borderRadius: 10,
+            padding: 30,
+          }}
+        >
+          <Form>
+            <Item login-input floatingLabel>
+              <Label>Code</Label>
+              <Input
+                onChangeText={this.changeCode}
+                value={code}
+                secureTextEntry
+              />
+            </Item>
+          </Form>
+          <Button onPress={this.unLock}>
+            <Text> Dévérouiller la session </Text>
+          </Button>
+        </View>
       </PaddedView>
     );
   }

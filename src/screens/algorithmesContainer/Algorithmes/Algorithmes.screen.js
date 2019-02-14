@@ -9,7 +9,7 @@ import { getItems } from '../../../engine/api/LocalStorage';
 import { CardView, RightView } from '../../../template/layout';
 import AnimatedPullToRefresh from '../../../components/AnimatedpullToRefresh/AnimatedPullToRefresh';
 import { fetchAlgorithmes } from '../../../engine/api/Http';
-
+import { styles } from './Algorithmes.style.js';
 type Props = NavigationScreenProps & {};
 
 type State = { algorithmes: Array<Object> };
@@ -46,7 +46,6 @@ export default class Algorithmes extends React.Component<Props, State> {
           <AnimatedPullToRefresh
             isRefreshing={this.state.isRefreshing}
             onRefresh={this.onRefresh}
-            // animationBackgroundColor={liwiColors.blackColor}
             pullHeight={100}
             contentView={
               <ScrollView>
@@ -54,16 +53,7 @@ export default class Algorithmes extends React.Component<Props, State> {
                   <CardView
                     elevation={5}
                     key={algo.id + '_algo'}
-                    style={{
-                      flex: 1,
-                      height: 100,
-                      // backgroundColor: '#DCDADF',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderBottomWidth: 1,
-                      borderBottomColor: '#8B8393',
-                    }}
+                    style={styles.view}
                   >
                     <H2>{algo.name}</H2>
                     <Text>{algo.description}</Text>
@@ -86,6 +76,11 @@ export default class Algorithmes extends React.Component<Props, State> {
                     </RightView>
                   </CardView>
                 ))}
+                {algorithmes.length === 0 ? (
+                  <CardView elevation={5} key={'_algo'} style={styles.view}>
+                    <Text>Aucun algorithme</Text>
+                  </CardView>
+                ) : null}
               </ScrollView>
             }
             onPullAnimationSrc={require('./medical.json')}

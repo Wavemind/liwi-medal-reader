@@ -3,16 +3,14 @@ import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   priority: {
-    borderColor: liwiColors.redColor,
-    borderWidth: 3,
+    backgroundColor: '#d8d8d8',
   },
   triage: {
-    borderColor: liwiColors.redColor,
-    borderWidth: 3,
+    elevation: 2,
   },
   normal: {
-    borderColor: '#3e3e3e',
-    borderWidth: 3,
+    // borderColor: '#3e3e3e',
+    // borderWidth: 2,
   },
   borderRight: {
     borderRightWidth: 1,

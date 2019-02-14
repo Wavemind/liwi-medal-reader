@@ -4,8 +4,16 @@ import * as React from 'react';
 import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 import { sha256 } from 'js-sha256';
 import type { NavigationScreenProps } from 'react-navigation';
-import { liwiColors, saltHash, screenHeight } from '../../../utils/constants';
+import {
+  liwiColors,
+  saltHash,
+  screenHeight,
+  screenWidth,
+} from '../../../utils/constants';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
+import { getSession } from '../../../engine/api/LocalStorage';
+import { LiwiTitle2 } from '../../../template/layout';
+import LottieView from 'lottie-react-native';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 
@@ -22,9 +30,12 @@ export default class SetCodeSession extends React.Component<Props, State> {
     codeTwo: __DEV__ ? '123456q' : '',
     error: false,
     success: false,
+    session: null,
   };
 
-  componentWillMount() {
+  async componentWillMount() {
+    let session = await getSession(this.props.navigation.getParam('user_id'));
+    this.setState({ session });
     this.isTheSame();
   }
 
@@ -72,7 +83,11 @@ export default class SetCodeSession extends React.Component<Props, State> {
   };
 
   render() {
-    const { codeOne, codeTwo, error, success } = this.state;
+    const { codeOne, codeTwo, error, success, session } = this.state;
+
+    if (session === null) {
+      return null;
+    }
 
     return (
       <View
@@ -81,16 +96,26 @@ export default class SetCodeSession extends React.Component<Props, State> {
           alignItems: 'center',
         }}
       >
+        <LottieView
+          source={require('../../../utils/animations/welcome.json')}
+          autoPlay
+          style={{
+            height: 300,
+          }}
+          loop
+        />
         <View
           style={{
-            width: 380,
+            width: screenWidth * 0.8,
             borderColor: liwiColors.redColor,
             borderWidth: 2,
             borderRadius: 10,
             padding: 30,
-            marginTop: screenHeight * 0.3,
           }}
         >
+          <LiwiTitle2>
+            Bienvenue {session.data.first_name} {session.data.last_name}
+          </LiwiTitle2>
           <Form>
             <Item success={success} error={error} login-input floatingLabel>
               <Label>Votre code</Label>

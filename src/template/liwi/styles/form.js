@@ -4,7 +4,7 @@ import { liwiColors } from '../../../utils/constants';
 export default {
   'NativeBase.Item': {
     '.login-input': {
-      width: 300,
+      width: screenWidth * 0.8 - 100,
     },
   },
   'NativeBase.Input': {

@@ -103,7 +103,7 @@ export default class Question extends React.PureComponent<Props, State> {
     }
 
     return (
-      <QuestionView elevation={1} key={question.id}>
+      <QuestionView elevation={1} key={question.id} style={specificStyle}>
         <Grid>
           <ColCenter
             key={question.id + '_cat'}
