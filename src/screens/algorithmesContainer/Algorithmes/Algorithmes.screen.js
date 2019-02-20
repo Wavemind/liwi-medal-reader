@@ -10,6 +10,7 @@ import { CardView, RightView } from '../../../template/layout';
 import AnimatedPullToRefresh from '../../../components/AnimatedpullToRefresh/AnimatedPullToRefresh';
 import { fetchAlgorithmes } from '../../../engine/api/Http';
 import { styles } from './Algorithmes.style.js';
+
 type Props = NavigationScreenProps & {};
 
 type State = { algorithmes: Array<Object> };
@@ -18,6 +19,7 @@ export default class Algorithmes extends React.Component<Props, State> {
 
   updateAlgorithmes = async () => {
     let algorithmes = await getItems('algorithmes');
+
     await this.setState({ algorithmes });
   };
 
@@ -39,6 +41,8 @@ export default class Algorithmes extends React.Component<Props, State> {
   render() {
     const { algorithmes } = this.state;
     const { navigation } = this.props;
+
+    console.log(algorithmes);
 
     return (
       <View style={{ flex: 2 }}>

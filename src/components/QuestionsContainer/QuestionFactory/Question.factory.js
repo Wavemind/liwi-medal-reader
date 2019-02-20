@@ -9,7 +9,7 @@ import Numeric from '../Question/Numeric';
 import { ColCenter, QuestionView } from '../../../template/layout';
 import { liwiColors } from '../../../utils/constants';
 import ModalWrapper from './ModalWrapper';
-import Radio from '../Question/Radio/Radio';
+import Radio from '../Question/Radio';
 
 type Props = NavigationScreenProps & {};
 
@@ -18,6 +18,7 @@ type State = {};
 export default class Question extends React.PureComponent<Props, State> {
   render() {
     const { question } = this.props;
+
     let specificStyle;
 
     let WrapperAnswer = () => null;
@@ -41,11 +42,19 @@ export default class Question extends React.PureComponent<Props, State> {
     }
 
     switch (question.display_format) {
-      case 'Radiobutton':
-        WrapperAnswer = () => (
-          <Boolean question={question} styles={specificStyle} />
-        );
-        WrapperRadiobutton = () => <Radio question={question} />;
+      case 'RadioButton':
+        // TODO improve value_format
+        if (question.value_format === 'Boolean') {
+          WrapperAnswer = () => (
+            <Boolean question={question} styles={specificStyle} />
+          );
+          WrapperRadiobutton = () => <Radio question={question} />;
+        }
+
+        if (question.value_format === 'Radio') {
+          WrapperRadiobutton = () => <Radio question={question} />;
+        }
+
         break;
       case 'Input':
         WrapperAnswer = () => (

@@ -1,73 +1,57 @@
 // @flow
 
 import * as React from 'react';
-import { Button, H2, Icon, Text, View, Grid, Col } from 'native-base';
+import { Button, Col, Grid, Icon } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
 import { getSession } from 'engine/api/LocalStorage';
-import { QuestionView, RightView } from '../../../../template/layout';
 import { liwiColors } from '../../../../utils/constants';
+import findKey from 'lodash/findKey';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Boolean extends React.PureComponent<Props, State> {
-  state = {
-    answer: null,
-  };
+export default class Boolean extends React.Component<Props, State> {
+  shouldComponentUpdate(
+    nextProps: Readonly<P>,
+    nextState: Readonly<S>,
+    nextContext: any
+  ): boolean {
+    return nextProps.question.answer !== this.props.question.answer;
+  }
 
-  _handleNo = () => {
-    let newAnswer;
-    switch (this.state.answer) {
-      case true:
-        newAnswer = false;
-        break;
-      case false:
-        newAnswer = null;
-        break;
-      case null:
-        newAnswer = false;
-        break;
+  _handleClick = (answer) => {
+    let newAnswer = Number(answer);
+
+    if (answer === this.props.question.answer) {
+      newAnswer = null;
     }
 
-    this.setState({ answer: newAnswer });
+    this.props.setQuestion(this.props.question.id, newAnswer);
   };
 
-  _handleYes = () => {
-    let newAnswer;
-    switch (this.state.answer) {
-      case true:
-        newAnswer = null;
-        break;
-      case false:
-        newAnswer = true;
-        break;
-      case null:
-        newAnswer = true;
-        break;
-    }
-    this.setState({ answer: newAnswer });
-  };
+  render = () => {
+    const { answer, answers } = this.props.question;
 
-  render() {
-    const { answer } = this.state;
+    const idYes = Number(Object.keys(answers)[0]);
+    const idNo = Number(Object.keys(answers)[1]);
 
     return (
       <Grid>
         <Col>
           <Button
             square
-            onPress={this._handleYes}
+            onPress={() => this._handleClick(idYes)}
             style={
-              answer === true
+              answer === idYes
                 ? { backgroundColor: '#c0c0c0' }
                 : { backgroundColor: liwiColors.whiteColor }
             }
           >
             <Icon
               style={
-                answer
+                answer === idYes
                   ? { color: liwiColors.greenColor }
                   : { color: liwiColors.blackColor }
               }
@@ -79,16 +63,16 @@ export default class Boolean extends React.PureComponent<Props, State> {
         <Col>
           <Button
             square
-            onPress={this._handleNo}
+            onPress={() => this._handleClick(idNo)}
             style={
-              answer === false
+              answer === idNo
                 ? { backgroundColor: '#c0c0c0' }
                 : { backgroundColor: liwiColors.whiteColor }
             }
           >
             <Icon
               style={
-                answer === false
+                answer === idNo
                   ? { color: liwiColors.redColor }
                   : { color: liwiColors.blackColor }
               }
@@ -99,5 +83,5 @@ export default class Boolean extends React.PureComponent<Props, State> {
         </Col>
       </Grid>
     );
-  }
+  };
 }

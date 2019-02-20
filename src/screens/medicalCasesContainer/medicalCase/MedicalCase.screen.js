@@ -4,9 +4,9 @@ import * as React from 'react';
 import { Col, Grid } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
-import LwInput from '../../components/formContainer/lwInput/LwInput';
-import LwDatePicker from '../../components/formContainer/lwDatePicker/LwDatePicker';
-import { LiwiTitle2, LiwiTitle3 } from '../../template/layout';
+import LwInput from '../../../components/formContainer/lwInput/LwInput';
+import LwDatePicker from '../../../components/formContainer/lwDatePicker/LwDatePicker';
+import { LiwiTitle2, LiwiTitle3 } from '../../../template/layout';
 import moment from 'moment';
 
 type Props = NavigationScreenProps & {};

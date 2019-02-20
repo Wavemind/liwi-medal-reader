@@ -12,6 +12,10 @@ import KeepAwake from 'react-native-keep-awake';
 
 KeepAwake.activate();
 
+Array.prototype.first = function() {
+  return this[0];
+};
+
 import i18n from 'utils/i18n';
 
 const ReloadAppOnLanguageChange = withNamespaces('common', {

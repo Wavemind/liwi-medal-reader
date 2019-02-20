@@ -4,6 +4,7 @@ import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
 import { getItems, getSession, setItem } from './LocalStorage';
 import { GetDeviceInformations } from './Device';
 import find from 'lodash/find';
+import isArray from 'lodash/isArray';
 
 const getHeaders = async (method = 'GET', body = false, userId = null) => {
   const credentials = async () => await getSession(userId);
@@ -37,21 +38,21 @@ export const get = async (params, userId) => {
   });
 
   const data = await response;
+  console.log(data);
+  let json = await data.json();
+
+  console.log(json);
 
   if (data.status === 200) {
-    const json = await data.json();
     return json;
   }
 
-  if (data.status === 422) {
-    const json = await data.json();
-    ToastFactory(json.errors, { type: 'danger' });
-    return json;
-  }
-
-  if (data.status === 401) {
-    const json = await data.json();
-    ToastFactory(json);
+  if (data.status === 422 || data.status === 401) {
+    if (isArray(json.errors)) {
+      ToastFactory(json.errors[0], { type: 'danger' });
+    } else {
+      ToastFactory(json.errors, { type: 'danger' });
+    }
     return json;
   }
 
@@ -139,7 +140,7 @@ export const fetchAlgorithmes = async (userId) => {
       post('activities', deviceInfo, userId);
 
       let algorithme = await get(
-        `algorithm_versions?mac_address=${
+        `versions?mac_address=${
           deviceInfo.activity.device_attributes.mac_address
         }`,
         userId

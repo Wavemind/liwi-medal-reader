@@ -39,28 +39,54 @@ export default class Drawer extends Component {
         </View>
         <View>
           {medicalCase.id !== undefined ? (
-            <Button
-              transparent
-              iconLeft
-              btnDrawer
-              onPress={() =>
-                navigation.navigate('MedicalCase', {
-                  title: `${medicalCase.patient.firstname} ${
-                    medicalCase.patient.lastname
-                  }`,
-                })
-              }
-            >
-              <Icon
-                style={styles.icon}
-                dark
-                type={'FontAwesome5'}
-                name="briefcase-medical"
-              />
-              <Text dark>
-                {medicalCase.patient.firstname} - {medicalCase.patient.lastname}
-              </Text>
-            </Button>
+            <React.Fragment>
+              <Button
+                transparent
+                iconLeft
+                btnDrawer
+                onPress={() =>
+                  navigation.navigate('MedicalCase', {
+                    title: `${medicalCase.patient.firstname} ${
+                      medicalCase.patient.lastname
+                    }`,
+                  })
+                }
+              >
+                <Icon
+                  style={styles.icon}
+                  dark
+                  type={'FontAwesome5'}
+                  name="briefcase-medical"
+                />
+                <Text dark>
+                  {medicalCase.patient.firstname} -{' '}
+                  {medicalCase.patient.lastname}
+                </Text>
+              </Button>
+              <Button
+                transparent
+                iconLeft
+                btnDrawer
+                onPress={() =>
+                  navigation.navigate('WorkCase', {
+                    title: `${medicalCase.patient.firstname} ${
+                      medicalCase.patient.lastname
+                    }`,
+                  })
+                }
+              >
+                <Icon
+                  style={styles.icon}
+                  dark
+                  type={'FontAwesome'}
+                  name="stethoscope"
+                />
+                <Text dark>
+                  {medicalCase.patient.firstname} -{' '}
+                  {medicalCase.patient.lastname}
+                </Text>
+              </Button>
+            </React.Fragment>
           ) : null}
           <Button
             transparent

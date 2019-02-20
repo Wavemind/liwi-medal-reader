@@ -5,18 +5,20 @@ import { Button, H3, Picker, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, View } from 'react-native';
 import LottieView from 'lottie-react-native';
+import algo from '../../../engine/algorithme/algorithm_versions.json';
 
 import {
   createMedicalCase,
   getItems,
   getUserMedicaleCases,
-} from '../../engine/api/LocalStorage';
+} from '../../../engine/api/LocalStorage';
 import moment from 'moment';
-import { medicalCaseInitialState } from '../../engine/algorithme/medicalCase';
-import { generateEmptyNodes } from '../../engine/algorithme/initiateAlgo';
-import { liwiColors } from '../../utils/constants';
-import { SeparatorLine } from '../../template/layout';
+import { medicalCaseInitialState } from '../../../engine/algorithme/medicalCase';
+import { generateEmptyNodes } from '../../../engine/algorithme/initiateAlgo';
+import { liwiColors } from '../../../utils/constants';
+import { SeparatorLine } from '../../../template/layout';
 import find from 'lodash/find';
+import { setInitialCounter } from '../../../engine/algorithme/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 
@@ -61,12 +63,11 @@ export default class MedicalCases extends React.Component<Props, State> {
       (a) => a.version === this.state.selected
     );
 
-    // INITIATE ALGO TEMP
-    let algo = generateEmptyNodes(versionAlgoSelected);
+    let algoWithCounter = setInitialCounter(algo);
 
     await createMedicalCase({
       ...medicalCaseInitialState,
-      ...algo,
+      ...algoWithCounter,
       userId: this.props.app.user.data.id,
       patient: {
         ...medicalCaseInitialState.patient,
@@ -97,6 +98,7 @@ export default class MedicalCases extends React.Component<Props, State> {
     const _renderMedicalCases = this.state.medicalCases.map((mc, index) => {
       return (
         <Button
+          key={mc.id + '_medicalCase'}
           disabled={medicalCase.id === mc.id}
           onPress={() => {
             this.onSelectMedicalCase(mc);
@@ -121,7 +123,7 @@ export default class MedicalCases extends React.Component<Props, State> {
           }}
         >
           <LottieView
-            source={require('../../utils/animations/blood_1.json')}
+            source={require('../../../utils/animations/blood_1.json')}
             autoPlay
             style={{
               height: 100,
@@ -132,7 +134,7 @@ export default class MedicalCases extends React.Component<Props, State> {
         <H3>Actions</H3>
         <Button
           onPress={() => this.createMedicalCase()}
-          disabled={selected === 'null'}
+          // disabled={selected === 'null'}
         >
           <Text>Créer un cas médical</Text>
         </Button>

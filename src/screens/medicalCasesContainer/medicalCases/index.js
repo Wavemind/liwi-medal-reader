@@ -1,9 +1,9 @@
 import medicalCases from './MedicalCases.screen';
-import { withSessions } from '../../engine/contexts/Sessions.context';
-import { withApplication } from '../../engine/contexts/Application.context';
+import { withSessions } from '../../../engine/contexts/Sessions.context';
+import { withApplication } from '../../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
-import { setMedicalCase } from '../../engine/actions/creators.actions';
-import { actions } from '../../engine/actions/types.actions';
+import { setMedicalCase } from '../../../engine/actions/creators.actions';
+import { actions } from '../../../engine/actions/types.actions';
 
 const mapStateToProps = (medicalCase, ownProps) => {
   return {

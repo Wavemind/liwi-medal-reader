@@ -10,14 +10,21 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Radio extends React.PureComponent<Props, State> {
-  state = { style: {}, idClicked: null };
+export default class Radio extends React.Component<Props, State> {
+  shouldComponentUpdate(
+    nextProps: Readonly<P>,
+    nextState: Readonly<S>,
+    nextContext: any
+  ): boolean {
+    return nextProps.question.answer !== this.props.question.answer;
+  }
 
-  _handleClick = (idClicked) => this.setState({ idClicked });
+  _handleClick = (idClicked) => {
+    this.setState({ idClicked });
+  };
 
   render() {
-    const { question } = this.props;
-    const { idClicked } = this.state;
+    const { question, setQuestion } = this.props;
 
     return (
       <View
@@ -38,17 +45,19 @@ export default class Radio extends React.PureComponent<Props, State> {
             <ColCenter>
               <Button
                 square
-                onPress={() => this._handleClick(question.answers[id].id)}
+                onPress={() =>
+                  setQuestion(question.id, question.answers[id].id)
+                }
               >
                 <Icon
                   name={
-                    idClicked === question.answers[id].id
+                    question.answer === question.answers[id].id
                       ? 'radio-button-checked'
                       : 'radio-button-unchecked'
                   }
                   type={'MaterialIcons'}
                   style={
-                    idClicked === question.answers[id].id
+                    question.answer === question.answers[id].id
                       ? { color: liwiColors.greenColor }
                       : { color: liwiColors.blackColor }
                   }

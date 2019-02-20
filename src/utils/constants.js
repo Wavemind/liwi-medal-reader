@@ -9,7 +9,8 @@ export const liwiColors = {
   greenColor: '#37b428',
 };
 export const sessionsDuration = 30; // in minutes
-//export const devHost = 'http://192.168.1.5:3000'; // quent
+// export const devHost = 'http://192.168.1.5:3000'; // quent
+
 export const devHost = 'https://liwi.wavelab.top';
 
 // export const devHost = 'http://192.168.1.7:3000'; // manu

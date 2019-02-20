@@ -1,5 +1,5 @@
 import { ofType } from 'redux-observable';
-import { mapTo, delay } from 'rxjs/operators';
+import { mapTo, delay, concatMap, mergeMap } from 'rxjs/operators';
 import { middlewareTest, addTodo } from '../../actions/creators.actions';
 
 export const fetchUserEpic = (action$) =>
