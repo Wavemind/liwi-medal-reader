@@ -1,0 +1,22 @@
+{
+  "name": "liwi-frontend-service",
+  "version": "1.0.0",
+  "description": "Logical package of Liwi algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://quentingirard@bitbucket.org/wavemind_swiss/liwi-frontend-service.git"
+  },
+  "keywords": [
+    "liwi-frontend-service"
+  ],
+  "author": "Wavemind",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/wavemind_swiss/liwi-frontend-service#readme",
+  "dependencies": {
+    "react": "^16.8.2"
+  }
+}
