@@ -17,6 +17,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/wavemind_swiss/liwi-frontend-service#readme",
   "dependencies": {
-    "react": "^16.8.2"
+    "react": "^16.8.1",
+    "react-native": "0.57.8"
   }
 }
