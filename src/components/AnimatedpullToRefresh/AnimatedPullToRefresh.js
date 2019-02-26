@@ -1,3 +1,4 @@
+// Extract from https://github.com/NadiKuts/react-native-pull-refresh
 import React from 'react';
 import {
   View,

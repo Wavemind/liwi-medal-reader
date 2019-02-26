@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
 import { PaddedView } from '../../../template/layout';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
 import type { NavigationScreenProps } from 'react-navigation';
@@ -10,6 +11,7 @@ import {
   screenHeight,
   screenWidth,
 } from '../../../utils/constants';
+
 import LottieView from 'lottie-react-native';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
@@ -47,20 +49,16 @@ export default class UnlockSession extends React.Component<Props, State> {
     const { code } = this.state;
 
     return (
-      <PaddedView
-        style={{
-          alignItems: 'center',
-          flex: 1,
-        }}
-      >
+      <ScrollView style={{}}>
         <LottieView
           source={require('../../../utils/animations/unlock.json')}
           autoPlay
           style={{
-            height: 200,
+            height: 50,
           }}
           loop
         />
+
         <View
           style={{
             width: screenWidth * 0.8,
@@ -84,7 +82,7 @@ export default class UnlockSession extends React.Component<Props, State> {
             <Text> Dévérouiller la session </Text>
           </Button>
         </View>
-      </PaddedView>
+      </ScrollView>
     );
   }
 }

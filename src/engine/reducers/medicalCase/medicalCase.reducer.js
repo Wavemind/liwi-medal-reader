@@ -5,7 +5,11 @@ import { REHYDRATE } from 'redux-persist';
 import { medicalCaseInitialState } from '../../algorithme/medicalCase';
 import { setMedicaleCase } from '../../api/LocalStorage';
 import findKey from 'lodash/findKey';
-import { setInitialCounter } from '../../algorithme/algoTreeDiagnosis';
+import findIndex from 'lodash/findIndex';
+import {
+  generateNextBatch,
+  setInitialCounter,
+} from '../../algorithme/algoTreeDiagnosis';
 // export const initialState = medicalCaseInitialState;
 export const initialState = null;
 
@@ -22,37 +26,37 @@ export default function medicalCaseReducer(
       };
     }
 
+    case actions.MC_GENERATE_NEXT_BATCH: {
+      let newState = generateNextBatch(state);
+
+      return {
+        ...state,
+        batchs: [...newState.batchs],
+      };
+    }
+
     case actions.MEDICAL_CASE_INITIATE: {
       const { medicalCase } = action.payload;
+
       console.log('MEDICAL_CASE_INITIATE');
       return {
         ...medicalCase,
       };
     }
 
-    case actions.MC_INCREMENT_COUNTER: {
-      const { nodeId } = action.payload;
-      return {
-        ...state,
-        nodes: {
-          ...state.nodes,
-          [nodeId]: {
-            ...state.nodes[nodeId],
-            counter: state.nodes[nodeId].counter + 1,
-          },
-        },
-      };
-    }
+    case actions.MC_CONDITION_VALUE_CHANGE: {
+      const { nodeId, diseaseId, value } = action.payload;
 
-    case actions.MC_DECREMENT_COUNTER: {
-      const { nodeId } = action.payload;
+      const dd = state.nodes[nodeId].dd;
+      dd[diseaseId].conditionValue = value;
+
       return {
         ...state,
         nodes: {
           ...state.nodes,
           [nodeId]: {
             ...state.nodes[nodeId],
-            counter: state.nodes[nodeId].counter - 1,
+            dd: dd,
           },
         },
       };
@@ -61,6 +65,8 @@ export default function medicalCaseReducer(
     case actions.MC_QUESTION_SET: {
       const { index, value } = action.payload;
       let answer;
+
+      console.log(index, value);
 
       switch (state.nodes[index].display_format) {
         case 'Input':
@@ -78,6 +84,18 @@ export default function medicalCaseReducer(
 
                 case '<':
                   return value < Number(answerCondition.value);
+
+                case '>=, <':
+                  return (
+                    value >= Number(answerCondition.value.split(',')[0]) &&
+                    value < Number(answerCondition.value.split(',')[1])
+                  );
+
+                case '>, <=':
+                  return (
+                    value > Number(answerCondition.value.split(',')[0]) &&
+                    value <= Number(answerCondition.value.split(',')[1])
+                  );
               }
             });
           } else {
@@ -90,12 +108,15 @@ export default function medicalCaseReducer(
           answer = value;
           break;
       }
+      console.log(answer, index);
 
       // workaround
       // TODO why sometimes there are string number ? lodash ?
       if (answer !== 'null' && answer !== null) {
         answer = Number(answer);
       }
+
+      console.log(answer, index);
 
       return {
         ...state,

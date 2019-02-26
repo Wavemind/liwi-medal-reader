@@ -14,6 +14,7 @@ import type { SessionsProviderState } from '../../../engine/contexts/Sessions.co
 import { getSession } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2 } from '../../../template/layout';
 import LottieView from 'lottie-react-native';
+import { ScrollView } from 'react-native';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 
@@ -90,17 +91,12 @@ export default class SetCodeSession extends React.Component<Props, State> {
     }
 
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
+      <ScrollView style={{}}>
         <LottieView
           source={require('../../../utils/animations/welcome.json')}
           autoPlay
           style={{
-            height: 300,
+            height: 100,
           }}
           loop
         />
@@ -153,7 +149,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
             <Text> Définir ce code </Text>
           </Button>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

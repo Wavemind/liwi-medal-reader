@@ -18,7 +18,10 @@ import { generateEmptyNodes } from '../../../engine/algorithme/initiateAlgo';
 import { liwiColors } from '../../../utils/constants';
 import { SeparatorLine } from '../../../template/layout';
 import find from 'lodash/find';
-import { setInitialCounter } from '../../../engine/algorithme/algoTreeDiagnosis';
+import {
+  setInitialCounter,
+  generateInitialBatch,
+} from '../../../engine/algorithme/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 
@@ -64,10 +67,11 @@ export default class MedicalCases extends React.Component<Props, State> {
     );
 
     let algoWithCounter = setInitialCounter(algo);
+    let algoReady = generateInitialBatch(algoWithCounter);
 
     await createMedicalCase({
       ...medicalCaseInitialState,
-      ...algoWithCounter,
+      ...algoReady,
       userId: this.props.app.user.data.id,
       patient: {
         ...medicalCaseInitialState.patient,

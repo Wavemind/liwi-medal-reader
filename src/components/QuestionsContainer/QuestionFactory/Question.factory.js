@@ -48,7 +48,7 @@ export default class Question extends React.PureComponent<Props, State> {
           WrapperAnswer = () => (
             <Boolean question={question} styles={specificStyle} />
           );
-          WrapperRadiobutton = () => <Radio question={question} />;
+          // WrapperRadiobutton = () => <Radio question={question} />;
         }
 
         if (question.value_format === 'Radio') {

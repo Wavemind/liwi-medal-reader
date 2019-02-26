@@ -5,8 +5,8 @@
   "version": "first_trial",
   "description": "loremp ipsum",
   "author": "Emmanuel Barchichat",
-  "created_at": "2019-02-19T16:20:27.772+01:00",
-  "updated_at": "2019-02-19T16:20:27.772+01:00",
+  "created_at": "2019-02-21T14:16:27.661+01:00",
+  "updated_at": "2019-02-21T14:16:27.661+01:00",
   "diseases": {
     "4": {
       "id": 4,
@@ -371,14 +371,14 @@
         "17": {
           "id": 17,
           "reference": "S_2_1",
-          "label": "translation missing: en.answers.yes",
+          "label": "Yes",
           "value": null,
           "operator": null
         },
         "18": {
           "id": 18,
           "reference": "S_2_2",
-          "label": "translation missing: en.answers.no",
+          "label": "No",
           "value": null,
           "operator": null
         }
@@ -407,14 +407,14 @@
         "19": {
           "id": 19,
           "reference": "S_4_1",
-          "label": "translation missing: en.answers.yes",
+          "label": "Yes",
           "value": null,
           "operator": null
         },
         "20": {
           "id": 20,
           "reference": "S_4_2",
-          "label": "translation missing: en.answers.no",
+          "label": "No",
           "value": null,
           "operator": null
         }
@@ -515,14 +515,14 @@
         "25": {
           "id": 25,
           "reference": "P_13_1",
-          "label": "translation missing: en.answers.yes",
+          "label": "Yes",
           "value": null,
           "operator": null
         },
         "26": {
           "id": 26,
           "reference": "P_13_2",
-          "label": "translation missing: en.answers.no",
+          "label": "No",
           "value": null,
           "operator": null
         }
@@ -551,14 +551,14 @@
         "27": {
           "id": 27,
           "reference": "P_14_1",
-          "label": "translation missing: en.answers.yes",
+          "label": "Yes",
           "value": null,
           "operator": null
         },
         "28": {
           "id": 28,
           "reference": "P_14_2",
-          "label": "translation missing: en.answers.no",
+          "label": "No",
           "value": null,
           "operator": null
         }
@@ -587,14 +587,14 @@
         "29": {
           "id": 29,
           "reference": "P_25_1",
-          "label": "translation missing: en.answers.yes",
+          "label": "Yes",
           "value": null,
           "operator": null
         },
         "30": {
           "id": 30,
           "reference": "P_25_2",
-          "label": "translation missing: en.answers.no",
+          "label": "No",
           "value": null,
           "operator": null
         }
@@ -629,6 +629,27 @@
       "description": null
     },
     "24": {
+      "top_conditions": [
+        {
+          "first_id": 29,
+          "first_type": "Answer",
+          "first_node_id": 19,
+          "operator": null,
+          "second_id": null,
+          "second_type": null
+        },
+        {
+          "first_id": 19,
+          "first_type": "Answer",
+          "first_node_id": 14,
+          "operator": null,
+          "second_id": null,
+          "second_type": null
+        }
+      ],
+      "conditions": [
+
+      ],
       "type": "PredefinedSyndrome",
       "nodes": {
         "14": {
@@ -668,12 +689,12 @@
         "31": {
           "id": 31,
           "reference": "PS_6_1",
-          "label": "translation missing: en.answers.yes"
+          "label": "Yes"
         },
         "32": {
           "id": 32,
           "reference": "PS_6_2",
-          "label": "translation missing: en.answers.no"
+          "label": "No"
         }
       },
       "ps": [

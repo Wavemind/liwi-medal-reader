@@ -34,7 +34,8 @@ export default {
       shadowOffset: { height: 1, width: 1 },
       shadowOpacity: 1,
       elevation: 1,
-      padding: 4,
+      padding: 0,
+      margin: 0,
       borderColor: liwiColors.blackColor,
     },
     // Tous les buttons sont affectés !

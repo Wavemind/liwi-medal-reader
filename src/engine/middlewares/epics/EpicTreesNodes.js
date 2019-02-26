@@ -4,15 +4,15 @@ import { actions } from '../../actions/types.actions';
 
 import { of } from 'rxjs';
 import {
-  decrementCounter,
-  incrementCounter,
+  conditionValueChange,
   nodeOfThisChildren,
+  predefinedSyndromeChildren,
 } from '../../actions/creators.actions';
 import {
   actionFactoryTypeNode,
   nodeConditionChecker,
 } from '../../algorithme/algoTreeDiagnosis';
-
+import findIndex from 'lodash/findIndex';
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state updated.*/
 
 // First call
@@ -34,11 +34,11 @@ export const epicCatchAnswer = (action$, state$) =>
       let arrayActions = [];
 
       childrensDD.map((indexDD) =>
-        arrayActions.push(nodeOfThisChildren(index, indexDD, 'diseases'))
+        arrayActions.push(nodeOfThisChildren(index, indexDD.id, 'diseases'))
       );
 
       childrensPS.map((indexPS) =>
-        arrayActions.push(nodeOfThisChildren(index, indexPS))
+        arrayActions.push(nodeOfThisChildren(index, indexPS.id))
       );
 
       return of(...arrayActions);
@@ -67,11 +67,28 @@ export const epicCatchNodeOfThisChildren = (action$, state$) =>
 
       let actions = actionFactoryTypeNode(state$, indexNode, indexChild, type);
 
+      console.log(actions);
+
       return of(...actions);
     })
   );
 
-// Third call
+// Loop on children's node od type predef syndrome
+
+export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.MC_PREDEFINED_SYNDROME_CHILDREN),
+    filter((action) => {
+      // For one node, what i do ?
+      // Check the condition for the node, according type
+      const { indexPS, indexChild } = action.payload;
+
+      console.log(indexPS, indexChild);
+      console.log('This is a PS');
+      // Check the condition of the children
+    })
+  );
+
 // Loop on children's node of type final diagnostics
 export const epicCatchDiagnosisChildren = (action$, state$) =>
   action$.pipe(
@@ -104,6 +121,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
       // For one node, what i do ?
       // Check the condition for the node, by type
       const { indexDD, indexChild } = action.payload;
+
       const child = state$.value.diseases[indexDD].nodes[indexChild];
 
       const condition = nodeConditionChecker(
@@ -115,17 +133,20 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
       let actions = [];
 
       console.log('question', indexChild, ' is ', condition, 'for', indexDD);
+      let findConditionValue = findIndex(
+        state$.value.nodes[indexChild].dd,
+        (o) => o.id === indexDD
+      );
 
-      // will be change... aie aie aie
-      switch (condition) {
-        case true:
-          actions.push(incrementCounter(indexChild));
-          break;
-        case false:
-          actions.push(decrementCounter(indexChild));
-          break;
-        case null:
-          break;
+      // If condition value is different from the old
+      // We take the index in array, be carreful
+      if (
+        state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !==
+        condition
+      ) {
+        actions.push(
+          conditionValueChange(indexChild, findConditionValue, condition)
+        );
       }
 
       return of(...actions);

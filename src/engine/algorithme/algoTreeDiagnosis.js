@@ -1,22 +1,126 @@
 import reduce from 'lodash/reduce';
 import {
   diagnosisChildren,
+  predefinedSyndromeChildren,
   diseasesChildren,
 } from '../actions/creators.actions';
+import find from 'lodash/find';
+import { nodesType } from '../../utils/constants';
+
+export const generateInitialBatch = (medicalCase) => {
+  console.log(medicalCase);
+  const { nodes, diseases, batchs } = medicalCase;
+  medicalCase.batchs = [{ name: '', current: false, nodes: [] }];
+  Object.keys(nodes).map((nodeId) => {
+    if (nodes[nodeId].priority === 'triage') {
+      medicalCase.batchs[0].nodes.push(nodeId);
+    }
+  });
+  return medicalCase;
+};
+
+export const generateNextBatch = (medicalCase) => {
+  console.log(medicalCase);
+  const { nodes, diseases, batchs } = medicalCase;
+  let newBatch = { name: '', current: false, nodes: [] };
+
+  Object.keys(nodes).map((nodeId) => {
+    // Is this PS show in a dd ?
+    let conditionValueAtLeastInDD = find(
+      nodes[nodeId].dd,
+      (k) => k.conditionValue === true
+    );
+
+    let conditionValueAtLeastInPS = find(
+      nodes[nodeId].ps,
+      (k) => k.conditionValue === true
+    );
+
+    // there is a conditionValue at true
+    if (
+      conditionValueAtLeastInDD !== undefined ||
+      conditionValueAtLeastInPS !== undefined
+    ) {
+      let findInOtherBatch = true;
+
+      // Find recursive
+      batchs.map((b) => {
+        let duplicate = find(b.nodes, (a) => a === nodeId);
+        if (duplicate) {
+          findInOtherBatch = false;
+        }
+      });
+
+      // If question was already asked
+      if (findInOtherBatch) {
+        newBatch.nodes.push(nodeId);
+      }
+    }
+  });
+  if (newBatch.nodes.length > 0) {
+    medicalCase.batchs.push(newBatch);
+  }
+  return medicalCase;
+};
 
 export const setInitialCounter = (medicalCase) => {
-  console.log(medicalCase);
   const { diseases, nodes } = medicalCase;
-  console.log(diseases);
-  Object.keys(diseases).map((diseaseId) =>
-    Object.keys(diseases[diseaseId].nodes).map((nodeId) => {
-      console.log(nodeId);
-      // there are no condition
-      if (diseases[diseaseId].nodes[nodeId].top_conditions.length === 0) {
-        nodes[nodeId].counter = nodes[nodeId].counter + 1;
-      }
-    })
-  );
+
+  Object.keys(nodes).map((nodeId) => {
+    if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
+      nodes[nodeId].dd.map((dd, index) => {
+        // dd.conditionValue =
+        //   diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
+        nodes[nodeId].dd[index] = {
+          id: dd,
+          conditionValue:
+            diseases[dd].nodes[nodeId].top_conditions.length === 0,
+        };
+      });
+    }
+  });
+
+  // Twice Loop because we need to set dd before ps because  ps in ps in dd...
+  Object.keys(nodes).map((nodeId) => {
+    if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
+      nodes[nodeId].ps.map((ps, index) => {
+        let conditionValueAtLeast;
+
+        // Is this PS show in a dd ?
+        // conditionValueAtLeast = find(
+        //   nodes[ps.id].dd,
+        //   (k) => k.conditionValue === true
+        // );
+        //
+        // // there is a conditionValue at true
+        // if (conditionValueAtLeast !== undefined) {
+        //   conditionValueAtLeast = true;
+        // } else {
+        //   conditionValueAtLeast = null;
+        // }
+        conditionValueAtLeast = find(
+          nodes[ps].dd,
+          (k) => k.conditionValue === true
+        );
+
+        // there is a conditionValue at true
+        if (conditionValueAtLeast !== undefined) {
+          conditionValueAtLeast = true;
+        }
+
+        nodes[nodeId].ps[index] = {
+          id: ps,
+          conditionValue:
+            nodes[ps].nodes[nodeId].top_conditions.length === 0 &&
+            conditionValueAtLeast,
+        };
+        // set conditioValue for this ps in this node
+        // ps.conditionValue =
+        //   nodes[ps.id].nodes[nodeId].top_conditions.length === 0 &&
+        //   conditionValueAtLeast;
+      });
+    }
+  });
 
   return medicalCase;
 };
@@ -137,18 +241,22 @@ export const actionFactoryTypeNode = (state$, indexNode, indexChild, type) => {
     type = state$.value.nodes[indexChild].type;
   }
 
+  console.log(type, indexNode, indexChild);
+
   switch (type) {
-    case 'Question':
+    case nodesType.q:
       // Go to this sample question
       return diseasesChildren(indexNode, indexChild);
-    case 'Treatment':
+    case nodesType.t:
+      // Treatment
       break;
-    case 'FinalDiagnostic':
+    case nodesType.fd:
       // Ho next node is Final Diagnostic
       return diagnosisChildren(indexNode, indexChild);
-    case 'Management':
+    case nodesType.m:
       break;
-    case 'diseases':
+    case nodesType.d:
+      // NEXT CHILDREN
       // This node affects a disease, we go on the children of this node in this diseases
       childrenNodes =
         state$.value.diseases[indexChild].nodes[indexNode].children;
@@ -160,13 +268,23 @@ export const actionFactoryTypeNode = (state$, indexNode, indexChild, type) => {
           childId,
           null
         );
+        console.log(typeOfChildren);
         arrayActions.push(typeOfChildren);
       });
       break;
-    case 'PredefinedSyndrome':
-      console.log(state$.value.nodes[indexChild]);
-      // Calcul change of PS
-      break;
+    case nodesType.ps:
+      // PS EFFECT CHANGE !
+      console.log(
+        'change ps ',
+        state$.value.nodes[indexChild],
+        state$.value.nodes[indexNode].type
+      );
+    // Calcul change of PS
+
+    // HERE
+    // if (state$.value.nodes[indexNode].type) {
+    // }
+    // return [predefinedSyndromeChildren(indexNode, indexChild)];
   }
 
   return arrayActions;

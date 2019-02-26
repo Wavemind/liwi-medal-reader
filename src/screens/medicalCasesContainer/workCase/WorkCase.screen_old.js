@@ -1,18 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import {
-  Tab,
-  Tabs,
-  Text,
-  View,
-  H2,
-  H3,
-  TabHeading,
-  Icon,
-  Left,
-  Button,
-} from 'native-base';
+import { Tab, Tabs, Text, View, H2, H3 } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
@@ -26,33 +15,35 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class WorkCase extends React.Component<Props, State> {
-  state = { ready: true };
+  state = { ready: false };
 
   render() {
     const {
-      nextbatch,
-      medicalCase: { nodes, diseases, version, description, author, batchs },
+      medicalCase: { nodes, ready, diseases, version, description, author },
       medicalCase,
     } = this.props;
 
-    let ready = true;
+    let questionTriage = {};
+    let questionNormals = {};
+    Object.keys(nodes).map((id) => {
+      switch (nodes[id].type) {
+        case 'Question':
+          if (
+            nodes[id].priority === 'triage'
+            // && nodes[id].counter > 0
+          ) {
+            questionTriage[id] = nodes[id];
+          }
 
-    let questionsBatched = [
-      { name: 'Questions de triage', current: false, nodes: {} },
-      { name: '2', current: false, nodes: {} },
-      { name: '3', current: false, nodes: {} },
-      { name: '4', current: false, nodes: {} },
-      { name: '5', current: false, nodes: {} },
-      { name: '6', current: false, nodes: {} },
-    ];
+          if (
+            nodes[id].priority !== 'triage'
+            // && nodes[id].counter > 0
+          ) {
+            questionNormals[id] = nodes[id];
+          }
 
-    batchs.map((batch, id) => {
-      batch.nodes.map((nodeId) => {
-        if (nodes[nodeId].answer === null) {
-          ready = false;
-        }
-        questionsBatched[id].nodes[nodeId] = nodes[nodeId];
-      });
+          break;
+      }
     });
 
     return (
@@ -62,26 +53,29 @@ export default class WorkCase extends React.Component<Props, State> {
           <Text>description : {description}</Text>
           <Text>Par : {author}</Text>
         </View>
-        <Button onPress={() => nextbatch()} disabled={!ready}>
-          <Icon name="forward" type={'AntDesign'} />
-          <Text>Créer le batch suivant</Text>
-        </Button>
         <Tabs>
-          {Object.keys(questionsBatched).map((batchId) =>
-            Object.keys(questionsBatched[batchId].nodes).length > 0 ? (
-              <Tab
-                heading={questionsBatched[batchId].name}
-                tabStyle={{
-                  backgroundColor: liwiColors.redColor,
-                }}
-                activeTabStyle={{
-                  backgroundColor: liwiColors.redColor,
-                }}
-              >
-                <Questions questions={questionsBatched[batchId].nodes} />
-              </Tab>
-            ) : null
-          )}
+          <Tab
+            heading="Questions triage"
+            tabStyle={{
+              backgroundColor: liwiColors.redColor,
+            }}
+            activeTabStyle={{
+              backgroundColor: liwiColors.redColor,
+            }}
+          >
+            <Questions questions={questionTriage} />
+          </Tab>
+          <Tab
+            heading="Questions normales"
+            tabStyle={{
+              backgroundColor: liwiColors.redColor,
+            }}
+            activeTabStyle={{
+              backgroundColor: liwiColors.redColor,
+            }}
+          >
+            <Questions questions={questionNormals} />
+          </Tab>
           <Tab
             heading="Diagnostic"
             tabStyle={{

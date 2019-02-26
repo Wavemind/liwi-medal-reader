@@ -39,6 +39,10 @@ export default class Numeric extends React.Component<Props, State> {
       case 'Integer':
         keyboardType = 'number-pad';
         break;
+
+      case 'Float':
+        keyboardType = 'number-pad';
+        break;
     }
 
     return (

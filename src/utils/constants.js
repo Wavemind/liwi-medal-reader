@@ -21,3 +21,13 @@ export const saltHash =
 
 export const screenWidth = Dimensions.get('window').width;
 export const screenHeight = Dimensions.get('window').height;
+
+// Const about nodes
+export const nodesType = {
+  ps: 'PredefinedSyndrome',
+  q: 'Question',
+  t: 'Treatment',
+  fd: 'FinalDiagnostic',
+  d: 'diseases',
+  m: 'Management',
+};

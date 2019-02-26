@@ -15,14 +15,9 @@ export const initiateMedicalCase = (medicalCase) => ({
   payload: medicalCase,
 });
 
-export const incrementCounter = (nodeId) => ({
-  type: actions.MC_INCREMENT_COUNTER,
-  payload: { nodeId },
-});
-
-export const decrementCounter = (nodeId) => ({
-  type: actions.MC_DECREMENT_COUNTER,
-  payload: { nodeId },
+export const conditionValueChange = (nodeId, diseaseId, value) => ({
+  type: actions.MC_CONDITION_VALUE_CHANGE,
+  payload: { nodeId, diseaseId, value },
 });
 
 export const setMedicalCase = (medicalCase) => ({
@@ -34,6 +29,11 @@ export const setMedicalCase = (medicalCase) => ({
 
 export const initialCounter = () => ({
   type: actions.MEDICAL_CASE_SET,
+  payload: {},
+});
+
+export const nextBatch = () => ({
+  type: actions.MC_GENERATE_NEXT_BATCH,
   payload: {},
 });
 
@@ -66,6 +66,14 @@ export const diseasesChildren = (indexDD, indexChild) => ({
   type: actions.MC_DISEASES_CHILDREN,
   payload: {
     indexDD,
+    indexChild,
+  },
+});
+
+export const predefinedSyndromeChildren = (indexPS, indexChild) => ({
+  type: actions.MC_PREDEFINED_SYNDROME_CHILDREN,
+  payload: {
+    indexPS,
     indexChild,
   },
 });
