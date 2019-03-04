@@ -4,9 +4,6 @@ import { Button, Container, Icon, Text } from 'native-base';
 import { styles } from './Drawer.style';
 import { withSessions } from 'engine/contexts/Sessions.context';
 import { SeparatorLine } from '../../../template/layout';
-import { GetDeviceInformations } from '../../api/Device';
-import { post, get } from '../../api/Http';
-import { setItem } from '../../api/LocalStorage';
 
 export default class Drawer extends Component {
   state = {

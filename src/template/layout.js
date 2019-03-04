@@ -2,12 +2,13 @@ import styled from 'styled-components/native';
 import { liwiColors } from '/utils/constants';
 import { View as RNView } from 'react-native';
 import {
-  Text as LText,
-  View as LView,
+  Col as LCol,
   H2 as LH2,
   H3 as LH3,
-  Col as LCol,
+  Text as LText,
+  View as LView,
 } from 'native-base';
+
 export const TextExemple = styled(LText).attrs({})`
   color: #4e4e4e;
   font-family: roboto;

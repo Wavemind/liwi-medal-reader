@@ -3,9 +3,10 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View } from 'react-native';
-import { Form, Input, Item, Label, Icon, Button, Text } from 'native-base';
+import { Form, Icon, Input, Text } from 'native-base';
 import { styles } from './LwInput.style';
 import { ViewBlocColor } from '../../../template/layout';
+
 type Props = NavigationScreenProps & {};
 
 type State = {};

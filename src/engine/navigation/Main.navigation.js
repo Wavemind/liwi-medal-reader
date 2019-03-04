@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  createDrawerNavigator,
-  createStackNavigator,
   createBottomTabNavigator,
-  createTabNavigator,
+  createDrawerNavigator,
   createMaterialTopTabNavigator,
+  createStackNavigator,
+  createTabNavigator,
 } from 'react-navigation';
 import { Button, Icon } from 'native-base';
 
@@ -15,7 +15,6 @@ import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
 import Algorithmes from '../../screens/algorithmesContainer/Algorithmes';
 import Algorithme from '../../screens/algorithmesContainer/Algorithme';
 import Settings from '../../screens/settings/';
-import TabsNavigation from './tabs';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
 const Stack = createStackNavigator({

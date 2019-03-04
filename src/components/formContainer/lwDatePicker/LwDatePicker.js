@@ -3,11 +3,12 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View } from 'react-native';
-import { Form, Input, Text, Item, Label, DatePicker, Icon } from 'native-base';
+import { DatePicker, Form, Icon, Text } from 'native-base';
 import moment from 'moment';
 import { styles } from './LwDatePicker.style';
 import { ViewBlocColor } from '../../../template/layout';
 import { liwiColors } from '../../../utils/constants';
+
 type Props = NavigationScreenProps & {};
 
 type State = {};

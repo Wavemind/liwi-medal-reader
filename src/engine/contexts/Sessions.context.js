@@ -9,12 +9,10 @@ import {
   getSession,
   setSessions,
   destroySession,
-  setItem,
 } from '../api/LocalStorage';
 
-import { auth, fetchAlgorithmes, post } from '../api/Http';
+import { auth, fetchAlgorithmes } from '../api/Http';
 import { ToastFactory } from 'utils/ToastFactory';
-import { GetDeviceInformations } from '../api/Device';
 import { get } from 'engine/api/Http';
 
 const defaultValue = {};

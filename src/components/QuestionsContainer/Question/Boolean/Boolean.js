@@ -6,7 +6,6 @@ import type { NavigationScreenProps } from 'react-navigation';
 import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
 import { getSession } from 'engine/api/LocalStorage';
 import { liwiColors } from '../../../../utils/constants';
-import findKey from 'lodash/findKey';
 
 type Props = NavigationScreenProps & {};
 

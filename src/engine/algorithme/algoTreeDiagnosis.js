@@ -181,6 +181,7 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     return comparingTopConditions(state$, child, conditions);
   });
   // reduce here
+  console.log(conditionFinal, 'conditionFinal');
   const reduceConditionArrayBoolean = reduce(
     conditionFinal,
     (result, value) => {
@@ -188,8 +189,6 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     },
     false
   );
-
-  console.log(conditionFinal, 'conditionFinal', reduceConditionArrayBoolean);
 
   return reduceConditionArrayBoolean;
 };
@@ -229,6 +228,7 @@ const checkOneCondition = (state$, child, wantedId, nodeId, conditionType) => {
       break;
   }
 };
+
 const comparingTopConditions = (state$, child, conditions) => {
   const {
     first_id,

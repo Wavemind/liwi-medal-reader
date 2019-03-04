@@ -1,12 +1,12 @@
 // Extract from https://github.com/NadiKuts/react-native-pull-refresh
 import React from 'react';
 import {
-  View,
-  ScrollView,
   Animated,
-  PanResponder,
-  UIManager,
   Dimensions,
+  PanResponder,
+  ScrollView,
+  UIManager,
+  View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 

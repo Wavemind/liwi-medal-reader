@@ -5,11 +5,7 @@ import { REHYDRATE } from 'redux-persist';
 import { medicalCaseInitialState } from '../../algorithme/medicalCase';
 import { setMedicaleCase } from '../../api/LocalStorage';
 import findKey from 'lodash/findKey';
-import findIndex from 'lodash/findIndex';
-import {
-  generateNextBatch,
-  setInitialCounter,
-} from '../../algorithme/algoTreeDiagnosis';
+import { generateNextBatch } from '../../algorithme/algoTreeDiagnosis';
 // export const initialState = medicalCaseInitialState;
 export const initialState = null;
 

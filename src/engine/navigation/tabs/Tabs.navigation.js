@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Grid, Col, Row } from 'native-base';
+import { Col, Grid, Text, View } from 'native-base';
 
 export default class TabsNavigation extends Component {
   render() {

@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { View } from 'react-native';
 
