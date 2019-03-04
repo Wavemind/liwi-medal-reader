@@ -16,8 +16,6 @@ export const ToastFactory = (text: string = 'Default', params: ToastType) => {
     duration = 2000,
   } = params;
 
-  console.log(text);
-
   Toast.show({
     text,
     buttonText,

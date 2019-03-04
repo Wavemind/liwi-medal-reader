@@ -91,12 +91,17 @@ export default class SetCodeSession extends React.Component<Props, State> {
     }
 
     return (
-      <ScrollView style={{}}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+        }}
+      >
         <LottieView
           source={require('../../../utils/animations/welcome.json')}
           autoPlay
           style={{
-            height: 100,
+            height: 300,
           }}
           loop
         />
@@ -149,7 +154,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
             <Text> Définir ce code </Text>
           </Button>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }

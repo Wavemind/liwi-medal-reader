@@ -38,10 +38,7 @@ export const get = async (params, userId) => {
   });
 
   const data = await response;
-  console.log(data);
   let json = await data.json();
-
-  console.log(json);
 
   if (data.status === 200) {
     return json;

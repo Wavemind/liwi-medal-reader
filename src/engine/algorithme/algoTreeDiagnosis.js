@@ -1,14 +1,8 @@
 import reduce from 'lodash/reduce';
-import {
-  diagnosisChildren,
-  predefinedSyndromeChildren,
-  diseasesChildren,
-} from '../actions/creators.actions';
 import find from 'lodash/find';
 import { nodesType } from '../../utils/constants';
 
 export const generateInitialBatch = (medicalCase) => {
-  console.log(medicalCase);
   const { nodes, diseases, batchs } = medicalCase;
   medicalCase.batchs = [{ name: '', current: false, nodes: [] }];
   Object.keys(nodes).map((nodeId) => {
@@ -20,7 +14,6 @@ export const generateInitialBatch = (medicalCase) => {
 };
 
 export const generateNextBatch = (medicalCase) => {
-  console.log(medicalCase);
   const { nodes, diseases, batchs } = medicalCase;
   let newBatch = { name: '', current: false, nodes: [] };
 
@@ -69,13 +62,13 @@ export const setInitialCounter = (medicalCase) => {
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
       nodes[nodeId].dd.map((dd, index) => {
-        // dd.conditionValue =
-        //   diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
-        nodes[nodeId].dd[index] = {
-          id: dd,
-          conditionValue:
-            diseases[dd].nodes[nodeId].top_conditions.length === 0,
-        };
+        dd.conditionValue =
+          diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
+        // nodes[nodeId].dd[index] = {
+        //   id: dd,
+        //   conditionValue:
+        //     diseases[dd].nodes[nodeId].top_conditions.length === 0,
+        // };
       });
     }
   });
@@ -86,43 +79,100 @@ export const setInitialCounter = (medicalCase) => {
       nodes[nodeId].ps.map((ps, index) => {
         let conditionValueAtLeast;
 
-        // Is this PS show in a dd ?
-        // conditionValueAtLeast = find(
-        //   nodes[ps.id].dd,
-        //   (k) => k.conditionValue === true
-        // );
-        //
-        // // there is a conditionValue at true
-        // if (conditionValueAtLeast !== undefined) {
-        //   conditionValueAtLeast = true;
-        // } else {
-        //   conditionValueAtLeast = null;
-        // }
+        //Is this PS show in a dd ?
         conditionValueAtLeast = find(
-          nodes[ps].dd,
+          nodes[ps.id].dd,
           (k) => k.conditionValue === true
         );
 
         // there is a conditionValue at true
         if (conditionValueAtLeast !== undefined) {
           conditionValueAtLeast = true;
+        } else {
+          conditionValueAtLeast = null;
         }
 
-        nodes[nodeId].ps[index] = {
-          id: ps,
-          conditionValue:
-            nodes[ps].nodes[nodeId].top_conditions.length === 0 &&
-            conditionValueAtLeast,
-        };
+        // conditionValueAtLeast = find(
+        //   nodes[ps].dd,
+        //   (k) => k.conditionValue === true
+        // );
+
+        // there is a conditionValue at true
+        if (conditionValueAtLeast !== undefined) {
+          conditionValueAtLeast = true;
+        }
+
+        // nodes[nodeId].ps[index] = {
+        //   id: ps,
+        //   conditionValue:
+        //     nodes[ps].nodes[nodeId].top_conditions.length === 0 &&
+        //     conditionValueAtLeast,
+        // };
         // set conditioValue for this ps in this node
-        // ps.conditionValue =
-        //   nodes[ps.id].nodes[nodeId].top_conditions.length === 0 &&
-        //   conditionValueAtLeast;
+        ps.conditionValue =
+          nodes[ps.id].nodes[nodeId].top_conditions.length === 0 &&
+          conditionValueAtLeast;
       });
     }
   });
 
   return medicalCase;
+};
+
+// TODO not working at 100%, fix it
+const recursiveNodePs = (state$, node, ps) => {
+  return node.children.some((nodeChildID) => {
+    let nodeChild = state$.value.nodes[nodeChildID];
+    // IF the child is OUR PS
+    if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
+      // Calculate state of OUR PS
+
+      const condition = nodeConditionChecker(state$, null, null, ps);
+
+      return condition;
+    }
+    // IF the child is an other PS
+    if (nodeChild.type === nodesType.ps) {
+      // Get state of this PS
+    }
+
+    // IF the child is an question
+    if (nodeChild.type === nodesType.q) {
+      // Next node is a question, get the state
+      const nodeChildCondition = nodeConditionChecker(
+        state$,
+        null,
+        null,
+        ps.nodes[nodeChild.id]
+      );
+      // if this branch is open, so go deeper
+      if (nodeChildCondition === true) {
+        return recursiveNodePs(state$, nodeChild, ps);
+      }
+    }
+  });
+};
+
+export const getStateToThisPs = (state$, ps) => {
+  let nodeTopParent = [];
+
+  // Get top parent nodes
+  Object.keys(ps.nodes).map((nodeId) => {
+    if (ps.nodes[nodeId].top_conditions.length === 0) {
+      nodeTopParent.push(ps.nodes[nodeId]);
+    }
+  });
+
+  let cond = nodeTopParent.some((topParent) => {
+    let childCond = recursiveNodePs(state$, topParent, ps);
+
+    // Result of this branch
+    if (childCond !== null) {
+      return childCond;
+    }
+  });
+
+  return cond;
 };
 
 export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
@@ -131,7 +181,6 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     return comparingTopConditions(state$, child, conditions);
   });
   // reduce here
-  console.log(conditionFinal);
   const reduceConditionArrayBoolean = reduce(
     conditionFinal,
     (result, value) => {
@@ -139,6 +188,8 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     },
     false
   );
+
+  console.log(conditionFinal, 'conditionFinal', reduceConditionArrayBoolean);
 
   return reduceConditionArrayBoolean;
 };
@@ -230,62 +281,3 @@ const comparingTopConditions = (state$, child, conditions) => {
   }
   return null;
 }; // Index node
-export const actionFactoryTypeNode = (state$, indexNode, indexChild, type) => {
-  // indexNode = Parent node
-  // indexChild = node that is affected by it
-  let arrayActions = [];
-  let childrenNodes;
-
-  // WORKAROUND because they dont want diseases in nodes
-  if (type === null) {
-    type = state$.value.nodes[indexChild].type;
-  }
-
-  console.log(type, indexNode, indexChild);
-
-  switch (type) {
-    case nodesType.q:
-      // Go to this sample question
-      return diseasesChildren(indexNode, indexChild);
-    case nodesType.t:
-      // Treatment
-      break;
-    case nodesType.fd:
-      // Ho next node is Final Diagnostic
-      return diagnosisChildren(indexNode, indexChild);
-    case nodesType.m:
-      break;
-    case nodesType.d:
-      // NEXT CHILDREN
-      // This node affects a disease, we go on the children of this node in this diseases
-      childrenNodes =
-        state$.value.diseases[indexChild].nodes[indexNode].children;
-      childrenNodes.map((childId) => {
-        // We will see the type of child of this node and perform the right action
-        let typeOfChildren = actionFactoryTypeNode(
-          state$,
-          indexChild,
-          childId,
-          null
-        );
-        console.log(typeOfChildren);
-        arrayActions.push(typeOfChildren);
-      });
-      break;
-    case nodesType.ps:
-      // PS EFFECT CHANGE !
-      console.log(
-        'change ps ',
-        state$.value.nodes[indexChild],
-        state$.value.nodes[indexNode].type
-      );
-    // Calcul change of PS
-
-    // HERE
-    // if (state$.value.nodes[indexNode].type) {
-    // }
-    // return [predefinedSyndromeChildren(indexNode, indexChild)];
-  }
-
-  return arrayActions;
-};

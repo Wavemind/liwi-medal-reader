@@ -70,6 +70,14 @@ export const diseasesChildren = (indexDD, indexChild) => ({
   },
 });
 
+export const setPsAnswer = (indexPs, answer) => ({
+  type: actions.MC_PREDEFINED_SYNDROME_SET_ANSWER,
+  payload: {
+    indexPs,
+    answer,
+  },
+});
+
 export const predefinedSyndromeChildren = (indexPS, indexChild) => ({
   type: actions.MC_PREDEFINED_SYNDROME_CHILDREN,
   payload: {

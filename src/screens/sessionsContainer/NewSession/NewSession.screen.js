@@ -48,7 +48,6 @@ export default class NewSession extends React.Component<Props, State> {
     await sessions
       .newSession(email, password)
       .then(async (data) => {
-        console.log(data);
         if (typeof data.uid === 'string') {
           this.setState({ success: true, loading: false, id: data.data.id });
         }

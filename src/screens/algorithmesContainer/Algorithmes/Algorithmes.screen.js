@@ -28,7 +28,6 @@ export default class Algorithmes extends React.Component<Props, State> {
   }
 
   onRefresh = async () => {
-    console.log('refresh algorithmes');
     this.setState({ isRefreshing: true });
     const {
       app: { user },
@@ -41,8 +40,6 @@ export default class Algorithmes extends React.Component<Props, State> {
   render() {
     const { algorithmes } = this.state;
     const { navigation } = this.props;
-
-    console.log(algorithmes);
 
     return (
       <View style={{ flex: 2 }}>

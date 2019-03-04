@@ -38,7 +38,6 @@ export default function medicalCaseReducer(
     case actions.MEDICAL_CASE_INITIATE: {
       const { medicalCase } = action.payload;
 
-      console.log('MEDICAL_CASE_INITIATE');
       return {
         ...medicalCase,
       };
@@ -62,11 +61,23 @@ export default function medicalCaseReducer(
       };
     }
 
+    case actions.MC_PREDEFINED_SYNDROME_SET_ANSWER: {
+      const { indexPs, answer } = action.payload;
+      return {
+        ...state,
+        nodes: {
+          ...state.nodes,
+          [indexPs]: {
+            ...state.nodes[indexPs],
+            answer: answer,
+          },
+        },
+      };
+    }
+
     case actions.MC_QUESTION_SET: {
       const { index, value } = action.payload;
       let answer;
-
-      console.log(index, value);
 
       switch (state.nodes[index].display_format) {
         case 'Input':
@@ -108,15 +119,12 @@ export default function medicalCaseReducer(
           answer = value;
           break;
       }
-      console.log(answer, index);
 
       // workaround
       // TODO why sometimes there are string number ? lodash ?
       if (answer !== 'null' && answer !== null) {
         answer = Number(answer);
       }
-
-      console.log(answer, index);
 
       return {
         ...state,
@@ -151,7 +159,6 @@ export default function medicalCaseReducer(
 
     case actions.MEDICAL_CASE_SET: {
       const { medicalCase } = action.payload;
-      console.log(medicalCase);
       if (state !== {} && medicalCase.id !== state.id) {
         setMedicaleCase(state);
       }

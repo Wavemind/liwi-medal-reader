@@ -37,7 +37,6 @@ export const GetGeo = async (cb) => {
             ],
             { cancelable: false }
           );
-          console.log('active ');
           cb(false);
         } else {
           cb(secondCallback);
