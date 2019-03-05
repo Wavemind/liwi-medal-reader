@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Text } from 'native-base';
 import { liwiColors } from '../../../utils/constants';
-import Modal from '../../LiwiModal';
+import Modal from '../../CustomModal';
 
 export default class ModalWrapper extends React.Component {
   state = { isModalVisible: false };

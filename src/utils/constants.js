@@ -31,3 +31,33 @@ export const nodesType = {
   d: 'diseases',
   m: 'Management',
 };
+
+export const displayFormats = {
+  radioButton: 'RadioButton',
+  checkBox: 'CheckBox',
+  input: 'Input',
+};
+
+export const displayValues = {
+  array: 'Array',
+  int: 'Integer',
+  float: 'Float',
+  bool: 'Boolean',
+};
+
+export const priorities = {
+  basic: 'Basic',
+  priority: 'Priority',
+  triage: 'Triage',
+};
+
+export const categories = {
+  assessment: 'Assessment/Test',
+  exposure: 'Exposure',
+  physicalExam: 'Physical exam',
+  symptom: 'Symptom',
+
+  predefinedCondition: 'Predefined condition',
+  commorbidity: 'Commorbidity',
+  predefinedSyndrome: 'Predefined syndrome',
+};

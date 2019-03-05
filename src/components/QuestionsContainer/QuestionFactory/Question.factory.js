@@ -1,15 +1,28 @@
 // @flow
 
 import * as React from 'react';
-import { Grid, Icon, Text } from 'native-base';
-import { styles } from './Question.style';
-import type { NavigationScreenProps } from 'react-navigation';
-import Boolean from '../Question/Boolean';
-import Numeric from '../Question/Numeric';
-import { ColCenter, QuestionView } from '../../../template/layout';
-import { liwiColors } from '../../../utils/constants';
+import type {NavigationScreenProps} from 'react-navigation';
+import {
+  categories,
+  displayFormats,
+  displayValues,
+  liwiColors,
+  priorities
+} from '../../../utils/constants';
+import {styles} from './Question.factory.style';
 import ModalWrapper from './ModalWrapper';
-import Radio from '../Question/Radio';
+import Radio from '../DisplaysContainer/Radio';
+import Boolean from '../DisplaysContainer/Boolean';
+import Numeric from '../DisplaysContainer/Numeric';
+import {
+  Grid,
+  Icon,
+  Text,
+} from 'native-base';
+import {
+  ColCenter,
+  QuestionView,
+} from '../../../template/layout';
 
 type Props = NavigationScreenProps & {};
 
@@ -17,7 +30,7 @@ type State = {};
 
 export default class Question extends React.PureComponent<Props, State> {
   render() {
-    const { question } = this.props;
+    const {question} = this.props;
 
     let specificStyle;
 
@@ -25,15 +38,15 @@ export default class Question extends React.PureComponent<Props, State> {
     let WrapperCategory = () => null;
     let WrapperRadiobutton = () => null;
 
-    // TODO Change it to int LOOL
+    // Set style of question according to the priority
     switch (question.priority) {
-      case 'triage':
+      case priorities.triage:
         specificStyle = styles.triage;
         break;
-      case 'priority':
+      case priorities.priority:
         specificStyle = styles.priority;
         break;
-      case 'normal':
+      case priorities.basic:
         specificStyle = styles.normal;
         break;
       default:
@@ -41,24 +54,21 @@ export default class Question extends React.PureComponent<Props, State> {
         break;
     }
 
+    // Define display format and value
+    // TODO : implement check boxes (and dropdown list)
     switch (question.display_format) {
-      case 'RadioButton':
-        // TODO improve value_format
-        if (question.value_format === 'Boolean') {
+      case displayFormats.radioButton:
+        if (question.value_format === displayValues.bool) {
           WrapperAnswer = () => (
-            <Boolean question={question} styles={specificStyle} />
+            <Boolean question={question} styles={specificStyle}/>
           );
-          // WrapperRadiobutton = () => <Radio question={question} />;
+        } else if (question.value_format === displayValues.array) {
+          WrapperRadiobutton = () => <Radio question={question}/>;
         }
-
-        if (question.value_format === 'Radio') {
-          WrapperRadiobutton = () => <Radio question={question} />;
-        }
-
         break;
-      case 'Input':
+      case displayFormats.input:
         WrapperAnswer = () => (
-          <Numeric question={question} styles={specificStyle} />
+          <Numeric question={question} styles={specificStyle}/>
         );
         break;
       default:
@@ -66,16 +76,7 @@ export default class Question extends React.PureComponent<Props, State> {
     }
 
     switch (question.category) {
-      case 'Comorbidity':
-        WrapperCategory = () => (
-          <Icon
-            style={styles.icon}
-            name={'layer-group'}
-            type={'FontAwesome5'}
-          />
-        );
-        break;
-      case 'Exposure':
+      case categories.exposure:
         WrapperCategory = () => (
           <Icon
             style={styles.icon}
@@ -84,7 +85,7 @@ export default class Question extends React.PureComponent<Props, State> {
           />
         );
         break;
-      case 'Physical exam':
+      case categories.physicalExam:
         WrapperCategory = () => (
           <Icon
             style={styles.icon}
@@ -93,7 +94,7 @@ export default class Question extends React.PureComponent<Props, State> {
           />
         );
         break;
-      case 'Assessment/Test':
+      case categories.assessment:
         WrapperCategory = () => (
           <Icon
             style={styles.icon}
@@ -102,9 +103,9 @@ export default class Question extends React.PureComponent<Props, State> {
           />
         );
         break;
-      case 'Symptom':
+      case categories.symptom:
         WrapperCategory = () => (
-          <Icon style={styles.icon} name={'infocirlceo'} type={'AntDesign'} />
+          <Icon style={styles.icon} name={'infocirlceo'} type={'AntDesign'}/>
         );
         break;
       default:
@@ -117,20 +118,16 @@ export default class Question extends React.PureComponent<Props, State> {
           <ColCenter
             key={question.id + '_cat'}
             size={1}
-            style={{
-              ...styles.borderRight,
-              flex: 1,
-              flexDirection: 'row',
-            }}
+            style={styles.category}
           >
-            <WrapperCategory />
+            <WrapperCategory/>
           </ColCenter>
           <ColCenter
             size={4}
             style={styles.borderRight}
             key={question.id + '_label'}
           >
-            <Text style={{ color: liwiColors.blackColor }}>
+            <Text style={{color: liwiColors.blackColor}}>
               {question.label}
             </Text>
           </ColCenter>
@@ -139,13 +136,13 @@ export default class Question extends React.PureComponent<Props, State> {
             style={styles.borderRight}
             key={question.id + '_answer'}
           >
-            <WrapperAnswer />
+            <WrapperAnswer/>
           </ColCenter>
           <ColCenter size={1} key={question.id + '_modal'}>
-            <ModalWrapper content={question.label} />
+            <ModalWrapper content={question.label}/>
           </ColCenter>
         </Grid>
-        <WrapperRadiobutton />
+        <WrapperRadiobutton/>
       </QuestionView>
     );
   }

@@ -4,8 +4,8 @@ import * as React from 'react';
 import { Col, Grid } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
-import LwInput from '../../../components/formContainer/lwInput/LwInput';
-import LwDatePicker from '../../../components/formContainer/lwDatePicker/LwDatePicker';
+import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
+import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
 import { LiwiTitle2, LiwiTitle3 } from '../../../template/layout';
 import moment from 'moment';
 
@@ -44,7 +44,7 @@ export default class MedicalCase extends React.Component<Props, State> {
         <LiwiTitle3>Personnel</LiwiTitle3>
         <Grid>
           <Col>
-            <LwInput
+            <CustomInput
               init={firstname}
               label={'Prénom'}
               change={updatePatient}
@@ -55,7 +55,7 @@ export default class MedicalCase extends React.Component<Props, State> {
             />
           </Col>
           <Col>
-            <LwInput
+            <CustomInput
               init={lastname}
               label={'Nom'}
               change={updatePatient}
@@ -68,7 +68,7 @@ export default class MedicalCase extends React.Component<Props, State> {
         </Grid>
         <Grid>
           <Col>
-            <LwInput
+            <CustomInput
               init={lastname}
               label={'Nom'}
               change={updatePatient}
@@ -79,7 +79,7 @@ export default class MedicalCase extends React.Component<Props, State> {
             />
           </Col>
           <Col>
-            <LwDatePicker
+            <CustomDatePicker
               init={birthdate}
               label={'Date de naissance'}
               change={updatePatient}
@@ -92,7 +92,7 @@ export default class MedicalCase extends React.Component<Props, State> {
         <LiwiTitle3>Santé</LiwiTitle3>
         <Grid>
           <Col>
-            <LwInput
+            <CustomInput
               init={breathingRhythm}
               label={'Rythme cardiaque'}
               change={updatePatient}
@@ -104,7 +104,7 @@ export default class MedicalCase extends React.Component<Props, State> {
             />
           </Col>
           <Col>
-            <LwInput
+            <CustomInput
               init={heartbeat}
               label={'Battements de cœur'}
               change={updatePatient}
@@ -118,7 +118,7 @@ export default class MedicalCase extends React.Component<Props, State> {
         </Grid>
         <Grid>
           <Col>
-            <LwInput
+            <CustomInput
               init={temperature}
               label={'Température'}
               change={updatePatient}
@@ -130,7 +130,7 @@ export default class MedicalCase extends React.Component<Props, State> {
             />
           </Col>
           <Col>
-            <LwInput
+            <CustomInput
               init={weight}
               label={'Poids'}
               change={updatePatient}

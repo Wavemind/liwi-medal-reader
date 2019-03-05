@@ -1,5 +1,12 @@
-import { Dimensions, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { screenHeight, screenWidth } from '../../utils/constants';
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  StyleSheet,
+} from 'react-native';
+import {
+  screenHeight,
+  screenWidth
+} from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {

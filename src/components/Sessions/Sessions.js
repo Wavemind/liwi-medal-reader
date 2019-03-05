@@ -1,7 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Icon, Text } from 'native-base';
+import {
+  Button,
+  Icon,
+  Text,
+} from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
 import { getSession } from 'engine/api/LocalStorage';
@@ -19,6 +23,8 @@ export default class Sessions extends React.Component<Props, State> {
   onClickSession = async (session: Object) => {
     const { navigation } = this.props;
     const sessionLocalStorage = await getSession(session.data.id);
+
+    // Redirect the user to make him define his local password if he had not done it yet.
     if (sessionLocalStorage.local_code === undefined) {
       navigation.navigate('SetCodeSession', {
         user_id: session.data.id,
