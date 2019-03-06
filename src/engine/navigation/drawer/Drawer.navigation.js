@@ -15,7 +15,7 @@ export default class Drawer extends Component {
     const {
       app: { user },
     } = this.props;
-    await this.props.sessions.deconnexion(user.id);
+    await this.props.sessions.logout(user.id);
     await this.props.app.lockSession();
   };
 

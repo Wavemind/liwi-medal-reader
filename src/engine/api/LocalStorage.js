@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import {AsyncStorage} from 'react-native';
 import moment from 'moment';
 import remove from 'lodash/remove';
 import filter from 'lodash/filter';
@@ -6,16 +6,22 @@ import findIndex from 'lodash/findIndex';
 import maxBy from 'lodash/maxBy';
 
 // TODO init localstorage, set initial value if undefined
-export const setCredentials = async (newState) =>
-  await AsyncStorage.setItem('credentials', JSON.stringify(newState));
+export const setCredentials = async (newState) => await AsyncStorage.setItem('credentials', JSON.stringify(newState));
 
+
+// @params [String] key, [Object] item
+// @return [Object] saved object
+// Save value in local storage
 export const setItem = async (key, item) => {
   return await AsyncStorage.setItem(key, JSON.stringify(item));
 };
 
+
+// @params [String] key
+// @return [Object]
+// Get value from local storage
 export const getItems = async (key) => {
   const items = await AsyncStorage.getItem(key);
-
   const itemsArray = JSON.parse(items);
 
   if (itemsArray === null) {
@@ -24,6 +30,10 @@ export const getItems = async (key) => {
   return itemsArray;
 };
 
+
+// @params [String] key [Integer] index, [Integer] id
+// @return [Object]
+// Get value from an array in local storage
 export const getItemFromArray = async (key, index, id) => {
   const items = await getItems(key);
 
@@ -35,12 +45,14 @@ export const getItemFromArray = async (key, index, id) => {
   return {};
 };
 
-export const destroyCredentials = async () =>
-  await AsyncStorage.removeItem('credentials', (err) => {
-    // key 'key' will be removed, if they existed
-    // callback to do some action after removal of item
-  });
 
+// Destroy user's credentials
+export const destroyCredentials = async () => await AsyncStorage.removeItem('credentials', (err) => {
+});
+
+
+// @return [Boolean]
+// Is user logged
 export const isLogged = async () => {
   let credentials = await getCredentials();
 
@@ -57,11 +69,17 @@ export const isLogged = async () => {
   return moment(date_expiry).isAfter(moment());
 };
 
-export const getCredentials = async (user_id) => {
+
+// @return [Array]
+// Get credentials from local storage
+export const getCredentials = async () => {
   const credentials = await AsyncStorage.getItem('credentials');
   return JSON.parse(credentials);
 };
 
+
+// @return [Array]
+// Get session from local storage
 export const getSessions = async () => {
   const sessions = await AsyncStorage.getItem('sessions');
   const sessionsArray = JSON.parse(sessions);
@@ -71,7 +89,10 @@ export const getSessions = async () => {
   return sessionsArray;
 };
 
-export const setMedicaleCase = async (medicalCase) => {
+
+// @params [Object] medicalCase
+// Set medical case in local storage
+export const setMedicalCase = async (medicalCase) => {
   let medicalCases = await getItems('medicalCases');
 
   if (Array.isArray(medicalCases)) {
@@ -83,19 +104,27 @@ export const setMedicaleCase = async (medicalCase) => {
   }
 };
 
-export const getUserMedicaleCases = async (userId) => {
+
+// @params [Integer] userId
+// @return [Object] medicalCase
+// Get medical case from local storage
+export const getUserMedicalCases = async (userId) => {
   const medicalCases = await getItems('medicalCases');
   return filter(medicalCases, (medicalCase) => {
     return medicalCase.userId === userId;
   });
 };
 
+
+// @params [Integer] newMedicalCase
+// @return [Object] medicalCase
+// Generate a new medical case
 export const createMedicalCase = async (newMedicalCase) => {
   let medicalCases = await getItems('medicalCases');
   let maxId = maxBy(medicalCases, 'id');
 
   if (medicalCases.length === 0) {
-    maxId = { id: 0 };
+    maxId = {id: 0};
   }
 
   newMedicalCase.id = maxId.id + 1;
@@ -104,44 +133,35 @@ export const createMedicalCase = async (newMedicalCase) => {
 
   return await setItem('medicalCases', medicalCases);
 };
-export const getMedicalCase = async (id) => {
-  const medicalCases = await getItems('medicalCases');
 
-  if (Array.isArray(medicalCases)) {
-    return medicalCases.find((medicalCase) => {
-      return medicalCase.id === id;
-    });
-  }
-  return {};
-};
 
-export const updateSession = async (id, newState) => {
+// @params [Integer] id, [Object] newSession
+// @return [Object] medicalCase
+// Generate a new medical case
+export const updateSession = async (id, newSession) => {
   let sessions = await AsyncStorage.getItem('sessions');
   sessions = JSON.parse(sessions);
 
   if (Array.isArray(sessions)) {
-    var index = findIndex(sessions, (session) => {
+    let index = findIndex(sessions, (session) => {
       return session.data.id === id;
     });
 
-    sessions.splice(index, 1, newState);
+    sessions.splice(index, 1, newSession);
   }
   await setSessions(sessions);
 };
 
-export const clearSessions = async () => {
-  await AsyncStorage.removeItem('sessions');
+
+// @params [Object] session
+// Set session credentials in local storage
+export const setSessions = async (session) => {
+  await AsyncStorage.setItem('sessions', JSON.stringify(session));
 };
 
-export const clearMedicalCases = async () => {
-  await AsyncStorage.removeItem('medicalCases');
-  await AsyncStorage.removeItem('algorithmes');
-};
 
-export const setSessions = async (newState) => {
-  await AsyncStorage.setItem('sessions', JSON.stringify(newState));
-};
-
+// @params [Integer] id
+// Set current session
 export const SetActiveSession = async (id = null) => {
   const sessions = await getItems('sessions');
   await sessions.map((session) => {
@@ -159,6 +179,10 @@ export const SetActiveSession = async (id = null) => {
   await setSessions(sessions);
 };
 
+
+// @params [Integer] id
+// @return [Object] session
+// Get session from local storage
 export const getSession = async (id) => {
   let sessions = await AsyncStorage.getItem('sessions');
   sessions = JSON.parse(sessions);
@@ -169,7 +193,7 @@ export const getSession = async (id) => {
     });
 
     if (findSession === undefined) {
-      return { access_token: 'unsecure' };
+      return {access_token: 'unsecure'};
     }
 
     return findSession;
@@ -177,12 +201,15 @@ export const getSession = async (id) => {
   return {};
 };
 
-export const destroySession = async (session_id) => {
+
+// @params [Integer] id
+// Destroy session in local storage
+export const destroySession = async (id) => {
   let sessions = await AsyncStorage.getItem('sessions');
   sessions = JSON.parse(sessions);
 
   if (Array.isArray(sessions)) {
-    remove(sessions, (session) => session.data.id === session_id);
+    remove(sessions, (session) => session.data.id === id);
   }
   await setSessions(sessions);
   return true;

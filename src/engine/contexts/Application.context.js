@@ -8,19 +8,17 @@ import {
   getSession,
   getSessions,
   SetActiveSession,
-  setItem,
 } from '../api/LocalStorage';
 import find from 'lodash/find';
 
-import { get, post, fetchAlgorithmes } from '../api/Http';
-import { sha256 } from 'js-sha256';
-import { saltHash } from 'utils/constants';
-import { ToastFactory } from 'utils/ToastFactory';
-import { NavigationScreenProps } from 'react-navigation';
-import { AppState, NetInfo } from 'react-native';
-import { GetDeviceInformations } from '../api/Device';
+import {fetchAlgorithms} from '../api/Http';
+import {sha256} from 'js-sha256';
+import {saltHash} from 'utils/constants';
+import {ToastFactory} from 'utils/ToastFactory';
+import {NavigationScreenProps} from 'react-navigation';
+import {AppState, NetInfo} from 'react-native';
 import moment from 'moment';
-import { sessionsDuration } from '../../utils/constants';
+import {sessionsDuration} from '../../utils/constants';
 import isEmpty from 'lodash/isEmpty';
 
 const defaultValue = {};
@@ -37,7 +35,7 @@ type State = {
   initContext: () => Promise<any>,
   logged: boolean,
   user: Object,
-  deconnexion: () => Promise<any>,
+  logout: () => Promise<any>,
   unlockSession: (id: number, code: string) => Promise<any>,
   lockSession: () => Promise<any>,
   isConnected: string,
@@ -47,21 +45,14 @@ type State = {
 export class ApplicationProvider extends React.Component<Props, State> {
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-    // NetInfo.isConnected.addEventListener(
-    //   'change',
-    //   this._handleConnectivityChange
-    // );
-
     NetInfo.addEventListener(
       'connectionChange',
       this._handleConnectivityChange
     );
-    // NetInfo.isConnected.fetch().done((isConnected) => {
-    //   this.setState({ isConnected });
-    // });
   }
+
   setValState = async (prop: any, value: any) => {
-    await this.setState({ [prop]: value });
+    await this.setState({[prop]: value});
   };
 
   constructor(props: Props) {
@@ -74,12 +65,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
       'connectionChange',
       this._handleConnectivityChange
     );
-
-    // TODO twice call ?
-    // NetInfo.isConnected.removeEventListener(
-    //   'change',
-    //   this._handleConnectivityChange
-    // );
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
@@ -91,7 +76,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     ) {
       console.log('---> Liwi is come back from background', nextAppState);
       this._fetchDataWhenChange();
-      this.setState({ appState: nextAppState });
+      this.setState({appState: nextAppState});
     }
 
     if (
@@ -99,14 +84,14 @@ export class ApplicationProvider extends React.Component<Props, State> {
       nextAppState.match(/inactive|background/)
     ) {
       console.log('---> Liwi is hidding');
-      this.setState({ appState: nextAppState });
+      this.setState({appState: nextAppState});
     }
   };
 
   _fetchDataWhenChange = async () => {
-    const { user } = this.state;
+    const {user} = this.state;
     if (!isEmpty(user)) {
-      await fetchAlgorithmes(user.data.id);
+      await fetchAlgorithms(user.data.id);
     }
   };
 
@@ -141,7 +126,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     });
   };
 
-  deconnexion = async () => {
+  logout = async () => {
     await destroySession(this.state.user.data.id);
     this.setState({
       user: {},
@@ -171,7 +156,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
   };
 
   setMedicalCase = (medicalCase) => {
-    this.setState({ medicalCase });
+    this.setState({medicalCase});
   };
 
   unlockSession = async (id: number, code: string) => {
@@ -183,7 +168,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
       session = await getSession(id);
       this.setUserContext(session);
     } else {
-      ToastFactory('Pas le bon code', { type: 'danger' });
+      ToastFactory('Pas le bon code', {type: 'danger'});
     }
   };
 
@@ -203,7 +188,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     initContext: this.initContext,
     createMedicalCase: this.createMedicalCase,
     user: {},
-    deconnexion: this.deconnexion,
+    logout: this.logout,
     unlockSession: this.unlockSession,
     lockSession: this.lockSession,
     isConnected: true,
@@ -213,7 +198,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
   };
 
   render() {
-    const { children } = this.props;
+    const {children} = this.props;
 
     return (
       <ApplicationContext.Provider value={this.state}>

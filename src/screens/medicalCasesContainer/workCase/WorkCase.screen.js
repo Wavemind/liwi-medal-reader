@@ -6,47 +6,47 @@ import {
   Tabs,
   Text,
   View,
-  H2,
-  H3,
-  TabHeading,
   Icon,
-  Left,
   Button,
 } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { ScrollView } from 'react-native';
-import { getItemFromArray } from '../../../engine/api/LocalStorage';
+import {NavigationScreenProps} from 'react-navigation';
+import {ScrollView} from 'react-native';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { liwiColors, screenHeight } from '../../../utils/constants';
-import { LiwiTitle2, LiwiTitle3, QuestionView } from '../../../template/layout';
-import find from 'lodash/find';
+import {liwiColors, screenHeight} from '../../../utils/constants';
+import {LiwiTitle2} from '../../../template/layout';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
 export default class WorkCase extends React.Component<Props, State> {
-  state = { ready: true };
+  state = {ready: true};
 
   render() {
     const {
-      nextbatch,
-      medicalCase: { nodes, diseases, version, description, author, batchs },
-      medicalCase,
+      nextBatch,
+      medicalCase: {
+        nodes,
+        diseases,
+        version,
+        description,
+        author,
+        batches,
+      },
     } = this.props;
 
     let ready = true;
 
     let questionsBatched = [
-      { name: 'Questions de triage', current: false, nodes: {} },
-      { name: '2', current: false, nodes: {} },
-      { name: '3', current: false, nodes: {} },
-      { name: '4', current: false, nodes: {} },
-      { name: '5', current: false, nodes: {} },
-      { name: '6', current: false, nodes: {} },
+      {name: 'Questions de triage', current: false, nodes: {}},
+      {name: '2', current: false, nodes: {}},
+      {name: '3', current: false, nodes: {}},
+      {name: '4', current: false, nodes: {}},
+      {name: '5', current: false, nodes: {}},
+      {name: '6', current: false, nodes: {}},
     ];
 
-    batchs.map((batch, id) => {
+    batches.map((batch, id) => {
       batch.nodes.map((nodeId) => {
         if (nodes[nodeId].answer === null) {
           ready = false;
@@ -56,14 +56,16 @@ export default class WorkCase extends React.Component<Props, State> {
     });
 
     return (
-      <View style={{ height: screenHeight, paddingBottom: 80 }}>
+      <View style={{height: screenHeight, paddingBottom: 80}}>
         <LiwiTitle2>Version : {version}</LiwiTitle2>
-        <View style={{ padding: 20 }}>
+        <View style={{padding: 20}}>
           <Text>description : {description}</Text>
           <Text>Par : {author}</Text>
         </View>
-        <Button onPress={() => nextbatch()} disabled={!ready}>
-          <Icon name="forward" type={'AntDesign'} />
+        <Button onPress={() => nextBatch()}
+          // disabled={!ready}
+        >
+          <Icon name="forward" type={'AntDesign'}/>
           <Text>Créer le batch suivant</Text>
         </Button>
         <Tabs>
@@ -78,7 +80,7 @@ export default class WorkCase extends React.Component<Props, State> {
                   backgroundColor: liwiColors.redColor,
                 }}
               >
-                <Questions questions={questionsBatched[batchId].nodes} />
+                <Questions questions={questionsBatched[batchId].nodes}/>
               </Tab>
             ) : null
           )}
@@ -91,7 +93,7 @@ export default class WorkCase extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               {Object.keys(diseases).map((id) => (
                 <View
                   style={{

@@ -10,7 +10,7 @@ import Sessions from '../../../components/Sessions';
 import type { I18nTypes } from '../../../utils/i18n';
 import { NavigationScreenProps } from 'react-navigation';
 import { clearMedicalCases, clearSessions } from 'engine/api/LocalStorage';
-import { GetDeviceInformations } from '../../../engine/api/Device';
+import { getDeviceInformation } from '../../../engine/api/Device';
 
 type Props = NavigationScreenProps & {
   logged: boolean,
@@ -73,7 +73,7 @@ export default class RootSessions extends React.Component<Props, State> {
               iconLeft
               blue
               onPress={async () => {
-                await GetDeviceInformations((deviceInfo) => {
+                await getDeviceInformation((deviceInfo) => {
                   post('activities', deviceInfo);
                 });
               }}

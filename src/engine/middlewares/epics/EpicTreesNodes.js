@@ -1,8 +1,12 @@
-import { ofType } from 'redux-observable';
-import { concatMap, filter } from 'rxjs/operators';
-import { actions } from '../../actions/types.actions';
-
-import { of } from 'rxjs';
+import {ofType} from 'redux-observable';
+import findIndex from 'lodash/findIndex';
+import {nodesType} from '../../../utils/constants';
+import {of} from 'rxjs';
+import {actions} from '../../actions/types.actions';
+import {
+  concatMap,
+  filter
+} from 'rxjs/operators';
 import {
   conditionValueChange,
   diagnosisChildren,
@@ -14,10 +18,8 @@ import {
 import {
   getStateToThisPs,
   nodeConditionChecker,
-} from '../../algorithme/algoTreeDiagnosis';
-import findIndex from 'lodash/findIndex';
-import { nodesType } from '../../../utils/constants';
-import find from 'lodash/find';
+} from '../../algorithm/algoTreeDiagnosis';
+
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state updated.*/
 
 // First call
@@ -27,14 +29,14 @@ export const epicCatchAnswer = (action$, state$) =>
     ofType(actions.MC_QUESTION_SET),
     concatMap((action) => {
       // Index = id of the node that has just changed
-      const { index, value } = action.payload;
+      const {index, value} = action.payload;
 
       console.log(
         '%c ########################  epicCatchAnswer ########################   ',
         'background: #F6F3EE; ' + 'color: #b84c4c; padding: 5px'
       );
 
-      console.log({ state: state$.value });
+      console.log({state: state$.value});
 
       const childrensDD = state$.value.nodes[index].dd;
       const childrensPS = state$.value.nodes[index].ps;
@@ -59,7 +61,8 @@ export const actionFactoryTypeNode = (
   indexNode,
   indexChild,
   type
-) => {};
+) => {
+};
 // Loop on children's node
 export const epicCatchNodeOfThisChildren = (action$, state$) =>
   action$.pipe(
@@ -68,7 +71,7 @@ export const epicCatchNodeOfThisChildren = (action$, state$) =>
       // indexNode = node that has just been answered
       // indexChild = this indexNode has an impact on indexChild
       // What do we do with this indexChild -> switch according to type
-      let { indexNode, indexChild, type } = action.payload;
+      let {indexNode, indexChild, type} = action.payload;
 
       console.log(
         '--- NODES ---',
@@ -128,7 +131,7 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
     concatMap((action) => {
       // For one node, what i do ?
       // Check the condition for the node, according type
-      const { indexPS, indexChild } = action.payload;
+      const {indexPS, indexChild} = action.payload;
 
       // Here get the state if this PS
       const ps = state$.value.nodes[indexPS];
@@ -148,7 +151,7 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
     filter((action) => {
       // For one node, what i do ?
       // Check the condition for the node, according type
-      const { indexDD, indexDiagnosis } = action.payload;
+      const {indexDD, indexDiagnosis} = action.payload;
 
       const child = state$.value.nodes[indexDiagnosis];
 
@@ -172,7 +175,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
     concatMap((action) => {
       // For one node, what i do ?
       // Check the condition for the node, by type
-      const { indexDD, indexChild } = action.payload;
+      const {indexDD, indexChild} = action.payload;
 
       const child = state$.value.diseases[indexDD].nodes[indexChild];
 

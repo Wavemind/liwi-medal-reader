@@ -16,6 +16,10 @@ Array.prototype.first = function() {
   return this[0];
 };
 
+Array.prototype.isEmpty = function() {
+  return this === undefined || this.length === 0
+};
+
 import i18n from 'utils/i18n';
 
 const ReloadAppOnLanguageChange = withNamespaces('common', {

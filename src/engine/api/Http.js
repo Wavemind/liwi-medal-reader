@@ -1,11 +1,21 @@
-import { Alert } from 'react-native';
-import { devHost } from 'utils/constants';
-import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
-import { getItems, getSession, setItem } from './LocalStorage';
-import { GetDeviceInformations } from './Device';
+import {Alert} from 'react-native';
+import {devHost} from 'utils/constants';
+import {getDeviceInformation} from './Device';
 import find from 'lodash/find';
 import isArray from 'lodash/isArray';
+import {
+  ErrorHttpFactory,
+  ToastFactory,
+} from 'utils/ToastFactory';
+import {
+  getItems,
+  getSession,
+  setItem,
+} from './LocalStorage';
 
+// @params [String] method, [Object] body, [Integer] userId
+// @return [Object] header
+// Set header credentials to communicate with server
 const getHeaders = async (method = 'GET', body = false, userId = null) => {
   const credentials = async () => await getSession(userId);
   return credentials().then((data) => {
@@ -27,35 +37,42 @@ const getHeaders = async (method = 'GET', body = false, userId = null) => {
   });
 };
 
+// @params [String] params, [Integer] userId
+// @return [Json] response from server
+// Https GET request
 export const get = async (params, userId) => {
   const response = await fetch(
     devHost + '/api/v1/' + params,
     await getHeaders('GET', false, userId)
-  ).catch(function(error) {
-    // Find how display error
-    Alert.alert('Une erreur est survenue. Veuillez réessayer ultérieurement');
-    throw error;
+  ).catch(function (error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+    console.log(error);
   });
 
-  const data = await response;
-  let json = await data.json();
+  const httpResponse = await response;
+  let jsonResponse = await httpResponse.json();
 
-  if (data.status === 200) {
-    return json;
-  }
-
-  if (data.status === 422 || data.status === 401) {
-    if (isArray(json.errors)) {
-      ToastFactory(json.errors[0], { type: 'danger' });
+  if (httpResponse.status === 200) {
+    return jsonResponse;
+  } else if (httpResponse.status === 422 || httpResponse.status === 401) {
+    // Throw error and display it
+    if (isArray(jsonResponse.errors)) {
+      ToastFactory(jsonResponse.errors[0], {type: 'danger'});
     } else {
-      ToastFactory(json.errors, { type: 'danger' });
+      ToastFactory(jsonResponse.errors, {type: 'danger'});
     }
-    return json;
+    return jsonResponse;
+  } else {
+    // Unhandled https status return empty json and throw a basic message
+    ToastFactory('Unhandled error', {type: 'danger'});
+    return {};
   }
-
-  return data;
 };
 
+
+// @params [String] params, [Object] body, [Integer] userId, [String] method
+// @return [Object] response from server
+// Https POST request
 export const post = async (
   params,
   body = {},
@@ -65,37 +82,38 @@ export const post = async (
   const response = await fetch(
     devHost + '/api/v1/' + params,
     await getHeaders(method, body, user_id)
-  ).catch(function(error) {
-    // Find how display error
-    Alert.alert('Une erreur est survenue. Veuillez réessayer ultérieurement');
-    throw error;
+  ).catch(function (error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+    console.log(error);
   });
 
-  let r = await response;
-  return r;
+  return await response;
 };
 
+// @return [Object] response from server
+// Send device activity to server
 export const postDeviceInfo = async () => {
   const device = {};
-  const response = await fetch(`${devHost}/api/v1/activities`, {
+  const request = await fetch(`${devHost}/api/v1/activities`, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(device),
-  }).catch(function(error) {
-    // Find how display error
-    Alert.alert('Une erreur est survenue. Veuillez réessayer ultérieurement');
-    throw error;
+  }).catch(function (error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+    console.log(error);
   });
 
-  let r = await response;
-  return r;
+  return await request;
 };
 
+// @params [String] email, [String] password
+// @return [Object] response from server
+// Https request for authentication
 export const auth = async (email, password) => {
-  const response = await fetch(`${devHost}/api/v1/auth/sign_in`, {
+  const request = await fetch(`${devHost}/api/v1/auth/sign_in`, {
     method: 'post',
     headers: {
       Accept: 'application/json, text/plain',
@@ -105,77 +123,74 @@ export const auth = async (email, password) => {
       email: email,
       password: password,
     }),
-  }).catch(function(error) {
-    // Find how display error
-    Alert.alert('Une erreur est survenue. Veuillez réessayer ultérieurement');
-    throw error;
+  }).catch(function (error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+    console.log(error);
   });
 
-  let request = await response;
-  let body = await request.json();
+  let response = await request;
+  let body = await response.json();
 
-  ErrorHttpFactory(request, body);
+  // Display toast if server return an error
+  if (response.status !== 200) {
+    ErrorHttpFactory(response, body);
+  }
 
   return await {
     ...body,
-    access_token: await response.headers.get('access-token'),
-    client: await response.headers.get('client'),
-    expiry: await response.headers.get('expiry'),
-    uid: await response.headers.get('uid'),
+    access_token: await request.headers.get('access-token'),
+    client: await request.headers.get('client'),
+    expiry: await request.headers.get('expiry'),
+    uid: await request.headers.get('uid'),
   };
 };
 
-export const fetchAlgorithmes = async (userId) => {
+// @params [Integer] userId
+// Promise fetch algorithm from server
+export const fetchAlgorithms = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    await GetDeviceInformations(async (deviceInfo) => {
+    await getDeviceInformation(async (deviceInfo) => {
       if (deviceInfo === false) {
         reject('Autorisations nécessaire');
       }
-      console.log('---- fetchAlgorithmes -----');
+      console.log('---- fetchAlgorithms -----');
 
       deviceInfo.activity.user_id = userId;
+
+      // Send activity from device
       post('activities', deviceInfo, userId);
 
-      let algorithme = await get(
-        `versions?mac_address=${
-          deviceInfo.activity.device_attributes.mac_address
-        }`,
-        userId
-      );
+      let serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
+      let localAlgorithms = await getItems('algorithmes');
+      let algorithm = find(localAlgorithms, (a) => a.id === serverAlgorithm.id);
+      let version;
 
-      let localAlgorithmes = await getItems('algorithmes');
-
-      let findAlgo = find(localAlgorithmes, (a) => a.id === algorithme.id);
-      let findVersion;
-
-      if (algorithme.errors) {
-        resolve(algorithme.errors);
+      if (serverAlgorithm.errors) {
+        resolve(serverAlgorithm.errors);
         return null;
       } else {
-        if (findAlgo !== undefined) {
-          // Cet algo est déja en local, on cherche la version
-          findVersion = find(
-            findAlgo.versions,
-            (a) => a.version === algorithme.version
+        if (algorithm !== undefined) {
+          // Algorithm container already in local, checking if the version is new
+          version = find(
+            algorithm.versions,
+            (a) => a.version === serverAlgorithm.version
           );
 
-          if (findVersion === undefined) {
-            // cette version existe pas encore !!!
-            findAlgo.versions.push(algorithme);
-          } else {
-            findVersion = algorithme;
+          // New version available, push it in local
+          if (version === undefined) {
+            algorithm.versions.push(serverAlgorithm);
           }
-        } else if (algorithme.id !== undefined) {
-          // Cet algo n'existe pas
-          localAlgorithmes.push({
-            id: algorithme.id,
-            name: algorithme.name,
-            versions: [algorithme],
+        } else if (serverAlgorithm.id !== undefined) {
+          // Algorithm container not existing in local, getting the container and the available version
+          localAlgorithms.push({
+            id: serverAlgorithm.id,
+            name: serverAlgorithm.name,
+            versions: [serverAlgorithm],
           });
         }
 
-        ToastFactory('Algo Updated', { type: 'success' });
-        await setItem('algorithmes', localAlgorithmes);
+        ToastFactory('Algo Updated', {type: 'success'});
+        await setItem('algorithmes', localAlgorithms);
         resolve();
       }
     });

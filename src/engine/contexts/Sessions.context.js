@@ -11,7 +11,7 @@ import {
   destroySession,
 } from '../api/LocalStorage';
 
-import { auth, fetchAlgorithmes } from '../api/Http';
+import { auth, fetchAlgorithms } from '../api/Http';
 import { ToastFactory } from 'utils/ToastFactory';
 import { get } from 'engine/api/Http';
 
@@ -28,7 +28,7 @@ export type SessionsProviderState = {
   initContext: () => Promise<any>,
   newSession: (email: string, password: string) => Promise<any>,
   setLocalCode: (encrypted: string, userId: number) => Promise<any>,
-  deconnexion: (userId: number) => Promise<any>,
+  logout: (userId: number) => Promise<any>,
 };
 
 export class SessionsProvider extends React.Component<
@@ -45,7 +45,7 @@ export class SessionsProvider extends React.Component<
     this.initContext();
   }
 
-  deconnexion = async (userId: number) => {
+  logout = async (userId: number) => {
     await destroySession(userId);
     await this.initContext();
   };
@@ -76,7 +76,7 @@ export class SessionsProvider extends React.Component<
           sessions.push(credentials);
           await setSessions(sessions);
           this.setState({ sessions });
-          return fetchAlgorithmes(credentials.data.id)
+          return fetchAlgorithms(credentials.data.id)
             .then(async (done) => {
               return credentials;
             })
@@ -96,7 +96,7 @@ export class SessionsProvider extends React.Component<
     newSession: this.newSession,
     sessions: [],
     setLocalCode: this.setLocalCode,
-    deconnexion: this.deconnexion,
+    logout: this.logout,
   };
 
   render() {

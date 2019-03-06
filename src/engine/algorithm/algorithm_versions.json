@@ -478,14 +478,14 @@
           "reference": "P_4_1",
           "label": "Less than 37.5� ",
           "value": "37.5",
-          "operator": "<"
+          "operator": ">="
         },
         "40": {
           "id": 40,
           "reference": "P_4_2",
           "label": "More or equal to 37.5",
           "value": "37.5",
-          "operator": ">="
+          "operator": "<"
         }
       }
     },

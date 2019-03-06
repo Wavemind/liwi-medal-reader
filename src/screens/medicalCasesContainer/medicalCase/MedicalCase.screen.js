@@ -17,6 +17,7 @@ export default class MedicalCase extends React.Component<Props, State> {
   state = { medicalCases: [] };
 
   render() {
+    console.log(this.props);
     const {
       medicalCase: {
         patient: {

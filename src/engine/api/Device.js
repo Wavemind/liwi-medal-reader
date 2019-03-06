@@ -1,54 +1,9 @@
-import { Alert } from 'react-native';
-
+import {Alert} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-const AskGeo = async (enableHighAccuracy, callback) => {
-  return navigator.geolocation.getCurrentPosition(
-    async (position) => callback(position),
-    async (error) => callback(error),
-    {
-      enableHighAccuracy: enableHighAccuracy,
-      timeout: 5000,
-    }
-  );
-};
 
-export const GetGeo = async (cb) => {
-  await AskGeo(true, async (firstCallback) => {
-    if (
-      firstCallback.PERMISSION_DENIED === 1 ||
-      firstCallback.POSITION_UNAVAILABLE === 2
-    ) {
-      await AskGeo(false, (secondCallback) => {
-        if (
-          secondCallback.PERMISSION_DENIED === 1 ||
-          secondCallback.POSITION_UNAVAILABLE === 2
-        ) {
-          Alert.alert(
-            'Vous devez activer votre service de localisation',
-            '',
-            [
-              {
-                text: 'Annuler',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              { text: 'OK', onPress: () => {} },
-            ],
-            { cancelable: false }
-          );
-          cb(false);
-        } else {
-          cb(secondCallback);
-        }
-      });
-    } else {
-      cb(firstCallback);
-    }
-  });
-};
-
-export const GetDeviceInformations = async (cb) => {
+// Return device information and his location
+export const getDeviceInformation = async (cb) => {
   const manufacturer = DeviceInfo.getManufacturer();
   const deviceName = DeviceInfo.getDeviceName();
   const model = DeviceInfo.getModel();
@@ -57,10 +12,8 @@ export const GetDeviceInformations = async (cb) => {
   const timezone = DeviceInfo.getTimezone();
   const version = DeviceInfo.getVersion();
 
-  //let reference_number = Platform.OS === 'ios' ? uniqueId : serialNumber;
-
   let mac = await DeviceInfo.getMACAddress();
-  return GetGeo((geo) => {
+  return getGeo((geo) => {
     if (geo === false) {
       cb(false);
     }
@@ -82,4 +35,51 @@ export const GetDeviceInformations = async (cb) => {
       },
     });
   });
+};
+
+// @return [Object] longitude and latitude
+// Return position of device if GPS is enabled or ask user to enable it.
+export const getGeo = async (cb) => {
+  await askGeo(true, async (firstCallBack) => {
+    if (firstCallBack.PERMISSION_DENIED === 1 || firstCallBack.POSITION_UNAVAILABLE === 2) {
+      await askGeo(false, (secondCallBack) => {
+        if (secondCallBack.PERMISSION_DENIED === 1 || secondCallBack.POSITION_UNAVAILABLE === 2) {
+          Alert.alert(
+            'Vous devez activer votre service de localisation',
+            '',
+            [
+              {
+                text: 'Annuler',
+                onPress: () => {},
+                style: 'cancel',
+              },
+              {
+                text: 'OK', onPress: () => {}
+              },
+            ],
+            {cancelable: false}
+          );
+          cb(false);
+        } else {
+          cb(secondCallBack);
+        }
+      });
+    } else {
+      cb(firstCallBack);
+    }
+  });
+};
+
+// @param [Boolean] enableHighAccuracy, [Object] callBack
+// @return [Object] longitude and latitude
+// Get current position of device
+const askGeo = async (enableHighAccuracy, callBack) => {
+  return navigator.geolocation.getCurrentPosition(
+    async (position) => callBack(position),
+    async (error) => callBack(error),
+    {
+      enableHighAccuracy: enableHighAccuracy,
+      timeout: 5000,
+    }
+  );
 };

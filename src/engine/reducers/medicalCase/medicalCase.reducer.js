@@ -2,10 +2,10 @@
 
 import { actions } from '../../actions/types.actions';
 import { REHYDRATE } from 'redux-persist';
-import { medicalCaseInitialState } from '../../algorithme/medicalCase';
-import { setMedicaleCase } from '../../api/LocalStorage';
+import { medicalCaseInitialState } from '../../algorithm/medicalCase';
+import { setMedicalCase } from '../../api/LocalStorage';
 import findKey from 'lodash/findKey';
-import { generateNextBatch } from '../../algorithme/algoTreeDiagnosis';
+import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 // export const initialState = medicalCaseInitialState;
 export const initialState = null;
 
@@ -27,7 +27,7 @@ export default function medicalCaseReducer(
 
       return {
         ...state,
-        batchs: [...newState.batchs],
+        batches: [...newState.batches],
       };
     }
 
@@ -153,10 +153,10 @@ export default function medicalCaseReducer(
       };
     }
 
-    case actions.MEDICAL_CASE_SET: {
+    case actions.MC_SET: {
       const { medicalCase } = action.payload;
       if (state !== {} && medicalCase.id !== state.id) {
-        setMedicaleCase(state);
+        setMedicalCase(state);
       }
 
       return {

@@ -5,23 +5,22 @@ import { Button, H3, Picker, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, View } from 'react-native';
 import LottieView from 'lottie-react-native';
-import algo from '../../../engine/algorithme/algorithm_versions.json';
+import algo from '../../../engine/algorithm/algorithm_versions.json';
 
 import {
   createMedicalCase,
   getItems,
-  getUserMedicaleCases,
+  getUserMedicalCases,
 } from '../../../engine/api/LocalStorage';
 import moment from 'moment';
-import { medicalCaseInitialState } from '../../../engine/algorithme/medicalCase';
-import { generateEmptyNodes } from '../../../engine/algorithme/initiateAlgo';
+import { medicalCaseInitialState } from '../../../engine/algorithm/medicalCase';
 import { liwiColors } from '../../../utils/constants';
 import { SeparatorLine } from '../../../template/layout';
 import find from 'lodash/find';
 import {
   setInitialCounter,
   generateInitialBatch,
-} from '../../../engine/algorithme/algoTreeDiagnosis';
+} from '../../../engine/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 
@@ -52,7 +51,7 @@ export default class MedicalCases extends React.Component<Props, State> {
 
   getMedicalCases = async () => {
     const { app } = this.props;
-    const medicalCases = await getUserMedicaleCases(app.user.data.id);
+    const medicalCases = await getUserMedicalCases(app.user.data.id);
     this.setState({ medicalCases });
   };
 
@@ -96,6 +95,8 @@ export default class MedicalCases extends React.Component<Props, State> {
   };
 
   render() {
+
+
     const { medicalCases, versions, selected } = this.state;
     const { setMedicalCase, navigation, medicalCase } = this.props;
 

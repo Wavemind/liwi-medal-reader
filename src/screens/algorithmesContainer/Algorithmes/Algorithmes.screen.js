@@ -8,7 +8,7 @@ import { get } from 'engine/api/Http';
 import { getItems } from '../../../engine/api/LocalStorage';
 import { CardView, RightView } from '../../../template/layout';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
-import { fetchAlgorithmes } from '../../../engine/api/Http';
+import { fetchAlgorithms } from '../../../engine/api/Http';
 import { styles } from './Algorithmes.style.js';
 
 type Props = NavigationScreenProps & {};
@@ -32,7 +32,7 @@ export default class Algorithmes extends React.Component<Props, State> {
     const {
       app: { user },
     } = this.props;
-    await fetchAlgorithmes(user.data.id);
+    await fetchAlgorithms(user.data.id);
     await this.updateAlgorithmes();
     this.setState({ isRefreshing: false });
   };

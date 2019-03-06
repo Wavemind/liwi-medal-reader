@@ -27,12 +27,8 @@ export const ToastFactory = (text: string = 'Default', params: ToastType) => {
   });
 };
 
-export const ErrorHttpFactory = async (request: Object, body: any) => {
-  if (request.status === 401) {
-    if (body.success === false) {
-      body.errors.map((error) => {
-        ToastFactory(error, { type: 'danger' });
-      });
-    }
-  }
+export const ErrorHttpFactory = async (response: Object, body: any) => {
+    body.errors.map((error) => {
+      ToastFactory(error, { type: 'danger' });
+    });
 };

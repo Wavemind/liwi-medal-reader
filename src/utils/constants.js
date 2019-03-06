@@ -13,7 +13,7 @@ export const sessionsDuration = 30; // in minutes
 
 export const devHost = 'https://liwi.wavelab.top';
 
-// export const devHost = 'http://192.168.1.7:3000'; // manu
+// export const devHost = 'http://192.168.31.214:3000'; // manu
 // export const devHost = 'http://192.168.1.4:3000'; // alain
 
 export const saltHash =
