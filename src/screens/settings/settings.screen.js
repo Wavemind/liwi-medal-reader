@@ -1,6 +1,9 @@
 // @flow
 
 import * as React from 'react';
+import {NavigationScreenProps} from 'react-navigation';
+import {ScrollView} from 'react-native';
+
 import {
   Text,
   View,
@@ -13,8 +16,6 @@ import {
   Right,
   Icon,
 } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { ScrollView } from 'react-native';
 
 type Props = NavigationScreenProps & {};
 
@@ -26,8 +27,6 @@ export default class Settings extends React.Component<Props, State> {
   componentWillMount() {}
 
   render() {
-    const {} = this.props;
-
     return (
       <View>
         <List>
@@ -37,14 +36,14 @@ export default class Settings extends React.Component<Props, State> {
           <ListItem>
             <Left>
               <Button iconLeft iconMenu>
-                <Icon grey type={'FontAwesome'} name="eye" />
+                <Icon grey type={'FontAwesome'} name="eye"/>
               </Button>
             </Left>
             <Body>
-              <Text>Empécher la mise en veille</Text>
+            <Text>Empécher la mise en veille</Text>
             </Body>
             <Right>
-              <Switch value={true} />
+              <Switch value={true}/>
             </Right>
           </ListItem>
           <ListItem>

@@ -111,24 +111,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
     await this.setState({[prop]: value});
   };
 
-  // Generate medical case with fake patient from uinames api
-  createMedicalCase = async () => {
-    const response = await fetch('https://uinames.com/api/?ext&region=france');
-
-    const json = await response.json();
-    createMedicalCase({
-      ...this.state.medicalCase,
-      userId: this.state.user.data.id,
-      patient: {
-        ...this.state.medicalCase.patient,
-        lastname: json.name,
-        firstname: json.surname,
-        birthdate: json.birthday.dmy,
-        email: json.email,
-        photo: json.photo,
-      },
-    });
-  };
 
   // Log out
   // TODO : check if duplicated from Session context is really necessary

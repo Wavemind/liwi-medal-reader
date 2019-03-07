@@ -1,20 +1,25 @@
 // @flow
 
 import * as React from 'react';
-import { Col, Grid } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { ScrollView } from 'react-native';
+import {NavigationScreenProps} from 'react-navigation';
+import {ScrollView} from 'react-native';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
-import { LiwiTitle2, LiwiTitle3 } from '../../../template/layout';
 import moment from 'moment';
+import {
+  Col,
+  Grid,
+} from 'native-base';
+import {
+  LiwiTitle2,
+  LiwiTitle3,
+} from '../../../template/layout';
 
 type Props = NavigationScreenProps & {};
-
 type State = {};
 
 export default class MedicalCase extends React.Component<Props, State> {
-  state = { medicalCases: [] };
+  state = {medicalCases: []};
 
   render() {
     console.log(this.props);

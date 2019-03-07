@@ -161,7 +161,7 @@ export const fetchAlgorithms = async (userId) => {
       post('activities', deviceInfo, userId);
 
       let serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
-      let localAlgorithms = await getItems('algorithmes');
+      let localAlgorithms = await getItems('algorithms');
       let algorithm = find(localAlgorithms, (a) => a.id === serverAlgorithm.id);
       let version;
 
@@ -190,7 +190,7 @@ export const fetchAlgorithms = async (userId) => {
         }
 
         ToastFactory('Algo Updated', {type: 'success'});
-        await setItem('algorithmes', localAlgorithms);
+        await setItem('algorithms', localAlgorithms);
         resolve();
       }
     });

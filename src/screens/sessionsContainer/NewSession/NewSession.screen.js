@@ -1,18 +1,22 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
+import {NavigationScreenProps} from 'react-navigation';
 import LottieView from 'lottie-react-native';
+import {ToastFactory} from '../../../utils/ToastFactory';
+import {styles} from './NewSession.style'
 import {
-  liwiColors,
-  screenHeight,
-  screenWidth,
-} from '../../../utils/constants';
-import { ToastFactory } from '../../../utils/ToastFactory';
+  Button,
+  Form,
+  Input,
+  Item,
+  Label,
+  Text,
+  View,
+} from 'native-base';
+
 
 type Props = NavigationScreenProps & {};
-
 type State = {
   email: string,
   loading: boolean,
@@ -32,58 +36,56 @@ export default class NewSession extends React.Component<Props, State> {
     // this.setState({ email: 'mickael.lacombe@wavemind.ch', password: '123456' });
   }
 
+  // Update value of email when user typing
   changeEmail = (val: string) => {
-    this.setState({ email: val });
+    this.setState({email: val});
   };
 
+  // Update value of password when user typing
   changePassword = (val: string) => {
-    this.setState({ password: val });
+    this.setState({password: val});
   };
 
-  authenticate = async () => {
-    this.setState({ loading: true });
-    const { email, password } = this.state;
-    const { sessions, navigation } = this.props;
+  // Authentication method
+  signIn = async () => {
+    this.setState({loading: true});
+    const {
+      email,
+      password,
+    } = this.state;
+    const {sessions} = this.props;
 
     await sessions
       .newSession(email, password)
       .then(async (data) => {
         if (typeof data.uid === 'string') {
-          this.setState({ success: true, loading: false, id: data.data.id });
+          this.setState({success: true, loading: false, id: data.data.id});
         }
 
         if (data === false) {
-          this.setState({ success: false, loading: false });
+          this.setState({success: false, loading: false});
         }
       })
       .catch((err) => {
-        ToastFactory(err, { type: 'danger' });
-        this.setState({ success: false, loading: false });
+        ToastFactory(err, {type: 'danger'});
+        this.setState({success: false, loading: false});
       });
   };
 
   render() {
-    const { email, password, loading, success, id } = this.state;
-    const { navigation } = this.props;
+    const {
+      email,
+      password,
+      loading,
+      success,
+      id,
+    } = this.state;
+
+    const {navigation} = this.props;
 
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
-        <View
-          style={{
-            width: screenWidth * 0.8,
-            borderColor: liwiColors.redColor,
-            borderWidth: 2,
-            borderRadius: 10,
-            padding: 30,
-            marginTop: screenHeight * 0.27,
-            marginBottom: 50,
-          }}
-        >
+      <View style={styles.container}>
+        <View style={styles.content}>
           <Form>
             <Item login-input floatingLabel>
               <Label>Email</Label>
@@ -104,8 +106,8 @@ export default class NewSession extends React.Component<Props, State> {
             </Item>
           </Form>
           <Button
-            style={{ marginTop: 20 }}
-            onPress={() => this.authenticate()}
+            style={styles.marginTop}
+            onPress={() => this.signIn()}
             disabled={loading || success}
           >
             <Text> Try to login </Text>
@@ -116,9 +118,7 @@ export default class NewSession extends React.Component<Props, State> {
             speed={3}
             source={require('../../../utils/animations/loading.json')}
             autoPlay
-            style={{
-              height: 200,
-            }}
+            style={styles.height}
             loop
           />
         ) : null}
@@ -128,9 +128,7 @@ export default class NewSession extends React.Component<Props, State> {
             source={require('../../../utils/animations/done.json')}
             autoPlay
             loop={false}
-            style={{
-              height: 200,
-            }}
+            style={styles.height}
             onAnimationFinish={() => {
               navigation.navigate('SetCodeSession', {
                 user_id: id,

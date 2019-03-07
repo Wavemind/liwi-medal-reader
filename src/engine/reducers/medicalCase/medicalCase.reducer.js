@@ -1,12 +1,10 @@
 // @flow
 
-import { actions } from '../../actions/types.actions';
-import { REHYDRATE } from 'redux-persist';
-import { medicalCaseInitialState } from '../../algorithm/medicalCase';
-import { setMedicalCase } from '../../api/LocalStorage';
+import {actions} from '../../actions/types.actions';
+import {REHYDRATE} from 'redux-persist';
+import {setMedicalCase} from '../../api/LocalStorage';
 import findKey from 'lodash/findKey';
-import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
-// export const initialState = medicalCaseInitialState;
+import {generateNextBatch} from '../../algorithm/algoTreeDiagnosis';
 export const initialState = null;
 
 export default function medicalCaseReducer(
@@ -14,14 +12,6 @@ export default function medicalCaseReducer(
   action: Object
 ) {
   switch (action.type) {
-    case actions.MEDICAL_CASE_NEW: {
-      const { id } = action.payload;
-      return {
-        ...state,
-        id,
-      };
-    }
-
     case actions.MC_GENERATE_NEXT_BATCH: {
       let newState = generateNextBatch(state);
 
@@ -31,16 +21,8 @@ export default function medicalCaseReducer(
       };
     }
 
-    case actions.MEDICAL_CASE_INITIATE: {
-      const { medicalCase } = action.payload;
-
-      return {
-        ...medicalCase,
-      };
-    }
-
     case actions.MC_CONDITION_VALUE_CHANGE: {
-      const { nodeId, diseaseId, value } = action.payload;
+      const {nodeId, diseaseId, value} = action.payload;
 
       const dd = state.nodes[nodeId].dd;
       dd[diseaseId].conditionValue = value;
@@ -58,7 +40,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_PREDEFINED_SYNDROME_SET_ANSWER: {
-      const { indexPs, answer } = action.payload;
+      const {indexPs, answer} = action.payload;
       return {
         ...state,
         nodes: {
@@ -72,7 +54,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_QUESTION_SET: {
-      const { index, value } = action.payload;
+      const {index, value} = action.payload;
       let answer;
 
       switch (state.nodes[index].display_format) {
@@ -136,7 +118,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_UPDATE_PATIENT: {
-      const { index, value } = action.payload;
+      const {index, value} = action.payload;
 
       return {
         ...state,
@@ -154,7 +136,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_SET: {
-      const { medicalCase } = action.payload;
+      const {medicalCase} = action.payload;
       if (state !== {} && medicalCase.id !== state.id) {
         setMedicalCase(state);
       }

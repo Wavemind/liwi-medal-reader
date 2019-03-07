@@ -1,5 +1,5 @@
 // @flow
-import { Toast } from 'native-base';
+import {Toast} from 'native-base';
 
 interface ToastType {
   buttonText?: string;
@@ -21,14 +21,14 @@ export const ToastFactory = (text: string = 'Default', params: ToastType) => {
     buttonText,
     type,
     position,
-    buttonTextStyle: { color: '#008000' },
-    buttonStyle: { backgroundColor: '#5cb85c' },
+    buttonTextStyle: {color: '#008000'},
+    buttonStyle: {backgroundColor: '#5cb85c'},
     duration,
   });
 };
 
 export const ErrorHttpFactory = async (response: Object, body: any) => {
-    body.errors.map((error) => {
-      ToastFactory(error, { type: 'danger' });
-    });
+  body.errors.map((error) => {
+    ToastFactory(error, {type: 'danger'});
+  });
 };

@@ -109,7 +109,7 @@ export default class Drawer extends Component {
             transparent
             iconLeft
             btnDrawer
-            onPress={() => navigation.navigate('Algorithmes')}
+            onPress={() => navigation.navigate('Algorithms')}
           >
             <Icon style={styles.icon} dark type={'Entypo'} name="flow-tree"/>
             <Text dark>Algorithmes</Text>

@@ -1,16 +1,31 @@
 // @flow
 
 import * as React from 'react';
-import { Fragment } from 'react';
-import { Button, Container, Content, Icon, Text, View } from 'native-base';
-import { AppState, Image, ImageBackground, ScrollView } from 'react-native';
-import { post } from '../../../engine/api/Http';
-import { styles } from './RootSessions.styles';
+import {Fragment} from 'react';
+import {getDeviceInformation} from '../../../engine/api/Device';
+import {post} from '../../../engine/api/Http';
+import {styles} from './RootSessions.styles';
+import {NavigationScreenProps} from 'react-navigation';
 import Sessions from '../../../components/Sessions';
-import type { I18nTypes } from '../../../utils/i18n';
-import { NavigationScreenProps } from 'react-navigation';
-import { clearMedicalCases, clearSessions } from 'engine/api/LocalStorage';
-import { getDeviceInformation } from '../../../engine/api/Device';
+import type {I18nTypes} from '../../../utils/i18n';
+import {
+  Button,
+  Container,
+  Content,
+  Icon,
+  Text,
+  View,
+} from 'native-base';
+import {
+  AppState,
+  Image,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
+import {
+  clearMedicalCases,
+  clearSessions,
+} from 'engine/api/LocalStorage';
 
 type Props = NavigationScreenProps & {
   logged: boolean,
@@ -19,7 +34,6 @@ type Props = NavigationScreenProps & {
     authentication: (email: string, password: string) => void,
   },
 };
-
 type State = {};
 
 export default class RootSessions extends React.Component<Props, State> {
@@ -29,7 +43,7 @@ export default class RootSessions extends React.Component<Props, State> {
     const {
       navigation,
       t,
-      app: { isConnected },
+      app: {isConnected},
       sessions,
       clear,
     } = this.props;
@@ -52,19 +66,19 @@ export default class RootSessions extends React.Component<Props, State> {
         </View>
         <Container style={styles.container}>
           <Content contentContainerStyle={styles.content}>
-            <Sessions navigation={navigation} />
+            <Sessions navigation={navigation}/>
             <Text>Tools</Text>
             <Button
               disabled={!isConnected}
               iconLeft
-              style={!isConnected ? { backgroundColor: '#69635f' } : {}}
+              style={!isConnected ? {backgroundColor: '#69635f'} : {}}
               blue
               onPress={() => navigation.push('NewSession')}
             >
               {!isConnected ? (
-                <Icon type={'MaterialCommunityIcons'} name="lan-disconnect" />
+                <Icon type={'MaterialCommunityIcons'} name="lan-disconnect"/>
               ) : (
-                <Icon type={'MaterialCommunityIcons'} name="lan-connect" />
+                <Icon type={'MaterialCommunityIcons'} name="lan-connect"/>
               )}
 
               <Text> {t('add_account')} </Text>
@@ -78,7 +92,7 @@ export default class RootSessions extends React.Component<Props, State> {
                 });
               }}
             >
-              <Icon type={'Octicons'} name="device-mobile" />
+              <Icon type={'Octicons'} name="device-mobile"/>
               <Text>{t('send_device_info')}</Text>
             </Button>
             <Button
@@ -89,7 +103,7 @@ export default class RootSessions extends React.Component<Props, State> {
                 await sessions.initContext();
               }}
             >
-              <Icon type={'MaterialCommunityIcons'} name="delete-forever" />
+              <Icon type={'MaterialCommunityIcons'} name="delete-forever"/>
               <Text>{t('clear_sessions')}</Text>
             </Button>
             <Button
@@ -100,7 +114,7 @@ export default class RootSessions extends React.Component<Props, State> {
                 clear();
               }}
             >
-              <Icon type={'MaterialCommunityIcons'} name="delete-forever" />
+              <Icon type={'MaterialCommunityIcons'} name="delete-forever"/>
               <Text>Vider les cas médicals et algo</Text>
             </Button>
           </Content>

@@ -14,9 +14,9 @@ import {ScrollView} from 'react-native';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import {liwiColors, screenHeight} from '../../../utils/constants';
 import {LiwiTitle2} from '../../../template/layout';
+import {styles} from './WorkCase.style';
 
 type Props = NavigationScreenProps & {};
-
 type State = {};
 
 export default class WorkCase extends React.Component<Props, State> {
@@ -37,7 +37,8 @@ export default class WorkCase extends React.Component<Props, State> {
 
     let ready = true;
 
-    let questionsBatched = [
+    // Tabs name
+    let tabBatches = [
       {name: 'Questions de triage', current: false, nodes: {}},
       {name: '2', current: false, nodes: {}},
       {name: '3', current: false, nodes: {}},
@@ -46,33 +47,32 @@ export default class WorkCase extends React.Component<Props, State> {
       {name: '6', current: false, nodes: {}},
     ];
 
+    // Generate batches with question is not answered
     batches.map((batch, id) => {
       batch.nodes.map((nodeId) => {
         if (nodes[nodeId].answer === null) {
           ready = false;
         }
-        questionsBatched[id].nodes[nodeId] = nodes[nodeId];
+        tabBatches[id].nodes[nodeId] = nodes[nodeId];
       });
     });
 
     return (
-      <View style={{height: screenHeight, paddingBottom: 80}}>
+      <View style={styles.container}>
         <LiwiTitle2>Version : {version}</LiwiTitle2>
-        <View style={{padding: 20}}>
+        <View style={styles.view}>
           <Text>description : {description}</Text>
           <Text>Par : {author}</Text>
         </View>
-        <Button onPress={() => nextBatch()}
-          // disabled={!ready}
-        >
+        <Button onPress={() => nextBatch()}>
           <Icon name="forward" type={'AntDesign'}/>
           <Text>Créer le batch suivant</Text>
         </Button>
         <Tabs>
-          {Object.keys(questionsBatched).map((batchId) =>
-            Object.keys(questionsBatched[batchId].nodes).length > 0 ? (
+          {Object.keys(tabBatches).map((batchId) =>
+            Object.keys(tabBatches[batchId].nodes).length > 0 ? (
               <Tab
-                heading={questionsBatched[batchId].name}
+                heading={tabBatches[batchId].name}
                 tabStyle={{
                   backgroundColor: liwiColors.redColor,
                 }}
@@ -80,7 +80,7 @@ export default class WorkCase extends React.Component<Props, State> {
                   backgroundColor: liwiColors.redColor,
                 }}
               >
-                <Questions questions={questionsBatched[batchId].nodes}/>
+                <Questions questions={tabBatches[batchId].nodes}/>
               </Tab>
             ) : null
           )}

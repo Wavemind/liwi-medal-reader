@@ -1,28 +1,34 @@
 // @flow
 
 import * as React from 'react';
-import { Tab, Tabs, Text, View, H2, H3 } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { ScrollView } from 'react-native';
-import { getItemFromArray } from '../../../engine/api/LocalStorage';
+import {NavigationScreenProps} from 'react-navigation';
+import {ScrollView} from 'react-native';
+import {getItemFromArray} from '../../../engine/api/LocalStorage';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { liwiColors, screenHeight } from '../../../utils/constants';
-import { LiwiTitle2, LiwiTitle3, QuestionView } from '../../../template/layout';
+import {liwiColors, screenHeight} from '../../../utils/constants';
+import {LiwiTitle2} from '../../../template/layout';
 import find from 'lodash/find';
+import {
+  Tab,
+  Tabs,
+  Text,
+  View,
+} from 'native-base';
 
 type Props = NavigationScreenProps & {};
-
 type State = {};
 
-export default class Algorithme extends React.Component<Props, State> {
-  state = { ready: false };
+// Display content of an algorithm
+// TODO : useful or useless ?
+export default class Algorithm extends React.Component<Props, State> {
+  state = {ready: false};
 
   async componentWillMount() {
-    const { navigation } = this.props;
-    let algoId = navigation.getParam('algoId');
-    let algoVersion = navigation.getParam('algoVersion');
-    let algo = await getItemFromArray('algorithmes', 'algorithm_id', algoId);
-    let version = find(algo.versions, (al) => al.version === algoVersion);
+    const {navigation} = this.props;
+    let algorithmId = navigation.getParam('algoId');
+    let algorithmVersion = navigation.getParam('algoVersion');
+    let algorithm = await getItemFromArray('algorithms', 'algorithm_id', algorithmId);
+    let version = find(algorithm.versions, (al) => al.version === algorithmVersion);
     await this.setState({
       ...version,
       ready: true,
@@ -30,7 +36,14 @@ export default class Algorithme extends React.Component<Props, State> {
   }
 
   render() {
-    const { nodes, ready, diseases, version, description, author } = this.state;
+    const {
+      nodes,
+      ready,
+      diseases,
+      version,
+      description,
+      author,
+    } = this.state;
 
     if (!ready) {
       return null;
@@ -38,20 +51,16 @@ export default class Algorithme extends React.Component<Props, State> {
 
     let questionTriage = {};
     let questionNormals = {};
+
+
     Object.keys(nodes).map((id) => {
-      switch (nodes[id].type) {
-        case 'Question':
-          nodes[id].priority === 'triage'
-            ? (questionTriage[id] = nodes[id])
-            : (questionNormals[id] = nodes[id]);
-          break;
-      }
+      nodes[id].priority === 'triage' ? (questionTriage[id] = nodes[id]) : (questionNormals[id] = nodes[id]);
     });
 
     return (
-      <View style={{ height: screenHeight, paddingBottom: 80 }}>
+      <View style={{height: screenHeight, paddingBottom: 80}}>
         <LiwiTitle2>Version : {version}</LiwiTitle2>
-        <View style={{ padding: 20 }}>
+        <View style={{padding: 20}}>
           <Text>description : {description}</Text>
           <Text>Par : {author}</Text>
         </View>
@@ -65,7 +74,7 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <Questions questions={questionTriage} />
+            <Questions questions={questionTriage}/>
           </Tab>
           <Tab
             heading="Questions normales"
@@ -76,7 +85,7 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <Questions questions={questionNormals} />
+            <Questions questions={questionNormals}/>
           </Tab>
           <Tab
             heading="Diagnostic"
@@ -87,7 +96,7 @@ export default class Algorithme extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               {Object.keys(diseases).map((id) => (
                 <View
                   style={{

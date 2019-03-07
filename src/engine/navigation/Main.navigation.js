@@ -24,12 +24,12 @@ import WorkCase from '../../screens/medicalCasesContainer/workCase';
 const Stack = createStackNavigator({
   Home: {
     screen: MainScreen,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: 'Votre espace personnel',
         headerLeft: (
           <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-            <Icon red type={'Entypo'} name="menu" large />
+            <Icon red type={'Entypo'} name="menu" large/>
           </Button>
         ),
       };
@@ -37,15 +37,15 @@ const Stack = createStackNavigator({
   },
   MedicalCases: {
     screen: MedicalCases,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
-        title: 'Vos cas médical',
+        title: 'Vos cas médicaux',
       };
     },
   },
   MedicalCase: {
     screen: MedicalCase,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: navigation.getParam('title'),
       };
@@ -53,7 +53,7 @@ const Stack = createStackNavigator({
   },
   WorkCase: {
     screen: WorkCase,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: navigation.getParam('title'),
       };
@@ -61,7 +61,7 @@ const Stack = createStackNavigator({
   },
   Algorithms: {
     screen: Algorithms,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: 'Algorithmes disponibles',
       };
@@ -69,7 +69,7 @@ const Stack = createStackNavigator({
   },
   Algorithm: {
     screen: Algorithm,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: navigation.getParam('title'),
       };
@@ -77,7 +77,7 @@ const Stack = createStackNavigator({
   },
   Settings: {
     screen: Settings,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: 'Paramètres',
       };
@@ -85,32 +85,9 @@ const Stack = createStackNavigator({
   },
 });
 
-const SimpleTabs = createBottomTabNavigator(
-  {
-    Home: {
-      screen: Stack,
-    },
-    MedicalCase: {
-      screen: MedicalCase,
-    },
-    MedicalCases: {
-      screen: MedicalCases,
-    },
-  },
-  {
-    tabBarOptions: {
-      activeTintColor: '#e91e63',
-    },
-    // tabBarComponent: TabsNavigation, // TODO nice Tabs menu
-  }
-);
-
 export default (medicalCase) => {
   return createDrawerNavigator(
-    // { Home: { screen: medicalCase.id === undefined ? Stack : SimpleTabs } },
-    { Home: { screen: Stack } },
-    {
-      contentComponent: (props) => <Drawer {...props} />,
-    }
+    {Home: {screen: Stack}},
+    {contentComponent: (props) => <Drawer {...props} />}
   );
 };

@@ -2,7 +2,15 @@
 
 import * as React from 'react';
 import AppNavigator from 'engine/navigation/Root.navigation';
-
+import {createAppContainer} from 'react-navigation';
+import getTheme from 'template/liwi/native_components/index.ignore';
+import material from 'template/liwi/variables/material';
+import liwi from 'template/liwi/styles';
+import merge from 'deepmerge';
+import {RootView} from 'template/layout';
+import {withApplication} from '../engine/contexts/Application.context';
+import {withSessions} from 'engine/contexts/Sessions.context';
+import {connect} from 'react-redux';
 import {
   AppState,
   NetInfo,
@@ -10,16 +18,12 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { Container, Root, StyleProvider } from 'native-base';
-import getTheme from 'template/liwi/native_components/index.ignore';
-import material from 'template/liwi/variables/material';
-import liwi from 'template/liwi/styles';
-import merge from 'deepmerge';
-import { RootView } from 'template/layout';
-import { withApplication } from '../engine/contexts/Application.context';
-import { withSessions } from 'engine/contexts/Sessions.context';
-import { connect } from 'react-redux';
+
+import {
+  Container,
+  Root,
+  StyleProvider,
+} from 'native-base';
 
 type Props = {
   app: {
@@ -27,42 +31,18 @@ type Props = {
   },
 };
 
-const mapStateToProps = (medicalCase, ownProps) => {
-  return {
-    medicalCase,
-  };
-};
-
 class LayoutTemplate extends React.Component<Props> {
   state = {
     appState: AppState.currentState,
   };
 
-  // shouldComponentUpdate(
-  //   nextProps: Readonly<P>,
-  //   nextState: Readonly<S>,
-  //   nextContext: any
-  // ): boolean {
-  //   console.log(this.props, nextProps);
-  //   console.log(
-  //     this.props.medicalCase.id === undefined,
-  //     nextProps.medicalCase.id !== this.props.medicalCase.id
-  //   );
-  //
-  //   if (
-  //     this.props.medicalCase.id === undefined ||
-  //     nextProps.medicalCase.id !== this.props.medicalCase.id
-  //   ) {
-  //     return true;
-  //   }
-  // }
-
   render() {
     const {
-      app: { logged },
+      app: {logged},
       medicalCase,
     } = this.props;
 
+    // Constant used in app
     const Navigator = AppNavigator(logged, medicalCase);
     const AppContainer = createAppContainer(Navigator);
     const baseTheme = getTheme(material);
@@ -73,8 +53,8 @@ class LayoutTemplate extends React.Component<Props> {
         <StyleProvider style={theme}>
           <Container>
             <RootView>
-              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AppContainer />
+              {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
+              <AppContainer/>
             </RootView>
           </Container>
         </StyleProvider>
@@ -83,5 +63,4 @@ class LayoutTemplate extends React.Component<Props> {
   }
 }
 
-// export default connect(mapStateToProps)(withApplication(LayoutTemplate));
 export default withApplication(LayoutTemplate);

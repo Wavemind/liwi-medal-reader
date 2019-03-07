@@ -1,34 +1,37 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
-import { sha256 } from 'js-sha256';
-import type { NavigationScreenProps } from 'react-navigation';
-import {
-  liwiColors,
-  saltHash,
-  screenHeight,
-  screenWidth,
-} from '../../../utils/constants';
-import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
-import { getSession } from '../../../engine/api/LocalStorage';
-import { LiwiTitle2 } from '../../../template/layout';
+import {sha256} from 'js-sha256';
+import type {NavigationScreenProps} from 'react-navigation';
+import type {SessionsProviderState} from '../../../engine/contexts/Sessions.context';
+import {getSession} from '../../../engine/api/LocalStorage';
+import {LiwiTitle2} from '../../../template/layout';
+import {styles} from './SetCodeSession.style';
 import LottieView from 'lottie-react-native';
-import { ScrollView } from 'react-native';
+import {ScrollView} from 'react-native';
+import {saltHash} from '../../../utils/constants';
+import {
+  Button,
+  Form,
+  Input,
+  Item,
+  Label,
+  Text,
+  View,
+} from 'native-base';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
-
 type State = {
-  codeOne: string,
-  codeTwo: string,
+  code: string,
+  codeConfirmation: string,
   error: boolean,
   success: boolean,
 };
 
 export default class SetCodeSession extends React.Component<Props, State> {
   state = {
-    codeOne: __DEV__ ? '123456q' : '',
-    codeTwo: __DEV__ ? '123456q' : '',
+    code: __DEV__ ? '123456q' : '',
+    codeConfirmation: __DEV__ ? '123456q' : '',
     error: false,
     success: false,
     session: null,
@@ -36,84 +39,76 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
   async componentWillMount() {
     let session = await getSession(this.props.navigation.getParam('user_id'));
-    this.setState({ session });
+    this.setState({session});
     this.isTheSame();
   }
 
-  changeCodeOne = (val: string) => {
-    this.setState({ codeOne: val }, () => this.isTheSame());
+  // Save value of code in state
+  changeCode = (val: string) => {
+    this.setState({code: val}, () => this.isTheSame());
   };
 
-  changeCodeTwo = (val: string) => {
-    this.setState({ codeTwo: val }, () => this.isTheSame());
+  // Save value of code confirmation in state
+  changeCodeConfirmation = (val: string) => {
+    this.setState({codeConfirmation: val}, () => this.isTheSame());
   };
 
+  // Verify if codes are same
   isTheSame = () => {
-    const { codeOne, codeTwo } = this.state;
-    var mediumRegex = new RegExp(
+    const {
+      code,
+      codeConfirmation,
+    } = this.state;
+
+    let mediumRegex = new RegExp(
       '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
     );
 
-    if (codeOne.length > 0 && codeTwo.length > 0) {
-      let encrypt1 = sha256.hmac(saltHash, codeOne);
-      let encrypt2 = sha256.hmac(saltHash, codeTwo);
+    if (code.length > 0 && codeConfirmation.length > 0) {
+      let encrypt1 = sha256.hmac(saltHash, code);
+      let encrypt2 = sha256.hmac(saltHash, codeConfirmation);
       if (encrypt1 !== encrypt2) {
-        this.setState({ error: true, success: false });
-      } else if (mediumRegex.test(codeOne) && mediumRegex.test(codeTwo)) {
-        this.setState({ success: true, error: false });
+        this.setState({error: true, success: false});
+      } else if (mediumRegex.test(code) && mediumRegex.test(codeConfirmation)) {
+        this.setState({success: true, error: false});
       }
     }
   };
 
+  // Save code in session
   setLocalCode = async () => {
-    const { codeOne } = this.state;
-    const { navigation, sessions, app } = this.props;
+    const {code} = this.state;
+    const {navigation, sessions, app} = this.props;
     const userId = navigation.getParam('user_id');
-    const encrypted = sha256.hmac(saltHash, codeOne);
+    const encrypted = sha256.hmac(saltHash, code);
 
     await sessions.setLocalCode(encrypted, userId);
 
-    app.unlockSession(userId, codeOne);
-    //
-    // navigation.navigate('UnlockSession', {
-    //   user_id: session.data.id,
-    //   title: `${session.data.first_name} ${session.data.last_name}`,
-    // });
-
-    //navigation.navigate('SignIn');
+    app.unlockSession(userId, code);
   };
 
   render() {
-    const { codeOne, codeTwo, error, success, session } = this.state;
+    const {
+      code,
+      codeConfirmation,
+      error,
+      success,
+      session,
+    } = this.state;
 
     if (session === null) {
       return null;
     }
 
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
+      <View style={styles.container}>
         <LottieView
           source={require('../../../utils/animations/welcome.json')}
           autoPlay
-          style={{
-            height: 300,
-          }}
+          style={styles.height}
           loop
         />
-        <View
-          style={{
-            width: screenWidth * 0.8,
-            borderColor: liwiColors.redColor,
-            borderWidth: 2,
-            borderRadius: 10,
-            padding: 30,
-          }}
-        >
+        <View style={styles.content} >
           <LiwiTitle2>
             Bienvenue {session.data.first_name} {session.data.last_name}
           </LiwiTitle2>
@@ -121,8 +116,8 @@ export default class SetCodeSession extends React.Component<Props, State> {
             <Item success={success} error={error} login-input floatingLabel>
               <Label>Votre code</Label>
               <Input
-                onChangeText={this.changeCodeOne}
-                value={codeOne}
+                onChangeText={this.changeCode}
+                value={code}
                 textContentType="emailAddress"
                 secureTextEntry
               />
@@ -130,8 +125,8 @@ export default class SetCodeSession extends React.Component<Props, State> {
             <Item success={success} error={error} login-input floatingLabel>
               <Label>Retaper votre code</Label>
               <Input
-                onChangeText={this.changeCodeTwo}
-                value={codeTwo}
+                onChangeText={this.changeCodeConfirmation}
+                value={codeConfirmation}
                 secureTextEntry
               />
             </Item>
@@ -147,7 +142,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
             ) : null}
           </Form>
           <Button
-            style={{ marginTop: 20 }}
+            style={styles.marginTop}
             onPress={() => this.setLocalCode()}
             disabled={success !== true}
           >

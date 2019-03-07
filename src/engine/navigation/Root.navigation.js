@@ -1,20 +1,20 @@
 import React from 'react';
-import {
-  createAppContainer,
-  createStackNavigator,
-  createSwitchNavigator,
-} from 'react-navigation';
-
 import MainTabNavigator from './Main.navigation';
 import RootSessions from '../../screens/sessionsContainer/RootSessions';
 import NewSession from 'screens/sessionsContainer/NewSession';
 import UnlockSession from 'screens/sessionsContainer/UnlockSession';
 import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
 
+import {
+  createAppContainer,
+  createStackNavigator,
+  createSwitchNavigator,
+} from 'react-navigation';
+
 export const SignedOut = createStackNavigator({
   SignIn: {
     screen: RootSessions,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         header: null,
         drawerLockMode: 'locked-closed',
@@ -23,7 +23,7 @@ export const SignedOut = createStackNavigator({
   },
   NewSession: {
     screen: NewSession,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: 'Nouvelle session',
       };
@@ -31,7 +31,7 @@ export const SignedOut = createStackNavigator({
   },
   UnlockSession: {
     screen: UnlockSession,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: navigation.getParam('title'),
       };
@@ -39,7 +39,7 @@ export const SignedOut = createStackNavigator({
   },
   SetCodeSession: {
     screen: SetCodeSession,
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: ({navigation}) => {
       return {
         title: 'Code local',
       };

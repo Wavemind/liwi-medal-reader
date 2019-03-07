@@ -1,17 +1,21 @@
-import { Dimensions, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { screenHeight, screenWidth } from '../../../utils/constants';
+import {StyleSheet} from 'react-native';
+import {liwiColors, screenWidth} from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
-    height: screenHeight,
-    width: screenWidth,
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
+
+  height: {
+    height: 200,
+  },
+
+  view: {
+    width: screenWidth * 0.8,
+    borderColor: liwiColors.redColor,
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 30,
+  }
 });
