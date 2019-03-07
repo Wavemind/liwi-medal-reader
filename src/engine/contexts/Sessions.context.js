@@ -2,6 +2,8 @@
 /* eslint-disable react/no-unused-state */
 
 import * as React from 'react';
+import {ToastFactory} from 'utils/ToastFactory';
+import {get} from 'engine/api/Http';
 
 import {
   getSessions,
@@ -10,10 +12,10 @@ import {
   setSessions,
   destroySession,
 } from '../api/LocalStorage';
-
-import { auth, fetchAlgorithms } from '../api/Http';
-import { ToastFactory } from 'utils/ToastFactory';
-import { get } from 'engine/api/Http';
+import {
+  auth,
+  fetchAlgorithms
+} from '../api/Http';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
@@ -31,36 +33,38 @@ export type SessionsProviderState = {
   logout: (userId: number) => Promise<any>,
 };
 
-export class SessionsProvider extends React.Component<
-  SessionsProviderProps,
-  SessionsProviderState
-> {
-  setValState = async (prop: any, value: any) => {
-    await this.setState({ [prop]: value });
-  };
+export class SessionsProvider extends React.Component<SessionsProviderProps, SessionsProviderState> {
 
   constructor(props: SessionsProviderProps) {
     super(props);
-
     this.initContext();
   }
 
+  // Set value in context
+  setValState = async (prop: any, value: any) => {
+    await this.setState({[prop]: value});
+  };
+
+  // Log out
   logout = async (userId: number) => {
     await destroySession(userId);
     await this.initContext();
   };
 
+  // Load context of current user
   initContext = async () => {
     const sessions = await getSessions();
-    this.setState({ sessions });
+    this.setState({sessions});
   };
 
+  // Define password on first login
   setLocalCode = async (encrypted: string, userId: number) => {
     const session = await getSession(userId);
     session.local_code = encrypted;
     await updateSession(userId, session);
   };
 
+  // Create new session
   newSession = async (email: string, password: string) => {
     const credentials = await auth(email, password);
     if (credentials.success !== false || credentials.success === undefined) {
@@ -75,7 +79,7 @@ export class SessionsProvider extends React.Component<
         if (!exist) {
           sessions.push(credentials);
           await setSessions(sessions);
-          this.setState({ sessions });
+          this.setState({sessions});
           return fetchAlgorithms(credentials.data.id)
             .then(async (done) => {
               return credentials;
@@ -84,7 +88,7 @@ export class SessionsProvider extends React.Component<
               return Promise.reject(err);
             });
         }
-        ToastFactory('Already connected', { type: 'danger' });
+        ToastFactory('Already connected', {type: 'danger'});
       }
     }
     return false;
@@ -100,7 +104,7 @@ export class SessionsProvider extends React.Component<
   };
 
   render() {
-    const { children } = this.props;
+    const {children} = this.props;
     return (
       <SessionsContext.Provider value={this.state}>
         {children}

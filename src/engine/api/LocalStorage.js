@@ -135,6 +135,21 @@ export const createMedicalCase = async (newMedicalCase) => {
 };
 
 
+// @params [Integer] medical case id
+// @return [Object] medicalCase
+// Get medical case
+export const getMedicalCase = async (id) => {
+  const medicalCases = await getItems('medicalCases');
+
+  if (Array.isArray(medicalCases)) {
+    return medicalCases.find((medicalCase) => {
+      return medicalCase.id === id;
+    });
+  }
+  return {};
+};
+
+
 // @params [Integer] id, [Object] newSession
 // @return [Object] medicalCase
 // Generate a new medical case
@@ -150,6 +165,19 @@ export const updateSession = async (id, newSession) => {
     sessions.splice(index, 1, newSession);
   }
   await setSessions(sessions);
+};
+
+
+// Clear sessions from local storage
+export const clearSessions = async () => {
+  await AsyncStorage.removeItem('sessions');
+};
+
+
+// Clear medical cases from local storage
+export const clearMedicalCases = async () => {
+  await AsyncStorage.removeItem('medicalCases');
+  await AsyncStorage.removeItem('algorithmes');
 };
 
 

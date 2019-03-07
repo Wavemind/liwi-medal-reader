@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Col, Grid, Text, View } from 'native-base';
+import {styles} from './Tabs.style';
 
 export default class TabsNavigation extends Component {
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        {
-          // trick for positionning...
-        }
-        <View style={{ flex: 0.8 }} />
-        <Grid style={{ flex: 0.2 }}>
+      <View style={ styles.container }>
+        <View style={ styles.view } />
+        <Grid style={ styles.grid }>
           <Col>
             <Text>Patient</Text>
           </Col>

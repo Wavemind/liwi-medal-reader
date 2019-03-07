@@ -1,4 +1,9 @@
 import React from 'react';
+
+import {
+  Button,
+  Icon
+} from 'native-base';
 import {
   createBottomTabNavigator,
   createDrawerNavigator,
@@ -6,14 +11,13 @@ import {
   createStackNavigator,
   createTabNavigator,
 } from 'react-navigation';
-import { Button, Icon } from 'native-base';
 
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCasesContainer/medicalCases';
 import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
-import Algorithmes from '../../screens/algorithmesContainer/Algorithmes';
-import Algorithme from '../../screens/algorithmesContainer/Algorithme';
+import Algorithms from '../../screens/algorithmsContainer/Algorithms';
+import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
@@ -55,16 +59,16 @@ const Stack = createStackNavigator({
       };
     },
   },
-  Algorithmes: {
-    screen: Algorithmes,
+  Algorithms: {
+    screen: Algorithms,
     navigationOptions: ({ navigation }) => {
       return {
-        title: 'Algorithmes disponible',
+        title: 'Algorithmes disponibles',
       };
     },
   },
-  Algorithme: {
-    screen: Algorithme,
+  Algorithm: {
+    screen: Algorithm,
     navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),

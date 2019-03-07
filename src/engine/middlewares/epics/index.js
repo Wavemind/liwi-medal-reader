@@ -1,6 +1,6 @@
 import {
   epicCatchAnswer,
-  epicCatchNodeOfThisChildren,
+  epicCatchDispatchNodeAction,
   epicCatchDiseasesChildren,
   epicCatchDiagnosisChildren,
   epicCatchPredefinedSyndromeChildren,
@@ -11,6 +11,6 @@ export default combineEpics(
   epicCatchPredefinedSyndromeChildren,
   epicCatchAnswer,
   epicCatchDiagnosisChildren,
-  epicCatchNodeOfThisChildren,
+  epicCatchDispatchNodeAction,
   epicCatchDiseasesChildren
 );

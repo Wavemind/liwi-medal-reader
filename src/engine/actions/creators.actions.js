@@ -25,7 +25,7 @@ export const setQuestion = (index, value) => ({
   },
 });
 
-export const nodeOfThisChildren = (indexNode, indexChild, type = null) => ({
+export const dispatchNodeAction = (indexNode, indexChild, type = null) => ({
   type: actions.MC_NODE_CHILDREN,
   payload: {
     indexNode,

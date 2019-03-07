@@ -9,10 +9,9 @@ export const liwiColors = {
   greenColor: '#37b428',
 };
 export const sessionsDuration = 30; // in minutes
-// export const devHost = 'http://192.168.1.5:3000'; // quent
 
 export const devHost = 'https://liwi.wavelab.top';
-
+// export const devHost = 'http://192.168.1.5:3000'; // quent
 // export const devHost = 'http://192.168.31.214:3000'; // manu
 // export const devHost = 'http://192.168.1.4:3000'; // alain
 
@@ -24,12 +23,12 @@ export const screenHeight = Dimensions.get('window').height;
 
 // Const about nodes
 export const nodesType = {
+  d: 'diseases',
+  fd: 'FinalDiagnostic',
+  m: 'Management',
   ps: 'PredefinedSyndrome',
   q: 'Question',
   t: 'Treatment',
-  fd: 'FinalDiagnostic',
-  d: 'diseases',
-  m: 'Management',
 };
 
 export const displayFormats = {
@@ -58,6 +57,6 @@ export const categories = {
   symptom: 'Symptom',
 
   predefinedCondition: 'Predefined condition',
-  commorbidity: 'Commorbidity',
+  comorbidity: 'Comorbidity',
   predefinedSyndrome: 'Predefined syndrome',
 };

@@ -1,7 +1,16 @@
 // @flow
 /* eslint-disable react/no-unused-state */
-
 import * as React from 'react';
+import find from 'lodash/find';
+import {fetchAlgorithms} from '../api/Http';
+import {sha256} from 'js-sha256';
+import {saltHash} from 'utils/constants';
+import {ToastFactory} from 'utils/ToastFactory';
+import {NavigationScreenProps} from 'react-navigation';
+import moment from 'moment';
+import {sessionsDuration} from '../../utils/constants';
+import isEmpty from 'lodash/isEmpty';
+
 import {
   createMedicalCase,
   destroySession,
@@ -9,17 +18,10 @@ import {
   getSessions,
   SetActiveSession,
 } from '../api/LocalStorage';
-import find from 'lodash/find';
-
-import {fetchAlgorithms} from '../api/Http';
-import {sha256} from 'js-sha256';
-import {saltHash} from 'utils/constants';
-import {ToastFactory} from 'utils/ToastFactory';
-import {NavigationScreenProps} from 'react-navigation';
-import {AppState, NetInfo} from 'react-native';
-import moment from 'moment';
-import {sessionsDuration} from '../../utils/constants';
-import isEmpty from 'lodash/isEmpty';
+import {
+  AppState,
+  NetInfo
+} from 'react-native';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -43,21 +45,17 @@ type State = {
 };
 
 export class ApplicationProvider extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.initContext();
+  }
+
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     NetInfo.addEventListener(
       'connectionChange',
       this._handleConnectivityChange
     );
-  }
-
-  setValState = async (prop: any, value: any) => {
-    await this.setState({[prop]: value});
-  };
-
-  constructor(props: Props) {
-    super(props);
-    this.initContext();
   }
 
   componentWillUnmount() {
@@ -108,6 +106,12 @@ export class ApplicationProvider extends React.Component<Props, State> {
     }
   };
 
+  // Set value in context
+  setValState = async (prop: any, value: any) => {
+    await this.setState({[prop]: value});
+  };
+
+  // Generate medical case with fake patient from uinames api
   createMedicalCase = async () => {
     const response = await fetch('https://uinames.com/api/?ext&region=france');
 
@@ -126,6 +130,8 @@ export class ApplicationProvider extends React.Component<Props, State> {
     });
   };
 
+  // Log out
+  // TODO : check if duplicated from Session context is really necessary
   logout = async () => {
     await destroySession(this.state.user.data.id);
     this.setState({
@@ -134,6 +140,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     });
   };
 
+  // Load context of current user
   initContext = async () => {
     const sessions = await getSessions();
     let finderActiveSession = find(sessions, (session) => {
@@ -148,6 +155,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     }
   };
 
+  // Set user context
   setUserContext = (userData) => {
     this.setState({
       logged: true,
@@ -155,10 +163,12 @@ export class ApplicationProvider extends React.Component<Props, State> {
     });
   };
 
+  // Set medical case in context
   setMedicalCase = (medicalCase) => {
     this.setState({medicalCase});
   };
 
+  // Unlock session from local credentials
   unlockSession = async (id: number, code: string) => {
     let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
@@ -172,6 +182,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     }
   };
 
+  // Lock current session
   lockSession = async () => {
     SetActiveSession();
     this.setState({
