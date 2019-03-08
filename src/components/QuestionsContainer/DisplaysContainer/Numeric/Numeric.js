@@ -1,11 +1,14 @@
 // @flow
 
 import * as React from 'react';
-import { Input, Item, View } from 'native-base';
+import {
+  Input,
+  Item,
+  View,
+} from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
-import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
-import { getSession } from 'engine/api/LocalStorage';
 import { liwiColors } from '../../../../utils/constants';
+import { styles } from './Numeric.style';
 
 type Props = NavigationScreenProps & {};
 
@@ -14,8 +17,6 @@ type State = {};
 export default class Numeric extends React.Component<Props, State> {
   shouldComponentUpdate(
     nextProps: Readonly<P>,
-    nextState: Readonly<S>,
-    nextContext: any
   ): boolean {
     return (
       nextProps.question.answer !== this.props.question.answer ||
@@ -46,7 +47,7 @@ export default class Numeric extends React.Component<Props, State> {
     }
 
     return (
-      <View style={{ flex: 1, width: '100%' }}>
+      <View style={styles.view}>
         <Item>
           <Input
             keyboardType={keyboardType}

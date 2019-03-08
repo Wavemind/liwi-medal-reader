@@ -1,23 +1,22 @@
 // @flow
 
 import * as React from 'react';
-import {NavigationScreenProps} from 'react-navigation';
-import {View} from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { View } from 'react-native';
 import {
   Form,
   Icon,
   Input,
   Text,
 } from 'native-base';
-import {styles} from './CustomInput.style';
-import {ViewBlocColor} from '../../../template/layout';
+import { styles } from './CustomInput.style';
+import { ViewBlocColor } from '../../../template/layout';
 
 type Props = NavigationScreenProps & {};
-
 type State = {};
 
 export default class CustomInput extends React.Component<Props, State> {
-  state = {value: ''};
+  state = { value: '' };
 
   static defaultProps = {
     iconName: false,
@@ -28,25 +27,24 @@ export default class CustomInput extends React.Component<Props, State> {
   shouldComponentUpdate(
     nextProps: Readonly<P>,
     nextState: Readonly<S>,
-    nextContext: any
   ): boolean {
     return (
       this.state.value !== nextState.value || this.props.init !== nextProps.init
     );
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+  componentWillReceiveProps(nextProps: Readonly<P>): void {
     if (nextProps.id !== this.props.id) {
-      this.setState({value: nextProps.init});
+      this.setState({ value: nextProps.init });
     }
   }
 
   componentWillMount(): void {
-    this.setState({value: this.props.init});
+    this.setState({ value: this.props.init });
   }
 
   _handleChangeValue = (value) =>
-    this.setState({value: value.nativeEvent.text});
+    this.setState({ value: value.nativeEvent.text });
 
   render() {
     const {
@@ -58,7 +56,7 @@ export default class CustomInput extends React.Component<Props, State> {
       keyboardType,
     } = this.props;
 
-    const {value} = this.state;
+    const { value } = this.state;
 
     return (
       <Form style={styles.form}>

@@ -1,20 +1,24 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Grid, Icon, Text, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
 import { ColCenter } from '../../../../template/layout';
+import { styles } from './Radio.style';
+import {
+  Button,
+  Grid,
+  Icon,
+  Text,
+  View,
+} from 'native-base';
 
 type Props = NavigationScreenProps & {};
-
 type State = {};
 
 export default class Radio extends React.Component<Props, State> {
   shouldComponentUpdate(
     nextProps: Readonly<P>,
-    nextState: Readonly<S>,
-    nextContext: any
   ): boolean {
     return nextProps.question.answer !== this.props.question.answer;
   }
@@ -24,17 +28,13 @@ export default class Radio extends React.Component<Props, State> {
   };
 
   render() {
-    const { question, setQuestion } = this.props;
+    const {
+      question,
+      setQuestion,
+    } = this.props;
 
     return (
-      <View
-        style={{
-          flex: 1,
-          width: '100%',
-          borderTopColor: liwiColors.whiteColor,
-          borderTopWidth: 2,
-        }}
-      >
+      <View style={styles.view}>
         {Object.keys(question.answers).map((id) => (
           <Grid key={id + '_radiobutton'}>
             <ColCenter>

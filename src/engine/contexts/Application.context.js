@@ -2,13 +2,13 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import find from 'lodash/find';
-import {fetchAlgorithms} from '../api/Http';
-import {sha256} from 'js-sha256';
-import {saltHash} from 'utils/constants';
-import {ToastFactory} from 'utils/ToastFactory';
-import {NavigationScreenProps} from 'react-navigation';
+import { fetchAlgorithms } from '../api/Http';
+import { sha256 } from 'js-sha256';
+import { saltHash } from 'utils/constants';
+import { ToastFactory } from 'utils/ToastFactory';
+import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
-import {sessionsDuration} from '../../utils/constants';
+import { sessionsDuration } from '../../utils/constants';
 import isEmpty from 'lodash/isEmpty';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from '../api/LocalStorage';
 import {
   AppState,
-  NetInfo
+  NetInfo,
 } from 'react-native';
 
 const defaultValue = {};
@@ -54,14 +54,14 @@ export class ApplicationProvider extends React.Component<Props, State> {
     AppState.addEventListener('change', this._handleAppStateChange);
     NetInfo.addEventListener(
       'connectionChange',
-      this._handleConnectivityChange
+      this._handleConnectivityChange,
     );
   }
 
   componentWillUnmount() {
     NetInfo.removeEventListener(
       'connectionChange',
-      this._handleConnectivityChange
+      this._handleConnectivityChange,
     );
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
@@ -74,7 +74,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     ) {
       console.log('---> Liwi is come back from background', nextAppState);
       this._fetchDataWhenChange();
-      this.setState({appState: nextAppState});
+      this.setState({ appState: nextAppState });
     }
 
     if (
@@ -82,12 +82,12 @@ export class ApplicationProvider extends React.Component<Props, State> {
       nextAppState.match(/inactive|background/)
     ) {
       console.log('---> Liwi is hidding');
-      this.setState({appState: nextAppState});
+      this.setState({ appState: nextAppState });
     }
   };
 
   _fetchDataWhenChange = async () => {
-    const {user} = this.state;
+    const { user } = this.state;
     if (!isEmpty(user)) {
       await fetchAlgorithms(user.data.id);
     }
@@ -108,7 +108,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
   // Set value in context
   setValState = async (prop: any, value: any) => {
-    await this.setState({[prop]: value});
+    await this.setState({ [prop]: value });
   };
 
 
@@ -127,7 +127,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     const sessions = await getSessions();
     let finderActiveSession = find(sessions, (session) => {
       const isStillActive = moment().isBefore(
-        moment(session.active_since).add(sessionsDuration, 'minute')
+        moment(session.active_since).add(sessionsDuration, 'minute'),
       );
       return session.active && isStillActive;
     });
@@ -147,7 +147,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
   // Set medical case in context
   setMedicalCase = (medicalCase) => {
-    this.setState({medicalCase});
+    this.setState({ medicalCase });
   };
 
   // Unlock session from local credentials
@@ -160,7 +160,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
       session = await getSession(id);
       this.setUserContext(session);
     } else {
-      ToastFactory('Pas le bon code', {type: 'danger'});
+      ToastFactory('Pas le bon code', { type: 'danger' });
     }
   };
 
@@ -191,7 +191,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
   };
 
   render() {
-    const {children} = this.props;
+    const { children } = this.props;
 
     return (
       <ApplicationContext.Provider value={this.state}>
@@ -202,7 +202,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 }
 
 export const withApplication = (Component: React.ComponentType<any>) => (
-  props: any
+  props: any,
 ) => (
   <ApplicationContext.Consumer>
     {(store) => <Component app={store} {...props} />}

@@ -1,11 +1,9 @@
 import {
-  Dimensions,
-  KeyboardAvoidingView,
   StyleSheet,
 } from 'react-native';
 import {
   screenHeight,
-  screenWidth
+  screenWidth,
 } from '../../utils/constants';
 
 export const styles = StyleSheet.create({

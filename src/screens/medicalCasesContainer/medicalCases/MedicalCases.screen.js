@@ -2,11 +2,10 @@
 
 import * as React from 'react';
 import moment from 'moment';
-import {medicalCaseInitialState} from '../../../engine/algorithm/medicalCase';
-import {liwiColors} from '../../../utils/constants';
-import {SeparatorLine} from '../../../template/layout';
-import {styles} from './MedicalCases.style';
-import {NavigationScreenProps} from 'react-navigation';
+import { medicalCaseInitialState } from '../../../engine/algorithm/medicalCase';
+import { SeparatorLine } from '../../../template/layout';
+import { styles } from './MedicalCases.style';
+import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
 import algorithmJson from '../../../engine/algorithm/algorithm_versions.json';
 import {
@@ -47,11 +46,11 @@ export default class MedicalCases extends React.Component<Props, State> {
     let versions = [];
     algorithms.map((algorithm) =>
       Object.keys(algorithm.versions).map((version) =>
-        versions.push(algorithm.versions[version])
-      )
+        versions.push(algorithm.versions[version]),
+      ),
     );
 
-    this.setState({algorithms, versions});
+    this.setState({ algorithms, versions });
   }
 
   // Update value
@@ -63,9 +62,9 @@ export default class MedicalCases extends React.Component<Props, State> {
 
   // Get medical cases of current user
   getMedicalCases = async () => {
-    const {app} = this.props;
+    const { app } = this.props;
     const medicalCases = await getUserMedicalCases(app.user.data.id);
-    this.setState({medicalCases});
+    this.setState({ medicalCases });
   };
 
   // Create new medical case
@@ -95,7 +94,7 @@ export default class MedicalCases extends React.Component<Props, State> {
 
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
-    const {setMedicalCase, navigation} = this.props;
+    const { setMedicalCase, navigation } = this.props;
     await setMedicalCase(medicalCase);
     // await app.setMedicalCase(medicalCase); // TODO find better way
     await this.getMedicalCases();
@@ -107,12 +106,12 @@ export default class MedicalCases extends React.Component<Props, State> {
   render() {
     const {
       versions,
-      selected
+      selected,
     } = this.state;
 
-    const {medicalCase} = this.props;
+    const { medicalCase } = this.props;
 
-    const _renderMedicalCases = this.state.medicalCases.map((mc, index) => {
+    const _renderMedicalCases = this.state.medicalCases.map((mc) => {
       return (
         <Button
           key={mc.id + '_medicalCase'}

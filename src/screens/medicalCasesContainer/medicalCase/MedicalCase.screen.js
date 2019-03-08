@@ -74,17 +74,6 @@ export default class MedicalCase extends React.Component<Props, State> {
         </Grid>
         <Grid>
           <Col>
-            <CustomInput
-              init={lastname}
-              label={'Nom'}
-              change={updatePatient}
-              index={'lastname'}
-              id={medicalCase.id}
-              iconName={'user'}
-              iconType={'AntDesign'}
-            />
-          </Col>
-          <Col>
             <CustomDatePicker
               init={birthdate}
               label={'Date de naissance'}

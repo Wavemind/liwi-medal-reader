@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {liwiColors} from '../../../utils/constants';
+import { StyleSheet } from 'react-native';
+import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   priority: {
@@ -8,8 +8,7 @@ export const styles = StyleSheet.create({
   triage: {
     elevation: 2,
   },
-  normal: {
-  },
+  normal: {},
   borderRight: {
     borderRightWidth: 1,
     borderRightColor: '#ffffff',

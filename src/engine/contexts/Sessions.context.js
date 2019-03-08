@@ -2,8 +2,7 @@
 /* eslint-disable react/no-unused-state */
 
 import * as React from 'react';
-import {ToastFactory} from 'utils/ToastFactory';
-import {get} from 'engine/api/Http';
+import { ToastFactory } from 'utils/ToastFactory';
 
 import {
   getSessions,
@@ -14,7 +13,7 @@ import {
 } from '../api/LocalStorage';
 import {
   auth,
-  fetchAlgorithms
+  fetchAlgorithms,
 } from '../api/Http';
 
 const defaultValue = {};
@@ -42,7 +41,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
 
   // Set value in context
   setValState = async (prop: any, value: any) => {
-    await this.setState({[prop]: value});
+    await this.setState({ [prop]: value });
   };
 
   // Log out
@@ -54,7 +53,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
   // Load context of current user
   initContext = async () => {
     const sessions = await getSessions();
-    this.setState({sessions});
+    this.setState({ sessions });
   };
 
   // Define password on first login
@@ -79,7 +78,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
         if (!exist) {
           sessions.push(credentials);
           await setSessions(sessions);
-          this.setState({sessions});
+          this.setState({ sessions });
           return fetchAlgorithms(credentials.data.id)
             .then(async (done) => {
               return credentials;
@@ -88,7 +87,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
               return Promise.reject(err);
             });
         }
-        ToastFactory('Already connected', {type: 'danger'});
+        ToastFactory('Already connected', { type: 'danger' });
       }
     }
     return false;
@@ -104,7 +103,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
   };
 
   render() {
-    const {children} = this.props;
+    const { children } = this.props;
     return (
       <SessionsContext.Provider value={this.state}>
         {children}
@@ -114,7 +113,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
 }
 
 export const withSessions = (Component: React.ComponentType<any>) => (
-  props: any
+  props: any,
 ) => (
   <SessionsContext.Consumer>
     {(store) => <Component sessions={store} {...props} />}

@@ -9,18 +9,17 @@ import {
   Icon,
   Button,
 } from 'native-base';
-import {NavigationScreenProps} from 'react-navigation';
-import {ScrollView} from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import {liwiColors, screenHeight} from '../../../utils/constants';
-import {LiwiTitle2} from '../../../template/layout';
-import {styles} from './WorkCase.style';
+import { liwiColors } from '../../../utils/constants';
+import { LiwiTitle2 } from '../../../template/layout';
+import { styles } from './WorkCase.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class WorkCase extends React.Component<Props, State> {
-  state = {ready: true};
+  state = { ready: true };
 
   render() {
     const {
@@ -35,17 +34,17 @@ export default class WorkCase extends React.Component<Props, State> {
       },
     } = this.props;
 
-    let ready = true;
-
     // Tabs name
     let tabBatches = [
-      {name: 'Questions de triage', current: false, nodes: {}},
-      {name: '2', current: false, nodes: {}},
-      {name: '3', current: false, nodes: {}},
-      {name: '4', current: false, nodes: {}},
-      {name: '5', current: false, nodes: {}},
-      {name: '6', current: false, nodes: {}},
+      { name: 'Questions de triage', current: false, nodes: {} },
+      { name: '2', current: false, nodes: {} },
+      { name: '3', current: false, nodes: {} },
+      { name: '4', current: false, nodes: {} },
+      { name: '5', current: false, nodes: {} },
+      { name: '6', current: false, nodes: {} },
     ];
+
+    let ready = true;
 
     // Generate batches with question is not answered
     batches.map((batch, id) => {
@@ -82,7 +81,7 @@ export default class WorkCase extends React.Component<Props, State> {
               >
                 <Questions questions={tabBatches[batchId].nodes}/>
               </Tab>
-            ) : null
+            ) : null,
           )}
           <Tab
             heading="Diagnostic"
@@ -93,14 +92,10 @@ export default class WorkCase extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <View style={{flex: 1}}>
+            <View style={styles.flex}>
               {Object.keys(diseases).map((id) => (
                 <View
-                  style={{
-                    margin: 10,
-                    padding: 20,
-                    backgroundColor: liwiColors.greyColor,
-                  }}
+                  style={styles.diseases}
                   key={id + '_diseases'}
                 >
                   <Text>id : {diseases[id].id}</Text>

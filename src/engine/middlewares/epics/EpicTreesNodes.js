@@ -1,11 +1,11 @@
-import {ofType} from 'redux-observable';
+import { ofType } from 'redux-observable';
 import findIndex from 'lodash/findIndex';
-import {nodesType} from '../../../utils/constants';
-import {of} from 'rxjs';
-import {actions} from '../../actions/types.actions';
+import { nodesType } from '../../../utils/constants';
+import { of } from 'rxjs';
+import { actions } from '../../actions/types.actions';
 import {
   concatMap,
-  filter
+  filter,
 } from 'rxjs/operators';
 import {
   conditionValueChange,
@@ -31,13 +31,13 @@ export const epicCatchAnswer = (action$, state$) =>
     ofType(actions.MC_QUESTION_SET),
     concatMap((action) => {
       // Index is the id of the node that has just been answered
-      const {index} = action.payload;
+      const { index } = action.payload;
 
       console.log(
-        '%c ########################  epicCatchAnswer ########################   ',
-        'background: #F6F3EE; color: #b84c4c; padding: 5px'
+        '%c ########################  epicCatchAnswer ########################',
+        'background: #F6F3EE; color: #b84c4c; padding: 5px',
       );
-      console.log({state: state$.value});
+      console.log({ state: state$.value });
 
       const node = state$.value.nodes[index];
       const nodeDdParents = node.dd;
@@ -47,15 +47,15 @@ export const epicCatchAnswer = (action$, state$) =>
 
       nodeDdParents.map((dd) =>
         // Define disease type so it will not be considered as node
-        arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.d))
+        arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.d)),
       );
 
       nodePsParents.map((ps) =>
-        arrayActions.push(dispatchNodeAction(index, ps.id))
+        arrayActions.push(dispatchNodeAction(index, ps.id)),
       );
 
       return of(...arrayActions);
-    })
+    }),
   );
 
 // @params [Object] action$, [Object] state$
@@ -68,7 +68,11 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     concatMap((action) => {
       // indexNode = node that has just been answered
       // indexChild = dd or ps being affected by the node
-      let {indexNode, indexChild, type} = action.payload;
+      let {
+        indexNode,
+        indexChild,
+        type,
+      } = action.payload;
 
       console.log(
         '--- NODES ---',
@@ -76,7 +80,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
         indexNode,
         'suivant : ',
         indexChild,
-        type
+        type,
       );
 
       // indexNode = Parent node
@@ -87,6 +91,8 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       if (type === null) {
         type = state$.value.nodes[indexChild].type;
       }
+
+      let nodeChildren;
 
       // What do we do with this child -> switch according to type
       switch (type) {
@@ -103,18 +109,18 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return null;
         case nodesType.d:
           // Get children of the node in the current diagnostic
-          let nodeChildren = state$.value.diseases[indexChild].nodes[indexNode].children;
+          nodeChildren = state$.value.diseases[indexChild].nodes[indexNode].children;
 
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) =>
-            arrayActions.push(dispatchNodeAction(indexChild, childId))
+            arrayActions.push(dispatchNodeAction(indexChild, childId)),
           );
           return of(...arrayActions);
         case nodesType.ps:
           // TODO : Handle PS
           return of(predefinedSyndromeChildren(indexChild, indexNode));
       }
-    })
+    }),
   );
 
 // @params [Object] action$, [Object] state$
@@ -126,7 +132,7 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
     concatMap((action) => {
       // For one node, what i do ?
       // Check the condition for the node, according type
-      const {indexPS, indexChild} = action.payload;
+      const { indexPS } = action.payload;
 
       // Here get the state if this PS
       const ps = state$.value.nodes[indexPS];
@@ -136,7 +142,7 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
       return of(setPsAnswer(ps.id, stateOfPs));
 
       // Check the condition of the children
-    })
+    }),
   );
 
 // @params [Object] action$, [Object] state$
@@ -146,7 +152,7 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
   action$.pipe(
     ofType(actions.MC_DIAGNOSIS_CHILDREN),
     filter((action) => {
-      const {indexDD, indexDiagnosis} = action.payload;
+      const { indexDD, indexDiagnosis } = action.payload;
       const child = state$.value.nodes[indexDiagnosis];
 
       // Get the conditions of the node
@@ -154,12 +160,12 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
         state$,
         indexDD,
         indexDiagnosis,
-        child
+        child,
       );
 
       console.log('conditon of this final diagnosis', condition);
       // Check the condition of the children
-    })
+    }),
     // TODO : Trigger Treatment/Management handling
   );
 
@@ -170,7 +176,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
   action$.pipe(
     ofType(actions.MC_DISEASES_CHILDREN),
     concatMap((action) => {
-      const {indexDD, indexChild} = action.payload;
+      const { indexDD, indexChild } = action.payload;
       const child = state$.value.diseases[indexDD].nodes[indexChild];
 
       // Get the conditions of the node
@@ -178,7 +184,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
         state$,
         indexDD,
         indexChild,
-        child
+        child,
       );
       let actions = [];
 
@@ -188,10 +194,10 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
       // Update the condition value if it is different from the current one
       if (state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !== condition) {
         actions.push(
-          conditionValueChange(indexChild, findConditionValue, condition)
+          conditionValueChange(indexChild, findConditionValue, condition),
         );
       }
 
       return of(...actions);
-    })
+    }),
   );

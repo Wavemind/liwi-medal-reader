@@ -14,8 +14,6 @@ export default class CustomCheckbox extends React.Component<Props, State> {
   componentWillMount() {}
 
   render() {
-    const {} = this.props;
-
     return <View />;
   }
 }

@@ -1,10 +1,10 @@
 // @flow
 
 import * as React from 'react';
-import {NavigationScreenProps} from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import {ToastFactory} from '../../../utils/ToastFactory';
-import {styles} from './NewSession.style'
+import { ToastFactory } from '../../../utils/ToastFactory';
+import { styles } from './NewSession.style';
 import {
   Button,
   Form,
@@ -38,37 +38,37 @@ export default class NewSession extends React.Component<Props, State> {
 
   // Update value of email when user typing
   changeEmail = (val: string) => {
-    this.setState({email: val});
+    this.setState({ email: val });
   };
 
   // Update value of password when user typing
   changePassword = (val: string) => {
-    this.setState({password: val});
+    this.setState({ password: val });
   };
 
   // Authentication method
   signIn = async () => {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     const {
       email,
       password,
     } = this.state;
-    const {sessions} = this.props;
+    const { sessions } = this.props;
 
     await sessions
       .newSession(email, password)
       .then(async (data) => {
         if (typeof data.uid === 'string') {
-          this.setState({success: true, loading: false, id: data.data.id});
+          this.setState({ success: true, loading: false, id: data.data.id });
         }
 
         if (data === false) {
-          this.setState({success: false, loading: false});
+          this.setState({ success: false, loading: false });
         }
       })
       .catch((err) => {
-        ToastFactory(err, {type: 'danger'});
-        this.setState({success: false, loading: false});
+        ToastFactory(err, { type: 'danger' });
+        this.setState({ success: false, loading: false });
       });
   };
 
@@ -81,7 +81,7 @@ export default class NewSession extends React.Component<Props, State> {
       id,
     } = this.state;
 
-    const {navigation} = this.props;
+    const { navigation } = this.props;
 
     return (
       <View style={styles.container}>

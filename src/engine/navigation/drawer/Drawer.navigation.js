@@ -1,12 +1,9 @@
-import React, {Component} from 'react';
-import {styles} from './Drawer.style';
-import {withSessions} from 'engine/contexts/Sessions.context';
-import {SeparatorLine} from '../../../template/layout';
+import React, { Component } from 'react';
+import { styles } from './Drawer.style';
+import { SeparatorLine } from '../../../template/layout';
 
 import {
   AppState,
-  Image,
-  NetInfo,
   View,
 } from 'react-native';
 import {
@@ -24,7 +21,7 @@ export default class Drawer extends Component {
 
   logout = async () => {
     const {
-      app: {user},
+      app: { user },
     } = this.props;
     await this.props.sessions.logout(user.id);
     await this.props.app.lockSession();
@@ -33,7 +30,7 @@ export default class Drawer extends Component {
   render() {
     const {
       navigation,
-      app: {user},
+      app: { user },
       medicalCase,
     } = this.props;
 

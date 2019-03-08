@@ -1,8 +1,11 @@
-import React, {Component} from 'react';
-import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import React, { Component } from 'react';
 import Modal from 'react-native-modal';
-import {Text, View} from 'native-base';
-import {styles} from './CustomModal.style'
+import { TouchableWithoutFeedback } from 'react-native';
+import { styles } from './CustomModal.style';
+import {
+  Text,
+  View,
+} from 'native-base';
 
 export default class CustomModal extends Component {
   state = {};
@@ -12,7 +15,7 @@ export default class CustomModal extends Component {
   };
 
   _toggleModal = () =>
-    this.setState({isModalVisible: !this.state.isModalVisible});
+    this.setState({ isModalVisible: !this.state.isModalVisible });
 
   render() {
     const {

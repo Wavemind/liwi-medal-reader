@@ -1,12 +1,10 @@
 // @flow
 
 import * as React from 'react';
-import {NavigationScreenProps} from 'react-navigation';
-import {ScrollView} from 'react-native';
-import {getItemFromArray} from '../../../engine/api/LocalStorage';
+import { NavigationScreenProps } from 'react-navigation';
+import { getItemFromArray } from '../../../engine/api/LocalStorage';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import {liwiColors, screenHeight} from '../../../utils/constants';
-import {LiwiTitle2} from '../../../template/layout';
+import { LiwiTitle2 } from '../../../template/layout';
 import find from 'lodash/find';
 import {
   Tab,
@@ -14,6 +12,10 @@ import {
   Text,
   View,
 } from 'native-base';
+import {
+  liwiColors,
+  screenHeight,
+} from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -21,10 +23,10 @@ type State = {};
 // Display content of an algorithm
 // TODO : useful or useless ?
 export default class Algorithm extends React.Component<Props, State> {
-  state = {ready: false};
+  state = { ready: false };
 
   async componentWillMount() {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     let algorithmId = navigation.getParam('algoId');
     let algorithmVersion = navigation.getParam('algoVersion');
     let algorithm = await getItemFromArray('algorithms', 'algorithm_id', algorithmId);
@@ -58,9 +60,9 @@ export default class Algorithm extends React.Component<Props, State> {
     });
 
     return (
-      <View style={{height: screenHeight, paddingBottom: 80}}>
+      <View style={{ height: screenHeight, paddingBottom: 80 }}>
         <LiwiTitle2>Version : {version}</LiwiTitle2>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <Text>description : {description}</Text>
           <Text>Par : {author}</Text>
         </View>
@@ -96,7 +98,7 @@ export default class Algorithm extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               {Object.keys(diseases).map((id) => (
                 <View
                   style={{

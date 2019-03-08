@@ -1,21 +1,21 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Col, Grid, Icon } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
-import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
-import { getSession } from 'engine/api/LocalStorage';
 import { liwiColors } from '../../../../utils/constants';
+import {
+  Button,
+  Col,
+  Grid,
+  Icon,
+} from 'native-base';
 
 type Props = NavigationScreenProps & {};
-
 type State = {};
 
 export default class Boolean extends React.Component<Props, State> {
   shouldComponentUpdate(
     nextProps: Readonly<P>,
-    nextState: Readonly<S>,
-    nextContext: any
   ): boolean {
     return nextProps.question.answer !== this.props.question.answer;
   }
@@ -31,7 +31,10 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   render = () => {
-    const { answer, answers } = this.props.question;
+    const {
+      answer,
+      answers,
+    } = this.props.question;
 
     const idYes = Number(Object.keys(answers)[0]);
     const idNo = Number(Object.keys(answers)[1]);

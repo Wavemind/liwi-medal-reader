@@ -1,9 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import {NavigationScreenProps} from 'react-navigation';
-import {ScrollView} from 'react-native';
-
+import { NavigationScreenProps } from 'react-navigation';
 import {
   Text,
   View,
@@ -24,7 +22,8 @@ type State = {};
 export default class Settings extends React.Component<Props, State> {
   state = {};
 
-  componentWillMount() {}
+  componentWillMount() {
+  }
 
   render() {
     return (

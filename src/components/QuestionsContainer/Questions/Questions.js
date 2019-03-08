@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
-import { get } from 'engine/api/Http';
 import QuestionFactory from '../QuestionFactory';
 
 type Props = NavigationScreenProps & {};
@@ -13,15 +12,16 @@ type State = {};
 export default class Questions extends React.PureComponent<Props, State> {
   state = {};
 
-  async componentWillMount() {}
+  async componentWillMount() {
+  }
+
   render() {
-    const {} = this.state;
     const { questions } = this.props;
 
     return (
       <ScrollView>
         {Object.keys(questions).map((i) => (
-          <QuestionFactory question={questions[i]} key={i + '_factory'} />
+          <QuestionFactory question={questions[i]} key={i + '_factory'}/>
         ))}
       </ScrollView>
     );

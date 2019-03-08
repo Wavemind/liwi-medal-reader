@@ -1,17 +1,4 @@
 import React from 'react';
-
-import {
-  Button,
-  Icon
-} from 'native-base';
-import {
-  createBottomTabNavigator,
-  createDrawerNavigator,
-  createMaterialTopTabNavigator,
-  createStackNavigator,
-  createTabNavigator,
-} from 'react-navigation';
-
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCasesContainer/medicalCases';
@@ -21,10 +8,20 @@ import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
+import {
+  Button,
+  Icon,
+} from 'native-base';
+
+import {
+  createDrawerNavigator,
+  createStackNavigator,
+} from 'react-navigation';
+
 const Stack = createStackNavigator({
   Home: {
     screen: MainScreen,
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       return {
         title: 'Votre espace personnel',
         headerLeft: (
@@ -37,7 +34,7 @@ const Stack = createStackNavigator({
   },
   MedicalCases: {
     screen: MedicalCases,
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       return {
         title: 'Vos cas médicaux',
       };
@@ -45,7 +42,7 @@ const Stack = createStackNavigator({
   },
   MedicalCase: {
     screen: MedicalCase,
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),
       };
@@ -53,7 +50,7 @@ const Stack = createStackNavigator({
   },
   WorkCase: {
     screen: WorkCase,
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),
       };
@@ -61,7 +58,7 @@ const Stack = createStackNavigator({
   },
   Algorithms: {
     screen: Algorithms,
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       return {
         title: 'Algorithmes disponibles',
       };
@@ -69,7 +66,7 @@ const Stack = createStackNavigator({
   },
   Algorithm: {
     screen: Algorithm,
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),
       };
@@ -77,7 +74,7 @@ const Stack = createStackNavigator({
   },
   Settings: {
     screen: Settings,
-    navigationOptions: ({navigation}) => {
+    navigationOptions: ({ navigation }) => {
       return {
         title: 'Paramètres',
       };
@@ -85,9 +82,9 @@ const Stack = createStackNavigator({
   },
 });
 
-export default (medicalCase) => {
+export default () => {
   return createDrawerNavigator(
-    {Home: {screen: Stack}},
-    {contentComponent: (props) => <Drawer {...props} />}
+    { Home: { screen: Stack } },
+    { contentComponent: (props) => <Drawer {...props} /> },
   );
 };

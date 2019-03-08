@@ -1,6 +1,5 @@
-import {Alert} from 'react-native';
-import {devHost} from 'utils/constants';
-import {getDeviceInformation} from './Device';
+import { devHost } from 'utils/constants';
+import { getDeviceInformation } from './Device';
 import find from 'lodash/find';
 import isArray from 'lodash/isArray';
 import {
@@ -43,9 +42,9 @@ const getHeaders = async (method = 'GET', body = false, userId = null) => {
 export const get = async (params, userId) => {
   const response = await fetch(
     devHost + '/api/v1/' + params,
-    await getHeaders('GET', false, userId)
-  ).catch(function (error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+    await getHeaders('GET', false, userId),
+  ).catch(function(error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
     console.log(error);
   });
 
@@ -57,14 +56,14 @@ export const get = async (params, userId) => {
   } else if (httpResponse.status === 422 || httpResponse.status === 401) {
     // Throw error and display it
     if (isArray(jsonResponse.errors)) {
-      ToastFactory(jsonResponse.errors[0], {type: 'danger'});
+      ToastFactory(jsonResponse.errors[0], { type: 'danger' });
     } else {
-      ToastFactory(jsonResponse.errors, {type: 'danger'});
+      ToastFactory(jsonResponse.errors, { type: 'danger' });
     }
     return jsonResponse;
   } else {
     // Unhandled https status return empty json and throw a basic message
-    ToastFactory('Unhandled error', {type: 'danger'});
+    ToastFactory('Unhandled error', { type: 'danger' });
     return {};
   }
 };
@@ -77,13 +76,13 @@ export const post = async (
   params,
   body = {},
   user_id = null,
-  method = 'POST'
+  method = 'POST',
 ) => {
   const response = await fetch(
     devHost + '/api/v1/' + params,
-    await getHeaders(method, body, user_id)
-  ).catch(function (error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+    await getHeaders(method, body, user_id),
+  ).catch(function(error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
     console.log(error);
   });
 
@@ -101,8 +100,8 @@ export const postDeviceInfo = async () => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(device),
-  }).catch(function (error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+  }).catch(function(error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
     console.log(error);
   });
 
@@ -123,8 +122,8 @@ export const auth = async (email, password) => {
       email: email,
       password: password,
     }),
-  }).catch(function (error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {type: 'danger'});
+  }).catch(function(error) {
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
     console.log(error);
   });
 
@@ -173,7 +172,7 @@ export const fetchAlgorithms = async (userId) => {
           // Algorithm container already in local, checking if the version is new
           version = find(
             algorithm.versions,
-            (a) => a.version === serverAlgorithm.version
+            (a) => a.version === serverAlgorithm.version,
           );
 
           // New version available, push it in local
@@ -189,7 +188,7 @@ export const fetchAlgorithms = async (userId) => {
           });
         }
 
-        ToastFactory('Algo Updated', {type: 'success'});
+        ToastFactory('Algo Updated', { type: 'success' });
         await setItem('algorithms', localAlgorithms);
         resolve();
       }

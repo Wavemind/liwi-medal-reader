@@ -1,13 +1,13 @@
 // @flow
 
 import * as React from 'react';
-import {Fragment} from 'react';
-import {getDeviceInformation} from '../../../engine/api/Device';
-import {post} from '../../../engine/api/Http';
-import {styles} from './RootSessions.styles';
-import {NavigationScreenProps} from 'react-navigation';
+import { Fragment } from 'react';
+import { getDeviceInformation } from '../../../engine/api/Device';
+import { post } from '../../../engine/api/Http';
+import { styles } from './RootSessions.styles';
+import { NavigationScreenProps } from 'react-navigation';
 import Sessions from '../../../components/Sessions';
-import type {I18nTypes} from '../../../utils/i18n';
+import type { I18nTypes } from '../../../utils/i18n';
 import {
   Button,
   Container,
@@ -17,10 +17,8 @@ import {
   View,
 } from 'native-base';
 import {
-  AppState,
   Image,
   ImageBackground,
-  ScrollView,
 } from 'react-native';
 import {
   clearMedicalCases,
@@ -43,7 +41,7 @@ export default class RootSessions extends React.Component<Props, State> {
     const {
       navigation,
       t,
-      app: {isConnected},
+      app: { isConnected },
       sessions,
       clear,
     } = this.props;
@@ -71,7 +69,7 @@ export default class RootSessions extends React.Component<Props, State> {
             <Button
               disabled={!isConnected}
               iconLeft
-              style={!isConnected ? {backgroundColor: '#69635f'} : {}}
+              style={!isConnected ? { backgroundColor: '#69635f' } : {}}
               blue
               onPress={() => navigation.push('NewSession')}
             >
