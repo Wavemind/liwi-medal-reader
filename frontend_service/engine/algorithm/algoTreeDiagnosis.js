@@ -1,6 +1,6 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import {nodesType} from '../../../frontend_service/constants';
+import {nodesType} from '../../constants';
 
 
 // Create the first batch from json based on triage priority

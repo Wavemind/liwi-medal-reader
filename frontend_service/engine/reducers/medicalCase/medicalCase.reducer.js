@@ -1,15 +1,16 @@
 // @flow
 
-import {actions} from '../../../../frontend_service/engine/actions/types.actions';
-import {REHYDRATE} from 'redux-persist';
-import {setMedicalCase} from '../../api/LocalStorage';
+import { actions } from '../../actions/types.actions';
+import { REHYDRATE } from 'redux-persist';
+import { setMedicalCase } from '../../../../src/engine/api/LocalStorage';
 import findKey from 'lodash/findKey';
-import {generateNextBatch} from '../../algorithm/algoTreeDiagnosis';
+import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
+
 export const initialState = null;
 
 export default function medicalCaseReducer(
   state: Object = initialState,
-  action: Object
+  action: Object,
 ) {
   switch (action.type) {
     case actions.MC_GENERATE_NEXT_BATCH: {
@@ -22,7 +23,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_CONDITION_VALUE_CHANGE: {
-      const {nodeId, diseaseId, value} = action.payload;
+      const { nodeId, diseaseId, value } = action.payload;
 
       const dd = state.nodes[nodeId].dd;
       dd[diseaseId].conditionValue = value;
@@ -40,7 +41,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_PREDEFINED_SYNDROME_SET_ANSWER: {
-      const {indexPs, answer} = action.payload;
+      const { indexPs, answer } = action.payload;
       return {
         ...state,
         nodes: {
@@ -54,7 +55,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_QUESTION_SET: {
-      const {index, value} = action.payload;
+      const { index, value } = action.payload;
       let answer;
 
       switch (state.nodes[index].display_format) {
@@ -118,7 +119,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_UPDATE_PATIENT: {
-      const {index, value} = action.payload;
+      const { index, value } = action.payload;
 
       return {
         ...state,
@@ -136,7 +137,7 @@ export default function medicalCaseReducer(
     }
 
     case actions.MC_SET: {
-      const {medicalCase} = action.payload;
+      const { medicalCase } = action.payload;
       if (state !== {} && medicalCase.id !== state.id) {
         setMedicalCase(state);
       }
