@@ -2,7 +2,7 @@ import { ofType } from 'redux-observable';
 import findIndex from 'lodash/findIndex';
 import { nodesType } from '../../../../frontend_service/constants';
 import { of } from 'rxjs';
-import { actions } from '../../actions/types.actions';
+import { actions } from '../../../../frontend_service/engine/actions/types.actions';
 import {
   concatMap,
   filter,
@@ -14,7 +14,7 @@ import {
   dispatchNodeAction,
   predefinedSyndromeChildren,
   setPsAnswer,
-} from '../../actions/creators.actions';
+} from '../../../../frontend_service/engine/actions/creators.actions';
 import {
   getStateToThisPs,
   nodeConditionChecker,
