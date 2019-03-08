@@ -1,6 +1,6 @@
 // @flow
 
-import {actions} from '../../actions/types.actions';
+import {actions} from '../../../../frontend_service/engine/actions/types.actions';
 import {REHYDRATE} from 'redux-persist';
 import {setMedicalCase} from '../../api/LocalStorage';
 import findKey from 'lodash/findKey';
