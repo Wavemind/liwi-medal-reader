@@ -1,5 +1,5 @@
 import { devHost } from '../../../frontend_service/constants';
-import { getDeviceInformation } from './Device';
+import { getDeviceInformation } from '../../../src/engine/api/Device';
 import find from 'lodash/find';
 import isArray from 'lodash/isArray';
 import {
@@ -10,7 +10,9 @@ import {
   getItems,
   getSession,
   setItem,
-} from './LocalStorage';
+} from '../../../src/engine/api/LocalStorage';
+
+// TODO: Must split logic of getDeviceInformation
 
 // @params [String] method, [Object] body, [Integer] userId
 // @return [Object] header
