@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 const ReactColorSquare = props => {
   return (
-    <Text>CUCUX</Text>
+    <Text>AHAHAHAHAH</Text>
   );
 };
 
