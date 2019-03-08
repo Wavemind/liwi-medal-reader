@@ -1,10 +1,10 @@
-import {applyMiddleware, createStore} from 'redux';
-import {createEpicMiddleware} from 'redux-observable';
+import { applyMiddleware, createStore } from 'redux';
+import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/es/storage';
-import rootReducer from '../../frontend_service/engine/reducers';
-import rootEpic from '../../frontend_service/engine/middlewares/epics';
+import rootReducer from './reducers';
+import rootEpic from './middlewares/epics';
 
 import {
   persistReducer,
