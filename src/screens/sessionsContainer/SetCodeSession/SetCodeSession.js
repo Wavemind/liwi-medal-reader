@@ -8,7 +8,7 @@ import { getSession } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './SetCodeSession.style';
 import LottieView from 'lottie-react-native';
-import { saltHash } from '../../../utils/constants';
+import { saltHash } from '../../../../frontend_service/constants';
 import {
   Button,
   Form,

@@ -1,4 +1,4 @@
-import { devHost } from 'utils/constants';
+import { devHost } from '../../../frontend_service/constants';
 import { getDeviceInformation } from './Device';
 import find from 'lodash/find';
 import isArray from 'lodash/isArray';

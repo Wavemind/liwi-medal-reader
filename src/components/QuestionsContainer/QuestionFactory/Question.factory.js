@@ -6,9 +6,9 @@ import {
   categories,
   displayFormats,
   displayValues,
-  liwiColors,
   priorities
-} from '../../../utils/constants';
+} from '../../../../frontend_service/constants';
+import { liwiColors } from '../../../utils/constants';
 import {styles} from './Question.factory.style';
 import ModalWrapper from './ModalWrapper';
 import Radio from '../DisplaysContainer/Radio';
