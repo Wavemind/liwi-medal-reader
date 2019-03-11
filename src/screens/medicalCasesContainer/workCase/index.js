@@ -2,7 +2,7 @@ import WorkCase from './WorkCase.screen';
 import {withSessions} from '../../../engine/contexts/Sessions.context';
 import {withApplication} from '../../../engine/contexts/Application.context';
 import {connect} from 'react-redux';
-import {nextBatch} from '../../../engine/actions/creators.actions';
+import {nextBatch} from '../../../../frontend_service/engine/actions/creators.actions';
 
 const mapStateToProps = (medicalCase, ownProps) => {
   return {

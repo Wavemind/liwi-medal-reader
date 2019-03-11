@@ -1,6 +1,6 @@
 import { ofType } from 'redux-observable';
 import findIndex from 'lodash/findIndex';
-import { nodesType } from '../../../utils/constants';
+import { nodesType } from '../../../constants';
 import { of } from 'rxjs';
 import { actions } from '../../actions/types.actions';
 import {
