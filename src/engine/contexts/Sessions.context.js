@@ -13,7 +13,7 @@ import {
 import {
   auth,
   fetchAlgorithms,
-} from '../../../frontend_service/engine/api/Http';
+} from '../../../frontend_service/api/Http';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
