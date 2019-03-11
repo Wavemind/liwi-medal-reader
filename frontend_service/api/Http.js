@@ -12,7 +12,7 @@ import {
 // @return [Json] response from server
 // Https GET request
 export const get = async (params, userId) => {
-  let url = `${host}/api/v1/${params}`;
+  let url = `${host}${params}`;
   let header = await getHeaders('GET', false, userId);
 
   const request = await fetch(url, header).catch(error => handleHttpError(error));
@@ -31,7 +31,7 @@ export const get = async (params, userId) => {
 // @return [Object] response from server
 // Https POST request
 export const post = async (params, body = {}, userId = null) => {
-  let url =  `${host}/api/v1/${params}`;
+  let url =  `${host}${params}`;
   let header = await getHeaders('POST', body, userId);
 
   const request = await fetch(url, header).catch(error => handleHttpError(error));
@@ -49,7 +49,7 @@ export const post = async (params, body = {}, userId = null) => {
 // @return [Object] response from server
 // Https request for authentication
 export const auth = async (email, password) => {
-  let url = `${host}/api/v1/auth/sign_in`;
+  let url = `${host}auth/sign_in`;
 
   const request = await fetch(url, {
     method: 'post',

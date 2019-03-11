@@ -8,7 +8,7 @@ interface ToastType {
   duration?: number;
 }
 
-export const DisplayToast = (text: string = 'Default', params: ToastType) => {
+export const displayToast = (text: string = 'Default', params: ToastType) => {
   const {
     buttonText = '',
     type = 'warning',
