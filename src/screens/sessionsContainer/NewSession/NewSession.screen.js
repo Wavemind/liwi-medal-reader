@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import { ToastFactory } from '../../../utils/ToastFactory';
+import { DisplayToast } from '../../../utils/CustomToast';
 import { styles } from './NewSession.style';
 import {
   Button,
@@ -67,7 +67,7 @@ export default class NewSession extends React.Component<Props, State> {
         }
       })
       .catch((err) => {
-        ToastFactory(err, { type: 'danger' });
+        DisplayToast(err, { type: 'danger' });
         this.setState({ success: false, loading: false });
       });
   };
