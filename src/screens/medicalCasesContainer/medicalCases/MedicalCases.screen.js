@@ -2,12 +2,12 @@
 
 import * as React from 'react';
 import moment from 'moment';
-import { medicalCaseInitialState } from '../../../../frontend_service/engine/algorithm/medicalCase';
+import { medicalCaseInitialState } from '../../../../frontend_service/algorithm/medicalCase';
 import { SeparatorLine } from '../../../template/layout';
 import { styles } from './MedicalCases.style';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import algorithmJson from '../../../../frontend_service/engine/algorithm/algorithm_versions.json';
+import algorithmJson from '../../../../frontend_service/algorithm/algorithm_versions.json';
 import {
   Button,
   H3,
@@ -26,7 +26,7 @@ import {
 import {
   setInitialCounter,
   generateInitialBatch,
-} from '../../../../frontend_service/engine/algorithm/algoTreeDiagnosis';
+} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 type State = { medicalCases: Array<Object> };

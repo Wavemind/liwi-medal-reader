@@ -1,6 +1,6 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import { nodesType } from '../../constants';
+import { nodesType } from '../constants';
 
 
 // Create the first batch from json based on triage priority
@@ -168,7 +168,7 @@ export const getStateToThisPs = (state$, ps) => {
     }
   });
 
-  let cond = nodeTopParent.some((topParent) => {
+  return nodeTopParent.some((topParent) => {
     let childCond = recursiveNodePs(state$, topParent, ps);
 
     // Result of this branch
@@ -176,8 +176,6 @@ export const getStateToThisPs = (state$, ps) => {
       return childCond;
     }
   });
-
-  return cond;
 };
 
 // TODO: IN PROGRESS

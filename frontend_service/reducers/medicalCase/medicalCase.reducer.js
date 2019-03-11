@@ -2,7 +2,7 @@
 
 import { actions } from '../../actions/types.actions';
 import { REHYDRATE } from 'redux-persist';
-import { setMedicalCase } from '../../../../src/engine/api/LocalStorage';
+import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import findKey from 'lodash/findKey';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 

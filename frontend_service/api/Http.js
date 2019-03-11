@@ -1,12 +1,12 @@
-import { host } from '../../../frontend_service/constants';
-import { getDeviceInformation } from '../../../src/engine/api/Device';
+import { host } from '../constants';
+import { getDeviceInformation } from '../../src/engine/api/Device';
 import find from 'lodash/find';
 import { handleHttpError } from 'utils/Error';
 import {
   getItems,
   getSession,
   setItem,
-} from '../../../src/engine/api/LocalStorage';
+} from '../../src/engine/api/LocalStorage';
 
 // @params [String] params, [Integer] userId
 // @return [Json] response from server
