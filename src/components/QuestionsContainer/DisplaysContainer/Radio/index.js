@@ -1,6 +1,6 @@
 import Radio from './Radio';
 import { connect } from 'react-redux';
-import { setQuestion } from '../../../../engine/actions/creators.actions';
+import { setQuestion } from '../../../../../frontend_service/engine/actions/creators.actions';
 
 const mapStateToProps = (medicalCase, ownProps) => {
   return { medicalCase };

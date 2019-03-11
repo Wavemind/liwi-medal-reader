@@ -13,7 +13,7 @@ import i18n from 'utils/i18n';
 import {
   persistor,
   store,
-} from './engine/store';
+} from '../frontend_service/engine/store';
 
 KeepAwake.activate();
 

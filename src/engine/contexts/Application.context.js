@@ -2,9 +2,9 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import find from 'lodash/find';
-import { fetchAlgorithms } from '../api/Http';
+import { fetchAlgorithms } from '../../../frontend_service/engine/api/Http';
 import { sha256 } from 'js-sha256';
-import { saltHash } from 'utils/constants';
+import { saltHash } from '../../../frontend_service/constants';
 import { ToastFactory } from 'utils/ToastFactory';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';

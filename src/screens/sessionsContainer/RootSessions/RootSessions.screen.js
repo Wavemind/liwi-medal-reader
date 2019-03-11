@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import { getDeviceInformation } from '../../../engine/api/Device';
-import { post } from '../../../engine/api/Http';
+import { post } from '../../../../frontend_service/engine/api/Http';
 import { styles } from './RootSessions.styles';
 import { NavigationScreenProps } from 'react-navigation';
 import Sessions from '../../../components/Sessions';
