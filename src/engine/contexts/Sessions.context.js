@@ -2,8 +2,7 @@
 /* eslint-disable react/no-unused-state */
 
 import * as React from 'react';
-import { ToastFactory } from 'utils/ToastFactory';
-
+import { DisplayToast } from 'utils/CustomToast';
 import {
   getSessions,
   updateSession,
@@ -66,6 +65,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
   // Create new session
   newSession = async (email: string, password: string) => {
     const credentials = await auth(email, password);
+
     if (credentials.success !== false || credentials.success === undefined) {
       let sessions = await getSessions();
       if (sessions === null) {
@@ -87,7 +87,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
               return Promise.reject(err);
             });
         }
-        ToastFactory('Already connected', { type: 'danger' });
+        DisplayToast('Already connected', { type: 'danger' });
       }
     }
     return false;

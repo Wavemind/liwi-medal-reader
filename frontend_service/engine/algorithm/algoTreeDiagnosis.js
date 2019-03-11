@@ -1,13 +1,13 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import {nodesType} from '../../constants';
+import { nodesType } from '../../constants';
 
 
 // Create the first batch from json based on triage priority
 // TODO : Maybe build an object instead of rewriting the json
 export const generateInitialBatch = (algorithmJson) => {
-  const {nodes} = algorithmJson;
-  algorithmJson.batches = [{name: '', current: false, nodes: []}];
+  const { nodes } = algorithmJson;
+  algorithmJson.batches = [{ name: '', current: false, nodes: [] }];
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].priority === 'triage') {
       algorithmJson.batches[0].nodes.push(nodeId);
@@ -83,7 +83,7 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
     nodes,
     batches,
   } = algorithmJsonMedicalCase;
-  let newBatch = {name: '', current: false, nodes: []};
+  let newBatch = { name: '', current: false, nodes: [] };
 
   Object.keys(nodes).map((nodeId) => {
 
@@ -147,7 +147,7 @@ const recursiveNodePs = (state$, node, ps) => {
         state$,
         null,
         null,
-        ps.nodes[nodeChild.id]
+        ps.nodes[nodeChild.id],
       );
       // if this branch is open, so go deeper
       if (nodeChildCondition === true) {
@@ -193,7 +193,7 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     (result, value) => {
       return comparingBooleanOr(result, value);
     },
-    false
+    false,
   );
 
   return reduceConditionArrayBoolean;
@@ -236,7 +236,7 @@ const comparingTopConditions = (state$, child, conditions) => {
     child,
     first_id,
     first_node_id,
-    first_type
+    first_type,
   );
 
   if (operator === null) {
@@ -247,7 +247,7 @@ const comparingTopConditions = (state$, child, conditions) => {
       child,
       second_id,
       second_node_id,
-      second_type
+      second_type,
     );
 
     if (operator === 'AND') {

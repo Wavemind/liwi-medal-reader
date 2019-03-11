@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 
@@ -50,14 +50,16 @@ export const getGeo = async (cb) => {
             [
               {
                 text: 'Annuler',
-                onPress: () => {},
+                onPress: () => {
+                },
                 style: 'cancel',
               },
               {
-                text: 'OK', onPress: () => {}
+                text: 'OK', onPress: () => {
+                },
               },
             ],
-            {cancelable: false}
+            { cancelable: false },
           );
           cb(false);
         } else {
@@ -80,6 +82,6 @@ const askGeo = async (enableHighAccuracy, callBack) => {
     {
       enableHighAccuracy: enableHighAccuracy,
       timeout: 5000,
-    }
+    },
   );
 };
