@@ -9,8 +9,19 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#8B8393',
-  },
+    backgroundColor: '#ffffff'
 
+  },
+  selected: {
+    flex: 1,
+    height: 100,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#8B8393',
+    backgroundColor: '#5a9542'
+  },
   textWithoutIcon: {
     marginTop: 5,
   },
