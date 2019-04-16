@@ -1,7 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-
   view: {
     flex: 1,
     height: 100,
@@ -29,6 +28,4 @@ export const styles = StyleSheet.create({
     flex: 7,
     backgroundColor: '#F8F4FC',
   },
-
-
 });

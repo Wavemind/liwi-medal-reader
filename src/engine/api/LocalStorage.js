@@ -1,4 +1,4 @@
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 import moment from 'moment';
 import remove from 'lodash/remove';
 import filter from 'lodash/filter';
@@ -6,8 +6,8 @@ import findIndex from 'lodash/findIndex';
 import maxBy from 'lodash/maxBy';
 
 // TODO init localstorage, set initial value if undefined
-export const setCredentials = async (newState) => await AsyncStorage.setItem('credentials', JSON.stringify(newState));
-
+export const setCredentials = async (newState) =>
+  await AsyncStorage.setItem('credentials', JSON.stringify(newState));
 
 // @params [String] key, [Object] item
 // @return [Object] saved object
@@ -15,7 +15,6 @@ export const setCredentials = async (newState) => await AsyncStorage.setItem('cr
 export const setItem = async (key, item) => {
   return await AsyncStorage.setItem(key, JSON.stringify(item));
 };
-
 
 // @params [String] key
 // @return [Object]
@@ -29,7 +28,6 @@ export const getItems = async (key) => {
   }
   return itemsArray;
 };
-
 
 // @params [String] key [Integer] index, [Integer] id
 // @return [Object]
@@ -45,11 +43,9 @@ export const getItemFromArray = async (key, index, id) => {
   return {};
 };
 
-
 // Destroy user's credentials
-export const destroyCredentials = async () => await AsyncStorage.removeItem('credentials', (err) => {
-});
-
+export const destroyCredentials = async () =>
+  await AsyncStorage.removeItem('credentials', (err) => {});
 
 // @return [Boolean]
 // Is user logged
@@ -69,14 +65,12 @@ export const isLogged = async () => {
   return moment(date_expiry).isAfter(moment());
 };
 
-
 // @return [Array]
 // Get credentials from local storage
 export const getCredentials = async () => {
   const credentials = await AsyncStorage.getItem('credentials');
   return JSON.parse(credentials);
 };
-
 
 // @return [Array]
 // Get session from local storage
@@ -88,7 +82,6 @@ export const getSessions = async () => {
   }
   return sessionsArray;
 };
-
 
 // @params [Object] medicalCase
 // Set medical case in local storage
@@ -104,7 +97,6 @@ export const setMedicalCase = async (medicalCase) => {
   }
 };
 
-
 // @params [Integer] userId
 // @return [Object] medicalCase
 // Get medical case from local storage
@@ -115,7 +107,6 @@ export const getUserMedicalCases = async (userId) => {
   });
 };
 
-
 // @params [Integer] newMedicalCase
 // @return [Object] medicalCase
 // Generate a new medical case
@@ -124,7 +115,7 @@ export const createMedicalCase = async (newMedicalCase) => {
   let maxId = maxBy(medicalCases, 'id');
 
   if (medicalCases.length === 0) {
-    maxId = {id: 0};
+    maxId = { id: 0 };
   }
 
   newMedicalCase.id = maxId.id + 1;
@@ -133,7 +124,6 @@ export const createMedicalCase = async (newMedicalCase) => {
 
   return await setItem('medicalCases', medicalCases);
 };
-
 
 // @params [Integer] medical case id
 // @return [Object] medicalCase
@@ -148,7 +138,6 @@ export const getMedicalCase = async (id) => {
   }
   return {};
 };
-
 
 // @params [Integer] id, [Object] newSession
 // @return [Object] medicalCase
@@ -167,12 +156,10 @@ export const updateSession = async (id, newSession) => {
   await setSessions(sessions);
 };
 
-
 // Clear sessions from local storage
 export const clearSessions = async () => {
   await AsyncStorage.removeItem('sessions');
 };
-
 
 // Clear medical cases from local storage
 export const clearMedicalCases = async () => {
@@ -180,13 +167,11 @@ export const clearMedicalCases = async () => {
   await AsyncStorage.removeItem('algorithms');
 };
 
-
 // @params [Object] session
 // Set session credentials in local storage
 export const setSessions = async (session) => {
   await AsyncStorage.setItem('sessions', JSON.stringify(session));
 };
-
 
 // @params [Integer] id
 // Set current session
@@ -207,7 +192,6 @@ export const SetActiveSession = async (id = null) => {
   await setSessions(sessions);
 };
 
-
 // @params [Integer] id
 // @return [Object] session
 // Get session from local storage
@@ -221,14 +205,13 @@ export const getSession = async (id) => {
     });
 
     if (findSession === undefined) {
-      return {access_token: 'unsecure'};
+      return { access_token: 'unsecure' };
     }
 
     return findSession;
   }
   return {};
 };
-
 
 // @params [Integer] id
 // Destroy session in local storage

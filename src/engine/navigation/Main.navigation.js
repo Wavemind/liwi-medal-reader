@@ -8,15 +8,9 @@ import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
-import {
-  Button,
-  Icon,
-} from 'native-base';
+import { Button, Icon } from 'native-base';
 
-import {
-  createDrawerNavigator,
-  createStackNavigator,
-} from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 
 const Stack = createStackNavigator({
   Home: {
@@ -26,7 +20,7 @@ const Stack = createStackNavigator({
         title: 'Votre espace personnel',
         headerLeft: (
           <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-            <Icon red type={'Entypo'} name="menu" large/>
+            <Icon red type={'Entypo'} name="menu" large />
           </Button>
         ),
       };
@@ -85,6 +79,6 @@ const Stack = createStackNavigator({
 export default () => {
   return createDrawerNavigator(
     { Home: { screen: Stack } },
-    { contentComponent: (props) => <Drawer {...props} /> },
+    { contentComponent: (props) => <Drawer {...props} /> }
   );
 };

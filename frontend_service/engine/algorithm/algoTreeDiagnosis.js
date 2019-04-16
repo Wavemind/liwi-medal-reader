@@ -1,34 +1,35 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import {nodesType} from '../../constants';
-
+import { nodesType } from '../../constants';
 
 // Create the first batch from json based on triage priority
 // TODO : Maybe build an object instead of rewriting the json
 export const generateInitialBatch = (algorithmJson) => {
-  const {nodes} = algorithmJson;
-  algorithmJson.batches = [{name: '', current: false, nodes: []}];
+  const { nodes } = algorithmJson;
+  algorithmJson.batches = [{ name: '', current: false, nodes: [] }];
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].priority === 'triage') {
       algorithmJson.batches[0].nodes.push(nodeId);
     }
+
+    // if (nodes[nodeId].priority === 'priority') {
+    //   algorithmJson.batches[1].nodes.push(nodeId);
+    // }
   });
-  return algorithmJson;
+  return algorithmJson; // return is useless, we modifiy ref to caller
 };
 
 // @param [Json] algorithmJsonMedicalCase
 // @return [Json] algorithmJsonMedicalCase
 // Set condition values of question in order to prepare them for second batch (before the triage one)
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
-  const {
-    diseases,
-    nodes,
-  } = algorithmJsonMedicalCase;
+  const { diseases, nodes } = algorithmJsonMedicalCase;
 
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
       nodes[nodeId].dd.map((dd) => {
-        dd.conditionValue = diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
+        dd.conditionValue =
+          diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
       });
 
       // Map trough PS if it is in an another PS itself
@@ -43,17 +44,19 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
 
 // @params [Json][Integer][Integer] algorithmJsonMedicalCase, parentId, id
 // Recursive function to also set dd and ps parents of current ps
-export const setParentConditionValue = (algorithmJsonMedicalCase, parentId, id) => {
+export const setParentConditionValue = (
+  algorithmJsonMedicalCase,
+  parentId,
+  id
+) => {
   let conditionValue = false;
-  const {
-    diseases,
-    nodes,
-  } = algorithmJsonMedicalCase;
+  const { diseases, nodes } = algorithmJsonMedicalCase;
 
   // Set condition value for DD if there is any
   if (!nodes[parentId].dd.isEmpty()) {
     nodes[parentId].dd.map((dd) => {
-      dd.conditionValue = diseases[dd.id].nodes[parentId].top_conditions.length === 0;
+      dd.conditionValue =
+        diseases[dd.id].nodes[parentId].top_conditions.length === 0;
     });
     conditionValue = true;
   }
@@ -70,7 +73,8 @@ export const setParentConditionValue = (algorithmJsonMedicalCase, parentId, id) 
   // Set conditionValue of current PS
   nodes[id].ps.map((ps) => {
     if (ps.id === parentId) {
-      ps.conditionValue = nodes[ps.id].nodes[id].top_conditions.length === 0 && conditionValue;
+      ps.conditionValue =
+        nodes[ps.id].nodes[id].top_conditions.length === 0 && conditionValue;
     }
   });
 };
@@ -79,14 +83,10 @@ export const setParentConditionValue = (algorithmJsonMedicalCase, parentId, id) 
 // @return [Json] algorithmJsonMedicalCase
 // Get every nodes and identify which are ready for next batch
 export const generateNextBatch = (algorithmJsonMedicalCase) => {
-  const {
-    nodes,
-    batches,
-  } = algorithmJsonMedicalCase;
-  let newBatch = {name: '', current: false, nodes: []};
+  const { nodes, batches } = algorithmJsonMedicalCase;
+  let newBatch = { name: '', current: false, nodes: [] };
 
   Object.keys(nodes).map((nodeId) => {
-
     // Check if the question or ps has already been answered
     if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
       let hasConditionValue = false;
@@ -99,7 +99,6 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
 
       if (hasConditionValue) {
         let isInBatch = false;
-
 
         // Find if the node is not already in another batch
         batches.map((b) => {
@@ -124,7 +123,6 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
   return algorithmJsonMedicalCase;
 };
 
-
 // TODO not working at 100%, fix it
 const recursiveNodePs = (state$, node, ps) => {
   return node.children.some((nodeChildID) => {
@@ -132,11 +130,11 @@ const recursiveNodePs = (state$, node, ps) => {
     // IF the child is OUR PS
     if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
       // Calculate state of OUR PS
-
       return nodeConditionChecker(state$, null, null, ps);
     }
     // IF the child is an other PS
     if (nodeChild.type === nodesType.ps) {
+      console.log(nodeChild)
       // Get state of this PS
     }
 
@@ -187,7 +185,7 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     return comparingTopConditions(state$, child, conditions);
   });
   // reduce here
-  console.log(conditionFinal, 'conditionFinal');
+
   const reduceConditionArrayBoolean = reduce(
     conditionFinal,
     (result, value) => {
@@ -196,8 +194,11 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     false
   );
 
+  console.log(conditionFinal, 'conditionFinal', reduceConditionArrayBoolean);
+
   return reduceConditionArrayBoolean;
 };
+
 
 // TODO: IN PROGRESS
 const checkOneCondition = (state$, child, wantedId, nodeId, conditionType) => {

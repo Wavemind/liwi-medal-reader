@@ -6,16 +6,8 @@ import { getItemFromArray } from '../../../engine/api/LocalStorage';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTitle2 } from '../../../template/layout';
 import find from 'lodash/find';
-import {
-  Tab,
-  Tabs,
-  Text,
-  View,
-} from 'native-base';
-import {
-  liwiColors,
-  screenHeight,
-} from '../../../utils/constants';
+import { Tab, Tabs, Text, View } from 'native-base';
+import { liwiColors, screenHeight } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -29,8 +21,15 @@ export default class Algorithm extends React.Component<Props, State> {
     const { navigation } = this.props;
     let algorithmId = navigation.getParam('algoId');
     let algorithmVersion = navigation.getParam('algoVersion');
-    let algorithm = await getItemFromArray('algorithms', 'algorithm_id', algorithmId);
-    let version = find(algorithm.versions, (al) => al.version === algorithmVersion);
+    let algorithm = await getItemFromArray(
+      'algorithms',
+      'algorithm_id',
+      algorithmId
+    );
+    let version = find(
+      algorithm.versions,
+      (al) => al.version === algorithmVersion
+    );
     await this.setState({
       ...version,
       ready: true,
@@ -38,14 +37,7 @@ export default class Algorithm extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      nodes,
-      ready,
-      diseases,
-      version,
-      description,
-      author,
-    } = this.state;
+    const { nodes, ready, diseases, version, description, author } = this.state;
 
     if (!ready) {
       return null;
@@ -54,9 +46,10 @@ export default class Algorithm extends React.Component<Props, State> {
     let questionTriage = {};
     let questionNormals = {};
 
-
     Object.keys(nodes).map((id) => {
-      nodes[id].priority === 'triage' ? (questionTriage[id] = nodes[id]) : (questionNormals[id] = nodes[id]);
+      nodes[id].priority === 'triage'
+        ? (questionTriage[id] = nodes[id])
+        : (questionNormals[id] = nodes[id]);
     });
 
     return (
@@ -76,7 +69,7 @@ export default class Algorithm extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <Questions questions={questionTriage}/>
+            <Questions questions={questionTriage} />
           </Tab>
           <Tab
             heading="Questions normales"
@@ -87,7 +80,7 @@ export default class Algorithm extends React.Component<Props, State> {
               backgroundColor: liwiColors.redColor,
             }}
           >
-            <Questions questions={questionNormals}/>
+            <Questions questions={questionNormals} />
           </Tab>
           <Tab
             heading="Diagnostic"

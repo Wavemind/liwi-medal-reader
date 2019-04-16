@@ -10,7 +10,7 @@ export const initialState = null;
 
 export default function medicalCaseReducer(
   state: Object = initialState,
-  action: Object,
+  action: Object
 ) {
   switch (action.type) {
     case actions.MC_GENERATE_NEXT_BATCH: {

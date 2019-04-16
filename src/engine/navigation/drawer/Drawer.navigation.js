@@ -2,16 +2,8 @@ import React, { Component } from 'react';
 import { styles } from './Drawer.style';
 import { SeparatorLine } from '../../../template/layout';
 
-import {
-  AppState,
-  View,
-} from 'react-native';
-import {
-  Button,
-  Container,
-  Icon,
-  Text,
-} from 'native-base';
+import { AppState, View } from 'react-native';
+import { Button, Container, Icon, Text } from 'native-base';
 
 export default class Drawer extends Component {
   state = {
@@ -53,7 +45,7 @@ export default class Drawer extends Component {
                   navigation.navigate('MedicalCase', {
                     title: `${medicalCase.patient.firstname} ${
                       medicalCase.patient.lastname
-                      }`,
+                    }`,
                   })
                 }
               >
@@ -76,7 +68,7 @@ export default class Drawer extends Component {
                   navigation.navigate('WorkCase', {
                     title: `${medicalCase.patient.firstname} ${
                       medicalCase.patient.lastname
-                      }`,
+                    }`,
                   })
                 }
               >
@@ -99,7 +91,7 @@ export default class Drawer extends Component {
             btnDrawer
             onPress={() => navigation.navigate('MedicalCases')}
           >
-            <Icon style={styles.icon} dark type={'FontAwesome5'} name="boxes"/>
+            <Icon style={styles.icon} dark type={'FontAwesome5'} name="boxes" />
             <Text dark>MedicalCases</Text>
           </Button>
           <Button
@@ -108,10 +100,10 @@ export default class Drawer extends Component {
             btnDrawer
             onPress={() => navigation.navigate('Algorithms')}
           >
-            <Icon style={styles.icon} dark type={'Entypo'} name="flow-tree"/>
+            <Icon style={styles.icon} dark type={'Entypo'} name="flow-tree" />
             <Text dark>Algorithmes</Text>
           </Button>
-          <SeparatorLine/>
+          <SeparatorLine />
           <Button
             transparent
             iconLeft
@@ -132,11 +124,11 @@ export default class Drawer extends Component {
             btnDrawer
             onPress={() => navigation.navigate('Settings')}
           >
-            <Icon style={styles.icon} dark type={'AntDesign'} name="setting"/>
+            <Icon style={styles.icon} dark type={'AntDesign'} name="setting" />
             <Text dark>Paramètres</Text>
           </Button>
           <Button transparent iconLeft btnDrawer onPress={this.logout}>
-            <Icon style={styles.icon} dark type={'AntDesign'} name="logout"/>
+            <Icon style={styles.icon} dark type={'AntDesign'} name="logout" />
             <Text dark>Se déconnecter</Text>
           </Button>
         </View>

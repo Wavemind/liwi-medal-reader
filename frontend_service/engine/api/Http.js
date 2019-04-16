@@ -1,11 +1,8 @@
 import { devHost } from '../../../frontend_service/constants';
 import { getDeviceInformation } from '../../../src/engine/api/Device';
-import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 import isArray from 'lodash/isArray';
-import {
-  ErrorHttpFactory,
-  ToastFactory,
-} from 'utils/ToastFactory';
+import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
 import {
   getItems,
   getSession,
@@ -20,7 +17,8 @@ import {
 const getHeaders = async (method = 'GET', body = false, userId = null) => {
   const credentials = async () => await getSession(userId);
   return credentials().then((data) => {
-    let header = {
+    let header;
+    header = {
       method: method,
       headers: {
         'access-token': data.access_token,
@@ -44,14 +42,19 @@ const getHeaders = async (method = 'GET', body = false, userId = null) => {
 export const get = async (params, userId) => {
   const response = await fetch(
     devHost + '/api/v1/' + params,
-    await getHeaders('GET', false, userId),
+    await getHeaders('GET', false, userId)
   ).catch(function(error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {
+      type: 'danger',
+    });
     console.log(error);
   });
 
   const httpResponse = await response;
+
+
   let jsonResponse = await httpResponse.json();
+
 
   if (httpResponse.status === 200) {
     return jsonResponse;
@@ -70,7 +73,6 @@ export const get = async (params, userId) => {
   }
 };
 
-
 // @params [String] params, [Object] body, [Integer] userId, [String] method
 // @return [Object] response from server
 // Https POST request
@@ -78,13 +80,15 @@ export const post = async (
   params,
   body = {},
   user_id = null,
-  method = 'POST',
+  method = 'POST'
 ) => {
   const response = await fetch(
     devHost + '/api/v1/' + params,
-    await getHeaders(method, body, user_id),
+    await getHeaders(method, body, user_id)
   ).catch(function(error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {
+      type: 'danger',
+    });
     console.log(error);
   });
 
@@ -103,7 +107,9 @@ export const postDeviceInfo = async () => {
     },
     body: JSON.stringify(device),
   }).catch(function(error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {
+      type: 'danger',
+    });
     console.log(error);
   });
 
@@ -125,7 +131,9 @@ export const auth = async (email, password) => {
       password: password,
     }),
   }).catch(function(error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', { type: 'danger' });
+    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {
+      type: 'danger',
+    });
     console.log(error);
   });
 
@@ -154,6 +162,7 @@ export const fetchAlgorithms = async (userId) => {
       if (deviceInfo === false) {
         reject('Autorisations nécessaire');
       }
+
       console.log('---- fetchAlgorithms -----');
 
       deviceInfo.activity.user_id = userId;
@@ -161,33 +170,28 @@ export const fetchAlgorithms = async (userId) => {
       // Send activity from device
       post('activities', deviceInfo, userId);
 
-      let serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
+      let serverAlgorithm = await get(
+        `versions?mac_address=${
+          deviceInfo.activity.device_attributes.mac_address
+        }`,
+        userId
+      );
+
       let localAlgorithms = await getItems('algorithms');
-      let algorithm = find(localAlgorithms, (a) => a.id === serverAlgorithm.id);
-      let version;
+
+      let algorithm = findIndex(localAlgorithms, (a) => a.algorithm_id === serverAlgorithm.algorithm_id);
 
       if (serverAlgorithm.errors) {
         resolve(serverAlgorithm.errors);
         return null;
-      } else {
-        if (algorithm !== undefined) {
-          // Algorithm container already in local, checking if the version is new
-          version = find(
-            algorithm.versions,
-            (a) => a.version === serverAlgorithm.version,
-          );
 
-          // New version available, push it in local
-          if (version === undefined) {
-            algorithm.versions.push(serverAlgorithm);
-          }
-        } else if (serverAlgorithm.id !== undefined) {
-          // Algorithm container not existing in local, getting the container and the available version
-          localAlgorithms.push({
-            id: serverAlgorithm.id,
-            name: serverAlgorithm.name,
-            versions: [serverAlgorithm],
-          });
+      } else {
+        if (algorithm !== -1) {
+          // Algorithm container already in local, replace this local algo
+          localAlgorithms[algorithm] = serverAlgorithm;
+        } else {
+          // Algorithm not existing in local, push it
+          localAlgorithms.push(serverAlgorithm);
         }
 
         ToastFactory('Algo Updated', { type: 'success' });

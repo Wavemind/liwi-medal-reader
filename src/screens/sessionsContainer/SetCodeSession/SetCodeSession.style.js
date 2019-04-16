@@ -1,19 +1,14 @@
-import {StyleSheet} from 'react-native';
-import {
-  liwiColors,
-  screenWidth,
-} from '../../../utils/constants';
+import { StyleSheet } from 'react-native';
+import { liwiColors, screenWidth } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
   },
-
   height: {
-    height: 300,
+    height: 60,
   },
-
   content: {
     width: screenWidth * 0.8,
     borderColor: liwiColors.redColor,
@@ -25,5 +20,4 @@ export const styles = StyleSheet.create({
   marginTop: {
     marginTop: 20,
   },
-
 });

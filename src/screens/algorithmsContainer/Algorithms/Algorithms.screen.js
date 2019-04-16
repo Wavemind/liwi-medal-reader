@@ -6,17 +6,9 @@ import { getItems } from '../../../engine/api/LocalStorage';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
 import { fetchAlgorithms } from '../../../../frontend_service/engine/api/Http';
 import { styles } from './Algorithms.style.js';
-import {
-  CardView,
-  RightView,
-} from '../../../template/layout';
-import {
-  Button,
-  H2,
-  Text,
-  View,
-} from 'native-base';
-import {ScrollView} from 'react-native';
+import { CardView, RightView } from '../../../template/layout';
+import { Button, H2, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
 
 type Props = NavigationScreenProps & {};
 type State = { algorithms: Array<Object> };
@@ -53,6 +45,8 @@ export default class Algorithms extends React.Component<Props, State> {
     const { algorithms } = this.state;
     const { navigation } = this.props;
 
+    console.log(algorithms);
+
     return (
       <View style={styles.container}>
         <View style={styles.content}>
@@ -69,23 +63,21 @@ export default class Algorithms extends React.Component<Props, State> {
                     style={styles.view}
                   >
                     <H2>{algorithm.name}</H2>
-                    <Text>{algorithm.description}</Text>
-                    <Text>N'versions : {algorithm.versions.length}</Text>
+                    <Text>{algorithm.description} </Text>
+                    <Text>versions : {algorithm.versions}</Text>
                     <RightView>
-                      {algorithm.versions.map((algorithmVersion) => (
-                        <Button
-                          key={algorithmVersion}
-                          onPress={() => {
-                            navigation.navigate('Algorithm', {
-                              algoId: algorithmVersion.algorithm_id,
-                              algoVersion: algorithmVersion.version,
-                              title: algorithmVersion.name,
-                            });
-                          }}
-                        >
-                          <Text>V : {algorithmVersion.version}</Text>
-                        </Button>
-                      ))}
+                      <Button
+                        key={algorithm.versions}
+                        onPress={() => {
+                          navigation.navigate('Algorithm', {
+                            algoId: algorithm.algorithm_id,
+                            algoVersion: algorithm.version,
+                            title: algorithm.name,
+                          });
+                        }}
+                      >
+                        <Text>V : {algorithm.version}</Text>
+                      </Button>
                     </RightView>
                   </CardView>
                 ))}

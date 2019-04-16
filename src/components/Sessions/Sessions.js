@@ -1,11 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import {
-  Button,
-  Icon,
-  Text,
-} from 'native-base';
+import { Button, Icon, Text } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import type { SessionsProviderState } from 'engine/contexts/Sessions.context';
 import { getSession } from 'engine/api/LocalStorage';
