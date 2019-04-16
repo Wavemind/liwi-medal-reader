@@ -4,7 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { getItems } from '../../../engine/api/LocalStorage';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
-import { fetchAlgorithms } from '../../../../frontend_service/engine/api/Http';
+import { fetchAlgorithms } from '../../../../frontend_service/api/Http';
 import { styles } from './Algorithms.style.js';
 import {
   CardView,

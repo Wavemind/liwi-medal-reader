@@ -2,10 +2,10 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import find from 'lodash/find';
-import { fetchAlgorithms } from '../../../frontend_service/engine/api/Http';
+import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 import { sha256 } from 'js-sha256';
 import { saltHash } from '../../../frontend_service/constants';
-import { ToastFactory } from 'utils/ToastFactory';
+import { displayToast } from 'utils/CustomToast';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
@@ -160,7 +160,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
       session = await getSession(id);
       this.setUserContext(session);
     } else {
-      ToastFactory('Pas le bon code', { type: 'danger' });
+      displayToast('Pas le bon code', { type: 'danger' });
     }
   };
 
