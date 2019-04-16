@@ -9,9 +9,9 @@ import { styles } from './Algorithms.style.js';
 import { CardView, RightView } from '../../../template/layout';
 import { Button, H2, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
-
 type Props = NavigationScreenProps & {};
 type State = { algorithms: Array<Object> };
+import moment from 'moment';
 
 export default class Algorithms extends React.Component<Props, State> {
   state = {
@@ -30,6 +30,41 @@ export default class Algorithms extends React.Component<Props, State> {
     await this.setState({ algorithms });
   };
 
+  contentView = () => (
+    <ScrollView>
+      {this.state.algorithms.map((algorithm) => (
+        <CardView
+          elevation={5}
+          key={algorithm.id + '_algorithm'}
+          style={algorithm.selected ? styles.selected : styles.view}
+        >
+          <H2>{algorithm.name}</H2>
+          <Text>{algorithm.description} </Text>
+          <Text>versions : {algorithm.versions}</Text>
+          <RightView>
+            <Button
+              key={algorithm.versions}
+              onPress={() => {
+                this.props.navigation.navigate('Algorithm', {
+                  algoId: algorithm.algorithm_id,
+                  algoVersion: algorithm.version,
+                  title: algorithm.name,
+                });
+              }}
+            >
+              <Text>V : {algorithm.version}</Text>
+            </Button>
+          </RightView>
+        </CardView>
+      ))}
+      {this.state.algorithms.length === 0 ? (
+        <CardView elevation={5} key={'_algo'} style={styles.view}>
+          <Text>Aucun algorithme</Text>
+        </CardView>
+      ) : null}
+    </ScrollView>
+  );
+
   // Fetch algorithms from server and save it in local storage
   onRefresh = async () => {
     this.setState({ isRefreshing: true });
@@ -42,11 +77,6 @@ export default class Algorithms extends React.Component<Props, State> {
   };
 
   render() {
-    const { algorithms } = this.state;
-    const { navigation } = this.props;
-
-    console.log(algorithms);
-
     return (
       <View style={styles.container}>
         <View style={styles.content}>
@@ -54,40 +84,7 @@ export default class Algorithms extends React.Component<Props, State> {
             isRefreshing={this.state.isRefreshing}
             onRefresh={this.onRefresh}
             pullHeight={100}
-            contentView={
-              <ScrollView>
-                {algorithms.map((algorithm) => (
-                  <CardView
-                    elevation={5}
-                    key={algorithm.id + '_algorithm'}
-                    style={styles.view}
-                  >
-                    <H2>{algorithm.name}</H2>
-                    <Text>{algorithm.description} </Text>
-                    <Text>versions : {algorithm.versions}</Text>
-                    <RightView>
-                      <Button
-                        key={algorithm.versions}
-                        onPress={() => {
-                          navigation.navigate('Algorithm', {
-                            algoId: algorithm.algorithm_id,
-                            algoVersion: algorithm.version,
-                            title: algorithm.name,
-                          });
-                        }}
-                      >
-                        <Text>V : {algorithm.version}</Text>
-                      </Button>
-                    </RightView>
-                  </CardView>
-                ))}
-                {algorithms.length === 0 ? (
-                  <CardView elevation={5} key={'_algo'} style={styles.view}>
-                    <Text>Aucun algorithme</Text>
-                  </CardView>
-                ) : null}
-              </ScrollView>
-            }
+            contentView={this.contentView()}
             onPullAnimationSrc={require('../../../utils/animations/medical.json')}
             onStartRefreshAnimationSrc={require('../../../utils/animations/medical.json')}
             onRefreshAnimationSrc={require('../../../utils/animations/medical.json')}

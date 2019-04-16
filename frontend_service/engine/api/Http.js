@@ -1,6 +1,7 @@
 import { devHost } from '../../../frontend_service/constants';
 import { getDeviceInformation } from '../../../src/engine/api/Device';
 import findIndex from 'lodash/findIndex';
+import find from 'lodash/find';
 import isArray from 'lodash/isArray';
 import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
 import {
@@ -180,6 +181,11 @@ export const fetchAlgorithms = async (userId) => {
       let localAlgorithms = await getItems('algorithms');
 
       let algorithm = findIndex(localAlgorithms, (a) => a.algorithm_id === serverAlgorithm.algorithm_id);
+      let algorithmSelected = find(localAlgorithms, (a) => a.selected === true);
+
+      if (algorithmSelected !== undefined) {
+        algorithmSelected.selected = false;
+      }
 
       if (serverAlgorithm.errors) {
         resolve(serverAlgorithm.errors);
@@ -189,8 +195,10 @@ export const fetchAlgorithms = async (userId) => {
         if (algorithm !== -1) {
           // Algorithm container already in local, replace this local algo
           localAlgorithms[algorithm] = serverAlgorithm;
+          localAlgorithms[algorithm].selected = true;
         } else {
           // Algorithm not existing in local, push it
+          serverAlgorithm.selected = true;
           localAlgorithms.push(serverAlgorithm);
         }
 

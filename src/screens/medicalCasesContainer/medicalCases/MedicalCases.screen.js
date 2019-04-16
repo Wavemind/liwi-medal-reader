@@ -10,6 +10,7 @@ import LottieView from 'lottie-react-native';
 import algorithmJson from '../../../../frontend_service/engine/algorithm/algorithm_versions.json';
 import { Button, H3, Picker, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
+import find from 'lodash/find';
 import {
   createMedicalCase,
   getItems,
@@ -29,6 +30,7 @@ export default class MedicalCases extends React.Component<Props, State> {
     algorithms: [],
     selected: 'null',
     versions: [],
+    generate: null,
   };
 
   async componentWillMount() {
@@ -61,11 +63,18 @@ export default class MedicalCases extends React.Component<Props, State> {
 
   // Create new medical case
   generateMedicalCase = async () => {
+    await this.setState({ generate: true });
+    this.loading.play();
     const response = await fetch('https://uinames.com/api/?ext&region=france');
 
     const json = await response.json();
 
-    let algorithm = setInitialCounter(algorithmJson);
+    const algorithms = await getItems('algorithms');
+
+    const algorithmUsed = find(algorithms, (a) => a.selected);
+
+    let algorithm = setInitialCounter(algorithmUsed);
+
     let algorithmFirstBatch = generateInitialBatch(algorithm);
 
     await createMedicalCase({
@@ -82,6 +91,8 @@ export default class MedicalCases extends React.Component<Props, State> {
       },
     });
     await this.getMedicalCases();
+    await this.setState({ generate: false });
+    this.loading.reset();
   };
 
   // Select a medical case and redirect to patient's view
@@ -96,7 +107,7 @@ export default class MedicalCases extends React.Component<Props, State> {
   };
 
   render() {
-    const { versions, selected } = this.state;
+    const { versions, selected, generate } = this.state;
 
     const { medicalCase } = this.props;
 
@@ -120,20 +131,28 @@ export default class MedicalCases extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View style={styles.view}>
-          <LottieView
+          {generate === true ? (
+            <LottieView
+              ref={(loading) => {
+                this.loading = loading;
+              }}
+              speed={3}
+              source={require('../../../utils/animations/loading.json')}
+              style={styles.height}
+              loop
+            />
+          ) :  <LottieView
             source={require('../../../utils/animations/blood_1.json')}
             autoPlay
             style={styles.height}
             loop
-          />
+          />}
         </View>
         <H3>Actions</H3>
-        <Button
-          onPress={() => this.generateMedicalCase()}
-          // disabled={selected === 'null'}
-        >
+        <Button onPress={() => this.generateMedicalCase()} disabled={generate}>
           <Text>Créer un cas médical</Text>
         </Button>
+
         <Picker
           mode="dropdown"
           iosHeader="Select your medical case"
@@ -146,6 +165,7 @@ export default class MedicalCases extends React.Component<Props, State> {
             <Picker.Item label={v.version} value={v.version} />
           ))}
         </Picker>
+
         <SeparatorLine />
         <H3>Cas médicals</H3>
         {_renderMedicalCases}
