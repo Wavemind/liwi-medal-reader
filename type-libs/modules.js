@@ -90,7 +90,7 @@ declare module 'react-i18next' {
   declare module.exports: any;
 }
 
-declare module 'utils/ToastFactory' {
+declare module 'utils/Error' {
   declare module.exports: any;
 }
 
