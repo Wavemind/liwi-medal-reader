@@ -1,14 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import {
-  Tab,
-  Tabs,
-  Text,
-  View,
-  Icon,
-  Button,
-} from 'native-base';
+import { Tab, Tabs, Text, View, Icon, Button } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { liwiColors } from '../../../utils/constants';
@@ -24,14 +17,7 @@ export default class WorkCase extends React.Component<Props, State> {
   render() {
     const {
       nextBatch,
-      medicalCase: {
-        nodes,
-        diseases,
-        version,
-        description,
-        author,
-        batches,
-      },
+      medicalCase: { nodes, diseases, version, description, author, batches },
     } = this.props;
 
     // Tabs name
@@ -64,7 +50,7 @@ export default class WorkCase extends React.Component<Props, State> {
           <Text>Par : {author}</Text>
         </View>
         <Button onPress={() => nextBatch()}>
-          <Icon name="forward" type={'AntDesign'}/>
+          <Icon name="forward" type={'AntDesign'} />
           <Text>Créer le batch suivant</Text>
         </Button>
         <Tabs>
@@ -79,9 +65,9 @@ export default class WorkCase extends React.Component<Props, State> {
                   backgroundColor: liwiColors.redColor,
                 }}
               >
-                <Questions questions={tabBatches[batchId].nodes}/>
+                <Questions questions={tabBatches[batchId].nodes} />
               </Tab>
-            ) : null,
+            ) : null
           )}
           <Tab
             heading="Diagnostic"
@@ -94,10 +80,7 @@ export default class WorkCase extends React.Component<Props, State> {
           >
             <View style={styles.flex}>
               {Object.keys(diseases).map((id) => (
-                <View
-                  style={styles.diseases}
-                  key={id + '_diseases'}
-                >
+                <View style={styles.diseases} key={id + '_diseases'}>
                   <Text>id : {diseases[id].id}</Text>
                   <Text>reference : {diseases[id].reference}</Text>
                   <Text>label : {diseases[id].label}</Text>

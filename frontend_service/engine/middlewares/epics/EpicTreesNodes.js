@@ -3,10 +3,7 @@ import findIndex from 'lodash/findIndex';
 import { nodesType } from '../../../constants';
 import { of } from 'rxjs';
 import { actions } from '../../actions/types.actions';
-import {
-  concatMap,
-  filter,
-} from 'rxjs/operators';
+import { concatMap, filter } from 'rxjs/operators';
 import {
   conditionValueChange,
   diagnosisChildren,
@@ -24,7 +21,7 @@ import {
 
 // @params [Object] action$, [Object] state$
 // @return [Array][Object] arrayActions
-// Loop on diagnostics AND
+// Loop on diagnostics AND PS
 // TODO make PS change side effect
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
@@ -35,7 +32,7 @@ export const epicCatchAnswer = (action$, state$) =>
 
       console.log(
         '%c ########################  epicCatchAnswer ########################',
-        'background: #F6F3EE; color: #b84c4c; padding: 5px',
+        'background: #F6F3EE; color: #b84c4c; padding: 5px'
       );
       console.log({ state: state$.value });
 
@@ -47,15 +44,15 @@ export const epicCatchAnswer = (action$, state$) =>
 
       nodeDdParents.map((dd) =>
         // Define disease type so it will not be considered as node
-        arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.d)),
+        arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.d))
       );
 
       nodePsParents.map((ps) =>
-        arrayActions.push(dispatchNodeAction(index, ps.id)),
+        arrayActions.push(dispatchNodeAction(index, ps.id))
       );
 
       return of(...arrayActions);
-    }),
+    })
   );
 
 // @params [Object] action$, [Object] state$
@@ -68,11 +65,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     concatMap((action) => {
       // indexNode = node that has just been answered
       // indexChild = dd or ps being affected by the node
-      let {
-        indexNode,
-        indexChild,
-        type,
-      } = action.payload;
+      let { indexNode, indexChild, type } = action.payload;
 
       console.log(
         '--- NODES ---',
@@ -80,7 +73,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
         indexNode,
         'suivant : ',
         indexChild,
-        type,
+        type
       );
 
       // indexNode = Parent node
@@ -109,18 +102,19 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return null;
         case nodesType.d:
           // Get children of the node in the current diagnostic
-          nodeChildren = state$.value.diseases[indexChild].nodes[indexNode].children;
+          nodeChildren =
+            state$.value.diseases[indexChild].nodes[indexNode].children;
 
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) =>
-            arrayActions.push(dispatchNodeAction(indexChild, childId)),
+            arrayActions.push(dispatchNodeAction(indexChild, childId))
           );
           return of(...arrayActions);
         case nodesType.ps:
           // TODO : Handle PS
           return of(predefinedSyndromeChildren(indexChild, indexNode));
       }
-    }),
+    })
   );
 
 // @params [Object] action$, [Object] state$
@@ -137,12 +131,23 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
       // Here get the state if this PS
       const ps = state$.value.nodes[indexPS];
 
+
       let stateOfPs = getStateToThisPs(state$, ps);
 
-      return of(setPsAnswer(ps.id, stateOfPs));
 
-      // Check the condition of the children
-    }),
+      let answeredId;
+      if (stateOfPs === true) {
+        answeredId = ps.answers[Object.keys(ps.answers)[0]].id;
+      } else if (stateOfPs === false) {
+        answeredId = ps.answers[Object.keys(ps.answers)[1]].id;
+      }
+
+      console.log(answeredId)
+
+      // if (answeredId !== ps.answer) {
+        return of(setPsAnswer(ps.id, answeredId));
+      // }
+    })
   );
 
 // @params [Object] action$, [Object] state$
@@ -160,12 +165,12 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
         state$,
         indexDD,
         indexDiagnosis,
-        child,
+        child
       );
 
       console.log('conditon of this final diagnosis', condition);
       // Check the condition of the children
-    }),
+    })
     // TODO : Trigger Treatment/Management handling
   );
 
@@ -184,20 +189,26 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
         state$,
         indexDD,
         indexChild,
-        child,
+        child
       );
       let actions = [];
 
       console.log('question', indexChild, ' is ', condition, 'for', indexDD);
-      let findConditionValue = findIndex(state$.value.nodes[indexChild].dd, (o) => o.id === indexDD);
+      let findConditionValue = findIndex(
+        state$.value.nodes[indexChild].dd,
+        (o) => o.id === indexDD
+      );
 
       // Update the condition value if it is different from the current one
-      if (state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !== condition) {
+      if (
+        state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !==
+        condition
+      ) {
         actions.push(
-          conditionValueChange(indexChild, findConditionValue, condition),
+          conditionValueChange(indexChild, findConditionValue, condition)
         );
       }
 
       return of(...actions);
-    }),
+    })
   );

@@ -8,16 +8,8 @@ import { styles } from './MedicalCases.style';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
 import algorithmJson from '../../../../frontend_service/engine/algorithm/algorithm_versions.json';
-import {
-  Button,
-  H3,
-  Picker,
-  Text,
-} from 'native-base';
-import {
-  ScrollView,
-  View,
-} from 'react-native';
+import { Button, H3, Picker, Text } from 'native-base';
+import { ScrollView, View } from 'react-native';
 import {
   createMedicalCase,
   getItems,
@@ -46,8 +38,8 @@ export default class MedicalCases extends React.Component<Props, State> {
     let versions = [];
     algorithms.map((algorithm) =>
       Object.keys(algorithm.versions).map((version) =>
-        versions.push(algorithm.versions[version]),
-      ),
+        versions.push(algorithm.versions[version])
+      )
     );
 
     this.setState({ algorithms, versions });
@@ -104,10 +96,7 @@ export default class MedicalCases extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      versions,
-      selected,
-    } = this.state;
+    const { versions, selected } = this.state;
 
     const { medicalCase } = this.props;
 
@@ -130,8 +119,7 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     return (
       <ScrollView>
-        <View
-          style={styles.view}>
+        <View style={styles.view}>
           <LottieView
             source={require('../../../utils/animations/blood_1.json')}
             autoPlay
@@ -153,12 +141,12 @@ export default class MedicalCases extends React.Component<Props, State> {
           selectedValue={selected}
           onValueChange={this.onValueChange}
         >
-          <Picker.Item label="Choisir l'algorithme" value="null"/>
+          <Picker.Item label="Choisir l'algorithme" value="null" />
           {versions.map((v) => (
-            <Picker.Item label={v.version} value={v.version}/>
+            <Picker.Item label={v.version} value={v.version} />
           ))}
         </Picker>
-        <SeparatorLine/>
+        <SeparatorLine />
         <H3>Cas médicals</H3>
         {_renderMedicalCases}
       </ScrollView>

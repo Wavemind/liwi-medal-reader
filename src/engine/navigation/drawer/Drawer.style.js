@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {liwiColors} from '../../../utils/constants';
+import { StyleSheet } from 'react-native';
+import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   header: {
@@ -7,9 +7,9 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
   content: {
-    padding: 20
+    padding: 20,
   },
   icon: {
-    color: liwiColors.redColor
+    color: liwiColors.redColor,
   },
 });

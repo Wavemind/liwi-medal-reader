@@ -6,10 +6,7 @@ import storage from 'redux-persist/es/storage';
 import rootReducer from './reducers';
 import rootEpic from './middlewares/epics';
 
-import {
-  persistReducer,
-  persistStore,
-} from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 
 const persistConfig = {
   debug: true,

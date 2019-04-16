@@ -5,16 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
 import { ToastFactory } from '../../../utils/ToastFactory';
 import { styles } from './NewSession.style';
-import {
-  Button,
-  Form,
-  Input,
-  Item,
-  Label,
-  Text,
-  View,
-} from 'native-base';
-
+import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 type State = {
@@ -49,10 +40,7 @@ export default class NewSession extends React.Component<Props, State> {
   // Authentication method
   signIn = async () => {
     this.setState({ loading: true });
-    const {
-      email,
-      password,
-    } = this.state;
+    const { email, password } = this.state;
     const { sessions } = this.props;
 
     await sessions
@@ -73,13 +61,7 @@ export default class NewSession extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      email,
-      password,
-      loading,
-      success,
-      id,
-    } = this.state;
+    const { email, password, loading, success, id } = this.state;
 
     const { navigation } = this.props;
 
