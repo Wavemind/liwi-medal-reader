@@ -33,8 +33,8 @@ export default class Drawer extends Component {
           </Text>
           <Text light>{user.email}</Text>
         </View>
-        <View style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
+        <View style={styles.flex}>
+          <View style={styles.flex}>
             <Button
               transparent
               iconLeft
@@ -108,13 +108,7 @@ export default class Drawer extends Component {
               </React.Fragment>
             ) : null}
           </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-            }}
-          >
+          <View style={styles.end}>
             <Button
               transparent
               iconLeft
