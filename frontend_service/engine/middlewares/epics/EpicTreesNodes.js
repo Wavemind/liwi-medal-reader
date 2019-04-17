@@ -142,8 +142,6 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
         answeredId = ps.answers[Object.keys(ps.answers)[1]].id;
       }
 
-      console.log(answeredId)
-
       // if (answeredId !== ps.answer) {
         return of(setPsAnswer(ps.id, answeredId));
       // }

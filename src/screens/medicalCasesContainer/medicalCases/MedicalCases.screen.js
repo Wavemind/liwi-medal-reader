@@ -47,13 +47,6 @@ export default class MedicalCases extends React.Component<Props, State> {
     this.setState({ algorithms, versions });
   }
 
-  // Update value
-  onValueChange = (value: string) => {
-    this.setState({
-      selected: value,
-    });
-  };
-
   // Get medical cases of current user
   getMedicalCases = async () => {
     const { app } = this.props;
@@ -107,7 +100,7 @@ export default class MedicalCases extends React.Component<Props, State> {
   };
 
   render() {
-    const { versions, selected, generate } = this.state;
+    const { generate } = this.state;
 
     const { medicalCase } = this.props;
 
@@ -152,19 +145,6 @@ export default class MedicalCases extends React.Component<Props, State> {
         <Button onPress={() => this.generateMedicalCase()} disabled={generate}>
           <Text>Créer un cas médical</Text>
         </Button>
-
-        <Picker
-          mode="dropdown"
-          iosHeader="Select your medical case"
-          style={styles.picker}
-          selectedValue={selected}
-          onValueChange={this.onValueChange}
-        >
-          <Picker.Item label="Choisir l'algorithme" value="null" />
-          {versions.map((v) => (
-            <Picker.Item label={v.version} value={v.version} />
-          ))}
-        </Picker>
 
         <SeparatorLine />
         <H3>Cas médicals</H3>
