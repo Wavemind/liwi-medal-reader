@@ -68,20 +68,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     concatMap((action) => {
       // indexNode = node that has just been answered
       // indexChild = dd or ps being affected by the node
-      let {
-        indexNode,
-        indexChild,
-        type,
-      } = action.payload;
-
-      console.log(
-        '--- NODES ---',
-        'cliqué :',
-        indexNode,
-        'suivant : ',
-        indexChild,
-        type,
-      );
+      let { indexNode, indexChild, type } = action.payload;
 
       // indexNode = Parent node
       // indexChild = node that is affected by it
@@ -91,6 +78,15 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       if (type === null) {
         type = state$.value.nodes[indexChild].type;
       }
+
+      console.log(
+        '--- NODES ---',
+        'cliqué :',
+        indexNode,
+        'suivant : ',
+        indexChild,
+        type
+      );
 
       let nodeChildren;
 
@@ -109,18 +105,26 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return null;
         case nodesType.d:
           // Get children of the node in the current diagnostic
-          nodeChildren = state$.value.diseases[indexChild].nodes[indexNode].children;
+          nodeChildren =
+            state$.value.diseases[indexChild].nodes[indexNode].children;
 
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) =>
-            arrayActions.push(dispatchNodeAction(indexChild, childId)),
+            arrayActions.push(
+              dispatchNodeAction(
+                indexChild,
+                childId,
+                state$.value.nodes[childId].type
+              )
+            )
           );
+
           return of(...arrayActions);
         case nodesType.ps:
           // TODO : Handle PS
           return of(predefinedSyndromeChildren(indexChild, indexNode));
       }
-    }),
+    })
   );
 
 // @params [Object] action$, [Object] state$
@@ -137,12 +141,22 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
       // Here get the state if this PS
       const ps = state$.value.nodes[indexPS];
 
+
       let stateOfPs = getStateToThisPs(state$, ps);
 
-      return of(setPsAnswer(ps.id, stateOfPs));
+      let answeredId;
+      if (stateOfPs === true) {
+        answeredId = ps.answers[Object.keys(ps.answers)[0]].id;
+      } else if (stateOfPs === false) {
+        answeredId = ps.answers[Object.keys(ps.answers)[1]].id;
+      }
 
-      // Check the condition of the children
-    }),
+      console.log(indexPS, ' -> ce PS a comme réponse : ', answeredId);
+
+      // if (answeredId !== ps.answer) {
+      return of(setPsAnswer(ps.id, answeredId));
+      // }
+    })
   );
 
 // @params [Object] action$, [Object] state$
@@ -160,12 +174,12 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
         state$,
         indexDD,
         indexDiagnosis,
-        child,
+        child
       );
 
-      console.log('conditon of this final diagnosis', condition);
+      console.log('-> conditon of this final diagnosis', condition);
       // Check the condition of the children
-    }),
+    })
     // TODO : Trigger Treatment/Management handling
   );
 
@@ -184,20 +198,31 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
         state$,
         indexDD,
         indexChild,
-        child,
+        child
       );
       let actions = [];
 
       console.log('question', indexChild, ' is ', condition, 'for', indexDD);
-      let findConditionValue = findIndex(state$.value.nodes[indexChild].dd, (o) => o.id === indexDD);
+
+      let findConditionValue = findIndex(
+        state$.value.nodes[indexChild].dd,
+        (o) => o.id === indexDD
+      );
 
       // Update the condition value if it is different from the current one
-      if (state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !== condition) {
+      // if (
+      //   state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !==
+      //   condition
+      // ) {
+      // IF the node is always possible we do nothing
+      if (condition !== null) {
         actions.push(
-          conditionValueChange(indexChild, findConditionValue, condition),
+          conditionValueChange(indexChild, findConditionValue, condition)
         );
+        actions.push(dispatchNodeAction(indexChild, indexDD, nodesType.d));
       }
+      // }
 
       return of(...actions);
-    }),
+    })
   );

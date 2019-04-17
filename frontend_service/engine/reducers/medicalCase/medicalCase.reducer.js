@@ -5,6 +5,7 @@ import { REHYDRATE } from 'redux-persist';
 import { setMedicalCase } from '../../../../src/engine/api/LocalStorage';
 import findKey from 'lodash/findKey';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
+import { displayFormats } from '../../../constants';
 
 export const initialState = null;
 
@@ -58,30 +59,44 @@ export default function medicalCaseReducer(
       const { index, value } = action.payload;
       let answer;
 
+      console.log(value, index)
+
       switch (state.nodes[index].display_format) {
-        case 'Input':
+        case displayFormats.input:
           if (value.length > 0) {
             answer = findKey(state.nodes[index].answers, (answerCondition) => {
               switch (answerCondition.operator) {
-                case '>=':
+                case 'more_or_equal':
                   return value >= Number(answerCondition.value);
 
-                case '<=':
+                case 'less_or_equal':
                   return value <= Number(answerCondition.value);
 
-                case '>':
-                  return value >= Number(answerCondition.value);
+                case 'more':
+                  return value > Number(answerCondition.value);
 
-                case '<':
+                case 'less':
                   return value < Number(answerCondition.value);
 
-                case '>=, <':
+                case 'more_or_equal_and_less':
                   return (
                     value >= Number(answerCondition.value.split(',')[0]) &&
                     value < Number(answerCondition.value.split(',')[1])
                   );
 
-                case '>, <=':
+                case 'between':
+                  return (
+                    value >= Number(answerCondition.value.split(',')[0]) &&
+                    value < Number(answerCondition.value.split(',')[1])
+                  );
+
+                case 'more_and_less':
+                  return (
+                    value > Number(answerCondition.value.split(',')[0]) &&
+                    value < Number(answerCondition.value.split(',')[1])
+                  );
+
+                case 'more_and_less_or_equal':
                   return (
                     value > Number(answerCondition.value.split(',')[0]) &&
                     value <= Number(answerCondition.value.split(',')[1])
@@ -94,7 +109,10 @@ export default function medicalCaseReducer(
 
           break;
 
-        case 'RadioButton':
+        case displayFormats.radioButton:
+          answer = value;
+          break;
+        case displayFormats.list:
           answer = value;
           break;
       }
