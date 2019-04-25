@@ -95,7 +95,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
         typeNode,
         ' > : ',
         indexChild,
-        typeChild,
+        typeChild
       );
 
       let nodeChildren;
@@ -201,7 +201,6 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
   action$.pipe(
     ofType(actions.MC_DIAGNOSIS_CHILDREN),
     filter((action) => {
-
       const { indexDD, indexChild } = action.payload;
 
       const child = state$.value.nodes[indexChild];
@@ -251,7 +250,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
       );
       let actions = [];
 
-      console.log('node', indexChild, ' is ', condition, 'for', indexDD);
+      // console.log('node', indexChild, ' is ', condition, 'for', indexDD);
 
       let findActuelConditionValue = findIndex(
         state$.value.nodes[indexChild].dd,
@@ -268,8 +267,6 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
         return node.answer !== null && findDiseasesId.conditionValue === true;
       });
 
-      console.log(finder, 'finder parents')
-
       // Update the condition value if it is different from the current one
       // if (
       //   state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !==
@@ -278,7 +275,6 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
       // IF the node is always possible we do nothing
 
       // IF the condition is not null
-      console.log('here',state$.value.nodes[indexChild], condition)
 
       if (condition !== null) {
         actions.push(
@@ -289,7 +285,6 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
         if (state$.value.nodes[indexChild].answer !== null) {
           actions.push(dispatchNodeAction(indexChild, indexDD, nodesType.d));
         }
-
       } else if (finder === false) {
         // reset conditionValue to false
         actions.push(conditionValueDiseasesChange(indexChild, indexDD, false));

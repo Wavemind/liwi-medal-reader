@@ -32,8 +32,10 @@ export type SessionsProviderState = {
   logout: (userId: number) => Promise<any>,
 };
 
-export class SessionsProvider extends React.Component<SessionsProviderProps, SessionsProviderState> {
-
+export class SessionsProvider extends React.Component<
+  SessionsProviderProps,
+  SessionsProviderState
+> {
   constructor(props: SessionsProviderProps) {
     super(props);
     this.initContext();
@@ -113,7 +115,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
 }
 
 export const withSessions = (Component: React.ComponentType<any>) => (
-  props: any,
+  props: any
 ) => (
   <SessionsContext.Consumer>
     {(store) => <Component sessions={store} {...props} />}
