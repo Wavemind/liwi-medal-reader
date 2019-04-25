@@ -11,7 +11,7 @@ import {
 // TODO : Maybe build an object instead of rewriting the json
 export const generateInitialBatch = (algorithmJson) => {
   const { nodes } = algorithmJson;
-  console.log(nodes )
+  console.log(nodes);
 
   algorithmJson.batches = [
     { name: 'Triage', current: false, nodes: [] },
@@ -21,7 +21,6 @@ export const generateInitialBatch = (algorithmJson) => {
     if (nodes[nodeId].priority === priorities.triage) {
       algorithmJson.batches[0].nodes.push(nodeId);
     }
-
 
     if (nodes[nodeId].priority === priorities.mandatory) {
       algorithmJson.batches[1].nodes.push(nodeId);
@@ -153,7 +152,6 @@ export const getParentsOfThisNode = (state$, diseaseId, nodeId) => {
 
 // TODO not working at 100%, fix it
 const recursiveNodePs = (state$, node, ps, actions) => {
-
   let findConditionValuePs = find(
     state$.value.nodes[node.id].ps,
     (p) => p.id === ps.id
@@ -167,7 +165,10 @@ const recursiveNodePs = (state$, node, ps, actions) => {
     return actions.push(conditionValuePSChange(node.id, ps.id, true));
   }
 
-  if ( state$.value.nodes[node.id].answer === null && findConditionValuePs === true) {
+  if (
+    state$.value.nodes[node.id].answer === null &&
+    findConditionValuePs === true
+  ) {
     // the question is not answered but already shown, and stop and wait on the user
     return;
   }
