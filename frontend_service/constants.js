@@ -1,6 +1,6 @@
-export const devHost = 'https://liwi.wavelab.top';
+// export const devHost = 'https://liwi.wavelab.top';
 // export const devHost = 'http://192.168.1.5:3000'; // quent
-// export const devHost = 'http://192.168.31.214:3000'; // manu
+export const devHost = 'http://192.168.31.214:3000'; // manu
 // export const devHost = 'http://192.168.1.4:3000'; // alain
 
 export const saltHash =
@@ -34,6 +34,7 @@ export const priorities = {
   basic: 'basic',
   mandatory: 'mandatory',
   triage: 'triage',
+  priority: 'priority'
 };
 
 export const categories = {

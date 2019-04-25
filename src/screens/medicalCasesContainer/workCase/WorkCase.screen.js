@@ -36,8 +36,8 @@ export default class WorkCase extends React.Component<Props, State> {
 
     // Tabs name
     let tabBatches = [
-      { name: 'Questions de triage', current: false, nodes: {} },
-      { name: '2', current: false, nodes: {} },
+      { name: 'Triage', current: false, nodes: {} },
+      { name: 'Mandatory', current: false, nodes: {} },
       { name: '3', current: false, nodes: {} },
       { name: '4', current: false, nodes: {} },
       { name: '5', current: false, nodes: {} },
@@ -55,6 +55,8 @@ export default class WorkCase extends React.Component<Props, State> {
         tabBatches[id].nodes[nodeId] = nodes[nodeId];
       });
     });
+
+    console.log(batches, tabBatches)
 
     return (
       <View style={styles.container}>

@@ -6,12 +6,12 @@ import { setMedicalCase } from '../../../../src/engine/api/LocalStorage';
 import findKey from 'lodash/findKey';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import { displayFormats } from '../../../constants';
-
+import find from 'lodash/find';
 export const initialState = null;
 
 export default function medicalCaseReducer(
   state: Object = initialState,
-  action: Object,
+  action: Object
 ) {
   switch (action.type) {
     case actions.MC_GENERATE_NEXT_BATCH: {
@@ -23,11 +23,33 @@ export default function medicalCaseReducer(
       };
     }
 
-    case actions.MC_CONDITION_VALUE_CHANGE: {
+    case actions.MC_CONDITION_VALUE_PS_CHANGE: {
+      const { nodeId, psId, value } = action.payload;
+
+      const ps = state.nodes[nodeId].ps;
+
+      let changeConditionValue = find(ps, (d) => d.id === psId);
+      changeConditionValue.conditionValue = value;
+
+      return {
+        ...state,
+        nodes: {
+          ...state.nodes,
+          [nodeId]: {
+            ...state.nodes[nodeId],
+            ps: ps,
+          },
+        },
+      };
+    }
+
+    case actions.MC_CONDITION_VALUE_DISEASES_CHANGE: {
       const { nodeId, diseaseId, value } = action.payload;
 
       const dd = state.nodes[nodeId].dd;
-      dd[diseaseId].conditionValue = value;
+
+      let changeConditionValue = find(dd, (d) => d.id === diseaseId);
+      changeConditionValue.conditionValue = value;
 
       return {
         ...state,
@@ -59,8 +81,6 @@ export default function medicalCaseReducer(
       const { index, value } = action.payload;
       let answer;
 
-      console.log(value, index)
-
       switch (state.nodes[index].display_format) {
         case displayFormats.input:
           if (value.length > 0) {
@@ -69,11 +89,11 @@ export default function medicalCaseReducer(
                 case 'more_or_equal':
                   return value >= Number(answerCondition.value);
 
-                case 'less_or_equal':
-                  return value <= Number(answerCondition.value);
+                // case 'less_or_equal':
+                //   return value <= Number(answerCondition.value);
 
-                case 'more':
-                  return value > Number(answerCondition.value);
+                // case 'more':
+                //   return value > Number(answerCondition.value);
 
                 case 'less':
                   return value < Number(answerCondition.value);
@@ -101,6 +121,34 @@ export default function medicalCaseReducer(
                     value > Number(answerCondition.value.split(',')[0]) &&
                     value <= Number(answerCondition.value.split(',')[1])
                   );
+
+                case '>=':
+                  return value >= Number(answerCondition.value);
+
+                  // WORKAROUND because JSON is wrong
+                case '=>':
+                  return value >= Number(answerCondition.value);
+
+                case '<=':
+                  return value <= Number(answerCondition.value);
+
+                case '>':
+                  return value >= Number(answerCondition.value);
+
+                case '<':
+                  return value < Number(answerCondition.value);
+
+                case '>=, <':
+                  return (
+                    value >= Number(answerCondition.value.split(',')[0]) &&
+                    value < Number(answerCondition.value.split(',')[1])
+                  );
+
+                case '>, <=':
+                  return (
+                    value > Number(answerCondition.value.split(',')[0]) &&
+                    value <= Number(answerCondition.value.split(',')[1])
+                  );
               }
             });
           } else {
@@ -115,6 +163,9 @@ export default function medicalCaseReducer(
         case displayFormats.list:
           answer = value;
           break;
+        case undefined:
+          answer = value;
+          break;
       }
 
       // workaround
@@ -122,6 +173,7 @@ export default function medicalCaseReducer(
       if (answer !== 'null' && answer !== null) {
         answer = Number(answer);
       }
+
 
       return {
         ...state,

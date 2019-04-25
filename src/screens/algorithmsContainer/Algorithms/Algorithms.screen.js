@@ -53,6 +53,8 @@ export default class Algorithms extends React.Component<Props, State> {
     const { algorithms } = this.state;
     const { navigation } = this.props;
 
+    console.log(algorithms)
+
     return (
       <View style={styles.container}>
         <View style={styles.content}>
@@ -70,23 +72,6 @@ export default class Algorithms extends React.Component<Props, State> {
                   >
                     <H2>{algorithm.name}</H2>
                     <Text>{algorithm.description}</Text>
-                    <Text>N'versions : {algorithm.versions.length}</Text>
-                    <RightView>
-                      {algorithm.versions.map((algorithmVersion) => (
-                        <Button
-                          key={algorithmVersion}
-                          onPress={() => {
-                            navigation.navigate('Algorithm', {
-                              algoId: algorithmVersion.algorithm_id,
-                              algoVersion: algorithmVersion.version,
-                              title: algorithmVersion.name,
-                            });
-                          }}
-                        >
-                          <Text>V : {algorithmVersion.version}</Text>
-                        </Button>
-                      ))}
-                    </RightView>
                   </CardView>
                 ))}
                 {algorithms.length === 0 ? (
