@@ -1,11 +1,18 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import { nodesType, priorities } from '../../constants';
+import {
+  conditionValueDiseasesChange,
+  conditionValuePSChange,
+  predefinedSyndromeChildren,
+} from '../actions/creators.actions';
 
 // Create the first batch from json based on triage priority
 // TODO : Maybe build an object instead of rewriting the json
 export const generateInitialBatch = (algorithmJson) => {
   const { nodes } = algorithmJson;
+  console.log(nodes )
+
   algorithmJson.batches = [
     { name: 'Triage', current: false, nodes: [] },
     { name: 'Mandatory', current: false, nodes: [] },
@@ -14,6 +21,7 @@ export const generateInitialBatch = (algorithmJson) => {
     if (nodes[nodeId].priority === priorities.triage) {
       algorithmJson.batches[0].nodes.push(nodeId);
     }
+
 
     if (nodes[nodeId].priority === priorities.mandatory) {
       algorithmJson.batches[1].nodes.push(nodeId);
@@ -126,40 +134,83 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
   return algorithmJsonMedicalCase;
 };
 
-// TODO not working at 100%, fix it
-const recursiveNodePs = (state$, node, ps) => {
-  return node.children.some((nodeChildID) => {
-    let nodeChild = state$.value.nodes[nodeChildID];
-    // IF the child is OUR PS
-    if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
-      // Calculate state of OUR PS
-      return nodeConditionChecker(state$, null, null, ps);
-    }
-    // IF the child is an other PS
-    if (nodeChild.type === nodesType.ps) {
-      console.log(nodeChild);
-      // Get state of this PS
-    }
+// Node from diseases !
+export const getParentsOfThisNode = (state$, diseaseId, nodeId) => {
+  let parents = [];
 
-    // IF the child is an question
-    if (nodeChild.type === nodesType.q) {
-      // Next node is a question, get the state
-      const nodeChildCondition = nodeConditionChecker(
-        state$,
-        null,
-        null,
-        ps.nodes[nodeChild.id]
-      );
-      // if this branch is open, so go deeper
-      if (nodeChildCondition === true) {
-        return recursiveNodePs(state$, nodeChild, ps);
-      }
+  let top_conditions =
+    state$.value.diseases[diseaseId].nodes[nodeId].top_conditions;
+
+  top_conditions.map((top) => {
+    parents.push(top.first_node_id);
+    if (top.second_type !== null) {
+      parents.push(top.second_node_id);
     }
   });
+
+  return parents;
+};
+
+// TODO not working at 100%, fix it
+const recursiveNodePs = (state$, node, ps, actions) => {
+
+  let findConditionValuePs = find(
+    state$.value.nodes[node.id].ps,
+    (p) => p.id === ps.id
+  ).conditionValue;
+
+  // if not answered we show it
+  if (
+    state$.value.nodes[node.id].answer === null &&
+    findConditionValuePs.conditionValue === false
+  ) {
+    return actions.push(conditionValuePSChange(node.id, ps.id, true));
+  }
+
+  if ( state$.value.nodes[node.id].answer === null && findConditionValuePs === true) {
+    // the question is not answered but already shown, and stop and wait on the user
+    return;
+  }
+
+  // We check the conditon of this node
+  const nodeCondition = nodeConditionChecker(state$, null, null, node);
+
+  // If top parent or condition === true
+  if (nodeCondition === true) {
+    node.children.map((nodeChildID) => {
+      let nodeChild = state$.value.nodes[nodeChildID];
+
+      // IF the child is OUR PS
+      if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
+        // Top parent and child is PS
+        // The branch is open and we can set the answer of this PS
+        return;
+        //return nodeConditionChecker(state$, null, null, ps);
+      }
+
+      // IF the child is an other PS
+      if (nodeChild.type === nodesType.ps && nodeChildID !== ps.id) {
+        console.log(nodeChild, 'Get state of this other PS');
+
+        // If the sub PS is null and show the sub question
+        if (state$.value.nodes[nodeChild.id].answer === null) {
+          actions.push(predefinedSyndromeChildren(nodeChild.id, ps.id));
+        }
+      }
+
+      // IF the child is an question
+
+      if (nodeChild.type === nodesType.q) {
+        // Next node is a question, get the state
+        // go deeper
+        recursiveNodePs(state$, ps.nodes[nodeChild.id], ps, actions);
+      }
+    });
+  }
 };
 
 // TODO as well
-export const getStateToThisPs = (state$, ps) => {
+export const getStateToThisPs = (state$, ps, actions) => {
   let nodeTopParent = [];
 
   // Get top parent nodes
@@ -168,21 +219,20 @@ export const getStateToThisPs = (state$, ps) => {
       nodeTopParent.push(ps.nodes[nodeId]);
     }
   });
-
-  let cond = nodeTopParent.some((topParent) => {
-    let childCond = recursiveNodePs(state$, topParent, ps);
-
-    // Result of this branch
-    if (childCond !== null) {
-      return childCond;
-    }
-  });
-
-  return cond;
+  // For each top parent node (a branch, but not the branche chocolate cailler)
+  nodeTopParent.map((topParent) =>
+    recursiveNodePs(state$, topParent, ps, actions)
+  );
+  return actions;
 };
 
 // TODO: IN PROGRESS
 export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
+  // If this is a top parent node
+  if (child.top_conditions.length === 0) {
+    return true;
+  }
+
   // Loop for top_conditions
   let conditionFinal = child.top_conditions.map((conditions) => {
     return comparingTopConditions(state$, child, conditions);
@@ -197,12 +247,12 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     false
   );
 
-  console.log(
-    conditionFinal,
-    'conditionFinal',
-    reduceConditionArrayBoolean,
-    child.id
-  );
+  // console.log(
+  //   conditionFinal,
+  //   'conditionFinal',
+  //   reduceConditionArrayBoolean,
+  //   child.id
+  // );
 
   return reduceConditionArrayBoolean;
 };
