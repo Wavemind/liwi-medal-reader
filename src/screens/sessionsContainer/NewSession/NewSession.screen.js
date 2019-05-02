@@ -5,16 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
 import { ToastFactory } from '../../../utils/ToastFactory';
 import { styles } from './NewSession.style';
-import {
-  Button,
-  Form,
-  Input,
-  Item,
-  Label,
-  Text,
-  View,
-} from 'native-base';
-
+import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 type State = {
@@ -32,10 +23,6 @@ export default class NewSession extends React.Component<Props, State> {
     id: null,
   };
 
-  componentDidMount() {
-    // this.setState({ email: 'mickael.lacombe@wavemind.ch', password: '123456' });
-  }
-
   // Update value of email when user typing
   changeEmail = (val: string) => {
     this.setState({ email: val });
@@ -49,10 +36,7 @@ export default class NewSession extends React.Component<Props, State> {
   // Authentication method
   signIn = async () => {
     this.setState({ loading: true });
-    const {
-      email,
-      password,
-    } = this.state;
+    const { email, password } = this.state;
     const { sessions } = this.props;
 
     await sessions
@@ -73,19 +57,13 @@ export default class NewSession extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      email,
-      password,
-      loading,
-      success,
-      id,
-    } = this.state;
+    const { email, password, loading, success, id } = this.state;
 
     const { navigation } = this.props;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.content}>
+      <View flex-container-column>
+        <View flex-center border-primary margin-auto padding-auto>
           <Form>
             <Item login-input floatingLabel>
               <Label>Email</Label>
@@ -104,38 +82,41 @@ export default class NewSession extends React.Component<Props, State> {
                 secureTextEntry
               />
             </Item>
+            <Button
+              full
+              style={styles.marginTop}
+              onPress={() => this.signIn()}
+              disabled={loading || success}
+            >
+              <Text> Try to login </Text>
+            </Button>
           </Form>
-          <Button
-            style={styles.marginTop}
-            onPress={() => this.signIn()}
-            disabled={loading || success}
-          >
-            <Text> Try to login </Text>
-          </Button>
         </View>
-        {loading ? (
-          <LottieView
-            speed={3}
-            source={require('../../../utils/animations/loading.json')}
-            autoPlay
-            style={styles.height}
-            loop
-          />
-        ) : null}
-        {success ? (
-          <LottieView
-            speed={0.5}
-            source={require('../../../utils/animations/done.json')}
-            autoPlay
-            loop={false}
-            style={styles.height}
-            onAnimationFinish={() => {
-              navigation.navigate('SetCodeSession', {
-                user_id: id,
-              });
-            }}
-          />
-        ) : null}
+        <View flex-center>
+          {loading ? (
+            <LottieView
+              speed={3}
+              source={require('../../../utils/animations/loading.json')}
+              autoPlay
+              style={styles.height}
+              loop
+            />
+          ) : null}
+          {success ? (
+            <LottieView
+              speed={0.5}
+              source={require('../../../utils/animations/done.json')}
+              autoPlay
+              loop={false}
+              style={styles.height}
+              onAnimationFinish={() => {
+                navigation.navigate('SetCodeSession', {
+                  user_id: id,
+                });
+              }}
+            />
+          ) : null}
+        </View>
       </View>
     );
   }

@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from 'react';
+import { ScrollView } from 'react-native';
 import {
   Tab,
   Tabs,
@@ -14,6 +15,7 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import { liwiColors } from '../../../utils/constants';
 import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './WorkCase.style';
+import { nodesType } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -52,14 +54,15 @@ export default class WorkCase extends React.Component<Props, State> {
         if (nodes[nodeId].answer === null) {
           ready = false;
         }
-        tabBatches[id].nodes[nodeId] = nodes[nodeId];
+        if (nodes[nodeId].type !== nodesType.ps) {
+          tabBatches[id].nodes[nodeId] = nodes[nodeId];
+        }
       });
     });
 
-    console.log(batches, tabBatches)
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <LiwiTitle2>Version : {version}</LiwiTitle2>
         <View style={styles.view}>
           <Text>description : {description}</Text>
@@ -73,6 +76,7 @@ export default class WorkCase extends React.Component<Props, State> {
           {Object.keys(tabBatches).map((batchId) =>
             Object.keys(tabBatches[batchId].nodes).length > 0 ? (
               <Tab
+                key={'tabBatches'+batchId}
                 heading={tabBatches[batchId].name}
                 tabStyle={{
                   backgroundColor: liwiColors.redColor,
@@ -108,7 +112,7 @@ export default class WorkCase extends React.Component<Props, State> {
             </View>
           </Tab>
         </Tabs>
-      </View>
+      </ScrollView>
     );
   }
 }

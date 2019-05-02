@@ -68,6 +68,7 @@ export class SessionsProvider extends React.Component<
   // Create new session
   newSession = async (email: string, password: string) => {
     const credentials = await auth(email, password);
+
     if (credentials.success !== false || credentials.success === undefined) {
       let sessions = await getSessions();
       if (sessions === null) {

@@ -53,6 +53,8 @@ export const get = async (params, userId) => {
   const httpResponse = await response;
   let jsonResponse = await httpResponse.json();
 
+  console.log(jsonResponse)
+
   if (httpResponse.status === 200) {
     return jsonResponse;
   } else if (httpResponse.status === 422 || httpResponse.status === 401) {
