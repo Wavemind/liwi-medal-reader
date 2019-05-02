@@ -53,7 +53,6 @@ export default class Algorithms extends React.Component<Props, State> {
     const { algorithms } = this.state;
     const { navigation } = this.props;
 
-    console.log(algorithms)
 
     return (
       <View style={styles.container}>

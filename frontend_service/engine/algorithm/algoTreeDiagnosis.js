@@ -35,6 +35,8 @@ export const generateInitialBatch = (algorithmJson) => {
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
   const { diseases, nodes } = algorithmJsonMedicalCase;
 
+  console.log(diseases, nodes)
+
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
       nodes[nodeId].dd.map((dd) => {
@@ -181,6 +183,8 @@ const recursiveNodePs = (state$, node, ps, actions) => {
     node.children.map((nodeChildID) => {
       let nodeChild = state$.value.nodes[nodeChildID];
 
+      console.log(nodeChild)
+
       // IF the child is OUR PS
       if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
         // Top parent and child is PS
@@ -191,11 +195,14 @@ const recursiveNodePs = (state$, node, ps, actions) => {
 
       // IF the child is an other PS
       if (nodeChild.type === nodesType.ps && nodeChildID !== ps.id) {
+
         console.log(nodeChild, 'Get state of this other PS');
 
         // If the sub PS is null and show the sub question
         if (state$.value.nodes[nodeChild.id].answer === null) {
           actions.push(predefinedSyndromeChildren(nodeChild.id, ps.id));
+        } else {
+          recursiveNodePs(state$, ps.nodes[nodeChild.id], ps, actions);
         }
       }
 

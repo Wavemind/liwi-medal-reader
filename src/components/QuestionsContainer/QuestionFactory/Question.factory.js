@@ -126,7 +126,7 @@ export default class Question extends React.PureComponent<Props, State> {
             style={styles.borderRight}
             key={question.id + '_label'}
           >
-            <Text style={{ color: liwiColors.blackColor }}>
+            <Text style={{ color: liwiColors.blackColor }} size-auto>
               {question.label}
             </Text>
           </ColCenter>

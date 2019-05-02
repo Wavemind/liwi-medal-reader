@@ -25,7 +25,6 @@ export default class List extends React.Component<Props, State> {
 
   render() {
     const { question } = this.props;
-    console.log(question)
     // TODO make it nice
     return (
       <View style={styles.view}>

@@ -1,4 +1,5 @@
 import { liwiColors } from 'utils/constants';
+import { fontSizeTextIsTablet } from '../../../utils/constants';
 
 export default {
   'NativeBase.Text': {
@@ -18,5 +19,8 @@ export default {
     '.dark': {
       color: '#292829',
     },
+    '.size-auto': {
+      fontSize: fontSizeTextIsTablet()
+    }
   },
 };

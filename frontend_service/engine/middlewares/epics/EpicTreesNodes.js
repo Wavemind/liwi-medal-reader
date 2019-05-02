@@ -4,7 +4,7 @@ import find from 'lodash/find';
 import { nodesType } from '../../../constants';
 import { of } from 'rxjs';
 import { actions } from '../../actions/types.actions';
-import { concatMap, filter, switchMap } from 'rxjs/operators';
+import { concatMap, filter, switchMap, ignoreElements } from 'rxjs/operators';
 import {
   conditionValueDiseasesChange,
   diagnosisChildren,
@@ -107,7 +107,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(diseasesChildren(indexNode, indexChild));
         case nodesType.t:
           // Treatment
-          return null;
+          return []
         case nodesType.fd:
           // Ho next node is Final Diagnostic
           return of(diagnosisChildren(indexNode, indexChild));
@@ -202,7 +202,6 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
     ofType(actions.MC_DIAGNOSIS_CHILDREN),
     filter((action) => {
       const { indexDD, indexChild } = action.payload;
-
       const child = state$.value.nodes[indexChild];
 
       // Get the conditions of the node
@@ -213,7 +212,7 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
         child
       );
 
-      console.log('-> conditon of this final node', condition);
+      console.log(indexDD, '-> conditon of this final node', condition);
       // Check the condition of the children
     })
     // TODO : Trigger Treatment/Management handling
