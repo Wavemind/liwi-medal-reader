@@ -15,9 +15,6 @@ export default class MainScreen extends React.Component<Props, State> {
     return (
       <ScrollView>
         <TextExemple customText>Bienvenue</TextExemple>
-        <Button large onPress={() => this.props.navigation.openDrawer()}>
-          <Text> Ouvrir le menu </Text>
-        </Button>
         <MedicalCases />
       </ScrollView>
     );

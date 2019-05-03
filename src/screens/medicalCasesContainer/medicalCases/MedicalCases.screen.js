@@ -7,18 +7,13 @@ import { SeparatorLine } from '../../../template/layout';
 import { styles } from './MedicalCases.style';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import algorithmJson from '../../../../frontend_service/engine/algorithm/algorithm_versions.json';
-import { Button, H3, Picker, Text } from 'native-base';
+import { Button, H3, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
 import find from 'lodash/find';
+import { createMedicalCase, getItems, getUserMedicalCases } from '../../../engine/api/LocalStorage';
 import {
-  createMedicalCase,
-  getItems,
-  getUserMedicalCases,
-} from '../../../engine/api/LocalStorage';
-import {
-  setInitialCounter,
   generateInitialBatch,
+  setInitialCounter,
 } from '../../../../frontend_service/engine/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
