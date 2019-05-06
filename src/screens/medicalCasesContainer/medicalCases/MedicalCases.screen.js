@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import moment from 'moment';
-import { medicalCaseInitialState } from '../../../../frontend_service/engine/algorithm/medicalCase';
+import { medicalCaseInitialState } from '../../../../frontend_service/algorithm/medicalCase';
 import { SeparatorLine } from '../../../template/layout';
 import { styles } from './MedicalCases.style';
 import { NavigationScreenProps } from 'react-navigation';
