@@ -26,6 +26,7 @@ export class PredefinedSyndromeModel extends NodeModel
       label = '',
       dd = [],
       ps = [],
+      medicalCase = {}
     } = props;
 
     this.description = description;
@@ -36,6 +37,7 @@ export class PredefinedSyndromeModel extends NodeModel
     this.ps = ps;
 
     // this.getMedicalCase();
+    console.log(medicalCase)
     this.inclusions = new InclusionsNodeModel({
       ps: ps,
       dd: dd,

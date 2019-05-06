@@ -83,13 +83,15 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     console.log(algorithmUsed)
 
+
+
     Object.keys(algorithmUsed.nodes).forEach((i) => {
       let node = algorithmUsed.nodes[i];
       let modelized;
 
       switch (node.type) {
         case nodesType.ps:
-          modelized = new PredefinedSyndromeModel({ ...node });
+          modelized = new PredefinedSyndromeModel({ ...node, medicalCase: algorithmUsed });
           break;
         case nodesType.t:
           modelized = new TreatmentModel({ ...node });
@@ -106,8 +108,10 @@ export default class MedicalCases extends React.Component<Props, State> {
         default:
           break;
       }
+
       algorithmUsed.nodes[i] = modelized;
     });
+
 
     Object.keys(algorithmUsed.diseases).forEach(
       (i) =>
