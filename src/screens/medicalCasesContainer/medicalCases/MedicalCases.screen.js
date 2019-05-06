@@ -14,7 +14,7 @@ import { createMedicalCase, getItems, getUserMedicalCases } from '../../../engin
 import {
   generateInitialBatch,
   setInitialCounter,
-} from '../../../../frontend_service/engine/algorithm/algoTreeDiagnosis';
+} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 type State = { medicalCases: Array<Object> };

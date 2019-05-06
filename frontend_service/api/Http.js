@@ -3,9 +3,7 @@ import { getDeviceInformation } from '../../src/engine/api/Device';
 import { devHost } from '../../frontend_service/constants';
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
-import { handleHttpError } from 'utils/Error';
-import isArray from 'lodash/isArray';
-import { ErrorHttpFactory, ToastFactory } from 'utils/ToastFactory';
+import { handleHttpError, displayToast } from 'utils/CustomToast';
 import {
   getItems,
   getSession,
@@ -34,16 +32,18 @@ export const get = async (params, userId) => {
 // @return [Object] response from server
 // Https POST request
 export const post = async (params, body = {}, userId = null) => {
-  let url =  `${host}${params}`;
-  let header = await getHeaders('POST', body, userId);
+  let url = `${ host }${ params }`;
+  let header = await getHeaders( 'POST', body, userId );
 
-  const request = await fetch(url, header).catch(error => handleHttpError(error));
+  const request = await fetch( url, header ).catch( error => handleHttpError( error ) );
   let response = await request.json();
 
   // Display error
   if (!request.ok) {
-    handleHttpError(response.errors);
+    handleHttpError( response.errors );
   }
+
+}
 // @return [Object] response from server
 // Send device activity to server
 export const postDeviceInfo = async () => {
@@ -56,7 +56,7 @@ export const postDeviceInfo = async () => {
     },
     body: JSON.stringify(device),
   }).catch(function(error) {
-    ToastFactory('Une erreur est survenue. Veuillez réessayer ultérieurement', {
+    displayToast('Une erreur est survenue. Veuillez réessayer ultérieurement', {
       type: 'danger',
     });
     console.log(error);
