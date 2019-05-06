@@ -3,7 +3,7 @@
 import { NodeModel } from './Node.model';
 
 
-export interface FinalDiagnostictInterface {
+ interface FinalDiagnostictInterface {
 
 }
 

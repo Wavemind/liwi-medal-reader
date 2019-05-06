@@ -8,16 +8,8 @@ import { styles } from './MedicalCases.style';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
 import algorithmJson from '../../../../frontend_service/engine/algorithm/algorithm_versions.json';
-import {
-  Button,
-  H3,
-  Picker,
-  Text,
-} from 'native-base';
-import {
-  ScrollView,
-  View,
-} from 'react-native';
+import { Button, H3, Picker, Text } from 'native-base';
+import { ScrollView, View } from 'react-native';
 import {
   createMedicalCase,
   getItems,
@@ -27,6 +19,16 @@ import {
   setInitialCounter,
   generateInitialBatch,
 } from '../../../../frontend_service/engine/algorithm/algoTreeDiagnosis';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { NodeModel } from '../../../../frontend_service/engine/models/Node.model';
+import { nodesType } from '../../../../frontend_service/constants';
+import { QuestionModel } from '../../../../frontend_service/engine/models/Question.model';
+import { PredefinedSyndromeModel } from '../../../../frontend_service/engine/models/PredefinedSyndrome.model';
+import { TreatmentModel } from '../../../../frontend_service/engine/models/Treatment.model';
+import { ManagementModel } from '../../../../frontend_service/engine/models/Management.model';
+import { FinalDiagnosticModel } from '../../../../frontend_service/engine/models/FinalDiagnostic.model';
+import { DiagnosisModel } from '../../../../frontend_service/engine/models/Diagnosis.model';
+import { DiseasesModel } from '../../../../frontend_service/engine/models/Diseases.model';
 
 type Props = NavigationScreenProps & {};
 type State = { medicalCases: Array<Object> };
@@ -46,8 +48,8 @@ export default class MedicalCases extends React.Component<Props, State> {
     let versions = [];
     algorithms.map((algorithm) =>
       Object.keys(algorithm.versions).map((version) =>
-        versions.push(algorithm.versions[version]),
-      ),
+        versions.push(algorithm.versions[version])
+      )
     );
 
     this.setState({ algorithms, versions });
@@ -73,7 +75,57 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     const json = await response.json();
 
-    let algorithm = setInitialCounter(algorithmJson);
+    const algorithms = await getItems('algorithms');
+
+    // const algorithmUsed = find(algorithms, (a) => a.selected);
+
+    const algorithmUsed = algorithms[0].versions[0];
+
+    console.log(algorithmUsed)
+
+    Object.keys(algorithmUsed.nodes).forEach((i) => {
+      let node = algorithmUsed.nodes[i];
+      let modelized;
+
+      switch (node.type) {
+        case nodesType.ps:
+          modelized = new PredefinedSyndromeModel({ ...node });
+          break;
+        case nodesType.t:
+          modelized = new TreatmentModel({ ...node });
+          break;
+        case nodesType.q:
+          modelized = new QuestionModel({ ...node });
+          break;
+        case nodesType.m:
+          modelized = new ManagementModel({ ...node });
+          break;
+        case nodesType.fd:
+          modelized = new FinalDiagnosticModel({ ...node });
+          break;
+        default:
+          break;
+      }
+      algorithmUsed.nodes[i] = modelized;
+    });
+
+    Object.keys(algorithmUsed.diseases).forEach(
+      (i) =>
+        (algorithmUsed.diseases[i] = new DiseasesModel({
+          ...algorithmUsed.diseases[i],
+        }))
+    );
+
+    const newmedicalCaseFromModel = new MedicalCaseModel({
+      ...medicalCaseInitialState,
+      nodes: algorithmUsed.nodes,
+      diseases: algorithmUsed.diseases,
+    });
+
+    console.log(newmedicalCaseFromModel);
+
+    let algorithm = setInitialCounter(algorithmUsed);
+
     let algorithmFirstBatch = generateInitialBatch(algorithm);
 
     await createMedicalCase({
@@ -104,10 +156,7 @@ export default class MedicalCases extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      versions,
-      selected,
-    } = this.state;
+    const { versions, selected } = this.state;
 
     const { medicalCase } = this.props;
 
@@ -130,8 +179,7 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     return (
       <ScrollView>
-        <View
-          style={styles.view}>
+        <View style={styles.view}>
           <LottieView
             source={require('../../../utils/animations/blood_1.json')}
             autoPlay
@@ -153,12 +201,12 @@ export default class MedicalCases extends React.Component<Props, State> {
           selectedValue={selected}
           onValueChange={this.onValueChange}
         >
-          <Picker.Item label="Choisir l'algorithme" value="null"/>
+          <Picker.Item label="Choisir l'algorithme" value="null" />
           {versions.map((v) => (
-            <Picker.Item label={v.version} value={v.version}/>
+            <Picker.Item label={v.version} value={v.version} />
           ))}
         </Picker>
-        <SeparatorLine/>
+        <SeparatorLine />
         <H3>Cas médicals</H3>
         {_renderMedicalCases}
       </ScrollView>

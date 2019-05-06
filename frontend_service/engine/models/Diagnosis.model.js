@@ -1,6 +1,6 @@
 // @flow
 
-export interface DiagnosisInterface {}
+interface DiagnosisInterface {}
 
 export class DiagnosisModel implements DiagnosisInterface {
   constructor(props) {}

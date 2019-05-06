@@ -152,6 +152,12 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-splash-screen')
+    implementation project(':react-native-keep-awake')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-device-info')
+    implementation project(':lottie-react-native')
     compile project(':lottie-react-native')
     compile project(':react-native-keep-awake')
     compile project(':react-native-device-info')
