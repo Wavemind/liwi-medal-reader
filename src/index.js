@@ -10,7 +10,7 @@ import { withNamespaces } from 'react-i18next';
 import KeepAwake from 'react-native-keep-awake';
 import i18n from 'utils/i18n';
 
-import { persistor, store } from '../frontend_service/engine/store';
+import { persistor, store } from '../frontend_service/store';
 
 KeepAwake.activate();
 
