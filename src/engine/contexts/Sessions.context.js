@@ -30,10 +30,12 @@ export type SessionsProviderState = {
   newSession: (email: string, password: string) => Promise<any>,
   setLocalCode: (encrypted: string, userId: number) => Promise<any>,
   logout: (userId: number) => Promise<any>,
-};
+};2
 
-export class SessionsProvider extends React.Component<SessionsProviderProps, SessionsProviderState> {
-
+export class SessionsProvider extends React.Component<
+  SessionsProviderProps,
+  SessionsProviderState
+> {
   constructor(props: SessionsProviderProps) {
     super(props);
     this.initContext();
@@ -113,7 +115,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
 }
 
 export const withSessions = (Component: React.ComponentType<any>) => (
-  props: any,
+  props: any
 ) => (
   <SessionsContext.Consumer>
     {(store) => <Component sessions={store} {...props} />}

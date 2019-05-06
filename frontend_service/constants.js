@@ -40,7 +40,6 @@ export const categories = {
   exposure: 'Exposure',
   physicalExam: 'Physical exam',
   symptom: 'Symptom',
-
   predefinedCondition: 'Predefined condition',
   comorbidity: 'Comorbidity',
   predefinedSyndrome: 'Predefined syndrome',

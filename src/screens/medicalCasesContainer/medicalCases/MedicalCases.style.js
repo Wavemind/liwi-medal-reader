@@ -1,8 +1,7 @@
-import {StyleSheet} from 'react-native';
-import {liwiColors} from '../../../utils/constants';
+import { StyleSheet } from 'react-native';
+import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
-
   view: {
     flex: 1,
     justifyContent: 'center',
@@ -11,7 +10,7 @@ export const styles = StyleSheet.create({
   },
 
   height: {
-    height: 100
+    height: 100,
   },
 
   picker: {
@@ -19,5 +18,4 @@ export const styles = StyleSheet.create({
     margin: 5,
     color: liwiColors.whiteColor,
   },
-
 });

@@ -9,17 +9,9 @@ import liwi from 'template/liwi/styles';
 import merge from 'deepmerge';
 import { RootView } from 'template/layout';
 import { withApplication } from '../engine/contexts/Application.context';
-import {
-  AppState,
-  Platform,
-  StatusBar,
-} from 'react-native';
+import { AppState, Platform, StatusBar } from 'react-native';
 
-import {
-  Container,
-  Root,
-  StyleProvider,
-} from 'native-base';
+import { Container, Root, StyleProvider } from 'native-base';
 
 type Props = {
   app: {
@@ -49,8 +41,8 @@ class LayoutTemplate extends React.Component<Props> {
         <StyleProvider style={theme}>
           <Container>
             <RootView>
-              {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
-              <AppContainer/>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <AppContainer />
             </RootView>
           </Container>
         </StyleProvider>

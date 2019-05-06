@@ -4,10 +4,7 @@ import NewSession from 'screens/sessionsContainer/NewSession';
 import UnlockSession from 'screens/sessionsContainer/UnlockSession';
 import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
 
-import {
-  createStackNavigator,
-  createSwitchNavigator,
-} from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
 export const SignedOut = createStackNavigator({
   SignIn: {
@@ -57,7 +54,7 @@ const createRootNavigator = (signedIn = false, medicalCase = null) => {
     },
     {
       initialRouteName: signedIn ? 'Main' : 'SignedOut',
-    },
+    }
   );
 };
 

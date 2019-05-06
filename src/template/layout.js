@@ -21,12 +21,21 @@ export const ColCenter = styled(LCol).attrs({
   alignItems: 'center',
 })``;
 
-export const LiwiTitle2 = styled(LH2).attrs({
-  color: liwiColors.redColor,
-})`
+export const LiwiTitle2 = styled(LH2)`
+  color: ${() => liwiColors.redColor};
   margin: 20px 20px 10px 20px;
-  padding-bottom: 20px;
-  border-bottom-width: 2px;
+  padding-bottom: ${({ noBorder }) => {
+    if (noBorder === true) {
+      return '0px';
+    }
+    return '20px';
+  }};
+  border-bottom-width: ${({ noBorder }) => {
+    if (noBorder === true) {
+      return '0px';
+    }
+    return '2px';
+  }};
   border-bottom-color: ${() => liwiColors.greyColor};
 `;
 
@@ -62,7 +71,9 @@ export const CardView = styled(LView).attrs({
   backgroundColor: '#eaeaea',
   borderRadius: 2,
   padding: 10,
-  margin: 20,
+  marginTop: 10,
+  marginLeft: 10,
+  marginRight: 10,
   shadowColor: '#7b7b7b',
   shadowOffset: {
     width: 0,

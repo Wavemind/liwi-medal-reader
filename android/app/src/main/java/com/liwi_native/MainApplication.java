@@ -3,12 +3,12 @@ package com.liwi_native;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.airbnb.android.react.lottie.LottiePackage;
-import com.corbt.keepawake.KCKeepAwakePackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.corbt.keepawake.KCKeepAwakePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -28,13 +28,13 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new LottiePackage(),
-            new KCKeepAwakePackage(),
-            new RNDeviceInfo(),
+            new MainReactPackage(),
             new VectorIconsPackage(),
             new SplashScreenReactPackage(),
-            new RNGestureHandlerPackage()
+            new RNGestureHandlerPackage(),
+            new RNDeviceInfo(),
+            new LottiePackage(),
+            new KCKeepAwakePackage()
       );
     }
 
