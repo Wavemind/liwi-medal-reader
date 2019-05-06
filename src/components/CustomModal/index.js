@@ -1,7 +1,7 @@
 import CustomModal from './CustomModal';
-import {withSessions} from '../../engine/contexts/Sessions.context';
-import {withApplication} from '../../engine/contexts/Application.context';
-import {connect} from 'react-redux';
+import { withSessions } from '../../engine/contexts/Sessions.context';
+import { withApplication } from '../../engine/contexts/Application.context';
+import { connect } from 'react-redux';
 
 const mapStateToProps = (state, ownProps) => {
   return {};

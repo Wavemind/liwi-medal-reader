@@ -3,12 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View } from 'react-native';
-import {
-  Form,
-  Icon,
-  Input,
-  Text,
-} from 'native-base';
+import { Form, Icon, Input, Text } from 'native-base';
 import { styles } from './CustomInput.style';
 import { ViewBlocColor } from '../../../template/layout';
 
@@ -26,7 +21,7 @@ export default class CustomInput extends React.Component<Props, State> {
 
   shouldComponentUpdate(
     nextProps: Readonly<P>,
-    nextState: Readonly<S>,
+    nextState: Readonly<S>
   ): boolean {
     return (
       this.state.value !== nextState.value || this.props.init !== nextProps.init
@@ -62,7 +57,7 @@ export default class CustomInput extends React.Component<Props, State> {
       <Form style={styles.form}>
         <View style={styles.view}>
           {iconName && iconType ? (
-            <Icon name={iconName} type={iconType} style={styles.icon}/>
+            <Icon name={iconName} type={iconType} style={styles.icon} />
           ) : null}
           <Text
             style={

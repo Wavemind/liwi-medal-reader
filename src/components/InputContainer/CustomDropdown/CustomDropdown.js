@@ -14,7 +14,6 @@ export default class CustomDropdown extends React.Component<Props, State> {
   componentWillMount() {}
 
   render() {
-
-    return <View/>;
+    return <View />;
   }
 }
