@@ -134,7 +134,6 @@ const recursiveNodePs = (state$, node, ps) => {
     }
     // IF the child is an other PS
     if (nodeChild.type === nodesType.ps) {
-      console.log(nodeChild)
       // Get state of this PS
     }
 
