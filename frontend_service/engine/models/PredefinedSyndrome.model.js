@@ -1,8 +1,9 @@
 // @flow
 
 import { NodeModel } from './Node.model';
+import { InclusionsNodeModel } from './ConditionsNode.model';
 
-export interface PredefinedSyndromeInterface {
+interface PredefinedSyndromeInterface {
   answer: string;
   answers: Object;
   description: string;
@@ -10,9 +11,11 @@ export interface PredefinedSyndromeInterface {
   dd: Array<Object>;
   ps: Array<Object>;
   nodes: Object;
+  inclusions: InclusionsNodeModel;
 }
 
-export class PredefinedSyndromeModel extends NodeModel implements PredefinedSyndromeInterface {
+export class PredefinedSyndromeModel extends NodeModel
+  implements PredefinedSyndromeInterface {
   constructor(props) {
     super(props);
 
@@ -31,5 +34,11 @@ export class PredefinedSyndromeModel extends NodeModel implements PredefinedSynd
     this.answers = answers;
     this.dd = dd;
     this.ps = ps;
+
+    // this.getMedicalCase();
+    this.inclusions = new InclusionsNodeModel({
+      ps: ps,
+      dd: dd,
+    });
   }
 }

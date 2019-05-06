@@ -1,6 +1,6 @@
 // @flow
 
-export interface DiseasesInterface {
+interface DiseasesInterface {
   diagnosis: Object;
   differential: Object;
   id: number;

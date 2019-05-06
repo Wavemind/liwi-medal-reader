@@ -3,7 +3,7 @@ import { nodesType } from '../../constants';
 
 const { ps, d, fd, m, q, t } = nodesType;
 
-export interface NodeInterface {
+ interface NodeInterface {
   id: number;
   type: ps | d | fd | m | q | t;
   reference: string;

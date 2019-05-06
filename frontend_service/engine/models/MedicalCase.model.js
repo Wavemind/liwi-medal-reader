@@ -1,6 +1,6 @@
 // @flow
 
-export interface MedicalCaseInterface {
+ interface MedicalCaseInterface {
   props: {
     id?: number;
     userId?: number;
@@ -40,7 +40,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.diseases = diseases;
     this.id = id;
     this.userId = userId;
-
 
   }
 }

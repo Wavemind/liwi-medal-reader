@@ -5,7 +5,7 @@ import { priorities } from '../../constants';
 
 const { basic, mandatory, triage, priority } = priorities;
 
-export interface QuestionInterface {
+ interface QuestionInterface {
   answer: string;
   answers: Object;
   description: string;
