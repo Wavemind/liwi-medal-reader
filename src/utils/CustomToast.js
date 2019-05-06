@@ -8,14 +8,13 @@ interface ToastType {
   duration?: number;
 }
 
-export const ToastFactory = (text: string = 'Default', params: ToastType) => {
+export const displayToast = (text: string = 'Default', params: ToastType) => {
   const {
     buttonText = '',
     type = 'warning',
     position = 'bottom',
     duration = 2000,
   } = params;
-
 
   Toast.show({
     text,
@@ -25,11 +24,5 @@ export const ToastFactory = (text: string = 'Default', params: ToastType) => {
     buttonTextStyle: { color: '#008000' },
     buttonStyle: { backgroundColor: '#5cb85c' },
     duration,
-  });
-};
-
-export const ErrorHttpFactory = async (response: Object, body: any) => {
-  body.errors.map((error) => {
-    ToastFactory(error, { type: 'danger' });
   });
 };

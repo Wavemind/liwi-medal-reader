@@ -2,7 +2,7 @@ import RootSessions from './RootSessions.screen';
 import { withNamespaces } from 'react-i18next';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
-import { actions } from '../../../../frontend_service/engine/actions/types.actions';
+import { actions } from '../../../../frontend_service/actions/types.actions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch, ownProps) => {
