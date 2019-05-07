@@ -21,8 +21,6 @@ export default class List extends React.Component<Props, State> {
     this.props.setQuestion(this.props.question.id, value);
   };
 
-
-
   render() {
     const { question } = this.props;
     // TODO make it nice
@@ -38,7 +36,10 @@ export default class List extends React.Component<Props, State> {
           >
             <Picker.Item label="Choose the answer" value={null} />
             {Object.keys(question.answers).map((id) => (
-              <Picker.Item label={question.answers[id].label} value={question.answers[id].id} />
+              <Picker.Item
+                label={question.answers[id].label}
+                value={question.answers[id].id}
+              />
             ))}
           </Picker>
         </Item>

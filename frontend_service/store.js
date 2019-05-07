@@ -18,7 +18,6 @@ const persistConfig = {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-
 const epicMiddleware = createEpicMiddleware();
 const middleware = composeEnhancers(applyMiddleware(thunk, epicMiddleware));
 const persistedReducer = persistReducer(persistConfig, rootReducer);

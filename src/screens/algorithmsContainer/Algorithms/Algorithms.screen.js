@@ -11,7 +11,6 @@ import { Button, H2, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 type Props = NavigationScreenProps & {};
 type State = { algorithms: Array<Object> };
-import moment from 'moment';
 
 export default class Algorithms extends React.Component<Props, State> {
   state = {
@@ -26,7 +25,6 @@ export default class Algorithms extends React.Component<Props, State> {
   // Set algorithms in state from local storage
   updateAlgorithms = async () => {
     let algorithms = await getItems('algorithms');
-
     await this.setState({ algorithms });
   };
 
@@ -43,6 +41,7 @@ export default class Algorithms extends React.Component<Props, State> {
           <Text>versions : {algorithm.versions}</Text>
           <RightView>
             <Button
+              disabled
               key={algorithm.versions}
               onPress={() => {
                 this.props.navigation.navigate('Algorithm', {
@@ -77,8 +76,6 @@ export default class Algorithms extends React.Component<Props, State> {
   };
 
   render() {
-    console.log(this.state);
-
     return (
       <View style={styles.container}>
         <View style={styles.content}>

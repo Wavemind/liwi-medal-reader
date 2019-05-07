@@ -20,7 +20,7 @@ export default {
       color: '#292829',
     },
     '.size-auto': {
-      fontSize: fontSizeTextIsTablet()
-    }
+      fontSize: fontSizeTextIsTablet(),
+    },
   },
 };

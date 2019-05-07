@@ -16,6 +16,7 @@ import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
 import { Grid, Icon, Text } from 'native-base';
 import { ColCenter, QuestionView } from '../../../template/layout';
+import List from '../DisplaysContainer/List';
 
 type Props = NavigationScreenProps & {};
 

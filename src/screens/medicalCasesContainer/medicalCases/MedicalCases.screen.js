@@ -10,7 +10,11 @@ import LottieView from 'lottie-react-native';
 import { Button, H3, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
 import find from 'lodash/find';
-import { createMedicalCase, getItems, getUserMedicalCases } from '../../../engine/api/LocalStorage';
+import {
+  createMedicalCase,
+  getItems,
+  getUserMedicalCases,
+} from '../../../engine/api/LocalStorage';
 import {
   generateInitialBatch,
   setInitialCounter,
@@ -89,8 +93,8 @@ export default class MedicalCases extends React.Component<Props, State> {
     await setMedicalCase(medicalCase);
     // await app.setMedicalCase(medicalCase); // TODO find better way
     await this.getMedicalCases();
-    navigation.navigate('MedicalCase', {
-      title: `Cas médical : ${medicalCase.id}`,
+    navigation.navigate('WorkCase', {
+      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
     });
   };
 
@@ -129,12 +133,14 @@ export default class MedicalCases extends React.Component<Props, State> {
               style={styles.height}
               loop
             />
-          ) :  <LottieView
-            source={require('../../../utils/animations/blood_1.json')}
-            autoPlay
-            style={styles.height}
-            loop
-          />}
+          ) : (
+            <LottieView
+              source={require('../../../utils/animations/blood_1.json')}
+              autoPlay
+              style={styles.height}
+              loop
+            />
+          )}
         </View>
         <H3>Actions</H3>
         <Button onPress={() => this.generateMedicalCase()} disabled={generate}>

@@ -11,7 +11,6 @@ import {
 // TODO : Maybe build an object instead of rewriting the json
 export const generateInitialBatch = (algorithmJson) => {
   const { nodes } = algorithmJson;
-  console.log(nodes);
 
   algorithmJson.batches = [
     { name: 'Triage', current: false, nodes: [] },
@@ -33,10 +32,7 @@ export const generateInitialBatch = (algorithmJson) => {
 // @return [Json] algorithmJsonMedicalCase
 // Set condition values of question in order to prepare them for second batch (before the triage one)
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
-  console.log(algorithmJsonMedicalCase)
-
   const { diseases, nodes } = algorithmJsonMedicalCase;
-
 
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
@@ -184,8 +180,6 @@ const recursiveNodePs = (state$, node, ps, actions) => {
     node.children.map((nodeChildID) => {
       let nodeChild = state$.value.nodes[nodeChildID];
 
-      console.log(nodeChild)
-
       // IF the child is OUR PS
       if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
         // Top parent and child is PS
@@ -196,7 +190,6 @@ const recursiveNodePs = (state$, node, ps, actions) => {
 
       // IF the child is an other PS
       if (nodeChild.type === nodesType.ps && nodeChildID !== ps.id) {
-
         console.log(nodeChild, 'Get state of this other PS');
 
         // If the sub PS is null and show the sub question
@@ -253,7 +246,7 @@ export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
     (result, value) => {
       return comparingBooleanOr(result, value);
     },
-    false,
+    false
   );
 
   // console.log(
@@ -303,7 +296,7 @@ const comparingTopConditions = (state$, child, conditions) => {
     child,
     first_id,
     first_node_id,
-    first_type,
+    first_type
   );
 
   if (operator === null) {
@@ -314,7 +307,7 @@ const comparingTopConditions = (state$, child, conditions) => {
       child,
       second_id,
       second_node_id,
-      second_type,
+      second_type
     );
 
     if (operator === 'AND') {

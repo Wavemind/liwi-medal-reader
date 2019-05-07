@@ -4,7 +4,6 @@ import * as React from 'react';
 import { TextExemple } from 'template/layout';
 import { ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Text } from 'native-base';
 import MedicalCases from '../medicalCasesContainer/medicalCases/';
 
 type Props = NavigationScreenProps & {};
@@ -15,7 +14,7 @@ export default class MainScreen extends React.Component<Props, State> {
     return (
       <ScrollView>
         <TextExemple customText>Bienvenue</TextExemple>
-        <MedicalCases />
+        <MedicalCases navigation={this.props.navigation} />
       </ScrollView>
     );
   }

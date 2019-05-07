@@ -125,7 +125,7 @@ export default function medicalCaseReducer(
                 case '>=':
                   return value >= Number(answerCondition.value);
 
-                  // WORKAROUND because JSON is wrong
+                // WORKAROUND because JSON is wrong
                 case '=>':
                   return value >= Number(answerCondition.value);
 
@@ -173,7 +173,6 @@ export default function medicalCaseReducer(
       if (answer !== 'null' && answer !== null) {
         answer = Number(answer);
       }
-
 
       return {
         ...state,

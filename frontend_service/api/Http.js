@@ -3,6 +3,7 @@ import { getDeviceInformation } from '../../src/engine/api/Device';
 import { devHost } from '../../frontend_service/constants';
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
+import isArray from 'lodash/isArray';
 import { handleHttpError, displayToast } from 'utils/CustomToast';
 import {
   getItems,
@@ -17,7 +18,9 @@ export const get = async (params, userId) => {
   let url = `${host}${params}`;
   let header = await getHeaders('GET', false, userId);
 
-  const request = await fetch(url, header).catch(error => handleHttpError(error));
+  const request = await fetch(url, header).catch((error) =>
+    handleHttpError(error)
+  );
   let response = await request.json();
 
   // Display error
@@ -32,18 +35,19 @@ export const get = async (params, userId) => {
 // @return [Object] response from server
 // Https POST request
 export const post = async (params, body = {}, userId = null) => {
-  let url = `${ host }${ params }`;
-  let header = await getHeaders( 'POST', body, userId );
+  let url = `${host}${params}`;
+  let header = await getHeaders('POST', body, userId);
 
-  const request = await fetch( url, header ).catch( error => handleHttpError( error ) );
+  const request = await fetch(url, header).catch((error) =>
+    handleHttpError(error)
+  );
   let response = await request.json();
 
   // Display error
   if (!request.ok) {
-    handleHttpError( response.errors );
+    handleHttpError(response.errors);
   }
-
-}
+};
 // @return [Object] response from server
 // Send device activity to server
 export const postDeviceInfo = async () => {
@@ -81,7 +85,7 @@ export const auth = async (email, password) => {
       email: email,
       password: password,
     }),
-  }).catch(error => handleHttpError(error));
+  }).catch((error) => handleHttpError(error));
 
   let body = await request.json();
 
@@ -121,45 +125,35 @@ export const fetchAlgorithms = async (userId) => {
 
       let localAlgorithms = await getItems('algorithms');
 
-      let algorithm = findIndex(localAlgorithms, (a) => a.algorithm_id === serverAlgorithm.algorithm_id);
+      let algorithm = findIndex(
+        localAlgorithms,
+        (a) => a.algorithm_id === serverAlgorithm.algorithm_id
+      );
       let algorithmSelected = find(localAlgorithms, (a) => a.selected === true);
 
       if (algorithmSelected !== undefined) {
         algorithmSelected.selected = false;
       }
 
-      // Stop promise if http request return an error
+      if (algorithmSelected !== undefined) {
+        algorithmSelected.selected = false;
+      }
+
       if (serverAlgorithm.errors) {
         resolve(serverAlgorithm.errors);
         return null;
-
       } else {
-        // Send activity from device
-        await post('activities', deviceInfo, userId);
-
-        let algorithm = find(localAlgorithms, (a) => a.id === serverAlgorithm.id);
-        let version;
-
-        // Algorithm container already in local, checking if the version is new
-        if (algorithm !== undefined) {
-          version = find(
-            algorithm.versions,
-            (a) => a.version === serverAlgorithm.version,
-          );
-
-          // New version available, push it in local
-          if (version === undefined) {
-            algorithm.versions.push(serverAlgorithm);
-          }
-        } else if (serverAlgorithm.id !== undefined) {
-          // Algorithm container not existing in local, getting the container and the available version
-          localAlgorithms.push({
-            id: serverAlgorithm.id,
-            name: serverAlgorithm.name,
-            versions: [serverAlgorithm],
-          });
+        if (algorithm !== -1) {
+          // Algorithm container already in local, replace this local algo
+          localAlgorithms[algorithm] = serverAlgorithm;
+          localAlgorithms[algorithm].selected = true;
+        } else {
+          // Algorithm not existing in local, push it
+          serverAlgorithm.selected = true;
+          localAlgorithms.push(serverAlgorithm);
         }
 
+        displayToast('Algo Updated', { type: 'success' });
         await setItem('algorithms', localAlgorithms);
         resolve();
       }

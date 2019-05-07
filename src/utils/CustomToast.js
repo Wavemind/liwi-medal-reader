@@ -13,14 +13,14 @@ export const handleHttpError = async (errors: any) => {
   // Array of errors maps throw or display it
   if (isArray(errors)) {
     errors.map((error) => {
-      displayToast(error, { type: 'danger' });
+      Toaster(error, { type: 'danger' });
     });
   } else {
-    displayToast(errors, { type: 'danger' });
+    Toaster(errors, { type: 'danger' });
   }
 };
 
-export const displayToast = (text: string = 'Default', params: ToastType) => {
+export const Toaster = (text: string = 'Default', params: ToastType) => {
   const {
     buttonText = '',
     type = 'warning',

@@ -46,7 +46,6 @@ export default class WorkCase extends React.Component<Props, State> {
       });
     });
 
-
     return (
       <ScrollView style={styles.container}>
         <LiwiTitle2>Version : {version}</LiwiTitle2>
@@ -62,7 +61,7 @@ export default class WorkCase extends React.Component<Props, State> {
           {Object.keys(tabBatches).map((batchId) =>
             Object.keys(tabBatches[batchId].nodes).length > 0 ? (
               <Tab
-                key={'tabBatches'+batchId}
+                key={'tabBatches' + batchId}
                 heading={tabBatches[batchId].name}
                 tabStyle={{
                   backgroundColor: liwiColors.redColor,

@@ -10,10 +10,7 @@ import {
   setSessions,
   destroySession,
 } from '../api/LocalStorage';
-import {
-  auth,
-  fetchAlgorithms,
-} from '../../../frontend_service/api/Http';
+import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);

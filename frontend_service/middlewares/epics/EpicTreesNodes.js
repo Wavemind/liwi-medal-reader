@@ -108,7 +108,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(diseasesChildren(indexNode, indexChild));
         case nodesType.t:
           // Treatment
-          return []
+          return [];
         case nodesType.fd:
           // Ho next node is Final Diagnostic
           return of(diagnosisChildren(indexNode, indexChild));
