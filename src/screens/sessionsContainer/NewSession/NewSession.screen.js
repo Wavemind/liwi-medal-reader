@@ -51,7 +51,7 @@ export default class NewSession extends React.Component<Props, State> {
         }
       })
       .catch((err) => {
-        Toaster(err, { type: 'danger' });
+        console.log(err, 'sdsfsdfds');
         this.setState({ success: false, loading: false });
       });
   };

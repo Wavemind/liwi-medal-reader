@@ -3,8 +3,7 @@ import { getDeviceInformation } from '../../src/engine/api/Device';
 import { devHost } from '../../frontend_service/constants';
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
-import isArray from 'lodash/isArray';
-import { handleHttpError, displayToast } from 'utils/CustomToast';
+import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
 import {
   getItems,
   getSession,
@@ -60,7 +59,7 @@ export const postDeviceInfo = async () => {
     },
     body: JSON.stringify(device),
   }).catch(function(error) {
-    displayToast('Une erreur est survenue. Veuillez réessayer ultérieurement', {
+    Toaster('Une erreur est survenue. Veuillez réessayer ultérieurement', {
       type: 'danger',
     });
     console.log(error);
@@ -153,7 +152,7 @@ export const fetchAlgorithms = async (userId) => {
           localAlgorithms.push(serverAlgorithm);
         }
 
-        displayToast('Algo Updated', { type: 'success' });
+        Toaster('Algo Updated', { type: 'success' });
         await setItem('algorithms', localAlgorithms);
         resolve();
       }

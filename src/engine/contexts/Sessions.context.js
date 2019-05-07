@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unused-state */
 
 import * as React from 'react';
-import { displayToast } from 'utils/CustomToast';
+import { Toaster } from '../../utils/CustomToast';
 import {
   getSessions,
   updateSession,
@@ -86,7 +86,7 @@ export class SessionsProvider extends React.Component<
               return Promise.reject(err);
             });
         }
-        displayToast('Already connected', { type: 'danger' });
+        Toaster('Already connected', { type: 'danger' });
       }
     }
     return false;
