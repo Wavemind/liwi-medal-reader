@@ -36,8 +36,8 @@ export default class Question extends React.PureComponent<Props, State> {
       case priorities.triage:
         specificStyle = styles.triage;
         break;
-      case priorities.priority:
-        specificStyle = styles.priority;
+      case priorities.mandatory:
+        specificStyle = styles.mandatory;
         break;
       case priorities.basic:
         specificStyle = styles.normal;
@@ -62,6 +62,11 @@ export default class Question extends React.PureComponent<Props, State> {
       case displayFormats.input:
         WrapperAnswer = () => (
           <Numeric question={question} styles={specificStyle} />
+        );
+        break;
+      case displayFormats.list:
+        WrapperAnswer = () => (
+          <List question={question} styles={specificStyle} />
         );
         break;
       default:
@@ -120,7 +125,7 @@ export default class Question extends React.PureComponent<Props, State> {
             style={styles.borderRight}
             key={question.id + '_label'}
           >
-            <Text style={{ color: liwiColors.blackColor }}>
+            <Text style={{ color: liwiColors.blackColor }} size-auto>
               {question.label}
             </Text>
           </ColCenter>

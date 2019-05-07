@@ -46,7 +46,7 @@ export default class Numeric extends React.Component<Props, State> {
           <Input
             keyboardType={keyboardType}
             question
-            defaultValue={this.props.question.value}
+            defaultValue={String(this.props.question.value)}
             onFocus={this._focus}
             onEndEditing={this._onEndEditing}
           />

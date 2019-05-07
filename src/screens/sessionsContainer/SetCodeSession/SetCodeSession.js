@@ -83,18 +83,12 @@ export default class SetCodeSession extends React.Component<Props, State> {
     }
 
     return (
-      <View style={styles.container}>
-        <LottieView
-          source={require('../../../utils/animations/welcome.json')}
-          autoPlay
-          style={styles.height}
-          loop
-        />
-        <View style={styles.content}>
-          <LiwiTitle2>
-            Bienvenue {session.data.first_name} {session.data.last_name}
-          </LiwiTitle2>
+      <View flex-container-column>
+        <View flex-center>
           <Form>
+            <LiwiTitle2>
+              Bienvenue {session.data.first_name} {session.data.last_name}
+            </LiwiTitle2>
             <Item success={success} error={error} login-input floatingLabel>
               <Label>Votre code</Label>
               <Input
@@ -123,14 +117,15 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 </Text>
               </React.Fragment>
             ) : null}
+            <Button
+              full
+              style={styles.marginTop}
+              onPress={() => this.setLocalCode()}
+              disabled={success !== true}
+            >
+              <Text> Définir ce code </Text>
+            </Button>
           </Form>
-          <Button
-            style={styles.marginTop}
-            onPress={() => this.setLocalCode()}
-            disabled={success !== true}
-          >
-            <Text> Définir ce code </Text>
-          </Button>
         </View>
       </View>
     );

@@ -6,17 +6,16 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+
   height: {
-    height: 60,
+    height: 300,
   },
   content: {
-    width: screenWidth * 0.8,
     borderColor: liwiColors.redColor,
     borderWidth: 2,
     borderRadius: 10,
     padding: 30,
   },
-
   marginTop: {
     marginTop: 20,
   },

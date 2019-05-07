@@ -29,7 +29,7 @@ export type SessionsProviderState = {
   newSession: (email: string, password: string) => Promise<any>,
   setLocalCode: (encrypted: string, userId: number) => Promise<any>,
   logout: (userId: number) => Promise<any>,
-};2
+};
 
 export class SessionsProvider extends React.Component<
   SessionsProviderProps,
