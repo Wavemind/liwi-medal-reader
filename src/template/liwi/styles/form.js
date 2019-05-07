@@ -2,13 +2,9 @@ import { screenWidth } from 'utils/constants';
 import { liwiColors } from '../../../utils/constants';
 
 export default {
-  'NativeBase.Item': {
-    '.login-input': {
-      flexDirection:'column',
-      flex: 1
-    },
-  },
+  'NativeBase.Item': {},
   'NativeBase.Input': {
+    '.login-input': {},
     '.string': {
       width: screenWidth * 0.8,
     },

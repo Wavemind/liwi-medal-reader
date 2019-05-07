@@ -10,7 +10,6 @@ export const conditionValuePSChange = (nodeId, psId, value) => ({
   payload: { nodeId, psId, value },
 });
 
-
 export const setMedicalCase = (medicalCase) => ({
   type: actions.MC_SET,
   payload: {
@@ -31,7 +30,11 @@ export const setQuestion = (index, value) => ({
   },
 });
 
-export const dispatchNodeAction = (indexNode, indexChild, typeChild = null) => ({
+export const dispatchNodeAction = (
+  indexNode,
+  indexChild,
+  typeChild = null
+) => ({
   type: actions.MC_NODE_CHILDREN,
   payload: {
     indexNode,

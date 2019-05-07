@@ -1,15 +1,15 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
-  liwiColors, paddingIsTablet,
+  liwiColors,
+  paddingIsTablet,
   screenHeight,
   screenWidth,
 } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
-
   container: {
     flexDirection: 'column',
-    flex: 1
+    flex: 1,
   },
   content: {
     // flexBasis: screenWidth / 2,

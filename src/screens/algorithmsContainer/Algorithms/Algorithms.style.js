@@ -9,8 +9,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#8B8393',
-    backgroundColor: '#ffffff'
-
+    backgroundColor: '#ffffff',
   },
   selected: {
     flex: 1,
@@ -20,7 +19,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#8B8393',
-    backgroundColor: '#5a9542'
+    backgroundColor: '#5a9542',
   },
   textWithoutIcon: {
     marginTop: 5,

@@ -1,4 +1,8 @@
-import { liwiColors, marginIsTablet, screenWidth } from '../../../utils/constants';
+import {
+  liwiColors,
+  marginIsTablet,
+  screenWidth,
+} from '../../../utils/constants';
 
 export default {
   'NativeBase.ViewNB': {
@@ -14,13 +18,19 @@ export default {
       flexGrow: 1, // not used actually
     },
     '.margin-auto': {
-      margin: marginIsTablet()
+      margin: marginIsTablet(),
     },
     '.padding-auto': { padding: 20 },
     '.flex-center': {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
+      flex: 1,
+      flexGrow: 1,
+    },
+    '.full-space': {
+      flexDirection: 'column',
+      justifyContent: 'center',
       flex: 1,
       flexGrow: 1,
     },

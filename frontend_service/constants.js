@@ -34,7 +34,7 @@ export const priorities = {
   basic: 'basic',
   mandatory: 'mandatory',
   triage: 'triage',
-  priority: 'priority'
+  priority: 'priority',
 };
 
 export const categories = {

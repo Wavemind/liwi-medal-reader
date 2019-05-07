@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import { displayToast } from '../../../utils/CustomToast';
+import { Toaster } from '../../../utils/CustomToast';
 import { styles } from './NewSession.style';
 import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 
@@ -51,7 +51,7 @@ export default class NewSession extends React.Component<Props, State> {
         }
       })
       .catch((err) => {
-        displayToast(err, { type: 'danger' });
+        Toaster(err, { type: 'danger' });
         this.setState({ success: false, loading: false });
       });
   };
@@ -63,20 +63,22 @@ export default class NewSession extends React.Component<Props, State> {
 
     return (
       <View flex-container-column>
-        <View flex-center border-primary margin-auto padding-auto>
+        <View full-space border-primary margin-auto padding-auto>
           <Form>
-            <Item login-input floatingLabel>
+            <Item floatingLabel>
               <Label>Email</Label>
               <Input
+                login-input
                 onChangeText={this.changeEmail}
                 value={email}
                 textContentType="emailAddress"
                 keyboardType="email-address"
               />
             </Item>
-            <Item login-input floatingLabel>
+            <Item floatingLabel>
               <Label>Password</Label>
               <Input
+                login-input
                 onChangeText={this.changePassword}
                 value={password}
                 secureTextEntry

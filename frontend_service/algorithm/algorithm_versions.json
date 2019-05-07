@@ -13,25 +13,15 @@
       "reference": "DD_15",
       "label": "Neck mass",
       "differential": {
-        "top_conditions": [
-
-        ],
-        "conditions": [
-
-        ]
+        "top_conditions": [],
+        "conditions": []
       },
       "nodes": {
         "26": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 26,
-          "children": [
-            48
-          ]
+          "children": [48]
         },
         "29": {
           "top_conditions": [
@@ -44,13 +34,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 29,
-          "children": [
-            50
-          ]
+          "children": [50]
         },
         "48": {
           "top_conditions": [
@@ -63,25 +49,15 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 48,
-          "children": [
-            29
-          ]
+          "children": [29]
         },
         "49": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 49,
-          "children": [
-            25
-          ]
+          "children": [25]
         }
       },
       "diagnosis": {
@@ -96,9 +72,7 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "disease_id": 5,
           "name": "Neck mass",
           "id": 50,
@@ -115,15 +89,11 @@
                   "second_type": null
                 }
               ],
-              "conditions": [
-
-              ],
+              "conditions": [],
               "id": 25
             }
           },
-          "managements": {
-
-          },
+          "managements": {},
           "excluding_diagnosis": null
         }
       }
@@ -133,25 +103,15 @@
       "reference": "DD_14",
       "label": "Osteomyelitis / Septic arthritis",
       "differential": {
-        "top_conditions": [
-
-        ],
-        "conditions": [
-
-        ]
+        "top_conditions": [],
+        "conditions": []
       },
       "nodes": {
         "26": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 26,
-          "children": [
-            48
-          ]
+          "children": [48]
         },
         "48": {
           "top_conditions": [
@@ -164,26 +124,15 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 48,
-          "children": [
-            55,
-            56
-          ]
+          "children": [55, 56]
         },
         "49": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 49,
-          "children": [
-
-          ]
+          "children": []
         },
         "55": {
           "top_conditions": [
@@ -196,13 +145,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 55,
-          "children": [
-            57
-          ]
+          "children": [57]
         },
         "56": {
           "top_conditions": [
@@ -215,13 +160,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 56,
-          "children": [
-            57
-          ]
+          "children": [57]
         },
         "57": {
           "top_conditions": [
@@ -242,13 +183,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 57,
-          "children": [
-            58
-          ]
+          "children": [58]
         },
         "58": {
           "top_conditions": [
@@ -261,13 +198,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 58,
-          "children": [
-            54
-          ]
+          "children": [54]
         }
       },
       "diagnosis": {
@@ -282,9 +215,7 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "disease_id": 6,
           "name": "Osteomylelitis / Septic arthritis",
           "id": 54,
@@ -301,18 +232,12 @@
                   "second_type": null
                 }
               ],
-              "conditions": [
-
-              ],
+              "conditions": [],
               "id": 25
             },
             "59": {
-              "top_conditions": [
-
-              ],
-              "conditions": [
-
-              ],
+              "top_conditions": [],
+              "conditions": [],
               "id": 59
             }
           },
@@ -328,9 +253,7 @@
                   "second_type": null
                 }
               ],
-              "conditions": [
-
-              ],
+              "conditions": [],
               "id": 60
             }
           },
@@ -408,7 +331,7 @@
           "label": "More than 12 years",
           "value": "12",
           "operator": "=>"
-        },
+        }
       }
     },
     "27": {
@@ -427,9 +350,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -466,9 +387,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -499,9 +418,7 @@
       "category": "Physical exam",
       "display_format": "Input",
       "value_format": "Float",
-      "ps": [
-
-      ],
+      "ps": [],
       "dd": [
         {
           "id": 5,
@@ -548,9 +465,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -598,9 +513,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -644,9 +557,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -683,9 +594,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -722,9 +631,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -761,9 +668,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -800,9 +705,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -839,9 +742,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -878,9 +779,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -917,9 +816,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -956,9 +853,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -995,9 +890,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "counter": 0,
       "value": 0,
       "answer": null,
@@ -1069,83 +962,45 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 42,
       "type": "PredefinedSyndrome",
       "nodes": {
         "34": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 34,
-          "children": [
-            42
-          ]
+          "children": [42]
         },
         "35": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 35,
-          "children": [
-            42
-          ]
+          "children": [42]
         },
         "36": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 36,
-          "children": [
-            42
-          ]
+          "children": [42]
         },
         "37": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 37,
-          "children": [
-            42
-          ]
+          "children": [42]
         },
         "38": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 38,
-          "children": [
-            42
-          ]
+          "children": [42]
         },
         "39": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 39,
-          "children": [
-            42
-          ]
+          "children": [42]
         }
       },
       "answers": {
@@ -1166,9 +1021,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "answer": null
     },
     "43": {
@@ -1190,24 +1043,15 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 43,
       "type": "PredefinedSyndrome",
       "nodes": {
         "40": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 40,
-          "children": [
-            43,
-            41
-          ]
+          "children": [43, 41]
         },
         "41": {
           "top_conditions": [
@@ -1220,13 +1064,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 41,
-          "children": [
-            43
-          ]
+          "children": [43]
         }
       },
       "answers": {
@@ -1247,9 +1087,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "answer": null
     },
     "44": {
@@ -1263,23 +1101,15 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 44,
       "type": "PredefinedSyndrome",
       "nodes": {
         "33": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 33,
-          "children": [
-            44
-          ]
+          "children": [44]
         }
       },
       "answers": {
@@ -1300,9 +1130,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "answer": null
     },
     "45": {
@@ -1316,23 +1144,15 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 45,
       "type": "PredefinedSyndrome",
       "nodes": {
         "32": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 32,
-          "children": [
-            45
-          ]
+          "children": [45]
         }
       },
       "answers": {
@@ -1353,9 +1173,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "answer": null
     },
     "46": {
@@ -1377,35 +1195,21 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 46,
       "type": "PredefinedSyndrome",
       "nodes": {
         "26": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 26,
-          "children": [
-            31
-          ]
+          "children": [31]
         },
         "30": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 30,
-          "children": [
-            46
-          ]
+          "children": [46]
         },
         "31": {
           "top_conditions": [
@@ -1418,13 +1222,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 31,
-          "children": [
-            46
-          ]
+          "children": [46]
         }
       },
       "answers": {
@@ -1445,9 +1245,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "answer": null
     },
     "47": {
@@ -1469,35 +1267,21 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 47,
       "type": "PredefinedSyndrome",
       "nodes": {
         "26": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 26,
-          "children": [
-            31
-          ]
+          "children": [31]
         },
         "30": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 30,
-          "children": [
-            47
-          ]
+          "children": [47]
         },
         "31": {
           "top_conditions": [
@@ -1510,13 +1294,9 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 31,
-          "children": [
-            47
-          ]
+          "children": [47]
         }
       },
       "answers": {
@@ -1537,9 +1317,7 @@
           "conditionValue": null
         }
       ],
-      "dd": [
-
-      ],
+      "dd": [],
       "answer": null
     },
     "48": {
@@ -1561,35 +1339,21 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 48,
       "type": "PredefinedSyndrome",
       "nodes": {
         "27": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 27,
-          "children": [
-            48
-          ]
+          "children": [48]
         },
         "28": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 28,
-          "children": [
-            48
-          ]
+          "children": [48]
         }
       },
       "answers": {
@@ -1604,9 +1368,7 @@
           "label": "translation missing: en.answers.no"
         }
       },
-      "ps": [
-
-      ],
+      "ps": [],
       "dd": [
         {
           "id": 5,
@@ -1670,83 +1432,45 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "id": 49,
       "type": "PredefinedSyndrome",
       "nodes": {
         "42": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 42,
-          "children": [
-            49
-          ]
+          "children": [49]
         },
         "43": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 43,
-          "children": [
-            49
-          ]
+          "children": [49]
         },
         "44": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 44,
-          "children": [
-            49
-          ]
+          "children": [49]
         },
         "45": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 45,
-          "children": [
-            49
-          ]
+          "children": [49]
         },
         "46": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 46,
-          "children": [
-            49
-          ]
+          "children": [49]
         },
         "47": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 47,
-          "children": [
-            49
-          ]
+          "children": [49]
         }
       },
       "answers": {
@@ -1761,9 +1485,7 @@
           "label": "translation missing: en.answers.no"
         }
       },
-      "ps": [
-
-      ],
+      "ps": [],
       "dd": [
         {
           "id": 5,
@@ -1787,9 +1509,7 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "disease_id": 5,
       "name": "Neck mass",
       "id": 50,
@@ -1806,15 +1526,11 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 25
         }
       },
-      "managements": {
-
-      },
+      "managements": {},
       "excluding_diagnosis": null
     },
     "54": {
@@ -1828,9 +1544,7 @@
           "second_type": null
         }
       ],
-      "conditions": [
-
-      ],
+      "conditions": [],
       "disease_id": 6,
       "name": "Osteomylelitis / Septic arthritis",
       "id": 54,
@@ -1847,18 +1561,12 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 25
         },
         "59": {
-          "top_conditions": [
-
-          ],
-          "conditions": [
-
-          ],
+          "top_conditions": [],
+          "conditions": [],
           "id": 59
         }
       },
@@ -1874,9 +1582,7 @@
               "second_type": null
             }
           ],
-          "conditions": [
-
-          ],
+          "conditions": [],
           "id": 60
         }
       },
@@ -1892,9 +1598,7 @@
       "category": "Symptom",
       "display_format": "RadioButton",
       "value_format": "Boolean",
-      "ps": [
-
-      ],
+      "ps": [],
       "dd": [
         {
           "id": 6,
@@ -1931,9 +1635,7 @@
       "category": "Physical exam",
       "display_format": "RadioButton",
       "value_format": "Boolean",
-      "ps": [
-
-      ],
+      "ps": [],
       "dd": [
         {
           "id": 6,
@@ -1970,9 +1672,7 @@
       "category": "Assessment/Test",
       "display_format": "DropDownList",
       "value_format": "Array",
-      "ps": [
-
-      ],
+      "ps": [],
       "dd": [
         {
           "id": 6,
@@ -2009,9 +1709,7 @@
       "category": "Assessment/Test",
       "display_format": "Input",
       "value_format": "Integer",
-      "ps": [
-
-      ],
+      "ps": [],
       "dd": [
         {
           "id": 6,
