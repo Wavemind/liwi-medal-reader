@@ -1,19 +1,14 @@
 // @flow
 
 import * as React from 'react';
-import {
-  Tab,
-  Tabs,
-  Text,
-  View,
-  Icon,
-  Button,
-} from 'native-base';
+import { ScrollView } from 'react-native';
+import { Tab, Tabs, Text, View, Icon, Button } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { liwiColors } from '../../../utils/constants';
 import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './WorkCase.style';
+import { nodesType } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -24,20 +19,13 @@ export default class WorkCase extends React.Component<Props, State> {
   render() {
     const {
       nextBatch,
-      medicalCase: {
-        nodes,
-        diseases,
-        version,
-        description,
-        author,
-        batches,
-      },
+      medicalCase: { nodes, diseases, version, description, author, batches },
     } = this.props;
 
     // Tabs name
     let tabBatches = [
-      { name: 'Questions de triage', current: false, nodes: {} },
-      { name: '2', current: false, nodes: {} },
+      { name: 'Triage', current: false, nodes: {} },
+      { name: 'Mandatory', current: false, nodes: {} },
       { name: '3', current: false, nodes: {} },
       { name: '4', current: false, nodes: {} },
       { name: '5', current: false, nodes: {} },
@@ -52,25 +40,28 @@ export default class WorkCase extends React.Component<Props, State> {
         if (nodes[nodeId].answer === null) {
           ready = false;
         }
-        tabBatches[id].nodes[nodeId] = nodes[nodeId];
+        if (nodes[nodeId].type !== nodesType.ps) {
+          tabBatches[id].nodes[nodeId] = nodes[nodeId];
+        }
       });
     });
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <LiwiTitle2>Version : {version}</LiwiTitle2>
         <View style={styles.view}>
           <Text>description : {description}</Text>
           <Text>Par : {author}</Text>
         </View>
         <Button onPress={() => nextBatch()}>
-          <Icon name="forward" type={'AntDesign'}/>
+          <Icon name="forward" type={'AntDesign'} />
           <Text>Créer le batch suivant</Text>
         </Button>
         <Tabs>
           {Object.keys(tabBatches).map((batchId) =>
             Object.keys(tabBatches[batchId].nodes).length > 0 ? (
               <Tab
+                key={'tabBatches' + batchId}
                 heading={tabBatches[batchId].name}
                 tabStyle={{
                   backgroundColor: liwiColors.redColor,
@@ -79,9 +70,9 @@ export default class WorkCase extends React.Component<Props, State> {
                   backgroundColor: liwiColors.redColor,
                 }}
               >
-                <Questions questions={tabBatches[batchId].nodes}/>
+                <Questions questions={tabBatches[batchId].nodes} />
               </Tab>
-            ) : null,
+            ) : null
           )}
           <Tab
             heading="Diagnostic"
@@ -94,10 +85,7 @@ export default class WorkCase extends React.Component<Props, State> {
           >
             <View style={styles.flex}>
               {Object.keys(diseases).map((id) => (
-                <View
-                  style={styles.diseases}
-                  key={id + '_diseases'}
-                >
+                <View style={styles.diseases} key={id + '_diseases'}>
                   <Text>id : {diseases[id].id}</Text>
                   <Text>reference : {diseases[id].reference}</Text>
                   <Text>label : {diseases[id].label}</Text>
@@ -106,7 +94,7 @@ export default class WorkCase extends React.Component<Props, State> {
             </View>
           </Tab>
         </Tabs>
-      </View>
+      </ScrollView>
     );
   }
 }

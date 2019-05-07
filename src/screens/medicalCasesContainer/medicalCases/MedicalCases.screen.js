@@ -2,13 +2,13 @@
 
 import * as React from 'react';
 import moment from 'moment';
-import { medicalCaseInitialState } from '../../../../frontend_service/engine/algorithm/medicalCase';
+import { medicalCaseInitialState } from '../../../../frontend_service/algorithm/medicalCase';
 import { SeparatorLine } from '../../../template/layout';
 import { styles } from './MedicalCases.style';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import algorithmJson from '../../../../frontend_service/engine/algorithm/algorithm_versions.json';
-import { Button, H3, Picker, Text } from 'native-base';
+import find from 'lodash/find';
+import { Button, H3, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
 import {
   createMedicalCase,
@@ -16,18 +16,16 @@ import {
   getUserMedicalCases,
 } from '../../../engine/api/LocalStorage';
 import {
-  setInitialCounter,
   generateInitialBatch,
-} from '../../../../frontend_service/engine/algorithm/algoTreeDiagnosis';
+  setInitialCounter,
+} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { NodeModel } from '../../../../frontend_service/engine/models/Node.model';
 import { nodesType } from '../../../../frontend_service/constants';
 import { QuestionModel } from '../../../../frontend_service/engine/models/Question.model';
 import { PredefinedSyndromeModel } from '../../../../frontend_service/engine/models/PredefinedSyndrome.model';
 import { TreatmentModel } from '../../../../frontend_service/engine/models/Treatment.model';
 import { ManagementModel } from '../../../../frontend_service/engine/models/Management.model';
 import { FinalDiagnosticModel } from '../../../../frontend_service/engine/models/FinalDiagnostic.model';
-import { DiagnosisModel } from '../../../../frontend_service/engine/models/Diagnosis.model';
 import { DiseasesModel } from '../../../../frontend_service/engine/models/Diseases.model';
 
 type Props = NavigationScreenProps & {};
@@ -39,6 +37,7 @@ export default class MedicalCases extends React.Component<Props, State> {
     algorithms: [],
     selected: 'null',
     versions: [],
+    generate: null,
   };
 
   async componentWillMount() {
@@ -55,13 +54,6 @@ export default class MedicalCases extends React.Component<Props, State> {
     this.setState({ algorithms, versions });
   }
 
-  // Update value
-  onValueChange = (value: string) => {
-    this.setState({
-      selected: value,
-    });
-  };
-
   // Get medical cases of current user
   getMedicalCases = async () => {
     const { app } = this.props;
@@ -71,19 +63,19 @@ export default class MedicalCases extends React.Component<Props, State> {
 
   // Create new medical case
   generateMedicalCase = async () => {
+    await this.setState({ generate: true });
+    this.loading.play();
     const response = await fetch('https://uinames.com/api/?ext&region=france');
 
     const json = await response.json();
 
     const algorithms = await getItems('algorithms');
 
-    // const algorithmUsed = find(algorithms, (a) => a.selected);
+    const algorithmUsed = find(algorithms, (a) => a.selected);
 
-    const algorithmUsed = algorithms[0].versions[0];
+    setInitialCounter(algorithmUsed);
 
-    console.log(algorithmUsed)
-
-
+    console.log(algorithmUsed);
 
     Object.keys(algorithmUsed.nodes).forEach((i) => {
       let node = algorithmUsed.nodes[i];
@@ -91,7 +83,10 @@ export default class MedicalCases extends React.Component<Props, State> {
 
       switch (node.type) {
         case nodesType.ps:
-          modelized = new PredefinedSyndromeModel({ ...node, medicalCase: algorithmUsed });
+          modelized = new PredefinedSyndromeModel({
+            ...node,
+            medicalCase: algorithmUsed,
+          });
           break;
         case nodesType.t:
           modelized = new TreatmentModel({ ...node });
@@ -111,7 +106,6 @@ export default class MedicalCases extends React.Component<Props, State> {
 
       algorithmUsed.nodes[i] = modelized;
     });
-
 
     Object.keys(algorithmUsed.diseases).forEach(
       (i) =>
@@ -146,6 +140,8 @@ export default class MedicalCases extends React.Component<Props, State> {
       },
     });
     await this.getMedicalCases();
+    await this.setState({ generate: false });
+    this.loading.reset();
   };
 
   // Select a medical case and redirect to patient's view
@@ -154,13 +150,13 @@ export default class MedicalCases extends React.Component<Props, State> {
     await setMedicalCase(medicalCase);
     // await app.setMedicalCase(medicalCase); // TODO find better way
     await this.getMedicalCases();
-    navigation.navigate('MedicalCase', {
-      title: `Cas médical : ${medicalCase.id}`,
+    navigation.navigate('WorkCase', {
+      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
     });
   };
 
   render() {
-    const { versions, selected } = this.state;
+    const { generate } = this.state;
 
     const { medicalCase } = this.props;
 
@@ -184,32 +180,30 @@ export default class MedicalCases extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View style={styles.view}>
-          <LottieView
-            source={require('../../../utils/animations/blood_1.json')}
-            autoPlay
-            style={styles.height}
-            loop
-          />
+          {generate === true ? (
+            <LottieView
+              ref={(loading) => {
+                this.loading = loading;
+              }}
+              speed={3}
+              source={require('../../../utils/animations/loading.json')}
+              style={styles.height}
+              loop
+            />
+          ) : (
+            <LottieView
+              source={require('../../../utils/animations/blood_1.json')}
+              autoPlay
+              style={styles.height}
+              loop
+            />
+          )}
         </View>
         <H3>Actions</H3>
-        <Button
-          onPress={() => this.generateMedicalCase()}
-          // disabled={selected === 'null'}
-        >
+        <Button onPress={() => this.generateMedicalCase()} disabled={generate}>
           <Text>Créer un cas médical</Text>
         </Button>
-        <Picker
-          mode="dropdown"
-          iosHeader="Select your medical case"
-          style={styles.picker}
-          selectedValue={selected}
-          onValueChange={this.onValueChange}
-        >
-          <Picker.Item label="Choisir l'algorithme" value="null" />
-          {versions.map((v) => (
-            <Picker.Item label={v.version} value={v.version} />
-          ))}
-        </Picker>
+
         <SeparatorLine />
         <H3>Cas médicals</H3>
         {_renderMedicalCases}

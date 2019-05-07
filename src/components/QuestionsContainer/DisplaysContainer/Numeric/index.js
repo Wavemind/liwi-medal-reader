@@ -1,6 +1,6 @@
 import Numeric from './Numeric';
 import { connect } from 'react-redux';
-import { setQuestion } from '../../../../../frontend_service/engine/actions/creators.actions';
+import { setQuestion } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase, ownProps) => {
   return { medicalCase };

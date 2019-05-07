@@ -5,21 +5,13 @@ import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
 import { ColCenter } from '../../../../template/layout';
 import { styles } from './Radio.style';
-import {
-  Button,
-  Grid,
-  Icon,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Grid, Icon, Text, View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Radio extends React.Component<Props, State> {
-  shouldComponentUpdate(
-    nextProps: Readonly<P>,
-  ): boolean {
+  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     return nextProps.question.answer !== this.props.question.answer;
   }
 
@@ -28,10 +20,7 @@ export default class Radio extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      question,
-      setQuestion,
-    } = this.props;
+    const { question, setQuestion } = this.props;
 
     return (
       <View style={styles.view}>

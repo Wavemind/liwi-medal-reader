@@ -1,6 +1,5 @@
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-
 
 // Return device information and his location
 export const getDeviceInformation = async (cb) => {
@@ -41,9 +40,15 @@ export const getDeviceInformation = async (cb) => {
 // Return position of device if GPS is enabled or ask user to enable it.
 export const getGeo = async (cb) => {
   await askGeo(true, async (firstCallBack) => {
-    if (firstCallBack.PERMISSION_DENIED === 1 || firstCallBack.POSITION_UNAVAILABLE === 2) {
+    if (
+      firstCallBack.PERMISSION_DENIED === 1 ||
+      firstCallBack.POSITION_UNAVAILABLE === 2
+    ) {
       await askGeo(false, (secondCallBack) => {
-        if (secondCallBack.PERMISSION_DENIED === 1 || secondCallBack.POSITION_UNAVAILABLE === 2) {
+        if (
+          secondCallBack.PERMISSION_DENIED === 1 ||
+          secondCallBack.POSITION_UNAVAILABLE === 2
+        ) {
           Alert.alert(
             'Vous devez activer votre service de localisation',
             '',
@@ -54,10 +59,11 @@ export const getGeo = async (cb) => {
                 style: 'cancel',
               },
               {
-                text: 'OK', onPress: () => {}
+                text: 'OK',
+                onPress: () => {},
               },
             ],
-            {cancelable: false}
+            { cancelable: false }
           );
           cb(false);
         } else {

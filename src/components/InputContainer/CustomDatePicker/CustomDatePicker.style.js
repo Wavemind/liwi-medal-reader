@@ -25,5 +25,4 @@ export const styles = StyleSheet.create({
   form: {
     padding: 20,
   },
-
 });

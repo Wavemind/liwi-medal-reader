@@ -14,6 +14,6 @@ export default class CustomRadio extends React.Component<Props, State> {
   componentWillMount() {}
 
   render() {
-    return <View/>;
+    return <View />;
   }
 }

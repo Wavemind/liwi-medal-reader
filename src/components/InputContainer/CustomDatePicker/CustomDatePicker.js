@@ -3,12 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View } from 'react-native';
-import {
-  DatePicker,
-  Form,
-  Icon,
-  Text,
-} from 'native-base';
+import { DatePicker, Form, Icon, Text } from 'native-base';
 import moment from 'moment';
 import { styles } from './CustomDatePicker.style';
 import { ViewBlocColor } from '../../../template/layout';
@@ -24,7 +19,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
 
   shouldComponentUpdate(
     nextProps: Readonly<P>,
-    nextState: Readonly<S>,
+    nextState: Readonly<S>
   ): boolean {
     return (
       this.state.value !== nextState.value || this.props.init !== nextProps.init
@@ -47,18 +42,14 @@ export default class CustomDatePicker extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      label,
-      iconName,
-      iconType,
-    } = this.props;
+    const { label, iconName, iconType } = this.props;
     const { value } = this.state;
 
     return (
       <Form style={styles.form}>
         <View style={styles.view}>
           {iconName && iconType ? (
-            <Icon name={iconName} type={iconType} style={styles.icon}/>
+            <Icon name={iconName} type={iconType} style={styles.icon} />
           ) : null}
           <Text
             style={

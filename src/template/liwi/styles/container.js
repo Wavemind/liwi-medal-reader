@@ -1,11 +1,43 @@
-import { screenWidth } from '../../../utils/constants';
+import {
+  liwiColors,
+  marginIsTablet,
+  screenWidth,
+} from '../../../utils/constants';
 
 export default {
-  'NativeBase.View': {
-    '.root': {
-      padding: 20,
+  'NativeBase.ViewNB': {
+    '.flex-container-column': {
+      flexDirection: 'column',
       flex: 1,
-      backgroundColor: 'blue',
+    },
+    '.flex-container-row': {
+      flexDirection: 'row',
+      flex: 1,
+    },
+    '.flex-child': {
+      flexGrow: 1, // not used actually
+    },
+    '.margin-auto': {
+      margin: marginIsTablet(),
+    },
+    '.padding-auto': { padding: 20 },
+    '.flex-center': {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1,
+      flexGrow: 1,
+    },
+    '.full-space': {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      flex: 1,
+      flexGrow: 1,
+    },
+    '.border-primary': {
+      borderColor: liwiColors.redColor,
+      borderWidth: 2,
+      borderRadius: 10,
     },
     '.card': {
       width: screenWidth - 40,

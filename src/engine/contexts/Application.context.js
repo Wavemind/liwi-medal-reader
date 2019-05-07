@@ -2,10 +2,10 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import find from 'lodash/find';
-import { fetchAlgorithms } from '../../../frontend_service/engine/api/Http';
+import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 import { sha256 } from 'js-sha256';
 import { saltHash } from '../../../frontend_service/constants';
-import { ToastFactory } from 'utils/ToastFactory';
+import { Toaster } from '../../utils/CustomToast';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
@@ -18,10 +18,7 @@ import {
   getSessions,
   SetActiveSession,
 } from '../api/LocalStorage';
-import {
-  AppState,
-  NetInfo,
-} from 'react-native';
+import { AppState, NetInfo } from 'react-native';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -54,14 +51,14 @@ export class ApplicationProvider extends React.Component<Props, State> {
     AppState.addEventListener('change', this._handleAppStateChange);
     NetInfo.addEventListener(
       'connectionChange',
-      this._handleConnectivityChange,
+      this._handleConnectivityChange
     );
   }
 
   componentWillUnmount() {
     NetInfo.removeEventListener(
       'connectionChange',
-      this._handleConnectivityChange,
+      this._handleConnectivityChange
     );
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
@@ -111,7 +108,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
     await this.setState({ [prop]: value });
   };
 
-
   // Log out
   // TODO : check if duplicated from Session context is really necessary
   logout = async () => {
@@ -127,7 +123,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     const sessions = await getSessions();
     let finderActiveSession = find(sessions, (session) => {
       const isStillActive = moment().isBefore(
-        moment(session.active_since).add(sessionsDuration, 'minute'),
+        moment(session.active_since).add(sessionsDuration, 'minute')
       );
       return session.active && isStillActive;
     });
@@ -160,7 +156,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
       session = await getSession(id);
       this.setUserContext(session);
     } else {
-      ToastFactory('Pas le bon code', { type: 'danger' });
+      Toaster('Pas le bon code', { type: 'danger' });
     }
   };
 
@@ -202,7 +198,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 }
 
 export const withApplication = (Component: React.ComponentType<any>) => (
-  props: any,
+  props: any
 ) => (
   <ApplicationContext.Consumer>
     {(store) => <Component app={store} {...props} />}

@@ -1,8 +1,13 @@
 import { actions } from './types.actions';
 
-export const conditionValueChange = (nodeId, diseaseId, value) => ({
-  type: actions.MC_CONDITION_VALUE_CHANGE,
+export const conditionValueDiseasesChange = (nodeId, diseaseId, value) => ({
+  type: actions.MC_CONDITION_VALUE_DISEASES_CHANGE,
   payload: { nodeId, diseaseId, value },
+});
+
+export const conditionValuePSChange = (nodeId, psId, value) => ({
+  type: actions.MC_CONDITION_VALUE_PS_CHANGE,
+  payload: { nodeId, psId, value },
 });
 
 export const setMedicalCase = (medicalCase) => ({
@@ -25,12 +30,24 @@ export const setQuestion = (index, value) => ({
   },
 });
 
-export const dispatchNodeAction = (indexNode, indexChild, type = null) => ({
+export const dispatchNodeAction = (
+  indexNode,
+  indexChild,
+  typeChild = null
+) => ({
   type: actions.MC_NODE_CHILDREN,
   payload: {
     indexNode,
     indexChild,
-    type,
+    typeChild,
+  },
+});
+
+export const dispatchPSAction = (indexPS, indexNode) => ({
+  type: actions.MC_PS_CHILDREN,
+  payload: {
+    indexPS,
+    indexNode,
   },
 });
 
@@ -66,10 +83,10 @@ export const predefinedSyndromeChildren = (indexPS, indexChild) => ({
   },
 });
 
-export const diagnosisChildren = (indexDD, indexDiagnosis) => ({
+export const diagnosisChildren = (indexDD, indexChild) => ({
   type: actions.MC_DIAGNOSIS_CHILDREN,
   payload: {
     indexDD,
-    indexDiagnosis,
+    indexChild,
   },
 });

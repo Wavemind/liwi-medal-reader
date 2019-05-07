@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
-
   container: {
     height: screenHeight,
     paddingBottom: 80,
@@ -21,5 +20,4 @@ export const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: liwiColors.greyColor,
   },
-
 });

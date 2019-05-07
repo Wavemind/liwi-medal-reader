@@ -9,15 +9,7 @@ import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './SetCodeSession.style';
 import LottieView from 'lottie-react-native';
 import { saltHash } from '../../../../frontend_service/constants';
-import {
-  Button,
-  Form,
-  Input,
-  Item,
-  Label,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 type State = {
@@ -54,13 +46,10 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
   // Verify if codes are same
   isTheSame = () => {
-    const {
-      code,
-      codeConfirmation,
-    } = this.state;
+    const { code, codeConfirmation } = this.state;
 
     let mediumRegex = new RegExp(
-      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
+      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
     );
 
     if (code.length > 0 && codeConfirmation.length > 0) {
@@ -87,31 +76,19 @@ export default class SetCodeSession extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      code,
-      codeConfirmation,
-      error,
-      success,
-      session,
-    } = this.state;
+    const { code, codeConfirmation, error, success, session } = this.state;
 
     if (session === null) {
       return null;
     }
 
     return (
-      <View style={styles.container}>
-        <LottieView
-          source={require('../../../utils/animations/welcome.json')}
-          autoPlay
-          style={styles.height}
-          loop
-        />
-        <View style={styles.content}>
-          <LiwiTitle2>
-            Bienvenue {session.data.first_name} {session.data.last_name}
-          </LiwiTitle2>
+      <View flex-container-column>
+        <View flex-center>
           <Form>
+            <LiwiTitle2>
+              Bienvenue {session.data.first_name} {session.data.last_name}
+            </LiwiTitle2>
             <Item success={success} error={error} login-input floatingLabel>
               <Label>Votre code</Label>
               <Input
@@ -121,6 +98,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 secureTextEntry
               />
             </Item>
+
             <Item success={success} error={error} login-input floatingLabel>
               <Label>Retaper votre code</Label>
               <Input
@@ -139,14 +117,15 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 </Text>
               </React.Fragment>
             ) : null}
+            <Button
+              full
+              style={styles.marginTop}
+              onPress={() => this.setLocalCode()}
+              disabled={success !== true}
+            >
+              <Text> Définir ce code </Text>
+            </Button>
           </Form>
-          <Button
-            style={styles.marginTop}
-            onPress={() => this.setLocalCode()}
-            disabled={success !== true}
-          >
-            <Text> Définir ce code </Text>
-          </Button>
         </View>
       </View>
     );
