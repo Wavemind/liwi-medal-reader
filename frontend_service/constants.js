@@ -20,6 +20,7 @@ export const displayFormats = {
   radioButton: 'RadioButton',
   checkBox: 'CheckBox',
   input: 'Input',
+  list: 'DropDownList',
 };
 
 export const displayValues = {
@@ -30,9 +31,10 @@ export const displayValues = {
 };
 
 export const priorities = {
-  basic: 'Basic',
-  priority: 'Priority',
-  triage: 'Triage',
+  basic: 'basic',
+  mandatory: 'mandatory',
+  triage: 'triage',
+  priority: 'priority'
 };
 
 export const categories = {

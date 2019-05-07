@@ -22,7 +22,7 @@ export default class CustomModal extends Component {
         <Modal
           isVisible={isModalVisible}
           backdropOpacity={0.5}
-          onSwipe={() => _toggleModal()}
+          onSwipeComplete={() => _toggleModal()}
           swipeDirection={'up'}
         >
           <View style={styles.view}>
