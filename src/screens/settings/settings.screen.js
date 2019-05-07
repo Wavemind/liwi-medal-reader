@@ -22,8 +22,7 @@ type State = {};
 export default class Settings extends React.Component<Props, State> {
   state = {};
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
   render() {
     return (
@@ -35,14 +34,14 @@ export default class Settings extends React.Component<Props, State> {
           <ListItem>
             <Left>
               <Button iconLeft iconMenu>
-                <Icon grey type={'FontAwesome'} name="eye"/>
+                <Icon grey type={'FontAwesome'} name="eye" />
               </Button>
             </Left>
             <Body>
-            <Text>Empécher la mise en veille</Text>
+              <Text>Empécher la mise en veille</Text>
             </Body>
             <Right>
-              <Switch value={true}/>
+              <Switch value={true} />
             </Right>
           </ListItem>
           <ListItem>

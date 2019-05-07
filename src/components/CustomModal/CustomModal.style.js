@@ -1,5 +1,5 @@
-import {liwiColors} from '../../utils/constants';
-import {StyleSheet} from 'react-native';
+import { liwiColors } from '../../utils/constants';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,6 +10,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: liwiColors.whiteColor,
     padding: 20,
-    margin: 20
-  }
+    margin: 20,
+  },
 });

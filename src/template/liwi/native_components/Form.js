@@ -3,7 +3,6 @@
 import variable from './../variables/platform';
 
 export default (variables /*: * */ = variable) => {
-
   const theme = {
     'NativeBase.Item': {
       '.fixedLabel': {

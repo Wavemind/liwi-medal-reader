@@ -2,8 +2,7 @@
 /* eslint-disable react/no-unused-state */
 
 import * as React from 'react';
-import { ToastFactory } from 'utils/ToastFactory';
-
+import { Toaster } from '../../utils/CustomToast';
 import {
   getSessions,
   updateSession,
@@ -11,10 +10,7 @@ import {
   setSessions,
   destroySession,
 } from '../api/LocalStorage';
-import {
-  auth,
-  fetchAlgorithms,
-} from '../../../frontend_service/engine/api/Http';
+import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
@@ -32,8 +28,10 @@ export type SessionsProviderState = {
   logout: (userId: number) => Promise<any>,
 };
 
-export class SessionsProvider extends React.Component<SessionsProviderProps, SessionsProviderState> {
-
+export class SessionsProvider extends React.Component<
+  SessionsProviderProps,
+  SessionsProviderState
+> {
   constructor(props: SessionsProviderProps) {
     super(props);
     this.initContext();
@@ -66,6 +64,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
   // Create new session
   newSession = async (email: string, password: string) => {
     const credentials = await auth(email, password);
+
     if (credentials.success !== false || credentials.success === undefined) {
       let sessions = await getSessions();
       if (sessions === null) {
@@ -87,7 +86,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
               return Promise.reject(err);
             });
         }
-        ToastFactory('Already connected', { type: 'danger' });
+        Toaster('Already connected', { type: 'danger' });
       }
     }
     return false;
@@ -113,7 +112,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
 }
 
 export const withSessions = (Component: React.ComponentType<any>) => (
-  props: any,
+  props: any
 ) => (
   <SessionsContext.Consumer>
     {(store) => <Component sessions={store} {...props} />}

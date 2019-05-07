@@ -1,11 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import {
-  Input,
-  Item,
-  View,
-} from 'native-base';
+import { Input, Item, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Numeric.style';
@@ -15,9 +11,7 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Numeric extends React.Component<Props, State> {
-  shouldComponentUpdate(
-    nextProps: Readonly<P>,
-  ): boolean {
+  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     return (
       nextProps.question.answer !== this.props.question.answer ||
       nextProps.question.value !== this.props.question.value
@@ -52,7 +46,7 @@ export default class Numeric extends React.Component<Props, State> {
           <Input
             keyboardType={keyboardType}
             question
-            defaultValue={this.props.question.value}
+            defaultValue={String(this.props.question.value)}
             onFocus={this._focus}
             onEndEditing={this._onEndEditing}
           />

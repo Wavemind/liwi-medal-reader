@@ -12,8 +12,7 @@ type State = {};
 export default class Questions extends React.PureComponent<Props, State> {
   state = {};
 
-  async componentWillMount() {
-  }
+  async componentWillMount() {}
 
   render() {
     const { questions } = this.props;
@@ -21,7 +20,7 @@ export default class Questions extends React.PureComponent<Props, State> {
     return (
       <ScrollView>
         {Object.keys(questions).map((i) => (
-          <QuestionFactory question={questions[i]} key={i + '_factory'}/>
+          <QuestionFactory question={questions[i]} key={i + '_factory'} />
         ))}
       </ScrollView>
     );

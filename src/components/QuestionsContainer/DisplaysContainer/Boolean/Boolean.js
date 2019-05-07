@@ -3,20 +3,13 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
-import {
-  Button,
-  Col,
-  Grid,
-  Icon,
-} from 'native-base';
+import { Button, Col, Grid, Icon } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Boolean extends React.Component<Props, State> {
-  shouldComponentUpdate(
-    nextProps: Readonly<P>,
-  ): boolean {
+  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     return nextProps.question.answer !== this.props.question.answer;
   }
 
@@ -31,10 +24,7 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   render = () => {
-    const {
-      answer,
-      answers,
-    } = this.props.question;
+    const { answer, answers } = this.props.question;
 
     const idYes = Number(Object.keys(answers)[0]);
     const idNo = Number(Object.keys(answers)[1]);

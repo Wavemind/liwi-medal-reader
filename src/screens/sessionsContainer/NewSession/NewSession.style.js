@@ -1,29 +1,33 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   liwiColors,
+  paddingIsTablet,
   screenHeight,
   screenWidth,
 } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
-
   container: {
+    flexDirection: 'column',
     flex: 1,
-    alignItems: 'center',
   },
-
   content: {
-    width: screenWidth * 0.8,
+    // flexBasis: screenWidth / 2,
+    flexGrow: 1,
+    // width: screenWidth * 0.8,
     borderColor: liwiColors.redColor,
     borderWidth: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
     borderRadius: 10,
-    padding: 30,
-    marginTop: screenHeight * 0.27,
-    marginBottom: 50,
+    // padding: paddingIsTablet(),
+    // marginTop: screenHeight * 0.27,
+    // marginBottom: 50,
   },
-
   marginTop: {
-    marginTop: 20
+    // marginTop: 20
   },
 
   height: {
