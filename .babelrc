@@ -1,8 +1,12 @@
 {
   "presets": ["module:metro-react-native-babel-preset","@babel/preset-flow"],
   "plugins": [
-//    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true}],
-//    ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+    ["@babel/plugin-transform-flow-strip-types"],
+    ["@babel/plugin-proposal-decorators", {"legacy": true}],
+    ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+    ["@babel/transform-runtime", {
+      "regenerator": false
+    }],
     ["module-resolver", {
       "root": ["./src"],
       "extensions": [".js", ".ios.js", ".android.js"],

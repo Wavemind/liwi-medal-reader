@@ -7,6 +7,7 @@ import findKey from 'lodash/findKey';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import { displayFormats } from '../../constants';
 import find from 'lodash/find';
+import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
 export const initialState = null;
 
 export default function medicalCaseReducer(
@@ -174,17 +175,12 @@ export default function medicalCaseReducer(
         answer = Number(answer);
       }
 
+      state.nodes[index].answer = answer
+      state.nodes[index].value = value
+
       return {
         ...state,
-        nodes: {
-          ...state.nodes,
-          [index]: {
-            ...state.nodes[index],
-            answer: answer,
-            value: value,
-          },
-        },
-      };
+      }
     }
 
     case actions.MC_UPDATE_PATIENT: {
@@ -211,9 +207,12 @@ export default function medicalCaseReducer(
         setMedicalCase(state);
       }
 
-      return {
-        ...medicalCase,
-      };
+      console.log(medicalCase);
+
+      // let instance = new MedicalCaseModel({...medicalCase});
+      // console.log(instance, medicalCase)
+
+      return { ...medicalCase };
     }
 
     case actions.MC_CLEAR: {
@@ -233,9 +232,13 @@ export default function medicalCaseReducer(
         return initialState;
       }
 
-      return {
-        ...action.payload,
-      };
+      console.log(action);
+
+      let modelsMedicalCase = new MedicalCaseModel({ ...action.payload });
+
+      console.log(modelsMedicalCase);
+
+      return { mc: modelsMedicalCase };
     }
 
     default:

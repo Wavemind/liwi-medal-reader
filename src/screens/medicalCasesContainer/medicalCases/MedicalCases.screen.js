@@ -27,6 +27,7 @@ import { TreatmentModel } from '../../../../frontend_service/engine/models/Treat
 import { ManagementModel } from '../../../../frontend_service/engine/models/Management.model';
 import { FinalDiagnosticModel } from '../../../../frontend_service/engine/models/FinalDiagnostic.model';
 import { DiseasesModel } from '../../../../frontend_service/engine/models/Diseases.model';
+import { InclusionsNodeModel } from '../../../../frontend_service/engine/models/ConditionsNode.model';
 
 type Props = NavigationScreenProps & {};
 type State = { medicalCases: Array<Object> };
@@ -36,7 +37,6 @@ export default class MedicalCases extends React.Component<Props, State> {
     medicalCases: [],
     algorithms: [],
     selected: 'null',
-    versions: [],
     generate: null,
   };
 
@@ -44,14 +44,7 @@ export default class MedicalCases extends React.Component<Props, State> {
     await this.getMedicalCases();
     let algorithms = await getItems('algorithms');
 
-    let versions = [];
-    algorithms.map((algorithm) =>
-      Object.keys(algorithm.versions).map((version) =>
-        versions.push(algorithm.versions[version])
-      )
-    );
-
-    this.setState({ algorithms, versions });
+    this.setState({ algorithms });
   }
 
   // Get medical cases of current user
@@ -66,8 +59,19 @@ export default class MedicalCases extends React.Component<Props, State> {
     await this.setState({ generate: true });
     this.loading.play();
     const response = await fetch('https://uinames.com/api/?ext&region=france');
+    let json = {};
 
-    const json = await response.json();
+    if (response.status === 200) {
+      json = await response.json();
+    } else {
+      json = {
+        name: 'Paul',
+        surname: 'Jacouille',
+        birthday: { dmy: '01.01.1900' },
+        email: 'pop@pip.pap',
+        photo: '',
+      };
+    }
 
     const algorithms = await getItems('algorithms');
 
@@ -75,60 +79,9 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     setInitialCounter(algorithmUsed);
 
-    console.log(algorithmUsed);
-
-    Object.keys(algorithmUsed.nodes).forEach((i) => {
-      let node = algorithmUsed.nodes[i];
-      let modelized;
-
-      switch (node.type) {
-        case nodesType.ps:
-          modelized = new PredefinedSyndromeModel({
-            ...node,
-            medicalCase: algorithmUsed,
-          });
-          break;
-        case nodesType.t:
-          modelized = new TreatmentModel({ ...node });
-          break;
-        case nodesType.q:
-          modelized = new QuestionModel({ ...node });
-          break;
-        case nodesType.m:
-          modelized = new ManagementModel({ ...node });
-          break;
-        case nodesType.fd:
-          modelized = new FinalDiagnosticModel({ ...node });
-          break;
-        default:
-          break;
-      }
-
-      algorithmUsed.nodes[i] = modelized;
-    });
-
-    Object.keys(algorithmUsed.diseases).forEach(
-      (i) =>
-        (algorithmUsed.diseases[i] = new DiseasesModel({
-          ...algorithmUsed.diseases[i],
-        }))
-    );
-
     const newmedicalCaseFromModel = new MedicalCaseModel({
-      ...medicalCaseInitialState,
       nodes: algorithmUsed.nodes,
       diseases: algorithmUsed.diseases,
-    });
-
-    console.log(newmedicalCaseFromModel);
-
-    let algorithm = setInitialCounter(algorithmUsed);
-
-    let algorithmFirstBatch = generateInitialBatch(algorithm);
-
-    await createMedicalCase({
-      ...medicalCaseInitialState,
-      ...algorithmFirstBatch,
       userId: this.props.app.user.data.id,
       patient: {
         ...medicalCaseInitialState.patient,
@@ -139,15 +92,21 @@ export default class MedicalCases extends React.Component<Props, State> {
         photo: json.photo,
       },
     });
+
+    console.log(newmedicalCaseFromModel);
+
+    generateInitialBatch(newmedicalCaseFromModel);
+
+    await createMedicalCase(newmedicalCaseFromModel);
     await this.getMedicalCases();
     await this.setState({ generate: false });
-    this.loading.reset();
+    // this.loading.reset();
   };
 
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase, navigation } = this.props;
-    await setMedicalCase(medicalCase);
+    await setMedicalCase(new MedicalCaseModel(medicalCase));
     // await app.setMedicalCase(medicalCase); // TODO find better way
     await this.getMedicalCases();
     navigation.navigate('WorkCase', {
@@ -156,7 +115,7 @@ export default class MedicalCases extends React.Component<Props, State> {
   };
 
   render() {
-    const { generate } = this.state;
+    const { generate, algorithms } = this.state;
 
     const { medicalCase } = this.props;
 
@@ -200,9 +159,19 @@ export default class MedicalCases extends React.Component<Props, State> {
           )}
         </View>
         <H3>Actions</H3>
-        <Button onPress={() => this.generateMedicalCase()} disabled={generate}>
-          <Text>Créer un cas médical</Text>
-        </Button>
+
+        {algorithms.length > 0 ? (
+          <Button
+            onPress={() => this.generateMedicalCase()}
+            disabled={generate}
+          >
+            <Text>Créer un cas médical</Text>
+          </Button>
+        ) : (
+          <Button disabled={true}>
+            <Text>Aucun algorithm en mémoire</Text>
+          </Button>
+        )}
 
         <SeparatorLine />
         <H3>Cas médicals</H3>

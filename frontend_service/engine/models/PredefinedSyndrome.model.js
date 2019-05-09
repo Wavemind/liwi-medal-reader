@@ -1,7 +1,8 @@
 // @flow
 
 import { NodeModel } from './Node.model';
-import { InclusionsNodeModel } from './ConditionsNode.model';
+import { InclusionsNodeModel } from './InclusionsNode.model';
+import { ConditionsNodeModel } from './ConditionsNode.model';
 
 interface PredefinedSyndromeInterface {
   answer: string;
@@ -26,7 +27,10 @@ export class PredefinedSyndromeModel extends NodeModel
       label = '',
       dd = [],
       ps = [],
-      medicalCase = {}
+      medicalCase = {},
+      conditions = {},
+      nodes = {},
+      top_conditions = {},
     } = props;
 
     this.description = description;
@@ -35,12 +39,17 @@ export class PredefinedSyndromeModel extends NodeModel
     this.answers = answers;
     this.dd = dd;
     this.ps = ps;
+    this.conditions = conditions;
+    this.top_conditions = top_conditions;
+    this.nodes = nodes;
 
-    // this.getMedicalCase();
-    console.log(medicalCase)
     this.inclusions = new InclusionsNodeModel({
-      ps: ps,
-      dd: dd,
+      ps,
+      dd,
+      medicalCase,
     });
+
+    this.conditions = new ConditionsNodeModel({ ...props });
+
   }
 }

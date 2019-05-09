@@ -2,22 +2,17 @@
 
 import { NodeModel } from './Node.model';
 
-
-interface InclusionsNodeInterface {
-  dd: Array<Object>;
-  ps: Array<Object>;
+interface ConditionsNodeInterface {
+  conditions: Array<Object>;
+  top_conditions: Array<Object>;
 }
 
-export class InclusionsNodeModel extends NodeModel implements InclusionsNodeInterface {
+export class ConditionsNodeModel implements ConditionsNodeInterface {
   constructor(props) {
-    super(props);
 
-    const {
-      dd = [],
-      ps = [],
+    const { conditions = [], top_conditions = [], medicalCase = {} } = props;
 
-    } = props;
-    this.dd = dd;
-    this.ps = ps;
+    this.conditions = conditions;
+    this.top_conditions = top_conditions;
   }
 }

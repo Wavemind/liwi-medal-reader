@@ -1,5 +1,7 @@
 // @flow
 
+import { NodeModel } from './Node.model';
+
 interface DiseasesInterface {
   diagnosis: Object;
   differential: Object;
@@ -10,7 +12,10 @@ interface DiseasesInterface {
 }
 
 export class DiseasesModel implements DiseasesInterface {
-  constructor(id, diagnosis, label, differential, reference, nodes) {
+  constructor(props) {
+
+    const { id, diagnosis, label, differential, reference, nodes } = props;
+
     this.id = id;
     this.diagnosis = diagnosis;
     this.label = label;
