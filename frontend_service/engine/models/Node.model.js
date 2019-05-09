@@ -13,11 +13,11 @@ interface NodeInterface {
 
 export class NodeModel implements NodeInterface {
   constructor(props) {
-    const { id = 0, type = '', reference = '', medicalCase = {} } = props;
-
+    const { id = 0, type = '', reference = ''} = props;
     this.id = id;
     this.type = type;
     this.reference = reference;
-    this.medicalCase = medicalCase;
+
+    console.log('node model', this.id)
   }
 }

@@ -34,19 +34,23 @@ export const generateInitialBatch = (algorithmJson) => {
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
   const { diseases, nodes } = algorithmJsonMedicalCase;
 
-  Object.keys(nodes).map((nodeId) => {
-    if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
-      nodes[nodeId].dd.map((dd) => {
-        dd.conditionValue =
-          diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
-      });
+  try {
+    Object.keys(nodes).map((nodeId) => {
+      if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
+        nodes[nodeId].dd.map((dd) => {
+          dd.conditionValue =
+            diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
+        });
 
-      // Map trough PS if it is in an another PS itself
-      nodes[nodeId].ps.map((ps) => {
-        setParentConditionValue(algorithmJsonMedicalCase, ps.id, nodeId);
-      });
-    }
-  });
+        // Map trough PS if it is in an another PS itself
+        nodes[nodeId].ps.map((ps) => {
+          setParentConditionValue(algorithmJsonMedicalCase, ps.id, nodeId);
+        });
+      }
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
   return algorithmJsonMedicalCase;
 };
