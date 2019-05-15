@@ -1,66 +1,339 @@
 import { Action, ReducerClass } from 'reducer-class';
 
-const actionTypeCatEat = 'MC_SET';
-const MC_QUESTION_SET = 'MC_QUESTION_SET';
-const actionTypeCatBeAwesome = 'actionTypeCatBeAwesome';
+import { REHYDRATE } from 'redux-persist';
 import { setMedicalCase } from '../../actions/creators.actions';
-import { stringifyDeepRef } from '../../../src/utils/swissKnives';
+import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
+import { actions } from '../../actions/types.actions';
+import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
+import find from 'lodash/find';
+import { displayFormats, nodesType } from '../../constants';
+import findKey from '../index';
+import { DiseasesModel } from '../../engine/models/Diseases.model';
+import { NodeModel } from '../../engine/models/Node.model';
+import { PredefinedSyndromeModel } from '../../engine/models/PredefinedSyndrome.model';
+import { TreatmentModel } from '../../engine/models/Treatment.model';
+import { QuestionModel } from '../../engine/models/Question.model';
+import { ManagementModel } from '../../engine/models/Management.model';
+import { FinalDiagnosticModel } from '../../engine/models/FinalDiagnostic.model';
+import moment from 'moment';
+
+export const initialState = null;
 
 interface IReducerCatState {
   energy: number;
 }
+
 class ReducerCat extends ReducerClass<IReducerCatState> {
-  initialState = {
-    energy: 100,
-  };
+  initialState = {};
 
   constructor(props) {
-    super( props );
-
-    this.test = 0;
+    super(props);
   }
 
-  @Action(MC_QUESTION_SET)
-  helloTest(state: IReducerCatState, action: { payload: number }) {
-    this.test = this.test + 1;
-    console.log(state, action, this);
+  _instanceMedicalCase(state) {
+    state.createdDate = moment().format();
+    state = this._generateInstanceDiseasesNode(state);
+    state = this._generateInstanceNodeModel(state);
+  }
+
+  _instanceChild(node) {
+    let modelized;
+
+    if (node instanceof NodeModel) {
+      return node;
+    }
+
+    switch (node.type) {
+      case nodesType.ps:
+        modelized = new PredefinedSyndromeModel({
+          ...node,
+          medicalCase: this,
+        });
+        break;
+      case nodesType.t:
+        modelized = new TreatmentModel({ ...node });
+        break;
+      case nodesType.q:
+        modelized = new QuestionModel({
+          ...node,
+          medicalCase: this,
+        });
+        break;
+      case nodesType.m:
+        modelized = new ManagementModel({ ...node });
+        break;
+      case nodesType.fd:
+        modelized = new FinalDiagnosticModel({ ...node });
+        break;
+      default:
+        break;
+    }
+
+    return modelized;
+  }
+
+  _generateInstanceDiseasesNode(state) {
+    Object.keys(state.diseases).forEach(
+      (i) =>
+        (state.diseases[i] = new DiseasesModel({
+          ...state.diseases[i],
+        }))
+    );
+
+    return state;
+  }
+
+  _generateInstanceNodeModel(state) {
+    Object.keys(state.nodes).forEach((i) => {
+      let node = state.nodes[i];
+      state.nodes[i] = this._instanceChild(node);
+    });
+
+    return state;
+  }
+
+  // --------------------------       Actions        --------------------------
+  // --------------------------------------------------------------------------
+
+  @Action(actions.MC_CLEAR)
+  clearReducer(state: IReducerCatState, action: { payload: number }) {
+    return {};
+  }
+
+  @Action(actions.MC_GENERATE_NEXT_BATCH)
+  generateNextBatch(state: IReducerCatState, action: { payload: number }) {
+    let newState = generateNextBatch(state);
 
     return {
       ...state,
+      batches: [...newState.batches],
     };
   }
 
-  @Action(actionTypeCatEat)
-  addEnergydd(state: IReducerCatState, action: { payload: number }) {
-    const { medicalCase } = action.payload;
+  @Action(actions.MC_CONDITION_VALUE_PS_CHANGE)
+  conditionValuePsChange(state: IReducerCatState, action: { payload: number }) {
+    const { nodeId, psId, value } = action.payload;
 
-    console.log('double catch reducer', 'oweffewfwefewf', medicalCase, 'asfdgfdsfgdffdsgf');
+    const ps = state.nodes[nodeId].ps;
 
-    // medicalCase.patient.lastname = 'asdaada'
+    let changeConditionValue = find(ps, (d) => d.id === psId);
+    changeConditionValue.conditionValue = value;
 
-    // let instance = new MedicalCaseModel({...medicalCase});
+    let newInstanceNode = this._instanceChild({
+      ...state.nodes[nodeId],
+      ps: ps,
+    });
 
-    // console.time('stringifyDeepRef');
-    //
-    let hola = stringifyDeepRef(medicalCase);
-
-    console.timeEnd('stringifyDeepRef');
-    //
-    // console.time('parse');
-    //
-    //
-    // let newValue = JSON.parse(hola)
-    //
-    // console.timeEnd('parse');
-
-    return  { ...medicalCase };
-
+    return {
+      ...state,
+      nodes: {
+        ...state.nodes,
+        [nodeId]: newInstanceNode,
+      },
+    };
   }
 
-  @Action(actionTypeCatBeAwesome)
-  wasteEnegry(state: IReducerCatState, action: { payload: number }) {
+  @Action(actions.MC_CONDITION_VALUE_DISEASES_CHANGE)
+  conditionValueDiseases(state: IReducerCatState, action: { payload: number }) {
+    const { nodeId, diseaseId, value } = action.payload;
+
+    const dd = state.nodes[nodeId].dd;
+
+    let changeConditionValue = find(dd, (d) => d.id === diseaseId);
+    changeConditionValue.conditionValue = value;
+
+    let newInstanceNode = this._instanceChild({
+      ...state.nodes[nodeId],
+      dd: dd,
+    });
+
     return {
-      energy: state.energy - action.payload,
+      ...state,
+      nodes: {
+        ...state.nodes,
+        [nodeId]: newInstanceNode,
+      },
+    };
+  }
+
+  @Action(actions.MC_PREDEFINED_SYNDROME_SET_ANSWER)
+  psSetAnswer(state: IReducerCatState, action: { payload: number }) {
+    const { indexPs, answer } = action.payload;
+
+    let newInstanceNode = this._instanceChild({
+      ...state.nodes[indexPs],
+      answer: answer,
+    });
+
+    return {
+      ...state,
+      nodes: {
+        ...state.nodes,
+        [indexPs]: newInstanceNode,
+      },
+    };
+  }
+
+  @Action(actions.MC_QUESTION_SET)
+  questionSet(state: IReducerCatState, action: { payload: number }) {
+    const { index, value } = action.payload;
+
+    console.log(index, value);
+    let answer;
+
+    console.log(index, value, state.nodes[index]);
+
+    switch (state.nodes[index].display_format) {
+      case displayFormats.input:
+        if (value.length > 0) {
+          answer = findKey(state.nodes[index].answers, (answerCondition) => {
+            switch (answerCondition.operator) {
+              case 'more_or_equal':
+                return value >= Number(answerCondition.value);
+
+              // case 'less_or_equal':
+              //   return value <= Number(answerCondition.value);
+
+              // case 'more':
+              //   return value > Number(answerCondition.value);
+
+              case 'less':
+                return value < Number(answerCondition.value);
+
+              case 'more_or_equal_and_less':
+                return (
+                  value >= Number(answerCondition.value.split(',')[0]) &&
+                  value < Number(answerCondition.value.split(',')[1])
+                );
+
+              case 'between':
+                return (
+                  value >= Number(answerCondition.value.split(',')[0]) &&
+                  value < Number(answerCondition.value.split(',')[1])
+                );
+
+              case 'more_and_less':
+                return (
+                  value > Number(answerCondition.value.split(',')[0]) &&
+                  value < Number(answerCondition.value.split(',')[1])
+                );
+
+              case 'more_and_less_or_equal':
+                return (
+                  value > Number(answerCondition.value.split(',')[0]) &&
+                  value <= Number(answerCondition.value.split(',')[1])
+                );
+
+              case '>=':
+                return value >= Number(answerCondition.value);
+
+              // WORKAROUND because JSON is wrong
+              case '=>':
+                return value >= Number(answerCondition.value);
+
+              case '<=':
+                return value <= Number(answerCondition.value);
+
+              case '>':
+                return value >= Number(answerCondition.value);
+
+              case '<':
+                return value < Number(answerCondition.value);
+
+              case '>=, <':
+                return (
+                  value >= Number(answerCondition.value.split(',')[0]) &&
+                  value < Number(answerCondition.value.split(',')[1])
+                );
+
+              case '>, <=':
+                return (
+                  value > Number(answerCondition.value.split(',')[0]) &&
+                  value <= Number(answerCondition.value.split(',')[1])
+                );
+            }
+          });
+        } else {
+          answer = null;
+        }
+
+        break;
+
+      case displayFormats.radioButton:
+        answer = value;
+        break;
+      case displayFormats.list:
+        answer = value;
+        break;
+      case undefined:
+        answer = value;
+        break;
+    }
+
+    // workaround
+    // TODO why sometimes there are string number ? lodash ?
+    if (answer !== 'null' && answer !== null) {
+      answer = Number(answer);
+    }
+
+    let newInstanceNode = this._instanceChild({
+      ...state.nodes[index],
+      answer: answer,
+      value: value,
+    });
+
+    console.log(newInstanceNode)
+
+    return {
+      ...state,
+      nodes: {
+        ...state.nodes,
+        [index]: newInstanceNode,
+      },
+    };
+  }
+
+  @Action(actions.MC_UPDATE_PATIENT)
+  updatePatient(state: IReducerCatState, action: { payload: number }) {
+    const { index, value } = action.payload;
+
+    return {
+      ...state,
+      patient: {
+        ...state.patient,
+        [index]: value,
+      },
+    };
+  }
+
+  @Action(actions.MC_SET)
+  medicalCaseSet(state: IReducerCatState, action: { payload: number }) {
+    const { medicalCase } = action.payload;
+
+    if (state !== {} && medicalCase.id !== state.id) {
+      setMedicalCase(state);
+    }
+    this._instanceMedicalCase(medicalCase);
+    return {
+      ...medicalCase,
+    };
+  }
+
+  @Action(REHYDRATE)
+  rehydrate(state: IReducerCatState, action: { payload: number }) {
+    if (
+      action.payload === undefined ||
+      action.payload === null ||
+      action.payload.id === undefined ||
+      action.payload.id === null
+    ) {
+      return initialState;
+    }
+
+    let modelsMedicalCase = this._instanceMedicalCase({ ...action.payload });
+
+    return {
+      ...modelsMedicalCase,
     };
   }
 }

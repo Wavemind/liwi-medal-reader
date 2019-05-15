@@ -16,6 +16,8 @@ export class DiseasesModel implements DiseasesInterface {
 
     const { id, diagnosis, label, differential, reference, nodes } = props;
 
+    console.log(props)
+
     this.id = id;
     this.diagnosis = diagnosis;
     this.label = label;

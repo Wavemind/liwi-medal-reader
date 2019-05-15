@@ -9,6 +9,7 @@ import { liwiColors } from '../../../utils/constants';
 import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './WorkCase.style';
 import { nodesType } from '../../../../frontend_service/constants';
+import CustomModal from '../../../components/CustomModal';
 
 type Props = NavigationScreenProps & {};
 type State = {};

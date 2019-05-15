@@ -93,7 +93,6 @@ export default class MedicalCases extends React.Component<Props, State> {
       },
     });
 
-    console.log(newmedicalCaseFromModel);
 
     generateInitialBatch(newmedicalCaseFromModel);
 
@@ -106,7 +105,8 @@ export default class MedicalCases extends React.Component<Props, State> {
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase, navigation } = this.props;
-    await setMedicalCase(new MedicalCaseModel(medicalCase));
+
+    await setMedicalCase(medicalCase);
     // await app.setMedicalCase(medicalCase); // TODO find better way
     await this.getMedicalCases();
     navigation.navigate('WorkCase', {

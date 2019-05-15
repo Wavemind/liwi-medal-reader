@@ -52,7 +52,7 @@ export const LiwiTitle3 = styled(LH3).attrs({
 `;
 
 export const RootView = styled(LView).attrs({
-  flex: 1,
+  flex: 1
 })``;
 
 export const RightView = styled(LView).attrs({

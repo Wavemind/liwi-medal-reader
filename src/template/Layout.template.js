@@ -11,7 +11,8 @@ import { RootView } from 'template/layout';
 import { withApplication } from '../engine/contexts/Application.context';
 import { AppState, Platform, StatusBar } from 'react-native';
 
-import { Container, Root, StyleProvider } from 'native-base';
+import { Container, Root, StyleProvider, View } from 'native-base';
+import CustomModal from '../components/CustomModal';
 
 type Props = {
   app: {

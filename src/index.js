@@ -13,6 +13,9 @@ import i18n from 'utils/i18n';
 
 
 import { persistor, store } from '../frontend_service/store';
+import CustomModal from './components/CustomModal';
+import { StyleProvider } from "native-base";
+import { QuestionView } from './template/layout';
 
 KeepAwake.activate();
 
@@ -36,6 +39,7 @@ export default function Root() {
         <ApplicationProvider>
           <SessionsProvider>
             <ReloadAppOnLanguageChange />
+            <CustomModal />
           </SessionsProvider>
         </ApplicationProvider>
       </PersistGate>
