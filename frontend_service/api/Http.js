@@ -152,6 +152,8 @@ export const fetchAlgorithms = async (userId) => {
           localAlgorithms.push(serverAlgorithm);
         }
 
+        console.log(localAlgorithms)
+
         Toaster('Algo Updated', { type: 'success' });
         await setItem('algorithms', localAlgorithms);
         resolve();

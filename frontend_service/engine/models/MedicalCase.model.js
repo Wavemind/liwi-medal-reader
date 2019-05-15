@@ -8,6 +8,7 @@ import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { DiseasesModel } from './Diseases.model';
+import { NodeModel } from './Node.model';
 
 interface MedicalCaseInterface {
   props: {
@@ -64,41 +65,48 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
   setId(id) {
     this.id = id + 1;
-
   }
 
-  instanceChildren(){
+  instanceChild(node) {
+    let modelized;
+
+    if (node instanceof NodeModel) {
+      return node
+    }
+
+    switch (node.type) {
+      case nodesType.ps:
+        modelized = new PredefinedSyndromeModel({
+          ...node,
+          medicalCase: this,
+        });
+        break;
+      case nodesType.t:
+        modelized = new TreatmentModel({ ...node });
+        break;
+      case nodesType.q:
+        modelized = new QuestionModel({
+          ...node,
+          medicalCase: this,
+        });
+        break;
+      case nodesType.m:
+        modelized = new ManagementModel({ ...node });
+        break;
+      case nodesType.fd:
+        modelized = new FinalDiagnosticModel({ ...node });
+        break;
+      default:
+        break;
+    }
+
+    return modelized;
+  }
+
+  instanceChildren() {
     Object.keys(this.nodes).forEach((i) => {
       let node = this.nodes[i];
-      let modelized;
-
-      switch (node.type) {
-        case nodesType.ps:
-          modelized = new PredefinedSyndromeModel({
-            ...node,
-            medicalCase: this,
-          });
-          break;
-        case nodesType.t:
-          modelized = new TreatmentModel({ ...node });
-          break;
-        case nodesType.q:
-          modelized = new QuestionModel({
-            ...node,
-            medicalCase: this,
-          });
-          break;
-        case nodesType.m:
-          modelized = new ManagementModel({ ...node });
-          break;
-        case nodesType.fd:
-          modelized = new FinalDiagnosticModel({ ...node });
-          break;
-        default:
-          break;
-      }
-
-      this.nodes[i] = modelized;
+      this.nodes[i] = this.instanceChild(node);
     });
 
     Object.keys(this.diseases).forEach(
@@ -107,11 +115,10 @@ export class MedicalCaseModel implements MedicalCaseInterface {
           ...this.diseases[i],
         }))
     );
-
   }
 
   static toJSON() {
-    console.log('hey you want to stringify me ?')
+    console.log('hey you want to stringify me ?');
     return {
       nodes: this.nodes,
       diseases: this.diseases,
@@ -121,7 +128,4 @@ export class MedicalCaseModel implements MedicalCaseInterface {
   static fromJSON(obj) {
     return new this(obj);
   }
-
-
-
 }

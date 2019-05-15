@@ -90,7 +90,7 @@ export default class NewSession extends React.Component<Props, State> {
               onPress={() => this.signIn()}
               disabled={loading || success}
             >
-              <Text> Try to login </Text>
+              <Text> Login </Text>
             </Button>
           </Form>
         </View>

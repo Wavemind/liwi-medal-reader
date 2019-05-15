@@ -120,10 +120,10 @@ export const createMedicalCase = async (newMedicalCase) => {
       maxId = { id: 0 };
     }
 
-    newMedicalCase.setId(maxId.id);
+    newMedicalCase.id = maxId.id;
 
     medicalCases.push(newMedicalCase);
-    console.log(medicalCases)
+    console.log(medicalCases);
 
     return await setItem('medicalCases', medicalCases);
   } catch (e) {

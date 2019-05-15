@@ -111,9 +111,10 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return [];
         case nodesType.fd:
           // Ho next node is Final Diagnostic
+          console.log(indexNode, indexChild, )
           return of(diagnosisChildren(indexNode, indexChild));
         case nodesType.m:
-          return null;
+          return [];
         case nodesType.d:
           // Get children of the node in the current diagnostic
           nodeChildren =
@@ -152,6 +153,8 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
 
       // Here get the state if this PS
       const ps = state$.value.nodes[indexPS];
+
+      console.log(ps)
 
       // Let check the condition of this ps
       const topConditionCheckerPs = nodeConditionChecker(

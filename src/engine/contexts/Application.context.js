@@ -169,6 +169,13 @@ export class ApplicationProvider extends React.Component<Props, State> {
     });
   };
 
+  setModal = async (content) => {
+    this.setState({
+      isModalVisible: true,
+      contentModal: content,
+    });
+  };
+
   state = {
     name: 'App',
     lang: 'fr',
@@ -184,6 +191,9 @@ export class ApplicationProvider extends React.Component<Props, State> {
     setMedicalCase: this.setMedicalCase,
     medicalCase: {},
     appState: AppState.currentState,
+    setModal: this.setModal,
+    isModalVisible: false,
+    contentModal: 'initial',
   };
 
   render() {

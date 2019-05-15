@@ -17,7 +17,5 @@ export class NodeModel implements NodeInterface {
     this.id = id;
     this.type = type;
     this.reference = reference;
-
-    console.log('node model', this.id)
   }
 }

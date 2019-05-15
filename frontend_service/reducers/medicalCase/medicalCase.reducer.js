@@ -80,6 +80,7 @@ export default function medicalCaseReducer(
 
     case actions.MC_QUESTION_SET: {
       const { index, value } = action.payload;
+
       let answer;
 
       switch (state.nodes[index].display_format) {
@@ -175,12 +176,22 @@ export default function medicalCaseReducer(
         answer = Number(answer);
       }
 
-      state.nodes[index].answer = answer
-      state.nodes[index].value = value
+      let newInstanceNode = state.mc.instanceChild({
+        ...state.nodes[index],
+        answer: answer,
+        value: value,
+      });
+
+      // state.nodes[index].answer = answer;
+      // state.nodes[index].value = value;
 
       return {
         ...state,
-      }
+        nodes: {
+          ...state.nodes,
+          [index]: newInstanceNode,
+        },
+      };
     }
 
     case actions.MC_UPDATE_PATIENT: {
@@ -207,12 +218,13 @@ export default function medicalCaseReducer(
         setMedicalCase(state);
       }
 
-      console.log(medicalCase);
-
       // let instance = new MedicalCaseModel({...medicalCase});
       // console.log(instance, medicalCase)
 
-      return { ...medicalCase };
+      return {
+        ...medicalCase,
+        mc: medicalCase,
+      };
     }
 
     case actions.MC_CLEAR: {
@@ -232,13 +244,13 @@ export default function medicalCaseReducer(
         return initialState;
       }
 
-      console.log(action);
 
       let modelsMedicalCase = new MedicalCaseModel({ ...action.payload });
 
-      console.log(modelsMedicalCase);
 
-      return { mc: modelsMedicalCase };
+      return {
+        mc: modelsMedicalCase,
+      };
     }
 
     default:

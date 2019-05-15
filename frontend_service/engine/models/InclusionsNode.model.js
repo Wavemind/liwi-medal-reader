@@ -16,17 +16,5 @@ export class InclusionsNodeModel
     this.dd = dd;
     this.ps = ps;
 
-    this.refToItem(medicalCase);
-  }
-
-  refToItem(medicalCase) {
-    this.ps.map((ps) => {
-      ps.node = medicalCase.nodes[ps.id];
-    });
-
-    this.dd.map((dd) => {
-      dd.node = medicalCase.diseases[dd.id];
-    });
-
   }
 }
