@@ -10,7 +10,6 @@ const mapStateToProps = (medicalCase, ownProps) => {
     medicalCase,
   };
 };
-
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setMedicalCase: (medicalCase) => dispatch(setMedicalCase(medicalCase)),

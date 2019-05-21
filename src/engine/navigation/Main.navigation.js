@@ -7,6 +7,7 @@ import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
+import i18n from '../../utils/i18n';
 
 import { Button, Icon } from 'native-base';
 
@@ -17,7 +18,7 @@ const Stack = createStackNavigator({
     screen: MainScreen,
     navigationOptions: ({ navigation }) => {
       return {
-        title: 'Votre espace personnel',
+        title: i18n.t('common:title_home'),
         headerLeft: (
           <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
             <Icon red type={'Entypo'} name="menu" large />
@@ -54,7 +55,7 @@ const Stack = createStackNavigator({
     screen: Algorithms,
     navigationOptions: ({ navigation }) => {
       return {
-        title: 'Algorithmes disponibles',
+        title: i18n.t('common:algorithms_av'),
       };
     },
   },
@@ -70,7 +71,7 @@ const Stack = createStackNavigator({
     screen: Settings,
     navigationOptions: ({ navigation }) => {
       return {
-        title: 'Paramètres',
+        title: i18n.t('common:settings'),
       };
     },
   },
