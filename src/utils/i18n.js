@@ -20,7 +20,7 @@ const languageDetector = {
 };
 
 i18n
-  // .use(i18nextReactNative)
+  .use(i18nextReactNative)
   .use(reactI18nextModule)
   .init({
     fallbackLng: 'en',
