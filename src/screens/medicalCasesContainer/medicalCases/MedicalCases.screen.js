@@ -27,7 +27,7 @@ import { TreatmentModel } from '../../../../frontend_service/engine/models/Treat
 import { ManagementModel } from '../../../../frontend_service/engine/models/Management.model';
 import { FinalDiagnosticModel } from '../../../../frontend_service/engine/models/FinalDiagnostic.model';
 import { DiseasesModel } from '../../../../frontend_service/engine/models/Diseases.model';
-import { InclusionsNodeModel } from '../../../../frontend_service/engine/models/ConditionsNode.model';
+import { InclusionsNodeModel } from '../../../../frontend_service/engine/models/RequirementNodeModel';
 
 type Props = NavigationScreenProps & {};
 type State = { medicalCases: Array<Object> };
@@ -65,8 +65,8 @@ export default class MedicalCases extends React.Component<Props, State> {
       json = await response.json();
     } else {
       json = {
-        name: 'Paul',
-        surname: 'Jacouille',
+        name: 'Jacquouille',
+        surname: 'la Fripouille',
         birthday: { dmy: '01.01.1900' },
         email: 'pop@pip.pap',
         photo: '',
@@ -79,7 +79,7 @@ export default class MedicalCases extends React.Component<Props, State> {
 
     setInitialCounter(algorithmUsed);
 
-    const newmedicalCaseFromModel = new MedicalCaseModel({
+    const newmedicalCase = {
       nodes: algorithmUsed.nodes,
       diseases: algorithmUsed.diseases,
       userId: this.props.app.user.data.id,
@@ -91,12 +91,11 @@ export default class MedicalCases extends React.Component<Props, State> {
         email: json.email,
         photo: json.photo,
       },
-    });
+    };
 
+    generateInitialBatch(newmedicalCase);
 
-    generateInitialBatch(newmedicalCaseFromModel);
-
-    await createMedicalCase(newmedicalCaseFromModel);
+    await createMedicalCase(newmedicalCase);
     await this.getMedicalCases();
     await this.setState({ generate: false });
     // this.loading.reset();

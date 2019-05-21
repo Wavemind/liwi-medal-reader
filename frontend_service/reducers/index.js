@@ -1,5 +1,5 @@
 import medicalCaseReducer from './medicalCase/medicalCase.reducer';
-import ClassReducer from './medicalCase/classReducer';
+import medicalCaseClassReducer from './medicalCase/medicalCase.class.reducer';
 
-export default ClassReducer;
+export default medicalCaseClassReducer;
 

@@ -10,6 +10,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
 import isEmpty from 'lodash/isEmpty';
+import DeviceInfo from 'react-native-device-info';
 
 import {
   createMedicalCase,
@@ -17,8 +18,10 @@ import {
   getSession,
   getSessions,
   SetActiveSession,
+  setItem,
 } from '../api/LocalStorage';
-import { AppState, NetInfo } from 'react-native';
+import { Alert, AppState, NetInfo, PermissionsAndroid } from 'react-native';
+import i18n from '../../utils/i18n';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -53,6 +56,32 @@ export class ApplicationProvider extends React.Component<Props, State> {
       'connectionChange',
       this._handleConnectivityChange
     );
+  }
+
+  async componentDidMount() {
+    let permissionReturned = await this.getGeo();
+    let location = {
+      coords: {
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        latitude: 0,
+        longitude: 0,
+        speed: 0,
+      },
+      mocked: false,
+      timestamp: 0,
+    };
+    location.date = moment().toISOString();
+
+    if (permissionReturned === 'granted') {
+      await this.askGeo(true, async (cb) => {
+        location = { ...location, ...cb };
+        await setItem('location', location);
+      });
+    } else {
+      await setItem('location', location);
+    }
   }
 
   componentWillUnmount() {
@@ -101,6 +130,30 @@ export class ApplicationProvider extends React.Component<Props, State> {
         isConnected: false,
       });
     }
+  };
+
+  getGeo = async () => {
+    return await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: i18n.t('popup:title'),
+        message: i18n.t('popup:message'),
+        buttonNeutral: i18n.t('popup:askmelater'),
+        buttonNegative: i18n.t('popup:cancel'),
+        buttonPositive: 'Ok !',
+      }
+    );
+  };
+
+  askGeo = async (enableHighAccuracy, callBack) => {
+    return navigator.geolocation.getCurrentPosition(
+      async (position) => callBack(position),
+      async (error) => callBack(error),
+      {
+        enableHighAccuracy: enableHighAccuracy,
+        timeout: 5000,
+      }
+    );
   };
 
   // Set value in context
@@ -153,6 +206,9 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
     if (session.local_code === encrypt) {
       await SetActiveSession(id);
+
+      await fetchAlgorithms(id);
+
       session = await getSession(id);
       this.setUserContext(session);
     } else {
@@ -194,6 +250,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     setModal: this.setModal,
     isModalVisible: false,
     contentModal: 'initial',
+    initialPosition: {},
   };
 
   render() {

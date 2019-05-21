@@ -72,9 +72,8 @@ export default class RootSessions extends React.Component<Props, State> {
               iconLeft
               blue
               onPress={async () => {
-                await getDeviceInformation((deviceInfo) => {
-                  post('activities', deviceInfo);
-                });
+                let deviceInfo = await getDeviceInformation();
+                let posting = await post('activities', deviceInfo);
               }}
             >
               <Icon type={'Octicons'} name="device-mobile" />

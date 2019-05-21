@@ -16,6 +16,10 @@ target 'liwi_native' do
 
     pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
+    pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+    pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   end
 
   target 'liwi_nativeTests' do

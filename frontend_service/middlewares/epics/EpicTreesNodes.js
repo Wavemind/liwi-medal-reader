@@ -164,6 +164,8 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
         ps
       );
 
+      console.log(topConditionCheckerPs, ps.requirement.nodeConditionChecker(state$))
+
       let answeredId = null;
       let actions = [];
 
@@ -231,6 +233,8 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
     switchMap((action) => {
       const { indexDD, indexChild } = action.payload;
       const child = state$.value.diseases[indexDD].nodes[indexChild];
+
+      console.log(child, state$.value)
 
       // If the algo is wrong with the nodes
       // TODO catch nice error from JSON

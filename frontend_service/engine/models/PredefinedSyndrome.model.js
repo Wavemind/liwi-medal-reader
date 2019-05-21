@@ -2,7 +2,8 @@
 
 import { NodeModel } from './Node.model';
 import { InclusionsNodeModel } from './InclusionsNode.model';
-import { ConditionsNodeModel } from './ConditionsNode.model';
+import { RequirementNodeModel } from './RequirementNodeModel';
+import { LinkNodeModel } from './Link.model';
 
 interface PredefinedSyndromeInterface {
   answer: string;
@@ -49,7 +50,14 @@ export class PredefinedSyndromeModel extends NodeModel
       medicalCase,
     });
 
-    this.conditions = new ConditionsNodeModel({ ...props });
+    this.requirement = new RequirementNodeModel({ ...props });
+    this.instanceLink();
 
+  }
+
+  instanceLink() {
+    Object.keys(this.nodes).map(id => {
+      this.nodes[id] = new LinkNodeModel({...this.nodes[id]})
+    })
   }
 }

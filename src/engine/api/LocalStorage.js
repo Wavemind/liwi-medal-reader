@@ -66,6 +66,11 @@ export const isLogged = async () => {
   return moment(date_expiry).isAfter(moment());
 };
 
+export const getItem = async (key) => {
+  const item = await AsyncStorage.getItem(key);
+  return JSON.parse(item);
+};
+
 // @return [Array]
 // Get credentials from local storage
 export const getCredentials = async () => {
@@ -120,14 +125,12 @@ export const createMedicalCase = async (newMedicalCase) => {
       maxId = { id: 0 };
     }
 
-    newMedicalCase.id = maxId.id;
+    newMedicalCase.id = maxId.id + 1;
 
     medicalCases.push(newMedicalCase);
-    console.log(medicalCases);
 
     return await setItem('medicalCases', medicalCases);
   } catch (e) {
-    console.log(e);
   }
 };
 

@@ -1,7 +1,7 @@
 // @flow
 
 import { NodeModel } from './Node.model';
-import { ConditionsNodeModel } from './ConditionsNode.model';
+import { RequirementNodeModel } from './RequirementNodeModel';
 
 interface FinalDiagnostictInterface {}
 
@@ -10,16 +10,24 @@ export class FinalDiagnosticModel extends NodeModel
   constructor(props) {
     super(props);
 
-    const { name, disease_id, treatments, managements, conditions, top_conditions } = props;
+    const {
+      name,
+      disease_id,
+      treatments,
+      managements,
+      conditions,
+      top_conditions,
+      excluding_diagnosis,
+    } = props;
 
-    console.log(props);
     this.name = name;
     this.disease_id = disease_id;
     this.treatments = treatments;
     this.managements = managements;
     this.conditions = conditions;
     this.top_conditions = top_conditions;
+    this.excluding_diagnosis = excluding_diagnosis;
 
-    this.conditons = new ConditionsNodeModel({ ...props });
+    this.requirement = new RequirementNodeModel({ ...props });
   }
 }
