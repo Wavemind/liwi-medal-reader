@@ -6,6 +6,7 @@ import LottieView from 'lottie-react-native';
 import { Toaster } from '../../../utils/CustomToast';
 import { styles } from './NewSession.style';
 import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
+import { KeyboardAvoidingView, ScrollView, Keyboard } from 'react-native';
 
 type Props = NavigationScreenProps & {};
 type State = {
@@ -21,6 +22,31 @@ export default class NewSession extends React.Component<Props, State> {
     loading: false,
     success: false,
     id: null,
+    keyboard: false,
+  };
+
+  componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({ keyboard: true });
+  };
+
+  _keyboardDidHide = () => {
+    this.setState({ keyboard: false });
   };
 
   // Update value of email when user typing
@@ -41,7 +67,7 @@ export default class NewSession extends React.Component<Props, State> {
 
     await sessions
       .newSession(email, password)
-      .then(async (data) => {
+      .then((data) => {
         if (typeof data.uid === 'string') {
           this.setState({ success: true, loading: false, id: data.data.id });
         }
@@ -51,48 +77,49 @@ export default class NewSession extends React.Component<Props, State> {
         }
       })
       .catch((err) => {
-        console.log(err, 'sdsfsdfds');
         this.setState({ success: false, loading: false });
       });
   };
 
   render() {
-    const { email, password, loading, success, id } = this.state;
+    const { email, password, loading, success, id, keyboard } = this.state;
 
-    const { navigation } = this.props;
+    const { navigation, t } = this.props;
 
     return (
       <View flex-container-column>
-        <View full-space border-primary margin-auto padding-auto>
-          <Form>
-            <Item floatingLabel>
-              <Label>Email</Label>
-              <Input
-                login-input
-                onChangeText={this.changeEmail}
-                value={email}
-                textContentType="emailAddress"
-                keyboardType="email-address"
-              />
-            </Item>
-            <Item floatingLabel>
-              <Label>Password</Label>
-              <Input
-                login-input
-                onChangeText={this.changePassword}
-                value={password}
-                secureTextEntry
-              />
-            </Item>
-            <Button
-              full
-              style={styles.marginTop}
-              onPress={() => this.signIn()}
-              disabled={loading || success}
-            >
-              <Text> Login </Text>
-            </Button>
-          </Form>
+        <View border-primary margin-auto padding-auto>
+          <ScrollView>
+            <Form>
+              <Item floatingLabel>
+                <Label>Email</Label>
+                <Input
+                  login-input
+                  onChangeText={this.changeEmail}
+                  value={email}
+                  textContentType="emailAddress"
+                  keyboardType="email-address"
+                />
+              </Item>
+              <Item floatingLabel>
+                <Label>{t('password')}</Label>
+                <Input
+                  login-input
+                  onChangeText={this.changePassword}
+                  value={password}
+                  secureTextEntry
+                />
+              </Item>
+              <Button
+                full
+                style={styles.marginTop}
+                onPress={() => this.signIn()}
+                disabled={loading || success}
+              >
+                <Text> {t('login')} </Text>
+              </Button>
+            </Form>
+          </ScrollView>
         </View>
         <View flex-center>
           {loading ? (

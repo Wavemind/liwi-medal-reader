@@ -154,6 +154,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-i18n')
+    implementation project(':react-native-locale-detector')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-keep-awake')

@@ -1,13 +1,13 @@
 // @flow
 
 import * as React from 'react';
+import { ScrollView } from 'react-native';
 import { sha256 } from 'js-sha256';
 import type { NavigationScreenProps } from 'react-navigation';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
 import { getSession } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './SetCodeSession.style';
-import LottieView from 'lottie-react-native';
 import { saltHash } from '../../../../frontend_service/constants';
 import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
 
@@ -77,57 +77,63 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
   render() {
     const { code, codeConfirmation, error, success, session } = this.state;
+    const { t } = this.props
 
     if (session === null) {
       return null;
     }
 
     return (
-      <View flex-container-column>
-        <View flex-center>
-          <Form>
-            <LiwiTitle2>
-              Bienvenue {session.data.first_name} {session.data.last_name}
-            </LiwiTitle2>
-            <Item success={success} error={error} login-input floatingLabel>
-              <Label>Votre code</Label>
-              <Input
-                onChangeText={this.changeCode}
-                value={code}
-                textContentType="emailAddress"
-                secureTextEntry
-              />
-            </Item>
+      <ScrollView>
+        <View flex-container-column>
+          <View flex-center>
+            <Form>
+              <LiwiTitle2>
+                {t('welcome')} {session.data.first_name} {session.data.last_name}
+              </LiwiTitle2>
+              <Item success={success} error={error} login-input floatingLabel>
+                <Label>{t('your_code')}</Label>
+                <Input
+                  onChangeText={this.changeCode}
+                  value={code}
+                  textContentType="emailAddress"
+                  secureTextEntry
+                />
+              </Item>
 
-            <Item success={success} error={error} login-input floatingLabel>
-              <Label>Retaper votre code</Label>
-              <Input
-                onChangeText={this.changeCodeConfirmation}
-                value={codeConfirmation}
-                secureTextEntry
-              />
-            </Item>
-            {error ? (
-              <React.Fragment>
-                <Text padded error>
-                  - Minimum 6 caractères
-                </Text>
-                <Text padded error>
-                  - Au moins une lettre et un chiffre
-                </Text>
-              </React.Fragment>
-            ) : null}
-            <Button
-              full
-              style={styles.marginTop}
-              onPress={() => this.setLocalCode()}
-              disabled={success !== true}
-            >
-              <Text> Définir ce code </Text>
-            </Button>
-          </Form>
+              <Item success={success} error={error} login-input floatingLabel>
+                <Label>{t('type_your_code')}</Label>
+                <Input
+                  onChangeText={this.changeCodeConfirmation}
+                  value={codeConfirmation}
+                  secureTextEntry
+                />
+              </Item>
+              {error ? (
+                <React.Fragment>
+                  <Text padded error>
+                    - {t('error_same')}
+                  </Text>
+                  <Text padded error>
+                    - {t('error_char')}
+                  </Text>
+                  <Text padded error>
+                    - {t('error_letter')}
+                  </Text>
+                </React.Fragment>
+              ) : null}
+              <Button
+                full
+                style={styles.marginTop}
+                onPress={() => this.setLocalCode()}
+                disabled={success !== true}
+              >
+                <Text> {t('set_code')} </Text>
+              </Button>
+            </Form>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

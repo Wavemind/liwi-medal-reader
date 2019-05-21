@@ -235,6 +235,8 @@ export const getStateToThisPs = (state$, ps, actions) => {
 // TODO: IN PROGRESS
 export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
 
+  console.log(state$, indexDD, indexChild, child )
+
   // If this is a top parent node
   if (child.top_conditions.length === 0) {
     return true;
