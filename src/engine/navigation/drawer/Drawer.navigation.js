@@ -4,6 +4,7 @@ import { SeparatorLine, LiwiTitle2 } from '../../../template/layout';
 
 import { AppState, View } from 'react-native';
 import { Button, Container, Icon, Text } from 'native-base';
+import i18n from '../../../utils/i18n';
 
 export default class Drawer extends Component {
   state = {
@@ -62,7 +63,7 @@ export default class Drawer extends Component {
             {medicalCase.id !== undefined ? (
               <React.Fragment>
                 <LiwiTitle2 noBorder>
-                  {medicalCase.patient.firstname}
+                  {medicalCase.patient.firstname} -
                   {medicalCase.patient.lastname}
                 </LiwiTitle2>
                 <Button
@@ -83,7 +84,7 @@ export default class Drawer extends Component {
                     type={'FontAwesome5'}
                     name="briefcase-medical"
                   />
-                  <Text dark>Données patient</Text>
+                  <Text dark>{i18n.t('common:patient_data')}</Text>
                 </Button>
                 <Button
                   transparent
@@ -103,7 +104,7 @@ export default class Drawer extends Component {
                     type={'FontAwesome'}
                     name="stethoscope"
                   />
-                  <Text dark> Consultation</Text>
+                  <Text dark> {i18n.t('common:consultation')}</Text>
                 </Button>
               </React.Fragment>
             ) : null}
@@ -121,11 +122,11 @@ export default class Drawer extends Component {
                 type={'AntDesign'}
                 name="setting"
               />
-              <Text dark>Paramètres</Text>
+              <Text dark>{i18n.t('common:settings')}</Text>
             </Button>
             <Button transparent iconLeft btnDrawer onPress={this.logout}>
               <Icon style={styles.icon} dark type={'AntDesign'} name="logout" />
-              <Text dark>Se déconnecter</Text>
+              <Text dark>{i18n.t('common:disconnect')}</Text>
             </Button>
           </View>
         </View>

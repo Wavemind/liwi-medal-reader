@@ -10,6 +10,8 @@ import LottieView from 'lottie-react-native';
 import find from 'lodash/find';
 import { Button, H3, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
+import i18n from '../../../utils/i18n';
+
 import {
   createMedicalCase,
   getItems,
@@ -158,22 +160,20 @@ export default class MedicalCases extends React.Component<Props, State> {
           )}
         </View>
         <H3>Actions</H3>
-
         {algorithms.length > 0 ? (
           <Button
             onPress={() => this.generateMedicalCase()}
             disabled={generate}
           >
-            <Text>Créer un cas médical</Text>
+            <Text>{i18n.t('workcase:button_create')}</Text>
           </Button>
         ) : (
           <Button disabled={true}>
-            <Text>Aucun algorithm en mémoire</Text>
+            <Text>{i18n.t('workcase:none')}</Text>
           </Button>
         )}
-
         <SeparatorLine />
-        <H3>Cas médicals</H3>
+        <H3>{i18n.t('workcase:case_medical')}</H3>
         {_renderMedicalCases}
       </ScrollView>
     );

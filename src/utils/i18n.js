@@ -20,12 +20,17 @@ const languageDetector = {
 };
 
 i18n
-  .use(i18nextReactNative)
+  // .use(i18nextReactNative)
   .use(reactI18nextModule)
   .init({
     fallbackLng: 'en',
     resources: {
       en: {
+        workcase: {
+          button_create: 'Create a medical case',
+          case_medical: 'Medical cases',
+          none: 'No algorithms in memory',
+        },
         login: {
           your_code: 'Your code',
           welcome: 'Welcome',
@@ -52,6 +57,12 @@ i18n
           empty: 'No session',
         },
         common: {
+          disconnect:'Disconnect',
+          consultation: 'Consultation',
+          patient_data: 'Patient data',
+          settings: 'Settings',
+          title_home: 'Your personal space',
+          algorithms_av: 'Available algorithms',
           currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
           actions: {
             toggleToGerman: 'Deutsch',
@@ -61,6 +72,11 @@ i18n
         },
       },
       fr: {
+        workcase: {
+          button_create: 'Créer un cas médical',
+          case_medical: 'Cas médicals',
+          none: 'Aucun algorithm en mémoire',
+        },
         login: {
           your_code: 'Votre code',
           welcome: 'Bienvenue',
@@ -76,7 +92,7 @@ i18n
           login: 'Connecter',
         },
         popup: {
-          title: 'Merci d\'autoriser l\'accès à la position',
+          title: "Merci d'autoriser l'accès à la position",
           message:
             'Le partage de localisation est obligatoire afin de pouvoir utiliser le service médical',
           askmelater: 'Demandez moi plus tard',
@@ -87,6 +103,12 @@ i18n
           empty: 'Aucune session',
         },
         common: {
+          disconnect:'Déconnecter',
+          consultation: 'Consultation',
+          patient_data: 'Données patient',
+          settings: 'Paramétres',
+          title_home: 'Votre espace personnel',
+          algorithms_av: 'Algorithmes disponibles',
           currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
           actions: {
             toggleToGerman: 'Deutsch',
