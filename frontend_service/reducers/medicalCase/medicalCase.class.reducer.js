@@ -2,12 +2,11 @@ import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
 import { setMedicalCase } from '../../actions/creators.actions';
-import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import find from 'lodash/find';
 import { displayFormats, nodesType } from '../../constants';
-import findKey from '../index';
+import findKey from 'lodash/findKey';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
 import { NodeModel } from '../../engine/models/Node.model';
 import { PredefinedSyndromeModel } from '../../engine/models/PredefinedSyndrome.model';
@@ -20,16 +19,8 @@ import { PatientModel } from '../../engine/models/Patient.model';
 
 export const initialState = null;
 
-interface IReducerCatState {
-  energy: number;
-}
-
-class ReducerCat extends ReducerClass<IReducerCatState> {
+class ReducerCat extends ReducerClass {
   initialState = {};
-
-  constructor(props) {
-    super(props);
-  }
 
   _instanceMedicalCase(state) {
     state.createdDate = moment().format();
@@ -99,12 +90,12 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   // --------------------------------------------------------------------------
 
   @Action(actions.MC_CLEAR)
-  clearReducer(state: IReducerCatState, action: { payload: number }) {
+  clearReducer(state, action) {
     return {};
   }
 
   @Action(actions.MC_GENERATE_NEXT_BATCH)
-  generateNextBatch(state: IReducerCatState, action: { payload: number }) {
+  generateNextBatch(state, action) {
     let newState = generateNextBatch(state);
 
     return {
@@ -114,7 +105,7 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   }
 
   @Action(actions.MC_CONDITION_VALUE_PS_CHANGE)
-  conditionValuePsChange(state: IReducerCatState, action: { payload: number }) {
+  conditionValuePsChange(state, action) {
     const { nodeId, psId, value } = action.payload;
 
     const ps = state.nodes[nodeId].ps;
@@ -137,7 +128,7 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   }
 
   @Action(actions.MC_CONDITION_VALUE_DISEASES_CHANGE)
-  conditionValueDiseases(state: IReducerCatState, action: { payload: number }) {
+  conditionValueDiseases(state, action) {
     const { nodeId, diseaseId, value } = action.payload;
 
     const dd = state.nodes[nodeId].dd;
@@ -160,7 +151,7 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   }
 
   @Action(actions.MC_PREDEFINED_SYNDROME_SET_ANSWER)
-  psSetAnswer(state: IReducerCatState, action: { payload: number }) {
+  psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
     let newInstanceNode = this._instanceChild({
@@ -178,7 +169,7 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   }
 
   @Action(actions.MC_QUESTION_SET)
-  questionSet(state: IReducerCatState, action: { payload: number }) {
+  questionSet(state, action) {
     const { index, value } = action.payload;
 
     console.log(index, value);
@@ -297,7 +288,7 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   }
 
   @Action(actions.MC_UPDATE_PATIENT)
-  updatePatient(state: IReducerCatState, action: { payload: number }) {
+  updatePatient(state, action) {
     const { index, value } = action.payload;
 
     return {
@@ -310,7 +301,7 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   }
 
   @Action(actions.MC_SET)
-  medicalCaseSet(state: IReducerCatState, action: { payload: number }) {
+  medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
     if (state !== {} && medicalCase.id !== state.id) {
@@ -323,7 +314,7 @@ class ReducerCat extends ReducerClass<IReducerCatState> {
   }
 
   @Action(REHYDRATE)
-  rehydrate(state: IReducerCatState, action: { payload: number }) {
+  rehydrate(state, action) {
     if (
       action.payload === undefined ||
       action.payload === null ||
