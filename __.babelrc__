@@ -1,13 +1,15 @@
 {
-  "presets": ["module:metro-react-native-babel-preset", "@babel/preset-flow"],
+  "presets": ["module:metro-react-native-babel-preset"],
   "plugins": [
     ["@babel/plugin-transform-flow-strip-types"],
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
     [
-      "@babel/transform-runtime",
+      "@babel/plugin-transform-runtime",
       {
-        "regenerator": false
+        "helpers": true,
+        "useESModules": true,
+        "regenerator": true
       }
     ],
     [

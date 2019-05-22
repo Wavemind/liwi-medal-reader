@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
-import i18nextReactNative from 'i18next-react-native-language-detector';
+import DeviceInfo from 'react-native-device-info';
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -13,14 +13,15 @@ const languageDetector = {
   type: 'languageDetector',
   async: true, // flags below detection to be async
   detect: (callback) => {
-    return 'en';
+    const deviceLocale = DeviceInfo.getDeviceLocale();
+    callback(deviceLocale);
   },
   init: () => {},
   cacheUserLanguage: () => {},
 };
 
 i18n
-  .use(i18nextReactNative)
+  .use(languageDetector)
   .use(reactI18nextModule)
   .init({
     fallbackLng: 'en',
@@ -57,7 +58,7 @@ i18n
           empty: 'No session',
         },
         common: {
-          disconnect:'Disconnect',
+          disconnect: 'Disconnect',
           consultation: 'Consultation',
           patient_data: 'Patient data',
           settings: 'Settings',
@@ -103,7 +104,7 @@ i18n
           empty: 'Aucune session',
         },
         common: {
-          disconnect:'Déconnecter',
+          disconnect: 'Déconnecter',
           consultation: 'Consultation',
           patient_data: 'Données patient',
           settings: 'Paramétres',
@@ -119,12 +120,13 @@ i18n
       },
     },
     // have a common namespace used around the full app
-    ns: ['common', 'popup'],
+    ns: ['common'],
     defaultNS: 'common',
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false, // not needed for react as it does escape per default to prevent xss!
     },
   });
 
 export default i18n;
+
