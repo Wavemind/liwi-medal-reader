@@ -204,9 +204,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
   pushSettings = async (session) => {
     let { lastLogin } = session;
-
-
-    console.log(lastLogin, session)
     let now = moment();
     let lastLoginMoment;
 
@@ -233,8 +230,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
       session = await getSession(id);
       this.setUserContext(session);
-
-      console.log(session);
 
       this.pushSettings(session);
 
