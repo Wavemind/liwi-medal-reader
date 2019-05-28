@@ -20,6 +20,7 @@ import {
   getSessions,
   SetActiveSession,
   setItem,
+  setSessions, updateSession,
 } from '../api/LocalStorage';
 import { AppState, NetInfo, PermissionsAndroid } from 'react-native';
 import i18n from '../../utils/i18n';
@@ -184,7 +185,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
     if (finderActiveSession) {
       this.setUserContext(finderActiveSession);
-      this.pushSettings();
+      this.pushSettings(finderActiveSession);
     }
   };
 
@@ -201,18 +202,22 @@ export class ApplicationProvider extends React.Component<Props, State> {
     this.setState({ medicalCase });
   };
 
-  pushSettings = async () => {
-    let lastLogin = await getItem('lastLogin');
+  pushSettings = async (session) => {
+    let { lastLogin } = session;
+
+
+    console.log(lastLogin, session)
     let now = moment();
     let lastLoginMoment;
 
-    if (lastLogin !== null) {
+    if (lastLogin !== undefined) {
       lastLoginMoment = moment(lastLogin);
     }
 
-    if (lastLogin === null || now() > lastLoginMoment) {
+    if (lastLogin === undefined || now() > lastLoginMoment) {
       NavigationService.navigate('Settings', { userName: 'Lucy' });
-      await setItem('lastLogin', now.toString());
+      session.lastLogin = now.toString();
+      await updateSession(session.data.id, session);
     }
   };
 
@@ -229,7 +234,9 @@ export class ApplicationProvider extends React.Component<Props, State> {
       session = await getSession(id);
       this.setUserContext(session);
 
-      this.pushSettings();
+      console.log(session);
+
+      this.pushSettings(session);
 
       // here push settings
     } else {
