@@ -202,6 +202,8 @@ export class ApplicationProvider extends React.Component<Props, State> {
     this.setState({ medicalCase });
   };
 
+
+  // define page settings to push
   pushSettings = async (session) => {
     let { lastLogin } = session;
     let now = moment();
