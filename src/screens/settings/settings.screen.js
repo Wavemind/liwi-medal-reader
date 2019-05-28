@@ -2,17 +2,7 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import {
-  Text,
-  List,
-  ListItem,
-  Left,
-  Body,
-  Button,
-  Switch,
-  Right,
-  Icon,
-} from 'native-base';
+import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Text } from 'native-base';
 import { ScrollView } from 'react-native';
 import { getItem, setItem } from '../../engine/api/LocalStorage';
 

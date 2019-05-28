@@ -1,6 +1,4 @@
-import { Alert, PermissionsAndroid } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import i18n from '../../utils/i18n';
 import { getItem } from './LocalStorage';
 
 // Return device information and his location

@@ -4,17 +4,14 @@ import { nodesType } from '../../constants';
 import find from 'lodash/find';
 import { of } from 'rxjs';
 import { actions } from '../../actions/types.actions';
-import { concatMap, filter, switchMap, ignoreElements } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import {
   conditionValueDiseasesChange,
-  conditionValuePSChange,
   diagnosisChildren,
   diseasesChildren,
   dispatchNodeAction,
   predefinedSyndromeChildren,
-  setPsAnswer,
   setQuestion,
-  dispatchPSAction,
 } from '../../actions/creators.actions';
 import {
   getParentsOfThisNode,
@@ -111,7 +108,6 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return [];
         case nodesType.fd:
           // Ho next node is Final Diagnostic
-          console.log(indexNode, indexChild, )
           return of(diagnosisChildren(indexNode, indexChild));
         case nodesType.m:
           return [];
@@ -154,8 +150,6 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
       // Here get the state if this PS
       const ps = state$.value.nodes[indexPS];
 
-      console.log(ps)
-
       // Let check the condition of this ps
       const topConditionCheckerPs = nodeConditionChecker(
         state$,
@@ -163,8 +157,6 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
         null,
         ps
       );
-
-      console.log(topConditionCheckerPs, ps.requirement.nodeConditionChecker(state$))
 
       let answeredId = null;
       let actions = [];
@@ -233,8 +225,6 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
     switchMap((action) => {
       const { indexDD, indexChild } = action.payload;
       const child = state$.value.diseases[indexDD].nodes[indexChild];
-
-      console.log(child, state$.value)
 
       // If the algo is wrong with the nodes
       // TODO catch nice error from JSON

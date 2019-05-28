@@ -3,10 +3,9 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import { Toaster } from '../../../utils/CustomToast';
 import { styles } from './NewSession.style';
 import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
-import { KeyboardAvoidingView, ScrollView, Keyboard } from 'react-native';
+import { Keyboard, ScrollView } from 'react-native';
 
 type Props = NavigationScreenProps & {};
 type State = {

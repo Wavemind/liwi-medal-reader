@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { styles } from './Drawer.style';
-import { SeparatorLine, LiwiTitle2 } from '../../../template/layout';
+import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 
 import { AppState, View } from 'react-native';
 import { Button, Container, Icon, Text } from 'native-base';

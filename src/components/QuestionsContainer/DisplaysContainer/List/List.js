@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Input, Item, Picker, View } from 'native-base';
+import { Item, Picker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { styles } from './List.style';
 

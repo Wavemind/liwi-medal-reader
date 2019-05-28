@@ -9,6 +9,7 @@ import { styles } from './Algorithms.style.js';
 import { CardView, RightView } from '../../../template/layout';
 import { Button, H2, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
+
 type Props = NavigationScreenProps & {};
 type State = { algorithms: Array<Object> };
 

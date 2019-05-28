@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, Text } from 'native-base';
 import { liwiColors } from '../../../utils/constants';
-import Modal from '../../CustomModal';
 import { withApplication } from '../../../engine/contexts/Application.context';
 
 class ModalWrapper extends React.Component {

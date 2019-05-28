@@ -5,7 +5,6 @@ import {
   epicCatchDiagnosisChildren,
   epicCatchPredefinedSyndromeChildren,
 } from './EpicTreesNodes.js';
-import { epicClassIntercept } from './EpicClassModel';
 import { combineEpics } from 'redux-observable';
 
 export default combineEpics(
@@ -14,5 +13,4 @@ export default combineEpics(
   epicCatchDiagnosisChildren,
   epicCatchDispatchNodeAction,
   epicCatchDiseasesChildren,
-  epicClassIntercept
 );
