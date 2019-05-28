@@ -150,7 +150,6 @@ export const getMedicalCase = async (id) => {
 
 // @params [Integer] id, [Object] newSession
 // @return [Object] medicalCase
-// Generate a new medical case
 export const updateSession = async (id, newSession) => {
   let sessions = await AsyncStorage.getItem('sessions');
   sessions = JSON.parse(sessions);
