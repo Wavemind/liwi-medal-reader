@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.2.0",
+    "@babel/runtime": "^7.4.5",
     "@babel/runtime-corejs2": "^7.4.5",
+    "@react-native-community/netinfo": "^3.2.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-react-native": "^5.0.2",
     "deepmerge": "^3.2.0",
@@ -22,7 +24,6 @@
     "immer": "^3.1.1",
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.11",
-    "@babel/runtime": "^7.4.5",
     "lottie-react-native": "^2.5.11",
     "moment": "^2.22.2",
     "native-base": "^2.12.1",

@@ -41,6 +41,7 @@ export const getItemFromArray = async (key, index, id) => {
       return item[index] === id;
     });
   }
+
   return {};
 };
 
@@ -130,8 +131,7 @@ export const createMedicalCase = async (newMedicalCase) => {
     medicalCases.push(newMedicalCase);
 
     return await setItem('medicalCases', medicalCases);
-  } catch (e) {
-  }
+  } catch (e) {}
 };
 
 // @params [Integer] medical case id
@@ -174,6 +174,7 @@ export const clearSessions = async () => {
 export const clearMedicalCases = async () => {
   await AsyncStorage.removeItem('medicalCases');
   await AsyncStorage.removeItem('algorithms');
+  await AsyncStorage.removeItem('lastLogin');
 };
 
 // @params [Object] session

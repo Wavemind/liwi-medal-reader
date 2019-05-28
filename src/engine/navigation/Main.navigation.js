@@ -13,73 +13,87 @@ import { Button, Icon } from 'native-base';
 
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 
-const Stack = createStackNavigator({
-  Home: {
-    screen: MainScreen,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: i18n.t('common:title_home'),
-        headerLeft: (
-          <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-            <Icon red type={'Entypo'} name="menu" large />
-          </Button>
-        ),
-      };
+const Stack = createStackNavigator(
+  {
+    Home: {
+      screen: MainScreen,
+      path: 'home',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: i18n.t('common:title_home'),
+          headerLeft: (
+            <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
+              <Icon red type={'Entypo'} name="menu" large />
+            </Button>
+          ),
+        };
+      },
+    },
+    MedicalCases: {
+      screen: MedicalCases,
+      path: 'medicalCases',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: 'Vos cas médicaux',
+        };
+      },
+    },
+    MedicalCase: {
+      screen: MedicalCase,
+      path: 'medicalCases/:id',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    WorkCase: {
+      screen: WorkCase,
+      path: 'workcase',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    Algorithms: {
+      screen: Algorithms,
+      path: 'algorithms',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: i18n.t('common:algorithms_av'),
+        };
+      },
+    },
+    Algorithm: {
+      screen: Algorithm,
+      path: 'algorithm/:id',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    Settings: {
+      screen: Settings,
+      path: 'settings',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: i18n.t('common:settings'),
+        };
+      },
     },
   },
-  MedicalCases: {
-    screen: MedicalCases,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: 'Vos cas médicaux',
-      };
-    },
-  },
-  MedicalCase: {
-    screen: MedicalCase,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: navigation.getParam('title'),
-      };
-    },
-  },
-  WorkCase: {
-    screen: WorkCase,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: navigation.getParam('title'),
-      };
-    },
-  },
-  Algorithms: {
-    screen: Algorithms,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: i18n.t('common:algorithms_av'),
-      };
-    },
-  },
-  Algorithm: {
-    screen: Algorithm,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: navigation.getParam('title'),
-      };
-    },
-  },
-  Settings: {
-    screen: Settings,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: i18n.t('common:settings'),
-      };
-    },
-  },
-});
+  {
+    // initialRouteName: 'Settings',
+  }
+);
 
 export default () => {
   return createDrawerNavigator(
     { Home: { screen: Stack } },
-    { contentComponent: (props) => <Drawer {...props} /> }
+    {
+      contentComponent: (props) => <Drawer {...props} />,
+    }
   );
 };

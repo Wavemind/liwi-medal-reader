@@ -7,8 +7,14 @@ export default {
       color: '#6a6a6a',
       borderRadius: 35,
     },
+    '.white': {
+      color: liwiColors.whiteColor,
+    },
     '.error': {
       color: liwiColors.redColor,
+    },
+    '.bold': {
+      fontWeight: 'bold',
     },
     '.padded': {
       paddingLeft: 18,

@@ -27,6 +27,12 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        settings: {
+          devices: 'Medical Devices',
+          tests: 'Medical Tests available',
+          awake: 'keep awake',
+          app: 'Application',
+        },
         workcase: {
           button_create: 'Create a medical case',
           case_medical: 'Medical cases',
@@ -73,6 +79,12 @@ i18n
         },
       },
       fr: {
+        settings: {
+          devices: 'Appareils médicaux',
+          tests: 'Tests Médicaux disponible',
+          app: 'Application',
+          awake: 'Empécher la mise en veille',
+        },
         workcase: {
           button_create: 'Créer un cas médical',
           case_medical: 'Cas médicals',
@@ -129,4 +141,3 @@ i18n
   });
 
 export default i18n;
-

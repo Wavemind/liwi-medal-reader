@@ -10,17 +10,18 @@ import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
 import isEmpty from 'lodash/isEmpty';
-import DeviceInfo from 'react-native-device-info';
+
+import NavigationService from '../navigation/Navigation.service';
 
 import {
-  createMedicalCase,
   destroySession,
+  getItem,
   getSession,
   getSessions,
   SetActiveSession,
   setItem,
 } from '../api/LocalStorage';
-import { Alert, AppState, NetInfo, PermissionsAndroid } from 'react-native';
+import { AppState, NetInfo, PermissionsAndroid } from 'react-native';
 import i18n from '../../utils/i18n';
 
 const defaultValue = {};
@@ -183,6 +184,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
     if (finderActiveSession) {
       this.setUserContext(finderActiveSession);
+      this.pushSettings();
     }
   };
 
@@ -199,6 +201,21 @@ export class ApplicationProvider extends React.Component<Props, State> {
     this.setState({ medicalCase });
   };
 
+  pushSettings = async () => {
+    let lastLogin = await getItem('lastLogin');
+    let now = moment();
+    let lastLoginMoment;
+
+    if (lastLogin !== null) {
+      lastLoginMoment = moment(lastLogin);
+    }
+
+    if (lastLogin === null || now() > lastLoginMoment) {
+      NavigationService.navigate('Settings', { userName: 'Lucy' });
+      await setItem('lastLogin', now.toString());
+    }
+  };
+
   // Unlock session from local credentials
   unlockSession = async (id: number, code: string) => {
     let session = await getSession(id);
@@ -211,6 +228,10 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
       session = await getSession(id);
       this.setUserContext(session);
+
+      this.pushSettings();
+
+      // here push settings
     } else {
       Toaster('Pas le bon code', { type: 'danger' });
     }
