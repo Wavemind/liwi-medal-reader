@@ -11,14 +11,18 @@ import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
 import isEmpty from 'lodash/isEmpty';
 
+import NavigationService from '../navigation/Navigation.service';
+
 import {
-  createMedicalCase,
   destroySession,
   getSession,
   getSessions,
   SetActiveSession,
+  setItem,
+  updateSession,
 } from '../api/LocalStorage';
-import { AppState, NetInfo } from 'react-native';
+import { AppState, NetInfo, PermissionsAndroid } from 'react-native';
+import i18n from '../../utils/i18n';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -53,6 +57,32 @@ export class ApplicationProvider extends React.Component<Props, State> {
       'connectionChange',
       this._handleConnectivityChange
     );
+  }
+
+  async componentDidMount() {
+    let permissionReturned = await this.getGeo();
+    let location = {
+      coords: {
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        latitude: 0,
+        longitude: 0,
+        speed: 0,
+      },
+      mocked: false,
+      timestamp: 0,
+    };
+    location.date = moment().toISOString();
+
+    if (permissionReturned === 'granted') {
+      await this.askGeo(true, async (cb) => {
+        location = { ...location, ...cb };
+        await setItem('location', location);
+      });
+    } else {
+      await setItem('location', location);
+    }
   }
 
   componentWillUnmount() {
@@ -103,6 +133,30 @@ export class ApplicationProvider extends React.Component<Props, State> {
     }
   };
 
+  getGeo = async () => {
+    return await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: i18n.t('popup:title'),
+        message: i18n.t('popup:message'),
+        buttonNeutral: i18n.t('popup:askmelater'),
+        buttonNegative: i18n.t('popup:cancel'),
+        buttonPositive: 'Ok !',
+      }
+    );
+  };
+
+  askGeo = async (enableHighAccuracy, callBack) => {
+    return navigator.geolocation.getCurrentPosition(
+      async (position) => callBack(position),
+      async (error) => callBack(error),
+      {
+        enableHighAccuracy: enableHighAccuracy,
+        timeout: 5000,
+      }
+    );
+  };
+
   // Set value in context
   setValState = async (prop: any, value: any) => {
     await this.setState({ [prop]: value });
@@ -130,6 +184,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
     if (finderActiveSession) {
       this.setUserContext(finderActiveSession);
+      this.pushSettings(finderActiveSession);
     }
   };
 
@@ -146,6 +201,24 @@ export class ApplicationProvider extends React.Component<Props, State> {
     this.setState({ medicalCase });
   };
 
+
+  // define page settings to push
+  pushSettings = async (session) => {
+    let { lastLogin } = session;
+    let now = moment();
+    let lastLoginMoment;
+
+    if (lastLogin !== undefined) {
+      lastLoginMoment = moment(lastLogin);
+    }
+
+    if (lastLogin === undefined || now() > lastLoginMoment) {
+      NavigationService.navigate('Settings', { userName: 'Lucy' });
+      session.lastLogin = now.toString();
+      await updateSession(session.data.id, session);
+    }
+  };
+
   // Unlock session from local credentials
   unlockSession = async (id: number, code: string) => {
     let session = await getSession(id);
@@ -153,8 +226,15 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
     if (session.local_code === encrypt) {
       await SetActiveSession(id);
+
+      await fetchAlgorithms(id);
+
       session = await getSession(id);
       this.setUserContext(session);
+
+      this.pushSettings(session);
+
+      // here push settings
     } else {
       Toaster('Pas le bon code', { type: 'danger' });
     }
@@ -166,6 +246,13 @@ export class ApplicationProvider extends React.Component<Props, State> {
     this.setState({
       logged: false,
       user: {},
+    });
+  };
+
+  setModal = async (content) => {
+    this.setState({
+      isModalVisible: true,
+      contentModal: content,
     });
   };
 
@@ -184,6 +271,10 @@ export class ApplicationProvider extends React.Component<Props, State> {
     setMedicalCase: this.setMedicalCase,
     medicalCase: {},
     appState: AppState.currentState,
+    setModal: this.setModal,
+    isModalVisible: false,
+    contentModal: 'initial',
+    initialPosition: {},
   };
 
   render() {

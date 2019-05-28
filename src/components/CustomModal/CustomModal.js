@@ -9,25 +9,25 @@ export default class CustomModal extends Component {
 
   static defaultProps = {
     isModalVisible: false,
+    contentModal: 'Default',
   };
 
   _toggleModal = () =>
     this.setState({ isModalVisible: !this.state.isModalVisible });
 
   render() {
-    const { _toggleModal, isModalVisible, content } = this.props;
-
+    const { app: { isModalVisible, contentModal, set } }= this.props;
     return (
       <View style={styles.container}>
         <Modal
           isVisible={isModalVisible}
           backdropOpacity={0.5}
-          onSwipeComplete={() => _toggleModal()}
+          onSwipeComplete={() => set('isModalVisible', false)}
           swipeDirection={'up'}
         >
           <View style={styles.view}>
-            <Text>{content}</Text>
-            <TouchableWithoutFeedback onPress={() => _toggleModal()}>
+            <Text>{contentModal}</Text>
+            <TouchableWithoutFeedback onPress={() => set('isModalVisible', false)}>
               <Text>Hide me!</Text>
             </TouchableWithoutFeedback>
           </View>

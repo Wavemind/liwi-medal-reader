@@ -7,18 +7,13 @@ import { SeparatorLine } from '../../../template/layout';
 import { styles } from './MedicalCases.style';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
+import find from 'lodash/find';
 import { Button, H3, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
-import find from 'lodash/find';
-import {
-  createMedicalCase,
-  getItems,
-  getUserMedicalCases,
-} from '../../../engine/api/LocalStorage';
-import {
-  generateInitialBatch,
-  setInitialCounter,
-} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
+import i18n from '../../../utils/i18n';
+
+import { createMedicalCase, getItems, getUserMedicalCases } from '../../../engine/api/LocalStorage';
+import { generateInitialBatch, setInitialCounter } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 type State = { medicalCases: Array<Object> };
@@ -28,7 +23,6 @@ export default class MedicalCases extends React.Component<Props, State> {
     medicalCases: [],
     algorithms: [],
     selected: 'null',
-    versions: [],
     generate: null,
   };
 
@@ -36,14 +30,7 @@ export default class MedicalCases extends React.Component<Props, State> {
     await this.getMedicalCases();
     let algorithms = await getItems('algorithms');
 
-    let versions = [];
-    algorithms.map((algorithm) =>
-      Object.keys(algorithm.versions).map((version) =>
-        versions.push(algorithm.versions[version])
-      )
-    );
-
-    this.setState({ algorithms, versions });
+    this.setState({ algorithms });
   }
 
   // Get medical cases of current user
@@ -58,20 +45,29 @@ export default class MedicalCases extends React.Component<Props, State> {
     await this.setState({ generate: true });
     this.loading.play();
     const response = await fetch('https://uinames.com/api/?ext&region=france');
+    let json = {};
 
-    const json = await response.json();
+    if (response.status === 200) {
+      json = await response.json();
+    } else {
+      json = {
+        name: 'Jacquouille',
+        surname: 'la Fripouille',
+        birthday: { dmy: '01.01.1900' },
+        email: 'pop@pip.pap',
+        photo: '',
+      };
+    }
 
     const algorithms = await getItems('algorithms');
 
     const algorithmUsed = find(algorithms, (a) => a.selected);
 
-    let algorithm = setInitialCounter(algorithmUsed);
+    setInitialCounter(algorithmUsed);
 
-    let algorithmFirstBatch = generateInitialBatch(algorithm);
-
-    await createMedicalCase({
-      ...medicalCaseInitialState,
-      ...algorithmFirstBatch,
+    const newmedicalCase = {
+      nodes: algorithmUsed.nodes,
+      diseases: algorithmUsed.diseases,
       userId: this.props.app.user.data.id,
       patient: {
         ...medicalCaseInitialState.patient,
@@ -81,15 +77,20 @@ export default class MedicalCases extends React.Component<Props, State> {
         email: json.email,
         photo: json.photo,
       },
-    });
+    };
+
+    generateInitialBatch(newmedicalCase);
+
+    await createMedicalCase(newmedicalCase);
     await this.getMedicalCases();
     await this.setState({ generate: false });
-    this.loading.reset();
+    // this.loading.reset();
   };
 
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase, navigation } = this.props;
+
     await setMedicalCase(medicalCase);
     // await app.setMedicalCase(medicalCase); // TODO find better way
     await this.getMedicalCases();
@@ -99,7 +100,7 @@ export default class MedicalCases extends React.Component<Props, State> {
   };
 
   render() {
-    const { generate } = this.state;
+    const { generate, algorithms } = this.state;
 
     const { medicalCase } = this.props;
 
@@ -143,12 +144,20 @@ export default class MedicalCases extends React.Component<Props, State> {
           )}
         </View>
         <H3>Actions</H3>
-        <Button onPress={() => this.generateMedicalCase()} disabled={generate}>
-          <Text>Créer un cas médical</Text>
-        </Button>
-
+        {algorithms.length > 0 ? (
+          <Button
+            onPress={() => this.generateMedicalCase()}
+            disabled={generate}
+          >
+            <Text>{i18n.t('workcase:button_create')}</Text>
+          </Button>
+        ) : (
+          <Button disabled={true}>
+            <Text>{i18n.t('workcase:none')}</Text>
+          </Button>
+        )}
         <SeparatorLine />
-        <H3>Cas médicals</H3>
+        <H3>{i18n.t('workcase:case_medical')}</H3>
         {_renderMedicalCases}
       </ScrollView>
     );

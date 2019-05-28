@@ -3,13 +3,7 @@
 
 import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
-import {
-  getSessions,
-  updateSession,
-  getSession,
-  setSessions,
-  destroySession,
-} from '../api/LocalStorage';
+import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
 import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 const defaultValue = {};
@@ -63,33 +57,36 @@ export class SessionsProvider extends React.Component<
 
   // Create new session
   newSession = async (email: string, password: string) => {
-    const credentials = await auth(email, password);
+    return new Promise(async (resolve, reject) => {
+      const credentials = await auth(email, password);
 
-    if (credentials.success !== false || credentials.success === undefined) {
-      let sessions = await getSessions();
-      if (sessions === null) {
-        sessions = [];
-      }
-      if (Array.isArray(sessions)) {
-        const exist = sessions.find((session) => {
-          return session.data.id === credentials.data.id;
-        });
-        if (!exist) {
-          sessions.push(credentials);
-          await setSessions(sessions);
-          this.setState({ sessions });
-          return fetchAlgorithms(credentials.data.id)
-            .then(async (done) => {
-              return credentials;
-            })
-            .catch((err) => {
-              return Promise.reject(err);
-            });
+      if (credentials.success !== false || credentials.success === undefined) {
+        let sessions = await getSessions();
+        if (sessions === null) {
+          sessions = [];
         }
-        Toaster('Already connected', { type: 'danger' });
+        if (Array.isArray(sessions)) {
+          const exist = sessions.find((session) => {
+            return session.data.id === credentials.data.id;
+          });
+          if (!exist) {
+            sessions.push(credentials);
+            await setSessions(sessions);
+            this.setState({ sessions });
+
+            return fetchAlgorithms(credentials.data.id)
+              .then(async (done) => {
+                resolve(credentials);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          }
+          Toaster('Already connected', { type: 'danger' });
+          reject('Already connected')
+        }
       }
-    }
-    return false;
+    });
   };
 
   state = {

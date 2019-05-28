@@ -20,6 +20,7 @@ export const get = async (params, userId) => {
   const request = await fetch(url, header).catch((error) =>
     handleHttpError(error)
   );
+
   let response = await request.json();
 
   // Display error
@@ -46,6 +47,7 @@ export const post = async (params, body = {}, userId = null) => {
   if (!request.ok) {
     handleHttpError(response.errors);
   }
+  return true;
 };
 // @return [Object] response from server
 // Send device activity to server
@@ -106,57 +108,51 @@ export const auth = async (email, password) => {
 // Promise fetch algorithm from server
 export const fetchAlgorithms = async (userId) => {
   return new Promise(async (resolve, reject) => {
-    await getDeviceInformation(async (deviceInfo) => {
-      if (deviceInfo === false) {
-        reject('Autorisations nécessaire');
-      }
+    let deviceInfo = await getDeviceInformation();
 
-      console.log('---- fetchAlgorithms -----');
+    console.log('---- fetchAlgorithms -----');
 
-      deviceInfo.activity.user_id = userId;
+    deviceInfo.activity.user_id = userId;
 
-      let serverAlgorithm = await get(
-        `versions?mac_address=${
-          deviceInfo.activity.device_attributes.mac_address
-        }`,
-        userId
-      );
+    await post('activities', deviceInfo);
 
-      let localAlgorithms = await getItems('algorithms');
+    let serverAlgorithm = await get(
+      `versions?mac_address=${
+        deviceInfo.activity.device_attributes.mac_address
+      }`,
+      userId
+    );
 
-      let algorithm = findIndex(
-        localAlgorithms,
-        (a) => a.algorithm_id === serverAlgorithm.algorithm_id
-      );
-      let algorithmSelected = find(localAlgorithms, (a) => a.selected === true);
+    let localAlgorithms = await getItems('algorithms');
 
-      if (algorithmSelected !== undefined) {
-        algorithmSelected.selected = false;
-      }
+    let algorithm = findIndex(
+      localAlgorithms,
+      (a) => a.algorithm_id === serverAlgorithm.algorithm_id
+    );
+    let algorithmSelected = find(localAlgorithms, (a) => a.selected === true);
 
-      if (algorithmSelected !== undefined) {
-        algorithmSelected.selected = false;
-      }
+    if (algorithmSelected !== undefined) {
+      algorithmSelected.selected = false;
+    }
 
-      if (serverAlgorithm.errors) {
-        resolve(serverAlgorithm.errors);
-        return null;
+    if (serverAlgorithm.errors) {
+      resolve(serverAlgorithm.errors);
+      return null;
+    } else {
+      if (algorithm !== -1) {
+        // Algorithm container already in local, replace this local algo
+        localAlgorithms[algorithm] = serverAlgorithm;
+        localAlgorithms[algorithm].selected = true;
       } else {
-        if (algorithm !== -1) {
-          // Algorithm container already in local, replace this local algo
-          localAlgorithms[algorithm] = serverAlgorithm;
-          localAlgorithms[algorithm].selected = true;
-        } else {
-          // Algorithm not existing in local, push it
-          serverAlgorithm.selected = true;
-          localAlgorithms.push(serverAlgorithm);
-        }
-
-        Toaster('Algo Updated', { type: 'success' });
-        await setItem('algorithms', localAlgorithms);
-        resolve();
+        // Algorithm not existing in local, push it
+        serverAlgorithm.selected = true;
+        localAlgorithms.push(serverAlgorithm);
       }
-    });
+
+      Toaster('Algo Updated', { type: 'success' });
+      await setItem('algorithms', localAlgorithms);
+      resolve('finish');
+    }
   });
 };
 

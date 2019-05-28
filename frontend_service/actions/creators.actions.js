@@ -83,10 +83,10 @@ export const predefinedSyndromeChildren = (indexPS, indexChild) => ({
   },
 });
 
-export const diagnosisChildren = (indexDD, indexChild) => ({
+export const diagnosisChildren = (indexDD, indexDiagnosis) => ({
   type: actions.MC_DIAGNOSIS_CHILDREN,
   payload: {
     indexDD,
-    indexChild,
+    indexDiagnosis,
   },
 });

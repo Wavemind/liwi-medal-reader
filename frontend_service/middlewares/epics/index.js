@@ -12,5 +12,5 @@ export default combineEpics(
   epicCatchAnswer,
   epicCatchDiagnosisChildren,
   epicCatchDispatchNodeAction,
-  epicCatchDiseasesChildren
+  epicCatchDiseasesChildren,
 );

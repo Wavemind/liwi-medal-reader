@@ -4,16 +4,17 @@ import remove from 'lodash/remove';
 import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
 import maxBy from 'lodash/maxBy';
+import { stringifyDeepRef } from '../../utils/swissKnives';
 
 // TODO init localstorage, set initial value if undefined
 export const setCredentials = async (newState) =>
-  await AsyncStorage.setItem('credentials', JSON.stringify(newState));
+  await AsyncStorage.setItem('credentials', stringifyDeepRef(newState));
 
 // @params [String] key, [Object] item
 // @return [Object] saved object
 // Save value in local storage
 export const setItem = async (key, item) => {
-  return await AsyncStorage.setItem(key, JSON.stringify(item));
+  return await AsyncStorage.setItem(key, stringifyDeepRef(item));
 };
 
 // @params [String] key
@@ -40,6 +41,7 @@ export const getItemFromArray = async (key, index, id) => {
       return item[index] === id;
     });
   }
+
   return {};
 };
 
@@ -63,6 +65,11 @@ export const isLogged = async () => {
   // }
 
   return moment(date_expiry).isAfter(moment());
+};
+
+export const getItem = async (key) => {
+  const item = await AsyncStorage.getItem(key);
+  return JSON.parse(item);
 };
 
 // @return [Array]
@@ -111,18 +118,20 @@ export const getUserMedicalCases = async (userId) => {
 // @return [Object] medicalCase
 // Generate a new medical case
 export const createMedicalCase = async (newMedicalCase) => {
-  let medicalCases = await getItems('medicalCases');
-  let maxId = maxBy(medicalCases, 'id');
+  try {
+    let medicalCases = await getItems('medicalCases');
+    let maxId = maxBy(medicalCases, 'id');
 
-  if (medicalCases.length === 0) {
-    maxId = { id: 0 };
-  }
+    if (medicalCases.length === 0) {
+      maxId = { id: 0 };
+    }
 
-  newMedicalCase.id = maxId.id + 1;
-  newMedicalCase.createdDate = moment().format();
-  medicalCases.push(newMedicalCase);
+    newMedicalCase.id = maxId.id + 1;
 
-  return await setItem('medicalCases', medicalCases);
+    medicalCases.push(newMedicalCase);
+
+    return await setItem('medicalCases', medicalCases);
+  } catch (e) {}
 };
 
 // @params [Integer] medical case id
@@ -141,7 +150,6 @@ export const getMedicalCase = async (id) => {
 
 // @params [Integer] id, [Object] newSession
 // @return [Object] medicalCase
-// Generate a new medical case
 export const updateSession = async (id, newSession) => {
   let sessions = await AsyncStorage.getItem('sessions');
   sessions = JSON.parse(sessions);
@@ -165,12 +173,13 @@ export const clearSessions = async () => {
 export const clearMedicalCases = async () => {
   await AsyncStorage.removeItem('medicalCases');
   await AsyncStorage.removeItem('algorithms');
+  await AsyncStorage.removeItem('lastLogin');
 };
 
 // @params [Object] session
 // Set session credentials in local storage
 export const setSessions = async (session) => {
-  await AsyncStorage.setItem('sessions', JSON.stringify(session));
+  await AsyncStorage.setItem('sessions', stringifyDeepRef(session));
 };
 
 // @params [Integer] id

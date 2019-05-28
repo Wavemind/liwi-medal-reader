@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+
 /*** COLORS *****/
 export const blueColor = '#fff';
 export const liwiColors = {
