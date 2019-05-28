@@ -10,8 +10,8 @@ import merge from 'deepmerge';
 import { RootView } from 'template/layout';
 import { withApplication } from '../engine/contexts/Application.context';
 import { AppState, Platform, StatusBar } from 'react-native';
-
 import { Container, Root, StyleProvider } from 'native-base';
+import NavigationService from '../engine/navigation/Navigation.service';
 
 type Props = {
   app: {
@@ -42,7 +42,11 @@ class LayoutTemplate extends React.Component<Props> {
           <Container>
             <RootView>
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AppContainer />
+              <AppContainer
+                ref={(navigatorRef) => {
+                  NavigationService.setTopLevelNavigator(navigatorRef);
+                }}
+              />
             </RootView>
           </Container>
         </StyleProvider>

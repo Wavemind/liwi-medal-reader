@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Tab, Tabs, Text, View, Icon, Button } from 'native-base';
+import { Button, Icon, Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { liwiColors } from '../../../utils/constants';

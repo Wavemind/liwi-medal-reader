@@ -12,6 +12,7 @@ type State = {};
 
 export default class Numeric extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+
     return (
       nextProps.question.answer !== this.props.question.answer ||
       nextProps.question.value !== this.props.question.value
@@ -24,7 +25,9 @@ export default class Numeric extends React.Component<Props, State> {
     });
 
   _onEndEditing = (value) => {
-    this.props.setQuestion(this.props.question.id, value.nativeEvent.text);
+    if (value.nativeEvent.text !== this.props.question.value) {
+      this.props.setQuestion(this.props.question.id, value.nativeEvent.text);
+    }
   };
 
   render() {

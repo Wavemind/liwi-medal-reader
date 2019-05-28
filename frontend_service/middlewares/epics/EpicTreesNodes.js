@@ -4,17 +4,14 @@ import { nodesType } from '../../constants';
 import find from 'lodash/find';
 import { of } from 'rxjs';
 import { actions } from '../../actions/types.actions';
-import { concatMap, filter, switchMap, ignoreElements } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import {
   conditionValueDiseasesChange,
-  conditionValuePSChange,
   diagnosisChildren,
   diseasesChildren,
   dispatchNodeAction,
   predefinedSyndromeChildren,
-  setPsAnswer,
   setQuestion,
-  dispatchPSAction,
 } from '../../actions/creators.actions';
 import {
   getParentsOfThisNode,
@@ -113,7 +110,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           // Ho next node is Final Diagnostic
           return of(diagnosisChildren(indexNode, indexChild));
         case nodesType.m:
-          return null;
+          return [];
         case nodesType.d:
           // Get children of the node in the current diagnostic
           nodeChildren =

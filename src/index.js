@@ -8,11 +8,10 @@ import { ApplicationProvider } from 'engine/contexts/Application.context';
 import { SessionsProvider } from 'engine/contexts/Sessions.context';
 import { withNamespaces } from 'react-i18next';
 import KeepAwake from 'react-native-keep-awake';
-import i18n from 'utils/i18n';
 
 import { persistor, store } from '../frontend_service/store';
-
-KeepAwake.activate();
+import CustomModal from './components/CustomModal';
+import { getItem } from './engine/api/LocalStorage';
 
 Array.prototype.first = function() {
   return this[0];
@@ -22,21 +21,31 @@ Array.prototype.isEmpty = function() {
   return this === undefined || this.length === 0;
 };
 
-const ReloadAppOnLanguageChange = withNamespaces('common', {
-  bindI18n: 'languageChanged',
-  bindStore: false,
-})(Layout);
+export default class Root extends React.Component {
+  async componentWillMount() {
+    let settings = await getItem('settings');
+    if (settings !== null && settings.app !== undefined && settings.app.awake) {
+      KeepAwake.activate();
+    }
+  }
 
-export default function Root() {
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ApplicationProvider>
-          <SessionsProvider>
-            <ReloadAppOnLanguageChange />
-          </SessionsProvider>
-        </ApplicationProvider>
-      </PersistGate>
-    </Provider>
-  );
+  render() {
+    const ReloadAppOnLanguageChange = withNamespaces('common', {
+      bindI18n: 'languageChanged',
+      bindStore: false,
+    })(Layout);
+
+    return (
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ApplicationProvider>
+            <SessionsProvider>
+              <ReloadAppOnLanguageChange />
+              <CustomModal />
+            </SessionsProvider>
+          </ApplicationProvider>
+        </PersistGate>
+      </Provider>
+    );
+  }
 }
