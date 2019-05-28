@@ -3,18 +3,8 @@
 
 import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
-import {
-  getSessions,
-  updateSession,
-  getSession,
-  setSessions,
-  destroySession,
-} from '../api/LocalStorage';
-import {
-  auth,
-  fetchAlgorithms,
-  post,
-} from '../../../frontend_service/api/Http';
+import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
+import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);

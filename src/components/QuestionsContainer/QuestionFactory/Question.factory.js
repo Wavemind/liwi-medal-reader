@@ -2,23 +2,15 @@
 
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
-import {
-  categories,
-  displayFormats,
-  displayValues,
-  priorities,
-} from '../../../../frontend_service/constants';
+import { categories, displayFormats, displayValues, priorities } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import ModalWrapper from './ModalWrapper';
-import Radio from '../DisplaysContainer/Radio';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
 import { Grid, Icon, Text } from 'native-base';
 import { ColCenter, QuestionView } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
-import CustomModal from '../../CustomModal';
-import { ScrollView } from "react-native";
 
 type Props = NavigationScreenProps & {};
 

@@ -12,24 +12,8 @@ import { Button, H3, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
 import i18n from '../../../utils/i18n';
 
-import {
-  createMedicalCase,
-  getItems,
-  getUserMedicalCases,
-} from '../../../engine/api/LocalStorage';
-import {
-  generateInitialBatch,
-  setInitialCounter,
-} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { nodesType } from '../../../../frontend_service/constants';
-import { QuestionModel } from '../../../../frontend_service/engine/models/Question.model';
-import { PredefinedSyndromeModel } from '../../../../frontend_service/engine/models/PredefinedSyndrome.model';
-import { TreatmentModel } from '../../../../frontend_service/engine/models/Treatment.model';
-import { ManagementModel } from '../../../../frontend_service/engine/models/Management.model';
-import { FinalDiagnosticModel } from '../../../../frontend_service/engine/models/FinalDiagnostic.model';
-import { DiseasesModel } from '../../../../frontend_service/engine/models/Diseases.model';
-import { InclusionsNodeModel } from '../../../../frontend_service/engine/models/RequirementNodeModel';
+import { createMedicalCase, getItems, getUserMedicalCases } from '../../../engine/api/LocalStorage';
+import { generateInitialBatch, setInitialCounter } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 type State = { medicalCases: Array<Object> };

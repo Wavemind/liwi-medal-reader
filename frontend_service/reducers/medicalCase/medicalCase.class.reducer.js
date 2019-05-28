@@ -172,24 +172,16 @@ class ReducerCat extends ReducerClass {
   questionSet(state, action) {
     const { index, value } = action.payload;
 
-    console.log(index, value);
     let answer;
-
-    console.log(index, value, state.nodes[index]);
 
     switch (state.nodes[index].display_format) {
       case displayFormats.input:
         if (value.length > 0) {
           answer = findKey(state.nodes[index].answers, (answerCondition) => {
+            // TODO reduce the case when backend is ready
             switch (answerCondition.operator) {
               case 'more_or_equal':
                 return value >= Number(answerCondition.value);
-
-              // case 'less_or_equal':
-              //   return value <= Number(answerCondition.value);
-
-              // case 'more':
-              //   return value > Number(answerCondition.value);
 
               case 'less':
                 return value < Number(answerCondition.value);
@@ -275,8 +267,6 @@ class ReducerCat extends ReducerClass {
       answer: answer,
       value: value,
     });
-
-    console.log(newInstanceNode);
 
     return {
       ...state,

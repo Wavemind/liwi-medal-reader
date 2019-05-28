@@ -15,12 +15,11 @@ import NavigationService from '../navigation/Navigation.service';
 
 import {
   destroySession,
-  getItem,
   getSession,
   getSessions,
   SetActiveSession,
   setItem,
-  setSessions, updateSession,
+  updateSession,
 } from '../api/LocalStorage';
 import { AppState, NetInfo, PermissionsAndroid } from 'react-native';
 import i18n from '../../utils/i18n';

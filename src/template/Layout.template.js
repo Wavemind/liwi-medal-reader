@@ -10,7 +10,7 @@ import merge from 'deepmerge';
 import { RootView } from 'template/layout';
 import { withApplication } from '../engine/contexts/Application.context';
 import { AppState, Platform, StatusBar } from 'react-native';
-import { Container, Root, StyleProvider, View } from 'native-base';
+import { Container, Root, StyleProvider } from 'native-base';
 import NavigationService from '../engine/navigation/Navigation.service';
 
 type Props = {

@@ -8,11 +8,9 @@ import { ApplicationProvider } from 'engine/contexts/Application.context';
 import { SessionsProvider } from 'engine/contexts/Sessions.context';
 import { withNamespaces } from 'react-i18next';
 import KeepAwake from 'react-native-keep-awake';
-import i18n from 'utils/i18n';
 
 import { persistor, store } from '../frontend_service/store';
 import CustomModal from './components/CustomModal';
-import { StyleProvider } from 'native-base';
 import { getItem } from './engine/api/LocalStorage';
 
 Array.prototype.first = function() {
