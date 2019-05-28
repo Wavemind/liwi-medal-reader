@@ -1,7 +1,5 @@
 // @flow
 
-import { NodeModel } from './Node.model';
-
 interface InclusionsNodeInterface {
   dd: Array<Object>;
   ps: Array<Object>;
