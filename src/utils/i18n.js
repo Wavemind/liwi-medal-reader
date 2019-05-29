@@ -39,6 +39,8 @@ i18n
           none: 'No algorithms in memory',
         },
         login: {
+          server: 'server',
+          local: 'local',
           your_code: 'Your code',
           welcome: 'Welcome',
           set_code: 'Set this code',
@@ -91,6 +93,8 @@ i18n
           none: 'Aucun algorithm en mémoire',
         },
         login: {
+          server: 'server',
+          local: 'local',
           your_code: 'Votre code',
           welcome: 'Bienvenue',
           set_code: 'Définir ce code',

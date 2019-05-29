@@ -2,7 +2,17 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Text } from 'native-base';
+import {
+  Body,
+  Button,
+  Icon,
+  Left,
+  List,
+  ListItem,
+  Right,
+  Switch,
+  Text,
+} from 'native-base';
 import { ScrollView } from 'react-native';
 import { getItem, setItem } from '../../engine/api/LocalStorage';
 
@@ -11,7 +21,6 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Settings extends React.Component<Props, State> {
-
   // default settings
   state = {
     settings: {
@@ -53,17 +62,12 @@ export default class Settings extends React.Component<Props, State> {
   }
 
   changeSettings = (setting, item) => {
-    let boolean = this.state.settings[setting][item];
+    const value = this.state.settings;
+    value[setting][item] = !value[setting][item];
 
     this.setState(
       {
-        settings: {
-          ...this.state.settings,
-          [setting]: {
-            ...this.state.settings[setting],
-            [item]: !boolean,
-          },
-        },
+        settings: value,
       },
       async () => {
         await setItem('settings', this.state.settings);

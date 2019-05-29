@@ -16,6 +16,10 @@ export default {
     '.margin-auto': {
       margin: marginIsTablet(),
     },
+    '.w50': {
+      flex: 1,
+      flexDirection: 'row',
+    },
     '.padding-auto': { padding: 20 },
     '.flex-center': {
       flexDirection: 'column',

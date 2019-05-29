@@ -7,6 +7,12 @@ export default {
       backgroundColor: '#ff31d0',
       borderRadius: 35,
     },
+    '.w50': {
+      flex: 1,
+      flexDirection: 'row',
+      flexGrow: 1,
+      justifyContent: 'center',
+    },
     '.blue': {
       backgroundColor: '#337aff',
       color: '#fff',
@@ -21,6 +27,13 @@ export default {
       shadowOffset: { height: 0, width: 0 },
       shadowOpacity: 0,
       elevation: 0,
+    },
+    '.switch-login': {
+      backgroundColor: 'none',
+      border: 0,
+    },
+    '.activeStyle': {
+      backgroundColor: liwiColors.greenColor,
     },
     '.btnDrawer': {
       height: 50,
