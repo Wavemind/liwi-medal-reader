@@ -170,9 +170,10 @@ export const clearSessions = async () => {
 };
 
 // Clear medical cases from local storage
-export const clearMedicalCases = async () => {
+export const clearLocalStorage = async () => {
   await AsyncStorage.removeItem('medicalCases');
   await AsyncStorage.removeItem('algorithms');
+  await AsyncStorage.removeItem('sessions');
   await AsyncStorage.removeItem('lastLogin');
 };
 

@@ -4,7 +4,16 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
 import { styles } from './NewSession.style';
-import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
+import {
+  Button,
+  Form,
+  Input,
+  Item,
+  Label,
+  Text,
+  View,
+  Icon,
+} from 'native-base';
 import { Keyboard, ScrollView } from 'react-native';
 
 type Props = NavigationScreenProps & {};
@@ -22,6 +31,7 @@ export default class NewSession extends React.Component<Props, State> {
     success: false,
     id: null,
     keyboard: false,
+    connectionMethod: 'server',
   };
 
   componentDidMount() {
@@ -80,10 +90,24 @@ export default class NewSession extends React.Component<Props, State> {
       });
   };
 
-  render() {
-    const { email, password, loading, success, id, keyboard } = this.state;
+  changeConnection = (connectionMethod) => this.setState({ connectionMethod });
 
-    const { navigation, t } = this.props;
+  render() {
+    const {
+      email,
+      password,
+      loading,
+      success,
+      id,
+      keyboard,
+      connectionMethod,
+    } = this.state;
+
+    const {
+      navigation,
+      t,
+      app: { isConnected },
+    } = this.props;
 
     return (
       <View flex-container-column>
@@ -117,6 +141,40 @@ export default class NewSession extends React.Component<Props, State> {
               >
                 <Text> {t('login')} </Text>
               </Button>
+              <View w50>
+                <Button
+                  center
+                  w50
+                  style={styles.marginTop}
+                  onPress={() => this.changeConnection('server')}
+                  disabled={loading || success || !isConnected}
+                  switch-login
+                  activeStyle={connectionMethod === 'server'}
+                >
+                  <Icon
+                    grey
+                    type={'MaterialCommunityIcons'}
+                    name="lan-connect"
+                  />
+                  <Text dark> {t('server')} </Text>
+                </Button>
+                <Button
+                  center
+                  w50
+                  style={styles.marginTop}
+                  onPress={() => this.changeConnection('local')}
+                  disabled={loading || success}
+                  switch-login
+                  activeStyle={connectionMethod === 'local'}
+                >
+                  <Icon
+                    grey
+                    type={'MaterialCommunityIcons'}
+                    name="lan-disconnect"
+                  />
+                  <Text dark> {t('local')} </Text>
+                </Button>
+              </View>
             </Form>
           </ScrollView>
         </View>
