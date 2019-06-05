@@ -3,7 +3,7 @@ import { styles } from './Drawer.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 
 import { AppState, View } from 'react-native';
-import { Button, Container, Icon, Text } from 'native-base';
+import { Button, Icon, Text } from 'native-base';
 import i18n from '../../../utils/i18n';
 
 export default class Drawer extends Component {
@@ -27,93 +27,26 @@ export default class Drawer extends Component {
     } = this.props;
 
     return (
-      <Container>
-        <View style={styles.header}>
-          <Text>
-            {user.data.first_name} {user.data.last_name}
-          </Text>
-          <Text light>{user.email}</Text>
-        </View>
-        <View style={styles.flex}>
-          <View style={styles.flex}>
+      <View style={styles.columns}>
+        <View style={styles.tools}>
+          <View style={styles.top}>
             <Button
               transparent
-              iconLeft
               btnDrawer
-              onPress={() => navigation.navigate('MedicalCases')}
+              marginIcon
             >
               <Icon
                 style={styles.icon}
                 dark
-                type={'FontAwesome5'}
-                name="boxes"
+                type={'AntDesign'}
+                name="user"
               />
-              <Text dark>MedicalCases</Text>
             </Button>
+
             <Button
               transparent
-              iconLeft
               btnDrawer
-              onPress={() => navigation.navigate('Algorithms')}
-            >
-              <Icon style={styles.icon} dark type={'Entypo'} name="flow-tree" />
-              <Text dark>Algorithmes</Text>
-            </Button>
-            <SeparatorLine />
-            {medicalCase.id !== undefined ? (
-              <React.Fragment>
-                <LiwiTitle2 noBorder>
-                  {medicalCase.patient.firstname} -
-                  {medicalCase.patient.lastname}
-                </LiwiTitle2>
-                <Button
-                  transparent
-                  iconLeft
-                  btnDrawer
-                  onPress={() =>
-                    navigation.navigate('MedicalCase', {
-                      title: `${medicalCase.patient.firstname} ${
-                        medicalCase.patient.lastname
-                      }`,
-                    })
-                  }
-                >
-                  <Icon
-                    style={styles.icon}
-                    dark
-                    type={'FontAwesome5'}
-                    name="briefcase-medical"
-                  />
-                  <Text dark>{i18n.t('common:patient_data')}</Text>
-                </Button>
-                <Button
-                  transparent
-                  iconLeft
-                  btnDrawer
-                  onPress={() =>
-                    navigation.navigate('WorkCase', {
-                      title: `${medicalCase.patient.firstname} ${
-                        medicalCase.patient.lastname
-                      }`,
-                    })
-                  }
-                >
-                  <Icon
-                    style={styles.icon}
-                    dark
-                    type={'FontAwesome'}
-                    name="stethoscope"
-                  />
-                  <Text dark> {i18n.t('common:consultation')}</Text>
-                </Button>
-              </React.Fragment>
-            ) : null}
-          </View>
-          <View style={styles.end}>
-            <Button
-              transparent
-              iconLeft
-              btnDrawer
+              marginIcon
               onPress={() => navigation.navigate('Settings')}
             >
               <Icon
@@ -122,15 +55,122 @@ export default class Drawer extends Component {
                 type={'AntDesign'}
                 name="setting"
               />
-              <Text dark>{i18n.t('common:settings')}</Text>
             </Button>
-            <Button transparent iconLeft btnDrawer onPress={this.logout}>
-              <Icon style={styles.icon} dark type={'AntDesign'} name="logout" />
-              <Text dark>{i18n.t('common:disconnect')}</Text>
+
+            <Button
+              transparent
+              btnDrawer
+              marginIcon
+            >
+              <Icon
+                style={styles.icon}
+                dark
+                type={'AntDesign'}
+                name="sync"
+              />
+            </Button>
+
+          </View>
+          <View style={styles.bottom}>
+            <Button transparent btnDrawer onPress={this.logout}>
+              <Icon style={styles.icon} dark type={'AntDesign'} name="logout"/>
             </Button>
           </View>
         </View>
-      </Container>
+
+        <View style={styles.medical}>
+
+          <View style={styles.triage}>
+            <Text style={styles.title}>triage</Text>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('MedicalCases')}
+            >
+              <Text dark>MedicalCases</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('Algorithms')}
+            >
+              <Text dark>Algorithmes</Text>
+            </Button>
+          </View>
+
+          <View style={styles.consultation}>
+            <Text style={styles.title}>consultation</Text>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('MedicalCases')}
+            >
+              <Text dark>MedicalCases</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('Algorithms')}
+            >
+              <Text dark>Algorithmes</Text>
+            </Button>
+          </View>
+
+          <View style={styles.tests}>
+            <Text style={styles.title}>tests</Text>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('MedicalCases')}
+            >
+              <Text dark>MedicalCases</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('Algorithms')}
+            >
+              <Text dark>Algorithmes</Text>
+            </Button>
+          </View>
+
+          <View style={styles.strategy}>
+            <Text style={styles.title}>diagnoses and strategy</Text>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('MedicalCases')}
+            >
+              <Text dark>MedicalCases</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('Algorithms')}
+            >
+              <Text dark>Algorithmes</Text>
+            </Button>
+          </View>
+
+          <View style={styles.patient}>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('MedicalCases')}
+            >
+              <Text dark>MedicalCases</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => navigation.navigate('Algorithms')}
+            >
+              <Text dark>Algorithmes</Text>
+            </Button>
+          </View>
+
+        </View>
+      </View>
     );
   }
 }
