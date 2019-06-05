@@ -2,7 +2,14 @@ import { screenWidth } from 'utils/constants';
 import { liwiColors } from '../../../utils/constants';
 
 export default {
-  'NativeBase.Item': {},
+  'NativeBase.Item': {
+    '.round': {
+      borderRadius: 5,
+      paddingLeft: 10,
+      borderWidth: 1,
+      borderColor: liwiColors.blackColor,
+    }
+  },
   'NativeBase.Input': {
     '.login-input': {},
     '.string': {

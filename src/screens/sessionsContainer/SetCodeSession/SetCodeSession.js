@@ -72,12 +72,12 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
     await sessions.setLocalCode(encrypted, userId);
 
-    app.unlockSession(userId, code);
+    app.unLockSession(userId, code);
   };
 
   render() {
     const { code, codeConfirmation, error, success, session } = this.state;
-    const { t } = this.props
+    const { t } = this.props;
 
     if (session === null) {
       return null;

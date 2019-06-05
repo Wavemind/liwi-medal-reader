@@ -37,7 +37,7 @@ export default class UnlockSession extends React.Component<Props, State> {
   unLock = () => {
     const { session, code } = this.state;
     const { app } = this.props;
-    app.unlockSession(session.data.id, code);
+    app.unLockSession(session.data.id, code);
   };
 
   render() {
@@ -63,7 +63,7 @@ export default class UnlockSession extends React.Component<Props, State> {
             </Item>
           </Form>
           <Button onPress={this.unLock}>
-            <Text> Dévérouiller la session </Text>
+            <Text> Déverrouiller la session </Text>
           </Button>
         </View>
       </PaddedView>

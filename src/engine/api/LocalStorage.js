@@ -185,7 +185,7 @@ export const setSessions = async (session) => {
 
 // @params [Integer] id
 // Set current session
-export const SetActiveSession = async (id = null) => {
+export const setActiveSession = async (id = null) => {
   const sessions = await getItems('sessions');
   await sessions.map((session) => {
     if (session.active === undefined || session.active === true) {

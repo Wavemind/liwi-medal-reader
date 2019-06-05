@@ -1,17 +1,18 @@
 import React from 'react';
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+
+import Algorithm from '../../screens/algorithmsContainer/Algorithm';
+import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCasesContainer/medicalCases';
 import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
-import Algorithms from '../../screens/algorithmsContainer/Algorithms';
-import Algorithm from '../../screens/algorithmsContainer/Algorithm';
+import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
+
 import i18n from '../../utils/i18n';
-
 import { Button, Icon } from 'native-base';
-
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 
 const Stack = createStackNavigator(
   {
@@ -20,12 +21,21 @@ const Stack = createStackNavigator(
       path: 'home',
       navigationOptions: ({ navigation }) => {
         return {
-          title: i18n.t('common:title_home'),
+          title: i18n.t('common:patient_list'),
           headerLeft: (
             <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-              <Icon red type={'Entypo'} name="menu" large />
+              <Icon red type={'Entypo'} name="menu" large/>
             </Button>
           ),
+        };
+      },
+    },
+    PatientList: {
+      screen: PatientList,
+      path: 'patientList',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: 'TRADUCTION',
         };
       },
     },
@@ -84,9 +94,6 @@ const Stack = createStackNavigator(
       },
     },
   },
-  {
-    // initialRouteName: 'Settings',
-  }
 );
 
 export default () => {
@@ -94,6 +101,6 @@ export default () => {
     { Home: { screen: Stack } },
     {
       contentComponent: (props) => <Drawer {...props} />,
-    }
+    },
   );
 };

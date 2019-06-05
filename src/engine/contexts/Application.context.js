@@ -17,7 +17,7 @@ import {
   destroySession,
   getSession,
   getSessions,
-  SetActiveSession,
+  setActiveSession,
   setItem,
   updateSession,
 } from '../api/LocalStorage';
@@ -39,7 +39,7 @@ type State = {
   logged: boolean,
   user: Object,
   logout: () => Promise<any>,
-  unlockSession: (id: number, code: string) => Promise<any>,
+  unLockSession: (id: number, code: string) => Promise<any>,
   lockSession: () => Promise<any>,
   isConnected: string,
   medicalCase: Object,
@@ -139,7 +139,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
       {
         title: i18n.t('popup:title'),
         message: i18n.t('popup:message'),
-        buttonNeutral: i18n.t('popup:askmelater'),
+        buttonNeutral: i18n.t('popup:ask_me_later'),
         buttonNegative: i18n.t('popup:cancel'),
         buttonPositive: 'Ok !',
       }
@@ -220,29 +220,28 @@ export class ApplicationProvider extends React.Component<Props, State> {
   };
 
   // Unlock session from local credentials
-  unlockSession = async (id: number, code: string) => {
+  unLockSession = async (id: number, code: string) => {
     let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
 
     if (session.local_code === encrypt) {
-      await SetActiveSession(id);
+      await setActiveSession(id);
 
       await fetchAlgorithms(id);
 
       session = await getSession(id);
       this.setUserContext(session);
-
       this.pushSettings(session);
 
       // here push settings
     } else {
-      Toaster('Pas le bon code', { type: 'danger' });
+      Toaster('TRADUCTION', { type: 'danger' });
     }
   };
 
   // Lock current session
   lockSession = async () => {
-    SetActiveSession();
+    setActiveSession();
     this.setState({
       logged: false,
       user: {},
@@ -265,7 +264,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     createMedicalCase: this.createMedicalCase,
     user: {},
     logout: this.logout,
-    unlockSession: this.unlockSession,
+    unLockSession: this.unLockSession,
     lockSession: this.lockSession,
     isConnected: true,
     setMedicalCase: this.setMedicalCase,
