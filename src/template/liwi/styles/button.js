@@ -42,6 +42,9 @@ export default {
       borderWidth: 0,
       borderRadius: 0,
     },
+    '.marginIcon': {
+      marginBottom: 15,
+    },
     '.square': {
       backgroundColor: 'none',
       shadowOffset: { height: 1, width: 1 },
