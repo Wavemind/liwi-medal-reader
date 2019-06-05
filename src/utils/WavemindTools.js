@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Container,
-  Header,
   View,
   Button,
   Icon,
   Fab,
-  Text,
-  Content,
 } from 'native-base';
 import { clearLocalStorage } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';

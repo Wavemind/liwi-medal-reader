@@ -54,11 +54,15 @@ i18n
           password: 'Password',
           login: 'Login',
         },
+        unlock_session: {
+          code: 'Code',
+          unlock: 'Unlock session'
+        },
         popup: {
           title: 'Please allow access to the position',
           message:
             'Location sharing is mandatory in order to use the medical service',
-          askmelater: 'Ask me later',
+          ask_me_later: 'Ask me later',
           cancel: 'cancel',
         },
         sessions: {
@@ -70,7 +74,7 @@ i18n
           consultation: 'Consultation',
           patient_data: 'Patient data',
           settings: 'Settings',
-          title_home: 'Your personal space',
+          patient_list: 'Patient list',
           algorithms_av: 'Available algorithms',
           currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
           actions: {
@@ -108,11 +112,15 @@ i18n
           password: 'Mot de passe',
           login: 'Connecter',
         },
+        unlock_session: {
+          code: 'Code',
+          unlock: 'Déverrouiller la session'
+        },
         popup: {
           title: "Merci d'autoriser l'accès à la position",
           message:
             'Le partage de localisation est obligatoire afin de pouvoir utiliser le service médical',
-          askmelater: 'Demandez moi plus tard',
+          ask_me_later: 'Demandez moi plus tard',
           cancel: 'annuler',
         },
         sessions: {
@@ -124,7 +132,7 @@ i18n
           consultation: 'Consultation',
           patient_data: 'Données patient',
           settings: 'Paramétres',
-          title_home: 'Votre espace personnel',
+          patient_list: 'Liste des patients',
           algorithms_av: 'Algorithmes disponibles',
           currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
           actions: {
