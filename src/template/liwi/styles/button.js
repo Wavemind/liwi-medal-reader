@@ -41,6 +41,8 @@ export default {
       backgroundColor: 'none',
       borderWidth: 0,
       borderRadius: 0,
+      marginTop: 5,
+      marginBottom: 5,
     },
     '.marginIcon': {
       marginBottom: 15,

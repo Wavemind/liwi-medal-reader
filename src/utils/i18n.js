@@ -27,6 +27,22 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        menu: {
+          triage: 'Triage',
+          assessment: 'First look assessment',
+          vital_signs: 'Vital signs',
+          comorbidities: 'Comorbidities',
+          vacciantion_history: 'Vaccination history',
+          chief_complaint: 'Chief complaint categories',
+          consultation: 'Consultation',
+          medical_history: 'Medical history',
+          physical_exam: 'Physical exam',
+          poct: 'POCT',
+          tests: 'Tests',
+          strategy: 'Diagnoses and strategy',
+          search: 'Search a patient',
+          add: 'Add a patient',
+        },
         settings: {
           devices: 'Medical Devices',
           tests: 'Medical Tests available',

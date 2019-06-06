@@ -15,39 +15,31 @@ export const styles = StyleSheet.create({
     height: screenHeight,
   },
 
-  triage: {
-    backgroundColor: liwiColors.lighterGreyColor,
+  paddingCategory: {
     paddingLeft: 30,
     paddingTop: 30,
     paddingBottom: 30,
+  },
+
+  triage: {
+    backgroundColor: liwiColors.lighterGreyColor,
   },
 
   consultation: {
     backgroundColor: liwiColors.lightGreyColor,
-    paddingLeft: 30,
-    paddingTop: 30,
-    paddingBottom: 30,
   },
 
   tests: {
     backgroundColor: liwiColors.greyColor,
-    paddingLeft: 30,
-    paddingTop: 30,
-    paddingBottom: 30,
   },
 
   strategy: {
     backgroundColor: liwiColors.darkGreyColor,
-    paddingLeft: 30,
-    paddingTop: 30,
-    paddingBottom: 30,
   },
 
   patient: {
     backgroundColor: liwiColors.darkerGreyColor,
-    paddingLeft: 30,
-    paddingTop: 30,
-    paddingBottom: 30,
+    height: '100%',
   },
 
   content: {
@@ -64,6 +56,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    marginTop: 20,
+  },
+
+  noLeftPadding: {
+    paddingLeft: 0,
   },
 
   bottom: {
@@ -74,8 +71,7 @@ export const styles = StyleSheet.create({
   },
 
   icon: {
-    color: liwiColors.blackColor,
-    fontSize: 35,
+    fontSize: 40,
   },
 
   columns: {

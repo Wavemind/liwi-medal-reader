@@ -4,7 +4,11 @@ export default {
   'NativeBase.Icon': {
     '.dark': {
       padding: 0,
-      color: '#b5b3b7',
+      color: liwiColors.blackColor,
+    },
+    '.white': {
+      padding: 0,
+      color: '#fff',
     },
     '.grey': {
       padding: 0,

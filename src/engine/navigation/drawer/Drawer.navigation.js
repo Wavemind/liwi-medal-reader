@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { styles } from './Drawer.style';
-import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-
 import { AppState, View } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
+
+import { styles } from './Drawer.style';
 import i18n from '../../../utils/i18n';
 
 export default class Drawer extends Component {
@@ -61,6 +60,7 @@ export default class Drawer extends Component {
               transparent
               btnDrawer
               marginIcon
+              onPress={() => navigation.navigate('Algorithms')}
             >
               <Icon
                 style={styles.icon}
@@ -80,92 +80,102 @@ export default class Drawer extends Component {
 
         <View style={styles.medical}>
 
-          <View style={styles.triage}>
-            <Text style={styles.title}>triage</Text>
+          <View style={[styles.triage, styles.paddingCategory]}>
+            <Text style={styles.title}>{i18n.t('menu:triage')}</Text>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('MedicalCases')}
             >
-              <Text dark>MedicalCases</Text>
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:assessment')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('Algorithms')}
             >
-              <Text dark>Algorithmes</Text>
-            </Button>
-          </View>
-
-          <View style={styles.consultation}>
-            <Text style={styles.title}>consultation</Text>
-            <Button
-              transparent
-              btnDrawer
-              onPress={() => navigation.navigate('MedicalCases')}
-            >
-              <Text dark>MedicalCases</Text>
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:vital_signs')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('Algorithms')}
             >
-              <Text dark>Algorithmes</Text>
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:comorbidities')}</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+            >
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:vacciantion_history')}</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+            >
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:chief_complaint')}</Text>
             </Button>
           </View>
 
-          <View style={styles.tests}>
-            <Text style={styles.title}>tests</Text>
+          <View style={[styles.consultation, styles.paddingCategory]}>
+            <Text style={styles.title}>{i18n.t('menu:consultation')}</Text>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('MedicalCases')}
             >
-              <Text dark>MedicalCases</Text>
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:medical_history')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('Algorithms')}
             >
-              <Text dark>Algorithmes</Text>
-            </Button>
-          </View>
-
-          <View style={styles.strategy}>
-            <Text style={styles.title}>diagnoses and strategy</Text>
-            <Button
-              transparent
-              btnDrawer
-              onPress={() => navigation.navigate('MedicalCases')}
-            >
-              <Text dark>MedicalCases</Text>
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:physical_exam')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('Algorithms')}
             >
-              <Text dark>Algorithmes</Text>
+              <Text dark style={styles.noLeftPadding}>{i18n.t('menu:poct')}</Text>
             </Button>
           </View>
 
-          <View style={styles.patient}>
+          <View style={[styles.tests, styles.paddingCategory]}>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('MedicalCases')}
             >
-              <Text dark>MedicalCases</Text>
+              <Text style={[styles.title, styles.noLeftPadding]} dark>{i18n.t('menu:tests')}</Text>
+            </Button>
+          </View>
+
+          <View style={[styles.strategy, styles.paddingCategory]}>
+            <Button
+              transparent
+              btnDrawer
+            >
+              <Text style={[styles.title, styles.noLeftPadding]} dark>{i18n.t('menu:strategy')}</Text>
+            </Button>
+          </View>
+
+          <View style={[styles.patient, styles.paddingCategory]}>
+            <Button
+              transparent
+              btnDrawer
+            >
+              <Icon
+                style={[styles.icon, {marginLeft: 0}]}
+                white
+                name="search"
+              />
+              <Text white>{i18n.t('menu:search')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={() => navigation.navigate('Algorithms')}
             >
-              <Text dark>Algorithmes</Text>
+              <Icon
+                style={[styles.icon, {marginLeft: 0}]}
+                white
+                name="person"
+              />
+              <Text white>{i18n.t('menu:add')}</Text>
             </Button>
           </View>
 
