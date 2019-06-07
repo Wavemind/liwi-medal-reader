@@ -12,6 +12,7 @@ import i18n from '../../utils/i18n';
 import { Button, Icon } from 'native-base';
 
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import { screenWidth } from '../../utils/constants';
 
 const Stack = createStackNavigator(
   {
@@ -93,6 +94,7 @@ export default () => {
   return createDrawerNavigator(
     { Home: { screen: Stack } },
     {
+      drawerWidth: screenWidth / 2,
       contentComponent: (props) => <Drawer {...props} />,
     }
   );

@@ -1,24 +1,81 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../../utils/constants';
+import { liwiColors, screenHeight } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#e9e9e9',
-    padding: 20,
-    height: 80,
+  tools: {
+    backgroundColor: liwiColors.greyColor,
+    height: screenHeight,
+    flex: 0.3,
+    alignItems: 'center',
+    paddingTop: 10,
   },
-  flex: {
-    flex: 1,
+
+  medical: {
+    flex: 0.7,
+    height: screenHeight,
   },
+
+  paddingCategory: {
+    paddingLeft: 30,
+    paddingTop: 30,
+    paddingBottom: 30,
+  },
+
+  triage: {
+    backgroundColor: liwiColors.lighterGreyColor,
+  },
+
+  consultation: {
+    backgroundColor: liwiColors.lightGreyColor,
+  },
+
+  tests: {
+    backgroundColor: liwiColors.greyColor,
+  },
+
+  strategy: {
+    backgroundColor: liwiColors.darkGreyColor,
+  },
+
+  patient: {
+    backgroundColor: liwiColors.darkerGreyColor,
+    height: '100%',
+  },
+
   content: {
     padding: 20,
   },
-  end: {
+
+  title: {
+    textTransform: 'uppercase',
+    fontSize: 20,
+    paddingBottom: 10,
+  },
+
+  top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginTop: 20,
+  },
+
+  noLeftPadding: {
+    paddingLeft: 0,
+  },
+
+  bottom: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
+    marginBottom: 40,
   },
+
   icon: {
-    color: liwiColors.redColor,
+    fontSize: 40,
+  },
+
+  columns: {
+    flex: 1,
+    flexDirection: 'row',
   },
 });
