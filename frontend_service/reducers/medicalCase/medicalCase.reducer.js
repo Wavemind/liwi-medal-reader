@@ -218,6 +218,9 @@ export default function medicalCaseReducer(
         setMedicalCase(state);
       }
 
+      console.log(medicalCase)
+
+
       return {
         ...medicalCase,
         mc: medicalCase,

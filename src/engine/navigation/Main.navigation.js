@@ -8,6 +8,7 @@ import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCasesContainer/medicalCases';
 import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
 import PatientList from '../../screens/patientsContainer/patientList';
+import PatientDetail from '../../screens/patientsContainer/patientDetail';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
@@ -36,6 +37,15 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: 'TRADUCTION',
+        };
+      },
+    },
+    PatientDetail: {
+      screen: PatientDetail,
+      path: 'patientList',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: 'Patient Detail',
         };
       },
     },
