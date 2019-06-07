@@ -1,7 +1,7 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
-import { setMedicalCase } from '../../actions/creators.actions';
+import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import find from 'lodash/find';
@@ -24,7 +24,7 @@ class ReducerCat extends ReducerClass {
 
   _instanceMedicalCase(state) {
     state.createdDate = moment().format();
-    state.patient = new PatientModel(state.patient);
+    // state.patient = new PatientModel(state.patient);
     state = this._generateInstanceDiseasesNode(state);
     state = this._generateInstanceNodeModel(state);
     return state;
@@ -298,6 +298,9 @@ class ReducerCat extends ReducerClass {
       setMedicalCase(state);
     }
     this._instanceMedicalCase(medicalCase);
+
+    console.log(medicalCase)
+
     return {
       ...medicalCase,
     };
