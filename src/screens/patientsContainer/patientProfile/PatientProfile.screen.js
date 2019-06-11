@@ -23,6 +23,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     },
     selected: 'null',
     algorithms: [],
+    generate: false,
   };
 
   async getPatientAlgo() {
@@ -81,13 +82,14 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   render() {
-    const { patient } = this.state;
+    const { patient, algorithms } = this.state;
 
     const flatPatient = {
       ...patient,
     };
     delete flatPatient.medicalCases;
 
+    // Display list of medical cases
     const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
       const { patient } = this.state;
 
@@ -120,23 +122,29 @@ export default class PatientProfile extends React.Component<Props, State> {
         <View padding-auto>
           <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
           <SeparatorLine/>
-          <Button
-            onPress={() => this.generateMedicalCase()}
-          >
-            <Text>{i18n.t('workcase:button_create')}</Text>
-          </Button>
-          {
-            patient.medicalCases.length > 0 ?
-              <List block>
-                {patient.medicalCases.map((medicalCase) => (
-                  _renderMedicalCases(medicalCase)
-                ))}
-              </List> : (
-                <View padding-auto margin-auto>
-                  <Text style={styles.textNotAvailable}>{i18n.t('patient_detail:no_medical_cases')}</Text>
-                </View>
-              )
-          }
+          {algorithms.length > 0 ? (
+            <View>
+              <Button
+                onPress={() => this.generateMedicalCase()}
+              >
+                <Text>{i18n.t('work_case:create')}</Text>
+              </Button>
+              {
+                patient.medicalCases.length > 0 ?
+                  <List block>
+                    {_renderMedicalCases}
+                  </List> : (
+                    <View padding-auto margin-auto>
+                      <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_medical_cases')}</Text>
+                    </View>
+                  )
+              }
+            </View>
+            ) : (
+            <View padding-auto margin-auto>
+              <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_algorithms')}</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     );
