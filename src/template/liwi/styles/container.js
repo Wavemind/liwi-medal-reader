@@ -52,5 +52,15 @@ export default {
       shadowRadius: 2.62,
       elevation: 4,
     },
+
+    '.bottom-view': {
+      flex: 1,
+      justifyContent: 'flex-end',
+      marginBottom: 36
+    },
+
+    '.flex': {
+      flex: 1
+    }
   },
 };

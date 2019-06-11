@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
+import { Text } from "native-base";
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -49,10 +50,20 @@ i18n
           awake: 'keep awake',
           app: 'Application',
         },
-        workcase: {
-          button_create: 'Create a medical case',
-          case_medical: 'Medical cases',
-          none: 'No algorithms in memory',
+        work_case: {
+          create: 'New case',
+          medical_case: 'Medical case',
+          medical_cases: 'Medical cases',
+          no_medical_cases: 'No medical cases',
+          no_algorithms: 'No algorithms in memory',
+        },
+        patient_detail: {
+        },
+        patient_list: {
+          waiting: 'Patients waiting for',
+          sort: 'Sort by',
+          name: 'Name',
+          status: 'Status',
         },
         login: {
           server: 'server',
@@ -107,10 +118,20 @@ i18n
           app: 'Application',
           awake: 'Empécher la mise en veille',
         },
-        workcase: {
-          button_create: 'Créer un cas médical',
-          case_medical: 'Cas médicals',
-          none: 'Aucun algorithm en mémoire',
+        work_case: {
+          create: 'Nouveau cas médical',
+          medical_case: 'Cas médical',
+          medical_cases: 'Cas médicaux',
+          no_medical_cases: 'Aucun cans médicaux',
+          no_algorithms: 'Aucun algorithme',
+        },
+        patient_detail: {
+        },
+        patient_list: {
+          waiting: 'En attente',
+          sort: 'Trier par',
+          name: 'Nom',
+          status: 'Status',
         },
         login: {
           server: 'server',

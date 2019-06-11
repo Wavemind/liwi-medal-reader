@@ -2,23 +2,16 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, H3, Text, View } from 'native-base';
+import { List, ListItem, Text, View, Button } from 'native-base';
+import maxBy from 'lodash/maxBy';
+import find from 'lodash/find';
 
 import { styles } from './PatientProfile.style';
-import { SeparatorLine } from '../../../template/layout';
-import {
-  getItemFromArray,
-  getItems,
-  setItemFromArray,
-} from '../../../engine/api/LocalStorage';
-import find from 'lodash/find';
-import {
-  generateInitialBatch,
-  setInitialCounter,
-} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
-import LottieView from 'lottie-react-native';
+import { generateInitialBatch, setInitialCounter } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
+import { getItemFromArray, getItems, setItemFromArray } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
-import maxBy from 'lodash/maxBy';
+
+import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 
 type Props = {};
 type State = {};
@@ -29,8 +22,8 @@ export default class PatientProfile extends React.Component<Props, State> {
       medicalCases: [],
     },
     selected: 'null',
-    generate: false,
     algorithms: [],
+    generate: false,
   };
 
   async getPatientAlgo() {
@@ -49,6 +42,7 @@ export default class PatientProfile extends React.Component<Props, State> {
 
   generateMedicalCase = async () => {
     const { algorithms, patient } = this.state;
+    const { app } = this.props;
 
     const algorithmUsed = find(algorithms, (a) => a.selected);
 
@@ -57,11 +51,10 @@ export default class PatientProfile extends React.Component<Props, State> {
     let newMedicalCase = {
       nodes: algorithmUsed.nodes,
       diseases: algorithmUsed.diseases,
-      userId: this.props.app.user.data.id,
+      userId: app.user.data.id,
     };
 
     generateInitialBatch(newMedicalCase);
-
     let maxId = maxBy(patient.medicalCases, 'id');
 
     if (patient.medicalCases.length === 0) {
@@ -88,74 +81,74 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   render() {
-    const { generate, algorithms, patient } = this.state;
+    const { patient, algorithms } = this.state;
 
     const flatPatient = {
       ...patient,
     };
     delete flatPatient.medicalCases;
 
-    const _renderMedicalCases = this.state.patient.medicalCases.map((mc) => {
+    // Display list of medical cases
+    const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
+      const { patient } = this.state;
+
       return (
-        <Button
-          key={mc.id + '_medicalCase'}
-          disabled={false}
+        <ListItem
+          rounded
+          block
+          spaced
           onPress={async () => {
             await this.selectMedicalCase({
-              ...mc,
+              ...medicalCase,
               patient: flatPatient,
             });
           }}
         >
-          <Text>medicalCase id :{mc.id}</Text>
-        </Button>
+          <View w50>
+            <Text>
+              {patient.firstname} {patient.lastname}
+            </Text>
+          </View>
+          <View w50>
+            <Text>{patient.status}</Text>
+          </View>
+        </ListItem>
       );
     });
 
     return (
-      <ScrollView>
-        <View padding-auto>
-          <Text>
-            {this.state.firstname} - {this.state.lastname}
-          </Text>
-        </View>
-        <View style={styles.view}>
-          {generate === true ? (
-            <LottieView
-              ref={(loading) => {
-                this.loading = loading;
-              }}
-              speed={3}
-              source={require('../../../utils/animations/loading.json')}
-              style={styles.height}
-              loop
-            />
-          ) : (
-            <LottieView
-              source={require('../../../utils/animations/blood_1.json')}
-              autoPlay
-              style={styles.height}
-              loop
-            />
-          )}
-        </View>
-        <H3>Actions</H3>
+      <View padding-auto flex>
+        <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
+        <SeparatorLine style={styles.bottomMargin}/>
         {algorithms.length > 0 ? (
-          <Button
-            onPress={() => this.generateMedicalCase()}
-            disabled={generate}
-          >
-            <Text>{i18n.t('workcase:button_create')}</Text>
-          </Button>
+          <View flex>
+            <View>
+              {
+                patient.medicalCases.length > 0 ?
+                  <List block>
+                    {_renderMedicalCases}
+                  </List> : (
+                    <View padding-auto margin-auto>
+                      <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_medical_cases')}</Text>
+                    </View>
+                  )
+              }
+            </View>
+            <View bottom-view>
+              <Button
+                light
+                onPress={() => this.generateMedicalCase()}
+              >
+                <Text>{i18n.t('work_case:create')}</Text>
+              </Button>
+            </View>
+          </View>
         ) : (
-          <Button disabled={true}>
-            <Text>{i18n.t('workcase:none')}</Text>
-          </Button>
+          <View padding-auto margin-auto>
+            <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_algorithms')}</Text>
+          </View>
         )}
-        <SeparatorLine />
-        <H3>{i18n.t('workcase:case_medical')}</H3>
-        {_renderMedicalCases}
-      </ScrollView>
+      </View>
     );
   }
 }

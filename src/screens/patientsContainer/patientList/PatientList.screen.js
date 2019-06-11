@@ -18,6 +18,7 @@ import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray, setItem } from '../../../engine/api/LocalStorage';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import i18n from '../../../utils/i18n';
 import maxBy from 'lodash/maxBy';
 import filter from 'lodash/filter';
 
@@ -40,7 +41,6 @@ export default class PatientList extends React.Component<Props, State> {
     let patient = new PatientModel();
     await patient.setPatient();
     let patients = this.state.patients;
-
     let maxId = maxBy(patients, 'id');
 
     if (patients.length === 0) {
@@ -85,24 +85,24 @@ export default class PatientList extends React.Component<Props, State> {
             <Button center rounded light>
               <Text>ALL</Text>
             </Button>
-            <Text style={styles.textFilter}>PATIENTS WAITING FOR</Text>
-            <Picker style={styles.picker} mode="dropdown">
-              <Picker.Item label="TRIAGE (11)" value="triage" />
-              <Picker.Item label="UNKNOWN (0)" value="unknown" />
+            <Text style={ styles.textFilter }>{i18n.t('patient_list:waiting')}</Text>
+            <Picker style={ styles.picker } mode="dropdown">
+              <Picker.Item label="TRIAGE (11)" value="triage"/>
+              <Picker.Item label="UNKNOWN (0)" value="unknown"/>
             </Picker>
           </View>
 
           <SeparatorLine />
 
-          <View flex-container-row style={styles.sorted}>
-            <Text style={styles.textSorted}>SORT BY</Text>
+          <View flex-container-row style={ styles.sorted }>
+            <Text style={ styles.textSorted }>{i18n.t('patient_list:sort')}</Text>
             <Button center rounded light>
-              <Icon name="arrow-up" />
-              <Text>Name</Text>
+              <Icon name="arrow-up"/>
+              <Text>{i18n.t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light>
-              <Icon name="arrow-down" />
-              <Text>Status</Text>
+              <Icon name="arrow-down"/>
+              <Text>{i18n.t('patient_list:status')}</Text>
             </Button>
           </View>
 
