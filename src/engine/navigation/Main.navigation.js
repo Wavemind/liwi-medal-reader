@@ -71,7 +71,7 @@ const Stack = createStackNavigator(
     },
     WorkCase: {
       screen: WorkCase,
-      path: 'workcase',
+      path: 'work_case',
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
