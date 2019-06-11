@@ -27,7 +27,12 @@ type Props = {};
 type State = {};
 
 export default class PatientList extends React.Component<Props, State> {
-  state = { patients: [], search: '', orderByName: 'asc' };
+  state = {
+    patients: [],
+    search: '',
+    orderByName: 'asc',
+    isGeneratingPatient: false,
+  };
 
   async componentWillMount() {
     await this.getPatients();
@@ -45,6 +50,7 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   generatePatient = async () => {
+    await this.setState({ isGeneratingPatient: true });
     let patient = new PatientModel();
     await patient.setPatient();
     let patients = this.state.patients;
@@ -59,6 +65,8 @@ export default class PatientList extends React.Component<Props, State> {
 
     await setItem('patients', patients);
     await this.getPatients();
+    await this.setState({ isGeneratingPatient: false });
+
   };
 
   search = (search) => {
