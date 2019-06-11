@@ -21,12 +21,13 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import i18n from '../../../utils/i18n';
 import maxBy from 'lodash/maxBy';
 import filter from 'lodash/filter';
+import orderBy from 'lodash/orderBy';
 
 type Props = {};
 type State = {};
 
 export default class PatientList extends React.Component<Props, State> {
-  state = { patients: [], search: '' };
+  state = { patients: [], search: '', orderByName: 'asc' };
 
   async componentWillMount() {
     await this.getPatients();
@@ -35,6 +36,12 @@ export default class PatientList extends React.Component<Props, State> {
   getPatients = async () => {
     let patients = await getArray('patients');
     this.setState({ patients });
+  };
+
+  orderByName = () => {
+    this.setState({
+      orderByName: this.state.orderByName === 'asc' ? 'desc' : 'asc',
+    });
   };
 
   generatePatient = async () => {
@@ -59,12 +66,18 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   render() {
-    const { patients, search } = this.state;
+    const { patients, search, orderByName } = this.state;
     const { navigation } = this.props;
 
     let filteredPatients = filter(patients, (p) => {
       return p.firstname.includes(search) || p.lastname.includes(search);
     });
+
+    let orderedFilteredPatients = orderBy(
+      filteredPatients,
+      ['lastname'],
+      [orderByName]
+    );
 
     return (
       <ScrollView>
@@ -85,31 +98,37 @@ export default class PatientList extends React.Component<Props, State> {
             <Button center rounded light>
               <Text>ALL</Text>
             </Button>
-            <Text style={ styles.textFilter }>{i18n.t('patient_list:waiting')}</Text>
-            <Picker style={ styles.picker } mode="dropdown">
-              <Picker.Item label="TRIAGE (11)" value="triage"/>
-              <Picker.Item label="UNKNOWN (0)" value="unknown"/>
+            <Text style={styles.textFilter}>
+              {i18n.t('patient_list:waiting')}
+            </Text>
+            <Picker style={styles.picker} mode="dropdown">
+              <Picker.Item label="TRIAGE (11)" value="triage" />
+              <Picker.Item label="UNKNOWN (0)" value="unknown" />
             </Picker>
           </View>
 
           <SeparatorLine />
 
-          <View flex-container-row style={ styles.sorted }>
-            <Text style={ styles.textSorted }>{i18n.t('patient_list:sort')}</Text>
-            <Button center rounded light>
-              <Icon name="arrow-up"/>
+          <View flex-container-row style={styles.sorted}>
+            <Text style={styles.textSorted}>{i18n.t('patient_list:sort')}</Text>
+            <Button center rounded light onPress={this.orderByName}>
+              {orderByName === 'asc' ? (
+                <Icon name="arrow-down" />
+              ) : (
+                <Icon name="arrow-up" />
+              )}
               <Text>{i18n.t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light>
-              <Icon name="arrow-down"/>
+              <Icon name="arrow-down" />
               <Text>{i18n.t('patient_list:status')}</Text>
             </Button>
           </View>
 
           {patients.length > 0 ? [
-              filteredPatients.length > 0 ? (
+              orderedFilteredPatients.length > 0 ? (
             <List block>
-              {filteredPatients.map((patient) => (
+              {orderedFilteredPatients.map((patient) => (
                 <ListItem
                   rounded
                   block
