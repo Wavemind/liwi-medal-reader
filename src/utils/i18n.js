@@ -51,7 +51,7 @@ i18n
           app: 'Application',
         },
         work_case: {
-          create: 'Create a medical case',
+          create: 'New case',
           medical_case: 'Medical case',
           medical_cases: 'Medical cases',
           no_medical_cases: 'No medical cases',
@@ -119,7 +119,7 @@ i18n
           awake: 'Empécher la mise en veille',
         },
         work_case: {
-          create: 'Créer un cas médical',
+          create: 'Nouveau cas médical',
           medical_case: 'Cas médical',
           medical_cases: 'Cas médicaux',
           no_medical_cases: 'Aucun cans médicaux',
