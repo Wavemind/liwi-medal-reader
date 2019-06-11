@@ -82,7 +82,6 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   render() {
-    const { navigation } = this.props;
     const { generate, algorithms, patient } = this.state;
 
     const flatPatient = {
