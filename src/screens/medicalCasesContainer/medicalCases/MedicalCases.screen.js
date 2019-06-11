@@ -149,15 +149,15 @@ export default class MedicalCases extends React.Component<Props, State> {
             onPress={() => this.generateMedicalCase()}
             disabled={generate}
           >
-            <Text>{i18n.t('workcase:button_create')}</Text>
+            <Text>{i18n.t('work_case:create')}</Text>
           </Button>
         ) : (
           <Button disabled={true}>
-            <Text>{i18n.t('workcase:none')}</Text>
+            <Text>{i18n.t('work_case:no_algorithm')}</Text>
           </Button>
         )}
         <SeparatorLine />
-        <H3>{i18n.t('workcase:case_medical')}</H3>
+        <H3>{i18n.t('work_case:cases_medical')}</H3>
         {_renderMedicalCases}
       </ScrollView>
     );

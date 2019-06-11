@@ -50,13 +50,14 @@ i18n
           awake: 'keep awake',
           app: 'Application',
         },
-        workcase: {
-          button_create: 'Create a medical case',
-          case_medical: 'Medical cases',
-          none: 'No algorithms in memory',
+        work_case: {
+          create: 'Create a medical case',
+          medical_case: 'Medical case',
+          medical_cases: 'Medical cases',
+          no_medical_cases: 'No medical cases',
+          no_algorithms: 'No algorithms in memory',
         },
         patient_detail: {
-          no_medical_cases: 'No medical cases'
         },
         patient_list: {
           waiting: 'Patients waiting for',
@@ -117,13 +118,14 @@ i18n
           app: 'Application',
           awake: 'Empécher la mise en veille',
         },
-        workcase: {
-          button_create: 'Créer un cas médical',
-          case_medical: 'Cas médicals',
-          none: 'Aucun algorithm en mémoire',
+        work_case: {
+          create: 'Créer un cas médical',
+          medical_case: 'Cas médical',
+          medical_cases: 'Cas médicaux',
+          no_medical_cases: 'Aucun cans médicaux',
+          no_algorithms: 'Aucun algorithme',
         },
         patient_detail: {
-          no_medical_cases: 'Aucun cas médical'
         },
         patient_list: {
           waiting: 'En attente',
