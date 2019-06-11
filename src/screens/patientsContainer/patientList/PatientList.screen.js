@@ -69,14 +69,14 @@ export default class PatientList extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View padding-auto>
-          <LiwiTitle2 noBorder>Search</LiwiTitle2>
+          <LiwiTitle2 noBorder>{i18n.t('patient_list:search')}</LiwiTitle2>
 
           <View flex-container-row>
             <Item round style={styles.input}>
               <Icon active name="search" />
               <Input value={search} onChangeText={this.search} />
             </Item>
-            <Button center rounded light>
+            <Button center rounded light onPress={this.generatePatient}>
               <Icon type={'MaterialCommunityIcons'} name="plus" />
             </Button>
           </View>
@@ -106,31 +106,39 @@ export default class PatientList extends React.Component<Props, State> {
             </Button>
           </View>
 
-          <Button onPress={this.generatePatient}>
-            <Text>generate patient</Text>
-          </Button>
+          {patients.length > 0 ? [
+              filteredPatients.length > 0 ? (
+            <List block>
+              {filteredPatients.map((patient) => (
+                <ListItem
+                  rounded
+                  block
+                  spaced
+                  onPress={() =>
+                    navigation.navigate('PatientProfile', { id: patient.id })
+                  }
+                >
+                  <View w50>
+                    <Text>
+                      {patient.firstname} {patient.lastname}
+                    </Text>
+                  </View>
+                  <View w50>
+                    <Text>{patient.status}</Text>
+                  </View>
+                </ListItem>
+              ))}
+            </List>) : (
+                <View padding-auto margin-auto>
+                  <Text not-available>{i18n.t('patient_list:not_found')}</Text>
+                </View>
+              )]
+          : (
+              <View padding-auto margin-auto>
+                <Text not-available>{i18n.t('patient_list:no_patients')}</Text>
+              </View>
+          )}
 
-          <List block>
-            {filteredPatients.map((patient) => (
-              <ListItem
-                rounded
-                block
-                spaced
-                onPress={() =>
-                  navigation.navigate('PatientProfile', { id: patient.id })
-                }
-              >
-                <View w50>
-                  <Text>
-                    {patient.firstname} {patient.lastname}
-                  </Text>
-                </View>
-                <View w50>
-                  <Text>{patient.status}</Text>
-                </View>
-              </ListItem>
-            ))}
-          </List>
         </View>
       </ScrollView>
     );

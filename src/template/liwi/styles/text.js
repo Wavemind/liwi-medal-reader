@@ -28,5 +28,12 @@ export default {
     '.size-auto': {
       fontSize: fontSizeTextIsTablet(),
     },
+    '.not-available': {
+      marginRight: 80,
+      marginLeft: 40,
+      paddingLeft: 40,
+      textTransform: 'uppercase',
+      textAlign: 'center',
+    },
   },
 };

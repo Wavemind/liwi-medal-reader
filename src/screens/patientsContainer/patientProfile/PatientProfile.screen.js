@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { List, ListItem, Text, View, Button } from 'native-base';
 import maxBy from 'lodash/maxBy';
 import find from 'lodash/find';
@@ -27,6 +26,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     generate: false,
   };
 
+
   async getPatientAlgo() {
     const { navigation } = this.props;
     let id = navigation.getParam('id');
@@ -46,7 +46,6 @@ export default class PatientProfile extends React.Component<Props, State> {
     const { app } = this.props;
 
     const algorithmUsed = find(algorithms, (a) => a.selected);
-
     setInitialCounter(algorithmUsed);
 
     let newMedicalCase = {
@@ -93,7 +92,6 @@ export default class PatientProfile extends React.Component<Props, State> {
     // Display list of medical cases
     const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
       const { patient } = this.state;
-
       return (
         <ListItem
           rounded
@@ -108,7 +106,7 @@ export default class PatientProfile extends React.Component<Props, State> {
         >
           <View w50>
             <Text>
-              {patient.firstname} {patient.lastname}
+              {moment(medicalCase.createdDate).format('lll')}
             </Text>
           </View>
           <View w50>
@@ -118,7 +116,6 @@ export default class PatientProfile extends React.Component<Props, State> {
       );
     });
 
-    console.log(this.state)
 
     return (
       <View padding-auto flex>
@@ -149,7 +146,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_algorithms')}</Text>
+            <Text not-available>{i18n.t('work_case:no_algorithms')}</Text>
           </View>
         )}
       </View>
