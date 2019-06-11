@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native';
 import { List, ListItem, Text, View, Button } from 'native-base';
 import maxBy from 'lodash/maxBy';
 import find from 'lodash/find';
+import orderBy from 'lodash/orderBy';
 
 import { styles } from './PatientProfile.style';
 import { generateInitialBatch, setInitialCounter } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
