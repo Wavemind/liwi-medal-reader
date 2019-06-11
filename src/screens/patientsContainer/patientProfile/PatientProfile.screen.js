@@ -4,24 +4,16 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 import {
   Button,
-  Icon,
-  Input,
-  Item,
   View,
   Text,
-  Picker,
-  List,
-  ListItem,
   H3,
 } from 'native-base';
 
-import { styles } from './PatientDetail.style';
-import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
+import { styles } from './PatientProfile.style';
+import { SeparatorLine } from '../../../template/layout';
 import {
-  createMedicalCase,
   getItemFromArray,
   getItems,
-  setItem,
   setItemFromArray,
 } from '../../../engine/api/LocalStorage';
 import find from 'lodash/find';
@@ -29,16 +21,14 @@ import {
   generateInitialBatch,
   setInitialCounter,
 } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
-import { medicalCaseInitialState } from '../../../../frontend_service/algorithm/medicalCase';
 import LottieView from 'lottie-react-native';
 import i18n from '../../../utils/i18n';
-import moment from 'moment';
 import maxBy from 'lodash/maxBy';
 
 type Props = {};
 type State = {};
 
-export default class PatientList extends React.Component<Props, State> {
+export default class PatientProfile extends React.Component<Props, State> {
   state = {
     patient: {
       medicalCases: [],
