@@ -61,9 +61,12 @@ i18n
         },
         patient_list: {
           waiting: 'Patients waiting for',
+          search: 'Search',
           sort: 'Sort by',
           name: 'Name',
           status: 'Status',
+          no_patients: 'There are no patients',
+          not_found: 'No match found',
         },
         login: {
           server: 'server',
@@ -129,9 +132,12 @@ i18n
         },
         patient_list: {
           waiting: 'En attente',
+          search: 'Rechercher',
           sort: 'Trier par',
           name: 'Nom',
           status: 'Status',
+          no_patients: 'Aucun patients',
+          not_found: 'Aucun résultat',
         },
         login: {
           server: 'server',
