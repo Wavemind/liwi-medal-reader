@@ -118,17 +118,12 @@ export default class PatientProfile extends React.Component<Props, State> {
     });
 
     return (
-      <ScrollView>
-        <View padding-auto>
-          <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
-          <SeparatorLine/>
-          {algorithms.length > 0 ? (
+      <View padding-auto flex>
+        <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
+        <SeparatorLine style={styles.bottomMargin}/>
+        {algorithms.length > 0 ? (
+          <View flex>
             <View>
-              <Button
-                onPress={() => this.generateMedicalCase()}
-              >
-                <Text>{i18n.t('work_case:create')}</Text>
-              </Button>
               {
                 patient.medicalCases.length > 0 ?
                   <List block>
@@ -140,13 +135,21 @@ export default class PatientProfile extends React.Component<Props, State> {
                   )
               }
             </View>
-            ) : (
-            <View padding-auto margin-auto>
-              <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_algorithms')}</Text>
+            <View bottom-view>
+              <Button
+                light
+                onPress={() => this.generateMedicalCase()}
+              >
+                <Text>{i18n.t('work_case:create')}</Text>
+              </Button>
             </View>
-          )}
-        </View>
-      </ScrollView>
+          </View>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_algorithms')}</Text>
+          </View>
+        )}
+      </View>
     );
   }
 }

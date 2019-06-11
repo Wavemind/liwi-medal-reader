@@ -8,7 +8,11 @@ export const styles = StyleSheet.create({
     marginLeft: 40,
     paddingLeft: 40,
     textTransform: 'uppercase',
-    textAlign: 'center'
+    textAlign: 'center',
+  },
+
+  bottomMargin: {
+    marginBottom: 20
   },
 
 });
