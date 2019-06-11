@@ -9,6 +9,7 @@ import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray, setItem } from '../../../engine/api/LocalStorage';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import i18n from '../../../utils/i18n';
+import maxBy from 'lodash/maxBy';
 
 type Props = {};
 type State = {};
@@ -21,19 +22,24 @@ export default class PatientList extends React.Component<Props, State> {
   }
 
   getPatients = async () => {
-    let patients = await getArray( 'patients' );
-    console.log( patients );
-    this.setState( { patients } );
+    let patients = await getArray('patients');
+    this.setState({ patients });
   };
 
   generatePatient = async () => {
     let patient = new PatientModel();
     await patient.setPatient();
     let patients = this.state.patients;
-    patients.push( patient );
+    let maxId = maxBy(patients, 'id');
 
+    if (patients.length === 0) {
+      maxId = { id: 0 };
+    }
 
-    await setItem( 'patients', patients );
+    patient.id = maxId.id + 1;
+    patients.push(patient);
+
+    await setItem('patients', patients);
     await this.getPatients();
   };
 
@@ -47,16 +53,16 @@ export default class PatientList extends React.Component<Props, State> {
           <LiwiTitle2 noBorder>Search</LiwiTitle2>
 
           <View flex-container-row>
-            <Item round style={ styles.input }>
-              <Icon active name="search"/>
-              <Input/>
+            <Item round style={styles.input}>
+              <Icon active name="search" />
+              <Input />
             </Item>
             <Button center rounded light>
-              <Icon type={ 'MaterialCommunityIcons' } name="plus"/>
+              <Icon type={'MaterialCommunityIcons'} name="plus" />
             </Button>
           </View>
 
-          <View flex-container-row style={ styles.filter }>
+          <View flex-container-row style={styles.filter}>
             <Button center rounded light>
               <Text>ALL</Text>
             </Button>
@@ -67,7 +73,7 @@ export default class PatientList extends React.Component<Props, State> {
             </Picker>
           </View>
 
-          <SeparatorLine/>
+          <SeparatorLine />
 
           <View flex-container-row style={ styles.sorted }>
             <Text style={ styles.textSorted }>{i18n.t('patient_list:sort')}</Text>
@@ -81,30 +87,30 @@ export default class PatientList extends React.Component<Props, State> {
             </Button>
           </View>
 
-          <Button onPress={ this.generatePatient }>
+          <Button onPress={this.generatePatient}>
             <Text>generate patient</Text>
           </Button>
 
           <List block>
-            { patients.map( (patient) => (
+            {patients.map((patient) => (
               <ListItem
                 rounded
                 block
                 spaced
-                onPress={ () =>
-                  navigation.navigate( 'PatientProfile', { id: patient.id } )
+                onPress={() =>
+                  navigation.navigate('PatientProfile', { id: patient.id })
                 }
               >
                 <View w50>
                   <Text>
-                    { patient.firstname } { patient.lastname }
+                    {patient.firstname} {patient.lastname}
                   </Text>
                 </View>
                 <View w50>
-                  <Text>{ patient.status }</Text>
+                  <Text>{patient.status}</Text>
                 </View>
               </ListItem>
-            ) ) }
+            ))}
           </List>
         </View>
       </ScrollView>

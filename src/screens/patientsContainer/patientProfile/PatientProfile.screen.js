@@ -121,9 +121,9 @@ export default class PatientProfile extends React.Component<Props, State> {
           <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
           <SeparatorLine/>
           <Button
-            onPress={ () => this.generateMedicalCase() }
+            onPress={() => this.generateMedicalCase()}
           >
-            <Text>{ i18n.t( 'workcase:button_create' ) }</Text>
+            <Text>{i18n.t('workcase:button_create')}</Text>
           </Button>
           {
             patient.medicalCases.length > 0 ?

@@ -1,6 +1,4 @@
 import React from 'react';
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
-
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -13,8 +11,11 @@ import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
 import i18n from '../../utils/i18n';
+
 import { Button, Icon } from 'native-base';
 
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import { screenWidth } from '../../utils/constants';
 
 const Stack = createStackNavigator(
   {
@@ -26,7 +27,7 @@ const Stack = createStackNavigator(
           title: i18n.t('common:patient_list'),
           headerLeft: (
             <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-              <Icon red type={'Entypo'} name="menu" large/>
+              <Icon red type={'Entypo'} name="menu" large />
             </Button>
           ),
         };
@@ -111,7 +112,8 @@ export default () => {
   return createDrawerNavigator(
     { Home: { screen: Stack } },
     {
+      drawerWidth: screenWidth / 2,
       contentComponent: (props) => <Drawer {...props} />,
-    },
+    }
   );
 };
