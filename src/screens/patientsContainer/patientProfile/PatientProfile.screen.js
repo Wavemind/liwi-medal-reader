@@ -12,6 +12,7 @@ import { getItemFromArray, getItems, setItemFromArray } from '../../../engine/ap
 import i18n from '../../../utils/i18n';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
+import moment from "moment";
 
 type Props = {};
 type State = {};
@@ -62,6 +63,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     }
 
     newMedicalCase.id = maxId.id + 1;
+    newMedicalCase.createdDate = moment().format();
 
     patient.medicalCases.push(newMedicalCase);
 
@@ -115,6 +117,8 @@ export default class PatientProfile extends React.Component<Props, State> {
         </ListItem>
       );
     });
+
+    console.log(this.state)
 
     return (
       <View padding-auto flex>

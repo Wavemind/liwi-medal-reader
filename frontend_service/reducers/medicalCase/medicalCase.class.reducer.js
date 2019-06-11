@@ -22,7 +22,6 @@ class ReducerCat extends ReducerClass {
   initialState = {};
 
   _instanceMedicalCase(state) {
-    state.createdDate = moment().format();
     state = this._generateInstanceDiseasesNode(state);
     state = this._generateInstanceNodeModel(state);
     return state;
