@@ -17,21 +17,7 @@ interface PatientModelInterface {
 }
 
 export class PatientModel implements PatientModelInterface {
-  constructor(props) {
-    // const {
-    //   birthdate,
-    //   breathingRhythm,
-    //   email,
-    //   firstname,
-    //   gender,
-    //   heartbeat,
-    //   height,
-    //   lastname,
-    //   photo,
-    //   temperature,
-    //   weight,
-    // } = props;
-  }
+  constructor(props) {}
 
   setPatient = async () => {
     const {
