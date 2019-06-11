@@ -8,12 +8,13 @@ import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCasesContainer/medicalCases';
 import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
 import PatientList from '../../screens/patientsContainer/patientList';
-import PatientDetail from '../../screens/patientsContainer/patientDetail';
+import PatientProfil from '../../screens/patientsContainer/patientProfil';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
 import i18n from '../../utils/i18n';
 import { Button, Icon } from 'native-base';
+
 
 const Stack = createStackNavigator(
   {
@@ -40,12 +41,12 @@ const Stack = createStackNavigator(
         };
       },
     },
-    PatientDetail: {
-      screen: PatientDetail,
-      path: 'patientList',
+    PatientProfil: {
+      screen: PatientProfil,
+      path: 'patientProfil',
       navigationOptions: ({ navigation }) => {
         return {
-          title: 'Patient Detail',
+          title: 'Patient Profil',
         };
       },
     },

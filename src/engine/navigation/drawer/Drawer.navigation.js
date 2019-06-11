@@ -26,6 +26,8 @@ export default class Drawer extends Component {
       medicalCase,
     } = this.props;
 
+    console.log(medicalCase)
+
     return (
       <Container>
         <View style={styles.header}>
@@ -63,8 +65,8 @@ export default class Drawer extends Component {
             {medicalCase.id !== undefined ? (
               <React.Fragment>
                 <LiwiTitle2 noBorder>
-                  {medicalCase.patient.firstname} -
-                  {medicalCase.patient.lastname}
+                  {medicalCase.firstname} -
+                  {medicalCase.lastname}
                 </LiwiTitle2>
                 <Button
                   transparent
