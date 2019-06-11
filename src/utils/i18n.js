@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
+import { Text } from "native-base";
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -37,6 +38,15 @@ i18n
           button_create: 'Create a medical case',
           case_medical: 'Medical cases',
           none: 'No algorithms in memory',
+        },
+        patient_detail: {
+          no_medical_cases: 'No medical cases'
+        },
+        patient_list: {
+          waiting: 'Patients waiting for',
+          sort: 'Sort by',
+          name: 'Name',
+          status: 'Status',
         },
         login: {
           server: 'server',
@@ -95,6 +105,15 @@ i18n
           button_create: 'Créer un cas médical',
           case_medical: 'Cas médicals',
           none: 'Aucun algorithm en mémoire',
+        },
+        patient_detail: {
+          no_medical_cases: 'Aucun cas médical'
+        },
+        patient_list: {
+          waiting: 'En attente',
+          sort: 'Trier par',
+          name: 'Nom',
+          status: 'Status',
         },
         login: {
           server: 'server',
