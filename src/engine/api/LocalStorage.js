@@ -36,6 +36,8 @@ export const getItems = async (key) => {
 export const getItemFromArray = async (key, index, id) => {
   const items = await getItems(key);
 
+  console.log(items, key, index, id)
+
   if (Array.isArray(items)) {
     return items.find((item) => {
       return item[index] === id;
