@@ -131,7 +131,7 @@ export default class PatientProfile extends React.Component<Props, State> {
                     {_renderMedicalCases}
                   </List> : (
                     <View padding-auto margin-auto>
-                      <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_medical_cases')}</Text>
+                      <Text not-available>{i18n.t('work_case:no_medical_cases')}</Text>
                     </View>
                   )
               }
