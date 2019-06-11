@@ -66,7 +66,6 @@ export default class PatientList extends React.Component<Props, State> {
     await setItem('patients', patients);
     await this.getPatients();
     await this.setState({ isGeneratingPatient: false });
-
   };
 
   search = (search) => {
@@ -74,7 +73,7 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   render() {
-    const { patients, search, orderByName } = this.state;
+    const { patients, search, orderByName, isGeneratingPatient } = this.state;
     const { navigation } = this.props;
 
     let filteredPatients = filter(patients, (p) => {
@@ -97,8 +96,15 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={search} onChangeText={this.search} />
             </Item>
-            <Button center rounded light onPress={this.generatePatient}>
-              <Icon type={'MaterialCommunityIcons'} name="plus" />
+            <Button
+              center
+              rounded
+              light
+              red
+              onPress={this.generatePatient}
+              disabled={isGeneratingPatient}
+            >
+              <Icon type={'MaterialCommunityIcons'} name="plus" white />
             </Button>
           </View>
 
@@ -133,39 +139,43 @@ export default class PatientList extends React.Component<Props, State> {
             </Button>
           </View>
 
-          {patients.length > 0 ? [
+          {patients.length > 0 ? (
+            [
               orderedFilteredPatients.length > 0 ? (
-            <List block>
-              {orderedFilteredPatients.map((patient) => (
-                <ListItem
-                  rounded
-                  block
-                  spaced
-                  onPress={() =>
-                    navigation.navigate('PatientProfile', { id: patient.id })
-                  }
-                >
-                  <View w50>
-                    <Text>
-                      {patient.firstname} {patient.lastname}
-                    </Text>
-                  </View>
-                  <View w50>
-                    <Text>{patient.status}</Text>
-                  </View>
-                </ListItem>
-              ))}
-            </List>) : (
+                <List block>
+                  {orderedFilteredPatients.map((patient) => (
+                    <ListItem
+                      rounded
+                      block
+                      spaced
+                      onPress={() =>
+                        navigation.navigate('PatientProfile', {
+                          id: patient.id,
+                        })
+                      }
+                    >
+                      <View w50>
+                        <Text>
+                          {patient.firstname} {patient.lastname}
+                        </Text>
+                      </View>
+                      <View w50>
+                        <Text>{patient.status}</Text>
+                      </View>
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
                 <View padding-auto margin-auto>
                   <Text not-available>{i18n.t('patient_list:not_found')}</Text>
                 </View>
-              )]
-          : (
-              <View padding-auto margin-auto>
-                <Text not-available>{i18n.t('patient_list:no_patients')}</Text>
-              </View>
+              ),
+            ]
+          ) : (
+            <View padding-auto margin-auto>
+              <Text not-available>{i18n.t('patient_list:no_patients')}</Text>
+            </View>
           )}
-
         </View>
       </ScrollView>
     );
