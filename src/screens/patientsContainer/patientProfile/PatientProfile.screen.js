@@ -80,9 +80,7 @@ export default class PatientProfile extends React.Component<Props, State> {
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase, navigation } = this.props;
-
     await setMedicalCase(medicalCase);
-    // await this.getMedicalCases();
 
     navigation.navigate('WorkCase', {
       title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
