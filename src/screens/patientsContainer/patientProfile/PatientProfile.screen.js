@@ -1,10 +1,9 @@
 // @flow
 
 import * as React from 'react';
-import { List, ListItem, Text, View, Button } from 'native-base';
+import { Button, List, ListItem, Text, View } from 'native-base';
 import maxBy from 'lodash/maxBy';
 import find from 'lodash/find';
-import orderBy from 'lodash/orderBy';
 import forEach from 'lodash/forEach';
 
 import { styles } from './PatientProfile.style';
@@ -131,9 +130,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           }}
         >
           <View w50>
-            <Text>
-              {moment(medicalCase.createdDate).format('lll')}
-            </Text>
+            <Text>{moment(medicalCase.createdDate).format('lll')}</Text>
           </View>
           <View w50>
             <Text>{patient.status}</Text>
@@ -144,24 +141,29 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     return (
       <View padding-auto flex>
-        <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
-        <SeparatorLine style={styles.bottomMargin}/>
+        <LiwiTitle2 noBorder>
+          {patient.firstname} {patient.lastname}
+        </LiwiTitle2>
+        <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
           <View flex>
             <View>
-              {
-                patient.medicalCases.length > 0 ?
-                  <List block>
-                    {_renderMedicalCases}
-                  </List> : (
-                    <View padding-auto margin-auto>
-                      <Text not-available>{i18n.t('work_case:no_medical_cases')}</Text>
-                    </View>
-                  )
-              }
+              {patient.medicalCases.length > 0 ? (
+                <List block>{_renderMedicalCases}</List>
+              ) : (
+                <View padding-auto margin-auto>
+                  <Text not-available>
+                    {i18n.t('work_case:no_medical_cases')}
+                  </Text>
+                </View>
+              )}
             </View>
             <View bottom-view>
-              <Button light onPress={() => this.generateMedicalCase()} disabled={isGeneratingMedicalCase}>
+              <Button
+                light
+                onPress={() => this.generateMedicalCase()}
+                disabled={isGeneratingMedicalCase}
+              >
                 <Text>{i18n.t('work_case:create')}</Text>
               </Button>
             </View>
