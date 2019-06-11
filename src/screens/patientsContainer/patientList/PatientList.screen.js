@@ -38,6 +38,7 @@ export default class PatientList extends React.Component<Props, State> {
     await this.getPatients();
   }
 
+  // set patient from localstorage
   getPatients = async () => {
     let patients = await getArray('patients');
     this.setState({ patients });
@@ -49,11 +50,14 @@ export default class PatientList extends React.Component<Props, State> {
     });
   };
 
+  // Generate a new patient based on model Patient
   generatePatient = async () => {
     await this.setState({ isGeneratingPatient: true });
     let patient = new PatientModel();
     await patient.setPatient();
     let patients = this.state.patients;
+
+    // uniqueId incremented
     let maxId = maxBy(patients, 'id');
 
     if (patients.length === 0) {
@@ -63,7 +67,10 @@ export default class PatientList extends React.Component<Props, State> {
     patient.id = maxId.id + 1;
     patients.push(patient);
 
+    // Set in localstorage
     await setItem('patients', patients);
+
+    // reload patient in the component
     await this.getPatients();
     await this.setState({ isGeneratingPatient: false });
   };
@@ -76,10 +83,12 @@ export default class PatientList extends React.Component<Props, State> {
     const { patients, search, orderByName, isGeneratingPatient } = this.state;
     const { navigation } = this.props;
 
+    // filter patient based on firstname and alstname
     let filteredPatients = filter(patients, (p) => {
       return p.firstname.includes(search) || p.lastname.includes(search);
     });
 
+    // order the patients
     let orderedFilteredPatients = orderBy(
       filteredPatients,
       ['lastname'],
@@ -156,7 +165,7 @@ export default class PatientList extends React.Component<Props, State> {
                     >
                       <View w50>
                         <Text>
-                          {patient.firstname} {patient.lastname}
+                          {patient.lastname} {patient.firstname}
                         </Text>
                       </View>
                       <View w50>

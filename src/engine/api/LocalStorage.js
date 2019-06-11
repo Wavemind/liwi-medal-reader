@@ -200,6 +200,7 @@ export const clearSessions = async () => {
   await AsyncStorage.removeItem('sessions');
 };
 
+// Clear patients in local storage
 export const clearPatients = async () => {
   await AsyncStorage.removeItem('patients');
 };

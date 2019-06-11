@@ -35,6 +35,8 @@ export default class PatientProfile extends React.Component<Props, State> {
     isGeneratingMedicalCase: false,
   };
 
+  // Get patient data storaged in localstorage
+  // Get algo
   async getPatientAlgo() {
     const { navigation } = this.props;
     let id = navigation.getParam('id');
@@ -49,6 +51,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     await this.getPatientAlgo();
   }
 
+  // Generate new medicalCase with algo selected
   generateMedicalCase = async () => {
     await this.setState({ isGeneratingMedicalCase: true });
 
@@ -72,13 +75,15 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     let eachMaxId = [];
 
-    let recursiveMax = forEach(patients, (p) => {
+    // find recursive max id in medicalCases
+    forEach(patients, (p) => {
       let itemMax = maxBy(p.medicalCases, 'id');
       if (itemMax !== undefined) {
         eachMaxId.push(itemMax);
       }
     });
 
+    // on each maxBy, take the final maxBy
     let maxId = maxBy(eachMaxId, 'id');
 
     if (eachMaxId.length === 0) {
@@ -90,7 +95,10 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     patient.medicalCases.push(newMedicalCase);
 
+    // set in localstorage
     await setItemFromArray('patients', patient, patient.id);
+
+    // get algo from localstorage (because we modify them)
     await this.getPatientAlgo();
     await this.setState({ isGeneratingMedicalCase: false });
   };
