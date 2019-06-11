@@ -91,7 +91,7 @@ export default class PatientList extends React.Component<Props, State> {
                 block
                 spaced
                 onPress={ () =>
-                  navigation.navigate( 'PatientProfil', { id: patient.id } )
+                  navigation.navigate( 'PatientProfile', { id: patient.id } )
                 }
               >
                 <View w50>
