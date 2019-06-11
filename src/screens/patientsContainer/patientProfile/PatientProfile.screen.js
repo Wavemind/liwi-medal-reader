@@ -6,14 +6,23 @@ import { List, ListItem, Text, View, Button } from 'native-base';
 import maxBy from 'lodash/maxBy';
 import find from 'lodash/find';
 import orderBy from 'lodash/orderBy';
+import forEach from 'lodash/forEach';
 
 import { styles } from './PatientProfile.style';
-import { generateInitialBatch, setInitialCounter } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
-import { getItemFromArray, getItems, setItemFromArray } from '../../../engine/api/LocalStorage';
+import {
+  generateInitialBatch,
+  setInitialCounter,
+} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
+import {
+  getItem,
+  getItemFromArray,
+  getItems,
+  setItemFromArray,
+} from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import moment from "moment";
+import moment from 'moment';
 
 type Props = {};
 type State = {};
@@ -25,7 +34,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     },
     selected: 'null',
     algorithms: [],
-    generate: false,
+    isGeneratingMedicalCase: false,
   };
 
   async getPatientAlgo() {
@@ -43,11 +52,15 @@ export default class PatientProfile extends React.Component<Props, State> {
   }
 
   generateMedicalCase = async () => {
+    await this.setState({ isGeneratingMedicalCase: true });
+
     const { algorithms, patient } = this.state;
     const { app } = this.props;
+    let patients = await getItem('patients');
 
     const algorithmUsed = find(algorithms, (a) => a.selected);
 
+    // default counter on each node
     setInitialCounter(algorithmUsed);
 
     let newMedicalCase = {
@@ -56,12 +69,25 @@ export default class PatientProfile extends React.Component<Props, State> {
       userId: app.user.data.id,
     };
 
+    // initial batch waiting on final workflow
     generateInitialBatch(newMedicalCase);
-    let maxId = maxBy(patient.medicalCases, 'id');
 
-    if (patient.medicalCases.length === 0) {
+    let eachMaxId = [];
+
+    let recursiveMax = forEach(patients, (p) => {
+      let itemMax = maxBy(p.medicalCases, 'id');
+      if (itemMax !== undefined) {
+        eachMaxId.push(itemMax);
+      }
+    });
+
+    let maxId = maxBy(eachMaxId, 'id');
+
+    if (eachMaxId.length === 0) {
       maxId = { id: 0 };
     }
+
+    console.log(recursiveMax, eachMaxId, maxId)
 
     newMedicalCase.id = maxId.id + 1;
     newMedicalCase.createdDate = moment().format();
@@ -70,7 +96,7 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     await setItemFromArray('patients', patient, patient.id);
     await this.getPatientAlgo();
-    await this.setState({ generate: false });
+    await this.setState({ isGeneratingMedicalCase: false });
   };
 
   // Select a medical case and redirect to patient's view
@@ -84,7 +110,7 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   render() {
-    const { patient, algorithms } = this.state;
+    const { patient, algorithms, isGeneratingMedicalCase } = this.state;
 
     const flatPatient = {
       ...patient,
@@ -119,38 +145,36 @@ export default class PatientProfile extends React.Component<Props, State> {
       );
     });
 
-    console.log(this.state)
-
     return (
       <View padding-auto flex>
-        <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
-        <SeparatorLine style={styles.bottomMargin}/>
-        {algorithms.length > 0 ? (
+        <LiwiTitle2 noBorder>
+          {patient.firstname} {patient.lastname}
+        </LiwiTitle2>
+        <SeparatorLine style={styles.bottomMargin} />
+        {algorithms.length < 0 ? (
           <View flex>
             <View>
-              {
-                patient.medicalCases.length > 0 ?
-                  <List block>
-                    {_renderMedicalCases}
-                  </List> : (
-                    <View padding-auto margin-auto>
-                      <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_medical_cases')}</Text>
-                    </View>
-                  )
-              }
+              {patient.medicalCases.length > 0 ? (
+                <List block>{_renderMedicalCases}</List>
+              ) : (
+                <View padding-auto margin-auto>
+                  <Text style={styles.textNotAvailable}>
+                    {i18n.t('work_case:no_medical_cases')}
+                  </Text>
+                </View>
+              )}
             </View>
             <View bottom-view>
-              <Button
-                light
-                onPress={() => this.generateMedicalCase()}
-              >
+              <Button light onPress={() => this.generateMedicalCase()} disabled={isGeneratingMedicalCase}>
                 <Text>{i18n.t('work_case:create')}</Text>
               </Button>
             </View>
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text style={styles.textNotAvailable}>{i18n.t('work_case:no_algorithms')}</Text>
+            <Text style={styles.textNotAvailable}>
+              {i18n.t('work_case:no_algorithms')}
+            </Text>
           </View>
         )}
       </View>
