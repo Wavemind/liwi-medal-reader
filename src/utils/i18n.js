@@ -99,20 +99,19 @@ i18n
           active: 'Sessions active',
           empty: 'No session',
         },
+        navigation: {
+          patient_list: 'Patient list',
+          settings: 'Settings',
+          available_algorithms: 'Available algorithms',
+        },
         common: {
           disconnect: 'Disconnect',
           consultation: 'Consultation',
           patient_data: 'Patient data',
-          settings: 'Settings',
-          patient_list: 'Patient list',
-          algorithms_av: 'Available algorithms',
-          currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
-          actions: {
-            toggleToGerman: 'Deutsch',
-            toggleToEnglish: 'English',
-            goToPage2: 'Öffne Seite 2',
-          },
         },
+        notifications: {
+          invalid_code: 'Code is invalid'
+        }
       },
       fr: {
         settings: {
@@ -170,19 +169,15 @@ i18n
           active: 'Sessions active',
           empty: 'Aucune session',
         },
+        navigation: {
+          patient_list: 'Liste des patients',
+          settings: 'Paramètres',
+          available_algorithms: 'Algorithmes disponibles',
+        },
         common: {
           disconnect: 'Déconnecter',
           consultation: 'Consultation',
           patient_data: 'Données patient',
-          settings: 'Paramétres',
-          patient_list: 'Liste des patients',
-          algorithms_av: 'Algorithmes disponibles',
-          currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
-          actions: {
-            toggleToGerman: 'Deutsch',
-            toggleToEnglish: 'English',
-            goToPage2: 'Öffne Seite 2',
-          },
         },
       },
     },
