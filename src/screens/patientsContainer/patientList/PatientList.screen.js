@@ -2,19 +2,30 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
+import {
+  Button,
+  Icon,
+  Input,
+  Item,
+  List,
+  ListItem,
+  Picker,
+  Text,
+  View,
+} from 'native-base';
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray, setItem } from '../../../engine/api/LocalStorage';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import maxBy from 'lodash/maxBy';
+import filter from 'lodash/filter';
 
 type Props = {};
 type State = {};
 
 export default class PatientList extends React.Component<Props, State> {
-  state = { patients: [] };
+  state = { patients: [], search: '' };
 
   async componentWillMount() {
     await this.getPatients();
@@ -43,9 +54,17 @@ export default class PatientList extends React.Component<Props, State> {
     await this.getPatients();
   };
 
+  search = (search) => {
+    this.setState({ search });
+  };
+
   render() {
-    const { patients } = this.state;
+    const { patients, search } = this.state;
     const { navigation } = this.props;
+
+    let filteredPatients = filter(patients, (p) => {
+      return p.firstname.includes(search) || p.lastname.includes(search);
+    });
 
     return (
       <ScrollView>
@@ -55,7 +74,7 @@ export default class PatientList extends React.Component<Props, State> {
           <View flex-container-row>
             <Item round style={styles.input}>
               <Icon active name="search" />
-              <Input />
+              <Input value={search} onChangeText={this.search} />
             </Item>
             <Button center rounded light>
               <Icon type={'MaterialCommunityIcons'} name="plus" />
@@ -92,7 +111,7 @@ export default class PatientList extends React.Component<Props, State> {
           </Button>
 
           <List block>
-            {patients.map((patient) => (
+            {filteredPatients.map((patient) => (
               <ListItem
                 rounded
                 block

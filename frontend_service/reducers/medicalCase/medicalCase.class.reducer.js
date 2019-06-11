@@ -15,7 +15,6 @@ import { QuestionModel } from '../../engine/models/Question.model';
 import { ManagementModel } from '../../engine/models/Management.model';
 import { FinalDiagnosticModel } from '../../engine/models/FinalDiagnostic.model';
 import moment from 'moment';
-import { PatientModel } from '../../engine/models/Patient.model';
 
 export const initialState = null;
 
@@ -24,7 +23,6 @@ class ReducerCat extends ReducerClass {
 
   _instanceMedicalCase(state) {
     state.createdDate = moment().format();
-    // state.patient = new PatientModel(state.patient);
     state = this._generateInstanceDiseasesNode(state);
     state = this._generateInstanceNodeModel(state);
     return state;
@@ -297,12 +295,10 @@ class ReducerCat extends ReducerClass {
     if (state !== {} && medicalCase.id !== state.id) {
       setMedicalCase(state);
     }
-    this._instanceMedicalCase(medicalCase);
-
-    console.log(medicalCase)
+    let modelsMedicalCase = this._instanceMedicalCase(medicalCase);
 
     return {
-      ...medicalCase,
+      ...modelsMedicalCase,
     };
   }
 
