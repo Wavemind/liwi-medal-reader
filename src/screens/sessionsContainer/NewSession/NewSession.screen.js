@@ -70,8 +70,13 @@ export default class NewSession extends React.Component<Props, State> {
 
   // Authentication method
   signIn = async () => {
-    this.setState({ loading: true });
     const { email, password } = this.state;
+
+    if (email.length < 8 || password.length < 3) {
+      return null
+    }
+
+    this.setState({ loading: true });
     const { sessions } = this.props;
 
     await sessions
