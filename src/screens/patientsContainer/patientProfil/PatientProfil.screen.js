@@ -2,26 +2,13 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import {
-  Button,
-  Icon,
-  Input,
-  Item,
-  View,
-  Text,
-  Picker,
-  List,
-  ListItem,
-  H3,
-} from 'native-base';
+import { Button, H3, Text, View } from 'native-base';
 
-import { styles } from './PatientDetail.style';
-import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
+import { styles } from './PatientProfil.style';
+import { SeparatorLine } from '../../../template/layout';
 import {
-  createMedicalCase,
   getItemFromArray,
   getItems,
-  setItem,
   setItemFromArray,
 } from '../../../engine/api/LocalStorage';
 import find from 'lodash/find';
@@ -29,16 +16,14 @@ import {
   generateInitialBatch,
   setInitialCounter,
 } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
-import { medicalCaseInitialState } from '../../../../frontend_service/algorithm/medicalCase';
 import LottieView from 'lottie-react-native';
 import i18n from '../../../utils/i18n';
-import moment from 'moment';
 import maxBy from 'lodash/maxBy';
 
 type Props = {};
 type State = {};
 
-export default class PatientList extends React.Component<Props, State> {
+export default class PatientProfil extends React.Component<Props, State> {
   state = {
     patient: {
       medicalCases: [],
@@ -106,9 +91,12 @@ export default class PatientList extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.props;
-    const { generate, algorithms } = this.state;
+    const { generate, algorithms, patient } = this.state;
 
-    console.log(this.props, this.state);
+    const flatPatient = {
+      ...patient,
+    };
+    delete flatPatient.medicalCases;
 
     const _renderMedicalCases = this.state.patient.medicalCases.map((mc) => {
       return (
@@ -116,13 +104,13 @@ export default class PatientList extends React.Component<Props, State> {
           key={mc.id + '_medicalCase'}
           disabled={false}
           onPress={async () => {
-            await this.selectMedicalCase(mc);
+            await this.selectMedicalCase({
+              ...mc,
+              patient: flatPatient
+            });
           }}
         >
-          <Text>
-            medicalCase id :
-            {mc.id}
-          </Text>
+          <Text>medicalCase id :{mc.id}</Text>
         </Button>
       );
     });
