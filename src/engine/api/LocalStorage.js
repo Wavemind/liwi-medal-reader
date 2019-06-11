@@ -45,7 +45,12 @@ export const getItemFromArray = async (key, index, id) => {
   return {};
 };
 
-export const setItemFromArray = async (key, newItem, id, ) => {
+// Helper to update an item in an array
+// @params [String] key [Object] newItem, [Integer] id
+// key = key of array in localstorage
+// newItem = Object of new item
+// id = id of the item we want to update
+export const setItemFromArray = async (key, newItem, id) => {
   const items = await getArray(key);
 
   if (Array.isArray(items)) {
