@@ -7,8 +7,8 @@ import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import MedicalCases from '../../screens/medicalCasesContainer/medicalCases';
 import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
+import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
-import PatientProfil from '../../screens/patientsContainer/patientProfil';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
@@ -41,12 +41,12 @@ const Stack = createStackNavigator(
         };
       },
     },
-    PatientProfil: {
-      screen: PatientProfil,
-      path: 'patientProfil',
+    PatientProfile: {
+      screen: PatientProfile,
+      path: 'patientProfile',
       navigationOptions: ({ navigation }) => {
         return {
-          title: 'Patient Profil',
+          title: 'Patient profile',
         };
       },
     },
