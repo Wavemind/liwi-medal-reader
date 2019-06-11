@@ -16,7 +16,7 @@ import {
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getArray, getItem, setItem } from '../../../engine/api/LocalStorage';
+import { getArray, setItem } from '../../../engine/api/LocalStorage';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 
 type Props = {};
@@ -106,7 +106,7 @@ export default class PatientList extends React.Component<Props, State> {
               >
                 <View w50>
                   <Text>
-                    {patient.firstname} - {patient.lastname}
+                    {patient.firstname} {patient.lastname}
                   </Text>
                 </View>
                 <View w50>
