@@ -76,6 +76,7 @@ export default class PatientList extends React.Component<Props, State> {
     await this.setState({ isGeneratingPatient: false });
   };
 
+  // set string search
   search = (search) => {
     this.setState({ search });
   };
