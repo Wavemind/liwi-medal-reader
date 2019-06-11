@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import {
-  Container,
-  Header,
   View,
   Button,
   Icon,
   Fab,
-  Text,
-  Content,
 } from 'native-base';
-import { clearLocalStorage } from '../engine/api/LocalStorage';
+import { clearLocalStorage, clearPatients } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 
 export default class WavemindTools extends Component {
@@ -32,6 +28,16 @@ export default class WavemindTools extends Component {
           onPress={() => this.setState({ active: !this.state.active })}
         >
           <Icon name="developer-mode" type={'MaterialIcons'} />
+          <Button
+            blue
+            onPress={async () => {
+              await clearPatients();
+              NavigationService.navigate('SignIn');
+              this.forceUpdate();
+            }}
+          >
+            <Icon type={'AntDesign'} name="deleteusergroup" />
+          </Button>
           <Button
             blue
             onPress={async () => {

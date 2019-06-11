@@ -3,6 +3,7 @@ import container from './container';
 import form from './form';
 import text from './text';
 import icon from './icon';
+import list from './list';
 
 export default {
   ...button,
@@ -10,4 +11,5 @@ export default {
   ...form,
   ...text,
   ...icon,
+  ...list,
 };
