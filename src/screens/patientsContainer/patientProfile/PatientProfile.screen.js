@@ -4,7 +4,6 @@ import * as React from 'react';
 import { List, ListItem, Text, View, Button } from 'native-base';
 import maxBy from 'lodash/maxBy';
 import find from 'lodash/find';
-import orderBy from 'lodash/orderBy';
 
 import { styles } from './PatientProfile.style';
 import { generateInitialBatch, setInitialCounter } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
@@ -26,7 +25,6 @@ export default class PatientProfile extends React.Component<Props, State> {
     algorithms: [],
     generate: false,
   };
-
 
   async getPatientAlgo() {
     const { navigation } = this.props;
