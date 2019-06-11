@@ -93,7 +93,11 @@ export const auth = async (email, password) => {
   // Display error
   if (!request.ok) {
     handleHttpError(body.errors);
+    throw body;
   }
+
+
+  console.log(body)
 
   return await {
     ...body,
