@@ -38,7 +38,7 @@ export default class PatientList extends React.Component<Props, State> {
     await this.getPatients();
   }
 
-  // set patient from localstorage
+  // get patients in localstorage
   getPatients = async () => {
     let patients = await getArray('patients');
     this.setState({ patients });
