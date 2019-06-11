@@ -44,6 +44,7 @@ export default class PatientList extends React.Component<Props, State> {
     this.setState({ patients });
   };
 
+  // update state switch asc / desc
   orderByName = () => {
     this.setState({
       orderByName: this.state.orderByName === 'asc' ? 'desc' : 'asc',
