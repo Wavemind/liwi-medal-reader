@@ -218,6 +218,7 @@ export default function medicalCaseReducer(
         setMedicalCase(state);
       }
 
+
       return {
         ...medicalCase,
         mc: medicalCase,

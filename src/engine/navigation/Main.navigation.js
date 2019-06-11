@@ -1,12 +1,14 @@
 import React from 'react';
+import Algorithm from '../../screens/algorithmsContainer/Algorithm';
+import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
-import MedicalCases from '../../screens/medicalCasesContainer/medicalCases';
 import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
-import Algorithms from '../../screens/algorithmsContainer/Algorithms';
-import Algorithm from '../../screens/algorithmsContainer/Algorithm';
+import PatientProfile from '../../screens/patientsContainer/patientProfile';
+import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
+
 import i18n from '../../utils/i18n';
 
 import { Button, Icon } from 'native-base';
@@ -21,7 +23,7 @@ const Stack = createStackNavigator(
       path: 'home',
       navigationOptions: ({ navigation }) => {
         return {
-          title: i18n.t('common:title_home'),
+          title: i18n.t('navigation:patient_list'),
           headerLeft: (
             <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
               <Icon red type={'Entypo'} name="menu" large />
@@ -30,12 +32,21 @@ const Stack = createStackNavigator(
         };
       },
     },
-    MedicalCases: {
-      screen: MedicalCases,
-      path: 'medicalCases',
+    PatientList: {
+      screen: PatientList,
+      path: 'patientList',
       navigationOptions: ({ navigation }) => {
         return {
-          title: 'Vos cas médicaux',
+          title: i18n.t('navigation:patient_list'),
+        };
+      },
+    },
+    PatientProfile: {
+      screen: PatientProfile,
+      path: 'patientProfile',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: i18n.t('navigation:patient_profile'),
         };
       },
     },
@@ -50,7 +61,7 @@ const Stack = createStackNavigator(
     },
     WorkCase: {
       screen: WorkCase,
-      path: 'workcase',
+      path: 'work_case',
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
@@ -62,7 +73,7 @@ const Stack = createStackNavigator(
       path: 'algorithms',
       navigationOptions: ({ navigation }) => {
         return {
-          title: i18n.t('common:algorithms_av'),
+          title: i18n.t('navigation:available_algorithms'),
         };
       },
     },
@@ -80,14 +91,11 @@ const Stack = createStackNavigator(
       path: 'settings',
       navigationOptions: ({ navigation }) => {
         return {
-          title: i18n.t('common:settings'),
+          title: i18n.t('navigation:settings'),
         };
       },
     },
   },
-  {
-    // initialRouteName: 'Settings',
-  }
 );
 
 export default () => {

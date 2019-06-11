@@ -45,6 +45,26 @@ export const getItemFromArray = async (key, index, id) => {
   return {};
 };
 
+// Helper to update an item in an array
+// @params [String] key [Object] newItem, [Integer] id
+// key = key of array in localstorage
+// newItem = Object of new item
+// id = id of the item we want to update
+export const setItemFromArray = async (key, newItem, id) => {
+  const items = await getArray(key);
+
+  if (Array.isArray(items)) {
+    let index = findIndex(items, (item) => {
+      return item.id === id;
+    });
+
+    items[index] = newItem;
+    await setItem(key, items);
+  }
+
+  return {};
+};
+
 // Destroy user's credentials
 export const destroyCredentials = async () =>
   await AsyncStorage.removeItem('credentials', (err) => {});
@@ -88,6 +108,17 @@ export const getSessions = async () => {
     return [];
   }
   return sessionsArray;
+};
+
+// @return [Array]
+// Get array from local storage
+export const getArray = async (item) => {
+  const array = await getItem(item);
+
+  if (array === null) {
+    return [];
+  }
+  return array;
 };
 
 // @params [Object] medicalCase
@@ -169,12 +200,18 @@ export const clearSessions = async () => {
   await AsyncStorage.removeItem('sessions');
 };
 
+// Clear patients in local storage
+export const clearPatients = async () => {
+  await AsyncStorage.removeItem('patients');
+};
+
 // Clear medical cases from local storage
 export const clearLocalStorage = async () => {
   await AsyncStorage.removeItem('medicalCases');
   await AsyncStorage.removeItem('algorithms');
   await AsyncStorage.removeItem('sessions');
   await AsyncStorage.removeItem('lastLogin');
+  await AsyncStorage.clear();
 };
 
 // @params [Object] session
@@ -185,7 +222,7 @@ export const setSessions = async (session) => {
 
 // @params [Integer] id
 // Set current session
-export const SetActiveSession = async (id = null) => {
+export const setActiveSession = async (id = null) => {
   const sessions = await getItems('sessions');
   await sessions.map((session) => {
     if (session.active === undefined || session.active === true) {

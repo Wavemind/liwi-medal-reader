@@ -3,7 +3,7 @@ import { liwiColors } from '/utils/constants';
 import { View as RNView } from 'react-native';
 import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from 'native-base';
 
-export const TextExemple = styled(LText).attrs({})`
+export const Text = styled(LText).attrs({})`
   color: #4e4e4e;
   font-family: roboto;
   font-weight: bold;
@@ -17,7 +17,8 @@ export const ColCenter = styled(LCol).attrs({
 
 export const LiwiTitle2 = styled(LH2)`
   color: ${() => liwiColors.redColor};
-  margin: 20px 20px 10px 20px;
+  margin: 0 20px 10px 0;
+  text-transform: uppercase;
   padding-bottom: ${({ noBorder }) => {
     if (noBorder === true) {
       return '0px';

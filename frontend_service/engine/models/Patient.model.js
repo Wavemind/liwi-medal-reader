@@ -1,5 +1,7 @@
 // @flow
 
+import { setItem } from '../../../src/engine/api/LocalStorage';
+
 interface PatientModelInterface {
   birthdate: string;
   breathingRhythm: string;
@@ -15,7 +17,9 @@ interface PatientModelInterface {
 }
 
 export class PatientModel implements PatientModelInterface {
-  constructor(props) {
+  constructor(props) {}
+
+  setPatient = async () => {
     const {
       birthdate,
       breathingRhythm,
@@ -28,8 +32,8 @@ export class PatientModel implements PatientModelInterface {
       photo,
       temperature,
       weight,
-    } = props;
-
+      status,
+    } = await this.generatePatient();
 
     this.birthdate = birthdate;
     this.breathingRhythm = breathingRhythm;
@@ -42,5 +46,33 @@ export class PatientModel implements PatientModelInterface {
     this.photo = photo;
     this.temperature = temperature;
     this.weight = weight;
-  }
+    this.status = status;
+    this.medicalCases = [];
+    this.status = 'initial';
+  };
+
+  generatePatient = async () => {
+    const response = await fetch('https://uinames.com/api/?ext&region=france');
+    let patient = {};
+
+    // if the service is down
+    if (response.status === 200) {
+      patient = await response.json();
+    } else {
+      patient = {
+        name: 'UinameDown',
+        surname: 'la Fripouille',
+        birthday: {
+          dmy: '01.01.1900',
+        },
+        email: 'pop@pip.pap',
+        photo: '',
+      };
+    }
+
+    patient.renameKey('name', 'firstname');
+    patient.renameKey('surname', 'lastname');
+
+    return patient;
+  };
 }

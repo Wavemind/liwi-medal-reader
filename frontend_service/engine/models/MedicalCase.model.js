@@ -117,14 +117,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     );
   }
 
-  static toJSON() {
-    console.log('hey you want to stringify me ?');
-    return {
-      nodes: this.nodes,
-      diseases: this.diseases,
-    };
-  }
-
   static fromJSON(obj) {
     return new this(obj);
   }

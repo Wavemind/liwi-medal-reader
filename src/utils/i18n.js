@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
+import { Text } from "native-base";
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -49,10 +50,23 @@ i18n
           awake: 'keep awake',
           app: 'Application',
         },
-        workcase: {
-          button_create: 'Create a medical case',
-          case_medical: 'Medical cases',
-          none: 'No algorithms in memory',
+        work_case: {
+          create: 'New case',
+          medical_case: 'Medical case',
+          medical_cases: 'Medical cases',
+          no_medical_cases: 'No medical cases',
+          no_algorithms: 'No algorithms in memory',
+        },
+        patient_detail: {
+        },
+        patient_list: {
+          waiting: 'Patients waiting for',
+          search: 'Search',
+          sort: 'Sort by',
+          name: 'Name',
+          status: 'Status',
+          no_patients: 'There are no patients',
+          not_found: 'No match found',
         },
         login: {
           server: 'server',
@@ -70,31 +84,34 @@ i18n
           password: 'Password',
           login: 'Login',
         },
+        unlock_session: {
+          code: 'Code',
+          unlock: 'Unlock session'
+        },
         popup: {
           title: 'Please allow access to the position',
           message:
             'Location sharing is mandatory in order to use the medical service',
-          askmelater: 'Ask me later',
+          ask_me_later: 'Ask me later',
           cancel: 'cancel',
         },
         sessions: {
           active: 'Sessions active',
           empty: 'No session',
         },
+        navigation: {
+          patient_list: 'Patient list',
+          settings: 'Settings',
+          available_algorithms: 'Available algorithms',
+        },
         common: {
           disconnect: 'Disconnect',
           consultation: 'Consultation',
           patient_data: 'Patient data',
-          settings: 'Settings',
-          title_home: 'Your personal space',
-          algorithms_av: 'Available algorithms',
-          currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
-          actions: {
-            toggleToGerman: 'Deutsch',
-            toggleToEnglish: 'English',
-            goToPage2: 'Öffne Seite 2',
-          },
         },
+        notifications: {
+          invalid_code: 'Code is invalid'
+        }
       },
       fr: {
         settings: {
@@ -103,10 +120,23 @@ i18n
           app: 'Application',
           awake: 'Empécher la mise en veille',
         },
-        workcase: {
-          button_create: 'Créer un cas médical',
-          case_medical: 'Cas médicals',
-          none: 'Aucun algorithm en mémoire',
+        work_case: {
+          create: 'Nouveau cas médical',
+          medical_case: 'Cas médical',
+          medical_cases: 'Cas médicaux',
+          no_medical_cases: 'Aucun cans médicaux',
+          no_algorithms: 'Aucun algorithme',
+        },
+        patient_detail: {
+        },
+        patient_list: {
+          waiting: 'En attente',
+          search: 'Rechercher',
+          sort: 'Trier par',
+          name: 'Nom',
+          status: 'Status',
+          no_patients: 'Aucun patients',
+          not_found: 'Aucun résultat',
         },
         login: {
           server: 'server',
@@ -124,30 +154,30 @@ i18n
           password: 'Mot de passe',
           login: 'Connecter',
         },
+        unlock_session: {
+          code: 'Code',
+          unlock: 'Déverrouiller la session'
+        },
         popup: {
           title: "Merci d'autoriser l'accès à la position",
           message:
             'Le partage de localisation est obligatoire afin de pouvoir utiliser le service médical',
-          askmelater: 'Demandez moi plus tard',
+          ask_me_later: 'Demandez moi plus tard',
           cancel: 'annuler',
         },
         sessions: {
           active: 'Sessions active',
           empty: 'Aucune session',
         },
+        navigation: {
+          patient_list: 'Liste des patients',
+          settings: 'Paramètres',
+          available_algorithms: 'Algorithmes disponibles',
+        },
         common: {
           disconnect: 'Déconnecter',
           consultation: 'Consultation',
           patient_data: 'Données patient',
-          settings: 'Paramétres',
-          title_home: 'Votre espace personnel',
-          algorithms_av: 'Algorithmes disponibles',
-          currentLanguage: 'Die Sprache ist auf "{{lng}}" gesetzt',
-          actions: {
-            toggleToGerman: 'Deutsch',
-            toggleToEnglish: 'English',
-            goToPage2: 'Öffne Seite 2',
-          },
         },
       },
     },

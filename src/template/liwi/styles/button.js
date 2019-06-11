@@ -13,6 +13,10 @@ export default {
       flexGrow: 1,
       justifyContent: 'center',
     },
+    '.red': {
+      backgroundColor: liwiColors.redColor,
+      color: '#fff',
+    },
     '.blue': {
       backgroundColor: '#337aff',
       color: '#fff',
