@@ -2,17 +2,7 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import {
-  Button,
-  Icon,
-  Input,
-  Item,
-  List,
-  ListItem,
-  Picker,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
