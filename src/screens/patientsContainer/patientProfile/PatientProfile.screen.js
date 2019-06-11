@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { List, ListItem, Text, View, Button } from 'native-base';
 import maxBy from 'lodash/maxBy';
 import find from 'lodash/find';
@@ -87,8 +86,6 @@ export default class PatientProfile extends React.Component<Props, State> {
       maxId = { id: 0 };
     }
 
-    console.log(recursiveMax, eachMaxId, maxId)
-
     newMedicalCase.id = maxId.id + 1;
     newMedicalCase.createdDate = moment().format();
 
@@ -135,7 +132,7 @@ export default class PatientProfile extends React.Component<Props, State> {
         >
           <View w50>
             <Text>
-              {patient.firstname} {patient.lastname}
+              {moment(medicalCase.createdDate).format('lll')}
             </Text>
           </View>
           <View w50>
@@ -147,22 +144,21 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     return (
       <View padding-auto flex>
-        <LiwiTitle2 noBorder>
-          {patient.firstname} {patient.lastname}
-        </LiwiTitle2>
-        <SeparatorLine style={styles.bottomMargin} />
-        {algorithms.length < 0 ? (
+        <LiwiTitle2 noBorder>{patient.firstname} {patient.lastname}</LiwiTitle2>
+        <SeparatorLine style={styles.bottomMargin}/>
+        {algorithms.length > 0 ? (
           <View flex>
             <View>
-              {patient.medicalCases.length > 0 ? (
-                <List block>{_renderMedicalCases}</List>
-              ) : (
-                <View padding-auto margin-auto>
-                  <Text style={styles.textNotAvailable}>
-                    {i18n.t('work_case:no_medical_cases')}
-                  </Text>
-                </View>
-              )}
+              {
+                patient.medicalCases.length > 0 ?
+                  <List block>
+                    {_renderMedicalCases}
+                  </List> : (
+                    <View padding-auto margin-auto>
+                      <Text not-available>{i18n.t('work_case:no_medical_cases')}</Text>
+                    </View>
+                  )
+              }
             </View>
             <View bottom-view>
               <Button light onPress={() => this.generateMedicalCase()} disabled={isGeneratingMedicalCase}>
