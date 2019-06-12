@@ -12,6 +12,7 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import maxBy from 'lodash/maxBy';
 import { getArray, setItem } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -82,6 +83,7 @@ export default class PatientUpdate extends React.Component<Props, State> {
       weight,
       firstRender,
       temperature,
+      sexe,
     } = this.state;
 
     console.log(this.props, this.state);
@@ -129,6 +131,18 @@ export default class PatientUpdate extends React.Component<Props, State> {
               index={'birthdate'}
               iconName={'birthday-cake'}
               iconType={'FontAwesome'}
+            />
+          </Col>
+          <Col>
+            <CustomSwitchButton
+              init={sexe}
+              label={'Sexe'}
+              change={updatePatient}
+              index={'sexe'}
+              label1={'Homme'}
+              label2={'Femme'}
+              iconName={'human-male-female'}
+              iconType={'MaterialCommunityIcons'}
             />
           </Col>
         </Grid>
