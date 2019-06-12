@@ -53,7 +53,13 @@ export default class PatientList extends React.Component<Props, State> {
 
   // Generate a new patient based on model Patient
   generatePatient = async () => {
+
+    console.log(this.props);
+    this.props.navigation.navigate('PatientUpdate', { createNewOne: true });
+    return null;
+
     await this.setState({ isGeneratingPatient: true });
+
     let patient = new PatientModel();
     await patient.setPatient();
     let patients = this.state.patients;

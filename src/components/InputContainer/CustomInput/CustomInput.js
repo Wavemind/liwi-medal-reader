@@ -29,9 +29,9 @@ export default class CustomInput extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Readonly<P>): void {
-    if (nextProps.id !== this.props.id) {
-      this.setState({ value: nextProps.init });
-    }
+    // if (nextProps.id !== this.props.id) {
+    //   this.setState({ value: nextProps.init });
+    // }
   }
 
   componentWillMount(): void {
