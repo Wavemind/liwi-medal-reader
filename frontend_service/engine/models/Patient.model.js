@@ -74,6 +74,7 @@ export class PatientModel implements PatientModelInterface {
     patient.renameKey('surname', 'lastname');
     patient.renameKey('birthday', 'birthdate');
     patient.birthdate = patient.birthdate.dmy;
+    patient.sexe = null;
 
     return patient;
   };
