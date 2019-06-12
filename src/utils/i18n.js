@@ -100,6 +100,7 @@ i18n
           empty: 'No session',
         },
         navigation: {
+          patient_update: 'Patient Update',
           patient_list: 'Patient list',
           settings: 'Settings',
           available_algorithms: 'Available algorithms',
@@ -170,6 +171,7 @@ i18n
           empty: 'Aucune session',
         },
         navigation: {
+          patient_update: 'Patient Update',
           patient_list: 'Liste des patients',
           settings: 'Paramètres',
           available_algorithms: 'Algorithmes disponibles',

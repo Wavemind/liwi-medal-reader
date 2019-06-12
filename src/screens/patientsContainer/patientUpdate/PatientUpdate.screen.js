@@ -5,34 +5,91 @@ import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
-import moment from 'moment';
+import moment from 'moment/moment';
 import { Col, Grid } from 'native-base';
 import { LiwiTitle2, LiwiTitle3 } from '../../../template/layout';
+import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import maxBy from 'lodash/maxBy';
+import { getArray, setItem } from '../../../engine/api/LocalStorage';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class MedicalCase extends React.Component<Props, State> {
-  state = { medicalCases: [] };
+export default class PatientUpdate extends React.Component<Props, State> {
+
+  async componentWillMount() {
+    await this.generatePatient();
+  }
+
+  state = {
+    firstRender: false,
+    medicalCases: [],
+    isGeneratingPatient: true,
+    patients: [],
+    firstname: '',
+    lastname: '',
+    birthdate: '',
+    breathingRhythm: '',
+    heartbeat: '',
+    weight: '',
+    temperature: '',
+    id: '',
+  };
+
+  getPatients = async () => {
+    let patients = await getArray('patients');
+    this.setState({ patients });
+  };
+
+  generatePatient = async () => {
+    await this.getPatients();
+
+    let patient = new PatientModel();
+    await patient.setPatient();
+    let patients = this.state.patients;
+
+    // uniqueId incremented
+    let maxId = maxBy(patients, 'id');
+
+    if (patients.length === 0) {
+      maxId = { id: 0 };
+    }
+
+    patient.id = maxId.id + 1;
+
+    // reload patient in the component
+    await this.getPatients();
+    await this.setState({
+      ...patient,
+      firstRender: true,
+    });
+  };
+
+  updatePatient = (key, value) => {
+    console.log(key, value);
+  };
 
   render() {
-    const {
-      medicalCase: {
-        patient: {
-          firstname,
-          lastname,
-          birthdate,
-          breathingRhythm,
-          heartbeat,
-          weight,
-          temperature,
-        },
-      },
-      updatePatient,
-      medicalCase,
-    } = this.props;
+    const { updatePatient } = this;
 
-    return (
+    const {
+      firstname,
+      lastname,
+      birthdate,
+      breathingRhythm,
+      heartbeat,
+      weight,
+      firstRender,
+      temperature,
+    } = this.state;
+
+    console.log(this.props, this.state);
+
+
+    return !firstRender ? (
+      <LiwiLoader />
+    ) : (
       <ScrollView>
         <LiwiTitle2>
           {firstname} - {lastname}{' '}
@@ -48,7 +105,6 @@ export default class MedicalCase extends React.Component<Props, State> {
               label={'Prénom'}
               change={updatePatient}
               index={'firstname'}
-              id={medicalCase.id}
               iconName={'user'}
               iconType={'AntDesign'}
             />
@@ -59,7 +115,6 @@ export default class MedicalCase extends React.Component<Props, State> {
               label={'Nom'}
               change={updatePatient}
               index={'lastname'}
-              id={medicalCase.id}
               iconName={'user'}
               iconType={'AntDesign'}
             />
@@ -85,7 +140,6 @@ export default class MedicalCase extends React.Component<Props, State> {
               label={'Rythme cardiaque'}
               change={updatePatient}
               index={'breathingRhythm'}
-              id={medicalCase.id}
               iconName={'heartbeat'}
               iconType={'FontAwesome'}
               keyboardType={'numeric'}
@@ -97,7 +151,6 @@ export default class MedicalCase extends React.Component<Props, State> {
               label={'Battements de cœur'}
               change={updatePatient}
               index={'heartbeat'}
-              id={medicalCase.id}
               iconName={'ios-headset'}
               iconType={'Ionicons'}
               keyboardType={'numeric'}
@@ -111,7 +164,6 @@ export default class MedicalCase extends React.Component<Props, State> {
               label={'Température'}
               change={updatePatient}
               index={'temperature'}
-              id={medicalCase.id}
               iconName={'temperature-celsius'}
               iconType={'MaterialCommunityIcons'}
               keyboardType={'numeric'}
@@ -123,7 +175,6 @@ export default class MedicalCase extends React.Component<Props, State> {
               label={'Poids'}
               change={updatePatient}
               index={'weight'}
-              id={medicalCase.id}
               iconName={'weight'}
               iconType={'MaterialCommunityIcons'}
               keyboardType={'numeric'}
