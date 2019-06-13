@@ -14,4 +14,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
+  columns: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  splitButton: {
+    flex: 0.5,
+    justifyContent: 'center',
+  },
 });

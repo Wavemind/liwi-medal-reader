@@ -4,6 +4,7 @@ import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import PatientUpdate from '../../screens/patientsContainer/patientUpdate';
+import PatientNew from '../../screens/patientsContainer/patientNew';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings/';
@@ -46,6 +47,15 @@ const Stack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         title: i18n.t('navigation:patient_profile'),
+      };
+    },
+  },
+  PatientNew: {
+    screen: PatientNew,
+    path: 'patient/',
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: i18n.t('navigation:patient_new'),
       };
     },
   },
