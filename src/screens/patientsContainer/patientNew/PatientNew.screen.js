@@ -7,23 +7,15 @@ import CustomInput from '../../../components/InputContainer/CustomInput/CustomIn
 import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
 import { Button, Col, Text, View } from 'native-base';
 import { LiwiTitle2 } from '../../../template/layout';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import maxBy from 'lodash/maxBy';
-import { getArray } from '../../../engine/api/LocalStorage';
-import LiwiLoader from '../../../utils/LiwiLoader';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import i18n from '../../../utils/i18n';
 
-import { styles } from './PatientUpdate.style';
+import { styles } from './PatientNew.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class PatientUpdate extends React.Component<Props, State> {
-
-  async componentWillMount() {
-    await this.generatePatient();
-  }
+export default class PatientNew extends React.Component<Props, State> {
 
   state = {
     firstRender: false,
@@ -32,41 +24,12 @@ export default class PatientUpdate extends React.Component<Props, State> {
     patients: [],
     firstname: '',
     lastname: '',
-    birthdate: '',
+    birthdate: new Date(1960, 1, 1),
     breathingRhythm: '',
     heartbeat: '',
     weight: '',
     temperature: '',
     id: '',
-  };
-
-  getPatients = async () => {
-    let patients = await getArray('patients');
-    this.setState({ patients });
-  };
-
-  generatePatient = async () => {
-    await this.getPatients();
-
-    let patient = new PatientModel();
-    await patient.setPatient();
-    let patients = this.state.patients;
-
-    // uniqueId incremented
-    let maxId = maxBy(patients, 'id');
-
-    if (patients.length === 0) {
-      maxId = { id: 0 };
-    }
-
-    patient.id = maxId.id + 1;
-
-    // reload patient in the component
-    await this.getPatients();
-    await this.setState({
-      ...patient,
-      firstRender: true,
-    });
   };
 
   updatePatient = (key, value) => {
@@ -80,17 +43,14 @@ export default class PatientUpdate extends React.Component<Props, State> {
       firstname,
       lastname,
       birthdate,
-      firstRender,
       sexe,
     } = this.state;
 
-    return !firstRender ? (
-      <LiwiLoader/>
-    ) : (
+    return (
       <ScrollView
         contentContainerStyle={styles.container}
       >
-        <LiwiTitle2 noBorder>{i18n.t('patient_update:title')}</LiwiTitle2>
+        <LiwiTitle2 noBorder>{i18n.t('patient_new:title')}</LiwiTitle2>
         <View>
           <Col>
             <CustomInput
@@ -138,11 +98,20 @@ export default class PatientUpdate extends React.Component<Props, State> {
         </View>
 
         <View bottom-view>
-          <Button
-            block
-          >
-            <Text>{i18n.t('update_patient:save')}</Text>
-          </Button>
+          <View style={styles.columns}>
+            <Button
+              light
+              style={styles.splitButton}
+            >
+              <Text>{i18n.t('patient_new:save_and_wait')}</Text>
+            </Button>
+            <Button
+              light
+              style={styles.splitButton}
+            >
+              <Text>{i18n.t('patient_new:save_and_case')}</Text>
+            </Button>
+          </View>
         </View>
       </ScrollView>
     );

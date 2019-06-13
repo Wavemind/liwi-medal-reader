@@ -59,6 +59,15 @@ i18n
         },
         patient_detail: {
         },
+        patient_update: {
+          title: 'Update patient',
+          save: 'Save'
+        },
+        patient_new: {
+          title: 'New patient',
+          save_and_wait: 'Save + add to waiting list',
+          save_and_case: 'Save + create new case',
+        },
         patient_list: {
           waiting: 'Patients waiting for',
           search: 'Search',
@@ -67,6 +76,15 @@ i18n
           status: 'Status',
           no_patients: 'There are no patients',
           not_found: 'No match found',
+        },
+        patient: {
+          first_name: 'First name',
+          last_name: 'Last name',
+          birth_date: 'Day of birth',
+          gender: 'Gender',
+          male: 'Male',
+          female: 'Female',
+
         },
         login: {
           server: 'server',
@@ -100,7 +118,8 @@ i18n
           empty: 'No session',
         },
         navigation: {
-          patient_update: 'Patient Update',
+          patient_update: 'Update patient',
+          patient_new: 'New patient',
           patient_list: 'Patient list',
           settings: 'Settings',
           available_algorithms: 'Available algorithms',

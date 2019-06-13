@@ -71,8 +71,8 @@ export default class CustomDatePicker extends React.Component<Props, State> {
             modalTransparent={false}
             animationType={'fade'}
             androidMode={'default'}
-            textStyle={{ color: liwiColors.whiteColor }}
-            placeHolderTextStyle={{ color: liwiColors.whiteColor }}
+            textStyle={{ color: liwiColors.blackColor, padding:20 }}
+            placeHolderTextStyle={{ color: liwiColors.darkerGreyColor}}
             onDateChange={this._handleChangeValue}
             disabled={false}
           />

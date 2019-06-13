@@ -56,10 +56,10 @@ export const RightView = styled(LView).attrs({
 })``;
 
 export const ViewBlocColor = styled(LView).attrs({
-  backgroundColor: liwiColors.greyColor,
+  backgroundColor: liwiColors.whiteColor,
 })`
   border-radius: 4px;
-  color: white;
+  color: ${liwiColors.blackColor};
 `;
 
 export const CardView = styled(LView).attrs({
