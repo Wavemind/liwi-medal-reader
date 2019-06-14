@@ -14,12 +14,12 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import i18n from '../../../utils/i18n';
 
-import { styles } from './PatientUpdate.style';
+import { styles } from './PatientEdit.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class PatientUpdate extends React.Component<Props, State> {
+export default class PatientEdit extends React.Component<Props, State> {
 
   async componentWillMount() {
     await this.generatePatient();
@@ -84,9 +84,7 @@ export default class PatientUpdate extends React.Component<Props, State> {
       sexe,
     } = this.state;
 
-    return !firstRender ? (
-      <LiwiLoader/>
-    ) : (
+    return (
       <ScrollView
         contentContainerStyle={styles.container}
       >

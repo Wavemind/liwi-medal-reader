@@ -3,7 +3,7 @@ import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
-import PatientUpdate from '../../screens/patientsContainer/patientUpdate';
+import PatientEdit from '../../screens/patientsContainer/patientEdit';
 import PatientNew from '../../screens/patientsContainer/patientNew';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
@@ -59,8 +59,8 @@ const Stack = createStackNavigator({
       };
     },
   },
-  PatientUpdate: {
-    screen: PatientUpdate,
+  PatientEdit: {
+    screen: PatientEdit,
     path: 'patient/:id',
     navigationOptions: ({ navigation }) => {
       return {
