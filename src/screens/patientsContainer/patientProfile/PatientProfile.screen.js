@@ -114,7 +114,13 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   render() {
-    const { patient, algorithms, isGeneratingMedicalCase } = this.state;
+    const {
+      patient,
+      algorithms,
+      isGeneratingMedicalCase,
+    } = this.state;
+
+    const { navigation } = this.props;
 
     const flatPatient = {
       ...patient,
@@ -152,7 +158,19 @@ export default class PatientProfile extends React.Component<Props, State> {
         <LiwiTitle2 noBorder>
           {patient.firstname} {patient.lastname}
         </LiwiTitle2>
-        <SeparatorLine style={styles.bottomMargin} />
+        <Text>
+          {moment(patient.birthdate).format('DD/MM/YYYY')} - {patient.gender}
+        </Text>
+        <Button
+          onPress={() =>
+            navigation.navigate('PatientEdit', {
+              id: patient.id,
+            })
+          }
+        >
+          <Text>Edit</Text>
+        </Button>
+        <SeparatorLine style={styles.bottomMargin}/>
         {algorithms.length > 0 ? (
           <View flex>
             <View>

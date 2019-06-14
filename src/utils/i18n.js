@@ -124,6 +124,7 @@ i18n
           patient_update: 'Update patient',
           patient_new: 'New patient',
           patient_list: 'Patient list',
+          patient_profile: 'Patient profile',
           settings: 'Settings',
           available_algorithms: 'Available algorithms',
         },
