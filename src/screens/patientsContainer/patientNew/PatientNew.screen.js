@@ -3,9 +3,11 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
+import { Button, Col, Text, View } from 'native-base';
+import * as _ from 'lodash';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
-import { Button, Col, Text, View } from 'native-base';
+import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import i18n from '../../../utils/i18n';
@@ -18,32 +20,68 @@ type State = {};
 export default class PatientNew extends React.Component<Props, State> {
 
   state = {
-    firstRender: false,
-    medicalCases: [],
-    isGeneratingPatient: true,
-    patients: [],
+    id: '',
     firstname: '',
     lastname: '',
     birthdate: new Date(1960, 1, 1),
-    breathingRhythm: '',
-    heartbeat: '',
-    weight: '',
-    temperature: '',
-    id: '',
+    gender: null,
+    medicalCases: [],
+    errors: {},
   };
 
-  updatePatient = (key, value) => {
-    console.log(key, value);
+  // Update state value of patient
+  updatePatient = async (key, value) => {
+    await this.setState({ [key]: value });
+  };
+
+  // Save patient and redirect to waiting list
+  saveWaitingList = async () => {
+    const { navigation } = this.props;
+    let result = await this.savePatient();
+
+    if (result) {
+      navigation.navigate('PatientList')
+    }
+  };
+
+  // Save patient and redirect to medical case
+  saveNewCase = async () => {
+    const { navigation } = this.props;
+    let result = await this.savePatient();
+
+    if (result) {
+      navigation.navigate('MUST BE CHANGE')
+    }
+  };
+
+  // Set patient in localStorage
+  savePatient = async () => {
+    let patient = new PatientModel();
+    let errors = await patient.validate(this.state);
+
+    // Create patient if there are no errors
+    if (_.isEmpty(errors)) {
+      patient.save(this.state);
+      return true
+    } else {
+      this.setState({errors: errors});
+      return false;
+    }
   };
 
   render() {
-    const { updatePatient } = this;
+    const {
+      updatePatient,
+      saveWaitingList,
+      saveNewCase,
+    } = this;
 
     const {
       firstname,
       lastname,
       birthdate,
-      sexe,
+      gender,
+      errors,
     } = this.state;
 
     return (
@@ -60,6 +98,7 @@ export default class PatientNew extends React.Component<Props, State> {
               index={'firstname'}
               iconName={'user'}
               iconType={'AntDesign'}
+              error={errors.firstname}
             />
             <CustomInput
               init={lastname}
@@ -68,20 +107,22 @@ export default class PatientNew extends React.Component<Props, State> {
               index={'lastname'}
               iconName={'user'}
               iconType={'AntDesign'}
+              error={errors.lastname}
             />
           </Col>
           <Col>
             <CustomSwitchButton
-              init={sexe}
+              init={gender}
               label={i18n.t('patient:gender')}
               change={updatePatient}
-              index={'sexe'}
+              index={'gender'}
               label1={i18n.t('patient:male')}
               label2={i18n.t('patient:female')}
               value1={'male'}
               value2={'female'}
               iconName={'human-male-female'}
               iconType={'MaterialCommunityIcons'}
+              error={errors.gender}
             />
           </Col>
           <Col>
@@ -92,6 +133,7 @@ export default class PatientNew extends React.Component<Props, State> {
               index={'birthdate'}
               iconName={'birthday-cake'}
               iconType={'FontAwesome'}
+              error={errors.birthdate}
 
             />
           </Col>
@@ -102,12 +144,14 @@ export default class PatientNew extends React.Component<Props, State> {
             <Button
               light
               style={styles.splitButton}
+              onPress={saveWaitingList}
             >
               <Text>{i18n.t('patient_new:save_and_wait')}</Text>
             </Button>
             <Button
               light
               style={styles.splitButton}
+              onPress={saveNewCase}
             >
               <Text>{i18n.t('patient_new:save_and_case')}</Text>
             </Button>

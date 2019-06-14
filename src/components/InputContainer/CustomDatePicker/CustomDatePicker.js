@@ -22,7 +22,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
     nextState: Readonly<S>
   ): boolean {
     return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init
+      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
     );
   }
 
@@ -42,7 +42,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
   };
 
   render() {
-    const { label, iconName, iconType } = this.props;
+    const { label, iconName, iconType, error } = this.props;
     const { value } = this.state;
 
     return (
@@ -60,6 +60,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
           >
             {label}
           </Text>
+          <Text style={{color: 'red'}}>{error}</Text>
         </View>
         <ViewBlocColor>
           <DatePicker

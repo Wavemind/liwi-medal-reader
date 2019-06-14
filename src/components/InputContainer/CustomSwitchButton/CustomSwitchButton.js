@@ -23,7 +23,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
     nextState: Readonly<S>
   ): boolean {
     return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init
+      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
     );
   }
 
@@ -31,8 +31,12 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
     this.setState({ value: this.props.init });
   }
 
-  _handleChangeValue = (value) =>
-    this.setState({ value: value});
+  _handleChangeValue = (value) => {
+    const { change, index } = this.props;
+    this.setState({ value: value });
+    change(index, value)
+  };
+
 
   render() {
     const {
@@ -43,6 +47,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
       value1,
       value2,
       iconType,
+      error
     } = this.props;
 
     const { value } = this.state;
@@ -62,6 +67,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
           >
             {label}
           </Text>
+          <Text style={{color: 'red'}}>{error}</Text>
         </View>
         <View style={styles.buttonWrapper}>
           <Button light style={[(value === value1 ? styles.active : null), styles.buttonSplit]} onPress={() => this._handleChangeValue(value1)}>
