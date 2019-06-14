@@ -49,7 +49,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
     const { code, codeConfirmation } = this.state;
 
     let mediumRegex = new RegExp(
-      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
+      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
     );
 
     if (code.length > 0 && codeConfirmation.length > 0) {
@@ -84,56 +84,54 @@ export default class SetCodeSession extends React.Component<Props, State> {
     }
 
     return (
-      <ScrollView>
-        <View flex-container-column>
-          <View flex-center>
-            <Form>
-              <LiwiTitle2>
-                {t('welcome')} {session.data.first_name} {session.data.last_name}
-              </LiwiTitle2>
-              <Item success={success} error={error} login-input floatingLabel>
-                <Label>{t('your_code')}</Label>
-                <Input
-                  onChangeText={this.changeCode}
-                  value={code}
-                  textContentType="emailAddress"
-                  secureTextEntry
-                />
-              </Item>
+      <View flex-container-column>
+        <View margin-auto padding-auto>
+          <Form>
+            <LiwiTitle2 noBorder>
+              {t('welcome')} {session.data.first_name} {session.data.last_name}
+            </LiwiTitle2>
+            <Item success={success} error={error} login-input floatingLabel>
+              <Label>{t('your_code')}</Label>
+              <Input
+                onChangeText={this.changeCode}
+                value={code}
+                textContentType="emailAddress"
+                secureTextEntry
+              />
+            </Item>
 
-              <Item success={success} error={error} login-input floatingLabel>
-                <Label>{t('type_your_code')}</Label>
-                <Input
-                  onChangeText={this.changeCodeConfirmation}
-                  value={codeConfirmation}
-                  secureTextEntry
-                />
-              </Item>
-              {error ? (
-                <React.Fragment>
-                  <Text padded error>
-                    - {t('error_same')}
-                  </Text>
-                  <Text padded error>
-                    - {t('error_char')}
-                  </Text>
-                  <Text padded error>
-                    - {t('error_letter')}
-                  </Text>
-                </React.Fragment>
-              ) : null}
-              <Button
-                full
-                style={styles.marginTop}
-                onPress={() => this.setLocalCode()}
-                disabled={success !== true}
-              >
-                <Text> {t('set_code')} </Text>
-              </Button>
-            </Form>
-          </View>
+            <Item success={success} error={error} login-input floatingLabel>
+              <Label>{t('type_your_code')}</Label>
+              <Input
+                onChangeText={this.changeCodeConfirmation}
+                value={codeConfirmation}
+                secureTextEntry
+              />
+            </Item>
+            {error ? (
+              <React.Fragment>
+                <Text padded error>
+                  - {t('error_same')}
+                </Text>
+                <Text padded error>
+                  - {t('error_char')}
+                </Text>
+                <Text padded error>
+                  - {t('error_letter')}
+                </Text>
+              </React.Fragment>
+            ) : null}
+            <Button
+              full
+              style={styles.marginTop}
+              onPress={() => this.setLocalCode()}
+              disabled={success !== true}
+            >
+              <Text> {t('set_code')} </Text>
+            </Button>
+          </Form>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
