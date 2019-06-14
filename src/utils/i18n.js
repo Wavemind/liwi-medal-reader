@@ -28,6 +28,9 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        form: {
+          required: ' is required'
+        },
         menu: {
           triage: 'Triage',
           assessment: 'First look assessment',

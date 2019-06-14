@@ -35,9 +35,13 @@ export default class PatientProfile extends React.Component<Props, State> {
     isGeneratingMedicalCase: false,
   };
 
+  async componentWillMount() {
+    await this.getPatient();
+  }
+
   // Get patient data storaged in localstorage
   // Get algo
-  async getPatientAlgo() {
+  async getPatient() {
     const { navigation } = this.props;
     let id = navigation.getParam('id');
 
@@ -45,10 +49,6 @@ export default class PatientProfile extends React.Component<Props, State> {
     let algorithms = await getItems('algorithms');
 
     this.setState({ patient, algorithms });
-  }
-
-  async componentWillMount() {
-    await this.getPatientAlgo();
   }
 
   // Generate new medicalCase with algo selected
@@ -98,8 +98,8 @@ export default class PatientProfile extends React.Component<Props, State> {
     // set in localstorage
     await setItemFromArray('patients', patient, patient.id);
 
-    // get algo from localstorage (because we modify them)
-    await this.getPatientAlgo();
+    // Get algo from localstorage (because we modify them)
+    await this.getPatient();
     await this.setState({ isGeneratingMedicalCase: false });
   };
 

@@ -24,7 +24,7 @@ export default class CustomInput extends React.Component<Props, State> {
     nextState: Readonly<S>
   ): boolean {
     return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init
+      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
     );
   }
 
@@ -49,6 +49,7 @@ export default class CustomInput extends React.Component<Props, State> {
       iconName,
       iconType,
       keyboardType,
+      error,
     } = this.props;
 
     const { value } = this.state;
@@ -68,6 +69,7 @@ export default class CustomInput extends React.Component<Props, State> {
           >
             {label}
           </Text>
+          <Text style={{color: 'red'}}>{error}</Text>
         </View>
         <ViewBlocColor>
           <Input

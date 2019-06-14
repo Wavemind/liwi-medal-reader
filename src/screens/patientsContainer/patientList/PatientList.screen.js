@@ -16,10 +16,8 @@ import {
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getArray, setItem } from '../../../engine/api/LocalStorage';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import { getArray } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
-import maxBy from 'lodash/maxBy';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 
@@ -36,6 +34,16 @@ export default class PatientList extends React.Component<Props, State> {
 
   async componentWillMount() {
     await this.getPatients();
+  }
+
+  // Should component update sur l'objet patient
+  async shouldComponentUpdate(): boolean {
+    let patients = await getArray('patients');
+
+    if (this.state.patients.length !== patients.length) {
+      this.getPatients();
+      return true;
+    }
   }
 
   // Get patients in localstorage
@@ -139,6 +147,7 @@ export default class PatientList extends React.Component<Props, State> {
                     <ListItem
                       rounded
                       block
+                      key={patient.id}
                       spaced
                       onPress={() =>
                         navigation.navigate('PatientProfile', {
