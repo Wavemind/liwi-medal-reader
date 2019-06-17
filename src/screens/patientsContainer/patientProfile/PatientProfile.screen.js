@@ -21,6 +21,7 @@ import i18n from '../../../utils/i18n';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import moment from 'moment';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
 type Props = {};
 type State = {};
@@ -28,27 +29,31 @@ type State = {};
 export default class PatientProfile extends React.Component<Props, State> {
   state = {
     patient: {
+      birthdate: '01/01/1900',
       medicalCases: [],
     },
     selected: 'null',
     algorithms: [],
     isGeneratingMedicalCase: false,
+    firstRender: false,
   };
 
+  async componentWillMount() {
+    await this.getPatient();
+  }
+
   // Get patient data storaged in localstorage
-  // Get algo
-  async getPatientAlgo() {
+  async getPatient() {
     const { navigation } = this.props;
     let id = navigation.getParam('id');
 
     let patient = await getItemFromArray('patients', 'id', id);
     let algorithms = await getItems('algorithms');
 
-    this.setState({ patient, algorithms });
-  }
-
-  async componentWillMount() {
-    await this.getPatientAlgo();
+    this.setState({
+      patient,
+      algorithms,
+      firstRender: true});
   }
 
   // Generate new medicalCase with algo selected
@@ -98,8 +103,8 @@ export default class PatientProfile extends React.Component<Props, State> {
     // set in localstorage
     await setItemFromArray('patients', patient, patient.id);
 
-    // get algo from localstorage (because we modify them)
-    await this.getPatientAlgo();
+    // Get algo from localstorage (because we modify them)
+    await this.getPatient();
     await this.setState({ isGeneratingMedicalCase: false });
   };
 
@@ -114,7 +119,14 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   render() {
-    const { patient, algorithms, isGeneratingMedicalCase } = this.state;
+    const {
+      patient,
+      algorithms,
+      isGeneratingMedicalCase,
+      firstRender,
+    } = this.state;
+
+    const { navigation } = this.props;
 
     const flatPatient = {
       ...patient,
@@ -147,12 +159,26 @@ export default class PatientProfile extends React.Component<Props, State> {
       );
     });
 
-    return (
+    return !firstRender ? (
+      <LiwiLoader/>
+    ) : (
       <View padding-auto flex>
         <LiwiTitle2 noBorder>
           {patient.firstname} {patient.lastname}
         </LiwiTitle2>
-        <SeparatorLine style={styles.bottomMargin} />
+        <Text>
+          {moment(patient.birthdate).format('d MMMM YYYY')} - {patient.gender}
+        </Text>
+        <Button
+          onPress={() =>
+            navigation.navigate('PatientNew', {
+              idPatient: patient.id,
+            })
+          }
+        >
+          <Text>Edit</Text>
+        </Button>
+        <SeparatorLine style={styles.bottomMargin}/>
         {algorithms.length > 0 ? (
           <View flex>
             <View>

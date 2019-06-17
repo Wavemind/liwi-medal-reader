@@ -16,10 +16,8 @@ import {
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getArray, setItem } from '../../../engine/api/LocalStorage';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import { getArray } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
-import maxBy from 'lodash/maxBy';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 
@@ -35,16 +33,21 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    await this.getPatients();
+    this.props.navigation.addListener(
+      'willFocus',
+      async () => {
+        await this.getPatients();
+      }
+    );
   }
 
-  // get patients in localstorage
+  // Get patients in localstorage
   getPatients = async () => {
     let patients = await getArray('patients');
     this.setState({ patients });
   };
 
-  // update state switch asc / desc
+  // Update state switch asc / desc
   orderByName = () => {
     this.setState({
       orderByName: this.state.orderByName === 'asc' ? 'desc' : 'asc',
@@ -52,31 +55,12 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   // Generate a new patient based on model Patient
-  generatePatient = async () => {
-    await this.setState({ isGeneratingPatient: true });
-    let patient = new PatientModel();
-    await patient.setPatient();
-    let patients = this.state.patients;
-
-    // uniqueId incremented
-    let maxId = maxBy(patients, 'id');
-
-    if (patients.length === 0) {
-      maxId = { id: 0 };
-    }
-
-    patient.id = maxId.id + 1;
-    patients.push(patient);
-
-    // Set in localstorage
-    await setItem('patients', patients);
-
-    // reload patient in the component
-    await this.getPatients();
-    await this.setState({ isGeneratingPatient: false });
+  newPatient = async () => {
+    const { navigation } = this.props;
+    navigation.navigate('PatientNew', { idPatient: null});
   };
 
-  // set string search
+  // Set string search
   search = (search) => {
     this.setState({ search });
   };
@@ -85,16 +69,18 @@ export default class PatientList extends React.Component<Props, State> {
     const { patients, search, orderByName, isGeneratingPatient } = this.state;
     const { navigation } = this.props;
 
-    // filter patient based on firstname and alstname
+    console.log(patients);
+
+    // Filter patient based on first name and last name
     let filteredPatients = filter(patients, (p) => {
       return p.firstname.includes(search) || p.lastname.includes(search);
     });
 
-    // order the patients
+    // Order the patients
     let orderedFilteredPatients = orderBy(
       filteredPatients,
       ['lastname'],
-      [orderByName]
+      [orderByName],
     );
 
     return (
@@ -104,18 +90,18 @@ export default class PatientList extends React.Component<Props, State> {
 
           <View flex-container-row>
             <Item round style={styles.input}>
-              <Icon active name="search" />
-              <Input value={search} onChangeText={this.search} />
+              <Icon active name="search"/>
+              <Input value={search} onChangeText={this.search}/>
             </Item>
             <Button
               center
               rounded
               light
               red
-              onPress={this.generatePatient}
+              onPress={this.newPatient}
               disabled={isGeneratingPatient}
             >
-              <Icon type={'MaterialCommunityIcons'} name="plus" white />
+              <Icon type={'MaterialCommunityIcons'} name="plus" white/>
             </Button>
           </View>
 
@@ -127,25 +113,25 @@ export default class PatientList extends React.Component<Props, State> {
               {i18n.t('patient_list:waiting')}
             </Text>
             <Picker style={styles.picker} mode="dropdown">
-              <Picker.Item label="TRIAGE (11)" value="triage" />
-              <Picker.Item label="UNKNOWN (0)" value="unknown" />
+              <Picker.Item label="TRIAGE (11)" value="triage"/>
+              <Picker.Item label="UNKNOWN (0)" value="unknown"/>
             </Picker>
           </View>
 
-          <SeparatorLine />
+          <SeparatorLine/>
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{i18n.t('patient_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByName}>
               {orderByName === 'asc' ? (
-                <Icon name="arrow-down" />
+                <Icon name="arrow-down"/>
               ) : (
-                <Icon name="arrow-up" />
+                <Icon name="arrow-up"/>
               )}
               <Text>{i18n.t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light>
-              <Icon name="arrow-down" />
+              <Icon name="arrow-down"/>
               <Text>{i18n.t('patient_list:status')}</Text>
             </Button>
           </View>
@@ -158,6 +144,7 @@ export default class PatientList extends React.Component<Props, State> {
                     <ListItem
                       rounded
                       block
+                      key={patient.id}
                       spaced
                       onPress={() =>
                         navigation.navigate('PatientProfile', {
@@ -167,7 +154,7 @@ export default class PatientList extends React.Component<Props, State> {
                     >
                       <View w50>
                         <Text>
-                          {patient.lastname} {patient.firstname}
+                          {patient.id} : {patient.lastname} {patient.firstname}
                         </Text>
                       </View>
                       <View w50>
