@@ -37,8 +37,10 @@ export default class CustomDatePicker extends React.Component<Props, State> {
   }
 
   _handleChangeValue = (value) => {
+    const {change, index} = this.props;
+
     this.setState({ value: new Date(value).toString() });
-    this.props.change(this.props.index, moment(value).format('DD/MM/YYYY'));
+    change(index, moment(value).format('DD/MM/YYYY'));
   };
 
   render() {
@@ -60,11 +62,11 @@ export default class CustomDatePicker extends React.Component<Props, State> {
           >
             {label}
           </Text>
-          <Text style={{color: 'red'}}>{error}</Text>
+          <Text error>{error}</Text>
         </View>
         <ViewBlocColor>
           <DatePicker
-            defaultDate={moment(value, 'DD/MM/YYYY').toDate()}
+            defaultDate={moment(value).toDate()}
             minimumDate={new Date(1930, 1, 1)}
             maximumDate={new Date()}
             locale={'fr'}

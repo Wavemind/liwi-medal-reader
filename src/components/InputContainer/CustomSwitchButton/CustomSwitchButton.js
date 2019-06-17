@@ -67,7 +67,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
           >
             {label}
           </Text>
-          <Text style={{color: 'red'}}>{error}</Text>
+          <Text error>{error}</Text>
         </View>
         <View style={styles.buttonWrapper}>
           <Button light style={[(value === value1 ? styles.active : null), styles.buttonSplit]} onPress={() => this._handleChangeValue(value1)}>

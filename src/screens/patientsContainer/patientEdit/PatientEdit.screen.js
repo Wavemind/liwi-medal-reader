@@ -7,9 +7,7 @@ import CustomInput from '../../../components/InputContainer/CustomInput/CustomIn
 import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
 import { Button, Col, Text, View } from 'native-base';
 import { LiwiTitle2 } from '../../../template/layout';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import maxBy from 'lodash/maxBy';
-import { getArray } from '../../../engine/api/LocalStorage';
+import { getItemFromArray } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import i18n from '../../../utils/i18n';
@@ -21,53 +19,34 @@ type State = {};
 
 export default class PatientEdit extends React.Component<Props, State> {
 
-  async componentWillMount() {
-    await this.generatePatient();
-  }
-
   state = {
     firstRender: false,
-    medicalCases: [],
-    isGeneratingPatient: true,
-    patients: [],
+    id: '',
     firstname: '',
     lastname: '',
-    birthdate: '',
-    breathingRhythm: '',
-    heartbeat: '',
-    weight: '',
-    temperature: '',
-    id: '',
+    birthdate: new Date(1960, 1, 1),
+    gender: null,
+    medicalCases: [],
+    errors: {},
   };
 
-  getPatients = async () => {
-    let patients = await getArray('patients');
-    this.setState({ patients });
-  };
+  async componentWillMount() {
+    await this.getPatient();
+  }
 
-  generatePatient = async () => {
-    await this.getPatients();
+  // Get patient data storaged in localstorage
+  async getPatient() {
+    const { navigation } = this.props;
+    let id = navigation.getParam('id');
 
-    let patient = new PatientModel();
-    await patient.setPatient();
-    let patients = this.state.patients;
+    let patient = await getItemFromArray('patients', 'id', id);
 
-    // uniqueId incremented
-    let maxId = maxBy(patients, 'id');
-
-    if (patients.length === 0) {
-      maxId = { id: 0 };
-    }
-
-    patient.id = maxId.id + 1;
-
-    // reload patient in the component
-    await this.getPatients();
-    await this.setState({
-      ...patient,
-      firstRender: true,
-    });
-  };
+    this.setState(
+      {
+        ...patient,
+        firstRender: true,
+      });
+  }
 
   updatePatient = (key, value) => {
     console.log(key, value);
@@ -78,13 +57,16 @@ export default class PatientEdit extends React.Component<Props, State> {
 
     const {
       firstname,
+      firstRender,
       lastname,
       birthdate,
-      firstRender,
-      sexe,
+      gender,
+      errors,
     } = this.state;
 
-    return (
+    return !firstRender ? (
+      <LiwiLoader/>
+    ) : (
       <ScrollView
         contentContainerStyle={styles.container}
       >
@@ -98,6 +80,7 @@ export default class PatientEdit extends React.Component<Props, State> {
               index={'firstname'}
               iconName={'user'}
               iconType={'AntDesign'}
+              error={errors.firstname}
             />
             <CustomInput
               init={lastname}
@@ -106,20 +89,22 @@ export default class PatientEdit extends React.Component<Props, State> {
               index={'lastname'}
               iconName={'user'}
               iconType={'AntDesign'}
+              error={errors.lastname}
             />
           </Col>
           <Col>
             <CustomSwitchButton
-              init={sexe}
+              init={gender}
               label={i18n.t('patient:gender')}
               change={updatePatient}
-              index={'sexe'}
+              index={'gender'}
               label1={i18n.t('patient:male')}
               label2={i18n.t('patient:female')}
               value1={'male'}
               value2={'female'}
               iconName={'human-male-female'}
               iconType={'MaterialCommunityIcons'}
+              error={errors.gender}
             />
           </Col>
           <Col>
@@ -130,6 +115,7 @@ export default class PatientEdit extends React.Component<Props, State> {
               index={'birthdate'}
               iconName={'birthday-cake'}
               iconType={'FontAwesome'}
+              error={errors.birthdate}
 
             />
           </Col>
