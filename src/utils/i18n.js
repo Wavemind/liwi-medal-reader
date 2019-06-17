@@ -28,6 +28,9 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        assessment: {
+          title: 'First look assessment',
+        },
         form: {
           required: ' is required'
         },

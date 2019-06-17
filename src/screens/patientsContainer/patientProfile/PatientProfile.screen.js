@@ -113,9 +113,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     const { setMedicalCase, navigation } = this.props;
     await setMedicalCase(medicalCase);
 
-    navigation.navigate('WorkCase', {
-      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
-    });
+    navigation.navigate('Assessment');
   };
 
   render() {
