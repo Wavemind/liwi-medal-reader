@@ -58,7 +58,12 @@ export const setItemFromArray = async (key, newItem, id) => {
       return item.id === id;
     });
 
-    items[index] = newItem;
+    if (index === -1) {
+      items.push(newItem);
+    } else {
+      items[index] = newItem;
+    }
+
     await setItem(key, items);
   }
 

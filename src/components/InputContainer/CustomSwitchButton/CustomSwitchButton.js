@@ -23,7 +23,9 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
     nextState: Readonly<S>
   ): boolean {
     return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
+      this.state.value !== nextState.value ||
+      this.props.init !== nextProps.init ||
+      this.props.error !== nextProps.error
     );
   }
 
@@ -34,9 +36,8 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
   _handleChangeValue = (value) => {
     const { change, index } = this.props;
     this.setState({ value: value });
-    change(index, value)
+    change(index, value);
   };
-
 
   render() {
     const {
@@ -47,7 +48,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
       value1,
       value2,
       iconType,
-      error
+      error,
     } = this.props;
 
     const { value } = this.state;
@@ -70,11 +71,29 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
           <Text error>{error}</Text>
         </View>
         <View style={styles.buttonWrapper}>
-          <Button light style={[(value === value1 ? styles.active : null), styles.buttonSplit]} onPress={() => this._handleChangeValue(value1)}>
-            <Text style={value === value1 ? styles.activeText : null}>{label1}</Text>
+          <Button
+            light
+            style={[
+              value === value1 ? styles.active : null,
+              styles.buttonSplit,
+            ]}
+            onPress={() => this._handleChangeValue(value1)}
+          >
+            <Text style={value === value1 ? styles.activeText : null}>
+              {label1}
+            </Text>
           </Button>
-          <Button light style={[(value === value2 ? styles.active : null), styles.buttonSplit]} onPress={() => this._handleChangeValue(value2)}>
-            <Text style={value === value2 ? styles.activeText : null}>{label2}</Text>
+          <Button
+            light
+            style={[
+              value === value2 ? styles.active : null,
+              styles.buttonSplit,
+            ]}
+            onPress={() => this._handleChangeValue(value2)}
+          >
+            <Text style={value === value2 ? styles.activeText : null}>
+              {label2}
+            </Text>
           </Button>
         </View>
       </View>
