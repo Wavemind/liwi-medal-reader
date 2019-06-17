@@ -3,15 +3,14 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View } from 'react-native';
-import { Form, Icon, Input, Text } from 'native-base';
-import { styles } from './CustomInput.style';
-import { ViewBlocColor } from '../../../template/layout';
+import { Icon, Text, Button } from 'native-base';
+import { styles } from './CustomSwitchButton.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class CustomInput extends React.Component<Props, State> {
-  state = { value: '' };
+export default class CustomSwitchButton extends React.Component<Props, State> {
+  state = { value: null };
 
   static defaultProps = {
     iconName: false,
@@ -28,34 +27,33 @@ export default class CustomInput extends React.Component<Props, State> {
     );
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>): void {
-    // if (nextProps.id !== this.props.id) {
-    //   this.setState({ value: nextProps.init });
-    // }
-  }
-
   componentWillMount(): void {
     this.setState({ value: this.props.init });
   }
 
-  _handleChangeValue = (value) =>
-    this.setState({ value: value.nativeEvent.text });
+  _handleChangeValue = (value) => {
+    const { change, index } = this.props;
+    this.setState({ value: value });
+    change(index, value)
+  };
+
 
   render() {
     const {
       label,
-      change,
-      index,
       iconName,
+      label1,
+      label2,
+      value1,
+      value2,
       iconType,
-      keyboardType,
-      error,
+      error
     } = this.props;
 
     const { value } = this.state;
 
     return (
-      <Form style={styles.form}>
+      <View style={styles.form}>
         <View style={styles.view}>
           {iconName && iconType ? (
             <Icon name={iconName} type={iconType} style={styles.icon} />
@@ -71,16 +69,15 @@ export default class CustomInput extends React.Component<Props, State> {
           </Text>
           <Text error>{error}</Text>
         </View>
-        <ViewBlocColor>
-          <Input
-            common
-            keyboardType={keyboardType}
-            value={value}
-            onChange={this._handleChangeValue}
-            onEndEditing={(value) => change(index, value.nativeEvent.text)}
-          />
-        </ViewBlocColor>
-      </Form>
+        <View style={styles.buttonWrapper}>
+          <Button light style={[(value === value1 ? styles.active : null), styles.buttonSplit]} onPress={() => this._handleChangeValue(value1)}>
+            <Text style={value === value1 ? styles.activeText : null}>{label1}</Text>
+          </Button>
+          <Button light style={[(value === value2 ? styles.active : null), styles.buttonSplit]} onPress={() => this._handleChangeValue(value2)}>
+            <Text style={value === value2 ? styles.activeText : null}>{label2}</Text>
+          </Button>
+        </View>
+      </View>
     );
   }
 }

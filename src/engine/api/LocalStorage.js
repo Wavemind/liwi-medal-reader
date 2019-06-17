@@ -205,10 +205,11 @@ export const clearPatients = async () => {
   await AsyncStorage.removeItem('patients');
 };
 
-// Clear medical cases from local storage
+// Clear local storage
 export const clearLocalStorage = async () => {
   await AsyncStorage.removeItem('medicalCases');
   await AsyncStorage.removeItem('algorithms');
+  await AsyncStorage.removeItem('patients');
   await AsyncStorage.removeItem('sessions');
   await AsyncStorage.removeItem('lastLogin');
   await AsyncStorage.clear();

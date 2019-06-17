@@ -16,7 +16,7 @@ export default {
       width: screenWidth * 0.8,
     },
     '.common': {
-      color: liwiColors.whiteColor,
+      color: liwiColors.blackColor,
       paddingTop: 10,
       paddingLeft: 10,
     },
