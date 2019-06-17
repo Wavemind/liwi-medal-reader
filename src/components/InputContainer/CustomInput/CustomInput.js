@@ -69,7 +69,7 @@ export default class CustomInput extends React.Component<Props, State> {
           >
             {label}
           </Text>
-          <Text style={{color: 'red'}}>{error}</Text>
+          <Text error>{error}</Text>
         </View>
         <ViewBlocColor>
           <Input

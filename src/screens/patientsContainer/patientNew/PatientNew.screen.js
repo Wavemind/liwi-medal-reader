@@ -11,8 +11,10 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import i18n from '../../../utils/i18n';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 import { styles } from './PatientNew.style';
+import { getItemFromArray } from '../../../engine/api/LocalStorage';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -20,18 +22,32 @@ type State = {};
 export default class PatientNew extends React.Component<Props, State> {
 
   state = {
-    id: '',
-    firstname: '',
-    lastname: '',
-    birthdate: new Date(1960, 1, 1),
-    gender: null,
-    medicalCases: [],
     errors: {},
+    patient: {},
   };
+
+  async componentWillMount() {
+    const {
+      navigation
+    } = this.props;
+
+    let idPatient = navigation.getParam('idPatient');
+    console.log(idPatient)
+    if (idPatient === null) {
+      let patient = new PatientModel();
+      this.setState({ patient });
+    } else {
+      await this.getPatient()
+    }
+
+  }
+
 
   // Update state value of patient
   updatePatient = async (key, value) => {
-    await this.setState({ [key]: value });
+    const { patient } = this.state;
+    patient[key] = value;
+    await this.setState({ patient });
   };
 
   // Save patient and redirect to waiting list
@@ -39,8 +55,10 @@ export default class PatientNew extends React.Component<Props, State> {
     const { navigation } = this.props;
     let result = await this.savePatient();
 
+    console.log(navigation);
+
     if (result) {
-      navigation.navigate('PatientList')
+      navigation.dispatch(NavigationActions.back('patientList'));
     }
   };
 
@@ -50,21 +68,35 @@ export default class PatientNew extends React.Component<Props, State> {
     let result = await this.savePatient();
 
     if (result) {
-      navigation.navigate('MUST BE CHANGE')
+      navigation.navigate('MUST BE CHANGE');
     }
   };
 
+  async getPatient() {
+    const { navigation } = this.props;
+    let id = navigation.getParam('idPatient');
+
+    let patient = await getItemFromArray('patients', 'id', id);
+    patient = new PatientModel(patient);
+
+
+    console.log(patient)
+
+
+    this.setState({ patient });
+  }
+
   // Set patient in localStorage
   savePatient = async () => {
-    let patient = new PatientModel();
-    let errors = await patient.validate(this.state);
+    const { patient } = this.state;
+    let errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
-      patient.save(this.state);
-      return true
+      await patient.save();
+      return true;
     } else {
-      this.setState({errors: errors});
+      this.setState({ errors: errors });
       return false;
     }
   };
@@ -77,12 +109,20 @@ export default class PatientNew extends React.Component<Props, State> {
     } = this;
 
     const {
-      firstname,
-      lastname,
-      birthdate,
-      gender,
+      patient: {
+        firstname,
+        lastname,
+        birthdate,
+        gender,
+      },
       errors,
     } = this.state;
+
+    const {
+      navigation,
+    } = this.props;
+
+    let idPatient = navigation.getParam('idPatient');
 
     return (
       <ScrollView
@@ -90,6 +130,8 @@ export default class PatientNew extends React.Component<Props, State> {
       >
         <LiwiTitle2 noBorder>{i18n.t('patient_new:title')}</LiwiTitle2>
         <View>
+
+
           <Col>
             <CustomInput
               init={firstname}
@@ -140,22 +182,29 @@ export default class PatientNew extends React.Component<Props, State> {
         </View>
 
         <View bottom-view>
-          <View style={styles.columns}>
-            <Button
-              light
-              style={styles.splitButton}
-              onPress={saveWaitingList}
+          {
+            idPatient === null ? <View style={styles.columns}>
+              <Button
+                light
+                style={styles.splitButton}
+                onPress={saveWaitingList}
+              >
+                <Text>{i18n.t('patient_new:save_and_wait')}</Text>
+              </Button>
+              <Button
+                light
+                style={styles.splitButton}
+                onPress={saveNewCase}
+              >
+                <Text>{i18n.t('patient_new:save_and_case')}</Text>
+              </Button>
+            </View> : <Button
+              block
             >
-              <Text>{i18n.t('patient_new:save_and_wait')}</Text>
+              <Text>{i18n.t('update_patient:save')}</Text>
             </Button>
-            <Button
-              light
-              style={styles.splitButton}
-              onPress={saveNewCase}
-            >
-              <Text>{i18n.t('patient_new:save_and_case')}</Text>
-            </Button>
-          </View>
+          }
+
         </View>
       </ScrollView>
     );

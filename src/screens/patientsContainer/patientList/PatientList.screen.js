@@ -33,17 +33,12 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    await this.getPatients();
-  }
-
-  // Should component update sur l'objet patient
-  async shouldComponentUpdate(): boolean {
-    let patients = await getArray('patients');
-
-    if (this.state.patients.length !== patients.length) {
-      this.getPatients();
-      return true;
-    }
+    this.props.navigation.addListener(
+      'willFocus',
+      async () => {
+        await this.getPatients();
+      }
+    );
   }
 
   // Get patients in localstorage
@@ -62,7 +57,7 @@ export default class PatientList extends React.Component<Props, State> {
   // Generate a new patient based on model Patient
   newPatient = async () => {
     const { navigation } = this.props;
-    navigation.navigate('PatientNew');
+    navigation.navigate('PatientNew', { idPatient: null});
   };
 
   // Set string search
@@ -73,6 +68,8 @@ export default class PatientList extends React.Component<Props, State> {
   render() {
     const { patients, search, orderByName, isGeneratingPatient } = this.state;
     const { navigation } = this.props;
+
+    console.log(patients);
 
     // Filter patient based on first name and last name
     let filteredPatients = filter(patients, (p) => {
@@ -157,7 +154,7 @@ export default class PatientList extends React.Component<Props, State> {
                     >
                       <View w50>
                         <Text>
-                          {patient.lastname} {patient.firstname}
+                          {patient.id} : {patient.lastname} {patient.firstname}
                         </Text>
                       </View>
                       <View w50>

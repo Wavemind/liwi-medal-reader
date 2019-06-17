@@ -21,6 +21,7 @@ import i18n from '../../../utils/i18n';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import moment from 'moment';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
 type Props = {};
 type State = {};
@@ -28,11 +29,13 @@ type State = {};
 export default class PatientProfile extends React.Component<Props, State> {
   state = {
     patient: {
+      birthdate: '01/01/1900',
       medicalCases: [],
     },
     selected: 'null',
     algorithms: [],
     isGeneratingMedicalCase: false,
+    firstRender: false,
   };
 
   async componentWillMount() {
@@ -40,7 +43,6 @@ export default class PatientProfile extends React.Component<Props, State> {
   }
 
   // Get patient data storaged in localstorage
-  // Get algo
   async getPatient() {
     const { navigation } = this.props;
     let id = navigation.getParam('id');
@@ -48,7 +50,10 @@ export default class PatientProfile extends React.Component<Props, State> {
     let patient = await getItemFromArray('patients', 'id', id);
     let algorithms = await getItems('algorithms');
 
-    this.setState({ patient, algorithms });
+    this.setState({
+      patient,
+      algorithms,
+      firstRender: true});
   }
 
   // Generate new medicalCase with algo selected
@@ -118,6 +123,7 @@ export default class PatientProfile extends React.Component<Props, State> {
       patient,
       algorithms,
       isGeneratingMedicalCase,
+      firstRender,
     } = this.state;
 
     const { navigation } = this.props;
@@ -153,18 +159,20 @@ export default class PatientProfile extends React.Component<Props, State> {
       );
     });
 
-    return (
+    return !firstRender ? (
+      <LiwiLoader/>
+    ) : (
       <View padding-auto flex>
         <LiwiTitle2 noBorder>
           {patient.firstname} {patient.lastname}
         </LiwiTitle2>
         <Text>
-          {moment(patient.birthdate).format('DD/MM/YYYY')} - {patient.gender}
+          {moment(patient.birthdate).format('d MMMM YYYY')} - {patient.gender}
         </Text>
         <Button
           onPress={() =>
-            navigation.navigate('PatientEdit', {
-              id: patient.id,
+            navigation.navigate('PatientNew', {
+              idPatient: patient.id,
             })
           }
         >
