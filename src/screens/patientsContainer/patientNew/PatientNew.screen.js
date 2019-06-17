@@ -20,28 +20,30 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class PatientNew extends React.Component<Props, State> {
-
   state = {
     errors: {},
     patient: {},
+    firstRender: false,
   };
 
   async componentWillMount() {
-    const {
-      navigation
-    } = this.props;
+    const { navigation } = this.props;
 
     let idPatient = navigation.getParam('idPatient');
-    console.log(idPatient)
+    console.log(idPatient);
     if (idPatient === null) {
       let patient = new PatientModel();
-      this.setState({ patient });
+      this.setState({ patient, firstRender: true });
     } else {
-      await this.getPatient()
+      await this.getPatient();
     }
-
   }
 
+  editPatient = async () => {
+    await this.savePatient();
+    this.props.navigation.dispatch(NavigationActions.back('patientProfile', {id: this.state.patient.id}));
+
+  }
 
   // Update state value of patient
   updatePatient = async (key, value) => {
@@ -54,8 +56,6 @@ export default class PatientNew extends React.Component<Props, State> {
   saveWaitingList = async () => {
     const { navigation } = this.props;
     let result = await this.savePatient();
-
-    console.log(navigation);
 
     if (result) {
       navigation.dispatch(NavigationActions.back('patientList'));
@@ -79,11 +79,9 @@ export default class PatientNew extends React.Component<Props, State> {
     let patient = await getItemFromArray('patients', 'id', id);
     patient = new PatientModel(patient);
 
+    console.log(patient, id);
 
-    console.log(patient)
-
-
-    this.setState({ patient });
+    this.setState({ patient, firstRender: true });
   }
 
   // Set patient in localStorage
@@ -102,36 +100,26 @@ export default class PatientNew extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      updatePatient,
-      saveWaitingList,
-      saveNewCase,
-    } = this;
+    const { updatePatient, saveWaitingList, saveNewCase } = this;
 
     const {
-      patient: {
-        firstname,
-        lastname,
-        birthdate,
-        gender,
-      },
+      patient: { firstname, lastname, birthdate, gender, id },
       errors,
+      firstRender,
     } = this.state;
 
-    const {
-      navigation,
-    } = this.props;
+    const { navigation } = this.props;
 
     let idPatient = navigation.getParam('idPatient');
 
+    if (!firstRender) {
+      return null;
+    }
+
     return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-      >
+      <ScrollView contentContainerStyle={styles.container}>
         <LiwiTitle2 noBorder>{i18n.t('patient_new:title')}</LiwiTitle2>
         <View>
-
-
           <Col>
             <CustomInput
               init={firstname}
@@ -176,14 +164,13 @@ export default class PatientNew extends React.Component<Props, State> {
               iconName={'birthday-cake'}
               iconType={'FontAwesome'}
               error={errors.birthdate}
-
             />
           </Col>
         </View>
 
         <View bottom-view>
-          {
-            idPatient === null ? <View style={styles.columns}>
+          {idPatient === null ? (
+            <View style={styles.columns}>
               <Button
                 light
                 style={styles.splitButton}
@@ -191,20 +178,18 @@ export default class PatientNew extends React.Component<Props, State> {
               >
                 <Text>{i18n.t('patient_new:save_and_wait')}</Text>
               </Button>
-              <Button
-                light
-                style={styles.splitButton}
-                onPress={saveNewCase}
-              >
+              <Button light style={styles.splitButton} onPress={saveNewCase}>
                 <Text>{i18n.t('patient_new:save_and_case')}</Text>
               </Button>
-            </View> : <Button
+            </View>
+          ) : (
+            <Button
               block
+              onPress={this.editPatient}
             >
               <Text>{i18n.t('update_patient:save')}</Text>
             </Button>
-          }
-
+          )}
         </View>
       </ScrollView>
     );
