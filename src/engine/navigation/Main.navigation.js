@@ -6,6 +6,7 @@ import MainScreen from '../../screens/main/Main.screen';
 import MedicalCase from '../../screens/medicalCasesContainer/medicalCase';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
+import Assessment from '../../screens/medicalCasesContainer/triageContainer/assessment';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
 
@@ -56,6 +57,15 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+        };
+      },
+    },
+    Assessment: {
+      screen: Assessment,
+      path: 'assessment',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: i18n.t('navigation:assessment'),
         };
       },
     },
