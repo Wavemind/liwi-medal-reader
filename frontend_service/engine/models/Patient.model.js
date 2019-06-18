@@ -24,10 +24,10 @@ export class PatientModel implements PatientModelInterface {
   create = (props = {}) => {
     const {
       id = null,
-      firstname = 'Ta où les vaches',
-      lastname = 'Crozin ',
+      firstname = __DEV__ ? 'Domachnie Tapotchki' : '',
+      lastname = __DEV__ ? 'домашние тапочки' : '',
       birthdate = moment('1970-01-01T00:00:00.000').format(),
-      gender = 'male',
+      gender = __DEV__ ? 'male' : '',
       medicalCases = [],
     } = props;
 
@@ -58,7 +58,6 @@ export class PatientModel implements PatientModelInterface {
 
   // Create patient and push it in local storage
   save = async () => {
-    // Set in localstorage
     await setItemFromArray('patients', this, this.id);
   };
 

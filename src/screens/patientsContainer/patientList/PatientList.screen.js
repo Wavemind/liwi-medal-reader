@@ -35,36 +35,39 @@ export default class PatientList extends React.Component<Props, State> {
     orderByName: 'asc',
     filterTerm: '',
     isGeneratingPatient: false,
-    statuses: [medicalCaseStatus.waitingTriage, medicalCaseStatus.waitingConsultation, medicalCaseStatus.waitingTest, medicalCaseStatus.waitingDiagnosis],
+    statuses: [
+      medicalCaseStatus.waitingTriage,
+      medicalCaseStatus.waitingConsultation,
+      medicalCaseStatus.waitingTest,
+      medicalCaseStatus.waitingDiagnosis,
+    ],
   };
 
   async componentWillMount() {
     const { navigation } = this.props;
 
     // Force refresh with a navigation.push
-    navigation.addListener(
-      'willFocus',
-      async () => {
-        await this.filterMedicalCases();
-      },
-    );
+    navigation.addListener('willFocus', async () => {
+      await this.filterMedicalCases();
+    });
   }
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
+    const { statuses } = this.state
     let patients = await getArray('patients');
     let medicalCases = [];
     patients.map((patient) => {
       patient.medicalCases.map((medicalCase) => {
-        if (includes([medicalCaseStatus.waitingTest, medicalCaseStatus.waitingDiagnosis, medicalCaseStatus.waitingConsultation, medicalCaseStatus.waitingTriage], medicalCase.status)) {
+        if (includes(statuses, medicalCase.status)) {
           medicalCase.patientId = patient.id;
           medicalCase.firstname = patient.firstname;
           medicalCase.lastname = patient.lastname;
-          medicalCases.push(merge(medicalCase));
+          medicalCases.push(medicalCase);
         }
       });
     });
-    medicalCases = flatten(medicalCases);
+
     this.setState({ medicalCases: medicalCases });
   };
 
@@ -101,12 +104,24 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   render() {
-    const { medicalCases, searchTerm, orderByName, isGeneratingPatient, statuses, filterTerm } = this.state;
+    const {
+      medicalCases,
+      searchTerm,
+      orderByName,
+      isGeneratingPatient,
+      statuses,
+      filterTerm,
+    } = this.state;
     const { navigation } = this.props;
 
     // Filter patient based on first name and last name by search term
     let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
-      return medicalCase.firstname.toLowerCase().includes(searchTerm.toLowerCase()) || medicalCase.lastname.toLowerCase().includes(searchTerm.toLowerCase());
+      return (
+        medicalCase.firstname
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        medicalCase.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     });
 
     // Filter patient based on medical case status
@@ -118,7 +133,7 @@ export default class PatientList extends React.Component<Props, State> {
     let orderedFilteredMedicalCases = orderBy(
       filteredMedicalCases,
       ['lastname'],
-      [orderByName],
+      [orderByName]
     );
 
     return (
@@ -128,8 +143,8 @@ export default class PatientList extends React.Component<Props, State> {
 
           <View flex-container-row>
             <Item round style={styles.input}>
-              <Icon active name="search"/>
-              <Input value={searchTerm} onChangeText={this.searchBy}/>
+              <Icon active name="search" />
+              <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
             <Button
               center
@@ -139,7 +154,7 @@ export default class PatientList extends React.Component<Props, State> {
               onPress={this.newPatient}
               disabled={isGeneratingPatient}
             >
-              <Icon type={'MaterialCommunityIcons'} name="plus" white/>
+              <Icon type={'MaterialCommunityIcons'} name="plus" white />
             </Button>
           </View>
 
@@ -156,27 +171,31 @@ export default class PatientList extends React.Component<Props, State> {
               selectedValue={filterTerm}
               onValueChange={this.filterBy}
             >
-              <Picker.Item label="" value=""/>
+              <Picker.Item label="" value="" />
               {statuses.map((status, index) => (
-                <Picker.Item label={i18n.t(`patient_list:${status}`)} key={index} value={status}/>
+                <Picker.Item
+                  label={i18n.t(`patient_list:${status}`)}
+                  key={index}
+                  value={status}
+                />
               ))}
             </Picker>
           </View>
 
-          <SeparatorLine/>
+          <SeparatorLine />
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{i18n.t('patient_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByName}>
               {orderByName === 'asc' ? (
-                <Icon name="arrow-down"/>
+                <Icon name="arrow-down" />
               ) : (
-                <Icon name="arrow-up"/>
+                <Icon name="arrow-up" />
               )}
               <Text>{i18n.t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light>
-              <Icon name="arrow-down"/>
+              <Icon name="arrow-down" />
               <Text>{i18n.t('patient_list:status')}</Text>
             </Button>
           </View>
@@ -199,11 +218,14 @@ export default class PatientList extends React.Component<Props, State> {
                     >
                       <View w50>
                         <Text>
-                          {medicalCase.patientId} : {medicalCase.lastname} {medicalCase.firstname}
+                          {medicalCase.patientId} : {medicalCase.lastname}{' '}
+                          {medicalCase.firstname}
                         </Text>
                       </View>
                       <View w50>
-                        <Text>{i18n.t(`medical_case:${medicalCase.status}`)}</Text>
+                        <Text>
+                          {i18n.t(`medical_case:${medicalCase.status}`)}
+                        </Text>
                       </View>
                     </ListItem>
                   ))}
