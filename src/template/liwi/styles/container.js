@@ -61,6 +61,21 @@ export default {
 
     '.flex': {
       flex: 1
+    },
+
+    '.question': {
+      flexDirection: 'row',
+      flex:0.8,
+      borderRadius: 5,
+      borderWidth: 1,
+      padding: 15,
+      marginRight: 20,
+      borderColor: liwiColors.blackColor,
+    },
+
+    '.answer': {
+      flexDirection: 'row',
+      flex:0.2,
     }
   },
 };

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { liwiColors } from '/utils/constants';
-import { View as RNView } from 'react-native';
+import { View as RNView, TouchableOpacity as RNTouchableOpacity } from 'react-native';
 import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from 'native-base';
 
 export const Text = styled(LText).attrs({})`
@@ -20,17 +20,17 @@ export const LiwiTitle2 = styled(LH2)`
   margin: 0 20px 10px 0;
   text-transform: uppercase;
   padding-bottom: ${({ noBorder }) => {
-    if (noBorder === true) {
-      return '0px';
-    }
-    return '20px';
-  }};
+  if (noBorder === true) {
+    return '0px';
+  }
+  return '20px';
+}};
   border-bottom-width: ${({ noBorder }) => {
-    if (noBorder === true) {
-      return '0px';
-    }
-    return '2px';
-  }};
+  if (noBorder === true) {
+    return '0px';
+  }
+  return '2px';
+}};
   border-bottom-color: ${() => liwiColors.greyColor};
 `;
 
@@ -47,7 +47,7 @@ export const LiwiTitle3 = styled(LH3).attrs({
 `;
 
 export const RootView = styled(LView).attrs({
-  flex: 1
+  flex: 1,
 })``;
 
 export const RightView = styled(LView).attrs({
@@ -101,3 +101,34 @@ export const SeparatorLine = styled(RNView).attrs({
 })``;
 
 export const PaddedView = styled(LView).attrs({})``;
+
+export const LeftButton = styled(RNTouchableOpacity).attrs({})`
+  flex: 1;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-width: 1px;
+  padding: 15px;
+  borderColor: ${liwiColors.blackColor};
+  backgroundColor: ${({ active }) => {
+  if (active) {
+    return liwiColors.redColor;
+  }
+  return liwiColors.whiteColor;
+}};
+`;
+
+
+export const RightButton = styled(RNTouchableOpacity).attrs({})`
+flex:1;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-width: 1px;
+  padding: 15px;
+  borderColor: ${liwiColors.blackColor};
+  backgroundColor: ${({ active }) => {
+  if (active) {
+    return liwiColors.redColor;
+  }
+  return liwiColors.whiteColor;
+}};
+`;
