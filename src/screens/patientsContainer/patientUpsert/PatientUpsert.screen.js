@@ -39,15 +39,17 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   }
 
-  editPatient = async () => {
+  // Update patient value in storage and redirect to patient profile
+  updatePatient = async () => {
+    const { navigation } = this.props;
     await this.savePatient();
-    this.props.navigation.dispatch(
-      NavigationActions.back('patientProfile', { id: this.state.patient.id })
+    navigation.dispatch(
+      NavigationActions.back('patientProfile', { id: this.state.patient.id }),
     );
   };
 
   // Update state value of patient
-  updatePatient = async (key, value) => {
+  updatePatientValue = async (key, value) => {
     const { patient } = this.state;
     patient[key] = value;
     await this.setState({ patient });
@@ -73,6 +75,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   };
 
+  // Get patient with id in navigation props
   async getPatient() {
     const { navigation } = this.props;
     let id = navigation.getParam('idPatient');
@@ -83,9 +86,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
     this.setState({ patient, firstRender: true });
   }
 
-  generateMedicalCase = async (id) => {
+  // Generate medical case for current patient
+  generateMedicalCase = async (patientId) => {
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.createMedicalCase(id);
+    await instanceMedicalCase.createMedicalCase(patientId);
   };
 
   // Set patient in localStorage
@@ -111,7 +115,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   render() {
-    const { updatePatient, saveWaitingList, saveNewCase } = this;
+    const { updatePatientValue, saveWaitingList, saveNewCase } = this;
 
     const {
       patient: { firstname, lastname, birthdate, gender },
@@ -135,7 +139,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
             <CustomInput
               init={firstname}
               label={i18n.t('patient:first_name')}
-              change={updatePatient}
+              change={updatePatientValue}
               index={'firstname'}
               iconName={'user'}
               iconType={'AntDesign'}
@@ -144,7 +148,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
             <CustomInput
               init={lastname}
               label={i18n.t('patient:last_name')}
-              change={updatePatient}
+              change={updatePatientValue}
               index={'lastname'}
               iconName={'user'}
               iconType={'AntDesign'}
@@ -155,7 +159,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
             <CustomSwitchButton
               init={gender}
               label={i18n.t('patient:gender')}
-              change={updatePatient}
+              change={updatePatientValue}
               index={'gender'}
               label1={i18n.t('patient:male')}
               label2={i18n.t('patient:female')}
@@ -170,7 +174,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
             <CustomDatePicker
               init={birthdate}
               label={i18n.t('patient:birth_date')}
-              change={updatePatient}
+              change={updatePatientValue}
               index={'birthdate'}
               iconName={'birthday-cake'}
               iconType={'FontAwesome'}
@@ -194,7 +198,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               </Button>
             </View>
           ) : (
-            <Button block onPress={this.editPatient}>
+            <Button block onPress={this.updatePatient}>
               <Text>{i18n.t('patient_upsert:save')}</Text>
             </Button>
           )}
