@@ -135,7 +135,7 @@ export default class PatientProfile extends React.Component<Props, State> {
         </Text>
         <Button
           onPress={() =>
-            navigation.navigate('PatientNew', {
+            navigation.navigate('PatientUpsert', {
               idPatient: patient.id,
             })
           }

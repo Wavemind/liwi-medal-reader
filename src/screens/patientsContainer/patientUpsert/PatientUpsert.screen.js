@@ -14,13 +14,13 @@ import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchB
 import i18n from '../../../utils/i18n';
 import { NavigationActions } from 'react-navigation';
 
-import { styles } from './PatientNew.style';
+import { styles } from './PatientUpsert.style';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class PatientNew extends React.Component<Props, State> {
+export default class PatientUpsert extends React.Component<Props, State> {
   state = {
     errors: {},
     patient: {},
@@ -114,7 +114,7 @@ export default class PatientNew extends React.Component<Props, State> {
     const { updatePatient, saveWaitingList, saveNewCase } = this;
 
     const {
-      patient: { firstname, lastname, birthdate, gender, id },
+      patient: { firstname, lastname, birthdate, gender },
       errors,
       firstRender,
     } = this.state;
@@ -129,7 +129,7 @@ export default class PatientNew extends React.Component<Props, State> {
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <LiwiTitle2 noBorder>{i18n.t('patient_new:title')}</LiwiTitle2>
+        <LiwiTitle2 noBorder>{i18n.t('patient_upsert:title')}</LiwiTitle2>
         <View>
           <Col>
             <CustomInput
@@ -187,15 +187,15 @@ export default class PatientNew extends React.Component<Props, State> {
                 style={styles.splitButton}
                 onPress={saveWaitingList}
               >
-                <Text>{i18n.t('patient_new:save_and_wait')}</Text>
+                <Text>{i18n.t('patient_upsert:save_and_wait')}</Text>
               </Button>
               <Button light style={styles.splitButton} onPress={saveNewCase}>
-                <Text>{i18n.t('patient_new:save_and_case')}</Text>
+                <Text>{i18n.t('patient_upsert:save_and_case')}</Text>
               </Button>
             </View>
           ) : (
             <Button block onPress={this.editPatient}>
-              <Text>{i18n.t('update_patient:save')}</Text>
+              <Text>{i18n.t('patient_upsert:save')}</Text>
             </Button>
           )}
         </View>
