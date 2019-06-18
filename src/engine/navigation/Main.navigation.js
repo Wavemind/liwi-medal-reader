@@ -16,6 +16,7 @@ import { Button, Icon } from 'native-base';
 
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
+import { TriageTabNavigator } from './Triage.navigation';
 
 const Stack = createStackNavigator({
   Home: {
@@ -101,6 +102,15 @@ const Stack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         title: i18n.t('navigation:settings'),
+      };
+    },
+  },
+  Triage: {
+    screen: TriageTabNavigator,
+    path: 'Triage',
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: navigation.getParam('title'),
       };
     },
   },

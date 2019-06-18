@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
-import { Text } from "native-base";
+import { Text } from 'native-base';
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -28,8 +28,15 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        triage: {
+          assessment: 'First look Assessments',
+          vital: 'Vital Signes',
+          comorbidities: 'Comorbidities',
+          vaccination: 'Vaccination history',
+          chief: 'Chief complaints'
+        },
         form: {
-          required: ' is required'
+          required: ' is required',
         },
         menu: {
           triage: 'Triage',
@@ -60,11 +67,10 @@ i18n
           no_medical_cases: 'No medical cases',
           no_algorithms: 'No algorithms in memory',
         },
-        patient_detail: {
-        },
+        patient_detail: {},
         patient_update: {
           title: 'Update patient',
-          save: 'Save'
+          save: 'Save',
         },
         patient_new: {
           title: 'New patient',
@@ -87,7 +93,6 @@ i18n
           gender: 'Gender',
           male: 'Male',
           female: 'Female',
-
         },
         login: {
           server: 'server',
@@ -107,7 +112,7 @@ i18n
         },
         unlock_session: {
           code: 'Code',
-          unlock: 'Unlock session'
+          unlock: 'Unlock session',
         },
         popup: {
           title: 'Please allow access to the position',
@@ -134,10 +139,17 @@ i18n
           patient_data: 'Patient data',
         },
         notifications: {
-          invalid_code: 'Code is invalid'
-        }
+          invalid_code: 'Code is invalid',
+        },
       },
       fr: {
+        triage: {
+          assessment: 'First look Assessments',
+          vital: 'Vital Signes',
+          comorbidities: 'Comorbidities',
+          vaccination: 'Vaccination history',
+          chief: 'Chief complaints'
+        },
         settings: {
           devices: 'Appareils médicaux',
           tests: 'Tests Médicaux disponible',
@@ -151,8 +163,7 @@ i18n
           no_medical_cases: 'Aucun cans médicaux',
           no_algorithms: 'Aucun algorithme',
         },
-        patient_detail: {
-        },
+        patient_detail: {},
         patient_list: {
           waiting: 'En attente',
           search: 'Rechercher',
@@ -180,10 +191,10 @@ i18n
         },
         unlock_session: {
           code: 'Code',
-          unlock: 'Déverrouiller la session'
+          unlock: 'Déverrouiller la session',
         },
         popup: {
-          title: "Merci d'autoriser l'accès à la position",
+          title: 'Merci d\'autoriser l\'accès à la position',
           message:
             'Le partage de localisation est obligatoire afin de pouvoir utiliser le service médical',
           ask_me_later: 'Demandez moi plus tard',
