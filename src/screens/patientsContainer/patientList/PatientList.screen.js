@@ -20,37 +20,52 @@ import { getArray } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
+import merge from 'lodash/merge';
+import flatten from 'lodash/flatten';
+import includes from 'lodash/includes';
+import { medicalCaseStatus } from '../../../../frontend_service/constants';
 
 type Props = {};
 type State = {};
 
 export default class PatientList extends React.Component<Props, State> {
   state = {
-    patients: [],
-    search: '',
+    medicalCases: [],
+    searchTerm: '',
     orderByName: 'asc',
+    filterTerm: '',
     isGeneratingPatient: false,
+    statuses: [medicalCaseStatus.waitingTriage, medicalCaseStatus.waitingConsultation, medicalCaseStatus.waitingTest, medicalCaseStatus.waitingDiagnosis],
   };
 
   async componentWillMount() {
-    this.props.navigation.addListener(
+    const { navigation } = this.props;
+
+    // Force refresh with a navigation.push
+    navigation.addListener(
       'willFocus',
       async () => {
-        await this.getPatients();
-        await this.getMedicalCases();
+        await this.filterMedicalCases();
       }
     );
   }
 
-  getMedicalCases = async () => {
-    let medicalCases = await getArray('medicalCases');
-
-  };
-
-  // Get patients in localstorage
-  getPatients = async () => {
+  // Get all medical case with waiting for... status
+  filterMedicalCases = async () => {
     let patients = await getArray('patients');
-    this.setState({ patients });
+    let medicalCases = [];
+    patients.map((patient) => {
+      patient.medicalCases.map((medicalCase) => {
+        if (includes([medicalCaseStatus.waitingTest, medicalCaseStatus.waitingDiagnosis, medicalCaseStatus.waitingConsultation, medicalCaseStatus.waitingTriage], medicalCase.status)) {
+          medicalCase.patientId = patient.id;
+          medicalCase.firstname = patient.firstname;
+          medicalCase.lastname = patient.lastname;
+          medicalCases.push(merge(medicalCase));
+        }
+      });
+    });
+    medicalCases = flatten(medicalCases);
+    this.setState({ medicalCases: medicalCases});
   };
 
   // Update state switch asc / desc
@@ -60,6 +75,20 @@ export default class PatientList extends React.Component<Props, State> {
     });
   };
 
+  // Reset all filter by default
+  resetFilter = () => {
+    this.setState({
+      searchTerm: '',
+      orderByName: 'asc',
+      filterTerm: '',
+    })
+  };
+
+  // Filter by status
+  filterBy = (filterTerm) => {
+    this.setState({filterTerm});
+  };
+
   // Generate a new patient based on model Patient
   newPatient = async () => {
     const { navigation } = this.props;
@@ -67,27 +96,30 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   // Set string search
-  search = (search) => {
-    this.setState({ search });
+  searchBy = (searchTerm) => {
+    this.setState({ searchTerm });
   };
 
   render() {
-    const { patients, search, orderByName, isGeneratingPatient } = this.state;
+    const { medicalCases, searchTerm, orderByName, isGeneratingPatient, statuses, filterTerm } = this.state;
     const { navigation } = this.props;
 
-    // Filter patient based on first name and last name
-    let filteredPatients = filter(patients, (p) => {
-      return p.firstname.includes(search) || p.lastname.includes(search);
+    // Filter patient based on first name and last name by search term
+    let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
+      return medicalCase.firstname.toLowerCase().includes(searchTerm.toLowerCase()) || medicalCase.lastname.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
-    // Order the patients
-    let orderedFilteredPatients = orderBy(
-      filteredPatients,
+    // Filter patient based on medical case status
+    filteredMedicalCases = filter(filteredMedicalCases, (medicalCase) => {
+      return medicalCase.status === filterTerm || filterTerm === '';
+    });
+
+    // Order the medical case
+    let orderedFilteredMedicalCases = orderBy(
+      filteredMedicalCases,
       ['lastname'],
       [orderByName],
     );
-
-    console.log(patients);
 
     return (
       <ScrollView>
@@ -97,7 +129,7 @@ export default class PatientList extends React.Component<Props, State> {
           <View flex-container-row>
             <Item round style={styles.input}>
               <Icon active name="search"/>
-              <Input value={search} onChangeText={this.search}/>
+              <Input value={searchTerm} onChangeText={this.searchBy}/>
             </Item>
             <Button
               center
@@ -112,15 +144,22 @@ export default class PatientList extends React.Component<Props, State> {
           </View>
 
           <View flex-container-row style={styles.filter}>
-            <Button center rounded light>
-              <Text>ALL</Text>
+            <Button center rounded light onPress={this.resetFilter}>
+              <Text>{i18n.t('patient_list:all')}</Text>
             </Button>
             <Text style={styles.textFilter}>
               {i18n.t('patient_list:waiting')}
             </Text>
-            <Picker style={styles.picker} mode="dropdown">
-              <Picker.Item label="TRIAGE (11)" value="triage"/>
-              <Picker.Item label="UNKNOWN (0)" value="unknown"/>
+            <Picker
+              style={styles.picker}
+              mode="dropdown"
+              selectedValue={filterTerm}
+              onValueChange={this.filterBy}
+            >
+              <Picker.Item label="" value=""/>
+              {statuses.map((status) => (
+                <Picker.Item label={i18n.t(`patient_list:${status}`)} value={status}/>
+              ))}
             </Picker>
           </View>
 
@@ -142,29 +181,29 @@ export default class PatientList extends React.Component<Props, State> {
             </Button>
           </View>
 
-          {patients.length > 0 ? (
+          {medicalCases.length > 0 ? (
             [
-              orderedFilteredPatients.length > 0 ? (
+              orderedFilteredMedicalCases.length > 0 ? (
                 <List block>
-                  {orderedFilteredPatients.map((patient) => (
+                  {orderedFilteredMedicalCases.map((medicalCase) => (
                     <ListItem
                       rounded
                       block
-                      key={patient.id}
+                      key={medicalCase.id}
                       spaced
                       onPress={() =>
                         navigation.navigate('PatientProfile', {
-                          id: patient.id,
+                          id: medicalCase.patientId,
                         })
                       }
                     >
                       <View w50>
                         <Text>
-                          {patient.id} : {patient.lastname} {patient.firstname}
+                          {medicalCase.patientId} : {medicalCase.lastname} {medicalCase.firstname}
                         </Text>
                       </View>
                       <View w50>
-                        <Text>{patient.status}</Text>
+                        <Text>{i18n.t(`medical_case:${medicalCase.status}`)}</Text>
                       </View>
                     </ListItem>
                   ))}

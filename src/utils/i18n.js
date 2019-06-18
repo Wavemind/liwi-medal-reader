@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
 import { Text } from "native-base";
+import { medicalCaseStatus } from '../../frontend_service/constants';
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -47,6 +48,17 @@ i18n
           search: 'Search a patient',
           add: 'Add a patient',
         },
+        medical_case: {
+          waiting_triage: 'Waiting for triage',
+          triage: 'Triage',
+          waiting_consultation: 'Waiting for consultation',
+          consultation: 'Consultation',
+          waiting_test: 'Waiting for test',
+          test: 'Test',
+          waiting_diagnosis: 'Wait for diagnosis',
+          diagnosis: 'Diagnosis',
+          close: 'Close',
+        },
         settings: {
           devices: 'Medical Devices',
           tests: 'Medical Tests available',
@@ -72,6 +84,7 @@ i18n
           save_and_case: 'Save + create new case',
         },
         patient_list: {
+          all: 'All',
           waiting: 'Patients waiting for',
           search: 'Search',
           sort: 'Sort by',
@@ -79,6 +92,10 @@ i18n
           status: 'Status',
           no_patients: 'There are no patients',
           not_found: 'No match found',
+          waiting_triage: 'Triage',
+          waiting_consultation: 'Consultation',
+          waiting_test: 'Test',
+          waiting_diagnosis: 'Diagnosis'
         },
         patient: {
           first_name: 'First name',
