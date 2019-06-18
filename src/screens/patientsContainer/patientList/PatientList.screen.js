@@ -37,9 +37,15 @@ export default class PatientList extends React.Component<Props, State> {
       'willFocus',
       async () => {
         await this.getPatients();
+        await this.getMedicalCases();
       }
     );
   }
+
+  getMedicalCases = async () => {
+    let medicalCases = await getArray('medicalCases');
+
+  };
 
   // Get patients in localstorage
   getPatients = async () => {
@@ -69,8 +75,6 @@ export default class PatientList extends React.Component<Props, State> {
     const { patients, search, orderByName, isGeneratingPatient } = this.state;
     const { navigation } = this.props;
 
-    console.log(patients);
-
     // Filter patient based on first name and last name
     let filteredPatients = filter(patients, (p) => {
       return p.firstname.includes(search) || p.lastname.includes(search);
@@ -82,6 +86,8 @@ export default class PatientList extends React.Component<Props, State> {
       ['lastname'],
       [orderByName],
     );
+
+    console.log(patients);
 
     return (
       <ScrollView>

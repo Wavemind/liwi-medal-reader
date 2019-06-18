@@ -11,7 +11,7 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import i18n from '../../../utils/i18n';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 import { styles } from './PatientNew.style';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
@@ -28,20 +28,17 @@ export default class PatientNew extends React.Component<Props, State> {
 
   async componentWillMount() {
     const {
-      navigation
+      navigation,
     } = this.props;
 
     let idPatient = navigation.getParam('idPatient');
-    console.log(idPatient)
     if (idPatient === null) {
       let patient = new PatientModel();
       this.setState({ patient });
     } else {
-      await this.getPatient()
+      await this.getPatient();
     }
-
   }
-
 
   // Update state value of patient
   updatePatient = async (key, value) => {
@@ -54,8 +51,6 @@ export default class PatientNew extends React.Component<Props, State> {
   saveWaitingList = async () => {
     const { navigation } = this.props;
     let result = await this.savePatient();
-
-    console.log(navigation);
 
     if (result) {
       navigation.dispatch(NavigationActions.back('patientList'));
@@ -78,10 +73,6 @@ export default class PatientNew extends React.Component<Props, State> {
 
     let patient = await getItemFromArray('patients', 'id', id);
     patient = new PatientModel(patient);
-
-
-    console.log(patient)
-
 
     this.setState({ patient });
   }
@@ -130,8 +121,6 @@ export default class PatientNew extends React.Component<Props, State> {
       >
         <LiwiTitle2 noBorder>{i18n.t('patient_new:title')}</LiwiTitle2>
         <View>
-
-
           <Col>
             <CustomInput
               init={firstname}
