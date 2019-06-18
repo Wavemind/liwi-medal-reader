@@ -15,6 +15,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 
 import { styles } from './PatientNew.style';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -30,7 +31,6 @@ export default class PatientNew extends React.Component<Props, State> {
     const { navigation } = this.props;
 
     let idPatient = navigation.getParam('idPatient');
-    console.log(idPatient);
     if (idPatient === null) {
       let patient = new PatientModel();
       this.setState({ patient, firstRender: true });
@@ -41,9 +41,10 @@ export default class PatientNew extends React.Component<Props, State> {
 
   editPatient = async () => {
     await this.savePatient();
-    this.props.navigation.dispatch(NavigationActions.back('patientProfile', {id: this.state.patient.id}));
-
-  }
+    this.props.navigation.dispatch(
+      NavigationActions.back('patientProfile', { id: this.state.patient.id })
+    );
+  };
 
   // Update state value of patient
   updatePatient = async (key, value) => {
@@ -79,19 +80,29 @@ export default class PatientNew extends React.Component<Props, State> {
     let patient = await getItemFromArray('patients', 'id', id);
     patient = new PatientModel(patient);
 
-    console.log(patient, id);
-
     this.setState({ patient, firstRender: true });
   }
+
+  generateMedicalCase = async (id) => {
+    let instanceMedicalCase = new MedicalCaseModel();
+    await instanceMedicalCase.createMedicalCase(id);
+  };
 
   // Set patient in localStorage
   savePatient = async () => {
     const { patient } = this.state;
+    let idPatient = this.props.navigation.getParam('idPatient');
+
     let errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
       await patient.save();
+
+      if (idPatient === null) {
+        await this.generateMedicalCase(patient.id);
+      }
+
       return true;
     } else {
       this.setState({ errors: errors });
@@ -183,10 +194,7 @@ export default class PatientNew extends React.Component<Props, State> {
               </Button>
             </View>
           ) : (
-            <Button
-              block
-              onPress={this.editPatient}
-            >
+            <Button block onPress={this.editPatient}>
               <Text>{i18n.t('update_patient:save')}</Text>
             </Button>
           )}

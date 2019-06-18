@@ -46,3 +46,13 @@ export const categories = {
   comorbidity: 'Comorbidity',
   predefinedSyndrome: 'Predefined syndrome',
 };
+
+export const MCstatus = {
+  wft: 'Waiting for triage',
+  t: 'Triage',
+  wfc: 'Waiting for consultation',
+  wfte: 'Waiting for test',
+  wfd: 'Waiting for diagnosis',
+  d: 'Diagnosis',
+  c: 'Close',
+};
