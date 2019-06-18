@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
 import { Text } from "native-base";
+import { medicalCaseStatus } from '../../frontend_service/constants';
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -28,6 +29,11 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        form: {
+          required: ' is required',
+          save: 'Save',
+          edit: 'Edit'
+        },
         menu: {
           triage: 'Triage',
           assessment: 'First look assessment',
@@ -44,6 +50,17 @@ i18n
           search: 'Search a patient',
           add: 'Add a patient',
         },
+        medical_case: {
+          waiting_triage: 'Waiting for triage',
+          triage: 'Triage',
+          waiting_consultation: 'Waiting for consultation',
+          consultation: 'Consultation',
+          waiting_test: 'Waiting for test',
+          test: 'Test',
+          waiting_diagnosis: 'Wait for diagnosis',
+          diagnosis: 'Diagnosis',
+          close: 'Close',
+        },
         settings: {
           devices: 'Medical Devices',
           tests: 'Medical Tests available',
@@ -59,7 +76,14 @@ i18n
         },
         patient_detail: {
         },
+        patient_upsert: {
+          title: 'Patient',
+          save_and_wait: 'Save + add to waiting list',
+          save_and_case: 'Save + create new case',
+          save: 'Save'
+        },
         patient_list: {
+          all: 'All',
           waiting: 'Patients waiting for',
           search: 'Search',
           sort: 'Sort by',
@@ -67,6 +91,18 @@ i18n
           status: 'Status',
           no_patients: 'There are no patients',
           not_found: 'No match found',
+          waiting_triage: 'Triage',
+          waiting_consultation: 'Consultation',
+          waiting_test: 'Test',
+          waiting_diagnosis: 'Diagnosis'
+        },
+        patient: {
+          first_name: 'First name',
+          last_name: 'Last name',
+          birth_date: 'Day of birth',
+          gender: 'Gender',
+          male: 'Male',
+          female: 'Female',
         },
         login: {
           server: 'server',
@@ -100,7 +136,9 @@ i18n
           empty: 'No session',
         },
         navigation: {
+          patient_upsert: 'patient',
           patient_list: 'Patient list',
+          patient_profile: 'Patient profile',
           settings: 'Settings',
           available_algorithms: 'Available algorithms',
         },
@@ -170,6 +208,7 @@ i18n
           empty: 'Aucune session',
         },
         navigation: {
+          patient_update: 'Patient Update',
           patient_list: 'Liste des patients',
           settings: 'Paramètres',
           available_algorithms: 'Algorithmes disponibles',
