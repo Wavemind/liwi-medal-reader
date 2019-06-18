@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import i18n from '../../../utils/i18n';
@@ -20,25 +21,30 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class PatientNew extends React.Component<Props, State> {
-
   state = {
     errors: {},
     patient: {},
+    firstRender: false,
   };
 
   async componentWillMount() {
-    const {
-      navigation,
-    } = this.props;
+    const { navigation } = this.props;
 
     let idPatient = navigation.getParam('idPatient');
     if (idPatient === null) {
       let patient = new PatientModel();
-      this.setState({ patient });
+      this.setState({ patient, firstRender: true });
     } else {
       await this.getPatient();
     }
   }
+
+  editPatient = async () => {
+    await this.savePatient();
+    this.props.navigation.dispatch(
+      NavigationActions.back('patientProfile', { id: this.state.patient.id })
+    );
+  };
 
   // Update state value of patient
   updatePatient = async (key, value) => {
@@ -74,17 +80,29 @@ export default class PatientNew extends React.Component<Props, State> {
     let patient = await getItemFromArray('patients', 'id', id);
     patient = new PatientModel(patient);
 
-    this.setState({ patient });
+    this.setState({ patient, firstRender: true });
   }
+
+  generateMedicalCase = async (id) => {
+    let instanceMedicalCase = new MedicalCaseModel();
+    await instanceMedicalCase.createMedicalCase(id);
+  };
 
   // Set patient in localStorage
   savePatient = async () => {
     const { patient } = this.state;
+    let idPatient = this.props.navigation.getParam('idPatient');
+
     let errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
       await patient.save();
+
+      if (idPatient === null) {
+        await this.generateMedicalCase(patient.id);
+      }
+
       return true;
     } else {
       this.setState({ errors: errors });
@@ -93,32 +111,24 @@ export default class PatientNew extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      updatePatient,
-      saveWaitingList,
-      saveNewCase,
-    } = this;
+    const { updatePatient, saveWaitingList, saveNewCase } = this;
 
     const {
-      patient: {
-        firstname,
-        lastname,
-        birthdate,
-        gender,
-      },
+      patient: { firstname, lastname, birthdate, gender, id },
       errors,
+      firstRender,
     } = this.state;
 
-    const {
-      navigation,
-    } = this.props;
+    const { navigation } = this.props;
 
     let idPatient = navigation.getParam('idPatient');
 
+    if (!firstRender) {
+      return null;
+    }
+
     return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-      >
+      <ScrollView contentContainerStyle={styles.container}>
         <LiwiTitle2 noBorder>{i18n.t('patient_new:title')}</LiwiTitle2>
         <View>
           <Col>
@@ -165,14 +175,13 @@ export default class PatientNew extends React.Component<Props, State> {
               iconName={'birthday-cake'}
               iconType={'FontAwesome'}
               error={errors.birthdate}
-
             />
           </Col>
         </View>
 
         <View bottom-view>
-          {
-            idPatient === null ? <View style={styles.columns}>
+          {idPatient === null ? (
+            <View style={styles.columns}>
               <Button
                 light
                 style={styles.splitButton}
@@ -180,20 +189,15 @@ export default class PatientNew extends React.Component<Props, State> {
               >
                 <Text>{i18n.t('patient_new:save_and_wait')}</Text>
               </Button>
-              <Button
-                light
-                style={styles.splitButton}
-                onPress={saveNewCase}
-              >
+              <Button light style={styles.splitButton} onPress={saveNewCase}>
                 <Text>{i18n.t('patient_new:save_and_case')}</Text>
               </Button>
-            </View> : <Button
-              block
-            >
+            </View>
+          ) : (
+            <Button block onPress={this.editPatient}>
               <Text>{i18n.t('update_patient:save')}</Text>
             </Button>
-          }
-
+          )}
         </View>
       </ScrollView>
     );

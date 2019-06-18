@@ -48,10 +48,6 @@ export default class PatientEdit extends React.Component<Props, State> {
       });
   }
 
-  updatePatient = (key, value) => {
-    console.log(key, value);
-  };
-
   render() {
     const { updatePatient } = this;
 

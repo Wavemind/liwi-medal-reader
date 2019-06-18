@@ -46,3 +46,15 @@ export const categories = {
   comorbidity: 'Comorbidity',
   predefinedSyndrome: 'Predefined syndrome',
 };
+
+export const medicalCaseStatus = {
+  waitingTriage: 'waiting_triage',
+  triage: 'triage',
+  waitingConsultation: 'waiting_consultation',
+  consultation: 'consultation',
+  waitingTest: 'waiting_test',
+  test: 'test',
+  waitingDiagnosis: 'waiting_diagnosis',
+  diagnosis: 'diagnosis',
+  close: 'close',
+};

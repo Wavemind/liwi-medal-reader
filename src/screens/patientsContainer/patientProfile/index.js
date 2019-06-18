@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
   setMedicalCase,
   updatePatient,
+  createMedicalCase
 } from '../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase, ownProps) => {
