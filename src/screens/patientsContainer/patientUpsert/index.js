@@ -12,7 +12,6 @@ const mapStateToProps = (medicalCase, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    newPatient: (key, value) => dispatch(upsertPatient(key, value)),
   };
 };
 
