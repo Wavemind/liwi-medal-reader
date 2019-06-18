@@ -22,7 +22,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
     nextState: Readonly<S>
   ): boolean {
     return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init
+      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
     );
   }
 
@@ -37,12 +37,14 @@ export default class CustomDatePicker extends React.Component<Props, State> {
   }
 
   _handleChangeValue = (value) => {
+    const {change, index} = this.props;
+
     this.setState({ value: new Date(value).toString() });
-    this.props.change(this.props.index, moment(value).format('DD/MM/YYYY'));
+    change(index, moment(value).format('DD/MM/YYYY'));
   };
 
   render() {
-    const { label, iconName, iconType } = this.props;
+    const { label, iconName, iconType, error } = this.props;
     const { value } = this.state;
 
     return (
@@ -60,10 +62,11 @@ export default class CustomDatePicker extends React.Component<Props, State> {
           >
             {label}
           </Text>
+          <Text error>{error}</Text>
         </View>
         <ViewBlocColor>
           <DatePicker
-            defaultDate={moment(value, 'DD/MM/YYYY').toDate()}
+            defaultDate={moment(value).toDate()}
             minimumDate={new Date(1930, 1, 1)}
             maximumDate={new Date()}
             locale={'fr'}
@@ -71,8 +74,8 @@ export default class CustomDatePicker extends React.Component<Props, State> {
             modalTransparent={false}
             animationType={'fade'}
             androidMode={'default'}
-            textStyle={{ color: liwiColors.whiteColor }}
-            placeHolderTextStyle={{ color: liwiColors.whiteColor }}
+            textStyle={{ color: liwiColors.blackColor, padding:20 }}
+            placeHolderTextStyle={{ color: liwiColors.darkerGreyColor}}
             onDateChange={this._handleChangeValue}
             disabled={false}
           />

@@ -1,12 +1,24 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
-import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
+import {
+  getItem,
+  getItemFromArray,
+  getItems,
+  setItemFromArray,
+  setMedicalCase,
+} from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
+import {
+  generateInitialBatch,
+  generateNextBatch,
+  setInitialCounter,
+} from '../../algorithm/algoTreeDiagnosis';
 import find from 'lodash/find';
 import { displayFormats, nodesType } from '../../constants';
 import findKey from 'lodash/findKey';
+import forEach from 'lodash/forEach';
+import maxBy from 'lodash/maxBy';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
 import { NodeModel } from '../../engine/models/Node.model';
 import { PredefinedSyndromeModel } from '../../engine/models/PredefinedSyndrome.model';
