@@ -30,7 +30,9 @@ i18n
     resources: {
       en: {
         form: {
-          required: ' is required'
+          required: ' is required',
+          save: 'Save',
+          edit: 'Edit'
         },
         menu: {
           triage: 'Triage',
@@ -101,7 +103,6 @@ i18n
           gender: 'Gender',
           male: 'Male',
           female: 'Female',
-
         },
         login: {
           server: 'server',

@@ -140,7 +140,7 @@ export default class PatientProfile extends React.Component<Props, State> {
             })
           }
         >
-          <Text>Edit</Text>
+          <Text>{i18n.t('form:edit')}</Text>
         </Button>
         <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
