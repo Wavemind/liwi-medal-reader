@@ -74,14 +74,11 @@ i18n
         },
         patient_detail: {
         },
-        patient_update: {
-          title: 'Update patient',
-          save: 'Save'
-        },
-        patient_new: {
-          title: 'New patient',
+        patient_upsert: {
+          title: 'Patient',
           save_and_wait: 'Save + add to waiting list',
           save_and_case: 'Save + create new case',
+          save: 'Save'
         },
         patient_list: {
           all: 'All',
@@ -138,8 +135,7 @@ i18n
           empty: 'No session',
         },
         navigation: {
-          patient_update: 'Update patient',
-          patient_new: 'New patient',
+          patient_upsert: 'patient',
           patient_list: 'Patient list',
           patient_profile: 'Patient profile',
           settings: 'Settings',

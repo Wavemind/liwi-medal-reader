@@ -46,7 +46,7 @@ export default class PatientList extends React.Component<Props, State> {
       'willFocus',
       async () => {
         await this.filterMedicalCases();
-      }
+      },
     );
   }
 
@@ -65,7 +65,7 @@ export default class PatientList extends React.Component<Props, State> {
       });
     });
     medicalCases = flatten(medicalCases);
-    this.setState({ medicalCases: medicalCases});
+    this.setState({ medicalCases: medicalCases });
   };
 
   // Update state switch asc / desc
@@ -81,18 +81,18 @@ export default class PatientList extends React.Component<Props, State> {
       searchTerm: '',
       orderByName: 'asc',
       filterTerm: '',
-    })
+    });
   };
 
   // Filter by status
   filterBy = (filterTerm) => {
-    this.setState({filterTerm});
+    this.setState({ filterTerm });
   };
 
   // Generate a new patient based on model Patient
   newPatient = async () => {
     const { navigation } = this.props;
-    navigation.navigate('PatientNew', { idPatient: null});
+    navigation.navigate('PatientUpsert', { idPatient: null });
   };
 
   // Set string search
@@ -157,8 +157,8 @@ export default class PatientList extends React.Component<Props, State> {
               onValueChange={this.filterBy}
             >
               <Picker.Item label="" value=""/>
-              {statuses.map((status) => (
-                <Picker.Item label={i18n.t(`patient_list:${status}`)} value={status}/>
+              {statuses.map((status, index) => (
+                <Picker.Item label={i18n.t(`patient_list:${status}`)} key={index} value={status}/>
               ))}
             </Picker>
           </View>
@@ -184,12 +184,12 @@ export default class PatientList extends React.Component<Props, State> {
           {medicalCases.length > 0 ? (
             [
               orderedFilteredMedicalCases.length > 0 ? (
-                <List block>
-                  {orderedFilteredMedicalCases.map((medicalCase) => (
+                <List block key={'patientList'}>
+                  {orderedFilteredMedicalCases.map((medicalCase, index) => (
                     <ListItem
                       rounded
                       block
-                      key={medicalCase.id}
+                      key={index}
                       spaced
                       onPress={() =>
                         navigation.navigate('PatientProfile', {
