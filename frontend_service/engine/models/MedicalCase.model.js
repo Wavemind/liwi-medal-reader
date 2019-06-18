@@ -1,7 +1,7 @@
 // @flow
 
 import moment from 'moment';
-import { nodesType } from '../../constants';
+import { MCstatus, nodesType } from '../../constants';
 import { PredefinedSyndromeModel } from './PredefinedSyndrome.model';
 import { TreatmentModel } from './Treatment.model';
 import { QuestionModel } from './Question.model';
@@ -37,12 +37,6 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-  constructor(props) {
-    const { patientId } = props;
-
-    this.createMedicalCase(patientId);
-  }
-
   createMedicalCase = async (patientId) => {
     let patient = await getItemFromArray('patients', 'id', patientId);
     let algorithms = await getItems('algorithms');
@@ -80,11 +74,11 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     newMedicalCase.id = maxId.id + 1;
     newMedicalCase.createdDate = moment().format();
+    newMedicalCase.status = MCstatus.wft;
 
     patient.medicalCases.push(newMedicalCase);
 
     // set in localstorage
     await setItemFromArray('patients', patient, patient.id);
   };
-
 }

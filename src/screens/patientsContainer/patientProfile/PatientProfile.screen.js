@@ -65,8 +65,8 @@ export default class PatientProfile extends React.Component<Props, State> {
   // Generate new medicalCase with algo selected
   generateMedicalCase = async () => {
     await this.setState({ isGeneratingMedicalCase: true });
-    let medicalCase = new MedicalCaseModel(this.state.patient.id);
-    console.log(medicalCase)
+    let instanceMedicalCase = new MedicalCaseModel();
+    await instanceMedicalCase.createMedicalCase(this.state.patient.id)
     await this.getPatient();
     await this.setState({ isGeneratingMedicalCase: false });
     return false;
@@ -122,8 +122,6 @@ export default class PatientProfile extends React.Component<Props, State> {
         </ListItem>
       );
     });
-
-    console.log(this.props);
 
     return !firstRender ? (
       <LiwiLoader />
