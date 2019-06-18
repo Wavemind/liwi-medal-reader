@@ -15,7 +15,7 @@ export default {
       },
 
       '.spaced': {
-        marginBottom: 20,
+        marginBottom: 10,
       }
     },
   },

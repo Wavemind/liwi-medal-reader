@@ -35,5 +35,9 @@ export default {
       textTransform: 'uppercase',
       textAlign: 'center',
     },
+
+    '.center': {
+      textAlign: 'center',
+    },
   },
 };

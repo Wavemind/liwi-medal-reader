@@ -1,12 +1,12 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView, TouchableOpacity } from 'react-native';
-import { Button, List, ListItem, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
+import { Input, List, ListItem, Text, View, Item, Label, Icon, Picker } from 'native-base';
 
-import { LiwiTitle2 } from '../../../../template/layout';
+import { LiwiTitle2, LeftButton, RightButton } from '../../../../template/layout';
 import i18n from '../../../../utils/i18n';
-import { liwiColors } from '../../../../utils/constants';
+import { styles } from '../../../patientsContainer/patientList/PatientList.style';
 
 type Props = {};
 type State = {};
@@ -21,45 +21,56 @@ export default class Assessment extends React.Component<Props, State> {
           <List block>
             <ListItem
               block
-              spaced
               noBorder
             >
-              <View flex-container-row style={{
-                flex:0.8,
-                borderRadius: 5,
-                borderWidth: 1,
-                padding: 15,
-                marginRight: 20,
-                borderColor: liwiColors.blackColor,
-              }}>
+              <View question>
                 <Text>
-                  Chabat chabit ou les deux
+                  Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux
                 </Text>
               </View>
-              <View flex-container-row style={{
-                flex:0.2,
-                justifyContent: 'center',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}>
-                <TouchableOpacity style={{
-                  borderTopLeftRadius: 5,
-                  borderBottomLeftRadius: 5,
-                  borderWidth: 1,
-                  padding: 15,
-                  borderColor: liwiColors.blackColor,
-                  }}>
-                <Text>Oui</Text>
-              </TouchableOpacity>
-                <TouchableOpacity style={{
-                  borderTopRightRadius: 5,
-                  borderBottomRightRadius: 5,
-                  borderWidth: 1,
-                  padding: 15,
-                  borderColor: liwiColors.blackColor,
-                }}>
-                  <Text>Non</Text>
-                </TouchableOpacity>
+              <View answer>
+                <LeftButton active>
+                  <Text white center>Oui</Text>
+                </LeftButton>
+                <RightButton>
+                  <Text center>Non</Text>
+                </RightButton>
+              </View>
+            </ListItem>
+
+            <ListItem
+              block
+              noBorder
+            >
+              <View question>
+                <Text>
+                  Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux
+                </Text>
+              </View>
+              <View answer>
+                <Item round>
+                  <Input keyboardType="number-pad"/>
+                </Item>
+              </View>
+            </ListItem>
+
+            <ListItem
+              block
+              noBorder
+            >
+              <View question>
+                <Text>
+                  Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux Chabat chabit ou les deux
+                </Text>
+              </View>
+              <View answer>
+                <Item round>
+                  <Picker mode="dropdown">
+                    <Picker.Item label="" value=""/>
+                    <Picker.Item label="TRIAGE (11)" value="triage"/>
+                    <Picker.Item label="UNKNOWN (0)" value="unknown"/>
+                  </Picker>
+                </Item>
               </View>
             </ListItem>
           </List>
