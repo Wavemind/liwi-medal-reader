@@ -6,7 +6,7 @@ import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
 
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
-export const SignedOut = createStackNavigator({
+export const SignedOut = createStackNavigator( {
   SignIn: {
     screen: RootSessions,
     navigationOptions: ({ navigation }) => {
@@ -28,7 +28,7 @@ export const SignedOut = createStackNavigator({
     screen: UnlockSession,
     navigationOptions: ({ navigation }) => {
       return {
-        title: navigation.getParam('title'),
+        title: navigation.getParam( 'title' ),
       };
     },
   },
@@ -40,13 +40,13 @@ export const SignedOut = createStackNavigator({
       };
     },
   },
-});
+} );
 
 const createRootNavigator = (signedIn = false, medicalCase = null) => {
   return createSwitchNavigator(
     {
       Main: {
-        screen: MainTabNavigator(medicalCase),
+        screen: MainTabNavigator( medicalCase ),
       },
       SignedOut: {
         screen: SignedOut,
@@ -54,7 +54,7 @@ const createRootNavigator = (signedIn = false, medicalCase = null) => {
     },
     {
       initialRouteName: signedIn ? 'Main' : 'SignedOut',
-    }
+    },
   );
 };
 
