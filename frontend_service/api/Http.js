@@ -96,9 +96,6 @@ export const auth = async (email, password) => {
     throw body;
   }
 
-
-  console.log(body)
-
   return await {
     ...body,
     access_token: await request.headers.get('access-token'),
