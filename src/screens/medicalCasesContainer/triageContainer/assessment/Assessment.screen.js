@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Input, List, ListItem, Text, View, Item, Label, Icon, Picker } from 'native-base';
+import { Input, List, ListItem, Text, View, Item, Label, Icon, Picker, Button } from 'native-base';
 
 import { LiwiTitle2, LeftButton, RightButton } from '../../../../template/layout';
 import i18n from '../../../../utils/i18n';
@@ -15,8 +15,13 @@ export default class Assessment extends React.Component<Props, State> {
 
   render() {
     return (
-      <ScrollView>
-        <View padding-auto>
+      <ScrollView contentContainerStyle={{
+          flexGrow: 1,
+          padding: 20,
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+      }}>
+        <View>
           <LiwiTitle2 noBorder>{i18n.t('assessment:title')}</LiwiTitle2>
           <List block>
             <ListItem
@@ -74,6 +79,21 @@ export default class Assessment extends React.Component<Props, State> {
               </View>
             </ListItem>
           </List>
+        </View>
+
+        <View bottom-view columns>
+            <Button
+              light
+              split
+            >
+              <Text>{i18n.t('form:back')}</Text>
+            </Button>
+            <Button
+              light
+              split
+            >
+              <Text>{i18n.t('form:next')}</Text>
+            </Button>
         </View>
       </ScrollView>
     );
