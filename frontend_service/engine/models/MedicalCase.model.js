@@ -1,14 +1,20 @@
 // @flow
 
 import moment from 'moment';
-import { nodesType } from '../../constants';
-import { PredefinedSyndromeModel } from './PredefinedSyndrome.model';
-import { TreatmentModel } from './Treatment.model';
-import { QuestionModel } from './Question.model';
-import { ManagementModel } from './Management.model';
-import { FinalDiagnosticModel } from './FinalDiagnostic.model';
-import { DiseasesModel } from './Diseases.model';
-import { NodeModel } from './Node.model';
+import { medicalCaseStatus } from '../../constants';
+import {
+  getItem,
+  getItemFromArray,
+  getItems,
+  setItemFromArray,
+} from '../../../src/engine/api/LocalStorage';
+import find from 'lodash/find';
+import {
+  generateInitialBatch,
+  setInitialCounter,
+} from '../../algorithm/algoTreeDiagnosis';
+import forEach from 'lodash/forEach';
+import maxBy from 'lodash/maxBy';
 
 interface MedicalCaseInterface {
   props: {
@@ -24,81 +30,48 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-  constructor(props) {
-    const {
-      id = 0,
-      userId = 0,
-      nodes = {},
-      diseases = {},
-      patient = {},
-      batches = [],
-    } = props;
-    this.nodes = nodes;
-    this.batches = batches;
-    this.diseases = diseases;
-    this.id = id;
-    this.userId = userId;
-    this.patient = patient;
-    this.createdDate = moment().format();
+  createMedicalCase = async (patientId) => {
+    let patient = await getItemFromArray('patients', 'id', patientId);
+    let algorithms = await getItems('algorithms');
+    let patients = await getItem('patients');
 
-    this.instanceChildren();
-  }
+    const algorithmUsed = find(algorithms, (a) => a.selected);
 
-  setId(id) {
-    this.id = id + 1;
-  }
+    // default counter on each node
+    setInitialCounter(algorithmUsed);
 
-  instanceChild(node) {
-    let modelized;
+    let newMedicalCase = {
+      nodes: algorithmUsed.nodes,
+      diseases: algorithmUsed.diseases,
+    };
 
-    if (node instanceof NodeModel) {
-      return node
-    }
+    // initial batch waiting on final workflow
+    generateInitialBatch(newMedicalCase);
 
-    switch (node.type) {
-      case nodesType.ps:
-        modelized = new PredefinedSyndromeModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-      case nodesType.t:
-        modelized = new TreatmentModel({ ...node });
-        break;
-      case nodesType.q:
-        modelized = new QuestionModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-      case nodesType.m:
-        modelized = new ManagementModel({ ...node });
-        break;
-      case nodesType.fd:
-        modelized = new FinalDiagnosticModel({ ...node });
-        break;
-      default:
-        break;
-    }
+    let eachMaxId = [];
 
-    return modelized;
-  }
-
-  instanceChildren() {
-    Object.keys(this.nodes).forEach((i) => {
-      let node = this.nodes[i];
-      this.nodes[i] = this.instanceChild(node);
+    // find recursive max id in medicalCases
+    forEach(patients, (p) => {
+      let itemMax = maxBy(p.medicalCases, 'id');
+      if (itemMax !== undefined) {
+        eachMaxId.push(itemMax);
+      }
     });
 
-    Object.keys(this.diseases).forEach(
-      (i) =>
-        (this.diseases[i] = new DiseasesModel({
-          ...this.diseases[i],
-        }))
-    );
-  }
+    // on each maxBy, take the final maxBy
+    let maxId = maxBy(eachMaxId, 'id');
 
-  static fromJSON(obj) {
-    return new this(obj);
-  }
+    if (eachMaxId.length === 0) {
+      maxId = { id: 0 };
+    }
+
+    newMedicalCase.id = maxId.id + 1;
+    newMedicalCase.createdDate = moment().format();
+    newMedicalCase.status = medicalCaseStatus.waitingTriage;
+
+    patient.medicalCases.push(newMedicalCase);
+
+    // set in localstorage
+    await setItemFromArray('patients', patient, patient.id);
+  };
 }

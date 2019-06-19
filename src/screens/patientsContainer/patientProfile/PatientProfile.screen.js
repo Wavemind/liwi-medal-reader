@@ -39,7 +39,9 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    await this.getPatient();
+    this.props.navigation.addListener('willFocus', async () => {
+      await this.getPatient();
+    });
   }
 
   // Get patient data storaged in localstorage
@@ -53,59 +55,18 @@ export default class PatientProfile extends React.Component<Props, State> {
     this.setState({
       patient,
       algorithms,
-      firstRender: true});
+      firstRender: true,
+    });
   }
 
   // Generate new medicalCase with algo selected
   generateMedicalCase = async () => {
     await this.setState({ isGeneratingMedicalCase: true });
-
-    const { algorithms, patient } = this.state;
-    const { app } = this.props;
-    let patients = await getItem('patients');
-
-    const algorithmUsed = find(algorithms, (a) => a.selected);
-
-    // default counter on each node
-    setInitialCounter(algorithmUsed);
-
-    let newMedicalCase = {
-      nodes: algorithmUsed.nodes,
-      diseases: algorithmUsed.diseases,
-      userId: app.user.data.id,
-    };
-
-    // initial batch waiting on final workflow
-    generateInitialBatch(newMedicalCase);
-
-    let eachMaxId = [];
-
-    // find recursive max id in medicalCases
-    forEach(patients, (p) => {
-      let itemMax = maxBy(p.medicalCases, 'id');
-      if (itemMax !== undefined) {
-        eachMaxId.push(itemMax);
-      }
-    });
-
-    // on each maxBy, take the final maxBy
-    let maxId = maxBy(eachMaxId, 'id');
-
-    if (eachMaxId.length === 0) {
-      maxId = { id: 0 };
-    }
-
-    newMedicalCase.id = maxId.id + 1;
-    newMedicalCase.createdDate = moment().format();
-
-    patient.medicalCases.push(newMedicalCase);
-
-    // set in localstorage
-    await setItemFromArray('patients', patient, patient.id);
-
-    // Get algo from localstorage (because we modify them)
+    let instanceMedicalCase = new MedicalCaseModel();
+    await instanceMedicalCase.createMedicalCase(this.state.patient.id)
     await this.getPatient();
     await this.setState({ isGeneratingMedicalCase: false });
+    return false;
   };
 
   // Select a medical case and redirect to patient's view
@@ -113,7 +74,9 @@ export default class PatientProfile extends React.Component<Props, State> {
     const { setMedicalCase, navigation } = this.props;
     await setMedicalCase(medicalCase);
 
-    navigation.navigate('Assessment');
+    navigation.navigate('Triage', {
+      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
+    });
   };
 
   render() {
@@ -158,7 +121,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     });
 
     return !firstRender ? (
-      <LiwiLoader/>
+      <LiwiLoader />
     ) : (
       <View padding-auto flex>
         <LiwiTitle2 noBorder>
@@ -169,14 +132,14 @@ export default class PatientProfile extends React.Component<Props, State> {
         </Text>
         <Button
           onPress={() =>
-            navigation.navigate('PatientNew', {
+            navigation.navigate('PatientUpsert', {
               idPatient: patient.id,
             })
           }
         >
-          <Text>Edit</Text>
+          <Text>{i18n.t('form:edit')}</Text>
         </Button>
-        <SeparatorLine style={styles.bottomMargin}/>
+        <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
           <View flex>
             <View>
@@ -202,9 +165,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text style={styles.textNotAvailable}>
-              {i18n.t('work_case:no_algorithms')}
-            </Text>
+            <Text>{i18n.t('work_case:no_algorithms')}</Text>
           </View>
         )}
       </View>

@@ -1,7 +1,8 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
-import { Text } from "native-base";
+import { Text } from 'native-base';
+import { medicalCaseStatus } from '../../frontend_service/constants';
 
 export interface I18nTypes<T> {
   t: (key: $Keys<T>, options?: Object) => string;
@@ -31,8 +32,22 @@ i18n
         assessment: {
           title: 'First look assessment',
         },
+        consultation: {
+          medical_history: 'Medical History',
+          physical_exam: 'Physical Exam',
+          poct: 'Poct'
+        },
+        triage: {
+          assessment: 'First look Assessments',
+          vital: 'Vital Signes',
+          comorbidities: 'Comorbidities',
+          vaccination: 'Vaccination history',
+          chief: 'Chief complaints'
+        },
         form: {
           required: ' is required',
+          save: 'Save',
+          edit: 'Edit',
           back: 'Back',
           next: 'Next',
         },
@@ -52,6 +67,17 @@ i18n
           search: 'Search a patient',
           add: 'Add a patient',
         },
+        medical_case: {
+          waiting_triage: 'Waiting for triage',
+          triage: 'Triage',
+          waiting_consultation: 'Waiting for consultation',
+          consultation: 'Consultation',
+          waiting_test: 'Waiting for test',
+          test: 'Test',
+          waiting_diagnosis: 'Wait for diagnosis',
+          diagnosis: 'Diagnosis',
+          close: 'Close',
+        },
         settings: {
           devices: 'Medical Devices',
           tests: 'Medical Tests available',
@@ -67,16 +93,13 @@ i18n
         },
         patient_detail: {
         },
-        patient_update: {
-          title: 'Update patient',
-          save: 'Save'
-        },
-        patient_new: {
-          title: 'New patient',
+        patient_upsert: {
+          title: 'Patient',
           save_and_wait: 'Save + add to waiting list',
           save_and_case: 'Save + create new case',
         },
         patient_list: {
+          all: 'All',
           waiting: 'Patients waiting for',
           search: 'Search',
           sort: 'Sort by',
@@ -84,6 +107,10 @@ i18n
           status: 'Status',
           no_patients: 'There are no patients',
           not_found: 'No match found',
+          waiting_triage: 'Triage',
+          waiting_consultation: 'Consultation',
+          waiting_test: 'Test',
+          waiting_diagnosis: 'Diagnosis'
         },
         patient: {
           first_name: 'First name',
@@ -112,7 +139,7 @@ i18n
         },
         unlock_session: {
           code: 'Code',
-          unlock: 'Unlock session'
+          unlock: 'Unlock session',
         },
         popup: {
           title: 'Please allow access to the position',
@@ -126,8 +153,7 @@ i18n
           empty: 'No session',
         },
         navigation: {
-          patient_update: 'Update patient',
-          patient_new: 'New patient',
+          patient_upsert: 'patient',
           patient_list: 'Patient list',
           patient_profile: 'Patient profile',
           settings: 'Settings',
@@ -139,10 +165,22 @@ i18n
           patient_data: 'Patient data',
         },
         notifications: {
-          invalid_code: 'Code is invalid'
-        }
+          invalid_code: 'Code is invalid',
+        },
       },
       fr: {
+        consultation: {
+          medical_history: 'Medical History',
+          physical_exam: 'Physical Exam',
+          poct: 'Poct'
+        },
+        triage: {
+          assessment: 'First look Assessments',
+          vital: 'Vital Signes',
+          comorbidities: 'Comorbidities',
+          vaccination: 'Vaccination history',
+          chief: 'Chief complaints'
+        },
         settings: {
           devices: 'Appareils médicaux',
           tests: 'Tests Médicaux disponible',
@@ -157,6 +195,7 @@ i18n
           no_algorithms: 'Aucun algorithme',
         },
         patient_detail: {
+
         },
         patient_list: {
           waiting: 'En attente',
@@ -185,10 +224,10 @@ i18n
         },
         unlock_session: {
           code: 'Code',
-          unlock: 'Déverrouiller la session'
+          unlock: 'Déverrouiller la session',
         },
         popup: {
-          title: "Merci d'autoriser l'accès à la position",
+          title: 'Merci d\'autoriser l\'accès à la position',
           message:
             'Le partage de localisation est obligatoire afin de pouvoir utiliser le service médical',
           ask_me_later: 'Demandez moi plus tard',

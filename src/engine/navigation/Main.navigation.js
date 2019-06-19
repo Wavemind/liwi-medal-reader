@@ -3,8 +3,7 @@ import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
-import PatientEdit from '../../screens/patientsContainer/patientEdit';
-import PatientNew from '../../screens/patientsContainer/patientNew';
+import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Assessment from '../../screens/medicalCasesContainer/triageContainer/assessment';
@@ -17,6 +16,9 @@ import { Button, Icon } from 'native-base';
 
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
+import { TriageTabNavigator } from './Triage.navigation';
+import { ConsultationTabNavigator } from './Consultation.navigation';
+import { DropDownMenu } from './DropDownMenuTop.navigation'
 
 const Stack = createStackNavigator({
   Home: {
@@ -51,21 +53,12 @@ const Stack = createStackNavigator({
       };
     },
   },
-  PatientNew: {
-    screen: PatientNew,
+  PatientUpsert: {
+    screen: PatientUpsert,
     path: 'patient/',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t('navigation:patient_new'),
-      };
-    },
-  },
-  PatientEdit: {
-    screen: PatientEdit,
-    path: 'patient/:id',
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: i18n.t('navigation:patient_update'),
+        title: i18n.t('navigation:patient_upsert'),
       };
     },
   },
@@ -111,6 +104,24 @@ const Stack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         title: i18n.t('navigation:settings'),
+      };
+    },
+  },
+  Triage: {
+    screen: TriageTabNavigator,
+    path: 'triage',
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: DropDownMenu
+      };
+    },
+  },
+  Consultation: {
+    screen: ConsultationTabNavigator,
+    path: 'consultation',
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: DropDownMenu
       };
     },
   },
