@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import moment from 'moment';
 import remove from 'lodash/remove';
-import filter from 'lodash/filter';
+import flatten from 'lodash/flatten';
 import findIndex from 'lodash/findIndex';
 import maxBy from 'lodash/maxBy';
 import { stringifyDeepRef } from '../../utils/swissKnives';
@@ -58,7 +58,12 @@ export const setItemFromArray = async (key, newItem, id) => {
       return item.id === id;
     });
 
-    items[index] = newItem;
+    if (index === -1) {
+      items.push(newItem);
+    } else {
+      items[index] = newItem;
+    }
+
     await setItem(key, items);
   }
 
@@ -135,16 +140,6 @@ export const setMedicalCase = async (medicalCase) => {
   }
 };
 
-// @params [Integer] userId
-// @return [Object] medicalCase
-// Get medical case from local storage
-export const getUserMedicalCases = async (userId) => {
-  const medicalCases = await getItems('medicalCases');
-  return filter(medicalCases, (medicalCase) => {
-    return medicalCase.userId === userId;
-  });
-};
-
 // @params [Integer] newMedicalCase
 // @return [Object] medicalCase
 // Generate a new medical case
@@ -163,20 +158,6 @@ export const createMedicalCase = async (newMedicalCase) => {
 
     return await setItem('medicalCases', medicalCases);
   } catch (e) {}
-};
-
-// @params [Integer] medical case id
-// @return [Object] medicalCase
-// Get medical case
-export const getMedicalCase = async (id) => {
-  const medicalCases = await getItems('medicalCases');
-
-  if (Array.isArray(medicalCases)) {
-    return medicalCases.find((medicalCase) => {
-      return medicalCase.id === id;
-    });
-  }
-  return {};
 };
 
 // @params [Integer] id, [Object] newSession

@@ -20,31 +20,55 @@ import { getArray } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
+import merge from 'lodash/merge';
+import flatten from 'lodash/flatten';
+import includes from 'lodash/includes';
+import { medicalCaseStatus } from '../../../../frontend_service/constants';
 
 type Props = {};
 type State = {};
 
 export default class PatientList extends React.Component<Props, State> {
   state = {
-    patients: [],
-    search: '',
+    medicalCases: [],
+    searchTerm: '',
     orderByName: 'asc',
+    filterTerm: '',
     isGeneratingPatient: false,
+    statuses: [
+      medicalCaseStatus.waitingTriage,
+      medicalCaseStatus.waitingConsultation,
+      medicalCaseStatus.waitingTest,
+      medicalCaseStatus.waitingDiagnosis,
+    ],
   };
 
   async componentWillMount() {
-    this.props.navigation.addListener(
-      'willFocus',
-      async () => {
-        await this.getPatients();
-      }
-    );
+    const { navigation } = this.props;
+
+    // Force refresh with a navigation.push
+    navigation.addListener('willFocus', async () => {
+      await this.filterMedicalCases();
+    });
   }
 
-  // Get patients in localstorage
-  getPatients = async () => {
+  // Get all medical case with waiting for... status
+  filterMedicalCases = async () => {
+    const { statuses } = this.state
     let patients = await getArray('patients');
-    this.setState({ patients });
+    let medicalCases = [];
+    patients.map((patient) => {
+      patient.medicalCases.map((medicalCase) => {
+        if (includes(statuses, medicalCase.status)) {
+          medicalCase.patientId = patient.id;
+          medicalCase.firstname = patient.firstname;
+          medicalCase.lastname = patient.lastname;
+          medicalCases.push(medicalCase);
+        }
+      });
+    });
+
+    this.setState({ medicalCases: medicalCases });
   };
 
   // Update state switch asc / desc
@@ -54,33 +78,62 @@ export default class PatientList extends React.Component<Props, State> {
     });
   };
 
+  // Reset all filter by default
+  resetFilter = () => {
+    this.setState({
+      searchTerm: '',
+      orderByName: 'asc',
+      filterTerm: '',
+    });
+  };
+
+  // Filter by status
+  filterBy = (filterTerm) => {
+    this.setState({ filterTerm });
+  };
+
   // Generate a new patient based on model Patient
   newPatient = async () => {
     const { navigation } = this.props;
-    navigation.navigate('PatientNew', { idPatient: null});
+    navigation.navigate('PatientUpsert', { idPatient: null });
   };
 
   // Set string search
-  search = (search) => {
-    this.setState({ search });
+  searchBy = (searchTerm) => {
+    this.setState({ searchTerm });
   };
 
   render() {
-    const { patients, search, orderByName, isGeneratingPatient } = this.state;
+    const {
+      medicalCases,
+      searchTerm,
+      orderByName,
+      isGeneratingPatient,
+      statuses,
+      filterTerm,
+    } = this.state;
     const { navigation } = this.props;
 
-    console.log(patients);
-
-    // Filter patient based on first name and last name
-    let filteredPatients = filter(patients, (p) => {
-      return p.firstname.includes(search) || p.lastname.includes(search);
+    // Filter patient based on first name and last name by search term
+    let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
+      return (
+        medicalCase.firstname
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        medicalCase.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     });
 
-    // Order the patients
-    let orderedFilteredPatients = orderBy(
-      filteredPatients,
+    // Filter patient based on medical case status
+    filteredMedicalCases = filter(filteredMedicalCases, (medicalCase) => {
+      return medicalCase.status === filterTerm || filterTerm === '';
+    });
+
+    // Order the medical case
+    let orderedFilteredMedicalCases = orderBy(
+      filteredMedicalCases,
       ['lastname'],
-      [orderByName],
+      [orderByName]
     );
 
     return (
@@ -90,8 +143,8 @@ export default class PatientList extends React.Component<Props, State> {
 
           <View flex-container-row>
             <Item round style={styles.input}>
-              <Icon active name="search"/>
-              <Input value={search} onChangeText={this.search}/>
+              <Icon active name="search" />
+              <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
             <Button
               center
@@ -101,64 +154,78 @@ export default class PatientList extends React.Component<Props, State> {
               onPress={this.newPatient}
               disabled={isGeneratingPatient}
             >
-              <Icon type={'MaterialCommunityIcons'} name="plus" white/>
+              <Icon type={'MaterialCommunityIcons'} name="plus" white />
             </Button>
           </View>
 
           <View flex-container-row style={styles.filter}>
-            <Button center rounded light>
-              <Text>ALL</Text>
+            <Button center rounded light onPress={this.resetFilter}>
+              <Text>{i18n.t('patient_list:all')}</Text>
             </Button>
             <Text style={styles.textFilter}>
               {i18n.t('patient_list:waiting')}
             </Text>
-            <Picker style={styles.picker} mode="dropdown">
-              <Picker.Item label="TRIAGE (11)" value="triage"/>
-              <Picker.Item label="UNKNOWN (0)" value="unknown"/>
+            <Picker
+              style={styles.picker}
+              mode="dropdown"
+              selectedValue={filterTerm}
+              onValueChange={this.filterBy}
+            >
+              <Picker.Item label="" value="" />
+              {statuses.map((status, index) => (
+                <Picker.Item
+                  label={i18n.t(`patient_list:${status}`)}
+                  key={index}
+                  value={status}
+                />
+              ))}
             </Picker>
           </View>
 
-          <SeparatorLine/>
+          <SeparatorLine />
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{i18n.t('patient_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByName}>
               {orderByName === 'asc' ? (
-                <Icon name="arrow-down"/>
+                <Icon name="arrow-down" />
               ) : (
-                <Icon name="arrow-up"/>
+                <Icon name="arrow-up" />
               )}
               <Text>{i18n.t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light>
-              <Icon name="arrow-down"/>
+              <Icon name="arrow-down" />
               <Text>{i18n.t('patient_list:status')}</Text>
             </Button>
           </View>
 
-          {patients.length > 0 ? (
+          {medicalCases.length > 0 ? (
             [
-              orderedFilteredPatients.length > 0 ? (
-                <List block>
-                  {orderedFilteredPatients.map((patient) => (
+              orderedFilteredMedicalCases.length > 0 ? (
+                <List block key={'patientList'}>
+                  {orderedFilteredMedicalCases.map((medicalCase, index) => (
                     <ListItem
                       rounded
                       block
-                      key={patient.id}
+                      key={index}
                       spaced
                       onPress={() =>
                         navigation.navigate('PatientProfile', {
-                          id: patient.id,
+                          id: medicalCase.patientId,
                         })
                       }
                     >
                       <View w50>
                         <Text>
-                          {patient.id} : {patient.lastname} {patient.firstname}
+                          {medicalCase.patientId} : {medicalCase.lastname}{' '}
+                          {medicalCase.firstname}
                         </Text>
                       </View>
                       <View w50>
-                        <Text>{patient.status}</Text>
+                        <Text>
+                          {i18n.t(`medical_case:${medicalCase.status}`)}
+                        </Text>
                       </View>
                     </ListItem>
                   ))}

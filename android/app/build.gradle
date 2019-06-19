@@ -159,7 +159,6 @@ android {
 }
 
 dependencies {
-    implementation project(':@react-native-community_netinfo')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-keep-awake')

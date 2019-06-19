@@ -2,7 +2,7 @@
 
 import * as _ from 'lodash';
 import moment from 'moment';
-import { getArray, setItem } from '../../../src/engine/api/LocalStorage';
+import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage';
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
 
@@ -17,17 +17,17 @@ interface PatientModelInterface {
 
 export class PatientModel implements PatientModelInterface {
   constructor(props) {
-    this.create(props)
+    this.create(props);
   }
 
   // Generate default patient value
-  create = ( props = {} ) => {
-
+  create = (props = {}) => {
     const {
-      firstname = 'Ta où les vaches',
-      lastname = 'Crozin ',
+      id = null,
+      firstname = __DEV__ ? 'Domachnie Tapotchki' : '',
+      lastname = __DEV__ ? 'домашние тапочки' : '',
       birthdate = moment('1970-01-01T00:00:00.000').format(),
-      gender = 'male',
+      gender = __DEV__ ? 'male' : '',
       medicalCases = [],
     } = props;
 
@@ -36,23 +36,29 @@ export class PatientModel implements PatientModelInterface {
     this.birthdate = birthdate;
     this.gender = gender;
     this.medicalCases = medicalCases;
+
+    if (id === null) {
+      this.setId();
+    } else {
+      this.id = id;
+    }
+
   };
 
-  // Create patient and push it in local storage
-  save = async () => {
+  // uniqueId incremented
+  setId = async () => {
     let patients = await this.getPatients();
 
-    // uniqueId incremented
     let maxId = _.maxBy(patients, 'id');
     if (patients.length === 0) {
       maxId = { id: 0 };
     }
     this.id = maxId.id + 1;
+  };
 
-    patients.push(this);
-
-    // Set in localstorage
-    await setItem('patients', patients);
+  // Create patient and push it in local storage
+  save = async () => {
+    await setItemFromArray('patients', this, this.id);
   };
 
   // Validate input
@@ -82,5 +88,4 @@ export class PatientModel implements PatientModelInterface {
   getPatients = async () => {
     return await getArray('patients');
   };
-
 }

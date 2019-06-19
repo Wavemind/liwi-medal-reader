@@ -28,6 +28,10 @@ export default {
     '.size-auto': {
       fontSize: fontSizeTextIsTablet(),
     },
+    '.center': {
+      textAlign: 'center',
+      textAlignVertical: 'center',
+    },
     '.not-available': {
       marginRight: 80,
       marginLeft: 40,
