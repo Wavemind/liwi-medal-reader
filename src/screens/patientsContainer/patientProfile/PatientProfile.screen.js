@@ -2,20 +2,10 @@
 
 import * as React from 'react';
 import { Button, List, ListItem, Text, View } from 'native-base';
-import maxBy from 'lodash/maxBy';
-import find from 'lodash/find';
-import forEach from 'lodash/forEach';
-
 import { styles } from './PatientProfile.style';
 import {
-  generateInitialBatch,
-  setInitialCounter,
-} from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
-import {
-  getItem,
   getItemFromArray,
   getItems,
-  setItemFromArray,
 } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
 
@@ -63,7 +53,7 @@ export default class PatientProfile extends React.Component<Props, State> {
   generateMedicalCase = async () => {
     await this.setState({ isGeneratingMedicalCase: true });
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.createMedicalCase(this.state.patient.id)
+    await instanceMedicalCase.createMedicalCase(this.state.patient.id);
     await this.getPatient();
     await this.setState({ isGeneratingMedicalCase: false });
     return false;
