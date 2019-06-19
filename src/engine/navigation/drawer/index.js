@@ -15,5 +15,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(Drawer)));
+  mapDispatchToProps,
+)( withSessions( withApplication( Drawer ) ) );
