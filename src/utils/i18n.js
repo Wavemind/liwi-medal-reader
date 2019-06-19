@@ -191,6 +191,7 @@ i18n
           no_algorithms: 'Aucun algorithme',
         },
         patient_detail: {
+
         },
         patient_list: {
           waiting: 'En attente',
