@@ -32,7 +32,9 @@ i18n
           title: 'First look assessment',
         },
         form: {
-          required: ' is required'
+          required: ' is required',
+          back: 'Back',
+          next: 'Next',
         },
         menu: {
           triage: 'Triage',

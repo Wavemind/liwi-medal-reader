@@ -130,8 +130,6 @@ export default class PatientNew extends React.Component<Props, State> {
       >
         <LiwiTitle2 noBorder>{i18n.t('patient_new:title')}</LiwiTitle2>
         <View>
-
-
           <Col>
             <CustomInput
               init={firstname}
@@ -183,17 +181,17 @@ export default class PatientNew extends React.Component<Props, State> {
 
         <View bottom-view>
           {
-            idPatient === null ? <View style={styles.columns}>
+            idPatient === null ? <View columns>
               <Button
                 light
-                style={styles.splitButton}
+                split
                 onPress={saveWaitingList}
               >
                 <Text>{i18n.t('patient_new:save_and_wait')}</Text>
               </Button>
               <Button
                 light
-                style={styles.splitButton}
+                split
                 onPress={saveNewCase}
               >
                 <Text>{i18n.t('patient_new:save_and_case')}</Text>

@@ -76,6 +76,12 @@ export default {
     '.answer': {
       flexDirection: 'row',
       flex:0.2,
+    },
+
+    '.columns': {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     }
   },
 };
