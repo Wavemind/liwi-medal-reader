@@ -22,6 +22,7 @@ import i18n from '../../../utils/i18n';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import moment from 'moment';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 
 type Props = {};
 type State = {};
