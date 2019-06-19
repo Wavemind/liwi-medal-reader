@@ -16,20 +16,20 @@ import { Button, Icon } from 'native-base';
 
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
-import DropDownMenuTop from './DropDownMenuTop.navigation';
-import { ConsultationTabNavigator } from './consultation/Consultation.navigation';
-import { TriageTabNavigator } from './triage/Triage.navigation';
+import { TriageTabNavigator } from './Triage.navigation';
+import { ConsultationTabNavigator } from './Consultation.navigation';
+import { DropDownMenu } from './DropDownMenuTop.navigation'
 
-const Stack = createStackNavigator( {
+const Stack = createStackNavigator({
   Home: {
     screen: MainScreen,
     path: 'home',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t( 'navigation:patient_list' ),
+        title: i18n.t('navigation:patient_list'),
         headerLeft: (
-          <Button iconMenu iconLeft onPress={ () => navigation.openDrawer() }>
-            <Icon red type={ 'Entypo' } name="menu" large/>
+          <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
+            <Icon red type={'Entypo'} name="menu" large />
           </Button>
         ),
       };
@@ -40,7 +40,7 @@ const Stack = createStackNavigator( {
     path: 'patientList',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t( 'navigation:patient_list' ),
+        title: i18n.t('navigation:patient_list'),
       };
     },
   },
@@ -49,7 +49,7 @@ const Stack = createStackNavigator( {
     path: 'patientProfile',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t( 'navigation:patient_profile' ),
+        title: i18n.t('navigation:patient_profile'),
       };
     },
   },
@@ -58,7 +58,7 @@ const Stack = createStackNavigator( {
     path: 'patient/',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t( 'navigation:patient_new' ),
+        title: i18n.t('navigation:patient_new'),
       };
     },
   },
@@ -67,7 +67,7 @@ const Stack = createStackNavigator( {
     path: 'patient/:id',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t( 'navigation:patient_update' ),
+        title: i18n.t('navigation:patient_update'),
       };
     },
   },
@@ -76,7 +76,7 @@ const Stack = createStackNavigator( {
     path: 'work_case',
     navigationOptions: ({ navigation }) => {
       return {
-        title: navigation.getParam( 'title' ),
+        title: navigation.getParam('title'),
       };
     },
   },
@@ -85,7 +85,7 @@ const Stack = createStackNavigator( {
     path: 'algorithms',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t( 'navigation:available_algorithms' ),
+        title: i18n.t('navigation:available_algorithms'),
       };
     },
   },
@@ -94,7 +94,7 @@ const Stack = createStackNavigator( {
     path: 'algorithm/:id',
     navigationOptions: ({ navigation }) => {
       return {
-        title: navigation.getParam( 'title' ),
+        title: navigation.getParam('title'),
       };
     },
   },
@@ -103,7 +103,7 @@ const Stack = createStackNavigator( {
     path: 'settings',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t( 'navigation:settings' ),
+        title: i18n.t('navigation:settings'),
       };
     },
   },
@@ -112,28 +112,27 @@ const Stack = createStackNavigator( {
     path: 'triage',
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: DropDownMenuTop,
+        headerTitle: DropDownMenu
       };
     },
   },
-
   Consultation: {
     screen: ConsultationTabNavigator,
     path: 'consultation',
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: DropDownMenuTop,
+        headerTitle: DropDownMenu
       };
     },
   },
-} );
+});
 
 export default () => {
   return createDrawerNavigator(
     { Home: { screen: Stack } },
     {
       drawerWidth: screenWidth / 2,
-      contentComponent: (props) => <Drawer { ...props } />,
-    },
+      contentComponent: (props) => <Drawer {...props} />,
+    }
   );
 };
