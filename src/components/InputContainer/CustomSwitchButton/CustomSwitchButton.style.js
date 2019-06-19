@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   form: {
     marginTop: 20,
     marginBottom: 20,
+    flex: 1,
   },
 
   view: {
@@ -26,4 +27,23 @@ export const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 15,
   },
+
+  buttonSplit: {
+    flex: 0.5,
+    justifyContent: 'center',
+  },
+
+  buttonWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  active: {
+    backgroundColor: liwiColors.redColor,
+  },
+
+  activeText: {
+    color: liwiColors.whiteColor,
+  }
 });

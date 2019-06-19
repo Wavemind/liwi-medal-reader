@@ -13,6 +13,7 @@ import { persistor, store } from '../frontend_service/store';
 import CustomModal from './components/CustomModal';
 import { getItem } from './engine/api/LocalStorage';
 
+
 import WavemindTools from 'utils/WavemindTools';
 
 Array.prototype.first = function() {
