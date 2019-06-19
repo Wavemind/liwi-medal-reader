@@ -73,5 +73,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     // set in localstorage
     await setItemFromArray('patients', patient, patient.id);
+    this.id = newMedicalCase.id;
   };
 }
