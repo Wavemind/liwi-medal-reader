@@ -7,6 +7,7 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "27.1.1"
+        multidexEnabled=true
     }
     repositories {
         google()
@@ -38,7 +39,7 @@ allprojects {
 }
 
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.6'
-    distributionUrl = distributionUrl.replace("bin", "all")
+wrapper{
+    gradleVersion = '5.1'
+    distributionType = Wrapper.DistributionType.BIN
 }

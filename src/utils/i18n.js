@@ -28,6 +28,11 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        consultation: {
+          medical_history: 'Medical History',
+          physical_exam: 'Physical Exam',
+          poct: 'Poct'
+        },
         triage: {
           assessment: 'First look Assessments',
           vital: 'Vital Signes',
@@ -143,6 +148,11 @@ i18n
         },
       },
       fr: {
+        consultation: {
+          medical_history: 'Medical History',
+          physical_exam: 'Physical Exam',
+          poct: 'Poct'
+        },
         triage: {
           assessment: 'First look Assessments',
           vital: 'Vital Signes',

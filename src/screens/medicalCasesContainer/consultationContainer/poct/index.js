@@ -1,6 +1,6 @@
-import TabsNavigation from './TriageTabs.navigation';
-import { withSessions } from '../../../engine/contexts/Sessions.context';
-import { withApplication } from '../../../engine/contexts/Application.context';
+import Poct from './Poct.screen';
+import { withSessions } from '../../../../engine/contexts/Sessions.context';
+import { withApplication } from '../../../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
 import { withNamespaces } from 'react-i18next';
 
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(withNamespaces(['Triage'])(TabsNavigation))));
+)(withSessions(withApplication(withNamespaces(['settings'])(Poct))));
