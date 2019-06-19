@@ -1,8 +1,8 @@
 import TabsNavigation from './TriageTabs.navigation';
-import { withSessions } from '../../../contexts/Sessions.context';
-import { withApplication } from '../../../contexts/Application.context';
+import { withSessions } from '../../../engine/contexts/Sessions.context';
+import { withApplication } from '../../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
-import { withNamespaces } from 'react-i18next/src/index';
+import { withNamespaces } from 'react-i18next';
 
 const mapStateToProps = (state, ownProps) => {
   return {};
