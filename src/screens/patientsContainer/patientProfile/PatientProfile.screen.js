@@ -53,8 +53,6 @@ export default class PatientProfile extends React.Component<Props, State> {
     let patient = await getItemFromArray('patients', 'id', id);
     let algorithms = await getItems('algorithms');
 
-    console.log(patient);
-
     this.setState({
       patient,
       algorithms,
@@ -77,7 +75,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     const { setMedicalCase, navigation } = this.props;
     await setMedicalCase(medicalCase);
 
-    navigation.navigate('WorkCase', {
+    navigation.navigate('Triage', {
       title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
     });
   };
