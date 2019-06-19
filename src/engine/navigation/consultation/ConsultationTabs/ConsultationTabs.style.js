@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../../utils/constants';
+import { liwiColors } from '../../../../utils/constants';
 
-export const styles = StyleSheet.create({
+export const styles = StyleSheet.create( {
   container: {
     height: 120,
     padding: 10,
-    backgroundColor: liwiColors.lightGreyColor
+    backgroundColor: liwiColors.lightGreyColor,
   },
   view: {
     flex: 0.8,
@@ -23,5 +23,12 @@ export const styles = StyleSheet.create({
   },
   unactive: {
     backgroundColor: liwiColors.whiteColor,
-  }
-});
+  },
+  touchable: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flex: 1,
+    flexGrow: 1,
+  },
+} );

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 
-export const styles = StyleSheet.create({
+export const styles = StyleSheet.create( {
   tools: {
     backgroundColor: liwiColors.greyColor,
     height: screenHeight,
@@ -78,4 +78,4 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-});
+} );

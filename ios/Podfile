@@ -20,6 +20,8 @@ target 'liwi_native' do
 
     pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+    pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
   end
 
   target 'liwi_nativeTests' do

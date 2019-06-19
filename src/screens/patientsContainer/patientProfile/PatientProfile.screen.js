@@ -53,8 +53,6 @@ export default class PatientProfile extends React.Component<Props, State> {
     let patient = await getItemFromArray('patients', 'id', id);
     let algorithms = await getItems('algorithms');
 
-    console.log(patient);
-
     this.setState({
       patient,
       algorithms,
