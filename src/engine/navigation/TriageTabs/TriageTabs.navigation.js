@@ -30,7 +30,7 @@ export default class TriageTabs extends Component {
       <View style={ styles.container }>
         <View flex-container-row>
           <TouchableOpacity
-            onPress={ () => this.onPress( 'Assessment' ) }
+            onPress={ () => this.onPress( 'Assessments' ) }
             style={ styles.touchable }
           >
             { this._renderRound( 1, index === 0 ) }
@@ -53,7 +53,7 @@ export default class TriageTabs extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={ () => this.onPress( 'Vaccination' ) }
+            onPress={ () => this.onPress( 'Vaccinations' ) }
             style={ styles.touchable }
           >
             { this._renderRound( 4, index === 3 ) }
@@ -61,7 +61,7 @@ export default class TriageTabs extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={ () => this.onPress( 'ChiefComplaint' ) }
+            onPress={ () => this.onPress( 'ChiefComplaints' ) }
             style={ styles.touchable }
           >
             { this._renderRound( 5, index === 4 ) }

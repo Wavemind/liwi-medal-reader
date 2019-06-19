@@ -1,16 +1,16 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from 'react-navigation';
-import Assessment from '../../screens/medicalCasesContainer/triageContainer/assessment';
-import ChiefComplaint from '../../screens/medicalCasesContainer/triageContainer/chiefComplaint';
+import Assessments from '../../screens/medicalCasesContainer/triageContainer/assessments';
+import ChiefComplaints from '../../screens/medicalCasesContainer/triageContainer/chiefComplaints';
 import Comorbidities from '../../screens/medicalCasesContainer/triageContainer/comorbidities';
-import Vaccination from '../../screens/medicalCasesContainer/triageContainer/vaccination';
+import Vaccinations from '../../screens/medicalCasesContainer/triageContainer/vaccinations';
 import VitalSigns from '../../screens/medicalCasesContainer/triageContainer/vitalSigns';
 import TriageTabs from './TriageTabs';
 
 export const TriageTabNavigator = createMaterialTopTabNavigator(
   {
-    Assessment: {
-      screen: Assessment,
+    Assessments: {
+      screen: Assessments,
     },
     VitalSigns: {
       screen: VitalSigns,
@@ -18,11 +18,11 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
     Comorbidities: {
       screen: Comorbidities,
     },
-    Vaccination: {
-      screen: Vaccination,
+    Vaccinations: {
+      screen: Vaccinations,
     },
-    ChiefComplaint: {
-      screen: ChiefComplaint,
+    ChiefComplaints: {
+      screen: ChiefComplaints,
     },
   },
   {

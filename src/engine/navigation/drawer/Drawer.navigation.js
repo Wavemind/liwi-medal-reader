@@ -89,7 +89,7 @@ export default class Drawer extends Component {
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'Assessment' ) }
+              onPress={ () => this.onPress( 'Assessments' ) }
 
             >
               <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:assessment' ) }</Text>
@@ -113,7 +113,7 @@ export default class Drawer extends Component {
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'Vaccination' ) }
+              onPress={ () => this.onPress( 'Vaccinations' ) }
 
             >
               <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:vacciantion_history' ) }</Text>
@@ -121,7 +121,7 @@ export default class Drawer extends Component {
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'ChiefComplaint' ) }
+              onPress={ () => this.onPress( 'ChiefComplaints' ) }
 
             >
               <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:chief_complaint' ) }</Text>
@@ -140,7 +140,7 @@ export default class Drawer extends Component {
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'PhysicalExam' ) }
+              onPress={ () => this.onPress( 'PhysicalExams' ) }
 
             >
               <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:physical_exam' ) }</Text>

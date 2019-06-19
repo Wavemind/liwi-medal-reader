@@ -19,7 +19,7 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Assessment extends React.Component<Props, State> {
+export default class PhysicalExams extends React.Component<Props, State> {
   // default settings
   state = {};
 
@@ -28,7 +28,7 @@ export default class Assessment extends React.Component<Props, State> {
 
     return (
       <ScrollView>
-        <Text>Assessment</Text>
+        <Text>PhysicalExams</Text>
       </ScrollView>
     );
   }

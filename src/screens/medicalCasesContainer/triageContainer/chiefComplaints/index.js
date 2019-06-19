@@ -1,4 +1,4 @@
-import Assessment from './Assessment.screen';
+import ChiefComplaint from './ChiefComplaints.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(withNamespaces(['settings'])(Assessment))));
+)(withSessions(withApplication(withNamespaces(['settings'])(ChiefComplaint))));
