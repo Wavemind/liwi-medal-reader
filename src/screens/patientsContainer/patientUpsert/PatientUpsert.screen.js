@@ -15,7 +15,7 @@ import i18n from '../../../utils/i18n';
 import { NavigationActions } from 'react-navigation';
 
 import { styles } from './PatientUpsert.style';
-import { getItemFromArray } from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getMedicalCase } from '../../../engine/api/LocalStorage';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -25,6 +25,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     errors: {},
     patient: {},
     firstRender: false,
+    idLastMedicalCase: null,
   };
 
   async componentWillMount() {
@@ -44,7 +45,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const { navigation } = this.props;
     await this.savePatient();
     navigation.dispatch(
-      NavigationActions.back('patientProfile', { id: this.state.patient.id }),
+      NavigationActions.back('patientProfile', { id: this.state.patient.id })
     );
   };
 
@@ -67,11 +68,20 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   // Save patient and redirect to medical case
   saveNewCase = async () => {
-    const { navigation } = this.props;
+    const { idLastMedicalCase, patient } = this.state;
     let result = await this.savePatient();
 
     if (result) {
-      navigation.navigate('MUST BE CHANGE');
+      const { setMedicalCase, navigation } = this.props;
+      let medicalCase = await getMedicalCase(idLastMedicalCase);
+      medicalCase.patient = patient
+      await setMedicalCase(medicalCase);
+
+      navigation.navigate('Triage', {
+        title: `${medicalCase.patient.firstname} ${
+          medicalCase.patient.lastname
+        }`,
+      });
     }
   };
 
@@ -90,6 +100,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   generateMedicalCase = async (patientId) => {
     let instanceMedicalCase = new MedicalCaseModel();
     await instanceMedicalCase.createMedicalCase(patientId);
+    return instanceMedicalCase.id;
   };
 
   // Set patient in localStorage
@@ -104,7 +115,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
       await patient.save();
 
       if (idPatient === null) {
-        await this.generateMedicalCase(patient.id);
+        let id = await this.generateMedicalCase(patient.id);
+        this.setState({ idLastMedicalCase: id });
       }
 
       return true;
@@ -186,11 +198,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <View bottom-view>
           {idPatient === null ? (
             <View columns>
-              <Button
-                light
-                split
-                onPress={saveWaitingList}
-              >
+              <Button light split onPress={saveWaitingList}>
                 <Text>{i18n.t('patient_upsert:save_and_wait')}</Text>
               </Button>
               <Button light split onPress={saveNewCase}>

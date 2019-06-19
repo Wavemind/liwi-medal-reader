@@ -3,6 +3,7 @@ import moment from 'moment';
 import remove from 'lodash/remove';
 import flatten from 'lodash/flatten';
 import findIndex from 'lodash/findIndex';
+import _ from 'lodash';
 import maxBy from 'lodash/maxBy';
 import { stringifyDeepRef } from '../../utils/swissKnives';
 
@@ -253,4 +254,17 @@ export const destroySession = async (id) => {
   }
   await setSessions(sessions);
   return true;
+};
+
+export const getMedicalCase = async (id) => {
+  let patients = await getItems('patients');
+  let item = null;
+
+  patients.map((patient) => {
+    let f = _.find(patient.medicalCases, (m) => m.id === id);
+    if (f !== undefined) {
+      item = f;
+    }
+  });
+  return item;
 };
