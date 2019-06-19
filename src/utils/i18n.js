@@ -133,6 +133,7 @@ i18n
           password: 'Password',
           login: 'Login',
         },
+
         unlock_session: {
           code: 'Code',
           unlock: 'Unlock session',
