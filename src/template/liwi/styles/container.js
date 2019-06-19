@@ -10,6 +10,14 @@ export default {
       flexDirection: 'row',
       flex: 1,
     },
+    '.round': {
+      borderRadius: 50,
+      backgroundColor: liwiColors.darkGreyColor,
+      height: 40,
+      width: 40,
+      flex: 1,
+      flexGrow: 1,
+    },
     '.flex-child': {
       flexGrow: 1, // not used actually
     },
@@ -23,7 +31,14 @@ export default {
     '.padding-auto': { padding: 20 },
     '.flex-center': {
       flexDirection: 'column',
-      justifyContent: 'center',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      flex: 1,
+      flexGrow: 1,
+    },
+    '.flex-center-stretch': {
+      flexDirection: 'column',
+      justifyContent: 'space-between',
       alignItems: 'center',
       flex: 1,
       flexGrow: 1,
