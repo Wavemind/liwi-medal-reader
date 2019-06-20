@@ -47,6 +47,18 @@ export const categories = {
   predefinedSyndrome: 'Predefined syndrome',
 };
 
+/*
+* Demographics (D)
+Vaccines (V)
+Comorbidities (DC)
+Chief Complain (CC)
+Exposure (E)
+Symptoms (S)
+Physical Exam/Signs (PE)
+Assessement/Test (A)
+Predifined Syndroms (PS)
+* */
+
 export const medicalCaseStatus = {
   waitingTriage: 'waiting_triage',
   triage: 'triage',

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import QuestionFactory from '../QuestionFactory';
+import { List } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 
