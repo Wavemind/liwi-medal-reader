@@ -116,7 +116,7 @@ export const LeftButton = styled(RNTouchableOpacity).attrs({})`
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   border-width: 0.5px;
-  padding: 15px;
+  padding: 13px;
   border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
     if (active) {
@@ -126,12 +126,23 @@ export const LeftButton = styled(RNTouchableOpacity).attrs({})`
   }};
 `;
 
+export const ViewQuestion = styled(RNView).attrs({})`
+  flex: 0.7;
+  flex-direction: row;
+  border-radius: 5px;
+  border-width: 0.5px;
+  padding: 10px;
+  margin-right: 20px;
+  border-color: ${liwiColors.blackColor};
+  background-color: ${liwiColors.lighterGreyColor};
+`;
+
 export const RightButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   border-width: 0.5px;
-  padding: 15px;
+  padding: 13px;
   border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
     if (active) {

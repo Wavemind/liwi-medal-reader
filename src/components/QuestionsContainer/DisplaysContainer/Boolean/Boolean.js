@@ -31,7 +31,7 @@ export default class Boolean extends React.Component<Props, State> {
     const idNo = Number(Object.keys(answers)[1]);
 
     return (
-      <View>
+      <View answer>
         <LeftButton
           active={answer === idYes}
           onPress={() => this._handleClick(idYes)}

@@ -23,6 +23,8 @@ export default {
     '.question': {
       borderColor: liwiColors.greyColor,
       borderWidth: 1,
+      borderRadius: 5,
+      backgroundColor: liwiColors.lighterGreyColor,
       width: '100%',
       flex: 1,
       margin: 0,

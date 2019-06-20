@@ -35,7 +35,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       dd = [],
       display_format = '',
       priority = '',
-      ps = [],
+      qs = [],
       value = '',
       value_format = '',
       medicalCase = {}
@@ -50,12 +50,12 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.dd = dd;
     this.display_format = display_format;
     this.priority = priority;
-    this.ps = ps;
+    this.qs = qs;
     this.value = value;
     this.value_format = value_format;
 
     this.inclusions = new InclusionsNodeModel({
-      ps,
+      qs: qs,
       dd,
       medicalCase,
     });

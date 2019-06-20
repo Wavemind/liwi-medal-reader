@@ -27,7 +27,7 @@ export class PredefinedSyndromeModel extends NodeModel
       description = '',
       label = '',
       dd = [],
-      ps = [],
+      qs = [],
       medicalCase = {},
       conditions = {},
       nodes = {},
@@ -39,13 +39,13 @@ export class PredefinedSyndromeModel extends NodeModel
     this.answer = answer;
     this.answers = answers;
     this.dd = dd;
-    this.ps = ps;
+    this.qs = qs;
     this.conditions = conditions;
     this.top_conditions = top_conditions;
     this.nodes = nodes;
 
     this.inclusions = new InclusionsNodeModel({
-      ps,
+      qs: qs,
       dd,
       medicalCase,
     });

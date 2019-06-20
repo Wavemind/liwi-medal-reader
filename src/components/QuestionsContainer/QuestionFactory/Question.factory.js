@@ -5,15 +5,16 @@ import type { NavigationScreenProps } from 'react-navigation';
 import {
   categories,
   displayFormats,
-  displayValues,
+  displayValues, nodesType,
   priorities,
+  typeNode,
 } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
 import { Grid, Icon, ListItem, Text, View } from 'native-base';
-import { ColCenter, QuestionView } from '../../../template/layout';
+import { ColCenter, ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 
 type Props = NavigationScreenProps & {};
@@ -23,11 +24,11 @@ type State = {};
 class LabelQuestion extends React.PureComponent<{ label: any }> {
   render() {
     return (
-      <ColCenter size={4} style={styles.borderRight}>
+      <ViewQuestion>
         <Text style={{ color: liwiColors.blackColor }} size-auto>
           {this.props.label}
         </Text>
-      </ColCenter>
+      </ViewQuestion>
     );
   }
 }
@@ -66,17 +67,20 @@ class WrapperQuestion extends React.Component<{}> {
         break;
     }
 
-    return (
-      <ColCenter size={3} style={styles.borderRight}>
-        <WrapperAnswer />
-      </ColCenter>
-    );
+    return <WrapperAnswer />;
   }
 }
 
 export default class Question extends React.PureComponent<Props, State> {
   render() {
     const { question } = this.props;
+
+
+
+    if (question.type !== nodesType.q) {
+      return null;
+    }
+
     let specificStyle;
 
     switch (question.priority) {
@@ -97,17 +101,14 @@ export default class Question extends React.PureComponent<Props, State> {
     // TODO move modalwrapper higher in component. we want only one initial render for it
 
     return (
-      <QuestionView elevation={1} key={question.id} style={specificStyle}>
-        <Grid>
-          <LabelQuestion key={question.id + '_label'} label={question.label} />
-          <WrapperQuestion
-            key={question.id + '_answer'}
-            question={question}
-            specificStyle={specificStyle}
-          />
-        </Grid>
-        {/*<WrapperRadiobutton/>*/}
-      </QuestionView>
+      <ListItem block noBorder>
+        <LabelQuestion key={question.id + '_label'} label={question.label} />
+        <WrapperQuestion
+          key={question.id + '_answer'}
+          question={question}
+          specificStyle={specificStyle}
+        />
+      </ListItem>
     );
   }
 }
