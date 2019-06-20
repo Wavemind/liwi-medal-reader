@@ -140,8 +140,6 @@ export default class PatientList extends React.Component<Props, State> {
       [orderByName]
     );
 
-    console.log(algorithms.length);
-
     return (
       <ScrollView>
         <View padding-auto>

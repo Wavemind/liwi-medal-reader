@@ -75,8 +75,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       // Set medicalCase in reducer
       const { setMedicalCase, navigation } = this.props;
       let medicalCase = await getMedicalCase(idLastMedicalCase);
-      medicalCase.patient = patient
-      console.log(medicalCase)
+      medicalCase.patient = patient;
 
       await setMedicalCase(medicalCase);
 

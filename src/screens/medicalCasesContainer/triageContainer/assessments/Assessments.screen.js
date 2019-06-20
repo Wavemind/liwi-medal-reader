@@ -27,7 +27,6 @@ export default class Assessments extends React.Component<Props, State> {
         }}
       >
         <View>
-          <LiwiTitle2 noBorder padding>{i18n.t('assessment:title')}</LiwiTitle2>
           <Questions questions={medicalCase.nodes} />
         </View>
 
