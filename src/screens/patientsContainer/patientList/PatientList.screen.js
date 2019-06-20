@@ -16,12 +16,10 @@ import {
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getArray } from '../../../engine/api/LocalStorage';
+import { getArray, getItems } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
-import merge from 'lodash/merge';
-import flatten from 'lodash/flatten';
 import includes from 'lodash/includes';
 import { medicalCaseStatus } from '../../../../frontend_service/constants';
 
@@ -35,6 +33,7 @@ export default class PatientList extends React.Component<Props, State> {
     orderByName: 'asc',
     filterTerm: '',
     isGeneratingPatient: false,
+    algorithms: [],
     statuses: [
       medicalCaseStatus.waitingTriage,
       medicalCaseStatus.waitingConsultation,
@@ -54,8 +53,9 @@ export default class PatientList extends React.Component<Props, State> {
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
-    const { statuses } = this.state
+    const { statuses } = this.state;
     let patients = await getArray('patients');
+    let algorithms = await getItems('algorithms');
     let medicalCases = [];
     patients.map((patient) => {
       patient.medicalCases.map((medicalCase) => {
@@ -68,7 +68,10 @@ export default class PatientList extends React.Component<Props, State> {
       });
     });
 
-    this.setState({ medicalCases: medicalCases });
+    this.setState({
+      medicalCases: medicalCases,
+      algorithms: algorithms,
+    });
   };
 
   // Update state switch asc / desc
@@ -111,6 +114,7 @@ export default class PatientList extends React.Component<Props, State> {
       isGeneratingPatient,
       statuses,
       filterTerm,
+      algorithms,
     } = this.state;
     const { navigation } = this.props;
 
@@ -136,6 +140,8 @@ export default class PatientList extends React.Component<Props, State> {
       [orderByName]
     );
 
+    console.log(algorithms.length);
+
     return (
       <ScrollView>
         <View padding-auto>
@@ -146,6 +152,7 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
+            { algorithms.length > 0 ? (
             <Button
               center
               rounded
@@ -156,6 +163,7 @@ export default class PatientList extends React.Component<Props, State> {
             >
               <Icon type={'MaterialCommunityIcons'} name="plus" white />
             </Button>
+              ) : null }
           </View>
 
           <View flex-container-row style={styles.filter}>
