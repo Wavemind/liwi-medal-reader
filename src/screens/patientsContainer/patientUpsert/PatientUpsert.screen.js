@@ -72,9 +72,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let result = await this.savePatient();
 
     if (result) {
+      // Set medicalCase in reducer
       const { setMedicalCase, navigation } = this.props;
       let medicalCase = await getMedicalCase(idLastMedicalCase);
       medicalCase.patient = patient
+      console.log(medicalCase)
+
       await setMedicalCase(medicalCase);
 
       navigation.navigate('Triage', {
@@ -84,6 +87,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       });
     }
   };
+
 
   // Get patient with id in navigation props
   async getPatient() {

@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#d8d8d8',
   },
   mandatory: {
-    borderWidth: 1,
-    borderColor: '#ffa4b5',
+    // borderWidth: 1,
+    // borderColor: '#ffa4b5',
   },
   triage: {
     elevation: 2,
