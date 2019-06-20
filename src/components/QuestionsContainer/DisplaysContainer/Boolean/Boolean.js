@@ -11,6 +11,7 @@ type State = {};
 
 export default class Boolean extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+    console.log(nextProps.question, this.props.question)
     return nextProps.question.answer !== this.props.question.answer;
   }
 

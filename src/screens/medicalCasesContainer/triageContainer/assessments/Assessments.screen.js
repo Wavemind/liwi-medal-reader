@@ -16,8 +16,6 @@ export default class Assessments extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
 
-    console.log(medicalCase.nodes.filterByCategory(categories.assessment))
-
     return (
       <ScrollView
         contentContainerStyle={{

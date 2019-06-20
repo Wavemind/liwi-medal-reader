@@ -5,15 +5,9 @@ import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import find from 'lodash/find';
-import { categories, displayFormats, nodesType } from '../../constants';
+import { displayFormats } from '../../constants';
 import findKey from 'lodash/findKey';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
-import { NodeModel } from '../../engine/models/Node.model';
-import { PredefinedSyndromeModel } from '../../engine/models/PredefinedSyndrome.model';
-import { TreatmentModel } from '../../engine/models/Treatment.model';
-import { QuestionModel } from '../../engine/models/Question.model';
-import { ManagementModel } from '../../engine/models/Management.model';
-import { FinalDiagnosticModel } from '../../engine/models/FinalDiagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 
 export const initialState = null;
@@ -23,7 +17,7 @@ class ReducerCat extends ReducerClass {
 
   _instanceMedicalCase(state) {
     state = this._generateInstanceDiseasesNode(state);
-    state.nodes = new NodesModel( state.nodes );
+    state.nodes = new NodesModel(state.nodes);
     return state;
   }
 
@@ -37,7 +31,6 @@ class ReducerCat extends ReducerClass {
 
     return state;
   }
-
 
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
@@ -71,12 +64,11 @@ class ReducerCat extends ReducerClass {
       qs: ps,
     });
 
+    state.nodes[nodeId] = newInstanceNode;
+
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [nodeId]: newInstanceNode,
-      },
+      nodes: new NodesModel(state.nodes)
     };
   }
 
@@ -89,17 +81,17 @@ class ReducerCat extends ReducerClass {
     let changeConditionValue = find(dd, (d) => d.id === diseaseId);
     changeConditionValue.conditionValue = value;
 
-    let newInstanceNode = this._instanceChild({
+
+    let newInstanceNode = state.nodes._instanceChild({
       ...state.nodes[nodeId],
       dd: dd,
     });
 
+    state.nodes[nodeId] = newInstanceNode;
+
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [nodeId]: newInstanceNode,
-      },
+      nodes: new NodesModel(state.nodes)
     };
   }
 
@@ -107,17 +99,16 @@ class ReducerCat extends ReducerClass {
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
-    let newInstanceNode = this._instanceChild({
+    let newInstanceNode = state.nodes._instanceChild({
       ...state.nodes[indexPs],
       answer: answer,
     });
 
+    state.nodes[indexPs] = newInstanceNode;
+
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [indexPs]: newInstanceNode,
-      },
+      nodes: new NodesModel(state.nodes)
     };
   }
 
@@ -215,18 +206,17 @@ class ReducerCat extends ReducerClass {
       answer = Number(answer);
     }
 
-    let newInstanceNode = this._instanceChild({
+    let newInstanceNode = state.nodes._instanceChild({
       ...state.nodes[index],
       answer: answer,
       value: value,
     });
 
+    state.nodes[index] = newInstanceNode;
+
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [index]: newInstanceNode,
-      },
+      nodes: new NodesModel(state.nodes)
     };
   }
 
