@@ -6,7 +6,7 @@ import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
-import _ from 'lodash'
+import _ from 'lodash';
 
 const { qs, d, fd, m, q, t } = nodesType;
 
@@ -17,15 +17,15 @@ export class NodesModel implements NodeInterface {
     this.instanceNodeModel(props);
   }
 
-  filterByCategory(category){
-    return _.filter(this, n => n.category === category);
+  filterByCategory(category) {
+    return _.filter(this, (n) => n.category === category);
   }
 
-  filterByType(type){
-    return _.filter(this, n => n.type === type);
+  filterByType(type) {
+    return _.filter(this, (n) => n.type === type);
   }
 
-  instanceNodeModel(nodes){
+  instanceNodeModel(nodes) {
     Object.keys(nodes).forEach((i) => {
       let node = nodes[i];
       this[i] = this._instanceChild(node);

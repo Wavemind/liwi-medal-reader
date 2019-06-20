@@ -35,6 +35,7 @@ class LabelQuestion extends React.PureComponent<{ label: any }> {
 
 class WrapperQuestion extends React.Component<{}> {
   shouldComponentUpdate(nextProps) {
+    console.log(nextProps.question, this.props.question)
     return (
       nextProps.question.answer !== this.props.question.answer ||
       nextProps.question.value !== this.props.question.value
@@ -74,8 +75,6 @@ class WrapperQuestion extends React.Component<{}> {
 export default class Question extends React.PureComponent<Props, State> {
   render() {
     const { question } = this.props;
-
-
 
     if (question.type !== nodesType.q) {
       return null;
