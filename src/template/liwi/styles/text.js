@@ -2,6 +2,11 @@ import { liwiColors } from 'utils/constants';
 import { fontSizeTextIsTablet } from '../../../utils/constants';
 
 export default {
+  'NativeBase.H2': {
+    '.padding': {
+      padding: 20,
+    },
+  },
   'NativeBase.Text': {
     '.light': {
       color: '#6a6a6a',
@@ -37,10 +42,6 @@ export default {
       marginLeft: 40,
       paddingLeft: 40,
       textTransform: 'uppercase',
-      textAlign: 'center',
-    },
-
-    '.center': {
       textAlign: 'center',
     },
   },

@@ -27,7 +27,7 @@ export default function medicalCaseReducer(
     case actions.MC_CONDITION_VALUE_PS_CHANGE: {
       const { nodeId, psId, value } = action.payload;
 
-      const ps = state.nodes[nodeId].ps;
+      const ps = state.nodes[nodeId].qs;
 
       let changeConditionValue = find(ps, (d) => d.id === psId);
       changeConditionValue.conditionValue = value;
@@ -38,7 +38,7 @@ export default function medicalCaseReducer(
           ...state.nodes,
           [nodeId]: {
             ...state.nodes[nodeId],
-            ps: ps,
+            qs: ps,
           },
         },
       };

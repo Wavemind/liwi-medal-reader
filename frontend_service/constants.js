@@ -11,9 +11,10 @@ export const nodesType = {
   d: 'diseases',
   fd: 'FinalDiagnostic',
   m: 'Management',
-  ps: 'PredefinedSyndrome',
+  qs: 'QuestionsSequence',
   q: 'Question',
   t: 'Treatment',
+  h: 'HealthCare',
 };
 
 export const displayFormats = {
@@ -33,18 +34,46 @@ export const displayValues = {
 export const priorities = {
   basic: 'basic',
   mandatory: 'mandatory',
+};
+
+export const stage = {
+  registration: 'registration',
   triage: 'triage',
-  priority: 'priority',
+  test: 'test',
+  consultation: 'consultation',
 };
 
 export const categories = {
-  assessment: 'Assessment/Test',
-  exposure: 'Exposure',
-  physicalExam: 'Physical exam',
-  symptom: 'Symptom',
-  predefinedCondition: 'Predefined condition',
-  comorbidity: 'Comorbidity',
-  predefinedSyndrome: 'Predefined syndrome',
+  assessment: 'assessment_test',
+  exposure: 'exposure',
+  physicalExam: 'physical_exam',
+  symptom: 'symptom',
+  demographic: 'demographic',
+  comorbidity: 'comorbidity',
+  chiefComplain: 'chief_complain',
+  predefinedSyndrome: 'predefined_syndrome',
+  triage: 'triage',
+  vaccine: 'vaccine',
+  scored: 'scored',
+  treatment: 'treatment',
+  management: 'management',
+};
+
+// export const categories = {
+//   assessment: 'Assessment/Test',
+//   exposure: 'Exposure',
+//   physicalExam: 'Physical exam',
+//   symptom: 'Symptom',
+//   predefinedCondition: 'Predefined condition',
+//   comorbidity: 'Comorbidity',
+//   predefinedSyndrome: 'Predefined syndrome',
+// };
+
+export const typeNode = {
+  question: 'Question',
+  management: 'Management',
+  questionsSequence: 'QuestionsSequence',
+  treatment: 'Treatment',
 };
 
 /*

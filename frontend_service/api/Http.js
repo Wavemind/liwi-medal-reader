@@ -23,6 +23,8 @@ export const get = async (params, userId) => {
 
   let response = await request.json();
 
+  console.log(response)
+
   // Display error
   if (!request.ok) {
     handleHttpError(response.errors);

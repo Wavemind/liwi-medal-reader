@@ -43,7 +43,7 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
         });
 
         // Map trough PS if it is in an another PS itself
-        nodes[nodeId].ps.map((ps) => {
+        nodes[nodeId].qs.map((ps) => {
           setParentConditionValue(algorithmJsonMedicalCase, ps.id, nodeId);
         });
       }
@@ -56,7 +56,7 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
 };
 
 // @params [Json][Integer][Integer] algorithmJsonMedicalCase, parentId, id
-// Recursive function to also set dd and ps parents of current ps
+// Recursive function to also set dd and qs parents of current qs
 export const setParentConditionValue = (
   algorithmJsonMedicalCase,
   parentId,
@@ -75,16 +75,16 @@ export const setParentConditionValue = (
   }
 
   // Set condition value of parent PS if there is any
-  if (!nodes[parentId].ps.isEmpty()) {
+  if (!nodes[parentId].qs.isEmpty()) {
     // If parentNode is a PS, rerun function
-    nodes[parentId].ps.map((ps) => {
+    nodes[parentId].qs.map((ps) => {
       setParentConditionValue(algorithmJsonMedicalCase, ps.id, parentId);
     });
     conditionValue = true;
   }
 
   // Set conditionValue of current PS
-  nodes[id].ps.map((ps) => {
+  nodes[id].qs.map((ps) => {
     if (ps.id === parentId) {
       ps.conditionValue =
         nodes[ps.id].nodes[id].top_conditions.length === 0 && conditionValue;
@@ -100,11 +100,11 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
   let newBatch = { name: '', current: false, nodes: [] };
 
   Object.keys(nodes).map((nodeId) => {
-    // Check if the question or ps has already been answered
+    // Check if the question or qs has already been answered
     if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
       let hasConditionValue = false;
 
-      nodes[nodeId].dd.concat(nodes[nodeId].ps).map((parent) => {
+      nodes[nodeId].dd.concat(nodes[nodeId].qs).map((parent) => {
         if (parent.conditionValue === true) {
           hasConditionValue = true;
         }
@@ -121,7 +121,7 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
           }
         });
 
-        // Push in the next batch if the question or ps is not present in another batch
+        // Push in the next batch if the question or qs is not present in another batch
         if (!isInBatch) {
           newBatch.nodes.push(nodeId);
         }
@@ -156,7 +156,7 @@ export const getParentsOfThisNode = (state$, diseaseId, nodeId) => {
 // TODO not working at 100%, fix it
 const recursiveNodePs = (state$, node, ps, actions) => {
   let findConditionValuePs = find(
-    state$.value.nodes[node.id].ps,
+    state$.value.nodes[node.id].qs,
     (p) => p.id === ps.id
   ).conditionValue;
 
@@ -185,15 +185,15 @@ const recursiveNodePs = (state$, node, ps, actions) => {
       let nodeChild = state$.value.nodes[nodeChildID];
 
       // IF the child is OUR PS
-      if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
+      if (nodeChildID === ps.id && nodeChild.type === nodesType.qs) {
         // Top parent and child is PS
         // The branch is open and we can set the answer of this PS
         return;
-        //return nodeConditionChecker(state$, null, null, ps);
+        //return nodeConditionChecker(state$, null, null, qs);
       }
 
       // IF the child is an other PS
-      if (nodeChild.type === nodesType.ps && nodeChildID !== ps.id) {
+      if (nodeChild.type === nodesType.qs && nodeChildID !== ps.id) {
         console.log(nodeChild, 'Get state of this other PS');
 
         // If the sub PS is null and show the sub question

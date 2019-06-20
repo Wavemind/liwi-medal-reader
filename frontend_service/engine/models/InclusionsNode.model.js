@@ -5,14 +5,10 @@ interface InclusionsNodeInterface {
   ps: Array<Object>;
 }
 
-export class InclusionsNodeModel
-  implements InclusionsNodeInterface {
+export class InclusionsNodeModel implements InclusionsNodeInterface {
   constructor(props) {
-
-    const { dd = [], ps = [], medicalCase = {} } = props;
-
+    const { dd = [], qs = [], medicalCase = {} } = props;
     this.dd = dd;
-    this.ps = ps;
-
+    this.qs = qs;
   }
 }

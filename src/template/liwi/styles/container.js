@@ -80,17 +80,18 @@ export default {
 
     '.question': {
       flexDirection: 'row',
-      flex:0.8,
+      flex:0.7,
       borderRadius: 5,
-      borderWidth: 1,
-      padding: 15,
+      borderWidth: 0.5,
+      backgroundColor: liwiColors.lighterGreyColor,
+      padding: 10,
       marginRight: 20,
       borderColor: liwiColors.blackColor,
     },
 
     '.answer': {
       flexDirection: 'row',
-      flex:0.2,
+      flex:0.3,
     },
 
     '.columns': {

@@ -40,7 +40,7 @@ export default class WorkCase extends React.Component<Props, State> {
         if (nodes[nodeId].answer === null) {
           ready = false;
         }
-        if (nodes[nodeId].type !== nodesType.ps) {
+        if (nodes[nodeId].type !== nodesType.qs) {
           tabBatches[id].nodes[nodeId] = nodes[nodeId];
         }
       });

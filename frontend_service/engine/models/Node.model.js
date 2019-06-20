@@ -2,11 +2,11 @@
 import { nodesType } from '../../constants';
 import { MedicalCaseModel } from './MedicalCase.model';
 
-const { ps, d, fd, m, q, t } = nodesType;
+const { qs, d, fd, m, q, t } = nodesType;
 
 interface NodeInterface {
   id: number;
-  type: ps | d | fd | m | q | t;
+  type: qs | d | fd | m | q | t;
   reference: string;
   medicalCase: MedicalCaseModel;
 }

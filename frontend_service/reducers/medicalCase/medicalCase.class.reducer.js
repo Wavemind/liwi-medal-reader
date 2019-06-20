@@ -1,24 +1,12 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
-import {
-  getItem,
-  getItemFromArray,
-  getItems,
-  setItemFromArray,
-  setMedicalCase,
-} from '../../../src/engine/api/LocalStorage';
+import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import {
-  generateInitialBatch,
-  generateNextBatch,
-  setInitialCounter,
-} from '../../algorithm/algoTreeDiagnosis';
+import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import find from 'lodash/find';
-import { displayFormats, nodesType } from '../../constants';
+import { categories, displayFormats, nodesType } from '../../constants';
 import findKey from 'lodash/findKey';
-import forEach from 'lodash/forEach';
-import maxBy from 'lodash/maxBy';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
 import { NodeModel } from '../../engine/models/Node.model';
 import { PredefinedSyndromeModel } from '../../engine/models/PredefinedSyndrome.model';
@@ -26,7 +14,7 @@ import { TreatmentModel } from '../../engine/models/Treatment.model';
 import { QuestionModel } from '../../engine/models/Question.model';
 import { ManagementModel } from '../../engine/models/Management.model';
 import { FinalDiagnosticModel } from '../../engine/models/FinalDiagnostic.model';
-import moment from 'moment';
+import { NodesModel } from '../../engine/models/Nodes.model';
 
 export const initialState = null;
 
@@ -35,44 +23,8 @@ class ReducerCat extends ReducerClass {
 
   _instanceMedicalCase(state) {
     state = this._generateInstanceDiseasesNode(state);
-    state = this._generateInstanceNodeModel(state);
+    state.nodes = new NodesModel( state.nodes );
     return state;
-  }
-
-  _instanceChild(node) {
-    let modelized;
-
-    if (node instanceof NodeModel) {
-      return node;
-    }
-
-    switch (node.type) {
-      case nodesType.ps:
-        modelized = new PredefinedSyndromeModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-      case nodesType.t:
-        modelized = new TreatmentModel({ ...node });
-        break;
-      case nodesType.q:
-        modelized = new QuestionModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-      case nodesType.m:
-        modelized = new ManagementModel({ ...node });
-        break;
-      case nodesType.fd:
-        modelized = new FinalDiagnosticModel({ ...node });
-        break;
-      default:
-        break;
-    }
-
-    return modelized;
   }
 
   _generateInstanceDiseasesNode(state) {
@@ -86,14 +38,6 @@ class ReducerCat extends ReducerClass {
     return state;
   }
 
-  _generateInstanceNodeModel(state) {
-    Object.keys(state.nodes).forEach((i) => {
-      let node = state.nodes[i];
-      state.nodes[i] = this._instanceChild(node);
-    });
-
-    return state;
-  }
 
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
@@ -117,14 +61,14 @@ class ReducerCat extends ReducerClass {
   conditionValuePsChange(state, action) {
     const { nodeId, psId, value } = action.payload;
 
-    const ps = state.nodes[nodeId].ps;
+    const ps = state.nodes[nodeId].qs;
 
     let changeConditionValue = find(ps, (d) => d.id === psId);
     changeConditionValue.conditionValue = value;
 
     let newInstanceNode = this._instanceChild({
       ...state.nodes[nodeId],
-      ps: ps,
+      qs: ps,
     });
 
     return {
@@ -306,6 +250,7 @@ class ReducerCat extends ReducerClass {
     if (state !== {} && medicalCase.id !== state.id) {
       setMedicalCase(state);
     }
+
     let modelsMedicalCase = this._instanceMedicalCase(medicalCase);
 
     return {
