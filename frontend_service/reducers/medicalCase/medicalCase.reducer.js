@@ -225,6 +225,16 @@ export default function medicalCaseReducer(
       };
     }
 
+    // Set vital signs
+    case actions.MC_SET_VITAL_SIGNS: {
+      const { vitalSigns } = action.payload;
+
+      return {
+        ...state,
+        vitalSigns
+      };
+    }
+
     case actions.MC_CLEAR: {
       return {};
     }
