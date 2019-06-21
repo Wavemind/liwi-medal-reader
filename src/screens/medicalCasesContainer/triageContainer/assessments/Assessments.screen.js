@@ -16,8 +16,6 @@ export default class Assessments extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
 
-    console.log(medicalCase.nodes.filterByCategory(categories.assessment))
-
     return (
       <ScrollView
         contentContainerStyle={{
@@ -27,7 +25,7 @@ export default class Assessments extends React.Component<Props, State> {
         }}
       >
         <View>
-          <Questions questions={medicalCase.nodes} />
+          <Questions questions={medicalCase.nodes.filterByCategory(categories.assessment)} />
         </View>
 
         <View bottom-view columns>

@@ -86,7 +86,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     delete flatPatient.medicalCases;
 
     // Display list of medical cases
-    const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
+    const _renderMedicalCases = patient.medicalCases.map((medicalCase, index) => {
       const { patient } = this.state;
 
       return (
@@ -94,6 +94,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           rounded
           block
           spaced
+          key={index}
           onPress={async () => {
             await this.selectMedicalCase({
               ...medicalCase,

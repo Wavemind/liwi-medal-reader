@@ -22,12 +22,19 @@ export default class VitalSigns extends React.Component<Props, State> {
   async componentWillMount() {
     const {
       medicalCase: {
-        vitalSigns
+        vitalSigns,
       },
     } = this.props;
-
     this.setState({ vitalSigns });
   }
+
+  // Save value in redux
+  save = async () => {
+    console.log(this.props);
+    const { setVitalSigns } = this.props;
+    const { vitalSigns } = this.state;
+    await setVitalSigns(vitalSigns);
+  };
 
   // Update state value of vital signs
   updateVitalSignsValue = async (key, value) => {
@@ -37,7 +44,6 @@ export default class VitalSigns extends React.Component<Props, State> {
   };
 
   render() {
-
     const {
       vitalSigns: {
         temperature,
@@ -56,65 +62,58 @@ export default class VitalSigns extends React.Component<Props, State> {
           <Col>
             <CustomInput
               init={temperature}
-              label={i18n.t('vital_signs:first_name')}
+              label={i18n.t('vital_signs:temperature')}
               change={this.updateVitalSignsValue}
+              keyboardType={'number-pad'}
               index={'temperature'}
-              iconName={'user'}
-              iconType={'AntDesign'}
               error={errors.temperature}
             />
             <CustomInput
               init={heartRate}
-              label={i18n.t('patient:last_name')}
+              label={i18n.t('vital_signs:heart_rate')}
               change={this.updateVitalSignsValue}
+              keyboardType={'number-pad'}
               index={'heartRate'}
-              iconName={'user'}
-              iconType={'AntDesign'}
               error={errors.heartRate}
             />
           </Col>
           <Col>
             <CustomInput
               init={height}
-              label={i18n.t('patient:first_name')}
+              label={i18n.t('vital_signs:height')}
               change={this.updateVitalSignsValue}
+              keyboardType={'number-pad'}
               index={'height'}
-              iconName={'user'}
-              iconType={'AntDesign'}
               error={errors.height}
             />
             <CustomInput
               init={weight}
-              label={i18n.t('patient:last_name')}
+              label={i18n.t('vital_signs:weight')}
               change={this.updateVitalSignsValue}
+              keyboardType={'number-pad'}
               index={'weight'}
-              iconName={'user'}
-              iconType={'AntDesign'}
               error={errors.weight}
             />
           </Col>
           <Col>
             <CustomInput
               init={respiratoryRate}
-              label={i18n.t('patient:first_name')}
+              label={i18n.t('vital_signs:respiratory_rate')}
               change={this.updateVitalSignsValue}
+              keyboardType={'number-pad'}
               index={'respiratoryRate'}
-              iconName={'user'}
-              iconType={'AntDesign'}
               error={errors.respiratoryRate}
             />
           </Col>
         </View>
 
-        <View bottom-view>
-          <View columns>
-            <Button light split>
-              <Text>{i18n.t('patient_upsert:save_and_wait')}</Text>
-            </Button>
-            <Button light split>
-              <Text>{i18n.t('patient_upsert:save_and_case')}</Text>
-            </Button>
-          </View>
+        <View bottom-view columns>
+          <Button light split>
+            <Text>{i18n.t('form:back')}</Text>
+          </Button>
+          <Button light split onPress={this.save}>
+            <Text>{i18n.t('form:next')}</Text>
+          </Button>
         </View>
       </ScrollView>
     );

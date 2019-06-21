@@ -137,6 +137,13 @@ i18n
           password: 'Password',
           login: 'Login',
         },
+        vital_signs: {
+          temperature: 'Temperature',
+          heart_rate: 'Heart rate',
+          height: 'Height',
+          weight: 'Weight',
+          respiratory_rate: 'Respiratory rate',
+        },
         unlock_session: {
           code: 'Code',
           unlock: 'Unlock session',
