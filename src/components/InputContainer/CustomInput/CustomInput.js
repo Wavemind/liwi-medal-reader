@@ -24,7 +24,9 @@ export default class CustomInput extends React.Component<Props, State> {
     nextState: Readonly<S>
   ): boolean {
     return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
+      this.state.value !== nextState.value ||
+      this.props.init !== nextProps.init ||
+      this.props.error !== nextProps.error
     );
   }
 
