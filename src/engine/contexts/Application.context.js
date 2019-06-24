@@ -274,6 +274,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     isModalVisible: false,
     contentModal: 'initial',
     initialPosition: {},
+    t: i18n.t
   };
 
   render() {

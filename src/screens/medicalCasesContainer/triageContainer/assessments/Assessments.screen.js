@@ -26,6 +26,8 @@ export default class Assessments extends React.Component<Props, State> {
   render() {
     const { t } = this.props;
 
+    console.log(this.props)
+
     return (
       <ScrollView>
         <Text>Assessments</Text>
