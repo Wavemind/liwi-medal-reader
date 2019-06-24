@@ -26,6 +26,13 @@ interface MedicalCaseInterface {
     nodes: Object,
     diseases: Object,
     createdDate: Date,
+    vitalSigns: {
+      temperature: number,
+      heartRate: number,
+      height: number,
+      weight: number,
+      respiratoryRate: number,
+    },
   };
 }
 
@@ -43,6 +50,13 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     let newMedicalCase = {
       nodes: algorithmUsed.nodes,
       diseases: algorithmUsed.diseases,
+      vitalSigns: {
+        temperature: null,
+        heartRate: null,
+        height: null,
+        weight: null,
+        respiratoryRate: null,
+      },
     };
 
     // initial batch waiting on final workflow
