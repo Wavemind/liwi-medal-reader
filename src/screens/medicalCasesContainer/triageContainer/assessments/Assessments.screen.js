@@ -16,6 +16,8 @@ export default class Assessments extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
 
+    let questions = medicalCase.nodes.filterByCategory(categories.assessment)
+
     return (
       <ScrollView
         contentContainerStyle={{
@@ -24,10 +26,15 @@ export default class Assessments extends React.Component<Props, State> {
           justifyContent: 'space-between',
         }}
       >
-        <View>
-          <LiwiTitle2 noBorder padding>{i18n.t('assessment:title')}</LiwiTitle2>
-          <Questions questions={medicalCase.nodes} />
-        </View>
+        {questions.length > 0 ? (
+          <View>
+            <Questions questions={questions}/>
+          </View>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text not-available>{i18n.t('work_case:no_questions')}</Text>
+          </View>
+        )}
 
         <View bottom-view columns>
           <Button light split>
