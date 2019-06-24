@@ -35,7 +35,6 @@ class LabelQuestion extends React.PureComponent<{ label: any }> {
 
 class WrapperQuestion extends React.Component<{}> {
   shouldComponentUpdate(nextProps) {
-    console.log(nextProps.question, this.props.question)
     return (
       nextProps.question.answer !== this.props.question.answer ||
       nextProps.question.value !== this.props.question.value
@@ -100,7 +99,7 @@ export default class Question extends React.PureComponent<Props, State> {
     // TODO move modalwrapper higher in component. we want only one initial render for it
 
     return (
-      <ListItem block noBorder>
+      <ListItem block noBorder key={question.id + '_item'}>
         <LabelQuestion key={question.id + '_label'} label={question.label} />
         <WrapperQuestion
           key={question.id + '_answer'}

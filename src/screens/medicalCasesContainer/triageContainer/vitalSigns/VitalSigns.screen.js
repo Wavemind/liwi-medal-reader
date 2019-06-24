@@ -15,46 +15,24 @@ type State = {};
 export default class VitalSigns extends React.Component<Props, State> {
   // default settings
   state = {
-    vitalSigns: {},
     errors: {},
-  };
-
-  async componentWillMount() {
-    const {
-      medicalCase: {
-        vitalSigns,
-      },
-    } = this.props;
-    this.setState({ vitalSigns });
-  }
-
-  // Save value in redux
-  save = async () => {
-    console.log(this.props);
-    const { setVitalSigns } = this.props;
-    const { vitalSigns } = this.state;
-    await setVitalSigns(vitalSigns);
   };
 
   // Update state value of vital signs
   updateVitalSignsValue = async (key, value) => {
-    const { vitalSigns } = this.state;
-    vitalSigns[key] = value;
-    await this.setState({ vitalSigns });
+    const { setVitalSigns } = this.props;
+    await setVitalSigns(key, value);
   };
 
   render() {
     const {
-      vitalSigns: {
-        temperature,
-        heartRate,
-        height,
-        weight,
-        respiratoryRate,
+      medicalCase: {
+        vitalSigns: { temperature, heartRate, height, weight, respiratoryRate },
       },
-      errors,
-    } = this.state;
+    } = this.props;
+    const { errors } = this.state;
 
+    console.log(this.props.medicalCase.vitalSigns);
 
     return (
       <ScrollView contentContainerStyle={styles.container}>

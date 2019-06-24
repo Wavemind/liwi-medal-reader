@@ -16,7 +16,7 @@ export default class Assessments extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
 
-    let questions = medicalCase.nodes.filterByCategory(categories.assessment)
+    let questions = medicalCase.nodes.filterByCategory(categories.assessment);
 
     return (
       <ScrollView
@@ -28,7 +28,7 @@ export default class Assessments extends React.Component<Props, State> {
       >
         {questions.length > 0 ? (
           <View>
-            <Questions questions={questions}/>
+            <Questions questions={questions} />
           </View>
         ) : (
           <View padding-auto margin-auto>

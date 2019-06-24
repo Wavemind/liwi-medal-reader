@@ -96,7 +96,7 @@ i18n
         patient_upsert: {
           title: 'Patient',
           save_and_wait: 'Create + add to waiting list',
-          save_and_case: 'Create + open new case',
+          save_and_case: 'Create + open triage',
         },
         patient_list: {
           all: 'All',
