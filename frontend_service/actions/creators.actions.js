@@ -59,9 +59,9 @@ export const updatePatient = (index, value) => ({
   },
 });
 
-export const setVitalSigns = (vitalSigns) => ({
+export const setVitalSigns = (index, value) => ({
   type: actions.MC_SET_VITAL_SIGNS,
-  payload: { vitalSigns }
+  payload: { index: index, value: value },
 });
 
 export const diseasesChildren = (indexDD, indexChild) => ({
@@ -95,5 +95,3 @@ export const diagnosisChildren = (indexDD, indexDiagnosis) => ({
     indexDiagnosis,
   },
 });
-
-
