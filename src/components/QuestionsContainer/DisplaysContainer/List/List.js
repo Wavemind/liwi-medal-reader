@@ -37,6 +37,7 @@ export default class List extends React.Component<Props, State> {
             <Picker.Item label="Choose the answer" value={null} />
             {Object.keys(question.answers).map((id) => (
               <Picker.Item
+                key={question.answers[id].id + '_picker'}
                 label={question.answers[id].label}
                 value={question.answers[id].id}
               />

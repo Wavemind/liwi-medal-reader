@@ -13,6 +13,7 @@ import { NodesModel } from '../../engine/models/Nodes.model';
 export const initialState = null;
 
 class ReducerCat extends ReducerClass {
+
   initialState = {};
 
   _instanceMedicalCase(state) {
@@ -68,7 +69,7 @@ class ReducerCat extends ReducerClass {
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes)
+      nodes: new NodesModel(state.nodes),
     };
   }
 
@@ -81,7 +82,6 @@ class ReducerCat extends ReducerClass {
     let changeConditionValue = find(dd, (d) => d.id === diseaseId);
     changeConditionValue.conditionValue = value;
 
-
     let newInstanceNode = state.nodes._instanceChild({
       ...state.nodes[nodeId],
       dd: dd,
@@ -91,7 +91,7 @@ class ReducerCat extends ReducerClass {
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes)
+      nodes: new NodesModel(state.nodes),
     };
   }
 
@@ -108,7 +108,21 @@ class ReducerCat extends ReducerClass {
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes)
+      nodes: new NodesModel(state.nodes),
+    };
+  }
+
+  @Action(actions.MC_SET_VITAL_SIGNS)
+  psSetAnswer(state, action) {
+    const { index, value } = action.payload;
+    console.log(index, value, state);
+
+    return {
+      ...state,
+      vitalSigns: {
+        ...state.vitalSigns,
+        [index]: value,
+      },
     };
   }
 
@@ -216,7 +230,7 @@ class ReducerCat extends ReducerClass {
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes)
+      nodes: new NodesModel(state.nodes),
     };
   }
 

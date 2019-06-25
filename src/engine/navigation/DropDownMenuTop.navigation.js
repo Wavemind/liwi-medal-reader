@@ -38,6 +38,7 @@ export class DropDownMenu extends React.Component {
           fieldTemplate={this.renderField}
           options={options}
           onValueChange={(value) => {
+            // TODO push nav
             console.log(value);
           }}
         />
