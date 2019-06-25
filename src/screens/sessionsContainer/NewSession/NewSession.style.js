@@ -7,9 +7,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    // flexBasis: screenWidth / 2,
     flexGrow: 1,
-    // width: screenWidth * 0.8,
     borderColor: liwiColors.redColor,
     borderWidth: 2,
     flexDirection: 'column',
@@ -17,12 +15,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     borderRadius: 10,
-    // padding: paddingIsTablet(),
-    // marginTop: screenHeight * 0.27,
-    // marginBottom: 50,
   },
   marginTop: {
-    // marginTop: 20
+    marginTop: 20
   },
 
   height: {

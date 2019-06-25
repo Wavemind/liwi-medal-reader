@@ -1,32 +1,38 @@
 // @flow
 
 import * as React from 'react';
-import { PaddedView } from '../../../template/layout';
-import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
-import { styles } from './UnlockSession.style';
+import { ScrollView } from 'react-native';
+import * as _ from 'lodash';
 import type { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
-import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
+import { Button, Form, Text, View } from 'native-base';
+import CustomInput from '../../../components/InputContainer/CustomInput';
+import i18n from '../../../utils/i18n';
+import { LiwiTitle2 } from '../../../template/layout';
+import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
+import { styles } from './UnlockSession.style';
+
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 type State = {
+  email: string,
   code: string,
   session: Object,
 };
 
 export default class UnlockSession extends React.Component<Props, State> {
-  state = { code: __DEV__ ? '123456q' : '', session: {} };
+  state = {
+    email: __DEV__ ? 'mickael.lacombe@wavemind.ch' : '',
+    code: __DEV__ ? '123456q' : '',
+    session: {},
+  };
 
-  componentWillMount() {
-    const {
-      navigation,
-      sessions: { sessions },
-    } = this.props;
 
-    const userId = navigation.getParam('user_id');
-    const session = sessions.find((item) => item.data.id === userId);
-    this.setState({ session });
-  }
+  // Update value of email when user typing
+  changeEmail = (val: string) => {
+    console.log(val)
+    this.setState({ email: val });
+  };
 
   // Save value of code in state
   changeCode = (val: string) => {
@@ -35,38 +41,60 @@ export default class UnlockSession extends React.Component<Props, State> {
 
   // Send to context code and session for verification
   unLock = () => {
-    const { session, code } = this.state;
-    const { app } = this.props;
-    app.unLockSession(session.data.id, code);
+    const { code, email } = this.state;
+    const { app, sessions: { sessions } } = this.props;
+
+    let result = _.find(sessions, (session) => {
+      console.log(email)
+      console.log(session.data.email === email);
+      return session.data.email === email;
+    });
+
+    console.log(result);
+
+    // app.unLockSession(session.data.id, code);
   };
 
   render() {
-    const { code } = this.state;
+    const { email, code } = this.state;
 
     return (
-      <PaddedView style={styles.container}>
-        <LottieView
-          source={require('../../../utils/animations/unlock.json')}
-          autoPlay
-          style={styles.height}
-          loop
-        />
-        <View style={styles.view}>
-          <Form>
-            <Item login-input floatingLabel>
-              <Label>Code</Label>
-              <Input
-                onChangeText={this.changeCode}
-                value={code}
-                secureTextEntry
+      <View flex-container-column>
+        <View margin-auto padding-auto>
+          <ScrollView>
+            <LottieView
+              source={require('../../../utils/animations/unlock.json')}
+              autoPlay
+              style={styles.lottie}
+              loop
+            />
+            <LiwiTitle2 noBorder center>{i18n.t('unlock_session:title')}</LiwiTitle2>
+            <Form>
+              <CustomInput
+                init={email}
+                change={this.changeEmail}
+                index={this}
+                placeholder={i18n.t('unlock_session:email')}
+                condensed={true}
               />
-            </Item>
-          </Form>
-          <Button onPress={this.unLock}>
-            <Text> Déverrouiller la session </Text>
-          </Button>
+              <CustomInput
+                init={code}
+                change={this.changeCode}
+                secureTextEntry={true}
+                placeholder={i18n.t('unlock_session:code')}
+                condensed={true}
+              />
+            </Form>
+            <Button
+              full
+              onPress={this.unLock}
+              styles={styles.button}
+            >
+              <Text>{i18n.t('unlock_session:unlock')}</Text>
+            </Button>
+          </ScrollView>
         </View>
-      </PaddedView>
+      </View>
     );
   }
 }
