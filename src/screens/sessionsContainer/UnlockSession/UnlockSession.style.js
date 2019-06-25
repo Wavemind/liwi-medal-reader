@@ -11,6 +11,16 @@ export const styles = StyleSheet.create({
     height: 200,
   },
 
+  lottie: {
+    height: 200,
+    alignSelf: 'center',
+    marginBottom: 100,
+  },
+
+  button: {
+    marginTop: 50,
+  },
+
   view: {
     width: screenWidth * 0.8,
     borderColor: liwiColors.redColor,

@@ -18,8 +18,10 @@ const languageDetector = {
     const deviceLocale = DeviceInfo.getDeviceLocale();
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => {
+  },
+  cacheUserLanguage: () => {
+  },
 };
 
 i18n
@@ -32,19 +34,19 @@ i18n
         consultation: {
           medical_history: 'Medical History',
           physical_exam: 'Physical Exam',
-          poct: 'Poct'
+          poct: 'Poct',
         },
         triage: {
           assessment: 'First look Assessments',
           vital: 'Vital Signes',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
-          chief: 'Chief complaints'
+          chief: 'Chief complaints',
         },
         form: {
           required: ' is required',
           save: 'Save',
-          edit: 'Edit'
+          edit: 'Edit',
         },
         menu: {
           triage: 'Triage',
@@ -86,13 +88,12 @@ i18n
           no_medical_cases: 'No medical cases',
           no_algorithms: 'No algorithms in memory',
         },
-        patient_detail: {
-        },
+        patient_detail: {},
         patient_upsert: {
           title: 'Patient',
           save_and_wait: 'Save + add to waiting list',
           save_and_case: 'Save + create new case',
-          save: 'Save'
+          save: 'Save',
         },
         patient_list: {
           all: 'All',
@@ -106,7 +107,7 @@ i18n
           waiting_triage: 'Triage',
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
-          waiting_diagnosis: 'Diagnosis'
+          waiting_diagnosis: 'Diagnosis',
         },
         patient: {
           first_name: 'First name',
@@ -118,6 +119,7 @@ i18n
 
         },
         login: {
+          title: 'Login',
           server: 'server',
           local: 'local',
           your_code: 'Your code',
@@ -130,13 +132,18 @@ i18n
           add_account: 'Add an account',
           send_device_info: 'Send device data',
           clear_sessions: 'Delete sessions',
+          email: 'Email',
           password: 'Password',
-          login: 'Login',
+          connect: 'Connect',
         },
-
+        new_session: {
+          title: 'Connect to main server',
+        },
         unlock_session: {
+          email: 'Email',
           code: 'Code',
-          unlock: 'Unlock session',
+          unlock: 'Unlock',
+          title: 'Unlock session',
         },
         popup: {
           title: 'Please allow access to the position',
@@ -169,14 +176,14 @@ i18n
         consultation: {
           medical_history: 'Medical History',
           physical_exam: 'Physical Exam',
-          poct: 'Poct'
+          poct: 'Poct',
         },
         triage: {
           assessment: 'First look Assessments',
           vital: 'Vital Signes',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
-          chief: 'Chief complaints'
+          chief: 'Chief complaints',
         },
         settings: {
           devices: 'Appareils médicaux',
@@ -191,9 +198,7 @@ i18n
           no_medical_cases: 'Aucun cans médicaux',
           no_algorithms: 'Aucun algorithme',
         },
-        patient_detail: {
-
-        },
+        patient_detail: {},
         patient_list: {
           waiting: 'En attente',
           search: 'Rechercher',
