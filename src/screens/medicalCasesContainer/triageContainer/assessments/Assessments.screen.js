@@ -2,21 +2,57 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Text, View, H2 } from 'native-base';
-
-import { LiwiTitle2 } from '../../../../template/layout';
+import { Button, Text, View } from 'native-base';
 import i18n from '../../../../utils/i18n';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
+import moment from 'moment';
 
 type Props = {};
 type State = {};
 
 export default class Assessments extends React.Component<Props, State> {
+  async callLaravel() {
+    // const request = await fetch('http://192.168.31.220:8000/medicalcase').catch((error) =>
+    //   console.log(error)
+    // );
+    //
+    // let response = await request.json();
+    // console.log(response)
+
+    let formatSqlDate = moment(this.props.medicalCase.createdDate).format(
+      'YYYY-MM-DD HH:mm:ss'
+    );
+    let { medicalCase } = this.props;
+
+    console.log(medicalCase);
+
+    medicalCase.createdDate = formatSqlDate;
+
+    let call = await fetch('http://192.168.31.220:8000/medicalcase', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'post',
+      body: JSON.stringify({
+        medical_case: medicalCase,
+      }),
+    });
+
+    let resp = await call.json();
+
+    console.log(resp);
+
+
+  }
+
   render() {
     const { medicalCase } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(categories.assessment);
+
+    // console.log(JSON.stringify(this.props.medicalCase));
 
     return (
       <ScrollView
@@ -35,6 +71,10 @@ export default class Assessments extends React.Component<Props, State> {
             <Text not-available>{i18n.t('work_case:no_questions')}</Text>
           </View>
         )}
+
+        <Button onPress={() => this.callLaravel()}>
+          <Text>Call Laravel</Text>
+        </Button>
 
         <View bottom-view columns>
           <Button light split>
