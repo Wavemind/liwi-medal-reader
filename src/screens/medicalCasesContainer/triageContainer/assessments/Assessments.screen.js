@@ -12,40 +12,6 @@ type Props = {};
 type State = {};
 
 export default class Assessments extends React.Component<Props, State> {
-  async callLaravel() {
-    // const request = await fetch('http://192.168.31.220:8000/medicalcase').catch((error) =>
-    //   console.log(error)
-    // );
-    //
-    // let response = await request.json();
-    // console.log(response)
-
-    let formatSqlDate = moment(this.props.medicalCase.createdDate).format(
-      'YYYY-MM-DD HH:mm:ss'
-    );
-    let { medicalCase } = this.props;
-
-    console.log(medicalCase);
-
-    medicalCase.createdDate = formatSqlDate;
-
-    let call = await fetch('http://192.168.31.220:8000/medicalcase', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      method: 'post',
-      body: JSON.stringify({
-        medical_case: medicalCase,
-      }),
-    });
-
-    let resp = await call.json();
-
-    console.log(resp);
-
-
-  }
 
   render() {
     const { medicalCase } = this.props;
@@ -71,10 +37,6 @@ export default class Assessments extends React.Component<Props, State> {
             <Text not-available>{i18n.t('work_case:no_questions')}</Text>
           </View>
         )}
-
-        <Button onPress={() => this.callLaravel()}>
-          <Text>Call Laravel</Text>
-        </Button>
 
         <View bottom-view columns>
           <Button light split>
