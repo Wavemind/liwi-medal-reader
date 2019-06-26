@@ -6,7 +6,6 @@ import { Button, Text, View } from 'native-base';
 import i18n from '../../../../utils/i18n';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
-import moment from 'moment';
 
 type Props = {};
 type State = {};
@@ -17,8 +16,6 @@ export default class Assessments extends React.Component<Props, State> {
     const { medicalCase } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(categories.assessment);
-
-    // console.log(JSON.stringify(this.props.medicalCase));
 
     return (
       <ScrollView

@@ -32,8 +32,6 @@ export default class VitalSigns extends React.Component<Props, State> {
     } = this.props;
     const { errors } = this.state;
 
-    console.log(this.props.medicalCase.vitalSigns);
-
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <View>
