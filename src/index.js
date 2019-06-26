@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ApplicationProvider } from 'engine/contexts/Application.context';
 import { SessionsProvider } from 'engine/contexts/Sessions.context';
-import { withNamespaces } from 'react-i18next';
 import KeepAwake from 'react-native-keep-awake';
 
 import { persistor, store } from '../frontend_service/store';
@@ -56,17 +55,13 @@ export default class Root extends React.Component {
   }
 
   render() {
-    const ReloadAppOnLanguageChange = withNamespaces('common', {
-      bindI18n: 'languageChanged',
-      bindStore: false,
-    })(Layout);
 
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ApplicationProvider>
             <SessionsProvider>
-              <ReloadAppOnLanguageChange />
+              <Layout />
               <CustomModal />
               {__DEV__ ? <WavemindTools /> : null}
             </SessionsProvider>

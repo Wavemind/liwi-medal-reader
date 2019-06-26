@@ -1,5 +1,4 @@
 import RootSessions from './RootSessions.screen';
-import { withNamespaces } from 'react-i18next';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
 import { actions } from '../../../../frontend_service/actions/types.actions';
@@ -21,4 +20,4 @@ const mapStateToProps = (medicalCase, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withApplication(withSessions(withNamespaces(['login'])(RootSessions))));
+)(withApplication(withSessions(RootSessions)));

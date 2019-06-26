@@ -25,7 +25,7 @@ export default class Drawer extends Component {
   render() {
     const {
       navigation,
-      app: { user },
+      app: { user, t },
       medicalCase,
     } = this.props;
 

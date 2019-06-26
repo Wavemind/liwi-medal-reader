@@ -24,7 +24,6 @@ export default class VitalSigns extends React.Component<Props, State> {
   state = {};
 
   render() {
-    const { t } = this.props;
 
     return (
       <ScrollView>
