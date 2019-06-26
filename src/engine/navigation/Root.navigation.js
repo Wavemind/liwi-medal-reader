@@ -50,6 +50,9 @@ const createRootNavigator = (signedIn = false, medicalCase = null) => {
       UnlockSession: {
         screen: UnlockSession,
       },
+      NewSession: {
+        screen: NewSession,
+      },
     },
     {
       initialRouteName: signedIn ? 'Main' : 'UnlockSession',

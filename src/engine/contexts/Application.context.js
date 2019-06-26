@@ -236,7 +236,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
       // here push settings
     } else {
-      Toaster(i18n.t('notifications.invalid_code'), { type: 'danger' });
+      return 'invalid_code';
     }
   };
 

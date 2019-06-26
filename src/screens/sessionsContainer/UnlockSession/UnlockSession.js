@@ -17,6 +17,7 @@ type State = {
   email: string,
   code: string,
   session: Object,
+  errors: Object,
 };
 
 export default class UnlockSession extends React.Component<Props, State> {
@@ -24,28 +25,45 @@ export default class UnlockSession extends React.Component<Props, State> {
     email: __DEV__ ? 'mickael.lacombe@wavemind.ch' : '',
     code: __DEV__ ? '123456q' : '',
     session: {},
+    errors: null,
   };
 
   changeValueFromInput = (index, value) => {
     this.setState({ [index]: value });
   };
 
+  // Navigate to new session screen
+  newSessionScreen = () => {
+    const { navigation } = this.props;
+    navigation.navigate('NewSession');
+  };
+
   // Send to context code and session for verification
-  unLock = () => {
+  unLock = async () => {
     const { code, email } = this.state;
     const {
       app,
       sessions: { sessions },
     } = this.props;
-    let result = _.find(sessions, (session) => {
+
+    let user = _.find(sessions, (session) => {
       return session.data.email === email;
     });
 
-    app.unLockSession(result.data.id, code);
+    if (user !== undefined) {
+      let result = await app.unLockSession(user.data.id, code);
+      this.setState({ errors: i18n.t(`notifications.${result}`) });
+    } else {
+      this.setState({ errors: i18n.t('notifications.session_does_not_exist') });
+    }
   };
 
   render() {
-    const { email, code } = this.state;
+    const { email, code, errors } = this.state;
+
+    const {
+      app: { isConnected },
+    } = this.props;
 
     return (
       <View flex-container-column>
@@ -67,6 +85,7 @@ export default class UnlockSession extends React.Component<Props, State> {
                 index={'email'}
                 placeholder={i18n.t('unlock_session:email')}
                 condensed={true}
+                error={errors}
               />
               <CustomInput
                 init={code}
@@ -82,7 +101,18 @@ export default class UnlockSession extends React.Component<Props, State> {
             </Button>
           </ScrollView>
         </View>
+        <View bottom-view margin-auto padding-auto>
+          <View>
+            <Button onPress={this.newSessionScreen} disabled={!isConnected}>
+              <Text>{i18n.t('unlock_session:new_session')}</Text>
+            </Button>
+            {!isConnected ? (
+              <Text>{i18n.t('notifications:no_internet')}</Text>
+            ) : null}
+          </View>
+        </View>
       </View>
+
     );
   }
 }

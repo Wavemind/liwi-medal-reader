@@ -53,8 +53,6 @@ export default class CustomInput extends React.Component<Props, State> {
 
     const { value } = this.state;
 
-    console.log(index, value)
-
     return (
       <Form style={condensed ? null : styles.form}>
         <View style={styles.view}>
