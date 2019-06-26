@@ -2,7 +2,6 @@ import Settings from './settings.screen';
 import { withSessions } from '../../engine/contexts/Sessions.context';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
-import { withNamespaces } from 'react-i18next';
 
 const mapStateToProps = (state, ownProps) => {
   return {};
@@ -15,4 +14,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(withNamespaces(['settings'])(Settings))));
+)(withSessions(withApplication(Settings)));

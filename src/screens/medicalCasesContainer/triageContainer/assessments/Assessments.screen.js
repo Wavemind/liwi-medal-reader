@@ -24,9 +24,9 @@ export default class Assessments extends React.Component<Props, State> {
   state = {};
 
   render() {
-    const { t } = this.props;
+    const { app } = this.props;
 
-    console.log(this.props)
+    console.log(app.t( 'triage:assessment' ), this.props )
 
     return (
       <ScrollView>
