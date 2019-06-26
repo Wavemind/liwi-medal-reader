@@ -138,12 +138,14 @@ i18n
         },
         new_session: {
           title: 'Connect to main server',
+          unlock_session: 'Unlock session',
         },
         unlock_session: {
           email: 'Email',
           code: 'Code',
           unlock: 'Unlock',
           title: 'Unlock session',
+          new_session: 'Create new session',
         },
         popup: {
           title: 'Please allow access to the position',
@@ -170,6 +172,8 @@ i18n
         },
         notifications: {
           invalid_code: 'Code is invalid',
+          session_does_not_exist: 'Session doesn\'t exist',
+          no_internet: 'You don\'t have internet connection',
         },
       },
       fr: {

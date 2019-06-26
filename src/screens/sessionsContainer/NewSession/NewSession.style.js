@@ -16,8 +16,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
   },
+
   marginTop: {
-    marginTop: 20
+    marginTop: 20,
+  },
+
+  centerVertically: {
+    marginTop: 250,
   },
 
   height: {

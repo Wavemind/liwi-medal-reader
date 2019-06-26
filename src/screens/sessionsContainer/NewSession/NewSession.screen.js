@@ -57,14 +57,14 @@ export default class NewSession extends React.Component<Props, State> {
     this.setState({ keyboard: false });
   };
 
-  // Update value of email when user typing
-  changeEmail = (val: string) => {
-    this.setState({ email: val });
+  changeValueFromInput = (index, value) => {
+    this.setState({ [index]: value });
   };
 
-  // Update value of password when user typing
-  changePassword = (val: string) => {
-    this.setState({ password: val });
+  // Navigate to unlock session screen
+  unLockSessionScreen = () => {
+    const { navigation } = this.props;
+    navigation.navigate('UnlockSession');
   };
 
   // Authentication method
@@ -111,21 +111,21 @@ export default class NewSession extends React.Component<Props, State> {
 
     return (
       <View flex-container-column>
-        <View margin-auto style={{ marginTop: 250 }} padding-auto>
+        <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
             <LiwiTitle2 noBorder center>{i18n.t('new_session:title')}</LiwiTitle2>
             <Form>
               <CustomInput
                 init={email}
-                change={this.changeEmail}
-                index={email}
+                change={this.changeValueFromInput}
+                index={'email'}
                 placeholder={t('email')}
                 condensed={true}
               />
               <CustomInput
                 init={password}
-                change={this.changePassword}
-                index={password}
+                change={this.changeValueFromInput}
+                index={'password'}
                 secureTextEntry={true}
                 placeholder={t('password')}
                 condensed={true}
@@ -165,6 +165,11 @@ export default class NewSession extends React.Component<Props, State> {
               }}
             />
           ) : null}
+        </View>
+        <View bottom-view margin-auto padding-auto>
+          <Button onPress={this.unLockSessionScreen}>
+            <Text>{i18n.t('new_session:unlock_session')}</Text>
+          </Button>
         </View>
       </View>
     );
