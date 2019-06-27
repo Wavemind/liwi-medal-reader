@@ -12,16 +12,27 @@ import { NodesModel } from '../../engine/models/Nodes.model';
 
 export const initialState = null;
 
-class ReducerCat extends ReducerClass {
-
+/*
+ * Reducer
+ * Catch actions from redux / dispatcher
+ * Load MedicalCase on it
+ *
+ *
+ *
+ *
+ * */
+class MedicalCaseReducer extends ReducerClass {
   initialState = {};
 
+  // The state is a MedicalCase
+  // Instance it
   _instanceMedicalCase(state) {
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
     return state;
   }
 
+  // For the diseases we instance it
   _generateInstanceDiseasesNode(state) {
     Object.keys(state.diseases).forEach(
       (i) =>
@@ -281,4 +292,4 @@ class ReducerCat extends ReducerClass {
   }
 }
 
-export default ReducerCat.create();
+export default MedicalCaseReducer.create();
