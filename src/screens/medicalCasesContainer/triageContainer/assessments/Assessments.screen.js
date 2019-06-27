@@ -6,6 +6,7 @@ import { Button, Text, View } from 'native-base';
 import i18n from '../../../../utils/i18n';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
+import { styles } from './Assessments.style';
 
 type Props = {};
 type State = {};
@@ -18,13 +19,7 @@ export default class Assessments extends React.Component<Props, State> {
     let questions = medicalCase.nodes.filterByCategory(categories.assessment);
 
     return (
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-      >
+      <ScrollView contentContainerStyle={styles.container}>
         {questions.length > 0 ? (
           <View>
             <Questions questions={questions} />
