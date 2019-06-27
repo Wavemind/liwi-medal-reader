@@ -50,8 +50,8 @@ export default class Root extends React.Component {
       KeepAwake.activate();
     }
 
-    /******* HACK WHILE BACKEND IS DOWN ********/
-    await setItem('algorithmes', [algo]);
+    // Set local JSON file if server is down for development
+    // await setItem('algorithmes', [algo]);
 
   }
 
