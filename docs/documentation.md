@@ -87,11 +87,6 @@ children||yes||
 
 
 
------
-**src/screens/session/RootSessions/RootSessions.screen.js**
-
-### 1. RootSessions
-
 
 
 
