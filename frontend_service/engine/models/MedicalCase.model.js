@@ -1,20 +1,22 @@
 // @flow
 
 import moment from 'moment';
+import find from 'lodash/find';
+import forEach from 'lodash/forEach';
+import maxBy from 'lodash/maxBy';
 import { medicalCaseStatus } from '../../constants';
+import { VitalSignsModel } from './VitalSigns.model';
 import {
   getItem,
   getItemFromArray,
   getItems,
   setItemFromArray,
 } from '../../../src/engine/api/LocalStorage';
-import find from 'lodash/find';
 import {
   generateInitialBatch,
   setInitialCounter,
 } from '../../algorithm/algoTreeDiagnosis';
-import forEach from 'lodash/forEach';
-import maxBy from 'lodash/maxBy';
+
 
 interface MedicalCaseInterface {
   props: {
@@ -26,18 +28,13 @@ interface MedicalCaseInterface {
     nodes: Object,
     diseases: Object,
     createdDate: Date,
-    vitalSigns: {
-      temperature: number,
-      heartRate: number,
-      height: number,
-      weight: number,
-      respiratoryRate: number,
-    },
+    vitalSigns: VitalSignsModel,
   };
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-  createMedicalCase = async (patientId) => {
+
+  create = async (patientId) => {
     let patient = await getItemFromArray('patients', 'id', patientId);
     let algorithms = await getItems('algorithms');
     let patients = await getItem('patients');
@@ -50,13 +47,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     let newMedicalCase = {
       nodes: algorithmUsed.nodes,
       diseases: algorithmUsed.diseases,
-      vitalSigns: {
-        temperature: null,
-        heartRate: null,
-        height: null,
-        weight: null,
-        respiratoryRate: null,
-      },
+      vitalSigns: new VitalSignsModel(),
     };
 
     // initial batch waiting on final workflow
