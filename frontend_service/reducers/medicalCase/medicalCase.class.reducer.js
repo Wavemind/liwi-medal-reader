@@ -51,7 +51,7 @@ class ReducerCat extends ReducerClass {
     };
   }
 
-  @Action(actions.MC_CONDITION_VALUE_PS_CHANGE)
+  @Action(actions.MC_CONDITION_VALUE_QS_CHANGE)
   conditionValuePsChange(state, action) {
     const { nodeId, psId, value } = action.payload;
 
