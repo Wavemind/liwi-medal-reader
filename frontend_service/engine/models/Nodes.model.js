@@ -25,6 +25,7 @@ export class NodesModel implements NodeInterface {
     return _.filter(this, (n) => n.type === type);
   }
 
+  // Instance all the nodes
   instanceNodeModel(nodes) {
     Object.keys(nodes).forEach((i) => {
       let node = nodes[i];
@@ -32,6 +33,7 @@ export class NodesModel implements NodeInterface {
     });
   }
 
+  // Switch for instance the good model to the node
   _instanceChild(node) {
     let instinctiveNode;
 
@@ -39,6 +41,7 @@ export class NodesModel implements NodeInterface {
       return node;
     }
 
+    // By the node type
     switch (node.type) {
       case nodesType.qs:
         instinctiveNode = new PredefinedSyndromeModel({
