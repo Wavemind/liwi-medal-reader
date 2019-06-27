@@ -225,6 +225,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     const encrypt = sha256.hmac(saltHash, code);
 
     if (session.local_code === encrypt) {
+
       await setActiveSession(id);
 
       await fetchAlgorithms(id);
@@ -235,7 +236,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
       // here push settings
     } else {
-      Toaster(i18n.t('notifications.invalid_code'), { type: 'danger' });
+      return 'invalid_code';
     }
   };
 
