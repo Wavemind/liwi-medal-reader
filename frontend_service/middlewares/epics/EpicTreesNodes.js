@@ -10,7 +10,7 @@ import {
   diagnosisChildren,
   diseasesChildren,
   dispatchNodeAction,
-  predefinedSyndromeChildren,
+  questionsSequencesChildren,
   setQuestion,
 } from '../../actions/creators.actions';
 import {
@@ -50,7 +50,7 @@ export const epicCatchAnswer = (action$, state$) =>
       );
 
       nodePsParents.map((qs) =>
-        arrayActions.push(predefinedSyndromeChildren(qs.id, index))
+        arrayActions.push(questionsSequencesChildren(qs.id, index))
       );
 
       return of(...arrayActions);
@@ -132,7 +132,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           // TODO : Handle PS
           // HERE calcule condition of node type PS
           return of(diseasesChildren(indexNode, indexChild));
-        //return of(predefinedSyndromeChildren(indexChild, indexNode));
+        //return of(questionsSequencesChildren(indexChild, indexNode));
       }
     })
   );
@@ -142,7 +142,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
 // TODO : finish it
 export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
   action$.pipe(
-    ofType(actions.MC_PREDEFINED_SYNDROME_CHILDREN),
+    ofType(actions.MC_QUESTIONS_SEQUENCES_CHILDREN),
     switchMap((action) => {
       // Processed with a PS
       const { indexPS, indexChild } = action.payload;
