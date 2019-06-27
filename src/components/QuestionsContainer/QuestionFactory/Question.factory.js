@@ -2,38 +2,33 @@
 
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
-import {
-  categories,
-  displayFormats,
-  displayValues, nodesType,
-  priorities,
-  typeNode,
-} from '../../../../frontend_service/constants';
+import { displayFormats, displayValues, nodesType, priorities } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
-import { Grid, Icon, ListItem, Text, View } from 'native-base';
-import { ColCenter, ViewQuestion } from '../../../template/layout';
+import { ListItem, Text } from 'native-base';
+import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-class LabelQuestion extends React.PureComponent<{ label: any }> {
-  render() {
-    return (
-      <ViewQuestion>
-        <Text style={{ color: liwiColors.blackColor }} size-auto>
-          {this.props.label}
-        </Text>
-      </ViewQuestion>
-    );
-  }
+function LabelQuestion(props: { label: String }) {
+  const { label } = props;
+  return (
+    <ViewQuestion>
+      <Text style={ { color: liwiColors.blackColor } } size-auto>
+        { label }
+      </Text>
+    </ViewQuestion>
+  );
 }
 
 class WrapperQuestion extends React.Component<{}> {
+
+  // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     return (
       nextProps.question.answer !== this.props.question.answer ||
@@ -43,8 +38,11 @@ class WrapperQuestion extends React.Component<{}> {
 
   render() {
     const { question, specificStyle } = this.props;
+    // By default no component
     let WrapperAnswer = () => null;
 
+    // Depending the format of the question we call the right component
+    // Boolean | Numeric | List
     switch (question.display_format) {
       case displayFormats.radioButton:
         if (question.value_format === displayValues.bool) {
@@ -75,12 +73,14 @@ export default class Question extends React.PureComponent<Props, State> {
   render() {
     const { question } = this.props;
 
+    // If this is not a question we return null
     if (question.type !== nodesType.q) {
       return null;
     }
 
     let specificStyle;
 
+    // Define special style depending the proprity
     switch (question.priority) {
       case priorities.mandatory:
         specificStyle = styles.mandatory;
@@ -93,11 +93,7 @@ export default class Question extends React.PureComponent<Props, State> {
         break;
     }
 
-    // Set style of question according to the priority
-    // Define display format and value
-    // TODO : implement check boxes (and dropdown list)
-    // TODO move modalwrapper higher in component. we want only one initial render for it
-
+    // Construct generic Component for the question
     return (
       <ListItem block noBorder key={question.id + '_item'}>
         <LabelQuestion key={question.id + '_label'} label={question.label} />

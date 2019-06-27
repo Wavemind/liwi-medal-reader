@@ -71,12 +71,10 @@ class MedicalCaseReducer extends ReducerClass {
     let changeConditionValue = find(ps, (d) => d.id === psId);
     changeConditionValue.conditionValue = value;
 
-    let newInstanceNode = this._instanceChild({
+    state.nodes[nodeId] = this._instanceChild( {
       ...state.nodes[nodeId],
       qs: ps,
-    });
-
-    state.nodes[nodeId] = newInstanceNode;
+    } );
 
     return {
       ...state,
@@ -93,12 +91,10 @@ class MedicalCaseReducer extends ReducerClass {
     let changeConditionValue = find(dd, (d) => d.id === diseaseId);
     changeConditionValue.conditionValue = value;
 
-    let newInstanceNode = state.nodes._instanceChild({
+    state.nodes[nodeId] = state.nodes._instanceChild( {
       ...state.nodes[nodeId],
       dd: dd,
-    });
-
-    state.nodes[nodeId] = newInstanceNode;
+    } );
 
     return {
       ...state,
@@ -110,12 +106,10 @@ class MedicalCaseReducer extends ReducerClass {
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
-    let newInstanceNode = state.nodes._instanceChild({
+    state.nodes[indexPs] = state.nodes._instanceChild( {
       ...state.nodes[indexPs],
       answer: answer,
-    });
-
-    state.nodes[indexPs] = newInstanceNode;
+    } );
 
     return {
       ...state,
@@ -126,7 +120,6 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.MC_SET_VITAL_SIGNS)
   psSetAnswer(state, action) {
     const { index, value } = action.payload;
-    console.log(index, value, state);
 
     return {
       ...state,
@@ -178,34 +171,6 @@ class MedicalCaseReducer extends ReducerClass {
                   value > Number(answerCondition.value.split(',')[0]) &&
                   value <= Number(answerCondition.value.split(',')[1])
                 );
-
-              case '>=':
-                return value >= Number(answerCondition.value);
-
-              // WORKAROUND because JSON is wrong
-              case '=>':
-                return value >= Number(answerCondition.value);
-
-              case '<=':
-                return value <= Number(answerCondition.value);
-
-              case '>':
-                return value >= Number(answerCondition.value);
-
-              case '<':
-                return value < Number(answerCondition.value);
-
-              case '>=, <':
-                return (
-                  value >= Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case '>, <=':
-                return (
-                  value > Number(answerCondition.value.split(',')[0]) &&
-                  value <= Number(answerCondition.value.split(',')[1])
-                );
             }
           });
         } else {
@@ -231,13 +196,11 @@ class MedicalCaseReducer extends ReducerClass {
       answer = Number(answer);
     }
 
-    let newInstanceNode = state.nodes._instanceChild({
+    state.nodes[index] = state.nodes._instanceChild( {
       ...state.nodes[index],
       answer: answer,
       value: value,
-    });
-
-    state.nodes[index] = newInstanceNode;
+    } );
 
     return {
       ...state,
