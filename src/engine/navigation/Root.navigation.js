@@ -1,5 +1,4 @@
 import MainTabNavigator from './Main.navigation';
-import RootSessions from '../../screens/sessionsContainer/RootSessions';
 import NewSession from 'screens/sessionsContainer/NewSession';
 import UnlockSession from 'screens/sessionsContainer/UnlockSession';
 import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
@@ -8,7 +7,7 @@ import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
 export const SignedOut = createStackNavigator( {
   SignIn: {
-    screen: RootSessions,
+    screen: UnlockSession,
     navigationOptions: ({ navigation }) => {
       return {
         header: null,
@@ -48,12 +47,15 @@ const createRootNavigator = (signedIn = false, medicalCase = null) => {
       Main: {
         screen: MainTabNavigator( medicalCase ),
       },
-      SignedOut: {
-        screen: SignedOut,
+      UnlockSession: {
+        screen: UnlockSession,
+      },
+      NewSession: {
+        screen: NewSession,
       },
     },
     {
-      initialRouteName: signedIn ? 'Main' : 'SignedOut',
+      initialRouteName: signedIn ? 'Main' : 'UnlockSession',
     },
   );
 };
