@@ -1,6 +1,5 @@
 // @flow
 
-import { InclusionsNodeModel } from './InclusionsNode.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 
 interface LinkNodeInterface {}

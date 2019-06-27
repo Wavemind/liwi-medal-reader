@@ -2,7 +2,6 @@
 
 import { NodeModel } from './Node.model';
 import { priorities } from '../../constants';
-import { InclusionsNodeModel } from './InclusionsNode.model';
 
 const { basic, mandatory, triage, priority } = priorities;
 
@@ -38,7 +37,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       qs = [],
       value = '',
       value_format = '',
-      medicalCase = {}
     } = props;
 
     this.description = description;
@@ -53,12 +51,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.qs = qs;
     this.value = value;
     this.value_format = value_format;
-
-    this.inclusions = new InclusionsNodeModel({
-      qs: qs,
-      dd,
-      medicalCase,
-    });
 
   }
 }
