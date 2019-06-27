@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
 import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
 import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
+import { i18n } from '../../utils/i18n';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
@@ -22,10 +23,8 @@ export type SessionsProviderState = {
   logout: (userId: number) => Promise<any>,
 };
 
-export class SessionsProvider extends React.Component<
-  SessionsProviderProps,
-  SessionsProviderState
-> {
+export class SessionsProvider extends React.Component<SessionsProviderProps,
+  SessionsProviderState> {
   constructor(props: SessionsProviderProps) {
     super(props);
     this.initContext();
@@ -68,13 +67,11 @@ export class SessionsProvider extends React.Component<
           sessions = [];
         }
         if (Array.isArray(sessions)) {
-          const exist = sessions.find((session) => {
+          const user = sessions.find((session) => {
             return session.data.id === credentials.data.id;
           });
 
-          console.log(exist);
-
-          if (!exist) {
+          if (!user || user.local_code === undefined) {
             sessions.push(credentials);
             await setSessions(sessions);
             this.setState({ sessions });
@@ -87,8 +84,9 @@ export class SessionsProvider extends React.Component<
                 reject(err);
               });
           }
-          Toaster('Already connected', { type: 'danger' });
-          reject('Already connected')
+
+          Toaster(i18n.t('notifications.session_already_exist'), { type: 'danger' });
+          reject('Already connected');
         }
       }
     });
@@ -114,7 +112,7 @@ export class SessionsProvider extends React.Component<
 }
 
 export const withSessions = (Component: React.ComponentType<any>) => (
-  props: any
+  props: any,
 ) => (
   <SessionsContext.Consumer>
     {(store) => <Component sessions={store} {...props} />}
