@@ -102,14 +102,15 @@ export default class PatientUpsert extends React.Component<Props, State> {
   // Generate medical case for current patient
   generateMedicalCase = async (patientId) => {
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.createMedicalCase(patientId);
+    await instanceMedicalCase.create(patientId);
     return instanceMedicalCase.id;
   };
 
   // Set patient in localStorage
   savePatient = async () => {
     const { patient } = this.state;
-    let idPatient = this.props.navigation.getParam('idPatient');
+    const { navigation } = this.props;
+    let idPatient = navigation.getParam('idPatient');
 
     let errors = await patient.validate();
 

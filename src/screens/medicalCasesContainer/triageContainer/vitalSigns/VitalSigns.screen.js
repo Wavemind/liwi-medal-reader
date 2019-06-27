@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native';
 import CustomInput from '../../../../components/InputContainer/CustomInput';
 import i18n from '../../../../utils/i18n';
 import { styles } from './VitalSigns.style';
+import * as _ from '../../../patientsContainer/patientUpsert/PatientUpsert.screen';
 
 type Props = NavigationScreenProps & {};
 
@@ -22,6 +23,13 @@ export default class VitalSigns extends React.Component<Props, State> {
   updateVitalSignsValue = async (key, value) => {
     const { setVitalSigns } = this.props;
     await setVitalSigns(key, value);
+  };
+
+  // Validate input
+  validate = async () => {
+    const { medicalCase: { vitalSigns } } = this.props;
+    let errors = await vitalSigns.validate();
+    this.setState({ errors: errors });
   };
 
   render() {
@@ -87,7 +95,7 @@ export default class VitalSigns extends React.Component<Props, State> {
           <Button light split>
             <Text>{i18n.t('form:back')}</Text>
           </Button>
-          <Button light split onPress={this.save}>
+          <Button light split onPress={this.validate}>
             <Text>{i18n.t('form:next')}</Text>
           </Button>
         </View>
