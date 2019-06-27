@@ -1,15 +1,10 @@
 import { AsyncStorage } from 'react-native';
 import moment from 'moment';
 import remove from 'lodash/remove';
-import flatten from 'lodash/flatten';
 import findIndex from 'lodash/findIndex';
 import _ from 'lodash';
 import maxBy from 'lodash/maxBy';
 import { stringifyDeepRef } from '../../utils/swissKnives';
-
-// TODO init localstorage, set initial value if undefined
-export const setCredentials = async (newState) =>
-  await AsyncStorage.setItem('credentials', stringifyDeepRef(newState));
 
 // @params [String] key, [Object] item
 // @return [Object] saved object
@@ -70,10 +65,6 @@ export const setItemFromArray = async (key, newItem, id) => {
 
   return {};
 };
-
-// Destroy user's credentials
-export const destroyCredentials = async () =>
-  await AsyncStorage.removeItem('credentials', (err) => {});
 
 // @return [Boolean]
 // Is user logged
