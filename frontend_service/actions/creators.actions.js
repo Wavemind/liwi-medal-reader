@@ -5,8 +5,8 @@ export const conditionValueDiseasesChange = (nodeId, diseaseId, value) => ({
   payload: { nodeId, diseaseId, value },
 });
 
-export const conditionValuePSChange = (nodeId, psId, value) => ({
-  type: actions.MC_CONDITION_VALUE_PS_CHANGE,
+export const conditionValueQSChange = (nodeId, psId, value) => ({
+  type: actions.MC_CONDITION_VALUE_QS_CHANGE,
   payload: { nodeId, psId, value },
 });
 
