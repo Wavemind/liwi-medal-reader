@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import type { I18nTypes } from '../../../utils/i18n';
-import UnlockSession from '../UnlockSession';
+import UnlockSession from '../UnlockSession.screen';
 
 type Props = NavigationScreenProps & {
   logged: boolean,

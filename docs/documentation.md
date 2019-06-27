@@ -101,7 +101,7 @@ logged||yes||
 t||yes||
 app||yes||
 -----
-**src/screens/session/SetCodeSession/SetCodeSession.js**
+**src/screens/session/SetCodeSession/SetCodeSession.screen.js**
 
 ### 1. SetCodeSession
 
