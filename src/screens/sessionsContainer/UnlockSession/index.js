@@ -1,4 +1,4 @@
-import UnlockSession from './UnlockSession';
+import UnlockSession from './UnlockSession.screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 
