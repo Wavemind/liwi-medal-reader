@@ -2,7 +2,6 @@ import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
 import {
-  conditionValueDiseasesChange,
   conditionValueQSChange,
   predefinedSyndromeChildren,
 } from '../actions/creators.actions';
