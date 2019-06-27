@@ -50,6 +50,8 @@ export default class UnlockSession extends React.Component<Props, State> {
       return session.data.email === email;
     });
 
+    console.log(user);
+
     if (user !== undefined) {
       let result = await app.unLockSession(user.data.id, code);
       this.setState({ errors: i18n.t(`notifications.${result}`) });
