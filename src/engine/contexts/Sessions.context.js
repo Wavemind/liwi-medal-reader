@@ -71,6 +71,9 @@ export class SessionsProvider extends React.Component<
           const exist = sessions.find((session) => {
             return session.data.id === credentials.data.id;
           });
+
+          console.log(exist);
+
           if (!exist) {
             sessions.push(credentials);
             await setSessions(sessions);

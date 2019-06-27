@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { sha256 } from 'js-sha256';
 import type { NavigationScreenProps } from 'react-navigation';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
