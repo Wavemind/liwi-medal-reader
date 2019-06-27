@@ -3,7 +3,7 @@ import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
 import {
   conditionValueQSChange,
-  predefinedSyndromeChildren,
+  questionsSequencesChildren,
 } from '../actions/creators.actions';
 
 // Create the first batch from json based on triage priority
@@ -197,7 +197,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
 
         // If the sub QS is null and show the sub question
         if (state$.value.nodes[nodeChild.id].answer === null) {
-          actions.push(predefinedSyndromeChildren(nodeChild.id, qs.id));
+          actions.push(questionsSequencesChildren(nodeChild.id, qs.id));
         } else {
           recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
         }

@@ -80,8 +80,8 @@ export const setPsAnswer = (indexPs, answer) => ({
   },
 });
 
-export const predefinedSyndromeChildren = (indexPS, indexChild) => ({
-  type: actions.MC_PREDEFINED_SYNDROME_CHILDREN,
+export const questionsSequencesChildren = (indexPS, indexChild) => ({
+  type: actions.MC_QUESTIONS_SEQUENCES_CHILDREN,
   payload: {
     indexPS,
     indexChild,
