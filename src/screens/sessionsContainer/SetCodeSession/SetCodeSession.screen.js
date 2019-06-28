@@ -1,51 +1,45 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { sha256 } from 'js-sha256';
 import type { NavigationScreenProps } from 'react-navigation';
+import { Button, Form, Text, View } from 'native-base';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
 import { getSession } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './SetCodeSession.style';
+import i18n from '../../../utils/i18n';
 import { saltHash } from '../../../../frontend_service/constants';
-import { Button, Form, Input, Item, Label, Text, View } from 'native-base';
+import CustomInput from '../../../components/InputContainer/CustomInput';
+import { ScrollView } from 'react-native';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 type State = {
   code: string,
   codeConfirmation: string,
-  error: boolean,
-  success: boolean,
+  error: string,
 };
 
 export default class SetCodeSession extends React.Component<Props, State> {
   state = {
     code: __DEV__ ? '123456q' : '',
     codeConfirmation: __DEV__ ? '123456q' : '',
-    error: false,
-    success: false,
+    error: null,
     session: null,
   };
 
   async componentWillMount() {
     let session = await getSession(this.props.navigation.getParam('user_id'));
     this.setState({ session });
-    this.isTheSame();
+    this.validateCode();
   }
 
-  // Save value of code in state
-  changeCode = (val: string) => {
-    this.setState({ code: val }, () => this.isTheSame());
+  changeValueFromInput = (index, value) => {
+    this.setState({ [index]: value });
   };
 
-  // Save value of code confirmation in state
-  changeCodeConfirmation = (val: string) => {
-    this.setState({ codeConfirmation: val }, () => this.isTheSame());
-  };
-
-  // Verify if codes are same
-  isTheSame = () => {
+  // Validation of code
+  validateCode = () => {
     const { code, codeConfirmation } = this.state;
 
     let mediumRegex = new RegExp(
@@ -55,29 +49,33 @@ export default class SetCodeSession extends React.Component<Props, State> {
     if (code.length > 0 && codeConfirmation.length > 0) {
       let encrypt1 = sha256.hmac(saltHash, code);
       let encrypt2 = sha256.hmac(saltHash, codeConfirmation);
-      if (encrypt1 !== encrypt2) {
-        this.setState({ error: true, success: false });
-      } else if (mediumRegex.test(code) && mediumRegex.test(codeConfirmation)) {
-        this.setState({ success: true, error: false });
+
+      if (encrypt1 !== encrypt2 || !mediumRegex.test(code) && !mediumRegex.test(codeConfirmation)) {
+        this.setState({ error: 'Your password is too weak or it\'s not the same' });
+        return false;
       }
+
+      return true;
     }
   };
 
   // Save code in session
   setLocalCode = async () => {
-    const { code } = this.state;
-    const { navigation, sessions, app } = this.props;
-    const userId = navigation.getParam('user_id');
-    const encrypted = sha256.hmac(saltHash, code);
+    let result = await this.validateCode();
 
-    await sessions.setLocalCode(encrypted, userId);
+    if (result) {
+      const { code } = this.state;
+      const { navigation, sessions, app } = this.props;
+      const userId = navigation.getParam('user_id');
+      const encrypted = sha256.hmac(saltHash, code);
 
-    app.unLockSession(userId, code);
+      await sessions.setLocalCode(encrypted, userId);
+      app.unLockSession(userId, code);
+    }
   };
 
   render() {
-    const { code, codeConfirmation, error, success, session } = this.state;
-    const { t } = this.props;
+    const { code, codeConfirmation, session, error } = this.state;
 
     if (session === null) {
       return null;
@@ -85,51 +83,38 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
     return (
       <View flex-container-column>
-        <View margin-auto padding-auto>
-          <Form>
+        <View margin-auto style={styles.centerVertically} padding-auto>
+          <ScrollView>
             <LiwiTitle2 noBorder>
-              {t('welcome')} {session.data.first_name} {session.data.last_name}
+              {i18n.t('code_session_screen:title')} {session.data.first_name} {session.data.last_name}
             </LiwiTitle2>
-            <Item success={success} error={error} login-input floatingLabel>
-              <Label>{t('your_code')}</Label>
-              <Input
-                onChangeText={this.changeCode}
-                value={code}
-                textContentType="emailAddress"
-                secureTextEntry
+            <Form>
+              <CustomInput
+                init={code}
+                change={this.changeValueFromInput}
+                index={'code'}
+                secureTextEntry={true}
+                placeholder={i18n.t('code_session_screen:your_code')}
+                condensed={true}
+                error={error}
               />
-            </Item>
-
-            <Item success={success} error={error} login-input floatingLabel>
-              <Label>{t('type_your_code')}</Label>
-              <Input
-                onChangeText={this.changeCodeConfirmation}
-                value={codeConfirmation}
-                secureTextEntry
+              <CustomInput
+                init={codeConfirmation}
+                change={this.changeValueFromInput}
+                index={'codeConfirmation'}
+                secureTextEntry={true}
+                placeholder={i18n.t('code_session_screen:type_your_code')}
+                condensed={true}
               />
-            </Item>
-            {error ? (
-              <React.Fragment>
-                <Text padded error>
-                  - {t('error_same')}
-                </Text>
-                <Text padded error>
-                  - {t('error_char')}
-                </Text>
-                <Text padded error>
-                  - {t('error_letter')}
-                </Text>
-              </React.Fragment>
-            ) : null}
-            <Button
-              full
-              style={styles.marginTop}
-              onPress={() => this.setLocalCode()}
-              disabled={success !== true}
-            >
-              <Text> {t('set_code')} </Text>
-            </Button>
-          </Form>
+              <Button
+                full
+                style={styles.marginTop}
+                onPress={() => this.setLocalCode()}
+              >
+                <Text> {i18n.t('code_session_screen:set_code')} </Text>
+              </Button>
+            </Form>
+          </ScrollView>
         </View>
       </View>
     );
