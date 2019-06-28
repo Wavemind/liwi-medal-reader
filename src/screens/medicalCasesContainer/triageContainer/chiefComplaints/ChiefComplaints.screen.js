@@ -3,17 +3,13 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import {
-  Body,
   Button,
-  Icon,
-  Left,
-  List,
-  ListItem,
-  Right,
-  Switch,
   Text,
+  View,
 } from 'native-base';
 import { ScrollView } from 'react-native';
+import { styles } from './ChiefComplaints.style';
+import i18n from '../../../../utils/i18n';
 
 type Props = NavigationScreenProps & {};
 
@@ -24,11 +20,46 @@ export default class ChiefComplaint extends React.Component<Props, State> {
   state = {};
 
   render() {
-    const { t } = this.props;
-
     return (
-      <ScrollView>
-        <Text>Chief Complaint</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.view}>
+          <Button style={styles.button}>
+            <Text center>Respiratory complaint</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text center>Ear / Noise / Mouth / Throat / Complaint</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text>1</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text>1</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text>1</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text>1</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text>1</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text>1</Text>
+          </Button>
+          <Button style={styles.button}>
+            <Text>1</Text>
+          </Button>
+
+        </View>
+        <View bottom-view columns>
+          <Button light split>
+            <Text>{i18n.t('form:back')}</Text>
+          </Button>
+          <Button light split>
+            <Text>{i18n.t('form:next')}</Text>
+          </Button>
+        </View>
       </ScrollView>
     );
   }
