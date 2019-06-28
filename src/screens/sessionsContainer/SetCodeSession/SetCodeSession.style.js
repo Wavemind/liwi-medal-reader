@@ -19,4 +19,8 @@ export const styles = StyleSheet.create({
   marginTop: {
     marginTop: 20,
   },
+
+  centerVertically: {
+    marginTop: 250,
+  },
 });
