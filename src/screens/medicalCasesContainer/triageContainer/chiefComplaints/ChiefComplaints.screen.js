@@ -29,33 +29,11 @@ export default class ChiefComplaint extends React.Component<Props, State> {
       <ScrollView contentContainerStyle={styles.container}>
         {questions.length > 0 ? (
         <View style={styles.view}>
-          <Button style={styles.button} light>
-            <Text center>Respiratory complaint</Text>
-          </Button>
-          <Button style={styles.button}>
-            <Text center>Ear / Noise / Mouth / Throat / Complaint</Text>
-          </Button>
-          <Button style={styles.button} light>
-            <Text>1</Text>
-          </Button>
-          <Button style={styles.button} light>
-            <Text>1</Text>
-          </Button>
-          <Button style={styles.button} light>
-            <Text>1</Text>
-          </Button>
-          <Button style={styles.button}>
-            <Text>1</Text>
-          </Button>
-          <Button style={styles.button} light>
-            <Text>1</Text>
-          </Button>
-          <Button style={styles.button} light>
-            <Text>1</Text>
-          </Button>
-          <Button style={styles.button}>
-            <Text>1</Text>
-          </Button>
+          {questions.map((question) => (
+            <Button style={styles.button} light>
+              <Text center>{question.label['en']}</Text>
+            </Button>
+          ))}
         </View>) : (
           <View padding-auto margin-auto>
             <Text not-available>{i18n.t('work_case:no_questions')}</Text>
