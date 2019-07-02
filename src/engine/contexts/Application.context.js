@@ -5,7 +5,6 @@ import find from 'lodash/find';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 import { sha256 } from 'js-sha256';
 import { saltHash } from '../../../frontend_service/constants';
-import { Toaster } from '../../utils/CustomToast';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
