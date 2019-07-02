@@ -9,6 +9,7 @@ import { displayFormats } from '../../constants';
 import findKey from 'lodash/findKey';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
+import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
 
 export const initialState = null;
 
@@ -29,6 +30,8 @@ class MedicalCaseReducer extends ReducerClass {
   _instanceMedicalCase(state) {
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
+    state.vitalSigns = new VitalSignsModel(state.vitalSigns);
+
     return state;
   }
 
@@ -38,7 +41,7 @@ class MedicalCaseReducer extends ReducerClass {
       (i) =>
         (state.diseases[i] = new DiseasesModel({
           ...state.diseases[i],
-        }))
+        })),
     );
 
     return state;
@@ -71,10 +74,10 @@ class MedicalCaseReducer extends ReducerClass {
     let changeConditionValue = find(ps, (d) => d.id === psId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = this._instanceChild( {
+    state.nodes[nodeId] = this._instanceChild({
       ...state.nodes[nodeId],
       qs: ps,
-    } );
+    });
 
     return {
       ...state,
@@ -91,10 +94,10 @@ class MedicalCaseReducer extends ReducerClass {
     let changeConditionValue = find(dd, (d) => d.id === diseaseId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = state.nodes._instanceChild( {
+    state.nodes[nodeId] = state.nodes._instanceChild({
       ...state.nodes[nodeId],
       dd: dd,
-    } );
+    });
 
     return {
       ...state,
@@ -106,10 +109,10 @@ class MedicalCaseReducer extends ReducerClass {
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
-    state.nodes[indexPs] = state.nodes._instanceChild( {
+    state.nodes[indexPs] = state.nodes._instanceChild({
       ...state.nodes[indexPs],
       answer: answer,
-    } );
+    });
 
     return {
       ...state,
@@ -118,15 +121,15 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   @Action(actions.MC_SET_VITAL_SIGNS)
-  psSetAnswer(state, action) {
+  setVitalSigns(state, action) {
     const { index, value } = action.payload;
 
     return {
       ...state,
-      vitalSigns: {
+      vitalSigns: new VitalSignsModel({
         ...state.vitalSigns,
         [index]: value,
-      },
+      }),
     };
   }
 
@@ -196,11 +199,11 @@ class MedicalCaseReducer extends ReducerClass {
       answer = Number(answer);
     }
 
-    state.nodes[index] = state.nodes._instanceChild( {
+    state.nodes[index] = state.nodes._instanceChild({
       ...state.nodes[index],
       answer: answer,
       value: value,
-    } );
+    });
 
     return {
       ...state,

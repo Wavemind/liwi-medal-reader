@@ -186,6 +186,7 @@ i18n
         notifications: {
           invalid_code: 'Code is invalid',
           session_does_not_exist: 'Session doesn\'t exist',
+          session_already_exist: 'Session already exist',
           no_internet: 'You don\'t have internet connection',
         },
       },
