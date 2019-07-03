@@ -10,6 +10,12 @@ export default {
       flexDirection: 'row',
       flex: 1,
     },
+    '.flex-container-fluid': {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    },
     '.round': {
       borderRadius: 50,
       backgroundColor: liwiColors.darkGreyColor,
