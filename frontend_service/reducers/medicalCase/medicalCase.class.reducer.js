@@ -1,80 +1,38 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
-import {
-  getItem,
-  getItemFromArray,
-  getItems,
-  setItemFromArray,
-  setMedicalCase,
-} from '../../../src/engine/api/LocalStorage';
+import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import {
-  generateInitialBatch,
-  generateNextBatch,
-  setInitialCounter,
-} from '../../algorithm/algoTreeDiagnosis';
+import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import find from 'lodash/find';
-import { displayFormats, nodesType } from '../../constants';
+import { displayFormats } from '../../constants';
 import findKey from 'lodash/findKey';
-import forEach from 'lodash/forEach';
-import maxBy from 'lodash/maxBy';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
-import { NodeModel } from '../../engine/models/Node.model';
-import { PredefinedSyndromeModel } from '../../engine/models/PredefinedSyndrome.model';
-import { TreatmentModel } from '../../engine/models/Treatment.model';
-import { QuestionModel } from '../../engine/models/Question.model';
-import { ManagementModel } from '../../engine/models/Management.model';
-import { FinalDiagnosticModel } from '../../engine/models/FinalDiagnostic.model';
-import moment from 'moment';
+import { NodesModel } from '../../engine/models/Nodes.model';
 
 export const initialState = null;
 
-class ReducerCat extends ReducerClass {
+/*
+ * Reducer
+ * Catch actions from redux / dispatcher
+ * Load MedicalCase on it
+ *
+ *
+ *
+ *
+ * */
+class MedicalCaseReducer extends ReducerClass {
   initialState = {};
 
+  // The state is a MedicalCase
+  // Instance it
   _instanceMedicalCase(state) {
     state = this._generateInstanceDiseasesNode(state);
-    state = this._generateInstanceNodeModel(state);
+    state.nodes = new NodesModel(state.nodes);
     return state;
   }
 
-  _instanceChild(node) {
-    let modelized;
-
-    if (node instanceof NodeModel) {
-      return node;
-    }
-
-    switch (node.type) {
-      case nodesType.ps:
-        modelized = new PredefinedSyndromeModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-      case nodesType.t:
-        modelized = new TreatmentModel({ ...node });
-        break;
-      case nodesType.q:
-        modelized = new QuestionModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-      case nodesType.m:
-        modelized = new ManagementModel({ ...node });
-        break;
-      case nodesType.fd:
-        modelized = new FinalDiagnosticModel({ ...node });
-        break;
-      default:
-        break;
-    }
-
-    return modelized;
-  }
-
+  // For the diseases we instance it
   _generateInstanceDiseasesNode(state) {
     Object.keys(state.diseases).forEach(
       (i) =>
@@ -82,15 +40,6 @@ class ReducerCat extends ReducerClass {
           ...state.diseases[i],
         }))
     );
-
-    return state;
-  }
-
-  _generateInstanceNodeModel(state) {
-    Object.keys(state.nodes).forEach((i) => {
-      let node = state.nodes[i];
-      state.nodes[i] = this._instanceChild(node);
-    });
 
     return state;
   }
@@ -113,26 +62,23 @@ class ReducerCat extends ReducerClass {
     };
   }
 
-  @Action(actions.MC_CONDITION_VALUE_PS_CHANGE)
+  @Action(actions.MC_CONDITION_VALUE_QS_CHANGE)
   conditionValuePsChange(state, action) {
     const { nodeId, psId, value } = action.payload;
 
-    const ps = state.nodes[nodeId].ps;
+    const ps = state.nodes[nodeId].qs;
 
     let changeConditionValue = find(ps, (d) => d.id === psId);
     changeConditionValue.conditionValue = value;
 
-    let newInstanceNode = this._instanceChild({
+    state.nodes[nodeId] = this._instanceChild( {
       ...state.nodes[nodeId],
-      ps: ps,
-    });
+      qs: ps,
+    } );
 
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [nodeId]: newInstanceNode,
-      },
+      nodes: new NodesModel(state.nodes),
     };
   }
 
@@ -145,17 +91,14 @@ class ReducerCat extends ReducerClass {
     let changeConditionValue = find(dd, (d) => d.id === diseaseId);
     changeConditionValue.conditionValue = value;
 
-    let newInstanceNode = this._instanceChild({
+    state.nodes[nodeId] = state.nodes._instanceChild( {
       ...state.nodes[nodeId],
       dd: dd,
-    });
+    } );
 
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [nodeId]: newInstanceNode,
-      },
+      nodes: new NodesModel(state.nodes),
     };
   }
 
@@ -163,16 +106,26 @@ class ReducerCat extends ReducerClass {
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
-    let newInstanceNode = this._instanceChild({
+    state.nodes[indexPs] = state.nodes._instanceChild( {
       ...state.nodes[indexPs],
       answer: answer,
-    });
+    } );
 
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [indexPs]: newInstanceNode,
+      nodes: new NodesModel(state.nodes),
+    };
+  }
+
+  @Action(actions.MC_SET_VITAL_SIGNS)
+  psSetAnswer(state, action) {
+    const { index, value } = action.payload;
+
+    return {
+      ...state,
+      vitalSigns: {
+        ...state.vitalSigns,
+        [index]: value,
       },
     };
   }
@@ -218,34 +171,6 @@ class ReducerCat extends ReducerClass {
                   value > Number(answerCondition.value.split(',')[0]) &&
                   value <= Number(answerCondition.value.split(',')[1])
                 );
-
-              case '>=':
-                return value >= Number(answerCondition.value);
-
-              // WORKAROUND because JSON is wrong
-              case '=>':
-                return value >= Number(answerCondition.value);
-
-              case '<=':
-                return value <= Number(answerCondition.value);
-
-              case '>':
-                return value >= Number(answerCondition.value);
-
-              case '<':
-                return value < Number(answerCondition.value);
-
-              case '>=, <':
-                return (
-                  value >= Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case '>, <=':
-                return (
-                  value > Number(answerCondition.value.split(',')[0]) &&
-                  value <= Number(answerCondition.value.split(',')[1])
-                );
             }
           });
         } else {
@@ -271,18 +196,15 @@ class ReducerCat extends ReducerClass {
       answer = Number(answer);
     }
 
-    let newInstanceNode = this._instanceChild({
+    state.nodes[index] = state.nodes._instanceChild( {
       ...state.nodes[index],
       answer: answer,
       value: value,
-    });
+    } );
 
     return {
       ...state,
-      nodes: {
-        ...state.nodes,
-        [index]: newInstanceNode,
-      },
+      nodes: new NodesModel(state.nodes),
     };
   }
 
@@ -306,6 +228,7 @@ class ReducerCat extends ReducerClass {
     if (state !== {} && medicalCase.id !== state.id) {
       setMedicalCase(state);
     }
+
     let modelsMedicalCase = this._instanceMedicalCase(medicalCase);
 
     return {
@@ -332,4 +255,4 @@ class ReducerCat extends ReducerClass {
   }
 }
 
-export default ReducerCat.create();
+export default MedicalCaseReducer.create();

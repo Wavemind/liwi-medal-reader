@@ -3,7 +3,8 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
-import { Button, Col, Grid, Icon } from 'native-base';
+import { Icon, Text, View } from 'native-base';
+import { LeftButton, RightButton } from '../../../../template/layout';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -30,50 +31,24 @@ export default class Boolean extends React.Component<Props, State> {
     const idNo = Number(Object.keys(answers)[1]);
 
     return (
-      <Grid>
-        <Col>
-          <Button
-            square
-            onPress={() => this._handleClick(idYes)}
-            style={
-              answer === idYes
-                ? { backgroundColor: '#c0c0c0' }
-                : { backgroundColor: liwiColors.whiteColor }
-            }
-          >
-            <Icon
-              style={
-                answer === idYes
-                  ? { color: liwiColors.greenColor }
-                  : { color: liwiColors.blackColor }
-              }
-              name={'check'}
-              type={'MaterialCommunityIcons'}
-            />
-          </Button>
-        </Col>
-        <Col>
-          <Button
-            square
-            onPress={() => this._handleClick(idNo)}
-            style={
-              answer === idNo
-                ? { backgroundColor: '#c0c0c0' }
-                : { backgroundColor: liwiColors.whiteColor }
-            }
-          >
-            <Icon
-              style={
-                answer === idNo
-                  ? { color: liwiColors.redColor }
-                  : { color: liwiColors.blackColor }
-              }
-              name={'cross'}
-              type={'Entypo'}
-            />
-          </Button>
-        </Col>
-      </Grid>
+      <View answer>
+        <LeftButton
+          active={answer === idYes}
+          onPress={() => this._handleClick(idYes)}
+        >
+          <Text white={answer === idYes} center>
+            Oui
+          </Text>
+        </LeftButton>
+        <RightButton
+          onPress={() => this._handleClick(idNo)}
+          active={answer === idNo}
+        >
+          <Text center white={answer === idNo}>
+            Non
+          </Text>
+        </RightButton>
+      </View>
     );
   };
 }

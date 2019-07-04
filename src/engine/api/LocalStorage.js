@@ -1,14 +1,10 @@
 import { AsyncStorage } from 'react-native';
 import moment from 'moment';
 import remove from 'lodash/remove';
-import flatten from 'lodash/flatten';
 import findIndex from 'lodash/findIndex';
+import _ from 'lodash';
 import maxBy from 'lodash/maxBy';
 import { stringifyDeepRef } from '../../utils/swissKnives';
-
-// TODO init localstorage, set initial value if undefined
-export const setCredentials = async (newState) =>
-  await AsyncStorage.setItem('credentials', stringifyDeepRef(newState));
 
 // @params [String] key, [Object] item
 // @return [Object] saved object
@@ -70,39 +66,14 @@ export const setItemFromArray = async (key, newItem, id) => {
   return {};
 };
 
-// Destroy user's credentials
-export const destroyCredentials = async () =>
-  await AsyncStorage.removeItem('credentials', (err) => {});
 
-// @return [Boolean]
-// Is user logged
-export const isLogged = async () => {
-  let credentials = await getCredentials();
-
-  if (credentials === null) {
-    return false;
-  }
-
-  let date_expiry = new Date(credentials.expiry * 1000);
-  // TODO validate_token
-  // if (!moment(date_expiry).isAfter(moment())) {
-  //   return await get('auth/validate_token');
-  // }
-
-  return moment(date_expiry).isAfter(moment());
-};
-
+// @params key used to store in local storage
+// Get item in local storage
 export const getItem = async (key) => {
   const item = await AsyncStorage.getItem(key);
   return JSON.parse(item);
 };
 
-// @return [Array]
-// Get credentials from local storage
-export const getCredentials = async () => {
-  const credentials = await AsyncStorage.getItem('credentials');
-  return JSON.parse(credentials);
-};
 
 // @return [Array]
 // Get session from local storage
@@ -253,4 +224,19 @@ export const destroySession = async (id) => {
   }
   await setSessions(sessions);
   return true;
+};
+
+// @params [Integer] id
+// Return patient medical cases
+export const getMedicalCase = async (id) => {
+  let patients = await getItems('patients');
+  let item = null;
+
+  patients.map((patient) => {
+    let f = _.find(patient.medicalCases, (m) => m.id === id);
+    if (f !== undefined) {
+      item = f;
+    }
+  });
+  return item;
 };

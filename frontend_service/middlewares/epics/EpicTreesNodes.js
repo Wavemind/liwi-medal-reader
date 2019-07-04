@@ -10,7 +10,7 @@ import {
   diagnosisChildren,
   diseasesChildren,
   dispatchNodeAction,
-  predefinedSyndromeChildren,
+  questionsSequencesChildren,
   setQuestion,
 } from '../../actions/creators.actions';
 import {
@@ -40,7 +40,7 @@ export const epicCatchAnswer = (action$, state$) =>
 
       const node = state$.value.nodes[index];
       const nodeDdParents = node.dd;
-      const nodePsParents = node.ps;
+      const nodePsParents = node.qs;
 
       let arrayActions = [];
 
@@ -49,8 +49,8 @@ export const epicCatchAnswer = (action$, state$) =>
         arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.d))
       );
 
-      nodePsParents.map((ps) =>
-        arrayActions.push(predefinedSyndromeChildren(ps.id, index))
+      nodePsParents.map((qs) =>
+        arrayActions.push(questionsSequencesChildren(qs.id, index))
       );
 
       return of(...arrayActions);
@@ -66,7 +66,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     ofType(actions.MC_NODE_CHILDREN),
     switchMap((action) => {
       // indexNode = node that has just been answered
-      // indexChild = dd or ps being affected by the node
+      // indexChild = dd or qs being affected by the node
       let { indexNode, indexChild, typeChild } = action.payload;
 
       // indexNode = Parent node
@@ -128,11 +128,11 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           );
 
           return of(...arrayActions);
-        case nodesType.ps:
+        case nodesType.qs:
           // TODO : Handle PS
           // HERE calcule condition of node type PS
           return of(diseasesChildren(indexNode, indexChild));
-        //return of(predefinedSyndromeChildren(indexChild, indexNode));
+        //return of(questionsSequencesChildren(indexChild, indexNode));
       }
     })
   );
@@ -142,49 +142,49 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
 // TODO : finish it
 export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
   action$.pipe(
-    ofType(actions.MC_PREDEFINED_SYNDROME_CHILDREN),
+    ofType(actions.MC_QUESTIONS_SEQUENCES_CHILDREN),
     switchMap((action) => {
       // Processed with a PS
       const { indexPS, indexChild } = action.payload;
 
       // Here get the state if this PS
-      const ps = state$.value.nodes[indexPS];
+      const qs = state$.value.nodes[indexPS];
 
-      // Let check the condition of this ps
+      // Let check the condition of this qs
       const topConditionCheckerPs = nodeConditionChecker(
         state$,
         null,
         null,
-        ps
+        qs
       );
 
       let answeredId = null;
       let actions = [];
 
       if (topConditionCheckerPs === true) {
-        answeredId = ps.answers[Object.keys(ps.answers)[0]].id;
+        answeredId = qs.answers[Object.keys(qs.answers)[0]].id;
       } else if (topConditionCheckerPs === false) {
-        answeredId = ps.answers[Object.keys(ps.answers)[1]].id;
+        answeredId = qs.answers[Object.keys(qs.answers)[1]].id;
       } else if (topConditionCheckerPs === null) {
         // TODO if top parent question is reset to null, reset children question condition value to false
-        getStateToThisPs(state$, ps, actions);
+        getStateToThisPs(state$, qs, actions);
       }
 
       console.log(
         'starte PS',
-        ps.id,
-        ps,
+        qs.id,
+        qs,
         topConditionCheckerPs,
-        'state du ps',
+        'state du qs',
         actions
       );
 
       console.log(indexPS, ' -> ce PS a comme réponse : ', answeredId);
 
-      if (answeredId !== ps.answer) {
-        // actions.push(dispatchNodeAction(ps.id, indexChild, ps.type));
+      if (answeredId !== qs.answer) {
+        // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
 
-        return of(...actions, setQuestion(ps.id, answeredId));
+        return of(...actions, setQuestion(qs.id, answeredId));
       } else {
         // emit nothing....
         return of();

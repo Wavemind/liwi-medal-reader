@@ -7,14 +7,13 @@ import { styles } from './NewSession.style';
 import {
   Button,
   Form,
-  Input,
-  Item,
-  Label,
   Text,
   View,
-  Icon,
 } from 'native-base';
 import { Keyboard, ScrollView } from 'react-native';
+import CustomInput from '../../../components/InputContainer/CustomInput';
+import i18n from '../../../utils/i18n';
+import { LiwiTitle2 } from '../../../template/layout';
 
 type Props = NavigationScreenProps & {};
 type State = {
@@ -37,11 +36,11 @@ export default class NewSession extends React.Component<Props, State> {
   componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
-      this._keyboardDidShow
+      this._keyboardDidShow,
     );
     this.keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
-      this._keyboardDidHide
+      this._keyboardDidHide,
     );
   }
 
@@ -58,14 +57,14 @@ export default class NewSession extends React.Component<Props, State> {
     this.setState({ keyboard: false });
   };
 
-  // Update value of email when user typing
-  changeEmail = (val: string) => {
-    this.setState({ email: val });
+  changeValueFromInput = (index, value) => {
+    this.setState({ [index]: value });
   };
 
-  // Update value of password when user typing
-  changePassword = (val: string) => {
-    this.setState({ password: val });
+  // Navigate to unlock session screen
+  unLockSessionScreen = () => {
+    const { navigation } = this.props;
+    navigation.navigate('UnlockSession');
   };
 
   // Authentication method
@@ -73,7 +72,7 @@ export default class NewSession extends React.Component<Props, State> {
     const { email, password } = this.state;
 
     if (email.length < 8 || password.length < 3) {
-      return null
+      return null;
     }
 
     this.setState({ loading: true });
@@ -95,8 +94,6 @@ export default class NewSession extends React.Component<Props, State> {
       });
   };
 
-  changeConnection = (connectionMethod) => this.setState({ connectionMethod });
-
   render() {
     const {
       email,
@@ -104,8 +101,6 @@ export default class NewSession extends React.Component<Props, State> {
       loading,
       success,
       id,
-      keyboard,
-      connectionMethod,
     } = this.state;
 
     const {
@@ -115,70 +110,33 @@ export default class NewSession extends React.Component<Props, State> {
 
     return (
       <View flex-container-column>
-        <View border-primary margin-auto padding-auto>
+        <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
+            <LiwiTitle2 noBorder center>{i18n.t('new_session:title')}</LiwiTitle2>
             <Form>
-              <Item floatingLabel>
-                <Label>Email</Label>
-                <Input
-                  login-input
-                  onChangeText={this.changeEmail}
-                  value={email}
-                  textContentType="emailAddress"
-                  keyboardType="email-address"
-                />
-              </Item>
-              <Item floatingLabel>
-                <Label>{t('password')}</Label>
-                <Input
-                  login-input
-                  onChangeText={this.changePassword}
-                  value={password}
-                  secureTextEntry
-                />
-              </Item>
+              <CustomInput
+                init={email}
+                change={this.changeValueFromInput}
+                index={'email'}
+                placeholder={t('email')}
+                condensed={true}
+              />
+              <CustomInput
+                init={password}
+                change={this.changeValueFromInput}
+                index={'password'}
+                secureTextEntry={true}
+                placeholder={t('password')}
+                condensed={true}
+              />
               <Button
                 full
                 style={styles.marginTop}
                 onPress={() => this.signIn()}
-                disabled={loading || success}
+                disabled={loading || success || !isConnected}
               >
-                <Text> {t('login')} </Text>
+                <Text> {t('connect')} </Text>
               </Button>
-              <View w50>
-                <Button
-                  center
-                  w50
-                  style={styles.marginTop}
-                  onPress={() => this.changeConnection('server')}
-                  disabled={loading || success || !isConnected}
-                  switch-login
-                  activeStyle={connectionMethod === 'server'}
-                >
-                  <Icon
-                    grey
-                    type={'MaterialCommunityIcons'}
-                    name="lan-connect"
-                  />
-                  <Text dark> {t('server')} </Text>
-                </Button>
-                <Button
-                  center
-                  w50
-                  style={styles.marginTop}
-                  onPress={() => this.changeConnection('local')}
-                  disabled={loading || success}
-                  switch-login
-                  activeStyle={connectionMethod === 'local'}
-                >
-                  <Icon
-                    grey
-                    type={'MaterialCommunityIcons'}
-                    name="lan-disconnect"
-                  />
-                  <Text dark> {t('local')} </Text>
-                </Button>
-              </View>
             </Form>
           </ScrollView>
         </View>
@@ -206,6 +164,11 @@ export default class NewSession extends React.Component<Props, State> {
               }}
             />
           ) : null}
+        </View>
+        <View bottom-view margin-auto padding-auto>
+          <Button onPress={this.unLockSessionScreen}>
+            <Text>{i18n.t('new_session:unlock_session')}</Text>
+          </Button>
         </View>
       </View>
     );

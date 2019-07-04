@@ -1,7 +1,6 @@
 // @flow
 
 import { NodeModel } from './Node.model';
-import { InclusionsNodeModel } from './InclusionsNode.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { LinkNodeModel } from './Link.model';
 
@@ -13,7 +12,6 @@ interface PredefinedSyndromeInterface {
   dd: Array<Object>;
   ps: Array<Object>;
   nodes: Object;
-  inclusions: InclusionsNodeModel;
 }
 
 export class PredefinedSyndromeModel extends NodeModel
@@ -27,8 +25,7 @@ export class PredefinedSyndromeModel extends NodeModel
       description = '',
       label = '',
       dd = [],
-      ps = [],
-      medicalCase = {},
+      qs = [],
       conditions = {},
       nodes = {},
       top_conditions = {},
@@ -39,25 +36,18 @@ export class PredefinedSyndromeModel extends NodeModel
     this.answer = answer;
     this.answers = answers;
     this.dd = dd;
-    this.ps = ps;
+    this.qs = qs;
     this.conditions = conditions;
     this.top_conditions = top_conditions;
     this.nodes = nodes;
 
-    this.inclusions = new InclusionsNodeModel({
-      ps,
-      dd,
-      medicalCase,
-    });
-
     this.requirement = new RequirementNodeModel({ ...props });
     this.instanceLink();
-
   }
 
   instanceLink() {
-    Object.keys(this.nodes).map(id => {
-      this.nodes[id] = new LinkNodeModel({...this.nodes[id]})
-    })
+    Object.keys(this.nodes).map((id) => {
+      this.nodes[id] = new LinkNodeModel({ ...this.nodes[id] });
+    });
   }
 }

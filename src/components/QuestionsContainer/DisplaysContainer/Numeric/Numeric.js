@@ -44,7 +44,7 @@ export default class Numeric extends React.Component<Props, State> {
     }
 
     return (
-      <View style={styles.view}>
+      <View answer>
         <Item>
           <Input
             keyboardType={keyboardType}

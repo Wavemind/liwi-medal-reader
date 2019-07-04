@@ -223,10 +223,12 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
   // Unlock session from local credentials
   unLockSession = async (id: number, code: string) => {
+    const { t } = this.state;
     let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
 
     if (session.local_code === encrypt) {
+
       await setActiveSession(id);
 
       await fetchAlgorithms(id);
@@ -237,7 +239,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
       // here push settings
     } else {
-      Toaster(this.state.t('notifications.invalid_code'), { type: 'danger' });
+      Toaster(t('notifications.invalid_code'), { type: 'danger' });
     }
   };
 
