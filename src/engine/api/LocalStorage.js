@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import remove from 'lodash/remove';
 import findIndex from 'lodash/findIndex';

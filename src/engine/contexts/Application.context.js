@@ -226,8 +226,13 @@ export class ApplicationProvider extends React.Component<Props, State> {
     let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
 
-    if (session.local_code === encrypt) {
+    console.log(session.local_code.length, code);
 
+    if (code.length === 0) {
+      return 'empty_code';
+    }
+
+    if (session.local_code === encrypt) {
       await setActiveSession(id);
 
       await fetchAlgorithms(id);
