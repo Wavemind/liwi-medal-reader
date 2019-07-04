@@ -2,9 +2,8 @@ import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
 import {
-  conditionValueDiseasesChange,
-  conditionValuePSChange,
-  predefinedSyndromeChildren,
+  conditionValueQSChange,
+  questionsSequencesChildren,
 } from '../actions/creators.actions';
 
 // Create the first batch from json based on triage priority
@@ -43,8 +42,8 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
         });
 
         // Map trough PS if it is in an another PS itself
-        nodes[nodeId].ps.map((ps) => {
-          setParentConditionValue(algorithmJsonMedicalCase, ps.id, nodeId);
+        nodes[nodeId].qs.map((qs) => {
+          setParentConditionValue(algorithmJsonMedicalCase, qs.id, nodeId);
         });
       }
     });
@@ -56,7 +55,7 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
 };
 
 // @params [Json][Integer][Integer] algorithmJsonMedicalCase, parentId, id
-// Recursive function to also set dd and ps parents of current ps
+// Recursive function to also set dd and qs parents of current qs
 export const setParentConditionValue = (
   algorithmJsonMedicalCase,
   parentId,
@@ -74,20 +73,20 @@ export const setParentConditionValue = (
     conditionValue = true;
   }
 
-  // Set condition value of parent PS if there is any
-  if (!nodes[parentId].ps.isEmpty()) {
-    // If parentNode is a PS, rerun function
-    nodes[parentId].ps.map((ps) => {
-      setParentConditionValue(algorithmJsonMedicalCase, ps.id, parentId);
+  // Set condition value of parent QS if there is any
+  if (!nodes[parentId].qs.isEmpty()) {
+    // If parentNode is a QS, rerun function
+    nodes[parentId].qs.map((qs) => {
+      setParentConditionValue(algorithmJsonMedicalCase, qs.id, parentId);
     });
     conditionValue = true;
   }
 
-  // Set conditionValue of current PS
-  nodes[id].ps.map((ps) => {
-    if (ps.id === parentId) {
-      ps.conditionValue =
-        nodes[ps.id].nodes[id].top_conditions.length === 0 && conditionValue;
+  // Set conditionValue of current QS
+  nodes[id].qs.map((qs) => {
+    if (qs.id === parentId) {
+      qs.conditionValue =
+        nodes[qs.id].nodes[id].top_conditions.length === 0 && conditionValue;
     }
   });
 };
@@ -100,11 +99,11 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
   let newBatch = { name: '', current: false, nodes: [] };
 
   Object.keys(nodes).map((nodeId) => {
-    // Check if the question or ps has already been answered
+    // Check if the question or qs has already been answered
     if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
       let hasConditionValue = false;
 
-      nodes[nodeId].dd.concat(nodes[nodeId].ps).map((parent) => {
+      nodes[nodeId].dd.concat(nodes[nodeId].qs).map((parent) => {
         if (parent.conditionValue === true) {
           hasConditionValue = true;
         }
@@ -121,7 +120,7 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
           }
         });
 
-        // Push in the next batch if the question or ps is not present in another batch
+        // Push in the next batch if the question or qs is not present in another batch
         if (!isInBatch) {
           newBatch.nodes.push(nodeId);
         }
@@ -154,29 +153,29 @@ export const getParentsOfThisNode = (state$, diseaseId, nodeId) => {
 };
 
 // TODO not working at 100%, fix it
-const recursiveNodePs = (state$, node, ps, actions) => {
-  let findConditionValuePs = find(
-    state$.value.nodes[node.id].ps,
-    (p) => p.id === ps.id
+const recursiveNodePs = (state$, node, qs, actions) => {
+  let findConditionValueQs = find(
+    state$.value.nodes[node.id].qs,
+    (p) => p.id === qs.id
   ).conditionValue;
 
   // if not answered we show it
   if (
     state$.value.nodes[node.id].answer === null &&
-    findConditionValuePs.conditionValue === false
+    findConditionValueQs.conditionValue === false
   ) {
-    return actions.push(conditionValuePSChange(node.id, ps.id, true));
+    return actions.push(conditionValueQSChange(node.id, qs.id, true));
   }
 
   if (
     state$.value.nodes[node.id].answer === null &&
-    findConditionValuePs === true
+    findConditionValueQs === true
   ) {
     // the question is not answered but already shown, and stop and wait on the user
     return;
   }
 
-  // We check the conditon of this node
+  // We check the condition of this node
   const nodeCondition = nodeConditionChecker(state$, null, null, node);
 
   // If top parent or condition === true
@@ -185,49 +184,48 @@ const recursiveNodePs = (state$, node, ps, actions) => {
       let nodeChild = state$.value.nodes[nodeChildID];
 
       // IF the child is OUR PS
-      if (nodeChildID === ps.id && nodeChild.type === nodesType.ps) {
-        // Top parent and child is PS
-        // The branch is open and we can set the answer of this PS
+      if (nodeChildID === qs.id && nodeChild.type === nodesType.qs) {
+        // Top parent and child is QS
+        // The branch is open and we can set the answer of this QS
         return;
-        //return nodeConditionChecker(state$, null, null, ps);
+        //return nodeConditionChecker(state$, null, null, qs);
       }
 
-      // IF the child is an other PS
-      if (nodeChild.type === nodesType.ps && nodeChildID !== ps.id) {
+      // IF the child is an other QS
+      if (nodeChild.type === nodesType.qs && nodeChildID !== qs.id) {
         console.log(nodeChild, 'Get state of this other PS');
 
-        // If the sub PS is null and show the sub question
+        // If the sub QS is null and show the sub question
         if (state$.value.nodes[nodeChild.id].answer === null) {
-          actions.push(predefinedSyndromeChildren(nodeChild.id, ps.id));
+          actions.push(questionsSequencesChildren(nodeChild.id, qs.id));
         } else {
-          recursiveNodePs(state$, ps.nodes[nodeChild.id], ps, actions);
+          recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
         }
       }
 
       // IF the child is an question
-
       if (nodeChild.type === nodesType.q) {
         // Next node is a question, get the state
         // go deeper
-        recursiveNodePs(state$, ps.nodes[nodeChild.id], ps, actions);
+        recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
       }
     });
   }
 };
 
 // TODO as well
-export const getStateToThisPs = (state$, ps, actions) => {
+export const getStateToThisPs = (state$, qs, actions) => {
   let nodeTopParent = [];
 
   // Get top parent nodes
-  Object.keys(ps.nodes).map((nodeId) => {
-    if (ps.nodes[nodeId].top_conditions.length === 0) {
-      nodeTopParent.push(ps.nodes[nodeId]);
+  Object.keys(qs.nodes).map((nodeId) => {
+    if (qs.nodes[nodeId].top_conditions.length === 0) {
+      nodeTopParent.push(qs.nodes[nodeId]);
     }
   });
-  // For each top parent node (a branch, but not the branche chocolate cailler)
+  // For each top parent node
   nodeTopParent.map((topParent) =>
-    recursiveNodePs(state$, topParent, ps, actions)
+    recursiveNodePs(state$, topParent, qs, actions)
   );
   return actions;
 };

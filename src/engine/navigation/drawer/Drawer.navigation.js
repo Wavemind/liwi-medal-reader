@@ -12,13 +12,14 @@ export default class Drawer extends Component {
 
   logout = async () => {
     const {
-      app: { user },
+      app: { lockSession },
     } = this.props;
-    await this.props.app.lockSession();
+    await lockSession();
   };
 
   onPress = (path) => {
-    this.props.navigation.navigate( path );
+    const { navigation } = this.props;
+    navigation.navigate( path );
   };
 
   render() {

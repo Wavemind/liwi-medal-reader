@@ -19,9 +19,4 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-
-  splitButton: {
-    flex: 0.5,
-    justifyContent: 'center',
-  },
 });

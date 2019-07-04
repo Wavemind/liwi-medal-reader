@@ -5,8 +5,8 @@ export const conditionValueDiseasesChange = (nodeId, diseaseId, value) => ({
   payload: { nodeId, diseaseId, value },
 });
 
-export const conditionValuePSChange = (nodeId, psId, value) => ({
-  type: actions.MC_CONDITION_VALUE_PS_CHANGE,
+export const conditionValueQSChange = (nodeId, psId, value) => ({
+  type: actions.MC_CONDITION_VALUE_QS_CHANGE,
   payload: { nodeId, psId, value },
 });
 
@@ -59,6 +59,11 @@ export const updatePatient = (index, value) => ({
   },
 });
 
+export const setVitalSigns = (index, value) => ({
+  type: actions.MC_SET_VITAL_SIGNS,
+  payload: { index: index, value: value },
+});
+
 export const diseasesChildren = (indexDD, indexChild) => ({
   type: actions.MC_DISEASES_CHILDREN,
   payload: {
@@ -75,8 +80,8 @@ export const setPsAnswer = (indexPs, answer) => ({
   },
 });
 
-export const predefinedSyndromeChildren = (indexPS, indexChild) => ({
-  type: actions.MC_PREDEFINED_SYNDROME_CHILDREN,
+export const questionsSequencesChildren = (indexPS, indexChild) => ({
+  type: actions.MC_QUESTIONS_SEQUENCES_CHILDREN,
   payload: {
     indexPS,
     indexChild,
@@ -90,5 +95,3 @@ export const diagnosisChildren = (indexDD, indexDiagnosis) => ({
     indexDiagnosis,
   },
 });
-
-

@@ -17,6 +17,8 @@ export default class CustomInput extends React.Component<Props, State> {
     iconName: false,
     iconType: false,
     keyboardType: 'default',
+    secureTextEntry: false,
+    condensed: false,
   };
 
   shouldComponentUpdate(
@@ -24,7 +26,9 @@ export default class CustomInput extends React.Component<Props, State> {
     nextState: Readonly<S>
   ): boolean {
     return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
+      this.state.value !== nextState.value ||
+      this.props.init !== nextProps.init ||
+      this.props.error !== nextProps.error
     );
   }
 
@@ -43,13 +47,16 @@ export default class CustomInput extends React.Component<Props, State> {
       iconName,
       iconType,
       keyboardType,
+      placeholder,
+      secureTextEntry,
       error,
+      condensed,
     } = this.props;
 
     const { value } = this.state;
 
     return (
-      <Form style={styles.form}>
+      <Form style={condensed ? null : styles.form}>
         <View style={styles.view}>
           {iconName && iconType ? (
             <Icon name={iconName} type={iconType} style={styles.icon} />
@@ -72,6 +79,8 @@ export default class CustomInput extends React.Component<Props, State> {
             value={value}
             onChange={this._handleChangeValue}
             onEndEditing={(value) => change(index, value.nativeEvent.text)}
+            placeholder={placeholder}
+            secureTextEntry={secureTextEntry}
           />
         </ViewBlocColor>
       </Form>

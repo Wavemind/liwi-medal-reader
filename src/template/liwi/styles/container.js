@@ -76,6 +76,28 @@ export default {
 
     '.flex': {
       flex: 1
+    },
+
+    '.question': {
+      flexDirection: 'row',
+      flex:0.7,
+      borderRadius: 5,
+      borderWidth: 0.5,
+      backgroundColor: liwiColors.lighterGreyColor,
+      padding: 10,
+      marginRight: 20,
+      borderColor: liwiColors.blackColor,
+    },
+
+    '.answer': {
+      flexDirection: 'row',
+      flex:0.3,
+    },
+
+    '.columns': {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     }
   },
 };

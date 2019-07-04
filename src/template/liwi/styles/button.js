@@ -60,6 +60,12 @@ export default {
       margin: 0,
       borderColor: liwiColors.blackColor,
     },
+
+    '.split': {
+      flex: 0.5,
+      justifyContent: 'center',
+    },
+
     // Tous les buttons sont affectés !
     margin: 5,
   },

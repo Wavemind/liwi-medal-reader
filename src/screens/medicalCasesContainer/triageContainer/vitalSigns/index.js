@@ -2,13 +2,15 @@ import VitalSigns from './VitalSigns.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
-
-const mapStateToProps = (state, ownProps) => {
-  return {};
+import { setVitalSigns } from '../../../../../frontend_service/actions/creators.actions';
+const mapStateToProps = (medicalCase, ownProps) => {
+  return {medicalCase};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {};
+  return {
+    setVitalSigns: (index, value) => dispatch(setVitalSigns(index, value)),
+  };
 };
 
 export default connect(

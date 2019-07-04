@@ -14,7 +14,7 @@ export default {
         borderColor: liwiColors.blackColor,
       },
       '.spaced': {
-        marginBottom: 20,
+        marginBottom: 10,
       }
     },
   },
