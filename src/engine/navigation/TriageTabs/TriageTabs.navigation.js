@@ -20,7 +20,7 @@ export default class TriageTabs extends Component {
 
   render() {
     const {
-      t,
+      app: { t },
       navigation: {
         state: { index },
       },

@@ -7,7 +7,6 @@ import {
   getItemFromArray,
   getItems,
 } from '../../../engine/api/LocalStorage';
-import i18n from '../../../utils/i18n';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import moment from 'moment';
@@ -78,7 +77,7 @@ export default class PatientProfile extends React.Component<Props, State> {
       firstRender,
     } = this.state;
 
-    const { navigation } = this.props;
+    const { navigation, app: { t } } = this.props;
 
     const flatPatient = {
       ...patient,
@@ -91,6 +90,7 @@ export default class PatientProfile extends React.Component<Props, State> {
 
       return (
         <ListItem
+          key={medicalCase.id + '_mc'}
           rounded
           block
           spaced
@@ -129,18 +129,18 @@ export default class PatientProfile extends React.Component<Props, State> {
             })
           }
         >
-          <Text>{i18n.t('form:edit')}</Text>
+          <Text>{t('form:edit')}</Text>
         </Button>
         <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
-          <View flex>
+          <View flex >
             <View>
               {patient.medicalCases.length > 0 ? (
                 <List block>{_renderMedicalCases}</List>
               ) : (
                 <View padding-auto margin-auto>
                   <Text not-available>
-                    {i18n.t('work_case:no_medical_cases')}
+                    {t('work_case:no_medical_cases')}
                   </Text>
                 </View>
               )}
@@ -151,13 +151,13 @@ export default class PatientProfile extends React.Component<Props, State> {
                 onPress={() => this.generateMedicalCase()}
                 disabled={isGeneratingMedicalCase}
               >
-                <Text>{i18n.t('work_case:create')}</Text>
+                <Text>{t('work_case:create')}</Text>
               </Button>
             </View>
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text>{i18n.t('work_case:no_algorithms')}</Text>
+            <Text>{t('work_case:no_algorithms')}</Text>
           </View>
         )}
       </View>

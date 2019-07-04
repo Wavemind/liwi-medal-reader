@@ -37,7 +37,7 @@ export default class Sessions extends React.Component<Props, State> {
   render() {
     const {
       sessions: { sessions },
-      t,
+      app: { t },
     } = this.props;
 
     return (
