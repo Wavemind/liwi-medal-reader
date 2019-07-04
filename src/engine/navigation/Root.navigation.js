@@ -23,7 +23,7 @@ const createRootNavigator = (signedIn = false, medicalCase = null) => {
     },
     {
       initialRouteName: signedIn ? 'Main' : 'UnlockSession',
-    },
+    }
   );
 };
 

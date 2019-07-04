@@ -13,7 +13,6 @@ export default {
         paddingLeft: 10,
         borderColor: liwiColors.blackColor,
       },
-
       '.spaced': {
         marginBottom: 10,
       }

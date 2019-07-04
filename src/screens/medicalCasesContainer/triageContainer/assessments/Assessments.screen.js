@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Text, View } from 'native-base';
-import i18n from '../../../../utils/i18n';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
 import { styles } from './Assessments.style';
@@ -14,7 +13,7 @@ type State = {};
 export default class Assessments extends React.Component<Props, State> {
 
   render() {
-    const { medicalCase } = this.props;
+    const { medicalCase, app: { t } } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(categories.assessment);
 
@@ -26,16 +25,16 @@ export default class Assessments extends React.Component<Props, State> {
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text not-available>{i18n.t('work_case:no_questions')}</Text>
+            <Text not-available>{t('work_case:no_questions')}</Text>
           </View>
         )}
 
         <View bottom-view columns>
           <Button light split>
-            <Text>{i18n.t('form:back')}</Text>
+            <Text>{t('form:back')}</Text>
           </Button>
           <Button light split>
-            <Text>{i18n.t('form:next')}</Text>
+            <Text>{t('form:next')}</Text>
           </Button>
         </View>
       </ScrollView>

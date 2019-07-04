@@ -11,7 +11,6 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
-import i18n from '../../../utils/i18n';
 import { NavigationActions } from 'react-navigation';
 
 import { styles } from './PatientUpsert.style';
@@ -139,7 +138,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
       firstRender,
     } = this.state;
 
-    const { navigation } = this.props;
+    const {
+      navigation,
+      app: { t },
+    } = this.props;
 
     let idPatient = navigation.getParam('idPatient');
 
@@ -149,12 +151,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <LiwiTitle2 noBorder>{i18n.t('patient_upsert:title')}</LiwiTitle2>
+        <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         <View>
           <Col>
             <CustomInput
               init={firstname}
-              label={i18n.t('patient:first_name')}
+              label={t('patient:first_name')}
               change={updatePatientValue}
               index={'firstname'}
               iconName={'user'}
@@ -163,7 +165,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
             />
             <CustomInput
               init={lastname}
-              label={i18n.t('patient:last_name')}
+              label={t('patient:last_name')}
               change={updatePatientValue}
               index={'lastname'}
               iconName={'user'}
@@ -174,11 +176,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
           <Col>
             <CustomSwitchButton
               init={gender}
-              label={i18n.t('patient:gender')}
+              label={t('patient:gender')}
               change={updatePatientValue}
               index={'gender'}
-              label1={i18n.t('patient:male')}
-              label2={i18n.t('patient:female')}
+              label1={t('patient:male')}
+              label2={t('patient:female')}
               value1={'male'}
               value2={'female'}
               iconName={'human-male-female'}
@@ -189,7 +191,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           <Col>
             <CustomDatePicker
               init={birthdate}
-              label={i18n.t('patient:birth_date')}
+              label={t('patient:birth_date')}
               change={updatePatientValue}
               index={'birthdate'}
               iconName={'birthday-cake'}
@@ -203,15 +205,15 @@ export default class PatientUpsert extends React.Component<Props, State> {
           {idPatient === null ? (
             <View columns>
               <Button light split onPress={saveWaitingList}>
-                <Text>{i18n.t('patient_upsert:save_and_wait')}</Text>
+                <Text>{t('patient_upsert:save_and_wait')}</Text>
               </Button>
               <Button light split onPress={saveNewCase}>
-                <Text>{i18n.t('patient_upsert:save_and_case')}</Text>
+                <Text>{t('patient_upsert:save_and_case')}</Text>
               </Button>
             </View>
           ) : (
             <Button block onPress={this.updatePatient}>
-              <Text>{i18n.t('patient_upsert:save')}</Text>
+              <Text>{t('patient_upsert:save')}</Text>
             </Button>
           )}
         </View>

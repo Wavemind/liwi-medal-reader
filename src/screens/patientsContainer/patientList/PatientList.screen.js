@@ -116,7 +116,11 @@ export default class PatientList extends React.Component<Props, State> {
       filterTerm,
       algorithms,
     } = this.state;
-    const { navigation } = this.props;
+
+    const {
+      navigation,
+      app: { t },
+    } = this.props;
 
     // Filter patient based on first name and last name by search term
     let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
@@ -143,7 +147,7 @@ export default class PatientList extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View padding-auto>
-          <LiwiTitle2 noBorder>{i18n.t('patient_list:search')}</LiwiTitle2>
+          <LiwiTitle2 noBorder>{t('patient_list:search')}</LiwiTitle2>
 
           <View flex-container-row>
             <Item round style={styles.input}>
@@ -166,11 +170,9 @@ export default class PatientList extends React.Component<Props, State> {
 
           <View flex-container-row style={styles.filter}>
             <Button center rounded light onPress={this.resetFilter}>
-              <Text>{i18n.t('patient_list:all')}</Text>
+              <Text>{t('patient_list:all')}</Text>
             </Button>
-            <Text style={styles.textFilter}>
-              {i18n.t('patient_list:waiting')}
-            </Text>
+            <Text style={styles.textFilter}>{t('patient_list:waiting')}</Text>
             <Picker
               style={styles.picker}
               mode="dropdown"
@@ -180,7 +182,7 @@ export default class PatientList extends React.Component<Props, State> {
               <Picker.Item label="" value="" />
               {statuses.map((status, index) => (
                 <Picker.Item
-                  label={i18n.t(`patient_list:${status}`)}
+                  label={t(`patient_list:${status}`)}
                   key={index}
                   value={status}
                 />
@@ -191,18 +193,18 @@ export default class PatientList extends React.Component<Props, State> {
           <SeparatorLine />
 
           <View flex-container-row style={styles.sorted}>
-            <Text style={styles.textSorted}>{i18n.t('patient_list:sort')}</Text>
+            <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByName}>
               {orderByName === 'asc' ? (
                 <Icon name="arrow-down" />
               ) : (
                 <Icon name="arrow-up" />
               )}
-              <Text>{i18n.t('patient_list:name')}</Text>
+              <Text>{t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light>
               <Icon name="arrow-down" />
-              <Text>{i18n.t('patient_list:status')}</Text>
+              <Text>{t('patient_list:status')}</Text>
             </Button>
           </View>
 
@@ -230,7 +232,7 @@ export default class PatientList extends React.Component<Props, State> {
                       </View>
                       <View w50>
                         <Text>
-                          {i18n.t(`medical_case:${medicalCase.status}`)}
+                          {t(`medical_case:${medicalCase.status}`)}
                         </Text>
                       </View>
                     </ListItem>
@@ -238,13 +240,13 @@ export default class PatientList extends React.Component<Props, State> {
                 </List>
               ) : (
                 <View padding-auto margin-auto>
-                  <Text not-available>{i18n.t('patient_list:not_found')}</Text>
+                  <Text not-available>{t('patient_list:not_found')}</Text>
                 </View>
               ),
             ]
           ) : (
             <View padding-auto margin-auto>
-              <Text not-available>{i18n.t('patient_list:no_patients')}</Text>
+              <Text not-available>{t('patient_list:no_patients')}</Text>
             </View>
           )}
         </View>

@@ -5,9 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Button, Col, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import CustomInput from '../../../../components/InputContainer/CustomInput';
-import i18n from '../../../../utils/i18n';
 import { styles } from './VitalSigns.style';
-import * as _ from '../../../patientsContainer/patientUpsert/PatientUpsert.screen';
 
 type Props = NavigationScreenProps & {};
 
@@ -40,13 +38,15 @@ export default class VitalSigns extends React.Component<Props, State> {
     } = this.props;
     const { errors } = this.state;
 
+    const { app: { t }} = this.props;
+
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <View>
           <Col>
             <CustomInput
               init={temperature}
-              label={i18n.t('vital_signs:temperature')}
+              label={t('vital_signs:temperature')}
               change={this.updateVitalSignsValue}
               keyboardType={'number-pad'}
               index={'temperature'}
@@ -54,7 +54,7 @@ export default class VitalSigns extends React.Component<Props, State> {
             />
             <CustomInput
               init={heartRate}
-              label={i18n.t('vital_signs:heart_rate')}
+              label={t('vital_signs:heart_rate')}
               change={this.updateVitalSignsValue}
               keyboardType={'number-pad'}
               index={'heartRate'}
@@ -64,7 +64,7 @@ export default class VitalSigns extends React.Component<Props, State> {
           <Col>
             <CustomInput
               init={height}
-              label={i18n.t('vital_signs:height')}
+              label={t('vital_signs:height')}
               change={this.updateVitalSignsValue}
               keyboardType={'number-pad'}
               index={'height'}
@@ -72,7 +72,7 @@ export default class VitalSigns extends React.Component<Props, State> {
             />
             <CustomInput
               init={weight}
-              label={i18n.t('vital_signs:weight')}
+              label={t('vital_signs:weight')}
               change={this.updateVitalSignsValue}
               keyboardType={'number-pad'}
               index={'weight'}
@@ -82,7 +82,7 @@ export default class VitalSigns extends React.Component<Props, State> {
           <Col>
             <CustomInput
               init={respiratoryRate}
-              label={i18n.t('vital_signs:respiratory_rate')}
+              label={t('vital_signs:respiratory_rate')}
               change={this.updateVitalSignsValue}
               keyboardType={'number-pad'}
               index={'respiratoryRate'}
@@ -93,10 +93,10 @@ export default class VitalSigns extends React.Component<Props, State> {
 
         <View bottom-view columns>
           <Button light split>
-            <Text>{i18n.t('form:back')}</Text>
+            <Text>{t('form:back')}</Text>
           </Button>
           <Button light split onPress={this.validate}>
-            <Text>{i18n.t('form:next')}</Text>
+            <Text>{t('form:next')}</Text>
           </Button>
         </View>
       </ScrollView>
