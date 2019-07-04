@@ -2,8 +2,9 @@ import i18n from '../../utils/i18n';
 import { Text, View } from 'native-base';
 import { CustomPicker } from 'react-native-custom-picker';
 import React from 'react';
+import { withApplication } from '../../engine/contexts/Application.context';
 
-export class DropDownMenu extends React.Component {
+class DropDownMenu extends React.Component {
   state = {
     options: [
       { label: i18n.t('menu:triage'), value: 'triage' },
@@ -29,6 +30,9 @@ export class DropDownMenu extends React.Component {
 
   render() {
     const { options } = this.state;
+    const {
+      app: { t },
+    } = this.props;
 
     return (
       <View flex-center>
@@ -45,3 +49,5 @@ export class DropDownMenu extends React.Component {
     );
   }
 }
+
+export default withApplication(DropDownMenu);

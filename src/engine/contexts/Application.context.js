@@ -21,7 +21,9 @@ import {
   setItem,
   updateSession,
 } from '../api/LocalStorage';
-import { AppState, NetInfo, PermissionsAndroid } from 'react-native';
+import { AppState, PermissionsAndroid } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+
 import i18n from '../../utils/i18n';
 
 const defaultValue = {};
@@ -134,13 +136,14 @@ export class ApplicationProvider extends React.Component<Props, State> {
   };
 
   getGeo = async () => {
+    const { t } = this.state;
     return await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
-        title: i18n.t('popup:title'),
-        message: i18n.t('popup:message'),
-        buttonNeutral: i18n.t('popup:ask_me_later'),
-        buttonNegative: i18n.t('popup:cancel'),
+        title: t('popup:title'),
+        message: t('popup:message'),
+        buttonNeutral: t('popup:ask_me_later'),
+        buttonNegative: t('popup:cancel'),
         buttonPositive: 'Ok !',
       }
     );
@@ -201,7 +204,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
     this.setState({ medicalCase });
   };
 
-
   // define page settings to push
   pushSettings = async (session) => {
     let { lastLogin } = session;
@@ -235,7 +237,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
 
       // here push settings
     } else {
-      Toaster(i18n.t('notifications.invalid_code'), { type: 'danger' });
+      Toaster(this.state.t('notifications.invalid_code'), { type: 'danger' });
     }
   };
 
@@ -274,7 +276,7 @@ export class ApplicationProvider extends React.Component<Props, State> {
     isModalVisible: false,
     contentModal: 'initial',
     initialPosition: {},
-    t: (translate) => i18n.t(translate)
+    t: (translate) => i18n.t(translate),
   };
 
   render() {
