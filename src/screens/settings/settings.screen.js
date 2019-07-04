@@ -77,7 +77,7 @@ export default class Settings extends React.Component<Props, State> {
 
   render() {
     const { settings } = this.state;
-    const { t } = this.props;
+    const { app: { t } } = this.props;
 
     return (
       <ScrollView>

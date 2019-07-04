@@ -3,7 +3,6 @@ import { AppState, View } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 
 import { styles } from './Drawer.style';
-import i18n from '../../../utils/i18n';
 
 export default class Drawer extends Component {
   state = {
@@ -85,14 +84,14 @@ export default class Drawer extends Component {
         <View style={ styles.medical }>
 
           <View style={ [styles.triage, styles.paddingCategory] }>
-            <Text style={ styles.title }>{ i18n.t( 'menu:triage' ) }</Text>
+            <Text style={ styles.title }>{ t( 'menu:triage' ) }</Text>
             <Button
               transparent
               btnDrawer
               onPress={ () => this.onPress( 'Assessments' ) }
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:assessment' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:assessment' ) }</Text>
             </Button>
             <Button
               transparent
@@ -100,7 +99,7 @@ export default class Drawer extends Component {
               onPress={ () => this.onPress( 'VitalSigns' ) }
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:vital_signs' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:vital_signs' ) }</Text>
             </Button>
             <Button
               transparent
@@ -108,7 +107,7 @@ export default class Drawer extends Component {
               onPress={ () => this.onPress( 'Comorbidities' ) }
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:comorbidities' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:comorbidities' ) }</Text>
             </Button>
             <Button
               transparent
@@ -116,7 +115,7 @@ export default class Drawer extends Component {
               onPress={ () => this.onPress( 'Vaccinations' ) }
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:vacciantion_history' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:vacciantion_history' ) }</Text>
             </Button>
             <Button
               transparent
@@ -124,18 +123,18 @@ export default class Drawer extends Component {
               onPress={ () => this.onPress( 'ChiefComplaints' ) }
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:chief_complaint' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:chief_complaint' ) }</Text>
             </Button>
           </View>
 
           <View style={ [styles.consultation, styles.paddingCategory] }>
-            <Text style={ styles.title }>{ i18n.t( 'menu:consultation' ) }</Text>
+            <Text style={ styles.title }>{ t( 'menu:consultation' ) }</Text>
             <Button
               transparent
               btnDrawer
               onPress={ () => this.onPress( 'MedicalHistory' ) }
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:medical_history' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:medical_history' ) }</Text>
             </Button>
             <Button
               transparent
@@ -143,7 +142,7 @@ export default class Drawer extends Component {
               onPress={ () => this.onPress( 'PhysicalExams' ) }
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:physical_exam' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:physical_exam' ) }</Text>
             </Button>
             <Button
               transparent
@@ -151,7 +150,7 @@ export default class Drawer extends Component {
               onPress={ () => this.onPress( 'Poct' ) }
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ i18n.t( 'menu:poct' ) }</Text>
+              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:poct' ) }</Text>
             </Button>
           </View>
 
@@ -160,7 +159,7 @@ export default class Drawer extends Component {
               transparent
               btnDrawer
             >
-              <Text style={ [styles.title, styles.noLeftPadding] } dark>{ i18n.t( 'menu:tests' ) }</Text>
+              <Text style={ [styles.title, styles.noLeftPadding] } dark>{ t( 'menu:tests' ) }</Text>
             </Button>
           </View>
 
@@ -169,7 +168,7 @@ export default class Drawer extends Component {
               transparent
               btnDrawer
             >
-              <Text style={ [styles.title, styles.noLeftPadding] } dark>{ i18n.t( 'menu:strategy' ) }</Text>
+              <Text style={ [styles.title, styles.noLeftPadding] } dark>{ t( 'menu:strategy' ) }</Text>
             </Button>
           </View>
 
@@ -183,7 +182,7 @@ export default class Drawer extends Component {
                 white
                 name="search"
               />
-              <Text white>{ i18n.t( 'menu:search' ) }</Text>
+              <Text white>{ t( 'menu:search' ) }</Text>
             </Button>
             <Button
               transparent
@@ -194,7 +193,7 @@ export default class Drawer extends Component {
                 white
                 name="person"
               />
-              <Text white>{ i18n.t( 'menu:add' ) }</Text>
+              <Text white>{ t( 'menu:add' ) }</Text>
             </Button>
           </View>
 

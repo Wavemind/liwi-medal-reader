@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 import { styles } from './RootSessions.styles';
 import { NavigationScreenProps } from 'react-navigation';
 import type { I18nTypes } from '../../../utils/i18n';
-import { Button, Container, Content, Icon, Text, View } from 'native-base';
+import {  View } from 'native-base';
 import { Image, ImageBackground } from 'react-native';
 import NewSession from '../NewSession';
 import Sessions from '../../../components/Sessions';
@@ -25,10 +25,7 @@ export default class RootSessions extends React.Component<Props, State> {
   render() {
     const {
       navigation,
-      t,
-      app: { isConnected },
-      sessions,
-      clear,
+      app: { t },
     } = this.props;
 
     return (

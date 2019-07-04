@@ -20,7 +20,7 @@ export default class ConsultationTabs extends Component {
 
   render() {
     const {
-      t,
+      app: { t },
       navigation: {
         state: { index },
       },

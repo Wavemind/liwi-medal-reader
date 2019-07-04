@@ -110,8 +110,7 @@ export default class NewSession extends React.Component<Props, State> {
 
     const {
       navigation,
-      t,
-      app: { isConnected },
+      app: { isConnected, t },
     } = this.props;
 
     return (
