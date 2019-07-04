@@ -52,9 +52,9 @@ export default class UnlockSession extends React.Component<Props, State> {
 
     if (user !== undefined) {
       let result = await app.unLockSession(user.data.id, code);
-      this.setState({ errors: i18n.t(`notifications.${result}`) });
+      this.setState({ errors: app.t(`notifications:${result}`) });
     } else {
-      this.setState({ errors: i18n.t('notifications.session_does_not_exist') });
+      this.setState({ errors: app.t('notifications:session_does_not_exist') });
     }
   };
 
