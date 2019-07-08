@@ -1,34 +1,43 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import {
-  Body,
-  Button,
-  Icon,
-  Left,
-  List,
-  ListItem,
-  Right,
-  Switch,
-  Text,
-} from 'native-base';
 import { ScrollView } from 'react-native';
+import { Button, Text, View } from 'native-base';
+import i18n from '../../../../utils/i18n';
+import Questions from '../../../../components/QuestionsContainer/Questions';
+import { categories } from '../../../../../frontend_service/constants';
+import { styles } from './Vaccinations.style';
 
-type Props = NavigationScreenProps & {};
-
+type Props = {};
 type State = {};
 
-export default class Vaccination extends React.Component<Props, State> {
-  // default settings
-  state = {};
+export default class Vaccinations extends React.Component<Props, State> {
 
   render() {
-    const { t } = this.props;
+    const { medicalCase } = this.props;
+
+    let questions = medicalCase.nodes.filterByCategory(categories.vaccine);
 
     return (
-      <ScrollView>
-        <Text>Vaccination</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        {questions.length > 0 ? (
+          <View>
+            <Questions questions={questions} />
+          </View>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text not-available>{i18n.t('work_case:no_questions')}</Text>
+          </View>
+        )}
+
+        <View bottom-view columns>
+          <Button light split>
+            <Text>{i18n.t('form:back')}</Text>
+          </Button>
+          <Button light split>
+            <Text>{i18n.t('form:next')}</Text>
+          </Button>
+        </View>
       </ScrollView>
     );
   }
