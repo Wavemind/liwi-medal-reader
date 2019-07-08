@@ -40,7 +40,7 @@ export default class PatientList extends React.Component<Props, State> {
       medicalCaseStatus.waitingTest,
       medicalCaseStatus.waitingDiagnosis,
     ],
-  };w
+  };
 
   async componentWillMount() {
     const { navigation } = this.props;
