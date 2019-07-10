@@ -1,16 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import DeviceInfo from 'react-native-device-info';
-import { Text } from 'native-base';
-import { medicalCaseStatus } from '../../frontend_service/constants';
 
-export interface I18nTypes<T> {
-  t: (key: $Keys<T>, options?: Object) => string;
-  translations: { [key: string]: T & $Shape<T> };
-}
-
-// creating a language detection plugin using expo
-// http://i18next.com/docs/ownplugin/#languagedetector
 const languageDetector = {
   type: 'languageDetector',
   async: true, // flags below detection to be async

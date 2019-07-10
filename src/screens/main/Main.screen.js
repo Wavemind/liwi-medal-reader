@@ -11,7 +11,7 @@ type State = {};
 
 export default class MainScreen extends React.Component<Props, State> {
 
-  render(): React.Node {
+  render(){
 
     const { navigation } = this.props;
 

@@ -17,6 +17,7 @@ type Props = {
   app: {
     logged: boolean,
   },
+  medicalCase: Object
 };
 
 class LayoutTemplate extends React.Component<Props> {

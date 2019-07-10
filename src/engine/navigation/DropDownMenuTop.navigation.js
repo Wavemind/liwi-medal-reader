@@ -3,8 +3,14 @@ import { Text, View } from 'native-base';
 import { CustomPicker } from 'react-native-custom-picker';
 import React from 'react';
 import { withApplication } from '../../engine/contexts/Application.context';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../engine/contexts/Application.context';
 
-class DropDownMenu extends React.Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+class DropDownMenu extends React.Component<Props, State> {
   state = {
     options: [
       { label: i18n.t('menu:triage'), value: 'triage' },

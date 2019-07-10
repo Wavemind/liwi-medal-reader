@@ -2,20 +2,26 @@ import React, { Component } from 'react';
 import { Text, View } from 'native-base';
 import { styles } from './ConsultationTabs.style';
 import { TouchableOpacity } from 'react-native';
+import type { StateApplicationContext } from '../../contexts/Application.context';
+import { NavigationScreenProps } from 'react-navigation';
 
-export default class ConsultationTabs extends Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+export default class ConsultationTabs extends Component<Props, State> {
   _renderRound = (n, active) => {
     return (
-      <View style={ [styles.round, active ? styles.active : styles.unactive] }>
+      <View style={[styles.round, active ? styles.active : styles.unactive]}>
         <View flex-center>
-          <Text dark>{ n }</Text>
+          <Text dark>{n}</Text>
         </View>
       </View>
     );
   };
 
   onPress = (path) => {
-    this.props.navigation.navigate( path );
+    this.props.navigation.navigate(path);
   };
 
   render() {
@@ -27,33 +33,31 @@ export default class ConsultationTabs extends Component {
     } = this.props;
 
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         <View flex-container-row>
           <TouchableOpacity
-            onPress={ () => this.onPress( 'MedicalHistory' ) }
-            style={ styles.touchable }
+            onPress={() => this.onPress('MedicalHistory')}
+            style={styles.touchable}
           >
-            { this._renderRound( 1, index === 0 ) }
-            <Text center>{ t( 'consultation:medical_history' ) }</Text>
+            {this._renderRound(1, index === 0)}
+            <Text center>{t('consultation:medical_history')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={ () => this.onPress( 'PhysicalExams' ) }
-            style={ styles.touchable }
+            onPress={() => this.onPress('PhysicalExams')}
+            style={styles.touchable}
           >
-            { this._renderRound( 2, index === 1 ) }
-            <Text center>{ t( 'consultation:physical_exam' ) }</Text>
+            {this._renderRound(2, index === 1)}
+            <Text center>{t('consultation:physical_exam')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={ () => this.onPress( 'Poct' ) }
-            style={ styles.touchable }
+            onPress={() => this.onPress('Poct')}
+            style={styles.touchable}
           >
-            { this._renderRound( 3, index === 2 ) }
-            <Text center>{ t( 'consultation:poct' ) }</Text>
+            {this._renderRound(3, index === 2)}
+            <Text center>{t('consultation:poct')}</Text>
           </TouchableOpacity>
-
-
         </View>
       </View>
     );

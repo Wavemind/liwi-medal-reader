@@ -6,9 +6,12 @@ import { Button, Text, View } from 'native-base';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
 import { styles } from './Assessments.style';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
 
-type Props = {};
-type State = {};
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
 
 export default class Assessments extends React.Component<Props, State> {
 

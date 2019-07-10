@@ -10,10 +10,9 @@ import KeepAwake from 'react-native-keep-awake';
 
 import { persistor, store } from '../frontend_service/store';
 import CustomModal from './components/CustomModal';
-import { getItem, setItem } from './engine/api/LocalStorage';
+import { getItem } from './engine/api/LocalStorage';
 
 import WavemindTools from 'utils/WavemindTools';
-import { algo } from './engine/api/algo_temp';
 
 Array.prototype.first = function() {
   return this[0];
@@ -48,14 +47,11 @@ export default class Root extends React.Component {
     if (settings !== null && settings.app !== undefined && settings.app.awake) {
       KeepAwake.activate();
     }
-
     // Set local JSON file if server is down for development
     // await setItem('algorithmes', [algo]);
-
   }
 
   render() {
-
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

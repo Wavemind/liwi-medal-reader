@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Input, Item, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
-import { styles } from './Numeric.style';
 
 type Props = NavigationScreenProps & {};
 

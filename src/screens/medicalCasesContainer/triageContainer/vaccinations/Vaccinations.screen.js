@@ -7,9 +7,12 @@ import i18n from '../../../../utils/i18n';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
 import { styles } from './Vaccinations.style';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
 
-type Props = {};
-type State = {};
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
 
 export default class Vaccinations extends React.Component<Props, State> {
 

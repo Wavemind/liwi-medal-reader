@@ -26,7 +26,7 @@ function LabelQuestion(props: { label: String }) {
   );
 }
 
-class WrapperQuestion extends React.Component<{}> {
+class WrapperQuestion extends React.Component<Props, State> {
 
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {

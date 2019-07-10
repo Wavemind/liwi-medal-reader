@@ -2,12 +2,10 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Text, View, Content } from 'native-base';
-import { ScrollView } from 'react-native';
+import { Button, Content, Text, View } from 'native-base';
 import { styles } from './ChiefComplaints.style';
 import i18n from '../../../../utils/i18n';
 import { categories } from '../../../../../frontend_service/constants';
-import { screenWidth } from '../../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 

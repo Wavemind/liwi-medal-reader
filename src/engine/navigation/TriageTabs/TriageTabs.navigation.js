@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import { Text, View } from 'native-base';
 import { styles } from './TriageTabs.style';
 import { TouchableOpacity } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../contexts/Application.context';
 
-export default class TriageTabs extends Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+
+export default class TriageTabs extends Component<Props, State> {
   _renderRound = (n, active) => {
     return (
       <View style={ [styles.round, active ? styles.active : styles.unactive] }>

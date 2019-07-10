@@ -4,12 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
 import { styles } from './NewSession.style';
-import {
-  Button,
-  Form,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Form, Text, View } from 'native-base';
 import { Keyboard, ScrollView } from 'react-native';
 import CustomInput from '../../../components/InputContainer/CustomInput';
 import i18n from '../../../utils/i18n';

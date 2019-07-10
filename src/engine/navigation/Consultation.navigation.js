@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import ConsultationTabs from './ConsultationTabs';
 import MedicalHistory from '../../screens/medicalCasesContainer/consultationContainer/medicalHistory';

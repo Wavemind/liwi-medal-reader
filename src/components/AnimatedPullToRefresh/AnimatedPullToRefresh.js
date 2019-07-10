@@ -59,6 +59,11 @@ export default class AnimatedPullToRefresh extends React.Component {
      * @type {Function}
      */
     onScroll: PropTypes.func,
+    onPullAnimationSrc: PropTypes.func,
+    onStartRefreshAnimationSrc: PropTypes.func,
+    onRefreshAnimationSrc: PropTypes.func,
+    onEndRefreshAnimationSrc: PropTypes.func,
+
   };
 
   static defaultProps = {
@@ -84,6 +89,7 @@ export default class AnimatedPullToRefresh extends React.Component {
     if (this.props.isRefreshing !== props.isRefreshing) {
       // Finish the animation and set refresh panel height to 0
       if (!props.isRefreshing) {
+        return true;
       }
     }
   }

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View } from 'react-native';
-import { Icon, Text, Button } from 'native-base';
+import { Button, Icon, Text } from 'native-base';
 import { styles } from './CustomSwitchButton.style';
 
 type Props = NavigationScreenProps & {};

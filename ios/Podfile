@@ -22,6 +22,8 @@ target 'liwi_native' do
 
     pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
 
+    pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   end
 
   target 'liwi_nativeTests' do
