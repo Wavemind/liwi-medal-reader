@@ -32,7 +32,7 @@ type Props = NavigationScreenProps & {
   children: React.Node,
 };
 
-type State = {
+export type StateApplicationContext = {
   name: string,
   lang: string,
   set: (prop: any, value: any) => Promise<any>,
@@ -42,11 +42,19 @@ type State = {
   logout: () => Promise<any>,
   unLockSession: (id: number, code: string) => Promise<any>,
   lockSession: () => Promise<any>,
-  isConnected: string,
+  setMedicalCase: (medicalcase: Object) => Promise<any>,
+  isConnected: boolean,
   medicalCase: Object,
+  appState: string,
+  setModal: () => Promise<any>,
+  isModalVisible: boolean,
+  contentModal: string,
+  isModalVisible: Object,
+  t: (string) => Function<string>,
 };
 
-export class ApplicationProvider extends React.Component<Props, State> {
+
+export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
     this.initContext();
@@ -227,7 +235,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
     const encrypt = sha256.hmac(saltHash, code);
 
     if (session.local_code === encrypt) {
-
       await setActiveSession(id);
 
       await fetchAlgorithms(id);
@@ -264,7 +271,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
     set: this.setValState,
     logged: false,
     initContext: this.initContext,
-    createMedicalCase: this.createMedicalCase,
     user: {},
     logout: this.logout,
     unLockSession: this.unLockSession,

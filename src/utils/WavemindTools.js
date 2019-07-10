@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Button,
-  Icon,
-  Fab,
-} from 'native-base';
+import { Button, Fab, Icon, View } from 'native-base';
 import { clearLocalStorage, clearPatients } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 

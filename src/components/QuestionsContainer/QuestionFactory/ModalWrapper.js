@@ -2,8 +2,15 @@ import * as React from 'react';
 import { Button, Text } from 'native-base';
 import { liwiColors } from '../../../utils/constants';
 import { withApplication } from '../../../engine/contexts/Application.context';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 
-class ModalWrapper extends React.Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+class ModalWrapper extends React.Component<Props, State> {
+
   static defaultProps = {
     content: 'Modal content',
   };

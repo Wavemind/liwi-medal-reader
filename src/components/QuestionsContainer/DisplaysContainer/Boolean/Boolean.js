@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
-import { liwiColors } from '../../../../utils/constants';
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../../../template/layout';
 
 type Props = NavigationScreenProps & {};

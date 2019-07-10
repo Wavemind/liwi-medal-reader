@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationActions, NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { Button, Col, Text, View } from 'native-base';
 import * as _ from 'lodash';
@@ -11,7 +11,6 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
-import { NavigationActions } from 'react-navigation';
 
 import { styles } from './PatientUpsert.style';
 import { getItemFromArray, getMedicalCase } from '../../../engine/api/LocalStorage';

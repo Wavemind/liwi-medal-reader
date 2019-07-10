@@ -3,6 +3,7 @@ import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { connect } from 'react-redux';
 import { setVitalSigns } from '../../../../../frontend_service/actions/creators.actions';
+
 const mapStateToProps = (medicalCase, ownProps) => {
   return {medicalCase};
 };

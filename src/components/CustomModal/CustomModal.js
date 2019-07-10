@@ -3,8 +3,14 @@ import Modal from 'react-native-modal';
 import { TouchableWithoutFeedback } from 'react-native';
 import { styles } from './CustomModal.style';
 import { Text, View } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../engine/contexts/Application.context';
 
-export default class CustomModal extends Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+export default class CustomModal extends Component<Props, State> {
   state = {};
 
   static defaultProps = {

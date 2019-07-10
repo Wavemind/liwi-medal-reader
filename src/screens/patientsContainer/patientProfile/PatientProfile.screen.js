@@ -3,17 +3,17 @@
 import * as React from 'react';
 import { Button, List, ListItem, Text, View } from 'native-base';
 import { styles } from './PatientProfile.style';
-import {
-  getItemFromArray,
-  getItems,
-} from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import moment from 'moment';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import type { NavigationScreenProps } from 'react-navigation';
 
-type Props = {};
+type Props = NavigationScreenProps & {
+
+};
 type State = {};
 
 export default class PatientProfile extends React.Component<Props, State> {
@@ -94,7 +94,6 @@ export default class PatientProfile extends React.Component<Props, State> {
           rounded
           block
           spaced
-          key={index}
           onPress={async () => {
             await this.selectMedicalCase({
               ...medicalCase,

@@ -1,75 +1,56 @@
 {
   "env": {
     "es6": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
-  "parser": "babel-eslint",
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2018,
-    "sourceType": "module"
+  "globals": {
+    "__DEV__": false,
+    "fetch": false,
+    "navigator": false
   },
-  "plugins": [
-    "react"
+  "extends": [
+    "plugin:react/recommended",
+    "eslint:recommended",
+    "plugin:flowtype/recommended"
   ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "plugins": ["react", "flowtype"],
   "settings": {
     "import/resolver": {
       "node": {
         "paths": ["src"]
       }
+    },
+    "react": {
+      "version": "detect"
     }
   },
   "rules": {
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error",
-    "react/forbid-prop-types": [
-      0
-    ],
-    "jsx-a11y/anchor-is-valid": [
-      0
-    ],
-    "function-paren-newline": [
-      2,
-      "consistent"
-    ],
-    "react/prefer-stateless-function": [
-      2,
-      {
-        "ignorePureComponents": true
-      }
-    ],
-    "react/jsx-filename-extension": [
-      1,
-      {
-        "extensions": [
-          ".js"
-        ]
-      }
-    ],
+    "no-console": 0,
+    "forbid-prop-types": [0],
+    "jsx-a11y/anchor-is-valid": [0],
     "max-len": 0,
-    "indent": [
-      "error",
-      2,
-      {"SwitchCase": 1}
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "globals": {
-      "navigator": "true",
-      "fetch": "true"
-    },
-    "semi": [
-      "error",
-      "always"
-    ]
+    "linebreak-style": [2, "unix"],
+    "quotes": [2, "single"],
+    "semi": [2, "always"],
+    "template-curly-spacing": "off",
+    "indent": "off",
+    "no-async-promise-executor": 0,
+    "comma-dangle": 0,
+    "react/no-string-refs": 0,
+    "no-prototype-builtins": 0,
+    "react/display-name": 0,
+    "flowtype/no-types-missing-file-annotation": 0,
+    "no-unused-vars": 0
   }
 }

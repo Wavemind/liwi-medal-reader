@@ -17,7 +17,7 @@ import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
-import { DropDownMenu } from './DropDownMenuTop.navigation'
+import { DropDownMenu } from './DropDownMenuTop.navigation';
 
 const Stack = createStackNavigator({
   Home: {
@@ -37,7 +37,7 @@ const Stack = createStackNavigator({
   PatientList: {
     screen: PatientList,
     path: 'patientList',
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
         title: i18n.t('navigation:patient_list'),
       };
@@ -46,7 +46,7 @@ const Stack = createStackNavigator({
   PatientProfile: {
     screen: PatientProfile,
     path: 'patientProfile',
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
         title: i18n.t('navigation:patient_profile'),
       };
@@ -73,7 +73,7 @@ const Stack = createStackNavigator({
   Algorithms: {
     screen: Algorithms,
     path: 'algorithms',
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
         title: i18n.t('navigation:available_algorithms'),
       };
@@ -91,7 +91,7 @@ const Stack = createStackNavigator({
   Settings: {
     screen: Settings,
     path: 'settings',
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
         title: i18n.t('navigation:settings'),
       };
@@ -100,18 +100,18 @@ const Stack = createStackNavigator({
   Triage: {
     screen: TriageTabNavigator,
     path: 'triage',
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
-        headerTitle: DropDownMenu
+        headerTitle: DropDownMenu,
       };
     },
   },
   Consultation: {
     screen: ConsultationTabNavigator,
     path: 'consultation',
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
-        headerTitle: DropDownMenu
+        headerTitle: DropDownMenu,
       };
     },
   },

@@ -2,29 +2,20 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import {
-  Button,
-  Icon,
-  Input,
-  Item,
-  List,
-  ListItem,
-  Picker,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray, getItems } from '../../../engine/api/LocalStorage';
-import i18n from '../../../utils/i18n';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 import includes from 'lodash/includes';
 import { medicalCaseStatus } from '../../../../frontend_service/constants';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 
-type Props = {};
-type State = {};
+type Props = NavigationScreenProps & {};
+type State = StateApplicationContext & {};
 
 export default class PatientList extends React.Component<Props, State> {
   state = {
@@ -131,7 +122,6 @@ export default class PatientList extends React.Component<Props, State> {
         medicalCase.lastname.toLowerCase().includes(searchTerm.toLowerCase())
       );
     });
-
     // Filter patient based on medical case status
     filteredMedicalCases = filter(filteredMedicalCases, (medicalCase) => {
       return medicalCase.status === filterTerm || filterTerm === '';
@@ -148,26 +138,24 @@ export default class PatientList extends React.Component<Props, State> {
       <ScrollView>
         <View padding-auto>
           <LiwiTitle2 noBorder>{t('patient_list:search')}</LiwiTitle2>
-
           <View flex-container-row>
             <Item round style={styles.input}>
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            { algorithms.length > 0 ? (
-            <Button
-              center
-              rounded
-              light
-              red
-              onPress={this.newPatient}
-              disabled={isGeneratingPatient}
-            >
-              <Icon type={'MaterialCommunityIcons'} name="plus" white />
-            </Button>
-              ) : null }
+            {algorithms.length > 0 ? (
+              <Button
+                center
+                rounded
+                light
+                red
+                onPress={this.newPatient}
+                disabled={isGeneratingPatient}
+              >
+                <Icon type={'MaterialCommunityIcons'} name="plus" white />
+              </Button>
+            ) : null}
           </View>
-
           <View flex-container-row style={styles.filter}>
             <Button center rounded light onPress={this.resetFilter}>
               <Text>{t('patient_list:all')}</Text>
@@ -207,7 +195,6 @@ export default class PatientList extends React.Component<Props, State> {
               <Text>{t('patient_list:status')}</Text>
             </Button>
           </View>
-
           {medicalCases.length > 0 ? (
             [
               orderedFilteredMedicalCases.length > 0 ? (
@@ -231,9 +218,7 @@ export default class PatientList extends React.Component<Props, State> {
                         </Text>
                       </View>
                       <View w50>
-                        <Text>
-                          {t(`medical_case:${medicalCase.status}`)}
-                        </Text>
+                        <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
                       </View>
                     </ListItem>
                   ))}

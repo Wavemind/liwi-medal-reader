@@ -52,7 +52,7 @@ export default (variables /*: * */ = variable) => {
       ...leftTheme(variables),
     },
     'NativeBase.Right': {
-      ...rightTheme(variables),
+      ...rightTheme(),
     },
     'NativeBase.Body': {
       ...bodyTheme(variables),

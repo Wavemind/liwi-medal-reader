@@ -3,8 +3,14 @@ import { AppState, View } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 
 import { styles } from './Drawer.style';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../contexts/Application.context';
 
-export default class Drawer extends Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+export default class Drawer extends Component<Props, State> {
   state = {
     isConnected: false,
     appState: AppState.currentState,
