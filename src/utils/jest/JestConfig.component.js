@@ -11,6 +11,7 @@ import 'core-js/fn/reflect/has-metadata';
 import 'core-js/fn/reflect/has-own-metadata';
 import 'core-js/fn/reflect/metadata';
 import 'es6-symbol/implement';
+import type { StateApplicationContext } from '../../engine/contexts/Application.context';
 import {
   ApplicationProvider,
   withApplication,
@@ -21,7 +22,6 @@ import {
 } from '../../engine/contexts/Sessions.context';
 import 'jest-styled-components';
 import { NavigationScreenProps } from 'react-navigation';
-import type { StateApplicationContext } from '../../engine/contexts/Application.context';
 
 type Props = NavigationScreenProps & {};
 
@@ -30,6 +30,10 @@ type State = StateApplicationContext & {};
 console.disableYellowBox = true;
 
 export class JestWithContext extends React.Component<Props, State> {
+  componentWillMount() {
+    console.log('call here');
+  }
+
   render() {
     let ChilComponent = withSessions(withApplication(this.props.child));
 
