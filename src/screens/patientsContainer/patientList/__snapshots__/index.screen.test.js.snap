@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders patient list correctly 1`] = `ShallowWrapper {}`;
-
-exports[`renders patient list correctly 2`] = `
+exports[`PatientList test component  1`] = `
 .c0 {
   color: #db473e;
   margin: 0 20px 10px 0;
@@ -28,9 +26,7 @@ exports[`renders patient list correctly 2`] = `
             "lineHeight": 27,
           }
         }
-      >
-        Search
-      </Text>
+      />
       <View
         flex-container-row={true}
         style={Object {}}
@@ -178,9 +174,7 @@ exports[`renders patient list correctly 2`] = `
               }
             }
             uppercase={false}
-          >
-            All
-          </Text>
+          />
         </View>
         <Text
           style={
@@ -201,9 +195,7 @@ exports[`renders patient list correctly 2`] = `
             ]
           }
           uppercase={false}
-        >
-          Patients waiting for
-        </Text>
+        />
         <View>
           <View
             accessible={true}
@@ -430,19 +422,15 @@ exports[`renders patient list correctly 2`] = `
                       value=""
                     />,
                     <Item
-                      label="Triage"
                       value="waiting_triage"
                     />,
                     <Item
-                      label="Consultation"
                       value="waiting_consultation"
                     />,
                     <Item
-                      label="Test"
                       value="waiting_test"
                     />,
                     <Item
-                      label="Diagnosis"
                       value="waiting_diagnosis"
                     />,
                   ]
@@ -640,9 +628,7 @@ exports[`renders patient list correctly 2`] = `
                               }
                             }
                             uppercase={false}
-                          >
-                            Triage
-                          </Text>
+                          />
                         </View>
                         <View
                           style={
@@ -730,9 +716,7 @@ exports[`renders patient list correctly 2`] = `
                               }
                             }
                             uppercase={false}
-                          >
-                            Consultation
-                          </Text>
+                          />
                         </View>
                         <View
                           style={
@@ -820,9 +804,7 @@ exports[`renders patient list correctly 2`] = `
                               }
                             }
                             uppercase={false}
-                          >
-                            Test
-                          </Text>
+                          />
                         </View>
                         <View
                           style={
@@ -910,9 +892,7 @@ exports[`renders patient list correctly 2`] = `
                               }
                             }
                             uppercase={false}
-                          >
-                            Diagnosis
-                          </Text>
+                          />
                         </View>
                         <View
                           style={
@@ -988,9 +968,7 @@ exports[`renders patient list correctly 2`] = `
             ]
           }
           uppercase={false}
-        >
-          Sort by
-        </Text>
+        />
         <View
           accessible={true}
           isTVSelectable={true}
@@ -1072,9 +1050,7 @@ exports[`renders patient list correctly 2`] = `
               }
             }
             uppercase={false}
-          >
-            Name
-          </Text>
+          />
         </View>
         <View
           accessible={true}
@@ -1157,9 +1133,7 @@ exports[`renders patient list correctly 2`] = `
               }
             }
             uppercase={false}
-          >
-            Status
-          </Text>
+          />
         </View>
       </View>
       <View
@@ -1177,9 +1151,7 @@ exports[`renders patient list correctly 2`] = `
             }
           }
           uppercase={false}
-        >
-          There are no patients
-        </Text>
+        />
       </View>
     </View>
   </View>

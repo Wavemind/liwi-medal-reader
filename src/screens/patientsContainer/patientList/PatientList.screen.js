@@ -2,7 +2,17 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
+import {
+  Button,
+  Icon,
+  Input,
+  Item,
+  List,
+  ListItem,
+  Picker,
+  Text,
+  View,
+} from 'native-base';
 
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
@@ -44,10 +54,12 @@ export default class PatientList extends React.Component<Props, State> {
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
+
     const { statuses } = this.state;
     let patients = await getArray('patients');
     let algorithms = await getItems('algorithms');
     let medicalCases = [];
+
     patients.map((patient) => {
       patient.medicalCases.map((medicalCase) => {
         if (includes(statuses, medicalCase.status)) {
