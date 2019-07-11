@@ -18,10 +18,11 @@ configure({ adapter: new Adapter() });
 describe('PatientList', () => {
   it('test component ', async () => {
     const component = renderer.create(<PatientList {...jestWithAllProps} />);
+
     const componentContext = renderer.create(
       <JestWithContext child={PatientList} />
     );
-    // can connect contexte but not easy to interact with PatientList
+    // can connect context but not easy to interact with PatientList
     // cant connect redux
     const instance = component.getInstance();
     await instance.filterMedicalCases();
