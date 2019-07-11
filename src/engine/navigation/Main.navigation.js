@@ -17,8 +17,9 @@ import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
-import { DropDownMenu } from './DropDownMenuTop.navigation'
+import DropDownMenu from './DropDownMenuTop.navigation';
 
+// we need to use i18n directly beacause we cant be connect to contexte
 const Stack = createStackNavigator({
   Home: {
     screen: MainScreen,
@@ -102,7 +103,7 @@ const Stack = createStackNavigator({
     path: 'triage',
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: DropDownMenu
+        headerTitle: DropDownMenu,
       };
     },
   },
@@ -111,7 +112,7 @@ const Stack = createStackNavigator({
     path: 'consultation',
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: DropDownMenu
+        headerTitle: DropDownMenu,
       };
     },
   },
