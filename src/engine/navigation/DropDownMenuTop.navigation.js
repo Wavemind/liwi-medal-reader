@@ -1,4 +1,3 @@
-import i18n from '../../utils/i18n';
 import { Text, View } from 'native-base';
 import { CustomPicker } from 'react-native-custom-picker';
 import React from 'react';
@@ -7,10 +6,10 @@ import { withApplication } from '../../engine/contexts/Application.context';
 class DropDownMenu extends React.Component {
   state = {
     options: [
-      { label: i18n.t('menu:triage'), value: 'triage' },
-      { label: i18n.t('menu:consultation'), value: 'Consultation' },
-      { label: i18n.t('menu:tests'), value: 'Tests' },
-      { label: i18n.t('menu:strategy'), value: 'Strategy' },
+      { label: this.props.app.t('menu:triage'), value: 'triage' },
+      { label: this.props.app.t('menu:consultation'), value: 'Consultation' },
+      { label: this.props.app.t('menu:tests'), value: 'Tests' },
+      { label: this.props.app.t('menu:strategy'), value: 'Strategy' },
     ],
   };
   onValueChange = (value: string) => {
@@ -38,7 +37,7 @@ class DropDownMenu extends React.Component {
       <View flex-center>
         <CustomPicker
           getLabel={(item) => item.label}
-          defaultValue={{ label: i18n.t('menu:triage'), value: 'triage' }}
+          defaultValue={{ label: t('menu:triage'), value: 'triage' }}
           fieldTemplate={this.renderField}
           options={options}
           onValueChange={(value) => {

@@ -17,7 +17,6 @@ import {
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray, getItems } from '../../../engine/api/LocalStorage';
-import i18n from '../../../utils/i18n';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 import includes from 'lodash/includes';

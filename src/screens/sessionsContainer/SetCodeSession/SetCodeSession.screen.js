@@ -8,7 +8,6 @@ import type { SessionsProviderState } from '../../../engine/contexts/Sessions.co
 import { getSession } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2 } from '../../../template/layout';
 import { styles } from './SetCodeSession.style';
-import i18n from '../../../utils/i18n';
 import { saltHash } from '../../../../frontend_service/constants';
 import CustomInput from '../../../components/InputContainer/CustomInput';
 import { ScrollView } from 'react-native';
@@ -43,15 +42,20 @@ export default class SetCodeSession extends React.Component<Props, State> {
     const { code, codeConfirmation } = this.state;
 
     let mediumRegex = new RegExp(
-      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
+      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
     );
 
     if (code.length > 0 && codeConfirmation.length > 0) {
       let encrypt1 = sha256.hmac(saltHash, code);
       let encrypt2 = sha256.hmac(saltHash, codeConfirmation);
 
-      if (encrypt1 !== encrypt2 || !mediumRegex.test(code) && !mediumRegex.test(codeConfirmation)) {
-        this.setState({ error: 'Your password is too weak or it\'s not the same' });
+      if (
+        encrypt1 !== encrypt2 ||
+        (!mediumRegex.test(code) && !mediumRegex.test(codeConfirmation))
+      ) {
+        this.setState({
+          error: "Your password is too weak or it's not the same",
+        });
         return false;
       }
 
@@ -76,6 +80,9 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
   render() {
     const { code, codeConfirmation, session, error } = this.state;
+    const {
+      app: { t },
+    } = this.props;
 
     if (session === null) {
       return null;
@@ -86,7 +93,8 @@ export default class SetCodeSession extends React.Component<Props, State> {
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
             <LiwiTitle2 noBorder>
-              {i18n.t('code_session_screen:title')} {session.data.first_name} {session.data.last_name}
+              {t('code_session_screen:title')} {session.data.first_name}{' '}
+              {session.data.last_name}
             </LiwiTitle2>
             <Form>
               <CustomInput
@@ -94,7 +102,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 change={this.changeValueFromInput}
                 index={'code'}
                 secureTextEntry={true}
-                placeholder={i18n.t('code_session_screen:your_code')}
+                placeholder={t('code_session_screen:your_code')}
                 condensed={true}
                 error={error}
               />
@@ -103,7 +111,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 change={this.changeValueFromInput}
                 index={'codeConfirmation'}
                 secureTextEntry={true}
-                placeholder={i18n.t('code_session_screen:type_your_code')}
+                placeholder={t('code_session_screen:type_your_code')}
                 condensed={true}
               />
               <Button
@@ -111,7 +119,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 style={styles.marginTop}
                 onPress={() => this.setLocalCode()}
               >
-                <Text> {i18n.t('code_session_screen:set_code')} </Text>
+                <Text> {t('code_session_screen:set_code')} </Text>
               </Button>
             </Form>
           </ScrollView>
