@@ -3,11 +3,8 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View, Content } from 'native-base';
-import { ScrollView } from 'react-native';
 import { styles } from './ChiefComplaints.style';
-import i18n from '../../../../utils/i18n';
 import { categories } from '../../../../../frontend_service/constants';
-import { screenWidth } from '../../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -74,7 +71,10 @@ export default class ChiefComplaint extends React.Component<Props, State> {
   };
 
   render() {
-    const { medicalCase } = this.props;
+    const {
+      medicalCase,
+      app: { t },
+    } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(
       categories.chiefComplain
@@ -94,15 +94,15 @@ export default class ChiefComplaint extends React.Component<Props, State> {
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text not-available>{i18n.t('work_case:no_questions')}</Text>
+            <Text not-available>{t('work_case:no_questions')}</Text>
           </View>
         )}
         <View bottom-view columns>
           <Button light split>
-            <Text>{i18n.t('form:back')}</Text>
+            <Text>{t('form:back')}</Text>
           </Button>
           <Button light split>
-            <Text>{i18n.t('form:next')}</Text>
+            <Text>{t('form:next')}</Text>
           </Button>
         </View>
       </Content>
