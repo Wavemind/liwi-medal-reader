@@ -31,6 +31,7 @@ export default class PatientList extends React.Component<Props, State> {
     medicalCases: [],
     searchTerm: '',
     orderByName: 'asc',
+    orderByStatus: null,
     filterTerm: '',
     isGeneratingPatient: false,
     algorithms: [],
@@ -77,7 +78,16 @@ export default class PatientList extends React.Component<Props, State> {
   // Update state switch asc / desc
   orderByName = () => {
     this.setState({
+      orderByStatus: null,
       orderByName: this.state.orderByName === 'asc' ? 'desc' : 'asc',
+    });
+  };
+
+  // Update state switch asc / desc
+  orderByStatus = () => {
+    this.setState({
+      orderByName: null,
+      orderByStatus: this.state.orderByStatus === 'asc' ? 'desc' : 'asc',
     });
   };
 
@@ -115,6 +125,7 @@ export default class PatientList extends React.Component<Props, State> {
       statuses,
       filterTerm,
       algorithms,
+      orderByStatus,
     } = this.state;
 
     const {
@@ -136,13 +147,23 @@ export default class PatientList extends React.Component<Props, State> {
     filteredMedicalCases = filter(filteredMedicalCases, (medicalCase) => {
       return medicalCase.status === filterTerm || filterTerm === '';
     });
+    let orderedFilteredMedicalCases;
+
+    if (orderByName !== null) {
+      orderedFilteredMedicalCases = orderBy(
+        filteredMedicalCases,
+        ['lastname'],
+        [orderByName]
+      );
+    } else if (orderByStatus !== null) {
+      orderedFilteredMedicalCases = orderBy(
+        filteredMedicalCases,
+        ['status'],
+        [orderByStatus]
+      );
+    }
 
     // Order the medical case
-    let orderedFilteredMedicalCases = orderBy(
-      filteredMedicalCases,
-      ['lastname'],
-      [orderByName]
-    );
 
     return (
       <ScrollView>
@@ -154,18 +175,18 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            { algorithms.length > 0 ? (
-            <Button
-              center
-              rounded
-              light
-              red
-              onPress={this.newPatient}
-              disabled={isGeneratingPatient}
-            >
-              <Icon type={'MaterialCommunityIcons'} name="plus" white />
-            </Button>
-              ) : null }
+            {algorithms.length > 0 ? (
+              <Button
+                center
+                rounded
+                light
+                red
+                onPress={this.newPatient}
+                disabled={isGeneratingPatient}
+              >
+                <Icon type={'MaterialCommunityIcons'} name="plus" white />
+              </Button>
+            ) : null}
           </View>
 
           <View flex-container-row style={styles.filter}>
@@ -202,8 +223,12 @@ export default class PatientList extends React.Component<Props, State> {
               )}
               <Text>{t('patient_list:name')}</Text>
             </Button>
-            <Button center rounded light>
-              <Icon name="arrow-down" />
+            <Button center rounded light onPress={this.orderByStatus}>
+              {orderByStatus === 'asc' ? (
+                <Icon name="arrow-down" />
+              ) : (
+                <Icon name="arrow-up" />
+              )}
               <Text>{t('patient_list:status')}</Text>
             </Button>
           </View>
@@ -231,9 +256,7 @@ export default class PatientList extends React.Component<Props, State> {
                         </Text>
                       </View>
                       <View w50>
-                        <Text>
-                          {t(`medical_case:${medicalCase.status}`)}
-                        </Text>
+                        <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
                       </View>
                     </ListItem>
                   ))}
