@@ -131,7 +131,7 @@ i18n
           clear_sessions: 'Delete sessions',
           email: 'Email',
           password: 'Password',
-          connect: 'Connect',
+          connect: 'Login',
         },
         code_session_screen: {
           title: 'Welcome',
@@ -151,13 +151,13 @@ i18n
         },
         new_session: {
           title: 'Connect to main server',
-          unlock_session: 'Unlock session',
+          unlock_session: 'Local login',
         },
         unlock_session: {
           email: 'Email',
           code: 'Code',
-          unlock: 'Unlock',
-          title: 'Unlock session',
+          unlock: 'Login',
+          title: 'Local login',
           new_session: 'Create new session',
         },
         popup: {
@@ -179,18 +179,27 @@ i18n
           available_algorithms: 'Available algorithms',
         },
         common: {
+          back: 'Back',
           disconnect: 'Disconnect',
           consultation: 'Consultation',
           patient_data: 'Patient data',
         },
         notifications: {
-          invalid_code: 'Code is invalid',
-          session_does_not_exist: 'Session doesn\'t exist',
+          empty_code: 'Your code is empty, please write it',
+          invalid_code: ' Your local code is invalid, please try again',
+          session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: 'You don\'t have internet connection',
         },
       },
       fr: {
+        notifications: {
+          empty_code: 'Votre code est vide, veuillez l\'écrire',
+          invalid_code: ' Votre code local n\'est pas valide, veuillez réessayer.',
+          session_does_not_exist: 'Cet utilisateur local n\'existe pas, veuillez réessayer.',
+          session_already_exist: 'La session existe déjà',
+          no_internet: 'Vous n\'avez pas de connexion internet',
+        },
         consultation: {
           medical_history: 'Medical History',
           physical_exam: 'Physical Exam',
@@ -264,6 +273,7 @@ i18n
           available_algorithms: 'Algorithmes disponibles',
         },
         common: {
+          back: 'Retour',
           disconnect: 'Déconnecter',
           consultation: 'Consultation',
           patient_data: 'Données patient',

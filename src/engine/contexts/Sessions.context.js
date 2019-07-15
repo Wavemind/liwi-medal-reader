@@ -85,7 +85,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
               });
           }
 
-          Toaster(i18n.t('notifications.session_already_exist'), { type: 'danger' });
+          Toaster(i18n.t('notifications:session_already_exist'), { type: 'danger' });
           reject('Already connected');
         }
       }
