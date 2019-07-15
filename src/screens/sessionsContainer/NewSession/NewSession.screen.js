@@ -12,7 +12,6 @@ import {
 } from 'native-base';
 import { Keyboard, ScrollView } from 'react-native';
 import CustomInput from '../../../components/InputContainer/CustomInput';
-import i18n from '../../../utils/i18n';
 import { LiwiTitle2 } from '../../../template/layout';
 
 type Props = NavigationScreenProps & {};
@@ -112,7 +111,7 @@ export default class NewSession extends React.Component<Props, State> {
       <View flex-container-column>
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
-            <LiwiTitle2 noBorder center>{i18n.t('new_session:title')}</LiwiTitle2>
+            <LiwiTitle2 noBorder center>{t('new_session:title')}</LiwiTitle2>
             <Form>
               <CustomInput
                 init={email}
@@ -167,7 +166,7 @@ export default class NewSession extends React.Component<Props, State> {
         </View>
         <View bottom-view margin-auto padding-auto>
           <Button onPress={this.unLockSessionScreen}>
-            <Text>{i18n.t('new_session:unlock_session')}</Text>
+            <Text>{t('new_session:unlock_session')}</Text>
           </Button>
         </View>
       </View>
