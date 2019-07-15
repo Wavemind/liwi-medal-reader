@@ -2,21 +2,21 @@
 # yarn lockfile v1
 
 
-"@babel/cli@7.2.3":
-  version "7.2.3"
-  resolved "http://54.93.89.199:4873/@babel%2fcli/-/cli-7.2.3.tgz#1b262e42a3e959d28ab3d205ba2718e1923cfee6"
+"@babel/cli@7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.4.4.tgz#5454bb7112f29026a4069d8e6f0e1794e651966c"
   dependencies:
     commander "^2.8.1"
     convert-source-map "^1.1.0"
     fs-readdir-recursive "^1.1.0"
     glob "^7.0.0"
-    lodash "^4.17.10"
+    lodash "^4.17.11"
     mkdirp "^0.5.1"
     output-file-sync "^2.0.0"
     slash "^2.0.0"
     source-map "^0.5.0"
   optionalDependencies:
-    chokidar "^2.0.3"
+    chokidar "^2.0.4"
 
 "@babel/code-frame@7.0.0-beta.47":
   version "7.0.0-beta.47"
@@ -30,17 +30,17 @@
   dependencies:
     "@babel/highlight" "^7.0.0"
 
-"@babel/core@7.3.4":
-  version "7.3.4"
-  resolved "http://54.93.89.199:4873/@babel%2fcore/-/core-7.3.4.tgz#921a5a13746c21e32445bf0798680e9d11a6530b"
+"@babel/core@7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.4.4.tgz#84055750b05fcd50f9915a826b44fa347a825250"
   dependencies:
     "@babel/code-frame" "^7.0.0"
-    "@babel/generator" "^7.3.4"
-    "@babel/helpers" "^7.2.0"
-    "@babel/parser" "^7.3.4"
-    "@babel/template" "^7.2.2"
-    "@babel/traverse" "^7.3.4"
-    "@babel/types" "^7.3.4"
+    "@babel/generator" "^7.4.4"
+    "@babel/helpers" "^7.4.4"
+    "@babel/parser" "^7.4.4"
+    "@babel/template" "^7.4.4"
+    "@babel/traverse" "^7.4.4"
+    "@babel/types" "^7.4.4"
     convert-source-map "^1.1.0"
     debug "^4.1.0"
     json5 "^2.1.0"
@@ -194,6 +194,17 @@
 "@babel/helper-create-class-features-plugin@^7.4.4":
   version "7.4.4"
   resolved "http://54.93.89.199:4873/@babel%2fhelper-create-class-features-plugin/-/helper-create-class-features-plugin-7.4.4.tgz#fc3d690af6554cc9efc607364a82d48f58736dba"
+  dependencies:
+    "@babel/helper-function-name" "^7.1.0"
+    "@babel/helper-member-expression-to-functions" "^7.0.0"
+    "@babel/helper-optimise-call-expression" "^7.0.0"
+    "@babel/helper-plugin-utils" "^7.0.0"
+    "@babel/helper-replace-supers" "^7.4.4"
+    "@babel/helper-split-export-declaration" "^7.4.4"
+
+"@babel/helper-create-class-features-plugin@^7.5.0":
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.5.0.tgz#02edb97f512d44ba23b3227f1bf2ed43454edac5"
   dependencies:
     "@babel/helper-function-name" "^7.1.0"
     "@babel/helper-member-expression-to-functions" "^7.0.0"
@@ -531,11 +542,11 @@
     "@babel/helper-create-class-features-plugin" "^7.2.3"
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-proposal-class-properties@^7.3.4":
-  version "7.4.4"
-  resolved "http://54.93.89.199:4873/@babel%2fplugin-proposal-class-properties/-/plugin-proposal-class-properties-7.4.4.tgz#93a6486eed86d53452ab9bab35e368e9461198ce"
+"@babel/plugin-proposal-class-properties@^7.4.4":
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-class-properties/-/plugin-proposal-class-properties-7.5.0.tgz#5bc6a0537d286fcb4fd4e89975adbca334987007"
   dependencies:
-    "@babel/helper-create-class-features-plugin" "^7.4.4"
+    "@babel/helper-create-class-features-plugin" "^7.5.0"
     "@babel/helper-plugin-utils" "^7.0.0"
 
 "@babel/plugin-proposal-decorators@^7.4.4":
@@ -662,6 +673,12 @@
 "@babel/plugin-syntax-flow@^7.0.0", "@babel/plugin-syntax-flow@^7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-flow/-/plugin-syntax-flow-7.2.0.tgz#a765f061f803bc48f240c26f8747faf97c26bf7c"
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.0.0"
+
+"@babel/plugin-syntax-import-meta@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-import-meta/-/plugin-syntax-import-meta-7.2.0.tgz#2333ef4b875553a3bcd1e93f8ebc09f5b9213a40"
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
@@ -891,9 +908,9 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-syntax-flow" "^7.2.0"
 
-"@babel/plugin-transform-flow-strip-types@^7.3.4":
+"@babel/plugin-transform-flow-strip-types@^7.4.4":
   version "7.4.4"
-  resolved "http://54.93.89.199:4873/@babel%2fplugin-transform-flow-strip-types/-/plugin-transform-flow-strip-types-7.4.4.tgz#d267a081f49a8705fc9146de0768c6b58dccd8f7"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-flow-strip-types/-/plugin-transform-flow-strip-types-7.4.4.tgz#d267a081f49a8705fc9146de0768c6b58dccd8f7"
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-syntax-flow" "^7.2.0"
@@ -1385,6 +1402,13 @@
     pirates "^4.0.0"
     source-map-support "^0.5.9"
 
+"@babel/runtime-corejs2@^7.4.5":
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs2/-/runtime-corejs2-7.5.0.tgz#b4ac9b2f28eef44c708227bd810f5bfb66ca73e5"
+  dependencies:
+    core-js "^2.6.5"
+    regenerator-runtime "^0.13.2"
+
 "@babel/runtime@^7.0.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.2.0.tgz#b03e42eeddf5898e00646e4c840fa07ba8dcad7f"
@@ -1465,7 +1489,7 @@
     globals "^11.1.0"
     lodash "^4.17.10"
 
-"@babel/traverse@^7.3.4", "@babel/traverse@^7.4.3", "@babel/traverse@^7.4.4", "@babel/traverse@^7.4.5":
+"@babel/traverse@^7.4.3", "@babel/traverse@^7.4.4", "@babel/traverse@^7.4.5":
   version "7.4.5"
   resolved "http://54.93.89.199:4873/@babel%2ftraverse/-/traverse-7.4.5.tgz#4e92d1728fd2f1897dafdd321efbff92156c3216"
   dependencies:
@@ -1685,6 +1709,10 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
+"@react-native-community/async-storage@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.5.0.tgz#647ffcd832272068b0be57332e08d73036ed391f"
+
 "@react-native-community/cli@^1.2.1":
   version "1.9.5"
   resolved "http://54.93.89.199:4873/@react-native-community%2fcli/-/cli-1.9.5.tgz#f46e83f84ee3c2043e0ade1f1e22f1954ae8fbbb"
@@ -1723,6 +1751,10 @@
     ws "^1.1.0"
     xcode "^2.0.0"
     xmldoc "^0.4.0"
+
+"@react-native-community/netinfo@^3.2.0":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-3.2.1.tgz#cd073b81a4b978f7f55f1a960a0b56c462813e02"
 
 "@react-navigation/core@~3.4.1":
   version "3.4.2"
@@ -3136,9 +3168,9 @@ chokidar@^1.6.1:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chokidar@^2.0.3:
+chokidar@^2.0.4:
   version "2.1.6"
-  resolved "http://54.93.89.199:4873/chokidar/-/chokidar-2.1.6.tgz#b6cad653a929e244ce8a834244164d241fa954c5"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.1.6.tgz#b6cad653a929e244ce8a834244164d241fa954c5"
   dependencies:
     anymatch "^2.0.0"
     async-each "^1.0.1"
@@ -6984,9 +7016,9 @@ lottie-ios@2.5.0:
   version "2.5.0"
   resolved "http://54.93.89.199:4873/lottie-ios/-/lottie-ios-2.5.0.tgz#55c808e785d4a6933b0c10b395530b17098b05de"
 
-lottie-react-native@^2.5.11:
+lottie-react-native@^2.6.1:
   version "2.6.1"
-  resolved "http://54.93.89.199:4873/lottie-react-native/-/lottie-react-native-2.6.1.tgz#330d24fa6aac5928ea63f8e181b9b7d930a1a119"
+  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-2.6.1.tgz#330d24fa6aac5928ea63f8e181b9b7d930a1a119"
   dependencies:
     invariant "^2.2.2"
     lottie-ios "2.5.0"
@@ -9025,6 +9057,10 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-custom-picker@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-custom-picker/-/react-native-custom-picker-0.4.0.tgz#258896b1eae65f95e4122b4bbdf6bfd68a27d0e3"
+
 react-native-debugger-open@^0.3.17:
   version "0.3.19"
   resolved "http://54.93.89.199:4873/react-native-debugger-open/-/react-native-debugger-open-0.3.19.tgz#d34af49cb871db5161fa46b4b5d24d01b22755a1"
@@ -9034,9 +9070,9 @@ react-native-debugger-open@^0.3.17:
     minimist "^1.2.0"
     semver "^5.4.1"
 
-react-native-device-info@^1.5.0:
-  version "1.8.0"
-  resolved "http://54.93.89.199:4873/react-native-device-info/-/react-native-device-info-1.8.0.tgz#98a7e3adb4e3d377eeba9c751bda03b2d7f9da35"
+react-native-device-info@^2.0.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-2.2.1.tgz#0c14285927fc7beeaf9241ea1ded90f5d5ebf836"
 
 react-native-drawer@2.5.1:
   version "2.5.1"

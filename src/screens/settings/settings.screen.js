@@ -147,6 +147,9 @@ export default class Settings extends React.Component<Props, State> {
             <Text>Autre</Text>
           </ListItem>
         </List>
+        <Button>
+          <Text>{t('common:back')}</Text>
+        </Button>
       </ScrollView>
     );
   }
