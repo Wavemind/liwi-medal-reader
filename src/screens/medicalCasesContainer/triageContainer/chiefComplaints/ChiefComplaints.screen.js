@@ -2,12 +2,11 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Text, View, Content } from 'native-base';
-import { ScrollView } from 'react-native';
+import { Button, Content, Text, View } from 'native-base';
 import { styles } from './ChiefComplaints.style';
 import i18n from '../../../../utils/i18n';
 import { categories } from '../../../../../frontend_service/constants';
-import { screenWidth } from '../../../../utils/constants';
+import Boolean from '../../../../components/QuestionsContainer/DisplaysContainer/Boolean';
 
 type Props = NavigationScreenProps & {};
 
@@ -17,60 +16,6 @@ export default class ChiefComplaint extends React.Component<Props, State> {
   // default settings
   state = {
     widthView: 0,
-  };
-
-  _renderButton = (question, index) => {
-    const { widthView } = this.state;
-
-    // onlayout isn't set
-    if (widthView === 0) {
-      return null;
-    }
-
-    const margin = 15;
-    const sizeButton = Math.floor(widthView / 3 - margin * 1.33);
-
-    const mod = index % 3;
-    let styleMargin = {};
-    if (mod === 0) {
-      styleMargin = {
-        marginTop: margin,
-        marginBottom: 0,
-        marginLeft: margin,
-        marginRight: 0,
-      };
-    } else if (mod === 1) {
-      styleMargin = {
-        marginTop: margin,
-        marginBottom: 0,
-        marginLeft: margin,
-        marginRight: margin,
-      };
-    } else if (mod === 2) {
-      styleMargin = {
-        marginTop: margin,
-        marginBottom: 0,
-        marginLeft: 0,
-        marginRight: margin,
-      };
-    }
-
-    return (
-      <Button
-        onPress={() => {}}
-        style={Object.assign(
-          {
-            width: sizeButton,
-            justifyContent: 'center',
-            height: sizeButton,
-          },
-          styleMargin
-        )}
-        light
-      >
-        <Text center>{question.label}</Text>
-      </Button>
-    );
   };
 
   render() {
@@ -90,7 +35,9 @@ export default class ChiefComplaint extends React.Component<Props, State> {
               this.setState({ widthView: w.layout.width });
             }}
           >
-            {questions.map((question, i) => this._renderButton(question, i))}
+            {questions.map((question, i) => (
+              <Boolean widthView={this.state.widthView} question={question} index={i} />
+            ))}
           </View>
         ) : (
           <View padding-auto margin-auto>
