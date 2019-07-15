@@ -16,8 +16,8 @@ export const getDeviceInformation = async () => {
 
   let objReturned = {
     activity: {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: location?.coords?.latitude ?? null,
+      longitude: location?.coords?.longitude ?? null,
       timezone: timezone,
       user_id: 'null',
       version: version,

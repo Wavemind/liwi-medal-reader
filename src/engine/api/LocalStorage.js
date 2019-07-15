@@ -170,6 +170,7 @@ export const clearLocalStorage = async () => {
 // @params [Object] session
 // Set session credentials in local storage
 export const setSessions = async (session) => {
+  console.log(session)
   await AsyncStorage.setItem('sessions', stringifyDeepRef(session));
 };
 

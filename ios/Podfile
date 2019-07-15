@@ -2,19 +2,13 @@
 # platform :ios, '9.0'
 
 target 'liwi_native' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
-
-  # Pods for liwi_native
-
-  target 'liwi_native-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-    pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
     pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
 
     pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
+    pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
     pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
@@ -23,6 +17,15 @@ target 'liwi_native' do
     pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
 
     pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for liwi_native
+
+  target 'liwi_native-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
 
   end
 
@@ -39,12 +42,7 @@ target 'liwi_native-tvOS' do
 
   # Pods for liwi_native-tvOS
 
-  target 'liwi_native-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
 end
 
-pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler/ios'
 

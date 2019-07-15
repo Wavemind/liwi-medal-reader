@@ -85,7 +85,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
       <View flex-container-column>
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
-            <LiwiTitle2 noBorder>
+            <LiwiTitle2 noBorder testID={'welcome'}>
               {i18n.t('code_session_screen:title')} {session.data.first_name} {session.data.last_name}
             </LiwiTitle2>
             <Form>
@@ -107,6 +107,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 condensed={true}
               />
               <Button
+                testID={'set_code'}
                 full
                 style={styles.marginTop}
                 onPress={() => this.setLocalCode()}

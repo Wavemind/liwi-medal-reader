@@ -31,11 +31,11 @@ export default class NewSession extends React.Component<Props, State> {
   componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
-      this._keyboardDidShow,
+      this._keyboardDidShow
     );
     this.keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
-      this._keyboardDidHide,
+      this._keyboardDidHide
     );
   }
 
@@ -90,24 +90,28 @@ export default class NewSession extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      email,
-      password,
-      loading,
-      success,
-      id,
-    } = this.state;
+    const { email, password, loading, success, id } = this.state;
 
     const {
       navigation,
       app: { isConnected, t },
     } = this.props;
 
+    if (success) {
+      setTimeout(() => {
+        navigation.navigate('SetCodeSession', {
+          user_id: id,
+        });
+      }, 3000);
+    }
+
     return (
       <View flex-container-column>
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
-            <LiwiTitle2 noBorder center>{i18n.t('new_session:title')}</LiwiTitle2>
+            <LiwiTitle2 noBorder center testID={'new_session'}>
+              {i18n.t('new_session:title')}
+            </LiwiTitle2>
             <Form>
               <CustomInput
                 init={email}
@@ -125,6 +129,7 @@ export default class NewSession extends React.Component<Props, State> {
                 condensed={true}
               />
               <Button
+                testID={'connect_main'}
                 full
                 style={styles.marginTop}
                 onPress={() => this.signIn()}
@@ -161,7 +166,7 @@ export default class NewSession extends React.Component<Props, State> {
           ) : null}
         </View>
         <View bottom-view margin-auto padding-auto>
-          <Button onPress={this.unLockSessionScreen}>
+          <Button onPress={this.unLockSessionScreen} >
             <Text>{i18n.t('new_session:unlock_session')}</Text>
           </Button>
         </View>
