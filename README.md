@@ -48,6 +48,14 @@ npm run start
 ```
 
 E2E test
+
+before you have to run
+ 
+```
+detox build -c android.emu.debug
+```
+ and then
+
 ```
 npm run detox-android
 npm run detox-ios
