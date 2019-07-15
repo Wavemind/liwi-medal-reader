@@ -4,14 +4,6 @@ import React from 'react';
 import { withApplication } from '../../engine/contexts/Application.context';
 
 class DropDownMenu extends React.Component {
-  state = {
-    options: [
-      { label: this.props.app.t('menu:triage'), value: 'triage' },
-      { label: this.props.app.t('menu:consultation'), value: 'Consultation' },
-      { label: this.props.app.t('menu:tests'), value: 'Tests' },
-      { label: this.props.app.t('menu:strategy'), value: 'Strategy' },
-    ],
-  };
   onValueChange = (value: string) => {
     console.log(value);
   };
@@ -28,10 +20,16 @@ class DropDownMenu extends React.Component {
   };
 
   render() {
-    const { options } = this.state;
     const {
       app: { t },
     } = this.props;
+
+    const options = [
+      { label: t('menu:triage'), value: 'triage' },
+      { label: t('menu:consultation'), value: 'Consultation' },
+      { label: t('menu:tests'), value: 'Tests' },
+      { label: t('menu:strategy'), value: 'Strategy' },
+    ];
 
     return (
       <View flex-center>
