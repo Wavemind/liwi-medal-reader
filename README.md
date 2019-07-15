@@ -47,6 +47,12 @@ cd documentarus
 npm run start
 ```
 
+E2E test
+```
+npm run detox-android
+npm run detox-ios
+```
+
 Libraries (not final)
 =======
 
