@@ -61,6 +61,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
         reject(error);
       });
 
+
       if (credentials.success !== false || credentials.success === undefined) {
         let sessions = await getSessions();
         if (sessions === null) {
@@ -75,6 +76,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
             sessions.push(credentials);
             await setSessions(sessions);
             this.setState({ sessions });
+
 
             return fetchAlgorithms(credentials.data.id)
               .then(async (done) => {

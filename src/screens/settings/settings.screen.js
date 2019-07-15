@@ -71,7 +71,7 @@ export default class Settings extends React.Component<Props, State> {
 
     return (
       <ScrollView>
-        <List>
+        <List testID={'settings_view'}>
           <ListItem itemDivider>
             <Text white bold>
               {t('tests')}

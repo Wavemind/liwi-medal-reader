@@ -50,6 +50,8 @@ export default class UnlockSession extends React.Component<Props, State> {
       return session.data.email === email;
     });
 
+    console.log(code, email, sessions)
+
     if (user !== undefined) {
       let result = await app.unLockSession(user.data.id, code);
       this.setState({ errors: i18n.t(`notifications.${result}`) });
@@ -96,14 +98,14 @@ export default class UnlockSession extends React.Component<Props, State> {
                 condensed={true}
               />
             </Form>
-            <Button full onPress={this.unLock} styles={styles.button}>
+            <Button full onPress={this.unLock} style={styles.button}>
               <Text>{i18n.t('unlock_session:unlock')}</Text>
             </Button>
           </ScrollView>
         </View>
         <View bottom-view margin-auto padding-auto>
           <View>
-            <Button onPress={this.newSessionScreen} disabled={!isConnected}>
+            <Button onPress={this.newSessionScreen} disabled={!isConnected} testID={'new_session'}>
               <Text>{i18n.t('unlock_session:new_session')}</Text>
             </Button>
             {!isConnected ? (
