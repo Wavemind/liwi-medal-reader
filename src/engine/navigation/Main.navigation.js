@@ -13,11 +13,17 @@ import i18n from '../../utils/i18n';
 
 import { Button, Icon } from 'native-base';
 
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import {
+  createDrawerNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
-import { DropDownMenu } from './DropDownMenuTop.navigation'
+import { DropDownMenu } from './DropDownMenuTop.navigation';
+import TriageTabs from './TriageTabs';
+import PatientProfileMenu from './patientProfileMenu'
 
 const Stack = createStackNavigator({
   Home: {
@@ -102,7 +108,7 @@ const Stack = createStackNavigator({
     path: 'triage',
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: DropDownMenu
+        headerTitle: DropDownMenu,
       };
     },
   },
@@ -111,15 +117,27 @@ const Stack = createStackNavigator({
     path: 'consultation',
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: DropDownMenu
+        headerTitle: DropDownMenu,
       };
     },
   },
 });
 
+let StackWithBottomNavigation = createBottomTabNavigator(
+  {
+    Home: { screen: Stack },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: '#e91e63',
+    },
+    tabBarComponent: PatientProfileMenu,
+  }
+);
+
 export default () => {
   return createDrawerNavigator(
-    { Home: { screen: Stack } },
+    { Home: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
       contentComponent: (props) => <Drawer {...props} />,

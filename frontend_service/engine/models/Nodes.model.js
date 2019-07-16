@@ -26,7 +26,8 @@ export class NodesModel implements NodeInterface {
     return _.filter(this, (n) => n.type === type);
   }
 
-  filterByCounterMoreThanZero(){
+
+  filterByCounterMoreThanZero() {
     this.filterByConditionValue();
     return _.filter(this, (n) => n.counter > 0);
   }

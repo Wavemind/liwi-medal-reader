@@ -43,11 +43,14 @@ export default class MedicalHistory extends React.Component<Props, State> {
     let counterMoreZero =  medicalCase.nodes.filterByCounterMoreThanZero();
 
     let questionsWithOutChiefComplains = _.filter(counterMoreZero, (w) => w.category !== categories.chiefComplain )
+    let allQuestions = _.filter(medicalCase.nodes, (w) => w.category !== categories.chiefComplain )
 
     return (
       <ScrollView>
-        <Text>MedicalHistory</Text>
+        <Text>Question with counter > 0</Text>
         <Questions questions={questionsWithOutChiefComplains} />
+        <Text>All questions</Text>
+        <Questions questions={allQuestions} />
       </ScrollView>
     );
   }
