@@ -2,7 +2,12 @@
 
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
-import { displayFormats, displayValues, nodesType, priorities } from '../../../../frontend_service/constants';
+import {
+  displayFormats,
+  displayValues,
+  nodesType,
+  priorities,
+} from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -16,18 +21,17 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 function LabelQuestion(props: { label: String }) {
-  const { label } = props;
+  const { label, flex, marginRight, marginLeft } = props;
   return (
-    <ViewQuestion>
-      <Text style={ { color: liwiColors.blackColor } } size-auto>
-        { label }
+    <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
+      <Text style={{ color: liwiColors.blackColor }} size-auto>
+        {label}
       </Text>
     </ViewQuestion>
   );
 }
 
 class WrapperQuestion extends React.Component<{}> {
-
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     return (
@@ -96,7 +100,20 @@ export default class Question extends React.PureComponent<Props, State> {
     // Construct generic Component for the question
     return (
       <ListItem block noBorder key={question.id + '_item'}>
-        <LabelQuestion key={question.id + '_label'} label={question.label} />
+        <LabelQuestion
+          key={question.id + '_counter'}
+          label={question.counter}
+          flex={0.05}
+          marginLeft={0}
+          marginRight={20}
+        />
+        <LabelQuestion
+          key={question.id + '_label'}
+          label={question.label}
+          flex={0.65}
+          marginLeft={0}
+          marginRight={20}
+        />
         <WrapperQuestion
           key={question.id + '_answer'}
           question={question}

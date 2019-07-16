@@ -3,10 +3,7 @@
 import * as React from 'react';
 import { Button, List, ListItem, Text, View } from 'native-base';
 import { styles } from './PatientProfile.style';
-import {
-  getItemFromArray,
-  getItems,
-} from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import i18n from '../../../utils/i18n';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
@@ -86,31 +83,34 @@ export default class PatientProfile extends React.Component<Props, State> {
     delete flatPatient.medicalCases;
 
     // Display list of medical cases
-    const _renderMedicalCases = patient.medicalCases.map((medicalCase, index) => {
-      const { patient } = this.state;
-
-      return (
-        <ListItem
-          rounded
-          block
-          spaced
-          key={index}
-          onPress={async () => {
-            await this.selectMedicalCase({
-              ...medicalCase,
-              patient: flatPatient,
-            });
-          }}
-        >
-          <View w50>
-            <Text>{moment(medicalCase.createdDate).format('lll')}</Text>
-          </View>
-          <View w50>
-            <Text>{patient.status}</Text>
-          </View>
-        </ListItem>
-      );
-    });
+    const _renderMedicalCases = patient.medicalCases.map(
+      (medicalCase, index) => {
+        const { patient } = this.state;
+        return (
+          <ListItem
+            rounded
+            block
+            spaced
+            key={index}
+            onPress={async () => {
+              if (medicalCase.id !== this.props.medicalCase.id) {
+                await this.selectMedicalCase({
+                  ...medicalCase,
+                  patient: flatPatient,
+                });
+              }
+            }}
+          >
+            <View w50>
+              <Text>{moment(medicalCase.createdDate).format('lll')}</Text>
+            </View>
+            <View w50>
+              <Text>{patient.status}</Text>
+            </View>
+          </ListItem>
+        );
+      }
+    );
 
     return !firstRender ? (
       <LiwiLoader />

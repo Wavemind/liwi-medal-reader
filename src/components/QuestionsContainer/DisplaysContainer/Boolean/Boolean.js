@@ -35,7 +35,7 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   render = () => {
-    const { answer, answers, label, category } = this.props.question;
+    const { answer, answers, label, category, id } = this.props.question;
     const { widthView, index } = this.props;
 
     // Define the id for the answer
