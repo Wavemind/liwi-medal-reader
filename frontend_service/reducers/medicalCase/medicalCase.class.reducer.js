@@ -27,6 +27,8 @@ class MedicalCaseReducer extends ReducerClass {
   // The state is a MedicalCase
   // Instance it
   _instanceMedicalCase(state) {
+    console.log(state);
+
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
     return state;
@@ -71,10 +73,10 @@ class MedicalCaseReducer extends ReducerClass {
     let changeConditionValue = find(ps, (d) => d.id === psId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = this._instanceChild( {
+    state.nodes[nodeId] = this._instanceChild({
       ...state.nodes[nodeId],
       qs: ps,
-    } );
+    });
 
     return {
       ...state,
@@ -91,10 +93,10 @@ class MedicalCaseReducer extends ReducerClass {
     let changeConditionValue = find(dd, (d) => d.id === diseaseId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = state.nodes._instanceChild( {
+    state.nodes[nodeId] = state.nodes._instanceChild({
       ...state.nodes[nodeId],
       dd: dd,
-    } );
+    });
 
     return {
       ...state,
@@ -106,10 +108,10 @@ class MedicalCaseReducer extends ReducerClass {
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
-    state.nodes[indexPs] = state.nodes._instanceChild( {
+    state.nodes[indexPs] = state.nodes._instanceChild({
       ...state.nodes[indexPs],
       answer: answer,
-    } );
+    });
 
     return {
       ...state,
@@ -196,11 +198,11 @@ class MedicalCaseReducer extends ReducerClass {
       answer = Number(answer);
     }
 
-    state.nodes[index] = state.nodes._instanceChild( {
+    state.nodes[index] = state.nodes._instanceChild({
       ...state.nodes[index],
       answer: answer,
       value: value,
-    } );
+    });
 
     return {
       ...state,
@@ -238,6 +240,7 @@ class MedicalCaseReducer extends ReducerClass {
 
   @Action(REHYDRATE)
   rehydrate(state, action) {
+
     if (
       action.payload === undefined ||
       action.payload === null ||
@@ -247,7 +250,7 @@ class MedicalCaseReducer extends ReducerClass {
       return initialState;
     }
 
-    let modelsMedicalCase = this._instanceMedicalCase({ ...action.payload });
+    let modelsMedicalCase = this._instanceMedicalCase(action.payload);
 
     return {
       ...modelsMedicalCase,

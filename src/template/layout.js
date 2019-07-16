@@ -127,14 +127,21 @@ export const LeftButton = styled(RNTouchableOpacity).attrs({})`
 `;
 
 export const ViewQuestion = styled(RNView).attrs({})`
-  flex: 0.7;
   flex-direction: row;
   border-radius: 5px;
   border-width: 0.5px;
   padding: 10px;
-  margin-right: 20px;
+  margin-right: ${({ marginRight }) => {
+    return marginRight;
+  }};
+  margin-left: ${({ marginLeft }) => {
+    return marginLeft;
+  }};
   border-color: ${liwiColors.blackColor};
   background-color: ${liwiColors.lighterGreyColor};
+  flex: ${({ flex }) => {
+    return flex;
+  }};
 `;
 
 export const RightButton = styled(RNTouchableOpacity).attrs({})`

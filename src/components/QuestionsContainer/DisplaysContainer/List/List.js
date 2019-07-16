@@ -25,7 +25,7 @@ export default class List extends React.Component<Props, State> {
     const { question } = this.props;
     // TODO make it nice
     return (
-      <View style={styles.view}>
+      <View answer>
         <Item>
           <Picker
             mode="dropdown"

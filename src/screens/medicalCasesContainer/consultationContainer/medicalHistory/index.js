@@ -4,8 +4,8 @@ import { withApplication } from '../../../../engine/contexts/Application.context
 import { connect } from 'react-redux';
 import { withNamespaces } from 'react-i18next';
 
-const mapStateToProps = (state, ownProps) => {
-  return {};
+const mapStateToProps = (medicalCase, ownProps) => {
+  return { medicalCase };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
