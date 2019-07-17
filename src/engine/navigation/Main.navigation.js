@@ -13,11 +13,17 @@ import i18n from '../../utils/i18n';
 
 import { Button, Icon } from 'native-base';
 
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import {
+  createDrawerNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
-import DropDownMenu from './DropDownMenuTop.navigation';
+import { DropDownMenu } from './DropDownMenuTop.navigation';
+import PatientProfileMenu from './patientProfileMenu';
+import PatientSummary from '../../screens/patientsContainer/patientSummary';
 
 // we need to use i18n directly beacause we cant be connect to contexte
 const Stack = createStackNavigator({
@@ -118,9 +124,42 @@ const Stack = createStackNavigator({
   },
 });
 
+const HomeWithModal = createStackNavigator(
+  {
+    Home: { screen: Stack },
+    Summary: {
+      screen: PatientSummary,
+      path: 'summary',
+    },
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+    cardStyle: {
+      backgroundColor: '#434343',
+      opacity: 0.9,
+    },
+    transparentCard: true,
+    transitionConfig: () => ({
+      containerStyle: {
+        backgroundColor: 'transparent',
+      },
+    }),
+  }
+);
+
+let StackWithBottomNavigation = createBottomTabNavigator(
+  {
+    Home: { screen: HomeWithModal },
+  },
+  {
+    tabBarComponent: PatientProfileMenu,
+  }
+);
+
 export default () => {
   return createDrawerNavigator(
-    { Home: { screen: Stack } },
+    { Home: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
       contentComponent: (props) => <Drawer {...props} />,
