@@ -2,11 +2,11 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
+import find from 'lodash/find';
+import { Tab, Tabs, Text, View } from 'native-base';
 import { getItemFromArray } from '../../../engine/api/LocalStorage';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTitle2 } from '../../../template/layout';
-import find from 'lodash/find';
-import { Tab, Tabs, Text, View } from 'native-base';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};

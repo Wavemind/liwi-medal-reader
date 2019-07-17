@@ -3,16 +3,18 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Text, View } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
 import { styles } from './Assessments.style';
-import { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
 
 type Props = NavigationScreenProps & {};
 
 type State = StateApplicationContext & {};
 
+// TODO Will be implemented
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Assessments extends React.Component<Props, State> {
 
   render() {
@@ -20,6 +22,7 @@ export default class Assessments extends React.Component<Props, State> {
 
     let questions = medicalCase.nodes.filterByCategory(categories.assessment);
 
+    // noinspection RequiredAttributes
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {questions.length > 0 ? (

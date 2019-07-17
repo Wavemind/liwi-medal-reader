@@ -1,17 +1,12 @@
+import { connect } from 'react-redux';
 import ChiefComplaint from './ChiefComplaints.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
-import { connect } from 'react-redux';
 
-const mapStateToProps = (medicalCase, ownProps) => {
-  return {medicalCase};
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {};
+const mapStateToProps = (medicalCase) => {
+  return { medicalCase };
 };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(withSessions(withApplication(ChiefComplaint)));

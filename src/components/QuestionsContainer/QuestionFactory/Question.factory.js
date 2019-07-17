@@ -2,12 +2,12 @@
 
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
+import { ListItem, Text } from 'native-base';
 import { displayFormats, displayValues, nodesType, priorities } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
-import { ListItem, Text } from 'native-base';
 import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 
@@ -19,8 +19,8 @@ function LabelQuestion(props: { label: String }) {
   const { label } = props;
   return (
     <ViewQuestion>
-      <Text style={ { color: liwiColors.blackColor } } size-auto>
-        { label }
+      <Text style={{ color: liwiColors.blackColor }} size-auto>
+        {label}
       </Text>
     </ViewQuestion>
   );
@@ -30,9 +30,10 @@ class WrapperQuestion extends React.Component<Props, State> {
 
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
+    const { question } = this.props;
     return (
-      nextProps.question.answer !== this.props.question.answer ||
-      nextProps.question.value !== this.props.question.value
+      nextProps.question.answer !== question.answer ||
+      nextProps.question.value !== question.value
     );
   }
 

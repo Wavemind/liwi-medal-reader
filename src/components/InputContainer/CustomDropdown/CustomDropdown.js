@@ -9,7 +9,7 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class CustomDropdown extends React.Component<Props, State> {
-  state = { medicalCases: [] };
+  state = { };
 
   componentWillMount() {}
 

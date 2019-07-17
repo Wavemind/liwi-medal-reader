@@ -14,8 +14,6 @@ export default class Comorbidities extends React.Component<Props, State> {
   state = {};
 
   render() {
-    const { t } = this.props;
-
     return (
       <ScrollView>
         <Text>Comorbidities</Text>

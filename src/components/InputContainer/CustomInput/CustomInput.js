@@ -21,19 +21,23 @@ export default class CustomInput extends React.Component<Props, State> {
     condensed: false,
   };
 
+  componentWillMount(): void {
+    const { init } = this.props;
+    this.setState({ value: init });
+  }
+
   shouldComponentUpdate(
     nextProps: Readonly<P>,
     nextState: Readonly<S>
   ): boolean {
-    return (
-      this.state.value !== nextState.value ||
-      this.props.init !== nextProps.init ||
-      this.props.error !== nextProps.error
-    );
-  }
+    const { init, error } = this.props;
+    const { value } = this.state;
 
-  componentWillMount(): void {
-    this.setState({ value: this.props.init });
+    return (
+      value !== nextState.value ||
+      init !== nextProps.init ||
+      error !== nextProps.error
+    );
   }
 
   _handleChangeValue = (value) =>

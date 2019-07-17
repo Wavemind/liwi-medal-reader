@@ -1,10 +1,11 @@
-import i18n from '../../utils/i18n';
+// @flow
 import { Text, View } from 'native-base';
 import { CustomPicker } from 'react-native-custom-picker';
 import React from 'react';
-import { withApplication } from '../../engine/contexts/Application.context';
 import { NavigationScreenProps } from 'react-navigation';
-import type { StateApplicationContext } from '../../engine/contexts/Application.context';
+import { withApplication } from '../contexts/Application.context';
+import i18n from '../../utils/i18n';
+import type { StateApplicationContext } from '../contexts/Application.context';
 
 type Props = NavigationScreenProps & {};
 
@@ -19,9 +20,7 @@ class DropDownMenu extends React.Component<Props, State> {
       { label: i18n.t('menu:strategy'), value: 'Strategy' },
     ],
   };
-  onValueChange = (value: string) => {
-    console.log(value);
-  };
+  onValueChange = () => {};
 
   // Render the text on top
   renderField = (settings) => {
@@ -36,10 +35,7 @@ class DropDownMenu extends React.Component<Props, State> {
 
   render() {
     const { options } = this.state;
-    const {
-      app: { t },
-    } = this.props;
-
+    
     return (
       <View flex-center>
         <CustomPicker
@@ -47,9 +43,8 @@ class DropDownMenu extends React.Component<Props, State> {
           defaultValue={{ label: i18n.t('menu:triage'), value: 'triage' }}
           fieldTemplate={this.renderField}
           options={options}
-          onValueChange={(value) => {
-            // TODO push nav
-            console.log(value);
+          onValueChange={() => {
+
           }}
         />
       </View>
