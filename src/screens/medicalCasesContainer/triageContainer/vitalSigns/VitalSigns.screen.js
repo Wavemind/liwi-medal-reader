@@ -48,16 +48,16 @@ export default class VitalSigns extends React.Component<Props, State> {
               init={temperature}
               label={t('vital_signs:temperature')}
               change={this.updateVitalSignsValue}
-              keyboardType={'number-pad'}
-              index={'temperature'}
+              keyboardType="number-pad"
+              index="temperature"
               error={errors.temperature}
             />
             <CustomInput
               init={heartRate}
               label={t('vital_signs:heart_rate')}
               change={this.updateVitalSignsValue}
-              keyboardType={'number-pad'}
-              index={'heartRate'}
+              keyboardType="number-pad"
+              index="heartRate"
               error={errors.heartRate}
             />
           </Col>
@@ -66,16 +66,16 @@ export default class VitalSigns extends React.Component<Props, State> {
               init={height}
               label={t('vital_signs:height')}
               change={this.updateVitalSignsValue}
-              keyboardType={'number-pad'}
-              index={'height'}
+              keyboardType="number-pad"
+              index="height"
               error={errors.height}
             />
             <CustomInput
               init={weight}
               label={t('vital_signs:weight')}
               change={this.updateVitalSignsValue}
-              keyboardType={'number-pad'}
-              index={'weight'}
+              keyboardType="number-pad"
+              index="weight"
               error={errors.weight}
             />
           </Col>
@@ -84,8 +84,8 @@ export default class VitalSigns extends React.Component<Props, State> {
               init={respiratoryRate}
               label={t('vital_signs:respiratory_rate')}
               change={this.updateVitalSignsValue}
-              keyboardType={'number-pad'}
-              index={'respiratoryRate'}
+              keyboardType="number-pad"
+              index="respiratoryRate"
               error={errors.respiratoryRate}
             />
           </Col>

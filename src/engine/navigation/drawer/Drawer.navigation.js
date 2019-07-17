@@ -1,9 +1,10 @@
+// @flow
 import React, { Component } from 'react';
-import { AppState, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
 
 import { styles } from './Drawer.style';
-import { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../contexts/Application.context';
 
 type Props = NavigationScreenProps & {};
@@ -11,10 +12,6 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 export default class Drawer extends Component<Props, State> {
-  state = {
-    isConnected: false,
-    appState: AppState.currentState,
-  };
 
   logout = async () => {
     const {
@@ -25,29 +22,28 @@ export default class Drawer extends Component<Props, State> {
 
   onPress = (path) => {
     const { navigation } = this.props;
-    navigation.navigate( path );
+    navigation.navigate(path);
   };
 
   render() {
     const {
       navigation,
-      app: { user, t },
-      medicalCase,
+      app: { t },
     } = this.props;
 
     return (
-      <View style={ styles.columns }>
-        <View style={ styles.tools }>
-          <View style={ styles.top }>
+      <View style={styles.columns}>
+        <View style={styles.tools}>
+          <View style={styles.top}>
             <Button
               transparent
               btnDrawer
               marginIcon
             >
               <Icon
-                style={ styles.icon }
+                style={styles.icon}
                 dark
-                type={ 'AntDesign' }
+                type="AntDesign"
                 name="user"
               />
             </Button>
@@ -56,12 +52,12 @@ export default class Drawer extends Component<Props, State> {
               transparent
               btnDrawer
               marginIcon
-              onPress={ () => navigation.navigate( 'Settings' ) }
+              onPress={() => navigation.navigate('Settings')}
             >
               <Icon
-                style={ styles.icon }
+                style={styles.icon}
                 dark
-                type={ 'AntDesign' }
+                type="AntDesign"
                 name="setting"
               />
             </Button>
@@ -70,140 +66,139 @@ export default class Drawer extends Component<Props, State> {
               transparent
               btnDrawer
               marginIcon
-              onPress={ () => navigation.navigate( 'Algorithms' ) }
+              onPress={() => navigation.navigate('Algorithms')}
             >
               <Icon
-                style={ styles.icon }
+                style={styles.icon}
                 dark
-                type={ 'AntDesign' }
+                type="AntDesign"
                 name="sync"
               />
             </Button>
 
           </View>
-          <View style={ styles.bottom }>
-            <Button transparent btnDrawer onPress={ this.logout }>
-              <Icon style={ styles.icon } dark type={ 'AntDesign' } name="logout"/>
+          <View style={styles.bottom}>
+            <Button transparent btnDrawer onPress={this.logout}>
+              <Icon style={styles.icon} dark type="AntDesign" name="logout" />
             </Button>
           </View>
         </View>
 
-        <View style={ styles.medical }>
+        <View style={styles.medical}>
 
-          <View style={ [styles.triage, styles.paddingCategory] }>
-            <Text style={ styles.title }>{ t( 'menu:triage' ) }</Text>
+          <View style={[styles.triage, styles.paddingCategory]}>
+            <Text style={styles.title}>{t('menu:triage')}</Text>
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'Assessments' ) }
+              onPress={() => this.onPress('Assessments')}
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:assessment' ) }</Text>
+              <Text dark style={styles.noLeftPadding}>{t('menu:assessment')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'VitalSigns' ) }
+              onPress={() => this.onPress('VitalSigns')}
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:vital_signs' ) }</Text>
+              <Text dark style={styles.noLeftPadding}>{t('menu:vital_signs')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'Comorbidities' ) }
+              onPress={() => this.onPress('Comorbidities')}
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:comorbidities' ) }</Text>
+              <Text dark style={styles.noLeftPadding}>{t('menu:comorbidities')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'Vaccinations' ) }
+              onPress={() => this.onPress('Vaccinations')}
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:vacciantion_history' ) }</Text>
+              <Text dark style={styles.noLeftPadding}>{t('menu:vacciantion_history')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
-              onPress={ () => this.onPress( 'ChiefComplaints' ) }
+              onPress={() => this.onPress('ChiefComplaints')}
 
             >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:chief_complaint' ) }</Text>
-            </Button>
-          </View>
-
-          <View style={ [styles.consultation, styles.paddingCategory] }>
-            <Text style={ styles.title }>{ t( 'menu:consultation' ) }</Text>
-            <Button
-              transparent
-              btnDrawer
-              onPress={ () => this.onPress( 'MedicalHistory' ) }
-            >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:medical_history' ) }</Text>
-            </Button>
-            <Button
-              transparent
-              btnDrawer
-              onPress={ () => this.onPress( 'PhysicalExams' ) }
-
-            >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:physical_exam' ) }</Text>
-            </Button>
-            <Button
-              transparent
-              btnDrawer
-              onPress={ () => this.onPress( 'Poct' ) }
-
-            >
-              <Text dark style={ styles.noLeftPadding }>{ t( 'menu:poct' ) }</Text>
+              <Text dark style={styles.noLeftPadding}>{t('menu:chief_complaint')}</Text>
             </Button>
           </View>
 
-          <View style={ [styles.tests, styles.paddingCategory] }>
+          <View style={[styles.consultation, styles.paddingCategory]}>
+            <Text style={styles.title}>{t('menu:consultation')}</Text>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => this.onPress('MedicalHistory')}
+            >
+              <Text dark style={styles.noLeftPadding}>{t('menu:medical_history')}</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => this.onPress('PhysicalExams')}
+
+            >
+              <Text dark style={styles.noLeftPadding}>{t('menu:physical_exam')}</Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => this.onPress('Poct')}
+
+            >
+              <Text dark style={styles.noLeftPadding}>{t('menu:poct')}</Text>
+            </Button>
+          </View>
+
+          <View style={[styles.tests, styles.paddingCategory]}>
             <Button
               transparent
               btnDrawer
             >
-              <Text style={ [styles.title, styles.noLeftPadding] } dark>{ t( 'menu:tests' ) }</Text>
+              <Text style={[styles.title, styles.noLeftPadding]} dark>{t('menu:tests')}</Text>
             </Button>
           </View>
 
-          <View style={ [styles.strategy, styles.paddingCategory] }>
+          <View style={[styles.strategy, styles.paddingCategory]}>
             <Button
               transparent
               btnDrawer
             >
-              <Text style={ [styles.title, styles.noLeftPadding] } dark>{ t( 'menu:strategy' ) }</Text>
+              <Text style={[styles.title, styles.noLeftPadding]} dark>{t('menu:strategy')}</Text>
             </Button>
           </View>
 
-          <View style={ [styles.patient, styles.paddingCategory] }>
+          <View style={[styles.patient, styles.paddingCategory]}>
             <Button
               transparent
               btnDrawer
             >
               <Icon
-                style={ [styles.icon, { marginLeft: 0 }] }
+                style={[styles.icon, { marginLeft: 0 }]}
                 white
                 name="search"
               />
-              <Text white>{ t( 'menu:search' ) }</Text>
+              <Text white>{t('menu:search')}</Text>
             </Button>
             <Button
               transparent
               btnDrawer
             >
               <Icon
-                style={ [styles.icon, { marginLeft: 0 }] }
+                style={[styles.icon, { marginLeft: 0 }]}
                 white
                 name="person"
               />
-              <Text white>{ t( 'menu:add' ) }</Text>
+              <Text white>{t('menu:add')}</Text>
             </Button>
           </View>
-
         </View>
       </View>
     );

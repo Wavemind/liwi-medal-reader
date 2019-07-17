@@ -9,7 +9,7 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class CustomCheckbox extends React.Component<Props, State> {
-  state = { medicalCases: [] };
+  state = { };
 
   componentWillMount() {}
 

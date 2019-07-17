@@ -1,4 +1,5 @@
-import React from 'react';
+// @flow
+// import React from 'react';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import Assessments from '../../screens/medicalCasesContainer/triageContainer/assessments';
 import ChiefComplaints from '../../screens/medicalCasesContainer/triageContainer/chiefComplaints';

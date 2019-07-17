@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button, Icon } from 'native-base';
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -6,18 +8,13 @@ import MainScreen from '../../screens/main/Main.screen';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
-import Settings from '../../screens/settings/';
-import WorkCase from '../../screens/medicalCasesContainer/workCase';
+import Settings from '../../screens/settings';
 
 import i18n from '../../utils/i18n';
-
-import { Button, Icon } from 'native-base';
-
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
-import { DropDownMenu } from './DropDownMenuTop.navigation';
+import DropDownMenu from './DropDownMenuTop.navigation';
 
 const Stack = createStackNavigator({
   Home: {
@@ -28,7 +25,7 @@ const Stack = createStackNavigator({
         title: i18n.t('navigation:patient_list'),
         headerLeft: (
           <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-            <Icon red type={'Entypo'} name="menu" large />
+            <Icon red type="Entypo" name="menu" large />
           </Button>
         ),
       };
@@ -55,18 +52,9 @@ const Stack = createStackNavigator({
   PatientUpsert: {
     screen: PatientUpsert,
     path: 'patient/',
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
         title: i18n.t('navigation:patient_upsert'),
-      };
-    },
-  },
-  WorkCase: {
-    screen: WorkCase,
-    path: 'work_case',
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: navigation.getParam('title'),
       };
     },
   },

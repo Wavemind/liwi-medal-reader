@@ -3,7 +3,7 @@
 import { PixelRatio, Platform } from 'react-native';
 
 import pickerTheme from './Picker';
-import variable from './../variables/platform';
+import variable from '../variables/platform';
 import { liwiColors } from '../../../utils/constants';
 
 export default (variables /*: * */ = variable) => {

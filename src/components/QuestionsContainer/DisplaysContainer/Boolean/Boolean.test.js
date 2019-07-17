@@ -1,10 +1,9 @@
 import * as React from 'react';
-import Boolean from './Boolean';
 import renderer from 'react-test-renderer';
-import { shallow, mount } from 'enzyme';
 // setup file
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import Boolean from './Boolean';
 
 configure({ adapter: new Adapter() });
 /*

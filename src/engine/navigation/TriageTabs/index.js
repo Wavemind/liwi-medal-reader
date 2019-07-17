@@ -1,17 +1,5 @@
 import TabsNavigation from './TriageTabs.navigation';
-import { withSessions } from '../../../engine/contexts/Sessions.context';
-import { withApplication } from '../../../engine/contexts/Application.context';
-import { connect } from 'react-redux';
+import { withSessions } from '../../contexts/Sessions.context';
+import { withApplication } from '../../contexts/Application.context';
 
-const mapStateToProps = (state, ownProps) => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {};
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(TabsNavigation)));
+export default withSessions(withApplication(TabsNavigation));

@@ -1,3 +1,5 @@
+// @flow
+// eslint-disable-next-line no-unused-vars
 import * as React from 'react';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import ConsultationTabs from './ConsultationTabs';

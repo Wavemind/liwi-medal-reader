@@ -24,7 +24,6 @@ export default class UnlockSession extends React.Component<Props, State> {
   state = {
     email: __DEV__ ? 'mickael.lacombe@wavemind.ch' : '',
     code: __DEV__ ? '123456q' : '',
-    session: {},
     errors: null,
   };
 
@@ -49,8 +48,6 @@ export default class UnlockSession extends React.Component<Props, State> {
     let user = _.find(sessions, (session) => {
       return session.data.email === email;
     });
-
-    console.log(code, email, sessions);
 
     if (user !== undefined) {
       let result = await app.unLockSession(user.data.id, code);
@@ -84,18 +81,18 @@ export default class UnlockSession extends React.Component<Props, State> {
               <CustomInput
                 init={email}
                 change={this.changeValueFromInput}
-                index={'email'}
+                index='email'
                 placeholder={i18n.t('unlock_session:email')}
-                condensed={true}
+                condensed
                 error={errors}
               />
               <CustomInput
                 init={code}
-                index={'code'}
+                index='code'
                 change={this.changeValueFromInput}
-                secureTextEntry={true}
+                secureTextEntry
                 placeholder={i18n.t('unlock_session:code')}
-                condensed={true}
+                condensed
               />
             </Form>
             <Button full onPress={this.unLock} style={styles.button}>
@@ -105,7 +102,7 @@ export default class UnlockSession extends React.Component<Props, State> {
         </View>
         <View bottom-view margin-auto padding-auto>
           <View>
-            <Button onPress={this.newSessionScreen} disabled={!isConnected} testID={'new_session'}>
+            <Button onPress={this.newSessionScreen} disabled={!isConnected} testID='new_session'>
               <Text>{i18n.t('unlock_session:new_session')}</Text>
             </Button>
             {!isConnected ? (

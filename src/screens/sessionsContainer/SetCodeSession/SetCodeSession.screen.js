@@ -4,6 +4,7 @@ import * as React from 'react';
 import { sha256 } from 'js-sha256';
 import type { NavigationScreenProps } from 'react-navigation';
 import { Button, Form, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
 import { getSession } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2 } from '../../../template/layout';
@@ -11,7 +12,6 @@ import { styles } from './SetCodeSession.style';
 import i18n from '../../../utils/i18n';
 import { saltHash } from '../../../../frontend_service/constants';
 import CustomInput from '../../../components/InputContainer/CustomInput';
-import { ScrollView } from 'react-native';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 type State = {
@@ -29,7 +29,8 @@ export default class SetCodeSession extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    let session = await getSession(this.props.navigation.getParam('user_id'));
+    const {navigation} = this.props;
+    let session = await getSession(navigation.getParam('user_id'));
     this.setState({ session });
     this.validateCode();
   }
@@ -85,29 +86,29 @@ export default class SetCodeSession extends React.Component<Props, State> {
       <View flex-container-column>
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
-            <LiwiTitle2 noBorder testID={'welcome'}>
+            <LiwiTitle2 noBorder testID="welcome">
               {i18n.t('code_session_screen:title')} {session.data.first_name} {session.data.last_name}
             </LiwiTitle2>
             <Form>
               <CustomInput
                 init={code}
                 change={this.changeValueFromInput}
-                index={'code'}
-                secureTextEntry={true}
+                index="code"
+                secureTextEntry
                 placeholder={i18n.t('code_session_screen:your_code')}
-                condensed={true}
+                condensed
                 error={error}
               />
               <CustomInput
                 init={codeConfirmation}
                 change={this.changeValueFromInput}
-                index={'codeConfirmation'}
-                secureTextEntry={true}
+                index="codeConfirmation"
+                secureTextEntry
                 placeholder={i18n.t('code_session_screen:type_your_code')}
-                condensed={true}
+                condensed
               />
               <Button
-                testID={'set_code'}
+                testID="set_code"
                 full
                 style={styles.marginTop}
                 onPress={() => this.setLocalCode()}

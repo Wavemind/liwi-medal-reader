@@ -14,14 +14,14 @@ import {
   View,
 } from 'native-base';
 
-import { styles } from './PatientList.style';
-import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getArray, getItems } from '../../../engine/api/LocalStorage';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 import includes from 'lodash/includes';
-import { medicalCaseStatus } from '../../../../frontend_service/constants';
 import { NavigationScreenProps } from 'react-navigation';
+import { styles } from './PatientList.style';
+import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
+import { getArray, getItems } from '../../../engine/api/LocalStorage';
+import { medicalCaseStatus } from '../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 
 type Props = NavigationScreenProps & {};
@@ -79,8 +79,9 @@ export default class PatientList extends React.Component<Props, State> {
 
   // Update state switch asc / desc
   orderByName = () => {
+    const { orderByName }= this.state;
     this.setState({
-      orderByName: this.state.orderByName === 'asc' ? 'desc' : 'asc',
+      orderByName: orderByName === 'asc' ? 'desc' : 'asc',
     });
   };
 
@@ -149,7 +150,7 @@ export default class PatientList extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View padding-auto>
-          <LiwiTitle2 testID={'patient_list'} noBorder>{t('patient_list:search')}</LiwiTitle2>
+          <LiwiTitle2 testID="patient_list" noBorder>{t('patient_list:search')}</LiwiTitle2>
           <View flex-container-row>
             <Item round style={styles.input}>
               <Icon active name="search" />
@@ -157,7 +158,7 @@ export default class PatientList extends React.Component<Props, State> {
             </Item>
             {algorithms.length > 0 ? (
               <Button
-                testID={'create_patient'}
+                testID="create_patient"
                 center
                 rounded
                 light
@@ -165,7 +166,7 @@ export default class PatientList extends React.Component<Props, State> {
                 onPress={this.newPatient}
                 disabled={isGeneratingPatient}
               >
-                <Icon type={'MaterialCommunityIcons'} name="plus" white />
+                <Icon type="MaterialCommunityIcons" name="plus" white />
               </Button>
             ) : null}
           </View>
@@ -181,10 +182,10 @@ export default class PatientList extends React.Component<Props, State> {
               onValueChange={this.filterBy}
             >
               <Picker.Item label="" value="" />
-              {statuses.map((status, index) => (
+              {statuses.map((status) => (
                 <Picker.Item
                   label={t(`patient_list:${status}`)}
-                  key={index}
+                  key={status + 'status_list'}
                   value={status}
                 />
               ))}
@@ -211,12 +212,12 @@ export default class PatientList extends React.Component<Props, State> {
           {medicalCases.length > 0 ? (
             [
               orderedFilteredMedicalCases.length > 0 ? (
-                <List block key={'patientList'}>
-                  {orderedFilteredMedicalCases.map((medicalCase, index) => (
+                <List block key="patientList">
+                  {orderedFilteredMedicalCases.map((medicalCase) => (
                     <ListItem
                       rounded
                       block
-                      key={index}
+                      key={medicalCase.id + '_patient_list'}
                       spaced
                       onPress={() =>
                         navigation.navigate('PatientProfile', {

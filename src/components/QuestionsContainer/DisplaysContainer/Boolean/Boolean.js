@@ -10,21 +10,24 @@ type State = {};
 
 export default class Boolean extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-    return nextProps.question.answer !== this.props.question.answer;
+    const { question }= this.props;
+    return nextProps.question.answer !== question.answer;
   }
 
   _handleClick = (answer) => {
+    const { question, setQuestion }= this.props;
     let newAnswer = Number(answer);
 
-    if (answer === this.props.question.answer) {
+    if (answer === question.answer) {
       newAnswer = null;
     }
 
-    this.props.setQuestion(this.props.question.id, newAnswer);
+    setQuestion(question.id, newAnswer);
   };
 
   render = () => {
-    const { answer, answers } = this.props.question;
+    const { question }= this.props;
+    const { answer, answers } = question;
 
     const idYes = Number(Object.keys(answers)[0]);
     const idNo = Number(Object.keys(answers)[1]);

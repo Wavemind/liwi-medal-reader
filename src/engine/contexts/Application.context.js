@@ -2,13 +2,13 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import find from 'lodash/find';
-import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 import { sha256 } from 'js-sha256';
-import { saltHash } from '../../../frontend_service/constants';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
-import { sessionsDuration } from '../../utils/constants';
 import isEmpty from 'lodash/isEmpty';
+import { AppState, PermissionsAndroid } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import { sessionsDuration } from '../../utils/constants';
 
 import NavigationService from '../navigation/Navigation.service';
 
@@ -20,8 +20,8 @@ import {
   setItem,
   updateSession,
 } from '../api/LocalStorage';
-import { AppState, PermissionsAndroid } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
+import { saltHash } from '../../../frontend_service/constants';
+import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
 
@@ -59,6 +59,27 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     super(props);
     this.initContext();
   }
+
+  state = {
+    name: 'App',
+    lang: 'fr',
+    set: this.setValState,
+    logged: false,
+    initContext: this.initContext,
+    user: {},
+    logout: this.logout,
+    unLockSession: this.unLockSession,
+    lockSession: this.lockSession,
+    isConnected: true,
+    setMedicalCase: this.setMedicalCase,
+    medicalCase: {},
+    appState: AppState.currentState,
+    setModal: this.setModal,
+    isModalVisible: false,
+    contentModal: 'initial',
+    initialPosition: {},
+    t: (translate) => i18n.t(translate),
+  };
 
   componentWillMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
@@ -104,20 +125,21 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // If the app is active or not
   _handleAppStateChange = (nextAppState) => {
+    const { appState } = this.state;
     if (
-      this.state.appState.match(/inactive|background/) &&
+      appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      console.log('---> Liwi is come back from background', nextAppState);
+      console.warn('---> Liwi came back from background', nextAppState);
       this._fetchDataWhenChange();
       this.setState({ appState: nextAppState });
     }
 
     if (
-      this.state.appState.match(/active/) &&
+      appState.match(/active/) &&
       nextAppState.match(/inactive|background/)
     ) {
-      console.log('---> Liwi is hidding');
+      console.warn('---> Liwi is hidding');
       this.setState({ appState: nextAppState });
     }
   };
@@ -175,7 +197,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   // Log out
   // TODO : check if duplicated from Session context is really necessary
   logout = async () => {
-    await destroySession(this.state.user.data.id);
+    const { user } = this.state;
+    await destroySession(user.data.id);
     this.setState({
       user: {},
       logged: false,
@@ -230,7 +253,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // Unlock session from local credentials
   unLockSession = async (id: number, code: string) => {
-    const { t } = this.state;
     let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
 
@@ -263,27 +285,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       isModalVisible: true,
       contentModal: content,
     });
-  };
-
-  state = {
-    name: 'App',
-    lang: 'fr',
-    set: this.setValState,
-    logged: false,
-    initContext: this.initContext,
-    user: {},
-    logout: this.logout,
-    unLockSession: this.unLockSession,
-    lockSession: this.lockSession,
-    isConnected: true,
-    setMedicalCase: this.setMedicalCase,
-    medicalCase: {},
-    appState: AppState.currentState,
-    setModal: this.setModal,
-    isModalVisible: false,
-    contentModal: 'initial',
-    initialPosition: {},
-    t: (translate) => i18n.t(translate),
   };
 
   render() {

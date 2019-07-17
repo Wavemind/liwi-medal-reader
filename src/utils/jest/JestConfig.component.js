@@ -1,3 +1,6 @@
+// @flow
+/* eslint-disable*/
+
 /** @format */
 import * as React from 'react';
 
@@ -31,7 +34,6 @@ console.disableYellowBox = true;
 
 export class JestWithContext extends React.Component<Props, State> {
   componentWillMount() {
-    console.log('call here');
   }
 
   render() {

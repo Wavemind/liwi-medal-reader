@@ -1,11 +1,10 @@
 // @flow
-/* eslint-disable react/no-unused-state */
-
+/* eslint-disable react/no-unused-state*/
 import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
 import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
 import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
-import { i18n } from '../../utils/i18n';
+import i18n from '../../utils/i18n';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
@@ -29,6 +28,15 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
     super(props);
     this.initContext();
   }
+
+  state = {
+    set: this.setValState,
+    initContext: this.initContext,
+    newSession: this.newSession,
+    sessions: [],
+    setLocalCode: this.setLocalCode,
+    logout: this.logout,
+  };
 
   // Set value in context
   setValState = async (prop: any, value: any) => {
@@ -79,7 +87,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
 
 
             return fetchAlgorithms(credentials.data.id)
-              .then(async (done) => {
+              .then(async () => {
                 resolve(credentials);
               })
               .catch((err) => {
@@ -92,15 +100,6 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
         }
       }
     });
-  };
-
-  state = {
-    set: this.setValState,
-    initContext: this.initContext,
-    newSession: this.newSession,
-    sessions: [],
-    setLocalCode: this.setLocalCode,
-    logout: this.logout,
   };
 
   render() {

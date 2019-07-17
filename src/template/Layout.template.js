@@ -8,9 +8,9 @@ import material from 'template/liwi/variables/material';
 import liwi from 'template/liwi/styles';
 import merge from 'deepmerge';
 import { RootView } from 'template/layout';
-import { withApplication } from '../engine/contexts/Application.context';
-import { AppState, Platform, StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { Container, Root, StyleProvider } from 'native-base';
+import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
 
 type Props = {
@@ -21,9 +21,6 @@ type Props = {
 };
 
 class LayoutTemplate extends React.Component<Props> {
-  state = {
-    appState: AppState.currentState,
-  };
 
   render() {
     const {

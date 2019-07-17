@@ -1,11 +1,12 @@
+// @flow
 import React, { Component } from 'react';
 import { Text, View } from 'native-base';
-import { styles } from './ConsultationTabs.style';
 import { TouchableOpacity } from 'react-native';
-import type { StateApplicationContext } from '../../contexts/Application.context';
 import { NavigationScreenProps } from 'react-navigation';
+import { styles } from './ConsultationTabs.style';
+import type { StateApplicationContext } from '../../contexts/Application.context';
 
-type Props = NavigationScreenProps & {};
+type Props = NavigationScreenProps & { app: StateApplicationContext};
 
 type State = StateApplicationContext & {};
 
@@ -21,7 +22,8 @@ export default class ConsultationTabs extends Component<Props, State> {
   };
 
   onPress = (path) => {
-    this.props.navigation.navigate(path);
+    const {navigation} = this.props;
+    navigation.navigate(path);
   };
 
   render() {

@@ -1,7 +1,5 @@
 // @flow
 
-import variable from './../variables/platform';
-
 export default () => {
   const rightTheme = {
     'NativeBase.Button': {

@@ -1,12 +1,11 @@
+/* eslint-disable */
 import * as React from 'react';
-import PatientList from './PatientList.screen';
 import renderer from 'react-test-renderer';
-import { AsyncStorage } from 'react-native';
-import { JestWithContext } from '../../../utils/jest/JestConfig.component';
-import { shallow, mount } from 'enzyme';
 // setup file
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { JestWithContext } from '../../../utils/jest/JestConfig.component';
+import PatientList from './PatientList.screen';
 import { jestWithAllProps } from '../../../utils/jest/JestDefaultProps';
 
 configure({ adapter: new Adapter() });
@@ -27,7 +26,6 @@ describe('PatientList', () => {
     const instance = component.getInstance();
     await instance.filterMedicalCases();
     // cant use asyncstorage
-    console.log(component.root);
     expect(component.toJSON()).toMatchSnapshot();
   });
 });
