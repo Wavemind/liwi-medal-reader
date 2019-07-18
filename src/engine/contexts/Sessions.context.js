@@ -29,20 +29,6 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
     this.initContext();
   }
 
-  state = {
-    set: this.setValState,
-    initContext: this.initContext,
-    newSession: this.newSession,
-    sessions: [],
-    setLocalCode: this.setLocalCode,
-    logout: this.logout,
-  };
-
-  // Set value in context
-  setValState = async (prop: any, value: any) => {
-    await this.setState({ [prop]: value });
-  };
-
   // Log out
   logout = async (userId: number) => {
     await destroySession(userId);
@@ -100,6 +86,20 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
         }
       }
     });
+  };
+
+  state = {
+    set: this.setValState,
+    initContext: this.initContext,
+    newSession: this.newSession,
+    sessions: [],
+    setLocalCode: this.setLocalCode,
+    logout: this.logout,
+  };
+
+  // Set value in context
+  setValState = async (prop: any, value: any) => {
+    await this.setState({ [prop]: value });
   };
 
   render() {
