@@ -8,6 +8,7 @@ import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings/';
 import WorkCase from '../../screens/medicalCasesContainer/workCase';
+import NavigationService from './Navigation.service';
 
 import i18n from '../../utils/i18n';
 
@@ -29,6 +30,9 @@ import PatientSummary from '../../screens/patientsContainer/patientSummary';
 const Stack = createStackNavigator({
   Home: {
     screen: MainScreen,
+    params: {
+      showSummary: false,
+    },
     path: 'home',
     navigationOptions: ({ navigation }) => {
       return {
@@ -44,6 +48,9 @@ const Stack = createStackNavigator({
   PatientList: {
     screen: PatientList,
     path: 'patientList',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: ({ navigation }) => {
       return {
         title: i18n.t('navigation:patient_list'),
@@ -53,6 +60,9 @@ const Stack = createStackNavigator({
   PatientProfile: {
     screen: PatientProfile,
     path: 'patientProfile',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: ({ navigation }) => {
       return {
         title: i18n.t('navigation:patient_profile'),
@@ -150,16 +160,36 @@ const HomeWithModal = createStackNavigator(
 
 let StackWithBottomNavigation = createBottomTabNavigator(
   {
-    Home: { screen: HomeWithModal },
+    RootBottomTab: { screen: HomeWithModal },
   },
   {
-    tabBarComponent: PatientProfileMenu,
+    tabBarComponent: (props) => {
+      let currentRoute = NavigationService.getCurrentRoute();
+
+      return <PatientProfileMenu  {...props}  />;
+    },
   }
 );
 
+StackWithBottomNavigation.navigationOptions = ({ navigation }) => {
+  let showSummary = navigation.state.routes[navigation.state.index];
+
+  let tabBarVisible = true;
+  if (
+    navigation.state.index > 0 &&
+    navigation.state.routes[1].routeName === 'Detailscreen'
+  ) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
 export default () => {
   return createDrawerNavigator(
-    { Home: { screen: StackWithBottomNavigation } },
+    { RootDrawer: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
       contentComponent: (props) => <Drawer {...props} />,

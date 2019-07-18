@@ -8,14 +8,23 @@ function setTopLevelNavigator(navigatorRef) {
 
 function navigate(routeName, params) {
   _navigator.dispatch(
-    NavigationActions.navigate( {
+    NavigationActions.navigate({
       routeName,
       params,
-    } ),
+    })
   );
+}
+
+function getCurrentRoute() {
+  let route = _navigator.state.nav;
+  while (route.routes) {
+    route = route.routes[route.index];
+  }
+  return route;
 }
 
 export default {
   navigate,
   setTopLevelNavigator,
+  getCurrentRoute,
 };

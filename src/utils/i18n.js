@@ -31,6 +31,9 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        summary: {
+          diagnoses: 'Diagnoses'
+        },
         assessment: {
           title: 'First look assessment',
         },
@@ -193,6 +196,9 @@ i18n
         },
       },
       fr: {
+        summary: {
+          diagnoses: 'Diagnostic'
+        },
         notifications: {
           empty_code: 'Votre code est vide, veuillez l\'écrire',
           invalid_code: ' Votre code local n\'est pas valide, veuillez réessayer.',
