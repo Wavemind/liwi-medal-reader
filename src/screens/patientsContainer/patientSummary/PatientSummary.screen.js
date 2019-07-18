@@ -7,7 +7,6 @@ import { styles } from './PatientSummary.style';
 import { liwiColors } from '../../../utils/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTitle2 } from '../../../template/layout';
-import { NavigationScreenProps } from 'react-navigation';
 import BackButton from '../../../components/uix/backButton';
 
 type Props = NavigationScreenProps & {};
@@ -39,7 +38,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           <Text>Patient info here</Text>
           <Tabs>
             <Tab
-              key={'tabBatches'}
+              key="tabBatches"
               heading={t('summary:diagnoses')}
               tabStyle={{
                 backgroundColor: liwiColors.redColor,

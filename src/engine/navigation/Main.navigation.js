@@ -1,4 +1,10 @@
 import React from 'react';
+import { Button, Icon } from 'native-base';
+import {
+  createDrawerNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -11,11 +17,12 @@ import NavigationService from './Navigation.service';
 
 import i18n from '../../utils/i18n';
 
+
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
 import DropDownMenu from './DropDownMenuTop.navigation';
-import PatientProfileMenu from './patientProfileMenu';
+import PatientSummaryMenu from './patientSummaryMenu';
 import PatientSummary from '../../screens/patientsContainer/patientSummary';
 
 // we need to use i18n directly beacause we cant be connect to contexte
