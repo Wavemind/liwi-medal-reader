@@ -3,14 +3,9 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import LottieView from 'lottie-react-native';
+import { Button, Form, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
 import { styles } from './NewSession.style';
-import {
-  Button,
-  Form,
-  Text,
-  View,
-} from 'native-base';
-import { Keyboard, ScrollView } from 'react-native';
 import CustomInput from '../../../components/InputContainer/CustomInput';
 import { LiwiTitle2 } from '../../../template/layout';
 
@@ -27,36 +22,11 @@ export default class NewSession extends React.Component<Props, State> {
     password: __DEV__ ? '123456' : '',
     loading: false,
     success: false,
-    id: null,
-    keyboard: false,
-    connectionMethod: 'server',
+    id: null
   };
 
-  componentDidMount() {
-    this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this._keyboardDidShow,
-    );
-    this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      this._keyboardDidHide,
-    );
-  }
 
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
-  _keyboardDidShow = () => {
-    this.setState({ keyboard: true });
-  };
-
-  _keyboardDidHide = () => {
-    this.setState({ keyboard: false });
-  };
-
-  changeValueFromInput = (index, value) => {
+    changeValueFromInput = (index, value) => {
     this.setState({ [index]: value });
   };
 
@@ -88,47 +58,52 @@ export default class NewSession extends React.Component<Props, State> {
           this.setState({ success: false, loading: false });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ success: false, loading: false });
       });
   };
 
   render() {
-    const {
-      email,
-      password,
-      loading,
-      success,
-      id,
-    } = this.state;
+    const { email, password, loading, success, id } = this.state;
 
     const {
       navigation,
       app: { isConnected, t },
     } = this.props;
 
+    if (success) {
+      setTimeout(() => {
+        navigation.navigate('SetCodeSession', {
+          user_id: id,
+        });
+      }, 3000);
+    }
+
     return (
       <View flex-container-column>
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
-            <LiwiTitle2 noBorder center>{t('new_session:title')}</LiwiTitle2>
+            <LiwiTitle2 noBorder center>
+              {t('new_session:title')}
+            </LiwiTitle2>
             <Form>
               <CustomInput
                 init={email}
                 change={this.changeValueFromInput}
-                index={'email'}
+                index='email'
                 placeholder={t('email')}
-                condensed={true}
+                condensed
               />
               <CustomInput
                 init={password}
                 change={this.changeValueFromInput}
-                index={'password'}
-                secureTextEntry={true}
+                index='password'
                 placeholder={t('password')}
-                condensed={true}
+                secureTextEntry
+                condensed
               />
               <Button
+                testID='connect_main'
                 full
                 style={styles.marginTop}
                 onPress={() => this.signIn()}

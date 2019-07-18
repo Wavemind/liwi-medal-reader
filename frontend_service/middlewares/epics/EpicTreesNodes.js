@@ -187,7 +187,7 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
         return of(...actions, setQuestion(qs.id, answeredId));
       } else {
         // emit nothing....
-        return of();
+        return of(...[]);
       }
     })
   );
@@ -198,7 +198,7 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
 export const epicCatchDiagnosisChildren = (action$, state$) =>
   action$.pipe(
     ofType(actions.MC_DIAGNOSIS_CHILDREN),
-    filter((action) => {
+    switchMap((action) => {
       const { indexDD, indexDiagnosis } = action.payload;
       const child = state$.value.nodes[indexDiagnosis];
 
@@ -212,6 +212,8 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
 
       console.log(indexDD, '-> conditon of this final node', condition);
       // Check the condition of the children
+      return of(...[]);
+
     })
     // TODO : Trigger Treatment/Management handling
   );

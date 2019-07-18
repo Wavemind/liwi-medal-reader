@@ -23,5 +23,5 @@ export const stringifyDeepRef = (item) => {
   });
   cache = null; // Enable garbage collection
 
-  return replacer
-}
+  return replacer;
+};

@@ -1,19 +1,18 @@
 // @flow
 
 import React from 'react';
-import Layout from './template/Layout.template';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ApplicationProvider } from 'engine/contexts/Application.context';
 import { SessionsProvider } from 'engine/contexts/Sessions.context';
 import KeepAwake from 'react-native-keep-awake';
 
+import WavemindTools from 'utils/WavemindTools';
 import { persistor, store } from '../frontend_service/store';
 import CustomModal from './components/CustomModal';
-import { getItem, setItem } from './engine/api/LocalStorage';
+import { getItem } from './engine/api/LocalStorage';
 
-import WavemindTools from 'utils/WavemindTools';
-import { algo } from './engine/api/algo_temp';
+import Layout from './template/Layout.template';
 
 Array.prototype.first = function() {
   return this[0];
@@ -48,14 +47,11 @@ export default class Root extends React.Component {
     if (settings !== null && settings.app !== undefined && settings.app.awake) {
       KeepAwake.activate();
     }
-
     // Set local JSON file if server is down for development
     // await setItem('algorithmes', [algo]);
-
   }
 
   render() {
-
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

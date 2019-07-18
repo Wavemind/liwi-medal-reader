@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Input, Item, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
-import { styles } from './Numeric.style';
 
 type Props = NavigationScreenProps & {};
 
@@ -12,10 +11,10 @@ type State = {};
 
 export default class Numeric extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-
+    const { question } = this.props;
     return (
-      nextProps.question.answer !== this.props.question.answer ||
-      nextProps.question.value !== this.props.question.value
+      nextProps.question.answer !== question.answer ||
+      nextProps.question.value !== question.value
     );
   }
 
@@ -25,13 +24,17 @@ export default class Numeric extends React.Component<Props, State> {
     });
 
   _onEndEditing = (value) => {
-    if (value.nativeEvent.text !== this.props.question.value) {
-      this.props.setQuestion(this.props.question.id, value.nativeEvent.text);
+    const { setQuestion, question } = this.props;
+    if (value.nativeEvent.text !== question.value) {
+      setQuestion(question.id, value.nativeEvent.text);
     }
   };
 
   render() {
     const { question } = this.props;
+    const { style } = this.state;
+
+
     let keyboardType;
     switch (question.value_format) {
       case 'Integer':
@@ -49,7 +52,8 @@ export default class Numeric extends React.Component<Props, State> {
           <Input
             keyboardType={keyboardType}
             question
-            defaultValue={String(this.props.question.value)}
+            defaultValue={String(question.value)}
+            style={style}
             onFocus={this._focus}
             onEndEditing={this._onEndEditing}
           />

@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Button,
-  Icon,
-  Fab,
-} from 'native-base';
+import { Button, Fab, Icon, View } from 'native-base';
 import { clearLocalStorage, clearPatients } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 
@@ -17,17 +12,18 @@ export default class WavemindTools extends Component {
   }
 
   render() {
+    const {active} = this.state;
     return (
       <View>
         <Fab
-          active={this.state.active}
+          active={active}
           direction="up"
           containerStyle={{}}
           style={{ backgroundColor: '#5067FF' }}
           position="bottomRight"
-          onPress={() => this.setState({ active: !this.state.active })}
+          onPress={() => this.setState({ active: !active })}
         >
-          <Icon name="developer-mode" type={'MaterialIcons'} />
+          <Icon name="developer-mode" type='MaterialIcons' />
           <Button
             blue
             onPress={async () => {
@@ -36,7 +32,7 @@ export default class WavemindTools extends Component {
               this.forceUpdate();
             }}
           >
-            <Icon type={'AntDesign'} name="deleteusergroup" />
+            <Icon type='AntDesign' name="deleteusergroup" />
           </Button>
           <Button
             blue
@@ -46,7 +42,7 @@ export default class WavemindTools extends Component {
               this.forceUpdate();
             }}
           >
-            <Icon type={'MaterialCommunityIcons'} name="delete-forever" />
+            <Icon type='MaterialCommunityIcons' name="delete-forever" />
           </Button>
         </Fab>
       </View>

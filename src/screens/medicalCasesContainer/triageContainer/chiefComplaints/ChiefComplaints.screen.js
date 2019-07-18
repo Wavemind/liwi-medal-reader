@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Text, View, Content } from 'native-base';
+import { Button, Content, Text, View } from 'native-base';
 import { styles } from './ChiefComplaints.style';
 import { categories } from '../../../../../frontend_service/constants';
 
@@ -54,7 +54,8 @@ export default class ChiefComplaint extends React.Component<Props, State> {
 
     return (
       <Button
-        onPress={() => {}}
+        onPress={() => {
+        }}
         style={Object.assign(
           {
             width: sizeButton,
@@ -71,11 +72,7 @@ export default class ChiefComplaint extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      medicalCase,
-      app: { t },
-    } = this.props;
-
+    const { medicalCase, app: { t } } = this.props;
     let questions = medicalCase.nodes.filterByCategory(
       categories.chiefComplain
     );

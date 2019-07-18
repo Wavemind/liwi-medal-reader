@@ -23,7 +23,6 @@ export default class UnlockSession extends React.Component<Props, State> {
   state = {
     email: __DEV__ ? 'mickael.lacombe@wavemind.ch' : '',
     code: __DEV__ ? '123456q' : '',
-    session: {},
     errors: null,
   };
 
@@ -82,28 +81,28 @@ export default class UnlockSession extends React.Component<Props, State> {
               <CustomInput
                 init={email}
                 change={this.changeValueFromInput}
-                index={'email'}
+                index='email'
                 placeholder={t('unlock_session:email')}
-                condensed={true}
+                condensed
                 error={errors}
               />
               <CustomInput
                 init={code}
-                index={'code'}
+                index='code'
                 change={this.changeValueFromInput}
-                secureTextEntry={true}
+                secureTextEntry
                 placeholder={t('unlock_session:code')}
-                condensed={true}
+                condensed
               />
             </Form>
-            <Button full onPress={this.unLock} styles={styles.button}>
+            <Button full onPress={this.unLock} style={styles.button}>
               <Text>{t('unlock_session:unlock')}</Text>
             </Button>
           </ScrollView>
         </View>
         <View bottom-view margin-auto padding-auto>
           <View>
-            <Button onPress={this.newSessionScreen} disabled={!isConnected}>
+            <Button onPress={this.newSessionScreen} disabled={!isConnected} testID='new_session'>
               <Text>{t('unlock_session:new_session')}</Text>
             </Button>
             {!isConnected ? (

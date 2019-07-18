@@ -1,19 +1,14 @@
-import Drawer from './Drawer.navigation';
-import { withApplication } from '../../contexts/Application.context';
 import { withSessions } from 'engine/contexts/Sessions.context';
 import { connect } from 'react-redux';
+import Drawer from './Drawer.navigation';
+import { withApplication } from '../../contexts/Application.context';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     medicalCase: state,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {};
-};
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)( withSessions( withApplication( Drawer ) ) );
+  mapStateToProps
+)(withSessions(withApplication(Drawer)));

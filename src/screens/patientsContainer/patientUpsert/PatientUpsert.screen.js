@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
+import { NavigationActions, NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { Button, Col, Text, View } from 'native-base';
 import * as _ from 'lodash';
@@ -11,7 +11,6 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
-import { NavigationActions } from 'react-navigation';
 
 import { styles } from './PatientUpsert.style';
 import { getItemFromArray, getMedicalCase } from '../../../engine/api/LocalStorage';
@@ -39,13 +38,37 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   }
 
-  // Update patient value in storage and redirect to patient profile
-  updatePatient = async () => {
+
+  // Get patient with id in navigation props
+  async getPatient() {
     const { navigation } = this.props;
-    await this.savePatient();
-    navigation.dispatch(
-      NavigationActions.back('patientProfile', { id: this.state.patient.id })
-    );
+    let id = navigation.getParam('idPatient');
+
+    let patient = await getItemFromArray('patients', 'id', id);
+    patient = new PatientModel(patient);
+
+    this.setState({ patient, firstRender: true });
+  }
+
+  // Save patient and redirect to medical case
+  saveNewCase = async () => {
+    const { idLastMedicalCase, patient } = this.state;
+    let result = await this.savePatient();
+
+    if (result) {
+      // Set medicalCase in reducer
+      const { setMedicalCase, navigation } = this.props;
+      let medicalCase = await getMedicalCase(idLastMedicalCase);
+      medicalCase.patient = patient;
+
+      await setMedicalCase(medicalCase);
+
+      navigation.navigate('Triage', {
+        title: `${medicalCase.patient.firstname} ${
+          medicalCase.patient.lastname
+          }`,
+      });
+    }
   };
 
   // Update state value of patient
@@ -65,38 +88,15 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   };
 
-  // Save patient and redirect to medical case
-  saveNewCase = async () => {
-    const { idLastMedicalCase, patient } = this.state;
-    let result = await this.savePatient();
-
-    if (result) {
-      // Set medicalCase in reducer
-      const { setMedicalCase, navigation } = this.props;
-      let medicalCase = await getMedicalCase(idLastMedicalCase);
-      medicalCase.patient = patient;
-
-      await setMedicalCase(medicalCase);
-
-      navigation.navigate('Triage', {
-        title: `${medicalCase.patient.firstname} ${
-          medicalCase.patient.lastname
-        }`,
-      });
-    }
-  };
-
-
-  // Get patient with id in navigation props
-  async getPatient() {
+  // Update patient value in storage and redirect to patient profile
+  updatePatient = async () => {
     const { navigation } = this.props;
-    let id = navigation.getParam('idPatient');
-
-    let patient = await getItemFromArray('patients', 'id', id);
-    patient = new PatientModel(patient);
-
-    this.setState({ patient, firstRender: true });
-  }
+    const { patient: { id } } = this.state;
+    await this.savePatient();
+    navigation.dispatch(
+      NavigationActions.back('patientProfile', { id })
+    );
+  };
 
   // Generate medical case for current patient
   generateMedicalCase = async (patientId) => {
@@ -158,18 +158,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
               init={firstname}
               label={t('patient:first_name')}
               change={updatePatientValue}
-              index={'firstname'}
-              iconName={'user'}
-              iconType={'AntDesign'}
+              index="firstname"
+              iconName="user"
+              iconType="AntDesign"
               error={errors.firstname}
             />
             <CustomInput
               init={lastname}
               label={t('patient:last_name')}
               change={updatePatientValue}
-              index={'lastname'}
-              iconName={'user'}
-              iconType={'AntDesign'}
+              index="lastname"
+              iconName="user"
+              iconType="AntDesign"
               error={errors.lastname}
             />
           </Col>
@@ -178,13 +178,13 @@ export default class PatientUpsert extends React.Component<Props, State> {
               init={gender}
               label={t('patient:gender')}
               change={updatePatientValue}
-              index={'gender'}
+              index="gender"
               label1={t('patient:male')}
               label2={t('patient:female')}
-              value1={'male'}
-              value2={'female'}
-              iconName={'human-male-female'}
-              iconType={'MaterialCommunityIcons'}
+              value1="male"
+              value2="female"
+              iconName="human-male-female"
+              iconType="MaterialCommunityIcons"
               error={errors.gender}
             />
           </Col>
@@ -193,9 +193,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
               init={birthdate}
               label={t('patient:birth_date')}
               change={updatePatientValue}
-              index={'birthdate'}
-              iconName={'birthday-cake'}
-              iconType={'FontAwesome'}
+              index="birthdate"
+              iconName="birthday-cake"
+              iconType="FontAwesome"
               error={errors.birthdate}
             />
           </Col>

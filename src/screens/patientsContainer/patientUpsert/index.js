@@ -1,16 +1,16 @@
+import { connect } from 'react-redux';
 import PatientUpsert from './PatientUpsert.screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
-import { connect } from 'react-redux';
-import { setMedicalCase, upsertPatient } from '../../../../frontend_service/actions/creators.actions';
+import { setMedicalCase } from '../../../../frontend_service/actions/creators.actions';
 
-const mapStateToProps = (medicalCase, ownProps) => {
+const mapStateToProps = (medicalCase) => {
   return {
     medicalCase,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setMedicalCase: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
   };

@@ -2,17 +2,7 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import {
-  Body,
-  Button,
-  Icon,
-  Left,
-  List,
-  ListItem,
-  Right,
-  Switch,
-  Text,
-} from 'native-base';
+import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Text } from 'native-base';
 import { ScrollView } from 'react-native';
 import { getItem, setItem } from '../../engine/api/LocalStorage';
 
@@ -50,19 +40,20 @@ export default class Settings extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    let settings = await getItem('settings');
-    if (settings !== null) {
+    const { settings } = this.state;
+    let localStorageSettings = await getItem('settings');
+    if (localStorageSettings !== null) {
       this.setState({
         settings: {
-          ...this.state.settings,
           ...settings,
+          ...localStorageSettings,
         },
       });
     }
   }
 
   changeSettings = (setting, item) => {
-    const value = this.state.settings;
+    const { settings, settings: { value } } = this.state;
     value[setting][item] = !value[setting][item];
 
     this.setState(
@@ -70,7 +61,7 @@ export default class Settings extends React.Component<Props, State> {
         settings: value,
       },
       async () => {
-        await setItem('settings', this.state.settings);
+        await setItem('settings', settings);
       }
     );
   };
@@ -81,7 +72,7 @@ export default class Settings extends React.Component<Props, State> {
 
     return (
       <ScrollView>
-        <List>
+        <List testID="settings_view">
           <ListItem itemDivider>
             <Text white bold>
               {t('tests')}
@@ -131,7 +122,7 @@ export default class Settings extends React.Component<Props, State> {
               <Button iconLeft iconMenu>
                 <Icon
                   grey
-                  type={'FontAwesome'}
+                  type="FontAwesome"
                   name={settings.app.awake ? 'eye' : 'eye-slash'}
                 />
               </Button>

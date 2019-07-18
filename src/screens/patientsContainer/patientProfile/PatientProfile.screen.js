@@ -1,19 +1,16 @@
 // @flow
-
 import * as React from 'react';
 import { Button, List, ListItem, Text, View } from 'native-base';
+import moment from 'moment';
+import type { NavigationScreenProps } from 'react-navigation';
 import { styles } from './PatientProfile.style';
-import {
-  getItemFromArray,
-  getItems,
-} from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import moment from 'moment';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 
-type Props = {};
+type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class PatientProfile extends React.Component<Props, State> {
@@ -22,14 +19,14 @@ export default class PatientProfile extends React.Component<Props, State> {
       birthdate: '01/01/1900',
       medicalCases: [],
     },
-    selected: 'null',
     algorithms: [],
     isGeneratingMedicalCase: false,
     firstRender: false,
   };
 
   async componentWillMount() {
-    this.props.navigation.addListener('willFocus', async () => {
+    const { navigation } = this.props;
+    navigation.addListener('willFocus', async () => {
       await this.getPatient();
     });
   }
@@ -51,9 +48,11 @@ export default class PatientProfile extends React.Component<Props, State> {
 
   // Generate new medicalCase with algo selected
   generateMedicalCase = async () => {
+    const { patient } = this.state;
+
     await this.setState({ isGeneratingMedicalCase: true });
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.createMedicalCase(this.state.patient.id);
+    await instanceMedicalCase.createMedicalCase(patient.id);
     await this.getPatient();
     await this.setState({ isGeneratingMedicalCase: false });
     return false;
@@ -85,7 +84,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     delete flatPatient.medicalCases;
 
     // Display list of medical cases
-    const _renderMedicalCases = patient.medicalCases.map((medicalCase, index) => {
+    const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
       const { patient } = this.state;
 
       return (
@@ -94,7 +93,6 @@ export default class PatientProfile extends React.Component<Props, State> {
           rounded
           block
           spaced
-          key={index}
           onPress={async () => {
             await this.selectMedicalCase({
               ...medicalCase,
@@ -133,7 +131,7 @@ export default class PatientProfile extends React.Component<Props, State> {
         </Button>
         <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
-          <View flex >
+          <View flex>
             <View>
               {patient.medicalCases.length > 0 ? (
                 <List block>{_renderMedicalCases}</List>

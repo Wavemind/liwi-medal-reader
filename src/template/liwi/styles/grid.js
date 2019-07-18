@@ -1,6 +1,3 @@
-import { screenWidth } from 'utils/constants';
-import { liwiColors } from '../../../utils/constants';
-
 export default {
   'NativeBase.Col': {
     '.flex-center': {

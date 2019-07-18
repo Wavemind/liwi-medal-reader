@@ -66,14 +66,12 @@ export const setItemFromArray = async (key, newItem, id) => {
   return {};
 };
 
-
 // @params key used to store in local storage
 // Get item in local storage
 export const getItem = async (key) => {
   const item = await AsyncStorage.getItem(key);
   return JSON.parse(item);
 };
-
 
 // @return [Array]
 // Get session from local storage
@@ -128,7 +126,9 @@ export const createMedicalCase = async (newMedicalCase) => {
     medicalCases.push(newMedicalCase);
 
     return await setItem('medicalCases', medicalCases);
-  } catch (e) {}
+  } catch (e) {
+    return e;
+  }
 };
 
 // @params [Integer] id, [Object] newSession

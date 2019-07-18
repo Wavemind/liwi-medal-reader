@@ -1,20 +1,13 @@
+// @flow
 import * as React from 'react';
 import LottieView from 'lottie-react-native';
-import { Button, H3, Text,View } from 'native-base';
+import { View } from 'native-base';
 
-type Props = {};
+type Props = { style: Object };
 type State = {};
 
 export default class LiwiLoader extends React.Component<Props, State> {
   state = {};
-
-  static defaultProps = {
-    style: {
-      height: 100,
-      width: 100,
-      display: 'flex',
-    },
-  };
 
   play = () => {
     this.loading.play();
@@ -25,6 +18,7 @@ export default class LiwiLoader extends React.Component<Props, State> {
   };
 
   render() {
+    const { style } = this.props;
     return (
       <View flex-container-row flex-center>
         <LottieView
@@ -33,9 +27,9 @@ export default class LiwiLoader extends React.Component<Props, State> {
           }}
           speed={3}
           source={require('./animations/loading.json')}
-          style={this.props.style}
+          style={style}
           loop
-          autoPlay={true}
+          autoPlay
         />
       </View>
     );

@@ -11,14 +11,16 @@ type State = {};
 
 export default class List extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+    const {question} = this.props;
     return (
-      nextProps.question.answer !== this.props.question.answer ||
-      nextProps.question.value !== this.props.question.value
+      nextProps.question.answer !== question.answer ||
+      nextProps.question.value !== question.value
     );
   }
 
   onValueChange = (value: string) => {
-    this.props.setQuestion(this.props.question.id, value);
+    const {question, setQuestion} = this.props;
+    setQuestion(question.id, value);
   };
 
   render() {
