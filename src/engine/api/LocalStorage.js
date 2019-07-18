@@ -98,14 +98,17 @@ export const getArray = async (item) => {
 // @params [Object] medicalCase
 // Set medical case in local storage
 export const setMedicalCase = async (medicalCase) => {
-  let medicalCases = await getItems('medicalCases');
+  let patients = await getItems('patients');
 
-  if (Array.isArray(medicalCases)) {
-    const idMedicalCase = findIndex(medicalCases, (item) => {
-      return item.id === medicalCase.id;
+  if (Array.isArray(patients)) {
+    patients.map((patient, patientID) => {
+      const idMedicalCase = findIndex(patient.medicalCases, (item) => {
+        return item.id === medicalCase.id;
+      });
+      patients[patientID].medicalCases[idMedicalCase] = medicalCase;
     });
-    medicalCases[idMedicalCase] = medicalCase;
-    await setItem('medicalCases', medicalCases);
+
+    await setItem('patients', patients);
   }
 };
 

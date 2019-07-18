@@ -35,17 +35,8 @@ export default class Drawer extends Component<Props, State> {
       <View style={styles.columns}>
         <View style={styles.tools}>
           <View style={styles.top}>
-            <Button
-              transparent
-              btnDrawer
-              marginIcon
-            >
-              <Icon
-                style={styles.icon}
-                dark
-                type="AntDesign"
-                name="user"
-              />
+            <Button transparent btnDrawer marginIcon>
+              <Icon style={styles.icon} dark type='AntDesign' name="user" />
             </Button>
 
             <Button
@@ -68,65 +59,63 @@ export default class Drawer extends Component<Props, State> {
               marginIcon
               onPress={() => navigation.navigate('Algorithms')}
             >
-              <Icon
-                style={styles.icon}
-                dark
-                type="AntDesign"
-                name="sync"
-              />
+              <Icon style={styles.icon} dark type='AntDesign' name="sync" />
             </Button>
-
           </View>
           <View style={styles.bottom}>
             <Button transparent btnDrawer onPress={this.logout}>
-              <Icon style={styles.icon} dark type="AntDesign" name="logout" />
+              <Icon style={styles.icon} dark type='AntDesign' name="logout" />
             </Button>
           </View>
         </View>
 
         <View style={styles.medical}>
-
           <View style={[styles.triage, styles.paddingCategory]}>
             <Text style={styles.title}>{t('menu:triage')}</Text>
             <Button
               transparent
               btnDrawer
               onPress={() => this.onPress('Assessments')}
-
             >
-              <Text dark style={styles.noLeftPadding}>{t('menu:assessment')}</Text>
-            </Button>
-            <Button
-              transparent
-              btnDrawer
-              onPress={() => this.onPress('VitalSigns')}
-
-            >
-              <Text dark style={styles.noLeftPadding}>{t('menu:vital_signs')}</Text>
-            </Button>
-            <Button
-              transparent
-              btnDrawer
-              onPress={() => this.onPress('Comorbidities')}
-
-            >
-              <Text dark style={styles.noLeftPadding}>{t('menu:comorbidities')}</Text>
-            </Button>
-            <Button
-              transparent
-              btnDrawer
-              onPress={() => this.onPress('Vaccinations')}
-
-            >
-              <Text dark style={styles.noLeftPadding}>{t('menu:vacciantion_history')}</Text>
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:assessment')}
+              </Text>
             </Button>
             <Button
               transparent
               btnDrawer
               onPress={() => this.onPress('ChiefComplaints')}
-
             >
-              <Text dark style={styles.noLeftPadding}>{t('menu:chief_complaint')}</Text>
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:chief_complaint')}
+              </Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => this.onPress('VitalSigns')}
+            >
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:vital_signs')}
+              </Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => this.onPress('Comorbidities')}
+            >
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:comorbidities')}
+              </Text>
+            </Button>
+            <Button
+              transparent
+              btnDrawer
+              onPress={() => this.onPress('Vaccinations')}
+            >
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:vacciantion_history')}
+              </Text>
             </Button>
           </View>
 
@@ -137,49 +126,44 @@ export default class Drawer extends Component<Props, State> {
               btnDrawer
               onPress={() => this.onPress('MedicalHistory')}
             >
-              <Text dark style={styles.noLeftPadding}>{t('menu:medical_history')}</Text>
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:medical_history')}
+              </Text>
             </Button>
             <Button
               transparent
               btnDrawer
               onPress={() => this.onPress('PhysicalExams')}
-
             >
-              <Text dark style={styles.noLeftPadding}>{t('menu:physical_exam')}</Text>
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:physical_exam')}
+              </Text>
             </Button>
-            <Button
-              transparent
-              btnDrawer
-              onPress={() => this.onPress('Poct')}
-
-            >
-              <Text dark style={styles.noLeftPadding}>{t('menu:poct')}</Text>
+            <Button transparent btnDrawer onPress={() => this.onPress('Poct')}>
+              <Text dark style={styles.noLeftPadding}>
+                {t('menu:poct')}
+              </Text>
             </Button>
           </View>
 
           <View style={[styles.tests, styles.paddingCategory]}>
-            <Button
-              transparent
-              btnDrawer
-            >
-              <Text style={[styles.title, styles.noLeftPadding]} dark>{t('menu:tests')}</Text>
+            <Button transparent btnDrawer>
+              <Text style={[styles.title, styles.noLeftPadding]} dark>
+                {t('menu:tests')}
+              </Text>
             </Button>
           </View>
 
           <View style={[styles.strategy, styles.paddingCategory]}>
-            <Button
-              transparent
-              btnDrawer
-            >
-              <Text style={[styles.title, styles.noLeftPadding]} dark>{t('menu:strategy')}</Text>
+            <Button transparent btnDrawer>
+              <Text style={[styles.title, styles.noLeftPadding]} dark>
+                {t('menu:strategy')}
+              </Text>
             </Button>
           </View>
 
           <View style={[styles.patient, styles.paddingCategory]}>
-            <Button
-              transparent
-              btnDrawer
-            >
+            <Button transparent btnDrawer>
               <Icon
                 style={[styles.icon, { marginLeft: 0 }]}
                 white
@@ -187,10 +171,7 @@ export default class Drawer extends Component<Props, State> {
               />
               <Text white>{t('menu:search')}</Text>
             </Button>
-            <Button
-              transparent
-              btnDrawer
-            >
+            <Button transparent btnDrawer>
               <Icon
                 style={[styles.icon, { marginLeft: 0 }]}
                 white
