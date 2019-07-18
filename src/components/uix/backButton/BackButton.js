@@ -1,8 +1,13 @@
+// @flow
+
 import * as React from 'react';
 import { Button, Icon } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../utils/constants';
 
-export default function BackButton(props) {
+type Props = NavigationScreenProps & {};
+
+export default function BackButton(props: Props) {
   const { navigation } = props;
   return (
     <Button

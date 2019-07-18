@@ -1,13 +1,15 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Text, View } from 'native-base';
 import { Image, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { styles } from './PatientProfileMenu.style';
+import { styles } from './PatientSummaryMenu.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class PatientProfileMenu extends Component<Props, State> {
+export default class PatientSummary extends Component<Props, State> {
   onPress = (path) => {
     const { navigation } = this.props;
     navigation.navigate(path);

@@ -8,5 +8,7 @@ const mapStateToProps = (medicalCase) => {
 };
 
 export default connect(
-  mapStateToProps
-)(withSessions(withApplication(TabsNavigation)));
+  mapStateToProps,
+
+  mapDispatchToProps
+)(withSessions(withApplication(PatientSummaryMenu)));
