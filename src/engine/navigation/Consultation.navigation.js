@@ -11,12 +11,21 @@ export const ConsultationTabNavigator = createMaterialTopTabNavigator(
   {
     MedicalHistory: {
       screen: MedicalHistory,
+      params: {
+      showSummary: true,
+    },
     },
     PhysicalExam: {
       screen: PhysicalExam,
+      params: {
+      showSummary: true,
+    },
     },
     Poct: {
       screen: Poct,
+      params: {
+      showSummary: true,
+    },
     },
   },
   {
