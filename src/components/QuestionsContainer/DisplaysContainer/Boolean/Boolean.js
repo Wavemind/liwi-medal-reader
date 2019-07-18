@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
-import { liwiColors } from '../../../../utils/constants';
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../../../template/layout';
 
 type Props = NavigationScreenProps & {};
@@ -11,21 +10,24 @@ type State = {};
 
 export default class Boolean extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-    return nextProps.question.answer !== this.props.question.answer;
+    const { question }= this.props;
+    return nextProps.question.answer !== question.answer;
   }
 
   _handleClick = (answer) => {
+    const { question, setQuestion }= this.props;
     let newAnswer = Number(answer);
 
-    if (answer === this.props.question.answer) {
+    if (answer === question.answer) {
       newAnswer = null;
     }
 
-    this.props.setQuestion(this.props.question.id, newAnswer);
+    setQuestion(question.id, newAnswer);
   };
 
   render = () => {
-    const { answer, answers } = this.props.question;
+    const { question }= this.props;
+    const { answer, answers } = question;
 
     const idYes = Number(Object.keys(answers)[0]);
     const idNo = Number(Object.keys(answers)[1]);

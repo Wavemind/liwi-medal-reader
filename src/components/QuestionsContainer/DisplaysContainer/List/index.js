@@ -1,12 +1,12 @@
-import List from './List';
 import { connect } from 'react-redux';
+import List from './List';
 import { setQuestion } from '../../../../../frontend_service/actions/creators.actions';
 
-const mapStateToProps = (medicalCase, ownProps) => {
+const mapStateToProps = (medicalCase) => {
   return { medicalCase };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setQuestion: (index, value) => dispatch(setQuestion(index, value)),
   };

@@ -17,27 +17,33 @@ export default class CustomDatePicker extends React.Component<Props, State> {
 
   static defaultProps = { iconName: false, iconType: false };
 
-  shouldComponentUpdate(
-    nextProps: Readonly<P>,
-    nextState: Readonly<S>
-  ): boolean {
-    return (
-      this.state.value !== nextState.value || this.props.init !== nextProps.init || this.props.error !== nextProps.error
-    );
+  componentWillMount(): void {
+    const { init } = this.props;
+    this.setState({ value: init });
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
-    if (nextProps.id !== this.props.id) {
+  componentWillReceiveProps(nextProps: Readonly<P>): void {
+    const { id } = this.props;
+    if (nextProps.id !== id) {
       this.setState({ value: nextProps.init });
     }
   }
 
-  componentWillMount(): void {
-    this.setState({ value: this.props.init });
+  shouldComponentUpdate(
+    nextProps: Readonly<P>,
+    nextState: Readonly<S>
+  ): boolean {
+    const { init, error } = this.props;
+    const { value } = this.state;
+    return (
+      value !== nextState.value || init !== nextProps.init || error !== nextProps.error
+    );
   }
 
+  +
+
   _handleChangeValue = (value) => {
-    const {change, index} = this.props;
+    const { change, index } = this.props;
 
     this.setState({ value: new Date(value).toString() });
     change(index, moment(value).format('DD/MM/YYYY'));
@@ -69,13 +75,13 @@ export default class CustomDatePicker extends React.Component<Props, State> {
             defaultDate={moment(value).toDate()}
             minimumDate={new Date(1930, 1, 1)}
             maximumDate={new Date()}
-            locale={'fr'}
+            locale="fr"
             timeZoneOffsetInMinutes={undefined}
             modalTransparent={false}
-            animationType={'fade'}
-            androidMode={'default'}
-            textStyle={{ color: liwiColors.blackColor, padding:20 }}
-            placeHolderTextStyle={{ color: liwiColors.darkerGreyColor}}
+            animationType="fade"
+            androidMode="default"
+            textStyle={{ color: liwiColors.blackColor, padding: 20 }}
+            placeHolderTextStyle={{ color: liwiColors.darkerGreyColor }}
             onDateChange={this._handleChangeValue}
             disabled={false}
           />

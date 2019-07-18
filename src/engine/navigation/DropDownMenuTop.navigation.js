@@ -1,12 +1,18 @@
+// @flow
+import React from 'react';
 import { Text, View } from 'native-base';
 import { CustomPicker } from 'react-native-custom-picker';
-import React from 'react';
-import { withApplication } from '../../engine/contexts/Application.context';
+import { NavigationScreenProps } from 'react-navigation';
+import { withApplication } from '../contexts/Application.context';
+import type { StateApplicationContext } from '../contexts/Application.context';
 
-class DropDownMenu extends React.Component {
-  onValueChange = (value: string) => {
-    console.log(value);
-  };
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+class DropDownMenu extends React.Component<Props, State> {
+
+  onValueChange = () => {};
 
   // Render the text on top
   renderField = (settings) => {
@@ -38,9 +44,8 @@ class DropDownMenu extends React.Component {
           defaultValue={{ label: t('menu:triage'), value: 'triage' }}
           fieldTemplate={this.renderField}
           options={options}
-          onValueChange={(value) => {
-            // TODO push nav
-            console.log(value);
+          onValueChange={() => {
+
           }}
         />
       </View>

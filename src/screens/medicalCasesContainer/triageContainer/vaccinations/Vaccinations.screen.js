@@ -3,13 +3,18 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Text, View } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../../frontend_service/constants';
 import { styles } from './Vaccinations.style';
+import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
 
-type Props = {};
-type State = {};
+type Props = NavigationScreenProps & {};
 
+type State = StateApplicationContext & {};
+
+// TODO Will be implemented soon
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Vaccinations extends React.Component<Props, State> {
 
   render() {

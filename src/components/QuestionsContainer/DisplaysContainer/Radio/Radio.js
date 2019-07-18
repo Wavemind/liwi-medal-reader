@@ -2,22 +2,19 @@
 
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
+import { Button, Grid, Icon, Text, View } from 'native-base';
 import { liwiColors } from '../../../../utils/constants';
 import { ColCenter } from '../../../../template/layout';
 import { styles } from './Radio.style';
-import { Button, Grid, Icon, Text, View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Radio extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-    return nextProps.question.answer !== this.props.question.answer;
+    const {question} = this.props;
+    return nextProps.question.answer !== question.answer;
   }
-
-  _handleClick = (idClicked) => {
-    this.setState({ idClicked });
-  };
 
   render() {
     const { question, setQuestion } = this.props;
@@ -44,7 +41,7 @@ export default class Radio extends React.Component<Props, State> {
                       ? 'radio-button-checked'
                       : 'radio-button-unchecked'
                   }
-                  type={'MaterialIcons'}
+                  type='MaterialIcons'
                   style={
                     question.answer === question.answers[id].id
                       ? { color: liwiColors.greenColor }

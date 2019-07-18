@@ -43,7 +43,7 @@ import listItemTheme from './ListItem';
 import formTheme from './Form';
 import separatorTheme from './Separator';
 import pickerTheme from './Picker';
-import variable from './../variables/platform';
+import variable from '../variables/platform';
 
 export default (variables /*: * */ = variable) => {
   const theme = {
@@ -52,7 +52,7 @@ export default (variables /*: * */ = variable) => {
       ...leftTheme(variables),
     },
     'NativeBase.Right': {
-      ...rightTheme(variables),
+      ...rightTheme(),
     },
     'NativeBase.Body': {
       ...bodyTheme(variables),

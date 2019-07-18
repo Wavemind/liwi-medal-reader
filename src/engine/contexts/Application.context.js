@@ -2,13 +2,14 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import find from 'lodash/find';
-import { fetchAlgorithms } from '../../../frontend_service/api/Http';
-import { sha256 } from 'js-sha256';
-import { saltHash } from '../../../frontend_service/constants';
-import { NavigationScreenProps } from 'react-navigation';
-import moment from 'moment';
-import { sessionsDuration } from '../../utils/constants';
 import isEmpty from 'lodash/isEmpty';
+import { sha256 } from 'js-sha256';
+import { NavigationScreenProps } from 'react-navigation';
+import { AppState, PermissionsAndroid } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import moment from 'moment';
+
+import { sessionsDuration } from '../../utils/constants';
 
 import NavigationService from '../navigation/Navigation.service';
 
@@ -20,8 +21,8 @@ import {
   setItem,
   updateSession,
 } from '../api/LocalStorage';
-import { AppState, PermissionsAndroid } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
+import { saltHash } from '../../../frontend_service/constants';
+import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
 
@@ -32,7 +33,7 @@ type Props = NavigationScreenProps & {
   children: React.Node,
 };
 
-type State = {
+export type StateApplicationContext = {
   name: string,
   lang: string,
   set: (prop: any, value: any) => Promise<any>,
@@ -42,97 +43,23 @@ type State = {
   logout: () => Promise<any>,
   unLockSession: (id: number, code: string) => Promise<any>,
   lockSession: () => Promise<any>,
-  isConnected: string,
+  setMedicalCase: (medicalcase: Object) => Promise<any>,
+  isConnected: boolean,
   medicalCase: Object,
+  appState: string,
+  setModal: () => Promise<any>,
+  isModalVisible: boolean,
+  contentModal: string,
+  isModalVisible: Object,
+  t: (string) => Function<string>,
 };
 
-export class ApplicationProvider extends React.Component<Props, State> {
+
+export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
     this.initContext();
   }
-
-  componentWillMount() {
-    AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
-  }
-
-  async componentDidMount() {
-    let permissionReturned = await this.getGeo();
-    let location = {
-      coords: {
-        accuracy: 0,
-        altitude: 0,
-        heading: 0,
-        latitude: 0,
-        longitude: 0,
-        speed: 0,
-      },
-      mocked: false,
-      timestamp: 0,
-    };
-    location.date = moment().toISOString();
-
-    if (permissionReturned === 'granted') {
-      await this.askGeo(true, async (cb) => {
-        location = { ...location, ...cb };
-        await setItem('location', location);
-      });
-    } else {
-      await setItem('location', location);
-    }
-  }
-
-  componentWillUnmount() {
-    NetInfo.removeEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
-    AppState.removeEventListener('change', this._handleAppStateChange);
-  }
-
-  // If the app is active or not
-  _handleAppStateChange = (nextAppState) => {
-    if (
-      this.state.appState.match(/inactive|background/) &&
-      nextAppState === 'active'
-    ) {
-      console.log('---> Liwi is come back from background', nextAppState);
-      this._fetchDataWhenChange();
-      this.setState({ appState: nextAppState });
-    }
-
-    if (
-      this.state.appState.match(/active/) &&
-      nextAppState.match(/inactive|background/)
-    ) {
-      console.log('---> Liwi is hidding');
-      this.setState({ appState: nextAppState });
-    }
-  };
-
-  _fetchDataWhenChange = async () => {
-    const { user } = this.state;
-    if (!isEmpty(user)) {
-      await fetchAlgorithms(user.data.id);
-    }
-  };
-
-  _handleConnectivityChange = async (isConnected) => {
-    if (isConnected.type.match(/wifi|cellular/)) {
-      this.setState({
-        isConnected: true,
-      });
-      await this._fetchDataWhenChange();
-    } else if (isConnected.type.match(/unknown|none/)) {
-      this.setState({
-        isConnected: false,
-      });
-    }
-  };
 
   getGeo = async () => {
     const { t } = this.state;
@@ -167,7 +94,8 @@ export class ApplicationProvider extends React.Component<Props, State> {
   // Log out
   // TODO : check if duplicated from Session context is really necessary
   logout = async () => {
-    await destroySession(this.state.user.data.id);
+    const { user } = this.state;
+    await destroySession(user.data.id);
     this.setState({
       user: {},
       logged: false,
@@ -206,27 +134,23 @@ export class ApplicationProvider extends React.Component<Props, State> {
   // define page settings to push
   pushSettings = async (session) => {
     let { lastLogin } = session;
-    let now = moment();
     let lastLoginMoment;
 
     if (lastLogin !== undefined) {
       lastLoginMoment = moment(lastLogin);
     }
 
-    if (lastLogin === undefined || now() > lastLoginMoment) {
+    if (lastLogin === undefined || moment() > lastLoginMoment) {
       NavigationService.navigate('Settings', { userName: 'Lucy' });
-      session.lastLogin = now.toString();
+      session.lastLogin = moment().toString();
       await updateSession(session.data.id, session);
     }
   };
 
   // Unlock session from local credentials
   unLockSession = async (id: number, code: string) => {
-    const { t } = this.state;
     let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
-
-    console.log(session.local_code.length, code);
 
     if (code.length === 0) {
       return 'empty_code';
@@ -269,7 +193,6 @@ export class ApplicationProvider extends React.Component<Props, State> {
     set: this.setValState,
     logged: false,
     initContext: this.initContext,
-    createMedicalCase: this.createMedicalCase,
     user: {},
     logout: this.logout,
     unLockSession: this.unLockSession,
@@ -284,6 +207,87 @@ export class ApplicationProvider extends React.Component<Props, State> {
     initialPosition: {},
     t: (translate) => i18n.t(translate),
   };
+  componentWillMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    NetInfo.addEventListener(
+      'connectionChange',
+      this._handleConnectivityChange
+    );
+  }
+  _fetchDataWhenChange = async () => {
+    const { user } = this.state;
+    if (!isEmpty(user)) {
+      await fetchAlgorithms(user.data.id);
+    }
+  };
+
+  _handleConnectivityChange = async (isConnected) => {
+    if (isConnected.type.match(/wifi|cellular/)) {
+      this.setState({
+        isConnected: true,
+      });
+      await this._fetchDataWhenChange();
+    } else if (isConnected.type.match(/unknown|none/)) {
+      this.setState({
+        isConnected: false,
+      });
+    }
+  };
+
+  async componentDidMount() {
+    let permissionReturned = await this.getGeo();
+    let location = {
+      coords: {
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        latitude: 0,
+        longitude: 0,
+        speed: 0,
+      },
+      mocked: false,
+      timestamp: 0,
+    };
+    location.date = moment().toISOString();
+
+    if (permissionReturned === 'granted') {
+      await this.askGeo(true, async (cb) => {
+        location = { ...location, ...cb };
+        await setItem('location', location);
+      });
+    } else {
+      await setItem('location', location);
+    }
+  }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+      'connectionChange',
+      this._handleConnectivityChange
+    );
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  // If the app is active or not
+  _handleAppStateChange = (nextAppState) => {
+    const { appState } = this.state;
+    if (
+      appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.warn('---> Liwi came back from background', nextAppState);
+      this._fetchDataWhenChange();
+      this.setState({ appState: nextAppState });
+    }
+
+    if (
+      appState.match(/active/) &&
+      nextAppState.match(/inactive|background/)
+    ) {
+      console.warn('---> Liwi is hidding');
+      this.setState({ appState: nextAppState });
+    }
+  }
 
   render() {
     const { children } = this.props;

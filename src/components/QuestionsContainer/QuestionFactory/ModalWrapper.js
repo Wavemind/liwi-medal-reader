@@ -1,13 +1,23 @@
+// @flow
 import * as React from 'react';
 import { Button, Text } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../utils/constants';
 import { withApplication } from '../../../engine/contexts/Application.context';
+import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 
-class ModalWrapper extends React.Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+class ModalWrapper extends React.Component<Props, State> {
+
   static defaultProps = {
     content: 'Modal content',
   };
 
+  // One-liner
+  // eslint-disable-next-line react/destructuring-assignment
   _toggleModal = () => this.props.app.setModal(this.props.content);
 
   render() {

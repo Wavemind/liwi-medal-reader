@@ -1,5 +1,4 @@
 // @flow
-
 import * as React from 'react';
 import { Button, Icon, Text } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
@@ -49,7 +48,7 @@ export default class Sessions extends React.Component<Props, State> {
             key={session.data.id}
             onPress={() => this.onClickSession(session)}
           >
-            <Icon type={'Ionicons'} name="md-person" />
+            <Icon type='Ionicons' name="md-person" />
             <Text>
               {session.data.first_name} {session.data.last_name}
             </Text>

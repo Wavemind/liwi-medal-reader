@@ -1,16 +1,7 @@
-import styled from 'styled-components/native';
-import { liwiColors } from '/utils/constants';
-import {
-  View as RNView,
-  TouchableOpacity as RNTouchableOpacity,
-} from 'react-native';
-import {
-  Col as LCol,
-  H2 as LH2,
-  H3 as LH3,
-  Text as LText,
-  View as LView,
-} from 'native-base';
+import styled from 'styled-components';
+import { TouchableOpacity as RNTouchableOpacity, View as RNView } from 'react-native';
+import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from 'native-base';
+import { liwiColors } from '../utils/constants';
 
 export const Text = styled(LText).attrs({})`
   color: #4e4e4e;
