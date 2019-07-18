@@ -28,6 +28,8 @@ class MedicalCaseReducer extends ReducerClass {
   // The state is a MedicalCase
   // Instance it
   _instanceMedicalCase(state) {
+    console.log(state);
+
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
     state.vitalSigns = new VitalSignsModel(state.vitalSigns);
@@ -241,6 +243,7 @@ class MedicalCaseReducer extends ReducerClass {
 
   @Action(REHYDRATE)
   rehydrate(state, action) {
+
     if (
       action.payload === undefined ||
       action.payload === null ||
@@ -250,7 +253,7 @@ class MedicalCaseReducer extends ReducerClass {
       return initialState;
     }
 
-    let modelsMedicalCase = this._instanceMedicalCase({ ...action.payload });
+    let modelsMedicalCase = this._instanceMedicalCase(action.payload);
 
     return {
       ...modelsMedicalCase,

@@ -10,13 +10,12 @@ type Props = NavigationScreenProps & {};
 
 type State = StateApplicationContext & {};
 
-
 export default class TriageTabs extends Component<Props, State> {
   _renderRound = (n, active) => {
     return (
       <View style={[styles.round, active ? styles.active : styles.unactive]}>
         <View flex-center>
-          <Text dark>{ n }</Text>
+          <Text dark>{n}</Text>
         </View>
       </View>
     );
@@ -38,42 +37,43 @@ export default class TriageTabs extends Component<Props, State> {
       <View style={styles.container}>
         <View flex-container-row>
           <TouchableOpacity
-            onPress={() => this.onPress( 'Assessments' )}
+            onPress={() => this.onPress('Assessments')}
             style={styles.touchable}
           >
-            { this._renderRound( 1, index === 0 ) }
-            <Text center>{ t( 'triage:assessment' ) }</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onPress( 'VitalSigns' )}
-            style={styles.touchable}
-          >
-            { this._renderRound( 2, index === 1 ) }
-            <Text center>{ t( 'triage:vital' ) }</Text>
+            {this._renderRound(1, index === 0)}
+            <Text center>{t('triage:assessment')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.onPress( 'Comorbidities' )}
+            onPress={() => this.onPress('ChiefComplaints')}
             style={styles.touchable}
           >
-            { this._renderRound( 3, index === 2 ) }
-            <Text center>{ t( 'triage:comorbidities' ) }</Text>
+            {this._renderRound(2, index === 1)}
+            <Text center>{t('triage:chief')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.onPress( 'Vaccinations' )}
+            onPress={() => this.onPress('VitalSigns')}
             style={styles.touchable}
           >
-            { this._renderRound( 4, index === 3 ) }
-            <Text center>{ t( 'triage:vaccination' ) }</Text>
+            {this._renderRound(3, index === 2)}
+            <Text center>{t('triage:vital')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.onPress( 'ChiefComplaints' )}
+            onPress={() => this.onPress('Comorbidities')}
             style={styles.touchable}
           >
-            { this._renderRound( 5, index === 4 ) }
-            <Text center>{ t( 'triage:chief' ) }</Text>
+            {this._renderRound(4, index === 3)}
+            <Text center>{t('triage:comorbidities')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => this.onPress('Vaccinations')}
+            style={styles.touchable}
+          >
+            {this._renderRound(5, index === 4)}
+            <Text center>{t('triage:vaccination')}</Text>
           </TouchableOpacity>
         </View>
       </View>

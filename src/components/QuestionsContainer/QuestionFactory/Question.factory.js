@@ -1,5 +1,4 @@
 // @flow
-
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { ListItem, Text } from 'native-base';
@@ -15,10 +14,10 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-function LabelQuestion(props: { label: String }) {
-  const { label } = props;
+function LabelQuestion(props: { label: String, flex: String, marginRight: Numeric, marginLeft: Numeric }) {
+  const { label, flex, marginRight, marginLeft } = props;
   return (
-    <ViewQuestion>
+    <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
       <Text style={{ color: liwiColors.blackColor }} size-auto>
         {label}
       </Text>
@@ -97,7 +96,20 @@ export default class Question extends React.PureComponent<Props, State> {
     // Construct generic Component for the question
     return (
       <ListItem block noBorder key={question.id + '_item'}>
-        <LabelQuestion key={question.id + '_label'} label={question.label} />
+        <LabelQuestion
+          key={question.id + '_counter'}
+          label={question.counter}
+          flex={0.05}
+          marginLeft={0}
+          marginRight={20}
+        />
+        <LabelQuestion
+          key={question.id + '_label'}
+          label={question.label}
+          flex={0.65}
+          marginLeft={0}
+          marginRight={20}
+        />
         <WrapperQuestion
           key={question.id + '_answer'}
           question={question}

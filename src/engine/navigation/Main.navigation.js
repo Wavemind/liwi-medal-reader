@@ -1,6 +1,10 @@
 import React from 'react';
 import { Button, Icon } from 'native-base';
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import {
+  createDrawerNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -9,12 +13,14 @@ import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
-
 import i18n from '../../utils/i18n';
+
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
 import DropDownMenu from './DropDownMenuTop.navigation';
+import PatientProfileMenu from './patientProfileMenu';
+
 
 // we need to use i18n directly beacause we cant be connect to contexte
 const Stack = createStackNavigator({
@@ -106,9 +112,21 @@ const Stack = createStackNavigator({
   },
 });
 
+let StackWithBottomNavigation = createBottomTabNavigator(
+  {
+    Home: { screen: Stack },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: '#e91e63',
+    },
+    tabBarComponent: PatientProfileMenu,
+  }
+);
+
 export default () => {
   return createDrawerNavigator(
-    { Home: { screen: Stack } },
+    { Home: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
       contentComponent: (props) => <Drawer {...props} />,

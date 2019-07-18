@@ -7,6 +7,7 @@ import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import _ from 'lodash';
+import { setParentConditionValue } from '../../algorithm/algoTreeDiagnosis';
 
 const { qs, d, fd, m, q, t } = nodesType;
 
@@ -23,6 +24,32 @@ export class NodesModel implements NodeInterface {
 
   filterByType(type) {
     return _.filter(this, (n) => n.type === type);
+  }
+
+
+  filterByCounterGreaterThanZero() {
+    this.filterByConditionValue();
+    return _.filter(this, (n) => n.counter > 0);
+  }
+
+  filterByConditionValue() {
+    try {
+      Object.keys(this).map((nodeId) => {
+        if (this[nodeId].type === 'Question') {
+          this[nodeId].counter = 0;
+
+          this[nodeId].dd.map((dd) => {
+            dd.conditionValue ? this[nodeId].counter++ : null;
+          });
+          // Map trough PS if it is in an another PS itself
+          this[nodeId].qs.map((qs) => {
+            qs.conditionValue ? this[nodeId].counter++ : null;
+          });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   // Instance all the nodes

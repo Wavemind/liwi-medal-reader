@@ -94,10 +94,13 @@ export default class PatientProfile extends React.Component<Props, State> {
           block
           spaced
           onPress={async () => {
-            await this.selectMedicalCase({
-              ...medicalCase,
-              patient: flatPatient,
-            });
+            const {medicalCase} = this.props;
+            if (medicalCase.id !== medicalCase.id) {
+              await this.selectMedicalCase({
+                ...medicalCase,
+                patient: flatPatient,
+              });
+            }
           }}
         >
           <View w50>
