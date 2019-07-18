@@ -47,6 +47,7 @@
     "react/jsx-filename-extension": 0,
     "import/prefer-default-export": 0,
     "no-console": ["error", { "allow": ["warn", "error"] }],
-    "react/display-name": 0
+    "react/display-name": 0,
+    "react/sort-comp": 0
   }
 }

@@ -2,12 +2,13 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import find from 'lodash/find';
+import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import { NavigationScreenProps } from 'react-navigation';
-import moment from 'moment';
-import isEmpty from 'lodash/isEmpty';
 import { AppState, PermissionsAndroid } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import moment from 'moment';
+
 import { sessionsDuration } from '../../utils/constants';
 
 import NavigationService from '../navigation/Navigation.service';
@@ -59,110 +60,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     super(props);
     this.initContext();
   }
-
-  state = {
-    name: 'App',
-    lang: 'fr',
-    set: this.setValState,
-    logged: false,
-    initContext: this.initContext,
-    user: {},
-    logout: this.logout,
-    unLockSession: this.unLockSession,
-    lockSession: this.lockSession,
-    isConnected: true,
-    setMedicalCase: this.setMedicalCase,
-    medicalCase: {},
-    appState: AppState.currentState,
-    setModal: this.setModal,
-    isModalVisible: false,
-    contentModal: 'initial',
-    initialPosition: {},
-    t: (translate) => i18n.t(translate),
-  };
-
-  componentWillMount() {
-    AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
-  }
-
-  async componentDidMount() {
-    let permissionReturned = await this.getGeo();
-    let location = {
-      coords: {
-        accuracy: 0,
-        altitude: 0,
-        heading: 0,
-        latitude: 0,
-        longitude: 0,
-        speed: 0,
-      },
-      mocked: false,
-      timestamp: 0,
-    };
-    location.date = moment().toISOString();
-
-    if (permissionReturned === 'granted') {
-      await this.askGeo(true, async (cb) => {
-        location = { ...location, ...cb };
-        await setItem('location', location);
-      });
-    } else {
-      await setItem('location', location);
-    }
-  }
-
-  componentWillUnmount() {
-    NetInfo.removeEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
-    AppState.removeEventListener('change', this._handleAppStateChange);
-  }
-
-  // If the app is active or not
-  _handleAppStateChange = (nextAppState) => {
-    const { appState } = this.state;
-    if (
-      appState.match(/inactive|background/) &&
-      nextAppState === 'active'
-    ) {
-      console.warn('---> Liwi came back from background', nextAppState);
-      this._fetchDataWhenChange();
-      this.setState({ appState: nextAppState });
-    }
-
-    if (
-      appState.match(/active/) &&
-      nextAppState.match(/inactive|background/)
-    ) {
-      console.warn('---> Liwi is hidding');
-      this.setState({ appState: nextAppState });
-    }
-  };
-
-  _fetchDataWhenChange = async () => {
-    const { user } = this.state;
-    if (!isEmpty(user)) {
-      await fetchAlgorithms(user.data.id);
-    }
-  };
-
-  _handleConnectivityChange = async (isConnected) => {
-    if (isConnected.type.match(/wifi|cellular/)) {
-      this.setState({
-        isConnected: true,
-      });
-      await this._fetchDataWhenChange();
-    } else if (isConnected.type.match(/unknown|none/)) {
-      this.setState({
-        isConnected: false,
-      });
-    }
-  };
 
   getGeo = async () => {
     const { t } = this.state;
@@ -237,16 +134,15 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   // define page settings to push
   pushSettings = async (session) => {
     let { lastLogin } = session;
-    let now = moment();
     let lastLoginMoment;
 
     if (lastLogin !== undefined) {
       lastLoginMoment = moment(lastLogin);
     }
 
-    if (lastLogin === undefined || now() > lastLoginMoment) {
+    if (lastLogin === undefined || moment() > lastLoginMoment) {
       NavigationService.navigate('Settings', { userName: 'Lucy' });
-      session.lastLogin = now.toString();
+      session.lastLogin = moment().toString();
       await updateSession(session.data.id, session);
     }
   };
@@ -286,6 +182,108 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       contentModal: content,
     });
   };
+
+  state = {
+    name: 'App',
+    lang: 'fr',
+    set: this.setValState,
+    logged: false,
+    initContext: this.initContext,
+    user: {},
+    logout: this.logout,
+    unLockSession: this.unLockSession,
+    lockSession: this.lockSession,
+    isConnected: true,
+    setMedicalCase: this.setMedicalCase,
+    medicalCase: {},
+    appState: AppState.currentState,
+    setModal: this.setModal,
+    isModalVisible: false,
+    contentModal: 'initial',
+    initialPosition: {},
+    t: (translate) => i18n.t(translate),
+  };
+  componentWillMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    NetInfo.addEventListener(
+      'connectionChange',
+      this._handleConnectivityChange
+    );
+  }
+  _fetchDataWhenChange = async () => {
+    const { user } = this.state;
+    if (!isEmpty(user)) {
+      await fetchAlgorithms(user.data.id);
+    }
+  };
+
+  _handleConnectivityChange = async (isConnected) => {
+    if (isConnected.type.match(/wifi|cellular/)) {
+      this.setState({
+        isConnected: true,
+      });
+      await this._fetchDataWhenChange();
+    } else if (isConnected.type.match(/unknown|none/)) {
+      this.setState({
+        isConnected: false,
+      });
+    }
+  };
+
+  async componentDidMount() {
+    let permissionReturned = await this.getGeo();
+    let location = {
+      coords: {
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        latitude: 0,
+        longitude: 0,
+        speed: 0,
+      },
+      mocked: false,
+      timestamp: 0,
+    };
+    location.date = moment().toISOString();
+
+    if (permissionReturned === 'granted') {
+      await this.askGeo(true, async (cb) => {
+        location = { ...location, ...cb };
+        await setItem('location', location);
+      });
+    } else {
+      await setItem('location', location);
+    }
+  }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+      'connectionChange',
+      this._handleConnectivityChange
+    );
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  // If the app is active or not
+  _handleAppStateChange = (nextAppState) => {
+    const { appState } = this.state;
+    if (
+      appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.warn('---> Liwi came back from background', nextAppState);
+      this._fetchDataWhenChange();
+      this.setState({ appState: nextAppState });
+    }
+
+    if (
+      appState.match(/active/) &&
+      nextAppState.match(/inactive|background/)
+    ) {
+      console.warn('---> Liwi is hidding');
+      this.setState({ appState: nextAppState });
+    }
+  }
 
   render() {
     const { children } = this.props;
