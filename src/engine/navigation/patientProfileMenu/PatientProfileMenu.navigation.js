@@ -27,6 +27,8 @@ export default class PatientProfileMenu extends Component<Props, State> {
       height: 40,
     };
 
+    console.log(this.props)
+
     return (
       <View style={styles.container}>
         <View flex-container-row>
