@@ -22,14 +22,15 @@ export default class PatientProfile extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
+
     return (
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
         <View
           style={{
-            height: '90%',
-            width: '90%',
-            margin: 50,
-            padding: 50,
+            height: '95%',
+            width: '95%',
+            margin: 20,
+            padding: 20,
             backgroundColor: '#eee',
             opacity: 0.9,
           }}
@@ -39,7 +40,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           <Tabs>
             <Tab
               key={'tabBatches'}
-              heading={'hello'}
+              heading={t('summary:diagnoses')}
               tabStyle={{
                 backgroundColor: liwiColors.redColor,
               }}
@@ -50,7 +51,7 @@ export default class PatientProfile extends React.Component<Props, State> {
               <Questions questions={medicalCase.nodes} />
             </Tab>
             <Tab
-              heading="Diagnostic"
+              heading="All questions"
               tabStyle={{
                 backgroundColor: liwiColors.redColor,
               }}
