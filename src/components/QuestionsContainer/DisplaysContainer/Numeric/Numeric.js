@@ -18,6 +18,10 @@ export default class Numeric extends React.Component<Props, State> {
     );
   }
 
+  state = {
+    style: null,
+  };
+
   _focus = () =>
     this.setState({
       style: { borderColor: liwiColors.greenColor },
@@ -33,7 +37,6 @@ export default class Numeric extends React.Component<Props, State> {
   render() {
     const { question } = this.props;
     const { style } = this.state;
-
 
     let keyboardType;
     switch (question.value_format) {

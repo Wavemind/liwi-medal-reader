@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { TouchableOpacity as RNTouchableOpacity, View as RNView } from 'react-native';
-import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from 'native-base';
+import { Button, Col as LCol, H2 as LH2, H3 as LH3, Icon, Text as LText, View as LView } from 'native-base';
 import { liwiColors } from '../utils/constants';
 
 export const Text = styled(LText).attrs({})`
@@ -149,3 +149,5 @@ export const RightButton = styled(RNTouchableOpacity).attrs({})`
     return liwiColors.whiteColor;
   }};
 `;
+
+

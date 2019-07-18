@@ -1,10 +1,4 @@
 import React from 'react';
-import { Button, Icon } from 'native-base';
-import {
-  createDrawerNavigator,
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -12,7 +6,7 @@ import MainScreen from '../../screens/main/Main.screen';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
-import Settings from '../../screens/settings/';
+import Settings from '../../screens/settings';
 import NavigationService from './Navigation.service';
 
 import i18n from '../../utils/i18n';
@@ -59,7 +53,7 @@ const Stack = createStackNavigator({
     screen: PatientProfile,
     path: 'patientProfile',
     params: {
-      showSummary: false,
+      showSummary: true,
     },
     navigationOptions: () => {
       return {
@@ -70,6 +64,9 @@ const Stack = createStackNavigator({
   PatientUpsert: {
     screen: PatientUpsert,
     path: 'patient/',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:patient_upsert'),
@@ -79,6 +76,9 @@ const Stack = createStackNavigator({
   Algorithms: {
     screen: Algorithms,
     path: 'algorithms',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:available_algorithms'),
@@ -88,6 +88,9 @@ const Stack = createStackNavigator({
   Algorithm: {
     screen: Algorithm,
     path: 'algorithm/:id',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),
@@ -97,6 +100,9 @@ const Stack = createStackNavigator({
   Settings: {
     screen: Settings,
     path: 'settings',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:settings'),
@@ -106,6 +112,9 @@ const Stack = createStackNavigator({
   Triage: {
     screen: TriageTabNavigator,
     path: 'triage',
+    params: {
+      showSummary: true,
+    },
     navigationOptions: () => {
       return {
         headerTitle: DropDownMenu,
@@ -115,6 +124,9 @@ const Stack = createStackNavigator({
   Consultation: {
     screen: ConsultationTabNavigator,
     path: 'consultation',
+    params: {
+      showSummary: true,
+    },
     navigationOptions: () => {
       return {
         headerTitle: DropDownMenu,
@@ -129,6 +141,9 @@ const HomeWithModal = createStackNavigator(
     Summary: {
       screen: PatientSummary,
       path: 'summary',
+      params: {
+        showSummary: false,
+      },
     },
   },
   {
@@ -155,26 +170,13 @@ let StackWithBottomNavigation = createBottomTabNavigator(
     tabBarComponent: (props) => {
       let currentRoute = NavigationService.getCurrentRoute();
 
-      return <PatientProfileMenu {...props} />;
+      if (currentRoute.params?.showSummary ?? false) {
+        return <PatientSummaryMenu {...props} />;
+      }
+      return null;
     },
   }
 );
-
-StackWithBottomNavigation.navigationOptions = ({ navigation }) => {
-  let showSummary = navigation.state.routes[navigation.state.index];
-
-  let tabBarVisible = true;
-  if (
-    navigation.state.index > 0 &&
-    navigation.state.routes[1].routeName === 'Detailscreen'
-  ) {
-    tabBarVisible = false;
-  }
-
-  return {
-    tabBarVisible,
-  };
-};
 
 export default () => {
   return createDrawerNavigator(

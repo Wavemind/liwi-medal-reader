@@ -1,12 +1,14 @@
 // @flow
 
 import * as React from 'react';
-import { Tab, Tabs, Text, View } from 'native-base';
+import { Tab, Tabs, Text, View, Button, Icon, Accordion } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './PatientSummary.style';
 import { liwiColors } from '../../../utils/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTitle2 } from '../../../template/layout';
+import { NavigationScreenProps } from 'react-navigation';
+import BackButton from '../../../components/uix/backButton';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -20,7 +22,6 @@ export default class PatientProfile extends React.Component<Props, State> {
       medicalCase,
     } = this.props;
 
-
     return (
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
         <View
@@ -33,6 +34,7 @@ export default class PatientProfile extends React.Component<Props, State> {
             opacity: 0.9,
           }}
         >
+          <BackButton />
           <LiwiTitle2>Current Summary</LiwiTitle2>
           <Text>Patient info here</Text>
           <Tabs>
@@ -59,6 +61,8 @@ export default class PatientProfile extends React.Component<Props, State> {
             >
               <View style={styles.flex}>
                 <Text>f23f3</Text>
+
+
               </View>
             </Tab>
           </Tabs>

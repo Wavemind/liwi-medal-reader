@@ -1,5 +1,3 @@
-// @flow
-
 import React, { Component } from 'react';
 import { Text, View } from 'native-base';
 import { Image, TouchableOpacity } from 'react-native';
@@ -26,8 +24,6 @@ export default class PatientProfileMenu extends Component<Props, State> {
       width: 40,
       height: 40,
     };
-
-    console.log(this.props)
 
     return (
       <View style={styles.container}>

@@ -12,18 +12,36 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
   {
     Assessments: {
       screen: Assessments,
+      params: {
+        showSummary: true,
+      },
     },
     ChiefComplaints: {
       screen: ChiefComplaints,
     },
     VitalSigns: {
       screen: VitalSigns,
+      params: {
+        showSummary: true,
+      },
     },
     Comorbidities: {
       screen: Comorbidities,
+      params: {
+        showSummary: true,
+      },
     },
     Vaccinations: {
       screen: Vaccinations,
+      params: {
+        showSummary: true,
+      },
+    },
+    ChiefComplaints: {
+      screen: ChiefComplaints,
+      params: {
+        showSummary: true,
+      },
     },
 
   },

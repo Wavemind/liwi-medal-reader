@@ -3,11 +3,19 @@ import * as React from 'react';
 import LottieView from 'lottie-react-native';
 import { View } from 'native-base';
 
-type Props = { style: Object };
+type Props = { style?: Object };
 type State = {};
 
 export default class LiwiLoader extends React.Component<Props, State> {
   state = {};
+
+  static defaultProps = {
+    style: {
+      height: 100,
+      width: 100,
+      display: 'flex',
+    },
+  };
 
   play = () => {
     this.loading.play();
