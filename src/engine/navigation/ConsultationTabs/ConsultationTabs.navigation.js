@@ -46,7 +46,7 @@ export default class ConsultationTabs extends Component<Props, State> {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.onPress('PhysicalExams')}
+            onPress={() => this.onPress('PhysicalExam')}
             style={styles.touchable}
           >
             {this._renderRound(2, index === 1)}

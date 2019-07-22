@@ -1,4 +1,8 @@
-import { liwiColors, marginIsTablet, screenWidth } from '../../../utils/constants';
+import {
+  liwiColors,
+  marginIsTablet,
+  screenWidth,
+} from '../../../utils/constants';
 
 export default {
   'NativeBase.ViewNB': {
@@ -55,6 +59,10 @@ export default {
       flex: 1,
       flexGrow: 1,
     },
+    '.flex-start': {
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+    },
     '.border-primary': {
       borderColor: liwiColors.redColor,
       borderWidth: 2,
@@ -77,16 +85,16 @@ export default {
     '.bottom-view': {
       flex: 1,
       justifyContent: 'flex-end',
-      marginBottom: 36
+      marginBottom: 36,
     },
 
     '.flex': {
-      flex: 1
+      flex: 1,
     },
 
     '.question': {
       flexDirection: 'row',
-      flex:0.7,
+      flex: 0.7,
       borderRadius: 5,
       borderWidth: 0.5,
       backgroundColor: liwiColors.lighterGreyColor,
@@ -97,13 +105,15 @@ export default {
 
     '.answer': {
       flexDirection: 'row',
-      flex:0.3,
+      flex: 0.3,
     },
-
+    '.w33': {
+      flex: 0.33,
+    },
     '.columns': {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-    }
+    },
   },
 };

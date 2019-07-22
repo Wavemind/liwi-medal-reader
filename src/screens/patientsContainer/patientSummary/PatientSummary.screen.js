@@ -1,8 +1,9 @@
 // @flow
 
 import * as React from 'react';
-import { Tab, Tabs, Text, View, Button, Icon, Accordion } from 'native-base';
+import { Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
+import { Image } from 'react-native';
 import { styles } from './PatientSummary.style';
 import { liwiColors } from '../../../utils/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
@@ -18,50 +19,104 @@ export default class PatientProfile extends React.Component<Props, State> {
   render() {
 
     const {
-      medicalCase,
+      medicalCase: { nodes, patient, vitalSigns },
+      app: { t },
+      navigation,
     } = this.props;
 
+    const styleImage = {
+      width: 40,
+      height: 40,
+    };
+
+    let defaultTab = navigation.getParam('defaultTab');
+
+    console.log(defaultTab);
+
     return (
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-        <View
-          style={{
-            height: '95%',
-            width: '95%',
-            margin: 20,
-            padding: 20,
-            backgroundColor: '#eee',
-            opacity: 0.9,
-          }}
-        >
+      <View>
+        <View style={styles.summary}>
           <BackButton />
           <LiwiTitle2>Current Summary</LiwiTitle2>
-          <Text>Patient info here</Text>
-          <Tabs>
+          <View>
+            <View>
+              <Image
+                resizeMode="contain"
+                style={styleImage}
+                source={require('../../../../assets/images/profil.png')}
+              />
+            </View>
+            <View>
+              <Text>
+                {patient.firstname} - {patient.lastname} | {patient.gender} |
+                20.02.2015
+              </Text>
+              <Text>
+                T {vitalSigns.tempetature}C | F.C {vitalSigns.respiratoryRate}{' '}
+                bpm
+              </Text>
+            </View>
+            <View>
+              <Text>Edit</Text>
+            </View>
+          </View>
+          <Tabs
+            initialPage={defaultTab}
+            tabBarUnderlineStyle={{
+              backgroundColor: liwiColors.redColor,
+            }}
+          >
             <Tab
-              key="tabBatches"
               heading={t('summary:diagnoses')}
               tabStyle={{
-                backgroundColor: liwiColors.redColor,
+                borderColor: liwiColors.darkGreyColor,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderWidth: 1,
+                borderRadius: 10,
+                // opacity: 0.5,
+              }}
+              activeTextStyle={{
+                color: liwiColors.redColor,
+              }}
+              textStyle={{
+                color: liwiColors.blackColor,
               }}
               activeTabStyle={{
-                backgroundColor: liwiColors.redColor,
+                borderColor: liwiColors.redColor,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderWidth: 1,
+                borderRadius: 10,
               }}
             >
-              <Questions questions={medicalCase.nodes} />
+              <Questions questions={nodes} />
             </Tab>
             <Tab
               heading="All questions"
               tabStyle={{
-                backgroundColor: liwiColors.redColor,
+                borderColor: liwiColors.darkGreyColor,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderWidth: 1,
+                borderRadius: 10,
+              }}
+              activeTextStyle={{
+                color: liwiColors.redColor,
+              }}
+              textStyle={{
+                color: liwiColors.blackColor,
               }}
               activeTabStyle={{
-                backgroundColor: liwiColors.redColor,
+                borderColor: liwiColors.redColor,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderWidth: 1,
+                borderRadius: 10,
               }}
             >
-              <View style={styles.flex}>
+              <View>
                 <Text>f23f3</Text>
-
-
               </View>
             </Tab>
           </Tabs>

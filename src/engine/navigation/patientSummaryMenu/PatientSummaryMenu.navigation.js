@@ -35,6 +35,7 @@ export default class PatientSummary extends Component<Props, State> {
             onPress={() =>
               navigation.navigate('Summary', {
                 id: medicalCase.patient.id,
+                defaultTab: 0,
               })
             }
             style={styles.touchable}
@@ -49,7 +50,12 @@ export default class PatientSummary extends Component<Props, State> {
 
           <TouchableOpacity
             disabled={id === undefined}
-            onPress={() => this.onPress('ChiefComplaints')}
+            onPress={() =>
+              navigation.navigate('Summary', {
+                id: medicalCase.patient.id,
+                defaultTab: 0,
+              })
+            }
             style={styles.touchable}
           >
             <Image
@@ -62,7 +68,12 @@ export default class PatientSummary extends Component<Props, State> {
 
           <TouchableOpacity
             disabled={id === undefined}
-            onPress={() => this.onPress('VitalSigns')}
+            onPress={() =>
+              navigation.navigate('Summary', {
+                id: medicalCase.patient.id,
+                defaultTab: 1,
+              })
+            }
             style={styles.touchable}
           >
             <Image

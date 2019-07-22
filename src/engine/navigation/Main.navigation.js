@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon } from 'native-base';
+import { useSelector } from 'react-redux';
 import {
   createDrawerNavigator,
   createStackNavigator,
@@ -16,7 +17,6 @@ import Settings from '../../screens/settings';
 import NavigationService from './Navigation.service';
 
 import i18n from '../../utils/i18n';
-
 
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
@@ -176,7 +176,6 @@ let StackWithBottomNavigation = createBottomTabNavigator(
   {
     tabBarComponent: (props) => {
       let currentRoute = NavigationService.getCurrentRoute();
-
       if (currentRoute.params?.showSummary ?? false) {
         return <PatientSummaryMenu {...props} />;
       }
@@ -185,12 +184,15 @@ let StackWithBottomNavigation = createBottomTabNavigator(
   }
 );
 
-export default () => {
+const MainNavigation = () => {
   return createDrawerNavigator(
     { RootDrawer: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
+      drawerBackgroundColor: 'transparent',
       contentComponent: (props) => <Drawer {...props} />,
     }
   );
 };
+
+export default MainNavigation;
