@@ -31,8 +31,6 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     let defaultTab = navigation.getParam('defaultTab');
 
-    console.log(defaultTab);
-
     return (
       <View>
         <View style={styles.summary}>

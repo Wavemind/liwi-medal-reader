@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Icon } from 'native-base';
-import { useSelector } from 'react-redux';
 import {
   createDrawerNavigator,
   createStackNavigator,
