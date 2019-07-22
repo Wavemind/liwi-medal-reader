@@ -9,6 +9,7 @@ import { liwiColors } from '../../../utils/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/uix/backButton';
+import { nodesType } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -17,7 +18,6 @@ export default class PatientProfile extends React.Component<Props, State> {
   state = {};
 
   render() {
-
     const {
       medicalCase: { nodes, patient, vitalSigns },
       app: { t },
@@ -28,8 +28,15 @@ export default class PatientProfile extends React.Component<Props, State> {
       width: 40,
       height: 40,
     };
+    let fd = nodes.filterByType(nodesType.fd);
 
     let defaultTab = navigation.getParam('defaultTab');
+
+    const items = [];
+
+    for (const [index, value] of fd.entries()) {
+      items.push(<Text>{index} - {value.name}</Text>);
+    }
 
     return (
       <View>
@@ -88,7 +95,7 @@ export default class PatientProfile extends React.Component<Props, State> {
                 borderRadius: 10,
               }}
             >
-              <Questions questions={nodes} />
+              <View>{items}</View>
             </Tab>
             <Tab
               heading="All questions"
@@ -114,7 +121,7 @@ export default class PatientProfile extends React.Component<Props, State> {
               }}
             >
               <View>
-                <Text>f23f3</Text>
+                <Questions questions={nodes} />
               </View>
             </Tab>
           </Tabs>
