@@ -52,7 +52,7 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     await this.setState({ isGeneratingMedicalCase: true });
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.createMedicalCase(patient.id);
+    await instanceMedicalCase.create(patient.id);
     await this.getPatient();
     await this.setState({ isGeneratingMedicalCase: false });
     return false;
@@ -76,7 +76,10 @@ export default class PatientProfile extends React.Component<Props, State> {
       firstRender,
     } = this.state;
 
-    const { navigation, app: { t } } = this.props;
+    const {
+      navigation,
+      app: { t },
+    } = this.props;
 
     const flatPatient = {
       ...patient,
@@ -140,9 +143,7 @@ export default class PatientProfile extends React.Component<Props, State> {
                 <List block>{_renderMedicalCases}</List>
               ) : (
                 <View padding-auto margin-auto>
-                  <Text not-available>
-                    {t('work_case:no_medical_cases')}
-                  </Text>
+                  <Text not-available>{t('work_case:no_medical_cases')}</Text>
                 </View>
               )}
             </View>
