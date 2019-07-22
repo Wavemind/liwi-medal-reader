@@ -20,7 +20,7 @@ import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
 import DropDownMenu from './DropDownMenuTop.navigation';
 import PatientProfileMenu from './patientProfileMenu';
-
+import PatientSummary from '../../screens/patientsContainer/patientSummary';
 
 // we need to use i18n directly beacause we cant be connect to contexte
 const Stack = createStackNavigator({
@@ -112,14 +112,35 @@ const Stack = createStackNavigator({
   },
 });
 
-let StackWithBottomNavigation = createBottomTabNavigator(
+const HomeWithModal = createStackNavigator(
   {
     Home: { screen: Stack },
+    Summary: {
+      screen: PatientSummary,
+      path: 'summary',
+    },
   },
   {
-    tabBarOptions: {
-      activeTintColor: '#e91e63',
+    mode: 'modal',
+    headerMode: 'none',
+    cardStyle: {
+      backgroundColor: '#434343',
+      opacity: 0.9,
     },
+    transparentCard: true,
+    transitionConfig: () => ({
+      containerStyle: {
+        backgroundColor: 'transparent',
+      },
+    }),
+  }
+);
+
+let StackWithBottomNavigation = createBottomTabNavigator(
+  {
+    Home: { screen: HomeWithModal },
+  },
+  {
     tabBarComponent: PatientProfileMenu,
   }
 );
