@@ -87,27 +87,27 @@ export default class PatientProfile extends React.Component<Props, State> {
     delete flatPatient.medicalCases;
 
     // Display list of medical cases
-    const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
+    const _renderMedicalCases = patient.medicalCases.map((medicalCaseItem) => {
       const { patient } = this.state;
 
       return (
         <ListItem
-          key={medicalCase.id + '_mc'}
+          key={medicalCaseItem.id + '_mc'}
           rounded
           block
           spaced
           onPress={async () => {
             const {medicalCase} = this.props;
-            if (medicalCase.id !== medicalCase.id) {
+            if (medicalCase.id !== medicalCaseItem.id) {
               await this.selectMedicalCase({
-                ...medicalCase,
+                ...medicalCaseItem,
                 patient: flatPatient,
               });
             }
           }}
         >
           <View w50>
-            <Text>{moment(medicalCase.createdDate).format('lll')}</Text>
+            <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
           </View>
           <View w50>
             <Text>{patient.status}</Text>
