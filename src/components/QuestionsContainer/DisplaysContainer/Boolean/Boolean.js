@@ -19,8 +19,10 @@ export default class Boolean extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question, widthView } = this.props;
-    return (nextProps.question.answer !== question.answer ||
-      nextProps.widthView !== widthView);
+    return (
+      nextProps.question.answer !== question.answer ||
+      nextProps.widthView !== widthView
+    );
   }
 
   _handleClick = (answer) => {
@@ -35,8 +37,11 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   render = () => {
-    const { question: { answer, answers, label, category } } = this.props;
-    const { widthView, index } = this.state;
+    const {
+      question: { answer, answers, label, category },
+      widthView,
+      index,
+    } = this.props;
 
     // Define the id for the answer
     const idYes = Number(Object.keys(answers)[0]);

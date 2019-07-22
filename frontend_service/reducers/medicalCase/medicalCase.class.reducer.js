@@ -43,7 +43,7 @@ class MedicalCaseReducer extends ReducerClass {
       (i) =>
         (state.diseases[i] = new DiseasesModel({
           ...state.diseases[i],
-        })),
+        }))
     );
 
     return state;
@@ -230,6 +230,8 @@ class MedicalCaseReducer extends ReducerClass {
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
+    console.log('qwdesfdgf', medicalCase);
+
     if (state !== {} && medicalCase.id !== state.id) {
       setMedicalCase(state);
     }
@@ -243,7 +245,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   @Action(REHYDRATE)
   rehydrate(state, action) {
-
     if (
       action.payload === undefined ||
       action.payload === null ||

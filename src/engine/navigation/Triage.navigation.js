@@ -16,9 +16,6 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
         showSummary: true,
       },
     },
-    ChiefComplaints: {
-      screen: ChiefComplaints,
-    },
     VitalSigns: {
       screen: VitalSigns,
       params: {
@@ -43,14 +40,11 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
         showSummary: true,
       },
     },
-
   },
   {
     tabBarOptions: {
       activeTintColor: '#e91e63',
     },
     tabBarComponent: TriageTabs,
-  },
+  }
 );
-
-
