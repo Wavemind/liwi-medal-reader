@@ -16,6 +16,12 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
         showSummary: true,
       },
     },
+    ChiefComplaints: {
+      screen: ChiefComplaints,
+      params: {
+        showSummary: true,
+      },
+    },
     VitalSigns: {
       screen: VitalSigns,
       params: {
@@ -30,12 +36,6 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
     },
     Vaccinations: {
       screen: Vaccinations,
-      params: {
-        showSummary: true,
-      },
-    },
-    ChiefComplaints: {
-      screen: ChiefComplaints,
       params: {
         showSummary: true,
       },
