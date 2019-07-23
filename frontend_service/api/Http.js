@@ -1,8 +1,8 @@
-import { host } from '../constants';
-import { getDeviceInformation } from '../../src/engine/api/Device';
-import { devHost } from '../../frontend_service/constants';
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
+import { host } from '../constants';
+import { getDeviceInformation } from '../../src/engine/api/Device';
+
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
 import {
   getItems,
@@ -49,26 +49,6 @@ export const post = async (params, body = {}, userId = null) => {
   }
   return true;
 };
-// @return [Object] response from server
-// Send device activity to server
-export const postDeviceInfo = async () => {
-  const device = {};
-  const request = await fetch(`${devHost}/api/v1/activities`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json, text/plain',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(device),
-  }).catch(function(error) {
-    Toaster('Une erreur est survenue. Veuillez réessayer ultérieurement', {
-      type: 'danger',
-    });
-    console.log(error);
-  });
-
-  return response;
-};
 
 // @params [String] email, [String] password
 // @return [Object] response from server
@@ -108,10 +88,8 @@ export const auth = async (email, password) => {
 // @params [Integer] userId
 // Promise fetch algorithm from server
 export const fetchAlgorithms = async (userId) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     let deviceInfo = await getDeviceInformation();
-
-    console.log('---- fetchAlgorithms -----');
 
     deviceInfo.activity.user_id = userId;
 

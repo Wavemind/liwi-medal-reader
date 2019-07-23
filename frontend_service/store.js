@@ -3,10 +3,10 @@ import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-community/async-storage';
+import { persistReducer, persistStore } from 'redux-persist';
 import rootReducer from './reducers';
 import rootEpic from './middlewares/epics';
 
-import { persistReducer, persistStore } from 'redux-persist';
 
 const persistConfig = {
   debug: true,
@@ -31,5 +31,5 @@ export const store = createStore(persistedReducer, middleware);
 epicMiddleware.run(rootEpic);
 
 export const persistor = persistStore(store, null, () => {
-  console.log('Rehydrate finish, here reducer returned', store.getState());
+  // console.log('Rehydrate finish, here reducer returned', store.getState());
 });

@@ -5,9 +5,8 @@ import { Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { Image } from 'react-native';
 import { styles } from './PatientSummary.style';
-import { liwiColors } from '../../../utils/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { LiwiTitle2 } from '../../../template/layout';
+import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/uix/backButton';
 import { nodesType } from '../../../../frontend_service/constants';
 
@@ -35,7 +34,11 @@ export default class PatientProfile extends React.Component<Props, State> {
     const items = [];
 
     for (const [index, value] of fd.entries()) {
-      items.push(<Text>{index} - {value.name}</Text>);
+      items.push(
+        <Text>
+          {index} - {value.name}
+        </Text>
+      );
     }
 
     return (
@@ -67,58 +70,23 @@ export default class PatientProfile extends React.Component<Props, State> {
           </View>
           <Tabs
             initialPage={defaultTab}
-            tabBarUnderlineStyle={{
-              backgroundColor: liwiColors.redColor,
-            }}
+            tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}
           >
             <Tab
               heading={t('summary:diagnoses')}
-              tabStyle={{
-                borderColor: liwiColors.darkGreyColor,
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-                borderWidth: 1,
-                borderRadius: 10,
-                // opacity: 0.5,
-              }}
-              activeTextStyle={{
-                color: liwiColors.redColor,
-              }}
-              textStyle={{
-                color: liwiColors.blackColor,
-              }}
-              activeTabStyle={{
-                borderColor: liwiColors.redColor,
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-                borderWidth: 1,
-                borderRadius: 10,
-              }}
+              tabStyle={LiwiTabStyle.tabStyle}
+              activeTextStyle={LiwiTabStyle.activeTextStyle}
+              textStyle={LiwiTabStyle.textStyle}
+              activeTabStyle={LiwiTabStyle.activeTabStyle}
             >
               <View>{items}</View>
             </Tab>
             <Tab
               heading="All questions"
-              tabStyle={{
-                borderColor: liwiColors.darkGreyColor,
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-                borderWidth: 1,
-                borderRadius: 10,
-              }}
-              activeTextStyle={{
-                color: liwiColors.redColor,
-              }}
-              textStyle={{
-                color: liwiColors.blackColor,
-              }}
-              activeTabStyle={{
-                borderColor: liwiColors.redColor,
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-                borderWidth: 1,
-                borderRadius: 10,
-              }}
+              tabStyle={LiwiTabStyle.tabStyle}
+              activeTextStyle={LiwiTabStyle.activeTextStyle}
+              textStyle={LiwiTabStyle.textStyle}
+              activeTabStyle={LiwiTabStyle.activeTabStyle}
             >
               <View>
                 <Questions questions={nodes} />

@@ -1,3 +1,5 @@
+/*eslint no-console: 0 */
+
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
