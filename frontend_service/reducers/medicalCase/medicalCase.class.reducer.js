@@ -28,7 +28,6 @@ class MedicalCaseReducer extends ReducerClass {
   // The state is a MedicalCase
   // Instance it
   _instanceMedicalCase(state) {
-    console.log(state);
 
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
@@ -229,8 +228,6 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.MC_SET)
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
-
-    console.log('qwdesfdgf', medicalCase);
 
     if (state !== {} && medicalCase.id !== state.id) {
       setMedicalCase(state);
