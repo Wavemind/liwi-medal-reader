@@ -1,12 +1,12 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
+import find from 'lodash/find';
+import findKey from 'lodash/findKey';
 import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
-import find from 'lodash/find';
 import { displayFormats } from '../../constants';
-import findKey from 'lodash/findKey';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
@@ -51,13 +51,8 @@ class MedicalCaseReducer extends ReducerClass {
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
 
-  @Action(actions.MC_CLEAR)
-  clearReducer(state, action) {
-    return {};
-  }
-
   @Action(actions.MC_GENERATE_NEXT_BATCH)
-  generateNextBatch(state, action) {
+  generateNextBatch(state) {
     let newState = generateNextBatch(state);
 
     return {

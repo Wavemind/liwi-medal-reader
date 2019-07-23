@@ -1,4 +1,5 @@
 // @flow
+import _ from 'lodash';
 import { categories, nodesType } from '../../constants';
 import { NodeModel } from './Node.model';
 import { PredefinedSyndromeModel } from './PredefinedSyndrome.model';
@@ -6,10 +7,6 @@ import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
-import _ from 'lodash';
-import { setParentConditionValue } from '../../algorithm/algoTreeDiagnosis';
-
-const { qs, d, fd, m, q, t } = nodesType;
 
 interface NodeInterface {}
 
@@ -48,7 +45,7 @@ export class NodesModel implements NodeInterface {
         }
       });
     } catch (e) {
-      console.log(e);
+      console.warn(e);
     }
   }
 

@@ -1,10 +1,11 @@
+/*eslint no-console: 0 */
+
 import { ofType } from 'redux-observable';
-import findIndex from 'lodash/findIndex';
-import { nodesType } from '../../constants';
 import find from 'lodash/find';
 import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { actions } from '../../actions/types.actions';
-import { filter, switchMap } from 'rxjs/operators';
+import { nodesType } from '../../constants';
 import {
   conditionValueDiseasesChange,
   diagnosisChildren,
@@ -171,12 +172,14 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
       }
 
       console.log(
-        'starte PS',
+        'starte PS :',
         qs.id,
         qs,
         topConditionCheckerPs,
-        'state du qs',
-        actions
+        'state du qs :',
+        actions,
+        'index child :',
+        indexChild
       );
 
       console.log(indexPS, ' -> ce PS a comme réponse : ', answeredId);
@@ -213,7 +216,6 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
       console.log(indexDD, '-> conditon of this final node', condition);
       // Check the condition of the children
       return of(...[]);
-
     })
     // TODO : Trigger Treatment/Management handling
   );
@@ -251,10 +253,10 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
 
       // console.log('node', indexChild, ' is ', condition, 'for', indexDD);
 
-      let findActuelConditionValue = findIndex(
-        state$.value.nodes[indexChild].dd,
-        (o) => o.id === indexDD
-      );
+      // let findActuelConditionValue = findIndex(
+      //   state$.value.nodes[indexChild].dd,
+      //   (o) => o.id === indexDD
+      // );
 
       let parents = getParentsOfThisNode(state$, indexDD, indexChild);
 
