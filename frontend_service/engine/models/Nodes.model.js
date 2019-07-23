@@ -23,6 +23,11 @@ export class NodesModel implements NodeInterface {
     return _.filter(this, (n) => n.type === type);
   }
 
+  isAnsweredNodes(nodes) {
+    return nodes.some((a) => {
+      return a.answer !== null;
+    });
+  }
 
   filterByCounterGreaterThanZero() {
     this.filterByConditionValue();
