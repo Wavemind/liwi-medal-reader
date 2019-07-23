@@ -37,8 +37,7 @@ export default class Assessments extends React.Component<Props, State> {
             <Text not-available>{t('work_case:no_questions')}</Text>
           </View>
         )}
-
-        <NavigationTriage />
+        <NavigationTriage questionsInScreen={questions} />
       </ScrollView>
     );
   }

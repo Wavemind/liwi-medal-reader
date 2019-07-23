@@ -17,9 +17,11 @@ type State = StateApplicationContext & {};
 // TODO Will be implemented soon
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Vaccinations extends React.Component<Props, State> {
-
   render() {
-    const { medicalCase, app : { t } } = this.props;
+    const {
+      medicalCase,
+      app: { t },
+    } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(categories.vaccine);
 
@@ -35,8 +37,7 @@ export default class Vaccinations extends React.Component<Props, State> {
           </View>
         )}
 
-        <NavigationTriage />
-
+        <NavigationTriage questionsInScreen={questions} />
       </ScrollView>
     );
   }
