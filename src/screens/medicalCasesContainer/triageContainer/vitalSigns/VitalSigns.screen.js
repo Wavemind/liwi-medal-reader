@@ -2,10 +2,11 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Col, Text, View } from 'native-base';
+import { Col, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import CustomInput from '../../../../components/InputContainer/CustomInput';
 import { styles } from './VitalSigns.style';
+import NavigationTriage from '../../../../components/uix/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 
@@ -25,7 +26,9 @@ export default class VitalSigns extends React.Component<Props, State> {
 
   // Validate input
   validate = async () => {
-    const { medicalCase: { vitalSigns } } = this.props;
+    const {
+      medicalCase: { vitalSigns },
+    } = this.props;
     let errors = await vitalSigns.validate();
     this.setState({ errors: errors });
   };
@@ -38,7 +41,9 @@ export default class VitalSigns extends React.Component<Props, State> {
     } = this.props;
     const { errors } = this.state;
 
-    const { app: { t }} = this.props;
+    const {
+      app: { t },
+    } = this.props;
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -90,15 +95,7 @@ export default class VitalSigns extends React.Component<Props, State> {
             />
           </Col>
         </View>
-
-        <View bottom-view columns>
-          <Button light split>
-            <Text>{t('form:back')}</Text>
-          </Button>
-          <Button light split onPress={this.validate}>
-            <Text>{t('form:next')}</Text>
-          </Button>
-        </View>
+        <NavigationTriage />
       </ScrollView>
     );
   }

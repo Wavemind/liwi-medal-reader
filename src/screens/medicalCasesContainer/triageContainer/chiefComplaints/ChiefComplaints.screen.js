@@ -2,10 +2,11 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Content, Text, View } from 'native-base';
+import { Content, Text, View } from 'native-base';
 import { styles } from './ChiefComplaints.style';
 import { categories } from '../../../../../frontend_service/constants';
 import Boolean from '../../../../components/QuestionsContainer/DisplaysContainer/Boolean';
+import NavigationTriage from '../../../../components/uix/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 
@@ -43,14 +44,7 @@ export default class ChiefComplaint extends React.Component<Props, State> {
             <Text not-available>{t('work_case:no_questions')}</Text>
           </View>
         )}
-        <View bottom-view columns>
-          <Button light split>
-            <Text>{t('form:back')}</Text>
-          </Button>
-          <Button light split>
-            <Text>{t('form:next')}</Text>
-          </Button>
-        </View>
+        <NavigationTriage />
       </Content>
     );
   }
