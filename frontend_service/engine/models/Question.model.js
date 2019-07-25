@@ -37,6 +37,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       qs = [],
       value = '',
       value_format = '',
+      stage = '',
     } = props;
 
     this.description = description;
@@ -51,6 +52,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.qs = qs;
     this.value = value;
     this.value_format = value_format;
+    this.stage = stage;
 
   }
 }

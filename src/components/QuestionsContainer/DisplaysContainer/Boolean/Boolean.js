@@ -3,7 +3,7 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
-import { liwiColors } from '../../../../utils/constants';
+import { Image } from 'react-native';
 import { LeftButton, RightButton } from '../../../../template/layout';
 import { categories } from '../../../../../frontend_service/constants';
 
@@ -28,6 +28,14 @@ export default class Boolean extends React.Component<Props, State> {
   _handleClick = (answer) => {
     const { question, setQuestion } = this.props;
     let newAnswer = Number(answer);
+
+    // Break if chiefcomplain
+    if (
+      question.category === categories.chiefComplain &&
+      answer === question.answer
+    ) {
+      return null;
+    }
 
     if (answer === question.answer) {
       newAnswer = null;
@@ -55,6 +63,7 @@ export default class Boolean extends React.Component<Props, State> {
     let activeStyle;
     let idOnPress;
     let concatStyle;
+    let styleImage;
 
     let RenderJsx;
 
@@ -91,20 +100,35 @@ export default class Boolean extends React.Component<Props, State> {
           };
         }
 
-        if (answer === null || answer === idNo) {
-          activeStyle = { backgroundColor: liwiColors.greyColor };
+        if (answer === null) {
+          activeStyle = { backgroundColor: 'transparent' };
           idOnPress = idYes;
-        } else {
-          activeStyle = { backgroundColor: liwiColors.greenColor };
+        } else if (answer === idYes) {
+          activeStyle = {
+            backgroundColor: 'rgba(0,153,0,0.2)',
+          };
           idOnPress = idNo;
+        } else if (answer === idNo) {
+          idOnPress = idYes;
+          activeStyle = {
+            backgroundColor: 'rgba(255,51,0,0.2)',
+            opacity: 0.3,
+          };
         }
 
         concatStyle = {
+          elevation: 1,
           width: sizeButton,
-          justifyContent: 'center',
+          flexDirection: 'column',
           height: sizeButton,
           ...styleMargin,
           ...activeStyle,
+          justifyContent: 'space-between',
+        };
+
+        styleImage = {
+          width: 40,
+          height: 40,
         };
 
         // Only one button for this type of node
@@ -115,7 +139,37 @@ export default class Boolean extends React.Component<Props, State> {
             style={concatStyle}
             light
           >
+            <Image
+              source={require('../../../../../assets/images/loung.png')}
+              style={styleImage}
+            />
             <Text center>{label}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                padding: 0,
+                margin: 0,
+              }}
+            >
+              <LeftButton
+                active={answer === idYes}
+                onPress={() => this._handleClick(idYes)}
+              >
+                <Text white={answer === idYes} center>
+                  Oui
+                </Text>
+              </LeftButton>
+
+              <RightButton
+                onPress={() => this._handleClick(idNo)}
+                active={answer === idNo}
+              >
+                <Text center white={answer === idNo}>
+                  Non
+                </Text>
+              </RightButton>
+            </View>
           </Button>
         );
         break;

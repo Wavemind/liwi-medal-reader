@@ -1,4 +1,4 @@
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 let _navigator;
 
@@ -6,7 +6,7 @@ function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
 }
 
-function navigate(routeName, params) {
+function navigate(routeName, params = {}) {
   _navigator.dispatch(
     NavigationActions.navigate({
       routeName,
@@ -17,6 +17,7 @@ function navigate(routeName, params) {
 
 function getCurrentRoute() {
   let route = _navigator.state.nav;
+
   let index;
   while (route.routes) {
     index = route.index;
@@ -34,7 +35,17 @@ function getRouteur(routeurName) {
   return route;
 }
 
+function resetActionStack(routeName, params) {
+  const resetAction = StackActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName }, params)],
+  });
+
+  _navigator.dispatch(resetAction);
+}
+
 export default {
+  resetActionStack,
   getRouteur,
   navigate,
   setTopLevelNavigator,

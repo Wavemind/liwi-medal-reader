@@ -97,7 +97,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           block
           spaced
           onPress={async () => {
-            const {medicalCase} = this.props;
+            const { medicalCase } = this.props;
             if (medicalCase.id !== medicalCaseItem.id) {
               await this.selectMedicalCase({
                 ...medicalCaseItem,
