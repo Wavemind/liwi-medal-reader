@@ -17,7 +17,6 @@ import {
   setInitialCounter,
 } from '../../algorithm/algoTreeDiagnosis';
 
-
 interface MedicalCaseInterface {
   props: {
     id?: number,
@@ -33,7 +32,6 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-
   create = async (patientId) => {
     let patient = await getItemFromArray('patients', 'id', patientId);
     let algorithms = await getItems('algorithms');
@@ -45,6 +43,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     setInitialCounter(algorithmUsed);
 
     let newMedicalCase = {
+      ...algorithmUsed,
       nodes: algorithmUsed.nodes,
       diseases: algorithmUsed.diseases,
       vitalSigns: new VitalSignsModel(),

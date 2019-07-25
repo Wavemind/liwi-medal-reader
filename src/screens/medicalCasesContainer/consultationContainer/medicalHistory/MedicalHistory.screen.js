@@ -32,50 +32,25 @@ export default class MedicalHistory extends React.Component<Props, State> {
       (n) => n.answer === Number(Object.keys(n.answers)[0])
     );
 
-    let counterMoreZero = medicalCase.nodes.filterByCounterGreaterThanZero();
-    let questionsWithOutChiefComplains = _.filter(
-      counterMoreZero,
-      (w) => w.category !== categories.chiefComplain
-    );
-    let allQuestions = _.filter(
-      medicalCase.nodes,
-      (w) => w.category !== categories.chiefComplain
-    );
-    let allQuestionsWithoutTriage = _.filter(
-      medicalCase.nodes,
-      (a) => a.priotity !== stage.triage
-    );
+    // symptom and counter and stage = consultation
+
+    let SymptomsCounterStage = medicalCase.nodes.filterbyMultiple([
+      { by: 'category', operator: 'equal', value: categories.symptom },
+      { by: 'stage', operator: 'equal', value: stage.consultation },
+      { by: 'counter', operator: 'more', value: 0 },
+    ]);
 
     return (
       <ScrollView>
         <Tabs tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>
           <Tab
-            heading="All counter"
+            heading="Symtom Counter Stage(consultation)"
             tabStyle={LiwiTabStyle.tabStyle}
             activeTextStyle={LiwiTabStyle.activeTextStyle}
             textStyle={LiwiTabStyle.textStyle}
             activeTabStyle={LiwiTabStyle.activeTabStyle}
           >
-            <Questions questions={questionsWithOutChiefComplains} />
-          </Tab>
-          <Tab
-            heading="All questions"
-            tabStyle={LiwiTabStyle.tabStyle}
-            activeTextStyle={LiwiTabStyle.activeTextStyle}
-            textStyle={LiwiTabStyle.textStyle}
-            activeTabStyle={LiwiTabStyle.activeTabStyle}
-          >
-            <Questions questions={allQuestions} />
-          </Tab>
-
-          <Tab
-            heading="All questions no triage"
-            tabStyle={LiwiTabStyle.tabStyle}
-            activeTextStyle={LiwiTabStyle.activeTextStyle}
-            textStyle={LiwiTabStyle.textStyle}
-            activeTabStyle={LiwiTabStyle.activeTabStyle}
-          >
-            <Questions questions={allQuestionsWithoutTriage} />
+            <Questions questions={SymptomsCounterStage} />
           </Tab>
         </Tabs>
       </ScrollView>

@@ -55,7 +55,6 @@ export default class PatientList extends React.Component<Props, State> {
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
-
     const { statuses } = this.state;
     let patients = await getArray('patients');
     let algorithms = await getItems('algorithms');
@@ -173,7 +172,9 @@ export default class PatientList extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View padding-auto>
-          <LiwiTitle2 testID="patient_list" noBorder>{t('patient_list:search')}</LiwiTitle2>
+          <LiwiTitle2 testID="patient_list" noBorder>
+            {t('patient_list:search')}
+          </LiwiTitle2>
           <View flex-container-row>
             <Item round style={styles.input}>
               <Icon active name="search" />

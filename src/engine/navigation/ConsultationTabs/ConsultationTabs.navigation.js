@@ -53,13 +53,6 @@ export default class ConsultationTabs extends Component<Props, State> {
             <Text center>{t('consultation:physical_exam')}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => this.onPress('Poct')}
-            style={styles.touchable}
-          >
-            {this._renderRound(3, index === 2)}
-            <Text center>{t('consultation:poct')}</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );

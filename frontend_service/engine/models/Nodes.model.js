@@ -29,6 +29,35 @@ export class NodesModel implements NodeInterface {
     });
   }
 
+  filterByStage(stage) {
+    return _.filter(this, (n) => n.stage === stage);
+  }
+
+
+  /*
+  * filters = [
+      { by: 'category', operator: 'equal', value: categories.symptom },
+      { by: 'stage', operator: 'equal', value: stage.consultation },
+      { by: 'counter', operator: 'more', value: 0 },
+    ]
+  *
+  *
+  * */
+  filterbyMultiple(filters) {
+    this.filterByConditionValue();
+    return _.filter(this, (node) => {
+      let f = filters.every((filter) => {
+        switch (filter.operator) {
+          case 'equal':
+            return node[filter.by] === filter.value;
+          case 'more':
+            return node[filter.by] > filter.value;
+        }
+      });
+      return f;
+    });
+  }
+
   filterByCounterGreaterThanZero() {
     this.filterByConditionValue();
     return _.filter(this, (n) => n.counter > 0);

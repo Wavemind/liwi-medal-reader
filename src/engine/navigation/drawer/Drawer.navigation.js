@@ -58,12 +58,12 @@ export default class Drawer extends Component<Props, State> {
               marginIcon
               onPress={() => navigation.navigate('Algorithms')}
             >
-              <Icon style={styles.icon} dark type='AntDesign' name="sync" />
+              <Icon style={styles.icon} dark type="AntDesign" name="sync" />
             </Button>
           </View>
           <View style={styles.bottom}>
             <Button transparent btnDrawer onPress={this.logout}>
-              <Icon style={styles.icon} dark type='AntDesign' name="logout" />
+              <Icon style={styles.icon} dark type="AntDesign" name="logout" />
             </Button>
           </View>
         </View>
@@ -138,19 +138,14 @@ export default class Drawer extends Component<Props, State> {
                   {t('menu:physical_exam')}
                 </Text>
               </Button>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() => this.onPress('Poct')}
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:poct')}
-                </Text>
-              </Button>
             </View>
 
             <View style={[styles.tests, styles.paddingCategory]}>
-              <Button transparent btnDrawer>
+              <Button
+                transparent
+                btnDrawer
+                onPress={() => this.onPress('Tests')}
+              >
                 <Text style={[styles.title, styles.noLeftPadding]} dark>
                   {t('menu:tests')}
                 </Text>

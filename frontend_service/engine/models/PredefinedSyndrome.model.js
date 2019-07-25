@@ -29,6 +29,7 @@ export class PredefinedSyndromeModel extends NodeModel
       conditions = {},
       nodes = {},
       top_conditions = {},
+      category = ''
     } = props;
 
     this.description = description;
@@ -40,6 +41,7 @@ export class PredefinedSyndromeModel extends NodeModel
     this.conditions = conditions;
     this.top_conditions = top_conditions;
     this.nodes = nodes;
+    this.category = category;
 
     this.requirement = new RequirementNodeModel({ ...props });
     this.instanceLink();
