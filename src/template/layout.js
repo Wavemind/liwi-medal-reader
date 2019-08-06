@@ -168,15 +168,19 @@ export const LiwiTabStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
+
   activeTextStyle: {
     color: liwiColors.redColor,
   },
+
   textStyle: {
     color: liwiColors.blackColor,
   },
+
   tabBarUnderlineStyle: {
     backgroundColor: liwiColors.redColor,
   },
+
   activeTabStyle: {
     borderColor: liwiColors.redColor,
     borderBottomLeftRadius: 0,

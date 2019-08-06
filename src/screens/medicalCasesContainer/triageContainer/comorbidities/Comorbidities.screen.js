@@ -20,7 +20,6 @@ export default class Comorbidities extends React.Component<Props, State> {
         <Text>Comorbidities</Text>
         <NavigationTriage  />
 
-
       </ScrollView>
     );
   }

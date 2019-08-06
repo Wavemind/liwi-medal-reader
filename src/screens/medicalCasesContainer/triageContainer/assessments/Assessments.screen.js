@@ -25,7 +25,6 @@ export default class Assessments extends React.Component<Props, State> {
 
     let questions = medicalCase.nodes.filterByCategory(categories.assessment);
 
-    // noinspection RequiredAttributes
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {questions.length > 0 ? (
