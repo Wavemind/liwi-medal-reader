@@ -8,16 +8,13 @@ import { categories } from '../../../../../frontend_service/constants';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 
 type Props = NavigationScreenProps & {};
-
 type State = {};
 
 export default class PhysicalExams extends React.Component<Props, State> {
   // default settings
   state = {};
 
-
   render() {
-
     const { medicalCase } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(
@@ -27,9 +24,7 @@ export default class PhysicalExams extends React.Component<Props, State> {
     return (
       <ScrollView>
         <Text>PhysicalExams</Text>
-
         <Questions questions={questions} />
-
       </ScrollView>
     );
   }

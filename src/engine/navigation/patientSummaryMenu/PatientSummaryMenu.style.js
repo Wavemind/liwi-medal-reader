@@ -5,7 +5,6 @@ import { liwiColors } from '../../../utils/constants';
 export const styles = StyleSheet.create({
   container: {
     height: 80,
-
     backgroundColor: liwiColors.lightGreyColor,
   },
 
@@ -19,9 +18,7 @@ export const styles = StyleSheet.create({
 
   round: {
     borderRadius: 50,
-
     height: 60,
-
     width: 60,
   },
 
@@ -35,15 +32,10 @@ export const styles = StyleSheet.create({
 
   touchable: {
     flexDirection: 'column',
-
     justifyContent: 'center',
-
     alignItems: 'center',
-
     flex: 1,
-
     flexGrow: 1,
-
     backgroundColor: '#dadada',
   },
 });
