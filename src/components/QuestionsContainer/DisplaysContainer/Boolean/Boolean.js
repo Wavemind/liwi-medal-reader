@@ -140,7 +140,7 @@ export default class Boolean extends React.Component<Props, State> {
             light
           >
             <Image
-              source={require('../../../../../assets/images/loung.png')}
+              source={require('../../../../../assets/images/home.png')}
               style={styleImage}
             />
             <Text center>{label}</Text>
