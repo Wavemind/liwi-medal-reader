@@ -10,16 +10,19 @@ export default {
       flexDirection: 'column',
       flex: 1,
     },
+
     '.flex-container-row': {
       flexDirection: 'row',
       flex: 1,
     },
+
     '.flex-container-fluid': {
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
     },
+
     '.round': {
       borderRadius: 50,
       backgroundColor: liwiColors.darkGreyColor,
@@ -31,13 +34,16 @@ export default {
     '.flex-child': {
       flexGrow: 1, // not used actually
     },
+
     '.margin-auto': {
       margin: marginIsTablet(),
     },
+
     '.w50': {
       flex: 1,
       flexDirection: 'row',
     },
+
     '.padding-auto': { padding: 20 },
     '.flex-center': {
       flexDirection: 'column',
@@ -46,6 +52,7 @@ export default {
       flex: 1,
       flexGrow: 1,
     },
+
     '.flex-center-stretch': {
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -53,21 +60,25 @@ export default {
       flex: 1,
       flexGrow: 1,
     },
+
     '.full-space': {
       flexDirection: 'column',
       justifyContent: 'center',
       flex: 1,
       flexGrow: 1,
     },
+
     '.flex-start': {
       justifyContent: 'flex-start',
       alignItems: 'flex-start',
     },
+
     '.border-primary': {
       borderColor: liwiColors.redColor,
       borderWidth: 2,
       borderRadius: 10,
     },
+
     '.card': {
       width: screenWidth - 40,
       padding: 20,
@@ -107,9 +118,11 @@ export default {
       flexDirection: 'row',
       flex: 0.3,
     },
+
     '.w33': {
       flex: 0.33,
     },
+
     '.columns': {
       flex: 1,
       flexDirection: 'row',

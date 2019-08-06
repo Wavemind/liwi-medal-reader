@@ -23,7 +23,7 @@ import { ConsultationTabNavigator } from './Consultation.navigation';
 import DropDownMenu from './DropDownMenuTop.navigation';
 import PatientSummaryMenu from './patientSummaryMenu';
 import PatientSummary from '../../screens/patientsContainer/patientSummary';
-import Tests from '../../screens/medicalCasesContainer/tests';
+//import Tests from '../../screens/medicalCasesContainer/tests';
 
 // we need to use i18n directly beacause we cant be connect to contexte
 const Stack = createStackNavigator({
@@ -140,19 +140,19 @@ const Stack = createStackNavigator({
       };
     },
   },
-  Tests: {
-    screen: Tests,
-    path: 'tests',
-    params: {
-      showSummary: true,
-      dropDownMenu: 'Tests'
-    },
-    navigationOptions: () => {
-      return {
-        headerTitle: DropDownMenu,
-      };
-    },
-  },
+  // Tests: {
+  //   screen: Tests,
+  //   path: 'tests',
+  //   params: {
+  //     showSummary: true,
+  //     dropDownMenu: 'Tests'
+  //   },
+  //   navigationOptions: () => {
+  //     return {
+  //       headerTitle: DropDownMenu,
+  //     };
+  //   },
+  // },
 });
 
 const HomeWithModal = createStackNavigator(
