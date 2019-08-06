@@ -56,8 +56,7 @@ export default class PatientProfile extends React.Component<Props, State> {
             </View>
             <View>
               <Text>
-                {patient.firstname} - {patient.lastname} | {patient.gender} |
-                20.02.2015
+                {patient.firstname} - {patient.lastname} | {patient.gender} | {patient.birthdate}
               </Text>
               <Text>
                 T {vitalSigns.tempetature}C | F.C {vitalSigns.respiratoryRate}{' '}
