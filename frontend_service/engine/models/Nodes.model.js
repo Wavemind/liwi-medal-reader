@@ -43,7 +43,7 @@ export class NodesModel implements NodeInterface {
   *
   *
   * */
-  filterbyMultiple(filters) {
+  filterByMultiple(filters) {
     this.filterByConditionValue();
     return _.filter(this, (node) => {
       let f = filters.every((filter) => {
