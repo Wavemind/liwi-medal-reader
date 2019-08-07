@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 
-import PatientList from '../patientsContainer/patientList';
+import MedicalCaseList from '../medicalCasesContainer/medicalCaseList';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -19,7 +19,7 @@ export default class MainScreen extends React.Component<Props, State> {
 
     return (
       <ScrollView>
-        <PatientList navigation={navigation} />
+        <MedicalCaseList navigation={navigation} />
       </ScrollView>
     );
   }
