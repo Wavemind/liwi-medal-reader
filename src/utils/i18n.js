@@ -179,12 +179,22 @@ i18n
           active: 'Sessions active',
           empty: 'No session',
         },
+        home: {
+          title: 'Home',
+        },
         navigation: {
           medical_case_list: 'Case in progress',
+          home: 'Home',
           patient_upsert: 'patient',
           patient_list: 'Patient list',
+          patient_search: 'Search a patient',
           patient_profile: 'Patient profile',
+          case_in_progress: 'Case in progress',
+          synchronize: 'Synchronize',
+          patient_add: 'Patient add',
           settings: 'Settings',
+          my_profile: 'My profile',
+          logout: 'Logout',
           available_algorithms: 'Available algorithms',
         },
         common: {
@@ -239,15 +249,6 @@ i18n
         },
         patient_detail: {},
         patient_list: {
-          waiting: 'En attente',
-          search: 'Rechercher',
-          sort: 'Trier par',
-          name: 'Nom',
-          status: 'Status',
-          no_patients: 'Aucun patients',
-          not_found: 'Aucun résultat',
-        },
-        medical_case_list: {
           waiting: 'En attente',
           search: 'Rechercher',
           sort: 'Trier par',

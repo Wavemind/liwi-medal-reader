@@ -21,5 +21,13 @@ export default {
     '.large': {
       fontSize: 40,
     },
+    '.navigation':  {
+      marginBottom: 10,
+      fontSize: 75,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+    },
   },
 };
