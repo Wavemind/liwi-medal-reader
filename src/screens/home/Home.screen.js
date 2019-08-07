@@ -10,7 +10,6 @@ import { styles } from './Home.style';
 type Props = NavigationScreenProps & {};
 type State = {};
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class Home extends React.Component<Props, State> {
 
   logout = async () => {
