@@ -165,11 +165,21 @@ i18n
           active: 'Sessions active',
           empty: 'No session',
         },
+        home: {
+          title: 'Home',
+        },
         navigation: {
+          home: 'Home',
           patient_upsert: 'patient',
           patient_list: 'Patient list',
+          patient_search: 'Search a patient',
           patient_profile: 'Patient profile',
+          case_in_progress: 'Case in progress',
+          synchronize: 'Synchronize',
+          patient_add: 'Patient add',
           settings: 'Settings',
+          my_profile: 'My profile',
+          logout: 'Logout',
           available_algorithms: 'Available algorithms',
         },
         common: {
