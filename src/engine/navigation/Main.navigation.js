@@ -36,7 +36,7 @@ const Stack = createStackNavigator({
     path: 'home',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t('navigation:medical_case_list'),
+        title: i18n.t('navigation:home'),
         headerLeft: (
           <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
             <Icon red type="Entypo" name="menu" large />

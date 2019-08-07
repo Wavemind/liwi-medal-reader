@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 
-import MedicalCaseList from '../medicalCasesContainer/medicalCaseList';
+import HomeScreen from '../home';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -13,13 +13,13 @@ type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class MainScreen extends React.Component<Props, State> {
 
-  render(){
+  render() {
 
     const { navigation } = this.props;
 
     return (
       <ScrollView>
-        <MedicalCaseList navigation={navigation} />
+        <HomeScreen navigation={navigation} />
       </ScrollView>
     );
   }
