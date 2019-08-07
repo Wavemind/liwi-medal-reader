@@ -23,7 +23,11 @@ export default class Assessments extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
-    let questions = medicalCase.nodes.filterByCategory(categories.assessment);
+    // Calculate zScore
+    const questions = medicalCase.nodes.filterByCategory(categories.assessment);
+    const firstQuestion = questions[0];
+    const result = firstQuestion.calculateZScore(11, 3);
+    //////////////////////////////////////////
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
