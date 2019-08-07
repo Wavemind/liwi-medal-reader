@@ -3,9 +3,11 @@
 import { NodeModel } from './Node.model';
 import { priorities } from '../../constants';
 
+const zScore = require('../../algorithm/z_score_male_table');
+
 const { basic, mandatory, triage, priority } = priorities;
 
- interface QuestionInterface {
+interface QuestionInterface {
   answer: string;
   answers: Object;
   description: string;
@@ -54,5 +56,49 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.value_format = value_format;
     this.stage = stage;
 
+  }
+
+  // Params age (in days), weight (in kg)
+  // Return range -4 to 4
+  // Calculate Z score based on age and weight.
+  calculateZScore(age, weight) {
+    let value = 0;
+    let previousKey = null;
+    Object.keys(zScore[age]).map((key) => {
+      if (zScore[age][key] > weight) {
+        value = this.zScoreCorrelation(previousKey);
+        return true;
+      }
+      previousKey = key;
+    });
+    return value;
+  }
+
+  // Params zScoreKey
+  // Return integer value
+  // Map key to return integer value
+  zScoreCorrelation(zScoreKey) {
+    switch (zScoreKey) {
+      case 'SD4neg':
+        return -4;
+      case 'SD3neg':
+        return -3;
+      case 'SD2neg':
+        return -2;
+      case 'SD1neg':
+        return -1;
+      case 'SD0':
+        return 0;
+      case 'SD1':
+        return 1;
+      case 'SD2':
+        return 2;
+      case 'SD3':
+        return 3;
+      case 'SD4':
+        return 4;
+      default:
+        console.log('This value doesn\'t exist');
+    }
   }
 }
