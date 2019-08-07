@@ -34,7 +34,7 @@ export default class MedicalHistory extends React.Component<Props, State> {
 
     // symptom and counter and stage = consultation
 
-    let SymptomsCounterStage = medicalCase.nodes.filterbyMultiple([
+    let SymptomsCounterStage = medicalCase.nodes.filterByMultiple([
       { by: 'category', operator: 'equal', value: categories.symptom },
       { by: 'stage', operator: 'equal', value: stage.consultation },
       { by: 'counter', operator: 'more', value: 0 },
