@@ -32,10 +32,6 @@ export default {
       shadowOpacity: 0,
       elevation: 0,
     },
-    '.switch-login': {
-      backgroundColor: 'none',
-      border: 0,
-    },
     '.activeStyle': {
       backgroundColor: liwiColors.greenColor,
     },
@@ -66,7 +62,7 @@ export default {
       justifyContent: 'center',
     },
 
-    // Tous les buttons sont affectés !
+    // All button is affected
     margin: 5,
   },
 };

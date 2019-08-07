@@ -3,10 +3,10 @@
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 
-interface FinalDiagnostictInterface {}
+interface FinalDiagnosticInterface {}
 
 export class FinalDiagnosticModel extends NodeModel
-  implements FinalDiagnostictInterface {
+  implements FinalDiagnosticInterface {
   constructor(props) {
     super(props);
 
