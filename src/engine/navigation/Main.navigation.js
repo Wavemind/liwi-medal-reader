@@ -23,7 +23,7 @@ import { ConsultationTabNavigator } from './Consultation.navigation';
 import DropDownMenu from './DropDownMenuTop.navigation';
 import PatientSummaryMenu from './patientSummaryMenu';
 import PatientSummary from '../../screens/patientsContainer/patientSummary';
-import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList/MedicalCaseList.screen';
+import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 //import Tests from '../../screens/medicalCasesContainer/tests';
 
 // we need to use i18n directly beacause we cant be connect to contexte
