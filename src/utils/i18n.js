@@ -107,6 +107,7 @@ i18n
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
           waiting_diagnosis: 'Diagnosis',
+          case_in_progress: 'a case is open'
         },
         medical_case_list: {
           all: 'All',
