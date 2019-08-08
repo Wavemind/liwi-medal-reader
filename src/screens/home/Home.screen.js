@@ -83,7 +83,7 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('PatientList')}
+                onPress={() => navigation.navigate('MedicalCaseList')}
               >
                 <View>
                   <Icon
