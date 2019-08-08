@@ -6,11 +6,8 @@ export const styles = StyleSheet.create({
     width: '90%',
   },
 
-  filter: {
-    marginTop: 40,
-    paddingBottom: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+  marginBottom: {
+    marginBottom: 40,
   },
 
   picker: {
