@@ -37,7 +37,7 @@ export default class Algorithm extends React.Component<Props, State> {
   }
 
   render() {
-    const { nodes, ready, diseases, version, description, author } = this.state;
+    const { nodes, ready, diagnostics, version, description, author } = this.state;
 
     if (!ready) {
       return null;
@@ -92,18 +92,18 @@ export default class Algorithm extends React.Component<Props, State> {
             }}
           >
             <View style={{ flex: 1 }}>
-              {Object.keys(diseases).map((id) => (
+              {Object.keys(diagnostics).map((id) => (
                 <View
                   style={{
                     margin: 10,
                     padding: 20,
                     backgroundColor: liwiColors.greyColor,
                   }}
-                  key={id + '_diseases'}
+                  key={id + '_diagnostics'}
                 >
-                  <Text>id : {diseases[id].id}</Text>
-                  <Text>reference : {diseases[id].reference}</Text>
-                  <Text>label : {diseases[id].label}</Text>
+                  <Text>id : {diagnostics[id].id}</Text>
+                  <Text>reference : {diagnostics[id].reference}</Text>
+                  <Text>label : {diagnostics[id].label}</Text>
                 </View>
               ))}
             </View>
