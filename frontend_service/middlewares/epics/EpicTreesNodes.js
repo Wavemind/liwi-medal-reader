@@ -50,7 +50,7 @@ export const epicCatchAnswer = (action$, state$) =>
       let arrayActions = [];
 
       relatedDiagnostics.map((diagnostic) =>
-        arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodesType.diagnostic))
+        arrayActions.push(dispatchNodeAction(currentNode, state$.value.diagnostics[diagnostic.id]))
       );
 
       relatedQuestionsSequence.map((questionsSequence) =>
@@ -67,83 +67,65 @@ export const epicCatchAnswer = (action$, state$) =>
 * @params [Object] action$, [Object] state$
 * @return [Array][Object] arrayActions
 **/
-// TODO : Handle Treatment/Management
+// TODO : Handle HealthCares
 export const epicCatchDispatchNodeAction = (action$, state$) =>
   action$.pipe(
-    ofType(actions.MC_NODE_CHILDREN),
+    ofType(actions.HANDLE_NODE_CHANGED),
     switchMap((action) => {
-      // indexNode = node that has just been answered
-      // indexChild = dd or qs being affected by the node
-      // typeChild = type of node
-      let { indexNode, indexChild, typeChild } = action.payload;
-
       let arrayActions = [];
 
-      // Since it is not a disease, we know it is a node then we look for its type
-      // TODO: Remove if no error found
-      if (typeChild === null) {
-        // eslint-disable-next-line no-console
-        console.log(
-          '%c --- DANGER --- ',
-          'background: #FF0000; color: #F6F3ED; padding: 5px',
-          typeChild,
-          'node',
-          indexNode
-        );
-        typeChild = state$.value.nodes[indexChild].type;
-      }
+      // Caller = dd or qs being affected by the node
+      let { node, caller } = action.payload;
 
       // eslint-disable-next-line no-console
       console.log(
         '%c --- epicCatchDispatchNodeAction --- ',
         'background: #FF4500; color: #F6F3ED; padding: 5px',
         'déclenché :',
-        indexNode,
-        state$.value.nodes[indexNode] === undefined ? 'diagnostics' : state$.value.nodes[indexNode],
+        node,
         ' > : ',
-        indexChild,
-        typeChild
+        caller,
       );
 
       let nodeChildren;
 
       // What do we do with this child -> switch according to type
-      switch (typeChild) {
+      switch (caller.type) {
         case nodesType.question:
-          return of(diseasesChildren(indexNode, indexChild));
+          return of(diseasesChildren(node.id, caller.id));
         case nodesType.finalDiagnostic:
-          return of(diagnosisChildren(indexNode, indexChild));
+          return of(diagnosisChildren(node.id, caller.id));
         case nodesType.healthCare:
           // TODO: to implement
           return [];
         case nodesType.diagnostic:
+
           // Get children of the node in the current diagnostic
-          nodeChildren = state$.value.diagnostics[indexChild].nodes[indexNode].children;
+          nodeChildren = caller.nodes[node.id].children;
 
           // Check children of the node in the current diagnostic and process them as well.
-          nodeChildren.map((childId) =>
+          nodeChildren.map((childId) => {
             arrayActions.push(
               dispatchNodeAction(
-                indexChild,
-                childId,
-                state$.value.nodes[childId].type
+                caller,
+                state$.value.nodes[childId] === undefined ? state$.value.diagnostics[childId] : state$.value.nodes[childId],
               )
-            )
-          );
+            );
+          });
 
           return of(...arrayActions);
         case nodesType.questionsSequence:
           // TODO : Handle PS
           // HERE calcule condition of node type PS
-          return of(diseasesChildren(indexNode, indexChild));
-        //return of(questionsSequencesChildren(indexChild, indexNode));
+          return of(diseasesChildren(node.id, caller.id));
+        //return of(questionsSequencesChildren(caller, node));
         default:
           // eslint-disable-next-line no-console
           console.log(
             '%c --- DANGER --- ',
             'background: #FF0000; color: #F6F3ED; padding: 5px',
             'nodes type ',
-            typeChild,
+            caller.type,
             'doesn\'t exist'
           );
           return [];
@@ -244,7 +226,6 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
     switchMap((action) => {
       const { indexDD, indexChild } = action.payload;
       const child = state$.value.diagnostics[indexDD].nodes[indexChild];
-
       // If the algo is wrong with the nodes
       // TODO catch nice error from JSON
       if (child === undefined) {

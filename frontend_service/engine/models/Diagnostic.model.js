@@ -10,6 +10,7 @@ interface DiagnosticInterface {
   label: string;
   nodes: Object;
   reference: string;
+  type: string;
 }
 
 export class DiagnosticModel implements DiagnosticInterface {
@@ -22,6 +23,7 @@ export class DiagnosticModel implements DiagnosticInterface {
     this.differential = differential;
     this.reference = reference;
     this.nodes = nodes;
+    this.type = 'diagnostic';
 
     this.instanceLink();
     this.instanceFinalDiagnostic();
