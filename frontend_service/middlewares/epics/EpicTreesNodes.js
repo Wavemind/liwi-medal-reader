@@ -20,9 +20,12 @@ import {
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 
-// @params [Object] action$, [Object] state$
-// @return [Array][Object] arrayActions
-// Loop on diagnostics AND PS
+/**
+* Loop on diagnostics AND PS
+*
+* @params [Object] action$, [Object] state$
+* @return [Array][Object] arrayActions
+**/
 // TODO make PS change side effect
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
@@ -36,31 +39,34 @@ export const epicCatchAnswer = (action$, state$) =>
         '%c ########################  epicCatchAnswer ########################',
         'background: #F6F3EE; color: #b84c4c; padding: 5px'
       );
+
       // eslint-disable-next-line no-console
       console.log({ STATE: state$.value });
 
-      const node = state$.value.nodes[index];
-      const nodeDdParents = node.dd;
-      const nodePsParents = node.qs;
+      const currentNode = state$.value.nodes[index];
+      const relatedDiagnostics = currentNode.dd;
+      const relatedQuestionsSequence = currentNode.qs;
 
       let arrayActions = [];
 
-      nodeDdParents.map((dd) =>
-        // Define disease type so it will not be considered as node
-        arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.diseases))
+      relatedDiagnostics.map((diagnostic) =>
+        arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodesType.diagnostic))
       );
 
-      nodePsParents.map((qs) =>
-        arrayActions.push(questionsSequencesChildren(qs.id, index))
+      relatedQuestionsSequence.map((questionsSequence) =>
+        arrayActions.push(questionsSequencesChildren(questionsSequence.id, index))
       );
 
       return of(...arrayActions);
     })
   );
 
-// @params [Object] action$, [Object] state$
-// @return [Array][Object] arrayActions
-// Process the impacted node according to his type
+/**
+* Process the impacted node according to his type
+*
+* @params [Object] action$, [Object] state$
+* @return [Array][Object] arrayActions
+**/
 // TODO : Handle Treatment/Management
 export const epicCatchDispatchNodeAction = (action$, state$) =>
   action$.pipe(
@@ -68,31 +74,32 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     switchMap((action) => {
       // indexNode = node that has just been answered
       // indexChild = dd or qs being affected by the node
+      // typeChild = type of node
       let { indexNode, indexChild, typeChild } = action.payload;
 
-      // indexNode = Parent node
-      // indexChild = node that is affected by it
       let arrayActions = [];
 
       // Since it is not a disease, we know it is a node then we look for its type
+      // TODO: Remove if no error found
       if (typeChild === null) {
+        // eslint-disable-next-line no-console
+        console.log(
+          '%c --- DANGER --- ',
+          'background: #FF0000; color: #F6F3ED; padding: 5px',
+          typeChild,
+          'node',
+          indexNode
+        );
         typeChild = state$.value.nodes[indexChild].type;
-      }
-
-      let typeNode;
-      if (state$.value.nodes[indexNode] === undefined) {
-        typeNode = 'diseases';
-      } else {
-        typeNode = state$.value.nodes[indexNode].type;
       }
 
       // eslint-disable-next-line no-console
       console.log(
-        '%c --- NODES --- ',
+        '%c --- epicCatchDispatchNodeAction --- ',
         'background: #FF4500; color: #F6F3ED; padding: 5px',
         'déclenché :',
         indexNode,
-        typeNode,
+        state$.value.nodes[indexNode] === undefined ? 'diagnostics' : state$.value.nodes[indexNode],
         ' > : ',
         indexChild,
         typeChild
@@ -103,20 +110,19 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       // What do we do with this child -> switch according to type
       switch (typeChild) {
         case nodesType.question:
-          // Go to this sample question
           return of(diseasesChildren(indexNode, indexChild));
-        case nodesType.treatment:
-          // Treatment
-          return [];
         case nodesType.finalDiagnostic:
-          // Ho next node is Final Diagnostic
           return of(diagnosisChildren(indexNode, indexChild));
-        case nodesType.management:
+        case nodesType.treatment:
+          // TODO Implement
           return [];
-        case nodesType.diseases:
+        case nodesType.management:
+          // TODO Implement
+          return [];
+        case nodesType.diagnostic:
           // Get children of the node in the current diagnostic
           nodeChildren =
-            state$.value.diseases[indexChild].nodes[indexNode].children;
+            state$.value.diagnostics[indexChild].nodes[indexNode].children;
 
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) =>
@@ -231,7 +237,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
     ofType(actions.MC_DISEASES_CHILDREN),
     switchMap((action) => {
       const { indexDD, indexChild } = action.payload;
-      const child = state$.value.diseases[indexDD].nodes[indexChild];
+      const child = state$.value.diagnostics[indexDD].nodes[indexChild];
 
       // If the algo is wrong with the nodes
       // TODO catch nice error from JSON
@@ -239,7 +245,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
         console.error(
           ' The child',
           indexChild,
-          'do not exist in diseases',
+          'do not exist in diagnostics',
           indexDD
         );
         return of();
@@ -267,8 +273,8 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
       // If one parents has to be show and answered
       let finder = parents.some((i) => {
         let node = state$.value.nodes[i];
-        let findDiseasesId = find(node.dd, (p) => p.id === indexDD);
-        return node.answer !== null && findDiseasesId.conditionValue === true;
+        let diagnostic = find(node.dd, (p) => p.id === indexDD);
+        return node.answer !== null && diagnostic.conditionValue === true;
       });
 
       // Update the condition value if it is different from the current one
@@ -287,13 +293,12 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
 
         // if the node is answered we go deeper
         if (state$.value.nodes[indexChild].answer !== null) {
-          actions.push(dispatchNodeAction(indexChild, indexDD, nodesType.diseases));
+          actions.push(dispatchNodeAction(indexChild, indexDD, nodesType.diagnostic));
         }
       } else if (finder === false) {
         // reset conditionValue to false
         actions.push(conditionValueDiseasesChange(indexChild, indexDD, false));
       }
-      // }
 
       return of(...actions);
     })

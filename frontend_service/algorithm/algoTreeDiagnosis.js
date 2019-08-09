@@ -31,14 +31,14 @@ export const generateInitialBatch = (algorithmJson) => {
 // @return [Json] algorithmJsonMedicalCase
 // Set condition values of question in order to prepare them for second batch (before the triage one)
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
-  const { diseases, nodes } = algorithmJsonMedicalCase;
+  const { diagnostics, nodes } = algorithmJsonMedicalCase;
 
   try {
     Object.keys(nodes).map((nodeId) => {
       if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
         nodes[nodeId].dd.map((dd) => {
           dd.conditionValue =
-            diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
+            diagnostics[dd.id].nodes[nodeId].top_conditions.length === 0;
         });
 
         // Map trough PS if it is in an another PS itself
@@ -62,13 +62,13 @@ export const setParentConditionValue = (
   id
 ) => {
   let conditionValue = false;
-  const { diseases, nodes } = algorithmJsonMedicalCase;
+  const { diagnostics, nodes } = algorithmJsonMedicalCase;
 
   // Set condition value for DD if there is any
   if (!nodes[parentId].dd.isEmpty()) {
     nodes[parentId].dd.map((dd) => {
       dd.conditionValue =
-        diseases[dd.id].nodes[parentId].top_conditions.length === 0;
+        diagnostics[dd.id].nodes[parentId].top_conditions.length === 0;
     });
     conditionValue = true;
   }
@@ -135,12 +135,12 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
   return algorithmJsonMedicalCase;
 };
 
-// Node from diseases !
+// Node from diagnostics !
 export const getParentsOfThisNode = (state$, diseaseId, nodeId) => {
   let parents = [];
 
   let top_conditions =
-    state$.value.diseases[diseaseId].nodes[nodeId].top_conditions;
+    state$.value.diagnostics[diseaseId].nodes[nodeId].top_conditions;
 
   top_conditions.map((top) => {
     parents.push(top.first_node_id);

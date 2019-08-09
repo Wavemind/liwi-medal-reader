@@ -25,7 +25,7 @@ interface MedicalCaseInterface {
     algorithmReady?: boolean,
     comments?: mixed,
     nodes: Object,
-    diseases: Object,
+    diagnostics: Object,
     createdDate: Date,
     vitalSigns: VitalSignsModel,
   };
@@ -45,7 +45,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     let newMedicalCase = {
       ...algorithmUsed,
       nodes: algorithmUsed.nodes,
-      diseases: algorithmUsed.diseases,
+      diagnostics: algorithmUsed.diagnostics,
       vitalSigns: new VitalSignsModel(),
     };
 

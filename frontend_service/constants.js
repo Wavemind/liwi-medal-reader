@@ -7,9 +7,9 @@ export const host = 'https://liwi.wavelab.top/api/v1/';
 export const saltHash =
   'x9gKs?RBf*96RK2DAM+&$CYv7A3Gjp=?X&RBLS%9KeL8Q3dSGjUzL_?2Vye3';
 
-// Nodes type
+// Nodes types
 export const nodesType = {
-  diseases: 'diseases',
+  diagnostic: 'diagnostic',
   finalDiagnostic: 'FinalDiagnostic',
   management: 'Management',
   questionsSequence: 'QuestionsSequence',

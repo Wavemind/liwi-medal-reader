@@ -74,7 +74,7 @@ i18n
           consultation: 'Consultation',
           waiting_test: 'Waiting for test',
           test: 'Test',
-          waiting_diagnosis: 'Wait for diagnosis',
+          waiting_final_diagnosis: 'Wait for diagnosis',
           diagnosis: 'Diagnosis',
           close: 'Close',
         },

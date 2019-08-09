@@ -7,7 +7,7 @@ import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import { valueFormats } from '../../constants';
-import { DiseasesModel } from '../../engine/models/Diseases.model';
+import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
 
@@ -38,10 +38,10 @@ class MedicalCaseReducer extends ReducerClass {
 
   // For the diseases we instance it
   _generateInstanceDiseasesNode(state) {
-    Object.keys(state.diseases).forEach(
+    Object.keys(state.diagnostics).forEach(
       (i) =>
-        (state.diseases[i] = new DiseasesModel({
-          ...state.diseases[i],
+        (state.diagnostics[i] = new DiagnosticModel({
+          ...state.diagnostics[i],
         })),
     );
 

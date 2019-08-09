@@ -3,7 +3,7 @@
 import { LinkNodeModel } from './Link.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 
-interface DiseasesInterface {
+interface DiagnosticInterface {
   diagnosis: Object;
   differential: Object;
   id: number;
@@ -12,7 +12,7 @@ interface DiseasesInterface {
   reference: string;
 }
 
-export class DiseasesModel implements DiseasesInterface {
+export class DiagnosticModel implements DiagnosticInterface {
   constructor(props) {
     const { id, diagnosis, label, differential, reference, nodes } = props;
 
