@@ -10,7 +10,7 @@ import {
   diseasesChildren,
   dispatchNodeAction,
   questionsSequencesChildren,
-  setQuestion,
+  setAnswer,
 } from '../../actions/creators.actions';
 import {
   getParentsOfThisNode,
@@ -26,7 +26,7 @@ import {
 // TODO make PS change side effect
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
-    ofType(actions.MC_QUESTION_SET),
+    ofType(actions.SET_ANSWER),
     switchMap((action) => {
       // Index is the id of the node that has just been answered
       const { index } = action.payload;
@@ -189,7 +189,7 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
       if (answeredId !== qs.answer) {
         // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
 
-        return of(...actions, setQuestion(qs.id, answeredId));
+        return of(...actions, setAnswer(qs.id, answeredId));
       } else {
         // emit nothing....
         return of(...[]);

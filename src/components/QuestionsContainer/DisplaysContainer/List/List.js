@@ -19,8 +19,8 @@ export default class List extends React.Component<Props, State> {
   }
 
   onValueChange = (value: string) => {
-    const {question, setQuestion} = this.props;
-    setQuestion(question.id, value);
+    const {question, setAnswer} = this.props;
+    setAnswer(question.id, value);
   };
 
   render() {

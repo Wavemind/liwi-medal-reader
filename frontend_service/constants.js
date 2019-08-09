@@ -27,7 +27,7 @@ export const displayFormats = {
 };
 
 // Value of answer accepted
-export const displayValues = {
+export const valueFormats = {
   array: 'Array',
   int: 'Integer',
   float: 'Float',
@@ -56,7 +56,7 @@ export const categories = {
   symptom: 'symptom',
   demographic: 'demographic',
   comorbidity: 'comorbidity',
-  chiefComplain: 'chief_complain',
+  chiefComplaint: 'chief_complaint',
   predefinedSyndrome: 'predefined_syndrome',
   triage: 'triage',
   vaccine: 'vaccine',

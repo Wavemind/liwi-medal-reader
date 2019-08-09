@@ -2,7 +2,7 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { ListItem, Text } from 'native-base';
-import { displayFormats, displayValues, nodesType, priorities } from '../../../../frontend_service/constants';
+import { displayFormats, valueFormats, nodesType, priorities } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -45,7 +45,7 @@ class WrapperQuestion extends React.Component<Props, State> {
     // Boolean | Numeric | List
     switch (question.display_format) {
       case displayFormats.radioButton:
-        if (question.value_format === displayValues.bool) {
+        if (question.value_format === valueFormats.bool) {
           WrapperAnswer = () => (
             <Boolean question={question} styles={specificStyle} />
           );
