@@ -81,7 +81,7 @@ export const medicalCaseStatus = {
   consultation: 'consultation',
   waitingTest: 'waiting_test',
   test: 'test',
-  waitingDiagnosis: 'waiting_diagnosis',
-  diagnosis: 'diagnosis',
+  waitingDiagnostic: 'waiting_diagnostic',
+  final_diagnostic: 'final_diagnostic',
   close: 'close',
 };

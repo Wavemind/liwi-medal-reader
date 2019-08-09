@@ -113,16 +113,12 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(diseasesChildren(indexNode, indexChild));
         case nodesType.finalDiagnostic:
           return of(diagnosisChildren(indexNode, indexChild));
-        case nodesType.treatment:
-          // TODO Implement
-          return [];
-        case nodesType.management:
-          // TODO Implement
+        case nodesType.healthCare:
+          // TODO: to implement
           return [];
         case nodesType.diagnostic:
           // Get children of the node in the current diagnostic
-          nodeChildren =
-            state$.value.diagnostics[indexChild].nodes[indexNode].children;
+          nodeChildren = state$.value.diagnostics[indexChild].nodes[indexNode].children;
 
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) =>
@@ -141,6 +137,16 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           // HERE calcule condition of node type PS
           return of(diseasesChildren(indexNode, indexChild));
         //return of(questionsSequencesChildren(indexChild, indexNode));
+        default:
+          // eslint-disable-next-line no-console
+          console.log(
+            '%c --- DANGER --- ',
+            'background: #FF0000; color: #F6F3ED; padding: 5px',
+            'nodes type ',
+            typeChild,
+            'doesn\'t exist'
+          );
+          return [];
       }
     })
   );

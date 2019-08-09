@@ -104,13 +104,6 @@ export default class Question extends React.PureComponent<Props, State> {
           marginRight={20}
         />
         <LabelQuestion
-          key={question.id + '_reference'}
-          label={question.reference}
-          flex={0.05}
-          marginLeft={0}
-          marginRight={20}
-        />
-        <LabelQuestion
           key={question.id + '_label'}
           label={question.label}
           flex={0.65}

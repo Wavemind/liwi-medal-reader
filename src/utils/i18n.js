@@ -74,8 +74,8 @@ i18n
           consultation: 'Consultation',
           waiting_test: 'Waiting for test',
           test: 'Test',
-          waiting_final_diagnosis: 'Wait for diagnosis',
-          diagnosis: 'Diagnosis',
+          waiting_final_diagnostic: 'Wait for diagnosis',
+          final_diagnostic: 'Diagnosis',
           close: 'Close',
         },
         settings: {
@@ -110,7 +110,7 @@ i18n
           waiting_triage: 'Triage',
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
-          waiting_diagnosis: 'Diagnosis',
+          waiting_diagnostics: 'Diagnosis',
         },
         patient: {
           first_name: 'First name',
