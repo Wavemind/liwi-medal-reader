@@ -31,15 +31,13 @@ export const setAnswer = (index, value) => ({
 });
 
 export const dispatchNodeAction = (
-  indexNode,
-  indexChild,
-  typeChild = null
+  node,
+  caller,
 ) => ({
-  type: actions.MC_NODE_CHILDREN,
+  type: actions.HANDLE_NODE_CHANGED,
   payload: {
-    indexNode,
-    indexChild,
-    typeChild,
+    node,
+    caller,
   },
 });
 
