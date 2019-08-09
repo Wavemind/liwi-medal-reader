@@ -3,7 +3,7 @@ import { Action, ReducerClass } from 'reducer-class';
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
 import findKey from 'lodash/findKey';
-import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
+import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import { valueFormats } from '../../constants';
@@ -65,14 +65,14 @@ class MedicalCaseReducer extends ReducerClass {
   conditionValuePsChange(state, action) {
     const { nodeId, psId, value } = action.payload;
 
-    const ps = state.nodes[nodeId].qs;
+    const qs = state.nodes[nodeId].qs;
 
-    let changeConditionValue = find(ps, (d) => d.id === psId);
+    let changeConditionValue = find(qs, (d) => d.id === psId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = this._instanceChild({
+    state.nodes[nodeId] = this.instantiateNode({
       ...state.nodes[nodeId],
-      qs: ps,
+      qs: qs,
     });
 
     return {
@@ -90,7 +90,7 @@ class MedicalCaseReducer extends ReducerClass {
     let changeConditionValue = find(dd, (d) => d.id === diseaseId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = state.nodes._instanceChild({
+    state.nodes[nodeId] = state.nodes.instantiateNode({
       ...state.nodes[nodeId],
       dd: dd,
     });
@@ -105,7 +105,7 @@ class MedicalCaseReducer extends ReducerClass {
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
-    state.nodes[indexPs] = state.nodes._instanceChild({
+    state.nodes[indexPs] = state.nodes.instantiateNode({
       ...state.nodes[indexPs],
       answer: answer,
     });
@@ -169,31 +169,16 @@ class MedicalCaseReducer extends ReducerClass {
       default:
         // eslint-disable-next-line no-console
         console.log(
-          '%c --- NODES --- ',
+          '%c --- DANGER --- ',
           'background: #FF0000; color: #F6F3ED; padding: 5px',
           `Unhandled question format ${state.nodes[index].display_format}`,
+          state.nodes[index],
         );
         answer = value;
         break;
     }
-
-    // workaround
-    // TODO why sometimes there are string number ? lodash ?
-    if (answer !== 'null' && answer !== null) {
-      // eslint-disable-next-line no-console
-      console.log(
-        '%c --- NODES --- ',
-        'background: #FF0000; color: #F6F3ED; padding: 5px',
-        'Answer is a string ! ',
-        answer,
-        'Question :',
-        index,
-      );
-      answer = Number(answer);
-    }
-
-    // Update answered question with new answer value
-    state.nodes[index] = state.nodes._instanceChild({
+    // Instantiate new object with answered question with new answer value
+    state.nodes[index] = state.nodes.instantiateNode({
       ...state.nodes[index],
       answer: answer,
       value: value,
@@ -223,7 +208,7 @@ class MedicalCaseReducer extends ReducerClass {
     const { medicalCase } = action.payload;
 
     if (state !== {} && medicalCase.id !== state.id) {
-      setMedicalCase(state);
+      storeMedicalCase(state);
     }
 
     let modelsMedicalCase = this._instanceMedicalCase(medicalCase);

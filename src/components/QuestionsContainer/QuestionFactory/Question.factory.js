@@ -74,7 +74,7 @@ export default class Question extends React.PureComponent<Props, State> {
     const { question } = this.props;
 
     // If this is not a question we return null
-    if (question === undefined || question.type !== nodesType.q) {
+    if (question === undefined || question.type !== nodesType.question) {
       return null;
     }
 
@@ -99,6 +99,13 @@ export default class Question extends React.PureComponent<Props, State> {
         <LabelQuestion
           key={question.id + '_counter'}
           label={question.counter}
+          flex={0.05}
+          marginLeft={0}
+          marginRight={20}
+        />
+        <LabelQuestion
+          key={question.id + '_reference'}
+          label={question.reference}
           flex={0.05}
           marginLeft={0}
           marginRight={20}

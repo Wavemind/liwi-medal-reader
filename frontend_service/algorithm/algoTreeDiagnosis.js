@@ -184,7 +184,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
       let nodeChild = state$.value.nodes[nodeChildID];
 
       // IF the child is OUR PS
-      if (nodeChildID === qs.id && nodeChild.type === nodesType.qs) {
+      if (nodeChildID === qs.id && nodeChild.type === nodesType.questionsSequence) {
         // Top parent and child is QS
         // The branch is open and we can set the answer of this QS
         return;
@@ -192,7 +192,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
       }
 
       // IF the child is an other QS
-      if (nodeChild.type === nodesType.qs && nodeChildID !== qs.id) {
+      if (nodeChild.type === nodesType.questionsSequence && nodeChildID !== qs.id) {
         console.warn(nodeChild, 'Get state of this other PS');
 
         // If the sub QS is null and show the sub question
@@ -204,7 +204,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
       }
 
       // IF the child is an question
-      if (nodeChild.type === nodesType.q) {
+      if (nodeChild.type === nodesType.question) {
         // Next node is a question, get the state
         // go deeper
         recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);

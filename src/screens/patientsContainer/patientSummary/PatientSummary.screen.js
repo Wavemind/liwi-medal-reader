@@ -27,7 +27,7 @@ export default class PatientProfile extends React.Component<Props, State> {
       width: 40,
       height: 40,
     };
-    let fd = nodes.filterByType(nodesType.fd);
+    let fd = nodes.filterByType(nodesType.finalDiagnostic);
 
     let defaultTab = navigation.getParam('defaultTab');
 

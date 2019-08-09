@@ -47,7 +47,7 @@ export const epicCatchAnswer = (action$, state$) =>
 
       nodeDdParents.map((dd) =>
         // Define disease type so it will not be considered as node
-        arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.d))
+        arrayActions.push(dispatchNodeAction(index, dd.id, nodesType.diseases))
       );
 
       nodePsParents.map((qs) =>
@@ -102,18 +102,18 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
 
       // What do we do with this child -> switch according to type
       switch (typeChild) {
-        case nodesType.q:
+        case nodesType.question:
           // Go to this sample question
           return of(diseasesChildren(indexNode, indexChild));
-        case nodesType.t:
+        case nodesType.treatment:
           // Treatment
           return [];
-        case nodesType.fd:
+        case nodesType.finalDiagnostic:
           // Ho next node is Final Diagnostic
           return of(diagnosisChildren(indexNode, indexChild));
-        case nodesType.m:
+        case nodesType.management:
           return [];
-        case nodesType.d:
+        case nodesType.diseases:
           // Get children of the node in the current diagnostic
           nodeChildren =
             state$.value.diseases[indexChild].nodes[indexNode].children;
@@ -130,7 +130,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           );
 
           return of(...arrayActions);
-        case nodesType.qs:
+        case nodesType.questionsSequence:
           // TODO : Handle PS
           // HERE calcule condition of node type PS
           return of(diseasesChildren(indexNode, indexChild));
@@ -287,7 +287,7 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
 
         // if the node is answered we go deeper
         if (state$.value.nodes[indexChild].answer !== null) {
-          actions.push(dispatchNodeAction(indexChild, indexDD, nodesType.d));
+          actions.push(dispatchNodeAction(indexChild, indexDD, nodesType.diseases));
         }
       } else if (finder === false) {
         // reset conditionValue to false
