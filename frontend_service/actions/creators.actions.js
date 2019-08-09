@@ -22,8 +22,8 @@ export const nextBatch = () => ({
   payload: {},
 });
 
-export const setQuestion = (index, value) => ({
-  type: actions.MC_QUESTION_SET,
+export const setAnswer = (index, value) => ({
+  type: actions.SET_ANSWER,
   payload: {
     index,
     value,

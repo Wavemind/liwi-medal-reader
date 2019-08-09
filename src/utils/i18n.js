@@ -47,6 +47,10 @@ i18n
           back: 'Back',
           next: 'Next',
         },
+        question: {
+          yes: 'Yes',
+          no: 'No',
+        },
         menu: {
           triage: 'Triage',
           assessment: 'First look assessment',

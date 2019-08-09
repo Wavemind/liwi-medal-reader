@@ -22,7 +22,7 @@ export default class ChiefComplaint extends React.Component<Props, State> {
     const { medicalCase, app: { t } } = this.props;
     const { widthView } = this.state;
     let questions = medicalCase.nodes.filterByCategory(
-      categories.chiefComplain
+      categories.chiefComplaint
     );
 
     return (

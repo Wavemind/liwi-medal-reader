@@ -6,7 +6,7 @@ import findKey from 'lodash/findKey';
 import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
-import { displayFormats } from '../../constants';
+import { valueFormats } from '../../constants';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
@@ -42,7 +42,7 @@ class MedicalCaseReducer extends ReducerClass {
       (i) =>
         (state.diseases[i] = new DiseasesModel({
           ...state.diseases[i],
-        }))
+        })),
     );
 
     return state;
@@ -129,62 +129,50 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
-  @Action(actions.MC_QUESTION_SET)
-  questionSet(state, action) {
+  /**
+   * Sets / calculate the answer in the state
+   *
+   * @trigger When a question is answered
+   * @payload index : Question id
+   * @payload value : Answer value
+   *                    if numeric question setted value
+   *                    if other question answer id
+   */
+  @Action(actions.SET_ANSWER)
+  setAnswer(state, action) {
     const { index, value } = action.payload;
 
     let answer;
+    switch (state.nodes[index].value_format) {
+      case valueFormats.int:
+      case valueFormats.float:
+        answer = findKey(state.nodes[index].answers, (answerCondition) => {
+          switch (answerCondition.operator) {
+            case 'more_or_equal':
+              return value >= Number(answerCondition.value);
 
-    switch (state.nodes[index].display_format) {
-      case displayFormats.input:
-        if (value.length > 0) {
-          answer = findKey(state.nodes[index].answers, (answerCondition) => {
-            // TODO reduce the case when backend is ready
-            switch (answerCondition.operator) {
-              case 'more_or_equal':
-                return value >= Number(answerCondition.value);
+            case 'less':
+              return value < Number(answerCondition.value);
 
-              case 'less':
-                return value < Number(answerCondition.value);
-
-              case 'more_or_equal_and_less':
-                return (
-                  value >= Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case 'between':
-                return (
-                  value >= Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case 'more_and_less':
-                return (
-                  value > Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case 'more_and_less_or_equal':
-                return (
-                  value > Number(answerCondition.value.split(',')[0]) &&
-                  value <= Number(answerCondition.value.split(',')[1])
-                );
-            }
-          });
-        } else {
-          answer = null;
-        }
-
+            case 'between':
+              return (
+                value >= Number(answerCondition.value.split(',')[0]) &&
+                value < Number(answerCondition.value.split(',')[1])
+              );
+          }
+        });
         break;
-
-      case displayFormats.radioButton:
+      case valueFormats.bool:
+      case valueFormats.array:
         answer = value;
         break;
-      case displayFormats.list:
-        answer = value;
-        break;
-      case undefined:
+      default:
+        // eslint-disable-next-line no-console
+        console.log(
+          '%c --- NODES --- ',
+          'background: #FF0000; color: #F6F3ED; padding: 5px',
+          `Unhandled question format ${state.nodes[index].display_format}`,
+        );
         answer = value;
         break;
     }
@@ -192,9 +180,19 @@ class MedicalCaseReducer extends ReducerClass {
     // workaround
     // TODO why sometimes there are string number ? lodash ?
     if (answer !== 'null' && answer !== null) {
+      // eslint-disable-next-line no-console
+      console.log(
+        '%c --- NODES --- ',
+        'background: #FF0000; color: #F6F3ED; padding: 5px',
+        'Answer is a string ! ',
+        answer,
+        'Question :',
+        index,
+      );
       answer = Number(answer);
     }
 
+    // Update answered question with new answer value
     state.nodes[index] = state.nodes._instanceChild({
       ...state.nodes[index],
       answer: answer,
