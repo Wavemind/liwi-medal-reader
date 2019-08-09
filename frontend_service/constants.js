@@ -9,13 +9,13 @@ export const saltHash =
 
 // Nodes type
 export const nodesType = {
-  d: 'diseases',
-  fd: 'FinalDiagnostic',
-  m: 'Management',
-  qs: 'QuestionsSequence',
-  q: 'Question',
-  t: 'Treatment',
-  h: 'HealthCare',
+  diseases: 'diseases',
+  finalDiagnostic: 'FinalDiagnostic',
+  management: 'Management',
+  questionsSequence: 'QuestionsSequence',
+  question: 'Question',
+  treatment: 'Treatment',
+  healthCare: 'HealthCare',
 };
 
 // Display answer format

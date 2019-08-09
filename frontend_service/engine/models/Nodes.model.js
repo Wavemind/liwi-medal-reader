@@ -12,7 +12,7 @@ interface NodeInterface {}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {
-    this.instanceNodeModel(props);
+    this.instantiateNodes(props);
   }
 
   filterByCategory(category) {
@@ -83,54 +83,63 @@ export class NodesModel implements NodeInterface {
     }
   }
 
-  // Instance all the nodes
-  instanceNodeModel(nodes) {
+  /**
+   * Instantiate all the nodes received
+   *
+   * @params nodes : nodes to instantiate
+   */
+  instantiateNodes(nodes) {
     Object.keys(nodes).forEach((i) => {
       let node = nodes[i];
-      this[i] = this._instanceChild(node);
+      this[i] = this.instantiateNode(node);
     });
   }
 
-  // Switch for instance the good model to the node
-  _instanceChild(node) {
-    let instinctiveNode;
+  /**
+   * Node factory
+   * Instantiate new Node base on node type
+   *
+   * @params node : node to instantiate
+   */
+  instantiateNode(node) {
+    let instantiatedNode;
 
     if (node instanceof NodeModel) {
       return node;
     }
 
-    // By the node type
+    // Based on the node type
     switch (node.type) {
-      case nodesType.qs:
-        instinctiveNode = new PredefinedSyndromeModel({
+      case nodesType.questionsSequence:
+        instantiatedNode = new PredefinedSyndromeModel({
           ...node,
           medicalCase: this,
         });
         break;
 
-      case nodesType.q:
-        instinctiveNode = new QuestionModel({
+      case nodesType.question:
+        instantiatedNode = new QuestionModel({
           ...node,
           medicalCase: this,
         });
         break;
-      case nodesType.h:
+      case nodesType.healthCare:
         switch (node.category) {
           case categories.management:
-            instinctiveNode = new ManagementModel({ ...node });
+            instantiatedNode = new ManagementModel({ ...node });
             break;
           case categories.treatment:
-            instinctiveNode = new TreatmentModel({ ...node });
+            instantiatedNode = new TreatmentModel({ ...node });
             break;
         }
         break;
-      case nodesType.fd:
-        instinctiveNode = new FinalDiagnosticModel({ ...node });
+      case nodesType.finalDiagnostic:
+        instantiatedNode = new FinalDiagnosticModel({ ...node });
         break;
       default:
         break;
     }
 
-    return instinctiveNode;
+    return instantiatedNode;
   }
 }
