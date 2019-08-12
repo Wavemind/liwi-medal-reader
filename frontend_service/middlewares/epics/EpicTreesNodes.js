@@ -7,21 +7,21 @@ import { nodesType } from '../../constants';
 import {
   conditionValueDiseasesChange,
   diagnosisChildren,
-  diseasesChildren,
+  dispatchCondition,
   dispatchNodeAction,
   questionsSequencesChildren,
   setAnswer,
 } from '../../actions/creators.actions';
 import {
-  getParentsOfThisNode,
+  getParentsNodes,
   getStateToThisPs,
-  nodeConditionChecker,
+  calculateCondition,
 } from '../../algorithm/algoTreeDiagnosis';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 
 /**
-* Loop on diagnostics AND PS
+* Loop on diagnostics AND QS
 *
 * @params [Object] action$, [Object] state$
 * @return [Array][Object] arrayActions
@@ -50,7 +50,7 @@ export const epicCatchAnswer = (action$, state$) =>
       let arrayActions = [];
 
       relatedDiagnostics.map((diagnostic) =>
-        arrayActions.push(dispatchNodeAction(currentNode, state$.value.diagnostics[diagnostic.id]))
+        arrayActions.push(dispatchNodeAction(index, diagnostic.id))
       );
 
       relatedQuestionsSequence.map((questionsSequence) =>
@@ -74,8 +74,9 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     switchMap((action) => {
       let arrayActions = [];
 
-      // Caller = dd or qs being affected by the node
-      let { node, caller } = action.payload;
+      const { nodeId, callerId } = action.payload;
+      const node = state$.value.nodes[nodeId] === undefined ? state$.value.diagnostics[nodeId] : state$.value.nodes[nodeId];
+      const caller = state$.value.nodes[callerId] === undefined ? state$.value.diagnostics[callerId] : state$.value.nodes[callerId];
 
       // eslint-disable-next-line no-console
       console.log(
@@ -92,7 +93,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       // What do we do with this child -> switch according to type
       switch (caller.type) {
         case nodesType.question:
-          return of(diseasesChildren(node.id, caller.id));
+          return of(dispatchCondition(node.id, caller.id));
         case nodesType.finalDiagnostic:
           return of(diagnosisChildren(node.id, caller.id));
         case nodesType.healthCare:
@@ -102,22 +103,21 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
 
           // Get children of the node in the current diagnostic
           nodeChildren = caller.nodes[node.id].children;
-
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) => {
             arrayActions.push(
               dispatchNodeAction(
-                caller,
-                state$.value.nodes[childId] === undefined ? state$.value.diagnostics[childId] : state$.value.nodes[childId],
+                caller.id,
+                childId,
               )
             );
           });
 
           return of(...arrayActions);
         case nodesType.questionsSequence:
-          // TODO : Handle PS
+          // TODO : Handle QS
           // HERE calcule condition of node type PS
-          return of(diseasesChildren(node.id, caller.id));
+          return of(dispatchCondition(node.id, caller.id));
         //return of(questionsSequencesChildren(caller, node));
         default:
           // eslint-disable-next-line no-console
@@ -147,7 +147,7 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
       const qs = state$.value.nodes[indexPS];
 
       // Let check the condition of this qs
-      const topConditionCheckerPs = nodeConditionChecker(
+      const topConditionCheckerPs = calculateCondition(
         state$,
         null,
         null,
@@ -202,7 +202,7 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
       const child = state$.value.nodes[indexDiagnosis];
 
       // Get the conditions of the node
-      const condition = nodeConditionChecker(
+      const condition = calculateCondition(
         state$,
         indexDD,
         indexDiagnosis,
@@ -219,72 +219,62 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
 
 // @params [Object] action$, [Object] state$
 // @return [Array][Object] arrayActions
-// Process node children in the dd
-export const epicCatchDiseasesChildren = (action$, state$) =>
+// Dispatch condition action on condition result
+export const epicCatchDispatchCondition = (action$, state$) =>
   action$.pipe(
-    ofType(actions.MC_DISEASES_CHILDREN),
+    ofType(actions.DISPATCH_CONDITION),
     switchMap((action) => {
-      const { indexDD, indexChild } = action.payload;
-      const child = state$.value.diagnostics[indexDD].nodes[indexChild];
-      // If the algo is wrong with the nodes
-      // TODO catch nice error from JSON
-      if (child === undefined) {
-        console.error(
-          ' The child',
-          indexChild,
+      let actions = [];
+
+      const { diagnosticId, nodeId } = action.payload;
+      const currentNode = state$.value.diagnostics[diagnosticId].nodes[nodeId];
+
+      // TODO: C'est possible ?
+      if (currentNode === undefined) {
+        // eslint-disable-next-line no-console
+        console.log(
+          '%c --- DANGER --- ',
+          'background: #FF0000; color: #F6F3ED; padding: 5px',
+          ' The node',
+          nodeId,
           'do not exist in diagnostics',
-          indexDD
+          diagnosticId
         );
         return of();
       }
 
-      // Get the conditions of the node
-      const condition = nodeConditionChecker(
-        state$,
-        indexDD,
-        indexChild,
-        child
-      );
-      let actions = [];
-
-      // console.log('node', indexChild, ' is ', condition, 'for', indexDD);
-
-      // let findActuelConditionValue = findIndex(
-      //   state$.value.nodes[indexChild].dd,
-      //   (o) => o.id === indexDD
-      // );
-
-      let parents = getParentsOfThisNode(state$, indexDD, indexChild);
+      const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);
 
       // some() – returns true if the function returns true for at least one of the items
-      // If one parents has to be show and answered
-      let finder = parents.some((i) => {
-        let node = state$.value.nodes[i];
-        let diagnostic = find(node.dd, (p) => p.id === indexDD);
-        return node.answer !== null && diagnostic.conditionValue === true;
+      // If one parentsNodes has to be show and answered
+      // TODO: Faut que tu m'expliques exactement a quoi sert le résultat de cette fonction (pour mick de quentin)
+      let parentConditionValue = parentsNodes.some((i) => {
+        let parentNode = state$.value.nodes[i];
+        let diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
+        return parentNode.answer !== null && diagnostic.conditionValue === true;
       });
 
-      // Update the condition value if it is different from the current one
-      // if (
-      //   state$.value.nodes[indexChild].dd[findConditionValue].conditionValue !==
-      //   condition
-      // ) {
-      // IF the node is always possible we do nothing
+      // Get node condition value
+      const conditionValue = calculateCondition(
+        state$,
+        diagnosticId,
+        currentNode.id,
+        currentNode
+      );
 
       // IF the condition is not null
-
-      if (condition !== null) {
+      if (conditionValue !== null) {
         actions.push(
-          conditionValueDiseasesChange(indexChild, indexDD, condition)
+          conditionValueDiseasesChange(nodeId, diagnosticId, conditionValue)
         );
 
-        // if the node is answered we go deeper
-        if (state$.value.nodes[indexChild].answer !== null) {
-          actions.push(dispatchNodeAction(indexChild, indexDD, nodesType.diagnostic));
+        // if the node is answered go his children
+        if (state$.value.nodes[nodeId].answer !== null) {
+          actions.push(dispatchNodeAction(nodeId, diagnosticId, nodesType.diagnostic));
         }
-      } else if (finder === false) {
-        // reset conditionValue to false
-        actions.push(conditionValueDiseasesChange(indexChild, indexDD, false));
+      } else if (parentConditionValue === false) {
+        // Set parent to false if their condition's isn't correct. Used to stop the algorithm
+        actions.push(conditionValueDiseasesChange(nodeId, diagnosticId, false));
       }
 
       return of(...actions);
