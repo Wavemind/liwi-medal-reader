@@ -2,7 +2,7 @@ import { combineEpics } from 'redux-observable';
 import {
   epicCatchAnswer,
   epicCatchDispatchNodeAction,
-  epicCatchDiseasesChildren,
+  epicCatchDispatchCondition,
   epicCatchDiagnosisChildren,
   epicCatchPredefinedSyndromeChildren,
 } from './EpicTreesNodes';
@@ -13,5 +13,5 @@ export default combineEpics(
   epicCatchAnswer,
   epicCatchDiagnosisChildren,
   epicCatchDispatchNodeAction,
-  epicCatchDiseasesChildren
+  epicCatchDispatchCondition
 );

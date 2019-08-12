@@ -136,20 +136,20 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
 };
 
 // Node from diagnostics !
-export const getParentsOfThisNode = (state$, diseaseId, nodeId) => {
-  let parents = [];
+export const getParentsNodes = (state$, diagnosticId, nodeId) => {
+  let parentsNodes = [];
 
   let top_conditions =
-    state$.value.diagnostics[diseaseId].nodes[nodeId].top_conditions;
+    state$.value.diagnostics[diagnosticId].nodes[nodeId].top_conditions;
 
   top_conditions.map((top) => {
-    parents.push(top.first_node_id);
+    parentsNodes.push(top.first_node_id);
     if (top.second_type !== null) {
-      parents.push(top.second_node_id);
+      parentsNodes.push(top.second_node_id);
     }
   });
 
-  return parents;
+  return parentsNodes;
 };
 
 // TODO not working at 100%, fix it
@@ -176,7 +176,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
   }
 
   // We check the condition of this node
-  const nodeCondition = nodeConditionChecker(state$, null, null, node);
+  const nodeCondition = calculateCondition(state$, null, null, node);
 
   // If top parent or condition === true
   if (nodeCondition === true) {
@@ -188,7 +188,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
         // Top parent and child is QS
         // The branch is open and we can set the answer of this QS
         return;
-        //return nodeConditionChecker(state$, null, null, qs);
+        //return calculateCondition(state$, null, null, qs);
       }
 
       // IF the child is an other QS
@@ -231,7 +231,7 @@ export const getStateToThisPs = (state$, qs, actions) => {
 };
 
 // TODO: IN PROGRESS
-export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
+export const calculateCondition = (state$, indexDD, indexChild, child) => {
 
   // If this is a top parent node
   if (child.top_conditions.length === 0) {

@@ -31,13 +31,13 @@ export const setAnswer = (index, value) => ({
 });
 
 export const dispatchNodeAction = (
-  node,
-  caller,
+  nodeId,
+  callerId,
 ) => ({
   type: actions.HANDLE_NODE_CHANGED,
   payload: {
-    node,
-    caller,
+    nodeId,
+    callerId,
   },
 });
 
@@ -62,11 +62,11 @@ export const setVitalSigns = (index, value) => ({
   payload: { index: index, value: value },
 });
 
-export const diseasesChildren = (indexDD, indexChild) => ({
-  type: actions.MC_DISEASES_CHILDREN,
+export const dispatchCondition = (diagnosticId, nodeId) => ({
+  type: actions.DISPATCH_CONDITION,
   payload: {
-    indexDD,
-    indexChild,
+    diagnosticId,
+    nodeId,
   },
 });
 
