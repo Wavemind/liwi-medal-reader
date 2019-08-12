@@ -9,10 +9,8 @@ const languageDetector = {
     const deviceLocale = DeviceInfo.getDeviceLocale();
     callback(deviceLocale);
   },
-  init: () => {
-  },
-  cacheUserLanguage: () => {
-  },
+  init: () => {},
+  cacheUserLanguage: () => {},
 };
 
 i18n
@@ -23,7 +21,8 @@ i18n
     resources: {
       en: {
         summary: {
-          diagnoses: 'Diagnoses'
+          title: 'Current Summary',
+          diagnoses: 'Diagnoses',
         },
         assessment: {
           title: 'First look assessment',
@@ -115,7 +114,6 @@ i18n
           gender: 'Gender',
           male: 'Male',
           female: 'Female',
-
         },
         login: {
           title: 'Login',
@@ -191,19 +189,23 @@ i18n
         notifications: {
           empty_code: 'Your code is empty, please write it',
           invalid_code: ' Your local code is invalid, please try again',
-          session_does_not_exist: 'Your local user does not exist, please try again',
+          session_does_not_exist:
+            'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: 'You don\'t have internet connection',
         },
       },
       fr: {
         summary: {
-          diagnoses: 'Diagnostic'
+          title: 'Résumé actuel',
+          diagnoses: 'Diagnostic',
         },
         notifications: {
           empty_code: 'Votre code est vide, veuillez l\'écrire',
-          invalid_code: ' Votre code local n\'est pas valide, veuillez réessayer.',
-          session_does_not_exist: 'Cet utilisateur local n\'existe pas, veuillez réessayer.',
+          invalid_code:
+            ' Votre code local n\'est pas valide, veuillez réessayer.',
+          session_does_not_exist:
+            'Cet utilisateur local n\'existe pas, veuillez réessayer.',
           session_already_exist: 'La session existe déjà',
           no_internet: 'Vous n\'avez pas de connexion internet',
         },

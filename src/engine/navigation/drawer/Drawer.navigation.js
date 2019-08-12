@@ -163,7 +163,7 @@ export default class Drawer extends Component<Props, State> {
             <View style={[styles.patient, styles.paddingCategory]}>
               <Button transparent btnDrawer>
                 <Icon
-                  style={[styles.icon, { marginLeft: 0 }]}
+                  style={[styles.icon, styles.margin0]}
                   white
                   name="search"
                 />
@@ -171,7 +171,7 @@ export default class Drawer extends Component<Props, State> {
               </Button>
               <Button transparent btnDrawer>
                 <Icon
-                  style={[styles.icon, { marginLeft: 0 }]}
+                  style={[styles.icon, styles.margin0]}
                   white
                   name="person"
                 />
