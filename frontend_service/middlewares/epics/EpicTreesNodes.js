@@ -1,10 +1,9 @@
 import { ofType } from 'redux-observable';
-import findIndex from 'lodash/findIndex';
-import { nodesType } from '../../constants';
 import find from 'lodash/find';
 import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { actions } from '../../actions/types.actions';
-import { filter, switchMap } from 'rxjs/operators';
+import { nodesType } from '../../constants';
 import {
   conditionValueDiseasesChange,
   diagnosisChildren,
@@ -32,10 +31,12 @@ export const epicCatchAnswer = (action$, state$) =>
       // Index is the id of the node that has just been answered
       const { index } = action.payload;
 
+      // eslint-disable-next-line no-console
       console.log(
         '%c ########################  epicCatchAnswer ########################',
         'background: #F6F3EE; color: #b84c4c; padding: 5px'
       );
+      // eslint-disable-next-line no-console
       console.log({ STATE: state$.value });
 
       const node = state$.value.nodes[index];
@@ -85,6 +86,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
         typeNode = state$.value.nodes[indexNode].type;
       }
 
+      // eslint-disable-next-line no-console
       console.log(
         '%c --- NODES --- ',
         'background: #FF4500; color: #F6F3ED; padding: 5px',
@@ -170,15 +172,18 @@ export const epicCatchPredefinedSyndromeChildren = (action$, state$) =>
         getStateToThisPs(state$, qs, actions);
       }
 
+      // eslint-disable-next-line no-console
       console.log(
-        'starte PS',
+        'starte PS :',
         qs.id,
         qs,
         topConditionCheckerPs,
-        'state du qs',
-        actions
+        'state du qs :',
+        actions,
+        'index child :',
+        indexChild
       );
-
+      // eslint-disable-next-line no-console
       console.log(indexPS, ' -> ce PS a comme réponse : ', answeredId);
 
       if (answeredId !== qs.answer) {
@@ -210,10 +215,10 @@ export const epicCatchDiagnosisChildren = (action$, state$) =>
         child
       );
 
+      // eslint-disable-next-line no-console
       console.log(indexDD, '-> conditon of this final node', condition);
       // Check the condition of the children
       return of(...[]);
-
     })
     // TODO : Trigger Treatment/Management handling
   );
@@ -251,10 +256,10 @@ export const epicCatchDiseasesChildren = (action$, state$) =>
 
       // console.log('node', indexChild, ' is ', condition, 'for', indexDD);
 
-      let findActuelConditionValue = findIndex(
-        state$.value.nodes[indexChild].dd,
-        (o) => o.id === indexDD
-      );
+      // let findActuelConditionValue = findIndex(
+      //   state$.value.nodes[indexChild].dd,
+      //   (o) => o.id === indexDD
+      // );
 
       let parents = getParentsOfThisNode(state$, indexDD, indexChild);
 

@@ -2,12 +2,13 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Text } from 'native-base';
+import { Tab, Tabs } from 'native-base';
 import { ScrollView } from 'react-native';
 import _ from 'lodash';
 
-import { categories } from '../../../../../frontend_service/constants';
+import { categories, stage } from '../../../../../frontend_service/constants';
 import Questions from '../../../../components/QuestionsContainer/Questions';
+import { LiwiTabStyle } from '../../../../template/layout';
 
 type Props = NavigationScreenProps & {};
 
@@ -31,16 +32,27 @@ export default class MedicalHistory extends React.Component<Props, State> {
       (n) => n.answer === Number(Object.keys(n.answers)[0])
     );
 
-    let counterMoreZero =  medicalCase.nodes.filterByCounterGreaterThanZero();
-    let questionsWithOutChiefComplains = _.filter(counterMoreZero, (w) => w.category !== categories.chiefComplain );
-    let allQuestions = _.filter(medicalCase.nodes, (w) => w.category !== categories.chiefComplain );
+    // symptom and counter and stage = consultation
+
+    let SymptomsCounterStage = medicalCase.nodes.filterByMultiple([
+      { by: 'category', operator: 'equal', value: categories.symptom },
+      { by: 'stage', operator: 'equal', value: stage.consultation },
+      { by: 'counter', operator: 'more', value: 0 },
+    ]);
 
     return (
       <ScrollView>
-        <Text>Question with counter &gt; 0</Text>
-        <Questions questions={questionsWithOutChiefComplains} />
-        <Text>All questions</Text>
-        <Questions questions={allQuestions} />
+        <Tabs tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>
+          <Tab
+            heading="Symtom Counter Stage(consultation)"
+            tabStyle={LiwiTabStyle.tabStyle}
+            activeTextStyle={LiwiTabStyle.activeTextStyle}
+            textStyle={LiwiTabStyle.textStyle}
+            activeTabStyle={LiwiTabStyle.activeTabStyle}
+          >
+            <Questions questions={SymptomsCounterStage} />
+          </Tab>
+        </Tabs>
       </ScrollView>
     );
   }

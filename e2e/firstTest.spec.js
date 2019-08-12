@@ -14,23 +14,23 @@ describe('liwi Native Work', () => {
     await element(by.id('new_session')).tap();
     await waitFor(element(by.id('new_session')).atIndex(1))
       .toBeVisible()
-      .withTimeout(4000);
+      .withTimeout(8000);
 
     await element(by.id('connect_main')).tap();
     await waitFor(element(by.id('welcome')).atIndex(1))
       .toBeVisible()
-      .withTimeout(4000);
+      .withTimeout(8000);
 
     await element(by.id('set_code')).tap();
     await waitFor(element(by.id('settings_view')).atIndex(1))
       .toBeVisible()
-      .withTimeout(4000);
+      .withTimeout(8000);
 
     await element(by.id('header-back')).tap();
 
     await waitFor(element(by.id('patient_list')).atIndex(1))
       .toBeVisible()
-      .withTimeout(4000);
+      .withTimeout(8000);
     await element(by.id('create_patient')).tap();
   });
 });

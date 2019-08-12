@@ -24,8 +24,8 @@ export class PatientModel implements PatientModelInterface {
   create = (props = {}) => {
     const {
       id = null,
-      firstname = __DEV__ ? 'Domachnie Tapotchki' : '',
-      lastname = __DEV__ ? 'домашние тапочки' : '',
+      firstname = __DEV__ ? 'John' : '',
+      lastname = __DEV__ ? 'Doe' : '',
       birthdate = moment('1970-01-01T00:00:00.000').format(),
       gender = __DEV__ ? 'male' : '',
       medicalCases = [],

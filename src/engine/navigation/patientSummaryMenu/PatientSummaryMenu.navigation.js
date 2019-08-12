@@ -1,29 +1,19 @@
 // @flow
+
 import React, { Component } from 'react';
 import { Text, View } from 'native-base';
-import { TouchableOpacity, Image } from 'react-native';
-import type { NavigationScreenProps } from 'react-navigation';
-import type { StateApplicationContext } from '../../contexts/Application.context';
-
-import { styles } from './PatientProfilemenu.style';
+import { Image, TouchableOpacity } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { styles } from './PatientSummaryMenu.style';
 
 type Props = NavigationScreenProps & {};
-type State = StateApplicationContext & {};
+type State = {};
 
-export default class TriageTabs extends Component<Props, State> {
-  _renderRound = (n, active) => {
-    return (
-      <View style={[styles.round, active ? styles.active : styles.unactive]}>
-        <View flex-center>
-          <Text dark>{n}</Text>
-        </View>
-      </View>
-    );
+export default class PatientSummary extends Component<Props, State> {
+  onPress = (path) => {
+    const { navigation } = this.props;
+    navigation.navigate(path);
   };
-
-  // One-liner
-  // eslint-disable-next-line react/destructuring-assignment
-  onPress = (path) => this.props.navigation.navigate(path);
 
   render() {
     const {
@@ -43,15 +33,16 @@ export default class TriageTabs extends Component<Props, State> {
           <TouchableOpacity
             disabled={id === undefined}
             onPress={() =>
-              navigation.navigate('PatientProfile', {
+              navigation.navigate('Summary', {
                 id: medicalCase.patient.id,
+                defaultTab: 0,
               })
             }
             style={styles.touchable}
           >
             <Image
-              resizeMode="contain"
               style={styleImage}
+              resizeMode="contain"
               source={require('../../../../assets/images/profil.png')}
             />
             <Text center>Patient Profile</Text>
@@ -59,7 +50,12 @@ export default class TriageTabs extends Component<Props, State> {
 
           <TouchableOpacity
             disabled={id === undefined}
-            onPress={() => this.onPress('ChiefComplaints')}
+            onPress={() =>
+              navigation.navigate('Summary', {
+                id: medicalCase.patient.id,
+                defaultTab: 0,
+              })
+            }
             style={styles.touchable}
           >
             <Image
@@ -72,7 +68,12 @@ export default class TriageTabs extends Component<Props, State> {
 
           <TouchableOpacity
             disabled={id === undefined}
-            onPress={() => this.onPress('VitalSigns')}
+            onPress={() =>
+              navigation.navigate('Summary', {
+                id: medicalCase.patient.id,
+                defaultTab: 1,
+              })
+            }
             style={styles.touchable}
           >
             <Image

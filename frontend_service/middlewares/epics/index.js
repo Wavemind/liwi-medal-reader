@@ -1,12 +1,12 @@
+import { combineEpics } from 'redux-observable';
 import {
   epicCatchAnswer,
   epicCatchDispatchNodeAction,
   epicCatchDiseasesChildren,
   epicCatchDiagnosisChildren,
   epicCatchPredefinedSyndromeChildren,
-} from './EpicTreesNodes.js';
+} from './EpicTreesNodes';
 
-import { combineEpics } from 'redux-observable';
 
 export default combineEpics(
   epicCatchPredefinedSyndromeChildren,

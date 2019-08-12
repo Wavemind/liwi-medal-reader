@@ -18,7 +18,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-react-native": "^5.0.2",
     "color": "^3.1.2",
-    "core-js": "^3.1.4",
+    "core-js": "^2.6.9",
     "deepmerge": "^3.2.0",
     "es6-symbol": "^3.1.1",
     "eslint-config-defaults": "^9.0.0",
@@ -46,7 +46,7 @@
     "react-native-vector-icons": "^6.4.2",
     "react-navigation": "^3.0.9",
     "react-navigation-tabs": "^1.0.2",
-    "react-redux": "^6.0.1",
+    "react-redux": "^7.1.0",
     "react-redux-decorate": "0.0.5",
     "reducer-class": "^1.4.0",
     "redux": "^4.0.1",
@@ -118,7 +118,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint src --fix"
+      "pre-commit": "eslint src frontend_service --fix"
     }
   },
   "jest": {

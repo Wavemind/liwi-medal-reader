@@ -74,7 +74,7 @@ export default class Question extends React.PureComponent<Props, State> {
     const { question } = this.props;
 
     // If this is not a question we return null
-    if (question.type !== nodesType.q) {
+    if (question === undefined || question.type !== nodesType.q) {
       return null;
     }
 

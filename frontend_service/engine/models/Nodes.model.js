@@ -1,4 +1,5 @@
 // @flow
+import _ from 'lodash';
 import { categories, nodesType } from '../../constants';
 import { NodeModel } from './Node.model';
 import { PredefinedSyndromeModel } from './PredefinedSyndrome.model';
@@ -6,10 +7,6 @@ import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
-import _ from 'lodash';
-import { setParentConditionValue } from '../../algorithm/algoTreeDiagnosis';
-
-const { qs, d, fd, m, q, t } = nodesType;
 
 interface NodeInterface {}
 
@@ -26,6 +23,41 @@ export class NodesModel implements NodeInterface {
     return _.filter(this, (n) => n.type === type);
   }
 
+  isAnsweredNodes(nodes) {
+    return nodes.some((a) => {
+      return a.answer !== null;
+    });
+  }
+
+  filterByStage(stage) {
+    return _.filter(this, (n) => n.stage === stage);
+  }
+
+
+  /* filterByMultiple
+  * Params: filters<Array>
+  * Format : filters = [
+      { by: 'category', operator: 'equal', value: categories.symptom },
+      { by: 'stage', operator: 'equal', value: stage.consultation },
+      { by: 'counter', operator: 'more', value: 0 },
+    ]
+  *
+  *
+  * */
+  filterByMultiple(filters) {
+    this.filterByConditionValue();
+    return _.filter(this, (node) => {
+      let f = filters.every((filter) => {
+        switch (filter.operator) {
+          case 'equal':
+            return node[filter.by] === filter.value;
+          case 'more':
+            return node[filter.by] > filter.value;
+        }
+      });
+      return f;
+    });
+  }
 
   filterByCounterGreaterThanZero() {
     this.filterByConditionValue();
@@ -48,7 +80,7 @@ export class NodesModel implements NodeInterface {
         }
       });
     } catch (e) {
-      console.log(e);
+      console.warn(e);
     }
   }
 
