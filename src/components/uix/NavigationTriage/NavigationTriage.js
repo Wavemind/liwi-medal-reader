@@ -11,17 +11,19 @@ type Props = NavigationScreenProps & {
 };
 
 type State = { app: StateApplicationContext } & {
-  routeur: Object,
+  router: Object,
   currentRoute: Object,
   prevRoute: Object,
   beginNavBool: boolean,
   endNavBool: boolean,
   nextRoute: Object,
 };
-
+/*
+* Component used as a navigator Next / Prev buttons between Triage Vues
+* */
 export default class NavigationTriage extends React.Component<Props, State> {
   state = {
-    routeur: NavigationService.getRouteur('Triage'),
+    router: NavigationService.getrouter('Triage'),
     currentRoute: NavigationService.getCurrentRoute(),
     prevRoute: {},
     beginNavBool: false,
@@ -37,31 +39,33 @@ export default class NavigationTriage extends React.Component<Props, State> {
     this.initRouterButton();
   }
 
+  // Init the route
+  // Define the next and prev action
   initRouterButton = () => {
-    const { routeur, currentRoute } = this.state;
+    const { router, currentRoute } = this.state;
 
     let prevRoute;
     let nextRoute;
 
     let beginNavBool = currentRoute.index === 0;
-    let endNavBool = currentRoute.index === routeur.routes.length - 1;
-    let insideNavBool = currentRoute.index !== routeur.routes.length;
+    let endNavBool = currentRoute.index === router.routes.length - 1;
+    let insideNavBool = currentRoute.index !== router.routes.length;
 
     // Begin Nav Triage OR inside Nav && not at the end
     if ((beginNavBool || insideNavBool) && !endNavBool) {
-      nextRoute = routeur.routes[currentRoute.index + 1];
+      nextRoute = router.routes[currentRoute.index + 1];
     }
 
-    // if we are at the end of the triage routeur
+    // if we are at the end of the triage router
     if (endNavBool) {
-      // we are inside the routeur
+      // we are inside the router
       nextRoute = {};
       nextRoute.key = 'MedicalHistory';
     }
 
-    // Inside the routeur
+    // Inside the router
     if (insideNavBool && !endNavBool) {
-      prevRoute = routeur.routes[currentRoute.index - 1];
+      prevRoute = router.routes[currentRoute.index - 1];
     }
 
     this.setState({
@@ -72,6 +76,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
     });
   };
 
+  // Is all the answers of the screen are setter
   isNodeValid = () => {
     const { medicalCase, questionsInScreen } = this.props;
 
@@ -89,6 +94,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
 
     let isValid = this.isNodeValid();
 
+    // Here we can block the next action if not valid
     isValid ? navigation.navigate(nextRoute.key) : null;
   };
 
