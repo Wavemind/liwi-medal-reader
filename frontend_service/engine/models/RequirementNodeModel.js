@@ -9,7 +9,7 @@ interface RequirementNodeInterface {
 
 export class RequirementNodeModel implements RequirementNodeInterface {
   constructor(props) {
-    const { conditions = [], top_conditions = [], medicalCase = {} } = props;
+    const { conditions = [], top_conditions = [] } = props;
 
     this.conditions = conditions;
     this.top_conditions = top_conditions;
@@ -17,7 +17,6 @@ export class RequirementNodeModel implements RequirementNodeInterface {
 
   // TODO: IN PROGRESS
   nodeConditionChecker(state$) {
-
     // If this is a top parent node
     if (this.top_conditions.length === 0) {
       return true;

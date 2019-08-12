@@ -1,4 +1,8 @@
-import { liwiColors, marginIsTablet, screenWidth } from '../../../utils/constants';
+import {
+  liwiColors,
+  marginIsTablet,
+  screenWidth,
+} from '../../../utils/constants';
 
 export default {
   'NativeBase.ViewNB': {
@@ -6,16 +10,19 @@ export default {
       flexDirection: 'column',
       flex: 1,
     },
+
     '.flex-container-row': {
       flexDirection: 'row',
       flex: 1,
     },
+
     '.flex-container-fluid': {
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
     },
+
     '.round': {
       borderRadius: 50,
       backgroundColor: liwiColors.darkGreyColor,
@@ -27,13 +34,16 @@ export default {
     '.flex-child': {
       flexGrow: 1, // not used actually
     },
+
     '.margin-auto': {
       margin: marginIsTablet(),
     },
+
     '.w50': {
       flex: 1,
       flexDirection: 'row',
     },
+
     '.padding-auto': { padding: 20 },
     '.flex-center': {
       flexDirection: 'column',
@@ -42,6 +52,7 @@ export default {
       flex: 1,
       flexGrow: 1,
     },
+
     '.flex-center-stretch': {
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -49,17 +60,25 @@ export default {
       flex: 1,
       flexGrow: 1,
     },
+
     '.full-space': {
       flexDirection: 'column',
       justifyContent: 'center',
       flex: 1,
       flexGrow: 1,
     },
+
+    '.flex-start': {
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+    },
+
     '.border-primary': {
       borderColor: liwiColors.redColor,
       borderWidth: 2,
       borderRadius: 10,
     },
+
     '.card': {
       width: screenWidth - 40,
       padding: 20,
@@ -77,16 +96,16 @@ export default {
     '.bottom-view': {
       flex: 1,
       justifyContent: 'flex-end',
-      marginBottom: 36
+      marginBottom: 36,
     },
 
     '.flex': {
-      flex: 1
+      flex: 1,
     },
 
     '.question': {
       flexDirection: 'row',
-      flex:0.7,
+      flex: 0.7,
       borderRadius: 5,
       borderWidth: 0.5,
       backgroundColor: liwiColors.lighterGreyColor,
@@ -97,13 +116,17 @@ export default {
 
     '.answer': {
       flexDirection: 'row',
-      flex:0.3,
+      flex: 0.3,
+    },
+
+    '.w33': {
+      flex: 0.33,
     },
 
     '.columns': {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-    }
+    },
   },
 };

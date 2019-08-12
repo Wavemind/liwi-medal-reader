@@ -1,8 +1,6 @@
 // @flow
 
-import { NodeModel } from './Node.model';
 import { LinkNodeModel } from './Link.model';
-import { DiagnosisModel } from './Diagnosis.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 
 interface DiseasesInterface {

@@ -54,8 +54,10 @@ export type StateApplicationContext = {
   t: (string) => Function<string>,
 };
 
-
-export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
+export class ApplicationProvider extends React.Component<
+  Props,
+  StateApplicationContext
+> {
   constructor(props: Props) {
     super(props);
     this.initContext();
@@ -140,7 +142,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       lastLoginMoment = moment(lastLogin);
     }
 
-    if (lastLogin === undefined || moment() > lastLoginMoment) {
+    if (lastLogin === undefined || moment() > lastLoginMoment.add(24, 'hour')) {
       NavigationService.navigate('Settings', { userName: 'Lucy' });
       session.lastLogin = moment().toString();
       await updateSession(session.data.id, session);
@@ -271,23 +273,17 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   // If the app is active or not
   _handleAppStateChange = (nextAppState) => {
     const { appState } = this.state;
-    if (
-      appState.match(/inactive|background/) &&
-      nextAppState === 'active'
-    ) {
+    if (appState.match(/inactive|background/) && nextAppState === 'active') {
       console.warn('---> Liwi came back from background', nextAppState);
       this._fetchDataWhenChange();
       this.setState({ appState: nextAppState });
     }
 
-    if (
-      appState.match(/active/) &&
-      nextAppState.match(/inactive|background/)
-    ) {
+    if (appState.match(/active/) && nextAppState.match(/inactive|background/)) {
       console.warn('---> Liwi is hidding');
       this.setState({ appState: nextAppState });
     }
-  }
+  };
 
   render() {
     const { children } = this.props;

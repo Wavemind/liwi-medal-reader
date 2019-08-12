@@ -81,14 +81,14 @@ export default class UnlockSession extends React.Component<Props, State> {
               <CustomInput
                 init={email}
                 change={this.changeValueFromInput}
-                index='email'
+                index="email"
                 placeholder={t('unlock_session:email')}
                 condensed
                 error={errors}
               />
               <CustomInput
                 init={code}
-                index='code'
+                index="code"
                 change={this.changeValueFromInput}
                 secureTextEntry
                 placeholder={t('unlock_session:code')}
@@ -102,7 +102,11 @@ export default class UnlockSession extends React.Component<Props, State> {
         </View>
         <View bottom-view margin-auto padding-auto>
           <View>
-            <Button onPress={this.newSessionScreen} disabled={!isConnected} testID='new_session'>
+            <Button
+              onPress={this.newSessionScreen}
+              disabled={!isConnected}
+              testID="new_session"
+            >
               <Text>{t('unlock_session:new_session')}</Text>
             </Button>
             {!isConnected ? (

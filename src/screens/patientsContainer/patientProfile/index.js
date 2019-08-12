@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 import patientProfile from './PatientProfile.screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
-import { setMedicalCase, updatePatient } from '../../../../frontend_service/actions/creators.actions';
+import {
+  setMedicalCase,
+  updatePatient,
+} from '../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return {

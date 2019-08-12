@@ -48,7 +48,7 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
       }
     });
   } catch (e) {
-    console.log(e);
+    console.warn(e);
   }
 
   return algorithmJsonMedicalCase;
@@ -193,7 +193,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
 
       // IF the child is an other QS
       if (nodeChild.type === nodesType.qs && nodeChildID !== qs.id) {
-        console.log(nodeChild, 'Get state of this other PS');
+        console.warn(nodeChild, 'Get state of this other PS');
 
         // If the sub QS is null and show the sub question
         if (state$.value.nodes[nodeChild.id].answer === null) {

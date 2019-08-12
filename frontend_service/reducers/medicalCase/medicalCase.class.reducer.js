@@ -1,12 +1,12 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
+import find from 'lodash/find';
+import findKey from 'lodash/findKey';
 import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
-import find from 'lodash/find';
 import { displayFormats } from '../../constants';
-import findKey from 'lodash/findKey';
 import { DiseasesModel } from '../../engine/models/Diseases.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
@@ -28,7 +28,6 @@ class MedicalCaseReducer extends ReducerClass {
   // The state is a MedicalCase
   // Instance it
   _instanceMedicalCase(state) {
-    console.log(state);
 
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
@@ -43,7 +42,7 @@ class MedicalCaseReducer extends ReducerClass {
       (i) =>
         (state.diseases[i] = new DiseasesModel({
           ...state.diseases[i],
-        })),
+        }))
     );
 
     return state;
@@ -52,13 +51,8 @@ class MedicalCaseReducer extends ReducerClass {
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
 
-  @Action(actions.MC_CLEAR)
-  clearReducer(state, action) {
-    return {};
-  }
-
   @Action(actions.MC_GENERATE_NEXT_BATCH)
-  generateNextBatch(state, action) {
+  generateNextBatch(state) {
     let newState = generateNextBatch(state);
 
     return {
@@ -243,7 +237,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   @Action(REHYDRATE)
   rehydrate(state, action) {
-
     if (
       action.payload === undefined ||
       action.payload === null ||

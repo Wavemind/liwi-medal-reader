@@ -12,27 +12,46 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
   {
     Assessments: {
       screen: Assessments,
+      params: {
+        showSummary: true,
+        dropDownMenu: 'Triage'
+      },
     },
     ChiefComplaints: {
       screen: ChiefComplaints,
+      params: {
+        showSummary: true,
+        dropDownMenu: 'Triage'
+      },
     },
     VitalSigns: {
       screen: VitalSigns,
+      params: {
+        showSummary: true,
+        dropDownMenu: 'Triage'
+      },
     },
     Comorbidities: {
       screen: Comorbidities,
+      params: {
+        showSummary: true,
+        dropDownMenu: 'Triage'
+      },
     },
     Vaccinations: {
       screen: Vaccinations,
+      params: {
+        showSummary: true,
+        dropDownMenu: 'Triage'
+      },
     },
-
   },
   {
     tabBarOptions: {
       activeTintColor: '#e91e63',
     },
     tabBarComponent: TriageTabs,
-  },
+    lazy: true,
+    optimizationsEnabled: true,
+  }
 );
-
-

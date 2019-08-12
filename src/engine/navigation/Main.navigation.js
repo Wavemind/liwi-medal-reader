@@ -13,23 +13,29 @@ import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
+import NavigationService from './Navigation.service';
+
 import i18n from '../../utils/i18n';
 
 import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
 import DropDownMenu from './DropDownMenuTop.navigation';
-import PatientProfileMenu from './patientProfileMenu';
-
+import PatientSummaryMenu from './patientSummaryMenu';
+import PatientSummary from '../../screens/patientsContainer/patientSummary';
+//import Tests from '../../screens/medicalCasesContainer/tests';
 
 // we need to use i18n directly beacause we cant be connect to contexte
 const Stack = createStackNavigator({
   Home: {
     screen: MainScreen,
+    params: {
+      showSummary: false,
+    },
     path: 'home',
     navigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t('navigation:patient_list'),
+        title: i18n.t('navigation:home'),
         headerLeft: (
           <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
             <Icon red type="Entypo" name="menu" large />
@@ -41,6 +47,9 @@ const Stack = createStackNavigator({
   PatientList: {
     screen: PatientList,
     path: 'patientList',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:patient_list'),
@@ -50,6 +59,9 @@ const Stack = createStackNavigator({
   PatientProfile: {
     screen: PatientProfile,
     path: 'patientProfile',
+    params: {
+      showSummary: true,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:patient_profile'),
@@ -59,6 +71,9 @@ const Stack = createStackNavigator({
   PatientUpsert: {
     screen: PatientUpsert,
     path: 'patient/',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:patient_upsert'),
@@ -68,6 +83,9 @@ const Stack = createStackNavigator({
   Algorithms: {
     screen: Algorithms,
     path: 'algorithms',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:available_algorithms'),
@@ -77,6 +95,9 @@ const Stack = createStackNavigator({
   Algorithm: {
     screen: Algorithm,
     path: 'algorithm/:id',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: ({ navigation }) => {
       return {
         title: navigation.getParam('title'),
@@ -86,6 +107,9 @@ const Stack = createStackNavigator({
   Settings: {
     screen: Settings,
     path: 'settings',
+    params: {
+      showSummary: false,
+    },
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:settings'),
@@ -95,6 +119,9 @@ const Stack = createStackNavigator({
   Triage: {
     screen: TriageTabNavigator,
     path: 'triage',
+    params: {
+      showSummary: true,
+    },
     navigationOptions: () => {
       return {
         headerTitle: DropDownMenu,
@@ -104,32 +131,81 @@ const Stack = createStackNavigator({
   Consultation: {
     screen: ConsultationTabNavigator,
     path: 'consultation',
+    params: {
+      showSummary: true,
+    },
     navigationOptions: () => {
       return {
         headerTitle: DropDownMenu,
       };
     },
   },
+  // Tests: {
+  //   screen: Tests,
+  //   path: 'tests',
+  //   params: {
+  //     showSummary: true,
+  //     dropDownMenu: 'Tests'
+  //   },
+  //   navigationOptions: () => {
+  //     return {
+  //       headerTitle: DropDownMenu,
+  //     };
+  //   },
+  // },
 });
 
-let StackWithBottomNavigation = createBottomTabNavigator(
+const HomeWithModal = createStackNavigator(
   {
     Home: { screen: Stack },
+    Summary: {
+      screen: PatientSummary,
+      path: 'summary',
+      params: {
+        showSummary: false,
+      },
+    },
   },
   {
-    tabBarOptions: {
-      activeTintColor: '#e91e63',
+    mode: 'modal',
+    headerMode: 'none',
+    cardStyle: {
+      backgroundColor: '#434343',
+      opacity: 0.9,
     },
-    tabBarComponent: PatientProfileMenu,
+    transparentCard: true,
+    transitionConfig: () => ({
+      containerStyle: {
+        backgroundColor: 'transparent',
+      },
+    }),
   }
 );
 
-export default () => {
+let StackWithBottomNavigation = createBottomTabNavigator(
+  {
+    RootBottomTab: { screen: HomeWithModal },
+  },
+  {
+    tabBarComponent: (props) => {
+      let currentRoute = NavigationService.getCurrentRoute();
+      if (currentRoute.params?.showSummary ?? false) {
+        return <PatientSummaryMenu {...props} />;
+      }
+      return null;
+    },
+  }
+);
+
+const MainNavigation = () => {
   return createDrawerNavigator(
-    { Home: { screen: StackWithBottomNavigation } },
+    { RootDrawer: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
+      drawerBackgroundColor: 'transparent',
       contentComponent: (props) => <Drawer {...props} />,
     }
   );
 };
+
+export default MainNavigation;

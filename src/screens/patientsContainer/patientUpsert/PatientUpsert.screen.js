@@ -13,7 +13,11 @@ import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 import { styles } from './PatientUpsert.style';
-import { getItemFromArray, getMedicalCase } from '../../../engine/api/LocalStorage';
+import {
+  getItemFromArray,
+  getMedicalCase,
+} from '../../../engine/api/LocalStorage';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -24,6 +28,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient: {},
     firstRender: false,
     idLastMedicalCase: null,
+    loading: false,
   };
 
   async componentWillMount() {
@@ -38,7 +43,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   }
 
-
   // Get patient with id in navigation props
   async getPatient() {
     const { navigation } = this.props;
@@ -52,12 +56,17 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   // Save patient and redirect to medical case
   saveNewCase = async () => {
-    const { idLastMedicalCase, patient } = this.state;
+    await this.setState({ loading: true });
+    const { patient } = this.state;
+
     let result = await this.savePatient();
 
     if (result) {
       // Set medicalCase in reducer
       const { setMedicalCase, navigation } = this.props;
+
+      // get state here because set juste bafore
+      const { idLastMedicalCase } = this.state;
       let medicalCase = await getMedicalCase(idLastMedicalCase);
       medicalCase.patient = patient;
 
@@ -66,8 +75,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
       navigation.navigate('Triage', {
         title: `${medicalCase.patient.firstname} ${
           medicalCase.patient.lastname
-          }`,
+        }`,
       });
+
+      await this.setState({ loading: false });
     }
   };
 
@@ -80,22 +91,27 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   // Save patient and redirect to waiting list
   saveWaitingList = async () => {
+    await this.setState({ loading: true });
+
     const { navigation } = this.props;
     let result = await this.savePatient();
 
     if (result) {
       navigation.dispatch(NavigationActions.back('patientList'));
     }
+    await this.setState({ loading: false });
   };
 
   // Update patient value in storage and redirect to patient profile
   updatePatient = async () => {
+    await this.setState({ loading: true });
     const { navigation } = this.props;
-    const { patient: { id } } = this.state;
+    const {
+      patient: { id },
+    } = this.state;
     await this.savePatient();
-    navigation.dispatch(
-      NavigationActions.back('patientProfile', { id })
-    );
+    navigation.dispatch(NavigationActions.back('patientProfile', { id }));
+    await this.setState({ loading: false });
   };
 
   // Generate medical case for current patient
@@ -109,7 +125,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   savePatient = async () => {
     const { patient } = this.state;
     const { navigation } = this.props;
-    let idPatient = navigation.getParam('idPatient');
+    let idPatient = await navigation.getParam('idPatient');
 
     let errors = await patient.validate();
 
@@ -119,7 +135,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
       if (idPatient === null) {
         let id = await this.generateMedicalCase(patient.id);
-        this.setState({ idLastMedicalCase: id });
+        await this.setState({ idLastMedicalCase: id });
       }
 
       return true;
@@ -136,6 +152,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       patient: { firstname, lastname, birthdate, gender },
       errors,
       firstRender,
+      loading,
     } = this.state;
 
     const {
@@ -202,19 +219,23 @@ export default class PatientUpsert extends React.Component<Props, State> {
         </View>
 
         <View bottom-view>
-          {idPatient === null ? (
-            <View columns>
-              <Button light split onPress={saveWaitingList}>
-                <Text>{t('patient_upsert:save_and_wait')}</Text>
+          {!loading ? (
+            idPatient === null ? (
+              <View columns>
+                <Button light split onPress={saveWaitingList}>
+                  <Text>{t('patient_upsert:save_and_wait')}</Text>
+                </Button>
+                <Button light split onPress={saveNewCase}>
+                  <Text>{t('patient_upsert:save_and_case')}</Text>
+                </Button>
+              </View>
+            ) : (
+              <Button block onPress={this.updatePatient}>
+                <Text>{t('patient_upsert:save')}</Text>
               </Button>
-              <Button light split onPress={saveNewCase}>
-                <Text>{t('patient_upsert:save_and_case')}</Text>
-              </Button>
-            </View>
+            )
           ) : (
-            <Button block onPress={this.updatePatient}>
-              <Text>{t('patient_upsert:save')}</Text>
-            </Button>
+            <LiwiLoader />
           )}
         </View>
       </ScrollView>
