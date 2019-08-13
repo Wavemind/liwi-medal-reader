@@ -23,6 +23,7 @@ import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray, getItems } from '../../../engine/api/LocalStorage';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import { medicalCaseStatus } from '../../../../frontend_service/constants';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -30,13 +31,12 @@ type State = StateApplicationContext & {};
 export default class PatientList extends React.Component<Props, State> {
   state = {
     patients: [],
+    loading: false,
     searchTerm: '',
     orderByName: 'asc',
     isGeneratingPatient: false,
     algorithms: [],
-    statuses: [
-      medicalCaseStatus.close,
-    ],
+    statuses: [medicalCaseStatus.close],
   };
 
   async componentWillMount() {
@@ -50,6 +50,7 @@ export default class PatientList extends React.Component<Props, State> {
 
   // Get all medical case with waiting for... status
   fetchPatients = async () => {
+    this.setState({ loading: true });
     const { statuses } = this.state;
     let patients = await getArray('patients');
     let algorithms = await getItems('algorithms');
@@ -63,18 +64,24 @@ export default class PatientList extends React.Component<Props, State> {
       });
     });
 
-    this.setState({
-      patients: patients,
-      algorithms: algorithms,
-    });
+    this.setState(
+      {
+        patients: patients,
+        algorithms: algorithms,
+      },
+      () => this.settlePatients()
+    );
   };
 
   // Update state switch asc / desc
   orderByName = () => {
     const { orderByName } = this.state;
-    this.setState({
-      orderByName: orderByName === 'asc' ? 'desc' : 'asc',
-    });
+    this.setState(
+      {
+        orderByName: orderByName === 'asc' ? 'desc' : 'asc',
+      },
+      () => this.settlePatients()
+    );
   };
 
   // Generate a new patient based on model Patient
@@ -85,29 +92,72 @@ export default class PatientList extends React.Component<Props, State> {
 
   // Set string search
   searchBy = (searchTerm) => {
-    this.setState({ searchTerm });
+    this.setState({ searchTerm }), () => this.settlePatients();
   };
 
-  render() {
-    const {
-      patients,
-      searchTerm,
-      orderByName,
-      isGeneratingPatient,
-      algorithms,
-    } = this.state;
-
+  _renderPatients = () => {
     const {
       navigation,
       app: { t },
     } = this.props;
 
+    const { orderedFilteredPatients, patients } = this.state;
+    return patients.length > 0 ? (
+      [
+        orderedFilteredPatients.length > 0 ? (
+          <List block key="patientList">
+            {orderedFilteredPatients.map((patient) => (
+              <ListItem
+                rounded
+                block
+                key={patient.id + '_patient_list'}
+                spaced
+                onPress={() =>
+                  navigation.navigate('PatientProfile', {
+                    id: patient.id,
+                  })
+                }
+              >
+                <View w50>
+                  <Text>
+                    {patient.id} : {patient.lastname} {patient.firstname}
+                  </Text>
+                </View>
+                <View w50>
+                  <Text>{moment(patient.birthdate).format('ll')}</Text>
+                </View>
+                <View w50>
+                  <Text>
+                    {patient.caseInProgress
+                      ? t('patient_list:case_in_progress')
+                      : null}
+                  </Text>
+                </View>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text not-available>{t('patient_list:not_found')}</Text>
+          </View>
+        ),
+      ]
+    ) : (
+      <View padding-auto margin-auto>
+        <Text not-available>{t('patient_list:no_patients')}</Text>
+      </View>
+    );
+  };
+
+  settlePatients = () => {
+    this.setState({ loading: true });
+
+    const { patients, searchTerm, orderByName } = this.state;
+
     // Filter patient based on first name and last name by search term
     let filteredPatients = filter(patients, (patient) => {
       return (
-        patient.firstname
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
+        patient.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
         patient.lastname.toLowerCase().includes(searchTerm.toLowerCase())
       );
     });
@@ -122,9 +172,25 @@ export default class PatientList extends React.Component<Props, State> {
       );
     }
 
+    this.setState({ orderedFilteredPatients, loading: false });
+  };
+
+  render() {
+    const {
+      loading,
+      searchTerm,
+      orderByName,
+      isGeneratingPatient,
+      algorithms,
+    } = this.state;
+
+    const {
+      app: { t },
+    } = this.props;
+
     return (
       <ScrollView>
-        <View padding-auto>
+        <View padding-auto flex-container-column>
           <LiwiTitle2 testID="patient_list" noBorder>
             {t('patient_list:search')}
           </LiwiTitle2>
@@ -161,48 +227,7 @@ export default class PatientList extends React.Component<Props, State> {
               <Text>{t('patient_list:name')}</Text>
             </Button>
           </View>
-          {patients.length > 0 ? (
-            [
-              orderedFilteredPatients.length > 0 ? (
-                <List block key="patientList">
-                  {orderedFilteredPatients.map((patient) => (
-                    <ListItem
-                      rounded
-                      block
-                      key={patient.id + '_patient_list'}
-                      spaced
-                      onPress={() =>
-                        navigation.navigate('PatientProfile', {
-                          id: patient.id,
-                        })
-                      }
-                    >
-                      <View w50>
-                        <Text>
-                          {patient.id} : {patient.lastname}{' '}
-                          {patient.firstname}
-                        </Text>
-                      </View>
-                      <View w50>
-                        <Text>{moment(patient.birthdate).format('ll')}</Text>
-                      </View>
-                      <View w50>
-                        <Text>{patient.caseInProgress ? t('patient_list:case_in_progress') : null}</Text>
-                      </View>
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <View padding-auto margin-auto>
-                  <Text not-available>{t('patient_list:not_found')}</Text>
-                </View>
-              ),
-            ]
-          ) : (
-            <View padding-auto margin-auto>
-              <Text not-available>{t('patient_list:no_patients')}</Text>
-            </View>
-          )}
+          {loading ? <LiwiLoader /> : this._renderPatients()}
         </View>
       </ScrollView>
     );
