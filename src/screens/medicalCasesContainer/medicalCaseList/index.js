@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 import MedicalCaseList from './MedicalCaseList.screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
-import { updatePatient } from '../../../../frontend_service/actions/creators.actions';
+import {
+  setMedicalCase,
+  updatePatient,
+} from '../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -13,6 +16,7 @@ const mapStateToProps = (medicalCase) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updatePatient: (key, value) => dispatch(updatePatient(key, value)),
+    setMedicalCase: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
   };
 };
 
