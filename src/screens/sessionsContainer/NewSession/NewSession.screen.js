@@ -22,11 +22,10 @@ export default class NewSession extends React.Component<Props, State> {
     password: __DEV__ ? '123456' : '',
     loading: false,
     success: false,
-    id: null
+    id: null,
   };
 
-
-    changeValueFromInput = (index, value) => {
+  changeValueFromInput = (index, value) => {
     this.setState({ [index]: value });
   };
 
@@ -90,20 +89,20 @@ export default class NewSession extends React.Component<Props, State> {
               <CustomInput
                 init={email}
                 change={this.changeValueFromInput}
-                index='email'
+                index="email"
                 placeholder={t('email')}
                 condensed
               />
               <CustomInput
                 init={password}
                 change={this.changeValueFromInput}
-                index='password'
+                index="password"
                 placeholder={t('password')}
                 secureTextEntry
                 condensed
               />
               <Button
-                testID='connect_main'
+                testID="connect_main"
                 full
                 style={styles.marginTop}
                 onPress={() => this.signIn()}

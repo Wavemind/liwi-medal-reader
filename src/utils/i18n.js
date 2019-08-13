@@ -106,6 +106,21 @@ i18n
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
           waiting_diagnosis: 'Diagnosis',
+          case_in_progress: 'a case is open'
+        },
+        medical_case_list: {
+          all: 'All',
+          waiting: 'Patients waiting for',
+          search: 'Search',
+          sort: 'Sort by',
+          name: 'Name',
+          status: 'Status',
+          no_medical_cases: 'There are no medical cases in progress',
+          not_found: 'No match found',
+          waiting_triage: 'Triage',
+          waiting_consultation: 'Consultation',
+          waiting_test: 'Test',
+          waiting_diagnosis: 'Diagnosis',
         },
         patient: {
           first_name: 'First name',
@@ -167,6 +182,7 @@ i18n
           title: 'Home',
         },
         navigation: {
+          medical_case_list: 'Case in progress',
           home: 'Home',
           patient_upsert: 'patient',
           patient_list: 'Patient list',
