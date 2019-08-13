@@ -65,9 +65,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     patients.map((patient) => {
       patient.medicalCases.map((medicalCase) => {
         if (includes(statuses, medicalCase.status)) {
-          medicalCase.patientId = patient.id;
-          medicalCase.firstname = patient.firstname;
-          medicalCase.lastname = patient.lastname;
+          medicalCase.patient = patient;
           medicalCases.push(medicalCase);
         }
       });
@@ -135,10 +133,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     // Filter patient based on first name and last name by search term
     let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
       return (
-        medicalCase.firstname
+        medicalCase.patient?.firstname
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
-        medicalCase.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+        medicalCase.patient?.lastname.toLowerCase().includes(searchTerm.toLowerCase())
       );
     });
 
@@ -170,9 +168,19 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState({ searchTerm });
   };
 
+  // Select a medical case and redirect to patient's view
+  selectMedicalCase = async (medicalCase) => {
+    const { setMedicalCase, navigation } = this.props;
+    await setMedicalCase(medicalCase);
+
+    navigation.navigate('Triage', {
+      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
+    });
+  };
+
   _renderMedicalCase = () => {
     const {
-      navigation,
+      medicalCase,
       app: { t },
     } = this.props;
 
@@ -182,26 +190,27 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       [
         orderedFilteredMedicalCases.length > 0 ? (
           <List block key="medicalCaseList">
-            {orderedFilteredMedicalCases.map((medicalCase) => (
+            {orderedFilteredMedicalCases.map((medicalCaseItem) => (
               <ListItem
                 rounded
                 block
                 key={medicalCase.id + '_medical_case_list'}
                 spaced
-                onPress={() =>
-                  navigation.navigate('PatientProfile', {
-                    id: medicalCase.patientId,
-                  })
-                }
+                onPress={async () => {
+                  const { medicalCase } = this.props;
+                  if (medicalCase.id !== medicalCaseItem.id) {
+                    await this.selectMedicalCase(medicalCaseItem);
+                  }
+                }}
               >
                 <View w50>
                   <Text>
-                    {medicalCase.patientId} : {medicalCase.lastname}{' '}
-                    {medicalCase.firstname}
+                    {medicalCaseItem.patient.id} : {medicalCaseItem.patient.lastname}{' '}
+                    {medicalCaseItem.patient.firstname}
                   </Text>
                 </View>
                 <View w50>
-                  <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
+                  <Text>{t(`medical_case:${medicalCaseItem.status}`)}</Text>
                 </View>
               </ListItem>
             ))}
