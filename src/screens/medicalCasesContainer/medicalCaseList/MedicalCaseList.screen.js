@@ -180,13 +180,12 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
   _renderMedicalCase = () => {
     const {
-      medicalCase,
       app: { t },
     } = this.props;
 
     const { orderedFilteredMedicalCases, medicalCases } = this.state;
 
-    return medicalCases.length > 0 ? (
+     return medicalCases.length > 0 ? (
       [
         orderedFilteredMedicalCases.length > 0 ? (
           <List block key="medicalCaseList">
@@ -194,7 +193,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
               <ListItem
                 rounded
                 block
-                key={medicalCase.id + '_medical_case_list'}
+                key={medicalCaseItem.id + '_medical_case_list'}
                 spaced
                 onPress={async () => {
                   const { medicalCase } = this.props;
