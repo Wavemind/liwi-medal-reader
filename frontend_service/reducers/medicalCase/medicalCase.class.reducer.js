@@ -6,7 +6,7 @@ import findKey from 'lodash/findKey';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
-import { valueFormats } from '../../constants';
+import { nodesType, valueFormats } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
@@ -28,7 +28,6 @@ class MedicalCaseReducer extends ReducerClass {
   // The state is a MedicalCase
   // Instance it
   _instanceMedicalCase(state) {
-
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
     state.vitalSigns = new VitalSignsModel(state.vitalSigns);
@@ -42,7 +41,7 @@ class MedicalCaseReducer extends ReducerClass {
       (i) =>
         (state.diagnostics[i] = new DiagnosticModel({
           ...state.diagnostics[i],
-        })),
+        }))
     );
 
     return state;
@@ -61,39 +60,37 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
-  @Action(actions.MC_CONDITION_VALUE_QS_CHANGE)
-  conditionValuePsChange(state, action) {
-    const { nodeId, psId, value } = action.payload;
+  /**
+   * Update condition value of diagnostic or questions sequence for a question or a questions sequence
+   *
+   * @trigger When a condition value must be change
+   * @payload nodeId: Question or QuestionsSequence
+   * @payload callerId: Diagnostic or QuestionsSequence
+   * @payload value: new condition value
+   * @payload type: define if it's a diagnostic or a question sequence
+   */
+  @Action(actions.UPDATE_CONDITION_VALUE)
+  updateConditionValue(state, action) {
+    const { nodeId, callerId, value, type } = action.payload;
 
-    const qs = state.nodes[nodeId].qs;
-
-    let changeConditionValue = find(qs, (d) => d.id === psId);
-    changeConditionValue.conditionValue = value;
-
-    state.nodes[nodeId] = this.instantiateNode({
+    let caller;
+    let newNode = {
       ...state.nodes[nodeId],
-      qs: qs,
-    });
-
-    return {
-      ...state,
-      nodes: new NodesModel(state.nodes),
     };
-  }
 
-  @Action(actions.MC_CONDITION_VALUE_DISEASES_CHANGE)
-  conditionValueDiseases(state, action) {
-    const { nodeId, diseaseId, value } = action.payload;
+    switch (type) {
+      case nodesType.diagnostic:
+        caller = newNode.dd;
+        break;
+      case nodesType.questionsSequence:
+        caller = newNode.qs;
+        break;
+    }
 
-    const dd = state.nodes[nodeId].dd;
-
-    let changeConditionValue = find(dd, (d) => d.id === diseaseId);
+    let changeConditionValue = find(caller, (d) => d.id === callerId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = state.nodes.instantiateNode({
-      ...state.nodes[nodeId],
-      dd: dd,
-    });
+    state.nodes[nodeId] = state.nodes.instantiateNode({ ...newNode });
 
     return {
       ...state,
@@ -172,7 +169,7 @@ class MedicalCaseReducer extends ReducerClass {
           '%c --- DANGER --- ',
           'background: #FF0000; color: #F6F3ED; padding: 5px',
           `Unhandled question format ${state.nodes[index].display_format}`,
-          state.nodes[index],
+          state.nodes[index]
         );
         answer = value;
         break;

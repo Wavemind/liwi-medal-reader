@@ -2,8 +2,7 @@ import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
 import {
-  conditionValueQSChange,
-  questionsSequencesChildren,
+  dispatchQuestionsSequenceAction, updateConditionValue,
 } from '../actions/creators.actions';
 
 // Create the first batch from json based on triage priority
@@ -164,7 +163,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
     state$.value.nodes[node.id].answer === null &&
     findConditionValueQs.conditionValue === false
   ) {
-    return actions.push(conditionValueQSChange(node.id, qs.id, true));
+    return actions.push(updateConditionValue(node.id, qs.id, true, qs.type));
   }
 
   if (
@@ -176,7 +175,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
   }
 
   // We check the condition of this node
-  const nodeCondition = calculateCondition(state$, null, null, node);
+  const nodeCondition = calculateCondition(state$, node);
 
   // If top parent or condition === true
   if (nodeCondition === true) {
@@ -197,7 +196,7 @@ const recursiveNodePs = (state$, node, qs, actions) => {
 
         // If the sub QS is null and show the sub question
         if (state$.value.nodes[nodeChild.id].answer === null) {
-          actions.push(questionsSequencesChildren(nodeChild.id, qs.id));
+          actions.push(dispatchQuestionsSequenceAction(nodeChild.id, qs.id));
         } else {
           recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
         }
@@ -231,16 +230,16 @@ export const getStateToThisPs = (state$, qs, actions) => {
 };
 
 // TODO: IN PROGRESS
-export const calculateCondition = (state$, indexDD, indexChild, child) => {
+export const calculateCondition = (state$, node) => {
 
   // If this is a top parent node
-  if (child.top_conditions.length === 0) {
+  if (node.top_conditions.length === 0) {
     return true;
   }
 
   // Loop for top_conditions
-  let conditionFinal = child.top_conditions.map((conditions) => {
-    return comparingTopConditions(state$, child, conditions);
+  let conditionFinal = node.top_conditions.map((conditions) => {
+    return comparingTopConditions(state$, node, conditions);
   });
   // reduce here
 
