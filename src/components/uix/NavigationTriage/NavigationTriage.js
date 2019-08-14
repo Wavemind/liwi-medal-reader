@@ -23,7 +23,7 @@ type State = { app: StateApplicationContext } & {
 * */
 export default class NavigationTriage extends React.Component<Props, State> {
   state = {
-    router: NavigationService.getrouter('Triage'),
+    router: NavigationService.getRouter('Triage'),
     currentRoute: NavigationService.getCurrentRoute(),
     prevRoute: {},
     beginNavBool: false,
