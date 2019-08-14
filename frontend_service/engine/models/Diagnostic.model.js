@@ -4,7 +4,7 @@ import { LinkNodeModel } from './Link.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 
 interface DiagnosticInterface {
-  finalDiagnostics: Object;
+  final_diagnostics: Object;
   differential: Object;
   id: number;
   label: string;
@@ -18,7 +18,7 @@ export class DiagnosticModel implements DiagnosticInterface {
     const { id, final_diagnostics, label, differential, reference, nodes } = props;
 
     this.id = id;
-    this.finalDiagnostics = final_diagnostics;
+    this.final_diagnostics = final_diagnostics;
     this.label = label;
     this.differential = differential;
     this.reference = reference;
@@ -36,8 +36,8 @@ export class DiagnosticModel implements DiagnosticInterface {
   }
 
   instanceFinalDiagnostic() {
-    Object.keys(this.finalDiagnostics).map((id) => {
-      this.finalDiagnostics[id] = new FinalDiagnosticModel({ ...this.finalDiagnostics[id] });
+    Object.keys(this.final_diagnostics).map((id) => {
+      this.final_diagnostics[id] = new FinalDiagnosticModel({ ...this.final_diagnostics[id] });
     });
   }
 }
