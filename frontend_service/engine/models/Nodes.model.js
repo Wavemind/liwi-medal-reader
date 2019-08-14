@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import { categories, nodesType } from '../../constants';
 import { NodeModel } from './Node.model';
-import { PredefinedSyndromeModel } from './PredefinedSyndrome.model';
+import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
@@ -112,7 +112,7 @@ export class NodesModel implements NodeInterface {
     // Based on the node type
     switch (node.type) {
       case nodesType.questionsSequence:
-        instantiatedNode = new PredefinedSyndromeModel({
+        instantiatedNode = new QuestionsSequenceModel({
           ...node,
           medicalCase: this,
         });

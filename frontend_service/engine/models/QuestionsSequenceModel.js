@@ -4,7 +4,7 @@ import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { LinkNodeModel } from './Link.model';
 
-interface PredefinedSyndromeInterface {
+interface QuestionsSequenceInterface {
   answer: string;
   answers: Object;
   description: string;
@@ -14,8 +14,8 @@ interface PredefinedSyndromeInterface {
   nodes: Object;
 }
 
-export class PredefinedSyndromeModel extends NodeModel
-  implements PredefinedSyndromeInterface {
+export class QuestionsSequenceModel extends NodeModel
+  implements QuestionsSequenceInterface {
   constructor(props) {
     super(props);
 

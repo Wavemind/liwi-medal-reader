@@ -11,7 +11,7 @@ export class FinalDiagnosticModel extends NodeModel
     super(props);
 
     const {
-      name,
+      label,
       final_diagnostic_id,
       treatments,
       managements,
@@ -20,7 +20,7 @@ export class FinalDiagnosticModel extends NodeModel
       excluding_final_diagnostic,
     } = props;
 
-    this.name = name;
+    this.label = label;
     this.final_diagnostic_id = final_diagnostic_id;
     this.treatments = treatments;
     this.managements = managements;

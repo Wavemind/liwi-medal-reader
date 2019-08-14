@@ -63,6 +63,7 @@ export default class PatientProfile extends React.Component<Props, State> {
   };
 
   // Select a medical case and redirect to patient's view
+  // TODO create a single composant for medicalList Unique in all app !
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase, navigation } = this.props;
     await setMedicalCase(medicalCase);
@@ -93,15 +94,20 @@ export default class PatientProfile extends React.Component<Props, State> {
     // Display list of medical cases
     const _renderMedicalCases = patient.medicalCases.map((medicalCaseItem) => {
       const { patient } = this.state;
+      const { medicalCase } = this.props;
+
+      const style = {
+        backgroundColor: medicalCase.id === medicalCaseItem.id ? '#ee0006' : '#ffffff'
+      };
 
       return (
         <ListItem
           key={medicalCaseItem.id + '_mc'}
           rounded
           block
+          style={style}
           spaced
           onPress={async () => {
-            const { medicalCase } = this.props;
             if (medicalCase.id !== medicalCaseItem.id) {
               await this.selectMedicalCase({
                 ...medicalCaseItem,
