@@ -23,6 +23,7 @@ import { ConsultationTabNavigator } from './Consultation.navigation';
 import DropDownMenu from './DropDownMenuTop.navigation';
 import PatientSummaryMenu from './patientSummaryMenu';
 import PatientSummary from '../../screens/patientsContainer/patientSummary';
+import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 //import Tests from '../../screens/medicalCasesContainer/tests';
 
 // we need to use i18n directly beacause we cant be connect to contexte
@@ -89,6 +90,18 @@ const Stack = createStackNavigator({
     navigationOptions: () => {
       return {
         title: i18n.t('navigation:available_algorithms'),
+      };
+    },
+  },
+  MedicalCaseList: {
+    screen: MedicalCaseList,
+    path: 'medicalCaseList',
+    params: {
+      showSummary: false,
+    },
+    navigationOptions: () => {
+      return {
+        title: i18n.t('navigation:medical_case_list'),
       };
     },
   },

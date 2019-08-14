@@ -42,6 +42,7 @@ export default class Home extends React.Component<Props, State> {
                   <Icon
                     type="MaterialCommunityIcons"
                     name="account-search"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:patient_search')}</Text>
@@ -57,6 +58,7 @@ export default class Home extends React.Component<Props, State> {
                   <Icon
                     type="MaterialCommunityIcons"
                     name="account-plus"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:patient_add')}</Text>
@@ -74,6 +76,7 @@ export default class Home extends React.Component<Props, State> {
                   <Icon
                     type="MaterialCommunityIcons"
                     name="account-multiple"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:patient_list')}</Text>
@@ -83,12 +86,13 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('PatientList')}
+                onPress={() => navigation.navigate('MedicalCaseList')}
               >
                 <View>
                   <Icon
                     type="MaterialCommunityIcons"
                     name="format-list-checkbox"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:case_in_progress')}</Text>
@@ -106,6 +110,7 @@ export default class Home extends React.Component<Props, State> {
                   <Icon
                     type="AntDesign"
                     name="sync"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:synchronize')}</Text>
@@ -121,6 +126,7 @@ export default class Home extends React.Component<Props, State> {
                   <Icon
                     type="AntDesign"
                     name="setting"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:settings')}</Text>
@@ -138,6 +144,7 @@ export default class Home extends React.Component<Props, State> {
                   <Icon
                     type="MaterialCommunityIcons"
                     name="account"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:my_profile')}</Text>
@@ -153,6 +160,7 @@ export default class Home extends React.Component<Props, State> {
                   <Icon
                     type="AntDesign"
                     name="logout"
+                    style={styles.icons}
                     navigation
                   />
                   <Text size-auto center>{t('navigation:logout')}</Text>

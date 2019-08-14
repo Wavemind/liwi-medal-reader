@@ -9,10 +9,8 @@ const languageDetector = {
     const deviceLocale = DeviceInfo.getDeviceLocale();
     callback(deviceLocale);
   },
-  init: () => {
-  },
-  cacheUserLanguage: () => {
-  },
+  init: () => {},
+  cacheUserLanguage: () => {},
 };
 
 i18n
@@ -23,7 +21,8 @@ i18n
     resources: {
       en: {
         summary: {
-          diagnoses: 'Diagnoses'
+          title: 'Current Summary',
+          diagnoses: 'Diagnoses',
         },
         assessment: {
           title: 'First look assessment',
@@ -111,7 +110,22 @@ i18n
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
           waiting_diagnostics: 'Diagnosis',
+          case_in_progress: 'a case is open'
         },
+      medical_case_list: {
+        all: 'All',
+        waiting: 'Patients waiting for',
+        search: 'Search',
+        sort: 'Sort by',
+        name: 'Name',
+        status: 'Status',
+        no_medical_cases: 'There are no medical cases in progress',
+        not_found: 'No match found',
+        waiting_triage: 'Triage',
+        waiting_consultation: 'Consultation',
+        waiting_test: 'Test',
+        waiting_diagnosis: 'Diagnosis',
+      },
         patient: {
           first_name: 'First name',
           last_name: 'Last name',
@@ -119,7 +133,6 @@ i18n
           gender: 'Gender',
           male: 'Male',
           female: 'Female',
-
         },
         login: {
           title: 'Login',
@@ -173,6 +186,7 @@ i18n
           title: 'Home',
         },
         navigation: {
+          medical_case_list: 'Case in progress',
           home: 'Home',
           patient_upsert: 'patient',
           patient_list: 'Patient list',
@@ -202,11 +216,12 @@ i18n
       },
       fr: {
         summary: {
-          diagnoses: 'Diagnostic'
+          title: 'Résumé actuel',
+          diagnoses: 'Diagnostic',
         },
         notifications: {
           empty_code: 'Votre code est vide, veuillez l\'écrire',
-          invalid_code: ' Votre code local n\'est pas valide, veuillez réessayer.',
+          invalid_code: 'Votre code local n\'est pas valide, veuillez réessayer.',
           session_does_not_exist: 'Cet utilisateur local n\'existe pas, veuillez réessayer.',
           session_already_exist: 'La session existe déjà',
           no_internet: 'Vous n\'avez pas de connexion internet',

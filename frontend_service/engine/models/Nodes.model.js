@@ -34,8 +34,9 @@ export class NodesModel implements NodeInterface {
   }
 
 
-  /*
-  * filters = [
+  /* filterByMultiple
+  * Params: filters<Array>
+  * Format : filters = [
       { by: 'category', operator: 'equal', value: categories.symptom },
       { by: 'stage', operator: 'equal', value: stage.consultation },
       { by: 'counter', operator: 'more', value: 0 },
