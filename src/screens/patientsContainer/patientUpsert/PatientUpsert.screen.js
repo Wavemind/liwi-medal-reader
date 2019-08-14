@@ -34,8 +34,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
   async componentWillMount() {
     const { navigation } = this.props;
 
-    // NavigationService.navigateAndPopPrevious();
-
     let idPatient = navigation.getParam('idPatient');
     if (idPatient === null) {
       let patient = new PatientModel();

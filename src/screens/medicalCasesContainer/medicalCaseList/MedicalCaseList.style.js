@@ -3,11 +3,14 @@ import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   input: {
-    width: '90%',
+    width: '100%',
   },
 
-  marginBottom: {
-    marginBottom: 40,
+  filter: {
+    marginTop: 40,
+    paddingBottom: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   picker: {

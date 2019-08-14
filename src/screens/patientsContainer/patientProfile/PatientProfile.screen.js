@@ -50,11 +50,15 @@ export default class PatientProfile extends React.Component<Props, State> {
   generateMedicalCase = async () => {
     const { patient } = this.state;
 
-    await this.setState({ isGeneratingMedicalCase: true });
+    await this.setState({
+      isGeneratingMedicalCase: true,
+    });
     let instanceMedicalCase = new MedicalCaseModel();
     await instanceMedicalCase.create(patient.id);
     await this.getPatient();
-    await this.setState({ isGeneratingMedicalCase: false });
+    await this.setState({
+      isGeneratingMedicalCase: false,
+    });
     return false;
   };
 

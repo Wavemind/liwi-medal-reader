@@ -4,7 +4,10 @@ export const styles = StyleSheet.create({
   bottomMargin: {
     marginBottom: 20,
   },
-
+  image: {
+    width: 40,
+    height: 40,
+  },
   summary: {
     height: '95%',
     width: '95%',

@@ -23,10 +23,7 @@ export default class PatientProfile extends React.Component<Props, State> {
       navigation,
     } = this.props;
 
-    const styleImage = {
-      width: 40,
-      height: 40,
-    };
+
     let fd = nodes.filterByType(nodesType.finalDiagnostic);
 
     let defaultTab = navigation.getParam('defaultTab');
@@ -45,12 +42,12 @@ export default class PatientProfile extends React.Component<Props, State> {
       <View>
         <View style={styles.summary}>
           <BackButton />
-          <LiwiTitle2>Current Summary</LiwiTitle2>
+          <LiwiTitle2>{t('summary:title')}</LiwiTitle2>
           <View>
             <View>
               <Image
                 resizeMode="contain"
-                style={styleImage}
+                style={styles.image}
                 source={require('../../../../assets/images/profil.png')}
               />
             </View>
@@ -64,7 +61,7 @@ export default class PatientProfile extends React.Component<Props, State> {
               </Text>
             </View>
             <View>
-              <Text>Edit</Text>
+              <Text>{t('form:edit')}</Text>
             </View>
           </View>
           <Tabs

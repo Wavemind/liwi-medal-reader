@@ -6,6 +6,9 @@ function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
 }
 
+// Navigate to a specific route
+// This method is used when we dont have access to Navigation Context
+// Ex : from a function JS or from RxJs
 function navigate(routeName, params = {}) {
   _navigator.dispatch(
     NavigationActions.navigate({
@@ -15,6 +18,7 @@ function navigate(routeName, params = {}) {
   );
 }
 
+// When we call this method, we get the current route, because the tree from react-navigaton is special
 function getCurrentRoute() {
   let route = _navigator.state.nav;
 
@@ -27,14 +31,15 @@ function getCurrentRoute() {
   return route;
 }
 
-function getRouteur(routeurName) {
+function getRouter(routerName) {
   let route = _navigator.state.nav;
-  while (route.routeName !== routeurName) {
+  while (route.routeName !== routerName) {
     route = route.routes[route.index];
   }
   return route;
 }
 
+// Try to build reset action stack
 function resetActionStack(routeName, params) {
   const resetAction = StackActions.reset({
     index: 0,
@@ -46,7 +51,7 @@ function resetActionStack(routeName, params) {
 
 export default {
   resetActionStack,
-  getRouteur,
+  getRouter,
   navigate,
   setTopLevelNavigator,
   getCurrentRoute,
