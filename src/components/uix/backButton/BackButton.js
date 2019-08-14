@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Button, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './BackButton.style';
+
 type Props = NavigationScreenProps & {};
 
 export default function BackButton(props: Props) {
