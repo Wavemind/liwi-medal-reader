@@ -10,7 +10,6 @@ export class LinkNodeModel implements LinkNodeInterface {
 
     this.requirement = new RequirementNodeModel({ conditions, top_conditions });
 
-    this.conditons = conditions;
     this.top_conditions = top_conditions;
     this.id = id;
     this.children = children;

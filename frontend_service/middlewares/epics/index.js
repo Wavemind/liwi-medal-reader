@@ -3,15 +3,15 @@ import {
   epicCatchAnswer,
   epicCatchDispatchNodeAction,
   epicCatchDispatchCondition,
-  epicCatchDiagnosisChildren,
-  epicCatchPredefinedSyndromeChildren,
+  epicCatchFinalDiagnosticAction,
+  epicCatchQuestionsSequenceAction,
 } from './EpicTreesNodes';
 
 
 export default combineEpics(
-  epicCatchPredefinedSyndromeChildren,
+  epicCatchQuestionsSequenceAction,
   epicCatchAnswer,
-  epicCatchDiagnosisChildren,
+  epicCatchFinalDiagnosticAction,
   epicCatchDispatchNodeAction,
   epicCatchDispatchCondition
 );
