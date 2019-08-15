@@ -152,42 +152,53 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
 };
 
 // TODO not working at 100%, fix it
-const recursiveNodePs = (state$, node, qs, actions) => {
-  let findConditionValueQs = find(
-    state$.value.nodes[node.id].qs,
+/**
+ * Get
+ *
+ * @trigger When a condition value must be change
+ * @payload nodeId: Question or QuestionsSequence
+ * @payload callerId: Diagnostic or QuestionsSequence
+ * @payload value: new condition value
+ * @payload type: define if it's a diagnostic or a question sequence
+ */
+const recursiveNodePs = (state$, link, qs, actions) => {
+  let currentNode =  state$.value.nodes[link.id];
+
+  let conditionValueQs = find(
+    currentNode.qs,
     (p) => p.id === qs.id
   ).conditionValue;
 
-  // if not answered we show it
-  if (
-    state$.value.nodes[node.id].answer === null &&
-    findConditionValueQs.conditionValue === false
-  ) {
-    return actions.push(updateConditionValue(node.id, qs.id, true, qs.type));
-  }
+  // console.log(conditionValueQs, link, qs, currentNode);
 
+  // if the current node isn't answered we have to show it to the user
   if (
-    state$.value.nodes[node.id].answer === null &&
-    findConditionValueQs === true
+    currentNode.answer === null &&
+    conditionValueQs === false
   ) {
-    // the question is not answered but already shown, and stop and wait on the user
+    return actions.push(updateConditionValue(link.id, qs.id, true, qs.type));
+  }
+  // Question is showed but not answered, we stop and wait on the user
+  if (
+    currentNode.answer === null &&
+    conditionValueQs === true
+  ) {
     return;
   }
 
-  // We check the condition of this node
-  const nodeCondition = calculateCondition(state$, node);
+  // If answer is not null We check the condition of this node
+  const nodeCondition = calculateCondition(state$, link);
 
   // If top parent or condition === true
   if (nodeCondition === true) {
-    node.children.map((nodeChildID) => {
+    link.children.map((nodeChildID) => {
       let nodeChild = state$.value.nodes[nodeChildID];
 
-      // IF the child is OUR PS
+      // IF the child is OUR QS
       if (nodeChildID === qs.id && nodeChild.type === nodesType.questionsSequence) {
         // Top parent and child is QS
         // The branch is open and we can set the answer of this QS
-        return;
-        //return calculateCondition(state$, null, null, qs);
+        return calculateCondition(state$,  qs);
       }
 
       // IF the child is an other QS
