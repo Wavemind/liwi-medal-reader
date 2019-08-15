@@ -2,7 +2,7 @@
 
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
-import { LinkNodeModel } from './Link.model';
+import { InstanceModel } from './Instance.model';
 
 interface QuestionsSequenceInterface {
   answer: string;
@@ -27,7 +27,7 @@ export class QuestionsSequenceModel extends NodeModel
       dd = [],
       qs = [],
       conditions = {},
-      nodes = {},
+      instances = {},
       top_conditions = {},
       category = ''
     } = props;
@@ -40,7 +40,7 @@ export class QuestionsSequenceModel extends NodeModel
     this.qs = qs;
     this.conditions = conditions;
     this.top_conditions = top_conditions;
-    this.nodes = nodes;
+    this.instances = instances;
     this.category = category;
 
     this.requirement = new RequirementNodeModel({ ...props });
@@ -48,8 +48,8 @@ export class QuestionsSequenceModel extends NodeModel
   }
 
   instanceLink() {
-    Object.keys(this.nodes).map((id) => {
-      this.nodes[id] = new LinkNodeModel({ ...this.nodes[id] });
+    Object.keys(this.instances).map((id) => {
+      this.instances[id] = new InstanceModel({ ...this.instances[id] });
     });
   }
 }

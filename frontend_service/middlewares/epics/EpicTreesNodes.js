@@ -107,7 +107,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return [];
         case nodesType.diagnostic:
           // Get children of the node in the current diagnostic
-          nodeChildren = caller.nodes[node.id].children;
+          nodeChildren = caller.instances[node.id].children;
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) => {
             arrayActions.push(dispatchNodeAction(caller.id, childId));
@@ -237,7 +237,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       let actions = [];
 
       const { diagnosticId, nodeId } = action.payload;
-      const currentNode = state$.value.diagnostics[diagnosticId].nodes[nodeId];
+      const currentNode = state$.value.diagnostics[diagnosticId].instances[nodeId];
 
       // INFO for debug if algo JSON is broken
       if (currentNode === undefined) {
