@@ -2,9 +2,9 @@
 
 import { RequirementNodeModel } from './RequirementNodeModel';
 
-interface LinkNodeInterface {}
+interface InstanceInterface {}
 
-export class LinkNodeModel implements LinkNodeInterface {
+export class InstanceModel implements InstanceInterface {
   constructor(props) {
     const { children, conditions, id, top_conditions } = props;
 
