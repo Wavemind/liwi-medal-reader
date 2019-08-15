@@ -14,7 +14,7 @@ import {
 } from '../../actions/creators.actions';
 import {
   getParentsNodes,
-  getStateToThisPs,
+  getQuestionsSequenceStatus,
   calculateCondition,
 } from '../../algorithm/algoTreeDiagnosis';
 
@@ -140,59 +140,71 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION),
     switchMap((action) => {
-      const { questionsSequenceId, callerId } = action.payload;
+      const { questionsSequenceId } = action.payload;
       const currentQuestionsSequence = state$.value.nodes[questionsSequenceId];
-
-      // Let check the condition of this qs
-      const questionsSequenceConditionValue = calculateCondition(
-        state$,
-        currentQuestionsSequence
-      );
-
       let answerId = null;
       let actions = [];
+      let isReady;
 
-      if (questionsSequenceConditionValue === true) {
+      isReady = getQuestionsSequenceStatus(
+        state$,
+        currentQuestionsSequence,
+        actions
+      );
+      let questionsSequenceCondition = null;
+
+      if (isReady) {
+        questionsSequenceCondition = calculateCondition(
+          state$,
+          currentQuestionsSequence
+        );
+      }
+
+      if (questionsSequenceCondition === true) {
         answerId =
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers)[0]
           ].id;
-      } else if (questionsSequenceConditionValue === false) {
+      } else if (questionsSequenceCondition === false) {
         answerId =
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers)[1]
           ].id;
-      } else if (questionsSequenceConditionValue === null) {
+      } else if (questionsSequenceCondition === null) {
         // TODO if top parent question is reset to null, reset children question condition value to false
-        getStateToThisPs(state$, currentQuestionsSequence, actions);
+        // u = getQuestionsSequenceStatus(state$, currentQuestionsSequence, actions);
       }
 
       // eslint-disable-next-line no-console
-      console.log(
-        'starte PS :',
-        currentQuestionsSequence.id,
-        currentQuestionsSequence,
-        questionsSequenceConditionValue,
-        'state du qs :',
-        actions,
-        'index child :',
-        callerId
-      );
+      // console.log(
+      //   'starte PS :',
+      //   currentQuestionsSequence.id,
+      //   currentQuestionsSequence,
+      //   questionsSequenceConditionValue,
+      //   'state du qs :',
+      //   actions,
+      //   'index child :',
+      //   callerId
+      // );
+
       // eslint-disable-next-line no-console
       console.log(
-        questionsSequenceId,
+        currentQuestionsSequence,
         ' -> ce PS a comme réponse : ',
-        answerId
+        answerId,
+        'condition result : ',
+        questionsSequenceCondition,
+        ' and is ',
+        isReady,
+        ' to calculate'
       );
 
+      // If the new answer of this QS is different from the older, we change it
       if (answerId !== currentQuestionsSequence.answer) {
         // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
-
-        return of(...actions, setAnswer(currentQuestionsSequence.id, answerId));
-      } else {
-        // emit nothing....
-        return of(...[]);
+        actions.push(setAnswer(currentQuestionsSequence.id, answerId));
       }
+      return of(...actions);
     })
   );
 
@@ -237,7 +249,8 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       let actions = [];
 
       const { diagnosticId, nodeId } = action.payload;
-      const currentNode = state$.value.diagnostics[diagnosticId].instances[nodeId];
+      const currentNode =
+        state$.value.diagnostics[diagnosticId].instances[nodeId];
 
       // INFO for debug if algo JSON is broken
       if (currentNode === undefined) {

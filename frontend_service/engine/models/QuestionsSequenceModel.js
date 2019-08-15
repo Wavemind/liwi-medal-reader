@@ -3,6 +3,7 @@
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { InstanceModel } from './Instance.model';
+import { valueFormats } from '../../constants';
 
 interface QuestionsSequenceInterface {
   answer: string;
@@ -29,7 +30,8 @@ export class QuestionsSequenceModel extends NodeModel
       conditions = {},
       instances = {},
       top_conditions = {},
-      category = ''
+      category = '',
+      value_format = valueFormats.bool,
     } = props;
 
     this.description = description;
@@ -42,6 +44,7 @@ export class QuestionsSequenceModel extends NodeModel
     this.top_conditions = top_conditions;
     this.instances = instances;
     this.category = category;
+    this.value_format = value_format;
 
     this.requirement = new RequirementNodeModel({ ...props });
     this.instanceLink();
