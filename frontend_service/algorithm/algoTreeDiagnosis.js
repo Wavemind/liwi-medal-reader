@@ -37,7 +37,7 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
       if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
         nodes[nodeId].dd.map((dd) => {
           dd.conditionValue =
-            diagnostics[dd.id].nodes[nodeId].top_conditions.length === 0;
+            diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
         });
 
         // Map trough PS if it is in an another PS itself
@@ -67,7 +67,7 @@ export const setParentConditionValue = (
   if (!nodes[parentId].dd.isEmpty()) {
     nodes[parentId].dd.map((dd) => {
       dd.conditionValue =
-        diagnostics[dd.id].nodes[parentId].top_conditions.length === 0;
+        diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
     });
     conditionValue = true;
   }
@@ -85,7 +85,7 @@ export const setParentConditionValue = (
   nodes[id].qs.map((qs) => {
     if (qs.id === parentId) {
       qs.conditionValue =
-        nodes[qs.id].nodes[id].top_conditions.length === 0 && conditionValue;
+        nodes[qs.id].instances[id].top_conditions.length === 0 && conditionValue;
     }
   });
 };
@@ -139,7 +139,7 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
   let parentsNodes = [];
 
   let top_conditions =
-    state$.value.diagnostics[diagnosticId].nodes[nodeId].top_conditions;
+    state$.value.diagnostics[diagnosticId].instances[nodeId].top_conditions;
 
   top_conditions.map((top) => {
     parentsNodes.push(top.first_node_id);
@@ -209,7 +209,7 @@ const recursiveNodePs = (state$, link, qs, actions) => {
         if (state$.value.nodes[nodeChild.id].answer === null) {
           actions.push(dispatchQuestionsSequenceAction(nodeChild.id, qs.id));
         } else {
-          recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
+          recursiveNodePs(state$, qs.instances[nodeChild.id], qs, actions);
         }
       }
 
@@ -217,7 +217,7 @@ const recursiveNodePs = (state$, link, qs, actions) => {
       if (nodeChild.type === nodesType.question) {
         // Next node is a question, get the state
         // go deeper
-        recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
+        recursiveNodePs(state$, qs.instances[nodeChild.id], qs, actions);
       }
     });
   }
@@ -228,9 +228,9 @@ export const getStateToThisPs = (state$, qs, actions) => {
   let nodeTopParent = [];
 
   // Get top parent nodes
-  Object.keys(qs.nodes).map((nodeId) => {
-    if (qs.nodes[nodeId].top_conditions.length === 0) {
-      nodeTopParent.push(qs.nodes[nodeId]);
+  Object.keys(qs.instances).map((nodeId) => {
+    if (qs.instances[nodeId].top_conditions.length === 0) {
+      nodeTopParent.push(qs.instances[nodeId]);
     }
   });
   // For each top parent node

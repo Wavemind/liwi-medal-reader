@@ -1,6 +1,6 @@
 // @flow
 
-import { LinkNodeModel } from './Link.model';
+import { InstanceModel } from './Instance.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 
 interface DiagnosticInterface {
@@ -8,21 +8,21 @@ interface DiagnosticInterface {
   differential: Object;
   id: number;
   label: string;
-  nodes: Object;
+  instances: Object;
   reference: string;
   type: string;
 }
 
 export class DiagnosticModel implements DiagnosticInterface {
   constructor(props) {
-    const { id, final_diagnostics, label, differential, reference, nodes } = props;
+    const { id, final_diagnostics, label, differential, reference, instances } = props;
 
     this.id = id;
     this.final_diagnostics = final_diagnostics;
     this.label = label;
     this.differential = differential;
     this.reference = reference;
-    this.nodes = nodes;
+    this.instances = instances;
     this.type = 'diagnostic';
 
     this.instanceLink();
@@ -30,8 +30,8 @@ export class DiagnosticModel implements DiagnosticInterface {
   }
 
   instanceLink() {
-    Object.keys(this.nodes).map((id) => {
-      this.nodes[id] = new LinkNodeModel({ ...this.nodes[id] });
+    Object.keys(this.instances).map((id) => {
+      this.instances[id] = new InstanceModel({ ...this.instances[id] });
     });
   }
 
