@@ -1,9 +1,7 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
-import {
-  dispatchQuestionsSequenceAction, updateConditionValue,
-} from '../actions/creators.actions';
+import { updateConditionValue } from '../actions/creators.actions';
 
 // Create the first batch from json based on triage priority
 // TODO : Maybe build an object instead of rewriting the json
@@ -85,7 +83,8 @@ export const setParentConditionValue = (
   nodes[id].qs.map((qs) => {
     if (qs.id === parentId) {
       qs.conditionValue =
-        nodes[qs.id].instances[id].top_conditions.length === 0 && conditionValue;
+        nodes[qs.id].instances[id].top_conditions.length === 0 &&
+        conditionValue;
     }
   });
 };
@@ -161,88 +160,107 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
  * @payload value: new condition value
  * @payload type: define if it's a diagnostic or a question sequence
  */
-const recursiveNodePs = (state$, link, qs, actions) => {
-  let currentNode =  state$.value.nodes[link.id];
+const recursiveNodeQs = (state$, instance, qs, actions) => {
+  let currentNode = state$.value.nodes[instance.id];
 
-  let conditionValueQs = find(
-    currentNode.qs,
-    (p) => p.id === qs.id
-  ).conditionValue;
+  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id)
+    .conditionValue;
 
-  // console.log(conditionValueQs, link, qs, currentNode);
-
-  // if the current node isn't answered we have to show it to the user
-  if (
-    currentNode.answer === null &&
-    conditionValueQs === false
-  ) {
-    return actions.push(updateConditionValue(link.id, qs.id, true, qs.type));
+  // If the node is not shown is this QS we change the conditon value to show it
+  if (instanceConditionValue === false) {
+    actions.push(updateConditionValue(instance.id, qs.id, true, qs.type));
   }
-  // Question is showed but not answered, we stop and wait on the user
-  if (
-    currentNode.answer === null &&
-    conditionValueQs === true
-  ) {
-    return;
+
+  // if the node isn't answered yet we stop the algo
+  if (currentNode.answer === null) {
+    return false;
   }
 
   // If answer is not null We check the condition of this node
-  const nodeCondition = calculateCondition(state$, link);
+  const instanceCondition = calculateCondition(state$, instance);
+  let qsFullyAnswered = null;
+  // If instance condition === true
+  if (instanceCondition === true) {
+    qsFullyAnswered = instance.children.some((childId) => {
+      let child = state$.value.nodes[childId];
 
-  // If top parent or condition === true
-  if (nodeCondition === true) {
-    link.children.map((nodeChildID) => {
-      let nodeChild = state$.value.nodes[nodeChildID];
-
-      // IF the child is OUR QS
-      if (nodeChildID === qs.id && nodeChild.type === nodesType.questionsSequence) {
-        // Top parent and child is QS
+      if (child.id === qs.id && child.type === nodesType.questionsSequence) {
         // The branch is open and we can set the answer of this QS
-        return calculateCondition(state$,  qs);
+        return true;
       }
 
       // IF the child is an other QS
-      if (nodeChild.type === nodesType.questionsSequence && nodeChildID !== qs.id) {
-        console.warn(nodeChild, 'Get state of this other PS');
-
+      else if (
+        child.id === qs.id &&
+        child.type === nodesType.questionsSequence
+      ) {
         // If the sub QS is null and show the sub question
-        if (state$.value.nodes[nodeChild.id].answer === null) {
-          actions.push(dispatchQuestionsSequenceAction(nodeChild.id, qs.id));
-        } else {
-          recursiveNodePs(state$, qs.instances[nodeChild.id], qs, actions);
+        if (child.answer === null) {
+          getQuestionsSequenceStatus(state$, state$.nodes[child.id], actions);
         }
       }
 
       // IF the child is an question
-      if (nodeChild.type === nodesType.question) {
+      else if (child.type === nodesType.question) {
         // Next node is a question, get the state
         // go deeper
-        recursiveNodePs(state$, qs.instances[nodeChild.id], qs, actions);
+        return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+      } else {
+        console.warn(
+          '%c --- DANGER --- ',
+          'background: #FF0000; color: #F6F3ED; padding: 5px',
+          'This QS',
+          qs,
+          'You do not have to be here !! child in QS is wrong for : ',
+          child
+        );
       }
+
+      // we have children and and can continue
     });
+
+    if (qsFullyAnswered === true) {
+      return qsFullyAnswered;
+    }
+  } else {
+    // The node hasn't the expected answer so we stop the algo
+    return false;
   }
 };
 
-// TODO as well
-export const getStateToThisPs = (state$, qs, actions) => {
-  let nodeTopParent = [];
+/**
+ * 1. Get all nodes without conditons
+ * 2. On each node we do work on his children (like change conditon value or check conditon of the child)
+ * 3. Update Recursive QS
+ *
+ * @return boolean: can we calculate this QS ?
+ * @params state$: All the state of the reducer
+ * @params qs: The QS we want to get the status
+ * @params actions: The array of Redux Actions
+ */
+export const getQuestionsSequenceStatus = (state$, qs, actions) => {
+  let topLevelNodes = [];
+  let allNodesAnsweredInQs = false;
 
-  // Get top parent nodes
+  // Set top Level Nodes
   Object.keys(qs.instances).map((nodeId) => {
     if (qs.instances[nodeId].top_conditions.length === 0) {
-      nodeTopParent.push(qs.instances[nodeId]);
+      topLevelNodes.push(qs.instances[nodeId]);
     }
   });
+
+  // TODO SOME ??
   // For each top parent node
-  nodeTopParent.map((topParent) =>
-    recursiveNodePs(state$, topParent, qs, actions)
-  );
-  return actions;
+  allNodesAnsweredInQs = topLevelNodes.some((topNode) => {
+    let rec = recursiveNodeQs(state$, topNode, qs, actions);
+    if (rec) return true;
+  });
+  // return actions;
+  return allNodesAnsweredInQs;
 };
 
 // TODO: IN PROGRESS
 export const calculateCondition = (state$, node) => {
-
   // If this is a top parent node
   if (node.top_conditions.length === 0) {
     return true;
