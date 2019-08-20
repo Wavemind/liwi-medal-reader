@@ -24,6 +24,7 @@ export const displayFormats = {
   checkBox: 'CheckBox',
   input: 'Input',
   list: 'DropDownList',
+  formula: 'Formula',
 };
 
 // Value of answer accepted

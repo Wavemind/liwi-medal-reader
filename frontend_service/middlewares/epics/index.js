@@ -5,10 +5,11 @@ import {
   epicCatchDispatchCondition,
   epicCatchFinalDiagnosticAction,
   epicCatchQuestionsSequenceAction,
+  epicCatchDispatchFormulaNodeAction,
 } from './EpicTreesNodes';
 
-
 export default combineEpics(
+  epicCatchDispatchFormulaNodeAction,
   epicCatchQuestionsSequenceAction,
   epicCatchAnswer,
   epicCatchFinalDiagnosticAction,

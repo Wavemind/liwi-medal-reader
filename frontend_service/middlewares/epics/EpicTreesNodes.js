@@ -3,7 +3,7 @@ import find from 'lodash/find';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { actions } from '../../actions/types.actions';
-import { nodesType } from '../../constants';
+import { displayFormats, nodesType } from '../../constants';
 import {
   updateConditionValue,
   dispatchFinalDiagnosticAction,
@@ -11,11 +11,13 @@ import {
   dispatchNodeAction,
   dispatchQuestionsSequenceAction,
   setAnswer,
+  dispatchFormulaNodeAction,
 } from '../../actions/creators.actions';
 import {
   getParentsNodes,
   getQuestionsSequenceStatus,
   calculateCondition,
+  calculateFormula,
 } from '../../algorithm/algoTreeDiagnosis';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
@@ -46,11 +48,19 @@ export const epicCatchAnswer = (action$, state$) =>
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
       const relatedQuestionsSequence = currentNode.qs;
+      const relatedFormulaNodes = currentNode.fn;
 
       let arrayActions = [];
 
       relatedDiagnostics.map((diagnostic) =>
-        arrayActions.push(dispatchNodeAction(index, diagnostic.id))
+        arrayActions.push(
+          dispatchNodeAction(index, diagnostic.id, nodesType.diagnostic)
+        )
+      );
+
+      // TODO maybe we have to make formula here, not necessary dispatch action, what think others ?
+      relatedFormulaNodes.map((formulaNode) =>
+        arrayActions.push(dispatchFormulaNodeAction(formulaNode.id))
       );
 
       relatedQuestionsSequence.map((questionsSequence) =>
@@ -75,23 +85,26 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     ofType(actions.HANDLE_NODE_CHANGED),
     switchMap((action) => {
       let arrayActions = [];
+      let caller;
 
-      const { nodeId, callerId } = action.payload;
+      // TODO make a giant test about perf between ref id and object pass into action
+      // TODO Test get node in state and comare with object in action, are there somes differences ?
+      const { nodeId, callerId, callerType } = action.payload;
 
-      const node =
-        state$.value.nodes?.[nodeId] ?? state$.value.diagnostics[nodeId];
-
-      const caller =
-        state$.value.nodes?.[callerId] ?? state$.value.diagnostics[callerId];
+      if (callerType === nodesType.diagnostic)
+        caller = state$.value.diagnostics[callerId];
+      else if (callerType !== nodesType.diagnostic)
+        caller = state$.value.nodes[callerId];
 
       // eslint-disable-next-line no-console
       console.log(
         '%c --- epicCatchDispatchNodeAction --- ',
         'background: #FF4500; color: #F6F3ED; padding: 5px',
         'déclenché :',
-        node,
+        nodeId,
         ' > : ',
-        caller
+        callerId,
+        callerType
       );
 
       let nodeChildren;
@@ -99,25 +112,31 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       // What do we do with this child -> switch according to type
       switch (caller.type) {
         case nodesType.question:
-          return of(dispatchCondition(node.id, caller.id));
+          return of(dispatchCondition(nodeId, caller.id));
         case nodesType.finalDiagnostic:
-          return of(dispatchFinalDiagnosticAction(node.id, caller.id));
+          return of(dispatchFinalDiagnosticAction(nodeId, caller.id));
         case nodesType.healthCare:
           // TODO: to implement
           return [];
         case nodesType.diagnostic:
           // Get children of the node in the current diagnostic
-          nodeChildren = caller.instances[node.id].children;
+          nodeChildren = caller.instances[nodeId].children;
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) => {
-            arrayActions.push(dispatchNodeAction(caller.id, childId));
+            arrayActions.push(
+              dispatchNodeAction(
+                caller.id,
+                childId,
+                state$.value.nodes[childId].type
+              )
+            );
           });
 
           return of(...arrayActions);
         case nodesType.questionsSequence:
           // TODO : Handle QS
           // HERE calcule condition of node type PS
-          return of(dispatchCondition(node.id, caller.id));
+          return of(dispatchCondition(nodeId, caller.id));
         //return of(dispatchQuestionsSequenceAction(caller, node));
         default:
           // eslint-disable-next-line no-console
@@ -239,9 +258,36 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
     // TODO : Trigger Treatment/Management handling
   );
 
+export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.DISPATCH_FORMULA_NODE_ACTION),
+    switchMap((action) => {
+      let actions = [];
+
+      const { nodeId } = action.payload;
+
+      const currentNode = state$.value.nodes[nodeId];
+
+      // 0 to default
+      // If the node was already calcutate but we want to reset the node the value will still be 0 and setAnswer set to 0
+      let value = 0;
+      if (currentNode.display_format === displayFormats.formula) {
+        value = calculateFormula(state$, currentNode);
+      }
+
+      if (value !== currentNode.value) {
+        // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
+        actions.push(setAnswer(currentNode.id, value));
+      }
+
+      return of(...actions);
+    })
+  );
+
 // @params [Object] action$, [Object] state$
 // @return [Array][Object] arrayActions
 // Dispatch condition action on condition result
+// TODO rename it... we dont know what is it
 export const epicCatchDispatchCondition = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_CONDITION),
@@ -249,8 +295,9 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       let actions = [];
 
       const { diagnosticId, nodeId } = action.payload;
+
       const currentNode =
-        state$.value.diagnostics[diagnosticId].instances[nodeId];
+        state$.value.diagnostics[diagnosticId]?.instances[nodeId];
 
       // INFO for debug if algo JSON is broken
       if (currentNode === undefined) {
@@ -264,6 +311,12 @@ export const epicCatchDispatchCondition = (action$, state$) =>
           diagnosticId
         );
         return of();
+      }
+
+      if (
+        state$.value.nodes[nodeId].display_format === displayFormats.formula
+      ) {
+        calculateFormula(state$, state$.value.nodes[nodeId]);
       }
 
       const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);

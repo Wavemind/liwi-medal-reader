@@ -2,7 +2,12 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { ListItem, Text } from 'native-base';
-import { displayFormats, valueFormats, nodesType, priorities } from '../../../../frontend_service/constants';
+import {
+  displayFormats,
+  valueFormats,
+  nodesType,
+  priorities,
+} from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -14,7 +19,12 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-function LabelQuestion(props: { label: String, flex: String, marginRight: Numeric, marginLeft: Numeric }) {
+function LabelQuestion(props: {
+  label: String,
+  flex: String,
+  marginRight: Numeric,
+  marginLeft: Numeric,
+}) {
   const { label, flex, marginRight, marginLeft } = props;
   return (
     <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
@@ -26,7 +36,6 @@ function LabelQuestion(props: { label: String, flex: String, marginRight: Numeri
 }
 
 class WrapperQuestion extends React.Component<Props, State> {
-
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     const { question } = this.props;
@@ -75,6 +84,11 @@ export default class Question extends React.PureComponent<Props, State> {
 
     // If this is not a question we return null
     if (question === undefined || question.type !== nodesType.question) {
+      return null;
+    }
+
+    // If this is a question Formula we do not show it
+    if (question.display_format === displayFormats.formula) {
       return null;
     }
 
