@@ -5,7 +5,7 @@ import { priorities } from '../../constants';
 
 const { basic, mandatory, triage, priority } = priorities;
 
- interface QuestionInterface {
+interface QuestionInterface {
   answer: string;
   answers: Object;
   description: string;
@@ -38,6 +38,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       value = '',
       value_format = '',
       stage = '',
+      formula = '',
+      fn = [],
     } = props;
 
     this.description = description;
@@ -53,6 +55,16 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.value = value;
     this.value_format = value_format;
     this.stage = stage;
+    this.formula = formula;
+    this.fn = fn;
 
+    if (this.id === 108 || this.id === 111) {
+      this.fn = [
+        {
+          id: 278,
+          conditionValue: true,
+        },
+      ];
+    }
   }
 }

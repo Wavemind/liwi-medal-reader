@@ -44,6 +44,28 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
         });
       }
     });
+
+    // Set question Formula
+    Object.keys(nodes).map((nodeId) => {
+      if (nodes[nodeId].type.match(/Question/)) {
+        // TODO remove it when json ready
+        if (nodeId == 108 || nodeId == 111) {
+          nodes[nodeId].fn = [
+            {
+              id: 278,
+              conditionValue: false,
+            },
+          ];
+        } else {
+          nodes[nodeId].fn = [];
+        }
+        nodes[nodeId].fn.map((fn) => {
+          let fdd = nodes[fn.id].dd.some((e) => e.conditionValue);
+          let fqs = nodes[fn.id].qs.some((e) => e.conditionValue);
+          if (fdd || fqs) fn.conditionValue = true;
+        });
+      }
+    });
   } catch (e) {
     console.warn(e);
   }
@@ -261,6 +283,7 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
 
 // TODO: IN PROGRESS
 export const calculateCondition = (state$, node) => {
+
   // If this is a top parent node
   if (node.top_conditions.length === 0) {
     return true;
@@ -281,6 +304,35 @@ export const calculateCondition = (state$, node) => {
   );
 
   return reduceConditionArrayBoolean;
+};
+
+// @params [Object] state$, [Object] node
+// Calculate formula
+export const calculateFormula = (state$, node) => {
+  // Regex to find []
+  const findBrackertId = /\[(.*?)\]/gi;
+  let ready = true;
+
+  // Function to change the [id] into the good value
+  const functionReplacing = (item) => {
+    // Get the id into []
+    let id = item.match(/\d/g).join('');
+
+    // Get value of this node
+    const nodeValue = state$.value.nodes[id].value;
+
+    if (nodeValue === 0) {
+      ready = false;
+      return item;
+    } else {
+      return nodeValue;
+    }
+  };
+
+  // Find in string each item with functionReplacing
+  let replacer = node.formula.replace(findBrackertId, functionReplacing);
+
+  if (ready) return eval(replacer);
 };
 
 // TODO: IN PROGRESS

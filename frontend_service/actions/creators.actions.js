@@ -25,14 +25,19 @@ export const setAnswer = (index, value) => ({
   },
 });
 
-export const dispatchNodeAction = (
-  nodeId,
-  callerId,
-) => ({
+export const dispatchNodeAction = (nodeId, callerId, callerType) => ({
   type: actions.HANDLE_NODE_CHANGED,
   payload: {
     nodeId,
     callerId,
+    callerType,
+  },
+});
+
+export const dispatchFormulaNodeAction = (nodeId) => ({
+  type: actions.DISPATCH_FORMULA_NODE_ACTION,
+  payload: {
+    nodeId,
   },
 });
 
@@ -73,7 +78,10 @@ export const setPsAnswer = (indexPs, answer) => ({
   },
 });
 
-export const dispatchQuestionsSequenceAction = (questionsSequenceId, callerId) => ({
+export const dispatchQuestionsSequenceAction = (
+  questionsSequenceId,
+  callerId
+) => ({
   type: actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION,
   payload: {
     questionsSequenceId,
@@ -81,7 +89,10 @@ export const dispatchQuestionsSequenceAction = (questionsSequenceId, callerId) =
   },
 });
 
-export const dispatchFinalDiagnosticAction = (diagnosticId, finalDiagnosticId) => ({
+export const dispatchFinalDiagnosticAction = (
+  diagnosticId,
+  finalDiagnosticId
+) => ({
   type: actions.DISPATCH_FINAL_DIAGNOSTIC_ACTION,
   payload: {
     diagnosticId,
