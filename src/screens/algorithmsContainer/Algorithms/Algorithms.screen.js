@@ -32,6 +32,7 @@ export default class Algorithms extends React.Component<Props, State> {
   contentView = () => {
     const { algorithms } = this.state;
     const { navigation } = this.props;
+
     return (
       <ScrollView>
         {algorithms.map((algorithm) => (
