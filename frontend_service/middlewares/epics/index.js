@@ -2,16 +2,17 @@ import { combineEpics } from 'redux-observable';
 import {
   epicCatchAnswer,
   epicCatchDispatchNodeAction,
-  epicCatchDiseasesChildren,
-  epicCatchDiagnosisChildren,
-  epicCatchPredefinedSyndromeChildren,
+  epicCatchDispatchCondition,
+  epicCatchFinalDiagnosticAction,
+  epicCatchQuestionsSequenceAction,
+  epicCatchDispatchFormulaNodeAction,
 } from './EpicTreesNodes';
 
-
 export default combineEpics(
-  epicCatchPredefinedSyndromeChildren,
+  epicCatchDispatchFormulaNodeAction,
+  epicCatchQuestionsSequenceAction,
   epicCatchAnswer,
-  epicCatchDiagnosisChildren,
+  epicCatchFinalDiagnosticAction,
   epicCatchDispatchNodeAction,
-  epicCatchDiseasesChildren
+  epicCatchDispatchCondition
 );

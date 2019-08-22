@@ -7,15 +7,15 @@ export const host = 'https://liwi.wavelab.top/api/v1/';
 export const saltHash =
   'x9gKs?RBf*96RK2DAM+&$CYv7A3Gjp=?X&RBLS%9KeL8Q3dSGjUzL_?2Vye3';
 
-// Nodes type
+// Nodes types
 export const nodesType = {
-  d: 'diseases',
-  fd: 'FinalDiagnostic',
-  m: 'Management',
-  qs: 'QuestionsSequence',
-  q: 'Question',
-  t: 'Treatment',
-  h: 'HealthCare',
+  diagnostic: 'diagnostic',
+  finalDiagnostic: 'FinalDiagnostic',
+  management: 'Management',
+  questionsSequence: 'QuestionsSequence',
+  question: 'Question',
+  treatment: 'Treatment',
+  healthCare: 'HealthCare',
 };
 
 // Display answer format
@@ -24,10 +24,11 @@ export const displayFormats = {
   checkBox: 'CheckBox',
   input: 'Input',
   list: 'DropDownList',
+  formula: 'Formula',
 };
 
 // Value of answer accepted
-export const displayValues = {
+export const valueFormats = {
   array: 'Array',
   int: 'Integer',
   float: 'Float',
@@ -56,7 +57,7 @@ export const categories = {
   symptom: 'symptom',
   demographic: 'demographic',
   comorbidity: 'comorbidity',
-  chiefComplain: 'chief_complain',
+  chiefComplaint: 'chief_complaint',
   predefinedSyndrome: 'predefined_syndrome',
   triage: 'triage',
   vaccine: 'vaccine',
@@ -81,7 +82,7 @@ export const medicalCaseStatus = {
   consultation: 'consultation',
   waitingTest: 'waiting_test',
   test: 'test',
-  waitingDiagnosis: 'waiting_diagnosis',
-  diagnosis: 'diagnosis',
+  waitingDiagnostic: 'waiting_diagnostic',
+  final_diagnostic: 'final_diagnostic',
   close: 'close',
 };

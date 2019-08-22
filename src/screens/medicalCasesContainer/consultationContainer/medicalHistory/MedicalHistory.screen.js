@@ -22,7 +22,7 @@ export default class MedicalHistory extends React.Component<Props, State> {
     const { medicalCase } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(
-      categories.chiefComplain
+      categories.chiefComplaint
     );
 
     // TODO Will be implemented

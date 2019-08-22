@@ -53,7 +53,7 @@ export default class PatientSummary extends Component<Props, State> {
             onPress={() =>
               navigation.navigate('Summary', {
                 id: medicalCase.patient.id,
-                defaultTab: 0,
+                defaultTab: 1,
               })
             }
             style={styles.touchable}
@@ -71,7 +71,7 @@ export default class PatientSummary extends Component<Props, State> {
             onPress={() =>
               navigation.navigate('Summary', {
                 id: medicalCase.patient.id,
-                defaultTab: 1,
+                defaultTab: 0,
               })
             }
             style={styles.touchable}
