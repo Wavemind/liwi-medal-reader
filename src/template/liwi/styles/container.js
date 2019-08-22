@@ -31,6 +31,7 @@ export default {
       flex: 1,
       flexGrow: 1,
     },
+
     '.flex-child': {
       flexGrow: 1, // not used actually
     },
@@ -45,6 +46,7 @@ export default {
     },
 
     '.padding-auto': { padding: 20 },
+
     '.flex-center': {
       flexDirection: 'column',
       justifyContent: 'space-around',

@@ -144,14 +144,7 @@ export default class Boolean extends React.Component<Props, State> {
               style={styleImage}
             />
             <Text center>{label}</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                padding: 0,
-                margin: 0,
-              }}
-            >
+            <View>
               <LeftButton
                 active={answer === idYes}
                 onPress={() => this._handleClick(idYes)}

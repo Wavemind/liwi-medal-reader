@@ -129,8 +129,6 @@ export const LeftButton = styled(RNTouchableOpacity).attrs({})`
 
 export const ViewQuestion = styled(RNView).attrs({})`
   flex-direction: row;
-  border-radius: 5px;
-  border-width: 0.5px;
   padding: 10px;
   margin-right: ${({ marginRight }) => {
     return marginRight;
@@ -138,8 +136,6 @@ export const ViewQuestion = styled(RNView).attrs({})`
   margin-left: ${({ marginLeft }) => {
     return marginLeft;
   }};
-  border-color: ${liwiColors.blackColor};
-  background-color: ${liwiColors.lighterGreyColor};
   flex: ${({ flex }) => {
     return flex;
   }};
