@@ -46,6 +46,10 @@ i18n
           back: 'Back',
           next: 'Next',
         },
+        question: {
+          yes: 'Yes',
+          no: 'No',
+        },
         menu: {
           triage: 'Triage',
           assessment: 'First look assessment',
@@ -69,8 +73,8 @@ i18n
           consultation: 'Consultation',
           waiting_test: 'Waiting for test',
           test: 'Test',
-          waiting_diagnosis: 'Wait for diagnosis',
-          diagnosis: 'Diagnosis',
+          waiting_final_diagnostic: 'Wait for diagnosis',
+          final_diagnostic: 'Diagnosis',
           close: 'Close',
         },
         settings: {
@@ -105,23 +109,23 @@ i18n
           waiting_triage: 'Triage',
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
-          waiting_diagnosis: 'Diagnosis',
+          waiting_diagnostics: 'Diagnosis',
           case_in_progress: 'a case is open'
         },
-        medical_case_list: {
-          all: 'All',
-          waiting: 'Patients waiting for',
-          search: 'Search',
-          sort: 'Sort by',
-          name: 'Name',
-          status: 'Status',
-          no_medical_cases: 'There are no medical cases in progress',
-          not_found: 'No match found',
-          waiting_triage: 'Triage',
-          waiting_consultation: 'Consultation',
-          waiting_test: 'Test',
-          waiting_diagnosis: 'Diagnosis',
-        },
+      medical_case_list: {
+        all: 'All',
+        waiting: 'Patients waiting for',
+        search: 'Search',
+        sort: 'Sort by',
+        name: 'Name',
+        status: 'Status',
+        no_medical_cases: 'There are no medical cases in progress',
+        not_found: 'No match found',
+        waiting_triage: 'Triage',
+        waiting_consultation: 'Consultation',
+        waiting_test: 'Test',
+        waiting_diagnosis: 'Diagnosis',
+      },
         patient: {
           first_name: 'First name',
           last_name: 'Last name',
@@ -205,8 +209,7 @@ i18n
         notifications: {
           empty_code: 'Your code is empty, please write it',
           invalid_code: ' Your local code is invalid, please try again',
-          session_does_not_exist:
-            'Your local user does not exist, please try again',
+          session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: 'You don\'t have internet connection',
         },
@@ -218,10 +221,8 @@ i18n
         },
         notifications: {
           empty_code: 'Votre code est vide, veuillez l\'écrire',
-          invalid_code:
-            ' Votre code local n\'est pas valide, veuillez réessayer.',
-          session_does_not_exist:
-            'Cet utilisateur local n\'existe pas, veuillez réessayer.',
+          invalid_code: 'Votre code local n\'est pas valide, veuillez réessayer.',
+          session_does_not_exist: 'Cet utilisateur local n\'existe pas, veuillez réessayer.',
           session_already_exist: 'La session existe déjà',
           no_internet: 'Vous n\'avez pas de connexion internet',
         },

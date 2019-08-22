@@ -7,7 +7,7 @@ export const algo = {
   author: 'Domatchief',
   created_at: '2019-06-11T17:08:08.232+02:00',
   updated_at: '2019-06-11T17:08:08.232+02:00',
-  diseases: {
+  diagnostics: {
     '4': {
       id: 4,
       reference: 'DD7',

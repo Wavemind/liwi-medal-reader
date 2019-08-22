@@ -26,12 +26,12 @@ export default class Boolean extends React.Component<Props, State> {
   }
 
   _handleClick = (answer) => {
-    const { question, setQuestion } = this.props;
+    const { question, setAnswer } = this.props;
     let newAnswer = Number(answer);
 
-    // Break if chiefcomplain
+    // Break if chiefComplaint
     if (
-      question.category === categories.chiefComplain &&
+      question.category === categories.chiefComplaint &&
       answer === question.answer
     ) {
       return null;
@@ -41,14 +41,15 @@ export default class Boolean extends React.Component<Props, State> {
       newAnswer = null;
     }
 
-    setQuestion(question.id, newAnswer);
+    setAnswer(question.id, newAnswer);
   };
 
   render = () => {
     const {
+      app: { t },
       question: { answer, answers, label, category },
       widthView,
-      index,
+      index
     } = this.props;
 
     // Define the id for the answer
@@ -70,7 +71,7 @@ export default class Boolean extends React.Component<Props, State> {
     // By the type of boolean node
     switch (category) {
       // If this is a chief complain
-      case categories.chiefComplain:
+      case categories.chiefComplaint:
         // onlayout isn't set
         if (widthView === 0) {
           RenderJsx = () => null;
@@ -140,7 +141,7 @@ export default class Boolean extends React.Component<Props, State> {
             light
           >
             <Image
-              source={require('../../../../../assets/images/home.png')}
+              source={require('../../../../../assets/images/lung.png')}
               style={styleImage}
             />
             <Text center>{label}</Text>
@@ -150,7 +151,7 @@ export default class Boolean extends React.Component<Props, State> {
                 onPress={() => this._handleClick(idYes)}
               >
                 <Text white={answer === idYes} center>
-                  Oui
+                  {t('question:yes')}
                 </Text>
               </LeftButton>
 
@@ -159,7 +160,7 @@ export default class Boolean extends React.Component<Props, State> {
                 active={answer === idNo}
               >
                 <Text center white={answer === idNo}>
-                  Non
+                  {t('question:no')}
                 </Text>
               </RightButton>
             </View>
@@ -175,7 +176,7 @@ export default class Boolean extends React.Component<Props, State> {
               onPress={() => this._handleClick(idYes)}
             >
               <Text white={answer === idYes} center>
-                Oui
+                {t('question:yes')}
               </Text>
             </LeftButton>
             <RightButton
@@ -183,7 +184,7 @@ export default class Boolean extends React.Component<Props, State> {
               active={answer === idNo}
             >
               <Text center white={answer === idNo}>
-                Non
+                {t('question:no')}
               </Text>
             </RightButton>
           </View>

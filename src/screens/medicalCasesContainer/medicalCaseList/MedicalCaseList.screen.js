@@ -183,7 +183,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
+    const { medicalCase } = this.props;
+
     const { orderedFilteredMedicalCases, medicalCases } = this.state;
+    // TODO create a single composant for medicalList Unique in all app !
 
      return medicalCases.length > 0 ? (
       [
@@ -193,10 +196,12 @@ export default class MedicalCaseList extends React.Component<Props, State> {
               <ListItem
                 rounded
                 block
+                style={{
+                  backgroundColor: medicalCase.id === medicalCaseItem.id ? '#ee0006' : '#ffffff'
+                }}
                 key={medicalCaseItem.id + '_medical_case_list'}
                 spaced
                 onPress={async () => {
-                  const { medicalCase } = this.props;
                   if (medicalCase.id !== medicalCaseItem.id) {
                     await this.selectMedicalCase(medicalCaseItem);
                   }

@@ -11,22 +11,24 @@ export class FinalDiagnosticModel extends NodeModel
     super(props);
 
     const {
-      name,
-      disease_id,
+      label,
+      diagnostic_id,
       treatments,
       managements,
       conditions,
       top_conditions,
-      excluding_diagnosis,
+      excluding_final_diagnostics = null,
+      excluded_by_final_diagnostics = null,
     } = props;
 
-    this.name = name;
-    this.disease_id = disease_id;
+    this.label = label;
+    this.diagnostic_id = diagnostic_id;
     this.treatments = treatments;
     this.managements = managements;
     this.conditions = conditions;
     this.top_conditions = top_conditions;
-    this.excluding_diagnosis = excluding_diagnosis;
+    this.excluding_final_diagnostics = excluding_final_diagnostics;
+    this.excluded_by_final_diagnostics = excluded_by_final_diagnostics;
 
     this.requirement = new RequirementNodeModel({ ...props });
   }

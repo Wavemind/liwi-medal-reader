@@ -3,11 +3,11 @@ import { Action, ReducerClass } from 'reducer-class';
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
 import findKey from 'lodash/findKey';
-import { setMedicalCase } from '../../../src/engine/api/LocalStorage';
+import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
-import { displayFormats } from '../../constants';
-import { DiseasesModel } from '../../engine/models/Diseases.model';
+import { nodesType, valueFormats } from '../../constants';
+import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
 
@@ -28,7 +28,6 @@ class MedicalCaseReducer extends ReducerClass {
   // The state is a MedicalCase
   // Instance it
   _instanceMedicalCase(state) {
-
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
     state.vitalSigns = new VitalSignsModel(state.vitalSigns);
@@ -38,10 +37,10 @@ class MedicalCaseReducer extends ReducerClass {
 
   // For the diseases we instance it
   _generateInstanceDiseasesNode(state) {
-    Object.keys(state.diseases).forEach(
+    Object.keys(state.diagnostics).forEach(
       (i) =>
-        (state.diseases[i] = new DiseasesModel({
-          ...state.diseases[i],
+        (state.diagnostics[i] = new DiagnosticModel({
+          ...state.diagnostics[i],
         }))
     );
 
@@ -61,39 +60,37 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
-  @Action(actions.MC_CONDITION_VALUE_QS_CHANGE)
-  conditionValuePsChange(state, action) {
-    const { nodeId, psId, value } = action.payload;
+  /**
+   * Update condition value of diagnostic or questions sequence for a question or a questions sequence
+   *
+   * @trigger When a condition value must be change
+   * @payload nodeId: Question or QuestionsSequence
+   * @payload callerId: Diagnostic or QuestionsSequence
+   * @payload value: new condition value
+   * @payload type: define if it's a diagnostic or a question sequence
+   */
+  @Action(actions.UPDATE_CONDITION_VALUE)
+  updateConditionValue(state, action) {
+    const { nodeId, callerId, value, type } = action.payload;
 
-    const ps = state.nodes[nodeId].qs;
-
-    let changeConditionValue = find(ps, (d) => d.id === psId);
-    changeConditionValue.conditionValue = value;
-
-    state.nodes[nodeId] = this._instanceChild({
+    let caller;
+    let newNode = {
       ...state.nodes[nodeId],
-      qs: ps,
-    });
-
-    return {
-      ...state,
-      nodes: new NodesModel(state.nodes),
     };
-  }
 
-  @Action(actions.MC_CONDITION_VALUE_DISEASES_CHANGE)
-  conditionValueDiseases(state, action) {
-    const { nodeId, diseaseId, value } = action.payload;
+    switch (type) {
+      case nodesType.diagnostic:
+        caller = newNode.dd;
+        break;
+      case nodesType.questionsSequence:
+        caller = newNode.qs;
+        break;
+    }
 
-    const dd = state.nodes[nodeId].dd;
-
-    let changeConditionValue = find(dd, (d) => d.id === diseaseId);
+    let changeConditionValue = find(caller, (d) => d.id === callerId);
     changeConditionValue.conditionValue = value;
 
-    state.nodes[nodeId] = state.nodes._instanceChild({
-      ...state.nodes[nodeId],
-      dd: dd,
-    });
+    state.nodes[nodeId] = state.nodes.instantiateNode({ ...newNode });
 
     return {
       ...state,
@@ -105,7 +102,7 @@ class MedicalCaseReducer extends ReducerClass {
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
 
-    state.nodes[indexPs] = state.nodes._instanceChild({
+    state.nodes[indexPs] = state.nodes.instantiateNode({
       ...state.nodes[indexPs],
       answer: answer,
     });
@@ -129,73 +126,56 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
-  @Action(actions.MC_QUESTION_SET)
-  questionSet(state, action) {
+  /**
+   * Sets / calculate the answer in the state
+   *
+   * @trigger When a question is answered
+   * @payload index : Question id
+   * @payload value : Answer value
+   *                    if numeric question setted value
+   *                    if other question answer id
+   */
+  @Action(actions.SET_ANSWER)
+  setAnswer(state, action) {
     const { index, value } = action.payload;
 
     let answer;
+    switch (state.nodes[index].value_format) {
+      case valueFormats.int:
+      case valueFormats.float:
+        answer = findKey(state.nodes[index].answers, (answerCondition) => {
+          switch (answerCondition.operator) {
+            case 'more_or_equal':
+              return value >= Number(answerCondition.value);
 
-    switch (state.nodes[index].display_format) {
-      case displayFormats.input:
-        if (value.length > 0) {
-          answer = findKey(state.nodes[index].answers, (answerCondition) => {
-            // TODO reduce the case when backend is ready
-            switch (answerCondition.operator) {
-              case 'more_or_equal':
-                return value >= Number(answerCondition.value);
+            case 'less':
+              return value < Number(answerCondition.value);
 
-              case 'less':
-                return value < Number(answerCondition.value);
-
-              case 'more_or_equal_and_less':
-                return (
-                  value >= Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case 'between':
-                return (
-                  value >= Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case 'more_and_less':
-                return (
-                  value > Number(answerCondition.value.split(',')[0]) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-
-              case 'more_and_less_or_equal':
-                return (
-                  value > Number(answerCondition.value.split(',')[0]) &&
-                  value <= Number(answerCondition.value.split(',')[1])
-                );
-            }
-          });
-        } else {
-          answer = null;
-        }
-
+            case 'between':
+              return (
+                value >= Number(answerCondition.value.split(',')[0]) &&
+                value < Number(answerCondition.value.split(',')[1])
+              );
+          }
+        });
         break;
-
-      case displayFormats.radioButton:
+      case valueFormats.bool:
+      case valueFormats.array:
         answer = value;
         break;
-      case displayFormats.list:
-        answer = value;
-        break;
-      case undefined:
+      default:
+        // eslint-disable-next-line no-console
+        console.log(
+          '%c --- DANGER --- ',
+          'background: #FF0000; color: #F6F3ED; padding: 5px',
+          `Unhandled question format ${state.nodes[index].display_format}`,
+          state.nodes[index]
+        );
         answer = value;
         break;
     }
-
-    // workaround
-    // TODO why sometimes there are string number ? lodash ?
-    if (answer !== 'null' && answer !== null) {
-      answer = Number(answer);
-    }
-
-    state.nodes[index] = state.nodes._instanceChild({
+    // Instantiate new object with answered question with new answer value
+    state.nodes[index] = state.nodes.instantiateNode({
       ...state.nodes[index],
       answer: answer,
       value: value,
@@ -225,7 +205,7 @@ class MedicalCaseReducer extends ReducerClass {
     const { medicalCase } = action.payload;
 
     if (state !== {} && medicalCase.id !== state.id) {
-      setMedicalCase(state);
+      storeMedicalCase(state);
     }
 
     let modelsMedicalCase = this._instanceMedicalCase(medicalCase);

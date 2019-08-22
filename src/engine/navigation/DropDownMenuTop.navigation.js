@@ -50,6 +50,7 @@ class DropDownMenu extends React.Component<Props, State> {
         (o) => o.value === currentRoute.params.dropDownMenu
       );
     }
+
     return (
       <View flex-center>
         <CustomPicker

@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import Boolean from './Boolean';
-import { setQuestion } from '../../../../../frontend_service/actions/creators.actions';
+import { setAnswer } from '../../../../../frontend_service/actions/creators.actions';
+import { withSessions } from '../../../../engine/contexts/Sessions.context';
+import { withApplication } from '../../../../engine/contexts/Application.context';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
@@ -8,10 +10,10 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setQuestion: (index, value) => dispatch(setQuestion(index, value)),
+    setAnswer: (index, value) => dispatch(setAnswer(index, value)),
   };
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Boolean);
+)(withSessions(withApplication(Boolean)));

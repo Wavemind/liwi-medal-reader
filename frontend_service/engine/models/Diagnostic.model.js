@@ -1,0 +1,43 @@
+// @flow
+
+import { InstanceModel } from './Instance.model';
+import { FinalDiagnosticModel } from './FinalDiagnostic.model';
+
+interface DiagnosticInterface {
+  final_diagnostics: Object;
+  differential: Object;
+  id: number;
+  label: string;
+  instances: Object;
+  reference: string;
+  type: string;
+}
+
+export class DiagnosticModel implements DiagnosticInterface {
+  constructor(props) {
+    const { id, final_diagnostics, label, differential, reference, instances } = props;
+
+    this.id = id;
+    this.final_diagnostics = final_diagnostics;
+    this.label = label;
+    this.differential = differential;
+    this.reference = reference;
+    this.instances = instances;
+    this.type = 'diagnostic';
+
+    this.instanceLink();
+    this.instanceFinalDiagnostic();
+  }
+
+  instanceLink() {
+    Object.keys(this.instances).map((id) => {
+      this.instances[id] = new InstanceModel({ ...this.instances[id] });
+    });
+  }
+
+  instanceFinalDiagnostic() {
+    Object.keys(this.final_diagnostics).map((id) => {
+      this.final_diagnostics[id] = new FinalDiagnosticModel({ ...this.final_diagnostics[id] });
+    });
+  }
+}

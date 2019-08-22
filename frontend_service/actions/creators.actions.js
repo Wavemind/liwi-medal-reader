@@ -1,13 +1,8 @@
 import { actions } from './types.actions';
 
-export const conditionValueDiseasesChange = (nodeId, diseaseId, value) => ({
-  type: actions.MC_CONDITION_VALUE_DISEASES_CHANGE,
-  payload: { nodeId, diseaseId, value },
-});
-
-export const conditionValueQSChange = (nodeId, psId, value) => ({
-  type: actions.MC_CONDITION_VALUE_QS_CHANGE,
-  payload: { nodeId, psId, value },
+export const updateConditionValue = (nodeId, callerId, value, type) => ({
+  type: actions.UPDATE_CONDITION_VALUE,
+  payload: { nodeId, callerId, value, type },
 });
 
 export const setMedicalCase = (medicalCase) => ({
@@ -22,24 +17,27 @@ export const nextBatch = () => ({
   payload: {},
 });
 
-export const setQuestion = (index, value) => ({
-  type: actions.MC_QUESTION_SET,
+export const setAnswer = (index, value) => ({
+  type: actions.SET_ANSWER,
   payload: {
     index,
     value,
   },
 });
 
-export const dispatchNodeAction = (
-  indexNode,
-  indexChild,
-  typeChild = null
-) => ({
-  type: actions.MC_NODE_CHILDREN,
+export const dispatchNodeAction = (nodeId, callerId, callerType) => ({
+  type: actions.HANDLE_NODE_CHANGED,
   payload: {
-    indexNode,
-    indexChild,
-    typeChild,
+    nodeId,
+    callerId,
+    callerType,
+  },
+});
+
+export const dispatchFormulaNodeAction = (nodeId) => ({
+  type: actions.DISPATCH_FORMULA_NODE_ACTION,
+  payload: {
+    nodeId,
   },
 });
 
@@ -64,11 +62,11 @@ export const setVitalSigns = (index, value) => ({
   payload: { index: index, value: value },
 });
 
-export const diseasesChildren = (indexDD, indexChild) => ({
-  type: actions.MC_DISEASES_CHILDREN,
+export const dispatchCondition = (diagnosticId, nodeId) => ({
+  type: actions.DISPATCH_CONDITION,
   payload: {
-    indexDD,
-    indexChild,
+    diagnosticId,
+    nodeId,
   },
 });
 
@@ -80,18 +78,24 @@ export const setPsAnswer = (indexPs, answer) => ({
   },
 });
 
-export const questionsSequencesChildren = (indexPS, indexChild) => ({
-  type: actions.MC_QUESTIONS_SEQUENCES_CHILDREN,
+export const dispatchQuestionsSequenceAction = (
+  questionsSequenceId,
+  callerId
+) => ({
+  type: actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION,
   payload: {
-    indexPS,
-    indexChild,
+    questionsSequenceId,
+    callerId,
   },
 });
 
-export const diagnosisChildren = (indexDD, indexDiagnosis) => ({
-  type: actions.MC_DIAGNOSIS_CHILDREN,
+export const dispatchFinalDiagnosticAction = (
+  diagnosticId,
+  finalDiagnosticId
+) => ({
+  type: actions.DISPATCH_FINAL_DIAGNOSTIC_ACTION,
   payload: {
-    indexDD,
-    indexDiagnosis,
+    diagnosticId,
+    finalDiagnosticId,
   },
 });
