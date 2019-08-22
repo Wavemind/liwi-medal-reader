@@ -34,7 +34,7 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Vital Signes',
+          vital: 'Vital Signs',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
           chief: 'Chief complaints',
@@ -233,7 +233,7 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Vital Signes',
+          vital: 'Vital Signs',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
           chief: 'Chief complaints',

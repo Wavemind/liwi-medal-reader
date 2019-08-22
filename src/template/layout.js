@@ -114,11 +114,8 @@ export const PaddedView = styled(LView).attrs({})``;
 
 export const LeftButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
   border-width: 0.5px;
   padding: 13px;
-  border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
     if (active) {
       return liwiColors.greenColor;
@@ -143,9 +140,8 @@ export const ViewQuestion = styled(RNView).attrs({})`
 
 export const RightButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
   border-width: 0.5px;
+  border-left-width: 0;
   padding: 13px;
   border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
