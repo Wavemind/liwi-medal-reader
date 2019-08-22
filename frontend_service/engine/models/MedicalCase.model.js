@@ -13,6 +13,7 @@ import {
   setItemFromArray,
 } from '../../../src/engine/api/LocalStorage';
 import {
+  generateExcludedId,
   generateInitialBatch,
   setInitialCounter,
 } from '../../algorithm/algoTreeDiagnosis';
@@ -48,6 +49,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       diagnostics: algorithmUsed.diagnostics,
       vitalSigns: new VitalSignsModel(),
     };
+
+    generateExcludedId(newMedicalCase);
 
     // initial batch waiting on final workflow
     generateInitialBatch(newMedicalCase);

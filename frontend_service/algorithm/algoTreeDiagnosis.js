@@ -1,5 +1,6 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
+import pickBy from 'lodash/pickBy';
 import { nodesType, priorities } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
 
@@ -22,6 +23,43 @@ export const generateInitialBatch = (algorithmJson) => {
     }
   });
   return algorithmJson; // return is useless, we modifiy ref to caller
+};
+
+export const generateExcludedId = (medicalCase) => {
+  console.log(medicalCase);
+
+  console.time();
+
+  for (let index in medicalCase.nodes) {
+    let item = medicalCase.nodes[index];
+    if (
+      item.type === nodesType.finalDiagnostic &&
+      item.excluding_final_diagnostics !== null
+    ) {
+      medicalCase.nodes[
+        item.excluding_final_diagnostics
+      ].excluded_by_final_diagnostics = item.id;
+    }
+  }
+  console.timeEnd();
+
+  console.time();
+
+  Object.keys(medicalCase.nodes).map((key) => {
+    let item = medicalCase.nodes[key];
+    if (
+      item.type === nodesType.finalDiagnostic &&
+      item.excluding_final_diagnostics !== null
+    ) {
+      medicalCase.nodes[
+        item.excluding_final_diagnostics
+      ].excluded_by_final_diagnostics = item.id;
+    }
+  });
+
+  console.timeEnd();
+
+  // filter array ->
 };
 
 // @param [Json] algorithmJsonMedicalCase
@@ -283,6 +321,8 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
 
 // TODO: IN PROGRESS
 export const calculateCondition = (state$, node) => {
+  // Tricks for pass differents sources of state$
+  if (state$.value === undefined) state$.value = state$;
 
   // If this is a top parent node
   if (node.top_conditions.length === 0) {

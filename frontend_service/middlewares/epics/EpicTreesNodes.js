@@ -43,7 +43,7 @@ export const epicCatchAnswer = (action$, state$) =>
       );
 
       // eslint-disable-next-line no-console
-      console.log({ STATE: state$.value });
+      console.log({ STATE: state$.value }, index);
 
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
@@ -58,10 +58,13 @@ export const epicCatchAnswer = (action$, state$) =>
         )
       );
 
-      // TODO maybe we have to make formula here, not necessary dispatch action, what think others ?
-      relatedFormulaNodes.map((formulaNode) =>
-        arrayActions.push(dispatchFormulaNodeAction(formulaNode.id))
-      );
+      // IF this is a question we check formula
+      if (currentNode.type === nodesType.question) {
+        // TODO maybe we have to make formula here, not necessary dispatch action, what think others ?
+        relatedFormulaNodes.map((formulaNode) =>
+          arrayActions.push(dispatchFormulaNodeAction(formulaNode.id))
+        );
+      }
 
       relatedQuestionsSequence.map((questionsSequence) =>
         arrayActions.push(
@@ -145,7 +148,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
             'background: #FF0000; color: #F6F3ED; padding: 5px',
             'nodes type ',
             caller.type,
-            'doesn\'t exist'
+            "doesn't exist"
           );
           return [];
       }
@@ -165,6 +168,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       let actions = [];
       let isReady;
 
+      // Can we calculate the QS ?
       isReady = getQuestionsSequenceStatus(
         state$,
         currentQuestionsSequence,
@@ -172,6 +176,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       );
       let questionsSequenceCondition = null;
 
+      // If ready we calculate condition of the QS
       if (isReady) {
         questionsSequenceCondition = calculateCondition(
           state$,
@@ -190,8 +195,8 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
             Object.keys(currentQuestionsSequence.answers)[1]
           ].id;
       } else if (questionsSequenceCondition === null) {
+        // The QS is still open
         // TODO if top parent question is reset to null, reset children question condition value to false
-        // u = getQuestionsSequenceStatus(state$, currentQuestionsSequence, actions);
       }
 
       // eslint-disable-next-line no-console
