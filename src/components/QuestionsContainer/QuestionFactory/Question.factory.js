@@ -95,20 +95,13 @@ export default class Question extends React.PureComponent<Props, State> {
 
     // Construct generic Component for the question
     return (
-      <ListItem block noBorder key={question.id + '_item'}>
-        <LabelQuestion
-          key={question.id + '_counter'}
-          label={question.counter}
-          flex={0.05}
-          marginLeft={0}
-          marginRight={20}
-        />
+      <ListItem style={styles.condensed} noBorder key={question.id + '_item'}>
         <LabelQuestion
           key={question.id + '_label'}
-          label={question.label}
+          label={question.counter + 'x - ' + question.label}
           flex={0.65}
           marginLeft={0}
-          marginRight={20}
+          marginRight={10}
         />
         <WrapperQuestion
           key={question.id + '_answer'}

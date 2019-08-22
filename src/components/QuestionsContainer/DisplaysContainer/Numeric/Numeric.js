@@ -55,6 +55,7 @@ export default class Numeric extends React.Component<Props, State> {
           <Input
             keyboardType={keyboardType}
             question
+            numeric
             defaultValue={String(question.value)}
             style={style}
             onFocus={this._focus}

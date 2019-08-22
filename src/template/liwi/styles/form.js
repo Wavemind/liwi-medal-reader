@@ -21,13 +21,17 @@ export default {
       paddingLeft: 10,
     },
     '.question': {
-      borderColor: liwiColors.greyColor,
-      borderWidth: 1,
-      borderRadius: 5,
-      backgroundColor: liwiColors.lighterGreyColor,
+      backgroundColor: '#fff',
       width: '100%',
       flex: 1,
       margin: 0,
     },
+    '.numeric':{
+      textAlign: 'center',
+    },
+    '.boolean':{
+      textAlign: 'center',
+    }
+
   },
 };
