@@ -32,7 +32,7 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     const items = [];
 
-    for (const [index, value] of fd.entries()) {
+    for (const value of fd.entries()) {
       let condition = calculateCondition(medicalCase, value);
 
       let type;
@@ -64,8 +64,6 @@ export default class PatientProfile extends React.Component<Props, State> {
         </Text>
       );
     }
-
-    console.log(fd, nodes);
 
     return (
       <View>

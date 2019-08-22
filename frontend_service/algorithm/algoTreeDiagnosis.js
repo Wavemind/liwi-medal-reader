@@ -1,6 +1,5 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import pickBy from 'lodash/pickBy';
 import { nodesType, priorities } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
 
@@ -26,10 +25,6 @@ export const generateInitialBatch = (algorithmJson) => {
 };
 
 export const generateExcludedId = (medicalCase) => {
-  console.log(medicalCase);
-
-  console.time();
-
   for (let index in medicalCase.nodes) {
     let item = medicalCase.nodes[index];
     if (
@@ -41,9 +36,6 @@ export const generateExcludedId = (medicalCase) => {
       ].excluded_by_final_diagnostics = item.id;
     }
   }
-  console.timeEnd();
-
-  console.time();
 
   Object.keys(medicalCase.nodes).map((key) => {
     let item = medicalCase.nodes[key];
@@ -56,8 +48,6 @@ export const generateExcludedId = (medicalCase) => {
       ].excluded_by_final_diagnostics = item.id;
     }
   });
-
-  console.timeEnd();
 
   // filter array ->
 };
