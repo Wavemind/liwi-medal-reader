@@ -143,6 +143,13 @@ export default {
       justifyContent: 'flex-end',
       margin: 0,
       padding: 0,
+    },
+    '.marginTop': {
+      marginTop:100,
+    },
+    '.home':{
+      backgroundColor: liwiColors.lightGreyColor,
+      border:0,
     }
   },
 };

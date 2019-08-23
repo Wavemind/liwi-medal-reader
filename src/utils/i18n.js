@@ -198,7 +198,7 @@ i18n
           patient_profile: 'Patient profile',
           case_in_progress: 'Case in progress',
           synchronize: 'Synchronize',
-          patient_add: 'Patient add',
+          patient_add: 'New patient',
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
