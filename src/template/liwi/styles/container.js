@@ -130,5 +130,19 @@ export default {
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
+
+    '.chiefComplaints': {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+
+    '.bottomInput': {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      margin: 0,
+      padding: 0,
+    }
   },
 };
