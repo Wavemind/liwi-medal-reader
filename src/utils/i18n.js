@@ -47,6 +47,7 @@ i18n
           edit: 'Edit',
           back: 'Back',
           next: 'Next',
+          next_stage: 'Next stage'
         },
         question: {
           yes: 'Yes',

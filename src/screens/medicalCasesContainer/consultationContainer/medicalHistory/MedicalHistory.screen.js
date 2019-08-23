@@ -39,7 +39,7 @@ export default class MedicalHistory extends React.Component<Props, State> {
     retainedChiefComplaints.map((chiefComplaint) => {
       chiefComplaintsAccordion.push({
         title: chiefComplaint.label,
-        content: <Questions questions={filteredQuestions}/>
+        content: <Questions questions={filteredQuestions} />
         ,
       });
     });
