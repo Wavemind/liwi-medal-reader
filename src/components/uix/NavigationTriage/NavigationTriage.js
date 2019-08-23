@@ -1,10 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Text, View } from 'native-base';
+import { Button, Icon, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
+import { styles } from '../../../engine/navigation/drawer/Drawer.style';
 
 type Props = NavigationScreenProps & {
   questionsInScreen: Array,
@@ -107,21 +108,23 @@ export default class NavigationTriage extends React.Component<Props, State> {
     } = this.props;
 
     return (
-      <View bottom-view columns>
+      <View bottom-view columns marginTop>
         <Button
           light
           split
           disabled={beginNavBool}
           onPress={() => navigation.navigate(prevRoute.key)}
         >
+          <Icon style={styles.medicalCaseNavigationIcon} dark type="AntDesign" name="left" />
           <Text>{t('form:back')}</Text>
         </Button>
-        <Button light split onPress={this.nextScreen}>
+        <Button success split onPress={this.nextScreen}>
           {!endNavBool ? (
             <Text>{t('form:next')}</Text>
           ) : (
             <Text>{t('form:next_stage')}</Text>
           )}
+          <Icon style={styles.rightMedicalCaseNavigationIcon} dark type="AntDesign" name="right" />
         </Button>
       </View>
     );

@@ -60,6 +60,12 @@ export const styles = StyleSheet.create({
   icon: {
     fontSize: 40,
   },
+  medicalCaseNavigationIcon: {
+    fontSize: 28,
+  },
+  rightMedicalCaseNavigationIcon: {
+    color: liwiColors.whiteColor,
+  },
   columns: {
     flex: 1,
     flexDirection: 'row',

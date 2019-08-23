@@ -12,7 +12,7 @@ export const liwiColors = {
   greyColor: '#c4c4c4',
   darkGreyColor: '#a9a9a9',
   darkerGreyColor: '#757575',
-  greenColor: '#37b428',
+  greenColor: '#4CAF50',
 };
 export const sessionsDuration = 30; // in minutes
 

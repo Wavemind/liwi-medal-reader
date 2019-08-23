@@ -182,14 +182,15 @@ const HomeWithModal = createStackNavigator(
     mode: 'modal',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: '#d0d0d0',
+      backgroundColor: 'transparent',
+      opacity: 1,
     },
     transparentCard: true,
     transitionConfig: () => ({
       containerStyle: {
         backgroundColor: 'transparent',
       },
-    }),
+    })
   }
 );
 
