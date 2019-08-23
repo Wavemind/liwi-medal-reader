@@ -9,8 +9,10 @@ const languageDetector = {
     const deviceLocale = DeviceInfo.getDeviceLocale();
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => {
+  },
+  cacheUserLanguage: () => {
+  },
 };
 
 i18n
@@ -110,22 +112,22 @@ i18n
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
           waiting_diagnostics: 'Diagnosis',
-          case_in_progress: 'a case is open'
+          case_in_progress: 'a case is open',
         },
-      medical_case_list: {
-        all: 'All',
-        waiting: 'Patients waiting for',
-        search: 'Search',
-        sort: 'Sort by',
-        name: 'Name',
-        status: 'Status',
-        no_medical_cases: 'There are no medical cases in progress',
-        not_found: 'No match found',
-        waiting_triage: 'Triage',
-        waiting_consultation: 'Consultation',
-        waiting_test: 'Test',
-        waiting_diagnosis: 'Diagnosis',
-      },
+        medical_case_list: {
+          all: 'All',
+          waiting: 'Patients waiting for',
+          search: 'Search',
+          sort: 'Sort by',
+          name: 'Name',
+          status: 'Status',
+          no_medical_cases: 'There are no medical cases in progress',
+          not_found: 'No match found',
+          waiting_triage: 'Triage',
+          waiting_consultation: 'Consultation',
+          waiting_test: 'Test',
+          waiting_diagnosis: 'Diagnosis',
+        },
         patient: {
           first_name: 'First name',
           last_name: 'Last name',
@@ -212,6 +214,7 @@ i18n
           session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: 'You don\'t have internet connection',
+          algorithm_updated: 'Your algorithm has been updated'
         },
       },
       fr: {

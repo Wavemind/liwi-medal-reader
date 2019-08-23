@@ -9,6 +9,7 @@ import {
   getSession,
   setItem,
 } from '../../src/engine/api/LocalStorage';
+import i18n from '../../src/utils/i18n';
 
 // @params [String] params, [Integer] userId
 // @return [Json] response from server
@@ -128,7 +129,7 @@ export const fetchAlgorithms = async (userId) => {
         localAlgorithms.push(serverAlgorithm);
       }
 
-      Toaster('Algo Updated', { type: 'success' });
+      Toaster(i18n.t('notifications:algorithm_updated'), { type: 'success' });
       await setItem('algorithms', localAlgorithms);
       resolve('finish');
     }
