@@ -8,7 +8,7 @@ export default {
       paddingLeft: 10,
       borderWidth: 1,
       borderColor: liwiColors.blackColor,
-    }
+    },
   },
   'NativeBase.Input': {
     '.login-input': {},
@@ -19,6 +19,8 @@ export default {
       color: liwiColors.blackColor,
       paddingTop: 10,
       paddingLeft: 10,
+      borderBottom: liwiColors.blackColor,
+      borderBottomWidth: 0.5,
     },
     '.question': {
       backgroundColor: '#fff',
@@ -26,12 +28,11 @@ export default {
       flex: 1,
       margin: 0,
     },
-    '.numeric':{
+    '.numeric': {
       textAlign: 'center',
     },
-    '.boolean':{
+    '.boolean': {
       textAlign: 'center',
-    }
-
+    },
   },
 };
