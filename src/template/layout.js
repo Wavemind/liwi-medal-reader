@@ -155,29 +155,25 @@ export const RightButton = styled(RNTouchableOpacity).attrs({})`
 export const LiwiTabStyle = StyleSheet.create({
   tabStyle: {
     borderColor: liwiColors.darkGreyColor,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
     borderWidth: 1,
-    borderRadius: 10,
   },
 
   activeTextStyle: {
-    color: liwiColors.redColor,
+    color: liwiColors.blackColor,
+    fontSize: 20,
   },
 
   textStyle: {
     color: liwiColors.blackColor,
+    fontSize: 20,
   },
 
   tabBarUnderlineStyle: {
-    backgroundColor: liwiColors.redColor,
+    backgroundColor: liwiColors.darkGreyColor,
   },
 
   activeTabStyle: {
-    borderColor: liwiColors.redColor,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    borderColor: liwiColors.darkGreyColor,
     borderWidth: 1,
-    borderRadius: 10,
   },
 });

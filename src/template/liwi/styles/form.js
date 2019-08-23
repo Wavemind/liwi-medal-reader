@@ -19,7 +19,7 @@ export default {
       color: liwiColors.blackColor,
       paddingTop: 10,
       paddingLeft: 10,
-      borderBottom: liwiColors.blackColor,
+      borderBottomColor: liwiColors.blackColor,
       borderBottomWidth: 0.5,
     },
     '.question': {
