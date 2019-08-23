@@ -80,7 +80,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
   isNodeValid = () => {
     const { medicalCase, questionsInScreen } = this.props;
 
-    if (questionsInScreen.length === 0) {
+    if (questionsInScreen === 0) {
       return true;
     }
 
@@ -120,7 +120,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
           {!endNavBool ? (
             <Text>{t('form:next')}</Text>
           ) : (
-            <Text>Next stage MedicalHistory</Text>
+            <Text>{t('form:next_stage')}</Text>
           )}
         </Button>
       </View>
