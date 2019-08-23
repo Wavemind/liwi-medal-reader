@@ -34,7 +34,7 @@ export class NodesModel implements NodeInterface {
   }
 
 
-  /* filterByMultiple
+  /* multipleFilter
   * Params: filters<Array>
   * Format : filters = [
       { by: 'category', operator: 'equal', value: categories.symptom },
@@ -44,7 +44,7 @@ export class NodesModel implements NodeInterface {
   *
   *
   * */
-  filterByMultiple(filters) {
+  multipleFilter(filters) {
     this.filterByConditionValue();
     return _.filter(this, (node) => {
       let f = filters.every((filter) => {
