@@ -188,7 +188,7 @@ i18n
         navigation: {
           medical_case_list: 'Case in progress',
           home: 'Home',
-          patient_upsert: 'patient',
+          patient_upsert: 'Patient',
           patient_list: 'Patient list',
           patient_search: 'Search a patient',
           patient_profile: 'Patient profile',
