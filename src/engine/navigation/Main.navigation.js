@@ -185,7 +185,6 @@ const HomeWithModal = createStackNavigator(
       backgroundColor: 'transparent',
       opacity: 1,
     },
-    transparentCard: true,
     transitionConfig: () => ({
       containerStyle: {
         backgroundColor: 'transparent',
@@ -214,7 +213,7 @@ const MainNavigation = () => {
     { RootDrawer: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
-      drawerBackgroundColor: 'transparent',
+      overlayColor: 'rgba(38,38,38,0.8)',
       contentComponent: (props) => <Drawer {...props} />,
     }
   );
