@@ -8,7 +8,8 @@
     "doc": "react-doc-generator  w./src -o docs/documentation.md",
     "flow": "flow",
     "detox-android": "detox test -c android.emu.debug",
-    "detox-ios": "detox test -c ios.sim.debug"
+    "detox-ios": "detox test -c ios.sim.debug",
+    "postinstall": "npx jetify -r"
   },
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.2.0",
@@ -108,6 +109,7 @@
     "husky": "^3.0.0",
     "jest": "^24.8.0",
     "jest-styled-components": "^6.3.3",
+    "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "0.53.0",
     "mocha": "^6.1.4",
     "prettier": "^1.15.3",
