@@ -1,19 +1,22 @@
 import { StyleSheet } from 'react-native';
+import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   bottomMargin: {
     marginBottom: 20,
   },
-  image: {
-    width: 40,
-    height: 40,
-  },
-  summary: {
-    height: '95%',
-    width: '95%',
-    margin: 20,
+
+  patientInfo: {
     padding: 20,
-    backgroundColor: '#ffffff',
-    opacity: 0.9,
+    backgroundColor: liwiColors.lighterGreyColor,
+    marginBottom: 10,
   },
+
+  marginTop: {
+    marginTop: 20
+  },
+
+  spaceText: {
+    marginBottom: 40
+  }
 });
