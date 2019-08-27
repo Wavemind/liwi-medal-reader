@@ -1,7 +1,6 @@
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import pickBy from 'lodash/pickBy';
-import { nodesType, priorities } from '../constants';
+import { categories, nodesType, priorities } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
 
 // Create the first batch from json based on triage priority
@@ -26,9 +25,8 @@ export const generateInitialBatch = (algorithmJson) => {
 };
 
 export const generateExcludedId = (medicalCase) => {
-  console.log(medicalCase);
 
-  console.time();
+  // console.time();
 
   for (let index in medicalCase.nodes) {
     let item = medicalCase.nodes[index];
@@ -41,9 +39,9 @@ export const generateExcludedId = (medicalCase) => {
       ].excluded_by_final_diagnostics = item.id;
     }
   }
-  console.timeEnd();
+  // console.timeEnd();
 
-  console.time();
+  // console.time();
 
   Object.keys(medicalCase.nodes).map((key) => {
     let item = medicalCase.nodes[key];
@@ -57,7 +55,7 @@ export const generateExcludedId = (medicalCase) => {
     }
   });
 
-  console.timeEnd();
+  // console.timeEnd();
 
   // filter array ->
 };
@@ -329,9 +327,31 @@ export const calculateCondition = (state$, node) => {
     return true;
   }
 
+  let scoreTrue = 0;
+  let scoreFalse = 0;
+  let scoreNull = 0;
+  let scoreTotalPossible = 0;
+
   // Loop for top_conditions
   let conditionFinal = node.top_conditions.map((conditions) => {
-    return comparingTopConditions(state$, node, conditions);
+    let returnedBoolean = comparingTopConditions(state$, node, conditions);
+
+    if (node?.category === categories.scored) {
+      scoreTotalPossible = scoreTotalPossible + conditions.score;
+      switch (returnedBoolean) {
+        case true:
+          scoreTrue = scoreTrue + conditions.score;
+          break;
+        case false:
+          scoreFalse = scoreFalse + conditions.score;
+          break;
+        case null:
+          scoreNull = scoreNull + conditions.score;
+          break;
+      }
+    }
+
+    return returnedBoolean;
   });
   // reduce here
 
@@ -342,6 +362,16 @@ export const calculateCondition = (state$, node) => {
     },
     false
   );
+
+  // eslint-disable-next-line no-empty
+  if (node?.category === categories.scored) {
+    // If score true so this QS is true
+    if (scoreTrue >= node.min_score) return true;
+    // If there are more false condition than min necessary so we return false
+    if (scoreTotalPossible - scoreFalse >= node.min_score) return false;
+    // If there are more null condition than min necessary so we return null
+    if (scoreTotalPossible - scoreNull >= node.min_score) return null;
+  }
 
   return reduceConditionArrayBoolean;
 };
@@ -393,7 +423,7 @@ const checkOneCondition = (state$, child, wantedId, nodeId, conditionType) => {
   }
 };
 
-// TODO: IN PROGRESS
+// TODO: IN PROGRESS comment it
 const comparingTopConditions = (state$, child, conditions) => {
   const {
     first_id,

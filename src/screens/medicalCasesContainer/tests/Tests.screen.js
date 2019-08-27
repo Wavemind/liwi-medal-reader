@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native';
 import { Text, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { categories, stage } from '../../../../frontend_service/constants';
+import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 
 type Props = NavigationScreenProps & {};
@@ -22,8 +22,6 @@ export default function Tests(props: Props) {
     { by: 'category', operator: 'equal', value: categories.vaccine },
     { by: 'counter', operator: 'more', value: 0 },
   ]);
-
-  console.log(assessment_test, vaccine);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
