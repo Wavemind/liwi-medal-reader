@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Tab, Tabs, Text, View, Icon, Content } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { Image } from 'react-native';
+import moment from 'moment';
 import { styles } from './PatientSummary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
@@ -15,25 +15,25 @@ import { liwiColors } from '../../../utils/constants';
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class PatientProfile extends React.Component<Props, State> {
+export default class PatientSummary extends React.Component<Props, State> {
   state = {};
 
   render() {
     const {
-      medicalCase: { nodes, patient, vitalSigns },
+      medicalCase: { nodes, patient },
       medicalCase,
       app: { t },
       navigation,
     } = this.props;
 
-    let fd = nodes.filterByType(nodesType.finalDiagnostic);
-
+    let finalDiagnostics = nodes.filterByType(nodesType.finalDiagnostic);
     let defaultTab = navigation.getParam('defaultTab');
 
     const items = [];
 
-    for (const value of fd.entries()) {
-      let condition = calculateCondition(medicalCase, value);
+    // eslint-disable-next-line no-unused-vars
+    for (const [index, finalDiagnostic] of finalDiagnostics.entries()) {
+      let condition = calculateCondition(medicalCase, finalDiagnostic);
 
       let type;
       let style = {};
@@ -58,66 +58,55 @@ export default class PatientProfile extends React.Component<Props, State> {
       }
 
       items.push(
-        <Text>
-          <Icon type={type} name={name} style={style} />- {value.id} -{' '}
-          {value.label}
-        </Text>
+        <Text style={styles.spaceText} size-auto>
+          <Icon type={type} name={name} style={style} /> - {finalDiagnostic.id} -{' '}
+          {finalDiagnostic.label}
+        </Text>,
       );
     }
 
     return (
-      <View>
-        <View style={styles.summary}>
-          <BackButton />
-          <LiwiTitle2>{t('summary:title')}</LiwiTitle2>
-          <View>
-            <View>
-              <Image
-                resizeMode="contain"
-                style={styles.image}
-                source={require('../../../../assets/images/profil.png')}
-              />
-            </View>
-            <View>
-              <Text>
-                {patient.firstname} - {patient.lastname} | {patient.gender} |{' '}
-                {patient.birthdate}
-              </Text>
-              <Text>
-                T {vitalSigns.tempetature}C | F.C {vitalSigns.respiratoryRate}{' '}
-                bpm
-              </Text>
-            </View>
-            <View>
-              <Text>{t('form:edit')}</Text>
-            </View>
+      <View padding-auto flex>
+        <BackButton />
+        <LiwiTitle2 marginTop>{t('summary:title')}</LiwiTitle2>
+        <View style={styles.patientInfo}>
+          <View flex-container-fluid>
+            <Text size-auto>
+              {patient.firstname} {patient.lastname}
+            </Text>
+            <Text size-auto>
+              {patient.gender}
+            </Text>
+            <Text size-auto>
+              {moment(patient.birthdate).format('d MMMM YYYY')}
+            </Text>
           </View>
-          <Tabs
-            initialPage={defaultTab}
-            tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}
-          >
-            <Tab
-              heading={t('summary:diagnoses')}
-              tabStyle={LiwiTabStyle.tabStyle}
-              activeTextStyle={LiwiTabStyle.activeTextStyle}
-              textStyle={LiwiTabStyle.textStyle}
-              activeTabStyle={LiwiTabStyle.activeTabStyle}
-            >
-              <Content style={{ padding: 10 }}>{items}</Content>
-            </Tab>
-            <Tab
-              heading="All questions"
-              tabStyle={LiwiTabStyle.tabStyle}
-              activeTextStyle={LiwiTabStyle.activeTextStyle}
-              textStyle={LiwiTabStyle.textStyle}
-              activeTabStyle={LiwiTabStyle.activeTabStyle}
-            >
-              <View>
-                <Questions questions={nodes} />
-              </View>
-            </Tab>
-          </Tabs>
         </View>
+        <Tabs
+          initialPage={defaultTab}
+          tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}
+        >
+          <Tab
+            heading={t('summary:diagnoses')}
+            tabStyle={LiwiTabStyle.tabStyle}
+            activeTextStyle={LiwiTabStyle.activeTextStyle}
+            textStyle={LiwiTabStyle.textStyle}
+            activeTabStyle={LiwiTabStyle.activeTabStyle}
+          >
+            <Content style={styles.marginTop}>{items}</Content>
+          </Tab>
+          <Tab
+            heading="All questions"
+            tabStyle={LiwiTabStyle.tabStyle}
+            activeTextStyle={LiwiTabStyle.activeTextStyle}
+            textStyle={LiwiTabStyle.textStyle}
+            activeTabStyle={LiwiTabStyle.activeTabStyle}
+          >
+            <View>
+              <Questions questions={nodes} />
+            </View>
+          </Tab>
+        </Tabs>
       </View>
     );
   }
