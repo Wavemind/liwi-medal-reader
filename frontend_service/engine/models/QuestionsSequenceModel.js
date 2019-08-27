@@ -32,6 +32,7 @@ export class QuestionsSequenceModel extends NodeModel
       top_conditions = {},
       category = '',
       value_format = valueFormats.bool,
+      min_score = 0,
     } = props;
 
     this.description = description;
@@ -45,6 +46,7 @@ export class QuestionsSequenceModel extends NodeModel
     this.instances = instances;
     this.category = category;
     this.value_format = value_format;
+    this.min_score = min_score;
 
     this.requirement = new RequirementNodeModel({ ...props });
     this.instanceLink();

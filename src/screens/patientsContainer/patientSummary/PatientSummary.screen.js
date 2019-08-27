@@ -32,6 +32,7 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     const items = [];
 
+    // eslint-disable-next-line no-unused-vars
     for (const [index, value] of fd.entries()) {
       let condition = calculateCondition(medicalCase, value);
 
@@ -64,8 +65,6 @@ export default class PatientProfile extends React.Component<Props, State> {
         </Text>
       );
     }
-
-    console.log(fd, nodes);
 
     return (
       <View>

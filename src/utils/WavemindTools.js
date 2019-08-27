@@ -21,7 +21,7 @@ export default class WavemindTools extends Component {
           active={active}
           direction="up"
           containerStyle={{}}
-          style={{ backgroundColor: '#5067FF' }}
+          style={{ backgroundColor: '#ffb21d' }}
           position="bottomRight"
           onPress={() => this.setState({ active: !active })}
         >
