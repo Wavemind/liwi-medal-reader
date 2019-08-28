@@ -20,7 +20,7 @@ import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
 import PatientSummaryMenu from './patientSummaryMenu';
-import PatientSummary from '../../screens/patientsContainer/patientSummary';
+import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
 
@@ -171,7 +171,7 @@ const HomeWithModal = createStackNavigator(
   {
     Home: { screen: Stack },
     Summary: {
-      screen: PatientSummary,
+      screen: MedicalCaseSummary,
       path: 'summary',
       params: {
         showSummary: false,
@@ -182,15 +182,14 @@ const HomeWithModal = createStackNavigator(
     mode: 'modal',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: '#ff1d00',
-      // opacity: 0.,
+      backgroundColor: 'transparent',
+      opacity: 1,
     },
-    transparentCard: true,
     transitionConfig: () => ({
       containerStyle: {
         backgroundColor: 'transparent',
       },
-    }),
+    })
   }
 );
 
@@ -214,7 +213,7 @@ const MainNavigation = () => {
     { RootDrawer: { screen: StackWithBottomNavigation } },
     {
       drawerWidth: screenWidth / 2,
-      drawerBackgroundColor: 'transparent',
+      overlayColor: 'rgba(38,38,38,0.8)',
       contentComponent: (props) => <Drawer {...props} />,
     }
   );

@@ -316,4 +316,3 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
   // return actions;
   return allNodesAnsweredInQs;
 };
-
