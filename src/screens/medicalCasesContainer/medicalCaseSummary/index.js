@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PatientSummary from './PatientSummary.screen';
+import MedicalCaseSummary from './MedicalCaseSummary.screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import {
@@ -23,4 +23,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(PatientSummary)));
+)(withSessions(withApplication(MedicalCaseSummary)));

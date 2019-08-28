@@ -225,12 +225,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 <Button light split onPress={saveWaitingList}>
                   <Text>{t('patient_upsert:save_and_wait')}</Text>
                 </Button>
-                <Button light split onPress={saveNewCase}>
+                <Button success split onPress={saveNewCase}>
                   <Text>{t('patient_upsert:save_and_case')}</Text>
                 </Button>
               </View>
             ) : (
-              <Button block onPress={this.updatePatient}>
+              <Button success block onPress={this.updatePatient}>
                 <Text>{t('patient_upsert:save')}</Text>
               </Button>
             )

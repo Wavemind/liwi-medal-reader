@@ -1,10 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Text, View } from 'native-base';
+import { Button, Icon, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
+import { styles } from '../../../engine/navigation/drawer/Drawer.style';
 
 type Props = NavigationScreenProps & {
   questionsInScreen: Array,
@@ -18,7 +19,7 @@ type State = { app: StateApplicationContext } & {
   endNavBool: boolean,
   nextRoute: Object,
 };
-/*
+/**
 * Component used as a navigator Next / Prev buttons between Triage Vues
 * */
 export default class NavigationTriage extends React.Component<Props, State> {
@@ -39,8 +40,9 @@ export default class NavigationTriage extends React.Component<Props, State> {
     this.initRouterButton();
   }
 
-  // Init the route
-  // Define the next and prev action
+  /**
+   * Sets in the state the next and prev action for the current screen
+   **/
   initRouterButton = () => {
     const { router, currentRoute } = this.state;
 
@@ -76,26 +78,29 @@ export default class NavigationTriage extends React.Component<Props, State> {
     });
   };
 
-  // Is all the answers of the screen are setter
-  isNodeValid = () => {
+  /**
+   * Return true if all question have been answered
+   * @return [Boolean]
+   **/
+  isScreenValid = () => {
     const { medicalCase, questionsInScreen } = this.props;
 
-    if (questionsInScreen.length === 0) {
+    if (questionsInScreen === 0) {
       return true;
     }
 
     return medicalCase.nodes.isAnsweredNodes(questionsInScreen);
   };
 
-  nextScreen = () => {
+  /**
+   * If the screen is valid it will navigate to the next screen, if not nothing is done
+   */
+  goToNextScreen = () => {
     const { nextRoute } = this.state;
-
     const { navigation } = this.props;
 
-    let isValid = this.isNodeValid();
-
-    // Here we can block the next action if not valid
-    isValid ? navigation.navigate(nextRoute.key) : null;
+    // Blocks the action if the we are not allowed to go to the next screen
+    this.isScreenValid() ? navigation.navigate(nextRoute.key) : null;
   };
 
   render() {
@@ -107,21 +112,23 @@ export default class NavigationTriage extends React.Component<Props, State> {
     } = this.props;
 
     return (
-      <View bottom-view columns>
+      <View bottom-view columns marginTop>
         <Button
           light
           split
           disabled={beginNavBool}
           onPress={() => navigation.navigate(prevRoute.key)}
         >
+          <Icon style={styles.medicalCaseNavigationIcon} dark type="AntDesign" name="left" />
           <Text>{t('form:back')}</Text>
         </Button>
-        <Button light split onPress={this.nextScreen}>
+        <Button success split onPress={this.goToNextScreen}>
           {!endNavBool ? (
             <Text>{t('form:next')}</Text>
           ) : (
-            <Text>Next stage MedicalHistory</Text>
+            <Text>{t('form:next_stage')}</Text>
           )}
+          <Icon style={styles.rightMedicalCaseNavigationIcon} dark type="AntDesign" name="right" />
         </Button>
       </View>
     );

@@ -11,15 +11,12 @@ import moment from 'moment';
 
 import { sessionsDuration } from '../../utils/constants';
 
-import NavigationService from '../navigation/Navigation.service';
-
 import {
   destroySession,
   getSession,
   getSessions,
   setActiveSession,
   setItem,
-  updateSession,
 } from '../api/LocalStorage';
 import { saltHash } from '../../../frontend_service/constants';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
@@ -116,7 +113,6 @@ export class ApplicationProvider extends React.Component<
 
     if (finderActiveSession) {
       this.setUserContext(finderActiveSession);
-      this.pushSettings(finderActiveSession);
     }
   };
 
@@ -131,22 +127,6 @@ export class ApplicationProvider extends React.Component<
   // Set medical case in context
   setMedicalCase = (medicalCase) => {
     this.setState({ medicalCase });
-  };
-
-  // define page settings to push
-  pushSettings = async (session) => {
-    let { lastLogin } = session;
-    let lastLoginMoment;
-
-    if (lastLogin !== undefined) {
-      lastLoginMoment = moment(lastLogin);
-    }
-
-    if (lastLogin === undefined || moment() > lastLoginMoment.add(24, 'hour')) {
-      NavigationService.navigate('Settings', { userName: 'Lucy' });
-      session.lastLogin = moment().toString();
-      await updateSession(session.data.id, session);
-    }
   };
 
   // Unlock session from local credentials
@@ -165,7 +145,6 @@ export class ApplicationProvider extends React.Component<
 
       session = await getSession(id);
       this.setUserContext(session);
-      this.pushSettings(session);
 
       // here push settings
     } else {

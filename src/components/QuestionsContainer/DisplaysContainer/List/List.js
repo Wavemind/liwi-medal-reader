@@ -36,7 +36,7 @@ export default class List extends React.Component<Props, State> {
             selectedValue={question.answer}
             onValueChange={this.onValueChange}
           >
-            <Picker.Item label="Choose the answer" value={null} />
+            <Picker.Item label="Select" value={null} />
             {Object.keys(question.answers).map((id) => (
               <Picker.Item
                 key={question.answers[id].id + '_picker'}

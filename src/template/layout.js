@@ -30,18 +30,24 @@ export const LiwiTitle2 = styled(LH2)`
   margin: 0 20px 10px 0;
   text-transform: uppercase;
   padding-bottom: ${({ noBorder }) => {
-    if (noBorder === true) {
-      return '0px';
-    }
-    return '20px';
-  }};
+  if (noBorder === true) {
+    return '0px';
+  }
+  return '20px';
+}};
   border-bottom-width: ${({ noBorder }) => {
-    if (noBorder === true) {
-      return '0px';
-    }
-    return '2px';
-  }};
+  if (noBorder === true) {
+    return '0px';
+  }
+  return '2px';
+}};
   border-bottom-color: ${() => liwiColors.greyColor};
+  margin-top: ${({ marginTop }) => {
+  if (marginTop === true) {
+    return '20px';
+  }
+  return '0px';
+}}
 `;
 
 export const LiwiTitle3 = styled(LH3).attrs({
@@ -114,78 +120,66 @@ export const PaddedView = styled(LView).attrs({})``;
 
 export const LeftButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
   border-width: 0.5px;
   padding: 13px;
-  border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
-    if (active) {
-      return liwiColors.greenColor;
-    }
-    return liwiColors.whiteColor;
-  }};
+  if (active) {
+    return liwiColors.greenColor;
+  }
+  return liwiColors.whiteColor;
+}};
 `;
 
 export const ViewQuestion = styled(RNView).attrs({})`
   flex-direction: row;
-  border-radius: 5px;
-  border-width: 0.5px;
   padding: 10px;
   margin-right: ${({ marginRight }) => {
-    return marginRight;
-  }};
+  return marginRight;
+}};
   margin-left: ${({ marginLeft }) => {
-    return marginLeft;
-  }};
-  border-color: ${liwiColors.blackColor};
-  background-color: ${liwiColors.lighterGreyColor};
+  return marginLeft;
+}};
   flex: ${({ flex }) => {
-    return flex;
-  }};
+  return flex;
+}};
 `;
 
 export const RightButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
   border-width: 0.5px;
+  border-left-width: 0;
   padding: 13px;
   border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
-    if (active) {
-      return liwiColors.redColor;
-    }
-    return liwiColors.whiteColor;
-  }};
+  if (active) {
+    return liwiColors.redColor;
+  }
+  return liwiColors.whiteColor;
+}};
 `;
 
 export const LiwiTabStyle = StyleSheet.create({
   tabStyle: {
     borderColor: liwiColors.darkGreyColor,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
     borderWidth: 1,
-    borderRadius: 10,
   },
 
   activeTextStyle: {
-    color: liwiColors.redColor,
+    color: liwiColors.blackColor,
+    fontSize: 20,
   },
 
   textStyle: {
     color: liwiColors.blackColor,
+    fontSize: 20,
   },
 
   tabBarUnderlineStyle: {
-    backgroundColor: liwiColors.redColor,
+    backgroundColor: liwiColors.darkGreyColor,
   },
 
   activeTabStyle: {
-    borderColor: liwiColors.redColor,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    borderColor: liwiColors.darkGreyColor,
     borderWidth: 1,
-    borderRadius: 10,
   },
 });
