@@ -30,14 +30,11 @@ export class NodesModel implements NodeInterface {
    * @return allAnswered: boolean
    * return true if all nodes is answered
    */
+
   isAllAnswered(nodes) {
-    let allAnswered = true;
-    nodes.map((node) => {
-      if (node.answer === null) {
-        allAnswered = false;
-      }
+    return !nodes.some((a) => {
+      return a.answer === null;
     });
-    return allAnswered;
   }
 
   /**
