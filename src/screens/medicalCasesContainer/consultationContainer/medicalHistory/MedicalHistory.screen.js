@@ -34,7 +34,7 @@ export default class MedicalHistory extends React.Component<Props, State> {
       }
     });
 
-    let filteredQuestions = medicalCase.nodes.multipleFilter([
+    let filteredQuestions = medicalCase.nodes.filterBy([
       { by: 'category', operator: 'equal', value: categories.symptom },
       { by: 'stage', operator: 'equal', value: stage.consultation },
       { by: 'counter', operator: 'more', value: 0 },

@@ -37,7 +37,7 @@ export class NodesModel implements NodeInterface {
    * { by: 'stage', operator: 'equal', value: stage.consultation },
    * { by: 'counter', operator: 'more', value: 0 },]
    */
-  multipleFilter(filters) {
+  filterBy(filters) {
     this.filterByConditionValue();
     return _.filter(this, (node) => {
       let nodes = filters.every((filter) => {
