@@ -24,10 +24,20 @@ export class NodesModel implements NodeInterface {
     return _.filter(this, (n) => n.type === type);
   }
 
-  isAnsweredNodes(nodes) {
-    return nodes.some((a) => {
-      return a.answer !== null;
+  /**
+   * Verify if all nodes in params is answered
+   * @params nodes: array
+   * @return allAnswered: boolean
+   * return true if all nodes is answered
+   */
+  isAllAnswered(nodes) {
+    let allAnswered = true;
+    nodes.map((node) => {
+      if (node.answer === null) {
+        allAnswered = false;
+      }
     });
+    return allAnswered;
   }
 
   /**
@@ -50,6 +60,10 @@ export class NodesModel implements NodeInterface {
       });
       return nodes;
     });
+  }
+
+  filterByStage(stage) {
+    return _.filter(this, (n) => n.stage === stage);
   }
 
   filterByCounterGreaterThanZero() {
