@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Tab, Tabs, Text, View, Icon, Content } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
-import { styles } from './PatientSummary.style';
+import { styles } from './MedicalCaseSummary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/uix/backButton';
@@ -15,7 +15,7 @@ import { liwiColors } from '../../../utils/constants';
 type Props = NavigationScreenProps & {};
 type State = {};
 
-export default class PatientSummary extends React.Component<Props, State> {
+export default class MedicalCaseSummary extends React.Component<Props, State> {
   state = {};
 
   render() {
