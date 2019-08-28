@@ -13,12 +13,12 @@ type Props = NavigationScreenProps & {};
 export default function Tests(props: Props) {
   const { medicalCase } = props;
 
-  let assessment_test = medicalCase.nodes.multipleFilter([
+  let assessment_test = medicalCase.nodes.filterBy([
     { by: 'category', operator: 'equal', value: categories.assessment },
     { by: 'counter', operator: 'more', value: 0 },
   ]);
 
-  let vaccine = medicalCase.nodes.multipleFilter([
+  let vaccine = medicalCase.nodes.filterBy([
     { by: 'category', operator: 'equal', value: categories.vaccine },
     { by: 'counter', operator: 'more', value: 0 },
   ]);
