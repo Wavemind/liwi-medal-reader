@@ -8,7 +8,7 @@ export default {
       paddingLeft: 10,
       borderWidth: 1,
       borderColor: liwiColors.blackColor,
-    }
+    },
   },
   'NativeBase.Input': {
     '.login-input': {},
@@ -19,15 +19,20 @@ export default {
       color: liwiColors.blackColor,
       paddingTop: 10,
       paddingLeft: 10,
+      borderBottomColor: liwiColors.blackColor,
+      borderBottomWidth: 0.5,
     },
     '.question': {
-      borderColor: liwiColors.greyColor,
-      borderWidth: 1,
-      borderRadius: 5,
-      backgroundColor: liwiColors.lighterGreyColor,
+      backgroundColor: '#fff',
       width: '100%',
       flex: 1,
       margin: 0,
+    },
+    '.numeric': {
+      textAlign: 'center',
+    },
+    '.boolean': {
+      textAlign: 'center',
     },
   },
 };

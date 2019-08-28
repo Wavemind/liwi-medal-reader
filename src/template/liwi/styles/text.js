@@ -44,5 +44,13 @@ export default {
       textTransform: 'uppercase',
       textAlign: 'center',
     },
+    '.subText': {
+      color: liwiColors.redColor,
+      fontSize: 26,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: liwiColors.darkGreyColor,
+      margin: 10,
+    },
   },
 };

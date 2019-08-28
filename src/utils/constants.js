@@ -5,14 +5,14 @@ import DeviceInfo from 'react-native-device-info';
 export const blueColor = '#fff';
 export const liwiColors = {
   redColor: '#db473e',
-  blackColor: '#595959',
-  whiteColor: '#f1f1f1',
+  blackColor: '#232323',
+  whiteColor: '#fff',
   lighterGreyColor: '#efefef',
   lightGreyColor: '#dbdbdb',
   greyColor: '#c4c4c4',
   darkGreyColor: '#a9a9a9',
   darkerGreyColor: '#757575',
-  greenColor: '#37b428',
+  greenColor: '#4CAF50',
 };
 export const sessionsDuration = 30; // in minutes
 
