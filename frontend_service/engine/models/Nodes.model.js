@@ -8,7 +8,8 @@ import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 
-interface NodeInterface {}
+interface NodeInterface {
+}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {
@@ -29,25 +30,17 @@ export class NodesModel implements NodeInterface {
     });
   }
 
-  filterByStage(stage) {
-    return _.filter(this, (n) => n.stage === stage);
-  }
-
-
-  /* filterByMultiple
-  * Params: filters<Array>
-  * Format : filters = [
-      { by: 'category', operator: 'equal', value: categories.symptom },
-      { by: 'stage', operator: 'equal', value: stage.consultation },
-      { by: 'counter', operator: 'more', value: 0 },
-    ]
-  *
-  *
-  * */
-  filterByMultiple(filters) {
+  /**
+   * Return filtered nodes on multiple params
+   * @params filter : array
+   * [{ by: 'category', operator: 'equal', value: categories.symptom },
+   * { by: 'stage', operator: 'equal', value: stage.consultation },
+   * { by: 'counter', operator: 'more', value: 0 },]
+   */
+  filterBy(filters) {
     this.filterByConditionValue();
     return _.filter(this, (node) => {
-      let f = filters.every((filter) => {
+      let nodes = filters.every((filter) => {
         switch (filter.operator) {
           case 'equal':
             return node[filter.by] === filter.value;
@@ -55,7 +48,7 @@ export class NodesModel implements NodeInterface {
             return node[filter.by] > filter.value;
         }
       });
-      return f;
+      return nodes;
     });
   }
 

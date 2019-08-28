@@ -31,6 +31,7 @@ export default {
       flex: 1,
       flexGrow: 1,
     },
+
     '.flex-child': {
       flexGrow: 1, // not used actually
     },
@@ -45,6 +46,7 @@ export default {
     },
 
     '.padding-auto': { padding: 20 },
+
     '.flex-center': {
       flexDirection: 'column',
       justifyContent: 'space-around',
@@ -128,5 +130,26 @@ export default {
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
+
+    '.chiefComplaints': {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+
+    '.bottomInput': {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      margin: 0,
+      padding: 0,
+    },
+    '.marginTop': {
+      marginTop:100,
+    },
+    '.home':{
+      backgroundColor: liwiColors.lightGreyColor,
+      border:0,
+    }
   },
 };

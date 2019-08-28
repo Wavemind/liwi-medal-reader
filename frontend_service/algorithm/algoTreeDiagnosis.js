@@ -340,7 +340,7 @@ export const calculateCondition = (state$, node) => {
 // Calculate formula
 export const calculateFormula = (state$, node) => {
   // Regex to find []
-  const findBrackertId = /\[(.*?)\]/gi;
+  const findBracketId = /\[(.*?)\]/gi;
   let ready = true;
 
   // Function to change the [id] into the good value
@@ -360,7 +360,7 @@ export const calculateFormula = (state$, node) => {
   };
 
   // Find in string each item with functionReplacing
-  let replacer = node.formula.replace(findBrackertId, functionReplacing);
+  let replacer = node.formula.replace(findBracketId, functionReplacing);
 
   if (ready) return eval(replacer);
 };
