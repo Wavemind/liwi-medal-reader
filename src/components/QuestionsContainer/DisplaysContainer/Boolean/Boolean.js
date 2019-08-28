@@ -6,6 +6,7 @@ import { Button, Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../../../template/layout';
 import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
+import { styles } from './Boolean.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -140,7 +141,7 @@ export default class Boolean extends React.Component<Props, State> {
             <View chiefComplaints>
               <Text center size-auto>{label}</Text>
             </View>
-            <View bottomInput>
+            <View style={styles.bottomInput}>
               <LeftButton
                 active={answer === idYes}
                 onPress={() => this._handleClick(idYes)}

@@ -85,7 +85,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
   isScreenValid = () => {
     const { medicalCase, questionsInScreen } = this.props;
 
-    if (questionsInScreen === 0) {
+    if (questionsInScreen.length === 0) {
       return true;
     }
 
