@@ -20,7 +20,7 @@ import { screenWidth } from '../../utils/constants';
 import { TriageTabNavigator } from './Triage.navigation';
 import { ConsultationTabNavigator } from './Consultation.navigation';
 import PatientSummaryMenu from './patientSummaryMenu';
-import PatientSummary from '../../screens/patientsContainer/patientSummary';
+import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
 
@@ -171,7 +171,7 @@ const HomeWithModal = createStackNavigator(
   {
     Home: { screen: Stack },
     Summary: {
-      screen: PatientSummary,
+      screen: MedicalCaseSummary,
       path: 'summary',
       params: {
         showSummary: false,
