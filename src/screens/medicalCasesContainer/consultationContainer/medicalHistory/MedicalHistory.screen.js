@@ -4,7 +4,6 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View, Text } from 'native-base';
 import { ScrollView } from 'react-native';
-import _ from 'lodash';
 import { categories, stage } from '../../../../../frontend_service/constants';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { styles } from './MedicalHistory.style';
@@ -20,14 +19,20 @@ export default class MedicalHistory extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
 
-    // TODO Will be implemented -> Waiting for backend to categories questions per chief complaints
-    let questions = medicalCase.nodes.filterByCategory(
+    let chiefComplaints = medicalCase.nodes.filterByCategory(
       categories.chiefComplaint,
     );
-    let retainedChiefComplaints = _.filter(
-      questions,
-      (n) => n.answer === Number(Object.keys(n.answers)[0]),
-    );
+
+    let questionsPerChiefComplaints = {};
+    chiefComplaints.map((chiefComplaint) => {
+      if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[0])) {
+        questionsPerChiefComplaints[chiefComplaint.id] = {
+          id: chiefComplaint.id,
+          title: chiefComplaint.label,
+          questions: [],
+        };
+      }
+    });
 
     let filteredQuestions = medicalCase.nodes.multipleFilter([
       { by: 'category', operator: 'equal', value: categories.symptom },
@@ -35,19 +40,25 @@ export default class MedicalHistory extends React.Component<Props, State> {
       { by: 'counter', operator: 'more', value: 0 },
     ]);
 
+    // TODO: waiting for CC array in question to finalize
+    filteredQuestions.map((question) => {
+      question.dd.map((diagnostic) => {
+        questionsPerChiefComplaints[medicalCase.diagnostics[diagnostic.id].cc].questions.push(question);
+      });
+    });
+
     let chiefComplaintsAccordion = [];
-    retainedChiefComplaints.map((chiefComplaint) => {
+    Object.keys(questionsPerChiefComplaints).map((id) => {
       chiefComplaintsAccordion.push({
-        title: chiefComplaint.label,
-        content: <Questions questions={filteredQuestions} />
-        ,
+        title: questionsPerChiefComplaints[id].title,
+        content: <Questions questions={questionsPerChiefComplaints[id].questions} />,
       });
     });
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {chiefComplaintsAccordion.map((chiefComplaint) => (
-          <View style={{paddingBottom: 10, marginBottom: 20}} key={`chiefComplaint_${chiefComplaint.title}`}>
+          <View style={{ paddingBottom: 10, marginBottom: 20 }} key={`chiefComplaint_${chiefComplaint.title}`}>
             <Text subText>{chiefComplaint.title}</Text>
             {chiefComplaint.content}
           </View>
