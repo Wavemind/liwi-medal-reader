@@ -1,7 +1,7 @@
-import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import { categories, nodesType, priorities } from '../constants';
+import { nodesType, priorities } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
+import { calculateCondition } from './algoConditionsHelpers';
 
 // Create the first batch from json based on triage priority
 // TODO : Maybe build an object instead of rewriting the json
@@ -235,7 +235,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   }
 
   // If answer is not null We check the condition of this node
-  const instanceCondition = calculateCondition(state$, instance);
+  const instanceCondition = calculateCondition(instance);
   let qsFullyAnswered = null;
   // If instance condition === true
   if (instanceCondition === true) {
@@ -317,172 +317,3 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
   return allNodesAnsweredInQs;
 };
 
-// TODO: IN PROGRESS
-export const calculateCondition = (state$, node) => {
-  // Tricks for pass differents sources of state$
-  if (state$.value === undefined) state$.value = state$;
-
-  // If this is a top parent node
-  if (node.top_conditions.length === 0) {
-    return true;
-  }
-
-  let scoreTrue = 0;
-  let scoreFalse = 0;
-  let scoreNull = 0;
-  let scoreTotalPossible = 0;
-
-  // Loop for top_conditions
-  let conditionFinal = node.top_conditions.map((conditions) => {
-    let returnedBoolean = comparingTopConditions(state$, node, conditions);
-
-    if (node?.category === categories.scored) {
-      scoreTotalPossible = scoreTotalPossible + conditions.score;
-      switch (returnedBoolean) {
-        case true:
-          scoreTrue = scoreTrue + conditions.score;
-          break;
-        case false:
-          scoreFalse = scoreFalse + conditions.score;
-          break;
-        case null:
-          scoreNull = scoreNull + conditions.score;
-          break;
-      }
-    }
-
-    return returnedBoolean;
-  });
-  // reduce here
-
-  const reduceConditionArrayBoolean = reduce(
-    conditionFinal,
-    (result, value) => {
-      return comparingBooleanOr(result, value);
-    },
-    false
-  );
-
-  // eslint-disable-next-line no-empty
-  if (node?.category === categories.scored) {
-    // If score true so this QS is true
-    if (scoreTrue >= node.min_score) return true;
-    // If there are more false condition than min necessary so we return false
-    if (scoreTotalPossible - scoreFalse >= node.min_score) return false;
-    // If there are more null condition than min necessary so we return null
-    if (scoreTotalPossible - scoreNull >= node.min_score) return null;
-  }
-
-  return reduceConditionArrayBoolean;
-};
-
-// @params [Object] state$, [Object] node
-// Calculate formula
-export const calculateFormula = (state$, node) => {
-  // Regex to find []
-  const findBrackertId = /\[(.*?)\]/gi;
-  let ready = true;
-
-  // Function to change the [id] into the good value
-  const functionReplacing = (item) => {
-    // Get the id into []
-    let id = item.match(/\d/g).join('');
-
-    // Get value of this node
-    const nodeValue = state$.value.nodes[id].value;
-
-    if (nodeValue === 0) {
-      ready = false;
-      return item;
-    } else {
-      return nodeValue;
-    }
-  };
-
-  // Find in string each item with functionReplacing
-  let replacer = node.formula.replace(findBrackertId, functionReplacing);
-
-  if (ready) return eval(replacer);
-};
-
-// TODO: IN PROGRESS
-const checkOneCondition = (state$, child, wantedId, nodeId, conditionType) => {
-  switch (conditionType) {
-    case 'Answer':
-      if (state$.value.nodes[nodeId].answer !== null) {
-        // pas sur
-        //  Unless it's a priority.
-        return state$.value.nodes[nodeId].answer === wantedId;
-      }
-
-      return null;
-
-    case 'Condition':
-      // TODO here check the id condition nested hooo....
-      break;
-  }
-};
-
-// TODO: IN PROGRESS comment it
-const comparingTopConditions = (state$, child, conditions) => {
-  const {
-    first_id,
-    first_node_id,
-    first_type,
-    operator,
-    second_node_id,
-    second_id,
-    second_type,
-  } = conditions;
-  let second_sub_condition;
-  let first_sub_condition;
-
-  first_sub_condition = checkOneCondition(
-    state$,
-    child,
-    first_id,
-    first_node_id,
-    first_type
-  );
-
-  if (operator === null) {
-    return first_sub_condition;
-  } else {
-    second_sub_condition = checkOneCondition(
-      state$,
-      child,
-      second_id,
-      second_node_id,
-      second_type
-    );
-
-    if (operator === 'AND') {
-      return first_sub_condition && second_sub_condition;
-    } else if (operator === 'OR') {
-      return comparingBooleanOr(first_sub_condition, second_sub_condition);
-    }
-  }
-  return null;
-};
-
-// @params [Boolean] firstBoolean [Boolean] secondBoolean
-// @return [Boolean]
-// Return value from both booleans
-//
-//       | True | False | Null
-// ____________________________
-// True  | True | True  | True
-// ____________________________
-// False | True | False | Null
-// ____________________________
-// Null  | True | Null  | Null
-//
-const comparingBooleanOr = (firstBoolean, secondBoolean) => {
-  if (firstBoolean === true || secondBoolean === true) {
-    return true;
-  } else if (firstBoolean === false && secondBoolean === false) {
-    return false;
-  } else if (firstBoolean === null || secondBoolean === null) {
-    return null;
-  }
-};

@@ -1,6 +1,7 @@
 // @flow
 
 import { RequirementNodeModel } from './RequirementNodeModel';
+import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 
 interface InstanceInterface {}
 
@@ -14,4 +15,8 @@ export class InstanceModel implements InstanceInterface {
     this.id = id;
     this.children = children;
   }
+
+  calculateCondition = () => {
+    return calculateCondition(this);
+  };
 }

@@ -2,6 +2,7 @@
 
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
+import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 
 interface FinalDiagnosticInterface {}
 
@@ -32,4 +33,8 @@ export class FinalDiagnosticModel extends NodeModel
 
     this.requirement = new RequirementNodeModel({ ...props });
   }
+
+  calculateCondition = () => {
+    return calculateCondition(this);
+  };
 }

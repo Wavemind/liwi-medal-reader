@@ -17,7 +17,7 @@ export const initialState = null;
  * Reducer
  * Catch actions from redux / dispatcher
  * Load MedicalCase on it
- *
+ *0
  *
  *
  *
