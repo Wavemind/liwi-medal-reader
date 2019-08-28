@@ -7,6 +7,7 @@ import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
+import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
 
 interface NodeInterface {}
 
@@ -32,7 +33,6 @@ export class NodesModel implements NodeInterface {
   filterByStage(stage) {
     return _.filter(this, (n) => n.stage === stage);
   }
-
 
   /* filterByMultiple
   * Params: filters<Array>
@@ -112,10 +112,20 @@ export class NodesModel implements NodeInterface {
     // Based on the node type
     switch (node.type) {
       case nodesType.questionsSequence:
-        instantiatedNode = new QuestionsSequenceModel({
-          ...node,
-          medicalCase: this,
-        });
+        switch (node.category) {
+          case categories.scored:
+            instantiatedNode = new QuestionsSequenceScoredModel({
+              ...node,
+              medicalCase: this,
+            });
+            break;
+          default:
+            instantiatedNode = new QuestionsSequenceModel({
+              ...node,
+              medicalCase: this,
+            });
+            break;
+        }
         break;
 
       case nodesType.question:

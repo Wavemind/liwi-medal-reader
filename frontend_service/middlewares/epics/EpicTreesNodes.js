@@ -16,9 +16,8 @@ import {
 import {
   getParentsNodes,
   getQuestionsSequenceStatus,
-  calculateCondition,
-  calculateFormula,
 } from '../../algorithm/algoTreeDiagnosis';
+import { calculateFormula } from '../../algorithm/algoConditionsHelpers';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 
@@ -178,10 +177,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
 
       // If ready we calculate condition of the QS
       if (isReady) {
-        questionsSequenceCondition = calculateCondition(
-          state$,
-          currentQuestionsSequence
-        );
+        questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
       }
 
       if (questionsSequenceCondition === true) {
@@ -243,7 +239,7 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
       const finalDiagnostic = state$.value.nodes[finalDiagnosticId];
 
       // Get the conditions of the node
-      const condition = calculateCondition(state$, finalDiagnostic);
+      const condition = finalDiagnostic.calculateCondition(state$);
 
       // eslint-disable-next-line no-console
       console.log(
@@ -277,7 +273,7 @@ export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
       // If the node was already calcutate but we want to reset the node the value will still be 0 and setAnswer set to 0
       let value = 0;
       if (currentNode.display_format === displayFormats.formula) {
-        value = calculateFormula(state$, currentNode);
+        value = calculateFormula(currentNode);
       }
 
       if (value !== currentNode.value) {
@@ -321,7 +317,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       if (
         state$.value.nodes[nodeId].display_format === displayFormats.formula
       ) {
-        calculateFormula(state$, state$.value.nodes[nodeId]);
+        calculateFormula(state$.value.nodes[nodeId]);
       }
 
       const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);
@@ -338,7 +334,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       });
 
       // Get node condition value
-      const conditionValue = calculateCondition(state$, currentNode);
+      const conditionValue = currentNode.calculateCondition(state$);
 
       // If the condition of this node is not null
       if (conditionValue !== null) {

@@ -9,8 +9,8 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/uix/backButton';
 import { nodesType } from '../../../../frontend_service/constants';
-import { calculateCondition } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 import { liwiColors } from '../../../utils/constants';
+import { calculateCondition } from '../../../../frontend_service/algorithm/algoConditionsHelpers';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -21,7 +21,6 @@ export default class PatientProfile extends React.Component<Props, State> {
   render() {
     const {
       medicalCase: { nodes, patient, vitalSigns },
-      medicalCase,
       app: { t },
       navigation,
     } = this.props;
@@ -34,7 +33,7 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     // eslint-disable-next-line no-unused-vars
     for (const [index, value] of fd.entries()) {
-      let condition = calculateCondition(medicalCase, value);
+      let condition = calculateCondition(value);
 
       let type;
       let style = {};

@@ -4,6 +4,7 @@ import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { InstanceModel } from './Instance.model';
 import { valueFormats } from '../../constants';
+import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 
 interface QuestionsSequenceInterface {
   answer: string;
@@ -57,4 +58,8 @@ export class QuestionsSequenceModel extends NodeModel
       this.instances[id] = new InstanceModel({ ...this.instances[id] });
     });
   }
+
+  calculateCondition = () => {
+    return calculateCondition(this);
+  };
 }
