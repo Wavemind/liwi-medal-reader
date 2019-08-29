@@ -21,8 +21,7 @@ export default class Comorbidities extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
-    // TODO: Waiting for new's from medical team
-    let questions = 0;
+    let questions = [];
 
     return (
       <ScrollView contentContainerStyle={styles.container}>

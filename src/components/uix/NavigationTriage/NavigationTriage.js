@@ -6,6 +6,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { styles } from '../../../engine/navigation/drawer/Drawer.style';
+import { stage } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {
   questionsInScreen: Array,
@@ -37,13 +38,13 @@ export default class NavigationTriage extends React.Component<Props, State> {
   };
 
   componentWillMount() {
-    this.initRouterButton();
+    this.initRouter();
   }
 
   /**
    * Sets in the state the next and prev action for the current screen
    **/
-  initRouterButton = () => {
+  initRouter = () => {
     const { router, currentRoute } = this.state;
 
     let prevRoute;
@@ -58,15 +59,14 @@ export default class NavigationTriage extends React.Component<Props, State> {
       nextRoute = router.routes[currentRoute.index + 1];
     }
 
-    // if we are at the end of the triage router
+    // If we are at the end of the triage router
     if (endNavBool) {
-      // we are inside the router
       nextRoute = {};
       nextRoute.key = 'MedicalHistory';
     }
 
     // Inside the router
-    if (insideNavBool && !endNavBool) {
+    if (insideNavBool) {
       prevRoute = router.routes[currentRoute.index - 1];
     }
 
@@ -84,12 +84,19 @@ export default class NavigationTriage extends React.Component<Props, State> {
    **/
   isScreenValid = () => {
     const { medicalCase, questionsInScreen } = this.props;
+    const { endNavBool } = this.state;
 
-    if (questionsInScreen === 0) {
+    if (questionsInScreen.length === 0) {
       return true;
     }
 
-    return medicalCase.nodes.isAnsweredNodes(questionsInScreen);
+    // Verify if all questions of triage stage is answered
+    if (endNavBool) {
+      const triageQuestions = medicalCase.nodes.filterByStage(stage.triage);
+      return medicalCase.nodes.isAllAnswered(triageQuestions);
+    }
+
+    return medicalCase.nodes.isAllAnswered(questionsInScreen);
   };
 
   /**
