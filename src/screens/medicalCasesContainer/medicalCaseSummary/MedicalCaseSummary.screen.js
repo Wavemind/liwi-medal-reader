@@ -29,7 +29,6 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
     const items = [];
 
-    // eslint-disable-next-line no-unused-vars
     for (let index in finalDiagnostics) {
       if (finalDiagnostics.hasOwnProperty(index)) {
         let finalDiagnostic = finalDiagnostics[index];

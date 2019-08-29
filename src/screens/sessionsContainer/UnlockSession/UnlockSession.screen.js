@@ -84,7 +84,6 @@ export default class UnlockSession extends React.Component<Props, State> {
                 index="email"
                 placeholder={t('unlock_session:email')}
                 condensed
-                rounded
                 error={errors}
               />
               <CustomInput
