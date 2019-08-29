@@ -40,7 +40,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       stage = '',
       formula = '',
       fn = [],
-      chiefComplaints = [],
+      cc = [],
     } = props;
 
     this.description = description;
@@ -58,7 +58,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.stage = stage;
     this.formula = formula;
     this.fn = fn;
-    this.chiefComplaints = chiefComplaints;
+    this.cc = cc;
 
     if (this.id === 108 || this.id === 111) {
       this.fn = [
