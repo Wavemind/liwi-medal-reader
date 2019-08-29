@@ -41,7 +41,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       medicalCaseStatus.waitingTriage,
       medicalCaseStatus.waitingConsultation,
       medicalCaseStatus.waitingTest,
-      medicalCaseStatus.waitingDiagnosis,
+      medicalCaseStatus.waitingDiagnostic,
     ],
   };
 
