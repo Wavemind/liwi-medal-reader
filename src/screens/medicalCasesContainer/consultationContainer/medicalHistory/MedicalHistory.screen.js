@@ -43,7 +43,7 @@ export default class MedicalHistory extends React.Component<Props, State> {
     // TODO: waiting for CC array in question to finalize
     filteredQuestions.map((question) => {
       question.dd.map((diagnostic) => {
-        questionsPerChiefComplaints[medicalCase.diagnostics[diagnostic.id].cc].questions.push(question);
+        questionsPerChiefComplaints[medicalCase.diagnostics[diagnostic.id]?.cc]?.questions.push(question);
       });
     });
 

@@ -25,37 +25,19 @@ export const generateInitialBatch = (algorithmJson) => {
 };
 
 export const generateExcludedId = (medicalCase) => {
-
-  // console.time();
-
   for (let index in medicalCase.nodes) {
-    let item = medicalCase.nodes[index];
-    if (
-      item.type === nodesType.finalDiagnostic &&
-      item.excluding_final_diagnostics !== null
-    ) {
-      medicalCase.nodes[
-        item.excluding_final_diagnostics
-      ].excluded_by_final_diagnostics = item.id;
+    if (medicalCase.nodes.hasOwnProperty(index)) {
+      let item = medicalCase.nodes[index];
+      if (
+        item.type === nodesType.finalDiagnostic &&
+        item.excluding_final_diagnostics !== null
+      ) {
+        medicalCase.nodes[
+          item.excluding_final_diagnostics
+        ].excluded_by_final_diagnostics = item.id;
+      }
     }
   }
-  // console.timeEnd();
-
-  // console.time();
-
-  Object.keys(medicalCase.nodes).map((key) => {
-    let item = medicalCase.nodes[key];
-    if (
-      item.type === nodesType.finalDiagnostic &&
-      item.excluding_final_diagnostics !== null
-    ) {
-      medicalCase.nodes[
-        item.excluding_final_diagnostics
-      ].excluded_by_final_diagnostics = item.id;
-    }
-  });
-
-  // console.timeEnd();
 
   // filter array ->
 };
