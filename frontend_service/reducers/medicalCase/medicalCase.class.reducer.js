@@ -13,14 +13,10 @@ import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
 
 export const initialState = null;
 
-/*
+/**
  * Reducer
  * Catch actions from redux / dispatcher
  * Load MedicalCase on it
- *0
- *
- *
- *
  * */
 class MedicalCaseReducer extends ReducerClass {
   initialState = {};
