@@ -17,8 +17,9 @@ type Props = {
   app: {
     logged: boolean,
   },
-  medicalCase: Object
+  medicalCase: Object,
 };
+
 
 class LayoutTemplate extends React.Component<Props> {
 
@@ -44,7 +45,7 @@ class LayoutTemplate extends React.Component<Props> {
                 ref={(navigatorRef) => {
                   NavigationService.setTopLevelNavigator(navigatorRef);
                 }}
-
+                onNavigationStateChange={NavigationService.onNavigationStateChange}
               />
             </RootView>
           </Container>
