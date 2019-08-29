@@ -9,7 +9,6 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/uix/backButton';
 import { nodesType } from '../../../../frontend_service/constants';
-import { calculateCondition } from '../../../../frontend_service/algorithm/algoConditionsHelpers';
 import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
@@ -31,37 +30,40 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
     const items = [];
 
     // eslint-disable-next-line no-unused-vars
-    for (const [index, finalDiagnostic] of finalDiagnostics.entries()) {
-      let condition = calculateCondition(finalDiagnostic);
+    for (let index in finalDiagnostics) {
+      if (finalDiagnostics.hasOwnProperty(index)) {
+        let finalDiagnostic = finalDiagnostics[index];
+        let condition = finalDiagnostic.calculateCondition();
 
-      let type;
-      let style = {};
-      let name;
+        let type;
+        let style = {};
+        let name;
 
-      switch (condition) {
-        case true:
-          type = 'AntDesign';
-          name = 'checkcircle';
-          style.color = liwiColors.greenColor;
-          break;
-        case false:
-          type = 'Entypo';
-          name = 'circle-with-cross';
-          style.color = liwiColors.redColor;
-          break;
-        case null:
-          type = 'AntDesign';
-          name = 'minuscircleo';
-          style.color = liwiColors.darkerGreyColor;
-          break;
+        switch (condition) {
+          case true:
+            type = 'AntDesign';
+            name = 'checkcircle';
+            style.color = liwiColors.greenColor;
+            break;
+          case false:
+            type = 'Entypo';
+            name = 'circle-with-cross';
+            style.color = liwiColors.redColor;
+            break;
+          case null:
+            type = 'AntDesign';
+            name = 'minuscircleo';
+            style.color = liwiColors.darkerGreyColor;
+            break;
+        }
+
+        items.push(
+          <Text style={styles.spaceText} size-auto>
+            <Icon type={type} name={name} style={style} /> -{' '}
+            {finalDiagnostic.id} - {finalDiagnostic.label}
+          </Text>
+        );
       }
-
-      items.push(
-        <Text style={styles.spaceText} size-auto>
-          <Icon type={type} name={name} style={style} /> - {finalDiagnostic.id} -{' '}
-          {finalDiagnostic.label}
-        </Text>,
-      );
     }
 
     return (
@@ -73,9 +75,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
             <Text size-auto>
               {patient.firstname} {patient.lastname}
             </Text>
-            <Text size-auto>
-              {patient.gender}
-            </Text>
+            <Text size-auto>{patient.gender}</Text>
             <Text size-auto>
               {moment(patient.birthdate).format('d MMMM YYYY')}
             </Text>
