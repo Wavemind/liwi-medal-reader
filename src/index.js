@@ -20,8 +20,6 @@ export default class Root extends React.Component {
     if (settings !== null && settings.app !== undefined && settings.app.awake) {
       KeepAwake.activate();
     }
-    // Set local JSON file if server is down for development
-    // await setItem('algorithmes', [algo]);
   }
 
   render() {
