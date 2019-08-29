@@ -239,7 +239,7 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
       const finalDiagnostic = state$.value.nodes[finalDiagnosticId];
 
       // Get the conditions of the node
-      const condition = finalDiagnostic.calculateCondition(state$);
+      const condition = finalDiagnostic.calculateCondition();
 
       // eslint-disable-next-line no-console
       console.log(
