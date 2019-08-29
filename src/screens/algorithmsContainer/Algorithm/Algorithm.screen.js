@@ -26,6 +26,7 @@ export default class Algorithm extends React.Component<Props, State> {
       'algorithm_id',
       algorithmId
     );
+
     let version = find(
       algorithm.versions,
       (al) => al.version === algorithmVersion
