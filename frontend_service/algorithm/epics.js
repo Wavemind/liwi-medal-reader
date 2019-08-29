@@ -1,9 +1,9 @@
-import { ofType } from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
 import find from 'lodash/find';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { actions } from '../../actions/types.actions';
-import { displayFormats, nodesType } from '../../constants';
+import { actions } from '../actions/types.actions';
+import { displayFormats, nodesType } from '../constants';
 import {
   updateConditionValue,
   dispatchFinalDiagnosticAction,
@@ -12,12 +12,12 @@ import {
   dispatchQuestionsSequenceAction,
   setAnswer,
   dispatchFormulaNodeAction,
-} from '../../actions/creators.actions';
+} from '../actions/creators.actions';
 import {
   getParentsNodes,
   getQuestionsSequenceStatus,
-} from '../../algorithm/algoTreeDiagnosis';
-import { calculateFormula } from '../../algorithm/algoConditionsHelpers';
+} from './algoTreeDiagnosis';
+import { calculateFormula } from './algoConditionsHelpers';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 
@@ -368,3 +368,13 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       return of(...actions);
     })
   );
+
+
+export default combineEpics(
+  epicCatchDispatchFormulaNodeAction,
+  epicCatchQuestionsSequenceAction,
+  epicCatchAnswer,
+  epicCatchFinalDiagnosticAction,
+  epicCatchDispatchNodeAction,
+  epicCatchDispatchCondition
+);
