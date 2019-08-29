@@ -59,13 +59,13 @@ export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
 export const calculateFormula = (node) => {
   const state$ = store.getState();
 
-  // Regex to find []
-  const findBrackertId = /\[(.*?)\]/gi;
+  // Regex to find the brackets [] in the formula
+  const findBracketId = /\[(.*?)\]/gi;
   let ready = true;
 
-  // Function to change the [id] into the good value
-  const functionReplacing = (item) => {
-    // Get the id into []
+  // Function to change the [id] into the answered value
+  const replaceBracketToValue = (item) => {
+    // Get the id from the brackets []
     let id = item.match(/\d/g).join('');
 
     // Get value of this node
@@ -79,10 +79,10 @@ export const calculateFormula = (node) => {
     }
   };
 
-  // Find in string each item with functionReplacing
-  let replacer = node.formula.replace(findBrackertId, functionReplacing);
+  // Replace every bracket in the formula with it's value
+  let formula = node.formula.replace(findBracketId, replaceBracketToValue);
 
-  if (ready) return eval(replacer);
+  if (ready) return eval(formula);
 };
 
 /**

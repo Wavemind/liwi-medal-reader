@@ -208,7 +208,6 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
   return parentsNodes;
 };
 
-// TODO not working at 100%, fix it
 /**
  * Get
  *
@@ -247,21 +246,20 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
         return true;
       }
 
-      // IF the child is an other QS
+      // If the child is an other QS
       else if (
         child.id === qs.id &&
         child.type === nodesType.questionsSequence
       ) {
-        // If the sub QS is null and show the sub question
+        // If the sub QS has not a defined value yet, we update the conditionValue of the top level nodes
         if (child.answer === null) {
           getQuestionsSequenceStatus(state$, state$.nodes[child.id], actions);
         }
       }
 
-      // IF the child is an question
+      // If the child is an question
       else if (child.type === nodesType.question) {
-        // Next node is a question, get the state
-        // go deeper
+        // Next node is a question, go deeper
         return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
       } else {
         console.warn(
@@ -307,12 +305,11 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
     }
   });
 
-  // TODO SOME ??
   // For each top parent node
   allNodesAnsweredInQs = topLevelNodes.some((topNode) => {
     let rec = recursiveNodeQs(state$, topNode, qs, actions);
     if (rec) return true;
   });
-  // return actions;
+
   return allNodesAnsweredInQs;
 };

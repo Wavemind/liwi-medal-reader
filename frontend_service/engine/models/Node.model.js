@@ -18,6 +18,4 @@ export class NodeModel implements NodeInterface {
     this.type = type;
     this.reference = reference;
   }
-
-
 }
