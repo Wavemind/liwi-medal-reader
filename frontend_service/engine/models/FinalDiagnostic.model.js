@@ -35,14 +35,17 @@ export class FinalDiagnosticModel extends NodeModel
     this.requirement = new RequirementNodeModel({ ...props });
   }
 
+  /**
+   * Calculate condition to display a final diagnostic
+   * Verify if the final diagnostic excluded an another one
+   */
   calculateCondition = () => {
     // If this FD can be excluded by other high-priority FD
     if (this.excluded_by_final_diagnostics !== null) {
       const state$ = store.getState();
       // If this other high-priority FD is true so this is always false
       if (
-        calculateCondition(state$.nodes[this.excluded_by_final_diagnostics]) ===
-        true
+        calculateCondition(state$.nodes[this.excluded_by_final_diagnostics]) ===  true
       ) {
         return false;
       }

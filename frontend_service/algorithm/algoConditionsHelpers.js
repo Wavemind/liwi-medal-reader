@@ -3,11 +3,11 @@ import reduce from 'lodash/reduce';
 import { store } from '../store';
 
 /**
+ * Main entry to get the condition boolean for a entity
  *
  * @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} node
  * @return {boolean}
  *
- * Main entry to get the condition boolean for a entity
  */
 export const calculateCondition = (node) => {
   // If this is a top parent node
@@ -22,12 +22,12 @@ export const calculateCondition = (node) => {
 };
 
 /**
+ * Loop over top_conditions
+ * Return a array containing multiple boolean
  *
  * @param node
  * @return {array}
  *
- * Loop over top_conditions
- * Return a array containing multiple bollean
  */
 export const returnConditionsArray = (node) =>
   node.top_conditions.map((conditions) =>
@@ -35,11 +35,11 @@ export const returnConditionsArray = (node) =>
   );
 
 /**
+ * Get a array of boolean and return the final boolean between null | true | false
  *
  * @param {array} conditionsArrayBoolean
  * @return {boolean}
  *
- * Get a array of boolean and return the final boolean between null | true | false
  */
 export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
   reduce(
@@ -51,10 +51,11 @@ export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
   );
 
 /**
- * @param node
+ * Parse the formula and calculate it if possible
+ *
+ *  @param node
  * @returns {number}
  *
- * Parse the formula and calculate it if possible
  */
 export const calculateFormula = (node) => {
   const state$ = store.getState();
@@ -86,6 +87,8 @@ export const calculateFormula = (node) => {
 };
 
 /**
+ * Does this node has the right answer ?
+ * If not answered return null
  *
  * @param child
  * @param {number} wantedId
@@ -93,8 +96,6 @@ export const calculateFormula = (node) => {
  * @param {string} conditionType
  * @returns {null|boolean}
  *
- * Does this node has the right answer ?
- * If not answered return null
  */
 const checkOneCondition = (child, wantedId, nodeId, conditionType) => {
   const state$ = store.getState();
@@ -115,11 +116,11 @@ const checkOneCondition = (child, wantedId, nodeId, conditionType) => {
 };
 
 /**
- * @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} child
+ * Check a complete condition by operator
+ *  @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} child
  * @param {top_condition} conditions
  * @returns {null || false || true}
  *
- * Check a complete condition by operator
  */
 export const comparingTopConditions = (child, conditions) => {
   const {
@@ -161,18 +162,19 @@ export const comparingTopConditions = (child, conditions) => {
 };
 
 /**
-*  @params [Boolean] firstBoolean [Boolean] secondBoolean
- * @return [Boolean]
  * Return value from both booleans
-*
-*       | True | False | Null
+        | True | False | Null
  ____________________________
  True  | True | True  | True
  ____________________________
  False | True | False | Null
  ____________________________
  Null  | True | Null  | Null
-* */
+ *
+ * @params [Boolean] firstBoolean [Boolean] secondBoolean
+ * @return [Boolean]
+ *
+ */
 const comparingBooleanOr = (firstBoolean, secondBoolean) => {
   if (firstBoolean === true || secondBoolean === true) {
     return true;

@@ -29,12 +29,18 @@ export class DiagnosticModel implements DiagnosticInterface {
     this.instanceFinalDiagnostic();
   }
 
+  /**
+   * Generate instance for current diagnostic
+   */
   instanceLink() {
     Object.keys(this.instances).map((id) => {
       this.instances[id] = new InstanceModel({ ...this.instances[id] });
     });
   }
 
+  /**
+   * Generate instance of final diagnostic for current diagnostic
+   */
   instanceFinalDiagnostic() {
     Object.keys(this.final_diagnostics).map((id) => {
       this.final_diagnostics[id] = new FinalDiagnosticModel({ ...this.final_diagnostics[id] });

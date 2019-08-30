@@ -59,6 +59,9 @@ export class QuestionsSequenceModel extends NodeModel
     });
   }
 
+  /**
+   * Calculate condition of question sequence and these children
+   */
   calculateCondition = () => {
     return calculateCondition(this);
   };
