@@ -7,7 +7,7 @@ import moment from 'moment';
 import { styles } from './MedicalCaseSummary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
-import BackButton from '../../../components/uix/backButton';
+import BackButton from '../../../components/BackButton';
 import { nodesType } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 
