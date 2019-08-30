@@ -6,7 +6,7 @@ import { Content, Text, View } from 'native-base';
 import { styles } from './ChiefComplaints.style';
 import { categories } from '../../../../../frontend_service/constants';
 import Boolean from '../../../../components/QuestionsContainer/DisplaysContainer/Boolean';
-import NavigationTriage from '../../../../components/uix/NavigationTriage';
+import NavigationTriage from '../../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 

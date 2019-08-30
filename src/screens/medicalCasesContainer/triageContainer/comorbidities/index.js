@@ -7,7 +7,6 @@ const mapStateToProps = (medicalCase) => {
   return { medicalCase };
 };
 
-
 export default connect(
   mapStateToProps
 )(withSessions(withApplication(Comorbidities)));
