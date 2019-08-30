@@ -30,14 +30,14 @@ export default class QuestionList extends React.Component<Props, State> {
       <ScrollView contentContainerStyle={styles.container}>
         {questions.length > 0 ? (
           <View>
-            <Questions questions={questions}/>
+            <Questions questions={questions} />
           </View>
         ) : (
           <View padding-auto margin-auto>
             <Text not-available>{t('work_case:no_questions')}</Text>
           </View>
         )}
-        <NavigationTriage questionsInScreen={questions}/>
+        <NavigationTriage questionsInScreen={questions} />
       </ScrollView>
     );
   }
