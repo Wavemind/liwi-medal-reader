@@ -16,6 +16,9 @@ export class InstanceModel implements InstanceInterface {
     this.children = children;
   }
 
+  /**
+   * Calculate condition to display a question
+   */
   calculateCondition = () => {
     return calculateCondition(this);
   };

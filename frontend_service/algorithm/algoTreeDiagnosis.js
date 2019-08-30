@@ -191,7 +191,7 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
 };
 
 /**
- * Get
+ * Calculate and update questions sequence and their children condition value
  *
  * @trigger When a condition value must be change
  * @payload nodeId: Question or QuestionsSequence
@@ -218,7 +218,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   // If answer is not null We check the condition of this node
   const instanceCondition = calculateCondition(instance);
   let qsFullyAnswered = null;
-  // If instance condition === true
+
   if (instanceCondition === true) {
     qsFullyAnswered = instance.children.some((childId) => {
       let child = state$.value.nodes[childId];

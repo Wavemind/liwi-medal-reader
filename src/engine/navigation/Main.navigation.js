@@ -24,7 +24,7 @@ import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseS
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
 
-// we need to use i18n directly beacause we cant be connect to contexte
+// We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator({
   Home: {
     screen: MainScreen,
@@ -133,23 +133,12 @@ const Stack = createStackNavigator({
     params: {
       showSummary: true,
     },
-    // TODO fix topmenu
-    navigationOptions: () => {
-      return {
-        // headerTitle: DropDownMenu,
-      };
-    },
   },
   Consultation: {
     screen: ConsultationTabNavigator,
     path: 'consultation',
     params: {
       showSummary: true,
-    },
-    navigationOptions: () => {
-      return {
-        // headerTitle: DropDownMenu,
-      };
     },
   },
   Tests: {
@@ -158,11 +147,6 @@ const Stack = createStackNavigator({
     params: {
       showSummary: true,
       dropDownMenu: 'Tests',
-    },
-    navigationOptions: () => {
-      return {
-        // headerTitle: DropDownMenu,
-      };
     },
   },
 });

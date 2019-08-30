@@ -8,6 +8,10 @@ export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
     super(props);
   }
 
+  /**
+   * Calculate condition by answer scored
+   * Sum answer scored and comparing it to the questions sequence scored
+   */
   calculateCondition = () => {
 
     // If this is a top parent node
