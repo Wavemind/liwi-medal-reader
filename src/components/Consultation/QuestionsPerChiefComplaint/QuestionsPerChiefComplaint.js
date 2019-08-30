@@ -42,7 +42,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
 
     filteredQuestions.map((question) => {
       question.dd.map((diagnostic) => {
-        questionsPerChiefComplaints[medicalCase.diagnostics[diagnostic.id]?.cc]?.questions.push(question);
+        questionsPerChiefComplaints[medicalCase.diagnostics[diagnostic.id]?.chief_complaint]?.questions.push(question);
       });
     });
 
