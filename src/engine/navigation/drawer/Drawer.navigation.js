@@ -77,7 +77,7 @@ export default class Drawer extends Component<Props, State> {
                 onPress={() => this.onPress('FirstLookAssessments')}
               >
                 <Text dark style={styles.noLeftPadding}>
-                  {t('menu:assessment')}
+                  {t('menu:first_look_assessments')}
                 </Text>
               </Button>
               <Button
@@ -101,10 +101,10 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('Comorbidities')}
+                onPress={() => this.onPress('ChronicalConditions')}
               >
                 <Text dark style={styles.noLeftPadding}>
-                  {t('menu:comorbidities')}
+                  {t('menu:chronical_conditions')}
                 </Text>
               </Button>
               <Button
