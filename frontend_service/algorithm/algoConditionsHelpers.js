@@ -1,4 +1,3 @@
-// TODO: IN PROGRESS
 import reduce from 'lodash/reduce';
 import { store } from '../store';
 

@@ -24,6 +24,10 @@ export const generateInitialBatch = (algorithmJson) => {
   return algorithmJson; // return is useless, we modifiy ref to caller
 };
 
+
+/*
+* For each medicalCase who exclude other diagnostic, we set the id in both side.
+* */
 export const generateExcludedId = (medicalCase) => {
   for (let index in medicalCase.nodes) {
     if (medicalCase.nodes.hasOwnProperty(index)) {
@@ -38,8 +42,6 @@ export const generateExcludedId = (medicalCase) => {
       }
     }
   }
-
-  // filter array ->
 };
 
 // @param [Json] algorithmJsonMedicalCase
@@ -254,7 +256,6 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
         );
       }
 
-      // we have children and and can continue
     });
 
     if (qsFullyAnswered === true) {
