@@ -149,7 +149,7 @@ class MedicalCaseReducer extends ReducerClass {
 
             case 'between':
               return (
-                value >= Number(answerCondition.value.split(',')[0]) &&
+                value >= Number(answerCondition.value.split(',').first()) &&
                 value < Number(answerCondition.value.split(',')[1])
               );
           }
