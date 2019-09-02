@@ -15,28 +15,21 @@ type State = {};
 export default class ChiefComplaints extends React.Component<Props, State> {
   state = {
     widthView: 0,
-    questions: [],
   };
 
-  // Fetch first look assessment questions and order it
-  componentWillMount() {
-    const { medicalCase } = this.props;
+  render() {
+    const {
+      medicalCase,
+      app: { t },
+    } = this.props;
+
+    const { widthView } = this.state;
+    const orders = medicalCase.triage.orders[categories.chiefComplaint];
     let questions = [];
-    const orders = medicalCase.triage_orders[categories.chiefComplaint];
 
     orders.map((order) => {
       questions.push(medicalCase.nodes[order]);
     });
-
-    this.setState({questions});
-  }
-
-  render() {
-    const { app: { t } } = this.props;
-    const {
-      widthView,
-      questions,
-    } = this.state;
 
     return (
       <Content style={styles.container}>

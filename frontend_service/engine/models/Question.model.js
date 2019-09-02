@@ -69,4 +69,26 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       ];
     }
   }
+
+  /**
+   * Calculate condition to display triage question
+   * @params medicalCase : object
+   * @return isDisplayed : boolean
+   */
+  isDisplayedInTriage(medicalCase) {
+    const conditions = medicalCase.triage.conditions;
+    let isDisplayed = true;
+
+    // Skip if there is no conditions
+    if (conditions?.[this.id] !== undefined) {
+      isDisplayed = false;
+      conditions[this.id].map((condition) => {
+        if (medicalCase.nodes[condition.chief_complaint_id].answer === condition.answer_id) {
+          isDisplayed = true;
+        }
+      });
+    }
+
+    return isDisplayed;
+  }
 }

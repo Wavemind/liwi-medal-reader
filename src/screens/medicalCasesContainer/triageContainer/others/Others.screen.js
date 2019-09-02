@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { categories } from '../../../../../frontend_service/constants';
+import type { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
+import { categories } from '../../../../../frontend_service/constants';
 import QuestionList from '../../../../components/Triage/QuestionList';
 
 type Props = NavigationScreenProps & {};
@@ -11,25 +11,17 @@ type State = StateApplicationContext & {};
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Others extends React.Component<Props, State> {
-  state: {
-    questions: []
-  };
-
-  // Fetch first look assessment questions and order it
-  componentWillMount() {
+  render() {
     const { medicalCase } = this.props;
     let questions = [];
-    const orders = medicalCase.triage_orders[categories.other];
+    const orderedQuestions = medicalCase.triage.orders[categories.other];
 
-    orders.map((order) => {
-      questions.push(medicalCase.nodes[order]);
+    orderedQuestions.map((orderedQuestion) => {
+      let question = medicalCase.nodes[orderedQuestion];
+      if (question.isDisplayedInTriage(medicalCase)) {
+        questions.push(question);
+      }
     });
-
-    this.setState({questions});
-  }
-
-  render() {
-    const { questions } = this.state;
 
     return (
       <QuestionList questions={questions} />
