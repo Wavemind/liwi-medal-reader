@@ -14,7 +14,7 @@ export const generateInitialBatch = (algorithmJson) => {
   ];
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].priority === priorities.triage) {
-      algorithmJson.batches[0].nodes.push(nodeId);
+      algorithmJson.batches?.first().nodes.push(nodeId);
     }
 
     if (nodes[nodeId].priority === priorities.mandatory) {

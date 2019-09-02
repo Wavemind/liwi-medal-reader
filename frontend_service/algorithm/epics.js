@@ -183,7 +183,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       if (questionsSequenceCondition === true) {
         answerId =
           currentQuestionsSequence.answers[
-            Object.keys(currentQuestionsSequence.answers)[0]
+            Object.keys(currentQuestionsSequence.answers).first()
           ].id;
       } else if (questionsSequenceCondition === false) {
         answerId =
