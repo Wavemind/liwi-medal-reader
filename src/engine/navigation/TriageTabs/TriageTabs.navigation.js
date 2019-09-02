@@ -69,11 +69,11 @@ export default class TriageTabs extends Component<Props, State> {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.onPress('Vaccinations')}
+            onPress={() => this.onPress('Others')}
             style={styles.touchable}
           >
             {this._renderRound(5, index === 4)}
-            <Text center>{t('triage:vaccination')}</Text>
+            <Text center>{t('triage:other')}</Text>
           </TouchableOpacity>
         </View>
       </View>

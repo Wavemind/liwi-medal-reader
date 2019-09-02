@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from 'react-navigation';
 import FirstLookAssessments from '../../screens/medicalCasesContainer/triageContainer/firstLookAssessments';
 import ChiefComplaints from '../../screens/medicalCasesContainer/triageContainer/chiefComplaints';
 import ChronicalConditions from '../../screens/medicalCasesContainer/triageContainer/chronicalConditions';
-import Vaccinations from '../../screens/medicalCasesContainer/triageContainer/vaccinations';
+import Others from '../../screens/medicalCasesContainer/triageContainer/others';
 import VitalSigns from '../../screens/medicalCasesContainer/triageContainer/vitalSigns';
 import TriageTabs from './TriageTabs';
 
@@ -38,8 +38,8 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
         dropDownMenu: 'Triage'
       },
     },
-    Vaccinations: {
-      screen: Vaccinations,
+    Others: {
+      screen: Others,
       params: {
         showSummary: true,
         dropDownMenu: 'Triage'

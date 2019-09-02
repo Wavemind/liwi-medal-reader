@@ -38,7 +38,7 @@ i18n
           first_look_assessment: 'First look Assessments',
           vital: 'Vital Signs',
           chronical_condition: 'Chronical conditions',
-          vaccination: 'Vaccination history',
+          other: 'Others',
           chief: 'Chief complaints',
         },
         form: {
@@ -58,8 +58,7 @@ i18n
           first_look_assessments: 'First look assessment',
           vital_signs: 'Vital signs',
           chronical_conditions: 'Chronical conditions',
-          vacciantion_history: 'Vaccination history',
-          chief_complaint: 'Chief complaint categories',
+          chief_complaints: 'Chief complaint categories',
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
@@ -68,6 +67,7 @@ i18n
           strategy: 'Diagnoses and strategy',
           search: 'Search a patient',
           add: 'Add a patient',
+          others: 'Others',
         },
         medical_case: {
           waiting_triage: 'Waiting for triage',

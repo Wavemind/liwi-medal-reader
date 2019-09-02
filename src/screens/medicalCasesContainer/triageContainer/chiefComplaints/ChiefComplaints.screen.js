@@ -12,7 +12,7 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class ChronicalConditions extends React.Component<Props, State> {
+export default class ChiefComplaints extends React.Component<Props, State> {
   state = {
     widthView: 0,
     questions: [],
