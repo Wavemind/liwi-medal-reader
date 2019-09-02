@@ -18,6 +18,18 @@ function navigate(routeName, params = {}) {
   );
 }
 
+function getActiveRouteName(navigationState) {
+  if (!navigationState) {
+    return null;
+  }
+  const route = navigationState.routes[navigationState.index];
+  // dive into nested navigators
+  if (route.routes) {
+    return getActiveRouteName(route);
+  }
+  return route.routeName;
+}
+
 // When we call this method, we get the current route, because the tree from react-navigaton is special
 function getCurrentRoute() {
   let route = _navigator.state.nav;
@@ -49,7 +61,19 @@ function resetActionStack(routeName, params) {
   _navigator.dispatch(resetAction);
 }
 
+// eslint-disable-next-line no-unused-vars
+function onNavigationStateChange(prevState, currentState, action) {
+
+  // eslint-disable-next-line no-unused-vars
+  let current = getActiveRouteName(currentState);
+
+  // here update statu of medicalcase in the case of entering route name
+
+}
+
 export default {
+  getActiveRouteName,
+  onNavigationStateChange,
   resetActionStack,
   getRouter,
   navigate,

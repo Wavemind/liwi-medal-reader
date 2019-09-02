@@ -3,9 +3,10 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
-import { Image } from 'react-native';
 import { LeftButton, RightButton } from '../../../../template/layout';
 import { categories } from '../../../../../frontend_service/constants';
+import { liwiColors } from '../../../../utils/constants';
+import { styles } from './Boolean.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -26,12 +27,12 @@ export default class Boolean extends React.Component<Props, State> {
   }
 
   _handleClick = (answer) => {
-    const { question, setQuestion } = this.props;
+    const { question, setAnswer } = this.props;
     let newAnswer = Number(answer);
 
-    // Break if chiefcomplain
+    // Break if chiefComplaint
     if (
-      question.category === categories.chiefComplain &&
+      question.category === categories.chiefComplaint &&
       answer === question.answer
     ) {
       return null;
@@ -41,11 +42,12 @@ export default class Boolean extends React.Component<Props, State> {
       newAnswer = null;
     }
 
-    setQuestion(question.id, newAnswer);
+    setAnswer(question.id, newAnswer);
   };
 
   render = () => {
     const {
+      app: { t },
       question: { answer, answers, label, category },
       widthView,
       index,
@@ -63,14 +65,13 @@ export default class Boolean extends React.Component<Props, State> {
     let activeStyle;
     let idOnPress;
     let concatStyle;
-    let styleImage;
 
     let RenderJsx;
 
     // By the type of boolean node
     switch (category) {
       // If this is a chief complain
-      case categories.chiefComplain:
+      case categories.chiefComplaint:
         // onlayout isn't set
         if (widthView === 0) {
           RenderJsx = () => null;
@@ -105,30 +106,28 @@ export default class Boolean extends React.Component<Props, State> {
           idOnPress = idYes;
         } else if (answer === idYes) {
           activeStyle = {
-            backgroundColor: 'rgba(0,153,0,0.2)',
+            borderColor: liwiColors.greenColor,
           };
           idOnPress = idNo;
         } else if (answer === idNo) {
           idOnPress = idYes;
           activeStyle = {
-            backgroundColor: 'rgba(255,51,0,0.2)',
-            opacity: 0.3,
+            borderColor: liwiColors.redColor,
           };
         }
 
         concatStyle = {
-          elevation: 1,
           width: sizeButton,
           flexDirection: 'column',
           height: sizeButton,
+          borderColor: liwiColors.darkGreyColor,
           ...styleMargin,
           ...activeStyle,
           justifyContent: 'space-between',
-        };
-
-        styleImage = {
-          width: 40,
-          height: 40,
+          backgroundColor: liwiColors.whiteColor,
+          borderWidth: 2.5,
+          paddingTop: 0,
+          paddingBottom: 0,
         };
 
         // Only one button for this type of node
@@ -139,25 +138,16 @@ export default class Boolean extends React.Component<Props, State> {
             style={concatStyle}
             light
           >
-            <Image
-              source={require('../../../../../assets/images/home.png')}
-              style={styleImage}
-            />
-            <Text center>{label}</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                padding: 0,
-                margin: 0,
-              }}
-            >
+            <View chiefComplaints>
+              <Text center size-auto>{label}</Text>
+            </View>
+            <View style={styles.bottomInput}>
               <LeftButton
                 active={answer === idYes}
                 onPress={() => this._handleClick(idYes)}
               >
                 <Text white={answer === idYes} center>
-                  Oui
+                  {t('question:yes')}
                 </Text>
               </LeftButton>
 
@@ -166,7 +156,7 @@ export default class Boolean extends React.Component<Props, State> {
                 active={answer === idNo}
               >
                 <Text center white={answer === idNo}>
-                  Non
+                  {t('question:no')}
                 </Text>
               </RightButton>
             </View>
@@ -182,7 +172,7 @@ export default class Boolean extends React.Component<Props, State> {
               onPress={() => this._handleClick(idYes)}
             >
               <Text white={answer === idYes} center>
-                Oui
+                {t('question:yes')}
               </Text>
             </LeftButton>
             <RightButton
@@ -190,7 +180,7 @@ export default class Boolean extends React.Component<Props, State> {
               active={answer === idNo}
             >
               <Text center white={answer === idNo}>
-                Non
+                {t('question:no')}
               </Text>
             </RightButton>
           </View>

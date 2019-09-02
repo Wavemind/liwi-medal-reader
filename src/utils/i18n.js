@@ -9,8 +9,10 @@ const languageDetector = {
     const deviceLocale = DeviceInfo.getDeviceLocale();
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => {
+  },
+  cacheUserLanguage: () => {
+  },
 };
 
 i18n
@@ -34,7 +36,7 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Vital Signes',
+          vital: 'Vital Signs',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
           chief: 'Chief complaints',
@@ -45,6 +47,11 @@ i18n
           edit: 'Edit',
           back: 'Back',
           next: 'Next',
+          next_stage: 'Next stage'
+        },
+        question: {
+          yes: 'Yes',
+          no: 'No',
         },
         menu: {
           triage: 'Triage',
@@ -69,8 +76,8 @@ i18n
           consultation: 'Consultation',
           waiting_test: 'Waiting for test',
           test: 'Test',
-          waiting_diagnosis: 'Wait for diagnosis',
-          diagnosis: 'Diagnosis',
+          waiting_final_diagnostic: 'Wait for diagnosis',
+          final_diagnostic: 'Diagnosis',
           close: 'Close',
         },
         settings: {
@@ -85,6 +92,7 @@ i18n
           medical_cases: 'Medical cases',
           no_medical_cases: 'No medical cases',
           no_algorithms: 'No algorithms in memory',
+          no_questions: 'There are no questions for this category'
         },
         patient_detail: {},
         patient_upsert: {
@@ -105,8 +113,8 @@ i18n
           waiting_triage: 'Triage',
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
-          waiting_diagnosis: 'Diagnosis',
-          case_in_progress: 'a case is open'
+          waiting_diagnostics: 'Diagnosis',
+          case_in_progress: 'a case is open',
         },
         medical_case_list: {
           all: 'All',
@@ -184,13 +192,13 @@ i18n
         navigation: {
           medical_case_list: 'Case in progress',
           home: 'Home',
-          patient_upsert: 'patient',
+          patient_upsert: 'Patient',
           patient_list: 'Patient list',
           patient_search: 'Search a patient',
           patient_profile: 'Patient profile',
           case_in_progress: 'Case in progress',
           synchronize: 'Synchronize',
-          patient_add: 'Patient add',
+          patient_add: 'New patient',
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
@@ -205,10 +213,10 @@ i18n
         notifications: {
           empty_code: 'Your code is empty, please write it',
           invalid_code: ' Your local code is invalid, please try again',
-          session_does_not_exist:
-            'Your local user does not exist, please try again',
+          session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: 'You don\'t have internet connection',
+          algorithm_updated: 'Your algorithm has been updated'
         },
       },
       fr: {
@@ -218,10 +226,8 @@ i18n
         },
         notifications: {
           empty_code: 'Votre code est vide, veuillez l\'écrire',
-          invalid_code:
-            ' Votre code local n\'est pas valide, veuillez réessayer.',
-          session_does_not_exist:
-            'Cet utilisateur local n\'existe pas, veuillez réessayer.',
+          invalid_code: 'Votre code local n\'est pas valide, veuillez réessayer.',
+          session_does_not_exist: 'Cet utilisateur local n\'existe pas, veuillez réessayer.',
           session_already_exist: 'La session existe déjà',
           no_internet: 'Vous n\'avez pas de connexion internet',
         },
@@ -232,7 +238,7 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Vital Signes',
+          vital: 'Vital Signs',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
           chief: 'Chief complaints',

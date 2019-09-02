@@ -6,7 +6,7 @@ import { Content, Text, View } from 'native-base';
 import { styles } from './ChiefComplaints.style';
 import { categories } from '../../../../../frontend_service/constants';
 import Boolean from '../../../../components/QuestionsContainer/DisplaysContainer/Boolean';
-import NavigationTriage from '../../../../components/uix/NavigationTriage';
+import NavigationTriage from '../../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 
@@ -22,7 +22,7 @@ export default class ChiefComplaint extends React.Component<Props, State> {
     const { medicalCase, app: { t } } = this.props;
     const { widthView } = this.state;
     let questions = medicalCase.nodes.filterByCategory(
-      categories.chiefComplain
+      categories.chiefComplaint
     );
 
     return (
@@ -44,7 +44,7 @@ export default class ChiefComplaint extends React.Component<Props, State> {
             <Text not-available>{t('work_case:no_questions')}</Text>
           </View>
         )}
-        <NavigationTriage />
+        <NavigationTriage questionsInScreen={questions} />
       </Content>
     );
   }

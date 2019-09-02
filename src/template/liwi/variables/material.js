@@ -107,7 +107,7 @@ export default {
   // Color
   brandPrimary: '#e74c3c',
   brandInfo: '#62B1F6',
-  brandSuccess: '#5cb85c',
+  brandSuccess: '#4CAF50',
   brandDanger: '#d9534f',
   brandWarning: '#f0ad4e',
   brandDark: '#000',

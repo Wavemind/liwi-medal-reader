@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Fab, Icon, View } from 'native-base';
+import RNRestart from 'react-native-restart';
 import { clearLocalStorage, clearPatients } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 
@@ -12,38 +13,54 @@ export default class WavemindTools extends Component {
   }
 
   render() {
-    const {active} = this.state;
+    const { active } = this.state;
+
     return (
       <View>
         <Fab
           active={active}
           direction="up"
           containerStyle={{}}
-          style={{ backgroundColor: '#5067FF' }}
+          style={{ backgroundColor: '#ffb21d' }}
           position="bottomRight"
           onPress={() => this.setState({ active: !active })}
         >
-          <Icon name="developer-mode" type='MaterialIcons' />
-          <Button
-            blue
-            onPress={async () => {
-              await clearPatients();
-              NavigationService.navigate('SignIn');
-              this.forceUpdate();
-            }}
-          >
-            <Icon type='AntDesign' name="deleteusergroup" />
-          </Button>
-          <Button
-            blue
-            onPress={async () => {
-              await clearLocalStorage();
-              NavigationService.navigate('SignIn');
-              this.forceUpdate();
-            }}
-          >
-            <Icon type='MaterialCommunityIcons' name="delete-forever" />
-          </Button>
+          <Icon name="developer-mode" type="MaterialIcons" />
+          {active
+            ? [
+              <Button
+                key="delete-button"
+                blue
+                onPress={async () => {
+                    await clearPatients();
+                    NavigationService.navigate('SignIn');
+                    await RNRestart.Restart();
+                  }}
+              >
+                <Icon type="AntDesign" name="deleteusergroup" />
+              </Button>,
+              <Button
+                key="delete-button"
+                blue
+                onPress={async () => {
+                    await clearLocalStorage();
+                    NavigationService.navigate('SignIn');
+                    await RNRestart.Restart();
+                  }}
+              >
+                <Icon type="MaterialCommunityIcons" name="delete-forever" />
+              </Button>,
+              <Button
+                key="reload-button"
+                blue
+                onPress={async () => {
+                    await RNRestart.Restart();
+                  }}
+              >
+                <Icon type="SimpleLineIcons" name="reload" />
+              </Button>,
+              ]
+            : null}
         </Fab>
       </View>
     );

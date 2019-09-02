@@ -13,7 +13,7 @@ interface NodeInterface {
 
 export class NodeModel implements NodeInterface {
   constructor(props) {
-    const { id = 0, type = '', reference = ''} = props;
+    const { id = 0, type = '', reference = '' } = props;
     this.id = id;
     this.type = type;
     this.reference = reference;

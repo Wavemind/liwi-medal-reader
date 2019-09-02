@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Radio from './Radio';
-import { setQuestion } from '../../../../../frontend_service/actions/creators.actions';
+import { setAnswer } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
@@ -8,7 +8,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setQuestion: (index, value) => dispatch(setQuestion(index, value)),
+    setAnswer: (index, value) => dispatch(setAnswer(index, value)),
   };
 };
 export default connect(

@@ -166,6 +166,7 @@ export default class Drawer extends Component<Props, State> {
                   style={[styles.icon, styles.margin0]}
                   white
                   name="search"
+                  onPress={() => this.onPress('PatientList')}
                 />
                 <Text white>{t('menu:search')}</Text>
               </Button>
@@ -174,6 +175,7 @@ export default class Drawer extends Component<Props, State> {
                   style={[styles.icon, styles.margin0]}
                   white
                   name="person"
+                  onPress={() => this.onPress('PatientUpsert')}
                 />
                 <Text white>{t('menu:add')}</Text>
               </Button>

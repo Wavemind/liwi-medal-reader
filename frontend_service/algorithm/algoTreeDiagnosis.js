@@ -1,10 +1,7 @@
-import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
-import {
-  conditionValueQSChange,
-  questionsSequencesChildren,
-} from '../actions/creators.actions';
+import { updateConditionValue } from '../actions/creators.actions';
+import { calculateCondition } from './algoConditionsHelpers';
 
 // Create the first batch from json based on triage priority
 // TODO : Maybe build an object instead of rewriting the json
@@ -17,7 +14,7 @@ export const generateInitialBatch = (algorithmJson) => {
   ];
   Object.keys(nodes).map((nodeId) => {
     if (nodes[nodeId].priority === priorities.triage) {
-      algorithmJson.batches[0].nodes.push(nodeId);
+      algorithmJson.batches?.first().nodes.push(nodeId);
     }
 
     if (nodes[nodeId].priority === priorities.mandatory) {
@@ -27,23 +24,65 @@ export const generateInitialBatch = (algorithmJson) => {
   return algorithmJson; // return is useless, we modifiy ref to caller
 };
 
+
+/*
+* For each medicalCase who exclude other diagnostic, we set the id in both side.
+* */
+export const generateExcludedId = (medicalCase) => {
+  for (let index in medicalCase.nodes) {
+    if (medicalCase.nodes.hasOwnProperty(index)) {
+      let item = medicalCase.nodes[index];
+      if (
+        item.type === nodesType.finalDiagnostic &&
+        item.excluding_final_diagnostics !== null
+      ) {
+        medicalCase.nodes[
+          item.excluding_final_diagnostics
+        ].excluded_by_final_diagnostics = item.id;
+      }
+    }
+  }
+};
+
 // @param [Json] algorithmJsonMedicalCase
 // @return [Json] algorithmJsonMedicalCase
 // Set condition values of question in order to prepare them for second batch (before the triage one)
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
-  const { diseases, nodes } = algorithmJsonMedicalCase;
+  const { diagnostics, nodes } = algorithmJsonMedicalCase;
 
   try {
     Object.keys(nodes).map((nodeId) => {
       if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
         nodes[nodeId].dd.map((dd) => {
           dd.conditionValue =
-            diseases[dd.id].nodes[nodeId].top_conditions.length === 0;
+            diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
         });
 
         // Map trough PS if it is in an another PS itself
         nodes[nodeId].qs.map((qs) => {
           setParentConditionValue(algorithmJsonMedicalCase, qs.id, nodeId);
+        });
+      }
+    });
+
+    // Set question Formula
+    Object.keys(nodes).map((nodeId) => {
+      if (nodes[nodeId].type.match(/Question/)) {
+        // TODO remove it when json ready
+        if (nodeId == 108 || nodeId == 111) {
+          nodes[nodeId].fn = [
+            {
+              id: 278,
+              conditionValue: false,
+            },
+          ];
+        } else {
+          nodes[nodeId].fn = [];
+        }
+        nodes[nodeId].fn.map((fn) => {
+          let fdd = nodes[fn.id].dd.some((e) => e.conditionValue);
+          let fqs = nodes[fn.id].qs.some((e) => e.conditionValue);
+          if (fdd || fqs) fn.conditionValue = true;
         });
       }
     });
@@ -62,13 +101,13 @@ export const setParentConditionValue = (
   id
 ) => {
   let conditionValue = false;
-  const { diseases, nodes } = algorithmJsonMedicalCase;
+  const { diagnostics, nodes } = algorithmJsonMedicalCase;
 
   // Set condition value for DD if there is any
   if (!nodes[parentId].dd.isEmpty()) {
     nodes[parentId].dd.map((dd) => {
       dd.conditionValue =
-        diseases[dd.id].nodes[parentId].top_conditions.length === 0;
+        diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
     });
     conditionValue = true;
   }
@@ -86,7 +125,8 @@ export const setParentConditionValue = (
   nodes[id].qs.map((qs) => {
     if (qs.id === parentId) {
       qs.conditionValue =
-        nodes[qs.id].nodes[id].top_conditions.length === 0 && conditionValue;
+        nodes[qs.id].instances[id].top_conditions.length === 0 &&
+        conditionValue;
     }
   });
 };
@@ -135,204 +175,124 @@ export const generateNextBatch = (algorithmJsonMedicalCase) => {
   return algorithmJsonMedicalCase;
 };
 
-// Node from diseases !
-export const getParentsOfThisNode = (state$, diseaseId, nodeId) => {
-  let parents = [];
+// Node from diagnostics !
+export const getParentsNodes = (state$, diagnosticId, nodeId) => {
+  let parentsNodes = [];
 
   let top_conditions =
-    state$.value.diseases[diseaseId].nodes[nodeId].top_conditions;
+    state$.value.diagnostics[diagnosticId].instances[nodeId].top_conditions;
 
   top_conditions.map((top) => {
-    parents.push(top.first_node_id);
+    parentsNodes.push(top.first_node_id);
     if (top.second_type !== null) {
-      parents.push(top.second_node_id);
+      parentsNodes.push(top.second_node_id);
     }
   });
 
-  return parents;
+  return parentsNodes;
 };
 
-// TODO not working at 100%, fix it
-const recursiveNodePs = (state$, node, qs, actions) => {
-  let findConditionValueQs = find(
-    state$.value.nodes[node.id].qs,
-    (p) => p.id === qs.id
-  ).conditionValue;
+/**
+ * Calculate and update questions sequence and their children condition value
+ *
+ * @trigger When a condition value must be change
+ * @payload nodeId: Question or QuestionsSequence
+ * @payload callerId: Diagnostic or QuestionsSequence
+ * @payload value: new condition value
+ * @payload type: define if it's a diagnostic or a question sequence
+ */
+const recursiveNodeQs = (state$, instance, qs, actions) => {
+  let currentNode = state$.value.nodes[instance.id];
 
-  // if not answered we show it
-  if (
-    state$.value.nodes[node.id].answer === null &&
-    findConditionValueQs.conditionValue === false
-  ) {
-    return actions.push(conditionValueQSChange(node.id, qs.id, true));
+  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id)
+    .conditionValue;
+
+  // If the node is not shown is this QS we change the conditon value to show it
+  if (instanceConditionValue === false) {
+    actions.push(updateConditionValue(instance.id, qs.id, true, qs.type));
   }
 
-  if (
-    state$.value.nodes[node.id].answer === null &&
-    findConditionValueQs === true
-  ) {
-    // the question is not answered but already shown, and stop and wait on the user
-    return;
+  // if the node isn't answered yet we stop the algo
+  if (currentNode.answer === null) {
+    return false;
   }
 
-  // We check the condition of this node
-  const nodeCondition = nodeConditionChecker(state$, null, null, node);
+  // If answer is not null We check the condition of this node
+  const instanceCondition = calculateCondition(instance);
+  let qsFullyAnswered = null;
 
-  // If top parent or condition === true
-  if (nodeCondition === true) {
-    node.children.map((nodeChildID) => {
-      let nodeChild = state$.value.nodes[nodeChildID];
+  if (instanceCondition === true) {
+    qsFullyAnswered = instance.children.some((childId) => {
+      let child = state$.value.nodes[childId];
 
-      // IF the child is OUR PS
-      if (nodeChildID === qs.id && nodeChild.type === nodesType.qs) {
-        // Top parent and child is QS
+      if (child.id === qs.id && child.type === nodesType.questionsSequence) {
         // The branch is open and we can set the answer of this QS
-        return;
-        //return nodeConditionChecker(state$, null, null, qs);
+        return true;
       }
 
-      // IF the child is an other QS
-      if (nodeChild.type === nodesType.qs && nodeChildID !== qs.id) {
-        console.warn(nodeChild, 'Get state of this other PS');
-
-        // If the sub QS is null and show the sub question
-        if (state$.value.nodes[nodeChild.id].answer === null) {
-          actions.push(questionsSequencesChildren(nodeChild.id, qs.id));
-        } else {
-          recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
+      // If the child is an other QS
+      else if (
+        child.id === qs.id &&
+        child.type === nodesType.questionsSequence
+      ) {
+        // If the sub QS has not a defined value yet, we update the conditionValue of the top level nodes
+        if (child.answer === null) {
+          getQuestionsSequenceStatus(state$, state$.nodes[child.id], actions);
         }
       }
 
-      // IF the child is an question
-      if (nodeChild.type === nodesType.q) {
-        // Next node is a question, get the state
-        // go deeper
-        recursiveNodePs(state$, qs.nodes[nodeChild.id], qs, actions);
+      // If the child is an question
+      else if (child.type === nodesType.question) {
+        // Next node is a question, go deeper
+        return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+      } else {
+        console.warn(
+          '%c --- DANGER --- ',
+          'background: #FF0000; color: #F6F3ED; padding: 5px',
+          'This QS',
+          qs,
+          'You do not have to be here !! child in QS is wrong for : ',
+          child
+        );
       }
+
     });
-  }
-};
 
-// TODO as well
-export const getStateToThisPs = (state$, qs, actions) => {
-  let nodeTopParent = [];
-
-  // Get top parent nodes
-  Object.keys(qs.nodes).map((nodeId) => {
-    if (qs.nodes[nodeId].top_conditions.length === 0) {
-      nodeTopParent.push(qs.nodes[nodeId]);
+    if (qsFullyAnswered === true) {
+      return qsFullyAnswered;
     }
-  });
-  // For each top parent node
-  nodeTopParent.map((topParent) =>
-    recursiveNodePs(state$, topParent, qs, actions)
-  );
-  return actions;
-};
-
-// TODO: IN PROGRESS
-export const nodeConditionChecker = (state$, indexDD, indexChild, child) => {
-
-  // If this is a top parent node
-  if (child.top_conditions.length === 0) {
-    return true;
-  }
-
-  // Loop for top_conditions
-  let conditionFinal = child.top_conditions.map((conditions) => {
-    return comparingTopConditions(state$, child, conditions);
-  });
-  // reduce here
-
-  const reduceConditionArrayBoolean = reduce(
-    conditionFinal,
-    (result, value) => {
-      return comparingBooleanOr(result, value);
-    },
-    false
-  );
-
-  return reduceConditionArrayBoolean;
-};
-
-// TODO: IN PROGRESS
-const checkOneCondition = (state$, child, wantedId, nodeId, conditionType) => {
-  switch (conditionType) {
-    case 'Answer':
-      if (state$.value.nodes[nodeId].answer !== null) {
-        // pas sur
-        //  Unless it's a priority.
-        return state$.value.nodes[nodeId].answer === wantedId;
-      }
-
-      return null;
-
-    case 'Condition':
-      // TODO here check the id condition nested hooo....
-      break;
-  }
-};
-
-// TODO: IN PROGRESS
-const comparingTopConditions = (state$, child, conditions) => {
-  const {
-    first_id,
-    first_node_id,
-    first_type,
-    operator,
-    second_node_id,
-    second_id,
-    second_type,
-  } = conditions;
-  let second_sub_condition;
-  let first_sub_condition;
-
-  first_sub_condition = checkOneCondition(
-    state$,
-    child,
-    first_id,
-    first_node_id,
-    first_type
-  );
-
-  if (operator === null) {
-    return first_sub_condition;
   } else {
-    second_sub_condition = checkOneCondition(
-      state$,
-      child,
-      second_id,
-      second_node_id,
-      second_type
-    );
-
-    if (operator === 'AND') {
-      return first_sub_condition && second_sub_condition;
-    } else if (operator === 'OR') {
-      return comparingBooleanOr(first_sub_condition, second_sub_condition);
-    }
+    // The node hasn't the expected answer so we stop the algo
+    return false;
   }
-  return null;
 };
 
-// @params [Boolean] firstBoolean [Boolean] secondBoolean
-// @return [Boolean]
-// Return value from both booleans
-//
-//       | True | False | Null
-// ____________________________
-// True  | True | True  | True
-// ____________________________
-// False | True | False | Null
-// ____________________________
-// Null  | True | Null  | Null
-//
-const comparingBooleanOr = (firstBoolean, secondBoolean) => {
-  if (firstBoolean === true || secondBoolean === true) {
-    return true;
-  } else if (firstBoolean === false && secondBoolean === false) {
-    return false;
-  } else if (firstBoolean === null || secondBoolean === null) {
-    return null;
-  }
+/**
+ * 1. Get all nodes without conditons
+ * 2. On each node we do work on his children (like change conditon value or check conditon of the child)
+ * 3. Update Recursive QS
+ *
+ * @return boolean: can we calculate this QS ?
+ * @params state$: All the state of the reducer
+ * @params qs: The QS we want to get the status
+ * @params actions: The array of Redux Actions
+ */
+export const getQuestionsSequenceStatus = (state$, qs, actions) => {
+  let topLevelNodes = [];
+  let allNodesAnsweredInQs = false;
+
+  // Set top Level Nodes
+  Object.keys(qs.instances).map((nodeId) => {
+    if (qs.instances[nodeId].top_conditions.length === 0) {
+      topLevelNodes.push(qs.instances[nodeId]);
+    }
+  });
+
+  // For each top parent node
+  allNodesAnsweredInQs = topLevelNodes.some((topNode) => {
+    let rec = recursiveNodeQs(state$, topNode, qs, actions);
+    if (rec) return true;
+  });
+
+  return allNodesAnsweredInQs;
 };

@@ -98,7 +98,7 @@ export const getArray = async (item) => {
 
 // @params [Object] medicalCase
 // Set medical case in local storage
-export const setMedicalCase = async (medicalCase) => {
+export const storeMedicalCase = async (medicalCase) => {
   let patients = await getItems('patients');
 
   if (Array.isArray(patients)) {

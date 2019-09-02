@@ -1,25 +1,21 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { Text } from 'native-base';
-import { ScrollView } from 'react-native';
-import NavigationTriage from '../../../../components/uix/NavigationTriage';
+import type { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
+import QuestionList from '../../../../components/Triage/QuestionList';
 
 type Props = NavigationScreenProps & {};
+type State = StateApplicationContext & {};
 
-type State = {};
-
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Comorbidities extends React.Component<Props, State> {
-  // default settings
-  state = {};
 
   render() {
+    let questions = [];
+
     return (
-      <ScrollView>
-        <Text>Comorbidities</Text>
-        <NavigationTriage />
-      </ScrollView>
+      <QuestionList questions={questions} />
     );
   }
 }

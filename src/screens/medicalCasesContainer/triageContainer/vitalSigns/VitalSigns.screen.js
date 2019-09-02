@@ -6,7 +6,7 @@ import { Col, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import CustomInput from '../../../../components/InputContainer/CustomInput';
 import { styles } from './VitalSigns.style';
-import NavigationTriage from '../../../../components/uix/NavigationTriage';
+import NavigationTriage from '../../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 

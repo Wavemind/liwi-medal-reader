@@ -15,6 +15,10 @@ export default {
       },
       '.spaced': {
         marginBottom: 10,
+      },
+      '.condensed': {
+        paddingTop: 7,
+        paddingBottom: 7
       }
     },
   },

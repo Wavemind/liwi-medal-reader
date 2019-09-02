@@ -4,7 +4,6 @@ import * as React from 'react';
 import { ScrollView, TouchableHighlight } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View, Icon } from 'native-base';
-import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Home.style';
 
 type Props = NavigationScreenProps & {};
@@ -28,15 +27,12 @@ export default class Home extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View padding-auto>
-          <LiwiTitle2 noBorder>
-            {t('home:title')}
-          </LiwiTitle2>
           <View flex-container-column>
             <View w50>
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('')}
+                onPress={() => navigation.navigate('PatientList')}
               >
                 <View>
                   <Icon

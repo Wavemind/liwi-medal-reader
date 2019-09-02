@@ -1,4 +1,5 @@
 import { liwiColors } from '../../../utils/constants';
+import variables from '../variables/material';
 
 export default {
   'NativeBase.Button': {
@@ -19,6 +20,10 @@ export default {
     },
     '.blue': {
       backgroundColor: '#337aff',
+      color: '#fff',
+    },
+    '.success': {
+      backgroundColor: variables.brandSuccess,
       color: '#fff',
     },
     '.iconMenu': {
@@ -61,7 +66,7 @@ export default {
       flex: 0.5,
       justifyContent: 'center',
     },
-
+    borderRadius: 0,
     // All button is affected
     margin: 5,
   },
