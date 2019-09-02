@@ -52,6 +52,9 @@ export const stage = {
 // Node category
 export const categories = {
   assessment: 'assessment_test',
+  chronicalCondition: 'chronical_condition',
+  vitalSign: 'vital_sign',
+  firstLookAssessment: 'first_look_assessment',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
   symptom: 'symptom',
@@ -64,6 +67,7 @@ export const categories = {
   scored: 'scored',
   treatment: 'treatment',
   management: 'management',
+  other: 'other',
 };
 
 // Type of nodes received from json

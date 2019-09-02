@@ -11,11 +11,26 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class Assessments extends React.Component<Props, State> {
+export default class FirstLookAssessments extends React.Component<Props, State> {
+  state: {
+    questions: []
+  };
+
+  // Fetch first look assessment questions and order it
+  componentWillMount() {
+    const { medicalCase } = this.props;
+    let questions = [];
+    const orders = medicalCase.triage_orders[categories.firstLookAssessment];
+
+    orders.map((order) => {
+      questions.push(medicalCase.nodes[order]);
+    });
+
+    this.setState({questions});
+  }
 
   render() {
-    const { medicalCase } = this.props;
-    const questions = medicalCase.nodes.filterByCategory(categories.assessment);
+    const { questions } = this.state;
 
     return (
       <QuestionList questions={questions} />
