@@ -35,9 +35,9 @@ i18n
           poct: 'Poct',
         },
         triage: {
-          assessment: 'First look Assessments',
+          first_look_assessment: 'First look Assessments',
           vital: 'Vital Signs',
-          comorbidities: 'Comorbidities',
+          chronical_condition: 'Chronical conditions',
           vaccination: 'Vaccination history',
           chief: 'Chief complaints',
         },
@@ -55,9 +55,9 @@ i18n
         },
         menu: {
           triage: 'Triage',
-          assessment: 'First look assessment',
+          first_look_assessments: 'First look assessment',
           vital_signs: 'Vital signs',
-          comorbidities: 'Comorbidities',
+          chronical_conditions: 'Chronical conditions',
           vacciantion_history: 'Vaccination history',
           chief_complaint: 'Chief complaint categories',
           consultation: 'Consultation',

@@ -41,7 +41,7 @@ export default class TriageTabs extends Component<Props, State> {
             style={styles.touchable}
           >
             {this._renderRound(1, index === 0)}
-            <Text center>{t('triage:assessment')}</Text>
+            <Text center>{t('triage:first_look_assessment')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -61,11 +61,11 @@ export default class TriageTabs extends Component<Props, State> {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => this.onPress('Comorbidities')}
+            onPress={() => this.onPress('ChronicalConditions')}
             style={styles.touchable}
           >
             {this._renderRound(4, index === 3)}
-            <Text center>{t('triage:comorbidities')}</Text>
+            <Text center>{t('triage:chronical_condition')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
