@@ -28,9 +28,9 @@ export default class Numeric extends React.Component<Props, State> {
     });
 
   _onEndEditing = (value) => {
-    const { setQuestion, question } = this.props;
+    const { setAnswer, question } = this.props;
     if (value.nativeEvent.text !== question.value) {
-      setQuestion(question.id, value.nativeEvent.text);
+      setAnswer(question.id, value.nativeEvent.text);
     }
   };
 
@@ -55,7 +55,8 @@ export default class Numeric extends React.Component<Props, State> {
           <Input
             keyboardType={keyboardType}
             question
-            defaultValue={String(question.value)}
+            numeric
+            defaultValue={question.answer !== null ? String(question.value) : null}
             style={style}
             onFocus={this._focus}
             onEndEditing={this._onEndEditing}

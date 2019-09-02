@@ -2,7 +2,12 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { ListItem, Text } from 'native-base';
-import { displayFormats, displayValues, nodesType, priorities } from '../../../../frontend_service/constants';
+import {
+  displayFormats,
+  valueFormats,
+  nodesType,
+  priorities,
+} from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -14,7 +19,12 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-function LabelQuestion(props: { label: String, flex: String, marginRight: Numeric, marginLeft: Numeric }) {
+function LabelQuestion(props: {
+  label: String,
+  flex: String,
+  marginRight: Numeric,
+  marginLeft: Numeric,
+}) {
   const { label, flex, marginRight, marginLeft } = props;
   return (
     <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
@@ -26,7 +36,6 @@ function LabelQuestion(props: { label: String, flex: String, marginRight: Numeri
 }
 
 class WrapperQuestion extends React.Component<Props, State> {
-
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     const { question } = this.props;
@@ -45,7 +54,7 @@ class WrapperQuestion extends React.Component<Props, State> {
     // Boolean | Numeric | List
     switch (question.display_format) {
       case displayFormats.radioButton:
-        if (question.value_format === displayValues.bool) {
+        if (question.value_format === valueFormats.bool) {
           WrapperAnswer = () => (
             <Boolean question={question} styles={specificStyle} />
           );
@@ -74,7 +83,12 @@ export default class Question extends React.PureComponent<Props, State> {
     const { question } = this.props;
 
     // If this is not a question we return null
-    if (question === undefined || question.type !== nodesType.q) {
+    if (question === undefined || question.type !== nodesType.question) {
+      return null;
+    }
+
+    // If this is a question Formula we do not show it
+    if (question.display_format === displayFormats.formula) {
       return null;
     }
 
@@ -95,20 +109,13 @@ export default class Question extends React.PureComponent<Props, State> {
 
     // Construct generic Component for the question
     return (
-      <ListItem block noBorder key={question.id + '_item'}>
-        <LabelQuestion
-          key={question.id + '_counter'}
-          label={question.counter}
-          flex={0.05}
-          marginLeft={0}
-          marginRight={20}
-        />
+      <ListItem style={styles.condensed} noBorder key={question.id + '_item'}>
         <LabelQuestion
           key={question.id + '_label'}
-          label={question.label}
+          label={question.counter + 'x - ' + question.label}
           flex={0.65}
           marginLeft={0}
-          marginRight={20}
+          marginRight={10}
         />
         <WrapperQuestion
           key={question.id + '_answer'}

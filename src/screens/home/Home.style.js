@@ -7,14 +7,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
-    backgroundColor: '#FFF',
-    elevation: 2,
     padding: 5,
     paddingTop: 30,
     paddingBottom: 30,
+    backgroundColor: liwiColors.lighterGreyColor,
+    borderWidth: 1,
+    borderColor: liwiColors.lightGreyColor,
   },
   icons: {
-    color: liwiColors.blackColor,
+    color: liwiColors.redColor,
     fontSize: 45
   }
 });

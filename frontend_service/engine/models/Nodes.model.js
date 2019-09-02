@@ -2,17 +2,18 @@
 import _ from 'lodash';
 import { categories, nodesType } from '../../constants';
 import { NodeModel } from './Node.model';
-import { PredefinedSyndromeModel } from './PredefinedSyndrome.model';
+import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
+import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
 
 interface NodeInterface {}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {
-    this.instanceNodeModel(props);
+    this.instantiateNodes(props);
   }
 
   filterByCategory(category) {
@@ -23,31 +24,30 @@ export class NodesModel implements NodeInterface {
     return _.filter(this, (n) => n.type === type);
   }
 
-  isAnsweredNodes(nodes) {
-    return nodes.some((a) => {
-      return a.answer !== null;
+  /**
+   * Verify if all nodes in params is answered
+   * @params nodes: array
+   * @return allAnswered: boolean
+   * return true if all nodes is answered
+   */
+
+  isAllAnswered(nodes) {
+    return !nodes.some((a) => {
+      return a.answer === null;
     });
   }
 
-  filterByStage(stage) {
-    return _.filter(this, (n) => n.stage === stage);
-  }
-
-
-  /* filterByMultiple
-  * Params: filters<Array>
-  * Format : filters = [
-      { by: 'category', operator: 'equal', value: categories.symptom },
-      { by: 'stage', operator: 'equal', value: stage.consultation },
-      { by: 'counter', operator: 'more', value: 0 },
-    ]
-  *
-  *
-  * */
-  filterByMultiple(filters) {
+  /**
+   * Return filtered nodes on multiple params
+   * @params filter : array
+   * [{ by: 'category', operator: 'equal', value: categories.symptom },
+   * { by: 'stage', operator: 'equal', value: stage.consultation },
+   * { by: 'counter', operator: 'more', value: 0 },]
+   */
+  filterBy(filters) {
     this.filterByConditionValue();
     return _.filter(this, (node) => {
-      let f = filters.every((filter) => {
+      let nodes = filters.every((filter) => {
         switch (filter.operator) {
           case 'equal':
             return node[filter.by] === filter.value;
@@ -55,8 +55,12 @@ export class NodesModel implements NodeInterface {
             return node[filter.by] > filter.value;
         }
       });
-      return f;
+      return nodes;
     });
+  }
+
+  filterByStage(stage) {
+    return _.filter(this, (n) => n.stage === stage);
   }
 
   filterByCounterGreaterThanZero() {
@@ -84,54 +88,73 @@ export class NodesModel implements NodeInterface {
     }
   }
 
-  // Instance all the nodes
-  instanceNodeModel(nodes) {
+  /**
+   * Instantiate all the nodes received
+   *
+   * @params nodes : nodes to instantiate
+   */
+  instantiateNodes(nodes) {
     Object.keys(nodes).forEach((i) => {
       let node = nodes[i];
-      this[i] = this._instanceChild(node);
+      this[i] = this.instantiateNode(node);
     });
   }
 
-  // Switch for instance the good model to the node
-  _instanceChild(node) {
-    let instinctiveNode;
+  /**
+   * Node factory
+   * Instantiate new Node base on node type
+   *
+   * @params node : node to instantiate
+   */
+  instantiateNode(node) {
+    let instantiatedNode;
 
     if (node instanceof NodeModel) {
       return node;
     }
 
-    // By the node type
+    // Based on the node type
     switch (node.type) {
-      case nodesType.qs:
-        instinctiveNode = new PredefinedSyndromeModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-
-      case nodesType.q:
-        instinctiveNode = new QuestionModel({
-          ...node,
-          medicalCase: this,
-        });
-        break;
-      case nodesType.h:
+      case nodesType.questionsSequence:
         switch (node.category) {
-          case categories.management:
-            instinctiveNode = new ManagementModel({ ...node });
+          case categories.scored:
+            instantiatedNode = new QuestionsSequenceScoredModel({
+              ...node,
+              medicalCase: this,
+            });
             break;
-          case categories.treatment:
-            instinctiveNode = new TreatmentModel({ ...node });
+          default:
+            instantiatedNode = new QuestionsSequenceModel({
+              ...node,
+              medicalCase: this,
+            });
             break;
         }
         break;
-      case nodesType.fd:
-        instinctiveNode = new FinalDiagnosticModel({ ...node });
+
+      case nodesType.question:
+        instantiatedNode = new QuestionModel({
+          ...node,
+          medicalCase: this,
+        });
+        break;
+      case nodesType.healthCare:
+        switch (node.category) {
+          case categories.management:
+            instantiatedNode = new ManagementModel({ ...node });
+            break;
+          case categories.treatment:
+            instantiatedNode = new TreatmentModel({ ...node });
+            break;
+        }
+        break;
+      case nodesType.finalDiagnostic:
+        instantiatedNode = new FinalDiagnosticModel({ ...node });
         break;
       default:
         break;
     }
 
-    return instinctiveNode;
+    return instantiatedNode;
   }
 }

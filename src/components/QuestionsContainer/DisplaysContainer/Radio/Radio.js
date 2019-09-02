@@ -17,7 +17,7 @@ export default class Radio extends React.Component<Props, State> {
   }
 
   render() {
-    const { question, setQuestion } = this.props;
+    const { question, setAnswer } = this.props;
 
     return (
       <View style={styles.view}>
@@ -32,7 +32,7 @@ export default class Radio extends React.Component<Props, State> {
               <Button
                 square
                 onPress={() =>
-                  setQuestion(question.id, question.answers[id].id)
+                  setAnswer(question.id, question.answers[id].id)
                 }
               >
                 <Icon

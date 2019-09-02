@@ -26,4 +26,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  condensed: {
+    paddingTop: 7,
+    paddingBottom: 7,
+    paddingRight: 0,
+    paddingLeft: 0,
+  }
 });
