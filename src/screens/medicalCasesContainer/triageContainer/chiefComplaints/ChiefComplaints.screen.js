@@ -13,17 +13,30 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class ChiefComplaint extends React.Component<Props, State> {
-  // default settings
   state = {
     widthView: 0,
+    questions: [],
   };
 
+  // Fetch first look assessment questions and order it
+  componentWillMount() {
+    const { medicalCase } = this.props;
+    let questions = [];
+    const orders = medicalCase.triage_orders[categories.chiefComplaint];
+
+    orders.map((order) => {
+      questions.push(medicalCase.nodes[order]);
+    });
+
+    this.setState({questions});
+  }
+
   render() {
-    const { medicalCase, app: { t } } = this.props;
-    const { widthView } = this.state;
-    let questions = medicalCase.nodes.filterByCategory(
-      categories.chiefComplaint
-    );
+    const { app: { t } } = this.props;
+    const {
+      widthView,
+      questions,
+    } = this.state;
 
     return (
       <Content style={styles.container}>
