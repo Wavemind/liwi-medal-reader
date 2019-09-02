@@ -60,13 +60,5 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.fn = fn;
     this.cc = cc;
 
-    if (this.id === 108 || this.id === 111) {
-      this.fn = [
-        {
-          id: 278,
-          conditionValue: true,
-        },
-      ];
-    }
   }
 }
