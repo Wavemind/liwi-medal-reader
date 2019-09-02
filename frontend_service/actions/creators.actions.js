@@ -57,11 +57,6 @@ export const updatePatient = (index, value) => ({
   },
 });
 
-export const setVitalSigns = (index, value) => ({
-  type: actions.MC_SET_VITAL_SIGNS,
-  payload: { index: index, value: value },
-});
-
 export const dispatchCondition = (diagnosticId, nodeId) => ({
   type: actions.DISPATCH_CONDITION,
   payload: {
