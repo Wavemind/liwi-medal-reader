@@ -186,7 +186,6 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     const { medicalCase } = this.props;
 
     const { orderedFilteredMedicalCases, medicalCases } = this.state;
-    // TODO create a single composant for medicalList Unique in all app !
 
      return medicalCases.length > 0 ? (
       [
