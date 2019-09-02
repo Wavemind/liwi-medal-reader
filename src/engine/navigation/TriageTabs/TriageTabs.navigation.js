@@ -37,7 +37,7 @@ export default class TriageTabs extends Component<Props, State> {
       <View style={styles.container}>
         <View flex-container-row>
           <TouchableOpacity
-            onPress={() => this.onPress('Assessments')}
+            onPress={() => this.onPress('FirstLookAssessments')}
             style={styles.touchable}
           >
             {this._renderRound(1, index === 0)}

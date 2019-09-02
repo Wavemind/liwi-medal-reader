@@ -74,7 +74,7 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('Assessments')}
+                onPress={() => this.onPress('FirstLookAssessments')}
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:assessment')}
