@@ -12,18 +12,24 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class ChiefComplaint extends React.Component<Props, State> {
-  // default settings
+export default class ChiefComplaints extends React.Component<Props, State> {
   state = {
     widthView: 0,
   };
 
   render() {
-    const { medicalCase, app: { t } } = this.props;
+    const {
+      medicalCase,
+      app: { t },
+    } = this.props;
+
     const { widthView } = this.state;
-    let questions = medicalCase.nodes.filterByCategory(
-      categories.chiefComplaint
-    );
+    const orders = medicalCase.triage.orders[categories.chiefComplaint];
+    let questions = [];
+
+    orders.map((order) => {
+      questions.push(medicalCase.nodes[order]);
+    });
 
     return (
       <Content style={styles.container}>

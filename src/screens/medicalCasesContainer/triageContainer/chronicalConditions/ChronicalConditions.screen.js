@@ -10,11 +10,11 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class VitalSigns extends React.Component<Props, State> {
+export default class ChronicalConditions extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
     let questions = [];
-    const orderedQuestions = medicalCase.triage.orders[categories.vitalSign];
+    const orderedQuestions = medicalCase.triage.orders[categories.chronicalCondition];
 
     orderedQuestions.map((orderedQuestion) => {
       let question = medicalCase.nodes[orderedQuestion];
