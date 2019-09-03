@@ -9,7 +9,6 @@ import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import { nodesType, valueFormats } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
-import { VitalSignsModel } from '../../engine/models/VitalSigns.model';
 
 export const initialState = null;
 
@@ -26,8 +25,6 @@ class MedicalCaseReducer extends ReducerClass {
   _instanceMedicalCase(state) {
     state = this._generateInstanceDiseasesNode(state);
     state.nodes = new NodesModel(state.nodes);
-    state.vitalSigns = new VitalSignsModel(state.vitalSigns);
-
     return state;
   }
 
@@ -106,19 +103,6 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...state,
       nodes: new NodesModel(state.nodes),
-    };
-  }
-
-  @Action(actions.MC_SET_VITAL_SIGNS)
-  setVitalSigns(state, action) {
-    const { index, value } = action.payload;
-
-    return {
-      ...state,
-      vitalSigns: new VitalSignsModel({
-        ...state.vitalSigns,
-        [index]: value,
-      }),
     };
   }
 

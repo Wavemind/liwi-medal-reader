@@ -35,10 +35,10 @@ i18n
           poct: 'Poct',
         },
         triage: {
-          assessment: 'First look Assessments',
-          vital: 'Vital Signs',
-          comorbidities: 'Comorbidities',
-          vaccination: 'Vaccination history',
+          first_look_assessment: 'First look Assessments',
+          vital: 'Vital signs',
+          chronical_condition: 'Chronical conditions',
+          other: 'Others',
           chief: 'Chief complaints',
         },
         form: {
@@ -55,11 +55,10 @@ i18n
         },
         menu: {
           triage: 'Triage',
-          assessment: 'First look assessment',
+          first_look_assessments: 'First look assessment',
           vital_signs: 'Vital signs',
-          comorbidities: 'Comorbidities',
-          vacciantion_history: 'Vaccination history',
-          chief_complaint: 'Chief complaint categories',
+          chronical_conditions: 'Chronical conditions',
+          chief_complaints: 'Chief complaint categories',
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
@@ -68,6 +67,7 @@ i18n
           strategy: 'Diagnoses and strategy',
           search: 'Search a patient',
           add: 'Add a patient',
+          others: 'Others',
         },
         medical_case: {
           waiting_triage: 'Waiting for triage',
@@ -238,7 +238,7 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Vital Signs',
+          vital: 'Vital signs',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
           chief: 'Chief complaints',
