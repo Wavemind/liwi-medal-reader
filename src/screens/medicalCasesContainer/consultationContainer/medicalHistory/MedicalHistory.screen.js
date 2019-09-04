@@ -4,6 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { categories } from '../../../../../frontend_service/constants';
 import QuestionsPerChiefComplaint from '../../../../components/Consultation/QuestionsPerChiefComplaint';
+import NavigationTriage from '../../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 
@@ -15,7 +16,10 @@ export default class MedicalHistory extends React.Component<Props, State> {
 
   render() {
     return (
-      <QuestionsPerChiefComplaint category={categories.symptom} />
+      <React.Fragment>
+        <QuestionsPerChiefComplaint category={categories.symptom} />
+        <NavigationTriage />
+      </React.Fragment>
     );
   }
 }

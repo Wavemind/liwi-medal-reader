@@ -7,7 +7,6 @@ import { ScrollView } from 'react-native';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import { styles } from './QuestionList.style';
 import Questions from '../../QuestionsContainer/Questions';
-import NavigationTriage from '../NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 type State = { app: StateApplicationContext } & {};
@@ -37,7 +36,6 @@ export default class QuestionList extends React.Component<Props, State> {
             <Text not-available>{t('work_case:no_questions')}</Text>
           </View>
         )}
-        <NavigationTriage questionsInScreen={questions} />
       </ScrollView>
     );
   }

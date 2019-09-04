@@ -1,12 +1,10 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
-import { View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
-import Questions from '../../../components/QuestionsContainer/Questions';
 import { categories } from '../../../../frontend_service/constants';
-import { styles } from './Tests.style';
+import QuestionList from '../../../components/Triage/QuestionList';
+import NavigationTriage from '../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 
@@ -19,10 +17,9 @@ export default function Tests(props: Props) {
   ]);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View>
-        <Questions questions={assessmentTest} />
-      </View>
-    </ScrollView>
+    <React.Fragment>
+      <QuestionList questions={assessmentTest} />
+      <NavigationTriage questionsInScreen={assessmentTest} />
+    </React.Fragment>
   );
 }

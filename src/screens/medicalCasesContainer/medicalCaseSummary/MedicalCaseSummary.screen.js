@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Tab, Tabs, Text, View, Icon, Content } from 'native-base';
+import { Content, Icon, Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { styles } from './MedicalCaseSummary.style';

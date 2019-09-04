@@ -2,13 +2,10 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Text } from 'native-base';
-import {
-  categories,
-  medicalCaseStatus,
-} from '../../../../../frontend_service/constants';
+import { categories } from '../../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
 import QuestionList from '../../../../components/Triage/QuestionList';
+import NavigationTriage from '../../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -16,24 +13,15 @@ type State = StateApplicationContext & {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Vaccinations extends React.Component<Props, State> {
   render() {
-    const { medicalCase, setStatus, navigation } = this.props;
+    const { medicalCase } = this.props;
 
     let questions = medicalCase.nodes.filterByCategory(categories.vaccine);
 
-    return [
-      <QuestionList questions={questions} key="vaccination+questions" />,
-      <Button
-        key="vaccination+button"
-        style={{
-          flexDirection: 'row-reverse',
-        }}
-        onPress={() => {
-          setStatus('status', medicalCaseStatus.waitingConsultation.name);
-          navigation.navigate('MedicalCaseList');
-        }}
-      >
-        <Text>Finish Vaccinations</Text>
-      </Button>,
-    ];
+    return (
+      <React.Fragment>
+        <QuestionList questions={questions} />
+        <NavigationTriage questionsInScreen={questions} />
+      </React.Fragment>
+    );
   }
 }
