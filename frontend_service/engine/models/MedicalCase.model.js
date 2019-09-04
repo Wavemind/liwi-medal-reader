@@ -74,7 +74,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     newMedicalCase.id = maxId.id + 1;
     newMedicalCase.createdDate = moment().format();
-    newMedicalCase.status = medicalCaseStatus.waitingTriage;
+    newMedicalCase.status = medicalCaseStatus.waitingTriage.name;
 
     patient.medicalCases.push(newMedicalCase);
 

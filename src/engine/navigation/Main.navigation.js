@@ -23,6 +23,7 @@ import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 // We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator({
@@ -147,6 +148,7 @@ const Stack = createStackNavigator({
     params: {
       showSummary: true,
       dropDownMenu: 'Tests',
+      medicalCaseStatus: medicalCaseStatus.test.name
     },
   },
 });
