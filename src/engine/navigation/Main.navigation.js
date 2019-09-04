@@ -148,7 +148,8 @@ const Stack = createStackNavigator({
     params: {
       showSummary: true,
       dropDownMenu: 'Tests',
-      medicalCaseStatus: medicalCaseStatus.test.name
+      medicalCaseStatus: medicalCaseStatus.test.name,
+      nextStage: medicalCaseStatus.waitingDiagnostic.name,
     },
   },
 });
@@ -175,7 +176,7 @@ const HomeWithModal = createStackNavigator(
       containerStyle: {
         backgroundColor: 'transparent',
       },
-    })
+    }),
   }
 );
 

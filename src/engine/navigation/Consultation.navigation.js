@@ -22,7 +22,8 @@ export const ConsultationTabNavigator = createMaterialTopTabNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Consultation',
-        medicalCaseStatus: medicalCaseStatus.consultation.name
+        medicalCaseStatus: medicalCaseStatus.consultation.name,
+        nextStage: medicalCaseStatus.waitingTest.name,
       },
     },
   },

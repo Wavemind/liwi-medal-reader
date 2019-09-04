@@ -16,7 +16,7 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     ChiefComplaints: {
@@ -24,7 +24,7 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     VitalSigns: {
@@ -32,7 +32,7 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     Comorbidities: {
@@ -40,7 +40,7 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     Vaccinations: {
@@ -48,7 +48,8 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name
+        medicalCaseStatus: medicalCaseStatus.triage.name,
+        nextStage: medicalCaseStatus.waitingConsultation.name,
       },
     },
   },

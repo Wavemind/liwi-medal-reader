@@ -98,7 +98,7 @@ export default {
     '.bottom-view': {
       flex: 1,
       justifyContent: 'flex-end',
-      marginBottom: 36,
+      marginBottom: 60,
     },
 
     '.flex': {
