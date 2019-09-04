@@ -66,12 +66,13 @@ function resetActionStack(routeName, params) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function onNavigationStateChange(prevState, currentState, action) {
+function onNavigationStateChange(prevState, currentState) {
   // eslint-disable-next-line no-unused-vars
   let activeRoute = getActiveRouteName(currentState);
   let prev = getActiveRouteName(prevState);
   let cu = getCurrentRoute(currentState);
 
+  // prevent multiple execution
   if (activeRoute !== prev) {
     const state$ = store.getState();
     // This route can change the status of MC

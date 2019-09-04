@@ -6,9 +6,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { styles } from '../../../engine/navigation/drawer/Drawer.style';
-import {
-  stage,
-} from '../../../../frontend_service/constants';
+import { stage } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {
   questionsInScreen: Array,
@@ -130,6 +128,19 @@ export default class NavigationTriage extends React.Component<Props, State> {
     setStatus('status', currentRoute?.params?.nextStage);
     navigation.navigate('MedicalCaseList');
   };
+
+  shouldComponentUpdate(
+    nextProps: Props,
+    nextState: State,
+  ): boolean {
+    const { state } = this;
+    return (
+      state.beginNavBool !== nextState.beginNavBool ||
+      state.endNavBool !== nextState.endNavBool ||
+      state.prevRoute !== nextState.prevRoute ||
+      state.nextRoute !== nextState.nextRoute
+    );
+  }
 
   render() {
     const { prevRoute, beginNavBool, endNavBool, currentRoute } = this.state;
