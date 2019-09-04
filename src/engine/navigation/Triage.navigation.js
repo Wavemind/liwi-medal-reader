@@ -7,6 +7,7 @@ import Comorbidities from '../../screens/medicalCasesContainer/triageContainer/c
 import Vaccinations from '../../screens/medicalCasesContainer/triageContainer/vaccinations';
 import VitalSigns from '../../screens/medicalCasesContainer/triageContainer/vitalSigns';
 import TriageTabs from './TriageTabs';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 export const TriageTabNavigator = createMaterialTopTabNavigator(
   {
@@ -14,35 +15,40 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       screen: Assessments,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name
       },
     },
     ChiefComplaints: {
       screen: ChiefComplaints,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name
       },
     },
     VitalSigns: {
       screen: VitalSigns,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name
       },
     },
     Comorbidities: {
       screen: Comorbidities,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name
       },
     },
     Vaccinations: {
       screen: Vaccinations,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name
       },
     },
   },

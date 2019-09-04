@@ -94,6 +94,16 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
+  @Action(actions.UPDATE_MEDICAL_CASE)
+  updateMedicalCase(state, action) {
+    const { property, newValue } = action.payload;
+
+    return {
+      ...state,
+      [property]: newValue,
+    };
+  }
+
   @Action(actions.MC_PREDEFINED_SYNDROME_SET_ANSWER)
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;

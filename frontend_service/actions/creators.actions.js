@@ -5,6 +5,11 @@ export const updateConditionValue = (nodeId, callerId, value, type) => ({
   payload: { nodeId, callerId, value, type },
 });
 
+export const updateMedicalCaseProperty = (property, newValue) => ({
+  type: actions.UPDATE_MEDICAL_CASE,
+  payload: { property, newValue },
+});
+
 export const setMedicalCase = (medicalCase) => ({
   type: actions.MC_SET,
   payload: {

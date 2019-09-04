@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from 'react-navigation';
 import ConsultationTabs from './ConsultationTabs';
 import MedicalHistory from '../../screens/medicalCasesContainer/consultationContainer/medicalHistory';
 import PhysicalExam from '../../screens/medicalCasesContainer/consultationContainer/physicalExams';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 export const ConsultationTabNavigator = createMaterialTopTabNavigator(
   {
@@ -12,14 +13,16 @@ export const ConsultationTabNavigator = createMaterialTopTabNavigator(
       screen: MedicalHistory,
       params: {
         showSummary: true,
-        dropDownMenu: 'Consultation'
+        dropDownMenu: 'Consultation',
+        medicalCaseStatus: medicalCaseStatus.consultation.name
       },
     },
     PhysicalExam: {
       screen: PhysicalExam,
       params: {
         showSummary: true,
-        dropDownMenu: 'Consultation'
+        dropDownMenu: 'Consultation',
+        medicalCaseStatus: medicalCaseStatus.consultation.name
       },
     },
   },
