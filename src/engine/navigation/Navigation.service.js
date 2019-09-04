@@ -81,21 +81,22 @@ function onNavigationStateChange(prevState, currentState) {
       cu?.params?.medicalCaseStatus !== undefined &&
       state$.status !== cu.params.medicalCaseStatus
     ) {
+      // Find index in status
       let currentStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === state$.status;
       });
 
+      // Find index in status
       let routeStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === cu.params.medicalCaseStatus;
       });
       // The status has to be changed !
       if (currentStatus.index < routeStatus.index) {
+        // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }
     }
   }
-
-  // here update status of medicalcase in the case of entering route name
 }
 
 export default {
