@@ -82,15 +82,6 @@ export default class NavigationTriage extends React.Component<Props, State> {
       prevRoute = router[indexInRouter - 1];
     }
 
-    console.log(
-      indexInRouter,
-      prevRoute,
-      beginNavBool,
-      endNavBool,
-      currentRoute,
-      insideNavBool
-    );
-
     this.setState({
       beginNavBool,
       endNavBool,
@@ -151,8 +142,6 @@ export default class NavigationTriage extends React.Component<Props, State> {
 
   render() {
     const { prevRoute, beginNavBool, endNavBool, currentRoute } = this.state;
-
-    console.log('render navigation');
 
     const {
       navigation,

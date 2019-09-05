@@ -4,7 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { View, Text } from 'native-base';
 import { ScrollView } from 'react-native';
-import {categories, stage} from '../../../../frontend_service/constants';
+import { categories, stage } from '../../../../frontend_service/constants';
 import Questions from '../../QuestionsContainer/Questions';
 import { styles } from './QuestionsPerChiefComplaint.style';
 
@@ -12,20 +12,32 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class QuestionsPerChiefComplaint extends React.Component<Props, State> {
+export default class QuestionsPerChiefComplaint extends React.Component<
+  Props,
+  State
+> {
   // default settings
   state = {};
 
   render() {
     const { medicalCase, category } = this.props;
 
+    // TODO optimize this with scu !
+
+    // shouldComponentUpdate( nextProps, nextState );
+    // {
+    //
+    // }
+
     let chiefComplaints = medicalCase.nodes.filterByCategory(
-      categories.chiefComplaint,
+      categories.chiefComplaint
     );
 
     let questionsPerChiefComplaints = {};
     chiefComplaints.map((chiefComplaint) => {
-      if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[0])) {
+      if (
+        chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[0])
+      ) {
         questionsPerChiefComplaints[chiefComplaint.id] = {
           id: chiefComplaint.id,
           title: chiefComplaint.label,
@@ -41,8 +53,8 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
     ]);
 
     filteredQuestions.map((question) => {
-      question.dd.map((diagnostic) => {
-        questionsPerChiefComplaints[medicalCase.diagnostics[diagnostic.id]?.chief_complaint]?.questions.push(question);
+      question.cc.map((cc) => {
+        questionsPerChiefComplaints[cc]?.questions.push(question);
       });
     });
 
@@ -50,14 +62,19 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
     Object.keys(questionsPerChiefComplaints).map((id) => {
       chiefComplaintsAccordion.push({
         title: questionsPerChiefComplaints[id].title,
-        content: <Questions questions={questionsPerChiefComplaints[id].questions} />,
+        content: (
+          <Questions questions={questionsPerChiefComplaints[id].questions} />
+        ),
       });
     });
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {chiefComplaintsAccordion.map((chiefComplaint) => (
-          <View style={styles.spacingChiefComplaints} key={`chiefComplaint_${chiefComplaint.title}`}>
+          <View
+            style={styles.spacingChiefComplaints}
+            key={`chiefComplaint_${chiefComplaint.title}`}
+          >
             <Text subText>{chiefComplaint.title}</Text>
             {chiefComplaint.content}
           </View>

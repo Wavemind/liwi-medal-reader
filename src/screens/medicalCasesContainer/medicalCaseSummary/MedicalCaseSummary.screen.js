@@ -10,6 +10,7 @@ import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import { nodesType } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
+import FinalDiagnosesList from '../../../components/FinalDiagnosesList';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -91,7 +92,9 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
             textStyle={LiwiTabStyle.textStyle}
             activeTabStyle={LiwiTabStyle.activeTabStyle}
           >
-            <Content style={styles.marginTop}>{items}</Content>
+            <Content style={styles.marginTop}>
+              <FinalDiagnosesList />
+            </Content>
           </Tab>
           <Tab
             heading="All questions"

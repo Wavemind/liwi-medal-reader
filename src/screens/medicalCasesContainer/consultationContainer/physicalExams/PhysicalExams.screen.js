@@ -16,7 +16,7 @@ export default class PhysicalExams extends React.Component<Props, State> {
   render() {
     return (
       <React.Fragment>
-        <QuestionsPerChiefComplaint category={categories.symptom} />
+        <QuestionsPerChiefComplaint category={categories.physicalExam} />
         <NavigationTriage />
       </React.Fragment>
     );
