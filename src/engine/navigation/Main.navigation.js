@@ -23,7 +23,7 @@ import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
-import DiagnosesStrategy from '../../screens/medicalCasesContainer/DiagnosesStrategy';
+import DiagnosesStrategy from '../../screens/medicalCasesContainer/DiagnosesStrategyContainer/DiagnosesStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 // We need to use i18n directly because we cant be connect to context

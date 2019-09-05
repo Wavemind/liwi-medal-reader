@@ -1,11 +1,8 @@
 import { connect } from 'react-redux';
-import DiagnosesStrategy from './DiagnosesStrategy.screen';
-import { withSessions } from '../../../engine/contexts/Sessions.context';
-import { withApplication } from '../../../engine/contexts/Application.context';
-import {
-  setMedicalCase,
-  updatePatient,
-} from '../../../../frontend_service/actions/creators.actions';
+import Diagnoses from './Diagnoses.screen';
+import { withSessions } from '../../../../engine/contexts/Sessions.context';
+import { withApplication } from '../../../../engine/contexts/Application.context';
+import { setMedicalCase, updatePatient } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -23,4 +20,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(DiagnosesStrategy)));
+)(withSessions(withApplication(Diagnoses)));
