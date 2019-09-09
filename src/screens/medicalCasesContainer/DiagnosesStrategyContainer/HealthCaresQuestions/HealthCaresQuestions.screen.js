@@ -22,7 +22,11 @@ export default class HealthCaresQuestions extends Component {
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
               finalDiagnostic.managements[indexManagement].top_conditions.map(
                 // eslint-disable-next-line react/prop-types
-                (m) => questions[m.first_node_id] = medicalCase.nodes[m.first_node_id]
+                (m) => {
+                  // console.log(medicalCase.nodes[m.first_node_id]);
+                  questions[m.first_node_id] =
+                    medicalCase.nodes[m.first_node_id];
+                }
               );
             }
           }
@@ -31,13 +35,19 @@ export default class HealthCaresQuestions extends Component {
             if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
               finalDiagnostic.treatments[indexTreatment].top_conditions.map(
                 // eslint-disable-next-line react/prop-types
-                (t) => questions[t.first_node_id] = medicalCase.nodes[t.first_node_id]
+                (t) => {
+                  // console.log(medicalCase.nodes[t.first_node_id]);
+                  questions[t.first_node_id] =
+                    medicalCase.nodes[t.first_node_id];
+                }
               );
             }
           }
         }
       }
     }
+
+    console.log(questions);
 
     return (
       <View>
