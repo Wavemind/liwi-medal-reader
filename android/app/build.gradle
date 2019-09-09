@@ -95,7 +95,14 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+def generatedSrcDir = "generated/rncli/src/main/java"
+def generatedCodeDir = new File(buildDir, "$generatedSrcDir/com/facebook/react")
+
+
+
+
 android {
+
     compileOptions {
       sourceCompatibility JavaVersion.VERSION_1_8
       targetCompatibility JavaVersion.VERSION_1_8
@@ -135,9 +142,8 @@ android {
         }
     }
    lintOptions {
-
-          checkReleaseBuilds false
-
+        checkReleaseBuilds false
+        abortOnError false
     }
     buildTypes {
         release {

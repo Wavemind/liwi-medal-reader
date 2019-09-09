@@ -10,6 +10,7 @@ import CustomInput from '../../../components/InputContainer/CustomInput';
 import { LiwiTitle2 } from '../../../template/layout';
 import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
 import { styles } from './UnlockSession.style';
+import { Toaster } from '../../../utils/CustomToast';
 
 type Props = NavigationScreenProps & { sessions: SessionsProviderState };
 type State = {
@@ -51,9 +52,9 @@ export default class UnlockSession extends React.Component<Props, State> {
 
     if (user !== undefined) {
       let result = await app.unLockSession(user.data.id, code);
-      this.setState({ errors: t(`notifications:${result}`) });
+      Toaster(t(`notifications:${result}`, { type: 'danger' }));
     } else {
-      this.setState({ errors: t('notifications:session_does_not_exist') });
+      Toaster(t('notifications:session_does_not_exist'), { type: 'danger' });
     }
   };
 
