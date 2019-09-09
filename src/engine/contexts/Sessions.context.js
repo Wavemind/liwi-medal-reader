@@ -2,7 +2,13 @@
 /* eslint-disable react/no-unused-state*/
 import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
-import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
+import {
+  destroySession,
+  getSession,
+  getSessions,
+  setSessions,
+  updateSession,
+} from '../api/LocalStorage';
 import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
 import i18n from '../../utils/i18n';
 
@@ -22,8 +28,10 @@ export type SessionsProviderState = {
   logout: (userId: number) => Promise<any>,
 };
 
-export class SessionsProvider extends React.Component<SessionsProviderProps,
-  SessionsProviderState> {
+export class SessionsProvider extends React.Component<
+  SessionsProviderProps,
+  SessionsProviderState
+> {
   constructor(props: SessionsProviderProps) {
     super(props);
     this.initContext();
@@ -51,10 +59,9 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
   // Create new session
   newSession = async (email: string, password: string) => {
     return new Promise(async (resolve, reject) => {
-      const credentials = await auth(email, password).catch(error => {
-        reject(error);
+      const credentials = await auth(email, password).catch((error) => {
+        return error;
       });
-
 
       if (credentials.success !== false || credentials.success === undefined) {
         let sessions = await getSessions();
@@ -71,7 +78,6 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
             await setSessions(sessions);
             this.setState({ sessions });
 
-
             return fetchAlgorithms(credentials.data.id)
               .then(async () => {
                 resolve(credentials);
@@ -81,10 +87,14 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
               });
           }
 
-          Toaster(i18n.t('notifications:session_already_exist'), { type: 'danger' });
+          Toaster(i18n.t('notifications:session_already_exist'), {
+            type: 'danger',
+          });
           reject('Already connected');
         }
       }
+      // Here if error network http
+      reject(credentials);
     });
   };
 
@@ -113,7 +123,7 @@ export class SessionsProvider extends React.Component<SessionsProviderProps,
 }
 
 export const withSessions = (Component: React.ComponentType<any>) => (
-  props: any,
+  props: any
 ) => (
   <SessionsContext.Consumer>
     {(store) => <Component sessions={store} {...props} />}

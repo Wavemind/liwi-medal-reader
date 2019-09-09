@@ -67,7 +67,12 @@ export const auth = async (email, password) => {
       email: email,
       password: password,
     }),
-  }).catch((error) => handleHttpError(error));
+  }).catch((error) => {
+    handleHttpError(error);
+    if (error instanceof Error) {
+      throw { success: false };
+    }
+  });
 
   let body = await request.json();
 

@@ -11,7 +11,9 @@ interface ToastType {
 
 export const handleHttpError = async (errors: any) => {
   // Array of errors maps throw or display it
-  if (isArray(errors)) {
+  if (errors instanceof Error) {
+    Toaster(errors.toString(), { type: 'danger' });
+  } else if (isArray(errors)) {
     errors.map((error) => {
       Toaster(error, { type: 'danger' });
     });
