@@ -1,14 +1,39 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import React from 'react';
+import { Content, Text } from 'native-base';
+import { styles } from './HealthCares.style';
 
-export default class HealthCares extends Component {
-  render() {
-    return (
-      <View>
-        <Text>HealthCares</Text>
-      </View>
-    );
-  }
+export default function HealthCares(props) {
+  // eslint-disable-next-line react/prop-types
+  const { medicalCase } = props;
 
+  // eslint-disable-next-line react/prop-types
+  const healthCares = medicalCase.nodes.getHealthCares();
 
+  const { managements, treatments } = healthCares;
+
+  return (
+    <Content>
+      <Text>HealthCares</Text>
+      <Text customTitle>Managements</Text>
+      {Object.keys(managements).map((m) => (
+        <Text
+          style={styles.spaceText}
+          size-auto
+          key={'healthcare' + managements[m].reference}
+        >
+          {managements[m].reference} - {managements[m].label}
+        </Text>
+      ))}
+      <Text customTitle>Treatments</Text>
+      {Object.keys(treatments).map((t) => (
+        <Text
+          style={styles.spaceText}
+          size-auto
+          key={'healthcare' + treatments[t].reference}
+        >
+          {treatments[t].reference} - {treatments[t].label}
+        </Text>
+      ))}
+    </Content>
+  );
 }

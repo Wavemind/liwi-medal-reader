@@ -44,7 +44,7 @@ export default {
       textTransform: 'uppercase',
       textAlign: 'center',
     },
-    '.subText': {
+    '.customTitle': {
       color: liwiColors.redColor,
       fontSize: 26,
       padding: 10,

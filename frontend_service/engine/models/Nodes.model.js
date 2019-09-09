@@ -8,6 +8,7 @@ import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
+import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 
 interface NodeInterface {}
 
@@ -30,7 +31,6 @@ export class NodesModel implements NodeInterface {
    * @return allAnswered: boolean
    * return true if all nodes is answered
    */
-
   isAllAnswered(nodes) {
     return !nodes.some((a) => {
       return a.answer === null;
@@ -86,6 +86,107 @@ export class NodesModel implements NodeInterface {
     } catch (e) {
       console.warn(e);
     }
+  }
+
+  /**
+   ** For each final diagnostics we return the management and treatment associate
+   */
+  getHealthCares() {
+    let healthCares = { managements: {}, treatments: {} };
+
+    // Filter by final diagnostic
+    const finalDiagnostics = this.filterByType(nodesType.finalDiagnostic);
+
+    for (let index in finalDiagnostics) {
+      if (finalDiagnostics.hasOwnProperty(index)) {
+        let finalDiagnostic = finalDiagnostics[index];
+        let condition = finalDiagnostic.calculateCondition();
+        if (condition === true) {
+          for (let indexManagement in finalDiagnostic.managements) {
+            if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
+              let managementBoolean = calculateCondition(
+                finalDiagnostic.managements[indexManagement]
+              );
+              if (managementBoolean === true) {
+                healthCares.managements[indexManagement] = this[
+                  indexManagement
+                ];
+              }
+            }
+          }
+
+          for (let indexTreatment in finalDiagnostic.treatments) {
+            if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
+              let treatmentBoolean = calculateCondition(
+                finalDiagnostic.treatments[indexTreatment]
+              );
+              if (treatmentBoolean === true) {
+                healthCares.treatments[indexTreatment] = this[indexTreatment];
+              }
+            }
+          }
+        }
+      }
+    }
+    return healthCares;
+  }
+
+  /**
+   ** We return all the questions are in Healtcares from Final Diagnostic are true
+   */
+  getHealthCaresQuestions() {
+    let questions = {};
+    const finalDiagnostics = this.filterByType(nodesType.finalDiagnostic);
+
+    for (let index in finalDiagnostics) {
+      if (finalDiagnostics.hasOwnProperty(index)) {
+        let finalDiagnostic = finalDiagnostics[index];
+        let condition = finalDiagnostic.calculateCondition();
+        if (condition === true) {
+          for (let indexManagement in finalDiagnostic.managements) {
+            if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
+              finalDiagnostic.managements[indexManagement].top_conditions.map(
+                // eslint-disable-next-line react/prop-types
+                (m) => {
+                  let node = this[m.first_node_id];
+                  if (node.type === nodesType.questionsSequence) {
+                    if (node.answer === null) {
+                      Object.keys(node.instances).map(
+                        (d) => (questions[d] = this[d])
+                      );
+                    }
+                  } else {
+                    questions[m.first_node_id] = this[m.first_node_id];
+                  }
+                }
+              );
+            }
+          }
+
+          for (let indexTreatment in finalDiagnostic.treatments) {
+            if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
+              finalDiagnostic.treatments[indexTreatment].top_conditions.map(
+                // eslint-disable-next-line react/prop-types
+                (t) => {
+                  //
+                  let node = this[t.first_node_id];
+                  if (node.type === nodesType.questionsSequence) {
+                    if (node.answer === null) {
+                      Object.keys(node.instances).map(
+                        (d) => (questions[d] = this[d])
+                      );
+                    }
+                  } else {
+                    questions[t.first_node_id] = this[t.first_node_id];
+                  }
+                }
+              );
+            }
+          }
+        }
+      }
+    }
+    return questions;
   }
 
   /**

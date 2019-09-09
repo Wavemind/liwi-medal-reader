@@ -1,10 +1,6 @@
 import React from 'react';
 import { Button, Icon } from 'native-base';
-import {
-  createDrawerNavigator,
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import { createBottomTabNavigator, createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
