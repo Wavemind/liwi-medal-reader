@@ -5,7 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text } from 'native-base';
 import { nodesType } from '../../../frontend_service/constants';
 import { liwiColors } from '../../utils/constants';
-import { styles } from '../../screens/medicalCasesContainer/medicalCaseSummary/MedicalCaseSummary.style';
+import { styles } from './FinalDiagnosesList.style';
 
 type Props = NavigationScreenProps & {};
 

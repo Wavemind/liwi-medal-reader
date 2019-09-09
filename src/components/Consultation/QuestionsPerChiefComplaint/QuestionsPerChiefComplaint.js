@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { View, Text } from 'native-base';
+import { Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import { categories, stage } from '../../../../frontend_service/constants';
 import Questions from '../../QuestionsContainer/Questions';
@@ -75,7 +75,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<
             style={styles.spacingChiefComplaints}
             key={`chiefComplaint_${chiefComplaint.title}`}
           >
-            <Text subText>{chiefComplaint.title}</Text>
+            <Text customTitle>{chiefComplaint.title}</Text>
             {chiefComplaint.content}
           </View>
         ))}
