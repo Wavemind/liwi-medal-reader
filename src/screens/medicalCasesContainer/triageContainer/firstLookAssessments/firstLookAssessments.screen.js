@@ -10,7 +10,10 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class FirstLookAssessments extends React.Component<Props, State> {
+export default class FirstLookAssessments extends React.Component<
+  Props,
+  State
+> {
   render() {
     const { medicalCase } = this.props;
     let questions = [];
@@ -20,8 +23,6 @@ export default class FirstLookAssessments extends React.Component<Props, State> 
       questions.push(medicalCase.nodes[order]);
     });
 
-    return (
-      <QuestionList questions={questions} />
-    );
+    return <QuestionList questions={questions} />;
   }
 }

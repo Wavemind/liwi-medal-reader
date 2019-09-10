@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { View, Text } from 'native-base';
+import { Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
-import {categories, stage} from '../../../../frontend_service/constants';
+import { categories, stage } from '../../../../frontend_service/constants';
 import Questions from '../../QuestionsContainer/Questions';
 import { styles } from './QuestionsPerChiefComplaint.style';
 
