@@ -22,9 +22,9 @@ export const handleHttpError = async (errors: any) => {
   }
 };
 
-export const Toaster = (text: string = 'Default', params: ToastType) => {
+export const Toaster = (text: string = 'Default', params: ToastType = {}) => {
   const {
-    buttonText = '',
+    buttonText = null,
     type = 'warning',
     position = 'bottom',
     duration = 2000,
