@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { ViewPager } from 'rn-viewpager';
 
 import StepIndicator from 'react-native-step-indicator';
@@ -8,37 +8,13 @@ import { liwiColors } from '../../../../utils/constants';
 import Diagnoses from '../Diagnoses/Diagnoses.screen';
 import HealthCaresQuestions from '../HealthCaresQuestions';
 import HealthCares from '../HealthCares';
+import { indicatorStyles, styles } from './DiagnosesStrategy.style';
 
 const PAGES = [
   <Diagnoses key="dioagnonseslist" />,
   <HealthCaresQuestions key="HealthCaresQuestions" />,
   <HealthCares key="HealthCares" />,
 ];
-
-const secondIndicatorStyles = {
-  stepIndicatorSize: 40,
-  currentStepIndicatorSize: 50,
-  separatorStrokeWidth: 2,
-  currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: liwiColors.redColor,
-  stepStrokeWidth: 3,
-  separatorStrokeFinishedWidth: 4,
-  stepStrokeFinishedColor: liwiColors.redColor,
-  stepStrokeUnFinishedColor: '#aaaaaa',
-  separatorFinishedColor: liwiColors.redColor,
-  separatorUnFinishedColor: '#aaaaaa',
-  stepIndicatorFinishedColor: liwiColors.redColor,
-  stepIndicatorUnFinishedColor: '#ffffff',
-  stepIndicatorCurrentColor: '#ffffff',
-  stepIndicatorLabelFontSize: 13,
-  currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: liwiColors.redColor,
-  stepIndicatorLabelFinishedColor: '#ffffff',
-  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
-  labelColor: '#999999',
-  labelSize: 13,
-  currentStepLabelColor: liwiColors.redColor,
-};
 
 const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   const iconConfig = {
@@ -66,7 +42,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   return iconConfig;
 };
 
-export default class App extends Component {
+export default class DiagnosesStrategy extends Component {
   constructor() {
     super();
     this.state = {
@@ -85,24 +61,28 @@ export default class App extends Component {
 
   render() {
     const { currentPage } = this.state;
+    const {
+      // eslint-disable-next-line react/prop-types
+      app: { t },
+    } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.stepIndicator}>
           <StepIndicator
             renderStepIndicator={this.renderStepIndicator}
-            customStyles={secondIndicatorStyles}
+            customStyles={indicatorStyles}
             currentPosition={currentPage}
             stepCount={3}
             onPress={this.onStepPress}
             labels={[
-              'Final Diagnoses',
-              'Healthcares\'s questions',
-              'Healthcares',
+              t('medical_case:final_diagnoses'),
+              t('medical_case:healthcares_questions'),
+              t('medical_case:healthcares'),
             ]}
           />
         </View>
         <ViewPager
-          style={{ flexGrow: 1 }}
+          style={styles.viewPager}
           ref={(viewPager) => {
             this.viewPager = viewPager;
           }}
@@ -143,30 +123,3 @@ export default class App extends Component {
     );
   };
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-  stepIndicator: {
-    marginVertical: 50,
-  },
-  page: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  stepLabel: {
-    fontSize: 15,
-    textAlign: 'center',
-    fontWeight: '500',
-    color: '#999999',
-  },
-  stepLabelSelected: {
-    fontSize: 15,
-    textAlign: 'center',
-    fontWeight: '500',
-    color: '#4aae4f',
-  },
-});

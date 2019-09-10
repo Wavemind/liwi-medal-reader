@@ -10,7 +10,7 @@ import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import { nodesType } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
-import FinalDiagnosesList from '../../../components/FinalDiagnosesList';
+import FinalDiagnosesList from '../../../components/FinalDiagnosticsList';
 
 type Props = NavigationScreenProps & {};
 type State = {};

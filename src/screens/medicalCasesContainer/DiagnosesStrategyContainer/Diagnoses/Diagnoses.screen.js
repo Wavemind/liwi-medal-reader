@@ -1,11 +1,11 @@
 import React from 'react';
 import { Content } from 'native-base';
-import FinalDiagnosesList from '../../../../components/FinalDiagnosesList';
+import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
 
 export default function Diagnoses() {
   return (
     <Content>
-      <FinalDiagnosesList />
+      <FinalDiagnosticsList />
     </Content>
   );
 }

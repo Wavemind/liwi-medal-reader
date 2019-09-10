@@ -90,6 +90,12 @@ export class NodesModel implements NodeInterface {
 
   /**
    ** For each final diagnostics we return the management and treatment associate
+   * @return
+   * Object healthCares : {
+   *   managements: {},
+   *   treatments: {},
+   * }
+   *
    */
   getHealthCares() {
     let healthCares = { managements: {}, treatments: {} };
@@ -132,7 +138,9 @@ export class NodesModel implements NodeInterface {
   }
 
   /**
-   ** We return all the questions are in Healtcares from Final Diagnostic are true
+   * Return all the questions are in Healtcares from Final Diagnostic are true
+   * @return Object {questions}
+   * Nodes of Management And Treatment nodes
    */
   getHealthCaresQuestions() {
     let questions = {};
@@ -147,8 +155,8 @@ export class NodesModel implements NodeInterface {
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
               finalDiagnostic.managements[indexManagement].top_conditions.map(
                 // eslint-disable-next-line react/prop-types
-                (m) => {
-                  let node = this[m.first_node_id];
+                (tp) => {
+                  let node = this[tp.first_node_id];
                   if (node.type === nodesType.questionsSequence) {
                     if (node.answer === null) {
                       Object.keys(node.instances).map(
@@ -156,7 +164,7 @@ export class NodesModel implements NodeInterface {
                       );
                     }
                   } else {
-                    questions[m.first_node_id] = this[m.first_node_id];
+                    questions[tp.first_node_id] = this[tp.first_node_id];
                   }
                 }
               );
@@ -167,9 +175,9 @@ export class NodesModel implements NodeInterface {
             if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
               finalDiagnostic.treatments[indexTreatment].top_conditions.map(
                 // eslint-disable-next-line react/prop-types
-                (t) => {
+                (tp) => {
                   //
-                  let node = this[t.first_node_id];
+                  let node = this[tp.first_node_id];
                   if (node.type === nodesType.questionsSequence) {
                     if (node.answer === null) {
                       Object.keys(node.instances).map(
@@ -177,7 +185,7 @@ export class NodesModel implements NodeInterface {
                       );
                     }
                   } else {
-                    questions[t.first_node_id] = this[t.first_node_id];
+                    questions[tp.first_node_id] = this[tp.first_node_id];
                   }
                 }
               );
