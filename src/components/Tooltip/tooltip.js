@@ -1,3 +1,10 @@
+/**
+ * This file is an extend from react-native-walkthrough-tooltip
+ *
+ * We change the onClose props callback and destructuring property
+ *
+ */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View } from 'react-native';
