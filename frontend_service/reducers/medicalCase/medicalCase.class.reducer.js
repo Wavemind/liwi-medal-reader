@@ -94,6 +94,13 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
+
+  /**
+   * Update property of medicalCase
+   *
+   * @payload property: Index in Object
+   * @payload newValue: New value of this index
+   */
   @Action(actions.UPDATE_MEDICAL_CASE)
   updateMedicalCase(state, action) {
     const { property, newValue } = action.payload;
