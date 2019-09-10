@@ -4,7 +4,7 @@ import { styles } from './HealthCares.style';
 
 export default function HealthCares(props) {
   // eslint-disable-next-line react/prop-types
-  const { medicalCase } = props;
+  const { medicalCase, app: { t } } = props;
 
   // eslint-disable-next-line react/prop-types
   const healthCares = medicalCase.nodes.getHealthCares();
@@ -13,8 +13,8 @@ export default function HealthCares(props) {
 
   return (
     <Content>
-      <Text>HealthCares</Text>
-      <Text customTitle>Managements</Text>
+      <Text>{t('medical_case:healthcares')}</Text>
+      <Text customTitle>{t('medical_case:managements')}</Text>
       {Object.keys(managements).map((m) => (
         <Text
           style={styles.spaceText}
@@ -24,7 +24,7 @@ export default function HealthCares(props) {
           {managements[m].reference} - {managements[m].label}
         </Text>
       ))}
-      <Text customTitle>Treatments</Text>
+      <Text customTitle>{t('medical_case:treatments')}</Text>
       {Object.keys(treatments).map((t) => (
         <Text
           style={styles.spaceText}

@@ -5,13 +5,13 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text } from 'native-base';
 import { nodesType } from '../../../frontend_service/constants';
 import { liwiColors } from '../../utils/constants';
-import { styles } from './FinalDiagnosesList.style';
+import { styles } from './FinalDiagnosticsList.style';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class FinalDiagnosesList extends React.PureComponent<
+export default class FinalDiagnosticsList extends React.PureComponent<
   Props,
   State
 > {
