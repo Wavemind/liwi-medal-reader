@@ -6,7 +6,8 @@ import { store } from '../../store';
 
 interface HealthCaresInterface {}
 
-export class HealthCares extends NodeModel implements HealthCaresInterface {
+export class HealthCaresModel extends NodeModel
+  implements HealthCaresInterface {
   constructor(props) {
     super(props);
 

@@ -1,13 +1,13 @@
 // @flow
 
-import { HealthCares } from './HealthCares.model';
+import { HealthCaresModel } from './HealthCares.model';
 
 
  interface ManagementInterface {
 
 }
 
-export class ManagementModel extends HealthCares implements ManagementInterface {
+export class ManagementModel extends HealthCaresModel implements ManagementInterface {
   constructor(props) {
     super(props);
 

@@ -8,7 +8,7 @@ import { styles } from './MedicalCaseSummary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
-import FinalDiagnosesList from '../../../components/FinalDiagnosticsList';
+import FinalDiagnosticsList from '../../../components/FinalDiagnosticsList';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -52,7 +52,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
           >
             <Content style={styles.marginTop}>
-              <FinalDiagnosesList />
+              <FinalDiagnosticsList />
             </Content>
           </Tab>
           <Tab
