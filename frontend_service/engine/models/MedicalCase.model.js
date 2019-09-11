@@ -5,7 +5,6 @@ import find from 'lodash/find';
 import forEach from 'lodash/forEach';
 import maxBy from 'lodash/maxBy';
 import { medicalCaseStatus } from '../../constants';
-import { VitalSignsModel } from './VitalSigns.model';
 import {
   getItem,
   getItemFromArray,
@@ -28,7 +27,6 @@ interface MedicalCaseInterface {
     nodes: Object,
     diagnostics: Object,
     createdDate: Date,
-    vitalSigns: VitalSignsModel,
   };
 }
 
@@ -47,7 +45,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       ...algorithmUsed,
       nodes: algorithmUsed.nodes,
       diagnostics: algorithmUsed.diagnostics,
-      vitalSigns: new VitalSignsModel(),
     };
 
     generateExcludedId(newMedicalCase);

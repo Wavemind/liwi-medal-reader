@@ -17,11 +17,6 @@ export const setMedicalCase = (medicalCase) => ({
   },
 });
 
-export const nextBatch = () => ({
-  type: actions.MC_GENERATE_NEXT_BATCH,
-  payload: {},
-});
-
 export const setAnswer = (index, value) => ({
   type: actions.SET_ANSWER,
   payload: {
@@ -60,11 +55,6 @@ export const updatePatient = (index, value) => ({
     index: index,
     value: value,
   },
-});
-
-export const setVitalSigns = (index, value) => ({
-  type: actions.MC_SET_VITAL_SIGNS,
-  payload: { index: index, value: value },
 });
 
 export const dispatchCondition = (diagnosticId, nodeId) => ({

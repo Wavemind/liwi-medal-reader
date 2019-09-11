@@ -18,10 +18,11 @@ const PAGES = [
 
 const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   const iconConfig = {
-    name: 'feed',
+    name: 'add-alert',
     color: stepStatus === 'finished' ? '#ffffff' : liwiColors.redColor,
     size: 25,
   };
+
   switch (position) {
     case 0: {
       iconConfig.name = 'add-alert';

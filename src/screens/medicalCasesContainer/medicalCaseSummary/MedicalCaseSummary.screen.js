@@ -1,15 +1,13 @@
 // @flow
 
 import * as React from 'react';
-import { Content, Icon, Tab, Tabs, Text, View } from 'native-base';
+import { Content, Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { styles } from './MedicalCaseSummary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
-import { nodesType } from '../../../../frontend_service/constants';
-import { liwiColors } from '../../../utils/constants';
 import FinalDiagnosesList from '../../../components/FinalDiagnosticsList';
 
 type Props = NavigationScreenProps & {};
@@ -25,46 +23,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
       navigation,
     } = this.props;
 
-    let finalDiagnostics = nodes.filterByType(nodesType.finalDiagnostic);
     let defaultTab = navigation.getParam('defaultTab');
-
-    const items = [];
-
-    for (let index in finalDiagnostics) {
-      if (finalDiagnostics.hasOwnProperty(index)) {
-        let finalDiagnostic = finalDiagnostics[index];
-        let condition = finalDiagnostic.calculateCondition();
-
-        let type;
-        let style = {};
-        let name;
-
-        switch (condition) {
-          case true:
-            type = 'AntDesign';
-            name = 'checkcircle';
-            style.color = liwiColors.greenColor;
-            break;
-          case false:
-            type = 'Entypo';
-            name = 'circle-with-cross';
-            style.color = liwiColors.redColor;
-            break;
-          case null:
-            type = 'AntDesign';
-            name = 'minuscircleo';
-            style.color = liwiColors.darkerGreyColor;
-            break;
-        }
-
-        items.push(
-          <Text style={styles.spaceText} size-auto>
-            <Icon type={type} name={name} style={style} /> -{' '}
-            {finalDiagnostic.id} - {finalDiagnostic.label}
-          </Text>
-        );
-      }
-    }
 
     return (
       <View padding-auto flex>
