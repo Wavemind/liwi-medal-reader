@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { ScrollView, TouchableHighlight } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { Text, View, Icon } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import { styles } from './Home.style';
 
 type Props = NavigationScreenProps & {};

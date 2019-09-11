@@ -5,7 +5,6 @@ import find from 'lodash/find';
 import findKey from 'lodash/findKey';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { generateNextBatch } from '../../algorithm/algoTreeDiagnosis';
 import { nodesType, valueFormats } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
@@ -42,16 +41,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
-
-  @Action(actions.MC_GENERATE_NEXT_BATCH)
-  generateNextBatch(state) {
-    let newState = generateNextBatch(state);
-
-    return {
-      ...state,
-      batches: [...newState.batches],
-    };
-  }
 
   /**
    * Update condition value of diagnostic or questions sequence for a question or a questions sequence
@@ -91,6 +80,28 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
+  /**
+   * Update property of medicalCase
+   *
+   * @payload property: Index in Object
+   * @payload newValue: New value of this index
+   */
+  @Action(actions.UPDATE_MEDICAL_CASE)
+  updateMedicalCase(state, action) {
+    const { property, newValue } = action.payload;
+
+    return {
+      ...state,
+      [property]: newValue,
+    };
+  }
+
+  /**
+   * Set the answer for a specific PS
+   *
+   * @payload indexPs: Index of a specific PredefinedSydrom
+   * @payload answer: New answer
+   */
   @Action(actions.MC_PREDEFINED_SYNDROME_SET_ANSWER)
   psSetAnswer(state, action) {
     const { indexPs, answer } = action.payload;
@@ -167,6 +178,12 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
+  /**
+   * Update the patient value
+   *
+   * @payload index: property in object patient
+   * @payload value: New value
+   */
   @Action(actions.MC_UPDATE_PATIENT)
   updatePatient(state, action) {
     const { index, value } = action.payload;
@@ -180,6 +197,13 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
+  /**
+   * Set the medical case
+   * store in localstorage if necessary
+   * Instance the medical case with model
+   *
+   * @payload medicalCase: medical case
+   */
   @Action(actions.MC_SET)
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
@@ -195,6 +219,11 @@ class MedicalCaseReducer extends ReducerClass {
     };
   }
 
+  /**
+   * Method call from redux persist and re set the medicalcase
+   *
+   * @payload medicalCase: medical case
+   */
   @Action(REHYDRATE)
   rehydrate(state, action) {
     if (

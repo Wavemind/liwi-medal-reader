@@ -1,8 +1,4 @@
-import {
-  liwiColors,
-  marginIsTablet,
-  screenWidth,
-} from '../../../utils/constants';
+import { liwiColors, marginIsTablet, screenWidth } from '../../../utils/constants';
 
 export default {
   'NativeBase.ViewNB': {
@@ -98,7 +94,7 @@ export default {
     '.bottom-view': {
       flex: 1,
       justifyContent: 'flex-end',
-      marginBottom: 36,
+      marginBottom: 60,
     },
 
     '.flex': {

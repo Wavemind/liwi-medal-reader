@@ -9,10 +9,8 @@ const languageDetector = {
     const deviceLocale = DeviceInfo.getDeviceLocale();
     callback(deviceLocale);
   },
-  init: () => {
-  },
-  cacheUserLanguage: () => {
-  },
+  init: () => {},
+  cacheUserLanguage: () => {},
 };
 
 i18n
@@ -47,7 +45,7 @@ i18n
           edit: 'Edit',
           back: 'Back',
           next: 'Next',
-          next_stage: 'Next stage'
+          next_stage: 'Next stage',
         },
         question: {
           yes: 'Yes',
@@ -70,6 +68,11 @@ i18n
           others: 'Others',
         },
         medical_case: {
+          final_diagnoses: 'Final Diagnoses',
+          healthcares_questions: 'Healthcares\'s questions',
+          healthcares: 'Healthcares',
+          managements: 'managements',
+          treatments: 'treatments',
           waiting_triage: 'Waiting for triage',
           triage: 'Triage',
           waiting_consultation: 'Waiting for consultation',
@@ -92,7 +95,7 @@ i18n
           medical_cases: 'Medical cases',
           no_medical_cases: 'No medical cases',
           no_algorithms: 'No algorithms in memory',
-          no_questions: 'There are no questions for this category'
+          no_questions: 'There are no questions for this category',
         },
         patient_detail: {},
         patient_upsert: {
@@ -192,6 +195,7 @@ i18n
         navigation: {
           medical_case_list: 'Case in progress',
           home: 'Home',
+          triage: 'Triage',
           patient_upsert: 'Patient',
           patient_list: 'Patient list',
           patient_search: 'Search a patient',
@@ -213,10 +217,11 @@ i18n
         notifications: {
           empty_code: 'Your code is empty, please write it',
           invalid_code: ' Your local code is invalid, please try again',
-          session_does_not_exist: 'Your local user does not exist, please try again',
+          session_does_not_exist:
+            'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: 'You don\'t have internet connection',
-          algorithm_updated: 'Your algorithm has been updated'
+          algorithm_updated: 'Your algorithm has been updated',
         },
       },
       fr: {
@@ -226,8 +231,10 @@ i18n
         },
         notifications: {
           empty_code: 'Votre code est vide, veuillez l\'écrire',
-          invalid_code: 'Votre code local n\'est pas valide, veuillez réessayer.',
-          session_does_not_exist: 'Cet utilisateur local n\'existe pas, veuillez réessayer.',
+          invalid_code:
+            'Votre code local n\'est pas valide, veuillez réessayer.',
+          session_does_not_exist:
+            'Cet utilisateur local n\'existe pas, veuillez réessayer.',
           session_already_exist: 'La session existe déjà',
           no_internet: 'Vous n\'avez pas de connexion internet',
         },
@@ -282,6 +289,22 @@ i18n
           password: 'Mot de passe',
           login: 'Connecter',
         },
+        medical_case: {
+          managements: 'managements',
+          treatments: 'treatments',
+          final_diagnoses: 'Final Diagnoses',
+          healthcares_questions: 'Healthcares\'s questions',
+          healthcares: 'Healthcares',
+          waiting_triage: 'Waiting for triage',
+          triage: 'Triage',
+          waiting_consultation: 'Waiting for consultation',
+          consultation: 'Consultation',
+          waiting_test: 'Waiting for test',
+          test: 'Test',
+          waiting_final_diagnostic: 'Wait for diagnosis',
+          final_diagnostic: 'Diagnosis',
+          close: 'Close',
+        },
         unlock_session: {
           code: 'Code',
           unlock: 'Déverrouiller la session',
@@ -302,6 +325,7 @@ i18n
           patient_list: 'Liste des patients',
           settings: 'Paramètres',
           available_algorithms: 'Algorithmes disponibles',
+          triage: 'Triage',
         },
         common: {
           back: 'Retour',

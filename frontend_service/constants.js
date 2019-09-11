@@ -1,7 +1,4 @@
 export const host = 'http://liwi.wavelab.top/api/v1/';
-// export const host = 'http://192.168.1.5:3000/api/v1/'; // quent
-// export const host = 'http://192.168.31.214:3000/api/v1/'; // manu
-// export const host = 'http://192.168.1.4:3000/api/v1/'; // alain
 
 // Hash used to encrypt local password
 export const saltHash =
@@ -80,13 +77,13 @@ export const typeNode = {
 
 // Status of medical cases
 export const medicalCaseStatus = {
-  waitingTriage: 'waiting_triage',
-  triage: 'triage',
-  waitingConsultation: 'waiting_consultation',
-  consultation: 'consultation',
-  waitingTest: 'waiting_test',
-  test: 'test',
-  waitingDiagnostic: 'waiting_diagnostic',
-  final_diagnostic: 'final_diagnostic',
-  close: 'close',
+  waitingTriage: { name: 'waiting_triage', index: 0 },
+  triage: { name: 'triage', index: 1 },
+  waitingConsultation: { name: 'waiting_consultation', index: 2 },
+  consultation: { name: 'consultation', index: 3 },
+  waitingTest: { name: 'waiting_test', index: 4 },
+  test: { name: 'test', index: 5 },
+  waitingDiagnostic: { name: 'waiting_diagnostic', index: 6 },
+  final_diagnostic: { name: 'final_diagnostic', index: 7 },
+  close: { name: 'close', index: 8 },
 };

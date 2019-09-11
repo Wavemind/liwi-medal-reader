@@ -1,4 +1,8 @@
 import { NavigationActions, StackActions } from 'react-navigation';
+import _ from 'lodash';
+import { store } from '../../../frontend_service/store';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 
 let _navigator;
 
@@ -62,13 +66,37 @@ function resetActionStack(routeName, params) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function onNavigationStateChange(prevState, currentState, action) {
-
+function onNavigationStateChange(prevState, currentState) {
   // eslint-disable-next-line no-unused-vars
-  let current = getActiveRouteName(currentState);
+  let activeRoute = getActiveRouteName(currentState);
+  let prev = getActiveRouteName(prevState);
+  let cu = getCurrentRoute(currentState);
 
-  // here update statu of medicalcase in the case of entering route name
+  // prevent multiple execution
+  if (activeRoute !== prev) {
+    const state$ = store.getState();
+    // This route can change the status of MC
+    if (
+      cu.params !== undefined &&
+      cu?.params?.medicalCaseStatus !== undefined &&
+      state$.status !== cu.params.medicalCaseStatus
+    ) {
+      // Find index in status
+      let currentStatus = _.find(medicalCaseStatus, (i) => {
+        return i.name === state$.status;
+      });
 
+      // Find index in status
+      let routeStatus = _.find(medicalCaseStatus, (i) => {
+        return i.name === cu.params.medicalCaseStatus;
+      });
+      // The status has to be changed !
+      if (currentStatus.index < routeStatus.index) {
+        // Dispatch an action redux to update the status
+        store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
+      }
+    }
+  }
 }
 
 export default {

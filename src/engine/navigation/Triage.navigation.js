@@ -7,6 +7,7 @@ import ChronicalConditions from '../../screens/medicalCasesContainer/triageConta
 import Others from '../../screens/medicalCasesContainer/triageContainer/others';
 import VitalSigns from '../../screens/medicalCasesContainer/triageContainer/vitalSigns';
 import TriageTabs from './TriageTabs';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 export const TriageTabNavigator = createMaterialTopTabNavigator(
   {
@@ -14,35 +15,41 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       screen: FirstLookAssessments,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     ChiefComplaints: {
       screen: ChiefComplaints,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     VitalSigns: {
       screen: VitalSigns,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     ChronicalConditions: {
       screen: ChronicalConditions,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
       },
     },
     Others: {
       screen: Others,
       params: {
         showSummary: true,
-        dropDownMenu: 'Triage'
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
+        nextStage: medicalCaseStatus.waitingConsultation.name,
       },
     },
   },
