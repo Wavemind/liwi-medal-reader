@@ -79,7 +79,7 @@ export default class PatientSummary extends Component<Props, State> {
             <Image
               resizeMode="contain"
               style={styleImage}
-              source={require('../../../../assets/images/differentiel.png')}
+              source={require('../../../../assets/images/differential.png')}
             />
             <Text center>Differential Diagnoses</Text>
           </TouchableOpacity>

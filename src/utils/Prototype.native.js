@@ -63,6 +63,18 @@ Array.prototype.first = function() {
 };
 
 /**
+ * Return the last element of an array.
+ * ex:
+ let arr = [1,2,3];
+ arr.last(); // return 3
+ *
+ * @return {*}
+ */
+Array.prototype.last = function() {
+  return this[this.length - 1];
+};
+
+/**
  * Return a boolean if an array is empty
  * ex :
       yourArray.isEmpty() // return true / false
