@@ -34,7 +34,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
       'MedicalHistory',
       'PhysicalExam',
       'Tests',
-      'DiagnosesStrategy',
+      'DiagnosticsStrategy',
     ],
     currentRoute: NavigationService.getCurrentRoute(),
     prevRoute: {},

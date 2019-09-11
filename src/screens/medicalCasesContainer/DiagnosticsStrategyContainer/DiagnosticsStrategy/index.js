@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import DiagnosesStrategy from './DiagnosesStrategy.screen';
+import DiagnosticsStrategy from './DiagnosticsStrategy.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 
@@ -10,5 +10,5 @@ const mapStateToProps = (medicalCase) => {
 };
 
 export default connect(mapStateToProps)(
-  withSessions(withApplication(DiagnosesStrategy))
+  withSessions(withApplication(DiagnosticsStrategy))
 );

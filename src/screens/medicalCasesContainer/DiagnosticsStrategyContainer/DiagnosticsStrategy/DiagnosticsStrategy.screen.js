@@ -5,10 +5,10 @@ import { ViewPager } from 'rn-viewpager';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { liwiColors } from '../../../../utils/constants';
-import Diagnoses from '../Diagnoses/Diagnoses.screen';
+import Diagnoses from '../Diagnostics/Diagnostics.screen';
 import HealthCaresQuestions from '../HealthCaresQuestions';
 import HealthCares from '../HealthCares';
-import { indicatorStyles, styles } from './DiagnosesStrategy.style';
+import { indicatorStyles, styles } from './DiagnosticsStrategy.style';
 
 const PAGES = [
   <Diagnoses key="dioagnonseslist" />,
