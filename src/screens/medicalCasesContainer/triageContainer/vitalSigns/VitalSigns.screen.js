@@ -5,6 +5,7 @@ import type { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../../engine/contexts/Application.context';
 import { categories } from '../../../../../frontend_service/constants';
 import QuestionList from '../../../../components/Triage/QuestionList';
+import NavigationTriage from '../../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -24,7 +25,10 @@ export default class VitalSigns extends React.Component<Props, State> {
     });
 
     return (
-      <QuestionList questions={questions} />
+      <React.Fragment>
+        <QuestionList questions={questions} />
+        <NavigationTriage />
+      </React.Fragment>
     );
   }
 }
