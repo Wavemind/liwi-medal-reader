@@ -90,6 +90,8 @@ export class NodesModel implements NodeInterface {
 
   /**
    ** For each final diagnostics we return the management and treatment associate
+   *  We return all a list of management and a list of treatment are condition true. Not filtered by Final Diagnostics
+   *
    * @return
    * Object healthCares : {
    *   managements: {},
