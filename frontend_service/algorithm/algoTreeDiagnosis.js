@@ -131,49 +131,6 @@ export const setParentConditionValue = (
   });
 };
 
-// @params [Json] algorithmJsonMedicalCase
-// @return [Json] algorithmJsonMedicalCase
-// Get every nodes and identify which are ready for next batch
-export const generateNextBatch = (algorithmJsonMedicalCase) => {
-  const { nodes, batches } = algorithmJsonMedicalCase;
-  let newBatch = { name: '', current: false, nodes: [] };
-
-  Object.keys(nodes).map((nodeId) => {
-    // Check if the question or qs has already been answered
-    if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
-      let hasConditionValue = false;
-
-      nodes[nodeId].dd.concat(nodes[nodeId].qs).map((parent) => {
-        if (parent.conditionValue === true) {
-          hasConditionValue = true;
-        }
-      });
-
-      if (hasConditionValue) {
-        let isInBatch = false;
-
-        // Find if the node is not already in another batch
-        batches.map((b) => {
-          let duplicate = find(b.nodes, (a) => a === nodeId);
-          if (duplicate) {
-            isInBatch = true;
-          }
-        });
-
-        // Push in the next batch if the question or qs is not present in another batch
-        if (!isInBatch) {
-          newBatch.nodes.push(nodeId);
-        }
-      }
-    }
-  });
-
-  if (!newBatch.nodes.isEmpty()) {
-    algorithmJsonMedicalCase.batches.push(newBatch);
-  }
-
-  return algorithmJsonMedicalCase;
-};
 
 // Node from diagnostics !
 export const getParentsNodes = (state$, diagnosticId, nodeId) => {

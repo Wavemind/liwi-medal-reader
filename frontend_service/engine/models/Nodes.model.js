@@ -8,6 +8,7 @@ import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
+import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 
 interface NodeInterface {}
 
@@ -30,7 +31,6 @@ export class NodesModel implements NodeInterface {
    * @return allAnswered: boolean
    * return true if all nodes is answered
    */
-
   isAllAnswered(nodes) {
     return !nodes.some((a) => {
       return a.answer === null;
@@ -86,6 +86,104 @@ export class NodesModel implements NodeInterface {
     } catch (e) {
       console.warn(e);
     }
+  }
+
+  /**
+   ** For each final diagnostics we return the management and treatment associate
+   *  We return all a list of management and a list of treatment are condition true. Not filtered by Final Diagnostics
+   *
+   * @return
+   * Object healthCares : {
+   *   managements: {},
+   *   treatments: {},
+   * }
+   *
+   */
+  getHealthCares() {
+    let healthCares = { managements: {}, treatments: {} };
+
+    // Filter by final diagnostic
+    const finalDiagnostics = this.filterByType(nodesType.finalDiagnostic);
+
+    for (let index in finalDiagnostics) {
+      if (finalDiagnostics.hasOwnProperty(index)) {
+        let finalDiagnostic = finalDiagnostics[index];
+        let condition = finalDiagnostic.calculateCondition();
+        if (condition === true) {
+          for (let indexManagement in finalDiagnostic.managements) {
+            if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
+              let managementBoolean = calculateCondition(
+                finalDiagnostic.managements[indexManagement]
+              );
+              if (managementBoolean === true) {
+                healthCares.managements[indexManagement] = this[
+                  indexManagement
+                ];
+              }
+            }
+          }
+
+          for (let indexTreatment in finalDiagnostic.treatments) {
+            if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
+              let treatmentBoolean = calculateCondition(
+                finalDiagnostic.treatments[indexTreatment]
+              );
+              if (treatmentBoolean === true) {
+                healthCares.treatments[indexTreatment] = this[indexTreatment];
+              }
+            }
+          }
+        }
+      }
+    }
+    return healthCares;
+  }
+
+  /**
+   * Return a list of question that need to be answered in order to define the health cares
+   * @return Object {questions} list of question that need to be answered
+   */
+  getHealthCaresQuestions() {
+    let questions = {};
+    const finalDiagnostics = this.filterByType(nodesType.finalDiagnostic);
+
+    for (let index in finalDiagnostics) {
+      if (finalDiagnostics.hasOwnProperty(index)) {
+        let finalDiagnostic = finalDiagnostics[index];
+        let condition = finalDiagnostic.calculateCondition();
+        if (condition === true) {
+          for (let indexManagement in finalDiagnostic.managements) {
+            this[indexManagement].getQuestions(finalDiagnostic);
+            if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
+              let m = this[indexManagement];
+
+              let q = m.getQuestions(
+                finalDiagnostic.managements[indexManagement]
+              );
+              questions = {
+                ...questions,
+                ...q,
+              };
+            }
+          }
+
+          for (let indexTreatment in finalDiagnostic.treatments) {
+            if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
+              let t = this[indexTreatment];
+
+              let q = t.getQuestions(
+                finalDiagnostic.treatments[indexTreatment]
+              );
+              questions = {
+                ...questions,
+                ...q,
+              };
+            }
+          }
+        }
+      }
+    }
+    return questions;
   }
 
   /**

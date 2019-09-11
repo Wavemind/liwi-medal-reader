@@ -15,14 +15,8 @@ import 'core-js/fn/reflect/has-own-metadata';
 import 'core-js/fn/reflect/metadata';
 import 'es6-symbol/implement';
 import type { StateApplicationContext } from '../../engine/contexts/Application.context';
-import {
-  ApplicationProvider,
-  withApplication,
-} from '../../engine/contexts/Application.context';
-import {
-  SessionsProvider,
-  withSessions,
-} from '../../engine/contexts/Sessions.context';
+import { ApplicationProvider, withApplication } from '../../engine/contexts/Application.context';
+import { SessionsProvider, withSessions } from '../../engine/contexts/Sessions.context';
 import 'jest-styled-components';
 import { NavigationScreenProps } from 'react-navigation';
 

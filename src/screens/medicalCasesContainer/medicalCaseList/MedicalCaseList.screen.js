@@ -111,6 +111,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState( { filterTerm }, () => this.settleMedicalCase() );
   };
 
+  // Sets in the  state a list of medical cases based on filters and orders
   settleMedicalCase = () => {
     this.setState( { loading: true } );
     const {

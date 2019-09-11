@@ -1,7 +1,4 @@
-export const host = 'https://liwi.wavelab.top/api/v1/';
-// export const host = 'http://192.168.1.5:3000/api/v1/'; // quent
-// export const host = 'http://192.168.31.214:3000/api/v1/'; // manu
-// export const host = 'http://192.168.1.4:3000/api/v1/'; // alain
+export const host = 'http://liwi.wavelab.top/api/v1/';
 
 // Hash used to encrypt local password
 export const saltHash =

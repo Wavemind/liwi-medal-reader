@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Icon } from 'native-base';
 import {
+  createBottomTabNavigator,
   createDrawerNavigator,
   createStackNavigator,
-  createBottomTabNavigator,
 } from 'react-navigation';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
@@ -23,6 +23,7 @@ import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
+import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 // We need to use i18n directly because we cant be connect to context
@@ -150,6 +151,16 @@ const Stack = createStackNavigator({
       dropDownMenu: 'Tests',
       medicalCaseStatus: medicalCaseStatus.test.name,
       nextStage: medicalCaseStatus.waitingDiagnostic.name,
+    },
+  },
+  DiagnosticsStrategy: {
+    screen: DiagnosticsStrategy,
+    path: 'DiagnosticsStrategy',
+    params: {
+      showSummary: true,
+      dropDownMenu: 'DiagnosticsStrategy',
+      medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
+      nextStage: medicalCaseStatus.close.name,
     },
   },
 });

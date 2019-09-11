@@ -153,7 +153,11 @@ export default class Drawer extends Component<Props, State> {
             </View>
 
             <View style={[styles.strategy, styles.paddingCategory]}>
-              <Button transparent btnDrawer>
+              <Button
+                transparent
+                btnDrawer
+                onPress={() => this.onPress('DiagnosesStrategy')}
+              >
                 <Text style={[styles.title, styles.noLeftPadding]} dark>
                   {t('menu:strategy')}
                 </Text>
