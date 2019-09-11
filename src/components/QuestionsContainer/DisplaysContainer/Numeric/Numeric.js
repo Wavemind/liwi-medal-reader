@@ -35,7 +35,7 @@ export default class Numeric extends React.Component<Props, State> {
   };
 
   render() {
-    const { question } = this.props;
+    const { question, unavailable } = this.props;
     const { style } = this.state;
 
     let keyboardType;
@@ -48,6 +48,14 @@ export default class Numeric extends React.Component<Props, State> {
         keyboardType = 'number-pad';
         break;
     }
+    let value = String(question.value);
+
+    if (
+      unavailable !== undefined &&
+      question.answer === String(unavailable.id)
+    ) {
+      value = '-';
+    }
 
     return (
       <View answer>
@@ -56,7 +64,7 @@ export default class Numeric extends React.Component<Props, State> {
             keyboardType={keyboardType}
             question
             numeric
-            defaultValue={question.answer !== null ? String(question.value) : null}
+            defaultValue={question.answer !== null ? value : null}
             style={style}
             onFocus={this._focus}
             onEndEditing={this._onEndEditing}

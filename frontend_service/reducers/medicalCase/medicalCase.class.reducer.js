@@ -130,6 +130,8 @@ class MedicalCaseReducer extends ReducerClass {
   setAnswer(state, action) {
     const { index, value } = action.payload;
 
+    // TODO if not available and Numeric question set it correctly
+
     let answer;
     switch (state.nodes[index].value_format) {
       case valueFormats.int:
