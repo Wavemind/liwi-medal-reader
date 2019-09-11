@@ -26,11 +26,11 @@ type State = { app: StateApplicationContext } & {
 export default class NavigationTriage extends React.Component<Props, State> {
   state = {
     router: [
-      'Assessments',
+      'FirstLookAssessments',
       'ChiefComplaints',
       'VitalSigns',
-      'Comorbidities',
-      'Vaccinations',
+      'ChronicalConditions',
+      'Others',
       'MedicalHistory',
       'PhysicalExam',
       'Tests',

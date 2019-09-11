@@ -15,7 +15,8 @@ export default class ChronicalConditions extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
     let questions = [];
-    const orderedQuestions = medicalCase.triage.orders[categories.chronicalCondition];
+    const orderedQuestions =
+      medicalCase.triage.orders[categories.chronicalCondition];
 
     orderedQuestions.map((orderedQuestion) => {
       let question = medicalCase.nodes[orderedQuestion];
