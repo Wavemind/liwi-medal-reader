@@ -11,13 +11,7 @@ import moment from 'moment';
 
 import { sessionsDuration } from '../../utils/constants';
 
-import {
-  destroySession,
-  getSession,
-  getSessions,
-  setActiveSession,
-  setItem,
-} from '../api/LocalStorage';
+import { destroySession, getSession, getSessions, setActiveSession, setItem } from '../api/LocalStorage';
 import { saltHash } from '../../../frontend_service/constants';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 

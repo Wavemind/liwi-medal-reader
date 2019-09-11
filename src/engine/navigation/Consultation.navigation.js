@@ -14,7 +14,7 @@ export const ConsultationTabNavigator = createMaterialTopTabNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Consultation',
-        medicalCaseStatus: medicalCaseStatus.consultation.name
+        medicalCaseStatus: medicalCaseStatus.consultation.name,
       },
     },
     PhysicalExam: {
@@ -32,5 +32,7 @@ export const ConsultationTabNavigator = createMaterialTopTabNavigator(
       activeTintColor: '#e91e63',
     },
     tabBarComponent: ConsultationTabs,
+    lazy: true,
+    optimizationsEnabled: true,
   }
 );

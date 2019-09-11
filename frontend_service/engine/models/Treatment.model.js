@@ -1,21 +1,16 @@
 // @flow
 
-import { NodeModel } from './Node.model';
+import { HealthCaresModel } from './HealthCares.model';
 
 interface TreatmentInterface {}
 
-export class TreatmentModel extends NodeModel implements TreatmentInterface {
+export class TreatmentModel extends HealthCaresModel
+  implements TreatmentInterface {
   constructor(props) {
     super(props);
 
-    const {
-      category,
-      description,
-      label
-    } = props;
+    const { category } = props;
 
     this.category = category;
-    this.description = description;
-    this.label = label;
   }
 }

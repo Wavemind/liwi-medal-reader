@@ -34,6 +34,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
       'MedicalHistory',
       'PhysicalExam',
       'Tests',
+      'DiagnosticsStrategy',
     ],
     currentRoute: NavigationService.getCurrentRoute(),
     prevRoute: {},
@@ -59,7 +60,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
     let prevRoute;
     let nextRoute;
 
-    let indexInRouter = router.findIndex((e) => e === currentRoute.key);
+    let indexInRouter = router.findIndex((e) => e === currentRoute.routeName);
 
     let beginNavBool = currentRoute.key === router.first();
     let endNavBool = currentRoute.key === router.last();
@@ -129,10 +130,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
     navigation.navigate('MedicalCaseList');
   };
 
-  shouldComponentUpdate(
-    nextProps: Props,
-    nextState: State,
-  ): boolean {
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     const { state } = this;
     return (
       state.beginNavBool !== nextState.beginNavBool ||
