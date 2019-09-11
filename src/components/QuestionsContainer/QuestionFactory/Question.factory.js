@@ -2,13 +2,20 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { ListItem, Text } from 'native-base';
-import { displayFormats, nodesType, priorities, valueFormats } from '../../../../frontend_service/constants';
+import _ from 'lodash';
+import {
+  displayFormats,
+  nodesType,
+  priorities,
+  valueFormats,
+} from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
 import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
+import CustomCheckbox from '../../InputContainer/CustomCheckbox';
 
 type Props = NavigationScreenProps & {};
 
@@ -44,6 +51,16 @@ class WrapperQuestion extends React.Component<Props, State> {
     const { question, specificStyle } = this.props;
     // By default no component
     let WrapperAnswer = () => null;
+    let WrapperUnavailable = () => null;
+    let unavailable = null;
+
+    unavailable = _.find(question.answers, (a) => a.value === 'not_available');
+
+    if (unavailable !== undefined) {
+      WrapperUnavailable = () => {
+        return <CustomCheckbox question={question} unavailable={unavailable} />;
+      };
+    }
 
     // Depending the format of the question we call the right component
     // Boolean | Numeric | List
@@ -57,7 +74,11 @@ class WrapperQuestion extends React.Component<Props, State> {
         break;
       case displayFormats.input:
         WrapperAnswer = () => (
-          <Numeric question={question} styles={specificStyle} />
+          <Numeric
+            question={question}
+            styles={specificStyle}
+            unavailable={unavailable}
+          />
         );
         break;
       case displayFormats.list:
@@ -69,7 +90,12 @@ class WrapperQuestion extends React.Component<Props, State> {
         break;
     }
 
-    return <WrapperAnswer />;
+    return (
+      <React.Fragment>
+        <WrapperUnavailable />
+        <WrapperAnswer />
+      </React.Fragment>
+    );
   }
 }
 
