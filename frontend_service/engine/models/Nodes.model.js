@@ -138,9 +138,8 @@ export class NodesModel implements NodeInterface {
   }
 
   /**
-   * Return all the questions are in Healtcares from Final Diagnostic are true
-   * @return Object {questions}
-   * Nodes of Management And Treatment nodes
+   * Return a list of question that need to be answered in order to define the health cares
+   * @return Object {questions} list of question that need to be answered
    */
   getHealthCaresQuestions() {
     let questions = {};
@@ -152,6 +151,7 @@ export class NodesModel implements NodeInterface {
         let condition = finalDiagnostic.calculateCondition();
         if (condition === true) {
           for (let indexManagement in finalDiagnostic.managements) {
+            this[indexManagement].getQuestions(finalDiagnostic);
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
               finalDiagnostic.managements[indexManagement].top_conditions.map(
                 // eslint-disable-next-line react/prop-types
