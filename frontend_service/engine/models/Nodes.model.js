@@ -153,42 +153,29 @@ export class NodesModel implements NodeInterface {
         if (condition === true) {
           for (let indexManagement in finalDiagnostic.managements) {
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
-              finalDiagnostic.managements[indexManagement].top_conditions.map(
-                // eslint-disable-next-line react/prop-types
-                (tp) => {
-                  let node = this[tp.first_node_id];
-                  if (node.type === nodesType.questionsSequence) {
-                    if (node.answer === null) {
-                      Object.keys(node.instances).map(
-                        (d) => (questions[d] = this[d])
-                      );
-                    }
-                  } else {
-                    questions[tp.first_node_id] = this[tp.first_node_id];
-                  }
-                }
+              let m = this[indexManagement];
+
+              let q = m.getQuestions(
+                finalDiagnostic.managements[indexManagement]
               );
+              questions = {
+                ...questions,
+                ...q,
+              };
             }
           }
 
           for (let indexTreatment in finalDiagnostic.treatments) {
             if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
-              finalDiagnostic.treatments[indexTreatment].top_conditions.map(
-                // eslint-disable-next-line react/prop-types
-                (tp) => {
-                  //
-                  let node = this[tp.first_node_id];
-                  if (node.type === nodesType.questionsSequence) {
-                    if (node.answer === null) {
-                      Object.keys(node.instances).map(
-                        (d) => (questions[d] = this[d])
-                      );
-                    }
-                  } else {
-                    questions[tp.first_node_id] = this[tp.first_node_id];
-                  }
-                }
+              let t = this[indexTreatment];
+
+              let q = t.getQuestions(
+                finalDiagnostic.treatments[indexTreatment]
               );
+              questions = {
+                ...questions,
+                ...q,
+              };
             }
           }
         }
