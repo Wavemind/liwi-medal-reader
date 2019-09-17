@@ -158,9 +158,6 @@ export default class Question extends React.PureComponent<Props, State> {
 
     // Define special style depending the proprity
     switch (question.priority) {
-      case priorities.mandatory:
-        specificStyle = styles.mandatory;
-        break;
       case priorities.basic:
         specificStyle = styles.normal;
         break;
