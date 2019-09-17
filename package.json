@@ -34,6 +34,7 @@
     "native-base": "^2.12.1",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
+    "react-fast-compare": "^2.0.4",
     "react-i18next": "9.0.2",
     "react-native": "0.59.8",
     "react-native-custom-picker": "^0.4.0",
