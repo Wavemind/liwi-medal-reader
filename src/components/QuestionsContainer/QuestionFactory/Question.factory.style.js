@@ -14,10 +14,6 @@ export const styles = StyleSheet.create({
     height: 50,
   },
   iconInfo: { color: liwiColors.redColor },
-  mandatory: {
-    // borderWidth: 1,
-    // borderColor: '#ffa4b5',
-  },
   triage: {
     elevation: 2,
   },
