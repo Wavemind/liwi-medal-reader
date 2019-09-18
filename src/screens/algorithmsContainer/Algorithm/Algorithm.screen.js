@@ -56,12 +56,16 @@ export default class Algorithm extends React.Component<Props, State> {
       empty,
     } = this.state;
 
+    const {
+      app: { t },
+    } = this.props;
+
     if (!ready) {
       return null;
     }
 
     if (empty && ready) {
-      return <Text>No algorithm</Text>;
+      return <Text>{t('work_case:no_algorithm')}</Text>;
     }
 
     let questionTriage = {};
