@@ -70,6 +70,25 @@ class WrapperQuestion extends React.Component<Props, State> {
     );
   };
 
+  onCloseToolTip = (e, r) => {
+    let xTouch = e.nativeEvent.pageX;
+    let xTooltip = r.tooltipOrigin.x;
+    let xEndToolTip = r.tooltipOrigin.x + r.contentSize.width;
+
+    let yTouch = e.nativeEvent.pageY;
+    let yTooltip = r.tooltipOrigin.y;
+    let yEndToolTip = r.tooltipOrigin.y + r.contentSize.height;
+
+    let insideContent =
+      xTouch > xTooltip &&
+      xTouch < xEndToolTip &&
+      (yTouch > yTooltip && yTouch < yEndToolTip);
+
+    if (!insideContent) {
+      this.setState({ toolTipVisible: false });
+    }
+  }
+
   render() {
     const { question, specificStyle } = this.props;
     const { toolTipVisible } = this.state;
@@ -116,24 +135,7 @@ class WrapperQuestion extends React.Component<Props, State> {
           showChildInTooltip={false}
           content={this._renderToolTipContent()}
           placement="center"
-          onClose={(e, r) => {
-            let xTouch = e.nativeEvent.pageX;
-            let xTooltip = r.tooltipOrigin.x;
-            let xEndToolTip = r.tooltipOrigin.x + r.contentSize.width;
-
-            let yTouch = e.nativeEvent.pageY;
-            let yTooltip = r.tooltipOrigin.y;
-            let yEndToolTip = r.tooltipOrigin.y + r.contentSize.height;
-
-            let insideContent =
-              xTouch > xTooltip &&
-              xTouch < xEndToolTip &&
-              (yTouch > yTooltip && yTouch < yEndToolTip);
-
-            if (!insideContent) {
-              this.setState({ toolTipVisible: false });
-            }
-          }}
+          onClose={this.onCloseToolTip}
         />
       </React.Fragment>
     );

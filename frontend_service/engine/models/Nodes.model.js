@@ -43,18 +43,41 @@ export class NodesModel implements NodeInterface {
    * [{ by: 'category', operator: 'equal', value: categories.symptom },
    * { by: 'stage', operator: 'equal', value: stage.consultation },
    * { by: 'counter', operator: 'more', value: 0 },]
+   *
+   * @params operator string
+   *  - AND
+   *  - OR
    */
-  filterBy(filters) {
+  filterBy(filters, operator = 'AND') {
     this.filterByConditionValue();
+
+    //return the boolean for one filter
+    let switchTest = (filter, node) => {
+      switch (filter.operator) {
+        case 'equal':
+          return node[filter.by] === filter.value;
+        case 'more':
+          return node[filter.by] > filter.value;
+      }
+    };
+
     return _.filter(this, (node) => {
-      let nodes = filters.every((filter) => {
-        switch (filter.operator) {
-          case 'equal':
-            return node[filter.by] === filter.value;
-          case 'more':
-            return node[filter.by] > filter.value;
-        }
-      });
+      let nodes;
+      // According operator to ALL filters
+      if (operator === 'AND') {
+        // The every() method tests whether all elements in the array pass the test implemented by the provided function.
+        // It returns a Boolean value.
+        nodes = filters.every((filter) => {
+          return switchTest(filter, node);
+        });
+      } else if (operator === 'OR') {
+        // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
+        // It returns a Boolean value.
+        nodes = filters.some((filter) => {
+          return switchTest(filter, node);
+        });
+      }
+
       return nodes;
     });
   }

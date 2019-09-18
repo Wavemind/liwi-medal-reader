@@ -5,6 +5,7 @@ import { NavigationActions, NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { Button, Col, Text, View } from 'native-base';
 import * as _ from 'lodash';
+import find from 'lodash/find';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
@@ -13,8 +14,15 @@ import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 import { styles } from './PatientUpsert.style';
-import { getItemFromArray, getMedicalCase } from '../../../engine/api/LocalStorage';
+import {
+  getItemFromArray,
+  getItems,
+  getMedicalCase,
+} from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
+import { categories } from '../../../../frontend_service/constants';
+import QuestionList from '../../../components/Triage/QuestionList';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -26,15 +34,51 @@ export default class PatientUpsert extends React.Component<Props, State> {
     firstRender: false,
     idLastMedicalCase: null,
     loading: false,
+    extraComponents: () => {},
+    extraQuestions: [],
   };
 
   async componentWillMount() {
     const { navigation } = this.props;
 
+    // specific code extra data vaccine etc, shared data
+    let algorithms = await getItems('algorithms');
+
+    const algorithmUsed = find(algorithms, (a) => a.selected);
+
+    let nodes = new NodesModel(algorithmUsed.nodes);
+    let extraQuestions = nodes.filterBy(
+      [
+        {
+          by: 'category',
+          operator: 'equal',
+          value: categories.chronicalCondition,
+        },
+        {
+          by: 'category',
+          operator: 'equal',
+          value: categories.vaccine,
+        },
+        {
+          by: 'category',
+          operator: 'equal',
+          value: categories.demographic,
+        },
+      ],
+      'OR'
+    );
+
+    let extraComponents = () => <QuestionList questions={extraQuestions} />;
+
     let idPatient = navigation.getParam('idPatient');
     if (idPatient === null) {
       let patient = new PatientModel();
-      this.setState({ patient, firstRender: true });
+      this.setState({
+        patient,
+        firstRender: true,
+        extraComponents,
+        extraQuestions,
+      });
     } else {
       await this.getPatient();
     }
@@ -113,8 +157,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   // Generate medical case for current patient
   generateMedicalCase = async (patientId) => {
+    const { extraQuestions } = this.state;
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.create(patientId);
+    await instanceMedicalCase.create(patientId, extraQuestions);
     return instanceMedicalCase.id;
   };
 
@@ -150,6 +195,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       errors,
       firstRender,
       loading,
+      extraComponents,
     } = this.state;
 
     const {
@@ -202,6 +248,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               error={errors.gender}
             />
           </Col>
+          {extraComponents()}
           <Col>
             <CustomDatePicker
               init={birthdate}
