@@ -25,7 +25,6 @@ export default class List extends React.Component<Props, State> {
 
   render() {
     const { question } = this.props;
-    // TODO make it nice
 
     const PickerItem = [];
 
