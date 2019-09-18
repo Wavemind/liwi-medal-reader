@@ -1,0 +1,19 @@
+{
+  "data": {
+    "id": 3,
+    "deactivated": false,
+    "email": "mickael.lacombe@wavemind.ch",
+    "provider": "email",
+    "role_id": 1,
+    "first_name": "Mickael",
+    "last_name": "Lacombe",
+    "uid": "mickael.lacombe@wavemind.ch"
+  },
+  "access_token": "WsKcIWe-w_aEVKR-Ar6ulg",
+  "client": "PdQazCuvzZ2KN95goWFyCA",
+  "expiry": "1570004446",
+  "uid": "mickael.lacombe@wavemind.ch",
+  "local_code": "abc9b601505d31a95dfc3eccec0e9e899d71f316c11d660b14d2e56370eea7d5",
+  "active": true,
+  "active_since": "2019-09-18T10:21:11+02:00"
+}
