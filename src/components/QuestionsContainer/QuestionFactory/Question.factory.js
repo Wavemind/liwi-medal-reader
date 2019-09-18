@@ -3,7 +3,12 @@ import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, View } from 'react-native';
 import { Button, Icon, ListItem, Text } from 'native-base';
-import { displayFormats, nodesType, priorities, valueFormats } from '../../../../frontend_service/constants';
+import {
+  displayFormats,
+  nodesType,
+  priorities,
+  valueFormats,
+} from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';

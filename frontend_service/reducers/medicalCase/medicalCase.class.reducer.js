@@ -70,7 +70,18 @@ class MedicalCaseReducer extends ReducerClass {
     }
 
     let changeConditionValue = find(caller, (d) => d.id === callerId);
-    changeConditionValue.conditionValue = value;
+
+    // IF not the same condition update the node
+    if (changeConditionValue.conditionValue !== value) {
+      // Update counter condition Value
+      // Explicite comparaison boolean for understand the case of new condition value
+      if (value === true) {
+        newNode.counter = newNode.counter + 1;
+      } else if (value === false) {
+        newNode.counter = newNode.counter - 1;
+      }
+      changeConditionValue.conditionValue = value;
+    }
 
     state.nodes[nodeId] = state.nodes.instantiateNode({ ...newNode });
 

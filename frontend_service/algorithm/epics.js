@@ -369,7 +369,6 @@ export const epicCatchDispatchCondition = (action$, state$) =>
     })
   );
 
-
 export default combineEpics(
   epicCatchDispatchFormulaNodeAction,
   epicCatchQuestionsSequenceAction,
