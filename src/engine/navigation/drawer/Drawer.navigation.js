@@ -35,7 +35,12 @@ export default class Drawer extends Component<Props, State> {
       <View style={styles.columns}>
         <View style={styles.tools}>
           <View style={styles.top}>
-            <Button transparent btnDrawer marginIcon>
+            <Button
+              transparent
+              btnDrawer
+              marginIcon
+              onPress={() => navigation.navigate('Home')}
+            >
               <Icon style={styles.icon} dark type="AntDesign" name="home" />
             </Button>
 

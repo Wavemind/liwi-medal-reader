@@ -3,26 +3,29 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { CheckBox } from 'native-base';
+import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class CustomCheckbox extends React.Component<Props, State> {
+export default class Unavailable extends React.Component<Props, State> {
   state = {};
 
   componentWillMount() {}
 
   onPress = () => {
 
-    const { setAnswer, question, unavailable } = this.props;
+    const { setAnswerUnavailable, question, unavailable } = this.props;
 
     if (question.answer === null || question.answer !== unavailable.id) {
-      setAnswer(question.id, unavailable.id);
+      setAnswerUnavailable(question.id, unavailable.id);
     } else {
-      setAnswer(question.id, null);
+      // reset to null the checkbox
+      setAnswerUnavailable(question.id, null);
     }
   };
+
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
 
@@ -34,6 +37,7 @@ export default class CustomCheckbox extends React.Component<Props, State> {
     return (
       <CheckBox
         onPress={this.onPress}
+        color={liwiColors.redColor}
         checked={question.answer === unavailable.id}
       />
     );
