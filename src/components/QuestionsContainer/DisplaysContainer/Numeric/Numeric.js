@@ -39,6 +39,7 @@ export default class Numeric extends React.Component<Props, State> {
     const { style } = this.state;
 
     let keyboardType;
+    let placeholder = 'Empty';
     switch (question.value_format) {
       case 'Integer':
         keyboardType = 'number-pad';
@@ -50,11 +51,9 @@ export default class Numeric extends React.Component<Props, State> {
     }
     let value = String(question.value);
 
-    if (
-      unavailable !== undefined &&
-      question.answer === String(unavailable.id)
-    ) {
-      value = '-';
+    if (unavailable !== undefined && question.answer === unavailable.id) {
+      value = null;
+      placeholder = 'Unavailable';
     }
 
     return (
@@ -68,6 +67,7 @@ export default class Numeric extends React.Component<Props, State> {
             style={style}
             onFocus={this._focus}
             onEndEditing={this._onEndEditing}
+            placeholder={placeholder}
           />
         </Item>
       </View>
