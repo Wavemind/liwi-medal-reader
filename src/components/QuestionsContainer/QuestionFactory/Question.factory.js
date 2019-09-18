@@ -31,7 +31,11 @@ function LabelQuestion(props: {
 }) {
   const { label, flex, marginRight, marginLeft } = props;
   return (
-    <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
+    <ViewQuestion
+      flex={flex}
+      marginRight={marginRight}
+      marginLeft={marginLeft}
+    >
       <Text style={{ color: liwiColors.blackColor }} size-auto>
         {label}
       </Text>
@@ -89,9 +93,7 @@ class WrapperQuestion extends React.Component<Props, State> {
 
     if (unavailable !== undefined) {
       WrapperUnavailable = () => {
-        return (
-          <CustomCheckbox question={question} unavailable={unavailable} />
-        );
+        return <CustomCheckbox question={question} unavailable={unavailable} />;
       };
     }
 
@@ -125,8 +127,8 @@ class WrapperQuestion extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <WrapperUnavailable />
         <WrapperAnswer />
+        <WrapperUnavailable />
         <Button
           style={styles.touchable}
           transparent
@@ -201,6 +203,7 @@ export default class Question extends React.PureComponent<Props, State> {
           marginRight={10}
         />
         <WrapperQuestion
+          flex={0.35}
           key={question.id + '_answer'}
           question={question}
           specificStyle={specificStyle}
