@@ -3,7 +3,12 @@ import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, View } from 'react-native';
 import { Button, Icon, ListItem, Text } from 'native-base';
-import { displayFormats, nodesType, priorities, valueFormats } from '../../../../frontend_service/constants';
+import {
+  displayFormats,
+  nodesType,
+  priorities,
+  valueFormats,
+} from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -87,7 +92,7 @@ class WrapperQuestion extends React.Component<Props, State> {
     if (!insideContent) {
       this.setState({ toolTipVisible: false });
     }
-  }
+  };
 
   render() {
     const { question, specificStyle } = this.props;
@@ -101,18 +106,22 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.radioButton:
         if (question.value_format === valueFormats.bool) {
           WrapperAnswer = () => (
-            <Boolean question={question} styles={specificStyle} />
+            <Boolean
+              question={question}
+              styles={specificStyle}
+              {...this.props}
+            />
           );
         }
         break;
       case displayFormats.input:
         WrapperAnswer = () => (
-          <Numeric question={question} styles={specificStyle} />
+          <Numeric question={question} styles={specificStyle} {...this.props} />
         );
         break;
       case displayFormats.list:
         WrapperAnswer = () => (
-          <List question={question} styles={specificStyle} />
+          <List question={question} styles={specificStyle} {...this.props} />
         );
         break;
       default:
@@ -182,6 +191,7 @@ export default class Question extends React.PureComponent<Props, State> {
           key={question.id + '_answer'}
           question={question}
           specificStyle={specificStyle}
+          {...this.props}
         />
       </ListItem>
     );

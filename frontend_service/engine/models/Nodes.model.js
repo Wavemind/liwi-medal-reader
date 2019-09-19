@@ -47,8 +47,12 @@ export class NodesModel implements NodeInterface {
    * @params operator string
    *  - AND
    *  - OR
+   *
+   *  @params formatReturn string
+   *  - array
+   *  - object
    */
-  filterBy(filters, operator = 'AND') {
+  filterBy(filters, operator = 'AND', formatReturn = 'array') {
     this.filterByConditionValue();
 
     //return the boolean for one filter
@@ -61,7 +65,18 @@ export class NodesModel implements NodeInterface {
       }
     };
 
-    return _.filter(this, (node) => {
+    let methodFilteringLodash;
+
+    // Set the right method depending the return format
+    if (formatReturn === 'array') {
+      // Return new array
+      methodFilteringLodash = 'filter';
+    } else if (formatReturn === 'object') {
+      // Return object and keep key
+      methodFilteringLodash = 'pickBy';
+    }
+
+    return _[methodFilteringLodash](this, (node) => {
       let nodes;
       // According operator to ALL filters
       if (operator === 'AND') {

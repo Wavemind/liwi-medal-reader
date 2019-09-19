@@ -22,7 +22,8 @@ import {
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 import { categories } from '../../../../frontend_service/constants';
-import QuestionList from '../../../components/Triage/QuestionList';
+import Questions from '../../../components/QuestionsContainer/Questions';
+import { updaterAnswer } from '../../../../frontend_service/engine/utilsDispatcher';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -35,44 +36,82 @@ export default class PatientUpsert extends React.Component<Props, State> {
     idLastMedicalCase: null,
     loading: false,
     extraComponents: () => {},
-    extraQuestions: [],
+    extraQuestions: {},
+  };
+
+  // Update the state with new answer
+  setExtraQuestions = (index, value) => {
+    const { extraQuestions } = this.state;
+
+    //Get the new node with the right answer
+    let newNode = updaterAnswer(extraQuestions[index], value);
+
+    let newExtraQuestions = {
+      ...extraQuestions,
+      [index]: newNode,
+    };
+
+    // Update the components Questions
+    let extraComponents = () => (
+      <Questions
+        questions={newExtraQuestions}
+        onChange={this.setExtraQuestions}
+        method="props"
+      />
+    );
+
+    this.setState({
+      extraQuestions: newExtraQuestions,
+      extraComponents,
+    });
   };
 
   async componentWillMount() {
     const { navigation } = this.props;
 
-    // specific code extra data vaccine etc, shared data
-    let algorithms = await getItems('algorithms');
-
-    const algorithmUsed = find(algorithms, (a) => a.selected);
-
-    let nodes = new NodesModel(algorithmUsed.nodes);
-    let extraQuestions = nodes.filterBy(
-      [
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.chronicalCondition,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.vaccine,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.demographic,
-        },
-      ],
-      'OR'
-    );
-
-    let extraComponents = () => <QuestionList questions={extraQuestions} />;
-
     let idPatient = navigation.getParam('idPatient');
     if (idPatient === null) {
       let patient = new PatientModel();
+
+      // specific code extra data vaccine etc, shared data
+      let algorithms = await getItems('algorithms');
+
+      // Get the user algo
+      const algorithmUsed = find(algorithms, (a) => a.selected);
+
+      // Instance all nodes for access to filterBy
+      let nodes = new NodesModel(algorithmUsed.nodes);
+      // Get nodes needed
+      let extraQuestions = nodes.filterBy(
+        [
+          {
+            by: 'category',
+            operator: 'equal',
+            value: categories.chronicalCondition,
+          },
+          {
+            by: 'category',
+            operator: 'equal',
+            value: categories.vaccine,
+          },
+          {
+            by: 'category',
+            operator: 'equal',
+            value: categories.demographic,
+          },
+        ],
+        'OR',
+        'object'
+      );
+
+      let extraComponents = () => (
+        <Questions
+          questions={extraQuestions}
+          onChange={this.setExtraQuestions}
+          method="props"
+        />
+      );
+
       this.setState({
         patient,
         firstRender: true,
