@@ -20,7 +20,11 @@ export default class Questions extends React.PureComponent<Props, State> {
     return (
       <ScrollView>
         {Object.keys(questions).map((i) => (
-          <QuestionFactory question={questions[i]} key={i + '_factory'} />
+          <QuestionFactory
+            question={questions[i]}
+            key={i + '_factory'}
+            {...this.props}
+          />
         ))}
       </ScrollView>
     );
