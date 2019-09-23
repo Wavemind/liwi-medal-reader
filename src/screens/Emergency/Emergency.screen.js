@@ -5,7 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Content, Text, View, Button } from 'native-base';
 import { Image, BackHandler } from 'react-native';
 import { LiwiTitle2 } from '../../template/layout';
-import { styles } from './Urgence.style';
+import { styles } from './Emergency.style';
 
 type Props = NavigationScreenProps & {};
 
@@ -50,10 +50,14 @@ export default class Urgence extends React.Component<Props, State> {
   }
 
   render() {
+    const {
+      app: { t },
+    } = this.props;
+
     return (
       <Content>
         <View style={styles.view}>
-          <LiwiTitle2>Urgence Assistance</LiwiTitle2>
+          <LiwiTitle2>{t('other:emergency')}</LiwiTitle2>
           <Text>
             This page has been created to provide emergency assistance in case
             of need
@@ -63,7 +67,7 @@ export default class Urgence extends React.Component<Props, State> {
               this.handleBackButtonClick();
             }}
           >
-            <Text>Go back to Home</Text>
+            <Text>{t('other:back')}</Text>
           </Button>
           <Image
             style={styles.image}
