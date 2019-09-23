@@ -23,7 +23,6 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 import { categories } from '../../../../frontend_service/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { updaterAnswer } from '../../../../frontend_service/engine/utilsDispatcher';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -39,31 +38,47 @@ export default class PatientUpsert extends React.Component<Props, State> {
     extraQuestions: {},
   };
 
-  // Update the state with new answer
-  setExtraQuestions = (index, value) => {
-    const { extraQuestions } = this.state;
-
-    //Get the new node with the right answer
-    let newNode = updaterAnswer(extraQuestions[index], value);
-
-    let newExtraQuestions = {
-      ...extraQuestions,
-      [index]: newNode,
-    };
-
-    // Update the components Questions
+  // Get the new extraQuestions and update The questions Component
+  updateExtraComponents = async (extraQuestions) => {
     let extraComponents = () => (
       <Questions
-        questions={newExtraQuestions}
-        onChange={this.setExtraQuestions}
+        questions={extraQuestions}
+        onChange={this.setExtraQuestion}
         method="props"
       />
     );
 
-    this.setState({
-      extraQuestions: newExtraQuestions,
+    await this.setState({
+      extraQuestions,
       extraComponents,
     });
+  };
+
+  /**
+   * @param index [Object] : index of the question in the state
+   * @param value [Number || String] : the new value of the question
+   *
+   * Update this question in the component
+   *  because immutability we have to flat it before and change the value
+   *
+   */
+  setExtraQuestion = async (index, value) => {
+    const { extraQuestions } = this.state;
+
+    //Create new object for immmutability
+    // Break instance Classe
+    let newFlattenObject = {
+      ...extraQuestions,
+      [index]: { ...extraQuestions[index] },
+    };
+
+    // Instance new Classes Nodes
+    let nodes = new NodesModel(newFlattenObject);
+
+    // Update the new question changed
+    nodes[index].updateAnswer(value);
+
+    await this.updateExtraComponents(nodes);
   };
 
   async componentWillMount() {
@@ -75,7 +90,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
       // specific code extra data vaccine etc, shared data
       let algorithms = await getItems('algorithms');
-
       // Get the user algo
       const algorithmUsed = find(algorithms, (a) => a.selected);
 
@@ -104,19 +118,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
         'object'
       );
 
-      let extraComponents = () => (
-        <Questions
-          questions={extraQuestions}
-          onChange={this.setExtraQuestions}
-          method="props"
-        />
-      );
+      await this.updateExtraComponents(extraQuestions);
 
       this.setState({
         patient,
         firstRender: true,
-        extraComponents,
-        extraQuestions,
       });
     } else {
       await this.getPatient();
