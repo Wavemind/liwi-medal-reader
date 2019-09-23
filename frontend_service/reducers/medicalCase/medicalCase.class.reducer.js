@@ -7,7 +7,6 @@ import { actions } from '../../actions/types.actions';
 import { nodesType } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
-import { updaterAnswer } from '../../engine/utilsDispatcher';
 
 export const initialState = null;
 
@@ -130,10 +129,10 @@ class MedicalCaseReducer extends ReducerClass {
   setAnswer(state, action) {
     const { index, value } = action.payload;
 
-    let newNode = updaterAnswer(state.nodes[index], value);
-
     // Instantiate new object with answered question with new answer value
-    state.nodes[index] = state.nodes.instantiateNode(newNode);
+    state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
+
+    state.nodes[index].updateAnswer(value);
 
     return {
       ...state,

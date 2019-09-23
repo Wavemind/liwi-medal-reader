@@ -57,8 +57,8 @@ export default class PatientProfile extends React.Component<Props, State> {
     });
 
     // Get the last medicalcase for question unique vaccines etc
-    let lastMedicalCase = _.maxBy(patient.medicalCases, (xyz) => {
-      return new Date(xyz.createdDate).getTime();
+    let lastMedicalCase = _.maxBy(patient.medicalCases, (medicalCase) => {
+      return new Date(medicalCase.createdDate).getTime();
     });
 
     let nodes = new NodesModel(lastMedicalCase.nodes);
