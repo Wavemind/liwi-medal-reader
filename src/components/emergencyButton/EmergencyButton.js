@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Fab, Icon, View } from 'native-base';
 import NavigationService from '../../engine/navigation/Navigation.service';
-import { styles } from './Urgence.style';
+import { styles } from './EmergencyButton.style';
 
-export default class UrgenceButton extends Component {
+export default class EmergencyButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,11 +19,10 @@ export default class UrgenceButton extends Component {
         <Fab
           active={active}
           direction="up"
-          containerStyle={{}}
           style={styles.button}
           position="bottomLeft"
           onPress={() => {
-            NavigationService.navigate('Urgence');
+            NavigationService.navigate('Emergency');
           }}
         >
           <Icon name="warning" type="FontAwesome" style={styles.icon} />

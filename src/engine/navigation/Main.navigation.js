@@ -25,7 +25,7 @@ import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList
 import Tests from '../../screens/medicalCasesContainer/tests';
 import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
-import Urgence from '../../screens/urgence';
+import Emergency from '../../screens/Emergency';
 
 // We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator({
@@ -46,8 +46,8 @@ const Stack = createStackNavigator({
       };
     },
   },
-  Urgence: {
-    screen: Urgence,
+  Emergency: {
+    screen: Emergency,
   },
   PatientList: {
     screen: PatientList,
