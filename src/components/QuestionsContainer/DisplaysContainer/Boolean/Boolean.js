@@ -139,7 +139,9 @@ export default class Boolean extends React.Component<Props, State> {
             light
           >
             <View chiefComplaints>
-              <Text center size-auto>{label}</Text>
+              <Text center size-auto>
+                {label}
+              </Text>
             </View>
             <View style={styles.bottomInput}>
               <LeftButton

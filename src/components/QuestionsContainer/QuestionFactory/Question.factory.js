@@ -43,17 +43,15 @@ function LabelQuestion(props: {
   );
 }
 
-class WrapperQuestion extends React.Component<Props, State> {
+class TooltipButton extends React.Component<Props, State> {
   state = {
     toolTipVisible: false,
   };
+
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps, nextState) {
-    const { question } = this.props;
     const { toolTipVisible } = this.state;
     return (
-      nextProps.question.answer !== question.answer ||
-      nextProps.question.value !== question.value ||
       nextState.toolTipVisible !== toolTipVisible
     );
   }
@@ -81,9 +79,73 @@ class WrapperQuestion extends React.Component<Props, State> {
     );
   };
 
+  /**
+   * Close the tooltip when the click is outside the tooltip
+   *
+   * Callback receive from the tooltip component when it ask for close itself
+   *
+   * @param reactNative : reactNative.nativeEvent is the data from react native who
+   *                      has all info about the screen size (in point) gives the position of the click
+   * @param toolTip : data from the tooltip like origin on screen and size gives the position of the tooltip
+   */
+  onCloseToolTip = (reactNative, toolTip) => {
+    let xTouch = reactNative.nativeEvent.pageX;
+    let xTooltip = toolTip.tooltipOrigin.x;
+    let xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
+
+    let yTouch = reactNative.nativeEvent.pageY;
+    let yTooltip = toolTip.tooltipOrigin.y;
+    let yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
+
+    let insideContent =
+      xTouch > xTooltip &&
+      xTouch < xEndToolTip &&
+      (yTouch > yTooltip && yTouch < yEndToolTip);
+
+    if (!insideContent) {
+      this.setState({ toolTipVisible: false });
+    }
+  };
+
+  render() {
+    const { toolTipVisible } = this.state;
+
+    return (
+      <React.Fragment>
+        <Button
+          style={styles.touchable}
+          transparent
+          onPress={() => this.setState({ toolTipVisible: true })}
+        >
+          <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+        </Button>
+        <Tooltip
+          isVisible={toolTipVisible}
+          closeOnChildInteraction={false}
+          showChildInTooltip={false}
+          content={this._renderToolTipContent()}
+          placement="center"
+          onClose={this.onCloseToolTip}
+        />
+      </React.Fragment>
+    );
+
+  };
+}
+
+class WrapperQuestion extends React.Component<Props, State> {
+
+  // Lifecycle for optimization
+  shouldComponentUpdate(nextProps) {
+    const { question } = this.props;
+    return (
+      nextProps.question.answer !== question.answer ||
+      nextProps.question.value !== question.value
+    );
+  }
+
   render() {
     const { question, specificStyle } = this.props;
-    const { toolTipVisible } = this.state;
     // By default no component
     let WrapperAnswer = () => null;
     let WrapperUnavailable = () => null;
@@ -103,22 +165,22 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.radioButton:
         if (question.value_format === valueFormats.bool) {
           WrapperAnswer = () => (
-            <Boolean question={question} styles={specificStyle} />
+            <Boolean
+              question={question}
+              styles={specificStyle}
+              {...this.props}
+            />
           );
         }
         break;
       case displayFormats.input:
         WrapperAnswer = () => (
-          <Numeric
-            question={question}
-            styles={specificStyle}
-            unavailable={unavailable}
-          />
+          <Numeric question={question} styles={specificStyle} {...this.props} />
         );
         break;
       case displayFormats.list:
         WrapperAnswer = () => (
-          <List question={question} styles={specificStyle} />
+          <List question={question} styles={specificStyle} {...this.props} />
         );
         break;
       default:
@@ -129,38 +191,6 @@ class WrapperQuestion extends React.Component<Props, State> {
       <React.Fragment>
         <WrapperAnswer />
         <WrapperUnavailable />
-        <Button
-          style={styles.touchable}
-          transparent
-          onPress={() => this.setState({ toolTipVisible: true })}
-        >
-          <Icon type="AntDesign" name="info" style={styles.iconInfo} />
-        </Button>
-        <Tooltip
-          isVisible={toolTipVisible}
-          closeOnChildInteraction={false}
-          showChildInTooltip={false}
-          content={this._renderToolTipContent()}
-          placement="center"
-          onClose={(e, r) => {
-            let xTouch = e.nativeEvent.pageX;
-            let xTooltip = r.tooltipOrigin.x;
-            let xEndToolTip = r.tooltipOrigin.x + r.contentSize.width;
-
-            let yTouch = e.nativeEvent.pageY;
-            let yTooltip = r.tooltipOrigin.y;
-            let yEndToolTip = r.tooltipOrigin.y + r.contentSize.height;
-
-            let insideContent =
-              xTouch > xTooltip &&
-              xTouch < xEndToolTip &&
-              (yTouch > yTooltip && yTouch < yEndToolTip);
-
-            if (!insideContent) {
-              this.setState({ toolTipVisible: false });
-            }
-          }}
-        />
       </React.Fragment>
     );
   }
@@ -207,6 +237,10 @@ export default class Question extends React.PureComponent<Props, State> {
           key={question.id + '_answer'}
           question={question}
           specificStyle={specificStyle}
+          {...this.props}
+        />
+        <TooltipButton
+          question={question}
         />
       </ListItem>
     );
