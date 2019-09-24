@@ -11,7 +11,7 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Urgence extends React.Component<Props, State> {
+export default class Emergency extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);

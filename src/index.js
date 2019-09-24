@@ -13,7 +13,7 @@ import CustomModal from './components/CustomModal';
 import { getItem } from './engine/api/LocalStorage';
 
 import Layout from './template/Layout.template';
-import UrgenceButton from './components/emergencyButton';
+import EmergencyButton from './components/emergencyButton';
 
 export default class Root extends React.Component {
   async componentWillMount() {
@@ -32,7 +32,7 @@ export default class Root extends React.Component {
               <Layout />
               <CustomModal />
               {__DEV__ ? <WavemindTools /> : null}
-              <UrgenceButton />
+              <EmergencyButton />
             </SessionsProvider>
           </ApplicationProvider>
         </PersistGate>
