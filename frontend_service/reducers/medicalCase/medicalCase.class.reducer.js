@@ -165,6 +165,10 @@ class MedicalCaseReducer extends ReducerClass {
         answer = value;
         break;
     }
+
+    if (answer !== null) {
+      answer = Number(answer);
+    }
     // Instantiate new object with answered question with new answer value
     state.nodes[index] = state.nodes.instantiateNode({
       ...state.nodes[index],

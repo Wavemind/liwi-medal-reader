@@ -1,10 +1,12 @@
 // @flow
-
+import filter from 'lodash/filter';
+import find from 'lodash/find';
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { InstanceModel } from './Instance.model';
 import { valueFormats } from '../../constants';
 import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
+import { store } from '../../store';
 
 interface QuestionsSequenceInterface {
   answer: string;
@@ -63,6 +65,28 @@ export class QuestionsSequenceModel extends NodeModel
    * Calculate condition of question sequence and these children
    */
   calculateCondition = () => {
-    return calculateCondition(this);
+    const state$ = store.getState();
+
+    // here filter top_condition condition value === false
+    let top_conditions_with_condition_value_true = filter(
+      this.top_conditions,
+      (top_condition) => {
+        let conditionValue = find(
+          state$.nodes[top_condition.first_node_id].qs,
+          (qs) => {
+            return qs.id === this.id;
+          }
+        ).conditionValue;
+        if (conditionValue === true) {
+          return true;
+        }
+      }
+    );
+    console.log(top_conditions_with_condition_value_true, this);
+    let tempNodeFiltered = {
+      ...this,
+      top_conditions: top_conditions_with_condition_value_true,
+    };
+    return calculateCondition(tempNodeFiltered);
   };
 }

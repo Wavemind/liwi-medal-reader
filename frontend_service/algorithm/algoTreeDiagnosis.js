@@ -1,7 +1,10 @@
 import find from 'lodash/find';
 import { nodesType, priorities } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
-import { calculateCondition } from './algoConditionsHelpers';
+import {
+  calculateCondition,
+  comparingTopConditions,
+} from './algoConditionsHelpers';
 
 // Create the first batch from json based on triage priority
 // TODO : Maybe build an object instead of rewriting the json
@@ -24,10 +27,9 @@ export const generateInitialBatch = (algorithmJson) => {
   return algorithmJson; // return is useless, we modifiy ref to caller
 };
 
-
 /*
-* For each medicalCase who exclude other diagnostic, we set the id in both side.
-* */
+ * For each medicalCase who exclude other diagnostic, we set the id in both side.
+ * */
 export const generateExcludedId = (medicalCase) => {
   for (let index in medicalCase.nodes) {
     if (medicalCase.nodes.hasOwnProperty(index)) {
@@ -131,7 +133,6 @@ export const setParentConditionValue = (
   });
 };
 
-
 // Node from diagnostics !
 export const getParentsNodes = (state$, diagnosticId, nodeId) => {
   let parentsNodes = [];
@@ -170,31 +171,74 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   }
 
   // if the node isn't answered yet we stop the algo
-  if (currentNode.answer === null) {
-    return false;
-  }
+  // if (currentNode.answer === null) {
+  //   return false;
+  // }
 
   // If answer is not null We check the condition of this node
   const instanceCondition = calculateCondition(instance);
+
+  if (instanceConditionValue === true && instanceCondition === false) {
+    actions.push(updateConditionValue(instance.id, qs.id, false, qs.type));
+  }
+
   let qsFullyAnswered = null;
 
-  if (instanceCondition === true) {
-    qsFullyAnswered = instance.children.some((childId) => {
+  if (instanceCondition === true && currentNode.answer !== null) {
+    instance.children.map((childId) => {
       let child = state$.value.nodes[childId];
 
+      let childConditionValue;
+
+      // If this is not the final QS we calculate the conditonValue of the child
+      if (child.id !== qs.id) {
+        childConditionValue = find(child.qs, (q) => q.id === qs.id)
+          .conditionValue;
+
+        // Reset the child condition value
+        if (currentNode.answer === null && childConditionValue === true) {
+          actions.push(updateConditionValue(child.id, qs.id, false, qs.type));
+        }
+      }
+
+      // If the child is the current QS
       if (child.id === qs.id && child.type === nodesType.questionsSequence) {
         // The branch is open and we can set the answer of this QS
-        return true;
+
+        // If top parent and child QS, this is a direct link we read other conditione
+        if (instance.top_conditions.length === 0) {
+          let child_top_condition = find(
+            child.top_conditions,
+            (top_condition) => top_condition.first_node_id === instance.id
+          );
+          let qsRouteCondition = comparingTopConditions(
+            child,
+            child_top_condition
+          );
+          if (qsRouteCondition === true) {
+            qsFullyAnswered = true;
+          } else {
+            if (qsFullyAnswered === null) {
+              qsFullyAnswered = false;
+            }
+          }
+        } else {
+          qsFullyAnswered = true;
+        }
       }
 
       // If the child is an other QS
-      else if (
-        child.id === qs.id &&
-        child.type === nodesType.questionsSequence
-      ) {
+      else if (child.type === nodesType.questionsSequence) {
         // If the sub QS has not a defined value yet, we update the conditionValue of the top level nodes
-        if (child.answer === null) {
-          getQuestionsSequenceStatus(state$, state$.nodes[child.id], actions);
+        if (child.answer === null && childConditionValue === false) {
+          // Update condition Value Qs
+          actions.push(updateConditionValue(child.id, qs.id, true, qs.type));
+
+          return getQuestionsSequenceStatus(
+            state$,
+            state$.value.nodes[child.id],
+            actions
+          );
         }
       }
 
@@ -212,11 +256,13 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
           child
         );
       }
-
     });
-
+    console.log(qsFullyAnswered);
+    // We can calculatite it
     if (qsFullyAnswered === true) {
       return qsFullyAnswered;
+    } else if (qsFullyAnswered === false) {
+      return false;
     }
   } else {
     // The node hasn't the expected answer so we stop the algo
@@ -230,6 +276,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
  * 3. Update Recursive QS
  *
  * @return boolean: can we calculate this QS ?
+ *
  * @params state$: All the state of the reducer
  * @params qs: The QS we want to get the status
  * @params actions: The array of Redux Actions
@@ -248,6 +295,9 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
   // For each top parent node
   allNodesAnsweredInQs = topLevelNodes.some((topNode) => {
     let rec = recursiveNodeQs(state$, topNode, qs, actions);
+    if (qs.id === 181) {
+      console.log(rec, topNode);
+    }
     if (rec) return true;
   });
 
