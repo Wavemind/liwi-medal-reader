@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Numeric from './Numeric';
-import { dispatcherOnChangeSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
+import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
@@ -10,7 +10,7 @@ const mapDispatchToProps = (dispatch, props) => {
 
   return {
     setAnswer: (index, value) =>
-      dispatcherOnChangeSetAnswer(index, value, dispatch, props),
+      manageSetAnswer(index, value, dispatch, props),
   };
 };
 export default connect(

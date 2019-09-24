@@ -74,10 +74,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     if (conditions?.[this.id] !== undefined) {
       isDisplayed = false;
       conditions[this.id].map((condition) => {
-        if (
-          medicalCase.nodes[condition.chief_complaint_id].answer ===
-          condition.answer_id
-        ) {
+        if (medicalCase.nodes[condition.chief_complaint_id].answer === condition.answer_id) {
           isDisplayed = true;
         }
       });
@@ -85,5 +82,4 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
 
     return isDisplayed;
   }
-
 }
