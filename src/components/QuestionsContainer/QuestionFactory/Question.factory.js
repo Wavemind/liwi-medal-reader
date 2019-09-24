@@ -77,16 +77,13 @@ class WrapperQuestion extends React.Component<Props, State> {
   };
 
   /**
-   * Close the tooltip the click is outside the tooltip
+   * Close the tooltip when the click is outside the tooltip
    *
    * Callback receive from the tooltip component when it ask for close itself
    *
-   * We calculate the click on the screen with position native and from tooltip and close it if the click is outside the tooltip.
-   *
-   * @param reactNative : reactNative.nativeEvent is the data from react native who has all info about the screen size (in point)
-   * @param toolTip : data from the tooltip like origin on screen and size
-   *
-   * merging this infos we can calculate exactly where is the tooltip and the click from the user
+   * @param reactNative : reactNative.nativeEvent is the data from react native who
+   *                      has all info about the screen size (in point) gives the position of the click
+   * @param toolTip : data from the tooltip like origin on screen and size gives the position of the tooltip
    */
   onCloseToolTip = (reactNative, toolTip) => {
     let xTouch = reactNative.nativeEvent.pageX;
