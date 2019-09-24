@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
 import List from './List';
-import { setAnswer } from '../../../../../frontend_service/actions/creators.actions';
+import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
   return {
-    setAnswer: (index, value) => dispatch(setAnswer(index, value)),
+    setAnswer: (index, value) =>
+      manageSetAnswer(index, value, dispatch, props),
   };
 };
 export default connect(

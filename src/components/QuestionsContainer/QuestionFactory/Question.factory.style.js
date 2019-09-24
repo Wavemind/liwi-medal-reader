@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
   triage: {
     elevation: 2,
   },
-  normal: {},
   borderRight: {
     borderRightWidth: 1,
     borderRightColor: '#ffffff',
