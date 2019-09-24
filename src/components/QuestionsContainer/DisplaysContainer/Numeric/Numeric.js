@@ -39,7 +39,7 @@ export default class Numeric extends React.Component<Props, State> {
     const { style } = this.state;
 
     let keyboardType;
-    let placeholder = 'Empty';
+    let placeholder = '';
     switch (question.value_format) {
       case 'Integer':
         keyboardType = 'number-pad';
