@@ -37,4 +37,18 @@ export const styles = StyleSheet.create({
     paddingRight: 0,
     paddingLeft: 0,
   },
+  flexRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  flexColumn: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  unavailable: {
+    flex:1,
+    alignSelf:'flex-end',
+    flexDirection: 'row'
+  }
 });

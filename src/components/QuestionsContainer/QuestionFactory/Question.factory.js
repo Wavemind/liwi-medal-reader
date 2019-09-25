@@ -7,7 +7,6 @@ import _ from 'lodash';
 import {
   displayFormats,
   nodesType,
-  priorities,
   valueFormats,
 } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
@@ -109,9 +108,10 @@ class TooltipButton extends React.Component<Props, State> {
 
   render() {
     const { toolTipVisible } = this.state;
+    const { flex } = this.props;
 
     return (
-      <React.Fragment>
+      <View flex={flex}>
         <Button
           style={styles.touchable}
           transparent
@@ -127,15 +127,15 @@ class TooltipButton extends React.Component<Props, State> {
           placement="center"
           onClose={this.onCloseToolTip}
         />
-      </React.Fragment>
+      </View>
     );
 
-  };
+  }
 }
 
 class WrapperQuestion extends React.Component<Props, State> {
 
-  // Lifecycle for optimization
+// Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     const { question } = this.props;
     return (
@@ -145,19 +145,10 @@ class WrapperQuestion extends React.Component<Props, State> {
   }
 
   render() {
-    const { question, specificStyle } = this.props;
+    const { question, flex } = this.props;
+
     // By default no component
     let WrapperAnswer = () => null;
-    let WrapperUnavailable = () => null;
-    let unavailable = null;
-
-    unavailable = _.find(question.answers, (a) => a.value === 'not_available');
-
-    if (unavailable !== undefined) {
-      WrapperUnavailable = () => {
-        return <CustomCheckbox question={question} unavailable={unavailable} />;
-      };
-    }
 
     // Depending the format of the question we call the right component
     // Boolean | Numeric | List
@@ -165,22 +156,18 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.radioButton:
         if (question.value_format === valueFormats.bool) {
           WrapperAnswer = () => (
-            <Boolean
-              question={question}
-              styles={specificStyle}
-              {...this.props}
-            />
+            <Boolean question={question} {...this.props} />
           );
         }
         break;
       case displayFormats.input:
         WrapperAnswer = () => (
-          <Numeric question={question} styles={specificStyle} {...this.props} />
+          <Numeric question={question} {...this.props} />
         );
         break;
       case displayFormats.list:
         WrapperAnswer = () => (
-          <List question={question} styles={specificStyle} {...this.props} />
+          <List question={question} {...this.props} />
         );
         break;
       default:
@@ -188,17 +175,31 @@ class WrapperQuestion extends React.Component<Props, State> {
     }
 
     return (
-      <React.Fragment>
+      <View flex={flex}>
         <WrapperAnswer />
-        <WrapperUnavailable />
-      </React.Fragment>
+      </View>
     );
   }
 }
 
 export default class Question extends React.PureComponent<Props, State> {
   render() {
-    const { question } = this.props;
+    const { question, app: { t } } = this.props;
+    let WrapperUnavailable = () => null;
+    let unavailable = null;
+
+    unavailable = _.find(question.answers, (a) => a.value === 'not_available');
+
+    if (unavailable !== undefined) {
+      WrapperUnavailable = () => {
+        return (
+          <React.Fragment>
+            <Text>{t('question:unavailable')} </Text>
+            <CustomCheckbox question={question} unavailable={unavailable} />
+          </React.Fragment>
+        );
+      };
+    }
 
     // If this is not a question we return null
     if (question === undefined || question.type !== nodesType.question) {
@@ -210,38 +211,31 @@ export default class Question extends React.PureComponent<Props, State> {
       return null;
     }
 
-    let specificStyle;
-
-    // Define special style depending the proprity
-    switch (question.priority) {
-      case priorities.basic:
-        specificStyle = styles.normal;
-        break;
-      default:
-        specificStyle = {};
-        break;
-    }
-
     // Construct generic Component for the question
     return (
-      <ListItem style={styles.condensed} noBorder key={question.id + '_item'}>
-        <LabelQuestion
-          key={question.id + '_label'}
-          label={question.counter + 'x - ' + question.label}
-          flex={0.65}
-          marginLeft={0}
-          marginRight={10}
-        />
-        <WrapperQuestion
-          flex={0.35}
-          key={question.id + '_answer'}
-          question={question}
-          specificStyle={specificStyle}
-          {...this.props}
-        />
-        <TooltipButton
-          question={question}
-        />
+      <ListItem style={[styles.condensed,styles.flexColumn]} noBorder key={question.id + '_item'}>
+        <View style={styles.flexRow}>
+          <LabelQuestion
+            key={question.id + '_label'}
+            label={question.counter + 'x - ' + question.label}
+            flex={0.6}
+            marginLeft={0}
+            marginRight={10}
+          />
+          <WrapperQuestion
+            key={question.id + '_answer'}
+            question={question}
+            flex={0.25}
+            {...this.props}
+          />
+          <TooltipButton
+            question={question}
+            flex={0.15}
+          />
+        </View>
+        <View style={styles.unavailable}>
+          <WrapperUnavailable />
+        </View>
       </ListItem>
     );
   }
