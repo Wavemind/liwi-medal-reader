@@ -21,17 +21,23 @@ export class NodeModel implements NodeInterface {
   }
 
   /**
+   *  Update the answer depending his format
    *
-   * @param value: [Number || String] : new value for the question
+   * @param {(string\|number)} value: new value for the question
+   * @return  {Nothing} Update the class
    * Depending the value format of the question
    *
-   * @Float If float we find the right operator and calculate the new value
+   * Float If float we find the right operator and calculate the new value
    *
-   * @List If list or array set the new value defined by the component button
+   * List If list or array set the new value defined by the component button
    *
    */
   updateAnswer = (value) => {
     let answer;
+
+    if (this.value_format === undefined) {
+      return false;
+    }
 
     switch (this?.value_format) {
       case valueFormats.int:
