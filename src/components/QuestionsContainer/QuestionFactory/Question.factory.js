@@ -16,7 +16,7 @@ import Numeric from '../DisplaysContainer/Numeric';
 import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 import Tooltip from '../../Tooltip/tooltip';
-import CustomCheckbox from '../../InputContainer/Unavailable';
+import Unavailable from '../../InputContainer/Unavailable';
 
 type Props = NavigationScreenProps & {};
 
@@ -30,11 +30,7 @@ function LabelQuestion(props: {
 }) {
   const { label, flex, marginRight, marginLeft } = props;
   return (
-    <ViewQuestion
-      flex={flex}
-      marginRight={marginRight}
-      marginLeft={marginLeft}
-    >
+    <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
       <Text style={{ color: liwiColors.blackColor }} size-auto>
         {label}
       </Text>
@@ -50,9 +46,7 @@ class TooltipButton extends React.Component<Props, State> {
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps, nextState) {
     const { toolTipVisible } = this.state;
-    return (
-      nextState.toolTipVisible !== toolTipVisible
-    );
+    return nextState.toolTipVisible !== toolTipVisible;
   }
 
   _renderToolTipContent = () => {
@@ -129,13 +123,11 @@ class TooltipButton extends React.Component<Props, State> {
         />
       </View>
     );
-
   }
 }
 
 class WrapperQuestion extends React.Component<Props, State> {
-
-// Lifecycle for optimization
+  // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     const { question } = this.props;
     return (
@@ -155,20 +147,14 @@ class WrapperQuestion extends React.Component<Props, State> {
     switch (question.display_format) {
       case displayFormats.radioButton:
         if (question.value_format === valueFormats.bool) {
-          WrapperAnswer = () => (
-            <Boolean question={question} {...this.props} />
-          );
+          WrapperAnswer = () => <Boolean question={question} {...this.props} />;
         }
         break;
       case displayFormats.input:
-        WrapperAnswer = () => (
-          <Numeric question={question} {...this.props} />
-        );
+        WrapperAnswer = () => <Numeric question={question} {...this.props} />;
         break;
       case displayFormats.list:
-        WrapperAnswer = () => (
-          <List question={question} {...this.props} />
-        );
+        WrapperAnswer = () => <List question={question} {...this.props} />;
         break;
       default:
         break;
@@ -184,18 +170,27 @@ class WrapperQuestion extends React.Component<Props, State> {
 
 export default class Question extends React.PureComponent<Props, State> {
   render() {
-    const { question, app: { t } } = this.props;
+    const {
+      question,
+      app: { t },
+    } = this.props;
     let WrapperUnavailable = () => null;
-    let unavailable = null;
+    let unavailableAnswer = null;
 
-    unavailable = _.find(question.answers, (a) => a.value === 'not_available');
+    unavailableAnswer = _.find(
+      question.answers,
+      (a) => a.value === 'not_available'
+    );
 
-    if (unavailable !== undefined) {
+    if (unavailableAnswer !== undefined) {
       WrapperUnavailable = () => {
         return (
           <React.Fragment>
             <Text>{t('question:unavailable')} </Text>
-            <CustomCheckbox question={question} unavailable={unavailable} />
+            <Unavailable
+              question={question}
+              unavailableAnswer={unavailableAnswer}
+            />
           </React.Fragment>
         );
       };
@@ -213,7 +208,11 @@ export default class Question extends React.PureComponent<Props, State> {
 
     // Construct generic Component for the question
     return (
-      <ListItem style={[styles.condensed,styles.flexColumn]} noBorder key={question.id + '_item'}>
+      <ListItem
+        style={[styles.condensed, styles.flexColumn]}
+        noBorder
+        key={question.id + '_item'}
+      >
         <View style={styles.flexRow}>
           <LabelQuestion
             key={question.id + '_label'}
@@ -228,10 +227,7 @@ export default class Question extends React.PureComponent<Props, State> {
             flex={0.25}
             {...this.props}
           />
-          <TooltipButton
-            question={question}
-            flex={0.15}
-          />
+          <TooltipButton question={question} flex={0.15} />
         </View>
         <View style={styles.unavailable}>
           <WrapperUnavailable />
