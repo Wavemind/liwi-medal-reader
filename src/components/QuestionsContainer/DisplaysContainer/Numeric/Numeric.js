@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Input, Item, View } from 'native-base';
+import { Input, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
 
@@ -58,18 +58,16 @@ export default class Numeric extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Item>
-          <Input
-            keyboardType={keyboardType}
-            question
-            numeric
-            defaultValue={question.answer !== null ? value : null}
-            style={style}
-            onFocus={this._focus}
-            onEndEditing={this._onEndEditing}
-            placeholder={placeholder}
-          />
-        </Item>
+        <Input
+          keyboardType={keyboardType}
+          question
+          numeric
+          defaultValue={question.answer !== null ? value : null}
+          style={style}
+          onFocus={this._focus}
+          onEndEditing={this._onEndEditing}
+          placeholder={placeholder}
+        />
       </View>
     );
   }

@@ -1,3 +1,4 @@
 import QuestionFactory from './Question.factory';
+import { withApplication } from '../../../engine/contexts/Application.context';
 
-export default QuestionFactory;
+export default withApplication(QuestionFactory);

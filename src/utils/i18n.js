@@ -50,6 +50,7 @@ i18n
         question: {
           yes: 'Yes',
           no: 'No',
+          unavailable: 'Unavailable'
         },
         menu: {
           triage: 'Triage',
