@@ -26,7 +26,7 @@ export const setAnswer = (index, value) => ({
 });
 
 export const setAnswerUnavailable = (index, value) => ({
-  type: actions.SET_ANSWER_UNAVAILABLE,
+  type: actions.SET_ANSWER_TO_UNAVAILABLE,
   payload: {
     index,
     value,
