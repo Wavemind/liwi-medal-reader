@@ -57,7 +57,7 @@ export default class Emergency extends React.Component<Props, State> {
     return (
       <Content>
         <View style={styles.view}>
-          <LiwiTitle2>{t('other:emergency')}</LiwiTitle2>
+          <LiwiTitle2>{t('emergency:emergency')}</LiwiTitle2>
           <Text>
             This page has been created to provide emergency assistance in case
             of need
@@ -67,7 +67,7 @@ export default class Emergency extends React.Component<Props, State> {
               this.handleBackButtonClick();
             }}
           >
-            <Text>{t('other:back')}</Text>
+            <Text>{t('emergency:back')}</Text>
           </Button>
           <Image
             style={styles.image}
