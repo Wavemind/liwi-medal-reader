@@ -7,7 +7,6 @@ import _ from 'lodash';
 import {
   displayFormats,
   nodesType,
-  priorities,
   valueFormats,
 } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
@@ -43,17 +42,15 @@ function LabelQuestion(props: {
   );
 }
 
-class WrapperQuestion extends React.Component<Props, State> {
+class TooltipButton extends React.Component<Props, State> {
   state = {
     toolTipVisible: false,
   };
+
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps, nextState) {
-    const { question } = this.props;
     const { toolTipVisible } = this.state;
     return (
-      nextProps.question.answer !== question.answer ||
-      nextProps.question.value !== question.value ||
       nextState.toolTipVisible !== toolTipVisible
     );
   }
@@ -81,54 +78,40 @@ class WrapperQuestion extends React.Component<Props, State> {
     );
   };
 
+  /**
+   * Close the tooltip when the click is outside the tooltip
+   *
+   * Callback receive from the tooltip component when it ask for close itself
+   *
+   * @param reactNative : reactNative.nativeEvent is the data from react native who
+   *                      has all info about the screen size (in point) gives the position of the click
+   * @param toolTip : data from the tooltip like origin on screen and size gives the position of the tooltip
+   */
+  onCloseToolTip = (reactNative, toolTip) => {
+    let xTouch = reactNative.nativeEvent.pageX;
+    let xTooltip = toolTip.tooltipOrigin.x;
+    let xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
+
+    let yTouch = reactNative.nativeEvent.pageY;
+    let yTooltip = toolTip.tooltipOrigin.y;
+    let yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
+
+    let insideContent =
+      xTouch > xTooltip &&
+      xTouch < xEndToolTip &&
+      (yTouch > yTooltip && yTouch < yEndToolTip);
+
+    if (!insideContent) {
+      this.setState({ toolTipVisible: false });
+    }
+  };
+
   render() {
-    const { question, specificStyle } = this.props;
     const { toolTipVisible } = this.state;
-    // By default no component
-    let WrapperAnswer = () => null;
-    let WrapperUnavailable = () => null;
-    let unavailable = null;
-
-    unavailable = _.find(question.answers, (a) => a.value === 'not_available');
-
-    if (unavailable !== undefined) {
-      WrapperUnavailable = () => {
-        return <CustomCheckbox question={question} unavailable={unavailable} />;
-      };
-    }
-
-    // Depending the format of the question we call the right component
-    // Boolean | Numeric | List
-    switch (question.display_format) {
-      case displayFormats.radioButton:
-        if (question.value_format === valueFormats.bool) {
-          WrapperAnswer = () => (
-            <Boolean question={question} styles={specificStyle} />
-          );
-        }
-        break;
-      case displayFormats.input:
-        WrapperAnswer = () => (
-          <Numeric
-            question={question}
-            styles={specificStyle}
-            unavailable={unavailable}
-          />
-        );
-        break;
-      case displayFormats.list:
-        WrapperAnswer = () => (
-          <List question={question} styles={specificStyle} />
-        );
-        break;
-      default:
-        break;
-    }
+    const { flex } = this.props;
 
     return (
-      <React.Fragment>
-        <WrapperAnswer />
-        <WrapperUnavailable />
+      <View flex={flex}>
         <Button
           style={styles.touchable}
           transparent
@@ -142,33 +125,81 @@ class WrapperQuestion extends React.Component<Props, State> {
           showChildInTooltip={false}
           content={this._renderToolTipContent()}
           placement="center"
-          onClose={(e, r) => {
-            let xTouch = e.nativeEvent.pageX;
-            let xTooltip = r.tooltipOrigin.x;
-            let xEndToolTip = r.tooltipOrigin.x + r.contentSize.width;
-
-            let yTouch = e.nativeEvent.pageY;
-            let yTooltip = r.tooltipOrigin.y;
-            let yEndToolTip = r.tooltipOrigin.y + r.contentSize.height;
-
-            let insideContent =
-              xTouch > xTooltip &&
-              xTouch < xEndToolTip &&
-              (yTouch > yTooltip && yTouch < yEndToolTip);
-
-            if (!insideContent) {
-              this.setState({ toolTipVisible: false });
-            }
-          }}
+          onClose={this.onCloseToolTip}
         />
-      </React.Fragment>
+      </View>
+    );
+
+  }
+}
+
+class WrapperQuestion extends React.Component<Props, State> {
+
+// Lifecycle for optimization
+  shouldComponentUpdate(nextProps) {
+    const { question } = this.props;
+    return (
+      nextProps.question.answer !== question.answer ||
+      nextProps.question.value !== question.value
+    );
+  }
+
+  render() {
+    const { question, flex } = this.props;
+
+    // By default no component
+    let WrapperAnswer = () => null;
+
+    // Depending the format of the question we call the right component
+    // Boolean | Numeric | List
+    switch (question.display_format) {
+      case displayFormats.radioButton:
+        if (question.value_format === valueFormats.bool) {
+          WrapperAnswer = () => (
+            <Boolean question={question} {...this.props} />
+          );
+        }
+        break;
+      case displayFormats.input:
+        WrapperAnswer = () => (
+          <Numeric question={question} {...this.props} />
+        );
+        break;
+      case displayFormats.list:
+        WrapperAnswer = () => (
+          <List question={question} {...this.props} />
+        );
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <View flex={flex}>
+        <WrapperAnswer />
+      </View>
     );
   }
 }
 
 export default class Question extends React.PureComponent<Props, State> {
   render() {
-    const { question } = this.props;
+    const { question, app: { t } } = this.props;
+    let WrapperUnavailable = () => null;
+    let unavailable = null;
+
+    unavailable = _.find(question.answers, (a) => a.value === 'not_available');
+
+    if (unavailable !== undefined) {
+      WrapperUnavailable = () => {
+        return (
+          <React.Fragment>
+            <Text>{t('question:unavailable')} </Text>
+            <CustomCheckbox question={question} unavailable={unavailable} />
+          </React.Fragment>
+        );
+      };
+    }
 
     // If this is not a question we return null
     if (question === undefined || question.type !== nodesType.question) {
@@ -180,34 +211,31 @@ export default class Question extends React.PureComponent<Props, State> {
       return null;
     }
 
-    let specificStyle;
-
-    // Define special style depending the proprity
-    switch (question.priority) {
-      case priorities.basic:
-        specificStyle = styles.normal;
-        break;
-      default:
-        specificStyle = {};
-        break;
-    }
-
     // Construct generic Component for the question
     return (
-      <ListItem style={styles.condensed} noBorder key={question.id + '_item'}>
-        <LabelQuestion
-          key={question.id + '_label'}
-          label={question.counter + 'x - ' + question.label}
-          flex={0.65}
-          marginLeft={0}
-          marginRight={10}
-        />
-        <WrapperQuestion
-          flex={0.35}
-          key={question.id + '_answer'}
-          question={question}
-          specificStyle={specificStyle}
-        />
+      <ListItem style={[styles.condensed,styles.flexColumn]} noBorder key={question.id + '_item'}>
+        <View style={styles.flexRow}>
+          <LabelQuestion
+            key={question.id + '_label'}
+            label={question.counter + 'x - ' + question.label}
+            flex={0.6}
+            marginLeft={0}
+            marginRight={10}
+          />
+          <WrapperQuestion
+            key={question.id + '_answer'}
+            question={question}
+            flex={0.25}
+            {...this.props}
+          />
+          <TooltipButton
+            question={question}
+            flex={0.15}
+          />
+        </View>
+        <View style={styles.unavailable}>
+          <WrapperUnavailable />
+        </View>
       </ListItem>
     );
   }

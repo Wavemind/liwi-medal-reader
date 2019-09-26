@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
 import Boolean from './Boolean';
-import { setAnswer } from '../../../../../frontend_service/actions/creators.actions';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
+import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
   return {
-    setAnswer: (index, value) => dispatch(setAnswer(index, value)),
+    setAnswer: (index, value) =>
+      manageSetAnswer(index, value, dispatch, props),
   };
 };
 export default connect(

@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Item, Picker, View } from 'native-base';
+import { Picker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { styles } from './List.style';
 
@@ -36,23 +36,21 @@ export default class List extends React.Component<Props, State> {
             label={question.answers[id].label}
             value={id}
           />
-          )
+        )
         : null
     );
     return (
       <View answer>
-        <Item>
-          <Picker
-            mode="dropdown"
-            iosHeader="Select "
-            style={styles.picker}
-            selectedValue={question.answer}
-            onValueChange={this.onValueChange}
-          >
-            <Picker.Item label="Select" value={null} />
-            {PickerItem}
-          </Picker>
-        </Item>
+        <Picker
+          mode="dropdown"
+          iosHeader="Select "
+          style={styles.picker}
+          selectedValue={question.answer}
+          onValueChange={this.onValueChange}
+        >
+          <Picker.Item label="Select" value={null} />
+          {PickerItem}
+        </Picker>
       </View>
     );
   }
