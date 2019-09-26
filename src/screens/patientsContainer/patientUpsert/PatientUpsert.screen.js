@@ -38,7 +38,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     extraQuestions: {},
   };
 
-  // Get the new extraQuestions and update The questions Component
+  /**
+   * Get the new extraQuestions and update The questions Component
+   */
   updateExtraComponents = async (extraQuestions) => {
     let extraComponents = () => (
       <Questions
@@ -55,11 +57,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   /**
+   * Update this question in the component
+   *
+   * because of immutability we have to flatten it before and change the value
+   *
    * @param index [Object] : index of the question in the state
    * @param value [Number || String] : the new value of the question
-   *
-   * Update this question in the component
-   *  because immutability we have to flat it before and change the value
    *
    */
   setExtraQuestion = async (index, value) => {
@@ -129,7 +132,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   }
 
-  // Get patient with id in navigation props
+  /**
+   * Get patient with id in navigation props
+   */
   async getPatient() {
     const { navigation } = this.props;
     let id = navigation.getParam('idPatient');
@@ -140,7 +145,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     this.setState({ patient, firstRender: true });
   }
 
-  // Save patient and redirect to medical case
+  /**
+   * Save patient and redirect to medical case
+   */
   saveNewCase = async () => {
     await this.setState({ loading: true });
     const { patient } = this.state;
@@ -168,14 +175,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   };
 
-  // Update state value of patient
+  /**
+   * Update state value of patient
+   */
   updatePatientValue = async (key, value) => {
     const { patient } = this.state;
     patient[key] = value;
     await this.setState({ patient });
   };
 
-  // Save patient and redirect to waiting list
+  /**
+   * Save patient and redirect to waiting list
+   */
   saveWaitingList = async () => {
     await this.setState({ loading: true });
 
@@ -187,8 +198,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
     await this.setState({ loading: false });
   };
-
-  // Update patient value in storage and redirect to patient profile
+  /**
+   *  Update patient value in storage and redirect to patient profile
+   */
   updatePatient = async () => {
     await this.setState({ loading: true });
     const { navigation } = this.props;
@@ -200,7 +212,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     await this.setState({ loading: false });
   };
 
-  // Generate medical case for current patient
+  /**
+   * Generate medical case for current patient
+   */
   generateMedicalCase = async (patientId) => {
     const { extraQuestions } = this.state;
     let instanceMedicalCase = new MedicalCaseModel();
@@ -208,7 +222,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     return instanceMedicalCase.id;
   };
 
-  // Set patient in localStorage
+  /**
+   * Set patient in localStorage
+   */
   savePatient = async () => {
     const { patient } = this.state;
     const { navigation } = this.props;
