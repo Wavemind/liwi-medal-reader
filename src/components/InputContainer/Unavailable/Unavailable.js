@@ -15,11 +15,10 @@ export default class Unavailable extends React.Component<Props, State> {
   componentWillMount() {}
 
   onPress = () => {
+    const { setAnswerUnavailable, question, unavailableAnswer } = this.props;
 
-    const { setAnswerUnavailable, question, unavailable } = this.props;
-
-    if (question.answer === null || question.answer !== unavailable.id) {
-      setAnswerUnavailable(question.id, unavailable.id);
+    if (question.answer === null || question.answer !== unavailableAnswer.id) {
+      setAnswerUnavailable(question.id, unavailableAnswer.id);
     } else {
       // reset to null the checkbox
       setAnswerUnavailable(question.id, null);
@@ -33,12 +32,12 @@ export default class Unavailable extends React.Component<Props, State> {
   }
 
   render() {
-    const { question, unavailable } = this.props;
+    const { question, unavailableAnswer } = this.props;
     return (
       <CheckBox
         onPress={this.onPress}
         color={liwiColors.redColor}
-        checked={question.answer === unavailable.id}
+        checked={question.answer === unavailableAnswer.id}
       />
     );
   }

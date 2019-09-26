@@ -35,7 +35,7 @@ export default class Numeric extends React.Component<Props, State> {
   };
 
   render() {
-    const { question, unavailable } = this.props;
+    const { question, unavailableAnswer } = this.props;
     const { style } = this.state;
 
     let keyboardType;
@@ -51,7 +51,10 @@ export default class Numeric extends React.Component<Props, State> {
     }
     let value = String(question.value);
 
-    if (unavailable !== undefined && question.answer === unavailable.id) {
+    if (
+      unavailableAnswer !== undefined &&
+      question.answer === unavailableAnswer.id
+    ) {
       value = null;
       placeholder = 'Unavailable';
     }
