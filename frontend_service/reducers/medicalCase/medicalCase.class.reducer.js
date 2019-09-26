@@ -187,7 +187,7 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload value : Answer id finded in questions.answers
    *
    */
-  @Action(actions.SET_ANSWER_UNAVAILABLE)
+  @Action(actions.SET_ANSWER_TO_UNAVAILABLE)
   setAnswerUnavailable(state, action) {
     const { index, value } = action.payload;
 

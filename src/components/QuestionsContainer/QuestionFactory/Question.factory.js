@@ -17,7 +17,7 @@ import Numeric from '../DisplaysContainer/Numeric';
 import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 import Tooltip from '../../Tooltip/tooltip';
-import CustomCheckbox from '../../InputContainer/CustomCheckbox';
+import CustomCheckbox from '../../InputContainer/Unavailable';
 
 type Props = NavigationScreenProps & {};
 
