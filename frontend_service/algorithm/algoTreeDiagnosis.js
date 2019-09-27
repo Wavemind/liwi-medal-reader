@@ -151,6 +151,131 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
 };
 
 /**
+ *
+ */
+const InstanceChildrenOnQs = (
+  state$,
+  instance,
+  qs,
+  actions,
+  currentNode,
+  isThisBranchNull
+) => {
+  return instance.children.some((childId) => {
+    let child = state$.value.nodes[childId];
+
+    let childConditionValue;
+
+    // If this is not the final QS we calculate the conditonValue of the child
+    if (child.id !== qs.id) {
+      childConditionValue = find(child.qs, (q) => q.id === qs.id)
+        .conditionValue;
+
+      // Reset the child condition value
+      if (currentNode.answer === null && childConditionValue === true) {
+        actions.push(updateConditionValue(child.id, qs.id, false, qs.type));
+      }
+    }
+
+    // If the child is the current QS
+    if (child.id === qs.id && child.type === nodesType.questionsSequence) {
+      // The branch is open and we can set the answer of this QS
+
+      // If top parent and child QS, this is a direct link we read other conditione
+      if (instance.top_conditions.length === 0) {
+        let child_top_condition = find(
+          child.top_conditions,
+          (top_condition) => top_condition.first_node_id === instance.id
+        );
+        let qsRouteCondition = comparingTopConditions(
+          child,
+          child_top_condition
+        );
+        if (qs.id === 181 || qs.id === 186) {
+          console.log(
+            'direct link to the end of QS',
+            qsRouteCondition,
+            qs,
+            instance
+          );
+        }
+        // IF the direct link is open
+        return qsRouteCondition;
+      } else {
+        return true;
+      }
+    }
+
+    // If the child is an other QS
+    else if (child.type === nodesType.questionsSequence) {
+      // If the sub QS has not a defined value yet, we update the conditionValue of the top level nodes
+      if (child.answer === null && childConditionValue === false) {
+        // Update condition Value Qs
+        actions.push(updateConditionValue(child.id, qs.id, true, qs.type));
+
+        let subQs = getQuestionsSequenceStatus(
+          state$,
+          state$.value.nodes[child.id],
+          actions
+        );
+        if (qs.id === 181 || qs.id === 186) {
+          console.log(subQs);
+        }
+        return subQs;
+      } else if (child.answer === null && childConditionValue === true) {
+        // IF not answered but conditonValue true _> wait on user but still possible : return null
+        console.log('here we got a subqs open and waiting for answer');
+        isThisBranchNull.branch = null;
+        return null;
+      } else if (child.answer !== null && childConditionValue === true) {
+        // return the condition of the sub qs ??
+        let deeper = recursiveNodeQs(
+          state$,
+          qs.instances[child.id],
+          qs,
+          actions
+        );
+
+        if (deeper === null) {
+          isThisBranchNull.branch = null;
+        }
+
+        if (qs.id === 181) {
+          console.log(deeper);
+        }
+
+        if (deeper === true) {
+          return true;
+        }
+      }
+    }
+
+    // If the child is an question
+    else if (child.type === nodesType.question) {
+      // Next node is a question, go deeper
+      let deeper = recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+
+      if (deeper === null) {
+        isThisBranchNull.branch = null;
+      }
+
+      if (qs.id === 181) {
+        console.log(deeper);
+      }
+    } else {
+      console.warn(
+        '%c --- DANGER --- ',
+        'background: #FF0000; color: #F6F3ED; padding: 5px',
+        'This QS',
+        qs,
+        'You do not have to be here !! child in QS is wrong for : ',
+        child
+      );
+    }
+  });
+};
+
+/**
  * Calculate and update questions sequence and their children condition value
  *
  * @trigger When a condition value must be change
@@ -178,95 +303,53 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   // If answer is not null We check the condition of this node
   const instanceCondition = calculateCondition(instance);
 
+  // Reset this instance conditionValue
   if (instanceConditionValue === true && instanceCondition === false) {
     actions.push(updateConditionValue(instance.id, qs.id, false, qs.type));
   }
 
-  let qsFullyAnswered = null;
+  if (qs.id === 181 || qs.id === 186) {
+    console.log(
+      instance.id,
+      instanceConditionValue,
+      instanceCondition,
+      instance,
+      currentNode
+    );
+  }
 
-  if (instanceCondition === true && currentNode.answer !== null) {
-    instance.children.map((childId) => {
-      let child = state$.value.nodes[childId];
+  let isThisBranchNull = { branch: 0 }; // true = yes, null = potentiel, false = no, // immutability
+  // IF condition is respected and the answer is not null
+  // TODO reset the sub child
+  /// TODO detect when reset top_parent condition ?
+  if (
+    instanceCondition === true &&
+    (currentNode.answer !== null || instance.top_conditions.length === 0)
+  ) {
+    // Is this branch open to the end of QS ?
+    let processChildren = InstanceChildrenOnQs(
+      state$,
+      instance,
+      qs,
+      actions,
+      currentNode,
+      isThisBranchNull
+    );
 
-      let childConditionValue;
-
-      // If this is not the final QS we calculate the conditonValue of the child
-      if (child.id !== qs.id) {
-        childConditionValue = find(child.qs, (q) => q.id === qs.id)
-          .conditionValue;
-
-        // Reset the child condition value
-        if (currentNode.answer === null && childConditionValue === true) {
-          actions.push(updateConditionValue(child.id, qs.id, false, qs.type));
-        }
-      }
-
-      // If the child is the current QS
-      if (child.id === qs.id && child.type === nodesType.questionsSequence) {
-        // The branch is open and we can set the answer of this QS
-
-        // If top parent and child QS, this is a direct link we read other conditione
-        if (instance.top_conditions.length === 0) {
-          let child_top_condition = find(
-            child.top_conditions,
-            (top_condition) => top_condition.first_node_id === instance.id
-          );
-          let qsRouteCondition = comparingTopConditions(
-            child,
-            child_top_condition
-          );
-          if (qsRouteCondition === true) {
-            qsFullyAnswered = true;
-          } else {
-            if (qsFullyAnswered === null) {
-              qsFullyAnswered = false;
-            }
-          }
-        } else {
-          qsFullyAnswered = true;
-        }
-      }
-
-      // If the child is an other QS
-      else if (child.type === nodesType.questionsSequence) {
-        // If the sub QS has not a defined value yet, we update the conditionValue of the top level nodes
-        if (child.answer === null && childConditionValue === false) {
-          // Update condition Value Qs
-          actions.push(updateConditionValue(child.id, qs.id, true, qs.type));
-
-          return getQuestionsSequenceStatus(
-            state$,
-            state$.value.nodes[child.id],
-            actions
-          );
-        }
-      }
-
-      // If the child is an question
-      else if (child.type === nodesType.question) {
-        // Next node is a question, go deeper
-        return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
-      } else {
-        console.warn(
-          '%c --- DANGER --- ',
-          'background: #FF0000; color: #F6F3ED; padding: 5px',
-          'This QS',
-          qs,
-          'You do not have to be here !! child in QS is wrong for : ',
-          child
-        );
-      }
-    });
-    console.log(qsFullyAnswered);
-    // We can calculatite it
-    if (qsFullyAnswered === true) {
-      return qsFullyAnswered;
-    } else if (qsFullyAnswered === false) {
-      return false;
+    if (qs.id === 181 || qs.id === 186) {
+      console.log('isOpen ?', processChildren, 'potentiel', isThisBranchNull);
     }
+
+    // Here we have parcoured all the children if the instance
+    if (isThisBranchNull.branch === null) {
+      return null;
+    }
+
+    return processChildren;
+    // We can calculatite it
   } else {
-    // The node hasn't the expected answer so we stop the algo
-    return false;
+    // The node hasn't the expected answer BUT we are not a the end of the QS
+    return null;
   }
 };
 
@@ -275,7 +358,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
  * 2. On each node we do work on his children (like change conditon value or check conditon of the child)
  * 3. Update Recursive QS
  *
- * @return boolean: can we calculate this QS ?
+ * @return boolean: can we reach the end of the QS
  *
  * @params state$: All the state of the reducer
  * @params qs: The QS we want to get the status
@@ -291,15 +374,20 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
       topLevelNodes.push(qs.instances[nodeId]);
     }
   });
-
+  let pendingQs;
   // For each top parent node
   allNodesAnsweredInQs = topLevelNodes.some((topNode) => {
     let rec = recursiveNodeQs(state$, topNode, qs, actions);
-    if (qs.id === 181) {
-      console.log(rec, topNode);
+    if (qs.id === 181 || qs.id === 186) {
+      console.log('this branch is : ', rec, topNode);
     }
+    if (rec === null) pendingQs = true;
     if (rec) return true;
   });
+
+  if (pendingQs) {
+    return null;
+  }
 
   return allNodesAnsweredInQs;
 };

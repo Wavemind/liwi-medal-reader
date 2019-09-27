@@ -82,11 +82,21 @@ export class QuestionsSequenceModel extends NodeModel
         }
       }
     );
-    console.log(top_conditions_with_condition_value_true, this);
     let tempNodeFiltered = {
       ...this,
       top_conditions: top_conditions_with_condition_value_true,
     };
-    return calculateCondition(tempNodeFiltered);
+
+    let filteredCondition = calculateCondition(tempNodeFiltered);
+    let nofiltered = calculateCondition(this);
+
+    console.log(
+      this,
+      top_conditions_with_condition_value_true,
+      filteredCondition,
+      nofiltered
+    );
+
+    return filteredCondition;
   };
 }
