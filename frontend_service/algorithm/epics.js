@@ -147,7 +147,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
             'background: #FF0000; color: #F6F3ED; padding: 5px',
             'nodes type ',
             caller.type,
-            'doesn\'t exist'
+            "doesn't exist"
           );
           return [];
       }
@@ -180,7 +180,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       let questionsSequenceCondition = null;
 
       // If ready we calculate condition of the QS
-      if (isReady || isReady === null) {
+      if (isReady) {
         // car on doit savoir si branch ouverte ou fermée
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
       }
@@ -198,10 +198,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers).first()
           ].id;
-      } else if (
-        questionsSequenceCondition === false ||
-        (isReady === false && questionsSequenceCondition === false)
-      ) {
+      } else if (questionsSequenceCondition === false || isReady === false) {
         answerId =
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers)[1]

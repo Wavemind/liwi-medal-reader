@@ -199,6 +199,11 @@ const InstanceChildrenOnQs = (
             instance
           );
         }
+
+        if (qsRouteCondition === null) {
+          isThisBranchNull.branch = null;
+        }
+
         // IF the direct link is open
         return qsRouteCondition;
       } else {
@@ -220,6 +225,9 @@ const InstanceChildrenOnQs = (
         );
         if (qs.id === 181 || qs.id === 186) {
           console.log(subQs);
+        }
+        if (subQs === null) {
+          isThisBranchNull.branch = null;
         }
         return subQs;
       } else if (child.answer === null && childConditionValue === true) {
@@ -285,12 +293,17 @@ const InstanceChildrenOnQs = (
  * @payload type: define if it's a diagnostic or a question sequence
  */
 const recursiveNodeQs = (state$, instance, qs, actions) => {
+  /**
+   * Initial Var
+   */
   let currentNode = state$.value.nodes[instance.id];
 
   let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id)
     .conditionValue;
 
-  // If the node is not shown is this QS we change the conditon value to show it
+  /**
+   * Update condition Value if the instance has to be shown
+   * */
   if (instanceConditionValue === false) {
     actions.push(updateConditionValue(instance.id, qs.id, true, qs.type));
   }
@@ -303,7 +316,9 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   // If answer is not null We check the condition of this node
   const instanceCondition = calculateCondition(instance);
 
-  // Reset this instance conditionValue
+  /**
+   * Hide the node if the instance condition is no longer valid BUT he was already shwon
+   */
   if (instanceConditionValue === true && instanceCondition === false) {
     actions.push(updateConditionValue(instance.id, qs.id, false, qs.type));
   }
@@ -337,7 +352,13 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
     );
 
     if (qs.id === 181 || qs.id === 186) {
-      console.log('isOpen ?', processChildren, 'potentiel', isThisBranchNull);
+      console.log(
+        instance,
+        'isOpen ?',
+        processChildren,
+        'potentiel',
+        isThisBranchNull
+      );
     }
 
     // Here we have parcoured all the children if the instance
