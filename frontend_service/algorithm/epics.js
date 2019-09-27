@@ -147,7 +147,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
             'background: #FF0000; color: #F6F3ED; padding: 5px',
             'nodes type ',
             caller.type,
-            "doesn't exist"
+            'doesn\'t exist'
           );
           return [];
       }
