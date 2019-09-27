@@ -9,6 +9,7 @@ import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { routeDependingStatus } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -93,11 +94,11 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     // Display list of medical cases
     const _renderMedicalCases = patient.medicalCases.map((medicalCaseItem) => {
-      const { patient } = this.state;
       const { medicalCase } = this.props;
 
       const style = {
-        backgroundColor: medicalCase.id === medicalCaseItem.id ? '#ee0006' : '#ffffff'
+        backgroundColor:
+          medicalCase.id === medicalCaseItem.id ? '#ee0006' : '#ffffff',
       };
 
       return (
@@ -113,6 +114,11 @@ export default class PatientProfile extends React.Component<Props, State> {
                 ...medicalCaseItem,
                 patient: flatPatient,
               });
+            } else {
+              let route = routeDependingStatus(medicalCase);
+              if (route !== undefined) {
+                navigation.navigate(route);
+              }
             }
           }}
         >
@@ -120,7 +126,7 @@ export default class PatientProfile extends React.Component<Props, State> {
             <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
           </View>
           <View w50>
-            <Text>{patient.status}</Text>
+            <Text>{medicalCase.status}</Text>
           </View>
         </ListItem>
       );
