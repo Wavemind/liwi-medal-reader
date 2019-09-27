@@ -167,7 +167,11 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       let actions = [];
       let isReady;
 
-      // Can we calculate the QS ?
+      // Return the status of the QS
+      // true = can reach the end
+      // null = Still possible but uncaculable
+      // false = can't access the end anymore
+
       isReady = getQuestionsSequenceStatus(
         state$,
         currentQuestionsSequence,
@@ -176,23 +180,28 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       let questionsSequenceCondition = null;
 
       // If ready we calculate condition of the QS
-      if (isReady) {
+      if (isReady || isReady === null) {
         // car on doit savoir si branch ouverte ou fermée
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
       }
 
-      console.log(
-        isReady,
-        currentQuestionsSequence,
-        questionsSequenceCondition
-      );
+      if (currentQuestionsSequence.id === 181) {
+        console.log(
+          isReady,
+          currentQuestionsSequence,
+          questionsSequenceCondition
+        );
+      }
 
       if (questionsSequenceCondition === true) {
         answerId =
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers).first()
           ].id;
-      } else if (questionsSequenceCondition === false) {
+      } else if (
+        questionsSequenceCondition === false ||
+        (isReady === false && questionsSequenceCondition === false)
+      ) {
         answerId =
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers)[1]
