@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { categories } from '../../../../../frontend_service/constants';
+import { categories, stage } from '../../../../../frontend_service/constants';
 import QuestionsPerChiefComplaint from '../../../../components/Consultation/QuestionsPerChiefComplaint';
 import NavigationTriage from '../../../../components/Triage/NavigationTriage';
 
@@ -17,7 +17,13 @@ export default class MedicalHistory extends React.Component<Props, State> {
   render() {
     return (
       <React.Fragment>
-        <QuestionsPerChiefComplaint category={categories.symptom} />
+        <QuestionsPerChiefComplaint
+          filterBy={[
+            { by: 'category', operator: 'equal', value: categories.symptom },
+            { by: 'stage', operator: 'equal', value: stage.consultation },
+            { by: 'counter', operator: 'more', value: 0 },
+          ]}
+        />
         <NavigationTriage />
       </React.Fragment>
     );
