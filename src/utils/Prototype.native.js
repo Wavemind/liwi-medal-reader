@@ -119,3 +119,13 @@ Object.defineProperty(Object.prototype, 'renameKey', {
 // disabled console yellow box
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
+
+/**
+ * Optimisazion for production
+ */
+
+if (!__DEV__) {
+  console.log = () => {};
+  console.error = () => {};
+  console.warn = () => {};
+}
