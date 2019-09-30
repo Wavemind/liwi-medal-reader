@@ -147,7 +147,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
             'background: #FF0000; color: #F6F3ED; padding: 5px',
             'nodes type ',
             caller.type,
-            "doesn't exist"
+            'doesn\'t exist'
           );
           return [];
       }
@@ -165,29 +165,29 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       const currentQuestionsSequence = state$.value.nodes[questionsSequenceId];
       let answerId = null;
       let actions = [];
-      let isReady;
+      let statusQs;
+      let questionsSequenceCondition = null;
 
-      // Return the status of the QS
-      // true = can reach the end
-      // null = Still possible but uncaculable
-      // false = can't access the end anymore
-
-      isReady = getQuestionsSequenceStatus(
+      /** Return the status of the QS
+       *  true = can reach the end
+       *  null = Still possible but not yet
+       *  false = can't access the end anymore
+       */
+      statusQs = getQuestionsSequenceStatus(
         state$,
         currentQuestionsSequence,
         actions
       );
-      let questionsSequenceCondition = null;
 
       // If ready we calculate condition of the QS
-      if (isReady) {
-        // car on doit savoir si branch ouverte ou fermée
+      if (statusQs) {
+        // car on doit savoir si branche ouverte ou fermée
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
       }
 
       if (currentQuestionsSequence.id === 181) {
         console.log(
-          isReady,
+          statusQs,
           currentQuestionsSequence,
           questionsSequenceCondition
         );
@@ -198,7 +198,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers).first()
           ].id;
-      } else if (questionsSequenceCondition === false || isReady === false) {
+      } else if (questionsSequenceCondition === false || statusQs === false) {
         answerId =
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers)[1]
@@ -210,18 +210,6 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       }
 
       // eslint-disable-next-line no-console
-      // console.log(
-      //   'starte PS :',
-      //   currentQuestionsSequence.id,
-      //   currentQuestionsSequence,
-      //   questionsSequenceConditionValue,
-      //   'state du qs :',
-      //   actions,
-      //   'index child :',
-      //   callerId
-      // );
-
-      // eslint-disable-next-line no-console
       console.log(
         currentQuestionsSequence,
         ' -> ce PS a comme réponse : ',
@@ -229,7 +217,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
         'condition result : ',
         questionsSequenceCondition,
         ' and is ',
-        isReady,
+        statusQs,
         ' to calculate'
       );
 

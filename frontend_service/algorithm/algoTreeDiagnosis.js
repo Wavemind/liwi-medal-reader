@@ -151,7 +151,146 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
 };
 
 /**
+ * Process the final QS
  *
+ * If this is a direct link, get condition in the QS conditon
+ *
+ * @param instance
+ * @param child
+ * @param qs
+ * @param isThisBranchNull
+ * @return {boolean|false|true|null}
+ */
+export const nextChildFinalQs = (instance, child, qs, isThisBranchNull) => {
+  // If the instance is an top level node
+  if (instance.top_conditions.length === 0) {
+    // This is a direct link we read the condition in the QS
+    let child_top_condition = find(
+      child.top_conditions,
+      (top_condition) => top_condition.first_node_id === instance.id
+    );
+
+    // We get the condition of the direct link
+    let qsRouteCondition = comparingTopConditions(child, child_top_condition);
+
+    if (qs.id === 181 || qs.id === 186) {
+      console.log(
+        'direct link to the end of QS',
+        qsRouteCondition,
+        qs,
+        instance
+      );
+    }
+
+    if (qsRouteCondition === null) {
+      isThisBranchNull.branch = null;
+    }
+
+    // IF the direct link is open
+    return qsRouteCondition;
+  } else {
+    /**
+     *  Here we reach the end of the tree
+     *  This is not a direct link (top node level to final QS) because this is an other case
+     */
+    return true;
+  }
+};
+
+/**
+ *  Process child other QS
+ *
+ *  3 ways possible
+ *    1 - Not answered AND not shown
+ *    2 - Not answered AND shown
+ *    3 - Answered AND shown
+ *
+ * The reset Qs is not here
+ *
+ * @param state$
+ * @param child
+ * @param childConditionValue
+ * @param qs : Global QS
+ * @param actions : Array redux
+ * @param isThisBranchNull
+ * @return {null|false|true}
+ */
+export const nextChildOtherQs = (
+  state$,
+  child,
+  childConditionValue,
+  qs,
+  actions,
+  isThisBranchNull
+) => {
+  /**
+   *  If the sub QS has not a defined value yet, we update the sub Qs
+   */
+  if (child.answer === null && childConditionValue === false) {
+    // Update condition Value Qs
+    actions.push(updateConditionValue(child.id, qs.id, true, qs.type));
+
+    let subQs = getQuestionsSequenceStatus(
+      state$,
+      state$.value.nodes[child.id],
+      actions
+    );
+
+    if (qs.id === 181 || qs.id === 186) {
+      console.log(subQs);
+    }
+    // IF the subQS is still possible
+    if (subQs === null) {
+      isThisBranchNull.branch = null;
+    }
+    return subQs;
+  }
+
+  /**
+   * IF not answered but conditonValue true -> wait on user but still possible : return null
+   */
+  if (child.answer === null && childConditionValue === true) {
+    isThisBranchNull.branch = null;
+    return null;
+  }
+
+  /**
+   * If the QS is answered and has to be shown
+   */
+  if (child.answer !== null && childConditionValue === true) {
+    // Continue and go deeper
+    let deeper = recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+
+    if (deeper === null) {
+      isThisBranchNull.branch = null;
+    }
+
+    if (qs.id === 181) {
+      console.log(deeper);
+    }
+
+    if (deeper === true) {
+      return true;
+    }
+  }
+};
+
+/**
+ *
+ *
+ * @return boolean : the status of children
+ *
+ * Iterate the children and do action depending the child
+ * Can be the QS (reach the end of tree) -> nextChildFinalQs()
+ * Can be an other Qs -> nextChildOtherQs()
+ * Can be an question
+ *
+ * @param state$ {Object}: store redux
+ * @param instance {Object}: the instance node (parent of children)
+ * @param qs {Object}: Question sequence
+ * @param actions {Array}: Actions array redux
+ * @param currentNode {Object}: Node
+ * @param isThisBranchNull {Object}: flag for null
  */
 const InstanceChildrenOnQs = (
   state$,
@@ -173,89 +312,31 @@ const InstanceChildrenOnQs = (
 
       // Reset the child condition value
       if (currentNode.answer === null && childConditionValue === true) {
+        // Can be an question or other QS
         actions.push(updateConditionValue(child.id, qs.id, false, qs.type));
       }
     }
 
-    // If the child is the current QS
+    /**
+     * If the child is the current QS
+     */
     if (child.id === qs.id && child.type === nodesType.questionsSequence) {
       // The branch is open and we can set the answer of this QS
-
-      // If top parent and child QS, this is a direct link we read other conditione
-      if (instance.top_conditions.length === 0) {
-        let child_top_condition = find(
-          child.top_conditions,
-          (top_condition) => top_condition.first_node_id === instance.id
-        );
-        let qsRouteCondition = comparingTopConditions(
-          child,
-          child_top_condition
-        );
-        if (qs.id === 181 || qs.id === 186) {
-          console.log(
-            'direct link to the end of QS',
-            qsRouteCondition,
-            qs,
-            instance
-          );
-        }
-
-        if (qsRouteCondition === null) {
-          isThisBranchNull.branch = null;
-        }
-
-        // IF the direct link is open
-        return qsRouteCondition;
-      } else {
-        return true;
-      }
+      return nextChildFinalQs(instance, child, qs, isThisBranchNull);
     }
 
-    // If the child is an other QS
-    else if (child.type === nodesType.questionsSequence) {
-      // If the sub QS has not a defined value yet, we update the conditionValue of the top level nodes
-      if (child.answer === null && childConditionValue === false) {
-        // Update condition Value Qs
-        actions.push(updateConditionValue(child.id, qs.id, true, qs.type));
-
-        let subQs = getQuestionsSequenceStatus(
-          state$,
-          state$.value.nodes[child.id],
-          actions
-        );
-        if (qs.id === 181 || qs.id === 186) {
-          console.log(subQs);
-        }
-        if (subQs === null) {
-          isThisBranchNull.branch = null;
-        }
-        return subQs;
-      } else if (child.answer === null && childConditionValue === true) {
-        // IF not answered but conditonValue true _> wait on user but still possible : return null
-        console.log('here we got a subqs open and waiting for answer');
-        isThisBranchNull.branch = null;
-        return null;
-      } else if (child.answer !== null && childConditionValue === true) {
-        // return the condition of the sub qs ??
-        let deeper = recursiveNodeQs(
-          state$,
-          qs.instances[child.id],
-          qs,
-          actions
-        );
-
-        if (deeper === null) {
-          isThisBranchNull.branch = null;
-        }
-
-        if (qs.id === 181) {
-          console.log(deeper);
-        }
-
-        if (deeper === true) {
-          return true;
-        }
-      }
+    /**
+     * If the child is an other QS
+     */
+    if (child.type === nodesType.questionsSequence) {
+      return nextChildOtherQs(
+        state$,
+        instance,
+        qs,
+        actions,
+        currentNode,
+        isThisBranchNull
+      );
     }
 
     // If the child is an question
@@ -270,6 +351,9 @@ const InstanceChildrenOnQs = (
       if (qs.id === 181) {
         console.log(deeper);
       }
+      /**
+       * Here we return nothing because an question is never the final node in a QS
+       */
     } else {
       console.warn(
         '%c --- DANGER --- ',
@@ -297,7 +381,6 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    * Initial Var
    */
   let currentNode = state$.value.nodes[instance.id];
-
   let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id)
     .conditionValue;
 
@@ -313,10 +396,10 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   //   return false;
   // }
 
-  // If answer is not null We check the condition of this node
   const instanceCondition = calculateCondition(instance);
 
   /**
+   * Reset condition value
    * Hide the node if the instance condition is no longer valid BUT he was already shwon
    */
   if (instanceConditionValue === true && instanceCondition === false) {
@@ -333,15 +416,23 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
     );
   }
 
-  let isThisBranchNull = { branch: 0 }; // true = yes, null = potentiel, false = no, // immutability
-  // IF condition is respected and the answer is not null
-  // TODO reset the sub child
-  /// TODO detect when reset top_parent condition ?
+  /**
+   * Special variable to setting the null return
+   * Immutability with obj.property
+   */
+  let isThisBranchNull = { branch: 0 };
+
+  /**
+   * We process the instance children if
+   * The condition is true AND The questions has an answer OR this is a top level node
+   */
   if (
     instanceCondition === true &&
     (currentNode.answer !== null || instance.top_conditions.length === 0)
   ) {
-    // Is this branch open to the end of QS ?
+    /**
+     * From this point we can process all children and go deeper in the tree
+     */
     let processChildren = InstanceChildrenOnQs(
       state$,
       instance,
@@ -361,7 +452,13 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
       );
     }
 
-    // Here we have parcoured all the children if the instance
+    /**
+     *  Here we have parcoured all the children
+     */
+
+    /**
+     * If the immutability branch is null we stop the some
+     */
     if (isThisBranchNull.branch === null) {
       return null;
     }
@@ -379,7 +476,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
  * 2. On each node we do work on his children (like change conditon value or check conditon of the child)
  * 3. Update Recursive QS
  *
- * @return boolean: can we reach the end of the QS
+ * @return boolean: return the status of the QS
  *
  * @params state$: All the state of the reducer
  * @params qs: The QS we want to get the status
@@ -387,7 +484,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
  */
 export const getQuestionsSequenceStatus = (state$, qs, actions) => {
   let topLevelNodes = [];
-  let allNodesAnsweredInQs = false;
+  let allNodesAnsweredInQs = false; // By default false
 
   // Set top Level Nodes
   Object.keys(qs.instances).map((nodeId) => {
@@ -395,20 +492,31 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
       topLevelNodes.push(qs.instances[nodeId]);
     }
   });
+
   let pendingQs;
-  // For each top parent node
+  // For each top parent node we do a some
   allNodesAnsweredInQs = topLevelNodes.some((topNode) => {
-    let rec = recursiveNodeQs(state$, topNode, qs, actions);
+    // From this branch we go deeper
+    let recursifNode = recursiveNodeQs(state$, topNode, qs, actions);
+
     if (qs.id === 181 || qs.id === 186) {
-      console.log('this branch is : ', rec, topNode);
+      console.log('this branch is : ', recursifNode, topNode);
     }
-    if (rec === null) pendingQs = true;
-    if (rec) return true;
+
+    // If this node is null, we set the pending and continue the other branch
+    // .some() has to return something to be stopped
+    if (recursifNode === null) pendingQs = true;
+
+    // If we find one branch correctly open we stop the .some loop
+    if (recursifNode) return true;
   });
 
+  // If pending we return null
   if (pendingQs) {
     return null;
   }
 
+  // Return the result of recursif
+  // Can be True || False
   return allNodesAnsweredInQs;
 };
