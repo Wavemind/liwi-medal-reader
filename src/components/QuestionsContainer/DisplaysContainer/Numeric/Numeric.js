@@ -35,7 +35,11 @@ export default class Numeric extends React.Component<Props, State> {
   };
 
   render() {
-    const { question, unavailableAnswer } = this.props;
+    const {
+      question,
+      unavailableAnswer,
+      app: { t },
+    } = this.props;
     const { style } = this.state;
 
     let keyboardType;
@@ -56,7 +60,7 @@ export default class Numeric extends React.Component<Props, State> {
       question.answer === unavailableAnswer.id
     ) {
       value = null;
-      placeholder = 'Unavailable';
+      placeholder = t('question:unavailable');
     }
 
     return (
