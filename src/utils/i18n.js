@@ -95,7 +95,7 @@ i18n
           medical_case: 'Medical case',
           medical_cases: 'Medical cases',
           no_medical_cases: 'No medical cases',
-          no_algorithm: 'No algorithm in memory',
+          no_algorithm: 'No algorithm loaded',
           no_questions: 'There are no questions for this category',
         },
         patient_detail: {},
