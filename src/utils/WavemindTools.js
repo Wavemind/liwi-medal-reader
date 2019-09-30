@@ -92,6 +92,7 @@ export default class WavemindTools extends Component {
 
                     await setItem('sessions', [session]);
                     await setItem('algorithms', [algo]);
+                    await RNRestart.Restart();
                   }}
               >
                 <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
