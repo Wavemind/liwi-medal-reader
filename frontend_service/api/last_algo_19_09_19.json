@@ -1,6 +1,7 @@
 {
   "id": 5,
   "algorithm_id": 3,
+  "selected": true,
   "name": "ePOCT_ODS_1",
   "version": "ePOCT_ODS_1_version 1",
   "description": "first modellisation of ePOCT from the draw.io doc",

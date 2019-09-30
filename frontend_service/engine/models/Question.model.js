@@ -59,7 +59,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.formula = formula;
     this.fn = fn;
     this.cc = cc;
-
   }
 
   /**
