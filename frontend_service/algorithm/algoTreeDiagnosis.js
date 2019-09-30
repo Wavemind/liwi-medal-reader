@@ -226,6 +226,10 @@ export const nextChildOtherQs = (
   /**
    *  If the sub QS has not a defined value yet, we update the sub Qs
    */
+  if (qs.id === 181 || qs.id === 186) {
+    console.log(child, childConditionValue, qs, actions, isThisBranchNull);
+  }
+
   if (child.answer === null && childConditionValue === false) {
     // Update condition Value Qs
     actions.push(updateConditionValue(child.id, qs.id, true, qs.type));
@@ -322,21 +326,23 @@ const InstanceChildrenOnQs = (
      */
     if (child.id === qs.id && child.type === nodesType.questionsSequence) {
       // The branch is open and we can set the answer of this QS
-      return nextChildFinalQs(instance, child, qs, isThisBranchNull);
+      let nextQs = nextChildFinalQs(instance, child, qs, isThisBranchNull);
+      return nextQs;
     }
 
     /**
      * If the child is an other QS
      */
     if (child.type === nodesType.questionsSequence) {
-      return nextChildOtherQs(
+      let nextother = nextChildOtherQs(
         state$,
-        instance,
+        child,
+        childConditionValue,
         qs,
         actions,
-        currentNode,
         isThisBranchNull
       );
+      return nextother;
     }
 
     // If the child is an question
