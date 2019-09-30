@@ -134,21 +134,25 @@ class MedicalCaseReducer extends ReducerClass {
     switch (state.nodes[index].value_format) {
       case valueFormats.int:
       case valueFormats.float:
-        answer = findKey(state.nodes[index].answers, (answerCondition) => {
-          switch (answerCondition.operator) {
-            case 'more_or_equal':
-              return value >= Number(answerCondition.value);
+        if (value !== null) {
+          answer = findKey(state.nodes[index].answers, (answerCondition) => {
+            switch (answerCondition.operator) {
+              case 'more_or_equal':
+                return value >= Number(answerCondition.value);
 
-            case 'less':
-              return value < Number(answerCondition.value);
+              case 'less':
+                return value < Number(answerCondition.value);
 
-            case 'between':
-              return (
-                value >= Number(answerCondition.value.split(',').first()) &&
-                value < Number(answerCondition.value.split(',')[1])
-              );
-          }
-        });
+              case 'between':
+                return (
+                  value >= Number(answerCondition.value.split(',').first()) &&
+                  value < Number(answerCondition.value.split(',')[1])
+                );
+            }
+          });
+        } else {
+          answer = null;
+        }
         break;
       case valueFormats.bool:
       case valueFormats.array:
