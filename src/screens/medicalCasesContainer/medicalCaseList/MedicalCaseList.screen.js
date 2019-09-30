@@ -175,12 +175,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
-    const { setMedicalCase, navigation } = this.props;
+    const { setMedicalCase } = this.props;
     await setMedicalCase(medicalCase);
-
-    navigation.navigate('Triage', {
-      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
-    });
   };
 
   _renderMedicalCase = () => {
@@ -209,13 +205,20 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={medicalCaseItem.id + '_medical_case_list'}
                 spaced
                 onPress={async () => {
+                  let medicalCaseRoute =
+                    medicalCase.id === medicalCaseItem.id
+                      ? medicalCase
+                      : medicalCaseItem;
+
                   if (medicalCase.id !== medicalCaseItem.id) {
-                    await this.selectMedicalCase(medicalCaseItem);
-                  } else {
-                    let route = routeDependingStatus(medicalCase);
-                    if (route !== undefined) {
-                      navigation.navigate(route);
-                    }
+                    await this.selectMedicalCase({
+                      ...medicalCaseItem,
+                    });
+                  }
+
+                  let route = routeDependingStatus(medicalCaseRoute);
+                  if (route !== undefined) {
+                    navigation.navigate(route);
                   }
                 }}
               >
@@ -227,7 +230,15 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                   </Text>
                 </View>
                 <View w50>
-                  <Text>{t(`medical_case:${medicalCaseItem.status}`)}</Text>
+                  <Text>
+                    {t(
+                      `medical_case:${
+                        medicalCase.id === medicalCaseItem.id
+                          ? medicalCase.status
+                          : medicalCaseItem.status
+                      }`
+                    )}
+                  </Text>
                 </View>
               </ListItem>
             ))}

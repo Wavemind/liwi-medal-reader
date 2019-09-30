@@ -91,17 +91,19 @@ export const medicalCaseStatus = {
 
 export const routeDependingStatus = (medicalCase) => {
   let route;
+
   switch (medicalCase.status) {
-    case medicalCaseStatus.triage.name ||
-      medicalCaseStatus.waitingConsultation.name:
+    case medicalCaseStatus.waitingTriage.name:
+    case medicalCaseStatus.triage.name:
+    case medicalCaseStatus.waitingConsultation.name:
       route = 'FirstLookAssessments';
       break;
-    case medicalCaseStatus.consultation.name ||
-      medicalCaseStatus.waitingTest.name:
+    case medicalCaseStatus.consultation.name:
+    case medicalCaseStatus.waitingTest.name:
       route = 'MedicalHistory';
       break;
-    case medicalCaseStatus.test.name ||
-      medicalCaseStatus.waitingDiagnostic.name:
+    case medicalCaseStatus.test.name:
+    case medicalCaseStatus.waitingDiagnostic.name:
       route = 'Tests';
       break;
     case medicalCaseStatus.final_diagnostic.name:
@@ -111,5 +113,6 @@ export const routeDependingStatus = (medicalCase) => {
       // TODO view resume ?
       break;
   }
+
   return route;
 };
