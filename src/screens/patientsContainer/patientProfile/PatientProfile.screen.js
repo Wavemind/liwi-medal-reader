@@ -9,9 +9,9 @@ import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { routeDependingStatus } from '../../../../frontend_service/constants';
+import { routeDependingStatus , categories } from '../../../../frontend_service/constants';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
-import { categories } from '../../../../frontend_service/constants';
+
 
 type Props = NavigationScreenProps & {};
 type State = {};

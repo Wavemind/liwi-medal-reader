@@ -110,7 +110,7 @@ export const routeDependingStatus = (medicalCase) => {
       route = 'DiagnosticsStrategy';
       break;
     case medicalCaseStatus.close.name:
-      // TODO view resume ?
+      route = 'Summary';
       break;
   }
 
