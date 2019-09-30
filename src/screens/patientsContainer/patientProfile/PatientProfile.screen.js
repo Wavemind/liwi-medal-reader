@@ -215,7 +215,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text>{t('work_case:no_algorithms')}</Text>
+            <Text>{t('work_case:no_algorithm')}</Text>
           </View>
         )}
       </View>

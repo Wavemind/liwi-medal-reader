@@ -10,6 +10,9 @@ export default {
       borderColor: liwiColors.blackColor,
     },
   },
+  'NativeBase.CheckBox': {
+    borderColor: liwiColors.redColor,
+  },
   'NativeBase.Input': {
     '.login-input': {},
     '.string': {

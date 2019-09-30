@@ -15,7 +15,7 @@ type State = {};
 // Display content of an algorithm
 // TODO : useful or useless ?
 export default class Algorithm extends React.Component<Props, State> {
-  state = { ready: false };
+  state = { ready: false, empty: false };
 
   async componentWillMount() {
     const { navigation } = this.props;
@@ -27,21 +27,45 @@ export default class Algorithm extends React.Component<Props, State> {
       algorithmId
     );
 
-    let version = find(
-      algorithm.versions,
-      (al) => al.version === algorithmVersion
-    );
-    await this.setState({
-      ...version,
-      ready: true,
-    });
+    if (algorithm === undefined) {
+      this.setState({
+        ready: true,
+        empty: true,
+      });
+    } else {
+      let version = find(
+        algorithm?.versions,
+        (al) => al.version === algorithmVersion
+      );
+
+      await this.setState({
+        ...version,
+        ready: true,
+      });
+    }
   }
 
   render() {
-    const { nodes, ready, diagnostics, version, description, author } = this.state;
+    const {
+      nodes,
+      ready,
+      diagnostics,
+      version,
+      description,
+      author,
+      empty,
+    } = this.state;
+
+    const {
+      app: { t },
+    } = this.props;
 
     if (!ready) {
       return null;
+    }
+
+    if (empty && ready) {
+      return <Text>{t('work_case:no_algorithm')}</Text>;
     }
 
     let questionTriage = {};
