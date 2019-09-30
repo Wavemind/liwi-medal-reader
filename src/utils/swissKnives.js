@@ -1,7 +1,4 @@
-
-
 export const stringifyDeepRef = (item) => {
-
   let cache = [];
 
   let replacer = JSON.stringify(item, function(key, value) {
