@@ -5,9 +5,9 @@ import { ViewPager } from 'rn-viewpager';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { liwiColors } from '../../../../utils/constants';
-import Diagnoses from '../diagnostics/Diagnostics.screen';
+import Diagnoses from '../Diagnostics';
 import HealthCaresQuestions from '../HealthCaresQuestions';
-import HealthCares from '../healthCares';
+import HealthCares from '../HealthCares';
 import { indicatorStyles, styles } from './DiagnosticsStrategy.style';
 
 const PAGES = [
