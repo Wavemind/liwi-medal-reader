@@ -38,10 +38,10 @@ i18n
         },
         triage: {
           first_look_assessment: 'First look Assessments',
-          vital: 'Vital signs',
+          vital: 'Basic measurments',
           chronical_condition: 'Chronical conditions',
           other: 'Others',
-          chief: 'Chief complaints',
+          chief: 'Complaint Categories',
         },
         form: {
           required: ' is required',
@@ -58,9 +58,9 @@ i18n
         menu: {
           triage: 'Triage',
           first_look_assessments: 'First look assessment',
-          vital_signs: 'Vital signs',
+          vital_signs: 'Basic measurments',
           chronical_conditions: 'Chronical conditions',
-          chief_complaints: 'Chief complaint categories',
+          chief_complaints: 'Complaint Categories',
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
@@ -249,10 +249,10 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Vital signs',
+          vital: 'Basic measurments',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
-          chief: 'Chief complaints',
+          chief: 'Complaint Categories',
         },
         settings: {
           devices: 'Appareils médicaux',

@@ -60,21 +60,6 @@ export default class TriageTabs extends Component<Props, State> {
             <Text center>{t('triage:vital')}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => this.onPress('ChronicalConditions')}
-            style={styles.touchable}
-          >
-            {this._renderRound(4, index === 3)}
-            <Text center>{t('triage:chronical_condition')}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => this.onPress('Others')}
-            style={styles.touchable}
-          >
-            {this._renderRound(5, index === 4)}
-            <Text center>{t('triage:other')}</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
