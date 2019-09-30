@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Input, Item, View } from 'native-base';
+import { Input, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
 
@@ -35,10 +35,15 @@ export default class Numeric extends React.Component<Props, State> {
   };
 
   render() {
-    const { question } = this.props;
+    const {
+      question,
+      unavailableAnswer,
+      app: { t },
+    } = this.props;
     const { style } = this.state;
 
     let keyboardType;
+    let placeholder = '';
     switch (question.value_format) {
       case 'Integer':
         keyboardType = 'number-pad';
@@ -48,20 +53,28 @@ export default class Numeric extends React.Component<Props, State> {
         keyboardType = 'number-pad';
         break;
     }
+    let value = String(question.value);
+
+    if (
+      unavailableAnswer !== undefined &&
+      question.answer === unavailableAnswer.id
+    ) {
+      value = null;
+      placeholder = t('question:unavailable');
+    }
 
     return (
       <View answer>
-        <Item>
-          <Input
-            keyboardType={keyboardType}
-            question
-            numeric
-            defaultValue={question.answer !== null ? String(question.value) : null}
-            style={style}
-            onFocus={this._focus}
-            onEndEditing={this._onEndEditing}
-          />
-        </Item>
+        <Input
+          keyboardType={keyboardType}
+          question
+          numeric
+          defaultValue={question.answer !== null ? value : null}
+          style={style}
+          onFocus={this._focus}
+          onEndEditing={this._onEndEditing}
+          placeholder={placeholder}
+        />
       </View>
     );
   }

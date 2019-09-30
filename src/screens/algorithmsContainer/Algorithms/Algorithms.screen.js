@@ -83,6 +83,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
   render() {
     const { isRefreshing } = this.state;
+
     return (
       <View style={styles.container}>
         <View style={styles.content}>
