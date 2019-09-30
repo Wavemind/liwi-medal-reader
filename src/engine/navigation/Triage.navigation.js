@@ -3,8 +3,6 @@
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import FirstLookAssessments from '../../screens/medicalCasesContainer/triageContainer/firstLookAssessments';
 import ChiefComplaints from '../../screens/medicalCasesContainer/triageContainer/chiefComplaints';
-import ChronicalConditions from '../../screens/medicalCasesContainer/triageContainer/chronicalConditions';
-import Others from '../../screens/medicalCasesContainer/triageContainer/others';
 import VitalSigns from '../../screens/medicalCasesContainer/triageContainer/vitalSigns';
 import TriageTabs from './TriageTabs';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
@@ -33,23 +31,6 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
         showSummary: true,
         dropDownMenu: 'Triage',
         medicalCaseStatus: medicalCaseStatus.triage.name,
-      },
-    },
-    ChronicalConditions: {
-      screen: ChronicalConditions,
-      params: {
-        showSummary: true,
-        dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name,
-      },
-    },
-    Others: {
-      screen: Others,
-      params: {
-        showSummary: true,
-        dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name,
-        nextStage: medicalCaseStatus.waitingConsultation.name,
       },
     },
   },
