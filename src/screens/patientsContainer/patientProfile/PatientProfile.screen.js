@@ -9,6 +9,7 @@ import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { routeDependingStatus } from '../../../../frontend_service/constants';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 import { categories } from '../../../../frontend_service/constants';
 
@@ -96,12 +97,8 @@ export default class PatientProfile extends React.Component<Props, State> {
   // Select a medical case and redirect to patient's view
   // TODO create a single composant for medicalList Unique in all app !
   selectMedicalCase = async (medicalCase) => {
-    const { setMedicalCase, navigation } = this.props;
+    const { setMedicalCase } = this.props;
     await setMedicalCase(medicalCase);
-
-    navigation.navigate('Triage', {
-      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
-    });
   };
 
   render() {
@@ -139,11 +136,21 @@ export default class PatientProfile extends React.Component<Props, State> {
           style={style}
           spaced
           onPress={async () => {
+            let medicalCaseRoute =
+              medicalCase.id === medicalCaseItem.id
+                ? medicalCase
+                : medicalCaseItem;
+
             if (medicalCase.id !== medicalCaseItem.id) {
               await this.selectMedicalCase({
                 ...medicalCaseItem,
                 patient: flatPatient,
               });
+            }
+
+            let route = routeDependingStatus(medicalCaseRoute);
+            if (route !== undefined) {
+              navigation.navigate(route);
             }
           }}
         >
@@ -151,7 +158,15 @@ export default class PatientProfile extends React.Component<Props, State> {
             <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
           </View>
           <View w50>
-            <Text>{medicalCaseItem.status}</Text>
+            <Text>
+              {t(
+                `medical_case:${
+                  medicalCase.id === medicalCaseItem.id
+                    ? medicalCase.status
+                    : medicalCaseItem.status
+                }`
+              )}
+            </Text>
           </View>
         </ListItem>
       );
