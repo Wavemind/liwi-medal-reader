@@ -54,7 +54,7 @@ i18n
         question: {
           yes: 'Yes',
           no: 'No',
-          unavailable: 'Unavailable'
+          unavailable: 'Unavailable',
         },
         menu: {
           triage: 'Triage',
@@ -212,6 +212,7 @@ i18n
           my_profile: 'My profile',
           logout: 'Logout',
           available_algorithms: 'Available algorithms',
+          emergency: 'Emergency',
         },
         common: {
           back: 'Back',
