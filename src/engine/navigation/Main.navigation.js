@@ -23,151 +23,184 @@ import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
-import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
+import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Emergency from '../../screens/Emergency';
 
 // We need to use i18n directly because we cant be connect to context
-const Stack = createStackNavigator({
-  Home: {
-    screen: MainScreen,
-    params: {
-      showSummary: false,
+const Stack = createStackNavigator(
+  {
+    Home: {
+      screen: MainScreen,
+      params: {
+        showSummary: false,
+      },
+      path: 'home',
+
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: i18n.t('navigation:home'),
+          headerLeft: (
+            <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
+              <Icon red type="Entypo" name="menu" large />
+            </Button>
+          ),
+          headerTitleContainerStyle: {
+            marginLeft: 15,
+          },
+        };
+      },
     },
-    path: 'home',
-    navigationOptions: ({ navigation }) => {
+    Emergency: {
+      screen: Emergency,
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:emergency'),
+        };
+      },
+    },
+    PatientList: {
+      screen: PatientList,
+      path: 'patientList',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:patient_list'),
+        };
+      },
+    },
+    PatientProfile: {
+      screen: PatientProfile,
+      path: 'patientProfile',
+      params: {
+        showSummary: true,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:patient_profile'),
+        };
+      },
+    },
+    PatientUpsert: {
+      screen: PatientUpsert,
+      path: 'patient/',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:patient_upsert'),
+        };
+      },
+    },
+    Algorithms: {
+      screen: Algorithms,
+      path: 'algorithms',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:available_algorithms'),
+        };
+      },
+    },
+    MedicalCaseList: {
+      screen: MedicalCaseList,
+      path: 'medicalCaseList',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:medical_case_list'),
+        };
+      },
+    },
+    Algorithm: {
+      screen: Algorithm,
+      path: 'algorithm/:id',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    Settings: {
+      screen: Settings,
+      path: 'settings',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:settings'),
+        };
+      },
+    },
+    Triage: {
+      screen: TriageTabNavigator,
+      path: 'triage',
+      params: {
+        showSummary: true,
+      },
+    },
+    Consultation: {
+      screen: ConsultationTabNavigator,
+      path: 'consultation',
+      params: {
+        showSummary: true,
+      },
+    },
+    Tests: {
+      screen: Tests,
+      path: 'tests',
+      params: {
+        showSummary: true,
+        dropDownMenu: 'Tests',
+        medicalCaseStatus: medicalCaseStatus.test.name,
+        nextStage: medicalCaseStatus.waitingDiagnostic.name,
+      },
+    },
+    DiagnosticsStrategy: {
+      screen: DiagnosticsStrategy,
+      path: 'DiagnosticsStrategy',
+      params: {
+        showSummary: true,
+        dropDownMenu: 'DiagnosticsStrategy',
+        medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
+        nextStage: medicalCaseStatus.close.name,
+      },
+    },
+  },
+  {
+    headerMode: 'float',
+    headerBackTitleVisible: false,
+    defaultNavigationOptions: ({ navigation }) => {
       return {
-        title: i18n.t('navigation:home'),
+        headerBackTitleVisible: false,
         headerLeft: (
-          <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-            <Icon red type="Entypo" name="menu" large />
-          </Button>
+          <React.Fragment>
+            <Button iconMenu onPress={() => navigation.openDrawer()}>
+              <Icon red type="Entypo" name="menu" large />
+            </Button>
+            <Button backIconMenu onPress={() => navigation.goBack()}>
+              <Icon red type="AntDesign" name="back" medium />
+            </Button>
+          </React.Fragment>
         ),
+        headerTitleContainerStyle: {
+          marginLeft: 50,
+        },
       };
     },
-  },
-  Emergency: {
-    screen: Emergency,
-  },
-  PatientList: {
-    screen: PatientList,
-    path: 'patientList',
-    params: {
-      showSummary: false,
-    },
-    navigationOptions: () => {
-      return {
-        title: i18n.t('navigation:patient_list'),
-      };
-    },
-  },
-  PatientProfile: {
-    screen: PatientProfile,
-    path: 'patientProfile',
-    params: {
-      showSummary: true,
-    },
-    navigationOptions: () => {
-      return {
-        title: i18n.t('navigation:patient_profile'),
-      };
-    },
-  },
-  PatientUpsert: {
-    screen: PatientUpsert,
-    path: 'patient/',
-    params: {
-      showSummary: false,
-    },
-    navigationOptions: () => {
-      return {
-        title: i18n.t('navigation:patient_upsert'),
-      };
-    },
-  },
-  Algorithms: {
-    screen: Algorithms,
-    path: 'algorithms',
-    params: {
-      showSummary: false,
-    },
-    navigationOptions: () => {
-      return {
-        title: i18n.t('navigation:available_algorithms'),
-      };
-    },
-  },
-  MedicalCaseList: {
-    screen: MedicalCaseList,
-    path: 'medicalCaseList',
-    params: {
-      showSummary: false,
-    },
-    navigationOptions: () => {
-      return {
-        title: i18n.t('navigation:medical_case_list'),
-      };
-    },
-  },
-  Algorithm: {
-    screen: Algorithm,
-    path: 'algorithm/:id',
-    params: {
-      showSummary: false,
-    },
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: navigation.getParam('title'),
-      };
-    },
-  },
-  Settings: {
-    screen: Settings,
-    path: 'settings',
-    params: {
-      showSummary: false,
-    },
-    navigationOptions: () => {
-      return {
-        title: i18n.t('navigation:settings'),
-      };
-    },
-  },
-  Triage: {
-    screen: TriageTabNavigator,
-    path: 'triage',
-    params: {
-      showSummary: true,
-    },
-  },
-  Consultation: {
-    screen: ConsultationTabNavigator,
-    path: 'consultation',
-    params: {
-      showSummary: true,
-    },
-  },
-  Tests: {
-    screen: Tests,
-    path: 'tests',
-    params: {
-      showSummary: true,
-      dropDownMenu: 'Tests',
-      medicalCaseStatus: medicalCaseStatus.test.name,
-      nextStage: medicalCaseStatus.waitingDiagnostic.name,
-    },
-  },
-  DiagnosticsStrategy: {
-    screen: DiagnosticsStrategy,
-    path: 'DiagnosticsStrategy',
-    params: {
-      showSummary: true,
-      dropDownMenu: 'DiagnosticsStrategy',
-      medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
-      nextStage: medicalCaseStatus.close.name,
-    },
-  },
-});
+  }
+);
 
 const HomeWithModal = createStackNavigator(
   {
