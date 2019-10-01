@@ -1,6 +1,6 @@
 // @flow
 import findKey from 'lodash/findKey';
-import { nodesType, valueFormats } from '../../constants';
+import { categories, nodesType, valueFormats } from '../../constants';
 import { MedicalCaseModel } from './MedicalCase.model';
 
 const { qs, d, fd, m, q, t } = nodesType;
@@ -39,41 +39,45 @@ export class NodeModel implements NodeInterface {
       return false;
     }
 
-    switch (this?.value_format) {
-      case valueFormats.int:
-      case valueFormats.float:
-        answer = findKey(this?.answers, (answerCondition) => {
-          switch (answerCondition.operator) {
-            case 'more_or_equal':
-              return value >= Number(answerCondition.value);
+    if (this.category !== categories.vitalSign) {
+      switch (this?.value_format) {
+        case valueFormats.int:
+        case valueFormats.float:
+          answer = findKey(this?.answers, (answerCondition) => {
+            switch (answerCondition.operator) {
+              case 'more_or_equal':
+                return value >= Number(answerCondition.value);
 
-            case 'less':
-              return value < Number(answerCondition.value);
+              case 'less':
+                return value < Number(answerCondition.value);
 
-            case 'between':
-              return (
-                value >= Number(answerCondition.value.split(',').first()) &&
-                value < Number(answerCondition.value.split(',')[1])
-              );
-          }
-        });
-        break;
-      case valueFormats.bool:
-        answer = value;
-        break;
-      case valueFormats.array:
-        answer = value;
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.log(
-          '%c --- DANGER --- ',
-          'background: #FF0000; color: #F6F3ED; padding: 5px',
-          `Unhandled question format ${this.display_format}`,
-          this
-        );
-        answer = value;
-        break;
+              case 'between':
+                return (
+                  value >= Number(answerCondition.value.split(',').first()) &&
+                  value < Number(answerCondition.value.split(',')[1])
+                );
+            }
+          });
+          break;
+        case valueFormats.bool:
+          answer = value;
+          break;
+        case valueFormats.array:
+          answer = value;
+          break;
+        default:
+          // eslint-disable-next-line no-console
+          console.log(
+            '%c --- DANGER --- ',
+            'background: #FF0000; color: #F6F3ED; padding: 5px',
+            `Unhandled question format ${this.display_format}`,
+            this
+          );
+          answer = value;
+          break;
+      }
+    } else {
+      answer = null;
     }
 
     // Assign final value

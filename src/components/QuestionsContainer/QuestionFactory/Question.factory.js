@@ -206,8 +206,6 @@ export default class Question extends React.Component<Props, State> {
       };
     }
 
-    console.log('render question', question.id);
-
     // If this is not a question we return null
     if (question === undefined || question.type !== nodesType.question) {
       return null;

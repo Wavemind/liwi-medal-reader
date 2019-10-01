@@ -62,7 +62,7 @@ export class PatientModel implements PatientModelInterface {
   };
 
   // Validate input
-  validate = async () => {
+  validate = () => {
     let errors = {};
 
     if (this.firstname.trim() === '') {
