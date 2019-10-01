@@ -6,10 +6,28 @@ import { Icon, Text } from 'native-base';
 import { nodesType } from '../../../frontend_service/constants';
 import { liwiColors } from '../../utils/constants';
 import { styles } from './FinalDiagnosticsList.style';
-
 type Props = NavigationScreenProps & {};
 
 type State = {};
+
+class FinalDiagnostic extends React.Component<{}> {
+  shouldComponentUpdate(nextProps: Props): boolean {
+    // eslint-disable-next-line react/prop-types
+    const { name } = this.props;
+    // eslint-disable-next-line react/prop-types
+    return name !== nextProps.name;
+  }
+
+  render() {
+    // eslint-disable-next-line react/prop-types
+    const { type, name, style, label, id } = this.props;
+    return (
+      <Text style={styles.spaceText} size-auto>
+        <Icon type={type} name={name} style={style} />- {id} - {label}
+      </Text>
+    );
+  }
+}
 
 export default class FinalDiagnosticsList extends React.PureComponent<
   Props,
@@ -17,20 +35,17 @@ export default class FinalDiagnosticsList extends React.PureComponent<
 > {
   state = {};
 
-  async componentWillMount() {}
-
   render() {
     const {
       medicalCase: { nodes },
     } = this.props;
+    let finalDiagnosticsRedux = nodes.filterByType(nodesType.finalDiagnostic);
 
-    let finalDiagnostics = nodes.filterByType(nodesType.finalDiagnostic);
+    const finalDiagnostics = [];
 
-    const items = [];
-
-    for (let index in finalDiagnostics) {
-      if (finalDiagnostics.hasOwnProperty(index)) {
-        let finalDiagnostic = finalDiagnostics[index];
+    for (let index in finalDiagnosticsRedux) {
+      if (finalDiagnosticsRedux.hasOwnProperty(index)) {
+        let finalDiagnostic = finalDiagnosticsRedux[index];
         let condition = finalDiagnostic.calculateCondition();
 
         let type;
@@ -55,15 +70,10 @@ export default class FinalDiagnosticsList extends React.PureComponent<
             break;
         }
 
-        items.push(
-          <Text style={styles.spaceText} size-auto>
-            <Icon type={type} name={name} style={style} /> -{' '}
-            {finalDiagnostic.id} - {finalDiagnostic.label}
-          </Text>
-        );
+        finalDiagnostics.push({ ...finalDiagnostic, type, name, style });
       }
     }
 
-    return <React.Fragment>{items}</React.Fragment>;
+    return finalDiagnostics.map((f) => <FinalDiagnostic {...f} key={f.id} />);
   }
 }
