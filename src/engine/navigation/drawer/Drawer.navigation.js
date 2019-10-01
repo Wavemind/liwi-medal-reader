@@ -24,6 +24,15 @@ export default class Drawer extends Component<Props, State> {
     navigation.navigate(path);
   };
 
+  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+    const { props } = this;
+    let b =
+      nextProps.medicalCase.id !== props.medicalCase.id ||
+      Object.compare(nextProps.navigation, props.navigation);
+
+    return b;
+  }
+
   render() {
     const {
       navigation,

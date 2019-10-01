@@ -168,7 +168,17 @@ class WrapperQuestion extends React.Component<Props, State> {
   }
 }
 
-export default class Question extends React.PureComponent<Props, State> {
+export default class Question extends React.Component<Props, State> {
+  shouldComponentUpdate(nextProps: Props): boolean {
+    const { question } = this.props;
+
+    return (
+      question.counter !== nextProps.question.counter ||
+      question.answer !== nextProps.question.answer ||
+      question.value !== nextProps.question.value
+    );
+  }
+
   render() {
     const {
       question,
@@ -195,6 +205,8 @@ export default class Question extends React.PureComponent<Props, State> {
         );
       };
     }
+
+    console.log('render question', question.id);
 
     // If this is not a question we return null
     if (question === undefined || question.type !== nodesType.question) {

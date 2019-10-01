@@ -18,6 +18,7 @@ export default class ChiefComplaints extends React.Component<Props, State> {
   };
 
   render() {
+    console.log('chief complaint');
     const {
       medicalCase,
       app: { t },
@@ -42,7 +43,12 @@ export default class ChiefComplaints extends React.Component<Props, State> {
             }}
           >
             {questions.map((question, i) => (
-              <Boolean key={question.id + 'chief_boolean'} widthView={widthView} question={question} index={i} />
+              <Boolean
+                key={question.id + 'chief_boolean'}
+                widthView={widthView}
+                question={question}
+                index={i}
+              />
             ))}
           </View>
         ) : (

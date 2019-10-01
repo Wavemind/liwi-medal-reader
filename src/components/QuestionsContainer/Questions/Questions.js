@@ -17,6 +17,8 @@ export default class Questions extends React.PureComponent<Props, State> {
   render() {
     const { questions } = this.props;
 
+    console.log('render');
+
     return (
       <ScrollView>
         {Object.keys(questions).map((i) => (
