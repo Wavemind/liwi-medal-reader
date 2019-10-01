@@ -96,7 +96,7 @@ export const calculateFormula = (node) => {
  * @returns {null|boolean}
  *
  */
-const checkOneCondition = (child, wantedId, nodeId, conditionType) => {
+const checkOneCondition = (child, wantedId, nodeId) => {
   const state$ = store.getState();
 
   if (state$.nodes[nodeId].answer !== null) {

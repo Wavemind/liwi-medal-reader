@@ -125,6 +125,7 @@ console.disableYellowBox = true;
  */
 
 if (!__DEV__) {
+  // eslint-disable-next-line no-console
   console.log = () => {};
   console.error = () => {};
   console.warn = () => {};
