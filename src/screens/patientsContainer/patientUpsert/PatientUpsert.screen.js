@@ -253,6 +253,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     const {
       patient: { firstname, lastname, birthdate, gender },
+      patient,
       errors,
       firstRender,
       loading,
@@ -269,6 +270,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (!firstRender) {
       return null;
     }
+
+    const hasNoError = !_.isEmpty(patient.validate());
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -327,10 +330,20 @@ export default class PatientUpsert extends React.Component<Props, State> {
           {!loading ? (
             idPatient === null ? (
               <View columns>
-                <Button light split onPress={saveWaitingList}>
+                <Button
+                  light
+                  split
+                  onPress={saveWaitingList}
+                  disabled={hasNoError}
+                >
                   <Text>{t('patient_upsert:save_and_wait')}</Text>
                 </Button>
-                <Button success split onPress={saveNewCase}>
+                <Button
+                  success
+                  split
+                  onPress={saveNewCase}
+                  disabled={hasNoError}
+                >
                   <Text>{t('patient_upsert:save_and_case')}</Text>
                 </Button>
               </View>

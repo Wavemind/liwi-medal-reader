@@ -112,24 +112,6 @@ export default class Drawer extends Component<Props, State> {
                   {t('menu:vital_signs')}
                 </Text>
               </Button>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() => this.onPress('ChronicalConditions')}
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:chronical_conditions')}
-                </Text>
-              </Button>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() => this.onPress('Others')}
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:others')}
-                </Text>
-              </Button>
             </View>
 
             <View style={[styles.consultation, styles.paddingCategory]}>
@@ -153,7 +135,6 @@ export default class Drawer extends Component<Props, State> {
                 </Text>
               </Button>
             </View>
-
             <View style={[styles.tests, styles.paddingCategory]}>
               <Button
                 transparent
@@ -170,7 +151,7 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('DiagnosesStrategy')}
+                onPress={() => this.onPress('DiagnosticsStrategy')}
               >
                 <Text style={[styles.title, styles.noLeftPadding]} dark>
                   {t('menu:strategy')}

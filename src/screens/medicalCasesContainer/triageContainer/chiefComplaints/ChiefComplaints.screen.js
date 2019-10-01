@@ -18,7 +18,6 @@ export default class ChiefComplaints extends React.Component<Props, State> {
   };
 
   render() {
-    console.log('chief complaint');
     const {
       medicalCase,
       app: { t },
