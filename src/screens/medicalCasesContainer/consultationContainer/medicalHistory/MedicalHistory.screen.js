@@ -15,6 +15,7 @@ export default class MedicalHistory extends React.Component<Props, State> {
   state = {};
 
   render() {
+    console.log('hey render ');
     return (
       <React.Fragment>
         <QuestionsPerChiefComplaint

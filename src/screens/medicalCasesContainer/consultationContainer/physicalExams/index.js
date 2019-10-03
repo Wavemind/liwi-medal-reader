@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import PhysicalExams from './PhysicalExams.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
+import { WrapperNavigation } from '../../../../utils/WrapperNavigation';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
@@ -11,4 +12,4 @@ const mapStateToProps = (medicalCase) => {
 
 export default connect(
   mapStateToProps,
-)(withSessions(withApplication(PhysicalExams)));
+)(withSessions(withApplication(WrapperNavigation(PhysicalExams))));

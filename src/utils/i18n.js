@@ -67,14 +67,14 @@ i18n
           physical_exam: 'Physical exam',
           poct: 'POCT',
           tests: 'Tests',
-          strategy: 'Diagnoses and strategy',
+          strategy: 'Diagnostics and strategy',
           search: 'Search a patient',
           add: 'Add a patient',
           others: 'Others',
         },
         medical_case: {
           final_diagnoses: 'Final Diagnoses',
-          healthcares_questions: 'Healthcares\'s questions',
+          healthcares_questions: "Healthcares's questions",
           healthcares: 'Healthcares',
           managements: 'managements',
           treatments: 'treatments',
@@ -213,6 +213,7 @@ i18n
           logout: 'Logout',
           available_algorithms: 'Available algorithms',
           emergency: 'Emergency',
+          diagnosticsstrategy: 'Diagnostics & Strategy',
         },
         common: {
           back: 'Back',
@@ -226,7 +227,7 @@ i18n
           session_does_not_exist:
             'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
-          no_internet: 'You don\'t have internet connection',
+          no_internet: "You don't have internet connection",
           algorithm_updated: 'Your algorithm has been updated',
         },
       },
@@ -236,13 +237,13 @@ i18n
           diagnoses: 'Diagnostic',
         },
         notifications: {
-          empty_code: 'Votre code est vide, veuillez l\'écrire',
+          empty_code: "Votre code est vide, veuillez l'écrire",
           invalid_code:
-            'Votre code local n\'est pas valide, veuillez réessayer.',
+            "Votre code local n'est pas valide, veuillez réessayer.",
           session_does_not_exist:
-            'Cet utilisateur local n\'existe pas, veuillez réessayer.',
+            "Cet utilisateur local n'existe pas, veuillez réessayer.",
           session_already_exist: 'La session existe déjà',
-          no_internet: 'Vous n\'avez pas de connexion internet',
+          no_internet: "Vous n'avez pas de connexion internet",
         },
         consultation: {
           medical_history: 'Medical History',
@@ -299,7 +300,7 @@ i18n
           managements: 'managements',
           treatments: 'treatments',
           final_diagnoses: 'Final Diagnoses',
-          healthcares_questions: 'Healthcares\'s questions',
+          healthcares_questions: "Healthcares's questions",
           healthcares: 'Healthcares',
           waiting_triage: 'Waiting for triage',
           triage: 'Triage',
@@ -316,7 +317,7 @@ i18n
           unlock: 'Déverrouiller la session',
         },
         popup: {
-          title: 'Merci d\'autoriser l\'accès à la position',
+          title: "Merci d'autoriser l'accès à la position",
           message:
             'Le partage de localisation est obligatoire afin de pouvoir utiliser le service médical',
           ask_me_later: 'Demandez moi plus tard',

@@ -31,7 +31,7 @@ export default class Root extends React.Component {
             <SessionsProvider>
               <Layout />
               <CustomModal />
-              {__DEV__ ? <WavemindTools /> : null}
+              <WavemindTools />
               <EmergencyButton />
             </SessionsProvider>
           </ApplicationProvider>
