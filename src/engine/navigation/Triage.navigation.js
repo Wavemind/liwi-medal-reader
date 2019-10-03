@@ -39,7 +39,7 @@ export const TriageTabNavigator = createMaterialTopTabNavigator(
       activeTintColor: '#e91e63',
     },
     tabBarComponent: TriageTabs,
-    lazy: true,
+    // lazy: true,
     optimizationsEnabled: true,
   }
 );

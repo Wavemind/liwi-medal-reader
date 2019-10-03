@@ -26,6 +26,8 @@ import Tests from '../../screens/medicalCasesContainer/tests';
 import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Emergency from '../../screens/Emergency';
+import Triage from '../../screens/medicalCasesContainer/triage';
+import Consultation from '../../screens/medicalCasesContainer/consultation';
 
 // We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator(
@@ -149,12 +151,46 @@ const Stack = createStackNavigator(
       params: {
         showSummary: true,
       },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('menu:triage'),
+        };
+      },
+    },
+    TriageStepper: {
+      screen: Triage,
+      path: 'triage',
+      params: {
+        showSummary: true,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('menu:triage'),
+        };
+      },
     },
     Consultation: {
+      screen: Consultation,
+      path: 'consultation',
+      params: {
+        showSummary: true,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('menu:consultation'),
+        };
+      },
+    },
+    ConsultationS: {
       screen: ConsultationTabNavigator,
       path: 'consultation',
       params: {
         showSummary: true,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('menu:consultation'),
+        };
       },
     },
     Tests: {
@@ -175,6 +211,11 @@ const Stack = createStackNavigator(
         dropDownMenu: 'DiagnosticsStrategy',
         medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
         nextStage: medicalCaseStatus.close.name,
+      },
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:diagnosticsstrategy'),
+        };
       },
     },
   },

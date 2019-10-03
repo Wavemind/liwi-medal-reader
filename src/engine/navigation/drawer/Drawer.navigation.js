@@ -84,7 +84,14 @@ export default class Drawer extends Component<Props, State> {
         {medicalCase.id !== undefined ? (
           <View style={styles.medical}>
             <View style={[styles.triage, styles.paddingCategory]}>
-              <Text style={styles.title}>{t('menu:triage')}</Text>
+              <Button
+                transparent
+                btnDrawer
+                onPress={() => this.onPress('TriageStepper')}
+              >
+                <Text style={styles.title}>{t('menu:triage')}</Text>
+              </Button>
+
               <Button
                 transparent
                 btnDrawer
@@ -119,7 +126,7 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('MedicalHistory')}
+                onPress={() => this.onPress('Consultation')}
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:medical_history')}

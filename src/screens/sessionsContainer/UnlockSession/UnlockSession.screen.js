@@ -18,6 +18,7 @@ type State = {
   code: string,
   session: Object,
   errors: Object,
+  loadingUnlock: false,
 };
 
 export default class UnlockSession extends React.Component<Props, State> {
@@ -34,11 +35,13 @@ export default class UnlockSession extends React.Component<Props, State> {
   // Navigate to new session screen
   newSessionScreen = () => {
     const { navigation } = this.props;
+    console.log('click oepn sessions');
     navigation.navigate('NewSession');
   };
 
   // Send to context code and session for verification
   unLock = async () => {
+    this.setState({ loadingUnlock: true });
     const { code, email } = this.state;
     const {
       app,
@@ -56,10 +59,12 @@ export default class UnlockSession extends React.Component<Props, State> {
     } else {
       Toaster(t('notifications:session_does_not_exist'), { type: 'danger' });
     }
+    this.setState({ loadingUnlock: false });
+
   };
 
   render() {
-    const { email, code, errors } = this.state;
+    const { email, code, errors, loadingUnlock } = this.state;
 
     const {
       app: { isConnected, t },
@@ -96,7 +101,7 @@ export default class UnlockSession extends React.Component<Props, State> {
                 condensed
               />
             </Form>
-            <Button full onPress={this.unLock} style={styles.button}>
+            <Button full onPress={this.unLock} style={styles.button} disabled={loadingUnlock}>
               <Text>{t('unlock_session:unlock')}</Text>
             </Button>
           </ScrollView>

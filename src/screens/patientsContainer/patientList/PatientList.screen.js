@@ -2,7 +2,16 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
+import {
+  Button,
+  Icon,
+  Input,
+  Item,
+  List,
+  ListItem,
+  Text,
+  View,
+} from 'native-base';
 
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
@@ -148,8 +157,8 @@ export default class PatientList extends React.Component<Props, State> {
     // Filter patient based on first name and last name by search term
     let filteredPatients = filter(patients, (patient) => {
       return (
-        patient.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        patient.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+        patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+        patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase())
       );
     });
 
