@@ -7,6 +7,8 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 
 import { categories } from '../../../../frontend_service/constants';
 
+import LiwiLoader from '../../../utils/LiwiLoader';
+
 const Boolean = React.lazy(() =>
   import('../../../components/QuestionsContainer/DisplaysContainer/Boolean')
 );
@@ -14,8 +16,6 @@ const Questions = React.lazy(() =>
   import('../../../components/QuestionsContainer/Questions')
 );
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
-
-import LiwiLoader from '../../../utils/LiwiLoader';
 
 export default class Triage extends React.Component {
   state = {
