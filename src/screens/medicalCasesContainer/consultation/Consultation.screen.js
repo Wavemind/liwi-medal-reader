@@ -5,10 +5,10 @@ import { View, Text } from 'native-base';
 
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
-const Stepper = React.lazy(() => import('../../../components/Stepper'));
-
 import { categories, stage } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
+
+const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
 const QuestionsPerChiefComplaint = React.lazy(() =>
   import('../../../components/Consultation/QuestionsPerChiefComplaint')

@@ -21,6 +21,6 @@ export default class MainScreen extends React.Component<Props, State> {
       <ScrollView>
         <HomeScreen navigation={navigation} />
       </ScrollView>
-    );$
+    );$;
   }
 }
