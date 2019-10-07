@@ -29,8 +29,10 @@ export default class String extends React.Component<Props, State> {
 
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
-    if (value.nativeEvent.text !== question.value) {
+    if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '' ) {
       setAnswer(question.id, value.nativeEvent.text);
+    } else if (question.value !== null && value.nativeEvent.text === '') {
+      setAnswer(question.id, null);
     }
   };
 

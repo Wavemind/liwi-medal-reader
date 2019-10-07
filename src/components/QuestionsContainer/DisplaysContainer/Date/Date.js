@@ -11,6 +11,7 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Date extends React.Component<Props, State> {
+
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
     return (
@@ -21,8 +22,13 @@ export default class Date extends React.Component<Props, State> {
 
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
-    if (value.nativeEvent.text !== question.value) {
-      setAnswer(question.id,  moment(value.nativeEvent.text).format('DD/MM/YYYY'));
+
+    let date =  moment(value).format('DD/MM/YYYY');
+
+    if (date !== question.value && value !== '' ) {
+      setAnswer(question.id, date);
+    } else if (question.value !== null && value.nativeEvent.text === '') {
+      setAnswer(question.id, null);
     }
   };
 
@@ -33,8 +39,6 @@ export default class Date extends React.Component<Props, State> {
       <View answer>
         <DatePicker
           defaultDate={moment(question.value).toDate()}
-          minimumDate={new Date(1930, 1, 1)}
-          maximumDate={new Date()}
           locale="fr"
           timeZoneOffsetInMinutes={undefined}
           modalTransparent={false}

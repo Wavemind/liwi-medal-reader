@@ -58,9 +58,8 @@ export class NodeModel implements NodeInterface {
           }
         });
         break;
+      case valueFormats.string:
       case valueFormats.bool:
-        answer = value;
-        break;
       case valueFormats.array:
         answer = value;
         break;
@@ -69,8 +68,8 @@ export class NodeModel implements NodeInterface {
         console.log(
           '%c --- DANGER --- ',
           'background: #FF0000; color: #F6F3ED; padding: 5px',
-          `Unhandled question format ${this.display_format}`,
-          this
+          `Unhandled question format ${this.value_format}`,
+          this,
         );
         answer = value;
         break;

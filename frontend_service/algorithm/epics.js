@@ -154,9 +154,9 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
     })
   );
 
-// @params [Object] action$, [Object] state$
-// @return [Array][Object] arrayActions
-// TODO : finish it
+/**
+ * Trigger when there is a change in a QS
+ */
 export const epicCatchQuestionsSequenceAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION),
@@ -165,19 +165,31 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       const currentQuestionsSequence = state$.value.nodes[questionsSequenceId];
       let answerId = null;
       let actions = [];
-      let isReady;
+      let statusQs;
+      let questionsSequenceCondition = null;
 
-      // Can we calculate the QS ?
-      isReady = getQuestionsSequenceStatus(
+      /** Return the status of the QS
+       *  true = can reach the end
+       *  null = Still possible but not yet
+       *  false = can't access the end anymore
+       */
+      statusQs = getQuestionsSequenceStatus(
         state$,
         currentQuestionsSequence,
         actions
       );
-      let questionsSequenceCondition = null;
 
       // If ready we calculate condition of the QS
-      if (isReady) {
+      if (statusQs) {
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
+      }
+
+      if (currentQuestionsSequence.id === 181) {
+        console.log(
+          statusQs,
+          currentQuestionsSequence,
+          questionsSequenceCondition
+        );
       }
 
       if (questionsSequenceCondition === true) {
@@ -185,27 +197,13 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers).first()
           ].id;
-      } else if (questionsSequenceCondition === false) {
-        answerId =
-          currentQuestionsSequence.answers[
-            Object.keys(currentQuestionsSequence.answers)[1]
+      } else if (questionsSequenceCondition === false || statusQs === false) {
+        // statusQd === false -> can't access the end of the QS anymore
+        // questionsSequenceCondition === false -> can't find a condition to true
+        answerId = currentQuestionsSequence.answers[
+            Object.keys(currentQuestionsSequence.answers).second()
           ].id;
-      } else if (questionsSequenceCondition === null) {
-        // The QS is still open
-        // TODO if top parent question is reset to null, reset children question condition value to false
       }
-
-      // eslint-disable-next-line no-console
-      // console.log(
-      //   'starte PS :',
-      //   currentQuestionsSequence.id,
-      //   currentQuestionsSequence,
-      //   questionsSequenceConditionValue,
-      //   'state du qs :',
-      //   actions,
-      //   'index child :',
-      //   callerId
-      // );
 
       // eslint-disable-next-line no-console
       console.log(
@@ -215,13 +213,12 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
         'condition result : ',
         questionsSequenceCondition,
         ' and is ',
-        isReady,
+        statusQs,
         ' to calculate'
       );
 
       // If the new answer of this QS is different from the older, we change it
       if (answerId !== currentQuestionsSequence.answer) {
-        // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
         actions.push(setAnswer(currentQuestionsSequence.id, answerId));
       }
       return of(...actions);
