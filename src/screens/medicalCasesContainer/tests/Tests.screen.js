@@ -12,15 +12,15 @@ export default class Tests extends React.Component<Props> {
   render() {
     const { medicalCase } = this.props;
 
-    let assessmentTest = medicalCase.nodes.filterBy( [
+    let assessmentTest = medicalCase.nodes.filterBy([
       { by: 'category', operator: 'equal', value: categories.assessment },
       { by: 'counter', operator: 'more', value: 0 },
-    ] );
+    ]);
 
     return (
       <React.Fragment>
-        <QuestionList questions={ assessmentTest }/>
-        <NavigationTriage questionsInScreen={ assessmentTest }/>
+        <QuestionList questions={assessmentTest} />
+        <NavigationTriage questionsInScreen={assessmentTest} />
       </React.Fragment>
     );
   }
