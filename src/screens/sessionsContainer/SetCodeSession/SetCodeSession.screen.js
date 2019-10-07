@@ -31,7 +31,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
     const {navigation} = this.props;
     let session = await getSession(navigation.getParam('user_id'));
     this.setState({ session });
-    this.validateCode();
+    // this.validateCode();
   }
 
   changeValueFromInput = (index, value) => {
