@@ -27,8 +27,9 @@ export const generateInitialBatch = (algorithmJson) => {
   return algorithmJson; // return is useless, we modifiy ref to caller
 };
 
-/*
+/**
  * For each medicalCase who exclude other diagnostic, we set the id in both side.
+ * TODO Parameter
  * */
 export const generateExcludedId = (medicalCase) => {
   for (let index in medicalCase.nodes) {
@@ -46,9 +47,12 @@ export const generateExcludedId = (medicalCase) => {
   }
 };
 
-// @param [Json] algorithmJsonMedicalCase
-// @return [Json] algorithmJsonMedicalCase
-// Set condition values of question in order to prepare them for second batch (before the triage one)
+/**
+ * Set condition values of question in order to prepare them for second batch (before the triage one)
+ *
+ * @param [Json] algorithmJsonMedicalCase
+ * @return [Json] algorithmJsonMedicalCase
+ */
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
   const { diagnostics, nodes } = algorithmJsonMedicalCase;
 
@@ -95,8 +99,11 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
   return algorithmJsonMedicalCase;
 };
 
-// @params [Json][Integer][Integer] algorithmJsonMedicalCase, parentId, id
-// Recursive function to also set dd and qs parents of current qs
+
+/**
+ * Recursive function to also set dd and qs parents of current qs
+ * @params [Json][Integer][Integer] algorithmJsonMedicalCase, parentId, id
+ */
 export const setParentConditionValue = (
   algorithmJsonMedicalCase,
   parentId,
@@ -133,7 +140,13 @@ export const setParentConditionValue = (
   });
 };
 
-// Node from diagnostics !
+/**
+ * TODO Comment
+ * @param state$
+ * @param diagnosticId
+ * @param nodeId
+ * @return {[]}
+ */
 export const getParentsNodes = (state$, diagnosticId, nodeId) => {
   let parentsNodes = [];
 
@@ -203,7 +216,7 @@ export const nextChildFinalQs = (instance, child, qs, isThisBranchNull) => {
 
 /**
  *  Process child other QS
- *
+ * todo explain each way
  *  3 ways possible
  *    1 - Not answered AND not shown
  *    2 - Not answered AND shown
@@ -264,21 +277,21 @@ export const nextChildOtherQs = (
   }
 
   /**
-   * If the QS is answered and has to be shown
+   * If the QS is answered and is shown
    */
   if (child.answer !== null && childConditionValue === true) {
     // Continue and go deeper
-    let deeper = recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+    let branchStillOpen = recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
 
-    if (deeper === null) {
+    if (branchStillOpen === null) {
       isThisBranchNull.branch = null;
     }
 
     if (qs.id === 181) {
-      console.log(deeper);
+      console.log(branchStillOpen);
     }
 
-    if (deeper === true) {
+    if (branchStillOpen === true) {
       return true;
     }
   }
@@ -288,7 +301,7 @@ export const nextChildOtherQs = (
  * Iterate the children and do action depending the child
  * Can be the QS (reach the end of tree) -> nextChildFinalQs()
  * Can be an other Qs -> nextChildOtherQs()
- * Can be an question -> go deeper
+ * Can be an question -> go deeper in the branch
  *
  * @param state$ {Object}: store redux
  * @param instance {Object}: the instance node (parent of children)
@@ -351,14 +364,14 @@ const InstanceChildrenOnQs = (
      */
     else if (child.type === nodesType.question) {
       // Next node is a question, go deeper
-      let deeper = recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+      let branchStillOpen = recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
 
-      if (deeper === null) {
+      if (branchStillOpen === null) {
         isThisBranchNull.branch = null;
       }
 
       if (qs.id === 181) {
-        console.log(deeper);
+        console.log(branchStillOpen);
       }
       /**
        * Here we return nothing because an question is never the final node in a QS
