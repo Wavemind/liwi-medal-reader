@@ -94,7 +94,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
             <LiwiTitle2 noBorder testID="welcome">
-              {t('code_session_screen:title')} {session.data.first_name} {' '} {session.data.last_name}
+              {t('code_session_screen:title')} {session.data.first_name}   {session.data.last_name}
             </LiwiTitle2>
             <Form>
               <CustomInput

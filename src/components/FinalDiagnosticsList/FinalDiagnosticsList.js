@@ -57,7 +57,7 @@ export default class FinalDiagnosticsList extends React.PureComponent<
 
         items.push(
           <Text style={styles.spaceText} size-auto>
-            <Icon type={type} name={name} style={style} /> -{' '}
+            <Icon type={type} name={name} style={style} /> - 
             {finalDiagnostic.id} - {finalDiagnostic.label}
           </Text>
         );

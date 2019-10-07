@@ -29,7 +29,6 @@ export default class Numeric extends React.Component<Props, State> {
 
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
-    console.log(question.value !== null && value.nativeEvent.text === '');
 
     if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '' ) {
       setAnswer(question.id, value.nativeEvent.text);
