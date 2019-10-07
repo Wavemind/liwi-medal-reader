@@ -7,6 +7,8 @@ import { actions } from '../../actions/types.actions';
 import { nodesType } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
+import 'reflect-metadata';
+
 
 export const initialState = null;
 
