@@ -13,6 +13,7 @@ import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
+import String from '../DisplaysContainer/String';
 import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 import Tooltip from '../../Tooltip/tooltip';
@@ -152,6 +153,9 @@ class WrapperQuestion extends React.Component<Props, State> {
         break;
       case displayFormats.input:
         WrapperAnswer = () => <Numeric question={question} {...this.props} />;
+        break;
+      case displayFormats.string:
+        WrapperAnswer = () => <String question={question} {...this.props} />;
         break;
       case displayFormats.list:
         WrapperAnswer = () => <List question={question} {...this.props} />;

@@ -31,6 +31,8 @@ export const valueFormats = {
   int: 'Integer',
   float: 'Float',
   bool: 'Boolean',
+  string: 'String',
+  date: 'Date',
 };
 
 // Priority of questions
