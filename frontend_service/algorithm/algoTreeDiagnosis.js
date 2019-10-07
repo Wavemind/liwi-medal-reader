@@ -7,7 +7,6 @@ import {
 } from './algoConditionsHelpers';
 
 // Create the first batch from json based on triage priority
-// TODO : Maybe build an object instead of rewriting the json
 export const generateInitialBatch = (algorithmJson) => {
   const { nodes } = algorithmJson;
 
@@ -29,7 +28,8 @@ export const generateInitialBatch = (algorithmJson) => {
 
 /**
  * For each medicalCase who exclude other diagnostic, we set the id in both side.
- * TODO Parameter
+ * @param medicalCase {Object} : the medical case
+ * @return nothing, we update the parameter
  * */
 export const generateExcludedId = (medicalCase) => {
   for (let index in medicalCase.nodes) {
@@ -74,7 +74,6 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
     // Set question Formula
     Object.keys(nodes).map((nodeId) => {
       if (nodes[nodeId].type.match(/Question/)) {
-        // TODO remove it when json ready
         if (nodeId == 108 || nodeId == 111) {
           nodes[nodeId].fn = [
             {
@@ -141,11 +140,13 @@ export const setParentConditionValue = (
 };
 
 /**
- * TODO Comment
- * @param state$
- * @param diagnosticId
- * @param nodeId
- * @return {[]}
+ * Get the parents for an instance in a diagnostic
+ * Can be multiple nodes
+ *
+ * @param state$ : {Object}
+ * @param diagnosticId {Number}
+ * @param nodeId {Number}
+ * @return {Array}
  */
 export const getParentsNodes = (state$, diagnosticId, nodeId) => {
   let parentsNodes = [];
@@ -216,13 +217,16 @@ export const nextChildFinalQs = (instance, child, qs, isThisBranchNull) => {
 
 /**
  *  Process child other QS
- * todo explain each way
  *  3 ways possible
  *    1 - Not answered AND not shown
+ *      - Update condition Value to true
+ *      - Get the status of the sub QS (Update the child in this QS by the way)
  *    2 - Not answered AND shown
- *    3 - Answered AND shown
+ *      - Still possible we wait on the user
+ *    3 - Answered AND shown.
+ *      - The instance is good Go deeper in the algo
  *
- * The reset Qs is not here
+ * The reset Qs is not here !
  *
  * @param state$  {Object}
  * @param child  {Object}
