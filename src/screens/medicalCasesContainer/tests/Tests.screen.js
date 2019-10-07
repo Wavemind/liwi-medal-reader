@@ -8,18 +8,20 @@ import NavigationTriage from '../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
 
-export default function Tests(props: Props) {
-  const { medicalCase } = props;
+export default class Tests extends React.Component<Props> {
+  render() {
+    const { medicalCase } = this.props;
 
-  let assessmentTest = medicalCase.nodes.filterBy([
-    { by: 'category', operator: 'equal', value: categories.assessment },
-    { by: 'counter', operator: 'more', value: 0 },
-  ]);
+    let assessmentTest = medicalCase.nodes.filterBy( [
+      { by: 'category', operator: 'equal', value: categories.assessment },
+      { by: 'counter', operator: 'more', value: 0 },
+    ] );
 
-  return (
-    <React.Fragment>
-      <QuestionList questions={assessmentTest} />
-      <NavigationTriage questionsInScreen={assessmentTest} />
-    </React.Fragment>
-  );
+    return (
+      <React.Fragment>
+        <QuestionList questions={ assessmentTest }/>
+        <NavigationTriage questionsInScreen={ assessmentTest }/>
+      </React.Fragment>
+    );
+  }
 }
