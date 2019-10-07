@@ -8023,6 +8023,16 @@
           "second_type": null,
           "second_node_id": null,
           "score": null
+        },
+        {
+          "first_id": 278,
+          "first_type": "Answer",
+          "first_node_id": 186,
+          "operator": null,
+          "second_id": null,
+          "second_type": null,
+          "second_node_id": null,
+          "score": null
         }
       ],
       "conditions": [],
@@ -8036,7 +8046,24 @@
           "top_conditions": [],
           "conditions": [],
           "id": 66,
-          "children": [181, 182]
+          "children": [181, 182, 186]
+        },
+        "186": {
+          "top_conditions": [
+            {
+              "first_id": 133,
+              "first_type": "Answer",
+              "first_node_id": 66,
+              "operator": null,
+              "second_id": null,
+              "second_type": null,
+              "second_node_id": null,
+              "score": null
+            }
+          ],
+          "conditions": [],
+          "id": 66,
+          "children": [181]
         },
         "113": {
           "top_conditions": [
@@ -8562,7 +8589,10 @@
         "278": { "id": 278, "reference": "DC1_1", "label": "Yes" },
         "279": { "id": 279, "reference": "DC1_2", "label": "No" }
       },
-      "qs": [{ "id": 184, "conditionValue": null }],
+      "qs": [
+        { "id": 184, "conditionValue": null },
+        { "id": 181, "conditionValue": null }
+      ],
       "dd": [],
       "answer": null
     },

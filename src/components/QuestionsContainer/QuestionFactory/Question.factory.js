@@ -145,7 +145,7 @@ class WrapperQuestion extends React.Component<Props, State> {
     let WrapperAnswer = () => null;
 
     // Depending the format of the question we call the right component
-    // Boolean | Numeric | List
+    // Boolean | Numeric | String | Date | List
     switch (question.display_format) {
       case displayFormats.radioButton:
         if (question.value_format === valueFormats.bool) {

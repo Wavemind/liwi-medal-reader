@@ -96,22 +96,26 @@ export const calculateFormula = (node) => {
  * @returns {null|boolean}
  *
  */
-const checkOneCondition = (child, wantedId, nodeId, conditionType) => {
+const checkOneCondition = (child, wantedId, nodeId) => {
   const state$ = store.getState();
 
-  switch (conditionType) {
-    case 'Answer':
-      if (state$.nodes[nodeId].answer !== null) {
-        //  Unless it's a priority.
-        return state$.nodes[nodeId].answer === wantedId;
-      }
-
-      return null;
-
-    case 'Condition':
-      // TODO here check the id condition nested hooo....
-      break;
+  if (state$.nodes[nodeId].answer !== null) {
+    // Console.warn should only appear if there is a format error in ids
+    if (
+      Number(state$.nodes[nodeId].answer) !== state$.nodes[nodeId].answer ||
+      Number(wantedId) !== wantedId
+    ) {
+      console.warn(
+        '%c --- DANGER STRING OR NUMBER PROBLEM TYPE --- ',
+        'background: #FF0000; color: #F6F3ED; padding: 5px',
+        child,
+        wantedId,
+        nodeId
+      );
+    }
+    return Number(state$.nodes[nodeId].answer) === Number(wantedId);
   }
+  return null;
 };
 
 /**

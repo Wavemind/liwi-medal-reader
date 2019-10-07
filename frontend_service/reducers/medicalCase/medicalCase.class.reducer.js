@@ -4,7 +4,7 @@ import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { nodesType } from '../../constants';
+import { nodesType, valueFormats } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 
@@ -140,6 +140,50 @@ class MedicalCaseReducer extends ReducerClass {
   setAnswer(state, action) {
     const { index, value } = action.payload;
 
+    let answer;
+    switch (state.nodes[index].value_format) {
+      case valueFormats.int:
+      case valueFormats.float:
+        if (value !== null) {
+          answer = findKey(state.nodes[index].answers, (answerCondition) => {
+            switch (answerCondition.operator) {
+              case 'more_or_equal':
+                return value >= Number(answerCondition.value);
+
+              case 'less':
+                return value < Number(answerCondition.value);
+
+              case 'between':
+                return (
+                  value >= Number(answerCondition.value.split(',').first()) &&
+                  value < Number(answerCondition.value.split(',')[1])
+                );
+            }
+          });
+        } else {
+          answer = null;
+        }
+        break;
+      case valueFormats.string:
+      case valueFormats.bool:
+      case valueFormats.array:
+        answer = value;
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.log(
+          '%c --- DANGER --- ',
+          'background: #FF0000; color: #F6F3ED; padding: 5px',
+          `Unhandled question format ${state.nodes[index].value_format}`,
+          state.nodes[index]
+        );
+        answer = value;
+        break;
+    }
+
+    if (answer !== null) {
+      answer = Number(answer);
+    }
     // Instantiate new object with answered question with new answer value
     state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
 

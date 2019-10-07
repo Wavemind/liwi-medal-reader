@@ -3,6 +3,7 @@
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
+
 import { LeftButton, RightButton } from '../../../../template/layout';
 import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';

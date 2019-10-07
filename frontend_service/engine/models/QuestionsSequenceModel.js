@@ -1,10 +1,12 @@
 // @flow
-
+import filter from 'lodash/filter';
+import find from 'lodash/find';
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { InstanceModel } from './Instance.model';
 import { valueFormats } from '../../constants';
 import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
+import { store } from '../../store';
 
 interface QuestionsSequenceInterface {
   answer: string;
@@ -63,6 +65,42 @@ export class QuestionsSequenceModel extends NodeModel
    * Calculate condition of question sequence and these children
    */
   calculateCondition = () => {
-    return calculateCondition(this);
+    const state$ = store.getState();
+
+    // TODO extract it in the model @alain !
+    /**
+     * Filter the top conditions
+     *
+     *  1. On Each top_condition
+     *  2. Find the instance Id of the condition
+     *  3. Check if the instance has the conditonValue to true
+     *    If false the instance is closed (not answered or wrong answer)
+     *  4. Return new array of top_condition
+     */
+    let top_conditions_with_condition_value_true = filter(
+      this.top_conditions,
+      (top_condition) => {
+        return find(state$.nodes[top_condition.first_node_id].qs, (qs) => {
+          return qs.id === this.id;
+        }).conditionValue;
+      }
+    );
+    let tempNodeFiltered = {
+      ...this,
+      top_conditions: top_conditions_with_condition_value_true,
+    };
+
+    let filteredCondition = calculateCondition(tempNodeFiltered);
+    let nofiltered = calculateCondition(this);
+
+    console.log(
+      this.id,
+      this,
+      top_conditions_with_condition_value_true,
+      filteredCondition,
+      nofiltered
+    );
+
+    return filteredCondition;
   };
 }
