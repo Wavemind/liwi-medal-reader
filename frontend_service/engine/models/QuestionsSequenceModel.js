@@ -80,11 +80,18 @@ export class QuestionsSequenceModel extends NodeModel
     let top_conditions_with_condition_value_true = filter(
       this.top_conditions,
       (top_condition) => {
-        return find(state$.nodes[top_condition.first_node_id].qs, (qs) => {
-          return qs.id === this.id;
-        }).conditionValue;
+        let conditionValue = find(
+          state$.nodes[top_condition.first_node_id].qs,
+          (qs) => {
+            return qs.id === this.id;
+          }
+        ).conditionValue;
+        if (conditionValue === true) {
+          return true;
+        }
       }
     );
+
     let tempNodeFiltered = {
       ...this,
       top_conditions: top_conditions_with_condition_value_true,
