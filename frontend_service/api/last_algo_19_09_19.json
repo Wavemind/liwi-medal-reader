@@ -120,6 +120,12 @@
           "conditions": [],
           "id": 243,
           "children": [145, 146]
+        },
+        "286": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 278,
+          "children": [277]
         }
       },
       "final_diagnostics": {
@@ -10667,6 +10673,27 @@
           "operator": null
         }
       }
+    },
+    "286": {
+      "id": 286,
+      "type": "Question",
+      "reference": "TEST",
+      "label": "Is it a date",
+      "description": null,
+      "priority": "mandatory",
+      "stage": "registration",
+      "formula": "",
+      "category": "demographic",
+      "display_format": "Date",
+      "value_format": "String",
+      "qs": [],
+      "dd": [
+        { "id": 6, "conditionValue": null }
+      ],
+      "cc": [],
+      "counter": 0,
+      "value": 0,
+      "answer": null
     }
   }
 }
