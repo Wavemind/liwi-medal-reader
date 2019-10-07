@@ -70,7 +70,7 @@ export default class WavemindTools extends Component {
 
                     // eslint-disable-next-line no-console
                     console.log({
-                      state$: state$,
+                      state$:   state$,
                       sessions: sessions,
                       algorithms: algorithms,
                     });

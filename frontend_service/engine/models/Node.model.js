@@ -21,7 +21,7 @@ export class NodeModel implements NodeInterface {
   }
 
   /**
-   *  Update the answer depending his format
+   * Update the answer depending his format
    *
    * @param {(string\|number)} value: new value for the question
    * @return  {Nothing} Update the class
