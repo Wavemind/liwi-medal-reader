@@ -98,6 +98,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
       // Instance all nodes for access to filterBy
       let nodes = new NodesModel(algorithmUsed.nodes);
+
       // Get nodes needed
       let extraQuestions = nodes.filterBy(
         [
