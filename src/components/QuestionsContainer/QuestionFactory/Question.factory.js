@@ -16,6 +16,7 @@ import Numeric from '../DisplaysContainer/Numeric';
 import String from '../DisplaysContainer/String';
 import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
+import Date from '../DisplaysContainer/Date';
 import Tooltip from '../../Tooltip/tooltip';
 import Unavailable from '../../InputContainer/Unavailable';
 
@@ -156,6 +157,9 @@ class WrapperQuestion extends React.Component<Props, State> {
         break;
       case displayFormats.string:
         WrapperAnswer = () => <String question={question} {...this.props} />;
+        break;
+      case displayFormats.date:
+        WrapperAnswer = () => <Date question={question} {...this.props} />;
         break;
       case displayFormats.list:
         WrapperAnswer = () => <List question={question} {...this.props} />;
