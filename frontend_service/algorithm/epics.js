@@ -147,16 +147,16 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
             'background: #FF0000; color: #F6F3ED; padding: 5px',
             'nodes type ',
             caller.type,
-            'doesn\'t exist'
+            "doesn't exist"
           );
           return [];
       }
     })
   );
 
-// @params [Object] action$, [Object] state$
-// @return [Array][Object] arrayActions
-// TODO : finish it
+/**
+ * Trigger when there is a change in a QS
+ */
 export const epicCatchQuestionsSequenceAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION),
@@ -181,7 +181,6 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
 
       // If ready we calculate condition of the QS
       if (statusQs) {
-        // car on doit savoir si branche ouverte ou fermée
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
       }
 
@@ -199,14 +198,12 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
             Object.keys(currentQuestionsSequence.answers).first()
           ].id;
       } else if (questionsSequenceCondition === false || statusQs === false) {
+        // statusQd === false -> can't access the end of the QS anymore
+        // questionsSequenceCondition === false -> can't find a condition to true
         answerId =
           currentQuestionsSequence.answers[
             Object.keys(currentQuestionsSequence.answers)[1]
           ].id;
-      } else if (questionsSequenceCondition === null) {
-        // The QS is still open
-        console.log(currentQuestionsSequence);
-        // TODO if top parent question is reset to null, reset children question condition value to false
       }
 
       // eslint-disable-next-line no-console
@@ -223,7 +220,6 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
 
       // If the new answer of this QS is different from the older, we change it
       if (answerId !== currentQuestionsSequence.answer) {
-        // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
         actions.push(setAnswer(currentQuestionsSequence.id, answerId));
       }
       return of(...actions);

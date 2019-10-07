@@ -100,8 +100,7 @@ const checkOneCondition = (child, wantedId, nodeId) => {
   const state$ = store.getState();
 
   if (state$.nodes[nodeId].answer !== null) {
-    //  Unless it's a priority.
-    // Console.warn for show if there are some error with format comparaison
+    // Console.warn should only appear if there is a format error in ids
     if (
       Number(state$.nodes[nodeId].answer) !== state$.nodes[nodeId].answer ||
       Number(wantedId) !== wantedId
