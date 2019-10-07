@@ -63,6 +63,18 @@ Array.prototype.first = function() {
 };
 
 /**
+ * Return the second element of an array.
+ * ex:
+ *   let arr = [1,2,3];
+ *   arr.first(); // return 2
+ *
+ * @return {*}
+ */
+Array.prototype.second = function() {
+  return this[1];
+};
+
+/**
  * Return the last element of an array.
  * ex:
  let arr = [1,2,3];

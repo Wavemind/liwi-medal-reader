@@ -200,9 +200,8 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       } else if (questionsSequenceCondition === false || statusQs === false) {
         // statusQd === false -> can't access the end of the QS anymore
         // questionsSequenceCondition === false -> can't find a condition to true
-        answerId =
-          currentQuestionsSequence.answers[
-            Object.keys(currentQuestionsSequence.answers)[1]
+        answerId = currentQuestionsSequence.answers[
+            Object.keys(currentQuestionsSequence.answers).second()
           ].id;
       }
 
