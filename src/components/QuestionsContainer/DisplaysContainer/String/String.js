@@ -40,13 +40,11 @@ export default class String extends React.Component<Props, State> {
     const { question } = this.props;
     const { style } = this.state;
 
-    let value = String(question.value);
-
     return (
       <View answer>
         <Input
           question
-          defaultValue={question.answer !== null ? value : null}
+          defaultValue={question.answer !== null ? question.value : null}
           style={style}
           onFocus={this._focus}
           onEndEditing={this._onEndEditing}
