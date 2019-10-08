@@ -97,17 +97,6 @@ export class QuestionsSequenceModel extends NodeModel
       top_conditions: top_conditions_with_condition_value_true,
     };
 
-    let filteredCondition = calculateCondition(tempNodeFiltered);
-    let nofiltered = calculateCondition(this);
-
-    console.log(
-      this.id,
-      this,
-      top_conditions_with_condition_value_true,
-      filteredCondition,
-      nofiltered
-    );
-
-    return filteredCondition;
+    return calculateCondition(tempNodeFiltered);
   };
 }
