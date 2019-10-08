@@ -1,7 +1,6 @@
 export const host = 'http://liwi.wavelab.top/api/v1/';
 // export const host = 'http://192.168.31.190:3000/api/v1/';
 
-
 // Hash used to encrypt local password
 export const saltHash =
   'x9gKs?RBf*96RK2DAM+&$CYv7A3Gjp=?X&RBLS%9KeL8Q3dSGjUzL_?2Vye3';
@@ -88,4 +87,32 @@ export const medicalCaseStatus = {
   waitingDiagnostic: { name: 'waiting_diagnostic', index: 6 },
   final_diagnostic: { name: 'final_diagnostic', index: 7 },
   close: { name: 'close', index: 8 },
+};
+
+export const routeDependingStatus = (medicalCase) => {
+  let route;
+
+  switch (medicalCase.status) {
+    case medicalCaseStatus.waitingTriage.name:
+    case medicalCaseStatus.triage.name:
+    case medicalCaseStatus.waitingConsultation.name:
+      route = 'FirstLookAssessments';
+      break;
+    case medicalCaseStatus.consultation.name:
+    case medicalCaseStatus.waitingTest.name:
+      route = 'MedicalHistory';
+      break;
+    case medicalCaseStatus.test.name:
+    case medicalCaseStatus.waitingDiagnostic.name:
+      route = 'Tests';
+      break;
+    case medicalCaseStatus.final_diagnostic.name:
+      route = 'DiagnosticsStrategy';
+      break;
+    case medicalCaseStatus.close.name:
+      route = 'Summary';
+      break;
+  }
+
+  return route;
 };

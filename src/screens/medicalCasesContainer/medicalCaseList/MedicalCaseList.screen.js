@@ -2,7 +2,17 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
+import {
+  Button,
+  Icon,
+  Input,
+  Item,
+  List,
+  ListItem,
+  Picker,
+  Text,
+  View,
+} from 'native-base';
 
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
@@ -10,7 +20,10 @@ import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './MedicalCaseList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray } from '../../../engine/api/LocalStorage';
-import { medicalCaseStatus } from '../../../../frontend_service/constants';
+import {
+  medicalCaseStatus,
+  routeDependingStatus,
+} from '../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
@@ -38,35 +51,35 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     const { navigation } = this.props;
 
     // Force refresh with a navigation.push
-    navigation.addListener( 'willFocus', async () => {
+    navigation.addListener('willFocus', async () => {
       await this.filterMedicalCases();
-    } );
+    });
   }
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
-    this.setState( { loading: true } );
+    this.setState({ loading: true });
     const { medicalCase } = this.props;
 
-    let patients = await getArray( 'patients' );
+    let patients = await getArray('patients');
     let medicalCases = [];
 
-    patients.map( (patient) => {
-      patient.medicalCases.map( (medicalCaseLocalStorage) => {
+    patients.map((patient) => {
+      patient.medicalCases.map((medicalCaseLocalStorage) => {
         if (medicalCaseLocalStorage.id !== medicalCase.id) {
           medicalCaseLocalStorage.patient = patient;
-          medicalCases.push( medicalCaseLocalStorage );
+          medicalCases.push(medicalCaseLocalStorage);
         } else {
-          medicalCases.push( medicalCase );
+          medicalCases.push(medicalCase);
         }
-      } );
-    } );
+      });
+    });
 
     this.setState(
       {
         medicalCases: medicalCases,
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -78,7 +91,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByStatus: null,
         orderByName: orderByName === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -90,7 +103,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByName: null,
         orderByStatus: orderByStatus === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -102,18 +115,18 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByName: 'asc',
         filterTerm: '',
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
   // Filter by status
   filterBy = (filterTerm) => {
-    this.setState( { filterTerm }, () => this.settleMedicalCase() );
+    this.setState({ filterTerm }, () => this.settleMedicalCase());
   };
 
   // Sets in the  state a list of medical cases based on filters and orders
   settleMedicalCase = () => {
-    this.setState( { loading: true } );
+    this.setState({ loading: true });
     const {
       medicalCases,
       searchTerm,
@@ -123,51 +136,47 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     } = this.state;
 
     // Filter patient based on first name and last name by search term
-    let filteredMedicalCases = filter( medicalCases, (medicalCase) => {
+    let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
       return (
         medicalCase.patient?.firstname
           .toLowerCase()
-          .includes( searchTerm.toLowerCase() ) ||
+          .includes(searchTerm.toLowerCase()) ||
         medicalCase.patient?.lastname
           .toLowerCase()
-          .includes( searchTerm.toLowerCase() )
+          .includes(searchTerm.toLowerCase())
       );
-    } );
+    });
     // Filter patient based on medical case status
-    filteredMedicalCases = filter( filteredMedicalCases, (medicalCase) => {
+    filteredMedicalCases = filter(filteredMedicalCases, (medicalCase) => {
       return medicalCase.status === filterTerm || filterTerm === '';
-    } );
+    });
     let orderedFilteredMedicalCases;
 
     if (orderByName !== null) {
       orderedFilteredMedicalCases = orderBy(
         filteredMedicalCases,
         ['lastname'],
-        [orderByName],
+        [orderByName]
       );
     } else if (orderByStatus !== null) {
       orderedFilteredMedicalCases = orderBy(
         filteredMedicalCases,
         ['status'],
-        [orderByStatus],
+        [orderByStatus]
       );
     }
-    this.setState( { orderedFilteredMedicalCases, loading: false } );
+    this.setState({ orderedFilteredMedicalCases, loading: false });
   };
 
   // Set string search
   searchBy = (searchTerm) => {
-    this.setState( { searchTerm } );
+    this.setState({ searchTerm });
   };
 
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
-    const { setMedicalCase, navigation } = this.props;
-    await setMedicalCase( medicalCase );
-
-    navigation.navigate( 'Triage', {
-      title: `${ medicalCase.patient.firstname } ${ medicalCase.patient.lastname }`,
-    } );
+    const { setMedicalCase } = this.props;
+    await setMedicalCase(medicalCase);
   };
 
   _renderMedicalCase = () => {
@@ -175,7 +184,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
-    const { medicalCase } = this.props;
+    const { medicalCase, navigation } = this.props;
 
     const { orderedFilteredMedicalCases, medicalCases } = this.state;
 
@@ -183,7 +192,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       [
         orderedFilteredMedicalCases.length > 0 ? (
           <List block key="medicalCaseList">
-            { orderedFilteredMedicalCases.map( (medicalCaseItem) => (
+            {orderedFilteredMedicalCases.map((medicalCaseItem) => (
               <ListItem
                 rounded
                 block
@@ -196,33 +205,53 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={medicalCaseItem.id + '_medical_case_list'}
                 spaced
                 onPress={async () => {
+                  let medicalCaseRoute =
+                    medicalCase.id === medicalCaseItem.id
+                      ? medicalCase
+                      : medicalCaseItem;
+
                   if (medicalCase.id !== medicalCaseItem.id) {
-                    await this.selectMedicalCase( medicalCaseItem );
+                    await this.selectMedicalCase({
+                      ...medicalCaseItem,
+                    });
+                  }
+
+                  let route = routeDependingStatus(medicalCaseRoute);
+                  if (route !== undefined) {
+                    navigation.navigate(route);
                   }
                 }}
               >
                 <View w50>
                   <Text>
-                    { medicalCaseItem.patient.id } :{ ' ' }
-                    { medicalCaseItem.patient.lastname }{ ' ' }
-                    { medicalCaseItem.patient.firstname }
+                    {medicalCaseItem.patient.id} :{' '}
+                    {medicalCaseItem.patient.lastname}{' '}
+                    {medicalCaseItem.patient.firstname}
                   </Text>
                 </View>
                 <View w50>
-                  <Text>{ t( `medical_case:${ medicalCaseItem.status }` ) }</Text>
+                  <Text>
+                    {t(
+                      `medical_case:${
+                        medicalCase.id === medicalCaseItem.id
+                          ? medicalCase.status
+                          : medicalCaseItem.status
+                      }`
+                    )}
+                  </Text>
                 </View>
               </ListItem>
-            ) ) }
+            ))}
           </List>
         ) : (
           <View padding-auto margin-auto>
-            <Text not-available>{ t( 'medical_case_list:not_found' ) }</Text>
+            <Text not-available>{t('medical_case_list:not_found')}</Text>
           </View>
         ),
       ]
     ) : (
       <View padding-auto margin-auto>
-        <Text not-available>{ t( 'medical_case_list:no_medical_cases' ) }</Text>
+        <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
       </View>
     );
   };
@@ -245,7 +274,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     return (
       <ScrollView>
         <View padding-auto>
-          <LiwiTitle2 noBorder>{ t( 'medical_case_list:search' ) }</LiwiTitle2>
+          <LiwiTitle2 noBorder>{t('medical_case_list:search')}</LiwiTitle2>
           <View flex-container-row>
             <Item round style={styles.input}>
               <Icon active name="search" />
@@ -254,10 +283,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
           </View>
           <View flex-container-row style={styles.filter}>
             <Button center rounded light onPress={this.resetFilter}>
-              <Text>{ t( 'medical_case_list:all' ) }</Text>
+              <Text>{t('medical_case_list:all')}</Text>
             </Button>
             <Text style={styles.textFilter}>
-              { t( 'medical_case_list:waiting' ) }
+              {t('medical_case_list:waiting')}
             </Text>
             <Picker
               style={styles.picker}
@@ -266,38 +295,38 @@ export default class MedicalCaseList extends React.Component<Props, State> {
               onValueChange={this.filterBy}
             >
               <Picker.Item label="" value="" />
-              { statuses.map( (status) => (
+              {statuses.map((status) => (
                 <Picker.Item
-                  label={t( `medical_case_list:${ status }` )}
+                  label={t(`medical_case_list:${status}`)}
                   key={status + 'status_list'}
                   value={status}
                 />
-              ) ) }
+              ))}
             </Picker>
           </View>
 
           <SeparatorLine />
 
           <View flex-container-row style={styles.sorted}>
-            <Text style={styles.textSorted}>{ t( 'medical_case_list:sort' ) }</Text>
+            <Text style={styles.textSorted}>{t('medical_case_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByName}>
-              { orderByName === 'asc' ? (
+              {orderByName === 'asc' ? (
                 <Icon name="arrow-down" />
               ) : (
                 <Icon name="arrow-up" />
-              ) }
-              <Text>{ t( 'medical_case_list:name' ) }</Text>
+              )}
+              <Text>{t('medical_case_list:name')}</Text>
             </Button>
             <Button center rounded light onPress={this.orderByStatus}>
-              { orderByStatus === 'asc' ? (
+              {orderByStatus === 'asc' ? (
                 <Icon name="arrow-down" />
               ) : (
                 <Icon name="arrow-up" />
-              ) }
-              <Text>{ t( 'medical_case_list:status' ) }</Text>
+              )}
+              <Text>{t('medical_case_list:status')}</Text>
             </Button>
           </View>
-          { loading ? <LiwiLoader /> : this._renderMedicalCase() }
+          {loading ? <LiwiLoader /> : this._renderMedicalCase()}
         </View>
       </ScrollView>
     );

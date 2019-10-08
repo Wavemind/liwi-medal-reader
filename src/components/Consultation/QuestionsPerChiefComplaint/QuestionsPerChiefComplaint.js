@@ -4,7 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
-import { categories, stage } from '../../../../frontend_service/constants';
+import { categories } from '../../../../frontend_service/constants';
 import Questions from '../../QuestionsContainer/Questions';
 import { styles } from './QuestionsPerChiefComplaint.style';
 
@@ -20,9 +20,9 @@ export default class QuestionsPerChiefComplaint extends React.Component<
   state = {};
 
   render() {
-    const { medicalCase, category } = this.props;
+    const { medicalCase, filterBy } = this.props;
 
-    // TODO optimize this with scu !
+    // TODO optimize this with scu ! @quentin
 
     // shouldComponentUpdate( nextProps, nextState );
     // {
@@ -46,11 +46,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<
       }
     });
 
-    let filteredQuestions = medicalCase.nodes.filterBy([
-      { by: 'category', operator: 'equal', value: category },
-      { by: 'stage', operator: 'equal', value: stage.consultation },
-      { by: 'counter', operator: 'more', value: 0 },
-    ]);
+    let filteredQuestions = medicalCase.nodes.filterBy(filterBy);
 
     filteredQuestions.map((question) => {
       question.cc.map((cc) => {

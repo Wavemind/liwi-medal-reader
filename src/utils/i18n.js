@@ -20,6 +20,10 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        emergency: {
+          emergency: 'Emergency Assistance',
+          back: 'Back to home',
+        },
         summary: {
           title: 'Current Summary',
           diagnoses: 'Diagnoses',
@@ -34,10 +38,10 @@ i18n
         },
         triage: {
           first_look_assessment: 'First look Assessments',
-          vital: 'Vital signs',
+          vital: 'Basic measurments',
           chronical_condition: 'Chronical conditions',
           other: 'Others',
-          chief: 'Chief complaints',
+          chief: 'Complaint Categories',
         },
         form: {
           required: ' is required',
@@ -50,13 +54,14 @@ i18n
         question: {
           yes: 'Yes',
           no: 'No',
+          unavailable: 'Unavailable',
         },
         menu: {
           triage: 'Triage',
           first_look_assessments: 'First look assessment',
-          vital_signs: 'Vital signs',
+          vital_signs: 'Basic measurments',
           chronical_conditions: 'Chronical conditions',
-          chief_complaints: 'Chief complaint categories',
+          chief_complaints: 'Complaint Categories',
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
@@ -94,7 +99,7 @@ i18n
           medical_case: 'Medical case',
           medical_cases: 'Medical cases',
           no_medical_cases: 'No medical cases',
-          no_algorithms: 'No algorithms in memory',
+          no_algorithm: 'No algorithm loaded',
           no_questions: 'There are no questions for this category',
         },
         patient_detail: {},
@@ -207,6 +212,7 @@ i18n
           my_profile: 'My profile',
           logout: 'Logout',
           available_algorithms: 'Available algorithms',
+          emergency: 'Emergency',
         },
         common: {
           back: 'Back',
@@ -245,10 +251,10 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Vital signs',
+          vital: 'Basic measurments',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
-          chief: 'Chief complaints',
+          chief: 'Complaint Categories',
         },
         settings: {
           devices: 'Appareils médicaux',
@@ -261,7 +267,7 @@ i18n
           medical_case: 'Cas médical',
           medical_cases: 'Cas médicaux',
           no_medical_cases: 'Aucun cans médicaux',
-          no_algorithms: 'Aucun algorithme',
+          no_algorithm: 'Aucun algorithme',
         },
         patient_detail: {},
         patient_list: {
