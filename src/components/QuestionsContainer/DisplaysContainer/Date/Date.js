@@ -23,11 +23,9 @@ export default class Date extends React.Component<Props, State> {
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
 
-    let date =  moment(value).format('DD/MM/YYYY');
-
-    if (date !== question.value && value !== '' ) {
-      setAnswer(question.id, date);
-    } else if (question.value !== null && value.nativeEvent.text === '') {
+    if (value !== question.value && value !== '' ) {
+      setAnswer(question.id, value);
+    } else if (question.value !== null && value === '') {
       setAnswer(question.id, null);
     }
   };
