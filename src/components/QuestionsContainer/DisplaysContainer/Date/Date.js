@@ -4,7 +4,7 @@ import * as React from 'react';
 import { DatePicker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
-import { liwiColors } from '../../../../utils/constants';
+import { styles } from './Date.style';
 
 type Props = NavigationScreenProps & {};
 
@@ -23,7 +23,7 @@ export default class Date extends React.Component<Props, State> {
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
 
-    if (value !== question.value && value !== '' ) {
+    if (value !== question.value && value !== '') {
       setAnswer(question.id, value);
     } else if (question.value !== null && value === '') {
       setAnswer(question.id, null);
@@ -42,8 +42,8 @@ export default class Date extends React.Component<Props, State> {
           modalTransparent={false}
           animationType="fade"
           androidMode="default"
-          textStyle={{ color: liwiColors.blackColor, padding: 20 }}
-          placeHolderTextStyle={{ color: liwiColors.darkerGreyColor }}
+          textStyle={styles.textColor}
+          placeHolderTextStyle={styles.placeholder}
           onDateChange={this._onEndEditing}
           disabled={false}
         />
