@@ -2,10 +2,9 @@ import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
-import findKey from 'lodash/findKey';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { nodesType, valueFormats } from '../../constants';
+import { nodesType } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 
@@ -70,7 +69,18 @@ class MedicalCaseReducer extends ReducerClass {
     }
 
     let changeConditionValue = find(caller, (d) => d.id === callerId);
-    changeConditionValue.conditionValue = value;
+
+    // IF not the same condition update the node
+    if (changeConditionValue.conditionValue !== value) {
+      // Update counter condition Value
+      // Explicite comparaison boolean for understand the case of new condition value
+      if (value === true) {
+        newNode.counter = newNode.counter + 1;
+      } else if (value === false) {
+        newNode.counter = newNode.counter - 1;
+      }
+      changeConditionValue.conditionValue = value;
+    }
 
     state.nodes[nodeId] = state.nodes.instantiateNode({ ...newNode });
 
@@ -130,54 +140,35 @@ class MedicalCaseReducer extends ReducerClass {
   setAnswer(state, action) {
     const { index, value } = action.payload;
 
-    let answer;
-    switch (state.nodes[index].value_format) {
-      case valueFormats.int:
-      case valueFormats.float:
-        if (value !== null) {
-          answer = findKey(state.nodes[index].answers, (answerCondition) => {
-            switch (answerCondition.operator) {
-              case 'more_or_equal':
-                return value >= Number(answerCondition.value);
-
-              case 'less':
-                return value < Number(answerCondition.value);
-
-              case 'between':
-                return (
-                  value >= Number(answerCondition.value.split(',').first()) &&
-                  value < Number(answerCondition.value.split(',')[1])
-                );
-            }
-          });
-        } else {
-          answer = null;
-        }
-        break;
-      case valueFormats.bool:
-      case valueFormats.array:
-        answer = value;
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.log(
-          '%c --- DANGER --- ',
-          'background: #FF0000; color: #F6F3ED; padding: 5px',
-          `Unhandled question format ${state.nodes[index].display_format}`,
-          state.nodes[index]
-        );
-        answer = value;
-        break;
-    }
-
-    if (answer !== null) {
-      answer = Number(answer);
-    }
     // Instantiate new object with answered question with new answer value
+    state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
+
+    state.nodes[index].updateAnswer(value);
+
+    return {
+      ...state,
+      nodes: new NodesModel(state.nodes),
+    };
+  }
+
+  /**
+   * Sets an question to unavailable
+   *
+   * @trigger When a checkbox is triggered
+   * @payload index : Question id
+   * @payload value : Answer id finded in questions.answers
+   *
+   */
+  @Action(actions.SET_ANSWER_TO_UNAVAILABLE)
+  setAnswerUnavailable(state, action) {
+    const { index, value } = action.payload;
+
+    // Instantiate new object with id unavailable answer
+    // reset value to default
     state.nodes[index] = state.nodes.instantiateNode({
       ...state.nodes[index],
-      answer: answer,
-      value: value,
+      answer: value,
+      value: null,
     });
 
     return {

@@ -100,7 +100,7 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('Algorithm')}
+                onPress={() => navigation.navigate('Algorithms')}
               >
                 <View>
                   <Icon

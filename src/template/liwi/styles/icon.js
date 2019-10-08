@@ -21,6 +21,9 @@ export default {
     '.large': {
       fontSize: 40,
     },
+    '.medium': {
+      fontSize: 28,
+    },
     '.navigation':  {
       marginBottom: 10,
       fontSize: 75,

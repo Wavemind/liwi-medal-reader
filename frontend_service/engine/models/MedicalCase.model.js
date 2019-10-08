@@ -31,7 +31,7 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-  create = async (patientId) => {
+  create = async (patientId, extraQuestions) => {
     let patient = await getItemFromArray('patients', 'id', patientId);
     let algorithms = await getItems('algorithms');
     let patients = await getItem('patients');
@@ -43,7 +43,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     let newMedicalCase = {
       ...algorithmUsed,
-      nodes: algorithmUsed.nodes,
+      nodes: { ...algorithmUsed.nodes, ...extraQuestions }, // Merged nodes with algo and extraQuestions from other side
       diagnostics: algorithmUsed.diagnostics,
     };
 

@@ -3,12 +3,15 @@ import * as React from 'react';
 import { Button, List, ListItem, Text, View } from 'native-base';
 import moment from 'moment';
 import type { NavigationScreenProps } from 'react-navigation';
+import _ from 'lodash';
 import { styles } from './PatientProfile.style';
 import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
-
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { routeDependingStatus , categories } from '../../../../frontend_service/constants';
+import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
+
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -53,8 +56,37 @@ export default class PatientProfile extends React.Component<Props, State> {
     await this.setState({
       isGeneratingMedicalCase: true,
     });
+
+    // Get the last medicalcase for question unique vaccines etc
+    let lastMedicalCase = _.maxBy(patient.medicalCases, (medicalCase) => {
+      return new Date(medicalCase.createdDate).getTime();
+    });
+
+    let nodes = new NodesModel(lastMedicalCase.nodes);
+    let extraQuestions = nodes.filterBy(
+      [
+        {
+          by: 'category',
+          operator: 'equal',
+          value: categories.chronicalCondition,
+        },
+        {
+          by: 'category',
+          operator: 'equal',
+          value: categories.vaccine,
+        },
+        {
+          by: 'category',
+          operator: 'equal',
+          value: categories.demographic,
+        },
+      ],
+      'OR',
+      'object'
+    );
+
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.create(patient.id);
+    await instanceMedicalCase.create(patient.id, extraQuestions);
     await this.getPatient();
     await this.setState({
       isGeneratingMedicalCase: false,
@@ -65,12 +97,8 @@ export default class PatientProfile extends React.Component<Props, State> {
   // Select a medical case and redirect to patient's view
   // TODO create a single composant for medicalList Unique in all app !
   selectMedicalCase = async (medicalCase) => {
-    const { setMedicalCase, navigation } = this.props;
+    const { setMedicalCase } = this.props;
     await setMedicalCase(medicalCase);
-
-    navigation.navigate('Triage', {
-      title: `${medicalCase.patient.firstname} ${medicalCase.patient.lastname}`,
-    });
   };
 
   render() {
@@ -93,11 +121,11 @@ export default class PatientProfile extends React.Component<Props, State> {
 
     // Display list of medical cases
     const _renderMedicalCases = patient.medicalCases.map((medicalCaseItem) => {
-      const { patient } = this.state;
       const { medicalCase } = this.props;
 
       const style = {
-        backgroundColor: medicalCase.id === medicalCaseItem.id ? '#ee0006' : '#ffffff'
+        backgroundColor:
+          medicalCase.id === medicalCaseItem.id ? '#ee0006' : '#ffffff',
       };
 
       return (
@@ -108,11 +136,21 @@ export default class PatientProfile extends React.Component<Props, State> {
           style={style}
           spaced
           onPress={async () => {
+            let medicalCaseRoute =
+              medicalCase.id === medicalCaseItem.id
+                ? medicalCase
+                : medicalCaseItem;
+
             if (medicalCase.id !== medicalCaseItem.id) {
               await this.selectMedicalCase({
                 ...medicalCaseItem,
                 patient: flatPatient,
               });
+            }
+
+            let route = routeDependingStatus(medicalCaseRoute);
+            if (route !== undefined) {
+              navigation.navigate(route);
             }
           }}
         >
@@ -120,7 +158,15 @@ export default class PatientProfile extends React.Component<Props, State> {
             <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
           </View>
           <View w50>
-            <Text>{patient.status}</Text>
+            <Text>
+              {t(
+                `medical_case:${
+                  medicalCase.id === medicalCaseItem.id
+                    ? medicalCase.status
+                    : medicalCaseItem.status
+                }`
+              )}
+            </Text>
           </View>
         </ListItem>
       );
@@ -169,7 +215,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           </View>
         ) : (
           <View padding-auto margin-auto>
-            <Text>{t('work_case:no_algorithms')}</Text>
+            <Text>{t('work_case:no_algorithm')}</Text>
           </View>
         )}
       </View>

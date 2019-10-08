@@ -25,6 +25,14 @@ export const setAnswer = (index, value) => ({
   },
 });
 
+export const setAnswerUnavailable = (index, value) => ({
+  type: actions.SET_ANSWER_TO_UNAVAILABLE,
+  payload: {
+    index,
+    value,
+  },
+});
+
 export const dispatchNodeAction = (nodeId, callerId, callerType) => ({
   type: actions.HANDLE_NODE_CHANGED,
   payload: {
