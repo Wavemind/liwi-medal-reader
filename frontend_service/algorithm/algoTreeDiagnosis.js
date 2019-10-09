@@ -291,6 +291,7 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
  * @payload type: define if it's a diagnostic or a question sequence
  */
 const recursiveNodeQs = (state$, instance, qs, actions) => {
+  let isReset = false;
   /**
    * Initial Var
    */
@@ -301,7 +302,8 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   /**
    * Get the condition of the instance link
    */
-  const instanceCondition = calculateCondition(instance);
+  let instanceCondition = calculateCondition(instance);
+  if (instanceCondition === null) instanceCondition = false;
 
   /**
    * Update condition Value if the instance has to be shown
@@ -315,6 +317,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    * Hide the node if the instance condition is no longer valid BUT he was already shwon
    */
   if (instanceConditionValue === true && instanceCondition === false) {
+    isReset = true;
     actions.push(updateConditionValue(instance.id, qs.id, false, qs.type));
   }
 
@@ -328,9 +331,11 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    * We process the instance children if
    * The condition is true AND The questions has an answer OR this is a top level node
    */
+
   if (
-    instanceCondition === true &&
-    (currentNode.answer !== null || instance.top_conditions.length === 0)
+    (instanceCondition === true &&
+      (currentNode.answer !== null || instance.top_conditions.length === 0)) ||
+    isReset
   ) {
     /**
      * From this point we can process all children and go deeper in the tree
