@@ -35,7 +35,6 @@ export default class UnlockSession extends React.Component<Props, State> {
   // Navigate to new session screen
   newSessionScreen = () => {
     const { navigation } = this.props;
-    console.log('click oepn sessions');
     navigation.navigate('NewSession');
   };
 

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { isIPhoneX } from './iPhoneXUtils';
 import { liwiColors } from '../../utils/constants';
 

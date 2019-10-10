@@ -138,11 +138,13 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() =>  navigation.navigate({
-                  routeName: 'Consultation',
-                  params: { initialPage: 0 },
-                  key: 'Consultation' + 0,
-                })}
+                onPress={() =>
+                  navigation.navigate({
+                    routeName: 'Consultation',
+                    params: { initialPage: 0 },
+                    key: 'Consultation' + 0,
+                  })
+                }
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:medical_history')}
@@ -151,11 +153,13 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() =>  navigation.navigate({
-                  routeName: 'Consultation',
-                  params: { initialPage: 1 },
-                  key: 'Consultation' + 1,
-                })}
+                onPress={() =>
+                  navigation.navigate({
+                    routeName: 'Consultation',
+                    params: { initialPage: 1 },
+                    key: 'Consultation' + 1,
+                  })
+                }
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:physical_exam')}

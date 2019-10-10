@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import Triage from './Triage.Screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';

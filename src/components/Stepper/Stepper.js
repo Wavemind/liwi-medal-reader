@@ -8,21 +8,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  ViewPagerAndroid,
-  Platform,
-  View,
-  Text,
-  ScrollView,
-  ViewPropTypes,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPagerAndroid, ViewPropTypes } from 'react-native';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './styles';
 import { liwiColors } from '../../utils/constants';
-import { Icon, Button } from 'native-base';
+import { Icon } from 'native-base';
 
 type Props = {
   children: any,

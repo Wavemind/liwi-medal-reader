@@ -1,8 +1,9 @@
-// Flow
+// @flow
 
-import React, { lazy, Suspense } from 'react';
-import { View, Text } from 'native-base';
+import React, { Suspense } from 'react';
+import { View } from 'native-base';
 
+import { NavigationScreenProps } from 'react-navigation';
 import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
 
 import { categories, stage } from '../../../../frontend_service/constants';
@@ -13,12 +14,13 @@ const Stepper = React.lazy(() => import('../../../components/Stepper'));
 const QuestionsPerChiefComplaint = React.lazy(() =>
   import('../../../components/Consultation/QuestionsPerChiefComplaint')
 );
+type Props = NavigationScreenProps & {};
+type State = {};
 
-export default class Consultation extends React.Component {
+export default class Consultation extends React.Component<Props, State> {
   render() {
     const {
       app: { t },
-      medicalCase,
       focus,
       navigation,
     } = this.props;

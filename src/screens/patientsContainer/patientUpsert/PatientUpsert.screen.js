@@ -14,11 +14,7 @@ import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 import { styles } from './PatientUpsert.style';
-import {
-  getItemFromArray,
-  getItems,
-  getMedicalCase,
-} from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getItems, getMedicalCase } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 import { categories } from '../../../../frontend_service/constants';

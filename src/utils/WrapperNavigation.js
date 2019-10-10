@@ -34,6 +34,7 @@ export const WrapperNavigation = (Component: React.ComponentType<any>) =>
     };
 
     render() {
+      const { navigationStatus } = this.state;
       return (
         <React.Fragment>
           <NavigationEvents
@@ -50,7 +51,7 @@ export const WrapperNavigation = (Component: React.ComponentType<any>) =>
             //   this.setState({ navigationStatus: payload.type });
             // }}
           />
-          <Component {...this.props} focus={this.state.navigationStatus} />
+          <Component {...this.props} focus={navigationStatus} />
         </React.Fragment>
       );
     }
