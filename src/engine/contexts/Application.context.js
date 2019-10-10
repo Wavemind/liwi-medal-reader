@@ -11,7 +11,13 @@ import moment from 'moment';
 
 import { sessionsDuration } from '../../utils/constants';
 
-import { destroySession, getSession, getSessions, setActiveSession, setItem } from '../api/LocalStorage';
+import {
+  destroySession,
+  getSession,
+  getSessions,
+  setActiveSession,
+  setItem,
+} from '../api/LocalStorage';
 import { saltHash } from '../../../frontend_service/constants';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 
@@ -135,7 +141,8 @@ export class ApplicationProvider extends React.Component<
     if (session.local_code === encrypt) {
       await setActiveSession(id);
 
-      await fetchAlgorithms(id);
+      const { isConnected } = this.state;
+      if (isConnected) await fetchAlgorithms(id);
 
       session = await getSession(id);
       this.setUserContext(session);

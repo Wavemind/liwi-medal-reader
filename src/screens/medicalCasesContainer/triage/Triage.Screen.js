@@ -1,13 +1,13 @@
-// Flow
+// @flow
 
-import React, { lazy, Suspense } from 'react';
-import { Content, Text, View } from 'native-base';
+import React, { Component, Suspense } from 'react';
+import { Content, View } from 'native-base';
 
-import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
-
+import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
 import { categories } from '../../../../frontend_service/constants';
-
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { NavigationScreenProps } from 'react-navigation';
+import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 
 const Boolean = React.lazy(() =>
   import('../../../components/QuestionsContainer/DisplaysContainer/Boolean')
@@ -17,7 +17,11 @@ const Questions = React.lazy(() =>
 );
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
-export default class Triage extends React.Component {
+type Props = NavigationScreenProps & {};
+
+type State = StateApplicationContext & {};
+
+export default class Triage extends React.Component<Props, State> {
   state = {
     widthView: 0,
   };
@@ -27,7 +31,10 @@ export default class Triage extends React.Component {
       app: { t },
       medicalCase,
       focus,
+      navigation,
     } = this.props;
+
+    const initialPage = navigation.getParam('initialPage');
 
     let firstLookAssessement = [];
 
@@ -57,8 +64,6 @@ export default class Triage extends React.Component {
       }
     });
 
-    console.log('Render Triage Screen');
-
     return (
       <Suspense fallback={null}>
         <Stepper
@@ -67,6 +72,8 @@ export default class Triage extends React.Component {
           }}
           validation={false}
           showTopStepper
+          initial
+          initialPage={initialPage}
           showBottomStepper
           icons={[
             { name: 'eye-plus', type: 'MaterialCommunityIcons' },
@@ -76,6 +83,8 @@ export default class Triage extends React.Component {
           steps={[t('triage:assessment'), t('triage:chief'), t('triage:vital')]}
           backButtonTitle="BACK"
           nextButtonTitle="NEXT"
+          nextStage="Consultation"
+          nextStageString="CONSULTATION"
         >
           <View style={styles.pad}>
             {focus === 'didFocus' ? (

@@ -3,7 +3,7 @@
 import React, { lazy, Suspense } from 'react';
 import { View, Text } from 'native-base';
 
-import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
+import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
 
 import { categories, stage } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -20,9 +20,10 @@ export default class Consultation extends React.Component {
       app: { t },
       medicalCase,
       focus,
+      navigation,
     } = this.props;
 
-    console.log('Render consultation Screen', this.props);
+    const initialPage = navigation.getParam('initialPage');
 
     return (
       <Suspense fallback={null}>
@@ -30,6 +31,7 @@ export default class Consultation extends React.Component {
           ref={(ref: any) => {
             this.stepper = ref;
           }}
+          initialPage={initialPage}
           validation={false}
           showTopStepper
           showBottomStepper
@@ -43,6 +45,8 @@ export default class Consultation extends React.Component {
           ]}
           backButtonTitle="BACK"
           nextButtonTitle="NEXT"
+          nextStage="Tests"
+          nextStageString="TESTS"
         >
           <View style={styles.pad}>
             {focus === 'didFocus' ? (

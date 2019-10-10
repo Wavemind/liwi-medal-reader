@@ -12,15 +12,13 @@ type State = {};
 // TODO Will be implemented soon
 // eslint-disable-next-line react/prefer-stateless-function
 export default class MainScreen extends React.Component<Props, State> {
-
   render() {
-
     const { navigation } = this.props;
 
     return (
       <ScrollView>
         <HomeScreen navigation={navigation} />
       </ScrollView>
-    );$;
+    );
   }
 }

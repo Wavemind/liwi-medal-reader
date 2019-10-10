@@ -84,18 +84,18 @@ export default class Drawer extends Component<Props, State> {
         {medicalCase.id !== undefined ? (
           <View style={styles.medical}>
             <View style={[styles.triage, styles.paddingCategory]}>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() => this.onPress('TriageStepper')}
-              >
-                <Text style={styles.title}>{t('menu:triage')}</Text>
-              </Button>
+              <Text style={styles.title}>{t('menu:triage')}</Text>
 
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('FirstLookAssessments')}
+                onPress={() =>
+                  navigation.navigate({
+                    routeName: 'Triage',
+                    params: { initialPage: 0 },
+                    key: 'Triage' + 0,
+                  })
+                }
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:first_look_assessments')}
@@ -104,7 +104,13 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('ChiefComplaints')}
+                onPress={() =>
+                  navigation.navigate({
+                    routeName: 'Triage',
+                    params: { initialPage: 1 },
+                    key: 'Triage' + 1,
+                  })
+                }
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:chief_complaints')}
@@ -113,7 +119,13 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('VitalSigns')}
+                onPress={() =>
+                  navigation.navigate({
+                    routeName: 'Triage',
+                    params: { initialPage: 2 },
+                    key: 'Triage' + 2,
+                  })
+                }
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:vital_signs')}
@@ -126,7 +138,11 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('Consultation')}
+                onPress={() =>  navigation.navigate({
+                  routeName: 'Consultation',
+                  params: { initialPage: 0 },
+                  key: 'Consultation' + 0,
+                })}
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:medical_history')}
@@ -135,7 +151,11 @@ export default class Drawer extends Component<Props, State> {
               <Button
                 transparent
                 btnDrawer
-                onPress={() => this.onPress('PhysicalExam')}
+                onPress={() =>  navigation.navigate({
+                  routeName: 'Consultation',
+                  params: { initialPage: 1 },
+                  key: 'Consultation' + 1,
+                })}
               >
                 <Text dark style={styles.noLeftPadding}>
                   {t('menu:physical_exam')}

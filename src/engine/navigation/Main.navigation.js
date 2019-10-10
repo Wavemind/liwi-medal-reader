@@ -17,13 +17,11 @@ import NavigationService from './Navigation.service';
 import i18n from '../../utils/i18n';
 
 import { screenWidth } from '../../utils/constants';
-import { TriageTabNavigator } from './Triage.navigation';
-import { ConsultationTabNavigator } from './Consultation.navigation';
 import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
-import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
+import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Emergency from '../../screens/Emergency';
 import Triage from '../../screens/medicalCasesContainer/triage';
@@ -146,22 +144,13 @@ const Stack = createStackNavigator(
       },
     },
     Triage: {
-      screen: TriageTabNavigator,
-      path: 'triage',
-      params: {
-        showSummary: true,
-      },
-      navigationOptions: () => {
-        return {
-          title: i18n.t('menu:triage'),
-        };
-      },
-    },
-    TriageStepper: {
       screen: Triage,
       path: 'triage',
       params: {
         showSummary: true,
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
+        nextStage: medicalCaseStatus.waitingConsultation.name,
       },
       navigationOptions: () => {
         return {
@@ -174,18 +163,9 @@ const Stack = createStackNavigator(
       path: 'consultation',
       params: {
         showSummary: true,
-      },
-      navigationOptions: () => {
-        return {
-          title: i18n.t('menu:consultation'),
-        };
-      },
-    },
-    ConsultationS: {
-      screen: ConsultationTabNavigator,
-      path: 'consultation',
-      params: {
-        showSummary: true,
+        dropDownMenu: 'Consultation',
+        medicalCaseStatus: medicalCaseStatus.consultation.name,
+        nextStage: medicalCaseStatus.waitingTest.name,
       },
       navigationOptions: () => {
         return {

@@ -19,8 +19,7 @@ export default class Tests extends React.Component<Props> {
 
     return (
       <React.Fragment>
-        <QuestionList questions={ assessmentTest }/>
-        <NavigationTriage questionsInScreen={ assessmentTest }/>
+        <QuestionList questions={assessmentTest} />
       </React.Fragment>
     );
   }
