@@ -15,7 +15,14 @@ interface DiagnosticInterface {
 
 export class DiagnosticModel implements DiagnosticInterface {
   constructor(props) {
-    const { id, final_diagnostics, label, differential, reference, instances, chief_complaint_id } = props;
+    const {
+      id,
+      final_diagnostics,
+      label,
+      differential,
+      reference,
+      instances,
+    } = props;
 
     this.id = id;
     this.final_diagnostics = final_diagnostics;
@@ -23,7 +30,6 @@ export class DiagnosticModel implements DiagnosticInterface {
     this.differential = differential;
     this.reference = reference;
     this.instances = instances;
-    this.chief_complaint_id = chief_complaint_id;
     this.type = 'diagnostic';
 
     this.instanceLink();
@@ -44,7 +50,9 @@ export class DiagnosticModel implements DiagnosticInterface {
    */
   instanceFinalDiagnostic() {
     Object.keys(this.final_diagnostics).map((id) => {
-      this.final_diagnostics[id] = new FinalDiagnosticModel({ ...this.final_diagnostics[id] });
+      this.final_diagnostics[id] = new FinalDiagnosticModel({
+        ...this.final_diagnostics[id],
+      });
     });
   }
 }

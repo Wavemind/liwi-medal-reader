@@ -4050,7 +4050,7 @@
       "dd": [{ "id": 16, "conditionValue": null }],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "91": {
@@ -4085,7 +4085,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "369": {
@@ -4127,7 +4127,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "372": {
@@ -4187,7 +4187,7 @@
       ],
       "cc": [54, 53, 59, 60, 58, 52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "97": {
@@ -4257,7 +4257,7 @@
       "dd": [],
       "cc": [59, 53, 60, 52, 54, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "375": {
@@ -4292,7 +4292,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "104": {
@@ -4327,7 +4327,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "106": {
@@ -4362,7 +4362,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "108": {
@@ -4397,7 +4397,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "110": {
@@ -4432,7 +4432,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "112": {
@@ -4467,7 +4467,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "114": {
@@ -4502,7 +4502,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "116": {
@@ -4537,7 +4537,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "118": {
@@ -4572,7 +4572,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "120": {
@@ -4607,7 +4607,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "122": {
@@ -4642,7 +4642,7 @@
       "dd": [],
       "cc": [59, 53, 60, 52, 54, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "126": {
@@ -4684,7 +4684,7 @@
       ],
       "cc": [59, 52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "128": {
@@ -4719,7 +4719,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "130": {
@@ -4757,7 +4757,7 @@
       "dd": [],
       "cc": [52, 54, 59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "132": {
@@ -4795,7 +4795,7 @@
       ],
       "cc": [54],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "134": {
@@ -4830,7 +4830,7 @@
       "dd": [{ "id": 17, "conditionValue": null }],
       "cc": [54],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "353": {
@@ -4868,7 +4868,7 @@
       "dd": [],
       "cc": [54, 53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "138": {
@@ -4906,7 +4906,7 @@
       "dd": [],
       "cc": [54, 53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "355": {
@@ -4948,7 +4948,7 @@
       "dd": [{ "id": 18, "conditionValue": null }],
       "cc": [54],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "143": {
@@ -4983,7 +4983,7 @@
       "dd": [{ "id": 10, "conditionValue": null }],
       "cc": [58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "145": {
@@ -5023,7 +5023,7 @@
       ],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "147": {
@@ -5062,7 +5062,7 @@
       ],
       "cc": [60],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "149": {
@@ -5111,7 +5111,7 @@
       "dd": [],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "153": {
@@ -5146,7 +5146,7 @@
       "dd": [],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "155": {
@@ -5181,7 +5181,7 @@
       "dd": [],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "157": {
@@ -5216,7 +5216,7 @@
       "dd": [],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "159": {
@@ -5254,7 +5254,7 @@
       ],
       "cc": [59, 60, 53, 58, 52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "381": {
@@ -5289,7 +5289,7 @@
       "dd": [{ "id": 32, "conditionValue": null }],
       "cc": [59, 60, 53, 58, 54],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "383": {
@@ -5334,7 +5334,7 @@
       ],
       "cc": [59, 52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "385": {
@@ -5376,7 +5376,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "169": {
@@ -5411,7 +5411,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "171": {
@@ -5446,7 +5446,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "173": {
@@ -5481,7 +5481,7 @@
       "dd": [{ "id": 6, "conditionValue": null }],
       "cc": [59, 52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "175": {
@@ -5516,7 +5516,7 @@
       "dd": [],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "177": {
@@ -5551,7 +5551,7 @@
       "dd": [],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "179": {
@@ -5593,7 +5593,7 @@
       ],
       "cc": [59, 52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "181": {
@@ -5631,7 +5631,7 @@
       ],
       "cc": [52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "183": {
@@ -5666,7 +5666,7 @@
       "dd": [],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "185": {
@@ -5701,7 +5701,7 @@
       "dd": [],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "187": {
@@ -5736,7 +5736,7 @@
       "dd": [{ "id": 19, "conditionValue": null }],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "189": {
@@ -5771,7 +5771,7 @@
       "dd": [{ "id": 20, "conditionValue": null }],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "191": {
@@ -5812,7 +5812,7 @@
       ],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "388": {
@@ -5879,7 +5879,7 @@
       ],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "394": {
@@ -5924,7 +5924,7 @@
       ],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "397": {
@@ -5977,7 +5977,7 @@
       ],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "401": {
@@ -6071,7 +6071,7 @@
       ],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "411": {
@@ -6120,7 +6120,7 @@
       "dd": [{ "id": 10, "conditionValue": null }],
       "cc": [58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "220": {
@@ -6155,7 +6155,7 @@
       "dd": [],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "222": {
@@ -6197,7 +6197,7 @@
       ],
       "cc": [60],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "224": {
@@ -6242,7 +6242,7 @@
       ],
       "cc": [60],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "227": {
@@ -6284,7 +6284,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "230": {
@@ -6319,7 +6319,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "236": {
@@ -6354,7 +6354,7 @@
       "dd": [{ "id": 7, "conditionValue": null }],
       "cc": [52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "238": {
@@ -6396,7 +6396,7 @@
       "dd": [{ "id": 38, "conditionValue": null }],
       "cc": [60],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "241": {
@@ -6436,7 +6436,7 @@
       ],
       "cc": [59],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "243": {
@@ -6523,7 +6523,7 @@
       "dd": [],
       "cc": [52, 54, 59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "252": {
@@ -6562,7 +6562,7 @@
       ],
       "cc": [60],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "254": {
@@ -8097,7 +8097,7 @@
       "dd": [],
       "cc": [52, 54, 59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "269": {
@@ -8499,7 +8499,7 @@
       "dd": [],
       "cc": [59, 60, 53, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "275": {
@@ -8740,7 +8740,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "367": {
@@ -8775,7 +8775,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "377": {
@@ -8810,7 +8810,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "379": {
@@ -8927,7 +8927,7 @@
       "dd": [{ "id": 27, "conditionValue": null }],
       "cc": [52],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "307": {
@@ -9181,7 +9181,7 @@
       "dd": [{ "id": 32, "conditionValue": null }],
       "cc": [54],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "321": {
@@ -9223,7 +9223,7 @@
       ],
       "cc": [52, 60, 58],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "327": {
@@ -10239,7 +10239,7 @@
       "dd": [],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "335": {
@@ -10274,7 +10274,7 @@
       "dd": [],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "337": {
@@ -10309,7 +10309,7 @@
       "dd": [{ "id": 41, "conditionValue": null }],
       "cc": [53],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "339": {
@@ -10432,7 +10432,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "351": {
@@ -10489,7 +10489,7 @@
       "dd": [{ "id": 49, "conditionValue": null }],
       "cc": [56],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "417": {
@@ -10524,7 +10524,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "422": {
@@ -10559,7 +10559,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "424": {
@@ -10594,7 +10594,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "426": {
@@ -10629,7 +10629,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {}
     },
@@ -10649,7 +10649,7 @@
       "dd": [],
       "cc": [],
       "counter": 0,
-      "value": 0,
+      "value": null,
       "answer": null,
       "answers": {
         "428": {
