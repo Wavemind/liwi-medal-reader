@@ -26,8 +26,8 @@ module.exports = function(api) {
     presets,
     plugins,
     sourceMaps: true,
-    // production: {
-    //   plugins: ['transform-remove-console'],
-    // },
+    production: {
+      plugins: ['transform-remove-console'],
+    },
   };
 };
