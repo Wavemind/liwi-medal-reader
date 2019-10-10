@@ -2,16 +2,7 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import {
-  Button,
-  Icon,
-  Input,
-  Item,
-  List,
-  ListItem,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
 
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';

@@ -1,13 +1,18 @@
+// @flow
+
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import Stepper from '../../../../components/Stepper';
 import HealthCaresQuestions from '../HealthCaresQuestions';
 import HealthCares from '../HealthCares';
 import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
 import { styles } from './DiagnosticsStrategy.style';
 
-export default class DiagnosesStrategy extends Component {
+type Props = NavigationScreenProps & {};
+type State = {};
 
+export default class DiagnosesStrategy extends Component<Props, State> {
   render() {
     const {
       app: { t },
