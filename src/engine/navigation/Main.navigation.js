@@ -1,6 +1,10 @@
 import React from 'react';
 import { Button, Icon } from 'native-base';
-import { createBottomTabNavigator, createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import {
+  createBottomTabNavigator,
+  createDrawerNavigator,
+  createStackNavigator,
+} from 'react-navigation';
 import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -143,14 +147,15 @@ const Stack = createStackNavigator(
       screen: Triage,
       path: 'triage',
       params: {
+        title: '',
         showSummary: true,
         dropDownMenu: 'Triage',
         medicalCaseStatus: medicalCaseStatus.triage.name,
         nextStage: medicalCaseStatus.waitingConsultation.name,
       },
-      navigationOptions: () => {
+      navigationOptions: ({ navigation }) => {
         return {
-          title: i18n.t('menu:triage'),
+          title: navigation.getParam('title'),
         };
       },
     },
@@ -163,9 +168,9 @@ const Stack = createStackNavigator(
         medicalCaseStatus: medicalCaseStatus.consultation.name,
         nextStage: medicalCaseStatus.waitingTest.name,
       },
-      navigationOptions: () => {
+      navigationOptions: ({ navigation }) => {
         return {
-          title: i18n.t('menu:consultation'),
+          title: navigation.getParam('title'),
         };
       },
     },
@@ -178,6 +183,11 @@ const Stack = createStackNavigator(
         medicalCaseStatus: medicalCaseStatus.test.name,
         nextStage: medicalCaseStatus.waitingDiagnostic.name,
       },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
     },
     DiagnosticsStrategy: {
       screen: DiagnosticsStrategy,
@@ -188,9 +198,9 @@ const Stack = createStackNavigator(
         medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
         nextStage: medicalCaseStatus.close.name,
       },
-      navigationOptions: () => {
+      navigationOptions: ({ navigation }) => {
         return {
-          title: i18n.t('navigation:diagnosticsstrategy'),
+          title: navigation.getParam('title'),
         };
       },
     },

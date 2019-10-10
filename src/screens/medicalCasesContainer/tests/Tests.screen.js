@@ -10,6 +10,14 @@ type State = {};
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Tests extends React.Component<Props, State> {
+  componentWillMount() {
+    const {
+      navigation,
+      medicalCase: { patient },
+    } = this.props;
+    navigation.setParams({ title: patient.lastname + ' ' + patient.lastname });
+  }
+
   render() {
     const { medicalCase } = this.props;
 

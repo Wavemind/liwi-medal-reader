@@ -22,6 +22,14 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 export default class Triage extends React.Component<Props, State> {
+  componentWillMount() {
+    const {
+      navigation,
+      medicalCase: { patient },
+    } = this.props;
+    navigation.setParams({ title: patient.lastname + ' ' + patient.lastname });
+  }
+
   state = {
     widthView: 0,
   };
