@@ -2,13 +2,16 @@
 
 import * as React from 'react';
 import { Text, View } from 'native-base';
-import type { NavigationScreenProps } from 'react-navigation';
 
-type Props = NavigationScreenProps & {};
+type Props = {
+  question: {
+    answer: String,
+    value: String,
+    answers: Array,
+  },
+};
 
-type State = {};
-
-export default class Formula extends React.Component<Props, State> {
+export default class Formula extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
     return (
