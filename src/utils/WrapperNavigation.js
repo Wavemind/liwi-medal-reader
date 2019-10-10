@@ -4,7 +4,6 @@ import React from 'react';
 import { NavigationEvents } from 'react-navigation';
 
 /**
- *
  * @param Component
  * @return Wrapped Component
  * @state
