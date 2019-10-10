@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import Stepper from '../../../../components/Stepper';
 import HealthCaresQuestions from '../HealthCaresQuestions';
-import HealthCares from '../healthCares';
+import HealthCares from '../HealthCares';
 import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
 import { styles } from './DiagnosticsStrategy.style';
 
 export default class DiagnosesStrategy extends Component {
-  constructor() {
-    super();
-  }
 
   render() {
     const {
@@ -35,6 +32,8 @@ export default class DiagnosesStrategy extends Component {
         ]}
         backButtonTitle="BACK"
         nextButtonTitle="NEXT"
+        nextStage="Summary"
+        nextStageString="FINISH & SUMMARY"
       >
         <View style={styles.pad}>
           <ScrollView>
@@ -44,7 +43,9 @@ export default class DiagnosesStrategy extends Component {
         <View style={styles.pad}>
           <HealthCaresQuestions key="wealthCaresQuestions" />
         </View>
-        <HealthCares key="sealthCares" />
+        <View style={styles.pad}>
+          <HealthCares key="sealthCares" />
+        </View>
       </Stepper>
     );
   }

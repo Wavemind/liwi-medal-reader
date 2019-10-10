@@ -93,10 +93,13 @@ class Stepper extends React.Component<Props, State> {
     validate: PropTypes.bool,
     bottomNavigationLeftIconComponent: PropTypes.element,
     bottomNavigationRightIconComponent: PropTypes.element,
+    nextStage: PropTypes.string,
+    nextStageString: PropTypes.string,
   };
 
   static defaultProps = {
     initialPage: 0,
+    nextStage: null,
     activeStepColor: 'brown',
     inactiveStepColor: 'grey',
     stepNumberStyle: {
@@ -109,7 +112,7 @@ class Stepper extends React.Component<Props, State> {
     super(props);
     this.state = {
       showBack: props.initialPage > 0 ? true : false,
-      showNext: props.initialPage === props.children.length ? false : true,
+      showNext: props.initialPage + 1 === props.children.length ? false : true,
       page: props.initialPage,
       width: 0,
       height: 0,
@@ -248,6 +251,13 @@ class Stepper extends React.Component<Props, State> {
     });
   };
 
+  nextStage = () => {
+    const { navigation, nextStage } = this.props;
+    navigation.navigate({
+      routeName: nextStage,
+    });
+  };
+
   renderSteps = () => {
     const { steps } = this.props;
 
@@ -376,6 +386,8 @@ class Stepper extends React.Component<Props, State> {
       nextButtonTitle,
       bottomNavigationLeftIconComponent,
       bottomNavigationRightIconComponent,
+      nextStage,
+      nextStageString,
     } = this.props;
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
@@ -431,7 +443,29 @@ class Stepper extends React.Component<Props, State> {
                   )}
                 </View>
               </PlatformTouchableNative>
-            ) : null}
+            ) : (
+              nextStage !== null && (
+                <PlatformTouchableNative
+                  onPress={this.nextStage}
+                  background={PlatformTouchableNative.SelectableBackgroundBorderless()}
+                  style={{ zIndex: 1 }}
+                >
+                  <View
+                    style={[
+                      styles.button,
+                      { backgroundColor: liwiColors.greenColor },
+                    ]}
+                  >
+                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>
+                      {nextStageString}
+                    </Text>
+                    {bottomNavigationRightIconComponent || (
+                      <MaterialIcon name="navigate-next" size={24} />
+                    )}
+                  </View>
+                </PlatformTouchableNative>
+              )
+            )}
           </View>
         ) : null}
       </View>
