@@ -13,6 +13,13 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class DiagnosesStrategy extends Component<Props, State> {
+  componentWillMount() {
+    const {
+      navigation,
+      medicalCase: { patient },
+    } = this.props;
+    navigation.setParams({ title: patient.lastname + ' ' + patient.lastname });
+  }
   render() {
     const {
       app: { t },
