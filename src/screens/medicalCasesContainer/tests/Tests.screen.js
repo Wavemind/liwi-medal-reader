@@ -9,6 +9,7 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 // eslint-disable-next-line react/prefer-stateless-function
+// Because a function component is causing error from wrappers
 export default class Tests extends React.Component<Props, State> {
   componentWillMount() {
     const {

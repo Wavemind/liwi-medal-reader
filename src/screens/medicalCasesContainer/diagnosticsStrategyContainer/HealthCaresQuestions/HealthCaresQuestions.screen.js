@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'native-base';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 
+// Because a function component is causing error from wrappers
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCaresQuestions extends Component<{}> {
   render() {
