@@ -4,7 +4,11 @@ import type { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, View } from 'react-native';
 import { Button, Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
-import { displayFormats, nodesType, valueFormats } from '../../../../frontend_service/constants';
+import {
+  displayFormats,
+  nodesType,
+  valueFormats,
+} from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -13,6 +17,7 @@ import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 import Tooltip from '../../Tooltip/tooltip';
 import Unavailable from '../../InputContainer/Unavailable';
+import Formula from '../DisplaysContainer/Formula';
 
 type Props = NavigationScreenProps & {};
 
@@ -152,6 +157,9 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.list:
         WrapperAnswer = () => <List question={question} {...this.props} />;
         break;
+      case displayFormats.formula:
+        WrapperAnswer = () => <Formula question={question} {...this.props} />;
+        break;
       default:
         break;
     }
@@ -204,11 +212,6 @@ export default class Question extends React.Component<Props, State> {
 
     // If this is not a question we return null
     if (question === undefined || question.type !== nodesType.question) {
-      return null;
-    }
-
-    // If this is a question Formula we do not show it
-    if (question.display_format === displayFormats.formula) {
       return null;
     }
 
