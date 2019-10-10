@@ -74,9 +74,6 @@ const Stack = createStackNavigator(
     PatientProfile: {
       screen: PatientProfile,
       path: 'patientProfile',
-      params: {
-        showSummary: true,
-      },
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_profile'),
