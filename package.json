@@ -62,6 +62,7 @@
     "reselect": "^4.0.0",
     "rn-viewpager": "^1.2.9",
     "rxjs": "^6.3.3",
+    "rxjs-compat": "^6.5.3",
     "styled-components": "^4.1.2",
     "use-redux": "^2.1.1"
   },
