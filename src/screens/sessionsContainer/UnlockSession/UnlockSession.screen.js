@@ -110,9 +110,7 @@ export default class UnlockSession extends React.Component<Props, State> {
             >
               <Text>{t('unlock_session:new_session')}</Text>
             </Button>
-            {!isConnected ? (
-              <Text>{t('notifications:no_internet')}</Text>
-            ) : null}
+            {!isConnected && <Text>{t('notifications:no_internet')}</Text>}
           </View>
         </View>
       </View>
