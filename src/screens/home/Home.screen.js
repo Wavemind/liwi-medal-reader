@@ -32,22 +32,6 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('PatientList')}
-              >
-                <View>
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="account-search"
-                    style={styles.icons}
-                    navigation
-                  />
-                  <Text size-auto center>{t('navigation:patient_search')}</Text>
-                </View>
-              </TouchableHighlight>
-
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
                 onPress={() => navigation.navigate('PatientUpsert', { idPatient: null })}
               >
                 <View>
