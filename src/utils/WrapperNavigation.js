@@ -38,18 +38,12 @@ export const WrapperNavigation = (Component: React.ComponentType<any>) =>
       return (
         <React.Fragment>
           <NavigationEvents
-            // onWillFocus={(payload) =>
-            //   this.setState({ navigationStatus: payload.type })
-            // }
             onDidFocus={(payload) => {
               this.setState({ navigationStatus: payload.type });
             }}
             onWillBlur={(payload) => {
               this.setState({ navigationStatus: payload.type });
             }}
-            // onDidBlur={(payload) => {
-            //   this.setState({ navigationStatus: payload.type });
-            // }}
           />
           <Component {...this.props} focus={navigationStatus} />
         </React.Fragment>
