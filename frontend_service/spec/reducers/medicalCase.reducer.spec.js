@@ -1,8 +1,7 @@
 import find from 'lodash/find';
-import { setMedicalCase, setAnswer } from '../../actions/creators.actions';
+import { setAnswer, setMedicalCase } from '../../actions/creators.actions';
 import { store } from '../../store';
 import 'reflect-metadata';
-import { actions } from '../../actions/types.actions';
 
 /* Special import
  * This import is necessary for rewrite prototype function JS
@@ -11,11 +10,13 @@ import { actions } from '../../actions/types.actions';
 import Prototype from '../../../src/utils/Prototype.native';
 import { valueFormats } from '../../constants';
 
+// eslint-disable-next-line no-console
 export const cl = console.log;
 
 /**
  * Disabled all for a nice read
  */
+// eslint-disable-next-line no-console
 console.log = () => {};
 console.error = () => {};
 console.warn = () => {};
@@ -46,7 +47,7 @@ const booleanNodeAnswer = (id) => {
 
 const conditionValue = (id, elemId, elem = 'dd') => {
   const state$ = store.getState();
-  return find(state$.nodes[id][elem], (cv) => cv.id === elemId).conditionValue;
+  return find(state$?.nodes[id][elem], (cv) => cv.id === elemId).conditionValue;
 };
 
 describe('actions', () => {
@@ -63,14 +64,15 @@ describe('actions', () => {
     expect(getAnswer(66)).toEqual(132);
   });
 
-  it('should update all child of a node in QS when updating the a node', (done) => {
-    answer(66, 133);
-    expect(conditionValue(182, 181, 'qs')).toEqual(true);
-    expect(conditionValue(186, 181, 'qs')).toEqual(true);
+  it('should set qs 181 to true with direct link', (done) => {
     answer(66, 132);
     expect(booleanNodeAnswer(181)).toEqual(true);
     expect(conditionValue(182, 181, 'qs')).toEqual(false);
     expect(conditionValue(186, 181, 'qs')).toEqual(false);
+    done();
+  });
+
+  it('should reset qs 181 and set to true with other branch', (done) => {
     answer(66, null);
     expect(booleanNodeAnswer(181)).toEqual(null);
     answer(66, 133);
@@ -86,11 +88,18 @@ describe('actions', () => {
     answer(104, 7);
     expect(booleanNodeAnswer(186)).toEqual(false);
     expect(booleanNodeAnswer(181)).toEqual(false);
+    done();
+  });
 
+  it('should reset all the QS to the origine', (done) => {
+    answer(66, 133);
+    expect(conditionValue(182, 181, 'qs')).toEqual(true);
+    expect(conditionValue(186, 181, 'qs')).toEqual(true);
+
+    answer(182, null);
     answer(104, null);
     answer(113, null);
     answer(66, null);
-    answer(182, null);
 
     expect(booleanNodeAnswer(113)).toEqual(null);
     expect(booleanNodeAnswer(182)).toEqual(null);
@@ -98,11 +107,10 @@ describe('actions', () => {
 
     expect(conditionValue(182, 181, 'qs')).toEqual(false);
     expect(conditionValue(186, 181, 'qs')).toEqual(false);
-    // expect(conditionValue(113, 181, 'qs')).toEqual(false);
+    expect(conditionValue(113, 181, 'qs')).toEqual(false);
 
     expect(booleanNodeAnswer(186)).toEqual(null);
     expect(booleanNodeAnswer(181)).toEqual(null);
-
     done();
   });
 });

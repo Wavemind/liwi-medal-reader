@@ -15,6 +15,7 @@ export default class VitalSigns extends React.Component<Props, State> {
   render() {
     const { medicalCase } = this.props;
     let questions = [];
+
     const orderedQuestions = medicalCase.triage.orders[categories.vitalSign];
 
     orderedQuestions.map((orderedQuestion) => {
