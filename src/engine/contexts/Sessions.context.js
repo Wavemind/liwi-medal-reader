@@ -2,13 +2,7 @@
 /* eslint-disable react/no-unused-state*/
 import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
-import {
-  destroySession,
-  getSession,
-  getSessions,
-  setSessions,
-  updateSession,
-} from '../api/LocalStorage';
+import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
 import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
 import i18n from '../../utils/i18n';
 

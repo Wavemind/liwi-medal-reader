@@ -20,6 +20,7 @@ export default class Boolean extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question, widthView } = this.props;
+
     return (
       nextProps.question.answer !== question.answer ||
       nextProps.widthView !== widthView
@@ -189,6 +190,7 @@ export default class Boolean extends React.Component<Props, State> {
         );
         break;
     }
+
     return <RenderJsx />;
   };
 }

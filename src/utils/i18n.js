@@ -67,7 +67,7 @@ i18n
           physical_exam: 'Physical exam',
           poct: 'POCT',
           tests: 'Tests',
-          strategy: 'Diagnoses and strategy',
+          strategy: 'Diagnostics and strategy',
           search: 'Search a patient',
           add: 'Add a patient',
           others: 'Others',
@@ -87,6 +87,9 @@ i18n
           waiting_final_diagnostic: 'Wait for diagnosis',
           final_diagnostic: 'Diagnosis',
           close: 'Close',
+          finish: 'FINISH & SUMMARY',
+          next: 'NEXT',
+          back: 'BACK',
         },
         settings: {
           devices: 'Medical Devices',
@@ -213,6 +216,7 @@ i18n
           logout: 'Logout',
           available_algorithms: 'Available algorithms',
           emergency: 'Emergency',
+          diagnosticsstrategy: 'Diagnostics & Strategy',
         },
         common: {
           back: 'Back',

@@ -16,6 +16,7 @@ import Layout from './template/Layout.template';
 import EmergencyButton from './components/emergencyButton';
 
 export default class Root extends React.Component {
+  
   async componentWillMount() {
     let settings = await getItem('settings');
     if (settings !== null && settings.app !== undefined && settings.app.awake) {
@@ -31,7 +32,7 @@ export default class Root extends React.Component {
             <SessionsProvider>
               <Layout />
               <CustomModal />
-              {__DEV__ ? <WavemindTools /> : null}
+              <WavemindTools />
               <EmergencyButton />
             </SessionsProvider>
           </ApplicationProvider>

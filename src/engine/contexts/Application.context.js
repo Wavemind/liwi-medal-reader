@@ -131,7 +131,6 @@ export class ApplicationProvider extends React.Component<
 
   // Unlock session from local credentials
   unLockSession = async (id: number, code: string) => {
-    const { isConnected } = this.state;
     let session = await getSession(id);
     const encrypt = sha256.hmac(saltHash, code);
 
@@ -142,9 +141,9 @@ export class ApplicationProvider extends React.Component<
     if (session.local_code === encrypt) {
       await setActiveSession(id);
 
-      if (isConnected) {
-        await fetchAlgorithms(id);
-      }
+      const { isConnected } = this.state;
+
+      if (isConnected) await fetchAlgorithms(id);
 
       session = await getSession(id);
       this.setUserContext(session);

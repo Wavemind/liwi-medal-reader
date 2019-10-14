@@ -3,6 +3,7 @@ import PatientUpsert from './PatientUpsert.screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { setMedicalCase } from '../../../../frontend_service/actions/creators.actions';
+import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -19,4 +20,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(PatientUpsert)));
+)(withSessions(withApplication(WrapperNavigation(PatientUpsert))));

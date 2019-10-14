@@ -17,6 +17,7 @@ import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 import Tooltip from '../../Tooltip/tooltip';
 import Unavailable from '../../InputContainer/Unavailable';
+import Formula from '../DisplaysContainer/Formula';
 
 type Props = NavigationScreenProps & {};
 
@@ -156,6 +157,9 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.list:
         WrapperAnswer = () => <List question={question} {...this.props} />;
         break;
+      case displayFormats.formula:
+        WrapperAnswer = () => <Formula question={question} {...this.props} />;
+        break;
       default:
         break;
     }
@@ -168,7 +172,17 @@ class WrapperQuestion extends React.Component<Props, State> {
   }
 }
 
-export default class Question extends React.PureComponent<Props, State> {
+export default class Question extends React.Component<Props, State> {
+  shouldComponentUpdate(nextProps: Props): boolean {
+    const { question } = this.props;
+
+    return (
+      question.counter !== nextProps.question.counter ||
+      question.answer !== nextProps.question.answer ||
+      question.value !== nextProps.question.value
+    );
+  }
+
   render() {
     const {
       question,
@@ -198,11 +212,6 @@ export default class Question extends React.PureComponent<Props, State> {
 
     // If this is not a question we return null
     if (question === undefined || question.type !== nodesType.question) {
-      return null;
-    }
-
-    // If this is a question Formula we do not show it
-    if (question.display_format === displayFormats.formula) {
       return null;
     }
 
