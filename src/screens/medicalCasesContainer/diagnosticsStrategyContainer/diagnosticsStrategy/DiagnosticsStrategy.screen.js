@@ -15,12 +15,19 @@ type State = {};
 export default class DiagnosesStrategy extends Component<Props, State> {
   componentWillMount() {
     const {
+      app: { t },
+    } = this.props;
+
+    const {
       navigation,
       medicalCase: { patient },
     } = this.props;
     navigation.setParams({
       title:
-        'Diagnostics & Strategy : ' + patient.lastname + ' ' + patient.lastname,
+        t('navigation:diagnosticsstrategy') +
+        patient.lastname +
+        ' ' +
+        patient.lastname,
     });
   }
   render() {
@@ -45,14 +52,14 @@ export default class DiagnosesStrategy extends Component<Props, State> {
           t('medical_case:healthcares_questions'),
           t('medical_case:healthcares'),
         ]}
-        backButtonTitle="BACK"
-        nextButtonTitle="NEXT"
+        backButtonTitle={t('medical_case:back')}
+        nextButtonTitle={t('medical_case:next')}
         nextStage="Summary"
-        nextStageString="FINISH & SUMMARY"
+        nextStageString={t('medical_case:finish')}
       >
         <View style={styles.pad}>
           <ScrollView>
-            <FinalDiagnosticsList key="diognonseslist" />
+            <FinalDiagnosticsList key="diognoseslist" />
           </ScrollView>
         </View>
         <View style={styles.pad}>

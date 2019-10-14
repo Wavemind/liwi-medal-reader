@@ -91,10 +91,10 @@ export default class Triage extends React.Component<Props, State> {
             { name: 'healing', type: 'MaterialIcons' },
           ]}
           steps={[t('triage:assessment'), t('triage:chief'), t('triage:vital')]}
-          backButtonTitle="BACK"
-          nextButtonTitle="NEXT"
+          backButtonTitle={t('medical_case:back')}
+          nextButtonTitle={t('medical_case:next')}
           nextStage="Consultation"
-          nextStageString="CONSULTATION"
+          nextStageString={t('medical_case:consultation')}
         >
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
