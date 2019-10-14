@@ -55,10 +55,10 @@ export default class Consultation extends React.Component<Props, State> {
             t('consultation:medical_history'),
             t('consultation:physical_exam'),
           ]}
-          backButtonTitle="BACK"
-          nextButtonTitle="NEXT"
+          backButtonTitle={t('medical_case:back')}
+          nextButtonTitle={t('medical_case:next')}
           nextStage="Tests"
-          nextStageString="TESTS"
+          nextStageString={t('medical_case:test')}
         >
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
