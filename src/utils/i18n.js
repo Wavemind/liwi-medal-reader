@@ -55,6 +55,7 @@ i18n
           yes: 'Yes',
           no: 'No',
           unavailable: 'Unavailable',
+          no_answers: 'No answer',
         },
         menu: {
           triage: 'Triage',
@@ -139,7 +140,7 @@ i18n
           waiting_triage: 'Triage',
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
-          waiting_diagnosis: 'Diagnosis',
+          waiting_diagnostic: 'Diagnostic',
         },
         patient: {
           first_name: 'First name',
@@ -155,6 +156,8 @@ i18n
           add_account: 'Add an account',
           send_device_info: 'Send device data',
           clear_sessions: 'Delete sessions',
+          error_char: 'At least 6 characters',
+          error_letter: 'At least one letter and one number',
           email: 'Email',
           password: 'Password',
           connect: 'Login',

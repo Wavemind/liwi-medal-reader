@@ -1,4 +1,8 @@
-import { liwiColors, marginIsTablet, screenWidth } from '../../../utils/constants';
+import {
+  liwiColors,
+  marginIsTablet,
+  screenWidth,
+} from '../../../utils/constants';
 
 export default {
   'NativeBase.ViewNB': {
@@ -141,11 +145,11 @@ export default {
       padding: 0,
     },
     '.marginTop': {
-      marginTop:100,
+      marginTop: 100,
     },
-    '.home':{
+    '.home': {
       backgroundColor: liwiColors.lightGreyColor,
-      border:0,
-    }
+      border: 0,
+    },
   },
 };

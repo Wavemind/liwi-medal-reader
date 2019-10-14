@@ -9,7 +9,6 @@ import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 
-
 export const initialState = null;
 
 /**
@@ -144,6 +143,8 @@ class MedicalCaseReducer extends ReducerClass {
 
     // Instantiate new object with answered question with new answer value
     state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
+
+    console.log({ ...state.nodes[index] });
 
     state.nodes[index].updateAnswer(value);
 

@@ -20,7 +20,8 @@ export default class EmergencyButton extends Component {
           active={active}
           direction="up"
           style={styles.button}
-          position="bottomLeft"
+          containerStyle={__DEV__ ? styles.container : {}}
+          position="bottomRight"
           onPress={() => {
             NavigationService.navigate('Emergency');
           }}

@@ -12,6 +12,7 @@ type State = {};
 export default class Numeric extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
+
     return (
       nextProps.question.answer !== question.answer ||
       nextProps.question.value !== question.value
@@ -67,15 +68,17 @@ export default class Numeric extends React.Component<Props, State> {
       placeholder = t('question:unavailable');
     }
 
+    if (Object.keys(question.answers).length === 0) {
+      placeholder = t('question:no_answers');
+    }
+
     return (
       <View answer>
         <Input
           keyboardType={keyboardType}
           question
           numeric
-          defaultValue={
-            question.answer !== null ? String(question.value) : null
-          }
+          defaultValue={question.value !== null ? String(question.value) : null}
           style={style}
           onFocus={this._focus}
           onEndEditing={this._onEndEditing}

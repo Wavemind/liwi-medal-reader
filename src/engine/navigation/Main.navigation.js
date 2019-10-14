@@ -259,7 +259,7 @@ let StackWithBottomNavigation = createBottomTabNavigator(
   {
     tabBarComponent: (props) => {
       let currentRoute = NavigationService.getCurrentRoute();
-      if (currentRoute.params?.showSummary ?? false) {
+      if (currentRoute?.params?.showSummary ?? false) {
         return <PatientSummaryMenu {...props} />;
       }
       return null;
