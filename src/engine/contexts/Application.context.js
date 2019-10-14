@@ -49,6 +49,7 @@ export type StateApplicationContext = {
   contentModal: string,
   isModalVisible: Object,
   t: (string) => Function<string>,
+  ready: boolean,
 };
 
 export class ApplicationProvider extends React.Component<
@@ -57,7 +58,6 @@ export class ApplicationProvider extends React.Component<
 > {
   constructor(props: Props) {
     super(props);
-    this.initContext();
   }
 
   getGeo = async () => {
@@ -113,6 +113,8 @@ export class ApplicationProvider extends React.Component<
 
     if (finderActiveSession) {
       this.setUserContext(finderActiveSession);
+    } else {
+      this.setState({ ready: true });
     }
   };
 
@@ -121,6 +123,7 @@ export class ApplicationProvider extends React.Component<
     this.setState({
       logged: true,
       user: userData,
+      ready: true,
     });
   };
 
@@ -189,8 +192,10 @@ export class ApplicationProvider extends React.Component<
     contentModal: 'initial',
     initialPosition: {},
     t: (translate) => i18n.t(translate),
+    ready: false,
   };
-  componentWillMount() {
+  async componentWillMount() {
+    await this.initContext();
     AppState.addEventListener('change', this._handleAppStateChange);
     NetInfo.addEventListener(
       'connectionChange',

@@ -45,20 +45,20 @@ export class NodeModel implements NodeInterface {
         case valueFormats.float:
           if (value !== null) {
             answer = findKey(this?.answers, (answerCondition) => {
-            switch (answerCondition.operator) {
-              case 'more_or_equal':
-                return value >= Number(answerCondition.value);
+              switch (answerCondition.operator) {
+                case 'more_or_equal':
+                  return value >= Number(answerCondition.value);
 
-            case 'less':
-              return value < Number(answerCondition.value);
+                case 'less':
+                  return value < Number(answerCondition.value);
 
-              case 'between':
-                return (
-                  value >= Number(answerCondition.value.split(',').first()) &&
-                  value < Number(answerCondition.value.split(',').second())
-                );
-            }
-          });
+                case 'between':
+                  return (
+                    value >= Number(answerCondition.value.split(',').first()) &&
+                    value < Number(answerCondition.value.split(',').second())
+                  );
+              }
+            });
           } else {
             answer = null;
           }
@@ -88,6 +88,8 @@ export class NodeModel implements NodeInterface {
     if (answer !== null) {
       answer = Number(answer);
     }
+
+    console.log(this, answer, value);
 
     // Assign final value
     this.answer = answer;

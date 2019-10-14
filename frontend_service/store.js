@@ -7,7 +7,6 @@ import { persistReducer, persistStore } from 'redux-persist';
 import rootReducer from './reducers';
 import rootEpic from './algorithm/epics';
 
-
 const persistConfig = {
   debug: true,
   key: 'medicalCase',

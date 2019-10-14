@@ -36,10 +36,13 @@ function getActiveRouteName(navigationState) {
 
 // When we call this method, we get the current route, because the tree from react-navigaton is special
 function getCurrentRoute() {
-  let route = _navigator.state.nav;
+  if (_navigator === undefined) {
+    return null;
+  }
+  let route = _navigator?.state.nav;
 
   let index;
-  while (route.routes) {
+  while (route?.routes) {
     index = route.index;
     route = route.routes[route.index];
   }

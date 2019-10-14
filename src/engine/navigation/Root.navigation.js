@@ -5,11 +5,11 @@ import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
 import { createSwitchNavigator } from 'react-navigation';
 import MainTabNavigator from './Main.navigation';
 
-const createRootNavigator = (signedIn = false, medicalCase = null) => {
+const createRootNavigator = (signedIn = false) => {
   return createSwitchNavigator(
     {
       Main: {
-        screen: MainTabNavigator(medicalCase),
+        screen: MainTabNavigator(),
       },
       UnlockSession: {
         screen: UnlockSession,
