@@ -1,126 +1,74 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { ViewPager } from 'rn-viewpager';
+// @flow
 
-import StepIndicator from 'react-native-step-indicator';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { liwiColors } from '../../../../utils/constants';
-import Diagnoses from '../Diagnostics';
+import { NavigationScreenProps } from 'react-navigation';
+import React, { Component } from 'react';
+import { ScrollView, View } from 'react-native';
 import HealthCaresQuestions from '../HealthCaresQuestions';
 import HealthCares from '../HealthCares';
-import { indicatorStyles, styles } from './DiagnosticsStrategy.style';
+import { styles } from './DiagnosticsStrategy.style';
+import Stepper from '../../../../components/Stepper';
+import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
 
-const PAGES = [
-  <Diagnoses key="dioagnonseslist" />,
-  <HealthCaresQuestions key="HealthCaresQuestions" />,
-  <HealthCares key="HealthCares" />,
-];
+type Props = NavigationScreenProps & {};
+type State = {};
 
-const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
-  const iconConfig = {
-    name: 'add-alert',
-    color: stepStatus === 'finished' ? '#ffffff' : liwiColors.redColor,
-    size: 25,
-  };
-
-  switch (position) {
-    case 0: {
-      iconConfig.name = 'add-alert';
-      break;
-    }
-    case 1: {
-      iconConfig.name = 'question-answer';
-      break;
-    }
-    case 2: {
-      iconConfig.name = 'healing';
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-  return iconConfig;
-};
-
-export default class DiagnosesStrategy extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentPage: 0,
-    };
-  }
-
-  componentWillReceiveProps(nextProps, nextState) {
-    // eslint-disable-next-line react/destructuring-assignment
-    if (nextState.currentPage !== this.state.currentPage) {
-      if (this.viewPager) {
-        this.viewPager.setPage(nextState.currentPage);
-      }
-    }
-  }
-
-  render() {
-    const { currentPage } = this.state;
+export default class DiagnosesStrategy extends Component<Props, State> {
+  componentWillMount() {
     const {
-      // eslint-disable-next-line react/prop-types
+      app: { t },
+    } = this.props;
+
+    const {
+      navigation,
+      medicalCase: { patient },
+    } = this.props;
+    navigation.setParams({
+      title:
+        t('navigation:diagnosticsstrategy') +
+        patient.lastname +
+        ' ' +
+        patient.lastname,
+    });
+  }
+  render() {
+    const {
       app: { t },
     } = this.props;
     return (
-      <View style={styles.container}>
-        <View style={styles.stepIndicator}>
-          <StepIndicator
-            renderStepIndicator={this.renderStepIndicator}
-            customStyles={indicatorStyles}
-            currentPosition={currentPage}
-            stepCount={3}
-            onPress={this.onStepPress}
-            labels={[
-              t('medical_case:final_diagnoses'),
-              t('medical_case:healthcares_questions'),
-              t('medical_case:healthcares'),
-            ]}
-          />
+      <Stepper
+        ref={(ref: any) => {
+          this.stepper = ref;
+        }}
+        validation={false}
+        showTopStepper
+        showBottomStepper
+        icons={[
+          { name: 'add-alert', type: 'MaterialIcons' },
+          { name: 'question-answer', type: 'MaterialIcons' },
+          { name: 'healing', type: 'MaterialIcons' },
+        ]}
+        steps={[
+          t('medical_case:final_diagnoses'),
+          t('medical_case:healthcares_questions'),
+          t('medical_case:healthcares'),
+        ]}
+        backButtonTitle={t('medical_case:back')}
+        nextButtonTitle={t('medical_case:next')}
+        nextStage="Summary"
+        nextStageString={t('medical_case:finish')}
+      >
+        <View style={styles.pad}>
+          <ScrollView>
+            <FinalDiagnosticsList key="diognoseslist" />
+          </ScrollView>
         </View>
-        <ViewPager
-          style={styles.viewPager}
-          ref={(viewPager) => {
-            this.viewPager = viewPager;
-          }}
-          onPageSelected={(page) => {
-            this.setState({ currentPage: page.position });
-          }}
-        >
-          {PAGES.map((page) => this.renderViewPagerPage(page))}
-        </ViewPager>
-      </View>
+        <View style={styles.pad}>
+          <HealthCaresQuestions key="wealthCaresQuestions" />
+        </View>
+        <View style={styles.pad}>
+          <HealthCares key="sealthCares" />
+        </View>
+      </Stepper>
     );
   }
-
-  onStepPress = (position) => {
-    this.setState({ currentPage: position });
-    this.viewPager.setPage(position);
-  };
-
-  renderViewPagerPage = (data) => {
-    return <View style={styles.page}>{data}</View>;
-  };
-
-  renderStepIndicator = (params) => (
-    <MaterialIcon {...getStepIndicatorIconConfig(params)} />
-  );
-
-  renderLabel = ({ position, label, currentPosition }) => {
-    return (
-      <Text
-        style={
-          position === currentPosition
-            ? styles.stepLabelSelected
-            : styles.stepLabel
-        }
-      >
-        {label}
-      </Text>
-    );
-  };
 }

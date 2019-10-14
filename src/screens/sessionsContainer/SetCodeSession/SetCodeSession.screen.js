@@ -25,13 +25,13 @@ export default class SetCodeSession extends React.Component<Props, State> {
     codeConfirmation: __DEV__ ? '123456q' : '',
     error: null,
     session: null,
+    isLoading: false,
   };
 
   async componentWillMount() {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     let session = await getSession(navigation.getParam('user_id'));
     this.setState({ session });
-    this.validateCode();
   }
 
   changeValueFromInput = (index, value) => {
@@ -66,6 +66,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
   // Save code in session
   setLocalCode = async () => {
+    this.setState({ isLoading: true });
     let result = await this.validateCode();
 
     if (result) {
@@ -76,11 +77,13 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
       await sessions.setLocalCode(encrypted, userId);
       app.unLockSession(userId, code);
+    } else {
+      this.setState({ isLoading: false });
     }
   };
 
   render() {
-    const { code, codeConfirmation, session, error } = this.state;
+    const { code, codeConfirmation, session, error, isLoading } = this.state;
     const {
       app: { t },
     } = this.props;
@@ -100,7 +103,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
               <CustomInput
                 init={code}
                 change={this.changeValueFromInput}
-                index='code'
+                index="code"
                 secureTextEntry
                 placeholder={t('code_session_screen:your_code')}
                 condensed
@@ -109,7 +112,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
               <CustomInput
                 init={codeConfirmation}
                 change={this.changeValueFromInput}
-                index='codeConfirmation'
+                index="codeConfirmation"
                 secureTextEntry
                 placeholder={t('code_session_screen:type_your_code')}
                 condensed
@@ -119,6 +122,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 full
                 style={styles.marginTop}
                 onPress={() => this.setLocalCode()}
+                disabled={isLoading}
               >
                 <Text> {t('code_session_screen:set_code')} </Text>
               </Button>

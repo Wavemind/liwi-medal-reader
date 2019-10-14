@@ -14,11 +14,7 @@ import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 import { styles } from './PatientUpsert.style';
-import {
-  getItemFromArray,
-  getItems,
-  getMedicalCase,
-} from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getItems, getMedicalCase } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 import { categories } from '../../../../frontend_service/constants';
@@ -253,6 +249,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     const {
       patient: { firstname, lastname, birthdate, gender },
+      patient,
       errors,
       firstRender,
       loading,
@@ -269,6 +266,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (!firstRender) {
       return null;
     }
+
+    const hasNoError = !_.isEmpty(patient.validate());
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -327,10 +326,20 @@ export default class PatientUpsert extends React.Component<Props, State> {
           {!loading ? (
             idPatient === null ? (
               <View columns>
-                <Button light split onPress={saveWaitingList}>
+                <Button
+                  light
+                  split
+                  onPress={saveWaitingList}
+                  disabled={hasNoError}
+                >
                   <Text>{t('patient_upsert:save_and_wait')}</Text>
                 </Button>
-                <Button success split onPress={saveNewCase}>
+                <Button
+                  success
+                  split
+                  onPress={saveNewCase}
+                  disabled={hasNoError}
+                >
                   <Text>{t('patient_upsert:save_and_case')}</Text>
                 </Button>
               </View>

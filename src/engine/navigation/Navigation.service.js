@@ -66,6 +66,12 @@ function resetActionStack(routeName, params) {
 }
 
 // eslint-disable-next-line no-unused-vars
+/**
+ * Change the status of the medicalCase depending his status
+ *
+ * @param prevState: Navigation : The state of react-navigation
+ * @param currentState: Navigation : The state of react-navigation
+ */
 function onNavigationStateChange(prevState, currentState) {
   // eslint-disable-next-line no-unused-vars
   let activeRoute = getActiveRouteName(currentState);

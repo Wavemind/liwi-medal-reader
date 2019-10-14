@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Content, Text, View, Button } from 'native-base';
-import { Image, BackHandler } from 'react-native';
+import { Button, Content, Text, View } from 'native-base';
+import { BackHandler, Image } from 'react-native';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Emergency.style';
 

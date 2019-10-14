@@ -27,6 +27,8 @@ pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
     inherit! :search_paths
     # Pods for testing
 
+    pod 'RNCViewpager', :path => '../node_modules/@react-native-community/viewpager'
+
   end
 
   target 'liwi_nativeTests' do

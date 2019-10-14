@@ -4,11 +4,23 @@ import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { categories } from '../../../../frontend_service/constants';
 import QuestionList from '../../../components/Triage/QuestionList';
-import NavigationTriage from '../../../components/Triage/NavigationTriage';
 
 type Props = NavigationScreenProps & {};
+type State = {};
 
-export default class Tests extends React.Component<Props> {
+// eslint-disable-next-line react/prefer-stateless-function
+// Because a function component is causing error from wrappers
+export default class Tests extends React.Component<Props, State> {
+  componentWillMount() {
+    const {
+      navigation,
+      medicalCase: { patient },
+    } = this.props;
+    navigation.setParams({
+      title: 'Tests : ' + patient.lastname + ' ' + patient.lastname,
+    });
+  }
+
   render() {
     const { medicalCase } = this.props;
 
@@ -20,7 +32,6 @@ export default class Tests extends React.Component<Props> {
     return (
       <React.Fragment>
         <QuestionList questions={assessmentTest} />
-        <NavigationTriage questionsInScreen={assessmentTest} />
       </React.Fragment>
     );
   }

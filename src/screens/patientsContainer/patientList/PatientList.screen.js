@@ -148,8 +148,8 @@ export default class PatientList extends React.Component<Props, State> {
     // Filter patient based on first name and last name by search term
     let filteredPatients = filter(patients, (patient) => {
       return (
-        patient.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        patient.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+        patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+        patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase())
       );
     });
 

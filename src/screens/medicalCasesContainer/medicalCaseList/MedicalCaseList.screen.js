@@ -51,7 +51,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     const { navigation } = this.props;
 
     // Force refresh with a navigation.push
-    navigation.addListener('willFocus', async () => {
+    navigation.addListener('didFocus', async () => {
       await this.filterMedicalCases();
     });
   }
@@ -139,11 +139,11 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
       return (
         medicalCase.patient?.firstname
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
+          ?.toLowerCase()
+          .includes(searchTerm?.toLowerCase()) ||
         medicalCase.patient?.lastname
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+          ?.toLowerCase()
+          .includes(searchTerm?.toLowerCase())
       );
     });
     // Filter patient based on medical case status

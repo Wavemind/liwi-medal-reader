@@ -69,20 +69,27 @@ export const calculateFormula = (node) => {
     let id = item.match(/\d/g).join('');
 
     // Get value of this node
-    const nodeValue = state$.nodes[id].value;
+    const nodeInBracket = state$.nodes[id];
 
-    if (nodeValue === 0) {
+    if (
+      nodeInBracket.value === null ||
+      (nodeInBracket.value === 0 && nodeInBracket.answer === null)
+    ) {
       ready = false;
       return item;
     } else {
-      return nodeValue;
+      return nodeInBracket.value;
     }
   };
 
   // Replace every bracket in the formula with it's value
   let formula = node.formula.replace(findBracketId, replaceBracketToValue);
 
-  if (ready) return eval(formula);
+  if (ready) {
+    return eval(formula);
+  } else {
+    return null;
+  }
 };
 
 /**

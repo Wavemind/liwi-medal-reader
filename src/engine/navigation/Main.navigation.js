@@ -17,8 +17,6 @@ import NavigationService from './Navigation.service';
 import i18n from '../../utils/i18n';
 
 import { screenWidth } from '../../utils/constants';
-import { TriageTabNavigator } from './Triage.navigation';
-import { ConsultationTabNavigator } from './Consultation.navigation';
 import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
@@ -26,6 +24,8 @@ import Tests from '../../screens/medicalCasesContainer/tests';
 import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Emergency from '../../screens/Emergency';
+import Triage from '../../screens/medicalCasesContainer/triage';
+import Consultation from '../../screens/medicalCasesContainer/consultation';
 
 // We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator(
@@ -74,9 +74,6 @@ const Stack = createStackNavigator(
     PatientProfile: {
       screen: PatientProfile,
       path: 'patientProfile',
-      params: {
-        showSummary: true,
-      },
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_profile'),
@@ -144,17 +141,34 @@ const Stack = createStackNavigator(
       },
     },
     Triage: {
-      screen: TriageTabNavigator,
+      screen: Triage,
       path: 'triage',
       params: {
+        title: '',
         showSummary: true,
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
+        nextStage: medicalCaseStatus.waitingConsultation.name,
+      },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
       },
     },
     Consultation: {
-      screen: ConsultationTabNavigator,
+      screen: Consultation,
       path: 'consultation',
       params: {
         showSummary: true,
+        dropDownMenu: 'Consultation',
+        medicalCaseStatus: medicalCaseStatus.consultation.name,
+        nextStage: medicalCaseStatus.waitingTest.name,
+      },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
       },
     },
     Tests: {
@@ -166,6 +180,11 @@ const Stack = createStackNavigator(
         medicalCaseStatus: medicalCaseStatus.test.name,
         nextStage: medicalCaseStatus.waitingDiagnostic.name,
       },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
     },
     DiagnosticsStrategy: {
       screen: DiagnosticsStrategy,
@@ -175,6 +194,11 @@ const Stack = createStackNavigator(
         dropDownMenu: 'DiagnosticsStrategy',
         medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
         nextStage: medicalCaseStatus.close.name,
+      },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
       },
     },
   },
