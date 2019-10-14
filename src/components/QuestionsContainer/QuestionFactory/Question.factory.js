@@ -215,8 +215,6 @@ export default class Question extends React.Component<Props, State> {
       return null;
     }
 
-    console.log('render');
-
     // Construct generic Component for the question
     return (
       <ListItem
