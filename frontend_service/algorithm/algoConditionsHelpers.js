@@ -133,6 +133,7 @@ const checkOneCondition = (child, wantedId, nodeId) => {
  *
  */
 export const comparingTopConditions = (child, conditions) => {
+
   const {
     first_id,
     first_node_id,

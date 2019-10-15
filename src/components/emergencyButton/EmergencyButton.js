@@ -4,12 +4,9 @@ import NavigationService from '../../engine/navigation/Navigation.service';
 import { styles } from './EmergencyButton.style';
 
 export default class EmergencyButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: false,
-    };
-  }
+  state = {
+    active: false,
+  };
 
   render() {
     const { active } = this.state;
@@ -23,7 +20,23 @@ export default class EmergencyButton extends Component {
           containerStyle={__DEV__ ? styles.container : {}}
           position="bottomRight"
           onPress={() => {
-            NavigationService.navigate('Emergency');
+            const {
+              // eslint-disable-next-line react/prop-types
+              app: { logged },
+            } = this.props;
+
+            let navigationGoBack;
+            // IF logged go to back
+            if (logged) {
+              navigationGoBack = 'Home';
+            } else {
+              // Else go to Unlock
+              navigationGoBack = 'UnlockSession';
+            }
+
+            NavigationService.navigate('Emergency', {
+              navigationGoBack: navigationGoBack,
+            });
           }}
         >
           <Icon name="warning" type="FontAwesome" style={styles.icon} />

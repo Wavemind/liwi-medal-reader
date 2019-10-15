@@ -88,7 +88,7 @@ i18n
           waiting_final_diagnostic: 'Wait for diagnosis',
           final_diagnostic: 'Diagnosis',
           close: 'Close',
-          finish: 'FINISH & SUMMARY',
+          finish: 'FINISH & CLOSE',
           next: 'NEXT',
           back: 'BACK',
         },

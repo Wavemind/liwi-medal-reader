@@ -34,17 +34,13 @@ export default class Emergency extends React.Component<Props, State> {
 
   // Catch back button click OR click button in view
   handleBackButtonClick() {
-    const {
-      app: { logged },
-      navigation,
-    } = this.props;
+    const { navigation } = this.props;
 
-    // IF logged go to back
-    if (logged) {
-      navigation.goBack(null);
+    let navigationGoBack = navigation.getParam('navigationGoBack');
+    if (navigationGoBack !== undefined || navigationGoBack !== null) {
+      navigation.navigate(navigationGoBack);
     } else {
-      // Else go to Unlock
-      navigation.navigate('UnlockSession');
+      navigation.goBack();
     }
     return true;
   }

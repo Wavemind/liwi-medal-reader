@@ -9,7 +9,7 @@ import liwi from 'template/liwi/styles';
 import merge from 'deepmerge';
 import { RootView } from 'template/layout';
 import { Platform, StatusBar } from 'react-native';
-import { Container, Root, StyleProvider, View } from 'native-base';
+import { Container, Root, StyleProvider } from 'native-base';
 import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';

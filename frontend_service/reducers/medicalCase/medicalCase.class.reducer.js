@@ -143,9 +143,6 @@ class MedicalCaseReducer extends ReducerClass {
 
     // Instantiate new object with answered question with new answer value
     state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
-
-    console.log({ ...state.nodes[index] });
-
     state.nodes[index].updateAnswer(value);
 
     return {
@@ -209,6 +206,10 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.MC_SET)
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
+
+    if (medicalCase === null) {
+      return {};
+    }
 
     if (state !== {} && medicalCase.id !== state.id) {
       storeMedicalCase(state);

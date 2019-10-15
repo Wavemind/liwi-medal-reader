@@ -8,12 +8,26 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPagerAndroid, ViewPropTypes } from 'react-native';
+import {
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewPagerAndroid,
+  ViewPropTypes,
+} from 'react-native';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './styles';
 import { liwiColors } from '../../utils/constants';
 import { Icon } from 'native-base';
+import { store } from '../../../frontend_service/store';
+import {
+  setMedicalCase,
+  updateMedicalCaseProperty,
+} from '../../../frontend_service/actions/creators.actions';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 type Props = {
   children: any,
@@ -86,6 +100,7 @@ class Stepper extends React.Component<Props, State> {
     bottomNavigationRightIconComponent: PropTypes.element,
     nextStage: PropTypes.string,
     nextStageString: PropTypes.string,
+    endMedicalCase: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -243,7 +258,20 @@ class Stepper extends React.Component<Props, State> {
   };
 
   nextStage = () => {
-    const { navigation, nextStage } = this.props;
+    const { navigation, nextStage, endMedicalCase } = this.props;
+
+    if (endMedicalCase === true) {
+      const state$ = store.getState();
+
+      store.dispatch(
+        updateMedicalCaseProperty('status', medicalCaseStatus.close.name)
+      );
+
+      navigation.push('PatientProfile', {
+        id: state$.patient.id,
+      });
+    }
+
     navigation.navigate({
       routeName: nextStage,
     });
