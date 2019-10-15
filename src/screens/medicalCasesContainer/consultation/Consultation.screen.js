@@ -6,7 +6,7 @@ import { View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
 
-import { categories, stage } from '../../../../frontend_service/constants';
+import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
@@ -71,9 +71,9 @@ export default class Consultation extends React.Component<Props, State> {
                       value: categories.symptom,
                     },
                     {
-                      by: 'stage',
+                      by: 'category',
                       operator: 'equal',
-                      value: stage.consultation,
+                      value: categories.exposure,
                     },
                     { by: 'counter', operator: 'more', value: 0 },
                   ]}
@@ -96,17 +96,7 @@ export default class Consultation extends React.Component<Props, State> {
                     {
                       by: 'category',
                       operator: 'equal',
-                      value: categories.exposure,
-                    },
-                    {
-                      by: 'category',
-                      operator: 'equal',
                       value: categories.other,
-                    },
-                    {
-                      by: 'stage',
-                      operator: 'equal',
-                      value: stage.consultation,
                     },
                     { by: 'counter', operator: 'more', value: 0 },
                   ]}

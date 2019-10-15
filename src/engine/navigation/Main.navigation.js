@@ -197,15 +197,6 @@ const Stack = createStackNavigator(
     headerMode: 'float',
     headerBackTitleVisible: false,
     defaultNavigationOptions: ({ navigation }) => {
-      const onPressBack = () => {
-        let navigationGoBack = navigation.getParam('navigationGoBack');
-        if (navigationGoBack !== undefined || navigationGoBack !== null) {
-          navigation.navigate(navigationGoBack);
-        } else {
-          navigation.goBack();
-        }
-      };
-
       return {
         headerBackTitleVisible: false,
         headerLeft: (
@@ -213,7 +204,7 @@ const Stack = createStackNavigator(
             <Button iconMenu onPress={() => navigation.openDrawer()}>
               <Icon red type="Entypo" name="menu" large />
             </Button>
-            <Button backIconMenu onPress={() => onPressBack()}>
+            <Button backIconMenu onPress={() => navigation.goBack()}>
               <Icon red type="AntDesign" name="back" medium />
             </Button>
           </React.Fragment>
