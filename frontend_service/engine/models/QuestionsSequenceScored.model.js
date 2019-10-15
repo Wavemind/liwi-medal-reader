@@ -13,7 +13,6 @@ export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
    * Sum answer scored and comparing it to the questions sequence scored
    */
   calculateCondition = () => {
-
     // If this is a top parent node
     if (this.top_conditions.length === 0) {
       return true;
@@ -26,6 +25,7 @@ export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
 
     // Loop for top_conditions
     this.top_conditions.map((conditions) => {
+
       let returnedBoolean = comparingTopConditions(this, conditions);
 
       scoreTotalPossible = scoreTotalPossible + conditions.score;

@@ -1,3 +1,4 @@
 import EmergencyButton from './EmergencyButton';
+import { withApplication } from '../../engine/contexts/Application.context';
 
-export default EmergencyButton;
+export default withApplication(EmergencyButton);

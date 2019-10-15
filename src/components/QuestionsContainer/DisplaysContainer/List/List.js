@@ -32,11 +32,11 @@ export default class List extends React.Component<Props, State> {
     Object.keys(question.answers).map((id) =>
       question.answers[id].value !== 'not_available'
         ? PickerItem.push(
-            <Picker.Item
-              key={id + '_picker'}
-              label={question.answers[id].label}
-              value={id}
-            />
+          <Picker.Item
+            key={id + '_picker'}
+            label={question.answers[id].label}
+            value={String(id)}
+          />
           )
         : null
     );

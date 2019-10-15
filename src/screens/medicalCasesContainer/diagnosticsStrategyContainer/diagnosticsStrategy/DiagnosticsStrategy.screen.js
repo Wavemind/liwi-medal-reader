@@ -54,7 +54,8 @@ export default class DiagnosesStrategy extends Component<Props, State> {
         ]}
         backButtonTitle={t('medical_case:back')}
         nextButtonTitle={t('medical_case:next')}
-        nextStage="Summary"
+        nextStage="finish"
+        endMedicalCase
         nextStageString={t('medical_case:finish')}
       >
         <View style={styles.pad}>

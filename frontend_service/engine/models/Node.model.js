@@ -84,13 +84,6 @@ export class NodeModel implements NodeInterface {
       answer = null;
     }
 
-    // Force Number
-    if (answer !== null) {
-      answer = Number(answer);
-    }
-
-    console.log(this, answer, value);
-
     // Assign final value
     this.answer = answer;
     this.value = value;

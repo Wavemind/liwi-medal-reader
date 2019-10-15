@@ -23,7 +23,6 @@ import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList
 import Tests from '../../screens/medicalCasesContainer/tests';
 import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
-import Emergency from '../../screens/Emergency';
 import Triage from '../../screens/medicalCasesContainer/triage';
 import Consultation from '../../screens/medicalCasesContainer/consultation';
 
@@ -48,14 +47,6 @@ const Stack = createStackNavigator(
           headerTitleContainerStyle: {
             marginLeft: 15,
           },
-        };
-      },
-    },
-    Emergency: {
-      screen: Emergency,
-      navigationOptions: () => {
-        return {
-          title: i18n.t('navigation:emergency'),
         };
       },
     },
@@ -206,6 +197,15 @@ const Stack = createStackNavigator(
     headerMode: 'float',
     headerBackTitleVisible: false,
     defaultNavigationOptions: ({ navigation }) => {
+      const onPressBack = () => {
+        let navigationGoBack = navigation.getParam('navigationGoBack');
+        if (navigationGoBack !== undefined || navigationGoBack !== null) {
+          navigation.navigate(navigationGoBack);
+        } else {
+          navigation.goBack();
+        }
+      };
+
       return {
         headerBackTitleVisible: false,
         headerLeft: (
@@ -213,7 +213,7 @@ const Stack = createStackNavigator(
             <Button iconMenu onPress={() => navigation.openDrawer()}>
               <Icon red type="Entypo" name="menu" large />
             </Button>
-            <Button backIconMenu onPress={() => navigation.goBack()}>
+            <Button backIconMenu onPress={() => onPressBack()}>
               <Icon red type="AntDesign" name="back" medium />
             </Button>
           </React.Fragment>

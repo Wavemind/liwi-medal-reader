@@ -75,7 +75,8 @@ export default class WavemindTools extends Component {
 
                     // eslint-disable-next-line no-console
                     console.log({
-                      state$:   state$,
+                      state$: state$,
+                      stringiy: JSON.stringify(state$),
                       sessions: sessions,
                       algorithms: algorithms,
                     });
@@ -87,7 +88,7 @@ export default class WavemindTools extends Component {
                 key="5"
                 blue
                 onPress={async () => {
-                    let algo = require('../../frontend_service/api/last_algo_19_09_19');
+                    let algo = require('../../frontend_service/api/algo_refractor_from_olga_14_10_19');
                     let session = require('../../frontend_service/api/session');
 
                     await setItem('sessions', [session]);
