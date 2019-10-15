@@ -2,7 +2,17 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
+import {
+  Button,
+  Icon,
+  Input,
+  Item,
+  List,
+  ListItem,
+  Picker,
+  Text,
+  View,
+} from 'native-base';
 
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
@@ -10,7 +20,10 @@ import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './MedicalCaseList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray } from '../../../engine/api/LocalStorage';
-import { medicalCaseStatus, routeDependingStatus } from '../../../../frontend_service/constants';
+import {
+  medicalCaseStatus,
+  routeDependingStatus,
+} from '../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
@@ -184,10 +197,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 rounded
                 block
                 style={{
-                  backgroundColor:
-                    medicalCase.id === medicalCaseItem.id
-                      ? '#ee0006'
-                      : '#ffffff',
+                  backgroundColor: '#ffffff',
                 }}
                 key={medicalCaseItem.id + '_medical_case_list'}
                 spaced

@@ -21,15 +21,20 @@ export const get = async (params, userId) => {
   const request = await fetch(url, header).catch((error) =>
     handleHttpError(error)
   );
+  let httpcall = await request;
+  if (httpcall.status === 500) {
+    Toaster('The backend is not responding', { type: 'danger' });
+    return { errors: [] };
+  } else {
+    let response = await httpcall.json();
 
-  let response = await request.json();
+    // Display error
+    if (!request.ok) {
+      handleHttpError(response.errors);
+    }
 
-  // Display error
-  if (!request.ok) {
-    handleHttpError(response.errors);
+    return response;
   }
-
-  return response;
 };
 
 // @params [String] params, [Object] body, [Integer] userId, [String] method
