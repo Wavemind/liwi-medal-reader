@@ -412,6 +412,7 @@ class Stepper extends React.Component<Props, State> {
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
 
     const { showBack, showNext } = this.state;
+
     return (
       <View style={styles.container}>
         {showTopStepper ? (

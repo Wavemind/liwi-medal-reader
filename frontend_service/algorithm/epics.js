@@ -262,6 +262,7 @@ export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
       // 0 to default
       // If the node was already calcutate but we want to reset the node the value will still be 0 and setAnswer set to 0
       let value = 0;
+
       if (currentNode.display_format === displayFormats.formula) {
         value = calculateFormula(currentNode);
       }
