@@ -23,11 +23,8 @@ export default class DiagnosesStrategy extends Component<Props, State> {
       medicalCase: { patient },
     } = this.props;
     navigation.setParams({
-      title:
-        t('navigation:diagnosticsstrategy') +
-        patient.lastname +
-        ' ' +
-        patient.lastname,
+      title: t('navigation:diagnosticsstrategy'),
+      headerRight: patient.lastname + ' ' + patient.lastname,
     });
   }
   render() {

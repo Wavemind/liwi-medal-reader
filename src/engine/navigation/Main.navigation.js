@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon } from 'native-base';
+import { Button, Icon, Text } from 'native-base';
 import {
   createBottomTabNavigator,
   createDrawerNavigator,
@@ -174,6 +174,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+          headerRight: <Text>ddd {navigation.getParam('headerRight')}</Text>,
         };
       },
     },
@@ -208,6 +209,11 @@ const Stack = createStackNavigator(
               <Icon red type="AntDesign" name="back" medium />
             </Button>
           </React.Fragment>
+        ),
+        headerRight: (
+          <Text style={{ marginRight: 10, fontSize: 20, fontWeight: '500' }}>
+            {navigation.getParam('headerRight')}
+          </Text>
         ),
         headerTitleContainerStyle: {
           marginLeft: 50,

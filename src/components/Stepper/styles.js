@@ -42,6 +42,8 @@ const styles: Object = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
     elevation: 4,
     ...Platform.select({
       ios: {
@@ -53,8 +55,8 @@ const styles: Object = StyleSheet.create({
         },
       },
       android: {
-        height: 80,
-        marginBottom: 12,
+        height: 100,
+        marginBottom: 40,
       },
     }),
     backgroundColor: 'white',

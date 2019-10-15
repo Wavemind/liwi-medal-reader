@@ -193,6 +193,7 @@ export class ApplicationProvider extends React.Component<
     initialPosition: {},
     t: (translate) => i18n.t(translate),
     ready: false,
+    currentRoute: null,
   };
   async componentWillMount() {
     await this.initContext();

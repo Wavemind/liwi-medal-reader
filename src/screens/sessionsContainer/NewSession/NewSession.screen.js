@@ -92,7 +92,7 @@ export default class NewSession extends React.Component<Props, State> {
                 index="email"
                 placeholder={t('email')}
                 condensed
-                keyboardType="email"
+                keyboardType="email-address"
               />
               <CustomInput
                 init={password}

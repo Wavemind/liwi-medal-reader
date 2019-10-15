@@ -24,7 +24,8 @@ export default class Consultation extends React.Component<Props, State> {
       medicalCase: { patient },
     } = this.props;
     navigation.setParams({
-      title: 'Consultation : ' + patient.lastname + ' ' + patient.lastname,
+      title: 'Consultation  ',
+      headerRight: patient.lastname + ' ' + patient.lastname,
     });
   }
 

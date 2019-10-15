@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import NavigationService from '../Navigation.service';
 
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
@@ -41,8 +40,6 @@ export default class Drawer extends Component<Props, State> {
       medicalCase,
     } = this.props;
 
-    const currentRoute = NavigationService.getCurrentRoute();
-
     return (
       <View style={styles.columns}>
         <View style={styles.tools}>
@@ -52,11 +49,7 @@ export default class Drawer extends Component<Props, State> {
               btnDrawer
               marginIcon
               onPress={() => {
-                if (currentRoute?.routeName === 'Home') {
-                  navigation.closeDrawer();
-                } else {
-                  navigation.navigate('Home');
-                }
+                navigation.navigate('Home');
               }}
             >
               <Icon style={styles.icon} dark type="AntDesign" name="home" />

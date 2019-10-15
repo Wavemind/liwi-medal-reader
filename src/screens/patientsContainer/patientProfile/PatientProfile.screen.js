@@ -9,9 +9,11 @@ import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { categories, routeDependingStatus } from '../../../../frontend_service/constants';
+import {
+  categories,
+  routeDependingStatus,
+} from '../../../../frontend_service/constants';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
-
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -124,8 +126,7 @@ export default class PatientProfile extends React.Component<Props, State> {
       const { medicalCase } = this.props;
 
       const style = {
-        backgroundColor:
-          medicalCase.id === medicalCaseItem.id ? '#ee0006' : '#ffffff',
+        backgroundColor: '#ffffff',
       };
 
       return (
