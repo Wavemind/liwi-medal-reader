@@ -75,16 +75,6 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
     // Set question Formula
     Object.keys(nodes).map((nodeId) => {
       if (nodes[nodeId].type.match(/Question/)) {
-        if (nodeId == 108 || nodeId == 111) {
-          nodes[nodeId].fn = [
-            {
-              id: 278,
-              conditionValue: false,
-            },
-          ];
-        } else {
-          nodes[nodeId].fn = [];
-        }
         nodes[nodeId].fn.map((fn) => {
           let fdd = nodes[fn.id].dd.some((e) => e.conditionValue);
           let fqs = nodes[fn.id].qs.some((e) => e.conditionValue);
