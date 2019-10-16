@@ -90,6 +90,7 @@ export default class UnlockSession extends React.Component<Props, State> {
                 placeholder={t('unlock_session:email')}
                 condensed
                 error={errors}
+                keyboardType="email-address"
               />
               <CustomInput
                 init={code}
