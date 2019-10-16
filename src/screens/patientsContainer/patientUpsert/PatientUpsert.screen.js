@@ -7,18 +7,13 @@ import { Button, Col, Text, View } from 'native-base';
 import * as _ from 'lodash';
 import find from 'lodash/find';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
-import CustomDatePicker from '../../../components/InputContainer/CustomDatePicker/CustomDatePicker';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 import { styles } from './PatientUpsert.style';
-import {
-  getItemFromArray,
-  getItems,
-  getMedicalCase,
-} from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getItems, getMedicalCase } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 import { categories } from '../../../../frontend_service/constants';
@@ -260,7 +255,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const { updatePatientValue, saveWaitingList, saveNewCase } = this;
 
     const {
-      patient: { firstname, lastname, birthdate, gender },
+      patient: { firstname, lastname, gender },
       patient,
       errors,
       firstRender,
@@ -322,17 +317,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
             />
           </Col>
           {extraComponents()}
-          <Col>
-            <CustomDatePicker
-              init={birthdate}
-              label={t('patient:birth_date')}
-              change={updatePatientValue}
-              index="birthdate"
-              iconName="birthday-cake"
-              iconType="FontAwesome"
-              error={errors.birthdate}
-            />
-          </Col>
         </View>
 
         <View bottom-view>

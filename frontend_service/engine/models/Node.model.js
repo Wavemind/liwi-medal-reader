@@ -63,9 +63,9 @@ export class NodeModel implements NodeInterface {
             answer = null;
           }
           break;
+        case valueFormats.string:
+        case valueFormats.date:
         case valueFormats.bool:
-          answer = value;
-          break;
         case valueFormats.array:
           answer = value;
           break;
