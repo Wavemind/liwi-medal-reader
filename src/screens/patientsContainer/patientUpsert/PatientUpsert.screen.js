@@ -123,7 +123,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
             },
           ],
           'OR',
-          'object'
+          'object',
+          false
         );
 
         await this.updateExtraComponents(extraQuestions);

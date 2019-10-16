@@ -78,7 +78,6 @@ export default class WavemindTools extends Component {
                       state$: state$,
                       sessions: sessions,
                       algorithms: algorithms,
-                      a: JSON.stringify(algorithms),
                     });
                   }}
               >

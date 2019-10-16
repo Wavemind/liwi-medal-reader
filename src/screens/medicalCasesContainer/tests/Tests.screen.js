@@ -4,7 +4,7 @@ import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
 import { categories } from '../../../../frontend_service/constants';
-import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
+import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
@@ -40,7 +40,6 @@ export default class Tests extends React.Component<Props, State> {
 
     let assessmentTest = medicalCase.nodes.filterBy([
       { by: 'category', operator: 'equal', value: categories.assessment },
-      { by: 'counter', operator: 'more', value: 0 },
     ]);
 
     return (

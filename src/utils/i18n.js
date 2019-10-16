@@ -164,7 +164,7 @@ i18n
         code_session_screen: {
           title: 'Welcome',
           your_code: 'Your code',
-          set_code: 'Set this code',
+          set_code: 'Set code',
           type_your_code: 'Retype your code',
           error_char: 'Minimum 6 characters',
           error_same: 'The code must be the same',
@@ -180,6 +180,7 @@ i18n
         new_session: {
           title: 'Connect to main server',
           unlock_session: 'Local login',
+          connect: 'Login',
         },
         unlock_session: {
           email: 'Email',
@@ -319,7 +320,7 @@ i18n
         },
         unlock_session: {
           code: 'Code',
-          unlock: 'Déverrouiller la session',
+          unlock: 'Unlock',
         },
         popup: {
           title: 'Merci d\'autoriser l\'accès à la position',
