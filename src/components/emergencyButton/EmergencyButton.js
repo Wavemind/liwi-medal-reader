@@ -18,7 +18,7 @@ export default class EmergencyButton extends Component {
           direction="up"
           style={styles.button}
           containerStyle={__DEV__ ? styles.container : {}}
-          position="bottomLeft"
+          position="bottomRight"
           onPress={() => {
             const {
               // eslint-disable-next-line react/prop-types
