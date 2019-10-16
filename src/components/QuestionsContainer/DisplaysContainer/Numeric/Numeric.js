@@ -20,13 +20,11 @@ export default class Numeric extends React.Component<Props, State> {
   }
 
   state = {
-    style: { borderColor: liwiColors.greenColor },
+    style: {
+      borderBottomColor: liwiColors.blackLightColor,
+      borderBottomWidth: 1,
+    },
   };
-
-  _focus = () =>
-    this.setState({
-      style: { borderColor: liwiColors.greenColor },
-    });
 
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
@@ -76,7 +74,6 @@ export default class Numeric extends React.Component<Props, State> {
           numeric
           defaultValue={question.value !== null ? String(question.value) : null}
           style={style}
-          onFocus={this._focus}
           onEndEditing={this._onEndEditing}
           placeholder={placeholder}
         />
