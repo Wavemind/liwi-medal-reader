@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { Button, Fab, Icon, View } from 'native-base';
 import RNRestart from 'react-native-restart';
-import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/api/LocalStorage';
+import {
+  clearLocalStorage,
+  clearPatients,
+  getItems,
+  setItem,
+} from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 import { store } from '../../frontend_service/store';
 
@@ -73,6 +78,7 @@ export default class WavemindTools extends Component {
                       state$: state$,
                       sessions: sessions,
                       algorithms: algorithms,
+                      a: JSON.stringify(algorithms),
                     });
                   }}
               >

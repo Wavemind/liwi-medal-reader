@@ -20,7 +20,7 @@ export default class Numeric extends React.Component<Props, State> {
   }
 
   state = {
-    style: null,
+    style: { borderColor: liwiColors.greenColor },
   };
 
   _focus = () =>
@@ -66,10 +66,6 @@ export default class Numeric extends React.Component<Props, State> {
       question.answer === unavailableAnswer.id
     ) {
       placeholder = t('question:unavailable');
-    }
-
-    if (Object.keys(question.answers).length === 0) {
-      placeholder = t('question:no_answers');
     }
 
     return (

@@ -5,12 +5,16 @@ import { ScrollView, TouchableHighlight } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text, View } from 'native-base';
 import { styles } from './Home.style';
+import { getItems } from '../../engine/api/LocalStorage';
+import { Toaster } from '../../utils/CustomToast';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Home extends React.Component<Props, State> {
-
+  state = {
+    algorithms: [],
+  };
   logout = async () => {
     const {
       app: { lockSession },
@@ -18,11 +22,18 @@ export default class Home extends React.Component<Props, State> {
     await lockSession();
   };
 
+  async componentWillMount() {
+    let algorithms = await getItems('algorithms');
+    this.setState({ algorithms });
+  }
+
   render() {
     const {
       navigation,
       app: { t },
     } = this.props;
+
+    const { algorithms } = this.state;
 
     return (
       <ScrollView>
@@ -32,7 +43,16 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('PatientUpsert', { idPatient: null })}
+                onPress={() => {
+                  if (algorithms.length === 0) {
+                    Toaster(t('work_case:no_algorithm'), {
+                      type: 'danger',
+                      duration: 4000,
+                    });
+                  } else {
+                    navigation.navigate('PatientUpsert', { idPatient: null });
+                  }
+                }}
               >
                 <View>
                   <Icon
@@ -41,7 +61,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:patient_add')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:patient_add')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -59,7 +81,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:patient_list')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:patient_list')}
+                  </Text>
                 </View>
               </TouchableHighlight>
 
@@ -75,7 +99,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:case_in_progress')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:case_in_progress')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -93,7 +119,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:synchronize')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:synchronize')}
+                  </Text>
                 </View>
               </TouchableHighlight>
 
@@ -109,7 +137,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:settings')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:settings')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -127,7 +157,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:my_profile')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:my_profile')}
+                  </Text>
                 </View>
               </TouchableHighlight>
 
@@ -143,11 +175,12 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:logout')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:logout')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
-
           </View>
         </View>
       </ScrollView>
