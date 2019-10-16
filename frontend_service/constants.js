@@ -23,6 +23,8 @@ export const displayFormats = {
   input: 'Input',
   list: 'DropDownList',
   formula: 'Formula',
+  string: 'String',
+  date: 'Date',
 };
 
 // Value of answer accepted
@@ -31,6 +33,7 @@ export const valueFormats = {
   int: 'Integer',
   float: 'Float',
   bool: 'Boolean',
+  string: 'String',
 };
 
 // Priority of questions
