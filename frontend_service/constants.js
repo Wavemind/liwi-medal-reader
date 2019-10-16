@@ -23,6 +23,7 @@ export const displayFormats = {
   input: 'Input',
   list: 'DropDownList',
   formula: 'Formula',
+  reference: 'Reference',
 };
 
 // Value of answer accepted

@@ -60,6 +60,10 @@ export const setInitialCounter = (algorithmJsonMedicalCase) => {
   try {
     Object.keys(nodes).map((nodeId) => {
       if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
+
+
+
+
         nodes[nodeId].dd.map((dd) => {
           dd.conditionValue =
             diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;

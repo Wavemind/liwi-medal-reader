@@ -41,6 +41,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       formula = '',
       fn = [],
       cc = [],
+      reference_table_x_id = 0,
+      reference_table_y_id = 0,
     } = props;
 
     this.description = description;
@@ -59,6 +61,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.formula = formula;
     this.fn = fn;
     this.cc = cc;
+    this.reference_table_y_id = reference_table_y_id;
+    this.reference_table_x_id = reference_table_x_id;
   }
 
   /**
@@ -74,7 +78,10 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     if (conditions?.[this.id] !== undefined) {
       isDisplayed = false;
       conditions[this.id].map((condition) => {
-        if (medicalCase.nodes[condition.chief_complaint_id].answer === condition.answer_id) {
+        if (
+          medicalCase.nodes[condition.chief_complaint_id].answer ===
+          condition.answer_id
+        ) {
           isDisplayed = true;
         }
       });

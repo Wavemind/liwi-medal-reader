@@ -9222,7 +9222,7 @@
       "value_format": "Float",
       "stage": "test",
       "formula": "",
-      "fn": [{ "id": 278, "conditionValue": false }],
+      "fn": [],
       "cc": [59, 60, 53, 58]
     },
     "109": {
@@ -15097,9 +15097,11 @@
       "answer": null,
       "answers": {},
       "category": "vital_sign",
+      "reference_table_x_id": 111,
+      "reference_table_y_id": 92,
       "counter": 0,
       "dd": [],
-      "display_format": "Input",
+      "display_format": "Reference",
       "priority": "mandatory",
       "qs": [],
       "value": null,

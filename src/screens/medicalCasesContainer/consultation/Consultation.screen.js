@@ -76,6 +76,11 @@ export default class Consultation extends React.Component<Props, State> {
                       operator: 'equal',
                       value: categories.exposure,
                     },
+                    {
+                      by: 'category',
+                      operator: 'equal',
+                      value: categories.vitalSign,
+                    },
                     { by: 'counter', operator: 'more', value: 0 },
                   ]}
                 />
