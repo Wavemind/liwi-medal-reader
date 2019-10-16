@@ -46,7 +46,7 @@ export default class List extends React.Component<Props, State> {
           mode="dropdown"
           iosHeader="Select "
           style={styles.picker}
-          selectedValue={question.answer}
+          selectedValue={String(question.answer)}
           onValueChange={this.onValueChange}
         >
           <Picker.Item label="Select" value={null} />

@@ -170,7 +170,7 @@ export const nextChildFinalQs = (instance, finalQs) => {
     (top_condition) => top_condition.first_node_id === instance.id
   );
   // We get the condition of the final link
-  return comparingTopConditions(finalQs, child_top_condition);
+   return comparingTopConditions(finalQs, child_top_condition);
 };
 
 /**
@@ -183,7 +183,7 @@ export const nextChildFinalQs = (instance, finalQs) => {
  *      - Still possible we wait on the user
  *    3 - Answered AND shown.
  *      - The instance is good Go deeper in the algo
- *     4 - Answered AND not shwon
+ *    4 - Answered AND not shwon
  *      - Return false because the top_parent condition is not respected
  *
  * The reset Qs is not here !
