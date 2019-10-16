@@ -36,6 +36,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     loading: false,
     extraComponents: () => {},
     extraQuestions: {},
+    algorithmReady: false,
   };
 
   /**
@@ -93,40 +94,46 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
       // specific code extra data vaccine etc, shared data
       let algorithms = await getItems('algorithms');
-      // Get the user algo
-      const algorithmUsed = find(algorithms, (a) => a.selected);
 
-      // Instance all nodes for access to filterBy
-      let nodes = new NodesModel(algorithmUsed.nodes);
-      // Get nodes needed
-      let extraQuestions = nodes.filterBy(
-        [
-          {
-            by: 'category',
-            operator: 'equal',
-            value: categories.chronicalCondition,
-          },
-          {
-            by: 'category',
-            operator: 'equal',
-            value: categories.vaccine,
-          },
-          {
-            by: 'category',
-            operator: 'equal',
-            value: categories.demographic,
-          },
-        ],
-        'OR',
-        'object'
-      );
+      if (algorithms.length === 0) {
+        this.setState({ extraQuestions: [], patient, firstRender: true });
+      } else {
+        // Get the user algo
+        const algorithmUsed = find(algorithms, (a) => a.selected);
 
-      await this.updateExtraComponents(extraQuestions);
+        // Instance all nodes for access to filterBy
+        let nodes = new NodesModel(algorithmUsed?.nodes);
+        // Get nodes needed
+        let extraQuestions = nodes?.filterBy(
+          [
+            {
+              by: 'category',
+              operator: 'equal',
+              value: categories.chronicalCondition,
+            },
+            {
+              by: 'category',
+              operator: 'equal',
+              value: categories.vaccine,
+            },
+            {
+              by: 'category',
+              operator: 'equal',
+              value: categories.demographic,
+            },
+          ],
+          'OR',
+          'object'
+        );
 
-      this.setState({
-        patient,
-        firstRender: true,
-      });
+        await this.updateExtraComponents(extraQuestions);
+
+        this.setState({
+          patient,
+          firstRender: true,
+          algorithmReady: true,
+        });
+      }
     } else {
       await this.getPatient();
     }
@@ -258,6 +265,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       firstRender,
       loading,
       extraComponents,
+      algorithmReady,
     } = this.state;
 
     const {
@@ -327,33 +335,39 @@ export default class PatientUpsert extends React.Component<Props, State> {
         </View>
 
         <View bottom-view>
-          {!loading ? (
-            idPatient === null ? (
-              <View columns>
-                <Button
-                  light
-                  split
-                  onPress={saveWaitingList}
-                  disabled={hasNoError}
-                >
-                  <Text>{t('patient_upsert:save_and_wait')}</Text>
+          {algorithmReady ? (
+            !loading ? (
+              idPatient === null ? (
+                <View columns>
+                  <Button
+                    light
+                    split
+                    onPress={saveWaitingList}
+                    disabled={hasNoError}
+                  >
+                    <Text>{t('patient_upsert:save_and_wait')}</Text>
+                  </Button>
+                  <Button
+                    success
+                    split
+                    onPress={saveNewCase}
+                    disabled={hasNoError}
+                  >
+                    <Text>{t('patient_upsert:save_and_case')}</Text>
+                  </Button>
+                </View>
+              ) : (
+                <Button success block onPress={this.updatePatient}>
+                  <Text>{t('patient_upsert:save')}</Text>
                 </Button>
-                <Button
-                  success
-                  split
-                  onPress={saveNewCase}
-                  disabled={hasNoError}
-                >
-                  <Text>{t('patient_upsert:save_and_case')}</Text>
-                </Button>
-              </View>
+              )
             ) : (
-              <Button success block onPress={this.updatePatient}>
-                <Text>{t('patient_upsert:save')}</Text>
-              </Button>
+              <LiwiLoader />
             )
           ) : (
-            <LiwiLoader />
+            <View columns>
+              <Text>{t('work_case:no_algorithm')}</Text>
+            </View>
           )}
         </View>
       </ScrollView>

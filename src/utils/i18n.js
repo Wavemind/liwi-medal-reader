@@ -55,7 +55,6 @@ i18n
           yes: 'Yes',
           no: 'No',
           unavailable: 'Unavailable',
-          no_answers: 'No answer',
         },
         menu: {
           triage: 'Triage',
