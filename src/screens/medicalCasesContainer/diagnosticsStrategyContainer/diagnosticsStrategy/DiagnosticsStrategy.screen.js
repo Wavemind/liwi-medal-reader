@@ -24,7 +24,7 @@ export default class DiagnosesStrategy extends Component<Props, State> {
     } = this.props;
     navigation.setParams({
       title: t('navigation:diagnosticsstrategy'),
-      headerRight: patient.lastname + ' ' + patient.lastname,
+      headerRight: patient.firstname + ' ' + patient.lastname,
     });
   }
   render() {

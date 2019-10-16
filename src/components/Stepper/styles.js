@@ -118,9 +118,10 @@ const styles: Object = StyleSheet.create({
     marginHorizontal: 5,
   },
   bottomTextButtons: {
+    textTransform: 'uppercase',
     ...Platform.select({
       ios: {
-        fontFamily: 'Avenir',
+        fontFamily: 'System',
       },
       android: {
         fontFamily: 'Roboto',

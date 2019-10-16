@@ -473,7 +473,6 @@ class Stepper extends React.Component<Props, State> {
                   <View
                     style={[
                       styles.button,
-                      { backgroundColor: liwiColors.greenColor },
                     ]}
                   >
                     <Text style={[styles.bottomTextButtons, textButtonsStyle]}>
