@@ -32,11 +32,12 @@ export default class Date extends React.Component<Props, State> {
 
   render() {
     const { question } = this.props;
+    const value = question.value === null ? 0 : question.value;
 
     return (
       <View answer>
         <DatePicker
-          defaultDate={moment(question.value).toDate()}
+          defaultDate={moment(value).toDate()}
           locale="fr"
           timeZoneOffsetInMinutes={undefined}
           modalTransparent={false}
