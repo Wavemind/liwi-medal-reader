@@ -84,7 +84,8 @@ export default class PatientProfile extends React.Component<Props, State> {
         },
       ],
       'OR',
-      'object'
+      'object',
+      false
     );
 
     let instanceMedicalCase = new MedicalCaseModel();

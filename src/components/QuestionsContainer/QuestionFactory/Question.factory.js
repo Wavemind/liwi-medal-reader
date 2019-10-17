@@ -233,7 +233,7 @@ export default class Question extends React.Component<Props, State> {
         <View style={styles.flexRow}>
           <LabelQuestion
             key={question.id + '_label'}
-            label={question.counter + 'x - ' + question.label}
+            label={(__DEV__ ? question.counter + 'x - ' : '') + question.label}
             flex={0.6}
             marginLeft={0}
             marginRight={10}

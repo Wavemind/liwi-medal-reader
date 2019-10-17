@@ -76,7 +76,11 @@ export default class Consultation extends React.Component<Props, State> {
                       operator: 'equal',
                       value: categories.exposure,
                     },
-                    { by: 'counter', operator: 'more', value: 0 },
+                    {
+                      by: 'category',
+                      operator: 'equal',
+                      value: categories.vitalSign,
+                    },
                   ]}
                 />
               </Suspense>
@@ -99,7 +103,6 @@ export default class Consultation extends React.Component<Props, State> {
                       operator: 'equal',
                       value: categories.other,
                     },
-                    { by: 'counter', operator: 'more', value: 0 },
                   ]}
                 />
               </Suspense>
