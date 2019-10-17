@@ -4,7 +4,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import HealthCaresQuestions from '../HealthCaresQuestions';
-import HealthCares from '../HealthCares';
+import HealthCares from '../healthCares';
 import { styles } from './DiagnosticsStrategy.style';
 import Stepper from '../../../../components/Stepper';
 import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
