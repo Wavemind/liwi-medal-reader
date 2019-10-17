@@ -9,8 +9,6 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
-// import Questions from '../../../components/QuestionsContainer/Questions';
-
 const Questions = React.lazy(() =>
   import('../../../components/QuestionsContainer/Questions')
 );
