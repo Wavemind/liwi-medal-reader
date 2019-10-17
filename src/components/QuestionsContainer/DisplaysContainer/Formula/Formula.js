@@ -29,9 +29,9 @@ export default class Formula extends React.Component<Props> {
       <View answer>
         <Input
           question
-          defaultValue={question.answer !== null ? question.value : 'not defined'}
+          defaultValue={question.answer !== null ? String(question.value) : 'not defined'}
           disabled
-          style={{backgroundColor: liwiColors.greyColor}}
+          style={{backgroundColor: liwiColors.greyColor, textAlign:'center'}}
         />
       </View>
     );

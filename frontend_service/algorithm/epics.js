@@ -11,13 +11,12 @@ import {
   dispatchNodeAction,
   dispatchQuestionsSequenceAction,
   setAnswer,
-  dispatchFormulaNodeAction,
+  dispatchRelatedNodeAction,
 } from '../actions/creators.actions';
 import {
   getParentsNodes,
   getQuestionsSequenceStatus,
 } from './algoTreeDiagnosis';
-import { calculateFormula } from './algoConditionsHelpers';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 
@@ -44,7 +43,7 @@ export const epicCatchAnswer = (action$, state$) =>
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
       const relatedQuestionsSequence = currentNode.qs;
-      const relatedFormulaNodes = currentNode.fn;
+      const relatedNodes = currentNode.referenced_in;
 
       let arrayActions = [];
 
@@ -54,11 +53,10 @@ export const epicCatchAnswer = (action$, state$) =>
         )
       );
 
-      // IF this is a question we check formula
+      // We tell the related nodes to update themself
       if (currentNode.type === nodesType.question) {
-        // TODO maybe we have to make formula here, not necessary dispatch action, what think others ?
-        relatedFormulaNodes.map((formulaNode) =>
-          arrayActions.push(dispatchFormulaNodeAction(formulaNode.id))
+        relatedNodes.map((relatedNodeId) =>
+          arrayActions.push(dispatchRelatedNodeAction(relatedNodeId))
         );
       }
 
@@ -236,27 +234,25 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
 
 export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
   action$.pipe(
-    ofType(actions.DISPATCH_FORMULA_NODE_ACTION),
+    ofType(actions.DISPATCH_RELATED_NODE_ACTION),
     switchMap((action) => {
-      let actions = [];
-
       const { nodeId } = action.payload;
-
       const currentNode = state$.value.nodes[nodeId];
+      let actions = [];
+      let value = null;
 
-      // 0 to default
-      // If the node was already calcutate but we want to reset the node the value will still be 0 and setAnswer set to 0
-      let value = 0;
-
-      if (currentNode.display_format === displayFormats.formula) {
-        value = calculateFormula(currentNode);
+      switch (currentNode.display_format) {
+        case displayFormats.formula:
+          value = currentNode.calculateFormula();
+          break;
+        case displayFormats.reference:
+          value = currentNode.calculateReference();
+          break;
       }
 
       if (value !== currentNode.value) {
-        // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
         actions.push(setAnswer(currentNode.id, value));
       }
-
       return of(...actions);
     })
   );
@@ -293,7 +289,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       if (
         state$.value.nodes[nodeId].display_format === displayFormats.formula
       ) {
-        calculateFormula(state$.value.nodes[nodeId]);
+        state$.value.nodes[nodeId].calculateFormula();
       }
 
       const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);
