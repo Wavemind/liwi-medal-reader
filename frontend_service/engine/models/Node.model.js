@@ -59,15 +59,20 @@ export class NodeModel implements NodeInterface {
                   );
               }
             });
+            answer = Number(answer);
           } else {
             answer = null;
           }
+
           break;
+        case valueFormats.string:
+        case valueFormats.date:
         case valueFormats.bool:
           answer = value;
           break;
         case valueFormats.array:
-          answer = value;
+          answer = Number(value);
+          value = Number(value);
           break;
         default:
           // eslint-disable-next-line no-console

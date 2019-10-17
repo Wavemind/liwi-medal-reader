@@ -117,7 +117,10 @@ const checkOneCondition = (child, wantedId, nodeId) => {
         'background: #FF0000; color: #F6F3ED; padding: 5px',
         child,
         wantedId,
-        nodeId
+        nodeId,
+        state$.nodes[nodeId].answer,
+        typeof nodeId,
+        typeof state$.nodes[nodeId].answer
       );
     }
     return Number(state$.nodes[nodeId].answer) === Number(wantedId);
@@ -127,7 +130,7 @@ const checkOneCondition = (child, wantedId, nodeId) => {
 
 /**
  * Check a complete condition by operator
- *  @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} child
+ * @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} child
  * @param {top_condition} conditions
  * @returns {null || false || true}
  *

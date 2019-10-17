@@ -52,7 +52,7 @@ export class NodesModel implements NodeInterface {
    *  - array
    *  - object
    */
-  filterBy(filters, operator = 'AND', formatReturn = 'array') {
+  filterBy(filters, operator = 'OR', formatReturn = 'array', counter = true) {
     this.filterByConditionValue();
 
     //return the boolean for one filter
@@ -62,6 +62,14 @@ export class NodesModel implements NodeInterface {
           return node[filter.by] === filter.value;
         case 'more':
           return node[filter.by] > filter.value;
+      }
+    };
+
+    let counterFilter = (filter, node) => {
+      if (counter) {
+        return switchTest(filter, node) && node.counter > 0;
+      } else {
+        return switchTest(filter, node);
       }
     };
 
@@ -77,27 +85,25 @@ export class NodesModel implements NodeInterface {
     }
 
     return _[methodFilteringLodash](this, (node) => {
-      let nodes;
       // According operator to ALL filters
       if (operator === 'AND') {
         // The every() method tests whether all elements in the array pass the test implemented by the provided function.
         // It returns a Boolean value.
-        nodes = filters.every((filter) => {
-          return switchTest(filter, node);
+        return filters.every((filter) => {
+          return counterFilter(filter, node);
         });
       } else if (operator === 'OR') {
         // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
         // It returns a Boolean value.
-        nodes = filters.some((filter) => {
-          return switchTest(filter, node);
+        return filters.some((filter) => {
+          return counterFilter(filter, node);
         });
       }
-
-      return nodes;
     });
   }
 
   filterByStage(stage) {
+    this.filterByConditionValue();
     return _.filter(this, (n) => n.stage === stage);
   }
 

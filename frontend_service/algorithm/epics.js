@@ -41,9 +41,6 @@ export const epicCatchAnswer = (action$, state$) =>
         'background: #F6F3EE; color: #b84c4c; padding: 5px'
       );
 
-      // eslint-disable-next-line no-console
-      console.log({ STATE: state$.value }, index);
-
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
       const relatedQuestionsSequence = currentNode.qs;
@@ -81,7 +78,6 @@ export const epicCatchAnswer = (action$, state$) =>
  * @params [Object] action$, [Object] state$
  * @return [Array][Object] arrayActions
  **/
-// TODO : Handle HealthCares
 export const epicCatchDispatchNodeAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.HANDLE_NODE_CHANGED),
@@ -97,17 +93,6 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
         caller = state$.value.diagnostics[callerId];
       else if (callerType !== nodesType.diagnostic)
         caller = state$.value.nodes[callerId];
-
-      // eslint-disable-next-line no-console
-      console.log(
-        '%c --- epicCatchDispatchNodeAction --- ',
-        'background: #FF4500; color: #F6F3ED; padding: 5px',
-        'déclenché :',
-        nodeId,
-        ' > : ',
-        callerId,
-        callerType
-      );
 
       let nodeChildren;
 

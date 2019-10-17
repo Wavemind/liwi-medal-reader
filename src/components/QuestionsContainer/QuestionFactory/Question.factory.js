@@ -13,8 +13,10 @@ import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
+import String from '../DisplaysContainer/String';
 import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
+import Date from '../DisplaysContainer/Date';
 import Tooltip from '../../Tooltip/tooltip';
 import Unavailable from '../../InputContainer/Unavailable';
 import Formula from '../DisplaysContainer/Formula';
@@ -144,7 +146,7 @@ class WrapperQuestion extends React.Component<Props, State> {
     let WrapperAnswer = () => null;
 
     // Depending the format of the question we call the right component
-    // Boolean | Numeric | List
+    // Boolean | Numeric | String | Date | List
     switch (question.display_format) {
       case displayFormats.radioButton:
         if (question.value_format === valueFormats.bool) {
@@ -153,6 +155,12 @@ class WrapperQuestion extends React.Component<Props, State> {
         break;
       case displayFormats.input:
         WrapperAnswer = () => <Numeric question={question} {...this.props} />;
+        break;
+      case displayFormats.string:
+        WrapperAnswer = () => <String question={question} {...this.props} />;
+        break;
+      case displayFormats.date:
+        WrapperAnswer = () => <Date question={question} {...this.props} />;
         break;
       case displayFormats.list:
         WrapperAnswer = () => <List question={question} {...this.props} />;
@@ -225,7 +233,7 @@ export default class Question extends React.Component<Props, State> {
         <View style={styles.flexRow}>
           <LabelQuestion
             key={question.id + '_label'}
-            label={question.counter + 'x - ' + question.label}
+            label={(__DEV__ ? question.counter + 'x - ' : '') + question.label}
             flex={0.6}
             marginLeft={0}
             marginRight={10}

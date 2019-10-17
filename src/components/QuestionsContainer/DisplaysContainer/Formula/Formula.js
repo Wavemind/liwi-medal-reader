@@ -1,7 +1,8 @@
 // @flow
 
 import * as React from 'react';
-import { Text, View } from 'native-base';
+import { Input, View } from 'native-base';
+import { liwiColors } from '../../../../utils/constants';
 
 type Props = {
   question: {
@@ -23,16 +24,15 @@ export default class Formula extends React.Component<Props> {
   render() {
     const { question } = this.props;
 
+    // TODO Style inline and no translation because it's a temporary component
     return (
       <View answer>
-        <Text>
-          {question.answer === null
-            ? 'empty'
-            : question.answers[question.answer].label +
-              ' : ( ' +
-              question.value +
-              ')'}
-        </Text>
+        <Input
+          question
+          defaultValue={question.answer !== null ? question.value : 'not defined'}
+          disabled
+          style={{backgroundColor: liwiColors.greyColor}}
+        />
       </View>
     );
   }

@@ -24,6 +24,8 @@ export const displayFormats = {
   list: 'DropDownList',
   formula: 'Formula',
   reference: 'Reference',
+  string: 'String',
+  date: 'Date',
 };
 
 // Value of answer accepted
@@ -32,6 +34,8 @@ export const valueFormats = {
   int: 'Integer',
   float: 'Float',
   bool: 'Boolean',
+  string: 'String',
+  date: 'Date',
 };
 
 // Priority of questions
