@@ -40,8 +40,6 @@ export default class CustomDatePicker extends React.Component<Props, State> {
     );
   }
 
-  +
-
   _handleChangeValue = (value) => {
     const { change, index } = this.props;
 

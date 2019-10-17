@@ -27,7 +27,7 @@ export default class Tests extends React.Component<Props, State> {
     } = this.props;
     navigation.setParams({
       title: 'Tests ',
-      headerRight: patient.lastname + ' ' + patient.lastname,
+      headerRight: patient.firstname + ' ' + patient.lastname,
     });
   }
 
