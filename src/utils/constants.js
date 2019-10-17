@@ -6,6 +6,7 @@ export const blueColor = '#fff';
 export const liwiColors = {
   redColor: '#db473e',
   blackColor: '#232323',
+  blackLightColor: '#3f3f3f',
   whiteColor: '#fff',
   lighterGreyColor: '#efefef',
   lightGreyColor: '#dbdbdb',

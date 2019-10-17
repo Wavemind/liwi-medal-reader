@@ -16,7 +16,7 @@ import Settings from '../../screens/settings';
 import NavigationService from './Navigation.service';
 import i18n from '../../utils/i18n';
 
-import { screenWidth } from '../../utils/constants';
+import { liwiColors, screenWidth } from '../../utils/constants';
 import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
@@ -174,7 +174,6 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
-          headerRight: <Text>ddd {navigation.getParam('headerRight')}</Text>,
         };
       },
     },
@@ -211,10 +210,18 @@ const Stack = createStackNavigator(
           </React.Fragment>
         ),
         headerRight: (
-          <Text style={{ marginRight: 10, fontSize: 20, fontWeight: '500' }}>
+          <Text
+            style={{
+              marginRight: 10,
+              fontSize: 20,
+              fontWeight: '500',
+              color: liwiColors.blackLightColor,
+            }}
+          >
             {navigation.getParam('headerRight')}
           </Text>
         ),
+        headerTitleStyle: { color: liwiColors.blackColor },
         headerTitleContainerStyle: {
           marginLeft: 50,
         },

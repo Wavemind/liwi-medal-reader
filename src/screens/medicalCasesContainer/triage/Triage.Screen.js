@@ -29,7 +29,7 @@ export default class Triage extends React.Component<Props, State> {
     } = this.props;
     navigation.setParams({
       title: 'Triage ',
-      headerRight: patient.lastname + ' ' + patient.lastname,
+      headerRight: patient.firstname + ' ' + patient.lastname,
     });
   }
 
