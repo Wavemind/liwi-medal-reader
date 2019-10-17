@@ -5,7 +5,6 @@ import {
   createDrawerNavigator,
   createStackNavigator,
 } from 'react-navigation';
-import Algorithm from '../../screens/algorithmsContainer/Algorithm';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
@@ -104,18 +103,6 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:medical_case_list'),
-        };
-      },
-    },
-    Algorithm: {
-      screen: Algorithm,
-      path: 'algorithm/:id',
-      params: {
-        showSummary: false,
-      },
-      navigationOptions: ({ navigation }) => {
-        return {
-          title: navigation.getParam('title'),
         };
       },
     },

@@ -9,7 +9,6 @@ import {
   getSession,
   setItem,
 } from '../../src/engine/api/LocalStorage';
-import i18n from '../../src/utils/i18n';
 
 // @params [String] params, [Integer] userId
 // @return [Json] response from server
@@ -23,7 +22,7 @@ export const get = async (params, userId) => {
   );
   let httpcall = await request;
   if (httpcall.status === 500) {
-    Toaster('The backend is not responding', { type: 'danger' });
+    Toaster('The server is not responding', { type: 'danger', duration: 4000 });
     return { errors: [] };
   } else {
     let response = await httpcall.json();
@@ -139,7 +138,6 @@ export const fetchAlgorithms = async (userId) => {
         localAlgorithms.push(serverAlgorithm);
       }
 
-      Toaster(i18n.t('notifications:algorithm_updated'), { type: 'success' });
       await setItem('algorithms', localAlgorithms);
       resolve('finish');
     }
