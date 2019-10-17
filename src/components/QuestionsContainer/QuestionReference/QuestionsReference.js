@@ -46,20 +46,20 @@ export default class QuestionsReference extends React.Component<Props, State> {
         <QuestionFactory
           {...this.props}
           question={question}
-          key={question.id + '_factorye'}
+          key={question.id + '_factory'}
         />
         {nodeX.stage !== stage.triage ? (
           <QuestionFactory
             {...this.props}
             question={nodeX}
-            key={nodeX.id + '_factorye' + '_ref'}
+            key={nodeX.id + '_factory' + '_ref'}
           />
         ) : null}
         {nodeY.stage !== stage.triage ? (
           <QuestionFactory
             {...this.props}
             question={nodeY}
-            key={nodeX.id + '_factorye' + '_ref'}
+            key={nodeX.id + '_factory' + '_ref'}
           />
         ) : null}
       </React.Fragment>

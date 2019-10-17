@@ -165,6 +165,7 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.list:
         WrapperAnswer = () => <List question={question} {...this.props} />;
         break;
+      case displayFormats.reference:
       case displayFormats.formula:
         WrapperAnswer = () => <Formula question={question} {...this.props} />;
         break;

@@ -48,10 +48,8 @@ export class NodeModel implements NodeInterface {
               switch (answerCondition.operator) {
                 case 'more_or_equal':
                   return value >= Number(answerCondition.value);
-
                 case 'less':
                   return value < Number(answerCondition.value);
-
                 case 'between':
                   return (
                     value >= Number(answerCondition.value.split(',').first()) &&
@@ -63,7 +61,7 @@ export class NodeModel implements NodeInterface {
           } else {
             answer = null;
           }
-
+          value = Number(value);
           break;
         case valueFormats.string:
         case valueFormats.date:

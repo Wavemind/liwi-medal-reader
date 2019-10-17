@@ -50,49 +50,6 @@ export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
   );
 
 /**
- * Parse the formula and calculate it if possible
- *
- *  @param node
- * @returns {number}
- *
- */
-export const calculateFormula = (node) => {
-  const state$ = store.getState();
-
-  // Regex to find the brackets [] in the formula
-  const findBracketId = /\[(.*?)\]/gi;
-  let ready = true;
-
-  // Function to change the [id] into the answered value
-  const replaceBracketToValue = (item) => {
-    // Get the id from the brackets []
-    let id = item.match(/\d/g).join('');
-
-    // Get value of this node
-    const nodeInBracket = state$.nodes[id];
-
-    if (
-      nodeInBracket.value === null ||
-      (nodeInBracket.value === 0 && nodeInBracket.answer === null)
-    ) {
-      ready = false;
-      return item;
-    } else {
-      return nodeInBracket.value;
-    }
-  };
-
-  // Replace every bracket in the formula with it's value
-  let formula = node.formula.replace(findBracketId, replaceBracketToValue);
-
-  if (ready) {
-    return eval(formula);
-  } else {
-    return null;
-  }
-};
-
-/**
  * Does this node has the right answer ?
  * If not answered return null
  *
