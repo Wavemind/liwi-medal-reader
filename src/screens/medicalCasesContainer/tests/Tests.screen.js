@@ -4,7 +4,7 @@ import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
 import { categories } from '../../../../frontend_service/constants';
-import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
+import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));

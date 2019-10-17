@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { View } from 'native-base';
 
 import { NavigationScreenProps } from 'react-navigation';
-import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
+import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
 import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
