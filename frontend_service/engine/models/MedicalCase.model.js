@@ -13,7 +13,6 @@ import {
 } from '../../../src/engine/api/LocalStorage';
 import {
   generateExcludedId,
-  generateInitialBatch,
   setInitialCounter,
 } from '../../algorithm/algoTreeDiagnosis';
 
@@ -43,14 +42,19 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     let newMedicalCase = {
       ...algorithmUsed,
-      nodes: { ...algorithmUsed.nodes, ...extraQuestions }, // Merged nodes with algo and extraQuestions from other side
+      nodes: { ...algorithmUsed.nodes }, // Merged nodes with algo and extraQuestions from other side
       diagnostics: algorithmUsed.diagnostics,
     };
+
+    //TODO : @ MICK Il faut dispatch un setAnswer pour trigger les mise à jour sur les enfant !
+    Object.keys(extraQuestions).map(extraQuestionId => {
+      newMedicalCase.nodes[extraQuestionId].value = extraQuestions[extraQuestionId].value;
+      newMedicalCase.nodes[extraQuestionId].answer = extraQuestions[extraQuestionId].answer;
+    });
 
     generateExcludedId(newMedicalCase);
 
     // initial batch waiting on final workflow
-    generateInitialBatch(newMedicalCase);
 
     let eachMaxId = [];
 

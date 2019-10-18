@@ -92,7 +92,7 @@ const checkOneCondition = (child, wantedId, nodeId) => {
  * @returns {null || false || true}
  *
  */
-export const comparingTopConditions = (child, conditions) => {
+export const comparingTopConditions = (child, condition) => {
 
   const {
     first_id,
@@ -102,7 +102,7 @@ export const comparingTopConditions = (child, conditions) => {
     second_node_id,
     second_id,
     second_type,
-  } = conditions;
+  } = condition;
   let second_sub_condition;
   let first_sub_condition;
 
