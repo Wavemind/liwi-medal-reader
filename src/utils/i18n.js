@@ -32,16 +32,15 @@ i18n
           title: 'First look assessment',
         },
         consultation: {
-          medical_history: 'Medical History',
-          physical_exam: 'Physical Exam',
-          poct: 'Poct',
+          medical_history: 'Medical history',
+          physical_exam: 'Physical exam',
         },
         triage: {
-          first_look_assessment: 'First look Assessments',
+          first_look_assessment: 'First look assessments',
           vital: 'Basic measurments',
           chronical_condition: 'Chronical conditions',
           other: 'Others',
-          chief: 'Complaint Categories',
+          chief: 'Complaint categories',
         },
         form: {
           required: ' is required',
@@ -106,12 +105,6 @@ i18n
           no_questions: 'There are no questions for this category',
         },
         patient_detail: {},
-        patient_upsert: {
-          title: 'Patient',
-          save_and_wait: 'Save + add to waiting list',
-          save_and_case: 'Save + create new case',
-          save: 'Save',
-        },
         patient_list: {
           all: 'All',
           waiting: 'Patients waiting for',
@@ -126,6 +119,17 @@ i18n
           waiting_test: 'Test',
           waiting_diagnostics: 'Diagnosis',
           case_in_progress: 'a case is open',
+        },
+        patient_summary_menu:{
+          patient_profile: 'Patient profile',
+          current_summary: 'Current summary',
+          differential_diagnoses: 'Differential diagnoses'
+        },
+        patient_upsert: {
+          title: 'Patient',
+          save_and_wait: 'Save + add to waiting list',
+          save_and_case: 'Save + create new case',
+          save: 'Save',
         },
         medical_case_list: {
           all: 'All',
@@ -219,7 +223,7 @@ i18n
           logout: 'Logout',
           available_algorithms: 'Available algorithms',
           emergency: 'Emergency',
-          diagnosticsstrategy: 'Diagnostics & Strategy',
+          diagnosticsstrategy: 'Diagnostics & Strategies',
         },
         common: {
           back: 'Back',

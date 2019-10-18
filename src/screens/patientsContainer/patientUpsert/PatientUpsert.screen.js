@@ -64,8 +64,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
   setExtraQuestion = async (index, value) => {
     const { extraQuestions } = this.state;
 
-    //Create new object for immmutability
-    // Break instance Classe
+    // Create new object for immutability
+    // Break instance Class
     let newFlattenObject = {
       ...extraQuestions,
       [index]: { ...extraQuestions[index] },

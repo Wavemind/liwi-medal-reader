@@ -54,7 +54,6 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.UPDATE_CONDITION_VALUE)
   updateConditionValue(state, action) {
     const { nodeId, callerId, value, type } = action.payload;
-
     let caller;
     let newNode = {
       ...state.nodes[nodeId],
@@ -156,7 +155,7 @@ class MedicalCaseReducer extends ReducerClass {
    *
    * @trigger When a checkbox is triggered
    * @payload index : Question id
-   * @payload value : Answer id finded in questions.answers
+   * @payload value : Answer id find in questions.answers
    *
    */
   @Action(actions.SET_ANSWER_TO_UNAVAILABLE)

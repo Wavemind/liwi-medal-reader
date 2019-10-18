@@ -1,31 +1,12 @@
 import find from 'lodash/find';
-import { nodesType, priorities } from '../constants';
+import * as _ from 'lodash';
+import { nodesType } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
 import {
   calculateCondition,
   comparingTopConditions,
   reduceConditionArrayBoolean,
 } from './algoConditionsHelpers';
-
-// Create the first batch from json based on triage priority
-export const generateInitialBatch = (algorithmJson) => {
-  const { nodes } = algorithmJson;
-
-  algorithmJson.batches = [
-    { name: 'Triage', current: false, nodes: [] },
-    { name: 'Mandatory', current: false, nodes: [] },
-  ];
-  Object.keys(nodes).map((nodeId) => {
-    if (nodes[nodeId].priority === priorities.triage) {
-      algorithmJson.batches?.first().nodes.push(nodeId);
-    }
-
-    if (nodes[nodeId].priority === priorities.mandatory) {
-      algorithmJson.batches[1].nodes.push(nodeId);
-    }
-  });
-  return algorithmJson; // return is useless, we modifiy ref to caller
-};
 
 /**
  * For each medicalCase who exclude other diagnostic, we set the id in both side.
@@ -42,7 +23,7 @@ export const generateExcludedId = (medicalCase) => {
       ) {
         medicalCase.nodes[
           item.excluding_final_diagnostics
-        ].excluded_by_final_diagnostics = item.id;
+          ].excluded_by_final_diagnostics = item.id;
       }
     }
   }
@@ -56,16 +37,14 @@ export const generateExcludedId = (medicalCase) => {
  */
 export const setInitialCounter = (algorithmJsonMedicalCase) => {
   const { diagnostics, nodes } = algorithmJsonMedicalCase;
-
   try {
     Object.keys(nodes).map((nodeId) => {
-      if (nodes[nodeId].type.match(/Question|PredefinedSyndrome/)) {
+      if (nodes[nodeId].type.match(/Question|QuestionsSequence/)) {
         nodes[nodeId].dd.map((dd) => {
-          dd.conditionValue =
-            diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
+          dd.conditionValue = diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
         });
 
-        // Map trough PS if it is in an another PS itself
+        // Map trough QS if it is in an another QS itself
         nodes[nodeId].qs.map((qs) => {
           setParentConditionValue(algorithmJsonMedicalCase, qs.id, nodeId);
         });
@@ -100,7 +79,6 @@ export const setParentConditionValue = (
 ) => {
   let conditionValue = false;
   const { diagnostics, nodes } = algorithmJsonMedicalCase;
-
   // Set condition value for DD if there is any
   if (!nodes[parentId].dd.isEmpty()) {
     nodes[parentId].dd.map((dd) => {
@@ -118,13 +96,10 @@ export const setParentConditionValue = (
     });
     conditionValue = true;
   }
-
   // Set conditionValue of current QS
-  nodes[id].qs.map((qs) => {
-    if (qs.id === parentId) {
-      qs.conditionValue =
-        nodes[qs.id].instances[id].top_conditions.length === 0 &&
-        conditionValue;
+  nodes[id].qs.map((instanceQs) => {
+    if (instanceQs.id === parentId) {
+      instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
     }
   });
 };
@@ -164,12 +139,11 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
  * @return {boolean|false|true|null}
  */
 export const nextChildFinalQs = (instance, finalQs) => {
-  let child_top_condition = find(
-    finalQs.top_conditions,
-    (top_condition) => top_condition.first_node_id === instance.id
-  );
+  let top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
   // We get the condition of the final link
-   return comparingTopConditions(finalQs, child_top_condition);
+  return top_conditions.some((condition) => {
+    return comparingTopConditions(finalQs, condition);
+  });
 };
 
 /**
@@ -237,8 +211,7 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
 
     // If this is not the final QS we calculate the conditonValue of the child
     if (child.id !== qs.id) {
-      childConditionValue = find(child.qs, (q) => q.id === qs.id)
-        .conditionValue;
+      childConditionValue = find(child.qs, (q) => q.id === qs.id).conditionValue;
 
       // Reset the child condition value
       if (currentNode.answer === null && childConditionValue === true) {
@@ -286,8 +259,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    * Initial Var
    */
   let currentNode = state$.value.nodes[instance.id];
-  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id)
-    .conditionValue;
+  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
 
   /**
    * Get the condition of the instance link
@@ -304,7 +276,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
 
   /**
    * Reset condition value
-   * Hide the node if the instance condition is no longer valid BUT he was already shwon
+   * Hide the node if the instance condition is no longer valid BUT he was already shown
    */
   if (instanceConditionValue === true && instanceCondition === false) {
     isReset = true;
@@ -360,9 +332,9 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
  * @params actions: The array of Redux Actions
  *
  * @return boolean: return the status of the QS
-       true = can reach the end
-       null = Still possible but not yet
-       false = can't access the end anymore
+ *      true = can reach the end
+ *      null = Still possible but not yet
+ *      false = can't access the end anymore
  */
 export const getQuestionsSequenceStatus = (state$, qs, actions) => {
   let topLevelNodes = [];
