@@ -13,7 +13,7 @@ import CustomModal from './components/CustomModal';
 import { getItem } from './engine/api/LocalStorage';
 
 import Layout from './template/Layout.template';
-import EmergencyButton from './components/emergencyButton';
+import EmergencyButton from './components/EmergencyButton';
 
 export default class Root extends React.Component {
   async componentWillMount() {
