@@ -4,23 +4,19 @@ import moment from 'moment';
 import find from 'lodash/find';
 import forEach from 'lodash/forEach';
 import maxBy from 'lodash/maxBy';
-import { medicalCaseStatus } from '../../constants';
+import max from 'lodash/max';
+import { medicalCaseStatus, nodesType } from '../../constants';
 import {
   getItem,
-  getItemFromArray,
   getItems,
-  setItemFromArray,
 } from '../../../src/engine/api/LocalStorage';
-import {
-  generateExcludedId,
-  setInitialCounter,
-} from '../../algorithm/algoTreeDiagnosis';
+import { setParentConditionValue } from '../../algorithm/algoTreeDiagnosis';
 
 interface MedicalCaseInterface {
   props: {
     id?: number,
     userId?: number,
-    createdDate: string,
+    created_at: string,
     algorithmReady?: boolean,
     comments?: mixed,
     nodes: Object,
@@ -30,57 +26,107 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-  create = async (patientId, extraQuestions) => {
-    let patient = await getItemFromArray('patients', 'id', patientId);
+  create = async (patient) => {
     let algorithms = await getItems('algorithms');
-    let patients = await getItem('patients');
 
-    const algorithmUsed = find(algorithms, (a) => a.selected);
+    const currentAlgorithm = find(algorithms, (a) => a.selected);
 
     // default counter on each node
-    setInitialCounter(algorithmUsed);
+    await this.setInitialCounter(currentAlgorithm);
 
-    let newMedicalCase = {
-      ...algorithmUsed,
-      nodes: { ...algorithmUsed.nodes }, // Merged nodes with algo and extraQuestions from other side
-      diagnostics: algorithmUsed.diagnostics,
-    };
+    this.name = currentAlgorithm.name;
+    this.version = currentAlgorithm.version;
+    this.algorithm_id = currentAlgorithm.algorithm_id;
+    this.diagnostics = currentAlgorithm.diagnostics;
+    this.nodes = { ...currentAlgorithm.nodes };
+    this.selected = currentAlgorithm.selected;
+    this.triage = currentAlgorithm.triage;
+    this.updated_at = currentAlgorithm.updated_at;
+    this.created_at = moment().format();
+    this.status = medicalCaseStatus.waitingTriage.name;
 
-    //TODO : @ MICK Il faut dispatch un setAnswer pour trigger les mise à jour sur les enfant !
-    Object.keys(extraQuestions).map(extraQuestionId => {
-      newMedicalCase.nodes[extraQuestionId].value = extraQuestions[extraQuestionId].value;
-      newMedicalCase.nodes[extraQuestionId].answer = extraQuestions[extraQuestionId].answer;
-    });
+    await this.generateExcludedId();
+    await this.generateId();
 
-    generateExcludedId(newMedicalCase);
+    console.log(this);
 
-    // initial batch waiting on final workflow
+    // patient.medicalCases.push(newMedicalCase);
+    //
+    // // set in localstorage
+    // await setItemFromArray('patients', patient, patient.id);
+  };
 
-    let eachMaxId = [];
+  /**
+   * For each medicalCase who exclude other diagnostic, we set the id in both side.
+   * */
+  generateExcludedId = async () => {
+    for (let index in this.nodes) {
+      if (this.nodes.hasOwnProperty(index)) {
+        let item = this.nodes[index];
+        if (item.type === nodesType.finalDiagnostic && item.excluding_final_diagnostics !== null) {
+          this.nodes[item.excluding_final_diagnostics].excluded_by_final_diagnostics = item.id;
+        }
+      }
+    }
+  };
 
-    // find recursive max id in medicalCases
+  /**
+   * Generate id for a medical case
+   * */
+  generateId = async () => {
+    let patients = await getItem('patients');
+    let medicalCaseIds = [];
+    let lastId = 0;
+    let medicalCase = {};
+
+    // Find highest id in all medical cases
     forEach(patients, (p) => {
-      let itemMax = maxBy(p.medicalCases, 'id');
-      if (itemMax !== undefined) {
-        eachMaxId.push(itemMax);
+      medicalCase = maxBy(p.medicalCases, 'id');
+      if (medicalCase !== undefined) {
+        medicalCaseIds.push(medicalCase.id);
       }
     });
 
-    // on each maxBy, take the final maxBy
-    let maxId = maxBy(eachMaxId, 'id');
-
-    if (eachMaxId.length === 0) {
-      maxId = { id: 0 };
+    if (medicalCaseIds.length !== 0) {
+      lastId = max(medicalCaseIds);
     }
 
-    newMedicalCase.id = maxId.id + 1;
-    newMedicalCase.createdDate = moment().format();
-    newMedicalCase.status = medicalCaseStatus.waitingTriage.name;
+    this.id = lastId + 1;
+  };
 
-    patient.medicalCases.push(newMedicalCase);
+  /**
+   * Set condition values of question in order to prepare them for second batch (before the triage one)
+   */
+  setInitialCounter = () => {
+    const { diagnostics, nodes } = this;
+    try {
+      Object.keys(nodes).map((nodeId) => {
+        if (nodes[nodeId].type.match(/Question|QuestionsSequence/)) {
+          nodes[nodeId].dd.map((dd) => {
+            dd.conditionValue = diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
+          });
 
-    // set in localstorage
-    await setItemFromArray('patients', patient, patient.id);
-    this.id = newMedicalCase.id;
+          // Map trough QS if it is in an another QS itself
+          nodes[nodeId].qs.map((qs) => {
+            setParentConditionValue(this, qs.id, nodeId);
+          });
+        }
+      });
+
+      // Set question Formula
+      Object.keys(nodes).map((nodeId) => {
+        if (nodes[nodeId].type.match(/Question/)) {
+          nodes[nodeId].referenced_in.map((fn) => {
+            let fdd = nodes[fn.id].dd.some((e) => e.conditionValue);
+            let fqs = nodes[fn.id].qs.some((e) => e.conditionValue);
+            if (fdd || fqs) fn.conditionValue = true;
+          });
+        }
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+
+    return algorithmJsonMedicalCase;
   };
 }
