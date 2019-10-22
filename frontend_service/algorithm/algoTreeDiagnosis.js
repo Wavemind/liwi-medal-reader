@@ -9,27 +9,6 @@ import {
 } from './algoConditionsHelpers';
 
 /**
- * For each medicalCase who exclude other diagnostic, we set the id in both side.
- * @param medicalCase {Object} : the medical case
- * @return nothing, we update the parameter
- * */
-export const generateExcludedId = (medicalCase) => {
-  for (let index in medicalCase.nodes) {
-    if (medicalCase.nodes.hasOwnProperty(index)) {
-      let item = medicalCase.nodes[index];
-      if (
-        item.type === nodesType.finalDiagnostic &&
-        item.excluding_final_diagnostics !== null
-      ) {
-        medicalCase.nodes[
-          item.excluding_final_diagnostics
-          ].excluded_by_final_diagnostics = item.id;
-      }
-    }
-  }
-};
-
-/**
  * Set condition values of question in order to prepare them for second batch (before the triage one)
  *
  * @param [Json] algorithmJsonMedicalCase

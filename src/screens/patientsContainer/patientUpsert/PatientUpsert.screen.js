@@ -27,9 +27,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
     errors: {},
     patient: {},
     firstRender: false,
-    idLastMedicalCase: null,
+    medicalCaseId: null,
     loading: false,
-    extraComponents: () => {},
+    extraComponents: () => {
+    },
     extraQuestions: {},
     algorithmReady: false,
   };
@@ -37,13 +38,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
   /**
    * Get the new extraQuestions and update The questions Component
    */
-  updateExtraComponents = async (extraQuestions) => {
+  initExtraComponents = async (extraQuestions) => {
     let extraComponents = () => (
-      <Questions
-        questions={extraQuestions}
-        onChange={this.setExtraQuestion}
-        method="props"
-      />
+      <Questions questions={extraQuestions} />
     );
 
     await this.setState({
@@ -52,77 +49,52 @@ export default class PatientUpsert extends React.Component<Props, State> {
     });
   };
 
-  /**
-   * Update this question in the component
-   *
-   * because of immutability we have to flatten it before and change the value
-   *
-   * @param index [Object] : index of the question in the state
-   * @param value [Number || String] : the new value of the question
-   *
-   */
-  setExtraQuestion = async (index, value) => {
-    const { extraQuestions } = this.state;
-
-    // Create new object for immutability
-    // Break instance Class
-    let newFlattenObject = {
-      ...extraQuestions,
-      [index]: { ...extraQuestions[index] },
-    };
-
-    // Instance new Classes Nodes
-    let nodes = new NodesModel(newFlattenObject);
-
-    // Update the new question changed
-    nodes[index].updateAnswer(value);
-
-    await this.updateExtraComponents(nodes);
-  };
-
   async componentWillMount() {
     const { navigation } = this.props;
+    let patient = {};
+    let patientId = navigation.getParam('idPatient');
 
-    let idPatient = navigation.getParam('idPatient');
-    if (idPatient === null) {
-      let patient = new PatientModel();
-
-      // specific code extra data vaccine etc, shared data
+    if (patientId === null) {
+      patient = new PatientModel();
       let algorithms = await getItems('algorithms');
 
       if (algorithms.length === 0) {
         this.setState({ extraQuestions: [], patient, firstRender: true });
       } else {
+        this.generateMedicalCase(patient);
         // Get the user algo
-        const algorithmUsed = find(algorithms, (a) => a.selected);
+        console.log(patient.medicalCase)
+        await this.generateMedicalCase(patient);
+        // let medicalCase = await getMedicalCase(medicalCaseId);
+        // medicalCase.patient = patient;
 
-        // Instance all nodes for access to filterBy
-        let nodes = new NodesModel(algorithmUsed?.nodes);
-        // Get nodes needed
-        let extraQuestions = nodes?.filterBy(
-          [
-            {
-              by: 'category',
-              operator: 'equal',
-              value: categories.chronicalCondition,
-            },
-            {
-              by: 'category',
-              operator: 'equal',
-              value: categories.vaccine,
-            },
-            {
-              by: 'category',
-              operator: 'equal',
-              value: categories.demographic,
-            },
-          ],
-          'OR',
-          'object',
-          false
-        );
-
-        await this.updateExtraComponents(extraQuestions);
+        // // Instance all nodes for access to filterBy
+        // let nodes = new NodesModel(algorithmUsed?.nodes);
+        // // Get nodes needed
+        // let extraQuestions = nodes?.filterBy(
+        //   [
+        //     {
+        //       by: 'category',
+        //       operator: 'equal',
+        //       value: categories.chronicalCondition,
+        //     },
+        //     {
+        //       by: 'category',
+        //       operator: 'equal',
+        //       value: categories.vaccine,
+        //     },
+        //     {
+        //       by: 'category',
+        //       operator: 'equal',
+        //       value: categories.demographic,
+        //     },
+        //   ],
+        //   'OR',
+        //   'object',
+        //   false
+        // );
+        //
+        // await this.initExtraComponents(extraQuestions);
 
         this.setState({
           patient,
@@ -131,7 +103,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
         });
       }
     } else {
-      await this.getPatient();
+      patient = await this.getPatient();
+      await this.generateMedicalCase(patient);
     }
   }
 
@@ -146,6 +119,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient = new PatientModel(patient);
 
     this.setState({ patient, firstRender: true });
+    return patient;
   }
 
   /**
@@ -161,9 +135,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
       // Set medicalCase in reducer
       const { setMedicalCase, navigation } = this.props;
 
-      // get state here because set juste before
-      const { idLastMedicalCase } = this.state;
-      let medicalCase = await getMedicalCase(idLastMedicalCase);
+      // Get state here because set just before
+      const { medicalCaseId } = this.state;
+      let medicalCase = await getMedicalCase(medicalCaseId);
       medicalCase.patient = patient;
 
       await setMedicalCase(medicalCase);
@@ -201,6 +175,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
     await this.setState({ loading: false });
   };
+
   /**
    *  Update patient value in storage and redirect to patient profile
    */
@@ -218,11 +193,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
   /**
    * Generate medical case for current patient
    */
-  generateMedicalCase = async (patientId) => {
-    const { extraQuestions } = this.state;
+  generateMedicalCase = async (patient) => {
     let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.create(patientId, extraQuestions);
-    return instanceMedicalCase.id;
+    await instanceMedicalCase.create(patient);
+    console.log(instanceMedicalCase);
+    return instanceMedicalCase;
   };
 
   /**
@@ -230,20 +205,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   savePatient = async () => {
     const { patient } = this.state;
-    const { navigation } = this.props;
-    let idPatient = await navigation.getParam('idPatient');
 
     let errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
       await patient.save();
-
-      if (idPatient === null) {
-        let id = await this.generateMedicalCase(patient.id);
-        await this.setState({ idLastMedicalCase: id });
-      }
-
       return true;
     } else {
       this.setState({ errors: errors });
@@ -347,7 +314,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 </Button>
               )
             ) : (
-              <LiwiLoader />
+              <LiwiLoader/>
             )
           ) : (
             <View columns>
