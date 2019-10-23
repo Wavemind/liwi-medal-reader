@@ -5,7 +5,6 @@ import { NavigationActions, NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { Button, Col, Text, View } from 'native-base';
 import * as _ from 'lodash';
-import find from 'lodash/find';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
@@ -15,7 +14,6 @@ import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchB
 import { styles } from './PatientUpsert.style';
 import { getItemFromArray, getItems, getMedicalCase } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 import { categories } from '../../../../frontend_service/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
 
@@ -50,7 +48,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    const { navigation } = this.props;
+    const { navigation, setMedicalCase } = this.props;
     let patient = {};
     let patientId = navigation.getParam('idPatient');
 
@@ -61,40 +59,38 @@ export default class PatientUpsert extends React.Component<Props, State> {
       if (algorithms.length === 0) {
         this.setState({ extraQuestions: [], patient, firstRender: true });
       } else {
-        this.generateMedicalCase(patient);
-        // Get the user algo
-        console.log(patient.medicalCase)
-        await this.generateMedicalCase(patient);
-        // let medicalCase = await getMedicalCase(medicalCaseId);
-        // medicalCase.patient = patient;
 
-        // // Instance all nodes for access to filterBy
-        // let nodes = new NodesModel(algorithmUsed?.nodes);
-        // // Get nodes needed
-        // let extraQuestions = nodes?.filterBy(
-        //   [
-        //     {
-        //       by: 'category',
-        //       operator: 'equal',
-        //       value: categories.chronicalCondition,
-        //     },
-        //     {
-        //       by: 'category',
-        //       operator: 'equal',
-        //       value: categories.vaccine,
-        //     },
-        //     {
-        //       by: 'category',
-        //       operator: 'equal',
-        //       value: categories.demographic,
-        //     },
-        //   ],
-        //   'OR',
-        //   'object',
-        //   false
-        // );
-        //
-        // await this.initExtraComponents(extraQuestions);
+        // Generate medical case
+        let medicalCase = await this.generateMedicalCase(patient);
+        medicalCase.patient = patient;
+
+        await setMedicalCase(medicalCase);
+
+        // Instance all nodes for access to filterBy
+        let extraQuestions = medicalCase.nodes.filterBy(
+          [
+            {
+              by: 'category',
+              operator: 'equal',
+              value: categories.chronicalCondition,
+            },
+            {
+              by: 'category',
+              operator: 'equal',
+              value: categories.vaccine,
+            },
+            {
+              by: 'category',
+              operator: 'equal',
+              value: categories.demographic,
+            },
+          ],
+          'OR',
+          'object',
+          false
+        );
+
+        await this.initExtraComponents(extraQuestions);
 
         this.setState({
           patient,
@@ -194,9 +190,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * Generate medical case for current patient
    */
   generateMedicalCase = async (patient) => {
-    let instanceMedicalCase = new MedicalCaseModel();
+    let instanceMedicalCase = new MedicalCaseModel(patient);
     await instanceMedicalCase.create(patient);
-    console.log(instanceMedicalCase);
     return instanceMedicalCase;
   };
 
@@ -314,7 +309,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 </Button>
               )
             ) : (
-              <LiwiLoader/>
+              <LiwiLoader />
             )
           ) : (
             <View columns>
