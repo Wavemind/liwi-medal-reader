@@ -129,6 +129,7 @@ export class ApplicationProvider extends React.Component<
 
   // Set medical case in context
   setMedicalCase = (medicalCase) => {
+    console.log('Je rentre une fois dans ma vie ici ?')
     this.setState({ medicalCase });
   };
 
