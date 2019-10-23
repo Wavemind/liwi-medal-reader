@@ -44,11 +44,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     await this.generateExcludedId();
     await this.generateId();
-
-    // patient.medicalCases.push(newMedicalCase);
-    //
-    // // set in localstorage
-    // await setItemFromArray('patients', patient, patient.id);
   };
 
   /**

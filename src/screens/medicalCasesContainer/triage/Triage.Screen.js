@@ -28,7 +28,7 @@ export default class Triage extends React.Component<Props, State> {
       medicalCase: { patient },
     } = this.props;
     navigation.setParams({
-      title: 'Triage ',
+      title: 'Triage',
       headerRight: patient.firstname + ' ' + patient.lastname,
     });
   }
@@ -88,10 +88,10 @@ export default class Triage extends React.Component<Props, State> {
           showBottomStepper
           icons={[
             { name: 'eye-plus', type: 'MaterialCommunityIcons' },
-            { name: 'heart-broken', type: 'FontAwesome5' },
+            { name: 'view-module', type: 'MaterialIcons' },
             { name: 'healing', type: 'MaterialIcons' },
           ]}
-          steps={[t('triage:assessment'), t('triage:chief'), t('triage:vital')]}
+          steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:vital')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Consultation"

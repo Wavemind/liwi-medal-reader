@@ -12,9 +12,9 @@ import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 import { styles } from './PatientUpsert.style';
-import { getItemFromArray, getItems, getMedicalCase } from '../../../engine/api/LocalStorage';
+import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { categories } from '../../../../frontend_service/constants';
+import { stage } from '../../../../frontend_service/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
 
 type Props = NavigationScreenProps & {};
@@ -25,26 +25,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     errors: {},
     patient: {},
     firstRender: false,
-    medicalCaseId: null,
+    medicalCase: {},
     loading: false,
-    extraComponents: () => {
-    },
-    extraQuestions: {},
     algorithmReady: false,
-  };
-
-  /**
-   * Get the new extraQuestions and update The questions Component
-   */
-  initExtraComponents = async (extraQuestions) => {
-    let extraComponents = () => (
-      <Questions questions={extraQuestions} />
-    );
-
-    await this.setState({
-      extraQuestions,
-      extraComponents,
-    });
   };
 
   async componentWillMount() {
@@ -57,7 +40,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       let algorithms = await getItems('algorithms');
 
       if (algorithms.length === 0) {
-        this.setState({ extraQuestions: [], patient, firstRender: true });
+        this.setState({ patient, firstRender: true });
       } else {
 
         // Generate medical case
@@ -66,34 +49,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
         await setMedicalCase(medicalCase);
 
-        // Instance all nodes for access to filterBy
-        let extraQuestions = medicalCase.nodes.filterBy(
-          [
-            {
-              by: 'category',
-              operator: 'equal',
-              value: categories.chronicalCondition,
-            },
-            {
-              by: 'category',
-              operator: 'equal',
-              value: categories.vaccine,
-            },
-            {
-              by: 'category',
-              operator: 'equal',
-              value: categories.demographic,
-            },
-          ],
-          'OR',
-          'object',
-          false
-        );
-
-        await this.initExtraComponents(extraQuestions);
-
         this.setState({
           patient,
+          medicalCase,
           firstRender: true,
           algorithmReady: true,
         });
@@ -110,40 +68,31 @@ export default class PatientUpsert extends React.Component<Props, State> {
   async getPatient() {
     const { navigation } = this.props;
     let id = navigation.getParam('idPatient');
-
     let patient = await getItemFromArray('patients', 'id', id);
-    patient = new PatientModel(patient);
 
+    patient = new PatientModel(patient);
     this.setState({ patient, firstRender: true });
+
     return patient;
   }
 
   /**
    * Save patient and redirect to medical case
    */
-  saveNewCase = async () => {
+  save = async (route) => {
     await this.setState({ loading: true });
     const { patient } = this.state;
+    const { navigation } = this.props;
+    let isSaved = await this.savePatient();
 
-    let result = await this.savePatient();
-
-    if (result) {
-      // Set medicalCase in reducer
-      const { setMedicalCase, navigation } = this.props;
-
-      // Get state here because set just before
-      const { medicalCaseId } = this.state;
-      let medicalCase = await getMedicalCase(medicalCaseId);
-      medicalCase.patient = patient;
-
-      await setMedicalCase(medicalCase);
-
-      navigation.navigate('Triage', {
-        title: `${medicalCase.patient.firstname} ${
-          medicalCase.patient.lastname
-        }`,
-      });
-
+    if (isSaved) {
+      if (route === 'Triage') {
+        navigation.navigate(route, {
+          title: `${patient.firstname} ${patient.lastname}`,
+        });
+      } else {
+        navigation.dispatch(NavigationActions.back(route));
+      }
       await this.setState({ loading: false });
     }
   };
@@ -158,29 +107,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   /**
-   * Save patient and redirect to waiting list
-   */
-  saveWaitingList = async () => {
-    await this.setState({ loading: true });
-
-    const { navigation } = this.props;
-    let result = await this.savePatient();
-
-    if (result) {
-      navigation.dispatch(NavigationActions.back('patientList'));
-    }
-    await this.setState({ loading: false });
-  };
-
-  /**
    *  Update patient value in storage and redirect to patient profile
    */
   updatePatient = async () => {
     await this.setState({ loading: true });
     const { navigation } = this.props;
-    const {
-      patient: { id },
-    } = this.state;
+    const { patient: { id } } = this.state;
     await this.savePatient();
     navigation.dispatch(NavigationActions.back('patientProfile', { id }));
     await this.setState({ loading: false });
@@ -196,11 +128,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   /**
-   * Set patient in localStorage
+   * Set patient and medical case in localStorage
    */
   savePatient = async () => {
-    const { patient } = this.state;
-
+    const { patient, medicalCase } = this.state;
+    patient.medicalCase = medicalCase;
     let errors = await patient.validate();
 
     // Create patient if there are no errors
@@ -214,30 +146,40 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   render() {
-    const { updatePatientValue, saveWaitingList, saveNewCase } = this;
-
+    const { updatePatientValue, save } = this;
     const {
       patient: { firstname, lastname, gender },
       patient,
       errors,
       firstRender,
       loading,
-      extraComponents,
       algorithmReady,
     } = this.state;
 
     const {
       navigation,
       app: { t },
+      medicalCase
     } = this.props;
 
+    // Instance all nodes for access to filterBy
+    let extraQuestions = medicalCase.nodes?.filterBy(
+      [{
+        by: 'stage',
+        operator: 'equal',
+        value: stage.registration,
+      }],
+      'OR',
+      'object',
+      false,
+    );
+
     let idPatient = navigation.getParam('idPatient');
+    const hasNoError = !_.isEmpty(patient.validate());
 
     if (!firstRender) {
       return null;
     }
-
-    const hasNoError = !_.isEmpty(patient.validate());
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -278,7 +220,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               error={errors.gender}
             />
           </Col>
-          {extraComponents()}
+          <Questions questions={extraQuestions} />
         </View>
 
         <View bottom-view>
@@ -289,7 +231,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   <Button
                     light
                     split
-                    onPress={saveWaitingList}
+                    onPress={() => save('patientList')}
                     disabled={hasNoError}
                   >
                     <Text>{t('patient_upsert:save_and_wait')}</Text>
@@ -297,7 +239,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   <Button
                     success
                     split
-                    onPress={saveNewCase}
+                    onPress={() => save('Triage')}
                     disabled={hasNoError}
                   >
                     <Text>{t('patient_upsert:save_and_case')}</Text>
