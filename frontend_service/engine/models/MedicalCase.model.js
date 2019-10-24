@@ -25,7 +25,7 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-  create = async (props = {}) => {
+  create = async () => {
     let algorithms = await getItems('algorithms');
     let currentAlgorithm = find(algorithms, (a) => a.selected);
 

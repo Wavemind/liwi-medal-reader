@@ -42,7 +42,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       if (algorithms.length === 0) {
         this.setState({ patient, firstRender: true });
       } else {
-
         // Generate medical case
         let medicalCase = await this.generateMedicalCase(patient);
         medicalCase.patient = patient;
@@ -77,7 +76,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
   }
 
   /**
-   * Save patient and redirect to medical case
+   * Save patient and redirect to parameters
+   * @params [String] route
    */
   save = async (route) => {
     await this.setState({ loading: true });
@@ -99,6 +99,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   /**
    * Update state value of patient
+   * @params [String] key [String] value
    */
   updatePatientValue = async (key, value) => {
     const { patient } = this.state;
@@ -120,6 +121,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   /**
    * Generate medical case for current patient
+   * @params [Object] patient
+   * @return [Object] medical case
    */
   generateMedicalCase = async (patient) => {
     let instanceMedicalCase = new MedicalCaseModel(patient);
@@ -162,7 +165,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
       medicalCase
     } = this.props;
 
-    // Instance all nodes for access to filterBy
+    if (!firstRender) {
+      return null;
+    }
+
+    // Get nodes to display in registration stage
     let extraQuestions = medicalCase.nodes?.filterBy(
       [{
         by: 'stage',
@@ -176,10 +183,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     let idPatient = navigation.getParam('idPatient');
     const hasNoError = !_.isEmpty(patient.validate());
-
-    if (!firstRender) {
-      return null;
-    }
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
