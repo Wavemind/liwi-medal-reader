@@ -20,7 +20,6 @@ import Date from '../DisplaysContainer/Date';
 import Tooltip from '../../Tooltip/tooltip';
 import Unavailable from '../../InputContainer/Unavailable';
 import Formula from '../DisplaysContainer/Formula';
-import { cl } from '../../../../frontend_service/spec/reducers/medicalCase.reducer.spec';
 
 type Props = NavigationScreenProps & {};
 
@@ -185,9 +184,6 @@ class WrapperQuestion extends React.Component<Props, State> {
 export default class Question extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const { question } = this.props;
-
-    console.log('####################################################################');
-    console.log(question, nextProps)
 
     return (
       question.counter !== nextProps.question.counter ||

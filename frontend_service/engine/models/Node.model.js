@@ -35,8 +35,6 @@ export class NodeModel implements NodeInterface {
   updateAnswer = (value) => {
     let answer;
 
-    console.log('je modifie ma réponse', value)
-
     if (this.value_format === undefined) {
       return false;
     }
