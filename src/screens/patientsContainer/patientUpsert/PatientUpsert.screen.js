@@ -23,42 +23,44 @@ type State = {};
 export default class PatientUpsert extends React.Component<Props, State> {
   state = {
     errors: {},
-    patient: {},
-    firstRender: false,
+    patient: null,
     medicalCase: {},
-    loading: false,
+    loading: true,
     algorithmReady: false,
   };
 
-  async componentWillMount() {
+  initializeComponent = async () => {
     const { navigation, setMedicalCase } = this.props;
     let patient = {};
     let patientId = navigation.getParam('idPatient');
+    let algorithms = await getItems('algorithms');
 
     if (patientId === null) {
       patient = new PatientModel();
-      let algorithms = await getItems('algorithms');
-
-      if (algorithms.length === 0) {
-        this.setState({ patient, firstRender: true });
-      } else {
-        // Generate medical case
-        let medicalCase = await this.generateMedicalCase(patient);
-        medicalCase.patient = patient;
-
-        await setMedicalCase(medicalCase);
-
-        this.setState({
-          patient,
-          medicalCase,
-          firstRender: true,
-          algorithmReady: true,
-        });
-      }
     } else {
       patient = await this.getPatient();
-      await this.generateMedicalCase(patient);
     }
+
+    if (algorithms.length === 0) {
+      this.setState({ patient });
+    } else {
+      // Generate medical case
+      let medicalCase = await this.generateMedicalCase(patient);
+      medicalCase.patient = patient;
+
+      await setMedicalCase(medicalCase);
+
+      this.setState({
+        patient,
+        medicalCase,
+        algorithmReady: true,
+        loading: false,
+      });
+    }
+  };
+
+  async componentWillMount() {
+    await this.initializeComponent();
   }
 
   /**
@@ -70,7 +72,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let patient = await getItemFromArray('patients', 'id', id);
 
     patient = new PatientModel(patient);
-    this.setState({ patient, firstRender: true });
 
     return patient;
   }
@@ -113,7 +114,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
   updatePatient = async () => {
     await this.setState({ loading: true });
     const { navigation } = this.props;
-    const { patient: { id } } = this.state;
+    const {
+      patient: { id },
+    } = this.state;
     await this.savePatient();
     navigation.dispatch(NavigationActions.back('patientProfile', { id }));
     await this.setState({ loading: false });
@@ -135,11 +138,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   savePatient = async () => {
     const { patient, medicalCase } = this.state;
-    patient.medicalCase = medicalCase;
     let errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
+      patient.medicalCases.push(medicalCase);
       await patient.save();
       return true;
     } else {
@@ -151,117 +154,114 @@ export default class PatientUpsert extends React.Component<Props, State> {
   render() {
     const { updatePatientValue, save } = this;
     const {
-      patient: { firstname, lastname, gender },
       patient,
       errors,
-      firstRender,
       loading,
       algorithmReady,
     } = this.state;
 
     const {
-      navigation,
       app: { t },
-      medicalCase
+      medicalCase,
     } = this.props;
-
-    if (!firstRender) {
-      return null;
-    }
 
     // Get nodes to display in registration stage
     let extraQuestions = medicalCase.nodes?.filterBy(
-      [{
-        by: 'stage',
-        operator: 'equal',
-        value: stage.registration,
-      }],
+      [
+        {
+          by: 'stage',
+          operator: 'equal',
+          value: stage.registration,
+        },
+      ],
       'OR',
       'object',
-      false,
+      false
     );
 
-    let idPatient = navigation.getParam('idPatient');
-    const hasNoError = !_.isEmpty(patient.validate());
+    let hasNoError = false;
+    if (patient !== null) {
+      hasNoError = !_.isEmpty(patient.validate());
+    }
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
-        <View>
-          <Col>
-            <CustomInput
-              init={firstname}
-              label={t('patient:first_name')}
-              change={updatePatientValue}
-              index="firstname"
-              iconName="user"
-              iconType="AntDesign"
-              error={errors.firstname}
-            />
-            <CustomInput
-              init={lastname}
-              label={t('patient:last_name')}
-              change={updatePatientValue}
-              index="lastname"
-              iconName="user"
-              iconType="AntDesign"
-              error={errors.lastname}
-            />
-          </Col>
-          <Col>
-            <CustomSwitchButton
-              init={gender}
-              label={t('patient:gender')}
-              change={updatePatientValue}
-              index="gender"
-              label1={t('patient:male')}
-              label2={t('patient:female')}
-              value1="male"
-              value2="female"
-              iconName="human-male-female"
-              iconType="MaterialCommunityIcons"
-              error={errors.gender}
-            />
-          </Col>
-          <Questions questions={extraQuestions} />
-        </View>
 
-        <View bottom-view>
-          {algorithmReady ? (
-            !loading ? (
-              idPatient === null ? (
-                <View columns>
-                  <Button
-                    light
-                    split
-                    onPress={() => save('patientList')}
-                    disabled={hasNoError}
-                  >
-                    <Text>{t('patient_upsert:save_and_wait')}</Text>
-                  </Button>
-                  <Button
-                    success
-                    split
-                    onPress={() => save('Triage')}
-                    disabled={hasNoError}
-                  >
-                    <Text>{t('patient_upsert:save_and_case')}</Text>
-                  </Button>
-                </View>
-              ) : (
-                <Button success block onPress={this.updatePatient}>
-                  <Text>{t('patient_upsert:save')}</Text>
-                </Button>
-              )
-            ) : (
-              <LiwiLoader />
-            )
-          ) : (
-            <View columns>
-              <Text>{t('work_case:no_algorithm')}</Text>
+        {loading ? (
+          <LiwiLoader />
+        ) : (
+          <React.Fragment>
+            <View>
+              <Col>
+                <CustomInput
+                  init={patient.firstname}
+                  label={t('patient:first_name')}
+                  change={updatePatientValue}
+                  index="firstname"
+                  iconName="user"
+                  iconType="AntDesign"
+                  error={errors.firstname}
+                />
+                <CustomInput
+                  init={patient.lastname}
+                  label={t('patient:last_name')}
+                  change={updatePatientValue}
+                  index="lastname"
+                  iconName="user"
+                  iconType="AntDesign"
+                  error={errors.lastname}
+                />
+              </Col>
+              <Col>
+                <CustomSwitchButton
+                  init={patient.gender}
+                  label={t('patient:gender')}
+                  change={updatePatientValue}
+                  index="gender"
+                  label1={t('patient:male')}
+                  label2={t('patient:female')}
+                  value1="male"
+                  value2="female"
+                  iconName="human-male-female"
+                  iconType="MaterialCommunityIcons"
+                  error={errors.gender}
+                />
+              </Col>
+              <Questions questions={extraQuestions} />
             </View>
-          )}
-        </View>
+            <View bottom-view>
+              {algorithmReady ? (
+                !loading ? (
+                  <View columns>
+                    <Button
+                      light
+                      split
+                      onPress={() => save('patientList')}
+                      disabled={hasNoError}
+                    >
+                      <Text>{t('patient_upsert:save_and_wait')}</Text>
+                    </Button>
+                    <Button
+                      success
+                      split
+                      onPress={() => save('Triage')}
+                      disabled={hasNoError}
+                    >
+                      <Text>{t('patient_upsert:save_and_case')}</Text>
+                    </Button>
+                  </View>
+                ) : (
+                  <LiwiLoader />
+                )
+              ) : (
+                <View columns>
+                  <Text>{t('work_case:no_algorithm')}</Text>
+                </View>
+              )}
+            </View>
+          </React.Fragment>
+        )}
       </ScrollView>
     );
   }

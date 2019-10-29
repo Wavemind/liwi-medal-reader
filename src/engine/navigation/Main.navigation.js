@@ -20,7 +20,7 @@ import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
-import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
+import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Triage from '../../screens/medicalCasesContainer/triage';
 import Consultation from '../../screens/medicalCasesContainer/consultation';

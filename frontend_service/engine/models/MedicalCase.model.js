@@ -89,7 +89,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
    * @param [Json] algorithm
    * @return [Json] algorithm
    **/
-  setInitialConditionValue = (algorithm) => {
+  setInitialConditionValue = async (algorithm) => {
     const { diagnostics, nodes } = algorithm;
     try {
       Object.keys(nodes).map((nodeId) => {
