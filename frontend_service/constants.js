@@ -101,11 +101,11 @@ export const routeDependingStatus = (medicalCase) => {
     case medicalCaseStatus.waitingTriage.name:
     case medicalCaseStatus.triage.name:
     case medicalCaseStatus.waitingConsultation.name:
-      route = 'FirstLookAssessments';
+      route = 'Triage';
       break;
     case medicalCaseStatus.consultation.name:
     case medicalCaseStatus.waitingTest.name:
-      route = 'MedicalHistory';
+      route = 'Consultation';
       break;
     case medicalCaseStatus.test.name:
     case medicalCaseStatus.waitingDiagnostic.name:

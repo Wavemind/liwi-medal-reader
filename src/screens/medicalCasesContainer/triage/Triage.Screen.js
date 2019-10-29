@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { Content, View } from 'native-base';
 
 import { NavigationScreenProps } from 'react-navigation';
-import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
+import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
 import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
@@ -91,7 +91,11 @@ export default class Triage extends React.Component<Props, State> {
             { name: 'view-module', type: 'MaterialIcons' },
             { name: 'healing', type: 'MaterialIcons' },
           ]}
-          steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:vital')]}
+          steps={[
+            t('triage:first_look_assessment'),
+            t('triage:chief'),
+            t('triage:vital'),
+          ]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Consultation"

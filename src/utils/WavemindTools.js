@@ -71,6 +71,7 @@ export default class WavemindTools extends Component {
                 onPress={async () => {
                     let sessions = await getItems('sessions');
                     let algorithms = await getItems('algorithms');
+                    let patients = await getItems('patients');
                     let state$ = store.getState();
 
                     // eslint-disable-next-line no-console
@@ -78,6 +79,7 @@ export default class WavemindTools extends Component {
                       state$: state$,
                       sessions: sessions,
                       algorithms: algorithms,
+                      patients: patients,
                     });
                   }}
               >

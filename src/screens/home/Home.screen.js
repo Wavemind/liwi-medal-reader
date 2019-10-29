@@ -7,6 +7,7 @@ import { Icon, Text, View } from 'native-base';
 import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { Toaster } from '../../utils/CustomToast';
+import { ConfirmationView } from '../../components/ConfirmationView/ConfirmationView';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -14,6 +15,7 @@ type State = {};
 export default class Home extends React.Component<Props, State> {
   state = {
     algorithms: [],
+    propsToolTipVisible: false,
   };
   logout = async () => {
     const {
@@ -31,14 +33,23 @@ export default class Home extends React.Component<Props, State> {
     const {
       navigation,
       app: { t },
+      medicalCase,
     } = this.props;
 
-    const { algorithms } = this.state;
+    const { algorithms, propsToolTipVisible } = this.state;
 
     return (
       <ScrollView>
         <View padding-auto>
           <View flex-container-column>
+            <ConfirmationView
+              propsToolTipVisible={propsToolTipVisible}
+              nextView={() =>
+                navigation.navigate('PatientUpsert', {
+                  idPatient: null,
+                })
+              }
+            />
             <View w50>
               <TouchableHighlight
                 underlayColor="transparent"
@@ -50,7 +61,13 @@ export default class Home extends React.Component<Props, State> {
                       duration: 4000,
                     });
                   } else {
-                    navigation.navigate('PatientUpsert', { idPatient: null });
+                    if (medicalCase.id === undefined) {
+                      navigation.navigate('PatientUpsert', {
+                        idPatient: null,
+                      });
+                    } else {
+                      this.setState({ propsToolTipVisible: true });
+                    }
                   }
                 }}
               >

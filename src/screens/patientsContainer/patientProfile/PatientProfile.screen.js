@@ -7,15 +7,15 @@ import { styles } from './PatientProfile.style';
 import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import {
-  routeDependingStatus,
-} from '../../../../frontend_service/constants';
+import { routeDependingStatus } from '../../../../frontend_service/constants';
+import { ConfirmationView } from '../../../components/ConfirmationView/ConfirmationView';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class PatientProfile extends React.Component<Props, State> {
   state = {
+    propsToolTipVisible: false,
     patient: {
       birthdate: '01/01/1900',
       medicalCases: [],
@@ -30,13 +30,11 @@ export default class PatientProfile extends React.Component<Props, State> {
 
   // Fetch patient in localstorage
   async getPatient() {
-    console.log('2');
     const { navigation } = this.props;
     let id = navigation.getParam('id');
 
     let patient = await getItemFromArray('patients', 'id', id);
     let algorithms = await getItems('algorithms');
-    console.log('3');
     this.setState({
       patient,
       algorithms,
@@ -58,10 +56,12 @@ export default class PatientProfile extends React.Component<Props, State> {
       patient,
       algorithms,
       firstRender,
+      propsToolTipVisible,
     } = this.state;
 
     const {
       navigation,
+      medicalCase,
       app: { t },
     } = this.props;
 
@@ -114,7 +114,7 @@ export default class PatientProfile extends React.Component<Props, State> {
                   medicalCase.id === medicalCaseItem.id
                     ? medicalCase.status
                     : medicalCaseItem.status
-                }`,
+                }`
               )}
             </Text>
           </View>
@@ -123,7 +123,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     });
 
     return !firstRender ? (
-      <LiwiLoader/>
+      <LiwiLoader />
     ) : (
       <View padding-auto flex>
         <LiwiTitle2 noBorder>
@@ -132,16 +132,8 @@ export default class PatientProfile extends React.Component<Props, State> {
         <Text>
           {moment(patient.birthdate).format('d MMMM YYYY')} - {patient.gender}
         </Text>
-        <Button
-          onPress={() =>
-            navigation.navigate('PatientUpsert', {
-              idPatient: patient.id,
-            })
-          }
-        >
-          <Text>{t('form:edit')}</Text>
-        </Button>
-        <SeparatorLine style={styles.bottomMargin}/>
+
+        <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
           <View flex>
             <View>
@@ -154,13 +146,24 @@ export default class PatientProfile extends React.Component<Props, State> {
               )}
             </View>
             <View bottom-view>
-              <Button
-                light
-                onPress={() =>
+              <ConfirmationView
+                propsToolTipVisible={propsToolTipVisible}
+                nextView={() =>
                   navigation.navigate('PatientUpsert', {
                     idPatient: patient.id,
                   })
                 }
+              />
+              <Button
+                onPress={() => {
+                  if (medicalCase.id === undefined) {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: patient.id,
+                    });
+                  } else {
+                    this.setState({ propsToolTipVisible: true });
+                  }
+                }}
               >
                 <Text>{t('work_case:create')}</Text>
               </Button>
