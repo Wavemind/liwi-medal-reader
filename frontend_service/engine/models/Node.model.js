@@ -48,10 +48,8 @@ export class NodeModel implements NodeInterface {
               switch (answerCondition.operator) {
                 case 'more_or_equal':
                   return value >= Number(answerCondition.value);
-
                 case 'less':
                   return value < Number(answerCondition.value);
-
                 case 'between':
                   return (
                     value >= Number(answerCondition.value.split(',').first()) &&
@@ -59,14 +57,20 @@ export class NodeModel implements NodeInterface {
                   );
               }
             });
+            answer = Number(answer);
           } else {
             answer = null;
           }
+          value = Number(value);
           break;
         case valueFormats.string:
+        case valueFormats.date:
         case valueFormats.bool:
-        case valueFormats.array:
           answer = value;
+          break;
+        case valueFormats.array:
+          answer = Number(value);
+          value = Number(value);
           break;
         default:
           // eslint-disable-next-line no-console

@@ -23,6 +23,7 @@ export const displayFormats = {
   input: 'Input',
   list: 'DropDownList',
   formula: 'Formula',
+  reference: 'Reference',
   string: 'String',
   date: 'Date',
 };
@@ -34,6 +35,7 @@ export const valueFormats = {
   float: 'Float',
   bool: 'Boolean',
   string: 'String',
+  date: 'Date',
 };
 
 // Priority of questions
@@ -99,11 +101,11 @@ export const routeDependingStatus = (medicalCase) => {
     case medicalCaseStatus.waitingTriage.name:
     case medicalCaseStatus.triage.name:
     case medicalCaseStatus.waitingConsultation.name:
-      route = 'FirstLookAssessments';
+      route = 'Triage';
       break;
     case medicalCaseStatus.consultation.name:
     case medicalCaseStatus.waitingTest.name:
-      route = 'MedicalHistory';
+      route = 'Consultation';
       break;
     case medicalCaseStatus.test.name:
     case medicalCaseStatus.waitingDiagnostic.name:

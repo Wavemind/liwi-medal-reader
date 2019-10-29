@@ -6,6 +6,7 @@ import { Icon, Text } from 'native-base';
 import { nodesType } from '../../../frontend_service/constants';
 import { liwiColors } from '../../utils/constants';
 import { styles } from './FinalDiagnosticsList.style';
+import { LiwiTitle3 } from '../../template/layout';
 
 type Props = NavigationScreenProps & {};
 
@@ -24,7 +25,7 @@ class FinalDiagnostic extends React.Component<{}> {
     const { type, name, style, label, id } = this.props;
     return (
       <Text style={styles.spaceText} size-auto>
-        <Icon type={type} name={name} style={style} />- {id} - {label}
+        <Icon type={type} name={name} style={style} /> {id} - {label}
       </Text>
     );
   }
@@ -42,7 +43,9 @@ export default class FinalDiagnosticsList extends React.PureComponent<
     } = this.props;
     let finalDiagnosticsRedux = nodes.filterByType(nodesType.finalDiagnostic);
 
-    const finalDiagnostics = [];
+    const finalDiagnosticsNull = [];
+    const finalDiagnosticsTrue = [];
+    const finalDiagnosticsFalse = [];
 
     for (let index in finalDiagnosticsRedux) {
       if (finalDiagnosticsRedux.hasOwnProperty(index)) {
@@ -58,23 +61,57 @@ export default class FinalDiagnosticsList extends React.PureComponent<
             type = 'AntDesign';
             name = 'checkcircle';
             style.color = liwiColors.greenColor;
+            finalDiagnosticsTrue.push({
+              ...finalDiagnostic,
+              type,
+              name,
+              style,
+            });
+
             break;
           case false:
             type = 'Entypo';
             name = 'circle-with-cross';
             style.color = liwiColors.redColor;
+            finalDiagnosticsFalse.push({
+              ...finalDiagnostic,
+              type,
+              name,
+              style,
+            });
             break;
           case null:
             type = 'AntDesign';
             name = 'minuscircleo';
             style.color = liwiColors.darkerGreyColor;
+            finalDiagnosticsNull.push({
+              ...finalDiagnostic,
+              type,
+              name,
+              style,
+            });
             break;
         }
-
-        finalDiagnostics.push({ ...finalDiagnostic, type, name, style });
       }
     }
 
-    return finalDiagnostics.map((f) => <FinalDiagnostic {...f} key={f.id} />);
+    return (
+      <React.Fragment>
+        <LiwiTitle3>True</LiwiTitle3>
+        {finalDiagnosticsTrue.map((f) => (
+          <FinalDiagnostic {...f} key={f.id} />
+        ))}
+
+        <LiwiTitle3>False</LiwiTitle3>
+        {finalDiagnosticsFalse.map((f) => (
+          <FinalDiagnostic {...f} key={f.id} />
+        ))}
+
+        <LiwiTitle3>Null</LiwiTitle3>
+        {finalDiagnosticsNull.map((f) => (
+          <FinalDiagnostic {...f} key={f.id} />
+        ))}
+      </React.Fragment>
+    );
   }
 }
