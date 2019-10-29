@@ -51,6 +51,7 @@ export const nextChildFinalQs = (instance, finalQs) => {
   let arrayBoolean = top_conditions.map((condition) => {
     return comparingTopConditions(finalQs, condition);
   });
+
   return reduceConditionArrayBoolean(arrayBoolean);
 };
 

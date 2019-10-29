@@ -4,7 +4,7 @@ import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
 
 import { createSwitchNavigator } from 'react-navigation';
 import MainTabNavigator from './Main.navigation';
-import Emergency from '../../screens/emergency';
+import Emergency from '../../screens/Emergency';
 import i18n from '../../utils/i18n';
 
 const createRootNavigator = (signedIn = false) => {
