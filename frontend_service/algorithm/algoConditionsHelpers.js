@@ -50,49 +50,6 @@ export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
   );
 
 /**
- * Parse the formula and calculate it if possible
- *
- *  @param node
- * @returns {number}
- *
- */
-export const calculateFormula = (node) => {
-  const state$ = store.getState();
-
-  // Regex to find the brackets [] in the formula
-  const findBracketId = /\[(.*?)\]/gi;
-  let ready = true;
-
-  // Function to change the [id] into the answered value
-  const replaceBracketToValue = (item) => {
-    // Get the id from the brackets []
-    let id = item.match(/\d/g).join('');
-
-    // Get value of this node
-    const nodeInBracket = state$.nodes[id];
-
-    if (
-      nodeInBracket.value === null ||
-      (nodeInBracket.value === 0 && nodeInBracket.answer === null)
-    ) {
-      ready = false;
-      return item;
-    } else {
-      return nodeInBracket.value;
-    }
-  };
-
-  // Replace every bracket in the formula with it's value
-  let formula = node.formula.replace(findBracketId, replaceBracketToValue);
-
-  if (ready) {
-    return eval(formula);
-  } else {
-    return null;
-  }
-};
-
-/**
  * Does this node has the right answer ?
  * If not answered return null
  *
@@ -117,7 +74,10 @@ const checkOneCondition = (child, wantedId, nodeId) => {
         'background: #FF0000; color: #F6F3ED; padding: 5px',
         child,
         wantedId,
-        nodeId
+        nodeId,
+        state$.nodes[nodeId].answer,
+        typeof nodeId,
+        typeof state$.nodes[nodeId].answer
       );
     }
     return Number(state$.nodes[nodeId].answer) === Number(wantedId);
@@ -127,12 +87,12 @@ const checkOneCondition = (child, wantedId, nodeId) => {
 
 /**
  * Check a complete condition by operator
- *  @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} child
+ * @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} child
  * @param {top_condition} conditions
  * @returns {null || false || true}
  *
  */
-export const comparingTopConditions = (child, conditions) => {
+export const comparingTopConditions = (child, condition) => {
 
   const {
     first_id,
@@ -142,7 +102,7 @@ export const comparingTopConditions = (child, conditions) => {
     second_node_id,
     second_id,
     second_type,
-  } = conditions;
+  } = condition;
   let second_sub_condition;
   let first_sub_condition;
 

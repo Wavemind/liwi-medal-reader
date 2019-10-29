@@ -1,8 +1,7 @@
+import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
-import Home from './Home.screen';
-import { withSessions } from '../../engine/contexts/Sessions.context';
+import ConfirmationView from './ConfirmationView';
 import { withApplication } from '../../engine/contexts/Application.context';
-import { WrapperNavigation } from '../../utils/WrapperNavigation';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -11,5 +10,5 @@ const mapStateToProps = (medicalCase) => {
 };
 
 export default connect(mapStateToProps)(
-  withSessions(withApplication(WrapperNavigation(Home)))
+  withNavigation(withApplication(ConfirmationView))
 );

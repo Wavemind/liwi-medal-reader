@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { Button, Fab, Icon, View } from 'native-base';
 import RNRestart from 'react-native-restart';
-import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/api/LocalStorage';
+import {
+  clearLocalStorage,
+  clearPatients,
+  getItems,
+  setItem,
+} from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 import { store } from '../../frontend_service/store';
 
@@ -66,6 +71,7 @@ export default class WavemindTools extends Component {
                 onPress={async () => {
                     let sessions = await getItems('sessions');
                     let algorithms = await getItems('algorithms');
+                    let patients = await getItems('patients');
                     let state$ = store.getState();
 
                     // eslint-disable-next-line no-console
@@ -73,6 +79,7 @@ export default class WavemindTools extends Component {
                       state$: state$,
                       sessions: sessions,
                       algorithms: algorithms,
+                      patients: patients,
                     });
                   }}
               >

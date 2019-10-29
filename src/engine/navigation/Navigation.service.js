@@ -76,10 +76,11 @@ function resetActionStack(routeName, params) {
  * @param currentState: Navigation : The state of react-navigation
  */
 function onNavigationStateChange(prevState, currentState) {
-  // eslint-disable-next-line no-unused-vars
   let activeRoute = getActiveRouteName(currentState);
   let prev = getActiveRouteName(prevState);
   let cu = getCurrentRoute(currentState);
+
+
 
   // prevent multiple execution
   if (activeRoute !== prev) {

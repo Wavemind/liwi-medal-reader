@@ -5,11 +5,28 @@ import { ScrollView, TouchableHighlight } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text, View } from 'native-base';
 import { styles } from './Home.style';
+import { getItems } from '../../engine/api/LocalStorage';
+import { Toaster } from '../../utils/CustomToast';
+import ConfirmationView from '../../components/ConfirmationView';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Home extends React.Component<Props, State> {
+  state = {
+    algorithms: [],
+    propsToolTipVisible: false,
+  };
+
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
+    const { algorithms, propsToolTipVisible } = this.state;
+    const { medicalCase } = this.props;
+    return (
+      algorithms !== nextState.algorithms ||
+      propsToolTipVisible !== nextState.propsToolTipVisible ||
+      Object.compare(medicalCase, nextProps.medicalCase)
+    );
+  }
 
   logout = async () => {
     const {
@@ -18,21 +35,60 @@ export default class Home extends React.Component<Props, State> {
     await lockSession();
   };
 
+  async componentWillMount() {
+    let algorithms = await getItems('algorithms');
+    this.setState({ algorithms });
+  }
+
+  callBackClose = () => {
+    this.setState({
+      propsToolTipVisible: false,
+    });
+  };
+
   render() {
     const {
       navigation,
       app: { t },
+      medicalCase,
     } = this.props;
+
+    const { algorithms, propsToolTipVisible } = this.state;
 
     return (
       <ScrollView>
         <View padding-auto>
           <View flex-container-column>
+            <ConfirmationView
+              propsToolTipVisible={propsToolTipVisible}
+              nextRoute="PatientUpsert"
+              idPatient={null}
+              callBackClose={this.callBackClose}
+            />
             <View w50>
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('PatientUpsert', { idPatient: null })}
+                onPress={() => {
+                  if (algorithms.length === 0) {
+                    Toaster(t('work_case:no_algorithm'), {
+                      type: 'danger',
+                      duration: 4000,
+                    });
+                  } else {
+                    if (
+                      medicalCase.id === undefined ||
+                      medicalCase.isCreating === false
+                    ) {
+                      navigation.navigate('PatientUpsert', {
+                        idPatient: null,
+                        newMedicalCase: true,
+                      });
+                    } else {
+                      this.setState({ propsToolTipVisible: true });
+                    }
+                  }
+                }}
               >
                 <View>
                   <Icon
@@ -41,7 +97,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:patient_add')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:patient_add')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -59,7 +117,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:patient_list')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:patient_list')}
+                  </Text>
                 </View>
               </TouchableHighlight>
 
@@ -75,7 +135,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:case_in_progress')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:case_in_progress')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -93,7 +155,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:synchronize')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:synchronize')}
+                  </Text>
                 </View>
               </TouchableHighlight>
 
@@ -109,7 +173,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:settings')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:settings')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -127,7 +193,9 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:my_profile')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:my_profile')}
+                  </Text>
                 </View>
               </TouchableHighlight>
 
@@ -143,11 +211,12 @@ export default class Home extends React.Component<Props, State> {
                     style={styles.icons}
                     navigation
                   />
-                  <Text size-auto center>{t('navigation:logout')}</Text>
+                  <Text size-auto center>
+                    {t('navigation:logout')}
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
-
           </View>
         </View>
       </ScrollView>

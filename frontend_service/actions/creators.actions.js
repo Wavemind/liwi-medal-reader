@@ -42,8 +42,8 @@ export const dispatchNodeAction = (nodeId, callerId, callerType) => ({
   },
 });
 
-export const dispatchFormulaNodeAction = (nodeId) => ({
-  type: actions.DISPATCH_FORMULA_NODE_ACTION,
+export const dispatchRelatedNodeAction = (nodeId) => ({
+  type: actions.DISPATCH_RELATED_NODE_ACTION,
   payload: {
     nodeId,
   },
