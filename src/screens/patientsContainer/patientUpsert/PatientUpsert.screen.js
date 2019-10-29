@@ -43,7 +43,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         this.setState({ patient, firstRender: true });
       } else {
         // Generate medical case
-        let medicalCase = await this.generateMedicalCase(patient);
+        let medicalCase = await this.generateMedicalCase();
         medicalCase.patient = patient;
 
         await setMedicalCase(medicalCase);
@@ -56,8 +56,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         });
       }
     } else {
-      patient = await this.getPatient();
-      await this.generateMedicalCase(patient);
+      await this.generateMedicalCase();
     }
   }
 
@@ -135,7 +134,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   savePatient = async () => {
     const { patient, medicalCase } = this.state;
-    patient.medicalCase = medicalCase;
+    patient.medicalCase.push(medicalCase);
     let errors = await patient.validate();
 
     // Create patient if there are no errors
