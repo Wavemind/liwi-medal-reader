@@ -3,7 +3,7 @@
 import { NavigationScreenProps } from 'react-navigation';
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
-import HealthCaresQuestions from '../healthCaresQuestions';
+import HealthCaresQuestions from '../HealthCaresQuestions';
 import HealthCares from '../HealthCares';
 import { styles } from './DiagnosticsStrategy.style';
 import Stepper from '../../../../components/Stepper';
