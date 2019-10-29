@@ -20,6 +20,11 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        confirm:{
+          message: 'Do you want to close the current case and create new one ?',
+          new: 'Create new case',
+          continue: 'Continue creating case'
+        },
         emergency: {
           emergency: 'Emergency Assistance',
           back: 'Back to home',

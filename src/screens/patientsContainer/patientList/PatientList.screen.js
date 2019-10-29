@@ -2,7 +2,16 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
+import {
+  Button,
+  Icon,
+  Input,
+  Item,
+  List,
+  ListItem,
+  Text,
+  View,
+} from 'native-base';
 
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
@@ -15,6 +24,7 @@ import { getArray, getItems } from '../../../engine/api/LocalStorage';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import { medicalCaseStatus } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import ConfirmationView from '../../../components/ConfirmationView';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -22,6 +32,7 @@ type State = StateApplicationContext & {};
 export default class PatientList extends React.Component<Props, State> {
   state = {
     patients: [],
+    propsToolTipVisible: false,
     loading: false,
     searchTerm: '',
     orderByName: 'asc',
@@ -166,6 +177,12 @@ export default class PatientList extends React.Component<Props, State> {
     this.setState({ orderedFilteredPatients, loading: false });
   };
 
+  callBackClose() {
+    this.setState({
+      propsToolTipVisible: false,
+    });
+  }
+
   render() {
     const {
       loading,
@@ -173,10 +190,13 @@ export default class PatientList extends React.Component<Props, State> {
       orderByName,
       isGeneratingPatient,
       algorithms,
+      propsToolTipVisible,
     } = this.state;
 
     const {
       app: { t },
+      navigation,
+      medicalCase,
     } = this.props;
 
     return (
@@ -190,6 +210,12 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
+            <ConfirmationView
+              callBackClose={this.callBackClose}
+              propsToolTipVisible={propsToolTipVisible}
+              nextRoute="PatientUpsert"
+              idPatient={null}
+            />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
@@ -197,7 +223,19 @@ export default class PatientList extends React.Component<Props, State> {
                 rounded
                 light
                 red
-                onPress={this.newPatient}
+                onPress={() => {
+                  if (
+                    medicalCase.id === undefined ||
+                    medicalCase.isCreating === false
+                  ) {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: null,
+                      newMedicalCase: true,
+                    });
+                  } else {
+                    this.setState({ propsToolTipVisible: true });
+                  }
+                }}
                 disabled={isGeneratingPatient}
               >
                 <Icon type="MaterialCommunityIcons" name="plus" white />
