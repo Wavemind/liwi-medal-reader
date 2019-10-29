@@ -165,6 +165,7 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.list:
         WrapperAnswer = () => <List question={question} {...this.props} />;
         break;
+      case displayFormats.reference:
       case displayFormats.formula:
         WrapperAnswer = () => <Formula question={question} {...this.props} />;
         break;
@@ -187,7 +188,8 @@ export default class Question extends React.Component<Props, State> {
     return (
       question.counter !== nextProps.question.counter ||
       question.answer !== nextProps.question.answer ||
-      question.value !== nextProps.question.value
+      question.value !== nextProps.question.value ||
+      question.id !== nextProps.question.id
     );
   }
 
@@ -233,7 +235,7 @@ export default class Question extends React.Component<Props, State> {
         <View style={styles.flexRow}>
           <LabelQuestion
             key={question.id + '_label'}
-            label={question.counter + 'x - ' + question.label}
+            label={(__DEV__ ? question.counter + 'x - ' : '') + question.label}
             flex={0.6}
             marginLeft={0}
             marginRight={10}

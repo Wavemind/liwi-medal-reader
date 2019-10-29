@@ -3,47 +3,38 @@ import * as React from 'react';
 import { Button, List, ListItem, Text, View } from 'native-base';
 import moment from 'moment';
 import type { NavigationScreenProps } from 'react-navigation';
-import _ from 'lodash';
 import { styles } from './PatientProfile.style';
 import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import {
-  categories,
-  routeDependingStatus,
-} from '../../../../frontend_service/constants';
-import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
+import { routeDependingStatus } from '../../../../frontend_service/constants';
+import ConfirmationView from '../../../components/ConfirmationView';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class PatientProfile extends React.Component<Props, State> {
   state = {
+    propsToolTipVisible: false,
     patient: {
       birthdate: '01/01/1900',
       medicalCases: [],
     },
     algorithms: [],
-    isGeneratingMedicalCase: false,
     firstRender: false,
   };
 
   async componentWillMount() {
-    const { navigation } = this.props;
-    navigation.addListener('willFocus', async () => {
-      await this.getPatient();
-    });
+    await this.getPatient();
   }
 
-  // Get patient data storaged in localstorage
+  // Fetch patient in localstorage
   async getPatient() {
     const { navigation } = this.props;
     let id = navigation.getParam('id');
 
     let patient = await getItemFromArray('patients', 'id', id);
     let algorithms = await getItems('algorithms');
-
     this.setState({
       patient,
       algorithms,
@@ -51,68 +42,32 @@ export default class PatientProfile extends React.Component<Props, State> {
     });
   }
 
-  // Generate new medicalCase with algo selected
-  generateMedicalCase = async () => {
-    const { patient } = this.state;
-
-    await this.setState({
-      isGeneratingMedicalCase: true,
-    });
-
-    // Get the last medicalcase for question unique vaccines etc
-    let lastMedicalCase = _.maxBy(patient.medicalCases, (medicalCase) => {
-      return new Date(medicalCase.createdDate).getTime();
-    });
-
-    let nodes = new NodesModel(lastMedicalCase.nodes);
-    let extraQuestions = nodes.filterBy(
-      [
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.chronicalCondition,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.vaccine,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.demographic,
-        },
-      ],
-      'OR',
-      'object'
-    );
-
-    let instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.create(patient.id, extraQuestions);
-    await this.getPatient();
-    await this.setState({
-      isGeneratingMedicalCase: false,
-    });
-    return false;
-  };
-
   // Select a medical case and redirect to patient's view
-  // TODO create a single composant for medicalList Unique in all app !
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase } = this.props;
     await setMedicalCase(medicalCase);
   };
 
+  callBackClose = () => {
+    this.setState({
+      propsToolTipVisible: false,
+    });
+  };
+
+  // TODO: L'edit n'a plus tellement de sense vu que maintenant rien n'est push dans le local storage tant qu'il ne créer pas de nouveau cas medical
+  // TODO: Est-ce que on ferait pas une nouvelle vue ?
+
   render() {
     const {
       patient,
       algorithms,
-      isGeneratingMedicalCase,
       firstRender,
+      propsToolTipVisible,
     } = this.state;
 
     const {
       navigation,
+      medicalCase,
       app: { t },
     } = this.props;
 
@@ -183,15 +138,7 @@ export default class PatientProfile extends React.Component<Props, State> {
         <Text>
           {moment(patient.birthdate).format('d MMMM YYYY')} - {patient.gender}
         </Text>
-        <Button
-          onPress={() =>
-            navigation.navigate('PatientUpsert', {
-              idPatient: patient.id,
-            })
-          }
-        >
-          <Text>{t('form:edit')}</Text>
-        </Button>
+
         <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
           <View flex>
@@ -205,10 +152,26 @@ export default class PatientProfile extends React.Component<Props, State> {
               )}
             </View>
             <View bottom-view>
+              <ConfirmationView
+                callBackClose={this.callBackClose}
+                propsToolTipVisible={propsToolTipVisible}
+                nextRoute="PatientUpsert"
+                idPatient={patient.id}
+              />
               <Button
-                light
-                onPress={() => this.generateMedicalCase()}
-                disabled={isGeneratingMedicalCase}
+                onPress={() => {
+                  if (
+                    medicalCase.id === undefined ||
+                    medicalCase.isCreating === false
+                  ) {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: null,
+                      newMedicalCase: true,
+                    });
+                  } else {
+                    this.setState({ propsToolTipVisible: true });
+                  }
+                }}
               >
                 <Text>{t('work_case:create')}</Text>
               </Button>

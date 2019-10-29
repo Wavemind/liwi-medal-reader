@@ -11,13 +11,12 @@ import {
   dispatchNodeAction,
   dispatchQuestionsSequenceAction,
   setAnswer,
-  dispatchFormulaNodeAction,
+  dispatchRelatedNodeAction,
 } from '../actions/creators.actions';
 import {
   getParentsNodes,
   getQuestionsSequenceStatus,
 } from './algoTreeDiagnosis';
-import { calculateFormula } from './algoConditionsHelpers';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 
@@ -41,13 +40,10 @@ export const epicCatchAnswer = (action$, state$) =>
         'background: #F6F3EE; color: #b84c4c; padding: 5px'
       );
 
-      // eslint-disable-next-line no-console
-      console.log({ STATE: state$.value }, index);
-
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
       const relatedQuestionsSequence = currentNode.qs;
-      const relatedFormulaNodes = currentNode.fn;
+      const relatedNodes = currentNode.referenced_in;
 
       let arrayActions = [];
 
@@ -57,11 +53,10 @@ export const epicCatchAnswer = (action$, state$) =>
         )
       );
 
-      // IF this is a question we check formula
+      // We tell the related nodes to update themself
       if (currentNode.type === nodesType.question) {
-        // TODO maybe we have to make formula here, not necessary dispatch action, what think others ?
-        relatedFormulaNodes.map((formulaNode) =>
-          arrayActions.push(dispatchFormulaNodeAction(formulaNode.id))
+        relatedNodes.map((relatedNodeId) =>
+          arrayActions.push(dispatchRelatedNodeAction(relatedNodeId))
         );
       }
 
@@ -81,7 +76,6 @@ export const epicCatchAnswer = (action$, state$) =>
  * @params [Object] action$, [Object] state$
  * @return [Array][Object] arrayActions
  **/
-// TODO : Handle HealthCares
 export const epicCatchDispatchNodeAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.HANDLE_NODE_CHANGED),
@@ -97,17 +91,6 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
         caller = state$.value.diagnostics[callerId];
       else if (callerType !== nodesType.diagnostic)
         caller = state$.value.nodes[callerId];
-
-      // eslint-disable-next-line no-console
-      console.log(
-        '%c --- epicCatchDispatchNodeAction --- ',
-        'background: #FF4500; color: #F6F3ED; padding: 5px',
-        'déclenché :',
-        nodeId,
-        ' > : ',
-        callerId,
-        callerType
-      );
 
       let nodeChildren;
 
@@ -139,8 +122,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           // TODO : Handle QS
           // HERE calcule condition of node type PS
           return of(dispatchCondition(nodeId, caller.id));
-        //return of(dispatchQuestionsSequenceAction(caller, node));
-        default:
+          default:
           // eslint-disable-next-line no-console
           console.log(
             '%c --- DANGER --- ',
@@ -185,17 +167,11 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       }
 
       if (questionsSequenceCondition === true) {
-        answerId =
-          currentQuestionsSequence.answers[
-            Object.keys(currentQuestionsSequence.answers).first()
-          ].id;
+        answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).first()].id;
       } else if (questionsSequenceCondition === false || statusQs === false) {
         // statusQd === false -> can't access the end of the QS anymore
         // questionsSequenceCondition === false -> can't find a condition to true
-        answerId =
-          currentQuestionsSequence.answers[
-            Object.keys(currentQuestionsSequence.answers).second()
-          ].id;
+        answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).second()].id;
       }
 
       // eslint-disable-next-line no-console
@@ -251,27 +227,25 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
 
 export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
   action$.pipe(
-    ofType(actions.DISPATCH_FORMULA_NODE_ACTION),
+    ofType(actions.DISPATCH_RELATED_NODE_ACTION),
     switchMap((action) => {
-      let actions = [];
-
       const { nodeId } = action.payload;
-
       const currentNode = state$.value.nodes[nodeId];
+      let actions = [];
+      let value = null;
 
-      // 0 to default
-      // If the node was already calcutate but we want to reset the node the value will still be 0 and setAnswer set to 0
-      let value = 0;
-
-      if (currentNode.display_format === displayFormats.formula) {
-        value = calculateFormula(currentNode);
+      switch (currentNode.display_format) {
+        case displayFormats.formula:
+          value = currentNode.calculateFormula();
+          break;
+        case displayFormats.reference:
+          value = currentNode.calculateReference();
+          break;
       }
 
       if (value !== currentNode.value) {
-        // actions.push(dispatchNodeAction(qs.id, indexChild, qs.type));
         actions.push(setAnswer(currentNode.id, value));
       }
-
       return of(...actions);
     })
   );
@@ -308,7 +282,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       if (
         state$.value.nodes[nodeId].display_format === displayFormats.formula
       ) {
-        calculateFormula(state$.value.nodes[nodeId]);
+        state$.value.nodes[nodeId].calculateFormula();
       }
 
       const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);
