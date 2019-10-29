@@ -177,7 +177,7 @@ export default class PatientList extends React.Component<Props, State> {
     this.setState({ orderedFilteredPatients, loading: false });
   };
 
-  callBackClose() {
+  callBackClose = () => {
     this.setState({
       propsToolTipVisible: false,
     });

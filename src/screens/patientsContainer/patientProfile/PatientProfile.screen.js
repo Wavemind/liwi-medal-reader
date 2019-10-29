@@ -48,11 +48,11 @@ export default class PatientProfile extends React.Component<Props, State> {
     await setMedicalCase(medicalCase);
   };
 
-  callBackClose() {
+  callBackClose = () => {
     this.setState({
       propsToolTipVisible: false,
     });
-  }
+  };
 
   // TODO: L'edit n'a plus tellement de sense vu que maintenant rien n'est push dans le local storage tant qu'il ne créer pas de nouveau cas medical
   // TODO: Est-ce que on ferait pas une nouvelle vue ?
