@@ -8,7 +8,6 @@ import {
   reduceConditionArrayBoolean,
 } from './algoConditionsHelpers';
 
-
 /**
  * Get the parents for an instance in a diagnostic
  * Can be multiple nodes
@@ -44,11 +43,15 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
  * @return {boolean|false|true|null}
  */
 export const nextChildFinalQs = (instance, finalQs) => {
-  let top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
+  let top_conditions = _.filter(
+    finalQs.top_conditions,
+    (top_condition) => top_condition.first_node_id === instance.id
+  );
   // We get the condition of the final link
-  return top_conditions.some((condition) => {
+  let arrayBoolean = top_conditions.map((condition) => {
     return comparingTopConditions(finalQs, condition);
   });
+  return reduceConditionArrayBoolean(arrayBoolean);
 };
 
 /**
@@ -116,7 +119,8 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
 
     // If this is not the final QS we calculate the conditonValue of the child
     if (child.id !== qs.id) {
-      childConditionValue = find(child.qs, (q) => q.id === qs.id).conditionValue;
+      childConditionValue = find(child.qs, (q) => q.id === qs.id)
+        .conditionValue;
 
       // Reset the child condition value
       if (currentNode.answer === null && childConditionValue === true) {
@@ -164,7 +168,8 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    * Initial Var
    */
   let currentNode = state$.value.nodes[instance.id];
-  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
+  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id)
+    .conditionValue;
 
   /**
    * Get the condition of the instance link
