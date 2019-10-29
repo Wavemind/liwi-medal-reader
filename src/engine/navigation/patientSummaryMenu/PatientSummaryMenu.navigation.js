@@ -20,6 +20,7 @@ export default class PatientSummary extends Component<Props, State> {
       navigation,
       medicalCase: { id },
       medicalCase,
+      app: { t },
     } = this.props;
 
     const styleImage = {
@@ -45,7 +46,7 @@ export default class PatientSummary extends Component<Props, State> {
               resizeMode="contain"
               source={require('../../../../assets/images/profil.png')}
             />
-            <Text center>Patient Profile</Text>
+            <Text center>{t('patient_summary_menu:patient_profile')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -63,7 +64,7 @@ export default class PatientSummary extends Component<Props, State> {
               style={styleImage}
               source={require('../../../../assets/images/summary.png')}
             />
-            <Text center>Current Summary</Text>
+            <Text center>{t('patient_summary_menu:current_summary')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -81,7 +82,7 @@ export default class PatientSummary extends Component<Props, State> {
               style={styleImage}
               source={require('../../../../assets/images/differential.png')}
             />
-            <Text center>Differential Diagnoses</Text>
+            <Text center>{t('patient_summary_menu:differential_diagnoses')}</Text>
           </TouchableOpacity>
         </View>
       </View>

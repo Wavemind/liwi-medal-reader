@@ -127,10 +127,10 @@ export default class SetCodeSession extends React.Component<Props, State> {
               >
                 <Text> {t('code_session_screen:set_code')} </Text>
               </Button>
-              <Text padded error>
+              <Text padded>
                 - {t('login:error_char')}
               </Text>
-              <Text padded error>
+              <Text padded>
                 - {t('login:error_letter')}
               </Text>
             </Form>

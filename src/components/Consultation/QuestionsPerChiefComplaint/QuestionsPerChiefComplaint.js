@@ -12,22 +12,15 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class QuestionsPerChiefComplaint extends React.Component<
-  Props,
-  State
-> {
+export default class QuestionsPerChiefComplaint extends React.Component<Props,
+  State> {
   // default settings
   state = {};
 
+  // TODO optimize this with scu ! @quentin
+
   render() {
     const { medicalCase, filterBy } = this.props;
-
-    // TODO optimize this with scu ! @quentin
-
-    // shouldComponentUpdate( nextProps, nextState );
-    // {
-    //
-    // }
 
     let chiefComplaints = medicalCase.nodes.filterByCategory(
       categories.chiefComplaint

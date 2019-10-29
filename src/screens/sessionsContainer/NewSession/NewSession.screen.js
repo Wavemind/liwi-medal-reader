@@ -109,7 +109,7 @@ export default class NewSession extends React.Component<Props, State> {
                 onPress={() => this.signIn()}
                 disabled={loading || success || !isConnected}
               >
-                <Text> {t('connect')} </Text>
+                <Text> {t('new_session:connect')} </Text>
               </Button>
             </Form>
           </ScrollView>

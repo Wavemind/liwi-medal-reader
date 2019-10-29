@@ -42,7 +42,6 @@ export default class Algorithms extends React.Component<Props, State> {
             style={algorithm.selected ? styles.selected : styles.view}
           >
             <H2>{algorithm.name}</H2>
-            <Text>{algorithm.description} </Text>
             <Text>versions : {algorithm.versions}</Text>
             <RightView>
               <Button

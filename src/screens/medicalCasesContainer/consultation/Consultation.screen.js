@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import { View } from 'native-base';
 
 import { NavigationScreenProps } from 'react-navigation';
-import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
+import { styles } from '../DiagnosticsStrategyContainer/DiagnosticsStrategy/DiagnosticsStrategy.style';
 
 import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -76,7 +76,11 @@ export default class Consultation extends React.Component<Props, State> {
                       operator: 'equal',
                       value: categories.exposure,
                     },
-                    { by: 'counter', operator: 'more', value: 0 },
+                    {
+                      by: 'category',
+                      operator: 'equal',
+                      value: categories.vitalSign,
+                    },
                   ]}
                 />
               </Suspense>
@@ -99,7 +103,6 @@ export default class Consultation extends React.Component<Props, State> {
                       operator: 'equal',
                       value: categories.other,
                     },
-                    { by: 'counter', operator: 'more', value: 0 },
                   ]}
                 />
               </Suspense>

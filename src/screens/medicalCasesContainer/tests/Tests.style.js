@@ -7,4 +7,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
+  pad: {
+    paddingHorizontal: 20,
+    flex: 1,
+  },
 });

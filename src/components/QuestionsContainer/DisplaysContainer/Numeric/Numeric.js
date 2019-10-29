@@ -20,13 +20,11 @@ export default class Numeric extends React.Component<Props, State> {
   }
 
   state = {
-    style: null,
+    style: {
+      borderBottomColor: liwiColors.blackLightColor,
+      borderBottomWidth: 1,
+    },
   };
-
-  _focus = () =>
-    this.setState({
-      style: { borderColor: liwiColors.greenColor },
-    });
 
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
@@ -60,13 +58,11 @@ export default class Numeric extends React.Component<Props, State> {
         keyboardType = 'number-pad';
         break;
     }
-    let value = String(question.value);
 
     if (
       unavailableAnswer !== undefined &&
       question.answer === unavailableAnswer.id
     ) {
-      value = null;
       placeholder = t('question:unavailable');
     }
 
@@ -76,9 +72,8 @@ export default class Numeric extends React.Component<Props, State> {
           keyboardType={keyboardType}
           question
           numeric
-          defaultValue={question.answer !== null ? value : null}
+          defaultValue={question.value !== null ? String(question.value) : null}
           style={style}
-          onFocus={this._focus}
           onEndEditing={this._onEndEditing}
           placeholder={placeholder}
         />
