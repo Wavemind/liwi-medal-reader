@@ -155,14 +155,19 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    */
   calculateReference() {
     const state$ = store.getState();
+
+    // Get X and Y
     let x = state$.nodes[this.reference_table_x_id];
     let y = state$.nodes[this.reference_table_y_id];
 
     // TODO: Remove when decision about date format is taken
+    // TODO: If it's zscore question take format of date in days otherwise in months
+    // TODO: Get days or months between today and X/Y value
     const dateFormat = this.label === 'Weight for age (z-score)' ? 'days' : 'months';
     x = x.display_format === displayFormats.date ? moment().diff(moment(x.value).toDate(), dateFormat) : x.value;
     y = y.display_format === displayFormats.date ? moment().diff(moment(y.value).toDate(), dateFormat) : y.value;
 
+    // Get reference table for male or female
     const reference = state$.patient.gender === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
     let value = null;
     let previousKey = null;

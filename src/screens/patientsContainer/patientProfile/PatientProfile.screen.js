@@ -8,7 +8,7 @@ import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { routeDependingStatus } from '../../../../frontend_service/constants';
-import { ConfirmationView } from '../../../components/ConfirmationView/ConfirmationView';
+import ConfirmationView from '../../../components/ConfirmationView';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -47,6 +47,12 @@ export default class PatientProfile extends React.Component<Props, State> {
     const { setMedicalCase } = this.props;
     await setMedicalCase(medicalCase);
   };
+
+  callBackClose() {
+    this.setState({
+      propsToolTipVisible: false,
+    });
+  }
 
   // TODO: L'edit n'a plus tellement de sense vu que maintenant rien n'est push dans le local storage tant qu'il ne créer pas de nouveau cas medical
   // TODO: Est-ce que on ferait pas une nouvelle vue ?
@@ -147,18 +153,20 @@ export default class PatientProfile extends React.Component<Props, State> {
             </View>
             <View bottom-view>
               <ConfirmationView
+                callBackClose={this.callBackClose}
                 propsToolTipVisible={propsToolTipVisible}
-                nextView={() =>
-                  navigation.navigate('PatientUpsert', {
-                    idPatient: patient.id,
-                  })
-                }
+                nextRoute="PatientUpsert"
+                idPatient={patient.id}
               />
               <Button
                 onPress={() => {
-                  if (medicalCase.id === undefined) {
+                  if (
+                    medicalCase.id === undefined ||
+                    medicalCase.isCreating === false
+                  ) {
                     navigation.navigate('PatientUpsert', {
-                      idPatient: patient.id,
+                      idPatient: null,
+                      newMedicalCase: true,
                     });
                   } else {
                     this.setState({ propsToolTipVisible: true });

@@ -7,7 +7,7 @@ import { Icon, Text, View } from 'native-base';
 import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { Toaster } from '../../utils/CustomToast';
-import { ConfirmationView } from '../../components/ConfirmationView/ConfirmationView';
+import ConfirmationView from '../../components/ConfirmationView';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -17,6 +17,17 @@ export default class Home extends React.Component<Props, State> {
     algorithms: [],
     propsToolTipVisible: false,
   };
+
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
+    const { algorithms, propsToolTipVisible } = this.state;
+    const { medicalCase } = this.props;
+    return (
+      algorithms !== nextState.algorithms ||
+      propsToolTipVisible !== nextState.propsToolTipVisible ||
+      Object.compare(medicalCase, nextProps.medicalCase)
+    );
+  }
+
   logout = async () => {
     const {
       app: { lockSession },
@@ -28,6 +39,12 @@ export default class Home extends React.Component<Props, State> {
     let algorithms = await getItems('algorithms');
     this.setState({ algorithms });
   }
+
+  callBackClose = () => {
+    this.setState({
+      propsToolTipVisible: false,
+    });
+  };
 
   render() {
     const {
@@ -44,11 +61,9 @@ export default class Home extends React.Component<Props, State> {
           <View flex-container-column>
             <ConfirmationView
               propsToolTipVisible={propsToolTipVisible}
-              nextView={() =>
-                navigation.navigate('PatientUpsert', {
-                  idPatient: null,
-                })
-              }
+              nextRoute="PatientUpsert"
+              idPatient={null}
+              callBackClose={this.callBackClose}
             />
             <View w50>
               <TouchableHighlight
@@ -61,9 +76,13 @@ export default class Home extends React.Component<Props, State> {
                       duration: 4000,
                     });
                   } else {
-                    if (medicalCase.id === undefined) {
+                    if (
+                      medicalCase.id === undefined ||
+                      medicalCase.isCreating === false
+                    ) {
                       navigation.navigate('PatientUpsert', {
                         idPatient: null,
+                        newMedicalCase: true,
                       });
                     } else {
                       this.setState({ propsToolTipVisible: true });

@@ -4,9 +4,8 @@ import { ScrollView } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
 import { styles } from './ConfirmationView.styles';
 import Tooltip from '../Tooltip/tooltip';
-import { LiwiTitle2 } from '../../template/layout';
 
-export class ConfirmationView extends React.Component<Props, State> {
+export default class ConfirmationView extends React.Component<Props, State> {
   state = {
     toolTipVisible: false,
   };
@@ -27,39 +26,55 @@ export class ConfirmationView extends React.Component<Props, State> {
   }
 
   _renderToolTipContent = () => {
-    const { nextView } = this.props;
+    const {
+      nextRoute,
+      idPatient,
+      app: { t },
+      navigation,
+      callBackClose,
+      medicalCase,
+    } = this.props;
+
     return (
       <View>
         <ScrollView>
           <View onStartShouldSetResponder={() => true}>
-            <LiwiTitle2>Vraiment fermer votre cas ?</LiwiTitle2>
+            <Text style={styles.pad}>{t('confirm:message')}</Text>
             <View flex-container-column>
               <View w50>
                 <Button
                   w50
                   iconLeft
                   onPress={() => {
+                    if (medicalCase.isCreating) {
+                      navigation.navigate(nextRoute, {
+                        idPatient: idPatient,
+                        newMedicalCase: false,
+                      });
+                    }
+
                     this.setState({ toolTipVisible: false });
+                    callBackClose();
                   }}
                   style={styles.buttonPrev}
                 >
-                  <Text>Annuler</Text>
-                  <Icon
-                    name="cancel"
-                    type="MaterialCommunityIcons"
-                    style={styles.icon}
-                  />
+                  <Text>{t('continue')}</Text>
+                  <Icon name="edit" type="AntDesign" style={styles.icon} />
                 </Button>
                 <Button
                   w50
                   success
                   onPress={() => {
                     this.setState({ toolTipVisible: false });
-                    nextView();
+                    callBackClose();
+                    navigation.navigate(nextRoute, {
+                      idPatient: idPatient,
+                      newMedicalCase: true,
+                    });
                   }}
                   style={styles.buttonNext}
                 >
-                  <Text>Valider</Text>
+                  <Text>{t('new')}</Text>
                   <Icon
                     name="arrowright"
                     type="AntDesign"
@@ -84,6 +99,7 @@ export class ConfirmationView extends React.Component<Props, State> {
    * @param toolTip : data from the tooltip like origin on screen and size gives the position of the tooltip
    */
   onCloseToolTip = (reactNative, toolTip) => {
+    const { callBackClose } = this.props;
     let xTouch = reactNative.nativeEvent.pageX;
     let xTooltip = toolTip.tooltipOrigin.x;
     let xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
@@ -99,6 +115,7 @@ export class ConfirmationView extends React.Component<Props, State> {
 
     if (!insideContent) {
       this.setState({ toolTipVisible: false });
+      callBackClose();
     }
   };
 

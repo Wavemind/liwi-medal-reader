@@ -24,35 +24,39 @@ export default class PatientUpsert extends React.Component<Props, State> {
   state = {
     errors: {},
     patient: null,
-    medicalCase: {},
     loading: true,
     algorithmReady: false,
   };
 
   initializeComponent = async () => {
-    const { navigation, setMedicalCase } = this.props;
+    const { navigation, setMedicalCase, medicalCase } = this.props;
     let patient = {};
     let patientId = navigation.getParam('idPatient');
+    let newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     let algorithms = await getItems('algorithms');
 
-    if (patientId === null) {
+    if (patientId === null && newMedicalCase === true) {
       patient = new PatientModel();
-    } else {
+    } else if (patientId !== null && newMedicalCase === true) {
       patient = await this.getPatient();
+    } else if (newMedicalCase === false) {
+      patient = new PatientModel(medicalCase.patient);
     }
 
     if (algorithms.length === 0) {
       this.setState({ patient });
     } else {
       // Generate medical case
-      let medicalCase = await this.generateMedicalCase(patient);
-      medicalCase.patient = patient;
-
-      await setMedicalCase(medicalCase);
+      let generatedMedicalCase;
+      if (newMedicalCase) {
+        generatedMedicalCase = await this.generateMedicalCase();
+        generatedMedicalCase.patient = patient;
+        generatedMedicalCase.isCreating = true;
+        await setMedicalCase(generatedMedicalCase);
+      }
 
       this.setState({
         patient,
-        medicalCase,
         algorithmReady: true,
         loading: false,
       });
@@ -104,6 +108,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   updatePatientValue = async (key, value) => {
     const { patient } = this.state;
+    const { updatePatient: updatePatient } = this.props;
+    updatePatient(key, value);
     patient[key] = value;
     await this.setState({ patient });
   };
@@ -127,9 +133,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @params [Object] patient
    * @return [Object] medical case
    */
-  generateMedicalCase = async (patient) => {
-    let instanceMedicalCase = new MedicalCaseModel(patient);
-    await instanceMedicalCase.create(patient);
+  generateMedicalCase = async () => {
+    let instanceMedicalCase = new MedicalCaseModel();
+    await instanceMedicalCase.create();
     return instanceMedicalCase;
   };
 
@@ -137,11 +143,14 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * Set patient and medical case in localStorage
    */
   savePatient = async () => {
-    const { patient, medicalCase } = this.state;
+    const { patient } = this.state;
+    const { updateMedicalCaseProperty, medicalCase } = this.props;
     let errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
+      medicalCase.isCreating = false;
+      updateMedicalCaseProperty('isCreating', false);
       patient.medicalCases.push(medicalCase);
       await patient.save();
       return true;
@@ -153,35 +162,34 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const {
-      patient,
-      errors,
-      loading,
-      algorithmReady,
-    } = this.state;
+    const { patient, errors, loading, algorithmReady } = this.state;
 
     const {
       app: { t },
       medicalCase,
     } = this.props;
 
-    // Get nodes to display in registration stage
-    let extraQuestions = medicalCase.nodes?.filterBy(
-      [
-        {
-          by: 'stage',
-          operator: 'equal',
-          value: stage.registration,
-        },
-      ],
-      'OR',
-      'object',
-      false
-    );
+    let extraQuestions = [];
+    if (medicalCase.nodes !== undefined) {
+      // Get nodes to display in registration stage
+      extraQuestions = medicalCase.nodes?.filterBy(
+        [
+          {
+            by: 'stage',
+            operator: 'equal',
+            value: stage.registration,
+          },
+        ],
+        'OR',
+        'object',
+        false
+      );
+    }
 
     let hasNoError = false;
+
     if (patient !== null) {
-      hasNoError = !_.isEmpty(patient.validate());
+      hasNoError = !_.isEmpty(patient?.validate());
     }
 
     return (
