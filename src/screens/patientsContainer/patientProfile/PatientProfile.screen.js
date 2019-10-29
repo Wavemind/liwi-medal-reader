@@ -30,13 +30,11 @@ export default class PatientProfile extends React.Component<Props, State> {
 
   // Fetch patient in localstorage
   async getPatient() {
-    console.log('2');
     const { navigation } = this.props;
     let id = navigation.getParam('id');
 
     let patient = await getItemFromArray('patients', 'id', id);
     let algorithms = await getItems('algorithms');
-    console.log('3');
     this.setState({
       patient,
       algorithms,
@@ -123,7 +121,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     });
 
     return !firstRender ? (
-      <LiwiLoader/>
+      <LiwiLoader />
     ) : (
       <View padding-auto flex>
         <LiwiTitle2 noBorder>
@@ -141,7 +139,7 @@ export default class PatientProfile extends React.Component<Props, State> {
         >
           <Text>{t('form:edit')}</Text>
         </Button>
-        <SeparatorLine style={styles.bottomMargin}/>
+        <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
           <View flex>
             <View>
