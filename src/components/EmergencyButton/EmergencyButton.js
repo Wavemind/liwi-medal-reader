@@ -10,7 +10,6 @@ export default class EmergencyButton extends Component {
 
   render() {
     const { active } = this.state;
-
     return (
       <View>
         <Fab
@@ -20,6 +19,7 @@ export default class EmergencyButton extends Component {
           containerStyle={__DEV__ ? styles.container : {}}
           position="bottomRight"
           onPress={() => {
+            let cu = NavigationService.getCurrentRoute();
             const {
               // eslint-disable-next-line react/prop-types
               app: { logged },
@@ -34,9 +34,13 @@ export default class EmergencyButton extends Component {
               navigationGoBack = 'UnlockSession';
             }
 
-            NavigationService.navigate('Emergency', {
-              navigationGoBack: navigationGoBack,
-            });
+            if (cu.routeName === 'Emergency') {
+              NavigationService.navigate(navigationGoBack);
+            } else {
+              NavigationService.navigate('Emergency', {
+                navigationGoBack: navigationGoBack,
+              });
+            }
           }}
         >
           <Icon name="warning" type="FontAwesome" style={styles.icon} />
