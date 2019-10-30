@@ -63,7 +63,7 @@ i18n
         menu: {
           triage: 'Triage',
           first_look_assessments: 'First look assessment',
-          vital_signs: 'Basic measurments',
+          vital_signs: 'Basic measurements',
           chronical_conditions: 'Chronical conditions',
           chief_complaints: 'Complaint Categories',
           consultation: 'Consultation',

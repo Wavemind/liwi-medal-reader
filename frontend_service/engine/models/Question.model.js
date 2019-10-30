@@ -14,17 +14,6 @@ const references = {
 
 const { basic, mandatory, triage, priority } = priorities;
 
-// Function used to order the keys in the array of values
-function compare(a, b) {
-  if (Number(a) < Number(b)) {
-    return -1;
-  }
-  if (Number(a) > Number(b)) {
-    return 1;
-  }
-  return 0;
-}
-
 interface QuestionInterface {
   answer: string;
   answers: Object;
@@ -200,7 +189,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
     if (x !== null && y !== null && x in reference) {
       // Order the keys
-      let arr = Object.keys(reference[x]).sort(compare);
+      let arr = Object.keys(reference[x]).sortByNumber();
 
       // if value smaller than smallest element return the smaller value
       if (reference[x][arr.first()] > y) {
