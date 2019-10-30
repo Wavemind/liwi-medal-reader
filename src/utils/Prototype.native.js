@@ -86,6 +86,19 @@ Array.prototype.last = function() {
   return this[this.length - 1];
 };
 
+// Function used to order the keys in the array of values
+Array.prototype.sortByNumber = function() {
+  return this.sort((a, b) => {
+    if (Number(a) < Number(b)) {
+      return -1;
+    }
+    if (Number(a) > Number(b)) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
 /**
  * Return a boolean if an array is empty
  * ex :
