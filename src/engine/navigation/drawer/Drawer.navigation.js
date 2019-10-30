@@ -28,6 +28,7 @@ export default class Drawer extends Component<Props, State> {
     const { props } = this;
     let b =
       nextProps.medicalCase.id !== props.medicalCase.id ||
+      nextProps.medicalCase.isCreating !== props.medicalCase.isCreating ||
       Object.compare(nextProps.navigation, props.navigation);
 
     return b;
@@ -87,7 +88,6 @@ export default class Drawer extends Component<Props, State> {
           <View style={styles.medical}>
             <View style={[styles.triage, styles.paddingCategory]}>
               <Text style={styles.title}>{t('menu:triage')}</Text>
-
               <Button
                 transparent
                 btnDrawer

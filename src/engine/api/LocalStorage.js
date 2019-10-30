@@ -49,7 +49,6 @@ export const getItemFromArray = async (key, index, id) => {
 export const setItemFromArray = async (key, newItem, id) => {
   const items = await getArray(key);
 
-
   if (Array.isArray(items)) {
     let index = findIndex(items, (item) => {
       return item.id === id;
