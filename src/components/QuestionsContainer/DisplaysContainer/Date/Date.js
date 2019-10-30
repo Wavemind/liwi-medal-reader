@@ -11,7 +11,6 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Date extends React.Component<Props, State> {
-
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
     return (
@@ -32,7 +31,12 @@ export default class Date extends React.Component<Props, State> {
 
   render() {
     const { question } = this.props;
-    const value = question.value === null ? 0 : question.value;
+    const value =
+      question.value === null
+        ? moment()
+            .subtract(2, 'year')
+            .toDate()
+        : question.value;
 
     return (
       <View answer>

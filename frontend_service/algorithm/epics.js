@@ -29,7 +29,7 @@ import {
 // TODO make PS change side effect
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
-    ofType(actions.SET_ANSWER),
+    ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
     switchMap((action) => {
       // Index is the id of the node that has just been answered
       const { index } = action.payload;
@@ -122,7 +122,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           // TODO : Handle QS
           // HERE calcule condition of node type PS
           return of(dispatchCondition(nodeId, caller.id));
-          default:
+        default:
           // eslint-disable-next-line no-console
           console.log(
             '%c --- DANGER --- ',
@@ -167,11 +167,17 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       }
 
       if (questionsSequenceCondition === true) {
-        answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).first()].id;
+        answerId =
+          currentQuestionsSequence.answers[
+            Object.keys(currentQuestionsSequence.answers).first()
+          ].id;
       } else if (questionsSequenceCondition === false || statusQs === false) {
         // statusQd === false -> can't access the end of the QS anymore
         // questionsSequenceCondition === false -> can't find a condition to true
-        answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).second()].id;
+        answerId =
+          currentQuestionsSequence.answers[
+            Object.keys(currentQuestionsSequence.answers).second()
+          ].id;
       }
 
       // eslint-disable-next-line no-console
