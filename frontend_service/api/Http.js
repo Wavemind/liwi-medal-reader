@@ -52,7 +52,13 @@ export const post = async (params, body = {}, userId = null) => {
   if (!request.ok) {
     handleHttpError(response.errors);
   }
-  return true;
+
+  // TODO catch resut of success medicalcases POST by status
+  if (request.status === 404) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 // @params [String] email, [String] password

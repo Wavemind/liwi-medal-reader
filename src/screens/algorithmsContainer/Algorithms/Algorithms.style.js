@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#8B8393',
     backgroundColor: '#ffffff',
   },
+  smallContent: {
+    padding: 10,
+  },
   selected: {
     flex: 1,
     height: 100,

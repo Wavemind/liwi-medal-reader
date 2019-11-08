@@ -80,6 +80,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
             style={[
               value === value1 ? styles.active : null,
               styles.buttonSplit,
+              { zIndex: 100000 },
             ]}
             onPress={() => this._handleChangeValue(value1)}
           >
