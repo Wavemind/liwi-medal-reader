@@ -4,9 +4,13 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Button, H2, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
-import { getItems } from '../../../engine/api/LocalStorage';
+import moment from 'moment';
+import { getItem, getItems, setItem } from '../../../engine/api/LocalStorage';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
-import { fetchAlgorithms } from '../../../../frontend_service/api/Http';
+import {
+  fetchAlgorithms,
+  post,
+} from '../../../../frontend_service/api/Http';
 import { styles } from './Algorithms.style';
 import { CardView, RightView } from '../../../template/layout';
 
@@ -17,9 +21,14 @@ export default class Algorithms extends React.Component<Props, State> {
   state = {
     algorithms: [],
     isRefreshing: false,
+    patients: [],
+    synchronisation: null,
   };
 
   async componentWillMount() {
+    let patients = await getItems('patients');
+    let synchronisation = await getItem('synchronisation');
+    this.setState({ patients, synchronisation });
     await this.updateAlgorithms();
   }
 
@@ -80,12 +89,46 @@ export default class Algorithms extends React.Component<Props, State> {
     this.setState({ isRefreshing: false });
   };
 
+  sendSync = async () => {
+    const { patients } = this.state;
+    const {
+      app: {
+        user: {
+          data: { id },
+        },
+      },
+    } = this.props;
+    const body = { patients: patients };
+    let resultPosting = await post('medicases', body, id);
+    const synchronisation = {
+      time: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      success: resultPosting,
+    };
+    await setItem('synchronisation', synchronisation);
+    this.setState({ synchronisation });
+  };
+
   render() {
-    const { isRefreshing } = this.state;
+    const { isRefreshing, synchronisation } = this.state;
+    const {
+      app: { t },
+    } = this.props;
 
     return (
       <View style={styles.container}>
         <View style={styles.content}>
+          <View style={styles.smallContent}>
+            <Text>
+              {synchronisation === null
+                ? t('algorithms:never')
+                : `${t('algorithms:last')} : ${synchronisation?.time} ${t(
+                    'algorithms:success'
+                  )} : ${synchronisation?.success}`}
+            </Text>
+            <Button onPress={this.sendSync}>
+              <Text>{t('algorithms:synchronize')}</Text>
+            </Button>
+          </View>
           <AnimatedPullToRefresh
             isRefreshing={isRefreshing}
             onRefresh={this.onRefresh}
