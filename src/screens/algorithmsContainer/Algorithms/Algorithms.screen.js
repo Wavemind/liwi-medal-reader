@@ -5,7 +5,12 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Button, H2, Icon, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import moment from 'moment';
-import { getItem, getItems, setItem, storeMedicalCase } from '../../../engine/api/LocalStorage';
+import {
+  getItem,
+  getItems,
+  setItem,
+  storeMedicalCase,
+} from '../../../engine/api/LocalStorage';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
 import { fetchAlgorithms, post } from '../../../../frontend_service/api/Http';
 import { styles } from './Algorithms.style';
@@ -86,7 +91,7 @@ export default class Algorithms extends React.Component<Props, State> {
       if (mc.sync_at === null) {
         neverSync++;
       } else {
-        if (moment(mc.sync_at) < moment(mc.modify_at)) {
+        if (moment(mc.sync_at) < moment(mc.synchronized_at)) {
           notSync++;
         } else {
           sync++;
@@ -214,7 +219,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
     let patients = await getItems('patients');
     const body = { patients: patients };
-    let resultPosting = await post('medicases', body, id);
+    let resultPosting = await post('sync_medical_cases', body, id);
     let dateNow = moment().format();
     const synchronisation = {
       time: dateNow,
@@ -232,9 +237,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
   render() {
     const { isRefreshing, ready } = this.state;
-    const {
-      focus,
-    } = this.props;
+    const { focus } = this.props;
 
     return (
       <View style={styles.container}>

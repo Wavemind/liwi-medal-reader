@@ -51,7 +51,7 @@ export const epicCatchAnswer = (action$, state$) =>
 
       // Inject update
       arrayActions.push(
-        updateMedicalCaseProperty('modify_at', moment().format())
+        updateMedicalCaseProperty('synchronized_at', moment().format())
       );
 
       relatedDiagnostics.map((diagnostic) =>
