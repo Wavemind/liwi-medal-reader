@@ -21,7 +21,7 @@ i18n
     resources: {
       en: {
         algorithms: {
-          never: 'Never sync data',
+          never: 'Never synchronized data',
           last: 'Last synchronization attempt',
           success: 'and success',
           titlesync: 'Status synchronization of medical cases',
