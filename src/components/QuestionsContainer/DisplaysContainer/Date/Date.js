@@ -3,8 +3,9 @@
 import * as React from 'react';
 import { DatePicker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
-import { styles } from './Date.style';
 import moment from 'moment';
+import { styles } from './Date.style';
+
 type Props = NavigationScreenProps & {};
 
 type State = {};
