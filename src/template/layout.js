@@ -1,6 +1,16 @@
 import styled from 'styled-components';
-import { StyleSheet, TouchableOpacity as RNTouchableOpacity, View as RNView } from 'react-native';
-import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from 'native-base';
+import {
+  StyleSheet,
+  TouchableOpacity as RNTouchableOpacity,
+  View as RNView,
+} from 'react-native';
+import {
+  Col as LCol,
+  H2 as LH2,
+  H3 as LH3,
+  Text as LText,
+  View as LView,
+} from 'native-base';
 import { liwiColors } from '../utils/constants';
 
 export const Text = styled(LText).attrs({})`
@@ -20,24 +30,24 @@ export const LiwiTitle2 = styled(LH2)`
   margin: 0 20px 10px 0;
   text-transform: uppercase;
   padding-bottom: ${({ noBorder }) => {
-  if (noBorder === true) {
-    return '0px';
-  }
-  return '20px';
-}};
+    if (noBorder === true) {
+      return '0px';
+    }
+    return '20px';
+  }};
   border-bottom-width: ${({ noBorder }) => {
-  if (noBorder === true) {
-    return '0px';
-  }
-  return '2px';
-}};
+    if (noBorder === true) {
+      return '0px';
+    }
+    return '2px';
+  }};
   border-bottom-color: ${() => liwiColors.greyColor};
   margin-top: ${({ marginTop }) => {
-  if (marginTop === true) {
-    return '20px';
-  }
-  return '0px';
-}}
+    if (marginTop === true) {
+      return '20px';
+    }
+    return '0px';
+  }};
 `;
 
 export const LiwiTitle3 = styled(LH3).attrs({
@@ -50,6 +60,14 @@ export const LiwiTitle3 = styled(LH3).attrs({
   color: ${() => liwiColors.whiteColor};
   border-bottom-color: ${() => liwiColors.greyColor};
   background-color: ${() => liwiColors.redColor};
+`;
+
+export const LiwiTitle4 = styled(LText).attrs({
+  color: liwiColors.redColor,
+})`
+  font-weight: bold;
+  color: ${() => liwiColors.redColor};
+  border-bottom-color: ${() => liwiColors.greyColor};
 `;
 
 export const RootView = styled(LView).attrs({
@@ -113,25 +131,25 @@ export const LeftButton = styled(RNTouchableOpacity).attrs({})`
   border-width: 0.5px;
   padding: 13px;
   background-color: ${({ active }) => {
-  if (active) {
-    return liwiColors.greenColor;
-  }
-  return liwiColors.whiteColor;
-}};
+    if (active) {
+      return liwiColors.greenColor;
+    }
+    return liwiColors.whiteColor;
+  }};
 `;
 
 export const ViewQuestion = styled(RNView).attrs({})`
   flex-direction: row;
   padding: 10px;
   margin-right: ${({ marginRight }) => {
-  return marginRight;
-}};
+    return marginRight;
+  }};
   margin-left: ${({ marginLeft }) => {
-  return marginLeft;
-}};
+    return marginLeft;
+  }};
   flex: ${({ flex }) => {
-  return flex;
-}};
+    return flex;
+  }};
 `;
 
 export const RightButton = styled(RNTouchableOpacity).attrs({})`
@@ -141,11 +159,11 @@ export const RightButton = styled(RNTouchableOpacity).attrs({})`
   padding: 13px;
   border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
-  if (active) {
-    return liwiColors.redColor;
-  }
-  return liwiColors.whiteColor;
-}};
+    if (active) {
+      return liwiColors.redColor;
+    }
+    return liwiColors.whiteColor;
+  }};
 `;
 
 export const LiwiTabStyle = StyleSheet.create({

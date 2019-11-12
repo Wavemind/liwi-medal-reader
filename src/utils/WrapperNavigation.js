@@ -22,10 +22,20 @@ import { NavigationEvents } from 'react-navigation';
  *      More info at https://reactnavigation.org/docs/en/navigation-events.html
  *
  */
-export const WrapperNavigation = (Component: React.ComponentType<any>) =>
+export const WrapperNavigation = (
+  Component: React.ComponentType<any>,
+  props = { navigationStatus: 'didFocus' }
+) =>
   class extends Component<any> {
     shouldComponentUpdate(nextProps, nextState) {
-      return nextState.navigationStatus === 'didFocus';
+      if (props.navigationStatus === 'willBlur') {
+        return (
+          nextState.navigationStatus === 'didFocus' ||
+          nextState.navigationStatus === 'willBlur'
+        );
+      } else {
+        return nextState.navigationStatus === 'didFocus';
+      }
     }
 
     state = {
