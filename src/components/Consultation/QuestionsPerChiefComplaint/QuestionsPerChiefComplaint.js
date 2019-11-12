@@ -28,9 +28,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props,
 
     let questionsPerChiefComplaints = {};
     chiefComplaints.map((chiefComplaint) => {
-      if (
-        chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[0])
-      ) {
+      if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[0])) {
         questionsPerChiefComplaints[chiefComplaint.id] = {
           id: chiefComplaint.id,
           title: chiefComplaint.label,
