@@ -58,10 +58,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props,
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {chiefComplaintsAccordion.map((chiefComplaint) => (
-          <View
-            style={styles.spacingChiefComplaints}
-            key={`chiefComplaint_${chiefComplaint.title}`}
-          >
+          <View style={styles.spacingChiefComplaints} key={`chiefComplaint_${chiefComplaint.title}`}>
             <Text customTitle>{chiefComplaint.title}</Text>
             {chiefComplaint.content}
           </View>
