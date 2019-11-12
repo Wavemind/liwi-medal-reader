@@ -12,6 +12,9 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#8B8393',
     backgroundColor: '#ffffff',
   },
+  marginTop: {
+    marginTop: 50,
+  },
   number: {
     color: liwiColors.redColor,
     fontWeight: 'bold',

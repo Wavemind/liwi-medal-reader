@@ -10,7 +10,9 @@ import { stringifyDeepRef } from '../../utils/swissKnives';
 // @return [Object] saved object
 // Save value in local storage
 export const setItem = async (key, item) => {
-  return await AsyncStorage.setItem(key, stringifyDeepRef(item));
+  let controller = stringifyDeepRef(item);
+
+  return await AsyncStorage.setItem(key, controller);
 };
 
 // @params [String] key
@@ -113,7 +115,7 @@ export const getArray = async (item) => {
 export const storeMedicalCase = async (medicalCase) => {
   let patients = await getItems('patients');
 
-    if (Array.isArray(patients)) {
+  if (Array.isArray(patients)) {
     patients.map((patient, patientID) => {
       const idMedicalCase = findIndex(patient.medicalCases, (item) => {
         return item.id === medicalCase.id;

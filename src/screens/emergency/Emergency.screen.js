@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Content, Text, View } from 'native-base';
-import { BackHandler, Image } from 'react-native';
+import { Content, Text, View } from 'native-base';
+import { Image } from 'react-native';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Emergency.style';
 
@@ -11,38 +11,10 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Emergency extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
-  }
-
-  // Watch event for backbutton click
-  componentWillMount() {
-    BackHandler.addEventListener(
-      'hardwareBackPress',
-      this.handleBackButtonClick
-    );
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener(
-      'hardwareBackPress',
-      this.handleBackButtonClick
-    );
-  }
-
-  // Catch back button click OR click button in view
-  handleBackButtonClick() {
-    const { navigation } = this.props;
-
-    let navigationGoBack = navigation.getParam('navigationGoBack');
-    if (navigationGoBack !== undefined || navigationGoBack !== null) {
-      navigation.navigate(navigationGoBack);
-    } else {
-      navigation.goBack();
-    }
-    return true;
   }
 
   render() {
@@ -58,13 +30,6 @@ export default class Emergency extends React.Component<Props, State> {
             This page has been created to provide emergency assistance in case
             of need
           </Text>
-          <Button
-            onPress={() => {
-              this.handleBackButtonClick();
-            }}
-          >
-            <Text>{t('emergency:back')}</Text>
-          </Button>
           <Image
             style={styles.image}
             resizeMode="cover"
