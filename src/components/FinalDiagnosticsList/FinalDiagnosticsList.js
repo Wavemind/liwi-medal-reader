@@ -31,10 +31,7 @@ class FinalDiagnostic extends React.Component<{}> {
   }
 }
 
-export default class FinalDiagnosticsList extends React.PureComponent<
-  Props,
-  State
-> {
+export default class FinalDiagnosticsList extends React.PureComponent<Props, State> {
   state = {};
 
   render() {
@@ -50,6 +47,18 @@ export default class FinalDiagnosticsList extends React.PureComponent<
     for (let index in finalDiagnosticsRedux) {
       if (finalDiagnosticsRedux.hasOwnProperty(index)) {
         let finalDiagnostic = finalDiagnosticsRedux[index];
+        const chiefComplaint = nodes[finalDiagnostic.cc];
+
+        if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[1])) {
+          finalDiagnosticsFalse.push({
+            ...finalDiagnostic,
+            type,
+            name,
+            style,
+          });
+          continue;
+        }
+
         let condition = finalDiagnostic.calculateCondition();
 
         let type;
