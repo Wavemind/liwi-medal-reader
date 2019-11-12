@@ -21,6 +21,7 @@ export class FinalDiagnosticModel extends NodeModel
       top_conditions,
       excluding_final_diagnostics = null,
       excluded_by_final_diagnostics = null,
+      cc,
     } = props;
 
     this.label = label;
@@ -31,6 +32,7 @@ export class FinalDiagnosticModel extends NodeModel
     this.top_conditions = top_conditions;
     this.excluding_final_diagnostics = excluding_final_diagnostics;
     this.excluded_by_final_diagnostics = excluded_by_final_diagnostics;
+    this.cc = cc;
 
     this.requirement = new RequirementNodeModel({ ...props });
   }
