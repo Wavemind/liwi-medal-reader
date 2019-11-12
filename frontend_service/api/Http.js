@@ -54,10 +54,10 @@ export const post = async (params, body = {}, userId = null) => {
   }
 
   // TODO catch resut of success medicalcases POST by status
-  if (request.status === 404) {
-    return false;
-  } else {
+  if (request.status === 200) {
     return true;
+  } else {
+    return false;
   }
 };
 
