@@ -8,7 +8,8 @@ import {
   setItem,
 } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
-import { store } from '../../frontend_service/store';
+import { persistor, store } from '../../frontend_service/store';
+import { memorySizeOf } from './swissKnives';
 
 export default class WavemindTools extends Component {
   constructor(props) {
@@ -50,6 +51,7 @@ export default class WavemindTools extends Component {
                 blue
                 onPress={async () => {
                     await clearLocalStorage();
+                    await persistor.purge();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
@@ -77,9 +79,13 @@ export default class WavemindTools extends Component {
                     // eslint-disable-next-line no-console
                     console.log({
                       state$: state$,
+                      size_state$: memorySizeOf(state$),
                       sessions: sessions,
+                      size_sessions: memorySizeOf(sessions),
                       algorithms: algorithms,
+                      size_algorithms: memorySizeOf(algorithms),
                       patients: patients,
+                      size_patients: memorySizeOf(patients),
                     });
                   }}
               >

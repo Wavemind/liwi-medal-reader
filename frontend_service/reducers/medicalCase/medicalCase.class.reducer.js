@@ -189,7 +189,7 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...state,
       patient: {
-        ...state.patient,
+        ...state.$,
         [index]: value,
       },
     };

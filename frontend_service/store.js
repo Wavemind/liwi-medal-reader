@@ -2,15 +2,15 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import AsyncStorage from '@react-native-community/async-storage';
 import { persistReducer, persistStore } from 'redux-persist';
+import FilesystemStorage from 'redux-persist-filesystem-storage';
 import rootReducer from './reducers';
 import rootEpic from './algorithm/epics';
 
 const persistConfig = {
-  debug: true,
+  debug: __DEV__,
   key: 'medicalCase',
-  storage: AsyncStorage,
+  storage: FilesystemStorage,
   timeout: 10000,
   stateReconciler: autoMergeLevel2, // see "Merge Process" section for details.
 };

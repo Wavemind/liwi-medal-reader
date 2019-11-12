@@ -1,10 +1,6 @@
 import React from 'react';
 import { Button, Icon, Text } from 'native-base';
-import {
-  createBottomTabNavigator,
-  createDrawerNavigator,
-  createStackNavigator,
-} from 'react-navigation';
+import { createBottomTabNavigator, createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
@@ -20,10 +16,11 @@ import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
-import DiagnosticsStrategy from '../../screens/medicalCasesContainer/DiagnosticsStrategyContainer/DiagnosticsStrategy';
+import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Triage from '../../screens/medicalCasesContainer/triage';
 import Consultation from '../../screens/medicalCasesContainer/consultation';
+import Emergency from '../../screens/emergency';
 
 // We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator(
@@ -115,6 +112,15 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:settings'),
+        };
+      },
+    },
+    Emergency: {
+      screen: Emergency,
+      params: {},
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:emergency'),
         };
       },
     },
