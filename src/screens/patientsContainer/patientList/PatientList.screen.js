@@ -41,6 +41,17 @@ export default class PatientList extends React.Component<Props, State> {
     statuses: [medicalCaseStatus.close],
   };
 
+  shouldComponentUpdate(nextProps: Props): boolean {
+    const { focus } = this.props;
+    if (
+      nextProps.focus === 'didFocus' &&
+      (focus === undefined || focus === null)
+    ) {
+      this.fetchPatients();
+    }
+    return true;
+  }
+
   async componentWillMount() {
     const { navigation } = this.props;
 

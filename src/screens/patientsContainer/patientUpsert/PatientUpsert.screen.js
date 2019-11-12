@@ -50,9 +50,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
       let generatedMedicalCase;
       if (newMedicalCase) {
         generatedMedicalCase = await this.generateMedicalCase();
-        generatedMedicalCase.patient = patient;
         generatedMedicalCase.isCreating = true;
-        await setMedicalCase(generatedMedicalCase);
+        await setMedicalCase({
+          ...generatedMedicalCase,
+          patient: { ...patient, medicalCases: [] }, // Force
+        });
       }
 
       this.setState({

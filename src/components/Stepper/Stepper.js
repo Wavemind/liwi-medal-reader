@@ -24,7 +24,6 @@ import { liwiColors } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import {
-  setMedicalCase,
   updateMedicalCaseProperty,
 } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';

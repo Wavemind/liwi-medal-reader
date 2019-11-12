@@ -127,13 +127,6 @@ export class ApplicationProvider extends React.Component<
     });
   };
 
-  // Set medical case in context
-  setMedicalCase = (medicalCase) => {
-    // eslint-disable-next-line no-console
-    console.log('Je rentre une fois dans ma vie ici ? Si non, supprime moi ! ');
-    this.setState({ medicalCase });
-  };
-
   // Unlock session from local credentials
   unLockSession = async (id: number, code: string) => {
     let session = await getSession(id);
@@ -186,7 +179,6 @@ export class ApplicationProvider extends React.Component<
     unLockSession: this.unLockSession,
     lockSession: this.lockSession,
     isConnected: true,
-    setMedicalCase: this.setMedicalCase,
     medicalCase: {},
     appState: AppState.currentState,
     setModal: this.setModal,

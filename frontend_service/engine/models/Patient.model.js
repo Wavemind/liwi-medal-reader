@@ -2,7 +2,10 @@
 
 import * as _ from 'lodash';
 import moment from 'moment';
-import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage';
+import {
+  getArray,
+  setItemFromArray,
+} from '../../../src/engine/api/LocalStorage';
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
 
@@ -42,7 +45,6 @@ export class PatientModel implements PatientModelInterface {
     } else {
       this.id = id;
     }
-
   };
 
   // uniqueId incremented
@@ -58,7 +60,8 @@ export class PatientModel implements PatientModelInterface {
 
   // Create patient and push it in local storage
   save = async () => {
-    await setItemFromArray('patients', this, this.id);
+    const flatten = { ...this };
+    await setItemFromArray('patients', flatten, flatten.id);
   };
 
   // Validate input

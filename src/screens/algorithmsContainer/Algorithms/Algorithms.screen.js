@@ -5,7 +5,12 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Button, H2, Icon, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import moment from 'moment';
-import { getItem, getItems, setItem, storeMedicalCase } from '../../../engine/api/LocalStorage';
+import {
+  getItem,
+  getItems,
+  setItem,
+  storeMedicalCase,
+} from '../../../engine/api/LocalStorage';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
 import { fetchAlgorithms, post } from '../../../../frontend_service/api/Http';
 import { styles } from './Algorithms.style';
@@ -59,7 +64,7 @@ export default class Algorithms extends React.Component<Props, State> {
     const { focus } = this.props;
     if (
       nextProps.focus === 'didFocus' &&
-      (focus === undefined || focus === null)
+      (focus === undefined || focus === null || focus === 'willBlur')
     ) {
       this.updateComponentState();
     }
@@ -128,18 +133,17 @@ export default class Algorithms extends React.Component<Props, State> {
         ) : null}
 
         <View style={styles.smallContent}>
-          <Button onPress={this.sendSync}>
-            <Text>{t('algorithms:synchronize')}</Text>
-          </Button>
           <LiwiTitle4>{t('algorithms:titlesync')}</LiwiTitle4>
           {synchronisation === null ? (
             <Text>{t('algorithms:never')}</Text>
           ) : (
             <View style={{ flex: 1 }}>
               <Text>
-                {`${t('algorithms:last')} : ${synchronisation?.time} ${t(
-                  'algorithms:success'
-                )} : ${synchronisation?.success}`}
+                {`${t('algorithms:last')} : ${moment(
+                  synchronisation?.time
+                ).format()} ${t('algorithms:success')} : ${
+                  synchronisation?.success
+                }`}
               </Text>
               <View flex-center-row>
                 <View w33 style={styles.status}>
@@ -165,6 +169,11 @@ export default class Algorithms extends React.Component<Props, State> {
                   <Text style={styles.number}>{notSync}</Text>
                   <Text>{t('algorithms:need')}</Text>
                 </View>
+              </View>
+              <View flex-center-row>
+                <Button style={styles.marginTop} onPress={this.sendSync}>
+                  <Text>{t('algorithms:synchronize')}</Text>
+                </Button>
               </View>
             </View>
           )}
@@ -214,7 +223,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
     let patients = await getItems('patients');
     const body = { patients: patients };
-    let resultPosting = await post('medicases', body, id);
+    let resultPosting = await post('sync_medical_cases', body, id);
     let dateNow = moment().format();
     const synchronisation = {
       time: dateNow,
@@ -232,9 +241,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
   render() {
     const { isRefreshing, ready } = this.state;
-    const {
-      focus,
-    } = this.props;
+    const { focus } = this.props;
 
     return (
       <View style={styles.container}>

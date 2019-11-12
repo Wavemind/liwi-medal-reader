@@ -64,9 +64,14 @@ export default class Drawer extends Component<Props, State> {
               transparent
               btnDrawer
               marginIcon
-              onPress={() => navigation.navigate('Settings')}
+              onPress={() => navigation.navigate('Emergency')}
             >
-              <Icon style={styles.icon} dark type="AntDesign" name="setting" />
+              <Icon
+                style={styles.icon}
+                dark
+                name="warning"
+                type="FontAwesome"
+              />
             </Button>
 
             <Button
@@ -79,6 +84,14 @@ export default class Drawer extends Component<Props, State> {
             </Button>
           </View>
           <View style={styles.bottom}>
+            <Button
+              transparent
+              btnDrawer
+              marginIcon
+              onPress={() => navigation.navigate('Settings')}
+            >
+              <Icon style={styles.icon} dark type="AntDesign" name="setting" />
+            </Button>
             <Button transparent btnDrawer onPress={this.logout}>
               <Icon style={styles.icon} dark type="AntDesign" name="logout" />
             </Button>
@@ -189,27 +202,6 @@ export default class Drawer extends Component<Props, State> {
                 <Text style={[styles.title, styles.noLeftPadding]} dark>
                   {t('menu:strategy')}
                 </Text>
-              </Button>
-            </View>
-
-            <View style={[styles.patient, styles.paddingCategory]}>
-              <Button transparent btnDrawer>
-                <Icon
-                  style={[styles.icon, styles.margin0]}
-                  white
-                  name="search"
-                  onPress={() => this.onPress('PatientList')}
-                />
-                <Text white>{t('menu:search')}</Text>
-              </Button>
-              <Button transparent btnDrawer>
-                <Icon
-                  style={[styles.icon, styles.margin0]}
-                  white
-                  name="person"
-                  onPress={() => this.onPress('PatientUpsert')}
-                />
-                <Text white>{t('menu:add')}</Text>
               </Button>
             </View>
           </View>
