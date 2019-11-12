@@ -6,10 +6,7 @@ import forEach from 'lodash/forEach';
 import maxBy from 'lodash/maxBy';
 import max from 'lodash/max';
 import { medicalCaseStatus, nodesType, stage } from '../../constants';
-import {
-  getItem,
-  getItems,
-} from '../../../src/engine/api/LocalStorage';
+import { getItem, getItems } from '../../../src/engine/api/LocalStorage';
 
 interface MedicalCaseInterface {
   props: {
@@ -39,6 +36,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.selected = currentAlgorithm.selected;
     this.triage = currentAlgorithm.triage;
     this.updated_at = currentAlgorithm.updated_at;
+    this.modify_at = null;
+    this.sync_at = null;
     this.created_at = moment().format();
     this.status = medicalCaseStatus.waitingTriage.name;
 
@@ -53,8 +52,13 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     for (let index in this.nodes) {
       if (this.nodes.hasOwnProperty(index)) {
         let item = this.nodes[index];
-        if (item.type === nodesType.finalDiagnostic && item.excluding_final_diagnostics !== null) {
-          this.nodes[item.excluding_final_diagnostics].excluded_by_final_diagnostics = item.id;
+        if (
+          item.type === nodesType.finalDiagnostic &&
+          item.excluding_final_diagnostics !== null
+        ) {
+          this.nodes[
+            item.excluding_final_diagnostics
+          ].excluded_by_final_diagnostics = item.id;
         }
       }
     }
@@ -95,7 +99,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       Object.keys(nodes).map((nodeId) => {
         if (nodes[nodeId].type.match(/^Question$|^QuestionsSequence$/)) {
           nodes[nodeId].dd.map((dd) => {
-            dd.conditionValue = diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
+            dd.conditionValue =
+              diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
           });
 
           // Map trough QS if it is in an another QS itself
@@ -126,7 +131,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     return algorithm;
   };
 
-
   /**
    * Recursive function to also set dd and qs parents of current qs
    * @params [Json][Integer][Integer] algorithm, parentId, id
@@ -137,7 +141,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     // Set condition value for DD if there is any
     if (!nodes[parentId].dd.isEmpty()) {
       nodes[parentId].dd.map((dd) => {
-        dd.conditionValue = diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
+        dd.conditionValue =
+          diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
       });
       conditionValue = true;
     }
@@ -153,7 +158,9 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     // Set conditionValue of current QS
     nodes[id].qs.map((instanceQs) => {
       if (instanceQs.id === parentId) {
-        instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
+        instanceQs.conditionValue =
+          nodes[instanceQs.id].instances[id].top_conditions.length === 0 &&
+          conditionValue;
       }
     });
   };
