@@ -86,12 +86,6 @@ export default class PatientList extends React.Component<Props, State> {
     );
   };
 
-  // Generate a new patient based on model Patient
-  newPatient = async () => {
-    const { navigation } = this.props;
-    navigation.navigate('PatientUpsert', { idPatient: null });
-  };
-
   // Set string search
   searchBy = (searchTerm) => {
     this.setState({ searchTerm }), () => this.settlePatients();
@@ -181,7 +175,7 @@ export default class PatientList extends React.Component<Props, State> {
     this.setState({
       propsToolTipVisible: false,
     });
-  }
+  };
 
   render() {
     const {

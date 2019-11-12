@@ -18,7 +18,12 @@ export const setItem = async (key, item) => {
 // Get value from local storage
 export const getItems = async (key) => {
   const items = await AsyncStorage.getItem(key);
-  const itemsArray = JSON.parse(items);
+  let itemsArray = [];
+  try {
+    itemsArray = JSON.parse(items);
+  } catch (e) {
+    console.error(e); // error in the above string (in this case, yes)!
+  }
 
   if (itemsArray === null) {
     return [];
@@ -70,7 +75,15 @@ export const setItemFromArray = async (key, newItem, id) => {
 // Get item in local storage
 export const getItem = async (key) => {
   const item = await AsyncStorage.getItem(key);
-  return JSON.parse(item);
+
+  let itemObj;
+  try {
+    itemObj = JSON.parse(item);
+  } catch (e) {
+    console.error(e); // error in the above string (in this case, yes)!
+  }
+
+  return itemObj;
 };
 
 // @return [Array]
@@ -100,7 +113,7 @@ export const getArray = async (item) => {
 export const storeMedicalCase = async (medicalCase) => {
   let patients = await getItems('patients');
 
-  if (Array.isArray(patients)) {
+    if (Array.isArray(patients)) {
     patients.map((patient, patientID) => {
       const idMedicalCase = findIndex(patient.medicalCases, (item) => {
         return item.id === medicalCase.id;

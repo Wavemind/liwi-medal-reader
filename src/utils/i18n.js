@@ -24,7 +24,11 @@ i18n
           never: 'Never sync data',
           last: 'Last attempt synchronization',
           success: 'and success',
-          synchronize: 'Synchronization of medical cases',
+          titlesync: 'Status synchronization of medical cases',
+          synchronize: 'Synchronize now !',
+          no: 'Never synchronized',
+          need:'Must be synchronized',
+          uptodate: 'Are synchronized'
         },
         confirm: {
           message: 'Do you want to close the current case and create new one ?',
