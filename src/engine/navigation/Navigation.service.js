@@ -46,7 +46,9 @@ function getCurrentRoute() {
     index = route.index;
     route = route.routes[route.index];
   }
-  route.index = index;
+  if (route !== undefined) {
+    route.index = index;
+  }
   return route;
 }
 
@@ -79,8 +81,6 @@ function onNavigationStateChange(prevState, currentState) {
   let activeRoute = getActiveRouteName(currentState);
   let prev = getActiveRouteName(prevState);
   let cu = getCurrentRoute(currentState);
-
-
 
   // prevent multiple execution
   if (activeRoute !== prev) {

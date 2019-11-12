@@ -2,6 +2,7 @@ import { combineEpics, ofType } from 'redux-observable';
 import find from 'lodash/find';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import moment from 'moment';
 import { actions } from '../actions/types.actions';
 import { displayFormats, nodesType } from '../constants';
 import {
@@ -12,6 +13,7 @@ import {
   dispatchQuestionsSequenceAction,
   setAnswer,
   dispatchRelatedNodeAction,
+  updateMedicalCaseProperty,
 } from '../actions/creators.actions';
 import {
   getParentsNodes,
@@ -46,6 +48,11 @@ export const epicCatchAnswer = (action$, state$) =>
       const relatedNodes = currentNode.referenced_in;
 
       let arrayActions = [];
+
+      // Inject update
+      arrayActions.push(
+        updateMedicalCaseProperty('modify_at', moment().format())
+      );
 
       relatedDiagnostics.map((diagnostic) =>
         arrayActions.push(
