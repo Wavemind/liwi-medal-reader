@@ -2,11 +2,7 @@ import find from 'lodash/find';
 import * as _ from 'lodash';
 import { nodesType } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
-import {
-  calculateCondition,
-  comparingTopConditions,
-  reduceConditionArrayBoolean,
-} from './algoConditionsHelpers';
+import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './algoConditionsHelpers';
 
 /**
  * Get the parents for an instance in a diagnostic
@@ -20,8 +16,7 @@ import {
 export const getParentsNodes = (state$, diagnosticId, nodeId) => {
   let parentsNodes = [];
 
-  let top_conditions =
-    state$.value.diagnostics[diagnosticId].instances[nodeId].top_conditions;
+  let top_conditions = state$.value.diagnostics[diagnosticId].instances[nodeId].top_conditions;
 
   top_conditions.map((top) => {
     parentsNodes.push(top.first_node_id);
@@ -43,10 +38,7 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
  * @return {boolean|false|true|null}
  */
 export const nextChildFinalQs = (instance, finalQs) => {
-  let top_conditions = _.filter(
-    finalQs.top_conditions,
-    (top_condition) => top_condition.first_node_id === instance.id
-  );
+  let top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
   // We get the condition of the final link
   let arrayBoolean = top_conditions.map((condition) => {
     return comparingTopConditions(finalQs, condition);
@@ -77,13 +69,7 @@ export const nextChildFinalQs = (instance, finalQs) => {
  * @param actions  {Object}: Array redux
  * @return {null|false|true}
  */
-export const nextChildOtherQs = (
-  state$,
-  child,
-  childConditionValue,
-  qs,
-  actions
-) => {
+export const nextChildOtherQs = (state$, child, childConditionValue, qs, actions) => {
   /**
    *  If the sub QS has not a defined value yet, we update the sub Qs
    */
@@ -120,8 +106,7 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
 
     // If this is not the final QS we calculate the conditonValue of the child
     if (child.id !== qs.id) {
-      childConditionValue = find(child.qs, (q) => q.id === qs.id)
-        .conditionValue;
+      childConditionValue = find(child.qs, (q) => q.id === qs.id).conditionValue;
 
       // Reset the child condition value
       if (currentNode.answer === null && childConditionValue === true) {
@@ -169,8 +154,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    * Initial Var
    */
   let currentNode = state$.value.nodes[instance.id];
-  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id)
-    .conditionValue;
+  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
 
   /**
    * Get the condition of the instance link
@@ -197,30 +181,19 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   /**
    * Not shown before and the link condition is false -> return false
    */
-  if (instanceConditionValue === false && instanceCondition === false)
-    return false;
+  if (instanceConditionValue === false && instanceCondition === false) return false;
 
   /**
    * We process the instance children if
    * The condition is true AND The questions has an answer OR this is a top level node
    */
 
-  if (
-    (instanceCondition === true &&
-      (currentNode.answer !== null || instance.top_conditions.length === 0)) ||
-    isReset
-  ) {
+  if ((instanceCondition === true && (currentNode.answer !== null || instance.top_conditions.length === 0)) || isReset) {
     /**
      * From this point we can process all children and go deeper in the tree
      * ProcessChildren return the boolean array of each branch
      */
-    let processChildren = InstanceChildrenOnQs(
-      state$,
-      instance,
-      qs,
-      actions,
-      currentNode
-    );
+    let processChildren = InstanceChildrenOnQs(state$, instance, qs, actions, currentNode);
 
     return reduceConditionArrayBoolean(processChildren);
 
@@ -257,9 +230,7 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
     }
   });
 
-  let allNodesAnsweredInQs = topLevelNodes.map((topNode) =>
-    recursiveNodeQs(state$, topNode, qs, actions)
-  );
+  let allNodesAnsweredInQs = topLevelNodes.map((topNode) => recursiveNodeQs(state$, topNode, qs, actions));
 
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };

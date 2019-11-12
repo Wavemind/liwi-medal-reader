@@ -23,12 +23,7 @@ export const handleHttpError = async (errors: any) => {
 };
 
 export const Toaster = (text: string = 'Default', params: ToastType = {}) => {
-  const {
-    buttonText = null,
-    type = 'warning',
-    position = 'bottom',
-    duration = 2000,
-  } = params;
+  const { buttonText = null, type = 'warning', position = 'bottom', duration = 2000 } = params;
 
   Toast.show({
     text,

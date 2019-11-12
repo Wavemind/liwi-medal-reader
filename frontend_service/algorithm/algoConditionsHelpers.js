@@ -28,10 +28,7 @@ export const calculateCondition = (node) => {
  * @return {array}
  *
  */
-export const returnConditionsArray = (node) =>
-  node.top_conditions.map((conditions) =>
-    comparingTopConditions(node, conditions)
-  );
+export const returnConditionsArray = (node) => node.top_conditions.map((conditions) => comparingTopConditions(node, conditions));
 
 /**
  * Get a array of boolean and return the final boolean between null | true | false
@@ -65,10 +62,7 @@ const checkOneCondition = (child, wantedId, nodeId) => {
 
   if (state$.nodes[nodeId].answer !== null) {
     // Console.warn should only appear if there is a format error in ids
-    if (
-      Number(state$.nodes[nodeId].answer) !== state$.nodes[nodeId].answer ||
-      Number(wantedId) !== wantedId
-    ) {
+    if (Number(state$.nodes[nodeId].answer) !== state$.nodes[nodeId].answer || Number(wantedId) !== wantedId) {
       console.warn(
         '%c --- DANGER STRING OR NUMBER PROBLEM TYPE --- ',
         'background: #FF0000; color: #F6F3ED; padding: 5px',
@@ -93,35 +87,16 @@ const checkOneCondition = (child, wantedId, nodeId) => {
  *
  */
 export const comparingTopConditions = (child, condition) => {
-
-  const {
-    first_id,
-    first_node_id,
-    first_type,
-    operator,
-    second_node_id,
-    second_id,
-    second_type,
-  } = condition;
+  const { first_id, first_node_id, first_type, operator, second_node_id, second_id, second_type } = condition;
   let second_sub_condition;
   let first_sub_condition;
 
-  first_sub_condition = checkOneCondition(
-    child,
-    first_id,
-    first_node_id,
-    first_type
-  );
+  first_sub_condition = checkOneCondition(child, first_id, first_node_id, first_type);
 
   if (operator === null) {
     return first_sub_condition;
   } else {
-    second_sub_condition = checkOneCondition(
-      child,
-      second_id,
-      second_node_id,
-      second_type
-    );
+    second_sub_condition = checkOneCondition(child, second_id, second_node_id, second_type);
 
     if (operator === 'AND') {
       return first_sub_condition && second_sub_condition;
