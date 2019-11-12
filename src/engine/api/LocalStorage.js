@@ -113,7 +113,7 @@ export const getArray = async (item) => {
 export const storeMedicalCase = async (medicalCase) => {
   let patients = await getItems('patients');
 
-    if (Array.isArray(patients)) {
+  if (Array.isArray(patients)) {
     patients.map((patient, patientID) => {
       const idMedicalCase = findIndex(patient.medicalCases, (item) => {
         return item.id === medicalCase.id;

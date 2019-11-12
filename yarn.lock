@@ -9328,6 +9328,15 @@ react-native-iphone-x-helper@^1.0.3:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
 
+react-native-js-stepper@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-js-stepper/-/react-native-js-stepper-0.2.1.tgz#aefd8fcfc8209f168fe6d6d86d9525d8c0f90ced"
+  integrity sha512-OtpAMfExUeIKdJAQMT/Yymxgh/uqO/gcztJa6k2ciHGZq33nXtzGarSfPnU0XEDIhUrHLonCXczjfPZUaDuaHg==
+  dependencies:
+    prop-types "^15.6.0"
+    react-native-platform-touchable "^1.1.1"
+    react-native-vector-icons "^4.5.0"
+
 react-native-keep-awake@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-4.0.0.tgz#d89fdc3fb60b3cffa979ef37dc5816196df998a2"
@@ -9345,6 +9354,11 @@ react-native-modal@^9.0.0:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "^1.2.4"
+
+react-native-platform-touchable@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
+  integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
 
 react-native-restart@0.0.12:
   version "0.0.12"
@@ -9372,12 +9386,6 @@ react-native-splash-screen@^3.1.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"
 
-react-native-step-indicator@0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/react-native-step-indicator/-/react-native-step-indicator-0.0.11.tgz#18c53692f63c5e6812f80e8f6cc580cf4097e127"
-  dependencies:
-    prop-types "^15.6.0"
-
 react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.4.1.tgz#f113cd87485808f0c991abec937f70fa380478b9"
@@ -9394,6 +9402,15 @@ react-native-vector-icons@6.1.0:
   dependencies:
     lodash "^4.0.0"
     prop-types "^15.6.2"
+    yargs "^8.0.2"
+
+react-native-vector-icons@^4.5.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.6.0.tgz#e4014311ffa6de397d914ffc31b7097a874cc8d5"
+  integrity sha512-rpfhfPiXCK2PX1nrNhdxSMrEGB/Gw/SvKoPM0G2wAkSoqynnes19K0VYI+Up7DqR1rFIpE4hP2erpT1tNx2tfg==
+  dependencies:
+    lodash "^4.0.0"
+    prop-types "^15.5.10"
     yargs "^8.0.2"
 
 react-native-vector-icons@^6.4.2:
@@ -10072,6 +10089,11 @@ rx-lite-aggregates@^4.0.8:
 rx-lite@*, rx-lite@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-4.0.8.tgz#0b1e11af8bc44836f04a6407e92da42467b79444"
+
+rxjs-compat@^6.5.3:
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.5.3.tgz#18440949b2678bf87a78a754009676b2c49183dc"
+  integrity sha512-BIJX2yovz3TBpjJoAZyls2QYuU6ZiCaZ+U96SmxQpuSP/qDUfiXPKOVLbThBB2WZijNHkdTTJXKRwvv5Y48H7g==
 
 rxjs@^6.3.3, rxjs@^6.4.0:
   version "6.5.2"
