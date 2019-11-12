@@ -6,10 +6,7 @@ import forEach from 'lodash/forEach';
 import maxBy from 'lodash/maxBy';
 import max from 'lodash/max';
 import { medicalCaseStatus, nodesType, stage } from '../../constants';
-import {
-  getItem,
-  getItems,
-} from '../../../src/engine/api/LocalStorage';
+import { getItem, getItems } from '../../../src/engine/api/LocalStorage';
 
 interface MedicalCaseInterface {
   props: {
@@ -38,7 +35,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.nodes = { ...currentAlgorithm.nodes };
     this.selected = currentAlgorithm.selected;
     this.triage = currentAlgorithm.triage;
-    this.updated_at = currentAlgorithm.updated_at;
+    this.updated_at = null;
+    this.synchronized_at = null;
     this.created_at = moment().format();
     this.status = medicalCaseStatus.waitingTriage.name;
 
@@ -125,7 +123,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     return algorithm;
   };
-
 
   /**
    * Recursive function to also set dd and qs parents of current qs

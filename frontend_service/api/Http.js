@@ -52,7 +52,12 @@ export const post = async (params, body = {}, userId = null) => {
   if (!request.ok) {
     handleHttpError(response.errors);
   }
-  return true;
+
+  if (request.status === 200) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 // @params [String] email, [String] password

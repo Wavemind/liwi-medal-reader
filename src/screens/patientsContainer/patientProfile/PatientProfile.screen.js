@@ -28,6 +28,18 @@ export default class PatientProfile extends React.Component<Props, State> {
     await this.getPatient();
   }
 
+  shouldComponentUpdate(nextProps: Props): boolean {
+    const { focus } = this.props;
+
+    if (
+      nextProps.focus === 'didFocus' &&
+      (focus === undefined || focus === null || focus === 'willBlur')
+    ) {
+      this.getPatient();
+    }
+    return true;
+  }
+
   // Fetch patient in localstorage
   async getPatient() {
     const { navigation } = this.props;
@@ -74,6 +86,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     const flatPatient = {
       ...patient,
     };
+
     delete flatPatient.medicalCases;
 
     // Display list of medical cases
@@ -165,7 +178,7 @@ export default class PatientProfile extends React.Component<Props, State> {
                     medicalCase.isCreating === false
                   ) {
                     navigation.navigate('PatientUpsert', {
-                      idPatient: null,
+                      idPatient: patient.id,
                       newMedicalCase: true,
                     });
                   } else {

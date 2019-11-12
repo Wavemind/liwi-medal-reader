@@ -55,6 +55,14 @@ export default {
       flexGrow: 1,
     },
 
+    '.flex-center-row': {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      flex: 1,
+      flexGrow: 1,
+    },
+
     '.flex-center-stretch': {
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -123,6 +131,7 @@ export default {
 
     '.w33': {
       flex: 0.33,
+      flexDirection: 'row',
     },
 
     '.columns': {

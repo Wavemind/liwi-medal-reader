@@ -70,6 +70,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
           medicalCaseLocalStorage.patient = patient;
           medicalCases.push(medicalCaseLocalStorage);
         } else {
+          medicalCase.patient = patient;
           medicalCases.push(medicalCase);
         }
       });

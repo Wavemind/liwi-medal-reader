@@ -14,6 +14,7 @@ const mapDispatchToProps = (dispatch, props) => {
       manageSetAnswer(index, value, dispatch, props),
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

@@ -50,9 +50,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
       let generatedMedicalCase;
       if (newMedicalCase) {
         generatedMedicalCase = await this.generateMedicalCase();
-        generatedMedicalCase.patient = patient;
         generatedMedicalCase.isCreating = true;
-        await setMedicalCase(generatedMedicalCase);
+        await setMedicalCase({
+          ...generatedMedicalCase,
+          patient: { ...patient, medicalCases: [] }, // Force
+        });
       }
 
       this.setState({
@@ -193,7 +195,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="always"
+      >
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
           <LiwiLoader />

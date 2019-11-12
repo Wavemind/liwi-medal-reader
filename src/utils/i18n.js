@@ -20,10 +20,20 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
-        confirm:{
+        algorithms: {
+          never: 'Never synchronized data',
+          last: 'Last synchronization attempt',
+          success: 'and success',
+          titlesync: 'Status synchronization of medical cases',
+          synchronize: 'Synchronize',
+          no: 'Never synchronized',
+          need: 'Must be re-synchronized',
+          uptodate: 'Synchronized',
+        },
+        confirm: {
           message: 'Do you want to close the current case and create new one ?',
           new: 'Create new case',
-          continue: 'Continue creating case'
+          continue: 'Continue creating case',
         },
         emergency: {
           emergency: 'Emergency Assistance',
@@ -125,10 +135,10 @@ i18n
           waiting_diagnostics: 'Diagnosis',
           case_in_progress: 'a case is open',
         },
-        patient_summary_menu:{
+        patient_summary_menu: {
           patient_profile: 'Patient profile',
           current_summary: 'Current summary',
-          differential_diagnoses: 'Differential diagnoses'
+          differential_diagnoses: 'Differential diagnoses',
         },
         patient_upsert: {
           title: 'Patient',
