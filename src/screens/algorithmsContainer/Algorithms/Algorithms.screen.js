@@ -91,7 +91,7 @@ export default class Algorithms extends React.Component<Props, State> {
       if (mc.sync_at === null) {
         neverSync++;
       } else {
-        if (moment(mc.sync_at) < moment(mc.modify_at)) {
+        if (moment(mc.sync_at) < moment(mc.synchronized_at)) {
           notSync++;
         } else {
           sync++;
