@@ -15,10 +15,7 @@ import {
   dispatchRelatedNodeAction,
   updateMedicalCaseProperty,
 } from '../actions/creators.actions';
-import {
-  getParentsNodes,
-  getQuestionsSequenceStatus,
-} from './algoTreeDiagnosis';
+import { getParentsNodes, getQuestionsSequenceStatus } from './algoTreeDiagnosis';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 
@@ -37,10 +34,7 @@ export const epicCatchAnswer = (action$, state$) =>
       const { index } = action.payload;
 
       // eslint-disable-next-line no-console
-      console.log(
-        '%c ########################  epicCatchAnswer ########################',
-        'background: #F6F3EE; color: #b84c4c; padding: 5px'
-      );
+      console.log('%c ########################  epicCatchAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
 
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
@@ -50,28 +44,16 @@ export const epicCatchAnswer = (action$, state$) =>
       let arrayActions = [];
 
       // Inject update
-      arrayActions.push(
-        updateMedicalCaseProperty('synchronized_at', moment().format())
-      );
+      arrayActions.push(updateMedicalCaseProperty('synchronized_at', moment().format()));
 
-      relatedDiagnostics.map((diagnostic) =>
-        arrayActions.push(
-          dispatchNodeAction(index, diagnostic.id, nodesType.diagnostic)
-        )
-      );
+      relatedDiagnostics.map((diagnostic) => arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodesType.diagnostic)));
 
       // We tell the related nodes to update themself
       if (currentNode.type === nodesType.question) {
-        relatedNodes.map((relatedNodeId) =>
-          arrayActions.push(dispatchRelatedNodeAction(relatedNodeId))
-        );
+        relatedNodes.map((relatedNodeId) => arrayActions.push(dispatchRelatedNodeAction(relatedNodeId)));
       }
 
-      relatedQuestionsSequence.map((questionsSequence) =>
-        arrayActions.push(
-          dispatchQuestionsSequenceAction(questionsSequence.id, index)
-        )
-      );
+      relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
 
       return of(...arrayActions);
     })
@@ -94,10 +76,8 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       // TODO Test get node in state and comare with object in action, are there somes differences ?
       const { nodeId, callerId, callerType } = action.payload;
 
-      if (callerType === nodesType.diagnostic)
-        caller = state$.value.diagnostics[callerId];
-      else if (callerType !== nodesType.diagnostic)
-        caller = state$.value.nodes[callerId];
+      if (callerType === nodesType.diagnostic) caller = state$.value.diagnostics[callerId];
+      else if (callerType !== nodesType.diagnostic) caller = state$.value.nodes[callerId];
 
       let nodeChildren;
 
@@ -115,13 +95,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           nodeChildren = caller.instances[nodeId].children;
           // Check children of the node in the current diagnostic and process them as well.
           nodeChildren.map((childId) => {
-            arrayActions.push(
-              dispatchNodeAction(
-                caller.id,
-                childId,
-                state$.value.nodes[childId].type
-              )
-            );
+            arrayActions.push(dispatchNodeAction(caller.id, childId, state$.value.nodes[childId].type));
           });
 
           return of(...arrayActions);
@@ -131,13 +105,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
-          console.log(
-            '%c --- DANGER --- ',
-            'background: #FF0000; color: #F6F3ED; padding: 5px',
-            'nodes type ',
-            caller.type,
-            'doesn\'t exist'
-          );
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, "doesn't exist");
           return [];
       }
     })
@@ -162,11 +130,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
        *  null = Still possible but not yet
        *  false = can't access the end anymore
        */
-      statusQs = getQuestionsSequenceStatus(
-        state$,
-        currentQuestionsSequence,
-        actions
-      );
+      statusQs = getQuestionsSequenceStatus(state$, currentQuestionsSequence, actions);
 
       // If ready we calculate condition of the QS
       if (statusQs) {
@@ -174,17 +138,11 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       }
 
       if (questionsSequenceCondition === true) {
-        answerId =
-          currentQuestionsSequence.answers[
-            Object.keys(currentQuestionsSequence.answers).first()
-          ].id;
+        answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).first()].id;
       } else if (questionsSequenceCondition === false || statusQs === false) {
         // statusQd === false -> can't access the end of the QS anymore
         // questionsSequenceCondition === false -> can't find a condition to true
-        answerId =
-          currentQuestionsSequence.answers[
-            Object.keys(currentQuestionsSequence.answers).second()
-          ].id;
+        answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).second()].id;
       }
 
       // eslint-disable-next-line no-console
@@ -275,8 +233,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
       const { diagnosticId, nodeId } = action.payload;
 
-      const currentNode =
-        state$.value.diagnostics[diagnosticId]?.instances[nodeId];
+      const currentNode = state$.value.diagnostics[diagnosticId]?.instances[nodeId];
 
       // INFO for debug if algo JSON is broken
       if (currentNode === undefined) {
@@ -292,9 +249,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
         return of();
       }
 
-      if (
-        state$.value.nodes[nodeId].display_format === displayFormats.formula
-      ) {
+      if (state$.value.nodes[nodeId].display_format === displayFormats.formula) {
         state$.value.nodes[nodeId].calculateFormula();
       }
 
@@ -304,10 +259,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       // If one parentsNodes has to be show and answered
       let parentConditionValue = parentsNodes.some((i) => {
         let parentNode = state$.value.nodes[i];
-        let diagnostic = find(
-          parentNode.dd,
-          (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId
-        );
+        let diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
         return parentNode.answer !== null && diagnostic.conditionValue === true;
       });
 
@@ -316,31 +268,15 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
       // If the condition of this node is not null
       if (conditionValue !== null) {
-        actions.push(
-          updateConditionValue(
-            nodeId,
-            diagnosticId,
-            conditionValue,
-            state$.value.diagnostics[diagnosticId].type
-          )
-        );
+        actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type));
 
         // If the node is answered go his children
         if (state$.value.nodes[nodeId].answer !== null) {
-          actions.push(
-            dispatchNodeAction(nodeId, diagnosticId, nodesType.diagnostic)
-          );
+          actions.push(dispatchNodeAction(nodeId, diagnosticId, nodesType.diagnostic));
         }
       } else if (parentConditionValue === false) {
         // Set parent to false if their condition's isn't correct. Used to stop the algorithm
-        actions.push(
-          updateConditionValue(
-            nodeId,
-            diagnosticId,
-            false,
-            state$.value.diagnostics[diagnosticId].type
-          )
-        );
+        actions.push(updateConditionValue(nodeId, diagnosticId, false, state$.value.diagnostics[diagnosticId].type));
       }
 
       return of(...actions);

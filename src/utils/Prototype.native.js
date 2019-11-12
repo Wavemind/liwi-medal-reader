@@ -31,11 +31,7 @@ Object.compare = function(obj1, obj2) {
         break;
       //Compare function code
       case 'function':
-        if (
-          typeof obj2[p] == 'undefined' ||
-          (p !== 'compare' && obj1[p].toString() !== obj2[p].toString())
-        )
-          return false;
+        if (typeof obj2[p] == 'undefined' || (p !== 'compare' && obj1[p].toString() !== obj2[p].toString())) return false;
         break;
       //Compare values
       default:

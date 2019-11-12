@@ -4,11 +4,7 @@ import { host } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
 
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
-import {
-  getItems,
-  getSession,
-  setItem,
-} from '../../src/engine/api/LocalStorage';
+import { getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
 
 // @params [String] params, [Integer] userId
 // @return [Json] response from server
@@ -17,9 +13,7 @@ export const get = async (params, userId) => {
   let url = `${host}${params}`;
   let header = await getHeaders('GET', false, userId);
 
-  const request = await fetch(url, header).catch((error) =>
-    handleHttpError(error)
-  );
+  const request = await fetch(url, header).catch((error) => handleHttpError(error));
   let httpcall = await request;
   if (httpcall.status === 500) {
     Toaster('The server is not responding', { type: 'danger', duration: 4000 });
@@ -43,9 +37,7 @@ export const post = async (params, body = {}, userId = null) => {
   let url = `${host}${params}`;
   let header = await getHeaders('POST', body, userId);
 
-  const request = await fetch(url, header).catch((error) =>
-    handleHttpError(error)
-  );
+  const request = await fetch(url, header).catch((error) => handleHttpError(error));
   let response = await request.json();
 
   // Display error
@@ -110,19 +102,11 @@ export const fetchAlgorithms = async (userId) => {
 
     await post('activities', deviceInfo);
 
-    let serverAlgorithm = await get(
-      `versions?mac_address=${
-        deviceInfo.activity.device_attributes.mac_address
-      }`,
-      userId
-    );
+    let serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
 
     let localAlgorithms = await getItems('algorithms');
 
-    let algorithm = findIndex(
-      localAlgorithms,
-      (a) => a.algorithm_id === serverAlgorithm.algorithm_id
-    );
+    let algorithm = findIndex(localAlgorithms, (a) => a.algorithm_id === serverAlgorithm.algorithm_id);
     let algorithmSelected = find(localAlgorithms, (a) => a.selected === true);
 
     if (algorithmSelected !== undefined) {
