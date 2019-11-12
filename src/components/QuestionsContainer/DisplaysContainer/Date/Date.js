@@ -4,7 +4,7 @@ import * as React from 'react';
 import { DatePicker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { styles } from './Date.style';
-
+import moment from 'moment';
 type Props = NavigationScreenProps & {};
 
 type State = {};
@@ -19,7 +19,7 @@ export default class Date extends React.Component<Props, State> {
     const { setAnswer, question } = this.props;
 
     if (value !== question.value && value !== '') {
-      setAnswer(question.id, value);
+      setAnswer(question.id, moment(value).format());
     } else if (question.value !== null && value === '') {
       setAnswer(question.id, null);
     }
@@ -27,7 +27,8 @@ export default class Date extends React.Component<Props, State> {
 
   render() {
     const { question } = this.props;
-    const value = question.value === null ? null : question.value;
+
+    const value = question.value === null ? null : moment(question.value).toDate();
 
     return (
       <View answer>
