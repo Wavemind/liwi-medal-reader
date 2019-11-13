@@ -23,12 +23,13 @@ i18n
         algorithms: {
           never: 'Never synchronized data',
           last: 'Last synchronization attempt',
-          success: 'and success',
+          success: 'The synchronization did work.',
+          nosuccess: 'The synchronization didn\'t work. ',
           titlesync: 'Status synchronization of medical cases',
           synchronize: 'Synchronize',
           no: 'Never synchronized',
           need: 'Must be re-synchronized',
-          uptodate: 'Synchronized',
+          uptdate: 'Synchronized',
         },
         confirm: {
           message: 'Do you want to close the current case and create new one ?',

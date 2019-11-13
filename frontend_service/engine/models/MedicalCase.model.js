@@ -30,6 +30,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
     this.name = currentAlgorithm.name;
     this.version = currentAlgorithm.version;
+    this.version_id = currentAlgorithm.version_id !== undefined ? currentAlgorithm.version_id : null;
     this.algorithm_id = currentAlgorithm.algorithm_id;
     this.diagnostics = currentAlgorithm.diagnostics;
     this.nodes = { ...currentAlgorithm.nodes };
@@ -39,6 +40,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.synchronized_at = null;
     this.created_at = moment().format();
     this.status = medicalCaseStatus.waitingTriage.name;
+    this.main_data_medical_case_id = null;
 
     await this.generateExcludedId();
     await this.generateId();

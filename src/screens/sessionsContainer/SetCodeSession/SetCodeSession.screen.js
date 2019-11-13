@@ -42,18 +42,13 @@ export default class SetCodeSession extends React.Component<Props, State> {
   validateCode = () => {
     const { code, codeConfirmation } = this.state;
 
-    let mediumRegex = new RegExp(
-      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
-    );
+    let mediumRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
     if (code.length > 0 && codeConfirmation.length > 0) {
       let encrypt1 = sha256.hmac(saltHash, code);
       let encrypt2 = sha256.hmac(saltHash, codeConfirmation);
 
-      if (
-        encrypt1 !== encrypt2 ||
-        (!mediumRegex.test(code) && !mediumRegex.test(codeConfirmation))
-      ) {
+      if (encrypt1 !== encrypt2 || (!mediumRegex.test(code) && !mediumRegex.test(codeConfirmation))) {
         this.setState({
           error: 'Your password is too weak or it\'s not the same',
         });
@@ -76,7 +71,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
       const encrypted = sha256.hmac(saltHash, code);
 
       await sessions.setLocalCode(encrypted, userId);
-      app.unLockSession(userId, code);
+      await app.unLockSession(userId, code);
     } else {
       this.setState({ isLoading: false });
     }
@@ -97,8 +92,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
             <LiwiTitle2 noBorder testID="welcome">
-              {t('code_session_screen:title')} {session.data.first_name}{' '}
-              {session.data.last_name}
+              {t('code_session_screen:title')} {session.data.first_name} {session.data.last_name}
             </LiwiTitle2>
             <Form>
               <CustomInput
@@ -118,21 +112,11 @@ export default class SetCodeSession extends React.Component<Props, State> {
                 placeholder={t('code_session_screen:type_your_code')}
                 condensed
               />
-              <Button
-                testID="set_code"
-                full
-                style={styles.marginTop}
-                onPress={() => this.setLocalCode()}
-                disabled={isLoading}
-              >
+              <Button testID="set_code" full style={styles.marginTop} onPress={() => this.setLocalCode()} disabled={isLoading}>
                 <Text> {t('code_session_screen:set_code')} </Text>
               </Button>
-              <Text padded>
-                - {t('login:error_char')}
-              </Text>
-              <Text padded>
-                - {t('login:error_letter')}
-              </Text>
+              <Text padded>- {t('login:error_char')}</Text>
+              <Text padded>- {t('login:error_letter')}</Text>
             </Form>
           </ScrollView>
         </View>
