@@ -37,6 +37,7 @@ export default class Algorithms extends React.Component<Props, State> {
     let algorithms = await getItems('algorithms');
 
     const medicalCases = [];
+
     patients.map((patient) =>
       patient.medicalCases.map((mc) => {
         if (reduxMedicalCase.id === mc.id) {
@@ -79,10 +80,10 @@ export default class Algorithms extends React.Component<Props, State> {
     let neverSync = 0;
 
     medicalCases.map((mc) => {
-      if (mc.updated_at === null) {
+      if (mc.synchronized_at === null) {
         neverSync++;
       } else {
-        if (moment(mc.updated_at) < moment(mc.synchronized_at)) {
+        if (moment(mc.updated_at) > moment(mc.synchronized_at)) {
           notSync++;
         } else {
           sync++;
@@ -199,7 +200,6 @@ export default class Algorithms extends React.Component<Props, State> {
     const body = { patients: patients };
     let resultPosting = await syncMedicalCases(body, id);
     let dateNow = moment().format();
-
     if (resultPosting !== false) {
       // Do stuff on result
       patients.map((patient) => {
@@ -216,12 +216,11 @@ export default class Algorithms extends React.Component<Props, State> {
             medicalCaseitem.main_data_medical_case_id = resultPosting.medical_cases[medicalCaseitem.id];
           }
           // Update Sync_at
-          medicalCaseitem.updated_at = dateNow;
+          medicalCaseitem.synchronized_at = dateNow;
         });
       });
-
       await setItem('patients', patients);
-      updateMedicalCaseProperty('updated_at', dateNow);
+      updateMedicalCaseProperty('synchronized_at', dateNow);
     }
 
     const synchronisation = {

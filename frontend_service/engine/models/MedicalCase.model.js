@@ -36,7 +36,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.nodes = { ...currentAlgorithm.nodes };
     this.selected = currentAlgorithm.selected;
     this.triage = currentAlgorithm.triage;
-    this.updated_at = null;
+    this.updated_at = moment().format();
     this.synchronized_at = null;
     this.created_at = moment().format();
     this.status = medicalCaseStatus.waitingTriage.name;

@@ -12,6 +12,16 @@ import { stringifyDeepRef } from '../../utils/swissKnives';
 export const setItem = async (key, item) => {
   let controller = stringifyDeepRef(item);
 
+  if (key === 'patients') {
+    item.map((i) =>
+      i.medicalCases.map((medicalCase) => {
+        if (medicalCase.patient !== undefined) {
+          medicalCase.patient.medicalCases = [];
+        }
+      })
+    );
+  }
+
   return await AsyncStorage.setItem(key, controller);
 };
 
