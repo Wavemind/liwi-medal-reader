@@ -99,7 +99,6 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.UPDATE_MEDICAL_CASE)
   updateMedicalCase(state, action) {
     const { property, newValue } = action.payload;
-
     return {
       ...state,
       [property]: newValue,
@@ -224,12 +223,7 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(REHYDRATE)
   rehydrate(state, action) {
-    if (
-      action.payload === undefined ||
-      action.payload === null ||
-      action.payload.id === undefined ||
-      action.payload.id === null
-    ) {
+    if (action.payload === undefined || action.payload === null || action.payload.id === undefined || action.payload.id === null) {
       return initialState;
     }
 

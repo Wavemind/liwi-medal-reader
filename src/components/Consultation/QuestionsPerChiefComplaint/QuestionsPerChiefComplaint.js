@@ -21,9 +21,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
   render() {
     const { medicalCase, filterBy } = this.props;
 
-    let chiefComplaints = medicalCase.nodes.filterByCategory(
-      categories.chiefComplaint
-    );
+    let chiefComplaints = medicalCase.nodes.filterByCategory(categories.chiefComplaint);
 
     let questionsPerChiefComplaints = {};
     chiefComplaints.map((chiefComplaint) => {
@@ -50,9 +48,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
       if (questionsPerChiefComplaints[id].questions.length > 0) {
         chiefComplaintsAccordion.push({
           title: questionsPerChiefComplaints[id].title,
-          content: (
-            <Questions questions={questionsPerChiefComplaints[id].questions} />
-          ),
+          content: <Questions questions={questionsPerChiefComplaints[id].questions} />,
         });
       }
     });

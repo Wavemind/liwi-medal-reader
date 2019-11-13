@@ -36,7 +36,8 @@ export const syncMedicalCases = async (body, userId = null) => {
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
 
-  let response = await request.text();
+  let http = await request;
+  let response = await http.text();
   let json = false;
 
   try {
@@ -46,7 +47,7 @@ export const syncMedicalCases = async (body, userId = null) => {
     // handle the error according to your needs
   }
 
-  if (json.status === 200) {
+  if (http.status === 200) {
     return json;
   } else {
     return false;
