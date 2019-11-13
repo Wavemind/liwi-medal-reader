@@ -170,13 +170,13 @@ export default class Algorithms extends React.Component<Props, State> {
                   <Text>{t('algorithms:need')}</Text>
                 </View>
               </View>
-              <View flex-center-row>
-                <Button style={styles.marginTop} onPress={this.sendSync}>
-                  <Text>{t('algorithms:synchronize')}</Text>
-                </Button>
-              </View>
             </View>
           )}
+          <View flex-center-row>
+            <Button style={styles.marginTop} onPress={this.sendSync}>
+              <Text>{t('algorithms:synchronize')}</Text>
+            </Button>
+          </View>
         </View>
       </ScrollView>
     );
@@ -218,11 +218,12 @@ export default class Algorithms extends React.Component<Props, State> {
       },
     } = this.props;
 
-    // Store the redux medicalcase before send all data
+    // Store the redux medical Case before send all data
     await storeMedicalCase(medicalCase);
 
     let patients = await getItems('patients');
     const body = { patients: patients };
+
     let resultPosting = await post('sync_medical_cases', body, id);
     let dateNow = moment().format();
     const synchronisation = {
