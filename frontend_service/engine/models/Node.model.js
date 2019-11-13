@@ -65,12 +65,12 @@ export class NodeModel implements NodeInterface {
           break;
         case valueFormats.string:
         case valueFormats.date:
-        case valueFormats.bool:
-          answer = value;
+          //  Nothing to do
           break;
+        case valueFormats.bool:
         case valueFormats.array:
           answer = Number(value);
-          value = Number(value);
+          value = null;
           break;
         default:
           // eslint-disable-next-line no-console

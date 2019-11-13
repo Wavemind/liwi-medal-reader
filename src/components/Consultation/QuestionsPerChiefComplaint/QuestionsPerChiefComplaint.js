@@ -12,12 +12,11 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class QuestionsPerChiefComplaint extends React.Component<Props,
-  State> {
+export default class QuestionsPerChiefComplaint extends React.Component<Props, State> {
   // default settings
   state = {};
 
-  // TODO optimize this with scu ! @quentin
+  // TODO opti mize this with scu ! @quentin
 
   render() {
     const { medicalCase, filterBy } = this.props;
@@ -47,12 +46,15 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props,
 
     let chiefComplaintsAccordion = [];
     Object.keys(questionsPerChiefComplaints).map((id) => {
-      chiefComplaintsAccordion.push({
-        title: questionsPerChiefComplaints[id].title,
-        content: (
-          <Questions questions={questionsPerChiefComplaints[id].questions} />
-        ),
-      });
+      // Show chief complaint only if it has some questions
+      if (questionsPerChiefComplaints[id].questions.length > 0) {
+        chiefComplaintsAccordion.push({
+          title: questionsPerChiefComplaints[id].title,
+          content: (
+            <Questions questions={questionsPerChiefComplaints[id].questions} />
+          ),
+        });
+      }
     });
 
     return (
