@@ -7,42 +7,11 @@
   "description": "first modellisation of ePOCT from the draw.io doc",
   "triage": {
     "orders": {
-      "first_look_assessment": [
-        282,
-        281,
-        283
-      ],
-      "chief_complaint": [
-        61,
-        57,
-        54,
-        52,
-        53,
-        55,
-        56,
-        58,
-        59,
-        60
-      ],
-      "vital_sign": [
-        284
-      ],
-      "chronical_condition": [
-        285
-      ],
-      "other": [
-        193,
-        194,
-        195,
-        79,
-        80,
-        81,
-        185,
-        82,
-        270,
-        83,
-        84
-      ]
+      "first_look_assessment": [282, 281, 283],
+      "chief_complaint": [61, 57, 54, 52, 53, 55, 56, 58, 59, 60],
+      "vital_sign": [284],
+      "chronical_condition": [285],
+      "other": [193, 194, 195, 79, 80, 81, 185, 82, 270, 83, 84]
     },
     "conditions": {
       "79": [
@@ -277,10 +246,7 @@
             }
           ],
           "id": 64,
-          "children": [
-            81,
-            88
-          ]
+          "children": [81, 88]
         },
         "81": {
           "requirement": {
@@ -373,9 +339,7 @@
             }
           ],
           "id": 88,
-          "children": [
-            243
-          ]
+          "children": [243]
         },
         "176": {
           "requirement": {
@@ -384,10 +348,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            64,
-            85
-          ]
+          "children": [64, 85]
         },
         "243": {
           "requirement": {
@@ -418,10 +379,7 @@
             }
           ],
           "id": 243,
-          "children": [
-            145,
-            146
-          ]
+          "children": [145, 146]
         }
       },
       "type": "diagnostic"
@@ -495,9 +453,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            64
-          ]
+          "children": [64]
         },
         "64": {
           "requirement": {
@@ -548,10 +504,7 @@
             }
           ],
           "id": 64,
-          "children": [
-            81,
-            88
-          ]
+          "children": [81, 88]
         },
         "81": {
           "requirement": {
@@ -613,9 +566,7 @@
             }
           ],
           "id": 88,
-          "children": [
-            109
-          ]
+          "children": [109]
         },
         "109": {
           "requirement": {
@@ -646,9 +597,7 @@
             }
           ],
           "id": 109,
-          "children": [
-            149
-          ]
+          "children": [149]
         }
       },
       "type": "diagnostic"
@@ -742,9 +691,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            64
-          ]
+          "children": [64]
         },
         "64": {
           "requirement": {
@@ -795,11 +742,7 @@
             }
           ],
           "id": 64,
-          "children": [
-            81,
-            79,
-            89
-          ]
+          "children": [81, 79, 89]
         },
         "79": {
           "requirement": {
@@ -870,9 +813,7 @@
           },
           "top_conditions": [],
           "id": 88,
-          "children": [
-            231
-          ]
+          "children": [231]
         },
         "89": {
           "requirement": {
@@ -903,9 +844,7 @@
             }
           ],
           "id": 89,
-          "children": [
-            231
-          ]
+          "children": [231]
         }
       },
       "type": "diagnostic"
@@ -1040,9 +979,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "101": {
           "requirement": {
@@ -1073,10 +1010,7 @@
             }
           ],
           "id": 101,
-          "children": [
-            102,
-            184
-          ]
+          "children": [102, 184]
         },
         "102": {
           "requirement": {
@@ -1107,9 +1041,7 @@
             }
           ],
           "id": 102,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "176": {
           "requirement": {
@@ -1200,9 +1132,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            101
-          ]
+          "children": [101]
         },
         "184": {
           "requirement": {
@@ -1253,10 +1183,7 @@
             }
           ],
           "id": 184,
-          "children": [
-            152,
-            151
-          ]
+          "children": [152, 151]
         }
       },
       "type": "diagnostic"
@@ -1471,9 +1398,7 @@
             }
           ],
           "id": 72,
-          "children": [
-            243
-          ]
+          "children": [243]
         },
         "99": {
           "requirement": {
@@ -1504,9 +1429,7 @@
             }
           ],
           "id": 99,
-          "children": [
-            243
-          ]
+          "children": [243]
         },
         "176": {
           "requirement": {
@@ -1515,10 +1438,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            72,
-            99
-          ]
+          "children": [72, 99]
         },
         "184": {
           "requirement": {
@@ -1527,9 +1447,7 @@
           },
           "top_conditions": [],
           "id": 184,
-          "children": [
-            117
-          ]
+          "children": [117]
         },
         "243": {
           "requirement": {
@@ -1580,10 +1498,7 @@
             }
           ],
           "id": 243,
-          "children": [
-            165,
-            164
-          ]
+          "children": [165, 164]
         }
       },
       "type": "diagnostic"
@@ -1810,9 +1725,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "74": {
           "requirement": {
@@ -1843,10 +1756,7 @@
             }
           ],
           "id": 74,
-          "children": [
-            114,
-            170
-          ]
+          "children": [114, 170]
         },
         "101": {
           "requirement": {
@@ -1877,9 +1787,7 @@
             }
           ],
           "id": 101,
-          "children": [
-            243
-          ]
+          "children": [243]
         },
         "114": {
           "requirement": {
@@ -1930,10 +1838,7 @@
             }
           ],
           "id": 114,
-          "children": [
-            172,
-            171
-          ]
+          "children": [172, 171]
         },
         "176": {
           "requirement": {
@@ -1984,9 +1889,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            101
-          ]
+          "children": [101]
         },
         "184": {
           "requirement": {
@@ -1995,10 +1898,7 @@
           },
           "top_conditions": [],
           "id": 184,
-          "children": [
-            118,
-            115
-          ]
+          "children": [118, 115]
         },
         "243": {
           "requirement": {
@@ -2029,9 +1929,7 @@
             }
           ],
           "id": 243,
-          "children": [
-            74
-          ]
+          "children": [74]
         }
       },
       "type": "diagnostic"
@@ -2156,9 +2054,7 @@
           },
           "top_conditions": [],
           "id": 112,
-          "children": [
-            254
-          ]
+          "children": [254]
         }
       },
       "type": "diagnostic"
@@ -2301,9 +2197,7 @@
             }
           ],
           "id": 47,
-          "children": [
-            177
-          ]
+          "children": [177]
         },
         "50": {
           "requirement": {
@@ -2312,9 +2206,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "176": {
           "requirement": {
@@ -2385,9 +2277,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            47
-          ]
+          "children": [47]
         },
         "177": {
           "requirement": {
@@ -2418,11 +2308,7 @@
             }
           ],
           "id": 177,
-          "children": [
-            158,
-            178,
-            184
-          ]
+          "children": [158, 178, 184]
         },
         "178": {
           "requirement": {
@@ -2453,9 +2339,7 @@
             }
           ],
           "id": 178,
-          "children": [
-            159
-          ]
+          "children": [159]
         },
         "184": {
           "requirement": {
@@ -2486,9 +2370,7 @@
             }
           ],
           "id": 184,
-          "children": [
-            159
-          ]
+          "children": [159]
         }
       },
       "type": "diagnostic"
@@ -2582,9 +2464,7 @@
           },
           "top_conditions": [],
           "id": 67,
-          "children": [
-            68
-          ]
+          "children": [68]
         },
         "68": {
           "requirement": {
@@ -2624,9 +2504,7 @@
           },
           "top_conditions": [],
           "id": 179,
-          "children": [
-            160
-          ]
+          "children": [160]
         },
         "180": {
           "requirement": {
@@ -2635,9 +2513,7 @@
           },
           "top_conditions": [],
           "id": 180,
-          "children": [
-            160
-          ]
+          "children": [160]
         }
       },
       "type": "diagnostic"
@@ -2721,9 +2597,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "71": {
           "requirement": {
@@ -2774,9 +2648,7 @@
             }
           ],
           "id": 71,
-          "children": [
-            162
-          ]
+          "children": [162]
         },
         "176": {
           "requirement": {
@@ -2867,10 +2739,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            179,
-            180
-          ]
+          "children": [179, 180]
         },
         "179": {
           "requirement": {
@@ -2901,9 +2770,7 @@
             }
           ],
           "id": 179,
-          "children": [
-            71
-          ]
+          "children": [71]
         },
         "180": {
           "requirement": {
@@ -2934,9 +2801,7 @@
             }
           ],
           "id": 180,
-          "children": [
-            71
-          ]
+          "children": [71]
         }
       },
       "type": "diagnostic"
@@ -3118,9 +2983,7 @@
             }
           ],
           "id": 92,
-          "children": [
-            166
-          ]
+          "children": [166]
         },
         "176": {
           "requirement": {
@@ -3129,9 +2992,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            92
-          ]
+          "children": [92]
         },
         "184": {
           "requirement": {
@@ -3140,14 +3001,7 @@
           },
           "top_conditions": [],
           "id": 184,
-          "children": [
-            139,
-            117,
-            119,
-            123,
-            126,
-            138
-          ]
+          "children": [139, 117, 119, 123, 126, 138]
         }
       },
       "type": "diagnostic"
@@ -3318,9 +3172,7 @@
             }
           ],
           "id": 93,
-          "children": [
-            167
-          ]
+          "children": [167]
         },
         "176": {
           "requirement": {
@@ -3329,9 +3181,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            93
-          ]
+          "children": [93]
         },
         "184": {
           "requirement": {
@@ -3340,13 +3190,7 @@
           },
           "top_conditions": [],
           "id": 184,
-          "children": [
-            117,
-            115,
-            126,
-            123,
-            138
-          ]
+          "children": [117, 115, 126, 123, 138]
         }
       },
       "type": "diagnostic"
@@ -3452,9 +3296,7 @@
             }
           ],
           "id": 64,
-          "children": [
-            81
-          ]
+          "children": [81]
         },
         "81": {
           "requirement": {
@@ -3494,9 +3336,7 @@
           },
           "top_conditions": [],
           "id": 88,
-          "children": [
-            169
-          ]
+          "children": [169]
         },
         "176": {
           "requirement": {
@@ -3505,9 +3345,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            64
-          ]
+          "children": [64]
         }
       },
       "type": "diagnostic"
@@ -3574,9 +3412,7 @@
           },
           "top_conditions": [],
           "id": 73,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "94": {
           "requirement": {
@@ -3665,9 +3501,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            94
-          ]
+          "children": [94]
         }
       },
       "type": "diagnostic"
@@ -3802,9 +3636,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "101": {
           "requirement": {
@@ -3835,9 +3667,7 @@
             }
           ],
           "id": 101,
-          "children": [
-            102
-          ]
+          "children": [102]
         },
         "102": {
           "requirement": {
@@ -3868,9 +3698,7 @@
             }
           ],
           "id": 102,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "176": {
           "requirement": {
@@ -3941,9 +3769,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            101
-          ]
+          "children": [101]
         },
         "184": {
           "requirement": {
@@ -3974,10 +3800,7 @@
             }
           ],
           "id": 184,
-          "children": [
-            206,
-            207
-          ]
+          "children": [206, 207]
         }
       },
       "type": "diagnostic"
@@ -4083,10 +3906,7 @@
             }
           ],
           "id": 64,
-          "children": [
-            81,
-            88
-          ]
+          "children": [81, 88]
         },
         "81": {
           "requirement": {
@@ -4148,9 +3968,7 @@
             }
           ],
           "id": 88,
-          "children": [
-            219
-          ]
+          "children": [219]
         },
         "176": {
           "requirement": {
@@ -4159,9 +3977,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            64
-          ]
+          "children": [64]
         },
         "219": {
           "requirement": {
@@ -4212,9 +4028,7 @@
             }
           ],
           "id": 219,
-          "children": [
-            214
-          ]
+          "children": [214]
         },
         "233": {
           "requirement": {
@@ -4223,9 +4037,7 @@
           },
           "top_conditions": [],
           "id": 233,
-          "children": [
-            219
-          ]
+          "children": [219]
         }
       },
       "type": "diagnostic"
@@ -4331,11 +4143,7 @@
           },
           "top_conditions": [],
           "id": 64,
-          "children": [
-            88,
-            89,
-            79
-          ]
+          "children": [88, 89, 79]
         },
         "79": {
           "requirement": {
@@ -4428,9 +4236,7 @@
             }
           ],
           "id": 88,
-          "children": [
-            81
-          ]
+          "children": [81]
         },
         "89": {
           "requirement": {
@@ -4461,9 +4267,7 @@
             }
           ],
           "id": 89,
-          "children": [
-            224
-          ]
+          "children": [224]
         },
         "181": {
           "requirement": {
@@ -4472,11 +4276,7 @@
           },
           "top_conditions": [],
           "id": 181,
-          "children": [
-            116,
-            117,
-            124
-          ]
+          "children": [116, 117, 124]
         }
       },
       "type": "diagnostic"
@@ -4571,9 +4371,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "80": {
           "requirement": {
@@ -4695,9 +4493,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            80
-          ]
+          "children": [80]
         },
         "181": {
           "requirement": {
@@ -4706,9 +4502,7 @@
           },
           "top_conditions": [],
           "id": 181,
-          "children": [
-            235
-          ]
+          "children": [235]
         },
         "236": {
           "requirement": {
@@ -4717,9 +4511,7 @@
           },
           "top_conditions": [],
           "id": 236,
-          "children": [
-            139
-          ]
+          "children": [139]
         }
       },
       "type": "diagnostic"
@@ -4838,11 +4630,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            179,
-            180,
-            67
-          ]
+          "children": [179, 180, 67]
         },
         "67": {
           "requirement": {
@@ -4933,9 +4721,7 @@
             }
           ],
           "id": 67,
-          "children": [
-            245
-          ]
+          "children": [245]
         },
         "179": {
           "requirement": {
@@ -5026,9 +4812,7 @@
             }
           ],
           "id": 179,
-          "children": [
-            245
-          ]
+          "children": [245]
         },
         "180": {
           "requirement": {
@@ -5119,9 +4903,7 @@
             }
           ],
           "id": 180,
-          "children": [
-            245
-          ]
+          "children": [245]
         }
       },
       "type": "diagnostic"
@@ -5444,9 +5226,7 @@
             }
           ],
           "id": 101,
-          "children": [
-            243
-          ]
+          "children": [243]
         },
         "111": {
           "requirement": {
@@ -5517,10 +5297,7 @@
             }
           ],
           "id": 111,
-          "children": [
-            246,
-            247
-          ]
+          "children": [246, 247]
         },
         "176": {
           "requirement": {
@@ -5529,9 +5306,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            101
-          ]
+          "children": [101]
         },
         "184": {
           "requirement": {
@@ -5540,12 +5315,7 @@
           },
           "top_conditions": [],
           "id": 184,
-          "children": [
-            138,
-            132,
-            126,
-            123
-          ]
+          "children": [138, 132, 126, 123]
         },
         "243": {
           "requirement": {
@@ -5576,10 +5346,7 @@
             }
           ],
           "id": 243,
-          "children": [
-            246,
-            111
-          ]
+          "children": [246, 111]
         }
       },
       "type": "diagnostic"
@@ -5826,9 +5593,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "74": {
           "requirement": {
@@ -5859,11 +5624,7 @@
             }
           ],
           "id": 74,
-          "children": [
-            114,
-            248,
-            249
-          ]
+          "children": [114, 248, 249]
         },
         "101": {
           "requirement": {
@@ -5894,9 +5655,7 @@
             }
           ],
           "id": 101,
-          "children": [
-            243
-          ]
+          "children": [243]
         },
         "114": {
           "requirement": {
@@ -5927,10 +5686,7 @@
             }
           ],
           "id": 114,
-          "children": [
-            250,
-            249
-          ]
+          "children": [250, 249]
         },
         "176": {
           "requirement": {
@@ -5961,9 +5717,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            101
-          ]
+          "children": [101]
         },
         "184": {
           "requirement": {
@@ -5972,9 +5726,7 @@
           },
           "top_conditions": [],
           "id": 184,
-          "children": [
-            118
-          ]
+          "children": [118]
         },
         "243": {
           "requirement": {
@@ -6005,9 +5757,7 @@
             }
           ],
           "id": 243,
-          "children": [
-            74
-          ]
+          "children": [74]
         }
       },
       "type": "diagnostic"
@@ -6254,9 +6004,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            176
-          ]
+          "children": [176]
         },
         "74": {
           "requirement": {
@@ -6287,11 +6035,7 @@
             }
           ],
           "id": 74,
-          "children": [
-            114,
-            251,
-            252
-          ]
+          "children": [114, 251, 252]
         },
         "101": {
           "requirement": {
@@ -6322,9 +6066,7 @@
             }
           ],
           "id": 101,
-          "children": [
-            243
-          ]
+          "children": [243]
         },
         "114": {
           "requirement": {
@@ -6355,10 +6097,7 @@
             }
           ],
           "id": 114,
-          "children": [
-            253,
-            252
-          ]
+          "children": [253, 252]
         },
         "176": {
           "requirement": {
@@ -6389,9 +6128,7 @@
             }
           ],
           "id": 176,
-          "children": [
-            101
-          ]
+          "children": [101]
         },
         "184": {
           "requirement": {
@@ -6400,10 +6137,7 @@
           },
           "top_conditions": [],
           "id": 184,
-          "children": [
-            115,
-            118
-          ]
+          "children": [115, 118]
         },
         "243": {
           "requirement": {
@@ -6434,9 +6168,7 @@
             }
           ],
           "id": 243,
-          "children": [
-            74
-          ]
+          "children": [74]
         }
       },
       "type": "diagnostic"
@@ -6576,9 +6308,7 @@
           },
           "top_conditions": [],
           "id": 176,
-          "children": [
-            260
-          ]
+          "children": [260]
         },
         "257": {
           "requirement": {
@@ -6609,10 +6339,7 @@
             }
           ],
           "id": 257,
-          "children": [
-            256,
-            255
-          ]
+          "children": [256, 255]
         },
         "260": {
           "requirement": {
@@ -6643,9 +6370,7 @@
             }
           ],
           "id": 260,
-          "children": [
-            257
-          ]
+          "children": [257]
         }
       },
       "type": "diagnostic"
@@ -6729,9 +6454,7 @@
           },
           "top_conditions": [],
           "id": 73,
-          "children": [
-            94
-          ]
+          "children": [94]
         },
         "94": {
           "requirement": {
@@ -6789,9 +6512,7 @@
           },
           "top_conditions": [],
           "id": 112,
-          "children": [
-            262
-          ]
+          "children": [262]
         }
       },
       "type": "diagnostic"
@@ -6875,9 +6596,7 @@
           },
           "top_conditions": [],
           "id": 73,
-          "children": [
-            94
-          ]
+          "children": [94]
         },
         "94": {
           "requirement": {
@@ -6926,9 +6645,7 @@
           },
           "top_conditions": [],
           "id": 112,
-          "children": [
-            263
-          ]
+          "children": [263]
         }
       },
       "type": "diagnostic"
@@ -6996,9 +6713,7 @@
           },
           "top_conditions": [],
           "id": 73,
-          "children": [
-            94
-          ]
+          "children": [94]
         },
         "94": {
           "requirement": {
@@ -7047,9 +6762,7 @@
           },
           "top_conditions": [],
           "id": 112,
-          "children": [
-            264
-          ]
+          "children": [264]
         }
       },
       "type": "diagnostic"
@@ -7111,9 +6824,7 @@
           },
           "top_conditions": [],
           "id": 278,
-          "children": [
-            277
-          ]
+          "children": [277]
         }
       },
       "type": "diagnostic"
@@ -7159,9 +6870,7 @@
       "stage": "registration",
       "formula": null,
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "48": {
       "id": 48,
@@ -7209,12 +6918,7 @@
       "stage": "registration",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "49": {
       "id": 49,
@@ -7262,12 +6966,7 @@
       "stage": "registration",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "50": {
       "id": 50,
@@ -7404,14 +7103,7 @@
       "stage": "registration",
       "formula": "",
       "fn": [],
-      "cc": [
-        54,
-        53,
-        59,
-        60,
-        58,
-        52
-      ]
+      "cc": [54, 53, 59, 60, 58, 52]
     },
     "51": {
       "id": 51,
@@ -7452,14 +7144,7 @@
       "stage": "registration",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        53,
-        60,
-        52,
-        54,
-        58
-      ]
+      "cc": [59, 53, 60, 52, 54, 58]
     },
     "52": {
       "id": 52,
@@ -7500,12 +7185,7 @@
       "stage": "triage",
       "formula": null,
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "53": {
       "id": 53,
@@ -7582,12 +7262,7 @@
       "stage": "triage",
       "formula": null,
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "55": {
       "id": 55,
@@ -7700,12 +7375,7 @@
       "stage": "triage",
       "formula": null,
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "58": {
       "id": 58,
@@ -7890,14 +7560,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        53,
-        60,
-        52,
-        54,
-        58
-      ]
+      "cc": [59, 53, 60, 52, 54, 58]
     },
     "64": {
       "id": 64,
@@ -7963,10 +7626,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        52
-      ]
+      "cc": [59, 52]
     },
     "65": {
       "id": 65,
@@ -8007,12 +7667,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "66": {
       "id": 66,
@@ -8057,14 +7712,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        52,
-        54,
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [52, 54, 59, 60, 53, 58]
     },
     "67": {
       "id": 67,
@@ -8109,9 +7757,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        54
-      ]
+      "cc": [54]
     },
     "68": {
       "id": 68,
@@ -8152,9 +7798,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        54
-      ]
+      "cc": [54]
     },
     "69": {
       "id": 69,
@@ -8199,10 +7843,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        54,
-        53
-      ]
+      "cc": [54, 53]
     },
     "70": {
       "id": 70,
@@ -8254,10 +7895,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        54,
-        53
-      ]
+      "cc": [54, 53]
     },
     "71": {
       "id": 71,
@@ -8298,9 +7936,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        54
-      ]
+      "cc": [54]
     },
     "72": {
       "id": 72,
@@ -8341,9 +7977,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        58
-      ]
+      "cc": [58]
     },
     "73": {
       "id": 73,
@@ -8396,9 +8030,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "74": {
       "id": 74,
@@ -8461,9 +8093,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        60
-      ]
+      "cc": [60]
     },
     "75": {
       "id": 75,
@@ -8504,9 +8134,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "76": {
       "id": 76,
@@ -8547,9 +8175,7 @@
       "stage": "consultation",
       "formula": null,
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "77": {
       "id": 77,
@@ -8590,9 +8216,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "78": {
       "id": 78,
@@ -8633,9 +8257,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "79": {
       "id": 79,
@@ -8685,13 +8307,7 @@
       "stage": "triage",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58,
-        52
-      ]
+      "cc": [59, 60, 53, 58, 52]
     },
     "80": {
       "id": 80,
@@ -8737,13 +8353,7 @@
       "stage": "triage",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58,
-        54
-      ]
+      "cc": [59, 60, 53, 58, 54]
     },
     "81": {
       "id": 81,
@@ -8820,10 +8430,7 @@
       "stage": "triage",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        52
-      ]
+      "cc": [59, 52]
     },
     "82": {
       "id": 82,
@@ -8864,12 +8471,7 @@
       "stage": "triage",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "83": {
       "id": 83,
@@ -8910,12 +8512,7 @@
       "stage": "triage",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "84": {
       "id": 84,
@@ -8956,12 +8553,7 @@
       "stage": "triage",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "85": {
       "id": 85,
@@ -9007,10 +8599,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        52
-      ]
+      "cc": [59, 52]
     },
     "86": {
       "id": 86,
@@ -9051,9 +8640,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "87": {
       "id": 87,
@@ -9094,9 +8681,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "88": {
       "id": 88,
@@ -9162,10 +8747,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        52
-      ]
+      "cc": [59, 52]
     },
     "89": {
       "id": 89,
@@ -9210,9 +8792,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        52
-      ]
+      "cc": [52]
     },
     "90": {
       "id": 90,
@@ -9253,9 +8833,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "91": {
       "id": 91,
@@ -9296,9 +8874,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "92": {
       "id": 92,
@@ -9339,9 +8915,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "93": {
       "id": 93,
@@ -9382,9 +8956,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "94": {
       "id": 94,
@@ -9469,9 +9041,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "95": {
       "id": 95,
@@ -9527,9 +9097,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "96": {
       "id": 96,
@@ -9588,9 +9156,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "97": {
       "id": 97,
@@ -9695,9 +9261,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "98": {
       "id": 98,
@@ -9756,9 +9320,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "99": {
       "id": 99,
@@ -9799,9 +9361,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        58
-      ]
+      "cc": [58]
     },
     "100": {
       "id": 100,
@@ -9842,9 +9402,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "101": {
       "id": 101,
@@ -9912,9 +9470,7 @@
       "stage": "test",
       "formula": "",
       "fn": [],
-      "cc": [
-        60
-      ]
+      "cc": [60]
     },
     "102": {
       "id": 102,
@@ -9966,9 +9522,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        60
-      ]
+      "cc": [60]
     },
     "104": {
       "id": 104,
@@ -10009,12 +9563,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "108": {
       "id": 108,
@@ -10060,12 +9609,7 @@
           "conditionValue": true
         }
       ],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "109": {
       "id": 109,
@@ -10113,9 +9657,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        52
-      ]
+      "cc": [52]
     },
     "111": {
       "id": 111,
@@ -10161,9 +9703,7 @@
           "conditionValue": true
         }
       ],
-      "cc": [
-        60
-      ]
+      "cc": [60]
     },
     "112": {
       "id": 112,
@@ -10265,9 +9805,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        59
-      ]
+      "cc": [59]
     },
     "113": {
       "id": 113,
@@ -10312,14 +9850,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        52,
-        54,
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [52, 54, 59, 60, 53, 58]
     },
     "114": {
       "id": 114,
@@ -10375,9 +9906,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        60
-      ]
+      "cc": [60]
     },
     "115": {
       "id": 115,
@@ -11996,9 +11525,7 @@
           },
           "top_conditions": [],
           "id": 63,
-          "children": [
-            176
-          ]
+          "children": [176]
         }
       },
       "category": "predefined_syndrome",
@@ -12087,9 +11614,7 @@
           },
           "top_conditions": [],
           "id": 85,
-          "children": [
-            177
-          ]
+          "children": [177]
         },
         "86": {
           "requirement": {
@@ -12098,9 +11623,7 @@
           },
           "top_conditions": [],
           "id": 86,
-          "children": [
-            177
-          ]
+          "children": [177]
         },
         "87": {
           "requirement": {
@@ -12109,9 +11632,7 @@
           },
           "top_conditions": [],
           "id": 87,
-          "children": [
-            177
-          ]
+          "children": [177]
         }
       },
       "category": "predefined_syndrome",
@@ -12220,9 +11741,7 @@
           },
           "top_conditions": [],
           "id": 64,
-          "children": [
-            88
-          ]
+          "children": [88]
         },
         "81": {
           "requirement": {
@@ -12262,9 +11781,7 @@
             }
           ],
           "id": 88,
-          "children": [
-            178
-          ]
+          "children": [178]
         },
         "90": {
           "requirement": {
@@ -12273,9 +11790,7 @@
           },
           "top_conditions": [],
           "id": 90,
-          "children": [
-            178
-          ]
+          "children": [178]
         },
         "91": {
           "requirement": {
@@ -12284,9 +11799,7 @@
           },
           "top_conditions": [],
           "id": 91,
-          "children": [
-            178
-          ]
+          "children": [178]
         }
       },
       "category": "predefined_syndrome",
@@ -12377,9 +11890,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            69
-          ]
+          "children": [69]
         },
         "69": {
           "requirement": {
@@ -12470,9 +11981,7 @@
             }
           ],
           "id": 69,
-          "children": [
-            70
-          ]
+          "children": [70]
         },
         "70": {
           "requirement": {
@@ -12563,9 +12072,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            69
-          ]
+          "children": [69]
         },
         "69": {
           "requirement": {
@@ -12656,9 +12163,7 @@
             }
           ],
           "id": 69,
-          "children": [
-            70
-          ]
+          "children": [70]
         },
         "70": {
           "requirement": {
@@ -12781,11 +12286,7 @@
           },
           "top_conditions": [],
           "id": 66,
-          "children": [
-            181,
-            182,
-            186
-          ]
+          "children": [181, 182, 186]
         },
         "113": {
           "requirement": {
@@ -12816,9 +12317,7 @@
             }
           ],
           "id": 113,
-          "children": [
-            181
-          ]
+          "children": [181]
         },
         "182": {
           "requirement": {
@@ -12849,10 +12348,7 @@
             }
           ],
           "id": 182,
-          "children": [
-            181,
-            113
-          ]
+          "children": [181, 113]
         },
         "186": {
           "requirement": {
@@ -12883,9 +12379,7 @@
             }
           ],
           "id": 186,
-          "children": [
-            181
-          ]
+          "children": [181]
         }
       },
       "category": "predefined_syndrome",
@@ -12980,14 +12474,7 @@
       "stage": "consultation",
       "formula": null,
       "fn": [],
-      "cc": [
-        52,
-        54,
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [52, 54, 59, 60, 53, 58]
     },
     "183": {
       "id": 183,
@@ -13036,9 +12523,7 @@
           },
           "top_conditions": [],
           "id": 66,
-          "children": [
-            182
-          ]
+          "children": [182]
         },
         "113": {
           "requirement": {
@@ -13069,9 +12554,7 @@
             }
           ],
           "id": 113,
-          "children": [
-            183
-          ]
+          "children": [183]
         },
         "182": {
           "requirement": {
@@ -13102,9 +12585,7 @@
             }
           ],
           "id": 182,
-          "children": [
-            113
-          ]
+          "children": [113]
         }
       },
       "category": "predefined_syndrome",
@@ -13341,9 +12822,7 @@
           },
           "top_conditions": [],
           "id": 52,
-          "children": [
-            79
-          ]
+          "children": [79]
         },
         "54": {
           "requirement": {
@@ -13352,9 +12831,7 @@
           },
           "top_conditions": [],
           "id": 54,
-          "children": [
-            80
-          ]
+          "children": [80]
         },
         "57": {
           "requirement": {
@@ -13363,12 +12840,7 @@
           },
           "top_conditions": [],
           "id": 57,
-          "children": [
-            83,
-            82,
-            65,
-            84
-          ]
+          "children": [83, 82, 65, 84]
         },
         "65": {
           "requirement": {
@@ -13399,9 +12871,7 @@
             }
           ],
           "id": 65,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "79": {
           "requirement": {
@@ -13494,9 +12964,7 @@
             }
           ],
           "id": 82,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "83": {
           "requirement": {
@@ -13527,9 +12995,7 @@
             }
           ],
           "id": 83,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "84": {
           "requirement": {
@@ -13560,9 +13026,7 @@
             }
           ],
           "id": 84,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "183": {
           "requirement": {
@@ -13571,9 +13035,7 @@
           },
           "top_conditions": [],
           "id": 183,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "185": {
           "requirement": {
@@ -13582,9 +13044,7 @@
           },
           "top_conditions": [],
           "id": 185,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "186": {
           "requirement": {
@@ -13593,9 +13053,7 @@
           },
           "top_conditions": [],
           "id": 186,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "187": {
           "requirement": {
@@ -13604,9 +13062,7 @@
           },
           "top_conditions": [],
           "id": 187,
-          "children": [
-            184
-          ]
+          "children": [184]
         },
         "188": {
           "requirement": {
@@ -13615,9 +13071,7 @@
           },
           "top_conditions": [],
           "id": 188,
-          "children": [
-            184
-          ]
+          "children": [184]
         }
       },
       "category": "predefined_syndrome",
@@ -13785,12 +13239,7 @@
       "stage": "triage",
       "formula": null,
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     },
     "186": {
       "id": 186,
@@ -13843,9 +13292,7 @@
           },
           "top_conditions": [],
           "id": 104,
-          "children": [
-            186
-          ]
+          "children": [186]
         }
       },
       "category": "comorbidity",
@@ -13914,9 +13361,7 @@
           },
           "top_conditions": [],
           "id": 108,
-          "children": [
-            187
-          ]
+          "children": [187]
         }
       },
       "category": "comorbidity",
@@ -14077,9 +13522,7 @@
             }
           ],
           "id": 48,
-          "children": [
-            188
-          ]
+          "children": [188]
         },
         "49": {
           "requirement": {
@@ -14150,9 +13593,7 @@
             }
           ],
           "id": 49,
-          "children": [
-            188
-          ]
+          "children": [188]
         },
         "50": {
           "requirement": {
@@ -14161,10 +13602,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            48,
-            49
-          ]
+          "children": [48, 49]
         }
       },
       "category": "comorbidity",
@@ -14537,9 +13975,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        52
-      ]
+      "cc": [52]
     },
     "224": {
       "id": 224,
@@ -14762,9 +14198,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            233
-          ]
+          "children": [233]
         },
         "81": {
           "requirement": {
@@ -14773,9 +14207,7 @@
           },
           "top_conditions": [],
           "id": 81,
-          "children": [
-            233
-          ]
+          "children": [233]
         }
       },
       "category": "scored",
@@ -14928,9 +14360,7 @@
       "stage": "test",
       "formula": null,
       "fn": [],
-      "cc": [
-        54
-      ]
+      "cc": [54]
     },
     "243": {
       "id": 243,
@@ -15012,11 +14442,7 @@
       "stage": "test",
       "formula": "",
       "fn": [],
-      "cc": [
-        52,
-        60,
-        58
-      ]
+      "cc": [52, 60, 58]
     },
     "245": {
       "id": 245,
@@ -16270,9 +15696,7 @@
           },
           "top_conditions": [],
           "id": 50,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "75": {
           "requirement": {
@@ -16281,9 +15705,7 @@
           },
           "top_conditions": [],
           "id": 75,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "76": {
           "requirement": {
@@ -16292,9 +15714,7 @@
           },
           "top_conditions": [],
           "id": 76,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "77": {
           "requirement": {
@@ -16303,9 +15723,7 @@
           },
           "top_conditions": [],
           "id": 77,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "78": {
           "requirement": {
@@ -16314,9 +15732,7 @@
           },
           "top_conditions": [],
           "id": 78,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "100": {
           "requirement": {
@@ -16325,9 +15741,7 @@
           },
           "top_conditions": [],
           "id": 100,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "179": {
           "requirement": {
@@ -16336,9 +15750,7 @@
           },
           "top_conditions": [],
           "id": 179,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "180": {
           "requirement": {
@@ -16347,9 +15759,7 @@
           },
           "top_conditions": [],
           "id": 180,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "258": {
           "requirement": {
@@ -16358,9 +15768,7 @@
           },
           "top_conditions": [],
           "id": 258,
-          "children": [
-            257
-          ]
+          "children": [257]
         },
         "259": {
           "requirement": {
@@ -16369,9 +15777,7 @@
           },
           "top_conditions": [],
           "id": 259,
-          "children": [
-            257
-          ]
+          "children": [257]
         }
       },
       "category": "scored",
@@ -16632,9 +16038,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "259": {
       "id": 259,
@@ -16675,9 +16079,7 @@
       "stage": "consultation",
       "formula": null,
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "260": {
       "id": 260,
@@ -16718,9 +16120,7 @@
       "stage": "consultation",
       "formula": "",
       "fn": [],
-      "cc": [
-        53
-      ]
+      "cc": [53]
     },
     "261": {
       "id": 261,
@@ -17011,9 +16411,7 @@
       "stage": "consultation",
       "formula": "[108] * 500 * [111]",
       "fn": [],
-      "cc": [
-        56
-      ]
+      "cc": [56]
     },
     "281": {
       "id": 281,
@@ -17226,12 +16624,7 @@
       "stage": "triage",
       "formula": "",
       "fn": [],
-      "cc": [
-        59,
-        60,
-        53,
-        58
-      ]
+      "cc": [59, 60, 53, 58]
     }
   },
   "batches": [

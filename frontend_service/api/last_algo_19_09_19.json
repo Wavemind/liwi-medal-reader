@@ -10717,9 +10717,7 @@
       "display_format": "String",
       "value_format": "String",
       "qs": [],
-      "dd": [
-        { "id": 6, "conditionValue": null }
-      ],
+      "dd": [{ "id": 6, "conditionValue": null }],
       "cc": [],
       "counter": 0,
       "value": 0,

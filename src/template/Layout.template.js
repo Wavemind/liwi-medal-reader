@@ -44,9 +44,7 @@ class LayoutTemplate extends React.Component<Props> {
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
-                  onNavigationStateChange={
-                    NavigationService.onNavigationStateChange
-                  }
+                  onNavigationStateChange={NavigationService.onNavigationStateChange}
                 />
               </RootView>
             </Container>
