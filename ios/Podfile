@@ -31,6 +31,10 @@ pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
     pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
 
+    pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+    pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
   end
 
   target 'liwi_nativeTests' do

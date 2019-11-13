@@ -66,7 +66,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    await this.initializeComponent();
+    if (this.props?.focus === 'didFocus') {
+      await this.initializeComponent();
+    }
   }
 
   /**
@@ -195,10 +197,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="always"
-      >
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
           <LiwiLoader />
@@ -246,20 +245,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
               {algorithmReady ? (
                 !loading ? (
                   <View columns>
-                    <Button
-                      light
-                      split
-                      onPress={() => save('patientList')}
-                      disabled={hasNoError}
-                    >
+                    <Button light split onPress={() => save('patientList')} disabled={hasNoError}>
                       <Text>{t('patient_upsert:save_and_wait')}</Text>
                     </Button>
-                    <Button
-                      success
-                      split
-                      onPress={() => save('Triage')}
-                      disabled={hasNoError}
-                    >
+                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
                       <Text>{t('patient_upsert:save_and_case')}</Text>
                     </Button>
                   </View>

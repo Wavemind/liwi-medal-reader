@@ -38,6 +38,7 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
 
     render() {
       const { navigationStatus } = this.state;
+
       return (
         <React.Fragment>
           <NavigationEvents

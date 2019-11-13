@@ -186,11 +186,7 @@ export default class Algorithms extends React.Component<Props, State> {
     const {
       medicalCase,
       updateMedicalCaseProperty,
-      app: {
-        user: {
-          data: { id },
-        },
-      },
+      app: { user },
     } = this.props;
 
     // Store the redux medicalcase before send all data
@@ -198,7 +194,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
     let patients = await getItems('patients');
     const body = { patients: patients };
-    let resultPosting = await syncMedicalCases(body, id);
+    let resultPosting = await syncMedicalCases(body, user?.data?.id);
     let dateNow = moment().format();
     if (resultPosting !== false) {
       // Do stuff on result
