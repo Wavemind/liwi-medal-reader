@@ -81,10 +81,7 @@ export const setPsAnswer = (indexPs, answer) => ({
   },
 });
 
-export const dispatchQuestionsSequenceAction = (
-  questionsSequenceId,
-  callerId
-) => ({
+export const dispatchQuestionsSequenceAction = (questionsSequenceId, callerId) => ({
   type: actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION,
   payload: {
     questionsSequenceId,
@@ -92,10 +89,7 @@ export const dispatchQuestionsSequenceAction = (
   },
 });
 
-export const dispatchFinalDiagnosticAction = (
-  diagnosticId,
-  finalDiagnosticId
-) => ({
+export const dispatchFinalDiagnosticAction = (diagnosticId, finalDiagnosticId) => ({
   type: actions.DISPATCH_FINAL_DIAGNOSTIC_ACTION,
   payload: {
     diagnosticId,
