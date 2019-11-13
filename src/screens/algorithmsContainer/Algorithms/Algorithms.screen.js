@@ -7,7 +7,7 @@ import { ScrollView } from 'react-native';
 import moment from 'moment';
 import { getItem, getItems, setItem, storeMedicalCase } from '../../../engine/api/LocalStorage';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
-import { fetchAlgorithms, post } from '../../../../frontend_service/api/Http';
+import { fetchAlgorithms, syncMedicalCases } from '../../../../frontend_service/api/Http';
 import { styles } from './Algorithms.style';
 import { CardView, LiwiTitle4, RightView } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -197,7 +197,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
     let patients = await getItems('patients');
     const body = { patients: patients };
-    let resultPosting = await post('sync_medical_cases', body, id);
+    let resultPosting = await syncMedicalCases(body, id);
     let dateNow = moment().format();
     const synchronisation = {
       time: dateNow,

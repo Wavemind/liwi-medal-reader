@@ -11,13 +11,7 @@ import moment from 'moment';
 
 import { sessionsDuration } from '../../utils/constants';
 
-import {
-  destroySession,
-  getSession,
-  getSessions,
-  setActiveSession,
-  setItem,
-} from '../api/LocalStorage';
+import { destroySession, getSession, getSessions, setActiveSession, setItem } from '../api/LocalStorage';
 import { saltHash } from '../../../frontend_service/constants';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 
@@ -52,37 +46,27 @@ export type StateApplicationContext = {
   ready: boolean,
 };
 
-export class ApplicationProvider extends React.Component<
-  Props,
-  StateApplicationContext
-> {
+export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
   }
 
   getGeo = async () => {
     const { t } = this.state;
-    return await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: t('popup:title'),
-        message: t('popup:message'),
-        buttonNeutral: t('popup:ask_me_later'),
-        buttonNegative: t('popup:cancel'),
-        buttonPositive: 'Ok !',
-      }
-    );
+    return await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+      title: t('popup:title'),
+      message: t('popup:message'),
+      buttonNeutral: t('popup:ask_me_later'),
+      buttonNegative: t('popup:cancel'),
+      buttonPositive: 'Ok !',
+    });
   };
 
   askGeo = async (enableHighAccuracy, callBack) => {
-    return navigator.geolocation.getCurrentPosition(
-      async (position) => callBack(position),
-      async (error) => callBack(error),
-      {
-        enableHighAccuracy: enableHighAccuracy,
-        timeout: 5000,
-      }
-    );
+    return navigator.geolocation.getCurrentPosition(async (position) => callBack(position), async (error) => callBack(error), {
+      enableHighAccuracy: enableHighAccuracy,
+      timeout: 5000,
+    });
   };
 
   // Set value in context
@@ -104,10 +88,9 @@ export class ApplicationProvider extends React.Component<
   // Load context of current user
   initContext = async () => {
     const sessions = await getSessions();
+
     let finderActiveSession = find(sessions, (session) => {
-      const isStillActive = moment().isBefore(
-        moment(session.active_since).add(sessionsDuration, 'minute')
-      );
+      const isStillActive = moment().isBefore(moment(session.active_since).add(sessionsDuration, 'minute'));
       return session.active && isStillActive;
     });
 
@@ -154,7 +137,7 @@ export class ApplicationProvider extends React.Component<
 
   // Lock current session
   lockSession = async () => {
-    setActiveSession();
+    await setActiveSession();
     this.setState({
       logged: false,
       user: {},
@@ -192,10 +175,7 @@ export class ApplicationProvider extends React.Component<
   async componentWillMount() {
     await this.initContext();
     AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
+    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
   }
   _fetchDataWhenChange = async () => {
     const { user } = this.state;
@@ -244,10 +224,7 @@ export class ApplicationProvider extends React.Component<
   }
 
   componentWillUnmount() {
-    NetInfo.removeEventListener(
-      'connectionChange',
-      this._handleConnectivityChange
-    );
+    NetInfo.removeEventListener('connectionChange', this._handleConnectivityChange);
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
@@ -269,18 +246,10 @@ export class ApplicationProvider extends React.Component<
   render() {
     const { children } = this.props;
 
-    return (
-      <ApplicationContext.Provider value={this.state}>
-        {children}
-      </ApplicationContext.Provider>
-    );
+    return <ApplicationContext.Provider value={this.state}>{children}</ApplicationContext.Provider>;
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (
-  props: any
-) => (
-  <ApplicationContext.Consumer>
-    {(store) => <Component app={store} {...props} />}
-  </ApplicationContext.Consumer>
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) => (
+  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>
 );
