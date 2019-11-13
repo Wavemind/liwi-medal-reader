@@ -46,7 +46,7 @@ function getCurrentRoute() {
     index = route.index;
     route = route.routes[route.index];
   }
-  if (route !== undefined) {
+  if (route !== undefined && route !== null) {
     route.index = index;
   }
   return route;
@@ -86,11 +86,7 @@ function onNavigationStateChange(prevState, currentState) {
   if (activeRoute !== prev) {
     const state$ = store.getState();
     // This route can change the status of MC
-    if (
-      cu.params !== undefined &&
-      cu?.params?.medicalCaseStatus !== undefined &&
-      state$.status !== cu.params.medicalCaseStatus
-    ) {
+    if (cu.params !== undefined && cu?.params?.medicalCaseStatus !== undefined && state$.status !== cu.params.medicalCaseStatus) {
       // Find index in status
       let currentStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === state$.status;

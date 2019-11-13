@@ -7,7 +7,7 @@ import MainTabNavigator from './Main.navigation';
 
 const createRootNavigator = (signedIn = false) => {
   return createSwitchNavigator(
-    {
+  {
       Main: {
         screen: MainTabNavigator(),
       },
