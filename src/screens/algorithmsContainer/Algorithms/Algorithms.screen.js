@@ -79,11 +79,10 @@ export default class Algorithms extends React.Component<Props, State> {
     let neverSync = 0;
 
     medicalCases.map((mc) => {
-      //
-      if (mc.sync_at === null) {
+      if (mc.updated_at === null) {
         neverSync++;
       } else {
-        if (moment(mc.sync_at) < moment(mc.synchronized_at)) {
+        if (moment(mc.updated_at) < moment(mc.synchronized_at)) {
           notSync++;
         } else {
           sync++;
@@ -126,7 +125,8 @@ export default class Algorithms extends React.Component<Props, State> {
             <Text>{t('algorithms:never')}</Text>
           ) : (
             <View style={{ flex: 1 }}>
-              <Text>{`${t('algorithms:last')} : ${moment(synchronisation?.time).format()} ${t('algorithms:success')} : ${synchronisation?.success}`}</Text>
+              <Text>{`${t('algorithms:last')} : ${moment(synchronisation.time).format('MMMM Do YYYY, h:mm:ss a')}`}</Text>
+              <Text style={styles.red}>{synchronisation.success ? t('algorithms:success') : t('algorithms:nosuccess')} </Text>
               <View flex-center-row>
                 <View w33 style={styles.status}>
                   <Icon type="MaterialIcons" name="sync-disabled" style={styles.icons} />
@@ -136,7 +136,7 @@ export default class Algorithms extends React.Component<Props, State> {
                 <View w33 style={styles.status}>
                   <Icon type="MaterialIcons" name="sync" style={styles.icons} />
                   <Text style={styles.number}>{sync} </Text>
-                  <Text>{t('algorithms:uptodate')}</Text>
+                  <Text>{t('algorithms:uptdate')}</Text>
                 </View>
                 <View w33 style={styles.status}>
                   <Icon type="MaterialIcons" name="sync-problem" style={styles.icons} />
@@ -199,17 +199,38 @@ export default class Algorithms extends React.Component<Props, State> {
     const body = { patients: patients };
     let resultPosting = await syncMedicalCases(body, id);
     let dateNow = moment().format();
+
+    if (resultPosting !== false) {
+      // Do stuff on result
+      patients.map((patient) => {
+        // Set id from server
+        if (patient.main_data_patient_id === null) {
+          patient.main_data_patient_id = resultPosting.patients[patient.id];
+        }
+        patient.medicalCases.map((medicalCaseitem) => {
+          if (medicalCase.id === medicalCaseitem.id) {
+            updateMedicalCaseProperty('main_data_medical_case_id', resultPosting.medical_cases[medicalCaseitem.id]);
+          }
+          // Set id from server
+          if (medicalCaseitem.main_data_medical_case_id === null) {
+            medicalCaseitem.main_data_medical_case_id = resultPosting.medical_cases[medicalCaseitem.id];
+          }
+          // Update Sync_at
+          medicalCaseitem.updated_at = dateNow;
+        });
+      });
+
+      await setItem('patients', patients);
+      updateMedicalCaseProperty('updated_at', dateNow);
+    }
+
     const synchronisation = {
       time: dateNow,
-      success: resultPosting,
+      success: resultPosting !== false,
     };
-
-    patients.map((p) => p.medicalCases.map((mc) => (mc.sync_at = dateNow)));
 
     // Set date of sync
     await setItem('synchronisation', synchronisation);
-    await setItem('patients', patients);
-    updateMedicalCaseProperty(dateNow);
     await this.updateComponentState();
   };
 

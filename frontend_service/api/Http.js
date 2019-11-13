@@ -1,6 +1,6 @@
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
-import { host, hostLaravel } from '../constants';
+import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
 
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
@@ -31,19 +31,23 @@ export const get = async (params, userId) => {
 };
 
 export const syncMedicalCases = async (body, userId = null) => {
-  let url = `${hostLaravel}${'sync_medical_cases'}`;
+  let url = `${hostDataServer}${'sync_medical_cases'}`;
   let header = await getHeaders('POST', body, userId);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
-  let response = await request.json();
 
-  // Display error
-  if (!request.ok) {
-    handleHttpError(response.errors);
+  let response = await request.text();
+  let json = false;
+
+  try {
+    json = JSON.parse(response);
+  } catch (err) {
+    console.warn(err);
+    // handle the error according to your needs
   }
 
-  if (request.status === 200) {
-    return true;
+  if (json.status === 200) {
+    return json;
   } else {
     return false;
   }

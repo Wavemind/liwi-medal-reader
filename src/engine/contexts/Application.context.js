@@ -127,6 +127,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       if (isConnected) await fetchAlgorithms(id);
 
       session = await getSession(id);
+
       this.setUserContext(session);
 
       // here push settings
