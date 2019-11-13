@@ -2,10 +2,7 @@
 
 import * as _ from 'lodash';
 import moment from 'moment';
-import {
-  getArray,
-  setItemFromArray,
-} from '../../../src/engine/api/LocalStorage';
+import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage';
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
 
@@ -32,6 +29,7 @@ export class PatientModel implements PatientModelInterface {
       birthdate = moment('1970-01-01T00:00:00.000').format(),
       gender = __DEV__ ? 'male' : '',
       medicalCases = [],
+      main_data_patient_id = null,
     } = props;
 
     this.firstname = firstname;
@@ -39,6 +37,7 @@ export class PatientModel implements PatientModelInterface {
     this.birthdate = birthdate;
     this.gender = gender;
     this.medicalCases = medicalCases;
+    this.main_data_patient_id = main_data_patient_id;
 
     if (id === null) {
       this.setId();

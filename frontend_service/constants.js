@@ -1,5 +1,5 @@
 export const host = 'http://liwi.wavelab.top/api/v1/';
-export const hostLaravel = 'http://192.168.31.214:3000/api/';
+export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
 export const navigationStateKey = 'navigationState';
 // Hash used to encrypt local password

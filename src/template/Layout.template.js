@@ -25,11 +25,6 @@ type Props = {
   },
 };
 
-const loadNavigationState = async () => {
-  const jsonString = await AsyncStorage.getItem(navigationStateKey);
-  return JSON.parse(jsonString);
-};
-
 const persistNavigationState = async (navState) => {
   try {
     await setItem(navigationStateKey, navState);
@@ -39,6 +34,18 @@ const persistNavigationState = async (navState) => {
 };
 
 class LayoutTemplate extends React.Component<Props> {
+  loadNavigationState = async () => {
+    const jsonString = await AsyncStorage.getItem(navigationStateKey);
+    let routes = JSON.parse(jsonString);
+
+    const { app } = this.props;
+    if (routes !== null && routes.routes[routes.index].key === 'SetCodeSession' && app.logged === true) {
+      routes = null;
+    }
+
+    return routes;
+  };
+
   render() {
     const {
       app: { logged, ready },
@@ -59,7 +66,7 @@ class LayoutTemplate extends React.Component<Props> {
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <AppContainer
                   persistNavigationState={persistNavigationState}
-                  loadNavigationState={loadNavigationState}
+                  loadNavigationState={this.loadNavigationState}
                   renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
