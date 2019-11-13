@@ -5,12 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Button, H2, Icon, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import moment from 'moment';
-import {
-  getItem,
-  getItems,
-  setItem,
-  storeMedicalCase,
-} from '../../../engine/api/LocalStorage';
+import { getItem, getItems, setItem, storeMedicalCase } from '../../../engine/api/LocalStorage';
 import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
 import { fetchAlgorithms, post } from '../../../../frontend_service/api/Http';
 import { styles } from './Algorithms.style';
@@ -62,10 +57,7 @@ export default class Algorithms extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     const { focus } = this.props;
-    if (
-      nextProps.focus === 'didFocus' &&
-      (focus === undefined || focus === null || focus === 'willBlur')
-    ) {
+    if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null || focus === 'willBlur')) {
       this.updateComponentState();
     }
     return true;
@@ -102,11 +94,7 @@ export default class Algorithms extends React.Component<Props, State> {
     return (
       <ScrollView>
         {algorithms.map((algorithm) => (
-          <CardView
-            elevation={5}
-            key={algorithm.id + '_algorithm'}
-            style={algorithm.selected ? styles.selected : styles.view}
-          >
+          <CardView elevation={5} key={algorithm.id + '_algorithm'} style={algorithm.selected ? styles.selected : styles.view}>
             <H2>{algorithm.name}</H2>
             <Text>versions : {algorithm.versions}</Text>
             <RightView>
@@ -138,20 +126,10 @@ export default class Algorithms extends React.Component<Props, State> {
             <Text>{t('algorithms:never')}</Text>
           ) : (
             <View style={{ flex: 1 }}>
-              <Text>
-                {`${t('algorithms:last')} : ${moment(
-                  synchronisation?.time
-                ).format()} ${t('algorithms:success')} : ${
-                  synchronisation?.success
-                }`}
-              </Text>
+              <Text>{`${t('algorithms:last')} : ${moment(synchronisation?.time).format()} ${t('algorithms:success')} : ${synchronisation?.success}`}</Text>
               <View flex-center-row>
                 <View w33 style={styles.status}>
-                  <Icon
-                    type="MaterialIcons"
-                    name="sync-disabled"
-                    style={styles.icons}
-                  />
+                  <Icon type="MaterialIcons" name="sync-disabled" style={styles.icons} />
                   <Text style={styles.number}>{neverSync} </Text>
                   <Text>{t('algorithms:no')}</Text>
                 </View>
@@ -161,22 +139,18 @@ export default class Algorithms extends React.Component<Props, State> {
                   <Text>{t('algorithms:uptodate')}</Text>
                 </View>
                 <View w33 style={styles.status}>
-                  <Icon
-                    type="MaterialIcons"
-                    name="sync-problem"
-                    style={styles.icons}
-                  />
+                  <Icon type="MaterialIcons" name="sync-problem" style={styles.icons} />
                   <Text style={styles.number}>{notSync}</Text>
                   <Text>{t('algorithms:need')}</Text>
                 </View>
               </View>
-              <View flex-center-row>
-                <Button style={styles.marginTop} onPress={this.sendSync}>
-                  <Text>{t('algorithms:synchronize')}</Text>
-                </Button>
-              </View>
             </View>
           )}
+          <View flex-center-row>
+            <Button style={styles.marginTop} onPress={this.sendSync}>
+              <Text>{t('algorithms:synchronize')}</Text>
+            </Button>
+          </View>
         </View>
       </ScrollView>
     );
