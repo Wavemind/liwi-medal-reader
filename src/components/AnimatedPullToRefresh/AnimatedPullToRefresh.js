@@ -25,8 +25,7 @@ export default class AnimatedPullToRefresh extends React.Component {
     this.onRepeatAnimation = this.onRepeatAnimation.bind(this);
     this.onEndAnimation = this.onEndAnimation.bind(this);
 
-    UIManager.setLayoutAnimationEnabledExperimental &&
-      UIManager.setLayoutAnimationEnabledExperimental(true);
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   static propTypes = {
@@ -64,7 +63,6 @@ export default class AnimatedPullToRefresh extends React.Component {
     onStartRefreshAnimationSrc: PropTypes.func,
     onRefreshAnimationSrc: PropTypes.func,
     onEndRefreshAnimationSrc: PropTypes.func,
-
   };
 
   static defaultProps = {
@@ -74,12 +72,8 @@ export default class AnimatedPullToRefresh extends React.Component {
 
   componentWillMount() {
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(
-        this
-      ),
-      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(
-        this
-      ),
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
       onPanResponderMove: this._handlePanResponderMove.bind(this),
       onPanResponderRelease: this._handlePanResponderEnd.bind(this),
       onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
@@ -100,26 +94,22 @@ export default class AnimatedPullToRefresh extends React.Component {
   }
 
   _handleMoveShouldSetPanResponder(e, gestureState) {
-    return (
-      !(gestureState.dx === 0 && gestureState.dy === 0) &&
-      !this.state.isScrollFree
-    );
+    return !(gestureState.dx === 0 && gestureState.dy === 0) && !this.state.isScrollFree;
   }
 
   //if the content scroll value is at 0, we allow for a pull to refresh
   _handlePanResponderMove(e, gestureState) {
     if (!this.props.isRefreshing) {
-      if (
-        (gestureState.dy >= 0 && this.state.scrollY._value === 0) ||
-        this.state.refreshHeight._value > 0
-      ) {
+      if ((gestureState.dy >= 0 && this.state.scrollY._value === 0) || this.state.refreshHeight._value > 0) {
         this.state.refreshHeight.setValue(-1 * gestureState.dy * 0.5);
       } else {
         // Native android scrolling
-        this.refs.scrollComponentRef.scrollTo({
-          y: -1 * gestureState.dy,
-          animated: true,
-        });
+        if (this.refs !== null) {
+          this.refs.scrollComponentRef.scrollTo({
+            y: -1 * gestureState.dy,
+            animated: true,
+          });
+        }
       }
     }
   }
@@ -236,19 +226,12 @@ export default class AnimatedPullToRefresh extends React.Component {
         }}
         {...this._panResponder.panHandlers}
       >
-        <Animation
-          style={[animationStyle, { opacity: this.props.isRefreshing ? 0 : 1 }]}
-          source={this.props.onPullAnimationSrc}
-          progress={animateProgress}
-        />
+        <Animation style={[animationStyle, { opacity: this.props.isRefreshing ? 0 : 1 }]} source={this.props.onPullAnimationSrc} progress={animateProgress} />
         <Animation
           style={[
             animationStyle,
             {
-              opacity:
-                this.props.isRefreshing && !this.state.isRefreshAnimationStarted
-                  ? 1
-                  : 0,
+              opacity: this.props.isRefreshing && !this.state.isRefreshAnimationStarted ? 1 : 0,
             },
           ]}
           source={this.props.onStartRefreshAnimationSrc}
@@ -258,21 +241,14 @@ export default class AnimatedPullToRefresh extends React.Component {
           style={[
             animationStyle,
             {
-              opacity:
-                this.state.isRefreshAnimationStarted &&
-                !this.state.isRefreshAnimationEnded
-                  ? 1
-                  : 0,
+              opacity: this.state.isRefreshAnimationStarted && !this.state.isRefreshAnimationEnded ? 1 : 0,
             },
           ]}
           source={this.props.onRefreshAnimationSrc}
           progress={this.state.repeatAnimationProgress}
         />
         <Animation
-          style={[
-            animationStyle,
-            { opacity: this.state.isRefreshAnimationEnded ? 1 : 0 },
-          ]}
+          style={[animationStyle, { opacity: this.state.isRefreshAnimationEnded ? 1 : 0 }]}
           source={this.props.onEndRefreshAnimationSrc}
           progress={this.state.finalAnimationProgress}
         />

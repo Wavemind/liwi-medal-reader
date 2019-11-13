@@ -13,8 +13,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateMedicalCaseProperty: (date) =>
-      dispatch(updateMedicalCaseProperty('sync_at', date)),
+    updateMedicalCaseProperty: (prop, date) => dispatch(updateMedicalCaseProperty(prop, date)),
   };
 };
 
