@@ -107,11 +107,6 @@ export class NodesModel implements NodeInterface {
     return _.filter(this, (n) => n.stage === stage);
   }
 
-  filterByCounterGreaterThanZero() {
-    this.filterByConditionValue();
-    return _.filter(this, (n) => n.counter > 0);
-  }
-
   filterByConditionValue() {
     try {
       Object.keys(this).map((nodeId) => {
