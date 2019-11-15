@@ -14,8 +14,6 @@ type State = {};
 export default class Questions extends React.PureComponent<Props, State> {
   state = {};
 
-  async componentWillMount() {}
-
   render() {
     const { questions } = this.props;
     return (

@@ -11,9 +11,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
-const QuestionsPerChiefComplaint = React.lazy(() =>
-  import('../../../components/Consultation/QuestionsPerChiefComplaint')
-);
+const QuestionsPerChiefComplaint = React.lazy(() => import('../../../components/Consultation/QuestionsPerChiefComplaint'));
 type Props = NavigationScreenProps & {};
 type State = {};
 
@@ -48,14 +46,8 @@ export default class Consultation extends React.Component<Props, State> {
           validation={false}
           showTopStepper
           showBottomStepper
-          icons={[
-            { name: 'comment-medical', type: 'FontAwesome5' },
-            { name: 'ios-body', type: 'Ionicons' },
-          ]}
-          steps={[
-            t('consultation:medical_history'),
-            t('consultation:physical_exam'),
-          ]}
+          icons={[{ name: 'comment-medical', type: 'FontAwesome5' }, { name: 'ios-body', type: 'Ionicons' }]}
+          steps={[t('consultation:medical_history'), t('consultation:physical_exam')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Tests"
@@ -64,25 +56,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerChiefComplaint
-                  filterBy={[
-                    {
-                      by: 'category',
-                      operator: 'equal',
-                      value: categories.symptom,
-                    },
-                    {
-                      by: 'category',
-                      operator: 'equal',
-                      value: categories.exposure,
-                    },
-                    {
-                      by: 'category',
-                      operator: 'equal',
-                      value: categories.vitalSign,
-                    },
-                  ]}
-                />
+                <QuestionsPerChiefComplaint category={'medical_history'} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -91,20 +65,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerChiefComplaint
-                  filterBy={[
-                    {
-                      by: 'category',
-                      operator: 'equal',
-                      value: categories.physicalExam,
-                    },
-                    {
-                      by: 'category',
-                      operator: 'equal',
-                      value: categories.other,
-                    },
-                  ]}
-                />
+                <QuestionsPerChiefComplaint category={'physical_exam'} />
               </Suspense>
             ) : (
               <LiwiLoader />

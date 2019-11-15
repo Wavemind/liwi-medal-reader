@@ -7,59 +7,30 @@ import { ScrollView } from 'react-native';
 import { categories } from '../../../../frontend_service/constants';
 import Questions from '../../QuestionsContainer/Questions';
 import { styles } from './QuestionsPerChiefComplaint.style';
+import ChiefComplaint from '../ChiefComplaint';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
 export default class QuestionsPerChiefComplaint extends React.Component<Props, State> {
+
   // default settings
   state = {};
 
   // TODO opti mize this with scu ! @quentin
 
   render() {
-    const { medicalCase, filterBy } = this.props;
+    const { medicalCase, category } = this.props;
 
     let chiefComplaints = medicalCase.nodes.filterByCategory(categories.chiefComplaint);
 
-    let questionsPerChiefComplaints = {};
-    chiefComplaints.map((chiefComplaint) => {
-      if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[0])) {
-        questionsPerChiefComplaints[chiefComplaint.id] = {
-          id: chiefComplaint.id,
-          title: chiefComplaint.label,
-          questions: [],
-        };
-      }
-    });
-
-    let filteredQuestions = medicalCase.nodes.filterBy(filterBy);
-
-    filteredQuestions.map((question) => {
-      question.cc.map((cc) => {
-        questionsPerChiefComplaints[cc]?.questions.push(question);
-      });
-    });
-
-    let chiefComplaintsAccordion = [];
-    Object.keys(questionsPerChiefComplaints).map((id) => {
-      // Show chief complaint only if it has some questions
-      if (questionsPerChiefComplaints[id].questions.length > 0) {
-        chiefComplaintsAccordion.push({
-          title: questionsPerChiefComplaints[id].title,
-          content: <Questions questions={questionsPerChiefComplaints[id].questions} />,
-        });
-      }
-    });
+    console.log('render chiefs', chiefComplaints);
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        {chiefComplaintsAccordion.map((chiefComplaint) => (
-          <View style={styles.spacingChiefComplaints} key={`chiefComplaint_${chiefComplaint.title}`}>
-            <Text customTitle>{chiefComplaint.title}</Text>
-            {chiefComplaint.content}
-          </View>
+        {chiefComplaints.map((chiefComplaint) => (
+          <ChiefComplaint chiefComplaint={chiefComplaint} category={category} key={'chiefComplaint' + chiefComplaint.id} />
         ))}
       </ScrollView>
     );

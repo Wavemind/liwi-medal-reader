@@ -65,9 +65,9 @@ class LayoutTemplate extends React.Component<Props> {
               <RootView>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <AppContainer
-                  persistNavigationState={persistNavigationState}
-                  loadNavigationState={this.loadNavigationState}
-                  renderLoadingExperimental={() => <LiwiLoader />}
+                  // persistNavigationState={persistNavigationState}
+                  // loadNavigationState={this.loadNavigationState}
+                  // renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
