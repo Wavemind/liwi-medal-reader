@@ -3,76 +3,58 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
-import { ScrollView } from 'react-native';
-import { categories, stage } from '../../../../frontend_service/constants';
-import Questions from '../../QuestionsContainer/Questions';
 import { styles } from './ChiefComplaint.style';
+import Questions from '../../QuestionsContainer/Questions';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class ChiefComplaint extends React.Component<
-  Props,
-  State
-  > {
+export default class ChiefComplaint extends React.Component<Props, State> {
   // default settings
-  state = {};
+  state = { questions: [] };
 
-  render() {
-    const { medicalCase, category } = this.props;
+  shouldComponentUpdate(nextProps: Props, nextState: State, nextContext: *): boolean {
+    let changer = nextState.questions.some((q) => Object.compare(q, this.state.questions.find((d) => d.id === q.id)));
+    console.log(changer);
+    return nextState.questions.length !== this.state.questions.length || changer;
+  }
 
-    let chiefComplaints = medicalCase.nodes.filterByCategory(
-      categories.chiefComplaint
-    );
+  componentWillMount(): * {
+    this.updateQuestions();
+  }
 
-    let questionsPerChiefComplaints = {};
-    chiefComplaints.map((chiefComplaint) => {
-      if (
-        chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[0])
-      ) {
-        questionsPerChiefComplaints[chiefComplaint.id] = {
-          id: chiefComplaint.id,
-          title: chiefComplaint.label,
-          questions: [],
-        };
+  updateQuestions = () => {
+    let questions = [];
+
+    this.props.chiefComplaint[this.props.category].map((q) => {
+      if (this.props.medicalCase.nodes[q].counter > 0) {
+        questions.push(this.props.medicalCase.nodes[q]);
       }
     });
 
-    let filteredQuestions = medicalCase.nodes.filterBy([
-      { by: 'category', operator: 'equal', value: category },
-      { by: 'stage', operator: 'equal', value: stage.consultation },
-      { by: 'counter', operator: 'more', value: 0 },
-    ]);
+    this.setState({ questions });
+  };
 
-    filteredQuestions.map((question) => {
-      question.cc.map((cc) => {
-        questionsPerChiefComplaints[cc]?.questions.push(question);
-      });
-    });
+  componentWillUpdate(): * {
+    this.updateQuestions();
+  }
 
-    let chiefComplaintsAccordion = [];
-    Object.keys(questionsPerChiefComplaints).map((id) => {
-      chiefComplaintsAccordion.push({
-        title: questionsPerChiefComplaints[id].title,
-        content: (
-          <Questions questions={questionsPerChiefComplaints[id].questions} />
-        ),
-      });
-    });
+  render() {
+    const { medicalCase, category, chiefComplaint } = this.props;
+    const { questions } = this.state;
+
+    console.log(chiefComplaint, chiefComplaint.answer);
+
+    if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers).second()) || chiefComplaint.answer === null) {
+      return null;
+    }
 
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        {chiefComplaintsAccordion.map((chiefComplaint) => (
-          <View
-            style={styles.spacingChiefComplaints}
-            key={`chiefComplaint_${chiefComplaint.title}`}
-          >
-            <Text customTitle>{chiefComplaint.title}</Text>
-            {chiefComplaint.content}
-          </View>
-        ))}
-      </ScrollView>
+      <View style={styles.spacingChiefComplaints} key={`chiefComplaint_${chiefComplaint.id}`}>
+        <Text customTitle>{chiefComplaint.label}</Text>
+        <Questions questions={questions} />
+      </View>
     );
   }
 }

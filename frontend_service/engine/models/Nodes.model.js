@@ -2,13 +2,13 @@
 import _ from 'lodash';
 import { categories, nodesType } from '../../constants';
 import { NodeModel } from './Node.model';
-import { QuestionsSequenceModel } from './QuestionsSequenceModel';
-import { QuestionModel } from './Question.model';
 import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
 import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
+import { QuestionsSequenceModel } from './QuestionsSequenceModel';
+import { QuestionModel } from './Question.model';
 
 interface NodeInterface {}
 
@@ -151,22 +151,16 @@ export class NodesModel implements NodeInterface {
         if (condition === true) {
           for (let indexManagement in finalDiagnostic.managements) {
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
-              let managementBoolean = calculateCondition(
-                finalDiagnostic.managements[indexManagement]
-              );
+              let managementBoolean = calculateCondition(finalDiagnostic.managements[indexManagement]);
               if (managementBoolean === true) {
-                healthCares.managements[indexManagement] = this[
-                  indexManagement
-                ];
+                healthCares.managements[indexManagement] = this[indexManagement];
               }
             }
           }
 
           for (let indexTreatment in finalDiagnostic.treatments) {
             if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
-              let treatmentBoolean = calculateCondition(
-                finalDiagnostic.treatments[indexTreatment]
-              );
+              let treatmentBoolean = calculateCondition(finalDiagnostic.treatments[indexTreatment]);
               if (treatmentBoolean === true) {
                 healthCares.treatments[indexTreatment] = this[indexTreatment];
               }
@@ -196,9 +190,7 @@ export class NodesModel implements NodeInterface {
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
               let m = this[indexManagement];
 
-              let q = m.getQuestions(
-                finalDiagnostic.managements[indexManagement]
-              );
+              let q = m.getQuestions(finalDiagnostic.managements[indexManagement]);
               questions = {
                 ...questions,
                 ...q,
@@ -210,9 +202,7 @@ export class NodesModel implements NodeInterface {
             if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
               let t = this[indexTreatment];
 
-              let q = t.getQuestions(
-                finalDiagnostic.treatments[indexTreatment]
-              );
+              let q = t.getQuestions(finalDiagnostic.treatments[indexTreatment]);
               questions = {
                 ...questions,
                 ...q,

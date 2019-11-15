@@ -2,6 +2,7 @@
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 import { NodeModel } from './Node.model';
+
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { InstanceModel } from './Instance.model';
 import { valueFormats } from '../../constants';
