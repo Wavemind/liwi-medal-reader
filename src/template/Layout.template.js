@@ -25,6 +25,7 @@ type Props = {
   },
 };
 
+// eslint-disable-next-line no-unused-vars
 const persistNavigationState = async (navState) => {
   try {
     await setItem(navigationStateKey, navState);

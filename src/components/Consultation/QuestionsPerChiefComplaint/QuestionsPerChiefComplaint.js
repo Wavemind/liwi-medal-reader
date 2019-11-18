@@ -2,10 +2,8 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 import { categories } from '../../../../frontend_service/constants';
-import Questions from '../../QuestionsContainer/Questions';
 import { styles } from './QuestionsPerChiefComplaint.style';
 import ChiefComplaint from '../ChiefComplaint';
 
@@ -14,23 +12,42 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class QuestionsPerChiefComplaint extends React.Component<Props, State> {
+  shouldComponentUpdate(nextProps: Props): boolean {
+    const { pageIndex } = this.props;
+    return nextProps.selectedPage === pageIndex;
+  }
 
-  // default settings
-  state = {};
-
-  // TODO opti mize this with scu ! @quentin
-
-  render() {
+  generateQuestions = (chiefComplaint) => {
     const { medicalCase, category } = this.props;
 
-    let chiefComplaints = medicalCase.nodes.filterByCategory(categories.chiefComplaint);
+    let questions = [];
+    chiefComplaint[category].map((q) => {
+      if (medicalCase.nodes[q].counter > 0) {
+        questions.push(medicalCase.nodes[q]);
+      }
+    });
+    return questions;
+  };
 
-    console.log('render chiefs', chiefComplaints);
+  // default settings
+  state = {
+    // eslint-disable-next-line react/destructuring-assignment
+    chiefComplaints: this.props.medicalCase.nodes.filterByCategory(categories.chiefComplaint),
+  };
+
+  render() {
+    const { category } = this.props;
+    const { chiefComplaints } = this.state;
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {chiefComplaints.map((chiefComplaint) => (
-          <ChiefComplaint chiefComplaint={chiefComplaint} category={category} key={'chiefComplaint' + chiefComplaint.id} />
+          <ChiefComplaint
+            chiefComplaint={chiefComplaint}
+            category={category}
+            key={'chiefComplaint' + chiefComplaint.id}
+            questions={this.generateQuestions(chiefComplaint)}
+          />
         ))}
       </ScrollView>
     );

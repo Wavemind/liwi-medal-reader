@@ -58,8 +58,8 @@ export default class UnlockSession extends React.Component<Props, State> {
     } else {
       Toaster(t('notifications:session_does_not_exist'), { type: 'danger' });
     }
-    this.setState({ loadingUnlock: false });
 
+    this.setState({ loadingUnlock: false });
   };
 
   render() {
@@ -73,12 +73,7 @@ export default class UnlockSession extends React.Component<Props, State> {
       <View flex-container-column>
         <View margin-auto padding-auto>
           <ScrollView>
-            <LottieView
-              source={require('../../../utils/animations/unlock.json')}
-              autoPlay
-              style={styles.lottie}
-              loop
-            />
+            <LottieView source={require('../../../utils/animations/unlock.json')} autoPlay style={styles.lottie} loop />
             <LiwiTitle2 noBorder center>
               {t('unlock_session:title')}
             </LiwiTitle2>
@@ -92,14 +87,7 @@ export default class UnlockSession extends React.Component<Props, State> {
                 keyboardType="email-address"
                 error={errors}
               />
-              <CustomInput
-                init={code}
-                index="code"
-                change={this.changeValueFromInput}
-                secureTextEntry
-                placeholder={t('unlock_session:code')}
-                condensed
-              />
+              <CustomInput init={code} index="code" change={this.changeValueFromInput} secureTextEntry placeholder={t('unlock_session:code')} condensed />
             </Form>
             <Button full onPress={this.unLock} style={styles.button} disabled={loadingUnlock}>
               <Text>{t('unlock_session:unlock')}</Text>
@@ -108,11 +96,7 @@ export default class UnlockSession extends React.Component<Props, State> {
         </View>
         <View bottom-view margin-auto padding-auto>
           <View>
-            <Button
-              onPress={this.newSessionScreen}
-              disabled={!isConnected}
-              testID="new_session"
-            >
+            <Button onPress={this.newSessionScreen} disabled={!isConnected} testID="new_session">
               <Text>{t('unlock_session:new_session')}</Text>
             </Button>
             {!isConnected && <Text>{t('notifications:no_internet')}</Text>}
