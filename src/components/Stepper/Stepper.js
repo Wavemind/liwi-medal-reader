@@ -8,24 +8,15 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Platform,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewPagerAndroid,
-  ViewPropTypes,
-} from 'react-native';
+import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes } from 'react-native';
+import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './styles';
 import { liwiColors } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
-import {
-  updateMedicalCaseProperty,
-} from '../../../frontend_service/actions/creators.actions';
+import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 type Props = {
@@ -56,6 +47,7 @@ type Props = {
   bottomNavigationLeftIconComponent?: React$Element<any>,
   bottomNavigationRightIconComponent?: React$Element<any>,
 };
+
 type State = {
   showBack: boolean,
   showNext: boolean,
@@ -66,11 +58,11 @@ type State = {
 };
 
 class Stepper extends React.Component<Props, State> {
-  viewPager: ViewPagerAndroid;
+  viewPager: ViewPager;
   scrollView: ScrollView;
 
   static propTypes = {
-    ...ViewPagerAndroid.propTypes,
+    ...ViewPager.propTypes,
     ...ScrollView.propTypes,
     initialPage: PropTypes.number,
     onPressNext: PropTypes.func,
@@ -145,6 +137,7 @@ class Stepper extends React.Component<Props, State> {
       if (this.props.onScrollPage) {
         this.props.onScrollPage();
       }
+
       this.handleBottomStepper(index);
     }
   };
@@ -155,6 +148,8 @@ class Stepper extends React.Component<Props, State> {
    */
   handleBottomStepper = (position: number) => {
     const numberOfPages: number = this.props.children.length;
+
+    this.props.onPageSelected(position);
 
     this.setState(
       {
@@ -212,12 +207,7 @@ class Stepper extends React.Component<Props, State> {
 
     for (let index = 0; index < this.props.children.length; index++) {
       const isSelected: boolean = this.state.page === index;
-      dots.push(
-        <View
-          style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]}
-          key={index}
-        />
-      );
+      dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index} />);
     }
     return <View style={styles.dotsContainer}>{dots}</View>;
   };
@@ -242,14 +232,7 @@ class Stepper extends React.Component<Props, State> {
 
     return React.Children.map(children, (child: Object, index: number) => {
       return (
-        <View
-          key={`child${index}`}
-          style={[
-            styles.container,
-            { width: this.state.width, height: this.state.height },
-            childrenStyle,
-          ]}
-        >
+        <View key={`child${index}`} style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
           {child}
         </View>
       );
@@ -262,9 +245,7 @@ class Stepper extends React.Component<Props, State> {
     if (endMedicalCase === true) {
       const state$ = store.getState();
 
-      store.dispatch(
-        updateMedicalCaseProperty('status', medicalCaseStatus.close.name)
-      );
+      store.dispatch(updateMedicalCaseProperty('status', medicalCaseStatus.close.name));
 
       navigation.push('PatientProfile', {
         id: state$.patient.id,
@@ -279,14 +260,7 @@ class Stepper extends React.Component<Props, State> {
   renderSteps = () => {
     const { steps } = this.props;
 
-    const {
-      activeStepStyle,
-      inactiveStepStyle,
-      activeStepTitleStyle,
-      inactiveStepTitleStyle,
-      activeStepNumberStyle,
-      inactiveStepNumberStyle,
-    } = styles;
+    const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;
 
     if (steps) {
       return steps.map((step: string, index: number) => {
@@ -299,48 +273,20 @@ class Stepper extends React.Component<Props, State> {
         };
 
         return (
-          <TouchableOpacity onPress={() => this.handleBottomStepper(index)}>
+          <TouchableOpacity onPress={() => this.handleBottomStepper(index)} key={`TouchableOpacity${index}`}>
             <View key={`step${index}`} style={styles.stepContainer}>
-              <View
-                style={[
-                  styles.steps,
-                  isSelected ? activeStepStyle : inactiveStepStyle,
-                ]}
-              >
+              <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
                 {index < this.state.page && this.props.validate ? (
                   this.state.error ? (
-                    <MaterialIcon
-                      name="close"
-                      size={24}
-                      style={
-                        isSelected
-                          ? activeStepNumberStyle
-                          : inactiveStepNumberStyle
-                      }
-                    />
+                    <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                    <MaterialIcon
-                      name="check"
-                      size={24}
-                      style={
-                        isSelected
-                          ? activeStepNumberStyle
-                          : inactiveStepNumberStyle
-                      }
-                    />
+                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   )
                 ) : (
                   <Icon {...iconConfig} />
                 )}
               </View>
-              <Text
-                style={[
-                  styles.stepTitle,
-                  isSelected ? activeStepTitleStyle : inactiveStepTitleStyle,
-                ]}
-              >
-                {step}
-              </Text>
+              <Text style={[styles.stepTitle, isSelected ? activeStepTitleStyle : inactiveStepTitleStyle]}>{step}</Text>
             </View>
           </TouchableOpacity>
         );
@@ -383,7 +329,7 @@ class Stepper extends React.Component<Props, State> {
       );
     }
     return (
-      <ViewPagerAndroid
+      <ViewPager
         {...this.props}
         ref={(ref: any) => {
           this.viewPager = ref;
@@ -392,7 +338,7 @@ class Stepper extends React.Component<Props, State> {
         onPageSelected={this.onPageSelected}
       >
         {this.renderChildren()}
-      </ViewPagerAndroid>
+      </ViewPager>
     );
   };
 
@@ -414,11 +360,7 @@ class Stepper extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        {showTopStepper ? (
-          <View style={[styles.topStepper, topStepperStyle]}>
-            {this.renderSteps()}
-          </View>
-        ) : null}
+        {showTopStepper ? <View style={[styles.topStepper, topStepperStyle]}>{this.renderSteps()}</View> : null}
         {this.renderViewPager()}
         {showBottomStepper ? (
           <View
@@ -431,55 +373,27 @@ class Stepper extends React.Component<Props, State> {
             ]}
           >
             {showBack ? (
-              <PlatformTouchableNative
-                onPress={this.onPressBack}
-                background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                style={{ zIndex: 1 }}
-              >
+              <PlatformTouchableNative onPress={this.onPressBack} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
                 <View style={styles.button}>
-                  {bottomNavigationLeftIconComponent || (
-                    <MaterialIcon name="navigate-before" size={24} />
-                  )}
-                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>
-                    {backButtonTitle}
-                  </Text>
+                  {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
+                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
                 </View>
               </PlatformTouchableNative>
             ) : null}
             {this.renderDots()}
             {showNext ? (
-              <PlatformTouchableNative
-                onPress={this.onPressNext}
-                background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                style={{ zIndex: 1 }}
-              >
+              <PlatformTouchableNative onPress={this.onPressNext} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
                 <View style={styles.button}>
-                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>
-                    {nextButtonTitle}
-                  </Text>
-                  {bottomNavigationRightIconComponent || (
-                    <MaterialIcon name="navigate-next" size={24} />
-                  )}
+                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
+                  {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                 </View>
               </PlatformTouchableNative>
             ) : (
               nextStage !== null && (
-                <PlatformTouchableNative
-                  onPress={this.nextStage}
-                  background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                  style={{ zIndex: 1 }}
-                >
-                  <View
-                    style={[
-                      styles.button,
-                    ]}
-                  >
-                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>
-                      {nextStageString}
-                    </Text>
-                    {bottomNavigationRightIconComponent || (
-                      <MaterialIcon name="navigate-next" size={24} />
-                    )}
+                <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+                  <View style={[styles.button]}>
+                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
+                    {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                   </View>
                 </PlatformTouchableNative>
               )

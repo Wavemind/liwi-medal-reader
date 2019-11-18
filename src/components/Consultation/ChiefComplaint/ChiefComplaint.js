@@ -12,41 +12,43 @@ type State = {};
 
 export default class ChiefComplaint extends React.Component<Props, State> {
   // default settings
-  state = { questions: [] };
-
-  shouldComponentUpdate(nextProps: Props, nextState: State, nextContext: *): boolean {
-    let changer = nextState.questions.some((q) => Object.compare(q, this.state.questions.find((d) => d.id === q.id)));
-    console.log(changer);
-    return nextState.questions.length !== this.state.questions.length || changer;
-  }
-
-  componentWillMount(): * {
-    this.updateQuestions();
-  }
-
-  updateQuestions = () => {
-    let questions = [];
-
-    this.props.chiefComplaint[this.props.category].map((q) => {
-      if (this.props.medicalCase.nodes[q].counter > 0) {
-        questions.push(this.props.medicalCase.nodes[q]);
-      }
-    });
-
-    this.setState({ questions });
+  static defaultProps = {
+    questions: [],
   };
 
-  componentWillUpdate(): * {
-    this.updateQuestions();
+  isSomeQuestionsDifferent = (nextPropsQuestions) => {
+    const { questions } = this.props;
+    return questions.some((question) => {
+      let nextQuestion = nextPropsQuestions.find((d) => d.id === question.id);
+      if (
+        nextQuestion === undefined ||
+        question.answer !== nextQuestion.answer ||
+        question.value !== nextQuestion.value ||
+        question.counter !== nextQuestion.counter
+      ) {
+        return true;
+      }
+    });
+  };
+
+  shouldComponentUpdate(nextProps: Props): boolean {
+    // First fast comparaison if the number of questions is different
+    const { questions } = this.props;
+    if (nextProps.questions.length !== questions.length) {
+      return true;
+    }
+
+    return this.isSomeQuestionsDifferent(nextProps.questions);
   }
 
   render() {
-    const { medicalCase, category, chiefComplaint } = this.props;
-    const { questions } = this.state;
-
-    console.log(chiefComplaint, chiefComplaint.answer);
+    const { chiefComplaint, questions } = this.props;
 
     if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers).second()) || chiefComplaint.answer === null) {
+      return null;
+    }
+
+    if (questions.length === 0) {
       return null;
     }
 

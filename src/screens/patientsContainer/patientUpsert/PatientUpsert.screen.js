@@ -196,7 +196,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let instanceMedicalCase = new MedicalCaseModel();
     await instanceMedicalCase.create();
     this.generateChiefsComplaints(instanceMedicalCase);
-    console.log(instanceMedicalCase);
     return instanceMedicalCase;
   };
 

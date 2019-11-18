@@ -15,7 +15,7 @@
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/runtime-corejs2": "^7.4.5",
     "@react-native-community/async-storage": "^1.5.0",
-    "@react-native-community/netinfo": "^3.2.0",
+    "@react-native-community/netinfo": "3.3.0-reachability.4",
     "@react-native-community/viewpager": "^1.1.7",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-react-native": "^5.0.2",
