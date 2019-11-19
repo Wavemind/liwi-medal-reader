@@ -12,7 +12,7 @@ import moment from 'moment';
 import { sessionsDuration } from '../../utils/constants';
 
 import { destroySession, getSession, getSessions, setActiveSession, setItem } from '../api/LocalStorage';
-import { saltHash } from '../../../frontend_service/constants';
+import { appInBackgroundStateKey, saltHash } from '../../../frontend_service/constants';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
@@ -175,6 +175,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
   async componentWillMount() {
     await this.initContext();
+
     AppState.addEventListener('change', this._handleAppStateChange);
     NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
   }
@@ -230,10 +231,12 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 
   // If the app is active or not
-  _handleAppStateChange = (nextAppState) => {
+  _handleAppStateChange = async (nextAppState) => {
     const { appState } = this.state;
     if (appState.match(/inactive|background/) && nextAppState === 'active') {
       console.warn('---> Liwi came back from background', nextAppState);
+      await setItem(appInBackgroundStateKey, true);
+
       this._fetchDataWhenChange();
       this.setState({ appState: nextAppState });
     }
