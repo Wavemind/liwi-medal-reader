@@ -58,6 +58,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         });
       }
 
+
       this.setState({
         patient,
         algorithmReady: true,
