@@ -18,6 +18,7 @@ import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { Toaster } from '../../utils/CustomToast';
 
 type Props = {
   children: any,
@@ -149,7 +150,7 @@ class Stepper extends React.Component<Props, State> {
   handleBottomStepper = (position: number) => {
     const numberOfPages: number = this.props.children.length;
 
-    this.props.onPageSelected(position);
+    this.props.onPageSelected !== undefined ? this.props.onPageSelected(position) : null;
 
     this.setState(
       {
@@ -157,7 +158,13 @@ class Stepper extends React.Component<Props, State> {
         showBack: position === 0 ? false : true,
         page: position,
       },
-      () => (Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null)
+      () => {
+        Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null;
+        if (this.props.chiefComplaintReady !== undefined && !this.props.chiefComplaintReady && position === 2) {
+          this.handleBottomStepper(1);
+          Toaster(this.props.t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
+        }
+      }
     );
   };
 

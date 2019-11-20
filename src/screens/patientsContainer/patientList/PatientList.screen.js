@@ -167,11 +167,11 @@ export default class PatientList extends React.Component<Props, State> {
     let orderedFilteredPatients;
 
     if (orderByName !== null) {
-      orderedFilteredPatients = orderBy(filteredPatients, ['lastname'], [orderByName]);
+      orderedFilteredPatients = orderBy(filteredPatients, ['firstname'], [orderByName]);
     }
 
     if (orderBySurName !== null) {
-      orderedFilteredPatients = orderBy(filteredPatients, ['firstname'], [orderBySurName]);
+      orderedFilteredPatients = orderBy(filteredPatients, ['lastname'], [orderBySurName]);
     }
 
     this.setState({ orderedFilteredPatients, loading: false });

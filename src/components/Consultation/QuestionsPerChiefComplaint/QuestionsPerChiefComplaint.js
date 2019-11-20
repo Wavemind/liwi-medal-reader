@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
+import { Text } from 'native-base';
 import { categories } from '../../../../frontend_service/constants';
 import { styles } from './QuestionsPerChiefComplaint.style';
 import ChiefComplaint from '../ChiefComplaint';
@@ -41,6 +42,7 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
+        {chiefComplaints.length === 0 ? <Text>0 Chief Complaints</Text> : null}
         {chiefComplaints.map((chiefComplaint) => (
           <ChiefComplaint
             chiefComplaint={chiefComplaint}

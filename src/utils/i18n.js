@@ -57,6 +57,7 @@ i18n
           chronical_condition: 'Chronical conditions',
           other: 'Others',
           chief: 'Complaint categories',
+          not_allowed: 'You have to answer all chief complaint',
         },
         form: {
           required: ' is required',
@@ -153,7 +154,8 @@ i18n
           waiting: 'Patients waiting for',
           search: 'Search',
           sort: 'Sort by',
-          name: 'Name',
+          name: 'First name',
+          surname: 'Last name',
           status: 'Status',
           no_medical_cases: 'There is no medical case in progress',
           not_found: 'No match found',
