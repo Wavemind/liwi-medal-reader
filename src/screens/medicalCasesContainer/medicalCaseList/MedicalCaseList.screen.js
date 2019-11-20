@@ -55,7 +55,6 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     patients.map((patient) => {
       patient.medicalCases.map((medicalCaseLocalStorage) => {
-
         if (medicalCaseLocalStorage.id !== medicalCase.id) {
           medicalCaseLocalStorage.patient = { ...patient, medicalCases: [] };
           medicalCases.push(medicalCaseLocalStorage);
@@ -167,9 +166,9 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     let orderedFilteredMedicalCases;
 
     if (orderByName !== null) {
-      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.lastname', orderByName);
+      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.firstname', orderByName);
     } else if (orderBySurName !== null) {
-      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.firstname', orderBySurName);
+      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.lastname', orderBySurName);
     } else if (orderByStatus !== null) {
       orderedFilteredMedicalCases = orderBy(filteredMedicalCases, ['status'], [orderByStatus]);
     } else if (orderByUpdate !== null) {

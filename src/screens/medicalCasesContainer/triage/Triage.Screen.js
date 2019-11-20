@@ -8,6 +8,7 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
+import { Toaster } from '../../../utils/CustomToast';
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
@@ -40,9 +41,10 @@ export default class Triage extends React.Component<Props, State> {
       app: { t },
       medicalCase,
       focus,
+      navigation,
     } = this.props;
 
-    const { selectedPage } = this.state;
+    let { selectedPage } = this.state;
 
     let firstLookAssessement = [];
 
@@ -71,13 +73,22 @@ export default class Triage extends React.Component<Props, State> {
       }
     });
 
+    let chiefComplaintReady = chiefComplaint.every((cc) => cc.answer !== null);
+
+    if (navigation.getParam('initialPage') === 2 && selectedPage === 2 && !chiefComplaintReady) {
+      selectedPage = 1;
+      Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
+    }
+
     return (
       <Suspense fallback={null}>
         <Stepper
+          t={t}
           ref={(ref: any) => {
             this.stepper = ref;
           }}
           validation={false}
+          chiefComplaintReady={chiefComplaintReady}
           showTopStepper
           initial
           onPageSelected={(e) => this.setState({ selectedPage: e })}

@@ -20,10 +20,15 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-    const { question, widthView, pageIndex } = this.props;
+    const { question, widthView, pageIndex, selectedPage } = this.props;
 
     if (pageIndex !== undefined && nextProps.selectedPage !== pageIndex) {
       return false;
+    }
+
+    // When view is selected
+    if (selectedPage !== pageIndex && nextProps.selectedPage === pageIndex) {
+      return true;
     }
 
     return nextProps.question.answer !== question.answer || nextProps.widthView !== widthView;
