@@ -97,6 +97,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       if (route === 'Triage') {
         navigation.navigate(route, {
           title: `${patient.firstname} ${patient.lastname}`,
+          initialPage: 0,
         });
       } else {
         navigation.dispatch(NavigationActions.back(route));

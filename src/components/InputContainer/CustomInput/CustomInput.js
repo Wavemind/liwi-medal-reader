@@ -52,6 +52,7 @@ export default class CustomInput extends React.Component<Props, State> {
         </View>
         <ViewBlocColor>
           <Input
+            autoCapitalize="none"
             common
             keyboardType={keyboardType}
             value={value}

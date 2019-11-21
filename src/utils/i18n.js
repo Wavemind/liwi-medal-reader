@@ -52,12 +52,12 @@ i18n
           physical_exam: 'Physical exam',
         },
         triage: {
-          first_look_assessment: 'First look assessments',
-          vital: 'Basic measurements',
-          chronical_condition: 'Chronical conditions',
+          first_look_assessment: 'First look Assessments',
+          vital: 'Basic Measurements',
+          chronical_condition: 'Chronical Conditions',
           other: 'Others',
-          chief: 'Complaint categories',
-          not_allowed: 'You have to answer all chief complaint',
+          chief: 'Complaint Categories',
+          not_allowed: 'You have to answer all chief complaints',
         },
         form: {
           required: ' is required',
@@ -165,10 +165,10 @@ i18n
           waiting_diagnostic: 'Diagnostic',
         },
         patient: {
-          first_name: 'First name',
-          last_name: 'Last name',
+          first_name: 'First name *',
+          last_name: 'Last name * ',
           birth_date: 'Day of birth',
-          gender: 'Gender',
+          gender: 'Gender *',
           male: 'Male',
           female: 'Female',
         },
@@ -277,9 +277,9 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Basic measurments',
+          vital: 'Basic Measurments',
           comorbidities: 'Comorbidities',
-          vaccination: 'Vaccination history',
+          vaccination: 'Vaccination History',
           chief: 'Complaint Categories',
         },
         settings: {
