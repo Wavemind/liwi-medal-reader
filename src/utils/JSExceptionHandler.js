@@ -15,24 +15,28 @@ setJSExceptionHandler((error, isFatal) => {
 //=================================================
 // ADVANCED use case:
 const exceptionhandler = (error, isFatal) => {
-  if (isFatal) {
-    Alert.alert(
-      'Unexpected error occurred',
-      `
+  if (error !== undefined) {
+    if (isFatal) {
+      Alert.alert(
+        'Unexpected error occurred',
+        `
         Error: ${isFatal ? 'Fatal:' : ''} ${error.name} ${error.message}
         We have reported this to our team ! Please close the app and start again!
         `,
-      [
-        {
-          text: 'Close',
-          onPress: () => {
-            RNRestart.Restart();
+        [
+          {
+            text: 'Close',
+            onPress: () => {
+              RNRestart.Restart();
+            },
           },
-        },
-      ]
-    );
+        ]
+      );
+    } else {
+      console.log(error.name, error.message, error.stack); // So that we can see it in the ADB logs in case of Android if needed
+    }
   } else {
-    console.log(error.name, error.message, error.stack); // So that we can see it in the ADB logs in case of Android if needed
+    console.warn('Unexpected error was catched but is undefined ? o.O');
   }
 };
 setJSExceptionHandler(exceptionhandler, true);
