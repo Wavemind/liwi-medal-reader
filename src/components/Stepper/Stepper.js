@@ -100,9 +100,11 @@ class Stepper extends React.Component<Props, State> {
     nextStage: null,
     activeStepColor: 'brown',
     inactiveStepColor: 'grey',
+    paramsNextStage: { initialPage: 0 },
     stepNumberStyle: {
       color: 'white',
     },
+
     validate: false,
   };
 
@@ -247,7 +249,7 @@ class Stepper extends React.Component<Props, State> {
   };
 
   nextStage = () => {
-    const { navigation, nextStage, endMedicalCase } = this.props;
+    const { navigation, nextStage, endMedicalCase, paramsNextStage } = this.props;
 
     if (endMedicalCase === true) {
       const state$ = store.getState();
@@ -261,6 +263,7 @@ class Stepper extends React.Component<Props, State> {
 
     navigation.navigate({
       routeName: nextStage,
+      params: paramsNextStage,
     });
   };
 

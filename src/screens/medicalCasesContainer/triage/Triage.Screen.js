@@ -83,6 +83,7 @@ export default class Triage extends React.Component<Props, State> {
     return (
       <Suspense fallback={null}>
         <Stepper
+          params={{ initialPage: 0 }}
           t={t}
           ref={(ref: any) => {
             this.stepper = ref;

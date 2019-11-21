@@ -53,12 +53,13 @@ export default class Settings extends React.Component<Props, State> {
   }
 
   changeSettings = (setting, item) => {
-    const { settings, settings: { value } } = this.state;
-    value[setting][item] = !value[setting][item];
+    const { settings } = this.state;
+
+    settings[setting][item] = !settings[setting][item];
 
     this.setState(
       {
-        settings: value,
+        settings: settings,
       },
       async () => {
         await setItem('settings', settings);
@@ -68,7 +69,10 @@ export default class Settings extends React.Component<Props, State> {
 
   render() {
     const { settings } = this.state;
-    const { app: { t } } = this.props;
+    const {
+      navigation,
+      app: { t },
+    } = this.props;
 
     return (
       <ScrollView>
@@ -84,10 +88,7 @@ export default class Settings extends React.Component<Props, State> {
                 <Text>{test}</Text>
               </Left>
               <Right>
-                <Switch
-                  value={settings.tests[test]}
-                  onValueChange={() => this.changeSettings('tests', test)}
-                />
+                <Switch value={settings.tests[test]} onValueChange={() => this.changeSettings('tests', test)} />
               </Right>
             </ListItem>
           ))}
@@ -102,10 +103,7 @@ export default class Settings extends React.Component<Props, State> {
                 <Text>{device}</Text>
               </Left>
               <Right>
-                <Switch
-                  value={settings.devices[device]}
-                  onValueChange={() => this.changeSettings('devices', device)}
-                />
+                <Switch value={settings.devices[device]} onValueChange={() => this.changeSettings('devices', device)} />
               </Right>
             </ListItem>
           ))}
@@ -120,25 +118,18 @@ export default class Settings extends React.Component<Props, State> {
             </Left>
             <Body>
               <Button iconLeft iconMenu>
-                <Icon
-                  grey
-                  type="FontAwesome"
-                  name={settings.app.awake ? 'eye' : 'eye-slash'}
-                />
+                <Icon grey type="FontAwesome" name={settings.app.awake ? 'eye' : 'eye-slash'} />
               </Button>
             </Body>
             <Right>
-              <Switch
-                value={settings.app.awake}
-                onValueChange={() => this.changeSettings('app', 'awake')}
-              />
+              <Switch value={settings.app.awake} onValueChange={() => this.changeSettings('app', 'awake')} />
             </Right>
           </ListItem>
           <ListItem>
             <Text>Autre</Text>
           </ListItem>
         </List>
-        <Button>
+        <Button onPress={() => navigation.goBack()}>
           <Text>{t('common:back')}</Text>
         </Button>
       </ScrollView>

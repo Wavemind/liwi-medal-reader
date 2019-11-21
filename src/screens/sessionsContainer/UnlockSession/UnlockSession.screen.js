@@ -41,7 +41,7 @@ export default class UnlockSession extends React.Component<Props, State> {
   // Send to context code and session for verification
   unLock = async () => {
     this.setState({ loadingUnlock: true });
-    const { code, email } = this.state;
+    let { code, email } = this.state;
     const {
       app,
       app: { t },
@@ -49,7 +49,7 @@ export default class UnlockSession extends React.Component<Props, State> {
     } = this.props;
 
     let user = _.find(sessions, (session) => {
-      return session.data.email === email;
+      return session.data.email.toLowerCase() === email.toLowerCase();
     });
 
     if (user !== undefined) {
