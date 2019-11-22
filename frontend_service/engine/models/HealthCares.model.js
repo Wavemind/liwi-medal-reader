@@ -21,9 +21,7 @@ export class HealthCaresModel extends NodeModel
     const state$ = store.getState();
     let questions = {};
     instanceHealthcare.top_conditions.map(
-      // eslint-disable-next-line react/prop-types
       (tp) => {
-        //
         let node = state$.nodes[tp.first_node_id];
 
         if (node.type === nodesType.questionsSequence) {

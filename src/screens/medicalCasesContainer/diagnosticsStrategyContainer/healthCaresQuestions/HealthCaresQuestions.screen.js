@@ -12,10 +12,8 @@ type State = {};
 export default class HealthCaresQuestions extends Component<Props, State> {
   render() {
     const {
-      // eslint-disable-next-line react/prop-types
       medicalCase,
     } = this.props;
-    // eslint-disable-next-line react/prop-typess
     const questions = medicalCase.nodes.getHealthCaresQuestions();
 
     return (

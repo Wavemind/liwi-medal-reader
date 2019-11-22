@@ -49,6 +49,8 @@
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "react/display-name": 0,
     "react/sort-comp": 0,
-    "import/no-cycle": [2, { "maxDepth": 1 }]
+    "import/no-cycle": [2, { "maxDepth": 1 }],
+    "react/prop-types": 0
+
   }
 }
