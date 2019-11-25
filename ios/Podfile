@@ -35,6 +35,8 @@ pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
     pod 'RNScreens', :path => '../node_modules/react-native-screens'
 
+    pod 'ReactNativeExceptionHandler', :path => '../node_modules/react-native-exception-handler'
+
   end
 
   target 'liwi_nativeTests' do
