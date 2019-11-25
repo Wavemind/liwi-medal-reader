@@ -265,14 +265,15 @@ let StackWithBottomNavigation = createBottomTabNavigator(
 );
 
 const MainNavigation = () => {
+  const drawerWidth = screenWidth / 3;
   return createDrawerNavigator(
     {
       RootDrawer: { screen: StackWithBottomNavigation },
     },
     {
-      drawerWidth: screenWidth / 2,
+      drawerWidth,
       overlayColor: 'rgba(38,38,38,0.8)',
-      contentComponent: (props) => <Drawer {...props} />,
+      contentComponent: (props) => <Drawer {...props} drawerWidth={drawerWidth} />,
     }
   );
 };
