@@ -9,18 +9,18 @@ import liwi from 'template/liwi/styles';
 import merge from 'deepmerge';
 import { RootView } from 'template/layout';
 import { Platform, StatusBar } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import { Container, Root, StyleProvider } from 'native-base';
 import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';
-import { setItem } from '../engine/api/LocalStorage';
-import { navigationStateKey } from '../../frontend_service/constants';
+import { getItem, setItem } from '../engine/api/LocalStorage';
+import { appInBackgroundStateKey, navigationStateKey } from '../../frontend_service/constants';
 
 type Props = {
   app: {
     logged: boolean,
     ready: boolean,
+    appState: string,
     navigationState: Array,
   },
 };
@@ -35,16 +35,35 @@ const persistNavigationState = async (navState) => {
 };
 
 class LayoutTemplate extends React.Component<Props> {
+  shouldComponentUpdate(nextProps: Props): boolean {
+    return nextProps.app.appState !== 'background';
+  }
+
   loadNavigationState = async () => {
-    const jsonString = await AsyncStorage.getItem(navigationStateKey);
-    let routes = JSON.parse(jsonString);
+    const state = await getItem(navigationStateKey);
+    const fromBackground = await getItem(appInBackgroundStateKey);
+    const {
+      app: { appState },
+    } = this.props;
 
-    const { app } = this.props;
-    if (routes !== null && routes.routes[routes.index].key === 'SetCodeSession' && app.logged === true) {
-      routes = null;
+    let routes = null;
+    // If the app come not from the background the item is set in app.context
+    if (fromBackground === null && appState === 'active') {
+      // first render of the app
+      return null;
     }
+    else if (fromBackground && appState === 'active') {
+      routes = state;
+      const { app } = this.props;
 
-    return routes;
+      // This fix a bug when we reload the app in the setcodesession screen
+      if (routes !== null && routes.routes[routes.index].key === 'SetCodeSession' && app.logged === true) {
+        routes = null;
+      }
+      // Set the flag background
+      await setItem(appInBackgroundStateKey, null);
+      return routes;
+    }
   };
 
   render() {
@@ -66,9 +85,9 @@ class LayoutTemplate extends React.Component<Props> {
               <RootView>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <AppContainer
-                  // persistNavigationState={persistNavigationState}
-                  // loadNavigationState={this.loadNavigationState}
-                  // renderLoadingExperimental={() => <LiwiLoader />}
+                  persistNavigationState={persistNavigationState}
+                  loadNavigationState={this.loadNavigationState}
+                  renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}

@@ -18,6 +18,7 @@ import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { Toaster } from '../../utils/CustomToast';
 
 type Props = {
   children: any,
@@ -99,17 +100,19 @@ class Stepper extends React.Component<Props, State> {
     nextStage: null,
     activeStepColor: 'brown',
     inactiveStepColor: 'grey',
+    paramsNextStage: { initialPage: 0 },
     stepNumberStyle: {
       color: 'white',
     },
+
     validate: false,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      showBack: props.initialPage > 0 ? true : false,
-      showNext: props.initialPage + 1 === props.children.length ? false : true,
+      showBack: props.initialPage > 0,
+      showNext: props.initialPage + 1 !== props.children.length,
       page: props.initialPage,
       width: 0,
       height: 0,
@@ -122,20 +125,22 @@ class Stepper extends React.Component<Props, State> {
    * @param e
    */
   onPageSelected = (e: Object) => {
+    const { children, onScrollPage } = this.props;
+    const { width } = this.state;
     if (Platform.OS === 'android') {
       return this.handleBottomStepper(e.nativeEvent.position);
     }
 
     // Calculate current index
-    const index = e.nativeEvent.contentOffset.x / this.state.width;
+    const index = e.nativeEvent.contentOffset.x / width;
 
     // Only call the function if the index is an integer
     if (index === parseInt(index, 10)) {
-      if (index < 0 || index >= React.Children.count(this.props.children)) {
+      if (index < 0 || index >= React.Children.count(children)) {
         return undefined;
       }
-      if (this.props.onScrollPage) {
-        this.props.onScrollPage();
+      if (onScrollPage) {
+        onScrollPage();
       }
 
       this.handleBottomStepper(index);
@@ -147,17 +152,24 @@ class Stepper extends React.Component<Props, State> {
    * @param position
    */
   handleBottomStepper = (position: number) => {
-    const numberOfPages: number = this.props.children.length;
+    const { children, onPageSelected, chiefComplaintReady, t } = this.props;
+    const numberOfPages: number = children.length;
 
-    this.props.onPageSelected(position);
+    onPageSelected !== undefined ? onPageSelected(position) : null;
 
     this.setState(
       {
-        showNext: position === numberOfPages - 1 ? false : true,
-        showBack: position === 0 ? false : true,
+        showNext: position !== numberOfPages - 1,
+        showBack: position !== 0,
         page: position,
       },
-      () => (Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null)
+      () => {
+        Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null;
+        if (chiefComplaintReady !== undefined && !chiefComplaintReady && position === 2) {
+          this.handleBottomStepper(1);
+          Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
+        }
+      }
     );
   };
 
@@ -165,48 +177,48 @@ class Stepper extends React.Component<Props, State> {
    * Handles back button behaviour
    */
   onPressBack = () => {
-    if (this.props.onPressBack) {
-      this.props.onPressBack();
+    const { onPressBack } = this.props;
+    const { page, width } = this.state;
+
+    if (onPressBack) {
+      onPressBack();
     }
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-          x: (this.state.page - 1) * this.state.width,
-          animated: true,
-        })
-      : this.handleBottomStepper(this.state.page - 1);
+        x: (page - 1) * width,
+        animated: true,
+      })
+      : this.handleBottomStepper(page - 1);
   };
 
   /**
    * Handles next button behaviour
    */
   onPressNext = () => {
-    if (this.props.onPressNext) {
-      this.props.onPressNext();
+    const { onPressNext } = this.props;
+    const { page, width } = this.props;
+
+    if (onPressNext) {
+      onPressNext();
     }
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-          x: (this.state.page + 1) * this.state.width,
-          animated: true,
-        })
-      : this.handleBottomStepper(this.state.page + 1);
-  };
-
-  checkValue = (value: Object) => {
-    if (value) {
-      this.setState({ error: false });
-    } else {
-      this.setState({ error: true });
-    }
+        x: (page + 1) * width,
+        animated: true,
+      })
+      : this.handleBottomStepper(page + 1);
   };
 
   renderDots = () => {
     let dots = [];
     const { activeDotStyle, inactiveDotStyle } = styles;
+    const { children } = this.props;
+    const { page } = this.state;
 
-    for (let index = 0; index < this.props.children.length; index++) {
-      const isSelected: boolean = this.state.page === index;
+    for (let index = 0; index < children.length; index++) {
+      const isSelected: boolean = page === index;
       dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index} />);
     }
     return <View style={styles.dotsContainer}>{dots}</View>;
@@ -229,10 +241,12 @@ class Stepper extends React.Component<Props, State> {
    */
   renderChildren = () => {
     const { children, childrenStyle } = this.props;
+    const { width, height } = this.state;
 
     return React.Children.map(children, (child: Object, index: number) => {
       return (
-        <View key={`child${index}`} style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
+        <View key={`child${index}`}
+              style={[styles.container, { width: width, height: height }, childrenStyle]}>
           {child}
         </View>
       );
@@ -240,7 +254,7 @@ class Stepper extends React.Component<Props, State> {
   };
 
   nextStage = () => {
-    const { navigation, nextStage, endMedicalCase } = this.props;
+    const { navigation, nextStage, endMedicalCase, paramsNextStage } = this.props;
 
     if (endMedicalCase === true) {
       const state$ = store.getState();
@@ -254,33 +268,37 @@ class Stepper extends React.Component<Props, State> {
 
     navigation.navigate({
       routeName: nextStage,
+      params: paramsNextStage,
     });
   };
 
   renderSteps = () => {
-    const { steps } = this.props;
+    const { steps, icons, validate } = this.props;
+    const { page, error } = this.state;
 
     const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;
 
     if (steps) {
       return steps.map((step: string, index: number) => {
-        const isSelected: boolean = this.state.page === index;
+        const isSelected: boolean = page === index;
         const iconConfig = {
-          name: this.props.icons[index]?.name,
+          name: icons[index]?.name,
           style: { color: isSelected ? '#ffffff' : liwiColors.redColor },
           size: 30,
-          type: this.props.icons[index]?.type,
+          type: icons[index]?.type,
         };
 
         return (
           <TouchableOpacity onPress={() => this.handleBottomStepper(index)} key={`TouchableOpacity${index}`}>
             <View key={`step${index}`} style={styles.stepContainer}>
               <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
-                {index < this.state.page && this.props.validate ? (
-                  this.state.error ? (
-                    <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                {index < page && validate ? (
+                  error ? (
+                    <MaterialIcon name="close" size={24}
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                    <MaterialIcon name="check" size={24}
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   )
                 ) : (
                   <Icon {...iconConfig} />
@@ -373,7 +391,9 @@ class Stepper extends React.Component<Props, State> {
             ]}
           >
             {showBack ? (
-              <PlatformTouchableNative onPress={this.onPressBack} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+              <PlatformTouchableNative onPress={this.onPressBack}
+                                       background={PlatformTouchableNative.SelectableBackgroundBorderless()}
+                                       style={{ zIndex: 1 }}>
                 <View style={styles.button}>
                   {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
@@ -382,7 +402,9 @@ class Stepper extends React.Component<Props, State> {
             ) : null}
             {this.renderDots()}
             {showNext ? (
-              <PlatformTouchableNative onPress={this.onPressNext} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+              <PlatformTouchableNative onPress={this.onPressNext}
+                                       background={PlatformTouchableNative.SelectableBackgroundBorderless()}
+                                       style={{ zIndex: 1 }}>
                 <View style={styles.button}>
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                   {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
@@ -390,7 +412,9 @@ class Stepper extends React.Component<Props, State> {
               </PlatformTouchableNative>
             ) : (
               nextStage !== null && (
-                <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+                <PlatformTouchableNative onPress={this.nextStage}
+                                         background={PlatformTouchableNative.SelectableBackgroundBorderless()}
+                                         style={{ zIndex: 1 }}>
                   <View style={[styles.button]}>
                     <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
                     {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
