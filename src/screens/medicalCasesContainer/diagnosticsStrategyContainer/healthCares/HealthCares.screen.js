@@ -27,17 +27,17 @@ export default class HealthCares extends Component<Props, State> {
             size-auto
             key={'healthcare' + managements[key].reference}
           >
-            {managements[key].reference} - {managements[key].label}
+            {__DEV__ ? `${managements[key].reference} - ` : null}{managements[key].label}
           </Text>
         ))}
         <Text customTitle>{t('medical_case:treatments')}</Text>
-        {Object.keys(treatments).map((t) => (
+        {Object.keys(treatments).map((key) => (
           <Text
             style={styles.spaceText}
             size-auto
-            key={'healthcare' + treatments[t].reference}
+            key={'healthcare' + treatments[key].reference}
           >
-            {treatments[t].reference} - {treatments[t].label}
+            {__DEV__ ? `${managements[key].reference} - ` : null}{treatments[t].label}
           </Text>
         ))}
       </Content>

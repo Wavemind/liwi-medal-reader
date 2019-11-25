@@ -25,10 +25,11 @@ export default class Questions extends React.Component<Props, State> {
       questions,
       app: {t}
     } = this.props;
+
     return (
       <ScrollView>
 
-        {questions.length > 0 ?
+        {Object.keys(questions).length > 0 ?
           (
             Object.keys(questions).map((i) => {
               // Detect Reference node
