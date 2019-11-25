@@ -26,7 +26,7 @@ i18n
           success: 'The synchronization did work.',
           nosuccess: 'The synchronization didn\'t work. ',
           titlesync: 'Status synchronization of medical cases',
-          synchronize: 'Synchronize',
+          synchronize: 'Synchronize cases',
           no: 'Never synchronized',
           need: 'Must be re-synchronized',
           uptdate: 'Synchronized',
