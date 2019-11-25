@@ -3,15 +3,10 @@ import { liwiColors, screenHeight } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   tools: {
-    backgroundColor: liwiColors.greyColor,
+    flex: 1,
     height: screenHeight,
-    flex: 0.3,
     alignItems: 'center',
     paddingTop: 10,
-  },
-  medical: {
-    flex: 0.7,
-    height: screenHeight,
   },
   paddingCategory: {
     paddingLeft: 30,
@@ -44,9 +39,10 @@ export const styles = StyleSheet.create({
   },
   top: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     marginTop: 20,
+    padding: 20,
+    justifyContent: 'space-between',
   },
   noLeftPadding: {
     paddingLeft: 0,

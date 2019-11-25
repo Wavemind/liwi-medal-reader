@@ -8,6 +8,8 @@ export default {
     },
   },
   'NativeBase.Text': {
+    '.drawerCategorieText': { textAlign: 'center', textTransform: 'uppercase' },
+    '.drawerItemText': {},
     '.light': {
       color: '#6a6a6a',
       borderRadius: 35,

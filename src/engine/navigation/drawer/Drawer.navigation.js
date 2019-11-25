@@ -41,10 +41,57 @@ export default class Drawer extends Component<Props, State> {
       medicalCase,
     } = this.props;
 
+    /**
+     *  onPress={() =>
+                  navigation.navigate({
+                    routeName: 'Triage',
+                    params: { initialPage: 0 },
+                    key: 'Triage' + 0,
+                  })
+                }
+     *
+     */
+
     return (
-      <View style={styles.columns}>
+      <View style={[styles.columns, { width: this.props.drawerWidth, padding: 20 }]}>
         <View style={styles.tools}>
           <View style={styles.top}>
+            <Button drawerCategorieButton>
+              <Text drawerCategorieText>{t('menu:triage')}</Text>
+            </Button>
+            <Button drawerItemButton transparent>
+              <Icon drawerItemIcon type="Ionicons" name="md-radio-button-off" />
+              <Text drawerItemText>{t('menu:first_look_assessments')}</Text>
+            </Button>
+            <Button drawerItemButton transparent>
+              <Icon drawerItemIcon type="Ionicons" name="md-radio-button-off" />
+              <Text drawerItemText>{t('menu:chief_complaints')}</Text>
+            </Button>
+            <Button drawerItemButton transparent>
+              <Icon drawerItemIcon type="Ionicons" name="md-radio-button-off" />
+              <Text drawerItemText>{t('menu:vital_signs')}</Text>
+            </Button>
+
+            <Button drawerCategorieButton>
+              <Text drawerCategorieText>{t('menu:consultation')}</Text>
+            </Button>
+            <Button drawerItemButton transparent>
+              <Icon drawerItemIcon type="Ionicons" name="md-radio-button-off" />
+              <Text drawerItemText>{t('menu:medical_history')}</Text>
+            </Button>
+            <Button drawerItemButton transparent>
+              <Icon drawerItemIcon type="Ionicons" name="md-radio-button-off" />
+              <Text drawerItemText>{t('menu:physical_exam')}</Text>
+            </Button>
+
+            <Button drawerCategorieButton>
+              <Text drawerCategorieText>{t('menu:tests')}</Text>
+            </Button>
+
+            <Button drawerCategorieButton>
+              <Text drawerCategorieText>{t('menu:strategy')}</Text>
+            </Button>
+
             <Button
               transparent
               btnDrawer
@@ -56,40 +103,12 @@ export default class Drawer extends Component<Props, State> {
               <Icon style={styles.icon} dark type="AntDesign" name="home" />
             </Button>
 
-            <Button transparent btnDrawer marginIcon>
-              <Icon style={styles.icon} dark type="AntDesign" name="user" />
-            </Button>
-
-            <Button
-              transparent
-              btnDrawer
-              marginIcon
-              onPress={() => navigation.navigate('Emergency')}
-            >
-              <Icon
-                style={styles.icon}
-                dark
-                name="warning"
-                type="FontAwesome"
-              />
-            </Button>
-
-            <Button
-              transparent
-              btnDrawer
-              marginIcon
-              onPress={() => navigation.navigate('Algorithms')}
-            >
+            <Button transparent btnDrawer marginIcon onPress={() => navigation.navigate('Algorithms')}>
               <Icon style={styles.icon} dark type="AntDesign" name="sync" />
             </Button>
           </View>
           <View style={styles.bottom}>
-            <Button
-              transparent
-              btnDrawer
-              marginIcon
-              onPress={() => navigation.navigate('Settings')}
-            >
+            <Button transparent btnDrawer marginIcon onPress={() => navigation.navigate('Settings')}>
               <Icon style={styles.icon} dark type="AntDesign" name="setting" />
             </Button>
             <Button transparent btnDrawer onPress={this.logout}>
@@ -97,115 +116,6 @@ export default class Drawer extends Component<Props, State> {
             </Button>
           </View>
         </View>
-        {medicalCase.id !== undefined ? (
-          <View style={styles.medical}>
-            <View style={[styles.triage, styles.paddingCategory]}>
-              <Text style={styles.title}>{t('menu:triage')}</Text>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() =>
-                  navigation.navigate({
-                    routeName: 'Triage',
-                    params: { initialPage: 0 },
-                    key: 'Triage' + 0,
-                  })
-                }
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:first_look_assessments')}
-                </Text>
-              </Button>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() =>
-                  navigation.navigate({
-                    routeName: 'Triage',
-                    params: { initialPage: 1 },
-                    key: 'Triage' + 1,
-                  })
-                }
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:chief_complaints')}
-                </Text>
-              </Button>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() =>
-                  navigation.navigate({
-                    routeName: 'Triage',
-                    params: { initialPage: 2 },
-                    key: 'Triage' + 2,
-                  })
-                }
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:vital_signs')}
-                </Text>
-              </Button>
-            </View>
-
-            <View style={[styles.consultation, styles.paddingCategory]}>
-              <Text style={styles.title}>{t('menu:consultation')}</Text>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() =>
-                  navigation.navigate({
-                    routeName: 'Consultation',
-                    params: { initialPage: 0 },
-                    key: 'Consultation' + 0,
-                  })
-                }
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:medical_history')}
-                </Text>
-              </Button>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() =>
-                  navigation.navigate({
-                    routeName: 'Consultation',
-                    params: { initialPage: 1 },
-                    key: 'Consultation' + 1,
-                  })
-                }
-              >
-                <Text dark style={styles.noLeftPadding}>
-                  {t('menu:physical_exam')}
-                </Text>
-              </Button>
-            </View>
-            <View style={[styles.tests, styles.paddingCategory]}>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() => this.onPress('Tests')}
-              >
-                <Text style={[styles.title, styles.noLeftPadding]} dark>
-                  {t('menu:tests')}
-                </Text>
-              </Button>
-            </View>
-
-            <View style={[styles.strategy, styles.paddingCategory]}>
-              <Button
-                transparent
-                btnDrawer
-                onPress={() => this.onPress('DiagnosticsStrategy')}
-              >
-                <Text style={[styles.title, styles.noLeftPadding]} dark>
-                  {t('menu:strategy')}
-                </Text>
-              </Button>
-            </View>
-          </View>
-        ) : null}
       </View>
     );
   }

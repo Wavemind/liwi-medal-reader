@@ -8,6 +8,23 @@ export default {
       backgroundColor: '#ff31d0',
       borderRadius: 35,
     },
+    '.drawerCategorieButton': {
+      flex: 1,
+      backgroundColor: liwiColors.redColor,
+      padding: 20,
+      margin: 5,
+      borderRadius: 3,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'stretch',
+      textAlign: 'center',
+    },
+    '.drawerItemButton': {
+      flex: 1,
+      flexDirection: 'row',
+      backgroundColor: 'none',
+      padding: 5,
+    },
     '.w50': {
       flex: 1,
       flexDirection: 'row',
