@@ -10,7 +10,8 @@ import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 
-interface NodeInterface {}
+interface NodeInterface {
+}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {
@@ -142,33 +143,21 @@ export class NodesModel implements NodeInterface {
     let healthCares = { managements: {}, treatments: {} };
 
     // Filter by final diagnostic
-    const finalDiagnostics = this.filterByType(nodesType.finalDiagnostic);
+    const finalDiagnostics = FinalDiagnosticModel.all();
 
-    for (let index in finalDiagnostics) {
-      if (finalDiagnostics.hasOwnProperty(index)) {
-        let finalDiagnostic = finalDiagnostics[index];
-        let condition = finalDiagnostic.calculateCondition();
-        if (condition === true) {
-          for (let indexManagement in finalDiagnostic.managements) {
-            if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
-              let managementBoolean = calculateCondition(finalDiagnostic.managements[indexManagement]);
-              if (managementBoolean === true) {
-                healthCares.managements[indexManagement] = this[indexManagement];
-              }
-            }
-          }
-
-          for (let indexTreatment in finalDiagnostic.treatments) {
-            if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
-              let treatmentBoolean = calculateCondition(finalDiagnostic.treatments[indexTreatment]);
-              if (treatmentBoolean === true) {
-                healthCares.treatments[indexTreatment] = this[indexTreatment];
-              }
-            }
-          }
+    finalDiagnostics.included.forEach(finalDiagnostic => {
+         Object.keys(finalDiagnostic.managements).forEach(key => {
+        if(calculateCondition(finalDiagnostic.managements[key])){
+          healthCares.managements[key] = this[key];
         }
-      }
-    }
+      });
+
+      Object.keys(finalDiagnostic.treatments).forEach(key => {
+        if(calculateCondition(finalDiagnostic.treatments[key])){
+          healthCares.managements[key] = this[key];
+        }
+      });
+    });
     return healthCares;
   }
 

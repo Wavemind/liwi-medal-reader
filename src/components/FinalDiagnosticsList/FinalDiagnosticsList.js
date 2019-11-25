@@ -3,10 +3,9 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text } from 'native-base';
-import { nodesType } from '../../../frontend_service/constants';
-import { liwiColors } from '../../utils/constants';
 import { styles } from './FinalDiagnosticsList.style';
 import { LiwiTitle3 } from '../../template/layout';
+import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
 
 type Props = NavigationScreenProps & {};
 
@@ -14,14 +13,11 @@ type State = {};
 
 class FinalDiagnostic extends React.Component<{}> {
   shouldComponentUpdate(nextProps: Props): boolean {
-    // eslint-disable-next-line react/prop-types
     const { name } = this.props;
-    // eslint-disable-next-line react/prop-types
     return name !== nextProps.name;
   }
 
   render() {
-    // eslint-disable-next-line react/prop-types
     const { type, name, style, label, id } = this.props;
     return (
       <Text style={styles.spaceText} size-auto>
@@ -35,89 +31,23 @@ export default class FinalDiagnosticsList extends React.PureComponent<Props, Sta
   state = {};
 
   render() {
-    const {
-      medicalCase: { nodes },
-    } = this.props;
-    let finalDiagnosticsRedux = nodes.filterByType(nodesType.finalDiagnostic);
 
-    const finalDiagnosticsNull = [];
-    const finalDiagnosticsTrue = [];
-    const finalDiagnosticsFalse = [];
-
-    for (let index in finalDiagnosticsRedux) {
-      if (finalDiagnosticsRedux.hasOwnProperty(index)) {
-        let finalDiagnostic = finalDiagnosticsRedux[index];
-        const chiefComplaint = nodes[finalDiagnostic.cc];
-
-        if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[1])) {
-          finalDiagnosticsFalse.push({
-            ...finalDiagnostic,
-            type,
-            name,
-            style,
-          });
-          continue;
-        }
-
-        let condition = finalDiagnostic.calculateCondition();
-
-        let type;
-        let style = {};
-        let name;
-
-        switch (condition) {
-          case true:
-            type = 'AntDesign';
-            name = 'checkcircle';
-            style.color = liwiColors.greenColor;
-            finalDiagnosticsTrue.push({
-              ...finalDiagnostic,
-              type,
-              name,
-              style,
-            });
-
-            break;
-          case false:
-            type = 'Entypo';
-            name = 'circle-with-cross';
-            style.color = liwiColors.redColor;
-            finalDiagnosticsFalse.push({
-              ...finalDiagnostic,
-              type,
-              name,
-              style,
-            });
-            break;
-          case null:
-            type = 'AntDesign';
-            name = 'minuscircleo';
-            style.color = liwiColors.darkerGreyColor;
-            finalDiagnosticsNull.push({
-              ...finalDiagnostic,
-              type,
-              name,
-              style,
-            });
-            break;
-        }
-      }
-    }
+    const finalDiagnostics = FinalDiagnosticModel.all();
 
     return (
       <React.Fragment>
         <LiwiTitle3>True</LiwiTitle3>
-        {finalDiagnosticsTrue.map((f) => (
-          <FinalDiagnostic {...f} key={f.id} />
+        {finalDiagnostics.included.map((f) => (
+          <FinalDiagnostic {...f} type='AntDesign' name='checkcircle' key={f.id} style={styles.greenIcon} />
         ))}
 
         <LiwiTitle3>False</LiwiTitle3>
-        {finalDiagnosticsFalse.map((f) => (
-          <FinalDiagnostic {...f} key={f.id} />
+        {finalDiagnostics.excluded.map((f) => (
+          <FinalDiagnostic {...f} name='circle-with-cross' type='Entypo' key={f.id} style={styles.redIcon} />
         ))}
 
         <LiwiTitle3>Null</LiwiTitle3>
-        {finalDiagnosticsNull.map((f) => (
+        {finalDiagnostics.not_defined.map((f) => (
           <FinalDiagnostic {...f} key={f.id} />
         ))}
       </React.Fragment>
