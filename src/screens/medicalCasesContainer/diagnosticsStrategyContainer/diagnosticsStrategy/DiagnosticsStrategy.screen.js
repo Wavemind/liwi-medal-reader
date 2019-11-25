@@ -49,14 +49,14 @@ export default class DiagnosesStrategy extends Component<Props, State> {
       >
         <View style={styles.pad}>
           <ScrollView>
-            <FinalDiagnosticsList key="diognoseslist" />
+            <FinalDiagnosticsList key="diagnosesList" />
           </ScrollView>
         </View>
         <View style={styles.pad}>
           <HealthCaresQuestions key="wealthCaresQuestions" />
         </View>
         <View style={styles.pad}>
-          <HealthCares key="sealthCares" />
+          <HealthCares key="healthCares" />
         </View>
       </Stepper>
     );

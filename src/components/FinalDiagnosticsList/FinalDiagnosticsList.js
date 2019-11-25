@@ -4,7 +4,6 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text } from 'native-base';
 import { styles } from './FinalDiagnosticsList.style';
-import { LiwiTitle3 } from '../../template/layout';
 import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
 
 type Props = NavigationScreenProps & {};
@@ -21,7 +20,7 @@ class FinalDiagnostic extends React.Component<{}> {
     const { type, name, style, label, id } = this.props;
     return (
       <Text style={styles.spaceText} size-auto>
-        <Icon type={type} name={name} style={style} /> {id} - {label}
+        <Icon type={type} name={name} style={style} /> { __DEV__ ? `${id} - ` : null}{label}
       </Text>
     );
   }
@@ -36,19 +35,19 @@ export default class FinalDiagnosticsList extends React.PureComponent<Props, Sta
 
     return (
       <React.Fragment>
-        <LiwiTitle3>True</LiwiTitle3>
+        <Text customTitle>Included</Text>
         {finalDiagnostics.included.map((f) => (
           <FinalDiagnostic {...f} type='AntDesign' name='checkcircle' key={f.id} style={styles.greenIcon} />
         ))}
 
-        <LiwiTitle3>False</LiwiTitle3>
+        <Text customTitle>Excluded</Text>
         {finalDiagnostics.excluded.map((f) => (
           <FinalDiagnostic {...f} name='circle-with-cross' type='Entypo' key={f.id} style={styles.redIcon} />
         ))}
 
-        <LiwiTitle3>Null</LiwiTitle3>
+        <Text customTitle>Not defined</Text>
         {finalDiagnostics.not_defined.map((f) => (
-          <FinalDiagnostic {...f} key={f.id} />
+          <FinalDiagnostic {...f} key={f.id} type='AntDesign' name='minuscircleo' style={styles.grayIcon} />
         ))}
       </React.Fragment>
     );
