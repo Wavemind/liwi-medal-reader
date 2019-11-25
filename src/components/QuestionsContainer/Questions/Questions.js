@@ -11,8 +11,13 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Questions extends React.PureComponent<Props, State> {
+export default class Questions extends React.Component<Props, State> {
   state = {};
+
+  shouldComponentUpdate(nextProps: Props): boolean {
+    const { pageIndex } = this.props;
+    return (pageIndex !== undefined && nextProps.selectedPage === pageIndex) || pageIndex === undefined;
+  }
 
   render() {
     const { questions } = this.props;
