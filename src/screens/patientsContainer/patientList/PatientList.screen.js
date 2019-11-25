@@ -2,16 +2,7 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import {
-  Button,
-  Icon,
-  Input,
-  Item,
-  List,
-  ListItem,
-  Text,
-  View,
-} from 'native-base';
+import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
 
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
@@ -35,7 +26,8 @@ export default class PatientList extends React.Component<Props, State> {
     propsToolTipVisible: false,
     loading: false,
     searchTerm: '',
-    orderByName: 'asc',
+    orderByFirstName: 'asc',
+    orderByLastName: null,
     isGeneratingPatient: false,
     algorithms: [],
     statuses: [medicalCaseStatus.close],
@@ -43,10 +35,7 @@ export default class PatientList extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     const { focus } = this.props;
-    if (
-      nextProps.focus === 'didFocus' &&
-      (focus === undefined || focus === null)
-    ) {
+    if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null)) {
       this.fetchPatients();
     }
     return true;
@@ -87,11 +76,23 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   // Update state switch asc / desc
-  orderByName = () => {
-    const { orderByName } = this.state;
+  orderByFirstName = () => {
+    const { orderByFirstName } = this.state;
     this.setState(
       {
-        orderByName: orderByName === 'asc' ? 'desc' : 'asc',
+        orderByFirstName: orderByFirstName === 'asc' ? 'desc' : 'asc',
+        orderByLastName: null,
+      },
+      () => this.settlePatients()
+    );
+  };
+
+  orderByLastName = () => {
+    const { orderByLastName } = this.state;
+    this.setState(
+      {
+        orderByLastName: orderByLastName === 'asc' ? 'desc' : 'asc',
+        orderByFirstName: null,
       },
       () => this.settlePatients()
     );
@@ -109,6 +110,7 @@ export default class PatientList extends React.Component<Props, State> {
     } = this.props;
 
     const { orderedFilteredPatients, patients } = this.state;
+
     return patients.length > 0 ? (
       [
         orderedFilteredPatients.length > 0 ? (
@@ -134,11 +136,7 @@ export default class PatientList extends React.Component<Props, State> {
                   <Text>{moment(patient.birthdate).format('ll')}</Text>
                 </View>
                 <View w50>
-                  <Text>
-                    {patient.caseInProgress
-                      ? t('patient_list:case_in_progress')
-                      : null}
-                  </Text>
+                  <Text>{patient.caseInProgress ? t('patient_list:case_in_progress') : null}</Text>
                 </View>
               </ListItem>
             ))}
@@ -159,24 +157,21 @@ export default class PatientList extends React.Component<Props, State> {
   settlePatients = () => {
     this.setState({ loading: true });
 
-    const { patients, searchTerm, orderByName } = this.state;
+    const { patients, searchTerm, orderByFirstName, orderByLastName } = this.state;
 
     // Filter patient based on first name and last name by search term
     let filteredPatients = filter(patients, (patient) => {
-      return (
-        patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-        patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase())
-      );
+      return patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) || patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase());
     });
 
     let orderedFilteredPatients;
 
-    if (orderByName !== null) {
-      orderedFilteredPatients = orderBy(
-        filteredPatients,
-        ['lastname'],
-        [orderByName]
-      );
+    if (orderByFirstName !== null) {
+      orderedFilteredPatients = orderBy(filteredPatients, ['firstname'], [orderByFirstName]);
+    }
+
+    if (orderByLastName !== null) {
+      orderedFilteredPatients = orderBy(filteredPatients, ['lastname'], [orderByLastName]);
     }
 
     this.setState({ orderedFilteredPatients, loading: false });
@@ -189,14 +184,7 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      loading,
-      searchTerm,
-      orderByName,
-      isGeneratingPatient,
-      algorithms,
-      propsToolTipVisible,
-    } = this.state;
+    const { loading, searchTerm, orderByFirstName, isGeneratingPatient, algorithms, propsToolTipVisible, orderByLastName } = this.state;
 
     const {
       app: { t },
@@ -215,12 +203,7 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView
-              callBackClose={this.callBackClose}
-              propsToolTipVisible={propsToolTipVisible}
-              nextRoute="PatientUpsert"
-              idPatient={null}
-            />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
@@ -229,10 +212,7 @@ export default class PatientList extends React.Component<Props, State> {
                 light
                 red
                 onPress={() => {
-                  if (
-                    medicalCase.id === undefined ||
-                    medicalCase.isCreating === false
-                  ) {
+                  if (medicalCase.id === undefined || medicalCase.isCreating === false) {
                     navigation.navigate('PatientUpsert', {
                       idPatient: null,
                       newMedicalCase: true,
@@ -252,13 +232,13 @@ export default class PatientList extends React.Component<Props, State> {
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
-            <Button center rounded light onPress={this.orderByName}>
-              {orderByName === 'asc' ? (
-                <Icon name="arrow-down" />
-              ) : (
-                <Icon name="arrow-up" />
-              )}
+            <Button center rounded light onPress={this.orderByFirstName}>
+              {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:name')}</Text>
+            </Button>
+            <Button center rounded light onPress={this.orderByLastName}>
+              {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+              <Text>{t('patient_list:surname')}</Text>
             </Button>
           </View>
           {loading ? <LiwiLoader /> : this._renderPatients()}

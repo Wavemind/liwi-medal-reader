@@ -5,7 +5,11 @@ export const styles = StyleSheet.create({
   input: {
     width: '100%',
   },
-
+  filters: {
+    flex: 1,
+    flexDirection: 'row',
+    flexBasis: 1000,
+  },
   filter: {
     marginTop: 40,
     paddingBottom: 30,
@@ -28,7 +32,9 @@ export const styles = StyleSheet.create({
 
   sorted: {
     marginTop: 30,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flex: 1,
+    flexDirection: 'column',
     marginBottom: 40,
   },
 

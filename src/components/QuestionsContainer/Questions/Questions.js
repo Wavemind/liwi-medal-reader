@@ -11,10 +11,13 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class Questions extends React.PureComponent<Props, State> {
+export default class Questions extends React.Component<Props, State> {
   state = {};
 
-  async componentWillMount() {}
+  shouldComponentUpdate(nextProps: Props): boolean {
+    const { pageIndex } = this.props;
+    return (pageIndex !== undefined && nextProps.selectedPage === pageIndex) || pageIndex === undefined;
+  }
 
   render() {
     const { questions } = this.props;
@@ -23,15 +26,9 @@ export default class Questions extends React.PureComponent<Props, State> {
         {Object.keys(questions).map((i) => {
           // Detect Reference node
           if (questions[i].display_format === displayFormats.reference) {
-            return <QuestionReference question={questions[i]} />;
+            return <QuestionReference question={questions[i]} key={i + '_ref_factory'} />;
           } else {
-            return (
-              <QuestionFactory
-                question={questions[i]}
-                key={i + '_factory'}
-                {...this.props}
-              />
-            );
+            return <QuestionFactory question={questions[i]} key={i + '_factory'} {...this.props} />;
           }
         })}
       </ScrollView>

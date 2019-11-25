@@ -10,8 +10,6 @@ import { stringifyDeepRef } from '../../utils/swissKnives';
 // @return [Object] saved object
 // Save value in local storage
 export const setItem = async (key, item) => {
-  let controller = stringifyDeepRef(item);
-
   if (key === 'patients') {
     item.map((i) =>
       i.medicalCases.map((medicalCase) => {
@@ -21,6 +19,8 @@ export const setItem = async (key, item) => {
       })
     );
   }
+
+  let controller = stringifyDeepRef(item);
 
   return await AsyncStorage.setItem(key, controller);
 };
