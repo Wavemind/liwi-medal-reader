@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
+import { Text, View } from 'native-base';
 import { categories } from '../../../../frontend_service/constants';
 import { styles } from './QuestionsPerChiefComplaint.style';
 import ChiefComplaint from '../ChiefComplaint';
-import { Text, View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 
