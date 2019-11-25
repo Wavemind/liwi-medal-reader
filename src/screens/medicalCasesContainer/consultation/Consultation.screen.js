@@ -15,9 +15,9 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Consultation extends React.Component<Props, State> {
-
   state = {
-    selectedPage: 0,
+    // eslint-disable-next-line react/destructuring-assignment
+    selectedPage: this.props.navigation.getParam('initialPage'),
   };
 
   componentWillMount() {
@@ -35,12 +35,9 @@ export default class Consultation extends React.Component<Props, State> {
     const {
       app: { t },
       focus,
-      navigation,
     } = this.props;
 
     const { selectedPage } = this.state;
-
-    const initialPage = navigation.getParam('initialPage');
 
     return (
       <Suspense fallback={null}>
@@ -48,7 +45,7 @@ export default class Consultation extends React.Component<Props, State> {
           ref={(ref: any) => {
             this.stepper = ref;
           }}
-          initialPage={initialPage}
+          initialPage={selectedPage}
           validation={false}
           showTopStepper
           showBottomStepper

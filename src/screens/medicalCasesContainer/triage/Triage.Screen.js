@@ -8,13 +8,10 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
+import { Toaster } from '../../../utils/CustomToast';
 
-const Boolean = React.lazy(() =>
-  import('../../../components/QuestionsContainer/DisplaysContainer/Boolean')
-);
-const Questions = React.lazy(() =>
-  import('../../../components/QuestionsContainer/Questions')
-);
+const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
+const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
 type Props = NavigationScreenProps & {};
@@ -35,6 +32,8 @@ export default class Triage extends React.Component<Props, State> {
 
   state = {
     widthView: 0,
+    // eslint-disable-next-line react/destructuring-assignment
+    selectedPage: this.props.navigation.getParam('initialPage'),
   };
 
   render() {
@@ -45,12 +44,11 @@ export default class Triage extends React.Component<Props, State> {
       navigation,
     } = this.props;
 
-    const initialPage = navigation.getParam('initialPage');
+    let { selectedPage } = this.state;
 
     let firstLookAssessement = [];
 
-    const ordersFirstLookAssessment =
-      medicalCase.triage.orders[categories.firstLookAssessment];
+    const ordersFirstLookAssessment = medicalCase.triage.orders[categories.firstLookAssessment];
 
     ordersFirstLookAssessment.map((order) => {
       firstLookAssessement.push(medicalCase.nodes[order]);
@@ -75,27 +73,34 @@ export default class Triage extends React.Component<Props, State> {
       }
     });
 
+    let chiefComplaintReady = chiefComplaint.every((cc) => cc.answer !== null);
+
+    if (navigation.getParam('initialPage') === 2 && selectedPage === 2 && !chiefComplaintReady) {
+      selectedPage = 1;
+      Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
+    }
+
     return (
       <Suspense fallback={null}>
         <Stepper
+          params={{ initialPage: 0 }}
+          t={t}
           ref={(ref: any) => {
             this.stepper = ref;
           }}
           validation={false}
+          chiefComplaintReady={chiefComplaintReady}
           showTopStepper
           initial
-          initialPage={initialPage}
+          onPageSelected={(e) => this.setState({ selectedPage: e })}
+          initialPage={selectedPage}
           showBottomStepper
           icons={[
             { name: 'eye-plus', type: 'MaterialCommunityIcons' },
             { name: 'view-module', type: 'MaterialIcons' },
             { name: 'healing', type: 'MaterialIcons' },
           ]}
-          steps={[
-            t('triage:first_look_assessment'),
-            t('triage:chief'),
-            t('triage:vital'),
-          ]}
+          steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:vital')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Consultation"
@@ -104,7 +109,7 @@ export default class Triage extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <Questions questions={firstLookAssessement} />
+                <Questions questions={firstLookAssessement} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -126,6 +131,8 @@ export default class Triage extends React.Component<Props, State> {
                       widthView={widthView}
                       question={question}
                       index={i}
+                      selectedPage={selectedPage}
+                      pageIndex={1}
                     />
                   ))}
                 </View>
@@ -137,7 +144,7 @@ export default class Triage extends React.Component<Props, State> {
           <View>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <Questions questions={vitalSigns} />
+                <Questions questions={vitalSigns} selectedPage={selectedPage} pageIndex={2} />
               </Suspense>
             ) : (
               <LiwiLoader />
