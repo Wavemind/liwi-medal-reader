@@ -59,10 +59,7 @@ export default class Numeric extends React.Component<Props, State> {
         break;
     }
 
-    if (
-      unavailableAnswer !== undefined &&
-      question.answer === unavailableAnswer.id
-    ) {
+    if (unavailableAnswer !== undefined && question.answer === unavailableAnswer.id) {
       placeholder = t('question:unavailable');
     }
 
