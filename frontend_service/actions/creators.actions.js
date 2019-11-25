@@ -1,8 +1,8 @@
 import { actions } from './types.actions';
 
-export const updateConditionValue = (nodeId, callerId, value, type) => ({
+export const updateConditionValue = (index, callerId, value, type) => ({
   type: actions.UPDATE_CONDITION_VALUE,
-  payload: { nodeId, callerId, value, type },
+  payload: { index, callerId, value, type },
 });
 
 export const updateMedicalCaseProperty = (property, newValue) => ({

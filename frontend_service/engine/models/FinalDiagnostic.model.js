@@ -8,8 +8,7 @@ import { nodesType } from '../../constants';
 
 interface FinalDiagnosticInterface {}
 
-export class FinalDiagnosticModel extends NodeModel
-  implements FinalDiagnosticInterface {
+export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticInterface {
   constructor(props) {
     super(props);
 
@@ -43,13 +42,21 @@ export class FinalDiagnosticModel extends NodeModel
    * Verify if the final diagnostic excluded an another one
    */
   calculateCondition = () => {
+    const state$ = store.getState();
+
+    let topConditionValue = this.top_conditions.some((condition) => {
+      let findDDinNode = state$.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
+      if (findDDinNode.conditionValue === true) {
+        return true;
+      }
+    });
+
+    console.log(topConditionValue, this);
+
     // If this FD can be excluded by other high-priority FD
     if (this.excluded_by_final_diagnostics !== null) {
-      const state$ = store.getState();
       // If this other high-priority FD is true so this is always false
-      if (
-        calculateCondition(state$.nodes[this.excluded_by_final_diagnostics]) === true
-      ) {
+      if (calculateCondition(state$.nodes[this.excluded_by_final_diagnostics]) === true) {
         return false;
       }
     }
@@ -92,7 +99,7 @@ export class FinalDiagnosticModel extends NodeModel
 
         if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[1])) {
           finalDiagnosticsFalse.push({
-            ...finalDiagnostic
+            ...finalDiagnostic,
           });
           continue;
         }
