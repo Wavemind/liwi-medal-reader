@@ -23,9 +23,9 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     orderedFilteredMedicalCases: [],
     searchTerm: '',
     loading: false,
-    orderByName: 'asc',
+    orderByFirstName: 'asc',
     orderByStatus: null,
-    orderBySurName: null,
+    orderByLastName: null,
     orderByUpdate: null,
     filterTerm: '',
     statuses: [
@@ -74,27 +74,27 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   // Update state switch asc / desc
-  orderByName = () => {
-    const { orderByName } = this.state;
+  orderByFirstName = () => {
+    const { orderByFirstName } = this.state;
     this.setState(
       {
         orderByStatus: null,
-        orderBySurName: null,
+        orderByLastName: null,
         orderByUpdate: null,
-        orderByName: orderByName === 'asc' ? 'desc' : 'asc',
+        orderByFirstName: orderByFirstName === 'asc' ? 'desc' : 'asc',
       },
       () => this.settleMedicalCase()
     );
   };
 
-  orderBySurName = () => {
-    const { orderBySurName } = this.state;
+  orderByLastName = () => {
+    const { orderByLastName } = this.state;
     this.setState(
       {
         orderByStatus: null,
         orderByUpdate: null,
-        orderByName: null,
-        orderBySurName: orderBySurName === 'asc' ? 'desc' : 'asc',
+        orderByFirstName: null,
+        orderByLastName: orderByLastName === 'asc' ? 'desc' : 'asc',
       },
       () => this.settleMedicalCase()
     );
@@ -105,8 +105,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     const { orderByStatus } = this.state;
     this.setState(
       {
-        orderByName: null,
-        orderBySurName: null,
+        orderByFirstName: null,
+        orderByLastName: null,
         orderByUpdate: null,
         orderByStatus: orderByStatus === 'asc' ? 'desc' : 'asc',
       },
@@ -119,8 +119,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     this.setState(
       {
-        orderBySurName: null,
-        orderByName: null,
+        orderByLastName: null,
+        orderByFirstName: null,
         orderByUpdate: orderByUpdate === 'asc' ? 'desc' : 'asc',
         orderByStatus: null,
       },
@@ -133,10 +133,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState(
       {
         searchTerm: '',
-        orderByName: 'asc',
+        orderByFirstName: 'asc',
         filterTerm: '',
         orderByUpdate: null,
-        orderBySurName: null,
+        orderByLastName: null,
       },
       () => this.settleMedicalCase()
     );
@@ -150,7 +150,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   // Sets in the  state a list of medical cases based on filters and orders
   settleMedicalCase = () => {
     this.setState({ loading: true });
-    const { medicalCases, searchTerm, orderByName, filterTerm, orderByStatus, orderByUpdate, orderBySurName } = this.state;
+    const { medicalCases, searchTerm, orderByFirstName, filterTerm, orderByStatus, orderByUpdate, orderByLastName } = this.state;
 
     // Filter patient based on first name and last name by search term
     let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
@@ -165,10 +165,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     });
     let orderedFilteredMedicalCases;
 
-    if (orderByName !== null) {
-      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.firstname', orderByName);
-    } else if (orderBySurName !== null) {
-      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.lastname', orderBySurName);
+    if (orderByFirstName !== null) {
+      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.firstname', orderByFirstName);
+    } else if (orderByLastName !== null) {
+      orderedFilteredMedicalCases = orderBy(filteredMedicalCases, 'patient.lastname', orderByLastName);
     } else if (orderByStatus !== null) {
       orderedFilteredMedicalCases = orderBy(filteredMedicalCases, ['status'], [orderByStatus]);
     } else if (orderByUpdate !== null) {
@@ -267,7 +267,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   render() {
-    const { searchTerm, orderByName, statuses, filterTerm, orderByStatus, loading, orderByUpdate, orderBySurName } = this.state;
+    const { searchTerm, orderByFirstName, statuses, filterTerm, orderByStatus, loading, orderByUpdate, orderByLastName } = this.state;
 
     const {
       app: { t },
@@ -302,13 +302,13 @@ export default class MedicalCaseList extends React.Component<Props, State> {
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('medical_case_list:sort')}</Text>
             <View style={styles.filters}>
-              <Button center rounded light onPress={this.orderByName}>
-                {orderByName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+              <Button center rounded light onPress={this.orderByFirstName}>
+                {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
                 <Text>{t('medical_case_list:name')}</Text>
               </Button>
-              <Button center rounded light onPress={this.orderBySurName}>
-                {orderBySurName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
-                <Text>{t('medical_case_list:surname')}</Text>
+              <Button center rounded light onPress={this.orderByLastName}>
+                {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+                <Text>{t('medical_case_list:surname')}</Text>§
               </Button>
               <Button center rounded light onPress={this.orderByStatus}>
                 {orderByStatus === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
