@@ -137,7 +137,7 @@ export default class Home extends React.Component<Props, State> {
                 <View>
                   <Icon type="MaterialCommunityIcons" name="account" style={styles.icons} navigation />
                   <Text size-auto center>
-                    {t('navigation:my_profile')}
+                    Crash app
                   </Text>
                 </View>
               </TouchableHighlight>

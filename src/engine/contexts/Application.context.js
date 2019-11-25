@@ -41,7 +41,6 @@ export type StateApplicationContext = {
   setModal: () => Promise<any>,
   isModalVisible: boolean,
   contentModal: string,
-  isModalVisible: Object,
   t: (string) => Function<string>,
   ready: boolean,
 };

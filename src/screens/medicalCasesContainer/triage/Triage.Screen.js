@@ -75,6 +75,7 @@ export default class Triage extends React.Component<Props, State> {
 
     let chiefComplaintReady = chiefComplaint.every((cc) => cc.answer !== null);
 
+    // Denied access to Basic measurement step if all chief complaints are not answered
     if (navigation.getParam('initialPage') === 2 && selectedPage === 2 && !chiefComplaintReady) {
       selectedPage = 1;
       Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
@@ -121,11 +122,10 @@ export default class Triage extends React.Component<Props, State> {
                 <Content>
                   <View
                     flex-container-fluid
-
                     onLayout={async (p) => {
-                      let w = await p.nativeEvent;
-                      this.setState({ widthView: w.layout.width });
-                    }}
+                    let w = await p.nativeEvent;
+                    this.setState({ widthView: w.layout.width });
+                  }}
                   >
                     {chiefComplaint.map((question, i) => (
                       <Boolean
@@ -136,7 +136,7 @@ export default class Triage extends React.Component<Props, State> {
                         selectedPage={selectedPage}
                         pageIndex={1}
                       />
-                    ))}
+                  ))}
                   </View>
                 </Content>
               </Suspense>

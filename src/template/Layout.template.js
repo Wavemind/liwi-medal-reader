@@ -47,18 +47,15 @@ class LayoutTemplate extends React.Component<Props> {
     } = this.props;
 
     let routes = null;
-    // If the app come not from the background
-    // the item is set in app.contexte
+    // If the app come not from the background the item is set in app.context
     if (fromBackground === null && appState === 'active') {
       // first render of the app
       return null;
     }
-    // If we have to catch the moment when the app go into background
-    // } else if (fromBackground === null && appState === 'background') {
-    // }
     else if (fromBackground && appState === 'active') {
       routes = state;
       const { app } = this.props;
+
       // This fix a bug when we reload the app in the setcodesession screen
       if (routes !== null && routes.routes[routes.index].key === 'SetCodeSession' && app.logged === true) {
         routes = null;

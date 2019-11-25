@@ -26,8 +26,8 @@ export default class PatientList extends React.Component<Props, State> {
     propsToolTipVisible: false,
     loading: false,
     searchTerm: '',
-    orderByName: 'asc',
-    orderBySurName: null,
+    orderByFirstName: 'asc',
+    orderByLastName: null,
     isGeneratingPatient: false,
     algorithms: [],
     statuses: [medicalCaseStatus.close],
@@ -36,6 +36,7 @@ export default class PatientList extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     const { focus } = this.props;
     const { searchTerm } = this.state;
+
     if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null) || nextState.searchTerm !== searchTerm) {
       this.fetchPatients();
     }
@@ -77,23 +78,23 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   // Update state switch asc / desc
-  orderByName = () => {
-    const { orderByName } = this.state;
+  orderByFirstName = () => {
+    const { orderByFirstName } = this.state;
     this.setState(
       {
-        orderByName: orderByName === 'asc' ? 'desc' : 'asc',
-        orderBySurName: null,
+        orderByFirstName: orderByFirstName === 'asc' ? 'desc' : 'asc',
+        orderByLastName: null,
       },
       () => this.settlePatients()
     );
   };
 
-  orderBySurName = () => {
-    const { orderBySurName } = this.state;
+  orderByLastName = () => {
+    const { orderByLastName } = this.state;
     this.setState(
       {
-        orderBySurName: orderBySurName === 'asc' ? 'desc' : 'asc',
-        orderByName: null,
+        orderByLastName: orderByLastName === 'asc' ? 'desc' : 'asc',
+        orderByFirstName: null,
       },
       () => this.settlePatients()
     );
@@ -136,6 +137,9 @@ export default class PatientList extends React.Component<Props, State> {
                 <View w50>
                   <Text>{moment(patient.birthdate).format('ll')}</Text>
                 </View>
+                <View w50>
+                  <Text>{patient.caseInProgress ? t('patient_list:case_in_progress') : null}</Text>
+                </View>
               </ListItem>
             ))}
           </List>
@@ -155,7 +159,7 @@ export default class PatientList extends React.Component<Props, State> {
   settlePatients = () => {
     this.setState({ loading: true });
 
-    const { patients, searchTerm, orderByName, orderBySurName } = this.state;
+    const { patients, searchTerm, orderByFirstName, orderByLastName } = this.state;
 
     // Filter patient based on first name and last name by search term
     let filteredPatients = filter(patients, (patient) => {
@@ -164,12 +168,12 @@ export default class PatientList extends React.Component<Props, State> {
 
     let orderedFilteredPatients;
 
-    if (orderByName !== null) {
-      orderedFilteredPatients = orderBy(filteredPatients, ['firstname'], [orderByName]);
+    if (orderByFirstName !== null) {
+      orderedFilteredPatients = orderBy(filteredPatients, ['firstname'], [orderByFirstName]);
     }
 
-    if (orderBySurName !== null) {
-      orderedFilteredPatients = orderBy(filteredPatients, ['lastname'], [orderBySurName]);
+    if (orderByLastName !== null) {
+      orderedFilteredPatients = orderBy(filteredPatients, ['lastname'], [orderByLastName]);
     }
 
     this.setState({ orderedFilteredPatients, loading: false });
@@ -182,7 +186,7 @@ export default class PatientList extends React.Component<Props, State> {
   };
 
   render() {
-    const { loading, searchTerm, orderByName, isGeneratingPatient, algorithms, propsToolTipVisible, orderBySurName } = this.state;
+    const { loading, searchTerm, orderByFirstName, isGeneratingPatient, algorithms, propsToolTipVisible, orderByLastName } = this.state;
 
     const {
       app: { t },
@@ -201,12 +205,8 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView
-              callBackClose={this.callBackClose}
-              propsToolTipVisible={propsToolTipVisible}
-              nextRoute="PatientUpsert"
-              idPatient={null}
-            />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
+                              nextRoute="PatientUpsert" idPatient={null} />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
@@ -235,12 +235,12 @@ export default class PatientList extends React.Component<Props, State> {
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
-            <Button center rounded light onPress={this.orderByName}>
-              {orderByName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+            <Button center rounded light onPress={this.orderByFirstName}>
+              {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:name')}</Text>
             </Button>
-            <Button center rounded light onPress={this.orderBySurName}>
-              {orderBySurName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+            <Button center rounded light onPress={this.orderByLastName}>
+              {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:surname')}</Text>
             </Button>
           </View>

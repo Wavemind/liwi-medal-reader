@@ -51,12 +51,10 @@ export default class Numeric extends React.Component<Props, State> {
       value = value.replace(',', '.');
     }
 
-    // replace char not equal to number or dot
+    // Remove char that are not number or dot
     value = value.replace(/[^0-9.]/g, '');
 
-    // If value is not empty and last char is not dot
-    // parse into float
-    // avoid double dot
+    // Parse to float if value is not empty and last char is not dot
     if (value !== '' && value.charAt(value.length - 1) !== '.') {
       value = parseFloat(value);
     }
@@ -98,7 +96,6 @@ export default class Numeric extends React.Component<Props, State> {
           numeric
           value={value}
           onChange={this.onChange}
-          // defaultValue={question.value !== null ? String(question.value) : null}
           style={style}
           onEndEditing={this._onEndEditing}
           placeholder={placeholder}
