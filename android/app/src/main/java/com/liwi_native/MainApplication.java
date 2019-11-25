@@ -3,6 +3,7 @@ package com.liwi_native;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeExceptionHandlerPackage(),
             new RNFetchBlobPackage(),
             new RNCViewPagerPackage(),
             new ReactNativeRestartPackage(),
