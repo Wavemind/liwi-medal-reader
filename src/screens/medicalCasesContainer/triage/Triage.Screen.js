@@ -75,6 +75,7 @@ export default class Triage extends React.Component<Props, State> {
 
     let chiefComplaintReady = chiefComplaint.every((cc) => cc.answer !== null);
 
+    // Denied access to Basic measurement step if all chief complaints are not answered
     if (navigation.getParam('initialPage') === 2 && selectedPage === 2 && !chiefComplaintReady) {
       selectedPage = 1;
       Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
