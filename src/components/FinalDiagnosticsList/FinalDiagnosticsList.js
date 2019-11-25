@@ -35,7 +35,7 @@ export default class FinalDiagnosticsList extends React.PureComponent<Props, Sta
 
     return (
       <React.Fragment>
-        <Text customTitle>Included</Text>
+        <Text customTitle>Retained</Text>
         {finalDiagnostics.included.map((f) => (
           <FinalDiagnostic {...f} type='AntDesign' name='checkcircle' key={f.id} style={styles.greenIcon} />
         ))}
@@ -45,7 +45,7 @@ export default class FinalDiagnosticsList extends React.PureComponent<Props, Sta
           <FinalDiagnostic {...f} name='circle-with-cross' type='Entypo' key={f.id} style={styles.redIcon} />
         ))}
 
-        <Text customTitle>Not defined</Text>
+        <Text customTitle>Possible</Text>
         {finalDiagnostics.not_defined.map((f) => (
           <FinalDiagnostic {...f} key={f.id} type='AntDesign' name='minuscircleo' style={styles.grayIcon} />
         ))}
