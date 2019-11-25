@@ -38,12 +38,12 @@ export default class FinalDiagnosticsList extends React.PureComponent<Props, Sta
       <React.Fragment>
         <LiwiTitle3>True</LiwiTitle3>
         {finalDiagnostics.included.map((f) => (
-          <FinalDiagnostic {...f} key={f.id} />
+          <FinalDiagnostic {...f} type='AntDesign' name='checkcircle' key={f.id} style={styles.greenIcon} />
         ))}
 
         <LiwiTitle3>False</LiwiTitle3>
         {finalDiagnostics.excluded.map((f) => (
-          <FinalDiagnostic {...f} key={f.id} />
+          <FinalDiagnostic {...f} name='circle-with-cross' type='Entypo' key={f.id} style={styles.redIcon} />
         ))}
 
         <LiwiTitle3>Null</LiwiTitle3>
