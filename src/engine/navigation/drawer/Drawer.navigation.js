@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
+import { Toaster } from '../../../utils/CustomToast';
+
 
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
@@ -56,7 +58,14 @@ export default class Drawer extends Component<Props, State> {
               <Icon style={styles.icon} dark type="AntDesign" name="home" />
             </Button>
 
-            <Button transparent btnDrawer marginIcon>
+            <Button
+              transparent
+              btnDrawer
+              marginIcon
+              onPress={() => {
+                Toaster('Not Implemented yet ;-) <3', { type: 'warning' }, { duration: 50000 });
+              }}
+            >
               <Icon style={styles.icon} dark type="AntDesign" name="user" />
             </Button>
 

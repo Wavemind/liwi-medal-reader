@@ -20,12 +20,7 @@ export default class ChiefComplaint extends React.Component<Props, State> {
     const { questions } = this.props;
     return questions.some((question) => {
       let nextQuestion = nextPropsQuestions.find((d) => d.id === question.id);
-      if (
-        nextQuestion === undefined ||
-        question.answer !== nextQuestion.answer ||
-        question.value !== nextQuestion.value ||
-        question.counter !== nextQuestion.counter
-      ) {
+      if (nextQuestion === undefined || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value) {
         return true;
       }
     });

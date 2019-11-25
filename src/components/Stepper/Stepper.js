@@ -104,7 +104,6 @@ class Stepper extends React.Component<Props, State> {
     stepNumberStyle: {
       color: 'white',
     },
-
     validate: false,
   };
 
@@ -253,7 +252,6 @@ class Stepper extends React.Component<Props, State> {
 
     if (endMedicalCase === true) {
       const state$ = store.getState();
-
       store.dispatch(updateMedicalCaseProperty('status', medicalCaseStatus.close.name));
 
       navigation.push('PatientProfile', {
