@@ -5,7 +5,6 @@ import { RequirementNodeModel } from './RequirementNodeModel';
 import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 import { store } from '../../store';
 import { nodesType } from '../../constants';
-import { liwiColors } from '../../../src/utils/constants';
 
 interface FinalDiagnosticInterface {}
 
@@ -63,6 +62,17 @@ export class FinalDiagnosticModel extends NodeModel
     return calculateCondition(this);
   };
 
+  /**
+   * Returns all the FinalDiagnostics by their status (included | excluded | not_defined)
+   *
+   * @return {object} An hash with all the diagnostics with the following structure
+   *  {
+   *    included: [],
+   *    excluded: [],
+   *    not_defined: [],
+   *  }
+   *
+   */
   static all() {
     const state$ = store.getState();
     const { nodes } = state$;
@@ -79,55 +89,29 @@ export class FinalDiagnosticModel extends NodeModel
         const chiefComplaint = nodes[finalDiagnostic.cc];
 
         let condition = finalDiagnostic.calculateCondition();
-        let type;
-        let style = {};
-        let name;
 
         if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[1])) {
-          type = 'Entypo';
-          name = 'circle-with-cross';
           finalDiagnosticsFalse.push({
-            ...finalDiagnostic,
-            type,
-            name,
-            style,
+            ...finalDiagnostic
           });
           continue;
         }
 
         switch (condition) {
           case true:
-            type = 'AntDesign';
-            name = 'checkcircle';
-            style.color = liwiColors.greenColor;
             finalDiagnosticsTrue.push({
               ...finalDiagnostic,
-              type,
-              name,
-              style,
             });
 
             break;
           case false:
-            type = 'Entypo';
-            name = 'circle-with-cross';
-            style.color = liwiColors.redColor;
             finalDiagnosticsFalse.push({
               ...finalDiagnostic,
-              type,
-              name,
-              style,
             });
             break;
           case null:
-            type = 'AntDesign';
-            name = 'minuscircleo';
-            style.color = liwiColors.darkerGreyColor;
             finalDiagnosticsNull.push({
               ...finalDiagnostic,
-              type,
-              name,
-              style,
             });
             break;
         }
