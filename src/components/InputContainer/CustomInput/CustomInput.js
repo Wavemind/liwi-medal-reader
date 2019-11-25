@@ -26,58 +26,33 @@ export default class CustomInput extends React.Component<Props, State> {
     this.setState({ value: init });
   }
 
-  shouldComponentUpdate(
-    nextProps: Readonly<P>,
-    nextState: Readonly<S>
-  ): boolean {
+  shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>): boolean {
     const { init, error } = this.props;
     const { value } = this.state;
 
-    return (
-      value !== nextState.value ||
-      init !== nextProps.init ||
-      error !== nextProps.error
-    );
+    return value !== nextState.value || init !== nextProps.init || error !== nextProps.error;
   }
 
-  _handleChangeValue = (value) =>
+  _handleChangeValue = (value) => {
+    const { change, index } = this.props;
+    change(index, value.nativeEvent.text);
     this.setState({ value: value.nativeEvent.text });
-
+  };
   render() {
-    const {
-      label,
-      change,
-      index,
-      iconName,
-      iconType,
-      keyboardType,
-      placeholder,
-      secureTextEntry,
-      error,
-      condensed,
-    } = this.props;
+    const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed } = this.props;
 
     const { value } = this.state;
 
     return (
       <Form style={condensed ? null : styles.form}>
         <View style={styles.view}>
-          {iconName && iconType ? (
-            <Icon name={iconName} type={iconType} style={styles.icon} />
-          ) : null}
-          <Text
-            style={
-              iconName && iconType
-                ? styles.textWithoutIcon
-                : styles.textWithIcon
-            }
-          >
-            {label}
-          </Text>
+          {iconName && iconType ? <Icon name={iconName} type={iconType} style={styles.icon} /> : null}
+          <Text style={iconName && iconType ? styles.textWithoutIcon : styles.textWithIcon}>{label}</Text>
           <Text error>{error}</Text>
         </View>
         <ViewBlocColor>
           <Input
+            autoCapitalize="none"
             common
             keyboardType={keyboardType}
             value={value}

@@ -25,11 +25,7 @@ export default class QuestionsReference extends React.Component<Props, State> {
     const nodeY = nodes[question.reference_table_y_id];
     const nextNodeY = nextNodes[question.reference_table_y_id];
 
-    return (
-      Object.compare(nodeX, nextNodeX) ||
-      Object.compare(nodeY, nextNodeY) ||
-      Object.compare(question, nextQuestion)
-    );
+    return Object.compare(nodeX, nextNodeX) || Object.compare(nodeY, nextNodeY) || Object.compare(question, nextQuestion);
   }
 
   render() {
@@ -43,25 +39,9 @@ export default class QuestionsReference extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <QuestionFactory
-          {...this.props}
-          question={question}
-          key={question.id + '_factory'}
-        />
-        {nodeX.stage !== stage.triage ? (
-          <QuestionFactory
-            {...this.props}
-            question={nodeX}
-            key={nodeX.id + '_factory' + '_ref'}
-          />
-        ) : null}
-        {nodeY.stage !== stage.triage ? (
-          <QuestionFactory
-            {...this.props}
-            question={nodeY}
-            key={nodeX.id + '_factory' + '_ref'}
-          />
-        ) : null}
+        <QuestionFactory {...this.props} question={question} key={question.id + '_factory'} />
+        {nodeX.stage !== stage.triage ? <QuestionFactory {...this.props} question={nodeX} key={nodeX.id + '_factory' + '_ref'} /> : null}
+        {nodeY.stage !== stage.triage ? <QuestionFactory {...this.props} question={nodeY} key={nodeY.id + '_factory' + '_ref'} /> : null}
       </React.Fragment>
     );
   }

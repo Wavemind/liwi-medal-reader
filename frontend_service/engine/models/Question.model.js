@@ -54,6 +54,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       reference_table_y_id = 0,
       reference_table_male = '',
       reference_table_female = '',
+      medical_history = [],
+      physical_exam = [],
     } = props;
 
     this.description = description;
@@ -76,6 +78,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.reference_table_x_id = reference_table_x_id;
     this.reference_table_male = reference_table_male;
     this.reference_table_female = reference_table_female;
+    this.medical_history = medical_history;
+    this.physical_exam = physical_exam;
   }
 
   /**
@@ -91,10 +95,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     if (conditions?.[this.id] !== undefined) {
       isDisplayed = false;
       conditions[this.id].map((condition) => {
-        if (
-          medicalCase.nodes[condition.chief_complaint_id].answer ===
-          condition.answer_id
-        ) {
+        if (medicalCase.nodes[condition.chief_complaint_id].answer === condition.answer_id) {
           isDisplayed = true;
         }
       });
@@ -125,19 +126,13 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       // Get value of this node
       const nodeInBracket = state$.nodes[id];
 
-      if (
-        nodeInBracket.value === null ||
-        (nodeInBracket.value === 0 && nodeInBracket.answer === null)
-      ) {
+      if (nodeInBracket.value === null || (nodeInBracket.value === 0 && nodeInBracket.answer === null)) {
         ready = false;
         return item;
       } else {
         switch (nodeInBracket.value_format) {
           case valueFormats.date:
-            return moment().diff(
-              moment(nodeInBracket.value).toDate(),
-              'months'
-            );
+            return moment().diff(moment(nodeInBracket.value).toDate(), 'months');
           default:
             return nodeInBracket.value;
         }
@@ -167,22 +162,12 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     // TODO: Remove when decision about date format is taken
     // TODO: If it's zscore question take format of date in days otherwise in months
     // TODO: Get days or months between today and X/Y value
-    const dateFormat =
-      this.label === 'Weight for age (z-score)' ? 'days' : 'months';
-    x =
-      x.display_format === displayFormats.date
-        ? moment().diff(moment(x.value).toDate(), dateFormat)
-        : x.value;
-    y =
-      y.display_format === displayFormats.date
-        ? moment().diff(moment(y.value).toDate(), dateFormat)
-        : y.value;
+    const dateFormat = this.label === 'Weight for age (z-score)' ? 'days' : 'months';
+    x = x.display_format === displayFormats.date ? moment().diff(moment(x.value).toDate(), dateFormat) : x.value;
+    y = y.display_format === displayFormats.date ? moment().diff(moment(y.value).toDate(), dateFormat) : y.value;
 
     // Get reference table for male or female
-    const reference =
-      state$.patient.gender === 'male'
-        ? references[this.reference_table_male]
-        : references[this.reference_table_female];
+    const reference = state$.patient.gender === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
     let value = null;
     let previousKey = null;
 

@@ -21,11 +21,7 @@ export default class Home extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     const { algorithms, propsToolTipVisible } = this.state;
     const { medicalCase } = this.props;
-    return (
-      algorithms !== nextState.algorithms ||
-      propsToolTipVisible !== nextState.propsToolTipVisible ||
-      Object.compare(medicalCase, nextProps.medicalCase)
-    );
+    return algorithms !== nextState.algorithms || propsToolTipVisible !== nextState.propsToolTipVisible || Object.compare(medicalCase, nextProps.medicalCase);
   }
 
   logout = async () => {
@@ -35,7 +31,7 @@ export default class Home extends React.Component<Props, State> {
     await lockSession();
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     let algorithms = await getItems('algorithms');
     this.setState({ algorithms });
   }
@@ -59,12 +55,7 @@ export default class Home extends React.Component<Props, State> {
       <ScrollView>
         <View padding-auto>
           <View flex-container-column>
-            <ConfirmationView
-              propsToolTipVisible={propsToolTipVisible}
-              nextRoute="PatientUpsert"
-              idPatient={null}
-              callBackClose={this.callBackClose}
-            />
+            <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} />
             <View w50>
               <TouchableHighlight
                 underlayColor="transparent"
@@ -76,10 +67,7 @@ export default class Home extends React.Component<Props, State> {
                       duration: 4000,
                     });
                   } else {
-                    if (
-                      medicalCase.id === undefined ||
-                      medicalCase.isCreating === false
-                    ) {
+                    if (medicalCase.id === undefined || medicalCase.isCreating === false) {
                       navigation.navigate('PatientUpsert', {
                         idPatient: null,
                         newMedicalCase: true,
@@ -91,12 +79,7 @@ export default class Home extends React.Component<Props, State> {
                 }}
               >
                 <View>
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="account-plus"
-                    style={styles.icons}
-                    navigation
-                  />
+                  <Icon type="MaterialCommunityIcons" name="account-plus" style={styles.icons} navigation />
                   <Text size-auto center>
                     {t('navigation:patient_add')}
                   </Text>
@@ -105,36 +88,18 @@ export default class Home extends React.Component<Props, State> {
             </View>
 
             <View w50>
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
-                onPress={() => navigation.navigate('PatientList')}
-              >
+              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList')}>
                 <View>
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="account-multiple"
-                    style={styles.icons}
-                    navigation
-                  />
+                  <Icon type="MaterialCommunityIcons" name="account-multiple" style={styles.icons} navigation />
                   <Text size-auto center>
                     {t('navigation:patient_list')}
                   </Text>
                 </View>
               </TouchableHighlight>
 
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
-                onPress={() => navigation.navigate('MedicalCaseList')}
-              >
+              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList')}>
                 <View>
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="format-list-checkbox"
-                    style={styles.icons}
-                    navigation
-                  />
+                  <Icon type="MaterialCommunityIcons" name="format-list-checkbox" style={styles.icons} navigation />
                   <Text size-auto center>
                     {t('navigation:case_in_progress')}
                   </Text>
@@ -143,36 +108,18 @@ export default class Home extends React.Component<Props, State> {
             </View>
 
             <View w50>
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
-                onPress={() => navigation.navigate('Algorithms')}
-              >
+              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Algorithms')}>
                 <View>
-                  <Icon
-                    type="AntDesign"
-                    name="sync"
-                    style={styles.icons}
-                    navigation
-                  />
+                  <Icon type="AntDesign" name="sync" style={styles.icons} navigation />
                   <Text size-auto center>
                     {t('navigation:synchronize')}
                   </Text>
                 </View>
               </TouchableHighlight>
 
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
-                onPress={() => navigation.navigate('Settings')}
-              >
+              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
                 <View>
-                  <Icon
-                    type="AntDesign"
-                    name="setting"
-                    style={styles.icons}
-                    navigation
-                  />
+                  <Icon type="AntDesign" name="setting" style={styles.icons} navigation />
                   <Text size-auto center>
                     {t('navigation:settings')}
                   </Text>
@@ -184,33 +131,21 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => navigation.navigate('')}
+                onPress={() => {
+                  this.forceCrashApp(true);
+                }}
               >
                 <View>
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="account"
-                    style={styles.icons}
-                    navigation
-                  />
+                  <Icon type="MaterialCommunityIcons" name="account" style={styles.icons} navigation />
                   <Text size-auto center>
-                    {t('navigation:my_profile')}
+                    Crash app
                   </Text>
                 </View>
               </TouchableHighlight>
 
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
-                onPress={() => this.logout()}
-              >
+              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => this.logout()}>
                 <View>
-                  <Icon
-                    type="AntDesign"
-                    name="logout"
-                    style={styles.icons}
-                    navigation
-                  />
+                  <Icon type="AntDesign" name="logout" style={styles.icons} navigation />
                   <Text size-auto center>
                     {t('navigation:logout')}
                   </Text>
