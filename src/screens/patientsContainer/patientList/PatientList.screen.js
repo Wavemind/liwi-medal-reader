@@ -33,9 +33,10 @@ export default class PatientList extends React.Component<Props, State> {
     statuses: [medicalCaseStatus.close],
   };
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     const { focus } = this.props;
-    if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null)) {
+    const { searchTerm } = this.state;
+    if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null) || nextState.searchTerm !== searchTerm) {
       this.fetchPatients();
     }
     return true;
@@ -135,9 +136,6 @@ export default class PatientList extends React.Component<Props, State> {
                 <View w50>
                   <Text>{moment(patient.birthdate).format('ll')}</Text>
                 </View>
-                <View w50>
-                  <Text>{patient.caseInProgress ? t('patient_list:case_in_progress') : null}</Text>
-                </View>
               </ListItem>
             ))}
           </List>
@@ -203,7 +201,12 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
+            <ConfirmationView
+              callBackClose={this.callBackClose}
+              propsToolTipVisible={propsToolTipVisible}
+              nextRoute="PatientUpsert"
+              idPatient={null}
+            />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"

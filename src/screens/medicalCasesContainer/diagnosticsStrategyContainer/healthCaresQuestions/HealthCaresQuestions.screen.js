@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View } from 'native-base';
+import { Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 
@@ -13,12 +13,22 @@ export default class HealthCaresQuestions extends Component<Props, State> {
   render() {
     const {
       medicalCase,
+      app: { t }
     } = this.props;
     const questions = medicalCase.nodes.getHealthCaresQuestions();
 
     return (
       <View>
-        <Questions questions={questions} />
+        {questions.length > 0 ?
+          (
+            <Questions questions={questions} />
+          ) :
+          (
+            <View padding-auto margin-auto>
+              <Text not-available>{t('work_case:no_questions')}</Text>
+            </View>
+          )
+        }
       </View>
     );
   }
