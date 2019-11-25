@@ -21,7 +21,6 @@ export default class EmergencyButton extends Component {
           onPress={() => {
             let cu = NavigationService.getCurrentRoute();
             const {
-              // eslint-disable-next-line react/prop-types
               app: { logged },
             } = this.props;
 

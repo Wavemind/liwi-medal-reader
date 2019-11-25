@@ -66,7 +66,7 @@ export default class Consultation extends React.Component<Props, State> {
               <LiwiLoader />
             )}
           </View>
-          <View>
+          <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
                 <QuestionsPerChiefComplaint category="physical_exam" selectedPage={selectedPage} pageIndex={1} />

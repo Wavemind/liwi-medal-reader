@@ -4,11 +4,7 @@ import type { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, View } from 'react-native';
 import { Button, Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
-import {
-  displayFormats,
-  nodesType,
-  valueFormats,
-} from '../../../../frontend_service/constants';
+import { displayFormats, nodesType, valueFormats } from '../../../../frontend_service/constants';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -25,12 +21,7 @@ type Props = NavigationScreenProps & {};
 
 type State = {};
 
-function LabelQuestion(props: {
-  label: String,
-  flex: String,
-  marginRight: Numeric,
-  marginLeft: Numeric,
-}) {
+function LabelQuestion(props: { label: String, flex: String, marginRight: Numeric, marginLeft: Numeric }) {
   const { label, flex, marginRight, marginLeft } = props;
   return (
     <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
@@ -58,11 +49,7 @@ class TooltipButton extends React.Component<Props, State> {
       <View>
         <ScrollView>
           <View onStartShouldSetResponder={() => true}>
-            <Button
-              onPress={() => this.setState({ toolTipVisible: false })}
-              rounded
-              style={styles.button}
-            >
+            <Button onPress={() => this.setState({ toolTipVisible: false })} rounded style={styles.button}>
               <Icon name="close" type="AntDesign" style={styles.icon} />
             </Button>
             <Text subTitle>{question.label}</Text>
@@ -96,10 +83,7 @@ class TooltipButton extends React.Component<Props, State> {
     let yTooltip = toolTip.tooltipOrigin.y;
     let yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
 
-    let insideContent =
-      xTouch > xTooltip &&
-      xTouch < xEndToolTip &&
-      (yTouch > yTooltip && yTouch < yEndToolTip);
+    let insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
 
     if (!insideContent) {
       this.setState({ toolTipVisible: false });
@@ -112,11 +96,7 @@ class TooltipButton extends React.Component<Props, State> {
 
     return (
       <View flex={flex}>
-        <Button
-          style={styles.touchable}
-          transparent
-          onPress={() => this.setState({ toolTipVisible: true })}
-        >
+        <Button style={styles.touchable} transparent onPress={() => this.setState({ toolTipVisible: true })}>
           <Icon type="AntDesign" name="info" style={styles.iconInfo} />
         </Button>
         <Tooltip
@@ -136,10 +116,7 @@ class WrapperQuestion extends React.Component<Props, State> {
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     const { question } = this.props;
-    return (
-      nextProps.question.answer !== question.answer ||
-      nextProps.question.value !== question.value
-    );
+    return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
 
   render() {
@@ -204,20 +181,14 @@ export default class Question extends React.Component<Props, State> {
     let WrapperUnavailable = () => null;
     let unavailableAnswer = null;
 
-    unavailableAnswer = _.find(
-      question.answers,
-      (a) => a.value === 'not_available'
-    );
+    unavailableAnswer = _.find(question.answers, (a) => a.value === 'not_available');
 
     if (unavailableAnswer !== undefined) {
       WrapperUnavailable = () => {
         return (
           <React.Fragment>
             <Text>{t('question:unavailable')} </Text>
-            <Unavailable
-              question={question}
-              unavailableAnswer={unavailableAnswer}
-            />
+            <Unavailable question={question} unavailableAnswer={unavailableAnswer} />
           </React.Fragment>
         );
       };
@@ -230,11 +201,7 @@ export default class Question extends React.Component<Props, State> {
 
     // Construct generic Component for the question
     return (
-      <ListItem
-        style={[styles.condensed, styles.flexColumn]}
-        noBorder
-        key={question.id + '_item'}
-      >
+      <ListItem style={[styles.condensed, styles.flexColumn]} noBorder key={question.id + '_item'}>
         <View style={styles.flexRow}>
           <LabelQuestion
             key={question.id + '_label'}
@@ -243,12 +210,7 @@ export default class Question extends React.Component<Props, State> {
             marginLeft={0}
             marginRight={10}
           />
-          <WrapperQuestion
-            key={question.id + '_answer'}
-            question={question}
-            flex={0.25}
-            {...this.props}
-          />
+          <WrapperQuestion key={question.id + '_answer'} question={question} flex={0.25} {...this.props} />
           <TooltipButton question={question} flex={0.15} />
         </View>
         <View style={styles.unavailable}>

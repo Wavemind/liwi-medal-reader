@@ -103,6 +103,7 @@ export default {
   checkboxBgColor: '#039BE5',
   checkboxSize: 20,
   checkboxTickColor: '#fff',
+  checkboxDefaultColor: 'transparent',
 
   // Color
   brandPrimary: '#e74c3c',
