@@ -166,7 +166,7 @@ i18n
         },
         patient: {
           first_name: 'First name *',
-          last_name: 'Last name * ',
+          last_name: 'Last name *',
           birth_date: 'Day of birth',
           gender: 'Gender *',
           male: 'Male',
@@ -277,9 +277,9 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Basic Measurments',
+          vital: 'Basic measurments',
           comorbidities: 'Comorbidities',
-          vaccination: 'Vaccination History',
+          vaccination: 'Vaccination history',
           chief: 'Complaint Categories',
         },
         settings: {
