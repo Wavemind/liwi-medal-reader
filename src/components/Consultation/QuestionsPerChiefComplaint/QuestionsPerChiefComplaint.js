@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native';
 import { categories } from '../../../../frontend_service/constants';
 import { styles } from './QuestionsPerChiefComplaint.style';
 import ChiefComplaint from '../ChiefComplaint';
+import { Text, View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 
@@ -36,19 +37,26 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
   };
 
   render() {
-    const { category } = this.props;
+    const { category, app: { t } } = this.props;
     const { chiefComplaints } = this.state;
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        {chiefComplaints.map((chiefComplaint) => (
-          <ChiefComplaint
-            chiefComplaint={chiefComplaint}
-            category={category}
-            key={'chiefComplaint' + chiefComplaint.id}
-            questions={this.generateQuestions(chiefComplaint)}
-          />
-        ))}
+        {chiefComplaints.length > 0 ? (
+          chiefComplaints.map((chiefComplaint) => (
+            <ChiefComplaint
+              chiefComplaint={chiefComplaint}
+              category={category}
+              key={'chiefComplaint' + chiefComplaint.id}
+              questions={this.generateQuestions(chiefComplaint)}
+            />
+          ))
+        ) : (
+          <View padding-auto margin-auto>
+            <Text not-available>{t('patient_list:not_found')}</Text>
+          </View>
+        )}
+
       </ScrollView>
     );
   }
