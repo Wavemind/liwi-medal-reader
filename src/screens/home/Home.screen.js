@@ -128,11 +128,17 @@ export default class Home extends React.Component<Props, State> {
             </View>
 
             <View w50>
-              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('')}>
+              <TouchableHighlight
+                underlayColor="transparent"
+                style={styles.navigationButton}
+                onPress={() => {
+                  this.forceCrashApp(true);
+                }}
+              >
                 <View>
                   <Icon type="MaterialCommunityIcons" name="account" style={styles.icons} navigation />
                   <Text size-auto center>
-                    {t('navigation:my_profile')}
+                    Crash app
                   </Text>
                 </View>
               </TouchableHighlight>

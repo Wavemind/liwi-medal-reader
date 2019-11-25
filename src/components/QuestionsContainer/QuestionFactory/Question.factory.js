@@ -69,6 +69,9 @@ class TooltipButton extends React.Component<Props, State> {
             <Text>Description: {question.description}</Text>
             <Text>Id: {question.id}</Text>
             <Text>Reference : {question.reference}</Text>
+            <Text>Counter : {question.counter}</Text>
+            <Text>Answer: {question.answer}</Text>
+            <Text>Category: {question.category}</Text>
           </View>
         </ScrollView>
       </View>
