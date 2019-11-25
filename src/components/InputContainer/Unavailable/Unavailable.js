@@ -4,6 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { CheckBox } from 'native-base';
 import { liwiColors } from '../../../utils/constants';
+import { styles } from './Unavailable.style';
 
 type Props = NavigationScreenProps & {};
 
@@ -12,7 +13,8 @@ type State = {};
 export default class Unavailable extends React.Component<Props, State> {
   state = {};
 
-  componentWillMount() {}
+  componentWillMount() {
+  }
 
   onPress = () => {
     const { setAnswerUnavailable, question, unavailableAnswer } = this.props;
@@ -35,6 +37,7 @@ export default class Unavailable extends React.Component<Props, State> {
     const { question, unavailableAnswer } = this.props;
     return (
       <CheckBox
+        style={styles.unavailableBox}
         onPress={this.onPress}
         color={liwiColors.redColor}
         checked={question.answer === unavailableAnswer.id}
