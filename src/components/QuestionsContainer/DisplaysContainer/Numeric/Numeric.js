@@ -10,33 +10,56 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Numeric extends React.Component<Props, State> {
-  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+  shouldComponentUpdate(nextProps: Readonly<P>, nextState): boolean {
     const { question } = this.props;
 
-    return (
-      nextProps.question.answer !== question.answer ||
-      nextProps.question.value !== question.value
-    );
+    const { value } = this.state;
+    return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value || nextState.value !== value;
+  }
+
+  componentWillMount() {
+    const { question } = this.props;
+    this.setState({ value: question.value });
   }
 
   state = {
+    value: null,
     style: {
       borderBottomColor: liwiColors.blackLightColor,
       borderBottomWidth: 1,
     },
   };
 
-  _onEndEditing = (value) => {
+  _onEndEditing = (e) => {
+    let value = e.nativeEvent.text;
     const { setAnswer, question } = this.props;
 
-    if (
-      value.nativeEvent.text !== question.value &&
-      value.nativeEvent.text !== ''
-    ) {
-      setAnswer(question.id, value.nativeEvent.text);
-    } else if (question.value !== null && value.nativeEvent.text === '') {
+    if (value !== question.value && value !== '') {
+      setAnswer(question.id, value);
+    } else if (question.value !== null && value === '') {
       setAnswer(question.id, null);
     }
+  };
+
+  onChange = (e) => {
+    let value = e.nativeEvent.text;
+
+    let regWithComma = /^[0-9,]+$/;
+
+    // Replace comma with dot
+    if (regWithComma.test(value)) {
+      value = value.replace(',', '.');
+    }
+
+    // Remove char that are not number or dot
+    value = value.replace(/[^0-9.]/g, '');
+
+    // Parse to float if value is not empty and last char is not dot
+    if (value !== '' && value.charAt(value.length - 1) !== '.') {
+      value = parseFloat(value);
+    }
+
+    this.setState({ value });
   };
 
   render() {
@@ -45,7 +68,7 @@ export default class Numeric extends React.Component<Props, State> {
       unavailableAnswer,
       app: { t },
     } = this.props;
-    const { style } = this.state;
+    let { style, value } = this.state;
 
     let keyboardType;
     let placeholder = '';
@@ -59,12 +82,11 @@ export default class Numeric extends React.Component<Props, State> {
         break;
     }
 
-    if (
-      unavailableAnswer !== undefined &&
-      question.answer === unavailableAnswer.id
-    ) {
+    if (unavailableAnswer !== undefined && question.answer === unavailableAnswer.id) {
       placeholder = t('question:unavailable');
     }
+
+    value = value !== null ? String(value) : null;
 
     return (
       <View answer>
@@ -72,7 +94,8 @@ export default class Numeric extends React.Component<Props, State> {
           keyboardType={keyboardType}
           question
           numeric
-          defaultValue={question.value !== null ? String(question.value) : null}
+          value={value}
+          onChange={this.onChange}
           style={style}
           onEndEditing={this._onEndEditing}
           placeholder={placeholder}
