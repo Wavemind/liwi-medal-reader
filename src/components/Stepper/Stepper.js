@@ -16,7 +16,7 @@ import { styles } from './styles';
 import { liwiColors } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
-import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import { updateMedicalCaseProperty, clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { Toaster } from '../../utils/CustomToast';
 
@@ -253,6 +253,7 @@ class Stepper extends React.Component<Props, State> {
     if (endMedicalCase === true) {
       const state$ = store.getState();
       store.dispatch(updateMedicalCaseProperty('status', medicalCaseStatus.close.name));
+      store.dispatch(clearMedicalCase());
 
       navigation.push('PatientProfile', {
         id: state$.patient.id,
