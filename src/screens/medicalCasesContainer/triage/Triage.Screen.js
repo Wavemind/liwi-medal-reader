@@ -123,9 +123,9 @@ export default class Triage extends React.Component<Props, State> {
                   <View
                     flex-container-fluid
                     onLayout={async (p) => {
-                    let w = await p.nativeEvent;
-                    this.setState({ widthView: w.layout.width });
-                  }}
+                      let w = await p.nativeEvent;
+                      this.setState({ widthView: w.layout.width });
+                    }}
                   >
                     {chiefComplaint.map((question, i) => (
                       <Boolean
@@ -136,7 +136,7 @@ export default class Triage extends React.Component<Props, State> {
                         selectedPage={selectedPage}
                         pageIndex={1}
                       />
-                  ))}
+                    ))}
                   </View>
                 </Content>
               </Suspense>
