@@ -31,13 +31,12 @@ export const epicCatchAnswer = (action$, state$) =>
     ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE, actions.UPDATE_CONDITION_VALUE),
     switchMap((action) => {
       // Index is the id of the node that has just been answered
-      const { index, nodeId } = action.payload;
+      const { index } = action.payload;
 
       // eslint-disable-next-line no-console
       console.log('%c ########################  epicCatchAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
 
       const currentNode = state$.value.nodes[index];
-      console.log(currentNode, index, nodeId);
       const relatedDiagnostics = currentNode.dd;
       const relatedQuestionsSequence = currentNode.qs;
       const relatedNodes = currentNode.referenced_in;
@@ -106,7 +105,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, "doesn't exist");
           return [];
       }
     })
@@ -132,7 +131,6 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
        *  false = can't access the end anymore
        */
       statusQs = getQuestionsSequenceStatus(state$, currentQuestionsSequence, actions);
-
       // If ready we calculate condition of the QS
       if (statusQs) {
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
@@ -266,11 +264,9 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
       // Get node condition value
       const conditionValue = currentNode.calculateCondition(state$);
-      console.log(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type, parentConditionValue);
       // If the condition of this node is not null
       if (parentConditionValue === false) {
         // Set parent to false if their condition's isn't correct. Used to stop the algorithm
-        console.log(state$.value.nodes[nodeId]);
         actions.push(updateConditionValue(nodeId, diagnosticId, false, state$.value.diagnostics[diagnosticId].type));
       } else if (conditionValue !== null) {
         actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type));

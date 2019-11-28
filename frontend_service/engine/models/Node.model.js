@@ -66,7 +66,13 @@ export class NodeModel implements NodeInterface {
           break;
         case valueFormats.bool:
         case valueFormats.array:
-          answer = Number(value);
+          // Set Number only if this is a number
+          if (value !== null) {
+            answer = Number(value);
+          } else {
+            // Set the new answer to null for reset
+            answer = value;
+          }
           value = null;
           break;
         default:

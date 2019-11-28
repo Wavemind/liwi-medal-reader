@@ -5,6 +5,7 @@ import { RequirementNodeModel } from './RequirementNodeModel';
 import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 import { store } from '../../store';
 import { nodesType } from '../../constants';
+import { getStatusOfDD } from '../../algorithm/algoTreeDiagnosis';
 
 interface FinalDiagnosticInterface {}
 
@@ -22,6 +23,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       excluding_final_diagnostics = null,
       excluded_by_final_diagnostics = null,
       cc,
+      instances = [],
     } = props;
 
     this.label = label;
@@ -32,6 +34,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     this.top_conditions = top_conditions;
     this.excluding_final_diagnostics = excluding_final_diagnostics;
     this.excluded_by_final_diagnostics = excluded_by_final_diagnostics;
+    this.instances = instances;
     this.cc = cc;
 
     this.requirement = new RequirementNodeModel({ ...props });
@@ -43,20 +46,21 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    */
   calculateCondition = () => {
     const state$ = store.getState();
-
-    let topConditionValue = this.top_conditions.some((condition) => {
+    let conditioNValueTrue = [];
+    this.top_conditions.map((condition) => {
       let findDDinNode = state$.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
       if (findDDinNode.conditionValue === true) {
-        return true;
+        conditioNValueTrue.push(condition);
       }
     });
 
-    console.log(topConditionValue, this);
+    // console.log(topConditionValue, this);
+    let statusOfDD = getStatusOfDD(state$, this);
 
     // If this FD can be excluded by other high-priority FD
     if (this.excluded_by_final_diagnostics !== null) {
       // If this other high-priority FD is true so this is always false
-      if (calculateCondition(state$.nodes[this.excluded_by_final_diagnostics]) === true) {
+      if (state$.nodes[this.excluded_by_final_diagnostics].calculateCondition() === true) {
         return false;
       }
     }
@@ -65,8 +69,14 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     // eslint-disable-next-line no-empty
     if (this.excluding_final_diagnostics !== null) {
     }
-
-    return calculateCondition(this);
+    if (statusOfDD === false) {
+      return false;
+    } else if (statusOfDD === null) {
+      return null;
+    } else if (statusOfDD === true) {
+      let tempDd = { ...this, top_conditions: conditioNValueTrue };
+      return calculateCondition(tempDd);
+    }
   };
 
   /**

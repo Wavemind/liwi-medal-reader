@@ -6,8 +6,7 @@ import { store } from '../../store';
 
 interface HealthCaresInterface {}
 
-export class HealthCaresModel extends NodeModel
-  implements HealthCaresInterface {
+export class HealthCaresModel extends NodeModel implements HealthCaresInterface {
   constructor(props) {
     super(props);
 
@@ -20,21 +19,17 @@ export class HealthCaresModel extends NodeModel
   getQuestions(instanceHealthcare) {
     const state$ = store.getState();
     let questions = {};
-    instanceHealthcare.top_conditions.map(
-      (tp) => {
-        let node = state$.nodes[tp.first_node_id];
+    instanceHealthcare.top_conditions.map((tp) => {
+      let node = state$.nodes[tp.first_node_id];
 
-        if (node.type === nodesType.questionsSequence) {
-          if (node.answer === null) {
-            Object.keys(node.instances).map(
-              (d) => (questions[d] = state$.nodes[d])
-            );
-          }
-        } else {
-          questions[tp.first_node_id] = node;
+      if (node.type === nodesType.questionsSequence) {
+        if (node.answer === null) {
+          Object.keys(node.instances).map((d) => (questions[d] = state$.nodes[d]));
         }
+      } else {
+        questions[tp.first_node_id] = node;
       }
-    );
+    });
     return questions;
   }
 }
