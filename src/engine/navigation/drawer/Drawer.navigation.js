@@ -285,9 +285,9 @@ export default class Drawer extends Component<Props, State> {
               <Icon style={{ fontSize: 40 }} drawerBottomIcon type="AntDesign" name="setting" />
               <Text style={styles.textBottom}>Current Summary</Text>
             </Button>
-            <Button style={styles.bottomStyle} onPress={this.logout}>
-              <Icon style={{ fontSize: 40 }} drawerBottomIcon type="AntDesign" name="logout" />
-              <Text style={styles.textBottom}>Link</Text>
+            <Button style={styles.bottomStyle} onPress={() => navigation.navigate('Emergency')}>
+              <Icon style={{ fontSize: 40 }} drawerBottomIcon name="warning" type="FontAwesome" />
+              <Text style={styles.textBottom}>Emergency</Text>
             </Button>
           </View>
         </View>
