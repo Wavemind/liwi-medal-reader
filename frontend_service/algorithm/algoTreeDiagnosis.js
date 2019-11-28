@@ -273,8 +273,6 @@ export const recursiveNodeDd = (state$, instance, dd) => {
    */
   let instanceCondition = calculateCondition(instance);
 
-  console.log(currentNode, instanceConditionValue, instanceCondition, instance, dd);
-
   // The condition path is not answered
   // Wait on user
   if (currentNode.answer === null && instanceCondition === true) {
@@ -300,9 +298,8 @@ export const recursiveNodeDd = (state$, instance, dd) => {
 
   let recursif = childrenWithoutOtherDd.map((childId) => {
     let child = state$.nodes[childId];
-
     // If this is not the final QS we calculate the conditonValue of the child
-    if (child.type === nodesType.question) {
+    if (child.type === nodesType.question || child.type === nodesType.questionsSequence) {
       // childConditionValue = find(child.qs, (q) => q.id === qs.id).conditionValue;
       return recursiveNodeDd(state$, state$.diagnostics[dd.diagnostic_id].instances[child.id], dd);
     } else if (child.id === dd.id && child.type === nodesType.finalDiagnostic) {
@@ -314,12 +311,8 @@ export const recursiveNodeDd = (state$, instance, dd) => {
       // calcule final path
       let r = reduceConditionArrayBoolean(arrayBoolean);
       return r;
-    } else if (child.type === nodesType.finalDiagnostic) {
-      // other dd of the diagnostic
     }
   });
-
-  console.log(recursif, childrenWithoutOtherDd, dd);
 
   return reduceConditionArrayBoolean(recursif);
 };

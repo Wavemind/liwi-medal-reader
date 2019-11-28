@@ -21,7 +21,6 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     let questions = {};
     instanceHealthcare.top_conditions.map((tp) => {
       let node = state$.nodes[tp.first_node_id];
-
       if (node.type === nodesType.questionsSequence) {
         if (node.answer === null) {
           Object.keys(node.instances).map((d) => (questions[d] = state$.nodes[d]));
