@@ -105,7 +105,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, "doesn't exist");
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
           return [];
       }
     })

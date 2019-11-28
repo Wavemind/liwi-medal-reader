@@ -27,8 +27,16 @@ class FinalDiagnostic extends React.Component<{}> {
   }
 }
 
-export default class FinalDiagnosticsList extends React.PureComponent<Props, State> {
+export default class FinalDiagnosticsList extends React.Component<Props, State> {
   state = {};
+
+  // When we clear the store redux
+  shouldComponentUpdate(nextProps: Props): boolean {
+    if (nextProps.medicalCase.id === undefined) {
+      return false;
+    }
+    return true;
+  }
 
   render() {
     const finalDiagnostics = FinalDiagnosticModel.all();

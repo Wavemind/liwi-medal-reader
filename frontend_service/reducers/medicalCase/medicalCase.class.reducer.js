@@ -195,6 +195,18 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
+   * Clear the medical case after close mc
+   * store in localstorage if necessary
+   *
+   */
+  @Action(actions.MC_CLEAR)
+  medicalCaseClear(state) {
+    storeMedicalCase(state);
+
+    return {};
+  }
+
+  /**
    * Set the medical case
    * store in localstorage if necessary
    * Instance the medical case with model

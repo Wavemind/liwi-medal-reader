@@ -273,6 +273,8 @@ export const recursiveNodeDd = (state$, instance, dd) => {
    */
   let instanceCondition = calculateCondition(instance);
 
+  console.log(currentNode, instanceConditionValue, instanceCondition, instance, dd);
+
   // The condition path is not answered
   // Wait on user
   if (currentNode.answer === null && instanceCondition === true) {
@@ -316,6 +318,8 @@ export const recursiveNodeDd = (state$, instance, dd) => {
       // other dd of the diagnostic
     }
   });
+
+  console.log(recursif, childrenWithoutOtherDd, dd);
 
   return reduceConditionArrayBoolean(recursif);
 };
