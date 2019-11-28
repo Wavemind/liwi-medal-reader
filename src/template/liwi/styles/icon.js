@@ -8,7 +8,10 @@ export default {
     },
     '.drawerItemIcon': {
       color: liwiColors.greyColor,
+      marginRight: 10,
+      marginLeft: 0,
     },
+    drawerBottomIcon: { color: liwiColors.whiteColor, fontSize: 40, margin: 0, padding: 0 },
     '.white': {
       padding: 0,
       color: '#fff',

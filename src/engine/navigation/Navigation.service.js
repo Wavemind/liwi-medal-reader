@@ -77,6 +77,7 @@ function resetActionStack(routeName, params) {
  * @param prevState: Navigation : The state of react-navigation
  * @param currentState: Navigation : The state of react-navigation
  */
+
 function onNavigationStateChange(prevState, currentState) {
   let activeRoute = getActiveRouteName(currentState);
   let prev = getActiveRouteName(prevState);
