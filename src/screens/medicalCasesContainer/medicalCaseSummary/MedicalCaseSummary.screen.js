@@ -35,15 +35,10 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
               {patient.firstname} {patient.lastname}
             </Text>
             <Text size-auto>{patient.gender}</Text>
-            <Text size-auto>
-              {moment(patient.birthdate).format('d MMMM YYYY')}
-            </Text>
+            <Text size-auto>{moment(patient.birthdate).format('d MMMM YYYY')}</Text>
           </View>
         </View>
-        <Tabs
-          initialPage={defaultTab}
-          tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}
-        >
+        <Tabs initialPage={defaultTab} tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>
           <Tab
             heading={t('summary:diagnoses')}
             tabStyle={LiwiTabStyle.tabStyle}

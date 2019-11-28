@@ -93,7 +93,12 @@ export default class Triage extends React.Component<Props, State> {
           chiefComplaintReady={chiefComplaintReady}
           showTopStepper
           initial
-          onPageSelected={(e) => this.setState({ selectedPage: e })}
+          onPageSelected={(e) => {
+            navigation.setParams({
+              initialPage: e,
+            });
+            this.setState({ selectedPage: e });
+          }}
           initialPage={selectedPage}
           showBottomStepper
           icons={[

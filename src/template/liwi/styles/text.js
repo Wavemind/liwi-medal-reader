@@ -8,8 +8,13 @@ export default {
     },
   },
   'NativeBase.Text': {
-    '.drawerCategorieText': { textAlign: 'center', textTransform: 'uppercase' },
-    '.drawerItemText': {},
+    '.drawerCategorieText': { textAlign: 'center', textTransform: 'uppercase', fontSize: 18 },
+    '.drawerItemText': {
+      fontSize: 15,
+      padding: 0,
+      margin: 0,
+      color: liwiColors.darkerGreyColor,
+    },
     '.light': {
       color: '#6a6a6a',
       borderRadius: 35,

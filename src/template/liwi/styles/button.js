@@ -10,10 +10,15 @@ export default {
     },
     '.drawerCategorieButton': {
       flex: 1,
-      backgroundColor: liwiColors.redColor,
-      padding: 20,
-      margin: 5,
-      borderRadius: 3,
+      backgroundColor: liwiColors.greyColor,
+      // padding: 20,
+      paddingTop: 20,
+      paddingBottom: 20,
+      marginRight: 5,
+      marginLeft: 5,
+      marginTop: 15,
+      flexShrink: 1,
+      borderRadius: 4,
       alignItems: 'center',
       justifyContent: 'center',
       alignSelf: 'stretch',
@@ -23,7 +28,7 @@ export default {
       flex: 1,
       flexDirection: 'row',
       backgroundColor: 'none',
-      padding: 5,
+      // justifyContent: 'space-between',
     },
     '.w50': {
       flex: 1,
@@ -72,7 +77,6 @@ export default {
     '.activeStyle': {
       backgroundColor: liwiColors.greenColor,
     },
-
     '.btnDrawer': {
       height: 50,
       margin: 0,
@@ -81,6 +85,8 @@ export default {
       borderRadius: 0,
       marginTop: 5,
       marginBottom: 5,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     '.marginIcon': {
       marginBottom: 15,
