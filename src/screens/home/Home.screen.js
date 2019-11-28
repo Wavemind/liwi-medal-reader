@@ -130,7 +130,7 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => {
+                onPress={async () => {
                   this.forceCrashApp(true);
                 }}
               >
