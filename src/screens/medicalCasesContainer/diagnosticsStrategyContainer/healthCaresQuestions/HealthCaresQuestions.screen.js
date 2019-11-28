@@ -15,11 +15,12 @@ export default class HealthCaresQuestions extends Component<Props, State> {
       medicalCase,
       app: { t },
     } = this.props;
+
     const questions = medicalCase.nodes.getHealthCaresQuestions();
 
     return (
       <View>
-        {questions.length > 0 ? (
+        {Object.keys(questions).length > 0 ? (
           <Questions questions={questions} />
         ) : (
           <View padding-auto margin-auto>
