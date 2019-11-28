@@ -234,3 +234,88 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
 
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
+
+export const getStatusOfDD = (state$, dd) => {
+  let topLevelNodes = [];
+  let instancesOfDiagnosticByDd = state$.diagnostics[dd.diagnostic_id].instances;
+  // Set top Level Nodes
+  Object.keys(instancesOfDiagnosticByDd).map((instanceId) => {
+    if (instancesOfDiagnosticByDd[instanceId].top_conditions.length === 0 && instancesOfDiagnosticByDd[instanceId].final_diagnostic_id === null) {
+      topLevelNodes.push(instancesOfDiagnosticByDd[instanceId]);
+    }
+  });
+
+  let allNodesAnsweredInDd = topLevelNodes.map((topNode) => recursiveNodeDd(state$, topNode, dd));
+
+  return reduceConditionArrayBoolean(allNodesAnsweredInDd);
+};
+
+/**
+ * 1. Get all nodes without conditons
+ *
+ * @params state$: All the state of the reducer
+ * @params dd: The Final Diagnostics we want to get the status
+ *
+ * @return boolean: return the status of the DD
+ *      true = can reach the end
+ *      null = Still possible but not yet
+ *      false = can't access the end anymore
+ */
+export const recursiveNodeDd = (state$, instance, dd) => {
+  /**
+   * Initial Var
+   */
+  let currentNode = state$.nodes[instance.id];
+  let instanceConditionValue = find(currentNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
+
+  /**
+   * Get the condition of the instance link
+   */
+  let instanceCondition = calculateCondition(instance);
+
+  // The condition path is not answered
+  // Wait on user
+  if (currentNode.answer === null && instanceCondition === true) {
+    return null;
+  }
+
+  // The condition path is not respected so we cant go deeper
+  if (instanceCondition === false && instanceConditionValue === false) {
+    return false;
+  }
+  // The condition path is not answered
+  // Wait on user
+  if (instanceCondition === null) {
+    return null;
+  }
+  // Remove path other dd
+  let childrenWithoutOtherDd = instance.children.filter((id) => {
+    if (state$.nodes[id].type === nodesType.finalDiagnostic && state$.nodes[id].id !== dd.id) {
+      return false;
+    }
+    return true;
+  });
+
+  let recursif = childrenWithoutOtherDd.map((childId) => {
+    let child = state$.nodes[childId];
+
+    // If this is not the final QS we calculate the conditonValue of the child
+    if (child.type === nodesType.question) {
+      // childConditionValue = find(child.qs, (q) => q.id === qs.id).conditionValue;
+      return recursiveNodeDd(state$, state$.diagnostics[dd.diagnostic_id].instances[child.id], dd);
+    } else if (child.id === dd.id && child.type === nodesType.finalDiagnostic) {
+      let top_conditions = _.filter(dd.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
+      // We get the condition of the final link
+      let arrayBoolean = top_conditions.map((condition) => {
+        return comparingTopConditions(dd, condition);
+      });
+      // calcule final path
+      let r = reduceConditionArrayBoolean(arrayBoolean);
+      return r;
+    } else if (child.type === nodesType.finalDiagnostic) {
+      // other dd of the diagnostic
+    }
+  });
+
+  return reduceConditionArrayBoolean(recursif);
+};

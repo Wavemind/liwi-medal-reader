@@ -96,7 +96,11 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       Object.keys(nodes).map((nodeId) => {
         if (nodes[nodeId].type.match(/^Question$|^QuestionsSequence$/)) {
           nodes[nodeId].dd.map((dd) => {
-            dd.conditionValue = diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
+            if (diagnostics[dd.id].instances[nodeId].final_diagnostic_id === null) {
+              dd.conditionValue = diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
+            } else {
+              dd.conditionValue = false;
+            }
           });
 
           // Map trough QS if it is in an another QS itself
@@ -137,7 +141,11 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     // Set condition value for DD if there is any
     if (!nodes[parentId].dd.isEmpty()) {
       nodes[parentId].dd.map((dd) => {
-        dd.conditionValue = diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
+        if (diagnostics[dd.id].instances[parentId].final_diagnostic_id === null) {
+          dd.conditionValue = diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
+        } else {
+          dd.conditionValue = false;
+        }
       });
       conditionValue = true;
     }
