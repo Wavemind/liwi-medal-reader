@@ -19,10 +19,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
     const { toolTipVisible } = this.state;
     const { propsToolTipVisible } = this.props;
 
-    return (
-      nextState.toolTipVisible !== toolTipVisible ||
-      propsToolTipVisible !== nextProps.propsToolTipVisible
-    );
+    return nextState.toolTipVisible !== toolTipVisible || propsToolTipVisible !== nextProps.propsToolTipVisible;
   }
 
   _renderToolTipContent = () => {
@@ -75,11 +72,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
                   style={styles.buttonNext}
                 >
                   <Text>{t('new')}</Text>
-                  <Icon
-                    name="arrowright"
-                    type="AntDesign"
-                    style={styles.icon}
-                  />
+                  <Icon name="arrowright" type="AntDesign" style={styles.icon} />
                 </Button>
               </View>
             </View>
@@ -108,10 +101,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
     let yTooltip = toolTip.tooltipOrigin.y;
     let yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
 
-    let insideContent =
-      xTouch > xTooltip &&
-      xTouch < xEndToolTip &&
-      (yTouch > yTooltip && yTouch < yEndToolTip);
+    let insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
 
     if (!insideContent) {
       this.setState({ toolTipVisible: false });
