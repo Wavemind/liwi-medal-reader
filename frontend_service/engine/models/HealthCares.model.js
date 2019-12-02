@@ -16,6 +16,10 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     this.label = label;
   }
 
+  /**
+   * Recursif call to get question in QS from QS
+   * Immutability set on questions[key]
+   */
   getRecursifQuestionsInQs = (state$, questions, node) => {
     Object.keys(node.instances).map((d) => {
       if (state$.nodes[d].type === nodesType.questionsSequence) {
@@ -26,6 +30,11 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     });
   };
 
+  /**
+   *  Get questions related to a healthcare
+   *  Recursif call to include question in Qs
+   *  Immutability set on questions[key]
+   */
   getQuestions(instanceHealthcare) {
     const state$ = store.getState();
     let questions = {};
