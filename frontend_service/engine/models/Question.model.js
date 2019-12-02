@@ -180,6 +180,9 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       if (reference[x][arr.first()] > y) {
         return arr.first();
       }
+      if (reference[x][arr.last()] < y) {
+        return arr.last();
+      }
 
       arr.map((key) => {
         if (reference[x][key] > y) {

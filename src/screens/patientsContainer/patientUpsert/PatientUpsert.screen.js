@@ -1,10 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationActions, NavigationScreenProps } from 'react-navigation';
+import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { Button, Col, Text, View } from 'native-base';
 import * as _ from 'lodash';
+import NavigationService from '../../../engine/navigation/Navigation.service';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
@@ -87,20 +88,30 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * Save patient and redirect to parameters
    * @params [String] route
    */
-  save = async (route) => {
+  save = async (newRoute) => {
     await this.setState({ loading: true });
-    const { patient } = this.state;
     const { navigation } = this.props;
     let isSaved = await this.savePatient();
 
     if (isSaved) {
-      if (route === 'Triage') {
-        navigation.navigate(route, {
-          title: `${patient.firstname} ${patient.lastname}`,
-        });
-      } else {
-        navigation.dispatch(NavigationActions.back(route));
-      }
+      let currentRoute = NavigationService.getCurrentRoute();
+      // Replace the nextRoute navigation at the current index
+      navigation.dispatch(
+        StackActions.replace({
+          index: currentRoute.index,
+          newKey: newRoute,
+          routeName: newRoute,
+          params: {
+            initialPage: 0,
+          },
+          actions: [
+            NavigationActions.navigate({
+              routeName: newRoute,
+            }),
+          ],
+        })
+      );
+
       await this.setState({ loading: false });
     }
   };

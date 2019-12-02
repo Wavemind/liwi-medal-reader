@@ -13,6 +13,14 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class DiagnosesStrategy extends Component<Props, State> {
+  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+    if (nextProps.medicalCase.id === undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   componentWillMount() {
     const {
       app: { t },
@@ -39,16 +47,8 @@ export default class DiagnosesStrategy extends Component<Props, State> {
         validation={false}
         showTopStepper
         showBottomStepper
-        icons={[
-          { name: 'add-alert', type: 'MaterialIcons' },
-          { name: 'question-answer', type: 'MaterialIcons' },
-          { name: 'healing', type: 'MaterialIcons' },
-        ]}
-        steps={[
-          t('medical_case:final_diagnoses'),
-          t('medical_case:healthcares_questions'),
-          t('medical_case:healthcares'),
-        ]}
+        icons={[{ name: 'add-alert', type: 'MaterialIcons' }, { name: 'question-answer', type: 'MaterialIcons' }, { name: 'healing', type: 'MaterialIcons' }]}
+        steps={[t('medical_case:final_diagnoses'), t('medical_case:healthcares_questions'), t('medical_case:healthcares')]}
         backButtonTitle={t('medical_case:back')}
         nextButtonTitle={t('medical_case:next')}
         nextStage="finish"
@@ -57,14 +57,14 @@ export default class DiagnosesStrategy extends Component<Props, State> {
       >
         <View style={styles.pad}>
           <ScrollView>
-            <FinalDiagnosticsList key="diognoseslist" />
+            <FinalDiagnosticsList key="diagnosesList" />
           </ScrollView>
         </View>
         <View style={styles.pad}>
           <HealthCaresQuestions key="wealthCaresQuestions" />
         </View>
         <View style={styles.pad}>
-          <HealthCares key="sealthCares" />
+          <HealthCares key="healthCares" />
         </View>
       </Stepper>
     );

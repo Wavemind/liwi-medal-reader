@@ -116,7 +116,6 @@ export default class Home extends React.Component<Props, State> {
                   </Text>
                 </View>
               </TouchableHighlight>
-
               <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
                 <View>
                   <Icon type="AntDesign" name="setting" style={styles.icons} navigation />
@@ -131,7 +130,7 @@ export default class Home extends React.Component<Props, State> {
               <TouchableHighlight
                 underlayColor="transparent"
                 style={styles.navigationButton}
-                onPress={() => {
+                onPress={async () => {
                   this.forceCrashApp(true);
                 }}
               >

@@ -120,33 +120,35 @@ export default class Triage extends React.Component<Props, State> {
               <LiwiLoader />
             )}
           </View>
-          <Content>
+          <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <View
-                  flex-container-fluid
-                  onLayout={async (p) => {
-                    let w = await p.nativeEvent;
-                    this.setState({ widthView: w.layout.width });
-                  }}
-                >
-                  {chiefComplaint.map((question, i) => (
-                    <Boolean
-                      key={question.id + 'chief_boolean'}
-                      widthView={widthView}
-                      question={question}
-                      index={i}
-                      selectedPage={selectedPage}
-                      pageIndex={1}
-                    />
-                  ))}
-                </View>
+                <Content>
+                  <View
+                    flex-container-fluid
+                    onLayout={async (p) => {
+                      let w = await p.nativeEvent;
+                      this.setState({ widthView: w.layout.width });
+                    }}
+                  >
+                    {chiefComplaint.map((question, i) => (
+                      <Boolean
+                        key={question.id + 'chief_boolean'}
+                        widthView={widthView}
+                        question={question}
+                        index={i}
+                        selectedPage={selectedPage}
+                        pageIndex={1}
+                      />
+                    ))}
+                  </View>
+                </Content>
               </Suspense>
             ) : (
               <LiwiLoader />
             )}
-          </Content>
-          <View>
+          </View>
+          <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
                 <Questions questions={vitalSigns} selectedPage={selectedPage} pageIndex={2} />
