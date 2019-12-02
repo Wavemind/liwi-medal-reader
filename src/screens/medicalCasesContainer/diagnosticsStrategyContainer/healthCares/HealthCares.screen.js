@@ -9,13 +9,11 @@ type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCares extends Component<Props, State> {
   render() {
-    // eslint-disable-next-line react/prop-types
     const {
       medicalCase,
       app: { t },
     } = this.props;
 
-    // eslint-disable-next-line react/prop-types
     const healthCares = medicalCase.nodes.getHealthCares();
 
     const { managements, treatments } = healthCares;
@@ -23,23 +21,23 @@ export default class HealthCares extends Component<Props, State> {
     return (
       <Content>
         <Text customTitle>{t('medical_case:managements')}</Text>
-        {Object.keys(managements).map((m) => (
+        {Object.keys(managements).map(key => (
           <Text
             style={styles.spaceText}
             size-auto
-            key={'healthcare' + managements[m].reference}
+            key={'healthcare' + managements[key].reference}
           >
-            {managements[m].reference} - {managements[m].label}
+            {__DEV__ ? `${managements[key].reference} - ` : null}{managements[key].label}
           </Text>
         ))}
         <Text customTitle>{t('medical_case:treatments')}</Text>
-        {Object.keys(treatments).map((t) => (
+        {Object.keys(treatments).map((key) => (
           <Text
             style={styles.spaceText}
             size-auto
-            key={'healthcare' + treatments[t].reference}
+            key={'healthcare' + treatments[key].reference}
           >
-            {treatments[t].reference} - {treatments[t].label}
+            {__DEV__ ? `${managements[key].reference} - ` : null}{treatments[t].label}
           </Text>
         ))}
       </Content>

@@ -19,7 +19,6 @@ export const setItem = async (key, item) => {
       })
     );
   }
-
   let controller = stringifyDeepRef(item);
 
   return await AsyncStorage.setItem(key, controller);

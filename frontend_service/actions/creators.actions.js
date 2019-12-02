@@ -16,6 +16,9 @@ export const setMedicalCase = (medicalCase) => ({
     medicalCase,
   },
 });
+export const clearMedicalCase = () => ({
+  type: actions.MC_CLEAR,
+});
 
 export const setAnswer = (index, value) => ({
   type: actions.SET_ANSWER,
