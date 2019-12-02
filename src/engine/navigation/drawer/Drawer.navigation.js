@@ -9,6 +9,8 @@ import type { StateApplicationContext } from '../../contexts/Application.context
 import NavigationService from '../Navigation.service';
 import { liwiColors } from '../../../utils/constants';
 import { medicalCaseStatus } from '../../../../frontend_service/constants';
+import { CategorieButton, ItemButton, PathBar } from './Drawer.item.navigation';
+import { Toaster } from '../../../utils/CustomToast';
 
 type Props = NavigationScreenProps & {};
 
@@ -24,14 +26,6 @@ const isActiveStep = (step, status) => {
     return i.name === step;
   });
   return currentStatus.index > findStep.index;
-};
-
-export const PathBar = ({ active }) => {
-  return (
-    <View style={{ marginTop: -3, marginBottom: -3 }}>
-      <View style={{ backgroundColor: active ? liwiColors.redColor : liwiColors.greyColor, width: 3, height: 30, marginLeft: 13 }} />
-    </View>
-  );
 };
 
 export default class Drawer extends Component<Props, State> {
@@ -63,25 +57,126 @@ export default class Drawer extends Component<Props, State> {
       navigation,
       app: { t },
       medicalCase,
+      drawerWidth,
     } = this.props;
 
-    /**
-     *  onPress={() =>
-                  navigation.navigate({
-                    routeName: 'Triage',
-                    params: { initialPage: 0 },
-                    key: 'Triage' + 0,
-                  })
-                }
-     *
-     */
-
     let r = NavigationService.getCurrentRoute();
+    const areMedicalCaseInredux = medicalCase.id !== undefined;
 
-    console.log(r);
+    const navigate = (name, initialPage) => {
+      if (areMedicalCaseInredux) {
+        navigation.navigate({
+          routeName: name,
+          params: { initialPage: initialPage },
+          key: name + initialPage,
+        });
+      }
+    };
+
+    // Switch render with enum
+    const enumRender = (item) => {
+      const key = item.type;
+      return {
+        categorie: <CategorieButton navigate={navigate} r={r} {...item} />,
+        item: <ItemButton navigate={navigate} r={r} {...item} />,
+        path: <PathBar navigate={navigate} r={r} {...item} />,
+      }[key];
+    };
+
+    // routing render by objet, more clean
+    const renderingDrawerItems = [
+      {
+        type: 'categorie',
+        initialPage: 0,
+        name: 'Triage',
+        routeName: 'Triage',
+        t: t('menu:triage'),
+      },
+      {
+        type: 'path',
+        initialPage: 0,
+        routeName: 'Triage',
+      },
+      {
+        type: 'item',
+        initialPage: 0,
+        name: 'Triage',
+        routeName: 'Triage',
+        t: t('menu:first_look_assessments'),
+      },
+      {
+        type: 'path',
+        initialPage: 1,
+        routeName: 'Triage',
+      },
+      {
+        type: 'item',
+        initialPage: 1,
+        name: 'Triage',
+        routeName: 'Triage',
+        t: t('menu:chief_complaints'),
+      },
+      {
+        type: 'path',
+        initialPage: 2,
+        routeName: 'Triage',
+      },
+      {
+        type: 'item',
+        initialPage: 2,
+        name: 'Triage',
+        routeName: 'Triage',
+        t: t('menu:vital_signs'),
+      },
+      {
+        type: 'categorie',
+        initialPage: 0,
+        name: 'Consultation',
+        routeName: 'Consultation',
+        t: t('menu:consultation'),
+      },
+      {
+        type: 'path',
+        initialPage: 0,
+        routeName: 'Consultation',
+      },
+      {
+        type: 'item',
+        initialPage: 0,
+        name: 'Consultation',
+        routeName: 'Consultation',
+        t: t('menu:medical_history'),
+      },
+      {
+        type: 'path',
+        initialPage: 1,
+        routeName: 'Consultation',
+      },
+      {
+        type: 'item',
+        initialPage: 1,
+        name: 'Consultation',
+        routeName: 'Consultation',
+        t: t('menu:physical_exam'),
+      },
+      {
+        type: 'categorie',
+        initialPage: 0,
+        name: 'Tests',
+        routeName: 'Tests',
+        t: t('menu:tests'),
+      },
+      {
+        type: 'categorie',
+        initialPage: 0,
+        name: 'DiagnosticsStrategy',
+        routeName: 'DiagnosticsStrategy',
+        t: t('menu:strategy'),
+      },
+    ];
 
     return (
-      <View style={[styles.columns, { width: this.props.drawerWidth, padding: 0 }]}>
+      <View style={[styles.columns, { width: drawerWidth, padding: 0 }]}>
         <View style={styles.tools}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }}>
             <Button
@@ -105,6 +200,16 @@ export default class Drawer extends Component<Props, State> {
                 alignSelf: 'flex-end',
               }}
               homeDrawer
+              onPress={() => navigation.navigate('Emergency')}
+            >
+              <Icon style={styles.iconTop} dark type="FontAwesome5" name="plus-square" />
+            </Button>
+            <Button
+              transparent
+              style={{
+                alignSelf: 'flex-end',
+              }}
+              homeDrawer
               onPress={() => {
                 navigation.toggleDrawer();
               }}
@@ -112,169 +217,11 @@ export default class Drawer extends Component<Props, State> {
               <Icon style={styles.iconTop} dark type="AntDesign" name="close" />
             </Button>
           </View>
-          <View style={styles.top}>
-            <Button
-              onPress={() =>
-                navigation.navigate({
-                  routeName: 'Triage',
-                  params: { initialPage: 0 },
-                  key: 'Triage' + 0,
-                })
-              }
-              drawerCategorieButton
-              style={[r.routeName === 'Triage' ? styles.activeButtonCategorie : null]}
-            >
-              <Text drawerCategorieText style={[r.routeName === 'Triage' ? null : styles.activeTextcategorie]}>
-                {t('menu:triage')}
-              </Text>
-            </Button>
-            <PathBar active={r?.params?.initialPage >= 0 && r.routeName === 'Triage'} />
-            <Button
-              onPress={() =>
-                navigation.navigate({
-                  routeName: 'Triage',
-                  params: { initialPage: 0 },
-                  key: 'Triage' + 1,
-                })
-              }
-              drawerItemButton
-              transparent
-            >
-              <Icon
-                drawerItemIcon
-                style={r?.params?.initialPage >= 0 && r.routeName === 'Triage' ? styles.activeLink : null}
-                type="Ionicons"
-                name={r?.params?.initialPage >= 0 && r.routeName === 'Triage' ? 'md-radio-button-on' : 'md-radio-button-off'}
-              />
-              <Text drawerItemText style={r?.params?.initialPage >= 0 && r.routeName === 'Triage' ? styles.activeLink : null}>
-                {t('menu:first_look_assessments')}
-              </Text>
-            </Button>
-            <PathBar active={r?.params?.initialPage >= 1 && r.routeName === 'Triage'} />
-            <Button
-              onPress={() =>
-                navigation.navigate({
-                  routeName: 'Triage',
-                  params: { initialPage: 1 },
-                  key: 'Triage' + 2,
-                })
-              }
-              drawerItemButton
-              transparent
-            >
-              <Icon
-                style={r?.params?.initialPage >= 1 && r.routeName === 'Triage' ? styles.activeLink : null}
-                drawerItemIcon
-                type="Ionicons"
-                name={r?.params?.initialPage >= 1 && r.routeName === 'Triage' ? 'md-radio-button-on' : 'md-radio-button-off'}
-              />
-              <Text style={r?.params?.initialPage >= 1 && r.routeName === 'Triage' ? styles.activeLink : null} drawerItemText>
-                {t('menu:chief_complaints')}
-              </Text>
-            </Button>
-            <PathBar active={r?.params?.initialPage >= 2 && r.routeName === 'Triage'} />
-            <Button
-              onPress={() =>
-                navigation.navigate({
-                  routeName: 'Triage',
-                  params: { initialPage: 2 },
-                  key: 'Triage' + 3,
-                })
-              }
-              drawerItemButton
-              transparent
-            >
-              <Icon
-                style={r?.params?.initialPage >= 2 && r.routeName === 'Triage' ? styles.activeLink : null}
-                drawerItemIcon
-                type="Ionicons"
-                name={r?.params?.initialPage >= 2 && r.routeName === 'Triage' ? 'md-radio-button-on' : 'md-radio-button-off'}
-              />
-              <Text style={r?.params?.initialPage >= 2 && r.routeName === 'Triage' ? styles.activeLink : null} drawerItemText>
-                {t('menu:vital_signs')}
-              </Text>
-            </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate({
-                  routeName: 'Consultation',
-                  params: { initialPage: 0 },
-                  key: 'Consultation' + 1,
-                })
-              }
-              drawerCategorieButton
-              style={[r.routeName === 'Consultation' ? styles.activeButtonCategorie : null]}
-            >
-              <Text drawerCategorieText style={[r.routeName === 'Consultation' ? null : styles.activeTextcategorie]}>
-                {t('menu:consultation')}
-              </Text>
-            </Button>
-            <PathBar active={r?.params?.initialPage >= 0 && r.routeName === 'Consultation'} />
-            <Button
-              onPress={() =>
-                navigation.navigate({
-                  routeName: 'Consultation',
-                  params: { initialPage: 0 },
-                  key: 'Consultation' + 1,
-                })
-              }
-              drawerItemButton
-              transparent
-            >
-              <Icon
-                style={r?.params?.initialPage >= 0 && r.routeName === 'Consultation' ? styles.activeLink : null}
-                drawerItemIcon
-                type="Ionicons"
-                name={r?.params?.initialPage >= 0 && r.routeName === 'Consultation' ? 'md-radio-button-on' : 'md-radio-button-off'}
-              />
-              <Text style={r?.params?.initialPage >= 0 && r.routeName === 'Consultation' ? styles.activeLink : null} drawerItemText>
-                {t('menu:medical_history')}
-              </Text>
-            </Button>
-            <PathBar active={r?.params?.initialPage >= 1 && r.routeName === 'Consultation'} />
-            <Button
-              onPress={() =>
-                navigation.navigate({
-                  routeName: 'Consultation',
-                  params: { initialPage: 1 },
-                  key: 'Consultation' + 1,
-                })
-              }
-              drawerItemButton
-              transparent
-            >
-              <Icon
-                style={r?.params?.initialPage >= 1 && r.routeName === 'Consultation' ? styles.activeLink : null}
-                drawerItemIcon
-                type="Ionicons"
-                name={r?.params?.initialPage >= 1 && r.routeName === 'Consultation' ? 'md-radio-button-on' : 'md-radio-button-off'}
-              />
-              <Text style={r?.params?.initialPage >= 1 && r.routeName === 'Consultation' ? styles.activeLink : null} drawerItemText>
-                {t('menu:physical_exam')}
-              </Text>
-            </Button>
-            <Button onPress={() => navigation.navigate('Tests')} drawerCategorieButton style={[r.routeName === 'Tests' ? styles.activeButtonCategorie : null]}>
-              <Text drawerCategorieText style={[r.routeName === 'Tests' ? null : styles.activeTextcategorie]}>
-                {t('menu:tests')}
-              </Text>
-            </Button>
-            <Button
-              onPress={() => navigation.navigate('DiagnosticsStrategy')}
-              drawerCategorieButton
-              style={[r.routeName === 'DiagnosticsStrategy' ? styles.activeButtonCategorie : null]}
-            >
-              <Text drawerCategorieText style={[r.routeName === 'DiagnosticsStrategy' ? null : styles.activeTextcategorie]}>
-                {t('menu:strategy')}
-              </Text>
-            </Button>
-            <Button transparent btnDrawer marginIcon onPress={() => navigation.navigate('Algorithms')}>
-              <Icon style={styles.icon} dark type="AntDesign" name="sync" />
-            </Button>
-          </View>
+          <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((routeur) => enumRender(routeur))}</View>
           <View style={styles.bottom}>
             <Button
-              style={styles.bottomStyle}
               marginIcon
+              style={styles.bottomStyle}
               onPress={() =>
                 navigation.navigate('Summary', {
                   id: medicalCase.patient.id,
@@ -282,12 +229,8 @@ export default class Drawer extends Component<Props, State> {
                 })
               }
             >
-              <Icon style={{ fontSize: 40 }} drawerBottomIcon type="AntDesign" name="setting" />
+              <Icon style={{ fontSize: 40 }} drawerBottomIcon type="FontAwesome5" name="file-medical" />
               <Text style={styles.textBottom}>Current Summary</Text>
-            </Button>
-            <Button style={styles.bottomStyle} onPress={() => navigation.navigate('Emergency')}>
-              <Icon style={{ fontSize: 40 }} drawerBottomIcon name="warning" type="FontAwesome" />
-              <Text style={styles.textBottom}>Emergency</Text>
             </Button>
           </View>
         </View>

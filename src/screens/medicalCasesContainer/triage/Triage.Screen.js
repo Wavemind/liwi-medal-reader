@@ -33,7 +33,6 @@ export default class Triage extends React.Component<Props, State> {
   state = {
     widthView: 0,
     // eslint-disable-next-line react/destructuring-assignment
-    selectedPage: this.props.navigation.getParam('initialPage'),
   };
 
   render() {
@@ -43,8 +42,6 @@ export default class Triage extends React.Component<Props, State> {
       focus,
       navigation,
     } = this.props;
-
-    let { selectedPage } = this.state;
 
     let firstLookAssessement = [];
 
@@ -74,10 +71,13 @@ export default class Triage extends React.Component<Props, State> {
     });
 
     let chiefComplaintReady = chiefComplaint.every((cc) => cc.answer !== null);
-
+    let selectedPage = navigation.getParam('initialPage');
     // Denied access to Basic measurement step if all chief complaints are not answered
-    if (navigation.getParam('initialPage') === 2 && selectedPage === 2 && !chiefComplaintReady) {
+    if (selectedPage === 2 && !chiefComplaintReady) {
       selectedPage = 1;
+      navigation.setParams({
+        initialPage: 1,
+      });
       Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
     }
 
@@ -97,7 +97,6 @@ export default class Triage extends React.Component<Props, State> {
             navigation.setParams({
               initialPage: e,
             });
-            this.setState({ selectedPage: e });
           }}
           initialPage={selectedPage}
           showBottomStepper
