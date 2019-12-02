@@ -13,6 +13,14 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class DiagnosesStrategy extends Component<Props, State> {
+  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+    if (nextProps.medicalCase.id === undefined) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   componentWillMount() {
     const {
       app: { t },

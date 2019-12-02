@@ -39,7 +39,7 @@ const exceptionhandler = (error, isFatal) => {
     console.warn('Unexpected error was catched but is undefined ? o.O');
   }
 };
-setJSExceptionHandler(exceptionhandler, true);
+setJSExceptionHandler(exceptionhandler, false);
 // - exceptionhandler is the exception handler function
 // - allowInDevMode is an optional parameter is a boolean.
 //   If set to true the handler to be called in place of RED screen
