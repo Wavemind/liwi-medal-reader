@@ -125,14 +125,13 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
 
       // Get value of this node
       const nodeInBracket = state$.nodes[id];
-
       if (nodeInBracket.value === null || (nodeInBracket.value === 0 && nodeInBracket.answer === null)) {
         ready = false;
         return item;
       } else {
         switch (nodeInBracket.value_format) {
           case valueFormats.date:
-            return moment().diff(moment(nodeInBracket.value).toDate(), 'months');
+            return moment().diff(moment(nodeInBracket.value).toDate(), item.search('ToMonth') > 0 ? 'months' : 'days');
           default:
             return nodeInBracket.value;
         }
@@ -140,7 +139,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     };
     // Replace every bracket in the formula with it's value
     let formula = this.formula.replace(findBracketId, replaceBracketToValue);
-
     if (ready) {
       return eval(formula);
     } else {
