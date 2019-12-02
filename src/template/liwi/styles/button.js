@@ -5,15 +5,14 @@ export default {
   'NativeBase.Button': {
     '.btnLiwi': {
       height: 70,
-      backgroundColor: '#ff31d0',
       borderRadius: 35,
     },
     '.drawerCategorieButton': {
       flex: 1,
       backgroundColor: liwiColors.greyColor,
       // padding: 20,
-      paddingTop: 20,
-      paddingBottom: 20,
+      paddingTop: 5,
+      paddingBottom: 5,
       marginRight: 5,
       marginLeft: 5,
       marginTop: 15,
@@ -25,9 +24,9 @@ export default {
       textAlign: 'center',
     },
     '.drawerItemButton': {
-      flex: 1,
+      // flex: 1,
       flexDirection: 'row',
-      backgroundColor: 'none',
+      height: 13,
       // justifyContent: 'space-between',
     },
     '.w50': {

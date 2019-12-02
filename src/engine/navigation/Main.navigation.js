@@ -193,14 +193,9 @@ const Stack = createStackNavigator(
       return {
         headerBackTitleVisible: false,
         headerLeft: (
-          <React.Fragment>
-            <Button iconMenu onPress={() => navigation.openDrawer()}>
-              <Icon red type="Entypo" name="menu" large />
-            </Button>
-            <Button backIconMenu onPress={() => navigation.goBack()}>
-              <Icon red type="AntDesign" name="back" medium />
-            </Button>
-          </React.Fragment>
+          <Button iconMenu onPress={() => navigation.openDrawer()}>
+            <Icon red type="Entypo" name="menu" large />
+          </Button>
         ),
         headerRight: (
           <Text
@@ -214,6 +209,9 @@ const Stack = createStackNavigator(
             {navigation.getParam('headerRight')}
           </Text>
         ),
+        headerStyle: {
+          backgroundColor: '#E9E9E9',
+        },
         headerTitleStyle: { color: liwiColors.blackColor },
         headerTitleContainerStyle: {
           marginLeft: 50,
@@ -270,7 +268,7 @@ let StackWithBottomNavigation = createBottomTabNavigator(
 );
 
 const MainNavigation = () => {
-  const drawerWidth = screenWidth / 3;
+  const drawerWidth = screenWidth / 2.2;
   return createDrawerNavigator(
     {
       RootDrawer: { screen: StackWithBottomNavigation },

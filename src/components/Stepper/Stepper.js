@@ -186,9 +186,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (page - 1) * width,
-        animated: true,
-      })
+          x: (page - 1) * width,
+          animated: true,
+        })
       : this.handleBottomStepper(page - 1);
   };
 
@@ -205,9 +205,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (page + 1) * width,
-        animated: true,
-      })
+          x: (page + 1) * width,
+          animated: true,
+        })
       : this.handleBottomStepper(page + 1);
   };
 
@@ -245,8 +245,7 @@ class Stepper extends React.Component<Props, State> {
 
     return React.Children.map(children, (child: Object, index: number) => {
       return (
-        <View key={`child${index}`}
-              style={[styles.container, { width: width, height: height }, childrenStyle]}>
+        <View key={`child${index}`} style={[styles.container, { width: width, height: height }, childrenStyle]}>
           {child}
         </View>
       );
@@ -294,11 +293,9 @@ class Stepper extends React.Component<Props, State> {
               <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
                 {index < page && validate ? (
                   error ? (
-                    <MaterialIcon name="close" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                    <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                    <MaterialIcon name="check" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   )
                 ) : (
                   <Icon {...iconConfig} />
@@ -391,9 +388,7 @@ class Stepper extends React.Component<Props, State> {
             ]}
           >
             {showBack ? (
-              <PlatformTouchableNative onPress={this.onPressBack}
-                                       background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                                       style={{ zIndex: 1 }}>
+              <PlatformTouchableNative onPress={this.onPressBack} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
                 <View style={styles.button}>
                   {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
@@ -402,9 +397,7 @@ class Stepper extends React.Component<Props, State> {
             ) : null}
             {this.renderDots()}
             {showNext ? (
-              <PlatformTouchableNative onPress={this.onPressNext}
-                                       background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                                       style={{ zIndex: 1 }}>
+              <PlatformTouchableNative onPress={this.onPressNext} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
                 <View style={styles.button}>
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                   {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
@@ -412,9 +405,7 @@ class Stepper extends React.Component<Props, State> {
               </PlatformTouchableNative>
             ) : (
               nextStage !== null && (
-                <PlatformTouchableNative onPress={this.nextStage}
-                                         background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                                         style={{ zIndex: 1 }}>
+                <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
                   <View style={[styles.button]}>
                     <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
                     {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
