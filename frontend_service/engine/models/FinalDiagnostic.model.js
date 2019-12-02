@@ -47,6 +47,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
   calculateCondition = () => {
     const state$ = store.getState();
     let conditioNValueTrue = [];
+    // Generate only the top_condition with conditionValue to true => they are not disabled
     this.top_conditions.map((condition) => {
       let findDDinNode = state$.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
       if (findDDinNode.conditionValue === true) {
@@ -54,7 +55,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       }
     });
 
-    // console.log(topConditionValue, this);
+    // Return the status of this dd
     let statusOfDD = getStatusOfDD(state$, this);
 
     // If this FD can be excluded by other high-priority FD
