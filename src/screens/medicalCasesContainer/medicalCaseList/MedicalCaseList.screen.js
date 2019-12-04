@@ -308,7 +308,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
               </Button>
               <Button center rounded light onPress={this.orderByLastName}>
                 {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
-                <Text>{t('medical_case_list:surname')}</Text>§
+                <Text>{t('medical_case_list:surname')}</Text>
               </Button>
               <Button center rounded light onPress={this.orderByStatus}>
                 {orderByStatus === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
