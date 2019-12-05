@@ -1,14 +1,29 @@
 // @Flow
 import React, { Component } from 'react';
 import { Button, Icon, Text } from 'native-base';
-import { styles } from './Drawer.style';
 import { TouchableOpacity, View } from 'react-native';
-import { liwiColors } from '../../../utils/constants';
 import { withNavigation } from 'react-navigation';
+import { styles } from './Drawer.style';
+import { liwiColors } from '../../../utils/constants';
 
-export class CategorieButton extends Component<{ t: any, r: any, navigation: any }> {
+export class CategorieButton extends Component<{ t: any, r: any }> {
+  // Update the component only when needed
+  shouldComponentUpdate(nextProps) {
+    let { r, areMedicalCaseInredux, routeName } = this.props;
+
+    if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+      return true;
+    }
+
+    if (nextProps.r?.routeName !== r?.routeName && nextProps.routeName === routeName) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
-    let { t, r, navigation, name, initialPage, navigate } = this.props;
+    let { t, r, name, initialPage, navigate } = this.props;
     return (
       <Button onPress={() => navigate(name, initialPage)} drawerCategorieButton style={[r.routeName === name ? styles.activeButtonCategorie : null]}>
         <Text drawerCategorieText style={[r.routeName === name ? null : styles.activeTextcategorie]}>
@@ -19,14 +34,35 @@ export class CategorieButton extends Component<{ t: any, r: any, navigation: any
   }
 }
 
-export class ItemButton extends Component<{ t: any, r: any, navigation: any }> {
+export class ItemButton extends Component<{ t: any, r: any }> {
+  // Update the component only when needed
   shouldComponentUpdate(nextProps) {
-    let { r } = this.props;
-    return r?.params?.initialPage !== nextProps.r?.params?.initialPage || nextProps.r?.routeName === r?.routeName;
+    let { r, routeName, areMedicalCaseInredux } = this.props;
+
+    if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+      return true;
+    }
+
+    // Juste arrive here
+    if (nextProps.r?.routeName === routeName && r?.routeName !== routeName) {
+      return true;
+    }
+
+    // Route we want and only initialPage not the same
+    if (nextProps.r?.routeName === routeName && r?.params?.initialPage !== nextProps.r?.params?.initialPage) {
+      return true;
+    }
+
+    //
+    if (routeName === r.routeName && nextProps.r?.routeName !== r?.routeName) {
+      return true;
+    }
+
+    return false;
   }
 
   render() {
-    let { t, r, navigation, initialPage, name, navigate } = this.props;
+    let { t, r, initialPage, name, navigate } = this.props;
     return (
       <Button onPress={() => navigate(name, initialPage)} drawerItemButton transparent>
         <Icon
@@ -44,13 +80,19 @@ export class ItemButton extends Component<{ t: any, r: any, navigation: any }> {
 }
 export const HeaderButtonsDrawer = withNavigation(
   class Header extends React.Component {
-    shouldComponentUpdate(nextprops) {
-      return this.props?.r?.routeName !== nextprops?.r?.routeName;
+    // Update the component only when needed
+    shouldComponentUpdate(nextProps) {
+      const { areMedicalCaseInredux } = this.props;
+
+      if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+        return true;
+      }
+
+      return this.props?.r?.routeName !== nextProps.r?.routeName;
     }
 
     render() {
       const { r, navigation } = this.props;
-      console.log('render  HeaderButtonsDrawer');
 
       return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }}>
@@ -99,13 +141,17 @@ export const HeaderButtonsDrawer = withNavigation(
 
 export const BottomButtonsDrawer = withNavigation(
   class BottomButtonsDrawerClasse extends React.Component {
+    // Update the component only when needed
     shouldComponentUpdate(nextProps) {
+      const { areMedicalCaseInredux } = this.props;
+      if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+        return true;
+      }
       return nextProps?.medicalCase?.patient?.id !== this.props?.medicalCase?.patient?.id;
     }
 
     render() {
       const { navigation, medicalCase } = this.props;
-      console.log('render  BottomButtonsDrawer');
       return (
         <View style={styles.bottom}>
           <Button
@@ -127,10 +173,13 @@ export const BottomButtonsDrawer = withNavigation(
   }
 );
 
-export class PathBar extends Component<{ active: any, routeName: string, navigation: Object, initialPage: string }> {
-  shouldComponentUpdate(nextProps): boolean {
-    let { r, routeName } = this.props;
-    console.log(nextProps.r?.routeName, routeName, r?.params?.initialPage, nextProps.r?.params?.initialPage);
+export class PathBar extends Component<{ routeName: string, initialPage: string }> {
+  shouldComponentUpdate(nextProps) {
+    let { r, routeName, areMedicalCaseInredux } = this.props;
+
+    if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+      return true;
+    }
 
     // Juste arrive here
     if (nextProps.r?.routeName === routeName && r?.routeName !== routeName) {
@@ -142,6 +191,7 @@ export class PathBar extends Component<{ active: any, routeName: string, navigat
       return true;
     }
 
+    //
     if (routeName === r.routeName && nextProps.r?.routeName !== r?.routeName) {
       return true;
     }
@@ -152,8 +202,6 @@ export class PathBar extends Component<{ active: any, routeName: string, navigat
   render() {
     let { r, routeName, initialPage, navigate } = this.props;
     let active = r?.params?.initialPage >= initialPage && r.routeName === routeName;
-
-    console.log('render  PathBar');
 
     return (
       <TouchableOpacity onPress={() => navigate(routeName, initialPage)} style={{ marginTop: -2, marginBottom: -3, flex: 1, flexDirection: 'row' }}>

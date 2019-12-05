@@ -98,7 +98,7 @@ function onNavigationStateChange(prevState, currentState) {
         return i.name === cu.params.medicalCaseStatus;
       });
       // The status has to be changed !
-      if (currentStatus.index < routeStatus.index) {
+      if (currentStatus?.index < routeStatus?.index) {
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }

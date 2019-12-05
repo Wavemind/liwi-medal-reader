@@ -1,6 +1,6 @@
 import i18n from '../../../utils/i18n';
 
-// routing render by objet, more clean
+// routing render by object, more clean
 export const renderingDrawerItems = [
   {
     type: 'categorie',
