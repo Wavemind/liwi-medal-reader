@@ -87,6 +87,7 @@ i18n
           search: 'Search a patient',
           add: 'Add a patient',
           others: 'Others',
+          noredux: 'There is no medical Case loaded',
         },
         medical_case: {
           final_diagnoses: 'Final diagnoses',
@@ -264,11 +265,11 @@ i18n
           diagnoses: 'Diagnostic',
         },
         notifications: {
-          empty_code: "Votre code est vide, veuillez l'écrire",
-          invalid_code: "Votre code local n'est pas valide, veuillez réessayer.",
-          session_does_not_exist: "Cet utilisateur local n'existe pas, veuillez réessayer.",
+          empty_code: 'Votre code est vide, veuillez l\'écrire',
+          invalid_code: 'Votre code local n\'est pas valide, veuillez réessayer.',
+          session_does_not_exist: 'Cet utilisateur local n\'existe pas, veuillez réessayer.',
           session_already_exist: 'La session existe déjà',
-          no_internet: "Vous n'avez pas de connexion internet",
+          no_internet: 'Vous n\'avez pas de connexion internet',
         },
         consultation: {
           medical_history: 'Medical History',

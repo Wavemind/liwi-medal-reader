@@ -19,6 +19,7 @@ import { store } from '../../../frontend_service/store';
 import { updateMedicalCaseProperty, clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { Toaster } from '../../utils/CustomToast';
+import NavigationService from '../../engine/navigation/Navigation.service';
 
 type Props = {
   children: any,
@@ -251,13 +252,10 @@ class Stepper extends React.Component<Props, State> {
     const { navigation, nextStage, endMedicalCase, paramsNextStage } = this.props;
 
     if (endMedicalCase === true) {
-      const state$ = store.getState();
       store.dispatch(updateMedicalCaseProperty('status', medicalCaseStatus.close.name));
       store.dispatch(clearMedicalCase());
 
-      navigation.push('PatientProfile', {
-        id: state$.patient.id,
-      });
+      NavigationService.resetActionStack('Home');
     }
 
     navigation.navigate({

@@ -8,11 +8,9 @@ import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
-import NavigationService from './Navigation.service';
 import i18n from '../../utils/i18n';
 
 import { liwiColors, screenWidth } from '../../utils/constants';
-import PatientSummaryMenu from './patientSummaryMenu';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
@@ -247,25 +245,9 @@ const HomeWithModal = createStackNavigator(
   }
 );
 
-let StackWithBottomNavigation = createBottomTabNavigator(
-  {
-    RootBottomTab: { screen: HomeWithModal },
-  },
-  {
-    tabBarComponent: (props) => {
-      let currentRoute = NavigationService.getCurrentRoute();
-
-      // Disabled tabBarComponent
-      // do we remove it ?
-      return null;
-
-      if (currentRoute?.params?.showSummary ?? false) {
-        return <PatientSummaryMenu {...props} />;
-      }
-      return null;
-    },
-  }
-);
+let StackWithBottomNavigation = createBottomTabNavigator({
+  RootBottomTab: { screen: HomeWithModal },
+});
 
 const MainNavigation = () => {
   const drawerWidth = screenWidth / 2.2;

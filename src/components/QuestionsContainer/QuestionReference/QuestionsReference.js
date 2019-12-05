@@ -20,6 +20,11 @@ export default class QuestionsReference extends React.Component<Props, State> {
       question: nextQuestion,
     } = nextProps;
 
+    // Prevent empty redux crash
+    if (nextProps.medicalCase.id === undefined) {
+      return false;
+    }
+
     const nodeX = nodes[question.reference_table_x_id];
     const nextNodeX = nextNodes[question.reference_table_x_id];
     const nodeY = nodes[question.reference_table_y_id];

@@ -9,6 +9,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps
-)(withSessions(withApplication(Drawer)));
+export default connect(mapStateToProps)(withSessions(withApplication(Drawer)));

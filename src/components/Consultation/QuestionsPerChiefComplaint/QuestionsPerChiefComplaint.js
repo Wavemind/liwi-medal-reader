@@ -15,7 +15,11 @@ type State = {};
 export default class QuestionsPerChiefComplaint extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const { pageIndex } = this.props;
-    return nextProps.selectedPage === pageIndex;
+    if (nextProps.medicalCase.id === undefined) {
+      return false;
+    } else {
+      return nextProps.selectedPage === pageIndex;
+    }
   }
 
   generateQuestions = (chiefComplaint) => {
@@ -37,7 +41,10 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
   };
 
   render() {
-    const { category, app: { t } } = this.props;
+    const {
+      category,
+      app: { t },
+    } = this.props;
     const { chiefComplaints } = this.state;
 
     return (
@@ -56,7 +63,6 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
             <Text not-available>{t('patient_list:not_found')}</Text>
           </View>
         )}
-
       </ScrollView>
     );
   }
