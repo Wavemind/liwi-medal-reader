@@ -12,7 +12,6 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 class DropDownMenu extends React.Component<Props, State> {
-
   onValueChange = (selected) => {
     NavigationService.navigate(selected.value);
   };
@@ -27,7 +26,6 @@ class DropDownMenu extends React.Component<Props, State> {
       </View>
     );
   };
-
 
   render() {
     const {
@@ -46,20 +44,12 @@ class DropDownMenu extends React.Component<Props, State> {
     let value;
 
     if (currentRoute.params?.dropDownMenu !== undefined) {
-      value = options.find(
-        (o) => o.value === currentRoute.params.dropDownMenu
-      );
+      value = options.find((o) => o.value === currentRoute.params.dropDownMenu);
     }
 
     return (
       <View flex-center>
-        <CustomPicker
-          getLabel={(item) => item.label}
-          value={value}
-          fieldTemplate={this.renderField}
-          options={options}
-          onValueChange={this.onValueChange}
-        />
+        <CustomPicker getLabel={(item) => item.label} value={value} fieldTemplate={this.renderField} options={options} onValueChange={this.onValueChange} />
       </View>
     );
   }

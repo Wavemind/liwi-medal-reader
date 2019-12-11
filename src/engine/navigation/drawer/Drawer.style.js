@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../../utils/constants';
+import { liwiColors, marginLeftDrawer } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   tools: {
@@ -9,12 +9,32 @@ export const styles = StyleSheet.create({
   activeButtonCategorie: {
     backgroundColor: liwiColors.redColor,
   },
+  drawerMinifyWrapButton: {
+    flex: 1,
+    backgroundColor: '#888',
+    borderWidth: 2,
+    borderColor: '#7d8815',
+  },
   activeTextcategorie: { color: liwiColors.blackColor },
   activeLink: { color: liwiColors.redColor },
   paddingCategory: {
     paddingLeft: 30,
     paddingTop: 30,
     paddingBottom: 30,
+  },
+  drawerMinifySmallify: { alignSelf: 'flex-end', flex: 1 },
+  drawerMinifyView: { flex: 1, flexDirection: 'column', alignItems: 'flex-end' },
+  drawerMinifyButton: {
+    height: 30,
+    padding: 0,
+    margin: 0,
+    backgroundColor: liwiColors.redColor,
+    elevation: 3,
+  },
+  drawerMinifyText: {
+    backgroundColor: '#772888',
+    margin: 0,
+    textAlign: 'center',
   },
   textBottom: { color: liwiColors.whiteColor, fontSize: 19, textAlign: 'left', margin: 0, padding: 0, flexShrink: 1 },
   bottomStyle: {

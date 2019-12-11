@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon, Text } from 'native-base';
+import { Animated } from 'react-native';
 import { createBottomTabNavigator, createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -10,7 +11,7 @@ import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
 import i18n from '../../utils/i18n';
 
-import { liwiColors, screenWidth } from '../../utils/constants';
+import { liwiColors, marginLeftDrawer, screenWidth } from '../../utils/constants';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
@@ -236,6 +237,7 @@ const HomeWithModal = createStackNavigator(
     cardStyle: {
       backgroundColor: 'transparent',
       opacity: 1,
+      marginLeft: marginLeftDrawer,
     },
     transitionConfig: () => ({
       containerStyle: {
@@ -245,9 +247,16 @@ const HomeWithModal = createStackNavigator(
   }
 );
 
-let StackWithBottomNavigation = createBottomTabNavigator({
-  RootBottomTab: { screen: HomeWithModal },
-});
+let StackWithBottomNavigation = createBottomTabNavigator(
+  {
+    RootBottomTab: { screen: HomeWithModal },
+  },
+  {
+    tabBarComponent: (props) => {
+      return null;
+    },
+  }
+);
 
 const MainNavigation = () => {
   const drawerWidth = screenWidth / 2.2;
@@ -258,7 +267,17 @@ const MainNavigation = () => {
     {
       drawerWidth,
       overlayColor: 'rgba(38,38,38,0.8)',
-      contentComponent: (props) => <Drawer {...props} drawerWidth={drawerWidth} />,
+      contentComponent: (props) => {
+        const translateX = props.drawerOpenProgress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-100, 0],
+        });
+        return (
+          // <Animated.View style={{ flex: 1, transform: [{ translateX }] }}>
+          <Drawer {...props} drawerWidth={drawerWidth} />
+          // </Animated.View>
+        );
+      },
     }
   );
 };
