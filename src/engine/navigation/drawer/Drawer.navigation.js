@@ -8,6 +8,8 @@ import NavigationService from '../Navigation.service';
 import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
 import { Toaster } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
+import { marginLeftDrawer } from '../../../utils/constants';
+import { DrawerMinify } from './Drawer.minify';
 
 type Props = NavigationScreenProps & {};
 
@@ -33,6 +35,8 @@ export default class Drawer extends Component<Props, State> {
       drawerWidth,
       app: { t },
     } = this.props;
+
+    const { isDrawerOpen } = navigation.state;
 
     // Get current route from navigation
     let r = NavigationService.getCurrentRoute();
@@ -71,11 +75,18 @@ export default class Drawer extends Component<Props, State> {
     );
 
     return (
-      <View style={[styles.columns, { width: drawerWidth, padding: 0 }]}>
+      <View style={[styles.columns, { width: drawerWidth + marginLeftDrawer, padding: 0 }]}>
         <View style={styles.tools}>
-          <HeaderButtonsDrawer r={r} />
-          {renderDrawerButtons}
-          <BottomButtonsDrawer medicalCase={medicalCase} />
+          <DrawerMinify />
+          {/*{!isDrawerOpen ? (*/}
+          {/*  <DrawerMinify />*/}
+          {/*) : (*/}
+          {/*  <>*/}
+          {/*    <HeaderButtonsDrawer r={r} />*/}
+          {/*    {renderDrawerButtons}*/}
+          {/*    <BottomButtonsDrawer medicalCase={medicalCase} />*/}
+          {/*  </>*/}
+          {/*)}*/}
         </View>
       </View>
     );

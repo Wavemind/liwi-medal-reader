@@ -51,8 +51,7 @@ class LayoutTemplate extends React.Component<Props> {
     if (fromBackground === null && appState === 'active') {
       // first render of the app
       return null;
-    }
-    else if (fromBackground && appState === 'active') {
+    } else if (fromBackground && appState === 'active') {
       routes = state;
       const { app } = this.props;
 
