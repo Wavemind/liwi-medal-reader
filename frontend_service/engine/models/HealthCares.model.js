@@ -4,7 +4,8 @@ import { NodeModel } from './Node.model';
 import { nodesType } from '../../constants';
 import { store } from '../../store';
 
-interface HealthCaresInterface {}
+interface HealthCaresInterface {
+}
 
 export class HealthCaresModel extends NodeModel implements HealthCaresInterface {
   constructor(props) {
@@ -17,27 +18,23 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
   }
 
   /**
-   * Recursif call to get question in QS from QS
-   * Immutability set on questions[key]
-   *
+   * Recursive call to get question in QS from QS
    *
    * @params [Object] state$, [Object] questions, [Object] node: the node we want questions
    * @return nothing : Immutability
    */
-  getRecursifQuestionsInQs = (state$, questions, node) => {
-    Object.keys(node.instances).map((d) => {
-      if (state$.nodes[d].type === nodesType.questionsSequence) {
-        this.getRecursifQuestionsInQs(state$, questions, state$.nodes[d]);
+  getQuestionsInQs = (state$, questions, node) => {
+    Object.keys(node.instances).map((id) => {
+      if (state$.nodes[id].type === nodesType.questionsSequence) {
+        this.getQuestionsInQs(state$, questions, state$.nodes[id]);
       } else {
-        questions[d] = state$.nodes[d];
+        questions[id] = state$.nodes[id];
       }
     });
   };
 
   /**
    *  Get questions related to a healthcare
-   *  Recursif call to include question in Qs
-   *  Immutability set on questions[key]
    *
    *  @params [Object] instanceHealthcare: the instance from a final Diagnostic (management or treatment)
    *  @return [Object] questions
@@ -48,7 +45,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     instanceHealthcare.top_conditions.map((tp) => {
       let node = state$.nodes[tp.first_node_id];
       if (node.type === nodesType.questionsSequence) {
-        this.getRecursifQuestionsInQs(state$, questions, node);
+        this.getQuestionsInQs(state$, questions, node);
       } else {
         questions[tp.first_node_id] = node;
       }
