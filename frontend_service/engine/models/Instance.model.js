@@ -14,6 +14,7 @@ export class InstanceModel implements InstanceInterface {
     this.top_conditions = top_conditions;
     this.id = id;
     this.children = children;
+    // This fields tell us that this instance belongs in a diagram and it's not a Healthcare condition
     this.final_diagnostic_id = final_diagnostic_id;
   }
 
