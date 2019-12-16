@@ -15,14 +15,7 @@ interface DiagnosticInterface {
 
 export class DiagnosticModel implements DiagnosticInterface {
   constructor(props) {
-    const {
-      id,
-      final_diagnostics,
-      label,
-      differential,
-      reference,
-      instances,
-    } = props;
+    const { id, final_diagnostics, label, differential, reference, instances } = props;
 
     this.id = id;
     this.final_diagnostics = final_diagnostics;
