@@ -3,6 +3,7 @@
 import { NavigationScreenProps } from 'react-navigation';
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
+import find from 'lodash/find';
 import HealthCaresQuestions from '../healthCaresQuestions';
 import HealthCares from '../healthCares';
 import { styles } from './DiagnosticsStrategy.style';
@@ -28,11 +29,14 @@ export default class DiagnosesStrategy extends Component<Props, State> {
 
     const {
       navigation,
-      medicalCase: { patient },
+      medicalCase: { patient, nodes },
     } = this.props;
+
+    const age = find(nodes, { reference: '2', category: 'demographic' });
+
     navigation.setParams({
       title: t('navigation:diagnosticsstrategy'),
-      headerRight: patient.firstname + ' ' + patient.lastname,
+      headerRight: `${patient.firstname} ${patient.lastname} | ${age.value} months`,
     });
   }
   render() {

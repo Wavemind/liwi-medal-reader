@@ -3,6 +3,7 @@
 import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
+import find from 'lodash/find';
 import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -19,11 +20,14 @@ export default class Tests extends React.Component<Props, State> {
   componentWillMount() {
     const {
       navigation,
-      medicalCase: { patient },
+      medicalCase: { patient, nodes },
     } = this.props;
+
+    const age = find(nodes, { reference: '2', category: 'demographic' });
+
     navigation.setParams({
       title: 'Tests ',
-      headerRight: patient.firstname + ' ' + patient.lastname,
+      headerRight: `${patient.firstname} ${patient.lastname} | ${age.value} months`,
     });
   }
 
