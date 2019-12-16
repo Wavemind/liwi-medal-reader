@@ -105,7 +105,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, "doesn't exist");
           return [];
       }
     })
@@ -223,7 +223,6 @@ export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
 // @params [Object] action$, [Object] state$
 // @return [Array][Object] arrayActions
 // Dispatch condition action on condition result
-// TODO rename it... we dont know what is it
 export const epicCatchDispatchCondition = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_CONDITION),
@@ -264,12 +263,20 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
       // Get node condition value
       const conditionValue = currentNode.calculateCondition(state$);
+      const currentConditionValue = find(state$.value.nodes[currentNode.id].dd, (d) => d.id === diagnosticId);
+
       // If the condition of this node is not null
       if (parentConditionValue === false) {
-        // Set parent to false if their condition's isn't correct. Used to stop the algorithm
-        actions.push(updateConditionValue(nodeId, diagnosticId, false, state$.value.diagnostics[diagnosticId].type));
+        // Stop infinite loop, change only whene conditionValue is different
+        if (currentConditionValue.conditionValue !== false) {
+          // Set parent to false if their condition's isn't correct. Used to stop the algorithm
+          actions.push(updateConditionValue(nodeId, diagnosticId, false, state$.value.diagnostics[diagnosticId].type));
+        }
       } else if (conditionValue !== null) {
-        actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type));
+        // Stop infinite loop, change only whene conditionValue is different
+        if (currentConditionValue.conditionValue !== conditionValue) {
+          actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type));
+        }
 
         // If the node is answered go his children
         if (state$.value.nodes[nodeId].answer !== null) {

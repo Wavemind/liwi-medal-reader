@@ -15,6 +15,7 @@ type State = {};
 export default class QuestionsPerChiefComplaint extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const { pageIndex } = this.props;
+
     return nextProps.selectedPage === pageIndex;
   }
 
@@ -33,15 +34,16 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
   // default settings
   state = {
     // eslint-disable-next-line react/destructuring-assignment
-    chiefComplaints: this.props.medicalCase.nodes.filterByCategory(categories.chiefComplaint),
   };
 
   render() {
     const {
       category,
       app: { t },
+      medicalCase,
     } = this.props;
-    const { chiefComplaints } = this.state;
+
+    const chiefComplaints = medicalCase.nodes.filterByCategory(categories.chiefComplaint);
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
