@@ -12,9 +12,6 @@ const Matrix = {
     return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
   },
 
-  /**
-   两个矩阵相乘
-   **/
   multMatrix: (a, b) => {
     var out = [];
     var a00 = a[0],
