@@ -6,6 +6,7 @@ import { View } from 'native-base';
 import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import find from 'lodash/find';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -19,11 +20,14 @@ export default class Tests extends React.Component<Props, State> {
   componentWillMount() {
     const {
       navigation,
-      medicalCase: { patient },
+      medicalCase: { patient, nodes },
     } = this.props;
+
+    const age = find(nodes, { reference: '2', category: 'demographic' });
+
     navigation.setParams({
       title: 'Tests ',
-      headerRight: patient.firstname + ' ' + patient.lastname,
+      headerRight: `${patient.firstname} ${patient.lastname} | ${age.value} months`,
     });
   }
 
