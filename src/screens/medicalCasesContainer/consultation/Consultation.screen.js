@@ -4,10 +4,10 @@ import React, { Suspense } from 'react';
 import { View } from 'native-base';
 
 import { NavigationScreenProps } from 'react-navigation';
+import find from 'lodash/find';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
 import LiwiLoader from '../../../utils/LiwiLoader';
-import find from "lodash/find";
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
