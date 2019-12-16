@@ -28,12 +28,12 @@ export default class ChiefComplaint extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     // First fast comparaison if the number of questions is different
-    const { questions } = this.props;
+    const { questions, chiefComplaint } = this.props;
     if (nextProps.questions.length !== questions.length) {
       return true;
     }
 
-    return this.isSomeQuestionsDifferent(nextProps.questions);
+    return chiefComplaint.answer !== nextProps.chiefComplaint.answer || this.isSomeQuestionsDifferent(nextProps.questions);
   }
 
   render() {
