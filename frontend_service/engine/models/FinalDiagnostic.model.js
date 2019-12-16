@@ -1,12 +1,12 @@
 // @flow
 
+import find from 'lodash/find';
+import * as _ from 'lodash';
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/algoConditionsHelpers';
 import { store } from '../../store';
 import { nodesType } from '../../constants';
-import find from 'lodash/find';
-import * as _ from 'lodash';
 
 interface FinalDiagnosticInterface {}
 
