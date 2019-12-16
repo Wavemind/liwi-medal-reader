@@ -79,7 +79,7 @@ export default class NewSession extends React.Component<Props, State> {
     }
 
     return (
-      <View flex-container-column testID={'new_session'}>
+      <View flex-container-column testID="new_session">
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
             <LiwiTitle2 noBorder center>
