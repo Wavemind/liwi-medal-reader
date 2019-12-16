@@ -9,9 +9,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
-const Questions = React.lazy(() =>
-  import('../../../components/QuestionsContainer/Questions')
-);
+const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
 type Props = NavigationScreenProps & {};
 type State = {};
 
@@ -34,11 +32,10 @@ export default class Tests extends React.Component<Props, State> {
       medicalCase,
       app: { t },
       focus,
+      navigation,
     } = this.props;
 
-    let assessmentTest = medicalCase.nodes.filterBy([
-      { by: 'category', operator: 'equal', value: categories.assessment },
-    ]);
+    let assessmentTest = medicalCase.nodes.filterBy([{ by: 'category', operator: 'equal', value: categories.assessment }]);
 
     return (
       <React.Suspense fallback={null}>
@@ -48,6 +45,11 @@ export default class Tests extends React.Component<Props, State> {
           }}
           validation={false}
           showTopStepper
+          onPageSelected={(e) => {
+            navigation.setParams({
+              initialPage: e,
+            });
+          }}
           initialPage={0}
           showBottomStepper
           icons={[{ name: 'test-tube', type: 'MaterialCommunityIcons' }]}

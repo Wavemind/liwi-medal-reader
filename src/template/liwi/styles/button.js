@@ -5,8 +5,29 @@ export default {
   'NativeBase.Button': {
     '.btnLiwi': {
       height: 70,
-      backgroundColor: '#ff31d0',
       borderRadius: 35,
+    },
+    '.drawerCategorieButton': {
+      flex: 1,
+      backgroundColor: liwiColors.greyColor,
+      // padding: 20,
+      paddingTop: 5,
+      paddingBottom: 5,
+      marginRight: 5,
+      marginLeft: 5,
+      marginTop: 15,
+      flexShrink: 1,
+      borderRadius: 4,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'stretch',
+      textAlign: 'center',
+    },
+    '.drawerItemButton': {
+      // flex: 1,
+      flexDirection: 'row',
+      height: 13,
+      // justifyContent: 'space-between',
     },
     '.w50': {
       flex: 1,
@@ -55,7 +76,6 @@ export default {
     '.activeStyle': {
       backgroundColor: liwiColors.greenColor,
     },
-
     '.btnDrawer': {
       height: 50,
       margin: 0,
@@ -64,6 +84,8 @@ export default {
       borderRadius: 0,
       marginTop: 5,
       marginBottom: 5,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     '.marginIcon': {
       marginBottom: 15,

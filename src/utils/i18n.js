@@ -87,6 +87,7 @@ i18n
           search: 'Search a patient',
           add: 'Add a patient',
           others: 'Others',
+          noredux: 'There is no medical Case loaded',
         },
         medical_case: {
           final_diagnoses: 'Final diagnoses',

@@ -15,11 +15,6 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Consultation extends React.Component<Props, State> {
-  state = {
-    // eslint-disable-next-line react/destructuring-assignment
-    selectedPage: this.props.navigation.getParam('initialPage'),
-  };
-
   componentWillMount() {
     const {
       navigation,
@@ -35,9 +30,10 @@ export default class Consultation extends React.Component<Props, State> {
     const {
       app: { t },
       focus,
+      navigation,
     } = this.props;
 
-    const { selectedPage } = this.state;
+    let selectedPage = navigation.getParam('initialPage');
 
     return (
       <Suspense fallback={null}>
@@ -49,7 +45,11 @@ export default class Consultation extends React.Component<Props, State> {
           validation={false}
           showTopStepper
           showBottomStepper
-          onPageSelected={(e) => this.setState({ selectedPage: e })}
+          onPageSelected={(e) => {
+            navigation.setParams({
+              initialPage: e,
+            });
+          }}
           icons={[{ name: 'comment-medical', type: 'FontAwesome5' }, { name: 'ios-body', type: 'Ionicons' }]}
           steps={[t('consultation:medical_history'), t('consultation:physical_exam')]}
           backButtonTitle={t('medical_case:back')}

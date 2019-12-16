@@ -8,11 +8,9 @@ import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
-import NavigationService from './Navigation.service';
 import i18n from '../../utils/i18n';
 
-import { liwiColors, screenWidth } from '../../utils/constants';
-import PatientSummaryMenu from './patientSummaryMenu';
+import { liwiColors, marginLeftDrawer, screenWidth } from '../../utils/constants';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
@@ -193,14 +191,9 @@ const Stack = createStackNavigator(
       return {
         headerBackTitleVisible: false,
         headerLeft: (
-          <React.Fragment>
-            <Button iconMenu onPress={() => navigation.openDrawer()}>
-              <Icon red type="Entypo" name="menu" large />
-            </Button>
-            <Button backIconMenu onPress={() => navigation.goBack()}>
-              <Icon red type="AntDesign" name="back" medium />
-            </Button>
-          </React.Fragment>
+          <Button iconMenu onPress={() => navigation.openDrawer()}>
+            <Icon red type="Entypo" name="menu" large />
+          </Button>
         ),
         headerRight: (
           <Text
@@ -214,6 +207,9 @@ const Stack = createStackNavigator(
             {navigation.getParam('headerRight')}
           </Text>
         ),
+        headerStyle: {
+          backgroundColor: '#E9E9E9',
+        },
         headerTitleStyle: { color: liwiColors.blackColor },
         headerTitleContainerStyle: {
           marginLeft: 50,
@@ -240,6 +236,7 @@ const HomeWithModal = createStackNavigator(
     cardStyle: {
       backgroundColor: 'transparent',
       opacity: 1,
+      marginLeft: marginLeftDrawer,
     },
     transitionConfig: () => ({
       containerStyle: {
@@ -254,25 +251,24 @@ let StackWithBottomNavigation = createBottomTabNavigator(
     RootBottomTab: { screen: HomeWithModal },
   },
   {
-    tabBarComponent: (props) => {
-      let currentRoute = NavigationService.getCurrentRoute();
-      if (currentRoute?.params?.showSummary ?? false) {
-        return <PatientSummaryMenu {...props} />;
-      }
+    tabBarComponent: () => {
       return null;
     },
   }
 );
 
 const MainNavigation = () => {
+  const drawerWidth = screenWidth / 2.2;
   return createDrawerNavigator(
     {
       RootDrawer: { screen: StackWithBottomNavigation },
     },
     {
-      drawerWidth: screenWidth / 2,
+      drawerWidth,
       overlayColor: 'rgba(38,38,38,0.8)',
-      contentComponent: (props) => <Drawer {...props} />,
+      contentComponent: (props) => {
+        return <Drawer {...props} drawerWidth={drawerWidth} />;
+      },
     }
   );
 };

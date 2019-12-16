@@ -15,8 +15,11 @@ type State = {};
 export default class QuestionsPerChiefComplaint extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const { pageIndex } = this.props;
-
-    return nextProps.selectedPage === pageIndex;
+    if (nextProps.medicalCase.id === undefined) {
+      return false;
+    } else {
+      return nextProps.selectedPage === pageIndex;
+    }
   }
 
   generateQuestions = (chiefComplaint) => {

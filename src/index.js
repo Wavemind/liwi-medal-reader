@@ -30,7 +30,7 @@ export default class Root extends React.Component {
             <SessionsProvider>
               <Layout />
               <CustomModal />
-              {__DEV__ ? <WavemindTools /> : null }
+              {__DEV__ ? <WavemindTools /> : null}
             </SessionsProvider>
           </ApplicationProvider>
         </PersistGate>
