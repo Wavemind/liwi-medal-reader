@@ -23,29 +23,25 @@ export default class Questions extends React.Component<Props, State> {
   render() {
     const {
       questions,
-      app: {t}
+      app: { t },
     } = this.props;
 
     return (
       <ScrollView>
-
-        {Object.keys(questions).length > 0 ?
-          (
-            Object.keys(questions).map((i) => {
-              // Detect Reference node
-              if (questions[i].display_format === displayFormats.reference) {
-                return <QuestionReference question={questions[i]} key={i + '_ref_factory'} />;
-              } else {
-                return <QuestionFactory question={questions[i]} key={i + '_factory'} {...this.props} />;
-              }
-            })
-          ) :
-          (
-            <View padding-auto margin-auto>
-              <Text not-available>{t('work_case:no_questions')}</Text>
-            </View>
-          )
-        }
+        {Object.keys(questions).length > 0 ? (
+          Object.keys(questions).map((i) => {
+            // Detect Reference node
+            if (questions[i].display_format === displayFormats.reference) {
+              return <QuestionReference question={questions[i]} key={i + '_ref_factory'} />;
+            } else {
+              return <QuestionFactory question={questions[i]} key={i + '_factory'} {...this.props} />;
+            }
+          })
+        ) : (
+          <View padding-auto margin-auto>
+            <Text not-available>{t('work_case:no_questions')}</Text>
+          </View>
+        )}
       </ScrollView>
     );
   }
