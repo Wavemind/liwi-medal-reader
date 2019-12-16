@@ -10,8 +10,7 @@ import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 
-interface NodeInterface {
-}
+interface NodeInterface {}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {
@@ -145,15 +144,15 @@ export class NodesModel implements NodeInterface {
     // Filter by final diagnostic
     const finalDiagnostics = FinalDiagnosticModel.all();
 
-    finalDiagnostics.included.forEach(finalDiagnostic => {
-         Object.keys(finalDiagnostic.managements).forEach(key => {
-        if(calculateCondition(finalDiagnostic.managements[key])){
+    finalDiagnostics.included.forEach((finalDiagnostic) => {
+      Object.keys(finalDiagnostic.managements).forEach((key) => {
+        if (calculateCondition(finalDiagnostic.managements[key])) {
           healthCares.managements[key] = this[key];
         }
       });
 
-      Object.keys(finalDiagnostic.treatments).forEach(key => {
-        if(calculateCondition(finalDiagnostic.treatments[key])){
+      Object.keys(finalDiagnostic.treatments).forEach((key) => {
+        if (calculateCondition(finalDiagnostic.treatments[key])) {
           healthCares.managements[key] = this[key];
         }
       });

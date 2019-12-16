@@ -53,10 +53,10 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.UPDATE_CONDITION_VALUE)
   updateConditionValue(state, action) {
-    const { nodeId, callerId, value, type } = action.payload;
+    const { index, callerId, value, type } = action.payload;
     let caller;
     let newNode = {
-      ...state.nodes[nodeId],
+      ...state.nodes[index],
     };
 
     switch (type) {
@@ -82,7 +82,7 @@ class MedicalCaseReducer extends ReducerClass {
       changeConditionValue.conditionValue = value;
     }
 
-    state.nodes[nodeId] = state.nodes.instantiateNode({ ...newNode });
+    state.nodes[index] = state.nodes.instantiateNode({ ...newNode });
 
     return {
       ...state,

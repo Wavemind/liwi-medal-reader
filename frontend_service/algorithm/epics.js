@@ -28,7 +28,7 @@ import { getParentsNodes, getQuestionsSequenceStatus } from './algoTreeDiagnosis
 // TODO make PS change side effect
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
-    ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
+    ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE, actions.UPDATE_CONDITION_VALUE),
     switchMap((action) => {
       // Index is the id of the node that has just been answered
       const { index } = action.payload;
@@ -105,7 +105,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, "doesn't exist");
           return [];
       }
     })
@@ -131,7 +131,6 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
        *  false = can't access the end anymore
        */
       statusQs = getQuestionsSequenceStatus(state$, currentQuestionsSequence, actions);
-
       // If ready we calculate condition of the QS
       if (statusQs) {
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
@@ -224,7 +223,6 @@ export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
 // @params [Object] action$, [Object] state$
 // @return [Array][Object] arrayActions
 // Dispatch condition action on condition result
-// TODO rename it... we dont know what is it
 export const epicCatchDispatchCondition = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_CONDITION),
@@ -265,18 +263,25 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
       // Get node condition value
       const conditionValue = currentNode.calculateCondition(state$);
+      const currentConditionValue = find(state$.value.nodes[currentNode.id].dd, (d) => d.id === diagnosticId);
 
       // If the condition of this node is not null
-      if (conditionValue !== null) {
-        actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type));
+      if (parentConditionValue === false) {
+        // Stop infinite loop, change only whene conditionValue is different
+        if (currentConditionValue.conditionValue !== false) {
+          // Set parent to false if their condition's isn't correct. Used to stop the algorithm
+          actions.push(updateConditionValue(nodeId, diagnosticId, false, state$.value.diagnostics[diagnosticId].type));
+        }
+      } else if (conditionValue !== null) {
+        // Stop infinite loop, change only whene conditionValue is different
+        if (currentConditionValue.conditionValue !== conditionValue) {
+          actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type));
+        }
 
         // If the node is answered go his children
         if (state$.value.nodes[nodeId].answer !== null) {
           actions.push(dispatchNodeAction(nodeId, diagnosticId, nodesType.diagnostic));
         }
-      } else if (parentConditionValue === false) {
-        // Set parent to false if their condition's isn't correct. Used to stop the algorithm
-        actions.push(updateConditionValue(nodeId, diagnosticId, false, state$.value.diagnostics[diagnosticId].type));
       }
 
       return of(...actions);
