@@ -37,7 +37,10 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
   };
 
   render() {
-    const { category, app: { t } } = this.props;
+    const {
+      category,
+      app: { t },
+    } = this.props;
     const { chiefComplaints } = this.state;
 
     return (
@@ -56,7 +59,6 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
             <Text not-available>{t('patient_list:not_found')}</Text>
           </View>
         )}
-
       </ScrollView>
     );
   }
