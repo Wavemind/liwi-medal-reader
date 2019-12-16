@@ -3,10 +3,10 @@
 import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
+import find from 'lodash/find';
 import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import find from 'lodash/find';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
