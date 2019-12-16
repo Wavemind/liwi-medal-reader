@@ -77,6 +77,7 @@ export default class Drawer extends Component<Props, State> {
     return (
       <View style={[styles.columns, { width: drawerWidth + marginLeftDrawer, padding: 0 }]}>
         <View style={styles.tools}>
+
           <DrawerMinify />
           {/*{!isDrawerOpen ? (*/}
           {/*  <DrawerMinify />*/}

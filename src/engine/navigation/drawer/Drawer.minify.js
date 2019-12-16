@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Slider } from 'react-native';
 import { Button, Text } from 'native-base';
 import { styles } from './Drawer.style';
 import MatrixMath from 'react-native/Libraries/Utilities/MatrixMath';
 import transformUtils from '../../../utils/transformUtils';
 
 const Matrix = {
-  // 创建单位矩阵
   identify: () => {
     return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
   },
@@ -177,13 +176,18 @@ const Matrix = {
 };
 
 export class DrawerMinify extends Component<{ routeName: string, initialPage: string }> {
+
+  state = {
+
+  }
+
   render() {
     let {} = this.props;
 
     const transformOrigin = [50, -50];
-    const translate = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, transformOrigin[0], transformOrigin[1], 0, 1];
-    const unUseTranslate = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -transformOrigin[0], -transformOrigin[1], 0, 1];
-    const a = Math.PI / 6;
+    const translate = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, transformOrigin[1], -transformOrigin[1], 0, 1];
+    const unUseTranslate = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -transformOrigin[1], -transformOrigin[1], 0, 1];
+    const a = Math.PI / 3;
     const rotateMatrix = [Math.cos(a), Math.sin(a), 0, 0, -Math.sin(a), Math.cos(a), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
     let m = Matrix.multMatrix(translate, rotateMatrix);
@@ -191,30 +195,33 @@ export class DrawerMinify extends Component<{ routeName: string, initialPage: st
     m = Matrix.multMatrix(m, unUseTranslate);
 
     return (
-      <View style={styles.drawerMinifySmallify}>
-        <View style={styles.drawerMinifyView}>
-          <View style={styles.drawerMinifyWrapButton}>
-            <Button style={[styles.drawerMinifyButton, { transform: [{ matrix: m }] }]} onPress={() => console.log('click minify')}>
-              <Text style={styles.drawerMinifyText}>Triage</Text>
-            </Button>
-          </View>
-          <View style={styles.drawerMinifyWrapButton}>
-            <Button style={[styles.drawerMinifyButton, { transform: [{ rotate: '-90deg' }] }]} onPress={() => console.log('click minify')}>
-              <Text style={styles.drawerMinifyText}>Consultation</Text>
-            </Button>
-          </View>
-          <View style={styles.drawerMinifyWrapButton}>
-            <Button style={styles.drawerMinifyButton} onPress={() => console.log('click minify')}>
-              <Text style={styles.drawerMinifyText}>Tests</Text>
-            </Button>
-          </View>
-          <View style={styles.drawerMinifyWrapButton}>
-            <Button style={styles.drawerMinifyButton} onPress={() => console.log('click minify')}>
-              <Text style={styles.drawerMinifyText}>Diagnotics</Text>
-            </Button>
+      <>
+        <Slider style={{ width: 200, height: 40 }} minimumValue={0} maximumValue={1} minimumTrackTintColor="#FFFFFF" maximumTrackTintColor="#000000" />
+        <View style={styles.drawerMinifySmallify}>
+          <View style={styles.drawerMinifyView}>
+            <View style={styles.drawerMinifyWrapButton}>
+              <Button style={[styles.drawerMinifyButton, { transform: [{ matrix: m }] }]} onPress={() => console.log('click minify')}>
+                <Text style={styles.drawerMinifyText}>Triage</Text>
+              </Button>
+            </View>
+            <View style={styles.drawerMinifyWrapButton}>
+              <Button style={[styles.drawerMinifyButton, { transform: [{ matrix: m }] }]} onPress={() => console.log('click minify')}>
+                <Text style={styles.drawerMinifyText}>Consultation</Text>
+              </Button>
+            </View>
+            <View style={styles.drawerMinifyWrapButton}>
+              <Button style={styles.drawerMinifyButton} onPress={() => console.log('click minify')}>
+                <Text style={styles.drawerMinifyText}>Tests</Text>
+              </Button>
+            </View>
+            <View style={styles.drawerMinifyWrapButton}>
+              <Button style={styles.drawerMinifyButton} onPress={() => console.log('click minify')}>
+                <Text style={styles.drawerMinifyText}>Diagnotics</Text>
+              </Button>
+            </View>
           </View>
         </View>
-      </View>
+      </>
     );
   }
 }

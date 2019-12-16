@@ -37,6 +37,8 @@ pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
     pod 'ReactNativeExceptionHandler', :path => '../node_modules/react-native-exception-handler'
 
+    pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
   end
 
   target 'liwi_nativeTests' do
