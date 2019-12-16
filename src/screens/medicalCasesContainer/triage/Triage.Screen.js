@@ -32,7 +32,6 @@ export default class Triage extends React.Component<Props, State> {
 
   state = {
     widthView: 0,
-    // eslint-disable-next-line react/destructuring-assignment
   };
 
   render() {
