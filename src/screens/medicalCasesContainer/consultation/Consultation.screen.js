@@ -4,6 +4,7 @@ import React, { Suspense } from 'react';
 import { View } from 'native-base';
 
 import { NavigationScreenProps } from 'react-navigation';
+import find from 'lodash/find';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -18,11 +19,14 @@ export default class Consultation extends React.Component<Props, State> {
   componentWillMount() {
     const {
       navigation,
-      medicalCase: { patient },
+      medicalCase: { patient, nodes },
     } = this.props;
+
+    const age = find(nodes, { reference: '2', category: 'demographic' });
+
     navigation.setParams({
       title: 'Consultation  ',
-      headerRight: patient.firstname + ' ' + patient.lastname,
+      headerRight: `${patient.firstname} ${patient.lastname} | ${age.value} months`,
     });
   }
 
