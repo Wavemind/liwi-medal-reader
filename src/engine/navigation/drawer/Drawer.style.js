@@ -1,22 +1,50 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors, screenHeight } from '../../../utils/constants';
+import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   tools: {
-    backgroundColor: liwiColors.greyColor,
-    height: screenHeight,
-    flex: 0.3,
-    alignItems: 'center',
-    paddingTop: 10,
+    flex: 1,
+    justifyContent: 'space-between',
   },
-  medical: {
-    flex: 0.7,
-    height: screenHeight,
+  activeButtonCategorie: {
+    backgroundColor: liwiColors.redColor,
   },
+  drawerMinifyWrapButton: {
+    flex: 1,
+    backgroundColor: '#888',
+    borderWidth: 2,
+    borderColor: '#7d8815',
+  },
+  activeTextcategorie: { color: liwiColors.blackColor },
+  activeLink: { color: liwiColors.redColor },
   paddingCategory: {
     paddingLeft: 30,
     paddingTop: 30,
     paddingBottom: 30,
+  },
+  drawerMinifySmallify: { alignSelf: 'flex-end', flex: 1, backgroundColor: '#17881d' },
+  drawerMinifyView: { flex: 1, flexDirection: 'column', alignItems: 'flex-end' },
+  drawerMinifyButton: {
+    height: 30,
+    padding: 0,
+    margin: 0,
+    backgroundColor: liwiColors.redColor,
+    elevation: 3,
+  },
+  drawerMinifyText: {
+    backgroundColor: '#772888',
+    margin: 0,
+    textAlign: 'center',
+  },
+  textBottom: { color: liwiColors.whiteColor, fontSize: 19, textAlign: 'left', margin: 0, padding: 0, flexShrink: 1 },
+  bottomStyle: {
+    // alignItems: 'center',
+    // justifyContent: 'space-between',
+    textAlign: 'center',
+    backgroundColor: liwiColors.darkerGreyColor,
+    shadowOffset: { height: 0, width: 0 },
+    shadowOpacity: 0,
+    elevation: 0,
   },
   triage: {
     backgroundColor: liwiColors.lighterGreyColor,
@@ -44,21 +72,26 @@ export const styles = StyleSheet.create({
   },
   top: {
     flex: 1,
-    justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginTop: 20,
+    justifyContent: 'space-between',
   },
   noLeftPadding: {
     paddingLeft: 0,
   },
   bottom: {
-    flex: 1,
+    backgroundColor: liwiColors.darkerGreyColor,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    marginBottom: 40,
+    marginTop: 17,
   },
   icon: {
     fontSize: 40,
+    margin: 0,
+    color: liwiColors.whiteColor,
+  },
+  iconTop: {
+    fontSize: 40,
+    color: liwiColors.whiteColor,
   },
   medicalCaseNavigationIcon: {
     fontSize: 28,
@@ -67,8 +100,8 @@ export const styles = StyleSheet.create({
     color: liwiColors.whiteColor,
   },
   columns: {
-    flex: 1,
     flexDirection: 'row',
+    flex: 1,
   },
   margin0: {
     marginLeft: 0,

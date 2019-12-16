@@ -6,6 +6,12 @@ export default {
       padding: 0,
       color: liwiColors.blackColor,
     },
+    '.drawerItemIcon': {
+      color: liwiColors.greyColor,
+      marginRight: 10,
+      marginLeft: 0,
+    },
+    '.drawerBottomIcon': { color: liwiColors.whiteColor, fontSize: 40, margin: 0, padding: 0 },
     '.white': {
       padding: 0,
       color: '#fff',
@@ -24,7 +30,7 @@ export default {
     '.medium': {
       fontSize: 28,
     },
-    '.navigation':  {
+    '.navigation': {
       marginBottom: 10,
       fontSize: 75,
       flex: 1,
