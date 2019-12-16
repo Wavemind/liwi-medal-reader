@@ -24,9 +24,11 @@ export default class Consultation extends React.Component<Props, State> {
 
     const age = find(nodes, { reference: '2', category: 'demographic' });
 
+    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+
     navigation.setParams({
       title: 'Consultation  ',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${age.value} months`,
+      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
     });
   }
 

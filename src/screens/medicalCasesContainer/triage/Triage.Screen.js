@@ -27,10 +27,11 @@ export default class Triage extends React.Component<Props, State> {
     } = this.props;
 
     const age = find(nodes, { reference: '2', category: 'demographic' });
+    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
 
     navigation.setParams({
       title: 'Triage',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${age.value} months`,
+      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
     });
   }
 

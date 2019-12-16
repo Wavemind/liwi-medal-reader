@@ -202,7 +202,6 @@ export class PathBar extends Component<{ routeName: string, initialPage: string 
   render() {
     let { r, routeName, initialPage, navigate } = this.props;
     let active = r?.params?.initialPage >= initialPage && r.routeName === routeName;
-
     return (
       <TouchableOpacity onPress={() => navigate(routeName, initialPage)} style={{ marginTop: -2, marginBottom: -3, flex: 1, flexDirection: 'row' }}>
         <View
