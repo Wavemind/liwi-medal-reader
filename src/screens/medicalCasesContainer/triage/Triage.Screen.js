@@ -2,6 +2,7 @@
 
 import React, { Suspense } from 'react';
 import { Content, View } from 'native-base';
+import find from 'lodash/find';
 
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
@@ -22,11 +23,14 @@ export default class Triage extends React.Component<Props, State> {
   componentWillMount() {
     const {
       navigation,
-      medicalCase: { patient },
+      medicalCase: { patient, nodes },
     } = this.props;
+
+    const age = find(nodes, { reference: '2', category: 'demographic' });
+
     navigation.setParams({
       title: 'Triage',
-      headerRight: patient.firstname + ' ' + patient.lastname,
+      headerRight: `${patient.firstname} ${patient.lastname} | ${age.value} months`,
     });
   }
 
