@@ -9,6 +9,7 @@ import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, 
 import { Toaster } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
 import { marginLeftDrawer } from '../../../utils/constants';
+// eslint-disable-next-line no-unused-vars
 import { DrawerMinify } from './Drawer.minify';
 
 type Props = NavigationScreenProps & {};
@@ -36,6 +37,7 @@ export default class Drawer extends Component<Props, State> {
       app: { t },
     } = this.props;
 
+    // eslint-disable-next-line no-unused-vars
     const { isDrawerOpen } = navigation.state;
 
     // Get current route from navigation
@@ -77,15 +79,16 @@ export default class Drawer extends Component<Props, State> {
     return (
       <View style={[styles.columns, { width: drawerWidth + marginLeftDrawer, padding: 0 }]}>
         <View style={styles.tools}>
+          <HeaderButtonsDrawer r={r} />
+          {renderDrawerButtons}
+          <BottomButtonsDrawer medicalCase={medicalCase} />
 
-          <DrawerMinify />
+          {/*<DrawerMinify />*/}
           {/*{!isDrawerOpen ? (*/}
           {/*  <DrawerMinify />*/}
           {/*) : (*/}
           {/*  <>*/}
-          {/*    <HeaderButtonsDrawer r={r} />*/}
-          {/*    {renderDrawerButtons}*/}
-          {/*    <BottomButtonsDrawer medicalCase={medicalCase} />*/}
+
           {/*  </>*/}
           {/*)}*/}
         </View>

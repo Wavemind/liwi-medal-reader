@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Icon, Text } from 'native-base';
-import { Animated } from 'react-native';
 import { createBottomTabNavigator, createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
@@ -252,7 +251,7 @@ let StackWithBottomNavigation = createBottomTabNavigator(
     RootBottomTab: { screen: HomeWithModal },
   },
   {
-    tabBarComponent: (props) => {
+    tabBarComponent: () => {
       return null;
     },
   }
@@ -268,15 +267,7 @@ const MainNavigation = () => {
       drawerWidth,
       overlayColor: 'rgba(38,38,38,0.8)',
       contentComponent: (props) => {
-        const translateX = props.drawerOpenProgress.interpolate({
-          inputRange: [0, 1],
-          outputRange: [-100, 0],
-        });
-        return (
-          // <Animated.View style={{ flex: 1, transform: [{ translateX }] }}>
-          <Drawer {...props} drawerWidth={drawerWidth} />
-          // </Animated.View>
-        );
+        return <Drawer {...props} drawerWidth={drawerWidth} />;
       },
     }
   );

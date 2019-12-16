@@ -1,8 +1,10 @@
+/*eslint-disable */
+// TODO this file is in creating !
 import React, { Component } from 'react';
 import { View, Slider } from 'react-native';
 import { Button, Text } from 'native-base';
-import { styles } from './Drawer.style';
 import MatrixMath from 'react-native/Libraries/Utilities/MatrixMath';
+import { styles } from './Drawer.style';
 import transformUtils from '../../../utils/transformUtils';
 
 const Matrix = {
@@ -176,10 +178,7 @@ const Matrix = {
 };
 
 export class DrawerMinify extends Component<{ routeName: string, initialPage: string }> {
-
-  state = {
-
-  }
+  state = {};
 
   render() {
     let {} = this.props;
