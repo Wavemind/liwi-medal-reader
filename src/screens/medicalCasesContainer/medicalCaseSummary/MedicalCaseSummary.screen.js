@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Content, Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import moment from 'moment';
+import find from 'lodash/find';
 import { styles } from './MedicalCaseSummary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
@@ -25,6 +25,11 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
     let defaultTab = navigation.getParam('defaultTab');
 
+    const age = find(nodes, { reference: '2', category: 'demographic' });
+
+    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+
+
     return (
       <View padding-auto flex>
         <BackButton />
@@ -35,7 +40,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
               {patient.firstname} {patient.lastname}
             </Text>
             <Text size-auto>{patient.gender}</Text>
-            <Text size-auto>{moment(patient.birthdate).format('d MMMM YYYY')}</Text>
+            <Text size-auto>{stringAge}</Text>
           </View>
         </View>
         <Tabs initialPage={defaultTab} tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>

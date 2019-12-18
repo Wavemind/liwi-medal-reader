@@ -7,7 +7,6 @@ import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-ba
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 import includes from 'lodash/includes';
-import moment from 'moment';
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
@@ -16,6 +15,7 @@ import type { StateApplicationContext } from '../../../engine/contexts/Applicati
 import { medicalCaseStatus } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import ConfirmationView from '../../../components/ConfirmationView';
+import { showBirthDatePatient } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -37,7 +37,7 @@ export default class PatientList extends React.Component<Props, State> {
     const { focus } = this.props;
     const { searchTerm } = this.state;
 
-    if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null) || nextState.searchTerm !== searchTerm) {
+    if ((nextProps.focus === 'didFocus' && (focus === undefined || focus === null)) || nextState.searchTerm !== searchTerm) {
       this.fetchPatients();
     }
     return true;
@@ -109,6 +109,7 @@ export default class PatientList extends React.Component<Props, State> {
     const {
       navigation,
       app: { t },
+      medicalCase,
     } = this.props;
 
     const { orderedFilteredPatients, patients } = this.state;
@@ -135,7 +136,7 @@ export default class PatientList extends React.Component<Props, State> {
                   </Text>
                 </View>
                 <View w50>
-                  <Text>{moment(patient.birthdate).format('ll')}</Text>
+                  <Text>{showBirthDatePatient(patient, medicalCase)}</Text>
                 </View>
                 <View w50>
                   <Text>{patient.caseInProgress ? t('patient_list:case_in_progress') : null}</Text>
@@ -205,12 +206,7 @@ export default class PatientList extends React.Component<Props, State> {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView
-              callBackClose={this.callBackClose}
-              propsToolTipVisible={propsToolTipVisible}
-              nextRoute="PatientUpsert"
-              idPatient={null}
-            />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
