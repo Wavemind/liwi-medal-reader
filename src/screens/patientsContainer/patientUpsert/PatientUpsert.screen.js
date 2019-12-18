@@ -280,6 +280,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   iconName="user"
                   iconType="AntDesign"
                   error={errors.firstname}
+                  autoCapitalize={'sentences'}
                 />
                 <CustomInput
                   init={patient.lastname}
@@ -289,6 +290,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   iconName="user"
                   iconType="AntDesign"
                   error={errors.lastname}
+                  autoCapitalize={'sentences'}
                 />
               </Col>
               <Col>
@@ -312,7 +314,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               {algorithmReady ? (
                 !loading ? (
                   <View columns>
-                    <Button light split onPress={() => save('patientList')} disabled={hasNoError}>
+                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
                       <Text>{t('patient_upsert:save_and_wait')}</Text>
                     </Button>
                     <Button success split onPress={() => save('Triage')} disabled={hasNoError}>

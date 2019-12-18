@@ -7,7 +7,7 @@ import { Form, Icon, Input, Text } from 'native-base';
 import { styles } from './CustomInput.style';
 import { ViewBlocColor } from '../../../template/layout';
 
-type Props = NavigationScreenProps & {};
+type Props = NavigationScreenProps & { autoCapitalize: string};
 type State = {};
 
 export default class CustomInput extends React.Component<Props, State> {
@@ -19,6 +19,7 @@ export default class CustomInput extends React.Component<Props, State> {
     keyboardType: 'default',
     secureTextEntry: false,
     condensed: false,
+    autoCapitalize: 'none',
   };
 
   componentWillMount(): void {
@@ -39,7 +40,7 @@ export default class CustomInput extends React.Component<Props, State> {
     this.setState({ value: value.nativeEvent.text });
   };
   render() {
-    const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed } = this.props;
+    const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed, autoCapitalize } = this.props;
 
     const { value } = this.state;
 
@@ -52,7 +53,7 @@ export default class CustomInput extends React.Component<Props, State> {
         </View>
         <ViewBlocColor>
           <Input
-            autoCapitalize="none"
+            autoCapitalize={autoCapitalize}
             common
             keyboardType={keyboardType}
             value={value}
