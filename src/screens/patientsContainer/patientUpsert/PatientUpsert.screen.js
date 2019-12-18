@@ -280,7 +280,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   iconName="user"
                   iconType="AntDesign"
                   error={errors.firstname}
-                  autoCapitalize={'sentences'}
+                  autoCapitalize="sentences"
                 />
                 <CustomInput
                   init={patient.lastname}
@@ -290,7 +290,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   iconName="user"
                   iconType="AntDesign"
                   error={errors.lastname}
-                  autoCapitalize={'sentences'}
+                  autoCapitalize="sentences"
                 />
               </Col>
               <Col>

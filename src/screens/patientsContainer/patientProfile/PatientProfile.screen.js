@@ -9,6 +9,7 @@ import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { routeDependingStatus } from '../../../../frontend_service/constants';
 import ConfirmationView from '../../../components/ConfirmationView';
+import { showBirthDatePatient } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -31,10 +32,7 @@ export default class PatientProfile extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const { focus } = this.props;
 
-    if (
-      nextProps.focus === 'didFocus' &&
-      (focus === undefined || focus === null || focus === 'willBlur')
-    ) {
+    if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null || focus === 'willBlur')) {
       this.getPatient();
     }
     return true;
@@ -70,12 +68,7 @@ export default class PatientProfile extends React.Component<Props, State> {
   // TODO: Est-ce que on ferait pas une nouvelle vue ?
 
   render() {
-    const {
-      patient,
-      algorithms,
-      firstRender,
-      propsToolTipVisible,
-    } = this.state;
+    const { patient, algorithms, firstRender, propsToolTipVisible } = this.state;
 
     const {
       navigation,
@@ -105,10 +98,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           style={style}
           spaced
           onPress={async () => {
-            let medicalCaseRoute =
-              medicalCase.id === medicalCaseItem.id
-                ? medicalCase
-                : medicalCaseItem;
+            let medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
 
             if (medicalCase.id !== medicalCaseItem.id) {
               await this.selectMedicalCase({
@@ -127,15 +117,7 @@ export default class PatientProfile extends React.Component<Props, State> {
             <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
           </View>
           <View w50>
-            <Text>
-              {t(
-                `medical_case:${
-                  medicalCase.id === medicalCaseItem.id
-                    ? medicalCase.status
-                    : medicalCaseItem.status
-                }`
-              )}
-            </Text>
+            <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
           </View>
         </ListItem>
       );
@@ -149,7 +131,7 @@ export default class PatientProfile extends React.Component<Props, State> {
           {patient.firstname} {patient.lastname}
         </LiwiTitle2>
         <Text>
-          {moment(patient.birthdate).format('d MMMM YYYY')} - {patient.gender}
+          {showBirthDatePatient(patient, medicalCase)} - {patient.gender}
         </Text>
 
         <SeparatorLine style={styles.bottomMargin} />
@@ -165,18 +147,10 @@ export default class PatientProfile extends React.Component<Props, State> {
               )}
             </View>
             <View bottom-view>
-              <ConfirmationView
-                callBackClose={this.callBackClose}
-                propsToolTipVisible={propsToolTipVisible}
-                nextRoute="PatientUpsert"
-                idPatient={patient.id}
-              />
+              <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={patient.id} />
               <Button
                 onPress={() => {
-                  if (
-                    medicalCase.id === undefined ||
-                    medicalCase.isCreating === false
-                  ) {
+                  if (medicalCase.id === undefined || medicalCase.isCreating === false) {
                     navigation.navigate('PatientUpsert', {
                       idPatient: patient.id,
                       newMedicalCase: true,
