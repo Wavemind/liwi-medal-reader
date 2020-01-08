@@ -37,7 +37,7 @@ export default class HealthCares extends Component<Props, State> {
             size-auto
             key={'healthcare' + treatments[key].reference}
           >
-            {__DEV__ ? `${managements[key].reference} - ` : null}{treatments[t].label}
+            {__DEV__ ? `${treatments[key].reference} - ` : null}{treatments[key].label}
           </Text>
         ))}
       </Content>
