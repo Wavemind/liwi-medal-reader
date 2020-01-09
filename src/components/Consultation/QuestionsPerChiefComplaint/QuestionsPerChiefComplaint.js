@@ -22,11 +22,11 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
     }
   }
 
-  generateQuestions = (chiefComplaint) => {
+  generateQuestions = (complaintCategory) => {
     const { medicalCase, category } = this.props;
 
     let questions = [];
-    chiefComplaint[category].map((q) => {
+    complaintCategory[category].map((q) => {
       if (medicalCase.nodes[q].counter > 0) {
         questions.push(medicalCase.nodes[q]);
       }
@@ -46,17 +46,17 @@ export default class QuestionsPerChiefComplaint extends React.Component<Props, S
       medicalCase,
     } = this.props;
 
-    const chiefComplaints = medicalCase.nodes.filterByCategory(categories.chiefComplaint);
+    const complaintCategories = medicalCase.nodes.filterByCategory(categories.complaintCategory);
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        {chiefComplaints.length > 0 ? (
-          chiefComplaints.map((chiefComplaint) => (
+        {complaintCategories.length > 0 ? (
+          complaintCategories.map((complaintCategory) => (
             <ChiefComplaint
-              chiefComplaint={chiefComplaint}
+              complaintCategory={complaintCategory}
               category={category}
-              key={'chiefComplaint' + chiefComplaint.id}
-              questions={this.generateQuestions(chiefComplaint)}
+              key={'complaintCategory' + complaintCategory.id}
+              questions={this.generateQuestions(complaintCategory)}
             />
           ))
         ) : (

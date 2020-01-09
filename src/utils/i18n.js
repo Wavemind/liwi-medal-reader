@@ -53,7 +53,7 @@ i18n
         },
         triage: {
           first_look_assessment: 'First look assessments',
-          vital: 'Basic measurements',
+          basic_measurement: 'Basic measurements',
           chronical_condition: 'Chronical conditions',
           other: 'Others',
           chief: 'Complaint categories',
@@ -75,9 +75,9 @@ i18n
         menu: {
           triage: 'Triage',
           first_look_assessments: 'First look assessment',
-          vital_signs: 'Basic measurements',
+          basic_measurements: 'Basic measurements',
           chronical_conditions: 'Chronical conditions',
-          chief_complaints: 'Complaint categories',
+          complaint_categories: 'Complaint categories',
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
@@ -194,7 +194,7 @@ i18n
           error_same: 'The code must be the same',
           error_letter: 'At least one letter and one number',
         },
-        vital_signs: {
+        basic_measurements: {
           temperature: 'Temperature',
           heart_rate: 'Heart rate',
           height: 'Height',
@@ -278,7 +278,7 @@ i18n
         },
         triage: {
           assessment: 'First look Assessments',
-          vital: 'Basic measurments',
+          basic_measurement: 'Basic measurments',
           comorbidities: 'Comorbidities',
           vaccination: 'Vaccination history',
           chief: 'Complaint Categories',

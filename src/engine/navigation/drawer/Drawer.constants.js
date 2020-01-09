@@ -31,7 +31,7 @@ export const renderingDrawerItems = [
     initialPage: 1,
     name: 'Triage',
     routeName: 'Triage',
-    t: i18n.t('menu:chief_complaints'),
+    t: i18n.t('menu:complaint_categories'),
   },
   {
     type: 'path',
@@ -43,7 +43,7 @@ export const renderingDrawerItems = [
     initialPage: 2,
     name: 'Triage',
     routeName: 'Triage',
-    t: i18n.t('menu:vital_signs'),
+    t: i18n.t('menu:basic_measurements'),
   },
   {
     type: 'categorie',

@@ -28,7 +28,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
     router: [
       'FirstLookAssessments',
       'ChiefComplaints',
-      'VitalSigns',
+      'BasicMeasurements',
       'MedicalHistory',
       'PhysicalExam',
       'Tests',
