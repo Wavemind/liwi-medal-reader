@@ -57,27 +57,27 @@ export default class Triage extends React.Component<Props, State> {
 
     const { widthView } = this.state;
 
-    const orders = medicalCase.triage.orders[categories.chiefComplaint];
-    let chiefComplaint = [];
+    const orders = medicalCase.triage.orders[categories.complaintCategory];
+    let complaintCategory = [];
 
     orders.map((order) => {
-      chiefComplaint.push(medicalCase.nodes[order]);
+      complaintCategory.push(medicalCase.nodes[order]);
     });
 
-    let vitalSigns = [];
-    const orderedQuestions = medicalCase.triage.orders[categories.vitalSign];
+    let basicMeasurements = [];
+    const orderedQuestions = medicalCase.triage.orders[categories.basicMeasurements];
 
     orderedQuestions.map((orderedQuestion) => {
       let question = medicalCase.nodes[orderedQuestion];
       if (question.isDisplayedInTriage(medicalCase)) {
-        vitalSigns.push(question);
+        basicMeasurements.push(question);
       }
     });
 
-    let chiefComplaintReady = chiefComplaint.every((cc) => cc.answer !== null);
+    let complaintCategoryReady = complaintCategory.every((cc) => cc.answer !== null);
     let selectedPage = navigation.getParam('initialPage');
     // Denied access to Basic measurement step if all chief complaints are not answered
-    if (selectedPage === 2 && !chiefComplaintReady) {
+    if (selectedPage === 2 && !complaintCategoryReady) {
       selectedPage = 1;
       navigation.setParams({
         initialPage: 1,
@@ -94,7 +94,7 @@ export default class Triage extends React.Component<Props, State> {
             this.stepper = ref;
           }}
           validation={false}
-          chiefComplaintReady={chiefComplaintReady}
+          complaintCategoryReady={complaintCategoryReady}
           showTopStepper
           initial
           onPageSelected={(e) => {
@@ -109,7 +109,7 @@ export default class Triage extends React.Component<Props, State> {
             { name: 'view-module', type: 'MaterialIcons' },
             { name: 'healing', type: 'MaterialIcons' },
           ]}
-          steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:vital')]}
+          steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:basic_measurement')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Consultation"
@@ -135,7 +135,7 @@ export default class Triage extends React.Component<Props, State> {
                       this.setState({ widthView: w.layout.width });
                     }}
                   >
-                    {chiefComplaint.map((question, i) => (
+                    {complaintCategory.map((question, i) => (
                       <Boolean
                         key={question.id + 'chief_boolean'}
                         widthView={widthView}
@@ -155,7 +155,7 @@ export default class Triage extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <Questions questions={vitalSigns} selectedPage={selectedPage} pageIndex={2} />
+                <Questions questions={basicMeasurements} selectedPage={selectedPage} pageIndex={2} />
               </Suspense>
             ) : (
               <LiwiLoader />

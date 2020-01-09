@@ -100,7 +100,6 @@ export const auth = async (email, password) => {
   });
 
   let body = await request.json();
-
   // Display error
   if (!request.ok) {
     handleHttpError(body.errors);

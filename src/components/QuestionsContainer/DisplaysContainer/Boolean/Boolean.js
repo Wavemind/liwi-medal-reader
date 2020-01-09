@@ -38,8 +38,8 @@ export default class Boolean extends React.Component<Props, State> {
     const { question, setAnswer } = this.props;
     let newAnswer = Number(answer);
 
-    // Break if chiefComplaint
-    if (question.category === categories.chiefComplaint && answer === question.answer) {
+    // Break if complaintCategory
+    if (question.category === categories.complaintCategory && answer === question.answer) {
       return null;
     }
 
@@ -76,7 +76,7 @@ export default class Boolean extends React.Component<Props, State> {
     // By the type of boolean node
     switch (category) {
       // If this is a chief complain
-      case categories.chiefComplaint:
+      case categories.complaintCategory:
         // onlayout isn't set
         if (widthView === 0) {
           RenderJsx = () => null;
@@ -138,7 +138,7 @@ export default class Boolean extends React.Component<Props, State> {
         // Only one button for this type of node
         RenderJsx = () => (
           <Button key={index + category} onPress={() => this._handleClick(idOnPress)} style={concatStyle} light>
-            <View chiefComplaints>
+            <View complaintCategories>
               <Text center size-auto>
                 {label}
               </Text>

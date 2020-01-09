@@ -8,33 +8,33 @@
   "triage": {
     "orders": {
       "first_look_assessment": [282, 281, 283],
-      "chief_complaint": [61, 57, 54, 52, 53, 55, 56, 58, 59, 60],
-      "vital_sign": [284],
+      "complaint_category": [61, 57, 54, 52, 53, 55, 56, 58, 59, 60],
+      "basic_measurements": [284],
       "chronical_condition": [285],
       "other": [193, 194, 195, 79, 80, 81, 185, 82, 270, 83, 84]
     },
     "conditions": {
       "79": [
         {
-          "chief_complaint_id": 57,
+          "complaint_category_id": 57,
           "answer_id": 114
         }
       ],
       "80": [
         {
-          "chief_complaint_id": 57,
+          "complaint_category_id": 57,
           "answer_id": 114
         }
       ],
       "81": [
         {
-          "chief_complaint_id": 57,
+          "complaint_category_id": 57,
           "answer_id": 114
         }
       ],
       "284": [
         {
-          "chief_complaint_id": 53,
+          "complaint_category_id": 53,
           "answer_id": 106
         }
       ]
@@ -7169,7 +7169,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7210,7 +7210,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7246,7 +7246,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7287,7 +7287,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7323,7 +7323,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7359,7 +7359,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7400,7 +7400,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7436,7 +7436,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7472,7 +7472,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -7508,7 +7508,7 @@
           "operator": null
         }
       },
-      "category": "chief_complaint",
+      "category": "complaint_category",
       "counter": 0,
       "dd": [],
       "display_format": "RadioButton",
@@ -16529,7 +16529,7 @@
       "label": "Weight",
       "answer": null,
       "answers": {},
-      "category": "vital_sign",
+      "category": "basic_measurement",
       "counter": 0,
       "dd": [],
       "display_format": "Input",

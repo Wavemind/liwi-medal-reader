@@ -140,7 +140,7 @@ export default {
       justifyContent: 'space-between',
     },
 
-    '.chiefComplaints': {
+    '.complaintCategories': {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',

@@ -206,11 +206,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     for (let index in finalDiagnostics) {
       if (finalDiagnostics.hasOwnProperty(index)) {
         let finalDiagnostic = finalDiagnostics[index];
-        const chiefComplaint = nodes[finalDiagnostic.cc];
+        const complaintCategory = nodes[finalDiagnostic.cc];
 
         let condition = finalDiagnostic.calculateCondition();
 
-        if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers)[1])) {
+        if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers)[1])) {
           finalDiagnosticsFalse.push({
             ...finalDiagnostic,
           });
