@@ -149,6 +149,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     instanceMedicalCase.nodes = new NodesModel(instanceMedicalCase.nodes);
     // Pick by category Chief complaint
     let chiefs = _.pickBy(instanceMedicalCase.nodes, (n) => n.category === categories.complaintCategory);
+
     // Filter questions medical history
     let medical_history = instanceMedicalCase.nodes.filterBy(
       [
