@@ -65,7 +65,7 @@ export const categories = {
   symptom: 'symptom',
   demographic: 'demographic',
   comorbidity: 'comorbidity',
-  chiefComplaint: 'complaint_category',
+  complaintCategory: 'complaint_category',
   predefinedSyndrome: 'predefined_syndrome',
   triage: 'triage',
   vaccine: 'vaccine',
@@ -73,6 +73,7 @@ export const categories = {
   treatment: 'treatment',
   management: 'management',
   other: 'other',
+  treatment_condition: 'treatment_condition',
 };
 
 // Type of nodes received from json

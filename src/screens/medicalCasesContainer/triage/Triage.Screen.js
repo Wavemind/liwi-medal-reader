@@ -65,7 +65,7 @@ export default class Triage extends React.Component<Props, State> {
     });
 
     let basicMeasurements = [];
-    const orderedQuestions = medicalCase.triage.orders[categories.basicMeasurements];
+    const orderedQuestions = medicalCase.triage.orders[categories.basicMeasurement];
 
     orderedQuestions.map((orderedQuestion) => {
       let question = medicalCase.nodes[orderedQuestion];
