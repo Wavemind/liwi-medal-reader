@@ -27,7 +27,7 @@ export default class HealthCares extends Component<Props, State> {
               {__DEV__ ? `${managements[key].reference} - ` : null}
               {managements[key].label}
             </Text>
-            <Text style={styles.desc}>{managements[key].description}</Text>
+            {managements[key].description !== null ? <Text style={styles.desc}>{managements[key].description}</Text> : null}f
           </View>
         ))}
         <Text customTitle>{t('medical_case:treatments')}</Text>
@@ -37,7 +37,7 @@ export default class HealthCares extends Component<Props, State> {
               {__DEV__ ? `${treatments[key].reference} - ` : null}
               {treatments[key].label}
             </Text>
-            <Text style={styles.desc}>{treatments[key].description}</Text>
+            {treatments[key].description !== null ? <Text style={styles.desc}>{treatments[key].description}</Text> : null}
           </View>
         ))}
       </Content>
