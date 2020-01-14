@@ -4,11 +4,16 @@ import find from 'lodash/find';
 import * as _ from 'lodash';
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
-import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/algoConditionsHelpers';
+import {
+  calculateCondition,
+  comparingTopConditions,
+  reduceConditionArrayBoolean
+} from '../../algorithm/algoConditionsHelpers';
 import { store } from '../../store';
 import { nodesType } from '../../constants';
 
-interface FinalDiagnosticInterface {}
+interface FinalDiagnosticInterface {
+}
 
 export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticInterface {
   constructor(props) {
@@ -162,10 +167,15 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
 
     // If this FD can be excluded by other high-priority FD
     if (this.excluded_by_final_diagnostics !== null) {
-      // If this other high-priority FD is true so this is always false
-      if (state$.nodes[this.excluded_by_final_diagnostics].calculateCondition() === true) {
-        return false;
-      }
+      let excluding_node = state$.nodes[this.excluded_by_final_diagnostics];
+      do {
+        // If this other high-priority FD is true so this is always false
+        if (excluding_node.calculateCondition() === true) {
+          return false;
+        }
+        excluding_node = state$.nodes[excluding_node.excluded_by_final_diagnostics];
+
+      } while (excluding_node !== undefined);
     }
 
     // TODO change the excluding final diagnostics (can have an impact on showed treatment and management... so useless for now)
