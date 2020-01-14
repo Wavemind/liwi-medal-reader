@@ -193,8 +193,9 @@ export default class Question extends React.Component<Props, State> {
         );
       };
     }
+
     // If this is not a question we return null
-    if (question === undefined || question.type !== nodesType.question || question.label === 'Age in days') {
+    if (question === undefined || question.type !== nodesType.question || (question.display_format === displayFormats.formula && question.label !== 'Age in months')) {
       return null;
     }
 
