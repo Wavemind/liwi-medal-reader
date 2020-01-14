@@ -21,24 +21,24 @@ export default class HealthCares extends Component<Props, State> {
     return (
       <Content>
         <Text customTitle>{t('medical_case:managements')}</Text>
-        {Object.keys(managements).map(key => (
-          <Text
-            style={styles.spaceText}
-            size-auto
-            key={'healthcare' + managements[key].reference}
-          >
-            {__DEV__ ? `${managements[key].reference} - ` : null}{managements[key].label}
-          </Text>
+        {Object.keys(managements).map((key) => (
+          <>
+            <Text style={styles.spaceText} size-auto key={'healthcare' + managements[key].reference}>
+              {__DEV__ ? `${managements[key].reference} - ` : null}
+              {managements[key].label}
+            </Text>
+            <Text style={styles.desc}>{managements[key].description} tftf ftuftuzgzjguzvztfgzjgzgujg futg</Text>
+          </>
         ))}
         <Text customTitle>{t('medical_case:treatments')}</Text>
         {Object.keys(treatments).map((key) => (
-          <Text
-            style={styles.spaceText}
-            size-auto
-            key={'healthcare' + treatments[key].reference}
-          >
-            {__DEV__ ? `${treatments[key].reference} - ` : null}{treatments[key].label}
-          </Text>
+          <>
+            <Text style={styles.spaceText} size-auto key={'healthcare' + treatments[key].reference}>
+              {__DEV__ ? `${treatments[key].reference} - ` : null}
+              {treatments[key].label}
+            </Text>
+            <Text style={styles.desc}>{treatments[key].description}</Text>
+          </>
         ))}
       </Content>
     );
