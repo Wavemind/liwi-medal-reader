@@ -5,6 +5,10 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     marginLeft:20,
   },
+  desc: {
+    marginBottom: 10,
+    marginLeft:40,
+  },
   padded: {
     padding: 20,
   },
