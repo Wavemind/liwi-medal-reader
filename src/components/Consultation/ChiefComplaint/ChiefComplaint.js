@@ -28,18 +28,18 @@ export default class ChiefComplaint extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     // First fast comparaison if the number of questions is different
-    const { questions, chiefComplaint } = this.props;
+    const { questions, complaintCategory } = this.props;
     if (nextProps.questions.length !== questions.length) {
       return true;
     }
 
-    return chiefComplaint.answer !== nextProps.chiefComplaint.answer || this.isSomeQuestionsDifferent(nextProps.questions);
+    return complaintCategory.answer !== nextProps.complaintCategory.answer || this.isSomeQuestionsDifferent(nextProps.questions);
   }
 
   render() {
-    const { chiefComplaint, questions } = this.props;
+    const { complaintCategory, questions } = this.props;
 
-    if (chiefComplaint.answer === Number(Object.keys(chiefComplaint.answers).second()) || chiefComplaint.answer === null) {
+    if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers).second()) || complaintCategory.answer === null) {
       return null;
     }
 
@@ -48,8 +48,8 @@ export default class ChiefComplaint extends React.Component<Props, State> {
     }
 
     return (
-      <View style={styles.spacingChiefComplaints} key={`chiefComplaint_${chiefComplaint.id}`}>
-        <Text customTitle>{chiefComplaint.label}</Text>
+      <View style={styles.spacingChiefComplaints} key={`complaintCategory_${complaintCategory.id}`}>
+        <Text customTitle>{complaintCategory.label}</Text>
         <Questions questions={questions} />
       </View>
     );

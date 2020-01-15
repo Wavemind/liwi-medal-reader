@@ -241,7 +241,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
           'background: #FF0000; color: #F6F3ED; padding: 5px',
           ' The node',
           nodeId,
-          'do not exist in diagnostics',
+          'do not exist in diagnoses',
           diagnosticId
         );
         return of();

@@ -162,7 +162,7 @@ class Stepper extends React.Component<Props, State> {
       },
       () => {
         Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null;
-        if (this.props.chiefComplaintReady !== undefined && !this.props.chiefComplaintReady && position === 2) {
+        if (this.props.complaintCategoryReady !== undefined && !this.props.complaintCategoryReady && position === 2) {
           this.handleBottomStepper(1);
           Toaster(this.props.t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
         }

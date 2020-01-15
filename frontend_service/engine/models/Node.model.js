@@ -39,7 +39,7 @@ export class NodeModel implements NodeInterface {
       return false;
     }
 
-    if (this.category !== categories.vitalSign) {
+    if (this.category !== categories.basicMeasurement) {
       switch (this?.value_format) {
         case valueFormats.int:
         case valueFormats.float:
