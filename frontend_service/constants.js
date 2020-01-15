@@ -30,6 +30,11 @@ export const displayFormats = {
   date: 'Date',
 };
 
+export const healthCareType = {
+  pill: 'pill',
+  liquid: 'liquid',
+};
+
 // Value of answer accepted
 export const valueFormats = {
   array: 'Array',

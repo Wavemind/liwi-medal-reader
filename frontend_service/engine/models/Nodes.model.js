@@ -148,12 +148,14 @@ export class NodesModel implements NodeInterface {
       Object.keys(finalDiagnostic.managements).forEach((key) => {
         if (calculateCondition(finalDiagnostic.managements[key])) {
           healthCares.managements[key] = this[key];
+          healthCares.managements[key].drugDoses = healthCares.managements[key].getDrugDoses();
         }
       });
 
       Object.keys(finalDiagnostic.treatments).forEach((key) => {
         if (calculateCondition(finalDiagnostic.treatments[key])) {
           healthCares.treatments[key] = this[key];
+          healthCares.treatments[key].drugDoses = healthCares.treatments[key].getDrugDoses();
         }
       });
     });
