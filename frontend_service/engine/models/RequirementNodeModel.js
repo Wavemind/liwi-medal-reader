@@ -36,13 +36,6 @@ export class RequirementNodeModel implements RequirementNodeInterface {
       false
     );
 
-    // console.log(
-    //   conditionFinal,
-    //   'conditionFinal',
-    //   reduceConditionArrayBoolean,
-    //   child.id
-    // );
-
     return reduceConditionArrayBoolean;
   }
 
@@ -86,43 +79,22 @@ export class RequirementNodeModel implements RequirementNodeInterface {
   }
 
   comparingTopConditions(state$, conditions) {
-    const {
-      first_id,
-      first_node_id,
-      first_type,
-      operator,
-      second_node_id,
-      second_id,
-      second_type,
-    } = conditions;
+    const { first_id, first_node_id, first_type, operator, second_node_id, second_id, second_type } = conditions;
 
     let second_sub_condition;
     let first_sub_condition;
 
-    first_sub_condition = this.checkOneCondition(
-      state$,
-      first_id,
-      first_node_id,
-      first_type
-    );
+    first_sub_condition = this.checkOneCondition(state$, first_id, first_node_id, first_type);
 
     if (operator === null) {
       return first_sub_condition;
     } else {
-      second_sub_condition = this.checkOneCondition(
-        state$,
-        second_id,
-        second_node_id,
-        second_type
-      );
+      second_sub_condition = this.checkOneCondition(state$, second_id, second_node_id, second_type);
 
       if (operator === 'AND') {
         return first_sub_condition && second_sub_condition;
       } else if (operator === 'OR') {
-        return this.comparingBooleanOr(
-          first_sub_condition,
-          second_sub_condition
-        );
+        return this.comparingBooleanOr(first_sub_condition, second_sub_condition);
       }
     }
     return null;

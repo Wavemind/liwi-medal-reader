@@ -181,3 +181,7 @@ export const diff = function(obj1, obj2) {
   // Return the object of differences
   return diffs;
 };
+
+export const roundSup = (v) => {
+  return Math.round(v * 10) / 10;
+};
