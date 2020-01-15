@@ -41,7 +41,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.created_at = moment().format();
     this.status = medicalCaseStatus.waitingTriage.name;
     this.main_data_medical_case_id = null;
-    this.chiefComplaints = [];
+    this.complaintCategories = [];
 
     await this.generateExcludedId();
     await this.generateId();
@@ -54,6 +54,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     for (let index in this.nodes) {
       if (this.nodes.hasOwnProperty(index)) {
         let item = this.nodes[index];
+
         if (item.type === nodesType.finalDiagnostic && item.excluding_final_diagnostics !== null) {
           this.nodes[item.excluding_final_diagnostics].excluded_by_final_diagnostics = item.id;
         }

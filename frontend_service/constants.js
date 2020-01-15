@@ -58,14 +58,14 @@ export const stage = {
 export const categories = {
   assessment: 'assessment_test',
   chronicalCondition: 'chronical_condition',
-  vitalSign: 'vital_sign',
+  basicMeasurement: 'basic_measurement',
   firstLookAssessment: 'first_look_assessment',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
   symptom: 'symptom',
   demographic: 'demographic',
   comorbidity: 'comorbidity',
-  chiefComplaint: 'chief_complaint',
+  complaintCategory: 'complaint_category',
   predefinedSyndrome: 'predefined_syndrome',
   triage: 'triage',
   vaccine: 'vaccine',
@@ -73,6 +73,7 @@ export const categories = {
   treatment: 'treatment',
   management: 'management',
   other: 'other',
+  treatment_condition: 'treatment_condition',
 };
 
 // Type of nodes received from json
