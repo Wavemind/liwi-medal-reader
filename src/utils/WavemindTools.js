@@ -5,6 +5,7 @@ import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/a
 import NavigationService from '../engine/navigation/Navigation.service';
 import { persistor, store } from '../../frontend_service/store';
 import { memorySizeOf } from './swissKnives';
+import FilesystemStorage from 'redux-persist-filesystem-storage';
 
 export default class WavemindTools extends Component {
   constructor(props) {
@@ -30,49 +31,51 @@ export default class WavemindTools extends Component {
           <Icon name="developer-mode" type="MaterialIcons" />
           {active
             ? [
-              <Button
-                key="1"
-                blue
-                onPress={async () => {
+                <Button
+                  key="1"
+                  blue
+                  onPress={async () => {
                     await clearPatients();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="AntDesign" name="deleteusergroup" />
-              </Button>,
-              <Button
-                key="2"
-                blue
-                onPress={async () => {
+                >
+                  <Icon type="AntDesign" name="deleteusergroup" />
+                </Button>,
+                <Button
+                  key="2"
+                  blue
+                  onPress={async () => {
                     await clearLocalStorage();
                     await persistor.purge();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="MaterialCommunityIcons" name="delete-forever" />
-              </Button>,
-              <Button
-                key="3"
-                blue
-                onPress={async () => {
+                >
+                  <Icon type="MaterialCommunityIcons" name="delete-forever" />
+                </Button>,
+                <Button
+                  key="3"
+                  blue
+                  onPress={async () => {
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="SimpleLineIcons" name="reload" />
-              </Button>,
-              <Button
-                key="4"
-                blue
-                onPress={async () => {
+                >
+                  <Icon type="SimpleLineIcons" name="reload" />
+                </Button>,
+                <Button
+                  key="4"
+                  blue
+                  onPress={async () => {
                     let sessions = await getItems('sessions');
                     let algorithms = await getItems('algorithms');
                     let patients = await getItems('patients');
                     let state$ = store.getState();
-
+                    let k = await FilesystemStorage.getItem('persist:medicalCase');
+                    k = await JSON.parse(k);
                     // eslint-disable-next-line no-console
                     console.log({
+                      persist: k,
                       state$: state$,
                       size_state$: memorySizeOf(state$),
                       sessions: sessions,
@@ -83,13 +86,13 @@ export default class WavemindTools extends Component {
                       size_patients: memorySizeOf(patients),
                     });
                   }}
-              >
-                <Icon type="FontAwesome" name="database" />
-              </Button>,
-              <Button
-                key="5"
-                blue
-                onPress={async () => {
+                >
+                  <Icon type="FontAwesome" name="database" />
+                </Button>,
+                <Button
+                  key="5"
+                  blue
+                  onPress={async () => {
                     let algo = require('../../frontend_service/api/algo_refractor_from_olga_14_10_19');
                     let session = require('../../frontend_service/api/session');
 
@@ -97,9 +100,9 @@ export default class WavemindTools extends Component {
                     await setItem('algorithms', [algo]);
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
-              </Button>,
+                >
+                  <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
+                </Button>,
               ]
             : null}
         </Fab>

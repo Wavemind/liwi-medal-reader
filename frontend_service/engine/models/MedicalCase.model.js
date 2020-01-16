@@ -42,6 +42,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.status = medicalCaseStatus.waitingTriage.name;
     this.main_data_medical_case_id = null;
     this.complaintCategories = [];
+    this.isNewCase = true;
 
     await this.generateExcludedId();
     await this.generateId();
