@@ -217,7 +217,7 @@ class MedicalCaseReducer extends ReducerClass {
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
-    if (state !== {} && medicalCase.id !== state.id) {
+    if (state !== {} && medicalCase?.id !== state?.id) {
       storeMedicalCase(state);
     }
 
@@ -240,7 +240,6 @@ class MedicalCaseReducer extends ReducerClass {
     }
 
     let modelsMedicalCase = this._instanceMedicalCase(action.payload);
-
     return {
       ...modelsMedicalCase,
     };

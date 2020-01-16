@@ -3,6 +3,7 @@ import Triage from './Triage.Screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
+import { withPoliceOfficer } from '../../../engine/contexts/PoliceOfficer.context';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -10,4 +11,4 @@ const mapStateToProps = (medicalCase) => {
   };
 };
 
-export default connect(mapStateToProps)(withSessions(withApplication(WrapperNavigation(Triage))));
+export default connect(mapStateToProps)(withPoliceOfficer(withSessions(withApplication(WrapperNavigation(Triage)))));

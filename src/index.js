@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ApplicationProvider } from 'engine/contexts/Application.context';
 import { SessionsProvider } from 'engine/contexts/Sessions.context';
+import { PoliceOfficerProvider } from 'engine/contexts/PoliceOfficer.context';
 import KeepAwake from 'react-native-keep-awake';
 
 import WavemindTools from 'utils/WavemindTools';
@@ -26,13 +27,15 @@ export default class Root extends React.Component {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <ApplicationProvider>
-            <SessionsProvider>
-              <Layout />
-              <CustomModal />
-              {__DEV__ ? <WavemindTools /> : null}
-            </SessionsProvider>
-          </ApplicationProvider>
+          <PoliceOfficerProvider>
+            <ApplicationProvider>
+              <SessionsProvider>
+                <Layout />
+                <CustomModal />
+                {__DEV__ ? <WavemindTools /> : null}
+              </SessionsProvider>
+            </ApplicationProvider>
+          </PoliceOfficerProvider>
         </PersistGate>
       </Provider>
     );

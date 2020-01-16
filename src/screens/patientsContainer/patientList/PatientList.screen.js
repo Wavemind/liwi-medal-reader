@@ -215,7 +215,7 @@ export default class PatientList extends React.Component<Props, State> {
                 light
                 red
                 onPress={() => {
-                  if (medicalCase.id === undefined || medicalCase.isCreating === false) {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                     navigation.navigate('PatientUpsert', {
                       idPatient: null,
                       newMedicalCase: true,

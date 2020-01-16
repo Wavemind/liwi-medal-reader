@@ -15,6 +15,7 @@ import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';
 import { getItem, setItem } from '../engine/api/LocalStorage';
 import { appInBackgroundStateKey, navigationStateKey } from '../../frontend_service/constants';
+import { withPoliceOfficer } from '../engine/contexts/PoliceOfficer.context';
 
 type Props = {
   app: {
@@ -68,6 +69,7 @@ class LayoutTemplate extends React.Component<Props> {
   render() {
     const {
       app: { logged, ready },
+      police: { setNavigation },
     } = this.props;
 
     // Constant used in app
@@ -90,7 +92,10 @@ class LayoutTemplate extends React.Component<Props> {
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
-                  onNavigationStateChange={NavigationService.onNavigationStateChange}
+                  onNavigationStateChange={(prevState, currentState, action) => {
+                    setNavigation(prevState, currentState, action);
+                    NavigationService.onNavigationStateChange(prevState, currentState);
+                  }}
                 />
               </RootView>
             </Container>
@@ -103,4 +108,4 @@ class LayoutTemplate extends React.Component<Props> {
   }
 }
 
-export default withApplication(LayoutTemplate);
+export default withPoliceOfficer(withApplication(LayoutTemplate));

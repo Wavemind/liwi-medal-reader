@@ -22,6 +22,20 @@ function navigate(routeName, params = {}) {
   );
 }
 
+// Return the route by the given name
+function getActiveRouteByName(name, state) {
+  let { routes } = state;
+  for (const route of routes) {
+    if (route.routeName === name) {
+      return route;
+    } else {
+      if (route.routes !== undefined) {
+        return getActiveRouteByName(name, route);
+      }
+    }
+  }
+}
+
 function getActiveRouteName(navigationState) {
   if (!navigationState) {
     return null;
@@ -107,6 +121,7 @@ function onNavigationStateChange(prevState, currentState) {
 }
 
 export default {
+  getActiveRouteByName,
   getActiveRouteName,
   onNavigationStateChange,
   resetActionStack,
