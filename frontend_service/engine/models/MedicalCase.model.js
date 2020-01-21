@@ -43,6 +43,28 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.main_data_medical_case_id = null;
     this.complaintCategories = [];
     this.isNewCase = true;
+    this.modal = {
+      open: false,
+      content: '',
+    };
+    this.metaData = {
+      status: medicalCaseStatus.waitingTriage.name,
+      triage: {
+        firstLookAssessments: [],
+        complaintCategories: [],
+        basicMeasurements: [],
+      },
+      consultation: {
+        medicalHistory: [],
+        physicalExam: [],
+      },
+      tests: {
+        tests: [],
+      },
+      diagnosticsStrategy: {
+        managementQuestions: [],
+      },
+    };
 
     await this.generateExcludedId();
     await this.generateId();

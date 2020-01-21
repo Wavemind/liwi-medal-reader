@@ -99,9 +99,27 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.UPDATE_MEDICAL_CASE)
   updateMedicalCase(state, action) {
     const { property, newValue } = action.payload;
+
     return {
       ...state,
       [property]: newValue,
+    };
+  }
+
+  /**
+   * Update modal
+   *
+   * @payload content: Text that will be shown in modal
+   */
+  @Action(actions.MC_UPDATE_MODAL)
+  updateModalFromRedux(state, action) {
+    const { content } = action.payload;
+    return {
+      ...state,
+      modal: {
+        open: !state.modal.open,
+        content: content,
+      },
     };
   }
 
@@ -172,6 +190,29 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...state,
       nodes: new NodesModel(state.nodes),
+    };
+  }
+
+  /**
+   * Update the metadata in MC
+   *
+   * @payload screen: Main screen in MC (Triage...)
+   * @payload view: step in screen (sub view of screen)
+   * @payload value: Array of questions id
+   */
+  @Action(actions.MC_UPDATE_METADATA)
+  updateMetaData(state, action) {
+    const { screen, view, value } = action.payload;
+
+    return {
+      ...state,
+      metaData: {
+        ...state.metaData,
+        [screen]: {
+          ...state.metaData[screen],
+          [view]: value,
+        },
+      },
     };
   }
 

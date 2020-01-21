@@ -222,7 +222,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
       medicalCase.isNewCase = 'false'; // Workaround because redux persist is buggy with boolean
-      updateMedicalCaseProperty('isNewCase', 'false'); // Workauround because redux persist is buggy with boolean
+      updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
       patient.medicalCases.push(medicalCase);
       await patient.save();
       return true;
