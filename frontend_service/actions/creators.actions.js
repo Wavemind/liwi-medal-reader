@@ -16,6 +16,23 @@ export const setMedicalCase = (medicalCase) => ({
     medicalCase,
   },
 });
+
+export const updateMetaData = (screen, view, value) => ({
+  type: actions.MC_UPDATE_METADATA,
+  payload: {
+    screen,
+    view,
+    value,
+  },
+});
+
+export const updateModalFromRedux = (content = '') => ({
+  type: actions.MC_UPDATE_MODAL,
+  payload: {
+    content,
+  },
+});
+
 export const clearMedicalCase = () => ({
   type: actions.MC_CLEAR,
 });

@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import AppNavigator from 'engine/navigation/Root.navigation';
 import { createAppContainer } from 'react-navigation';
 import getTheme from 'template/liwi/native_components/index.ignore';
 import material from 'template/liwi/variables/material';
@@ -15,7 +14,8 @@ import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';
 import { getItem, setItem } from '../engine/api/LocalStorage';
 import { appInBackgroundStateKey, navigationStateKey } from '../../frontend_service/constants';
-import { withPoliceOfficer } from '../engine/contexts/PoliceOfficer.context';
+import CustomNavigator from '../engine/navigation/CustomNavigator.navigation';
+import { RootLoginNavigator } from '../engine/navigation/Root.navigation';
 
 type Props = {
   app: {
@@ -69,12 +69,16 @@ class LayoutTemplate extends React.Component<Props> {
   render() {
     const {
       app: { logged, ready },
-      police: { setNavigation },
     } = this.props;
 
     // Constant used in app
-    const Navigator = AppNavigator(logged);
-    const AppContainer = createAppContainer(Navigator);
+    let AppContainer;
+    if (logged) {
+      AppContainer = createAppContainer(CustomNavigator);
+    } else {
+      AppContainer = createAppContainer(RootLoginNavigator);
+    }
+
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
 
@@ -86,14 +90,14 @@ class LayoutTemplate extends React.Component<Props> {
               <RootView>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <AppContainer
+                  logged={logged}
                   persistNavigationState={persistNavigationState}
                   loadNavigationState={this.loadNavigationState}
                   renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
-                  onNavigationStateChange={(prevState, currentState, action) => {
-                    setNavigation(prevState, currentState, action);
+                  onNavigationStateChange={(prevState, currentState) => {
                     NavigationService.onNavigationStateChange(prevState, currentState);
                   }}
                 />
@@ -108,4 +112,4 @@ class LayoutTemplate extends React.Component<Props> {
   }
 }
 
-export default withPoliceOfficer(withApplication(LayoutTemplate));
+export default withApplication(LayoutTemplate);

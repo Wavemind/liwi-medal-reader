@@ -20,6 +20,10 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 export default class Triage extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+  }
+
   componentWillMount() {
     const {
       navigation,
@@ -45,6 +49,7 @@ export default class Triage extends React.Component<Props, State> {
       medicalCase,
       focus,
       navigation,
+      updateMetaData,
     } = this.props;
 
     let firstLookAssessement = [];
@@ -75,6 +80,7 @@ export default class Triage extends React.Component<Props, State> {
     });
 
     let complaintCategoryReady = complaintCategory.every((cc) => cc.answer !== null);
+
     let selectedPage = navigation.getParam('initialPage');
     // Denied access to Basic measurement step if all chief complaints are not answered
     if (selectedPage === 2 && !complaintCategoryReady) {
@@ -83,6 +89,19 @@ export default class Triage extends React.Component<Props, State> {
         initialPage: 1,
       });
       Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
+    }
+
+    // Set Questions in State for validation
+    if (medicalCase.metaData.triage.basicMeasurements.length === 0) {
+      updateMetaData('triage', 'basicMeasurements', basicMeasurements.map(({ id }) => id));
+    }
+
+    if (medicalCase.metaData.triage.firstLookAssessments.length === 0) {
+      updateMetaData('triage', 'firstLookAssessments', firstLookAssessement.map(({ id }) => id));
+    }
+
+    if (medicalCase.metaData.triage.complaintCategories.length === 0) {
+      updateMetaData('triage', 'complaintCategories', complaintCategory.map(({ id }) => id));
     }
 
     return (

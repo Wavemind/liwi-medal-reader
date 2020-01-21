@@ -124,3 +124,9 @@ export const routeDependingStatus = (medicalCase) => {
 
   return route;
 };
+
+export const navigationActionConstant = {
+  navigate: 'Navigation/NAVIGATE',
+  replace: 'Navigation/REPLACE',
+  setParams: 'Navigation/SET_PARAMS',
+};
