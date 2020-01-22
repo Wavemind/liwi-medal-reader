@@ -13,9 +13,9 @@ const screens = [
     key: 'Triage',
     medicalCaseOrder: 1,
     validations: {
-      firstLookAssessments: { priority: priorities.mandatory },
-      complaintCategories: { answer: 'not_null' },
-      basicMeasurements: { priority: priorities.mandatory },
+      firstLookAssessments: { priority: priorities.mandatory, initialPage: 0 },
+      complaintCategories: { answer: 'not_null', initialPage: 1 },
+      basicMeasurements: { priority: priorities.mandatory, initialPage: 2 },
     },
   },
   { key: 'Consultation', medicalCaseOrder: 2, validations: { medicalHistory: {}, physicalExam: {} } },
@@ -61,7 +61,9 @@ const validatorNavigate = (navigateRoute) => {
                 return true;
               });
             case 'answer':
-              return questions.every((questionId) => state$.nodes[questionId].answer !== null);
+              if (criteria[c] === 'not_null') {
+                return questions.every((questionId) => state$.nodes[questionId].answer !== null);
+              }
           }
         });
         // Need all condition to true
