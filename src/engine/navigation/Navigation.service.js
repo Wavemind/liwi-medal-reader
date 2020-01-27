@@ -22,6 +22,21 @@ function navigate(routeName, params = {}) {
   );
 }
 
+// Return the route by the given key
+function getActiveRouteByKey(key, state) {
+  let { routes } = state;
+
+  for (const route of routes) {
+    if (route.key === key.key) {
+      return route;
+    } else {
+      if (route.routes !== undefined) {
+        return getActiveRouteByKey(key, route);
+      }
+    }
+  }
+}
+
 // Return the route by the given name
 function getActiveRouteByName(name, state) {
   let { routes } = state;
@@ -121,6 +136,7 @@ function onNavigationStateChange(prevState, currentState) {
 }
 
 export default {
+  getActiveRouteByKey,
   getActiveRouteByName,
   getActiveRouteName,
   onNavigationStateChange,

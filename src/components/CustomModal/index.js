@@ -6,7 +6,7 @@ import { updateModalFromRedux } from '../../../frontend_service/actions/creators
 
 const mapStateToProps = (medicalCase) => {
   return {
-    modalRedux: medicalCase.modal,
+    medicalCase,
   };
 };
 

@@ -65,6 +65,7 @@ export const post = async (params, body = {}, userId = null) => {
   let header = await getHeaders('POST', body, userId);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
+
   let response = await request.json();
 
   // Display error

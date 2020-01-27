@@ -5,7 +5,7 @@ import { Button, Icon, Text } from 'native-base';
 import { styles } from './ToolTipModal.style';
 import Tooltip from '../Tooltip/tooltip';
 
-export default class TooltipButton extends React.Component<Props, State> {
+export default class TooltipModal extends React.Component<Props, State> {
   state = {
     toolTipVisible: false,
   };
@@ -13,18 +13,41 @@ export default class TooltipButton extends React.Component<Props, State> {
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps, nextState) {
     const { toolTipVisible } = this.state;
-    return nextState.toolTipVisible !== toolTipVisible;
+    const { modalRedux } = this.props;
+
+    return nextState.toolTipVisible !== toolTipVisible || nextProps.modalRedux.open !== modalRedux.open;
   }
 
+  _renderValidation = () => {
+    const { modalRedux } = this.props;
+
+    console.log(modalRedux);
+
+    return (
+      <View>
+        <Text>Hola</Text>
+      </View>
+    );
+  };
+
   _renderToolTipContent = () => {
+    const { modalRedux, children } = this.props;
+    const { toolTipVisible } = this.state;
+
+    const isFromRedux = modalRedux.open;
+    const isFromJsx = toolTipVisible;
+
+    console.log(modalRedux);
+
     return (
       <View>
         <ScrollView>
           <View onStartShouldSetResponder={() => true}>
-            <Button onPress={() => this.setState({ toolTipVisible: false })} rounded style={styles.button}>
+            <Button onPress={this.closeModal} rounded style={styles.button}>
               <Icon name="close" type="AntDesign" style={styles.icon} />
             </Button>
-            {this.props.children}
+            {isFromJsx && children}
+            {isFromRedux ? modalRedux.content !== null ? <Text>{modalRedux.content}</Text> : this._renderValidation() : null}
           </View>
         </ScrollView>
       </View>
@@ -52,21 +75,44 @@ export default class TooltipButton extends React.Component<Props, State> {
     let insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
 
     if (!insideContent) {
+      this.closeModal();
+    }
+  };
+
+  closeModal = () => {
+    const { modalRedux, updateModalFromRedux } = this.props;
+    const { toolTipVisible } = this.state;
+
+    const isFromRedux = modalRedux.open;
+    const isFromJsx = toolTipVisible;
+
+    if (isFromRedux) {
+      updateModalFromRedux();
+    }
+
+    if (isFromJsx) {
       this.setState({ toolTipVisible: false });
     }
   };
 
   render() {
     const { toolTipVisible } = this.state;
-    const { flex } = this.props;
+    const { flex, modalRedux, toolTipIcon } = this.props;
+
+    const isFromRedux = modalRedux.open;
+    const isFromJsx = toolTipVisible;
+    const isVisible = isFromRedux || isFromJsx;
 
     return (
       <View flex={flex}>
-        <Button style={styles.touchable} transparent onPress={() => this.setState({ toolTipVisible: true })}>
-          <Icon type="AntDesign" name="info" style={styles.iconInfo} />
-        </Button>
+        {isFromJsx && toolTipIcon ? (
+          <Button style={styles.touchable} transparent onPress={() => this.setState({ toolTipVisible: true })}>
+            <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+          </Button>
+        ) : null}
+
         <Tooltip
-          isVisible={toolTipVisible}
+          isVisible={isVisible}
           closeOnChildInteraction={false}
           showChildInTooltip={false}
           content={this._renderToolTipContent()}

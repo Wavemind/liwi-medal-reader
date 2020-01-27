@@ -48,7 +48,7 @@ export default class HealthCares extends Component<Props, State> {
           {healthCare[index].label}
         </Text>
         {healthCare[index].description !== null ? <Text style={styles.desc}>{healthCare[index].description}</Text> : null}
-        <ToolTipModal>{this._renderHealthCareType(healthCare[index])}</ToolTipModal>
+        <ToolTipModal toolTipIcon>{this._renderHealthCareType(healthCare[index])}</ToolTipModal>
       </View>
     ));
   };
