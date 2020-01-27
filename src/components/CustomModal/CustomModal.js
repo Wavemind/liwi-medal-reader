@@ -12,15 +12,6 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 export default class CustomModal extends Component<Props, State> {
-  shouldComponentUpdate(nextProps) {
-    const {
-      app: { isModalVisible },
-      modalRedux,
-    } = this.props;
-
-    return nextProps.isModalVisible !== isModalVisible || nextProps.modalRedux.open !== modalRedux.open;
-  }
-
   state = {};
 
   static defaultProps = {
@@ -30,39 +21,22 @@ export default class CustomModal extends Component<Props, State> {
 
   closeModal = () => {
     const {
-      app: { isModalVisible, set },
-      modalRedux,
-      updateModalFromRedux,
+      app: { set },
     } = this.props;
 
-    const isFromRedux = modalRedux.open;
-    const isFromReactContexte = isModalVisible;
-
-    if (isFromRedux) {
-      updateModalFromRedux();
-    }
-
-    if (isFromReactContexte) {
-      set('isModalVisible', false);
-    }
+    set('isModalVisible', false);
   };
 
   render() {
     const {
       app: { isModalVisible, contentModal },
-      modalRedux,
     } = this.props;
-
-    const isFromRedux = modalRedux.open;
-    const isFromReactContexte = isModalVisible;
-    const isVisible = isFromRedux || isFromReactContexte;
 
     return (
       <View style={styles.container}>
-        <Modal isVisible={isVisible} backdropOpacity={0.5} onSwipeComplete={this.closeModal} swipeDirection="up">
-          <View style={[styles.view, isFromRedux && styles.popupAlert]}>
-            {isFromReactContexte && <Text>{contentModal}</Text>}
-            {isFromRedux && <Text>{modalRedux.content}</Text>}
+        <Modal isVisible={isModalVisible} backdropOpacity={0.5} onSwipeComplete={this.closeModal} swipeDirection="up">
+          <View style={[styles.view]}>
+            <Text>{contentModal}</Text>
 
             <TouchableWithoutFeedback onPress={this.closeModal}>
               <Text>Hide</Text>

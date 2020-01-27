@@ -145,7 +145,7 @@ const Stack = createStackNavigator(
         showSummary: true,
         dropDownMenu: 'Consultation',
         medicalCaseStatus: medicalCaseStatus.consultation.name,
-        nextStage: medicalCaseStatus.waitingTest.name,
+        nextStage: medicalCaseStatus.waitingTests.name,
       },
       navigationOptions: ({ navigation }) => {
         return {
@@ -159,7 +159,7 @@ const Stack = createStackNavigator(
       params: {
         showSummary: true,
         dropDownMenu: 'Tests',
-        medicalCaseStatus: medicalCaseStatus.test.name,
+        medicalCaseStatus: medicalCaseStatus.tests.name,
         nextStage: medicalCaseStatus.waitingDiagnostic.name,
       },
       navigationOptions: ({ navigation }) => {
@@ -173,7 +173,7 @@ const Stack = createStackNavigator(
       path: 'DiagnosticsStrategy',
       params: {
         showSummary: true,
-        dropDownMenu: 'DiagnosticsStrategy',
+        dropDownMenu: 'Final_diagnostic',
         medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
         nextStage: medicalCaseStatus.close.name,
       },

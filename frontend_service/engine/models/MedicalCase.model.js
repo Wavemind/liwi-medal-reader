@@ -46,6 +46,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.modal = {
       open: false,
       content: '',
+      navigator: {},
     };
     this.metaData = {
       status: medicalCaseStatus.waitingTriage.name,
