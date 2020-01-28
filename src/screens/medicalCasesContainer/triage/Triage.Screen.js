@@ -49,7 +49,7 @@ export default class Triage extends React.Component<Props, State> {
 
     let firstLookAssessement = [];
 
-    const ordersFirstLookAssessment = medicalCase.triage.orders[categories.firstLookAssessment];
+    const ordersFirstLookAssessment = medicalCase.triage.orders[categories.emergencySign];
 
     ordersFirstLookAssessment.map((order) => {
       firstLookAssessement.push(medicalCase.nodes[order]);
@@ -65,7 +65,7 @@ export default class Triage extends React.Component<Props, State> {
     });
 
     let basicMeasurements = [];
-    const orderedQuestions = medicalCase.triage.orders[categories.basicMeasurement];
+    const orderedQuestions = medicalCase.triage.orders[categories.vitalSignTriage];
 
     orderedQuestions.map((orderedQuestion) => {
       let question = medicalCase.nodes[orderedQuestion];

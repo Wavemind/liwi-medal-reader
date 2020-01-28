@@ -40,12 +40,6 @@ export const valueFormats = {
   date: 'Date',
 };
 
-// Priority of questions
-export const priorities = {
-  basic: 'basic',
-  mandatory: 'mandatory',
-};
-
 // Stage of questions
 export const stage = {
   registration: 'registration',
@@ -54,12 +48,24 @@ export const stage = {
   consultation: 'consultation',
 };
 
+export const systems = {
+  general: 'General',
+  respiratory_circulation: 'Respiratory and circulatory system',
+  ear_nose_mouth_throat: 'Ear, nose, mouth and throat system',
+  visual: 'Visual system',
+  integumentary: 'Integumentary system',
+  digestive: 'Digestive system',
+  urinary_reproductive: 'Urinary and reproductive system',
+  nervous: 'Nervous system',
+  muscular_skeletal: 'Muscular and skeletal system',
+};
+
 // Node category
 export const categories = {
   assessment: 'assessment_test',
-  chronicalCondition: 'chronical_condition',
-  basicMeasurement: 'basic_measurement',
-  firstLookAssessment: 'first_look_assessment',
+  chronicCondition: 'chronic_condition',
+  vitalSignTriage: 'vital_sign',
+  emergencySign: 'emergency_sign',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
   symptom: 'symptom',
@@ -73,7 +79,10 @@ export const categories = {
   treatment: 'treatment',
   management: 'management',
   other: 'other',
-  treatment_condition: 'treatment_condition',
+  treatmentQuestion: 'treatment_question',
+  backgroundCalculation: 'background_calculation',
+  vitalSignConsultation: 'vital_sign_consultation',
+  observedPhysicalSign: 'observed_physical_sign',
 };
 
 // Type of nodes received from json

@@ -42,7 +42,6 @@ test('renders patient list correctly', () => {
           counter: 0,
           dd: [{ id: 16, conditionValue: false }],
           display_format: 'RadioButton',
-          priority: 'basic',
           qs: [],
           value: 0,
           value_format: 'Boolean',
