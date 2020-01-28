@@ -14,9 +14,9 @@ const screens = [
     key: 'Triage',
     medicalCaseOrder: 1,
     validations: {
-      firstLookAssessments: { priority: priorities.mandatory, initialPage: 0 },
+      firstLookAssessments: { is_mandatory: true, initialPage: 0 },
       complaintCategories: { answer: 'not_null', initialPage: 1 },
-      basicMeasurements: { priority: priorities.mandatory, initialPage: 2 },
+      basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
   },
   { key: 'Consultation', medicalCaseOrder: 2, validations: { medicalHistory: {}, physicalExam: {} } },
@@ -61,10 +61,10 @@ function oneValidation(criteria, questions, stepName) {
 
   Object.keys(criteria).map((c) => {
     switch (c) {
-      case 'priority':
+      case 'is_mandatory':
         questions.forEach((questionId) => {
           let q = state$.nodes[questionId];
-          if (q.priority === criteria[c]) {
+          if (q.is_mandatory === true) {
             result = state$.nodes[questionId].answer !== null || state$.nodes[questionId].value !== null;
             if (!result) {
               isValid = false;
