@@ -143,63 +143,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   /**
-   * Generate the complaintCategories ID and questions associate on each
-   */
-  generateChiefsComplaints = (instanceMedicalCase) => {
-    instanceMedicalCase.nodes = new NodesModel(instanceMedicalCase.nodes);
-    // Pick by category Chief complaint
-    let chiefs = _.pickBy(instanceMedicalCase.nodes, (n) => n.category === categories.complaintCategory);
-
-    // Filter questions medical history
-    let medical_history = instanceMedicalCase.nodes.filterBy(
-      [
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.symptom,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.exposure,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.basicMeasurement,
-        },
-      ],
-      'OR',
-      'array',
-      false
-    );
-
-    // Filter questions physical exam
-    let physical_exam = instanceMedicalCase.nodes.filterBy(
-      [
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.physicalExam,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.other,
-        },
-      ],
-      'OR',
-      'array',
-      false
-    );
-
-    Object.keys(chiefs).map((id) => {
-      instanceMedicalCase.nodes[id].medical_history = _.filter(medical_history, (k) => k.cc.some((d) => d === Number(id))).flatMap((x) => x.id);
-      instanceMedicalCase.nodes[id].physical_exam = _.filter(physical_exam, (k) => k.cc.some((d) => d === Number(id))).flatMap((x) => x.id);
-    });
-  };
-
-  /**
    * Generate medical case for current patient
    * @params [Object] patient
    * @return [Object] medical case
