@@ -7,9 +7,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-
   spacingChiefComplaints: {
+    flex: 1,
     paddingBottom: 10,
-    marginBottom: 20
+    marginBottom: 20,
   },
 });

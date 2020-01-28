@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import { NodeModel } from './Node.model';
-import { priorities, valueFormats, displayFormats } from '../../constants';
+import { valueFormats, displayFormats } from '../../constants';
 import { store } from '../../store';
 
 const references = {
@@ -11,8 +11,6 @@ const references = {
   heart_rate_table: require('../../api/heart_rate_table.json'),
   respiratory_rate_table: require('../../api/respiratory_rate_table.json'),
 };
-
-const { basic, mandatory, triage, priority } = priorities;
 
 interface QuestionInterface {
   answer: string;
@@ -23,7 +21,6 @@ interface QuestionInterface {
   counter: number;
   dd: Array<Object>;
   display_format: string;
-  priority: basic | mandatory | triage | priority;
   ps: Array<Object>;
   value: number;
   value_format: string;
@@ -42,7 +39,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       counter = 0,
       dd = [],
       display_format = '',
-      priority = '',
+      is_mandatory = '',
       qs = [],
       value = '',
       value_format = '',
@@ -54,8 +51,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       reference_table_y_id = 0,
       reference_table_male = '',
       reference_table_female = '',
-      medical_history = [],
-      physical_exam = [],
+      system = '',
     } = props;
 
     this.description = description;
@@ -66,7 +62,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.counter = counter;
     this.dd = dd;
     this.display_format = display_format;
-    this.priority = priority;
+    this.is_mandatory = is_mandatory;
     this.qs = qs;
     this.value = value;
     this.value_format = value_format;
@@ -78,8 +74,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.reference_table_x_id = reference_table_x_id;
     this.reference_table_male = reference_table_male;
     this.reference_table_female = reference_table_female;
-    this.medical_history = medical_history;
-    this.physical_exam = physical_exam;
+    this.system = system;
   }
 
   /**
