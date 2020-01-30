@@ -43,6 +43,8 @@ export const valueFormats = {
   bool: 'Boolean',
   string: 'String',
   date: 'Date',
+  present: 'Present',
+  positive: 'Positive',
 };
 
 // Stage of questions
@@ -69,7 +71,7 @@ export const systems = {
 export const categories = {
   assessment: 'assessment_test',
   chronicCondition: 'chronic_condition',
-  vitalSignTriage: 'vital_sign',
+  vitalSignTriage: 'vital_sign_triage',
   emergencySign: 'emergency_sign',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
@@ -100,6 +102,7 @@ export const typeNode = {
 
 // Status of medical cases
 export const medicalCaseStatus = {
+  inCreation: { name: 'in_creation', index: -1, main: 0 },
   waitingTriage: { name: 'waiting_triage', index: 0, main: null },
   triage: { name: 'triage', index: 1, main: 1 },
   waitingConsultation: { name: 'waiting_consultation', index: 2, main: null },
@@ -115,16 +118,19 @@ export const routeDependingStatus = (medicalCase) => {
   let route;
 
   switch (medicalCase.status) {
+    case medicalCaseStatus.inCreation.name:
+      route = 'PatientUpsert';
+      break;
     case medicalCaseStatus.waitingTriage.name:
     case medicalCaseStatus.triage.name:
     case medicalCaseStatus.waitingConsultation.name:
       route = 'Triage';
       break;
     case medicalCaseStatus.consultation.name:
-    case medicalCaseStatus.waitingTest.name:
+    case medicalCaseStatus.waitingTests.name:
       route = 'Consultation';
       break;
-    case medicalCaseStatus.test.name:
+    case medicalCaseStatus.tests.name:
     case medicalCaseStatus.waitingDiagnostic.name:
       route = 'Tests';
       break;

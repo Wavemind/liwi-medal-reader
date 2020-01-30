@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import PatientUpsert from './PatientUpsert.screen';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
-import { setMedicalCase, updatePatient, updateMedicalCaseProperty } from '../../../../frontend_service/actions/creators.actions';
+import { setMedicalCase, updatePatient, updateMedicalCaseProperty, updateMetaData } from '../../../../frontend_service/actions/creators.actions';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 
 const mapStateToProps = (medicalCase) => {
@@ -16,6 +16,7 @@ const mapDispatchToProps = (dispatch) => {
     setMedicalCase: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
     updatePatient: (index, value) => dispatch(updatePatient(index, value)),
     updateMedicalCaseProperty: (property, newValue) => dispatch(updateMedicalCaseProperty(property, newValue)),
+    updateMetaData: (screen, view, value) => dispatch(updateMetaData(screen, view, value)),
   };
 };
 

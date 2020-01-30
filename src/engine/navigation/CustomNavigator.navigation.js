@@ -1,25 +1,35 @@
 import React from 'react';
 import _ from 'lodash';
 import { RootMainNavigator } from './Root.navigation';
-import { medicalCaseStatus, navigationActionConstant, priorities } from '../../../frontend_service/constants';
+import { medicalCaseStatus, navigationActionConstant, routeDependingStatus } from '../../../frontend_service/constants';
 import NavigationService from './Navigation.service';
 import { store } from '../../../frontend_service/store';
-import { Toaster } from '../../utils/CustomToast';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
+import { Toaster } from '../../utils/CustomToast';
 
 const screens = [
   { key: 'Home' },
-  { key: 'PatientUpsert', medicalCaseOrder: 0 },
+  {
+    key: 'PatientUpsert',
+    medicalCaseOrder: 0,
+    validations: {
+      custom: { is_mandatory: true },
+    },
+  },
   {
     key: 'Triage',
     medicalCaseOrder: 1,
     validations: {
       firstLookAssessments: { is_mandatory: true, initialPage: 0 },
-      complaintCategories: { answer: 'not_null', initialPage: 1 },
+      complaintCategories: { answer: 'not_null', initialPage: 1, required: true },
       basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
   },
-  { key: 'Consultation', medicalCaseOrder: 2, validations: { medicalHistory: {}, physicalExam: {} } },
+  {
+    key: 'Consultation',
+    medicalCaseOrder: 2,
+    validations: { medicalHistory: { is_mandatory: true, initialPage: 0 }, physicalExam: { is_mandatory: true, initialPage: 1 } },
+  },
   { key: 'Tests', medicalCaseOrder: 3, validations: {} },
   { key: 'DiagnosticsStrategy', medicalCaseOrder: 4, validations: {} },
 ];
@@ -38,12 +48,15 @@ const validatorStep = (route, lastState, validator) => {
   if (route?.params?.initialPage && route.params.initialPage > 0) {
     const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
     const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
+
     let questionsToValidate = state$.metaData[route.routeName.toLowerCase()];
 
     let questions = questionsToValidate[detailValidation];
     let criteria = detailSetParamsRoute.validations[detailValidation];
-    return oneValidation(criteria, questions, detailValidation);
+
+    validator = oneValidation(criteria, questions, detailValidation);
   }
+
   return validator;
 };
 
@@ -57,7 +70,6 @@ function oneValidation(criteria, questions, stepName) {
   // Break Ref JS
   let staticValidator = JSON.parse(JSON.stringify(modelValidator));
   staticValidator.stepName = stepName;
-  console.log(criteria, questions, staticValidator);
 
   Object.keys(criteria).map((c) => {
     switch (c) {
@@ -85,73 +97,85 @@ function oneValidation(criteria, questions, stepName) {
           });
         }
         break;
-
       // eslint-disable-next-line no-fallthrough
       default:
         break;
     }
   });
   // Need all condition to true
-
   staticValidator.isActionValid = isValid;
   return staticValidator;
 }
 
 const validatorNavigate = (navigateRoute, lastState) => {
-  let state$ = store.getState();
-
   // Break Ref JS
   let validator = JSON.parse(JSON.stringify(modelValidator));
 
-  // Get validation from constant
-  const detailNavigateRoute = screens.find((s) => s.key === navigateRoute.routeName);
-
-  // If the route is not in the constant
-  if (detailNavigateRoute === null) {
+  /** Forced navigation **/
+  if (navigateRoute?.params?.force !== undefined && navigateRoute?.params?.force === true) {
     validator.isActionValid = true;
     return validator;
   }
 
-  /*** Specific Validation ***/
+  let state$ = store.getState();
+
+  // Get validation from constant
+  const detailNavigateRoute = screens.find((s) => s.key === navigateRoute.routeName);
+
+  /** This route has no rule **/
+  if (detailNavigateRoute === undefined || detailNavigateRoute === null) {
+    validator.isActionValid = true;
+    return validator;
+  }
+
+  /*** ----- Specific Validation -----  ***/
+
+  /** This route is patientUpSert **/
+  if (detailNavigateRoute.medicalCaseOrder === 0) {
+    validator.isActionValid = true;
+    return validator;
+  }
 
   /** MedicalCases Routes **/
 
   if (detailNavigateRoute.medicalCaseOrder !== undefined) {
     /** the case is still in creation, do not permit to go into medical case **/
-
     if (detailNavigateRoute.medicalCaseOrder > 0 && state$.isNewCase === true) {
       validator.isActionValid = false;
       return validator;
     }
 
-    // Prev route in medicalCase
-    let prevMedicalOrder = screens.find((s) => s.medicalCaseOrder === detailNavigateRoute.medicalCaseOrder - 1);
+    // Route depending status
+    let routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
 
-    // Prev route is not null and can be validated
-    if (prevMedicalOrder !== undefined && prevMedicalOrder.medicalCaseOrder > 0) {
+    /** The route requested is the route to validate  **/
+    if (routeToValidate.key === detailNavigateRoute.key) {
+      validator.isActionValid = true;
+      return validator;
+    }
+
+    // Route to validate is not null and can be validated
+    if (routeToValidate !== undefined) {
       // Questions to be validated
-      let questionsToValidate = state$.metaData[prevMedicalOrder.key.toLowerCase()];
+      let questionsToValidate = state$.metaData[routeToValidate.key.toLowerCase()];
 
       // Get order of screen
-      let indexStatus = medicalCaseStatus[state$.status].main;
+      let indexStatus = _.find(medicalCaseStatus, (i) => i.name === state$.status).main;
+
       let requestedStatus = screens.find((s) => s.key === navigateRoute.routeName).medicalCaseOrder;
 
       // Diff between prev and next index in order
       let diffStatus = requestedStatus - indexStatus;
-
-      /** Block action if screen prev **/
-      // Route requested is way to long in the medicalCase process
-      if (indexStatus !== null && diffStatus > 1) {
-        validator.isActionValid = false;
-        validator.routeRequested = navigateRoute.routeName;
-        validator.screenToBeFill = prevMedicalOrder.key;
+      /** Route is before so ok */
+      if (diffStatus <= 0) {
+        validator.isActionValid = true;
         return validator;
       }
 
-      // Check precedent screen if valid
-      let screenResults = Object.keys(prevMedicalOrder.validations).map((validation) => {
+      // Check route to validate screen if valid
+      let screenResults = Object.keys(routeToValidate.validations).map((validation) => {
         let questions = questionsToValidate[validation];
-        let criteria = prevMedicalOrder.validations[validation];
+        let criteria = routeToValidate.validations[validation];
         // Validation on each Step
         return oneValidation(criteria, questions, validation);
       });
@@ -160,28 +184,12 @@ const validatorNavigate = (navigateRoute, lastState) => {
       validator.isActionValid = screenResults.every((c) => c.isActionValid === true);
       validator.stepToBeFill = screenResults;
 
-      console.log('-----', detailNavigateRoute, navigateRoute, validator);
-
       if (!validator.isActionValid) {
-        Toaster('The screen ' + prevMedicalOrder.key + ' is not not valid', {
-          type: 'danger',
-          duration: 10000,
-        });
-        store.dispatch(updateModalFromRedux('The screen ' + prevMedicalOrder.key + ' is not valid (why ?) . content has to be defined by PMU'));
         validator.routeRequested = navigateRoute.routeName;
-        validator.screenToBeFill = prevMedicalOrder.key;
+        validator.screenToBeFill = routeToValidate.key;
       }
-      return validator;
-    }
 
-    // Validate initial Step to check
-    if (navigateRoute?.params?.initialPage !== undefined && navigateRoute?.params?.initialPage > 0) {
-      let step = validatorStep(navigateRoute, lastState, validator);
-      console.log(step);
-      if (!validator.isActionValid) {
-        Toaster('You cant access the step in this ' + navigateRoute.routeName, { type: 'danger', duration: 10000 });
-        store.dispatch(updateModalFromRedux('You cant access the step in this ' + navigateRoute.routeName));
-      }
+      return validator;
     }
   }
   return validator;
@@ -200,20 +208,30 @@ class CustomNavigator extends React.Component {
       switch (action.type) {
         case navigationActionConstant.navigate:
         case navigationActionConstant.replace:
-          // console.log(screens, action, lastState, NavigationService.getCurrentRoute(lastState));
           // eslint-disable-next-line no-case-declarations
           validation = validatorNavigate(action, lastState);
-          console.log(validation);
           break;
 
         case navigationActionConstant.setParams:
           const route = NavigationService.getActiveRouteByKey(action, lastState);
+          const currentRoute = NavigationService.getCurrentRoute();
           validation = validatorStep(route, lastState, modelValidator);
-          console.log(validation);
+
+          const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
+          const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
+          /** Change route params and dont block action **/
+          if (validation.isActionValid === false && detailSetParamsRoute.validations[detailValidation]?.required === true) {
+            action.params.initialPage = detailSetParamsRoute.validations[detailValidation].initialPage;
+            Toaster(detailValidation + ' are invalid', { type: 'danger' }, { duration: 50000 });
+            return RootMainNavigator.router.getStateForAction(action, lastState);
+          } else if (route.routeName === currentRoute.routeName) {
+            // If the set params is on the same route and has no required
+            validation.isActionValid = true;
+          }
+
           break;
       }
 
-      console.log('Final validation', validation, action);
       if (validation.isActionValid) {
         return RootMainNavigator.router.getStateForAction(action, lastState);
       } else {

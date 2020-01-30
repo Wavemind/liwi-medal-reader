@@ -18,7 +18,7 @@ export const get = async (params, userId) => {
 
   if (httpcall.status === 500) {
     let t = await httpcall.text();
-    console.warn(t, httpcall);
+    console.error(t, httpcall);
     Toaster('The server is not responding', { type: 'danger', duration: 4000 });
     return { errors: [] };
   } else {

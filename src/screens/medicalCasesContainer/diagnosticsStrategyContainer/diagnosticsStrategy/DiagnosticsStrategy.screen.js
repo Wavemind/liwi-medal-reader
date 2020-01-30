@@ -32,8 +32,14 @@ export default class DiagnosesStrategy extends Component<Props, State> {
       medicalCase: { patient, nodes },
     } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    const age = find(nodes, { reference: '1', category: 'demographic' });
+
+    let stringAge;
+    if (age === undefined) {
+      stringAge = 'The birth date node is not find';
+    } else {
+      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    }
 
     navigation.setParams({
       title: t('navigation:diagnosticsstrategy'),

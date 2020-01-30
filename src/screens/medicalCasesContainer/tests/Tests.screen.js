@@ -23,8 +23,14 @@ export default class Tests extends React.Component<Props, State> {
       medicalCase: { patient, nodes },
     } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    const age = find(nodes, { reference: '1', category: 'demographic' });
+
+    let stringAge;
+    if (age === undefined) {
+      stringAge = 'The node age is not find';
+    } else {
+      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    }
 
     navigation.setParams({
       title: 'Tests ',
@@ -37,10 +43,15 @@ export default class Tests extends React.Component<Props, State> {
       medicalCase,
       app: { t },
       focus,
+      updateMetaData,
       navigation,
     } = this.props;
 
     let assessmentTest = medicalCase.nodes.filterBy([{ by: 'category', operator: 'equal', value: categories.assessment }]);
+
+    if (medicalCase.metaData.tests.tests.length === 0 && assessmentTest.length !== 0) {
+      updateMetaData('tests', 'tests', assessmentTest.map(({ id }) => id));
+    }
 
     return (
       <React.Suspense fallback={null}>

@@ -20,6 +20,12 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        tooltip: {
+          forcegoto: 'I take risk, go to ',
+          goto: 'Go to the view',
+          notcomplete: 'Is not complete !',
+          more: 'more questions...',
+        },
         algorithms: {
           never: 'Never synchronized data',
           last: 'Last synchronization attempt',
