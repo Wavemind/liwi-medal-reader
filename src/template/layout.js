@@ -110,8 +110,18 @@ export const QuestionView = styled(LView).attrs({
 export const SeparatorLine = styled(RNView).attrs({
   backgroundColor: '#d6d6d6',
   height: 1,
-  marginBottom: 5,
-  marginTop: 5,
+  marginBottom: (props) => {
+    if (props.marginBottom !== undefined) {
+      return props.marginBottom;
+    }
+    return 5;
+  },
+  marginTop: (props) => {
+    if (props.marginTop !== undefined) {
+      return props.marginTop;
+    }
+    return 5;
+  },
 })``;
 
 export const PaddedView = styled(LView).attrs({})``;

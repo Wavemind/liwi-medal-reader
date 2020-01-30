@@ -39,7 +39,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.updated_at = moment().format();
     this.synchronized_at = null;
     this.created_at = moment().format();
-    this.status = medicalCaseStatus.waitingTriage.name;
+    this.status = medicalCaseStatus.inCreation.name;
     this.main_data_medical_case_id = null;
     this.complaintCategories = [];
     this.isNewCase = true;
@@ -49,7 +49,9 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       navigator: {},
     };
     this.metaData = {
-      status: medicalCaseStatus.waitingTriage.name,
+      patientupsert: {
+        custom: [],
+      },
       triage: {
         firstLookAssessments: [],
         complaintCategories: [],

@@ -24,9 +24,14 @@ export default class Consultation extends React.Component<Props, State> {
       medicalCase: { patient, nodes },
     } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
+    const age = find(nodes, { reference: '1', category: 'demographic' });
 
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    let stringAge;
+    if (age === undefined) {
+      stringAge = 'The node age is not find';
+    } else {
+      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    }
 
     navigation.setParams({
       title: 'Consultation  ',
@@ -40,6 +45,7 @@ export default class Consultation extends React.Component<Props, State> {
       focus,
       navigation,
       medicalCase,
+      updateMetaData,
     } = this.props;
 
     let selectedPage = navigation.getParam('initialPage');
@@ -86,6 +92,14 @@ export default class Consultation extends React.Component<Props, State> {
       'array',
       false
     );
+
+    if (medicalCase.metaData.consultation.medicalHistory.length === 0 && medical_history.length !== 0) {
+      updateMetaData('consultation', 'medicalHistory', medical_history.map(({ id }) => id));
+    }
+
+    if (medicalCase.metaData.consultation.physicalExam.length === 0 && physical_exam.length !== 0) {
+      updateMetaData('consultation', 'physicalExam', physical_exam.map(({ id }) => id));
+    }
 
     return (
       <Suspense fallback={null}>

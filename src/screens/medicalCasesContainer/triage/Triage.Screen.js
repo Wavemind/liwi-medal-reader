@@ -30,8 +30,13 @@ export default class Triage extends React.Component<Props, State> {
       medicalCase: { patient, nodes },
     } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    const age = find(nodes, { reference: '1', category: 'demographic' });
+    let stringAge;
+    if (age === undefined) {
+      stringAge = 'The node age is not find';
+    } else {
+      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    }
 
     navigation.setParams({
       title: 'Triage',
@@ -70,6 +75,9 @@ export default class Triage extends React.Component<Props, State> {
     });
 
     let basicMeasurements = [];
+
+    console.log(medicalCase);
+
     const orderedQuestions = medicalCase.triage.orders[categories.vitalSignTriage];
 
     orderedQuestions.map((orderedQuestion) => {
@@ -83,24 +91,19 @@ export default class Triage extends React.Component<Props, State> {
 
     let selectedPage = navigation.getParam('initialPage');
     // Denied access to Basic measurement step if all chief complaints are not answered
-    if (selectedPage === 2 && !complaintCategoryReady) {
-      selectedPage = 1;
-      navigation.setParams({
-        initialPage: 1,
-      });
-      Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
-    }
+    console.log(selectedPage, complaintCategoryReady);
+
 
     // Set Questions in State for validation
-    if (medicalCase.metaData.triage.basicMeasurements.length === 0) {
+    if (medicalCase.metaData.triage.basicMeasurements.length === 0 && basicMeasurements.length !== 0) {
       updateMetaData('triage', 'basicMeasurements', basicMeasurements.map(({ id }) => id));
     }
 
-    if (medicalCase.metaData.triage.firstLookAssessments.length === 0) {
+    if (medicalCase.metaData.triage.firstLookAssessments.length === 0 && firstLookAssessement.length !== 0) {
       updateMetaData('triage', 'firstLookAssessments', firstLookAssessement.map(({ id }) => id));
     }
 
-    if (medicalCase.metaData.triage.complaintCategories.length === 0) {
+    if (medicalCase.metaData.triage.complaintCategories.length === 0 && complaintCategory.length !== 0) {
       updateMetaData('triage', 'complaintCategories', complaintCategory.map(({ id }) => id));
     }
 

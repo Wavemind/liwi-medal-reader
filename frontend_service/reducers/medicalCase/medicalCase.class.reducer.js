@@ -114,13 +114,16 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.MC_UPDATE_MODAL)
   updateModalFromRedux(state, action) {
     const { content, navigator } = action.payload;
+
+    const newModal = {
+      open: !state.modal.open,
+      content: content,
+      navigator: navigator,
+    };
+
     return {
       ...state,
-      modal: {
-        open: !state.modal.open,
-        content: content,
-        navigator: navigator,
-      },
+      modal: newModal,
     };
   }
 
@@ -282,6 +285,9 @@ class MedicalCaseReducer extends ReducerClass {
     }
 
     let modelsMedicalCase = this._instanceMedicalCase(action.payload);
+
+    modelsMedicalCase.modal.open = false;
+
     return {
       ...modelsMedicalCase,
     };
