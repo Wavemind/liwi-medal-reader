@@ -10,7 +10,7 @@ describe('liwi Native Work', () => {
   });
 
   it('should have welcome screen', async () => {
-    // await expect(element(by.id('welcome'))).toBeVisible();
+    await expect(element(by.id('welcome'))).toBeVisible();
     await element(by.id('new_session')).tap();
     await waitFor(element(by.id('new_session')).atIndex(1))
       .toBeVisible()
