@@ -252,7 +252,7 @@ export const showBirthDatePatient = (patient, state$) => {
 
   // Filter medicalCase with date not null
   const medicalCaseWithBirthDate = patient.medicalCases.filter((e) => {
-    const date = find(e.nodes, { reference: '1', category: 'demographic', stage: 'registration' });
+    const date = find(e.nodes, { reference: '2', category: 'demographic', stage: 'registration' });
     return date.value !== null;
   });
 

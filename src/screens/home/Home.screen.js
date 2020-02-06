@@ -52,108 +52,106 @@ export default class Home extends React.Component<Props, State> {
     const { algorithms, propsToolTipVisible } = this.state;
 
     return (
-      <ScrollView>
-        <View padding-auto>
-          <View flex-container-column>
-            <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} />
-            <View w50>
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
-                onPress={() => {
-                  if (algorithms.length === 0) {
-                    Toaster(t('work_case:no_algorithm'), {
-                      type: 'danger',
-                      duration: 4000,
+      <View padding-auto>
+        <View flex-container-column>
+          <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} />
+          <View w50>
+            <TouchableHighlight
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={() => {
+                if (algorithms.length === 0) {
+                  Toaster(t('work_case:no_algorithm'), {
+                    type: 'danger',
+                    duration: 4000,
+                  });
+                } else {
+                  if (medicalCase.id === undefined || medicalCase.isCreating === false) {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: null,
+                      newMedicalCase: true,
                     });
                   } else {
-                    if (medicalCase.id === undefined || medicalCase.isCreating === false) {
-                      navigation.navigate('PatientUpsert', {
-                        idPatient: null,
-                        newMedicalCase: true,
-                      });
-                    } else {
-                      this.setState({ propsToolTipVisible: true });
-                    }
+                    this.setState({ propsToolTipVisible: true });
                   }
-                }}
-              >
-                <View>
-                  <Icon type="MaterialCommunityIcons" name="account-plus" style={styles.icons} navigation />
-                  <Text size-auto center>
-                    {t('navigation:patient_add')}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-            </View>
+                }
+              }}
+            >
+              <View>
+                <Icon type="MaterialCommunityIcons" name="account-plus" style={styles.icons} navigation />
+                <Text size-auto center>
+                  {t('navigation:patient_add')}
+                </Text>
+              </View>
+            </TouchableHighlight>
+          </View>
 
-            <View w50>
-              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList')}>
-                <View>
-                  <Icon type="MaterialCommunityIcons" name="account-multiple" style={styles.icons} navigation />
-                  <Text size-auto center>
-                    {t('navigation:patient_list')}
-                  </Text>
-                </View>
-              </TouchableHighlight>
+          <View w50>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList')}>
+              <View>
+                <Icon type="MaterialCommunityIcons" name="account-multiple" style={styles.icons} navigation />
+                <Text size-auto center>
+                  {t('navigation:patient_list')}
+                </Text>
+              </View>
+            </TouchableHighlight>
 
-              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList')}>
-                <View>
-                  <Icon type="MaterialCommunityIcons" name="format-list-checkbox" style={styles.icons} navigation />
-                  <Text size-auto center>
-                    {t('navigation:case_in_progress')}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-            </View>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList')}>
+              <View>
+                <Icon type="MaterialCommunityIcons" name="format-list-checkbox" style={styles.icons} navigation />
+                <Text size-auto center>
+                  {t('navigation:case_in_progress')}
+                </Text>
+              </View>
+            </TouchableHighlight>
+          </View>
 
-            <View w50>
-              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Algorithms')}>
-                <View>
-                  <Icon type="AntDesign" name="sync" style={styles.icons} navigation />
-                  <Text size-auto center>
-                    {t('navigation:synchronize')}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
-                <View>
-                  <Icon type="AntDesign" name="setting" style={styles.icons} navigation />
-                  <Text size-auto center>
-                    {t('navigation:settings')}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-            </View>
+          <View w50>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Algorithms')}>
+              <View>
+                <Icon type="AntDesign" name="sync" style={styles.icons} navigation />
+                <Text size-auto center>
+                  {t('navigation:synchronize')}
+                </Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
+              <View>
+                <Icon type="AntDesign" name="setting" style={styles.icons} navigation />
+                <Text size-auto center>
+                  {t('navigation:settings')}
+                </Text>
+              </View>
+            </TouchableHighlight>
+          </View>
 
-            <View w50>
-              <TouchableHighlight
-                underlayColor="transparent"
-                style={styles.navigationButton}
-                onPress={async () => {
-                  this.forceCrashApp(true);
-                }}
-              >
-                <View>
-                  <Icon type="MaterialCommunityIcons" name="account" style={styles.icons} navigation />
-                  <Text size-auto center>
-                    Crash app
-                  </Text>
-                </View>
-              </TouchableHighlight>
+          <View w50>
+            <TouchableHighlight
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={async () => {
+                this.forceCrashApp(true);
+              }}
+            >
+              <View>
+                <Icon type="MaterialCommunityIcons" name="account" style={styles.icons} navigation />
+                <Text size-auto center>
+                  Crash app
+                </Text>
+              </View>
+            </TouchableHighlight>
 
-              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => this.logout()}>
-                <View>
-                  <Icon type="AntDesign" name="logout" style={styles.icons} navigation />
-                  <Text size-auto center>
-                    {t('navigation:logout')}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-            </View>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => this.logout()}>
+              <View>
+                <Icon type="AntDesign" name="logout" style={styles.icons} navigation />
+                <Text size-auto center>
+                  {t('navigation:logout')}
+                </Text>
+              </View>
+            </TouchableHighlight>
           </View>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }

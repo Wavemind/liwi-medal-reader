@@ -70,6 +70,7 @@ const Stack = createStackNavigator(
       path: 'patient/',
       params: {
         showSummary: false,
+        showMiniDrawer: true,
       },
       navigationOptions: () => {
         return {
@@ -126,6 +127,8 @@ const Stack = createStackNavigator(
       screen: Triage,
       path: 'triage',
       params: {
+        showMiniDrawer: true,
+
         title: '',
         showSummary: true,
         dropDownMenu: 'Triage',
@@ -142,6 +145,8 @@ const Stack = createStackNavigator(
       screen: Consultation,
       path: 'consultation',
       params: {
+        showMiniDrawer: true,
+
         showSummary: true,
         dropDownMenu: 'Consultation',
         medicalCaseStatus: medicalCaseStatus.consultation.name,
@@ -158,6 +163,7 @@ const Stack = createStackNavigator(
       path: 'tests',
       params: {
         showSummary: true,
+        showMiniDrawer: true,
         dropDownMenu: 'Tests',
         medicalCaseStatus: medicalCaseStatus.test.name,
         nextStage: medicalCaseStatus.waitingDiagnostic.name,
@@ -172,6 +178,7 @@ const Stack = createStackNavigator(
       screen: DiagnosticsStrategy,
       path: 'DiagnosticsStrategy',
       params: {
+        showMiniDrawer: true,
         showSummary: true,
         dropDownMenu: 'DiagnosticsStrategy',
         medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
@@ -234,9 +241,8 @@ const HomeWithModal = createStackNavigator(
     mode: 'modal',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: 'transparent',
+      backgroundColor: '#ee8978',
       opacity: 1,
-      marginLeft: marginLeftDrawer,
     },
     transitionConfig: () => ({
       containerStyle: {
@@ -264,10 +270,11 @@ const MainNavigation = () => {
       RootDrawer: { screen: StackWithBottomNavigation },
     },
     {
+      drawerContainerStyle: { width: drawerWidth + 500 },
       drawerWidth,
       overlayColor: 'rgba(38,38,38,0.8)',
       contentComponent: (props) => {
-        return <Drawer {...props} drawerWidth={drawerWidth} />;
+        return <Drawer {...props} drawerWidth={drawerWidth} isDrawer />;
       },
     }
   );
