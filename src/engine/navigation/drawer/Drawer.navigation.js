@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, TouchableWithoutFeedback } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
+import styled from 'styled-components';
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
 import NavigationService from '../Navigation.service';
@@ -15,8 +16,14 @@ import { DrawerMinify } from './Drawer.minify';
 type Props = NavigationScreenProps & {};
 
 type State = StateApplicationContext & {};
-
+const Inner = styled.ScrollView`
+  elevation: 15;
+`;
 export default class Drawer extends Component<Props, State> {
+  static defaultProps = {
+    isDrawer: false,
+  };
+
   logout = async () => {
     const {
       app: { lockSession },
@@ -35,10 +42,8 @@ export default class Drawer extends Component<Props, State> {
       medicalCase,
       drawerWidth,
       app: { t },
+      isDrawer,
     } = this.props;
-
-    // eslint-disable-next-line no-unused-vars
-    const { isDrawerOpen } = navigation.state;
 
     // Get current route from navigation
     let r = NavigationService.getCurrentRoute();
@@ -65,9 +70,9 @@ export default class Drawer extends Component<Props, State> {
     const enumRender = (item) => {
       const key = item.type;
       return {
-        categorie: <CategorieButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} />,
-        item: <ItemButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} />,
-        path: <PathBar areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} />,
+        categorie: <CategorieButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        item: <ItemButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        path: <PathBar areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
       }[key];
     };
 
@@ -76,23 +81,33 @@ export default class Drawer extends Component<Props, State> {
       <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((item) => enumRender(item))}</View>
     );
 
+    console.log(isDrawer);
+
     return (
-      <View style={[styles.columns, { width: drawerWidth + marginLeftDrawer, padding: 0 }]}>
-        <View style={styles.tools}>
-          <HeaderButtonsDrawer r={r} />
-          {renderDrawerButtons}
-          <BottomButtonsDrawer medicalCase={medicalCase} />
-
-          {/*<DrawerMinify />*/}
-          {/*{!isDrawerOpen ? (*/}
-          {/*  <DrawerMinify />*/}
-          {/*) : (*/}
-          {/*  <>*/}
-
-          {/*  </>*/}
-          {/*)}*/}
+      <TouchableWithoutFeedback
+        onPress={() => {
+          console.log('pressss');
+        }}
+      >
+        <View
+          onStartShouldSetResponder={() => true}
+          style={[
+            styles.columns,
+            {
+              width: isDrawer ? drawerWidth : marginLeftDrawer,
+              padding: 0,
+            },
+          ]}
+        >
+          <Inner contentContainerStyle={{ flexGrow: 1 }} isDrawer={isDrawer} scrollEnabled showsVerticalScrollIndicator>
+            <View onStartShouldSetResponder={() => true} style={{ flex: 1 }}>
+              {isDrawer && <HeaderButtonsDrawer r={r} />}
+              {renderDrawerButtons}
+              <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
+            </View>
+          </Inner>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
