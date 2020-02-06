@@ -10,7 +10,7 @@ import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import { Toaster } from '../../../utils/CustomToast';
-
+import NavigationService from '../../../engine/navigation/Navigation.service';
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
@@ -21,18 +21,9 @@ type State = StateApplicationContext & {};
 
 export default class Triage extends React.Component<Props, State> {
   componentWillMount() {
-    const {
-      navigation,
-      medicalCase: { patient, nodes },
-    } = this.props;
+    const { navigation } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-
-    navigation.setParams({
-      title: 'Triage',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    NavigationService.setParamsAge(navigation, 'Triage');
   }
 
   state = {

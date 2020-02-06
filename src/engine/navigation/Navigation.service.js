@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { store } from '../../../frontend_service/store';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import find from 'lodash/find';
 
 let _navigator;
 
@@ -32,6 +33,30 @@ function getActiveRouteName(navigationState) {
     return getActiveRouteName(route);
   }
   return route.routeName;
+}
+
+function setParamsAge(navigation, name) {
+  const state$ = store.getState();
+
+  const { patient, nodes } = state$;
+
+  let age = find(nodes, { label: 'Age in months' });
+
+  let headerRight;
+  let stringAge;
+
+  if (age !== undefined) {
+    stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+  } else {
+    stringAge = 'No question for age found';
+  }
+
+  headerRight = `${patient.firstname} ${patient.lastname} | ${stringAge}`;
+
+  navigation.setParams({
+    title: name,
+    headerRight: headerRight,
+  });
 }
 
 // When we call this method, we get the current route, because the tree from react-navigaton is special
@@ -107,6 +132,7 @@ function onNavigationStateChange(prevState, currentState) {
 }
 
 export default {
+  setParamsAge,
   getActiveRouteName,
   onNavigationStateChange,
   resetActionStack,

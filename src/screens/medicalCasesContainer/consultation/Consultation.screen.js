@@ -9,6 +9,7 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { categories } from '../../../../frontend_service/constants';
+import NavigationService from '../../../engine/navigation/Navigation.service';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -19,19 +20,9 @@ type State = {};
 
 export default class Consultation extends React.Component<Props, State> {
   componentWillMount() {
-    const {
-      navigation,
-      medicalCase: { patient, nodes },
-    } = this.props;
+    const { navigation } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-
-    navigation.setParams({
-      title: 'Consultation  ',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    NavigationService.setParamsAge(navigation, 'Consultation');
   }
 
   render() {
