@@ -12,31 +12,38 @@ type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCares extends Component<Props, State> {
   _renderHealthCareType = (healthCare) => {
+    const {
+      app: { t },
+    } = this.props;
+
     const { drugDoses } = healthCare;
     switch (healthCare.treatment_type) {
       case healthCareType.liquid:
         break;
       case healthCareType.pill:
-        if (drugDoses !== null) {
-          return (
-            <View>
-              <Text>{healthCare.label}</Text>
-              <Text>{healthCare.description}</Text>
-              <SeparatorLine />
-              <Text>Reference : {healthCare.reference}</Text>
-              <Text>Id : {healthCare.id}</Text>
-              <SeparatorLine />
-              <Text>Pill Size : {healthCare.pill_size}</Text>
-              <Text>Maximum dose : {healthCare.maximal_dose}</Text>
-              <Text>Min dose (mg/Kg) : {drugDoses.minDoseMg}</Text>
-              <Text>Max dose (mg/kg) : {drugDoses.maxDoseMg}</Text>
-              <Text>Min dose (cap) : {drugDoses.minDoseCap}</Text>
-              <Text>Max dose (cap) : {drugDoses.maxDoseCap}</Text>
-              <Text>Dose result : {drugDoses.doseResult}</Text>
-            </View>
-          );
-        }
-
+        return (
+          <View>
+            <Text>{healthCare.label}</Text>
+            <Text>{healthCare.description}</Text>
+            <SeparatorLine />
+            <Text>Reference : {healthCare.reference}</Text>
+            <Text>Id : {healthCare.id}</Text>
+            <SeparatorLine />
+            <Text>Pill Size : {healthCare.pill_size}</Text>
+            <Text>Maximum dose : {healthCare.maximal_dose}</Text>
+            {drugDoses !== null ? (
+              <>
+                <Text>Min dose (mg/Kg) : {drugDoses.minDoseMg}</Text>
+                <Text>Max dose (mg/kg) : {drugDoses.maxDoseMg}</Text>
+                <Text>Min dose (cap) : {drugDoses.minDoseCap}</Text>
+                <Text>Max dose (cap) : {drugDoses.maxDoseCap}</Text>
+                <Text>Dose result : {drugDoses.doseResult}</Text>
+              </>
+            ) : (
+              <Text error>{t('medical_case:healthcares_no_weight')}</Text>
+            )}
+          </View>
+        );
         break;
     }
   };
@@ -44,7 +51,7 @@ export default class HealthCares extends Component<Props, State> {
     return Object.keys(healthCare).map((index) => (
       <View style={styles.blocManagement} key={index}>
         <Text style={styles.spaceText} size-auto key={'healthcare' + healthCare[index].reference}>
-          {__DEV__ ? `${healthCare[index].reference} - ` : null}
+          {__DEV__ && `${healthCare[index].reference} - `}
           {healthCare[index].label}
         </Text>
         {healthCare[index].description !== null ? <Text style={styles.desc}>{healthCare[index].description}</Text> : null}

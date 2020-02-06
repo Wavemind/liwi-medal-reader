@@ -166,6 +166,7 @@ const validatorNavigate = (navigateRoute, lastState) => {
 
       // Diff between prev and next index in order
       let diffStatus = requestedStatus - indexStatus;
+
       /** Route is before so ok */
       if (diffStatus <= 0) {
         validator.isActionValid = true;
@@ -188,6 +189,15 @@ const validatorNavigate = (navigateRoute, lastState) => {
         validator.routeRequested = navigateRoute.routeName;
         validator.screenToBeFill = routeToValidate.key;
       }
+
+      // if route requested is min 2 step too long AND the routeToValidate is true
+
+      if (diffStatus > 1 && validator.isActionValid === false) {
+        //const prevRoute = screens.find((w) => w.medicalCaseOrder === route.routeName);
+
+      }
+
+      console.log(diffStatus, requestedStatus, indexStatus, navigateRoute, routeToValidate, validator);
 
       return validator;
     }

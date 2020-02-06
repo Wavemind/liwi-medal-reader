@@ -76,8 +76,6 @@ export default class Triage extends React.Component<Props, State> {
 
     let basicMeasurements = [];
 
-    console.log(medicalCase);
-
     const orderedQuestions = medicalCase.triage.orders[categories.vitalSignTriage];
 
     orderedQuestions.map((orderedQuestion) => {
@@ -91,8 +89,6 @@ export default class Triage extends React.Component<Props, State> {
 
     let selectedPage = navigation.getParam('initialPage');
     // Denied access to Basic measurement step if all chief complaints are not answered
-    console.log(selectedPage, complaintCategoryReady);
-
 
     // Set Questions in State for validation
     if (medicalCase.metaData.triage.basicMeasurements.length === 0 && basicMeasurements.length !== 0) {

@@ -10,6 +10,10 @@ import { SeparatorLine } from '../../template/layout';
 // TODO implement scu
 
 export default class TooltipModal extends React.Component<Props, State> {
+  static defaultProps = {
+    toolTipIcon: false,
+  };
+
   state = {
     toolTipVisible: false,
   };
@@ -116,11 +120,11 @@ export default class TooltipModal extends React.Component<Props, State> {
   };
 
   _renderToolTipContent = () => {
-    const { modalRedux, children } = this.props;
+    const { modalRedux, children, toolTipIcon } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible;
+    const isFromJsx = toolTipVisible || toolTipIcon;
 
     return (
       <View>
@@ -163,11 +167,11 @@ export default class TooltipModal extends React.Component<Props, State> {
   };
 
   closeModal = () => {
-    const { modalRedux, updateModalFromRedux } = this.props;
+    const { modalRedux, updateModalFromRedux, toolTipIcon } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible;
+    const isFromJsx = toolTipVisible || toolTipIcon;
 
     if (isFromRedux) {
       updateModalFromRedux();
@@ -183,12 +187,16 @@ export default class TooltipModal extends React.Component<Props, State> {
     const { flex, modalRedux, toolTipIcon } = this.props;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible;
-    const isVisible = isFromRedux || isFromJsx;
+    const isFromJsx = toolTipVisible || toolTipIcon;
+    const isVisible = isFromRedux || toolTipVisible;
+
+    if (isFromJsx === false && isFromRedux === false) {
+      return null;
+    }
 
     return (
       <View flex={flex}>
-        {isFromJsx && toolTipIcon ? (
+        {toolTipIcon ? (
           <Button style={styles.touchable} transparent onPress={() => this.setState({ toolTipVisible: true })}>
             <Icon type="AntDesign" name="info" style={styles.iconInfo} />
           </Button>
