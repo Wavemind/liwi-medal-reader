@@ -58,13 +58,14 @@ export const systems = {
   urinary_reproductive: 'Urinary and reproductive system',
   nervous: 'Nervous system',
   muscular_skeletal: 'Muscular and skeletal system',
+  null: 'General',
 };
 
 // Node category
 export const categories = {
   assessment: 'assessment_test',
   chronicCondition: 'chronic_condition',
-  vitalSignTriage: 'vital_sign',
+  vitalSignTriage: 'vital_sign_triage',
   emergencySign: 'emergency_sign',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
