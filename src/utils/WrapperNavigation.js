@@ -55,9 +55,8 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
               this.setState({ navigationStatus: payload.type });
             }}
           />
-          <View style={{ flex: 1, flexDirection: 'row' }}>
             {showMiniDrawer && (
-              <View style={{ width: marginLeftDrawer }}>
+              <View>
                 <Drawer {...this.props} drawerWidth={drawerWidth} isDrawer={false} />
               </View>
             )}
