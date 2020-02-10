@@ -14,7 +14,7 @@ setJSExceptionHandler((error, isFatal) => {
 });
 //=================================================
 // ADVANCED use case:
-const exceptionhandler = (error, isFatal) => {
+const exceptionhandler = (error, isFatal) =>
   if (error !== undefined) {
     if (isFatal) {
       Alert.alert(
