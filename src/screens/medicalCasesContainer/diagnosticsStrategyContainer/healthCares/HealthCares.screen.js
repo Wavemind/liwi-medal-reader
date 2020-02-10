@@ -15,7 +15,7 @@ export default class HealthCares extends Component<Props, State> {
     const { drugDoses } = healthCare;
     switch (healthCare.treatmentType) {
       case healthCareType.liquid:
-        break;
+        return null;
       case healthCareType.pill:
         if (drugDoses !== null) {
           return (
@@ -38,6 +38,8 @@ export default class HealthCares extends Component<Props, State> {
         }
 
         break;
+      default:
+        return null;
     }
   };
   _renderHealthCare = (healthCare) => {
