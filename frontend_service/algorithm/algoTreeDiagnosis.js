@@ -252,8 +252,10 @@ export const showBirthDatePatient = (patient, state$) => {
 
   // Filter medicalCase with date not null
   const medicalCaseWithBirthDate = patient.medicalCases.filter((e) => {
-    const date = find(e.nodes, { reference: '2', category: 'demographic', stage: 'registration' });
-    return date.value !== null;
+    const date = find(e.nodes, { reference: 1, category: 'demographic', stage: 'registration' });
+    if (date !== undefined) {
+      return date.value !== null;
+    }
   });
 
   // Sort MC by updated_at for get the last
@@ -266,7 +268,7 @@ export const showBirthDatePatient = (patient, state$) => {
   // Mc match
   if (r.length > 0) {
     // Parse date
-    return moment(find(r.first().nodes, { reference: '1', category: 'demographic', stage: 'registration' }).value).format('ll');
+    return moment(find(r.first().nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
   } else {
     return 'Age is not defined';
   }

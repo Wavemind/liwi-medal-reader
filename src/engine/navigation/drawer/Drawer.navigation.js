@@ -17,7 +17,8 @@ type Props = NavigationScreenProps & {};
 
 type State = StateApplicationContext & {};
 const Inner = styled.ScrollView`
-  elevation: 15;
+  elevation: 20;
+  width: 100px;
 `;
 export default class Drawer extends Component<Props, State> {
   static defaultProps = {
@@ -84,30 +85,23 @@ export default class Drawer extends Component<Props, State> {
     console.log(isDrawer);
 
     return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          console.log('pressss');
-        }}
+      <View
+        style={[
+          styles.columns,
+          {
+            width: isDrawer ? drawerWidth : marginLeftDrawer + 50,
+            backgroundColor: '#6370ee',
+          },
+        ]}
       >
-        <View
-          onStartShouldSetResponder={() => true}
-          style={[
-            styles.columns,
-            {
-              width: isDrawer ? drawerWidth : marginLeftDrawer,
-              padding: 0,
-            },
-          ]}
-        >
-          <Inner contentContainerStyle={{ flexGrow: 1 }} isDrawer={isDrawer} scrollEnabled showsVerticalScrollIndicator>
-            <View onStartShouldSetResponder={() => true} style={{ flex: 1 }}>
-              {isDrawer && <HeaderButtonsDrawer r={r} />}
-              {renderDrawerButtons}
-              <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
-            </View>
-          </Inner>
-        </View>
-      </TouchableWithoutFeedback>
+        <Inner contentContainerStyle={{ flexGrow: 1 }} isDrawer={isDrawer} scrollEnabled showsVerticalScrollIndicator>
+          <View onStartShouldSetResponder={() => true} style={{ flex: 1 }}>
+            {isDrawer && <HeaderButtonsDrawer r={r} />}
+            {renderDrawerButtons}
+            <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
+          </View>
+        </Inner>
+      </View>
     );
   }
 }
