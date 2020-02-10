@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 import { Button, Icon, Text } from 'native-base';
 import { TouchableOpacity, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import styled from 'styled-components';
 import { styles } from './Drawer.style';
 import { liwiColors } from '../../../utils/constants';
-import styled from 'styled-components';
+import DrawerDot from './Drawer.dot';
 
-const Wrapper = styled.View`
+const WrapperMiniDrawerCategory = styled.TouchableOpacity`
   padding: ${({ isDrawer }) => (isDrawer ? '13px 0' : '6px 0')};
   height: ${({ isDrawer }) => (isDrawer ? 'auto' : '200px')};
-  width: ${({ isDrawer }) => (isDrawer ? 'auto' : '35px')};
+  width: ${({ isDrawer }) => (isDrawer ? 'auto' : '30px')};
+  margin-top: 10px;
+  margin-left: 10px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -53,13 +56,20 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
 
   render() {
     let { t, r, name, initialPage, navigate, isDrawer } = this.props;
+
+    // Small drawer
     if (!isDrawer) {
       return (
-        <Wrapper active={true} isDrawer={isDrawer} onStartShouldSetResponder={() => true}>
-          <SmallText isDrawer={isDrawer} active={true} numberOfLines={isDrawer ? 5 : 1}>
+        <WrapperMiniDrawerCategory
+          active={r.routeName === name}
+          isDrawer={isDrawer}
+          onStartShouldSetResponder={() => true}
+          onPress={() => navigate(name, initialPage)}
+        >
+          <SmallText isDrawer={isDrawer} active={r.routeName === name} numberOfLines={isDrawer ? 5 : 1}>
             {t}
           </SmallText>
-        </Wrapper>
+        </WrapperMiniDrawerCategory>
       );
     }
     return (
@@ -105,14 +115,16 @@ export class ItemButton extends Component<{ t: any, r: any }> {
 
   render() {
     let { t, r, initialPage, name, navigate, isDrawer } = this.props;
+
+    let dotType;
+
+    if (r?.params?.initialPage >= initialPage && r.routeName === name) {
+      dotType = 'active';
+    }
+
     return (
       <Button onPress={() => navigate(name, initialPage)} drawerItemButton transparent>
-        <Icon
-          drawerItemIcon
-          style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}
-          type="Ionicons"
-          name={r?.params?.initialPage >= initialPage && r.routeName === name ? 'md-radio-button-on' : 'md-radio-button-off'}
-        />
+        <DrawerDot type={dotType} onPress={() => navigate(name, initialPage)} isDrawer={isDrawer} />
         {isDrawer ? (
           <Text drawerItemText style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}>
             {t}
@@ -255,10 +267,11 @@ export class PathBar extends Component<{ routeName: string, initialPage: string 
   render() {
     let { r, routeName, initialPage, navigate, isDrawer } = this.props;
     let active = r?.params?.initialPage >= initialPage && r.routeName === routeName;
+
     return (
       <TouchableOpacity
         onPress={() => navigate(routeName, initialPage)}
-        style={{ marginTop: -2, marginBottom: -3, flex: 1, flexDirection: 'row' }}
+        style={{ marginTop: 2, marginBottom: 0, flex: 1, flexDirection: 'row' }}
         onStartShouldSetResponder={() => true}
       >
         <View
@@ -266,7 +279,7 @@ export class PathBar extends Component<{ routeName: string, initialPage: string 
             flex: 1,
             borderLeftWidth: 3,
             borderLeftColor: active ? liwiColors.redColor : liwiColors.greyColor,
-            marginLeft: 14,
+            marginLeft: isDrawer ? 19 : 24,
             height: isDrawer ? 'auto' : 20,
           }}
         />

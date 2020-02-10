@@ -4,8 +4,8 @@ import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import {
   setMedicalCase,
-  updatePatient,
   updateMedicalCaseProperty,
+  updatePatient,
 } from '../../../../frontend_service/actions/creators.actions';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 

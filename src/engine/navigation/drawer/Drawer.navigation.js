@@ -1,25 +1,18 @@
 // @flow
 import React, { Component } from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import styled from 'styled-components';
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
 import NavigationService from '../Navigation.service';
 import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
 import { Toaster } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
-import { marginLeftDrawer } from '../../../utils/constants';
-// eslint-disable-next-line no-unused-vars
-import { DrawerMinify } from './Drawer.minify';
 
 type Props = NavigationScreenProps & {};
 
 type State = StateApplicationContext & {};
-const Inner = styled.ScrollView`
-  elevation: 20;
-  width: 100px;
-`;
+
 export default class Drawer extends Component<Props, State> {
   static defaultProps = {
     isDrawer: false,
@@ -41,7 +34,6 @@ export default class Drawer extends Component<Props, State> {
     const {
       navigation,
       medicalCase,
-      drawerWidth,
       app: { t },
       isDrawer,
     } = this.props;
@@ -67,9 +59,14 @@ export default class Drawer extends Component<Props, State> {
       }
     };
 
+    if (r === null) {
+      return null;
+    }
+
     // Switch render with enum
     const enumRender = (item) => {
       const key = item.type;
+
       return {
         categorie: <CategorieButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
         item: <ItemButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
@@ -82,26 +79,27 @@ export default class Drawer extends Component<Props, State> {
       <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((item) => enumRender(item))}</View>
     );
 
-    console.log(isDrawer);
-
     return (
-      <View
-        style={[
-          styles.columns,
-          {
-            width: isDrawer ? drawerWidth : marginLeftDrawer + 50,
-            backgroundColor: '#6370ee',
-          },
-        ]}
+      <ScrollView
+        style={{
+          elevation: 5,
+          backgroundColor: '#f5f5f5',
+        }}
+        contentContainerStyle={{ flexGrow: 1, zIndex: 10000 }}
+        isDrawer={isDrawer}
+        scrollEnabled
+        showsVerticalScrollIndicator={false}
       >
-        <Inner contentContainerStyle={{ flexGrow: 1 }} isDrawer={isDrawer} scrollEnabled showsVerticalScrollIndicator>
-          <View onStartShouldSetResponder={() => true} style={{ flex: 1 }}>
-            {isDrawer && <HeaderButtonsDrawer r={r} />}
-            {renderDrawerButtons}
-            <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
-          </View>
-        </Inner>
-      </View>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          {isDrawer && <HeaderButtonsDrawer r={r} />}
+          {renderDrawerButtons}
+          <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
+        </View>
+      </ScrollView>
     );
   }
 }

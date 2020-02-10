@@ -10,7 +10,7 @@ import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
 import i18n from '../../utils/i18n';
 
-import { liwiColors, marginLeftDrawer, screenWidth } from '../../utils/constants';
+import { liwiColors, screenWidth } from '../../utils/constants';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
@@ -35,7 +35,7 @@ const Stack = createStackNavigator(
           title: i18n.t('navigation:home'),
           headerLeft: (
             <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-              <Icon red type="Entypo" name="menu" large />
+              <Icon type="Entypo" name="menu" large />
             </Button>
           ),
           headerTitleContainerStyle: {
@@ -199,7 +199,7 @@ const Stack = createStackNavigator(
         headerBackTitleVisible: false,
         headerLeft: (
           <Button iconMenu onPress={() => navigation.openDrawer()}>
-            <Icon red type="Entypo" name="menu" large />
+            <Icon type="Entypo" name="menu" large />
           </Button>
         ),
         headerRight: (
@@ -241,7 +241,6 @@ const HomeWithModal = createStackNavigator(
     mode: 'modal',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: '#ee8978',
       opacity: 1,
     },
     transitionConfig: () => ({
