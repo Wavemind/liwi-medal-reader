@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { NavigationEvents } from 'react-navigation';
-import { Text, View } from 'native-base';
+import { View } from 'native-base';
 import Drawer from '../engine/navigation/drawer';
-import { marginLeftDrawer, screenWidth } from './constants';
+import { screenWidth } from './constants';
 
 /**
  * @param Component
@@ -55,6 +55,7 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
               this.setState({ navigationStatus: payload.type });
             }}
           />
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             {showMiniDrawer && (
               <View>
                 <Drawer {...this.props} drawerWidth={drawerWidth} isDrawer={false} />

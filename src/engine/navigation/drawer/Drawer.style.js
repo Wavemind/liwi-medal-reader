@@ -104,7 +104,6 @@ export const styles = StyleSheet.create({
     color: liwiColors.whiteColor,
   },
   columns: {
-    backgroundColor: '#59ee9b',
     flexDirection: 'row',
     flex: 1,
   },

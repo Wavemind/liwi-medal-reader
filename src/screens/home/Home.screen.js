@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView, TouchableHighlight } from 'react-native';
+import { TouchableHighlight } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text, View } from 'native-base';
 import { styles } from './Home.style';

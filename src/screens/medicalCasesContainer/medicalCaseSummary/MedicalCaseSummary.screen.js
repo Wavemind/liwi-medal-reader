@@ -9,7 +9,6 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import FinalDiagnosticsList from '../../../components/FinalDiagnosticsList';
-import NavigationService from '../../../engine/navigation/Navigation.service';
 
 type Props = NavigationScreenProps & {};
 type State = {};
