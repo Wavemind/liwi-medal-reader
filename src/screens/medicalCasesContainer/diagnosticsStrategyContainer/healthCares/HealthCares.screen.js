@@ -13,7 +13,7 @@ type State = {};
 export default class HealthCares extends Component<Props, State> {
   _renderHealthCareType = (healthCare) => {
     const { drugDoses } = healthCare;
-    switch (healthCare.treatment_type) {
+    switch (healthCare.treatmentType) {
       case healthCareType.liquid:
         break;
       case healthCareType.pill:
@@ -26,8 +26,8 @@ export default class HealthCares extends Component<Props, State> {
               <Text>Reference : {healthCare.reference}</Text>
               <Text>Id : {healthCare.id}</Text>
               <SeparatorLine />
-              <Text>Pill Size : {healthCare.pill_size}</Text>
-              <Text>Maximum dose : {healthCare.maximal_dose}</Text>
+              <Text>Pill Size : {healthCare.pillSize}</Text>
+              <Text>Maximum dose : {healthCare.maximalDose}</Text>
               <Text>Min dose (mg/Kg) : {drugDoses.minDoseMg}</Text>
               <Text>Max dose (mg/kg) : {drugDoses.maxDoseMg}</Text>
               <Text>Min dose (cap) : {drugDoses.minDoseCap}</Text>
