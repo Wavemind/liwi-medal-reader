@@ -3,7 +3,6 @@
 import { NavigationScreenProps } from 'react-navigation';
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
-import find from 'lodash/find';
 import HealthCaresQuestions from '../healthCaresQuestions';
 import HealthCares from '../healthCares';
 import { styles } from './DiagnosticsStrategy.style';

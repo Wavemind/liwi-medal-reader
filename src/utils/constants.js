@@ -23,7 +23,49 @@ export const screenHeight = Dimensions.get('window').height;
 export const marginLeftDrawer = 0;
 
 /*** STYLES COMMON **/
-const isTablet = DeviceInfo.isTablet();
+export const isTablet = DeviceInfo.isTablet();
 export const paddingIsTablet = () => (isTablet ? 30 : 5);
 export const marginIsTablet = () => (isTablet ? 50 : 20);
-export const fontSizeTextIsTablet = () => (isTablet ? 20 : 13);
+
+export const fontSizeTextIsTablet = () => (isTablet ? 20 : 14);
+
+// DeviceInfo.isTablet(), screenWidth, screenHeight, PixelRatio.getFontScale();
+
+export const screensScale = {
+  xs: 360,
+  s: 412,
+  m: 480,
+  l: 600,
+  xl: 800,
+};
+
+export const responsiveUi = {
+  textFontSize: () => {
+    switch (true) {
+      case screenWidth < screensScale.s:
+        return 14;
+      case screenWidth > screensScale.m && screenWidth < screensScale.l:
+        return 18;
+      case screenWidth > screensScale.l:
+        return 20;
+    }
+  },
+  padding: () => {
+    switch (true) {
+      case screenWidth < screensScale.s:
+        return 5;
+      case screenWidth > screensScale.s:
+        return 20;
+    }
+  },
+  iconSize: () => {
+    switch (true) {
+      case screenWidth < screensScale.s:
+        return 30;
+      case screenWidth > screensScale.m && screenWidth < screensScale.l:
+        return 35;
+      case screenWidth > screensScale.l:
+        return 45;
+    }
+  },
+};

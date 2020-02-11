@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors, screenWidth } from '../../../utils/constants';
+import { isTablet, liwiColors, screenWidth } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -12,9 +12,10 @@ export const styles = StyleSheet.create({
   },
 
   lottie: {
-    height: 200,
+    height: isTablet ? 200 : 100,
     alignSelf: 'center',
-    marginBottom: 100,
+
+    marginBottom: isTablet ? 100 : 20,
   },
 
   button: {
