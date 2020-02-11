@@ -1,11 +1,11 @@
 // @flow
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
 import { displayFormats, nodesType, valueFormats } from '../../../../frontend_service/constants';
-import { liwiColors } from '../../../utils/constants';
+import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
@@ -96,9 +96,9 @@ class TooltipButton extends React.Component<Props, State> {
 
     return (
       <View flex={flex}>
-        <Button style={styles.touchable} transparent onPress={() => this.setState({ toolTipVisible: true })}>
+        <TouchableOpacity style={styles.touchable} transparent onPress={() => this.setState({ toolTipVisible: true })}>
           <Icon type="AntDesign" name="info" style={styles.iconInfo} />
-        </Button>
+        </TouchableOpacity>
         <Tooltip
           isVisible={toolTipVisible}
           closeOnChildInteraction={false}
@@ -195,23 +195,38 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if (question === undefined || question.type !== nodesType.question || (question.display_format === displayFormats.formula && question.label !== 'Age in months')) {
+    if (
+      question === undefined ||
+      question.type !== nodesType.question ||
+      (question.display_format === displayFormats.formula && question.label !== 'Age in months')
+    ) {
       return null;
+    }
+
+    let flexLabel = 0.6;
+    let flexQuestion = 0.3;
+    let flexToolTip = 0.1;
+
+    // Change flex for small screen
+    if (screenWidth < screensScale.s) {
+      flexLabel = 0.5;
+      flexQuestion = 0.4;
+      flexToolTip = 0.1;
     }
 
     // Construct generic Component for the question
     return (
-      <ListItem style={[styles.condensed, styles.flexColumn]} noBorder key={question.id + '_item'}>
+      <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={question.id + '_item'}>
         <View style={styles.flexRow}>
           <LabelQuestion
             key={question.id + '_label'}
             label={(__DEV__ ? question.counter + 'x - ' : '') + question.label}
-            flex={0.6}
+            flex={flexLabel}
             marginLeft={0}
             marginRight={10}
           />
-          <WrapperQuestion key={question.id + '_answer'} question={question} flex={0.25} {...this.props} />
-          <TooltipButton question={question} flex={0.15} />
+          <WrapperQuestion key={question.id + '_answer'} question={question} flex={flexQuestion} {...this.props} />
+          <TooltipButton question={question} flex={flexToolTip} />
         </View>
         <View style={styles.unavailable}>
           <WrapperUnavailable />

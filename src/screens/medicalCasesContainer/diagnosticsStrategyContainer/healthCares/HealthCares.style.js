@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../../../utils/constants';
+import { liwiColors, responsiveUi } from '../../../../utils/constants';
 
 export const styles = StyleSheet.create({
   spaceText: {
@@ -16,6 +16,6 @@ export const styles = StyleSheet.create({
     fontSize: 18,
   },
   padded: {
-    padding: 20,
+    padding: responsiveUi.padding(),
   },
 });

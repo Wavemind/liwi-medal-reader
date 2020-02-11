@@ -44,8 +44,6 @@ export default class System extends React.Component<Props, State> {
       return null;
     }
 
-    console.log(systems, system);
-
     return (
       <View style={styles.spacingChiefComplaints} key={`view_system_${system}`}>
         <Text customTitle>{systems[system]}</Text>

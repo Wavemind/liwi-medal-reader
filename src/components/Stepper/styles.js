@@ -2,14 +2,14 @@
 
 import { Platform, StyleSheet } from 'react-native';
 import { isIPhoneX } from './iPhoneXUtils';
-import { liwiColors } from '../../utils/constants';
+import { liwiColors, responsiveUi } from '../../utils/constants';
 
 const styles: Object = StyleSheet.create({
   activeDotStyle: {
     backgroundColor: liwiColors.redColor,
   },
   pad: {
-    padding: 20,
+    padding: responsiveUi.padding(),
   },
   inactiveDotStyle: {
     backgroundColor: '#ededed',

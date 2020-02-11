@@ -1,5 +1,5 @@
 import { liwiColors } from 'utils/constants';
-import { fontSizeTextIsTablet } from '../../../utils/constants';
+import { responsiveUi } from '../../../utils/constants';
 
 export default {
   'NativeBase.H2': {
@@ -38,7 +38,7 @@ export default {
       color: '#292829',
     },
     '.size-auto': {
-      fontSize: fontSizeTextIsTablet(),
+      fontSize: responsiveUi.textFontSize(),
     },
     '.center': {
       textAlign: 'center',
@@ -56,7 +56,7 @@ export default {
       fontSize: 26,
       padding: 10,
       margin: 10,
-      marginLeft: 0
+      marginLeft: 0,
     },
     '.subText': {
       color: liwiColors.redColor,
