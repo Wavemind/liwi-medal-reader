@@ -268,7 +268,7 @@ export const showBirthDatePatient = (patient, state$) => {
   // Medical case match
   if (medicalCase.length > 0) {
     // Parse date
-    return moment(find(r.first().nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
+    return moment(find(medicalCase.first().nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
   } else {
     return 'Age is not defined';
   }
