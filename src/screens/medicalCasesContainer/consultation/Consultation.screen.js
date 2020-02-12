@@ -34,8 +34,8 @@ export default class Consultation extends React.Component<Props, State> {
 
     let selectedPage = navigation.getParam('initialPage');
 
-    // Filter questions medical history
-    let medical_history = medicalCase.nodes.filterBy(
+    // Medical history questions
+    const medicalHistory = medicalCase.nodes.filterBy(
       [
         {
           by: 'category',
@@ -55,11 +55,11 @@ export default class Consultation extends React.Component<Props, State> {
       ],
       'OR',
       'array',
-      false
+      false,
     );
 
-    // Filter questions physical exam
-    let physical_exam = medicalCase.nodes.filterBy(
+    // Phisical exam questions
+    const physicalExam = medicalCase.nodes.filterBy(
       [
         {
           by: 'category',
@@ -74,7 +74,7 @@ export default class Consultation extends React.Component<Props, State> {
       ],
       'OR',
       'array',
-      false
+      false,
     );
 
     return (
@@ -93,7 +93,7 @@ export default class Consultation extends React.Component<Props, State> {
             });
           }}
           icons={[{ name: 'comment-medical', type: 'FontAwesome5' }, { name: 'ios-body', type: 'Ionicons' }]}
-          steps={[t('consultation:medical_history'), t('consultation:physical_exam')]}
+          steps={[t('consultation:medicalHistory'), t('consultation:physicalExam')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Tests"
@@ -102,7 +102,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerSystem questions={medical_history} selectedPage={selectedPage} pageIndex={0} />
+                <QuestionsPerSystem questions={medicalHistory} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -111,7 +111,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerSystem questions={physical_exam} selectedPage={selectedPage} pageIndex={1} />
+                <QuestionsPerSystem questions={physicalExam} selectedPage={selectedPage} pageIndex={1} />
               </Suspense>
             ) : (
               <LiwiLoader />
