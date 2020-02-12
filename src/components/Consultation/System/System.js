@@ -17,6 +17,8 @@ export default class System extends React.Component<Props, State> {
     questions: [],
   };
 
+  // Compare the new props to old props for optimization
+  // Return true if one question is different
   isSomeQuestionsDifferent = (nextPropsQuestions) => {
     const { questions } = this.props;
     return questions.some((question) => {
@@ -43,8 +45,6 @@ export default class System extends React.Component<Props, State> {
     if (questions.length === 0) {
       return null;
     }
-
-    console.log(systems, system);
 
     return (
       <View style={styles.spacingChiefComplaints} key={`view_system_${system}`}>
