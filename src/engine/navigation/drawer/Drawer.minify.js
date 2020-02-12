@@ -1,11 +1,9 @@
 /*eslint-disable */
 // TODO this file is in creating !
 import React, { Component } from 'react';
-import { View, Slider } from 'react-native';
+import { Slider, View } from 'react-native';
 import { Button, Text } from 'native-base';
-import MatrixMath from 'react-native/Libraries/Utilities/MatrixMath';
 import { styles } from './Drawer.style';
-import transformUtils from '../../../utils/transformUtils';
 
 const Matrix = {
   identify: () => {

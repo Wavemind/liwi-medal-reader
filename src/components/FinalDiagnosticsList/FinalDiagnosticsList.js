@@ -48,22 +48,17 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
           <FinalDiagnostic {...f} type="AntDesign" name="checkcircle" key={f.id} style={styles.greenIcon} />
         ))}
 
-        {/* TODO: 27.12.2019 Temporarly remove those diag for a demo */}
-        {false ? (
-          <>
-            <Text customTitle>Excluded</Text>
-            {
-              finalDiagnostics.excluded.map((f) => (
-                <FinalDiagnostic {...f} name="circle-with-cross" type="Entypo" key={f.id} style={styles.redIcon} />
-              ))
-            }
+        <>
+          <Text customTitle>Excluded</Text>
+          {finalDiagnostics.excluded.map((f) => (
+            <FinalDiagnostic {...f} name="circle-with-cross" type="Entypo" key={f.id} style={styles.redIcon} />
+          ))}
 
-            <Text customTitle>Possible</Text>
-            {finalDiagnostics.not_defined.map((f) => (
-              <FinalDiagnostic {...f} key={f.id} type="AntDesign" name="minuscircleo" style={styles.grayIcon} />
-            ))}
-          </>
-        ) : null}
+          <Text customTitle>Possible</Text>
+          {finalDiagnostics.not_defined.map((f) => (
+            <FinalDiagnostic {...f} key={f.id} type="AntDesign" name="minuscircleo" style={styles.grayIcon} />
+          ))}
+        </>
       </React.Fragment>
     );
   }

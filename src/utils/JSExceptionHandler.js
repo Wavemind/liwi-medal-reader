@@ -1,6 +1,6 @@
 /*eslint-disable */
 
-import { setJSExceptionHandler, getJSExceptionHandler } from 'react-native-exception-handler';
+import { getJSExceptionHandler, setJSExceptionHandler } from 'react-native-exception-handler';
 import { Alert } from 'react-native';
 import RNRestart from 'react-native-restart';
 
