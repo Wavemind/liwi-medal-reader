@@ -11,6 +11,11 @@ type Props = NavigationScreenProps & {};
 type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCares extends Component<Props, State> {
+  /**
+   *  Render content of modal healthCare
+   *
+   *  @params object : healthCare
+   */
   _renderHealthCareType = (healthCare) => {
     const { drugDoses } = healthCare;
     switch (healthCare.treatmentType) {
@@ -42,8 +47,14 @@ export default class HealthCares extends Component<Props, State> {
         return null;
     }
   };
-  _renderHealthCare = (healthCare) => {
-    return Object.keys(healthCare).map((index) => (
+
+  /**
+   *  Render a healthcare by type
+   *
+   *  @params object : healthCare
+   */
+  _renderHealthCare = (healthCare) =>
+    Object.keys(healthCare).map((index) => (
       <View style={styles.blocManagement} key={index}>
         <Text style={styles.spaceText} size-auto key={'healthcare' + healthCare[index].reference}>
           {__DEV__ ? `${healthCare[index].reference} - ` : null}
@@ -53,7 +64,6 @@ export default class HealthCares extends Component<Props, State> {
         <ToolTipModal>{this._renderHealthCareType(healthCare[index])}</ToolTipModal>
       </View>
     ));
-  };
 
   render() {
     const {

@@ -62,16 +62,16 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
 
         case healthCareType.pill:
           // First calcule min and max dose (mg/Kg)
-          let minDoseMg = roundSup((weightNode.value * this.minimalDosePerKg) / this.dosesPerDay);
-          let maxDoseMg = roundSup((weightNode.value * this.maximalDosePerKg) / this.dosesPerDay);
+          const minDoseMg = roundSup((weightNode.value * this.minimalDosePerKg) / this.dosesPerDay);
+          const maxDoseMg = roundSup((weightNode.value * this.maximalDosePerKg) / this.dosesPerDay);
 
           // Second calcule min and max dose (cap)
-          let minDoseCap = roundSup((1 / this.pillSize) * minDoseMg);
-          let maxDoseCap = roundSup((1 / this.pillSize) * maxDoseMg);
+          const minDoseCap = roundSup((1 / this.pillSize) * minDoseMg);
+          const maxDoseCap = roundSup((1 / this.pillSize) * maxDoseMg);
 
           // Define Dose Result
           // TODO Result more efficient with data from PMU... waiting
-          let doseResult = Math.floor(maxDoseCap);
+          const doseResult = Math.floor(maxDoseCap);
 
           return {
             minDoseMg,
