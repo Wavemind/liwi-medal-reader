@@ -70,7 +70,7 @@ export default class UnlockSession extends React.Component<Props, State> {
     } = this.props;
 
     return (
-      <View flex-container-column>
+      <View flex-container-column testID="welcome">
         <View margin-auto padding-auto>
           <ScrollView>
             <LottieView source={require('../../../utils/animations/unlock.json')} autoPlay style={styles.lottie} loop />

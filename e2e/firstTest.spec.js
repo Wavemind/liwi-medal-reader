@@ -6,7 +6,7 @@ describe('liwi Native Work', () => {
     if (typeof device == 'undefined') {
       await detox.init(config);
     }
-    await device.reloadReactNative();
+    await device.reloadReactNative({ delete: true });
   });
 
   it('should have welcome screen', async () => {
