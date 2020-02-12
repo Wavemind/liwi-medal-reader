@@ -22,8 +22,8 @@ export default class HealthCares extends Component<Props, State> {
       <Content>
         <Text customTitle>{t('medical_case:managements')}</Text>
         {Object.keys(managements).map((key) => (
-          <View style={styles.blocManagement}>
-            <Text style={styles.spaceText} size-auto key={'healthcare' + managements[key].reference}>
+          <View style={styles.blocManagement} key={`managements-box-${managements[key].reference}`}>
+            <Text style={styles.spaceText} size-auto>
               {__DEV__ ? `${managements[key].reference} - ` : null}
               {managements[key].label}
             </Text>
@@ -32,8 +32,8 @@ export default class HealthCares extends Component<Props, State> {
         ))}
         <Text customTitle>{t('medical_case:treatments')}</Text>
         {Object.keys(treatments).map((key) => (
-          <View style={styles.blocManagement}>
-            <Text style={styles.spaceText} size-auto key={'healthcare' + treatments[key].reference}>
+          <View style={styles.blocManagement} key={`treatments-box-${treatments[key].reference}`}>
+            <Text style={styles.spaceText} size-auto>
               {__DEV__ ? `${treatments[key].reference} - ` : null}
               {treatments[key].label}
             </Text>
