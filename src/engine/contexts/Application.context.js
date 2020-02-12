@@ -8,6 +8,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { AppState, PermissionsAndroid } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
+import Geolocation from '@react-native-community/geolocation';
 
 import { sessionsDuration } from '../../utils/constants';
 
@@ -62,6 +63,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   askGeo = async (enableHighAccuracy, callBack) => {
+    Geolocation.getCurrentPosition((info) => console.log(info));
+
     return navigator.geolocation.getCurrentPosition(async (position) => callBack(position), async (error) => callBack(error), {
       enableHighAccuracy,
       timeout: 5000,
