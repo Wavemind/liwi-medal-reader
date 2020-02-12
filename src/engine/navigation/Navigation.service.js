@@ -7,6 +7,7 @@ import { updateMedicalCaseProperty } from '../../../frontend_service/actions/cre
 
 let _navigator;
 
+// Set ref to navigator
 function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
 }
@@ -23,6 +24,12 @@ function navigate(routeName, params = {}) {
   );
 }
 
+/**
+ * Get the active route from react-navigation
+ *
+ * @param navigationState: Navigation : The state of react-navigation
+ * @return : string : the current route
+ */
 function getActiveRouteName(navigationState) {
   if (!navigationState) {
     return null;
@@ -35,32 +42,37 @@ function getActiveRouteName(navigationState) {
   return route.routeName;
 }
 
+// Set params for the current screen
+// Get the date node and set has a params
+// Will be update on react-navigation v4
 function setParamsAge(navigation, name) {
   const state$ = store.getState();
 
   const { patient, nodes } = state$;
 
-  let age = find(nodes, { label: 'Age in months' });
+  const age = find(nodes, { label: 'Age in months' });
 
-  let headerRight;
   let stringAge;
 
   if (age !== undefined) {
-    stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    stringAge = age.value === null ? 'Age is not defined' : `${age.value} months`;
   } else {
     stringAge = 'No question for age found';
   }
 
-  headerRight = `${patient.firstname} ${patient.lastname} | ${stringAge}`;
+  const headerRight = `${patient.firstname} ${patient.lastname} | ${stringAge}`;
 
   navigation.setParams({
     title: name,
-    headerRight: headerRight,
+    headerRight,
   });
 }
 
-// When we call this method, we get the current route, because the tree from react-navigaton is special
-function getCurrentRoute() {
+/**
+ * Get the active route from react-navigation
+ *
+ * @return : object : the current route
+ */ function getCurrentRoute() {
   if (_navigator === undefined) {
     return null;
   }

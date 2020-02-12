@@ -2,7 +2,6 @@
 
 import React, { Suspense } from 'react';
 import { Content, View } from 'native-base';
-import find from 'lodash/find';
 
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
