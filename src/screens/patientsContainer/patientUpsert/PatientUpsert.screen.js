@@ -265,7 +265,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     return (
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID={'PatientUpsertScreen'}>
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
           <LiwiLoader />

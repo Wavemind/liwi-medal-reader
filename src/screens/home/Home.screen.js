@@ -52,12 +52,13 @@ export default class Home extends React.Component<Props, State> {
     const { algorithms, propsToolTipVisible } = this.state;
 
     return (
-      <ScrollView>
+      <ScrollView testID={'HomeScreen'}>
         <View padding-auto>
           <View flex-container-column>
             <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} />
             <View w50>
               <TouchableHighlight
+                testID={'GoToPatientUpsert'}
                 underlayColor="transparent"
                 style={styles.navigationButton}
                 onPress={() => {
