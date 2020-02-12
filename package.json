@@ -3,24 +3,26 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
     "test": "jest",
-    "doc": "react-doc-generator  w./src -o docs/documentation.md",
-    "flow": "flow",
     "detox-android": "detox test -c android.emu.debug",
     "detox-ios": "detox test -c ios.sim.debug",
-    "postinstall": "npx jetify -r"
+    "postinstall": "npx jetify -r",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/runtime-corejs2": "^7.4.5",
     "@react-native-community/async-storage": "^1.5.0",
+    "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/netinfo": "3.3.0-reachability.4",
     "@react-native-community/viewpager": "^1.1.7",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-react-native": "^5.0.2",
     "color": "^3.1.2",
-    "core-js": "^2.6.9",
+    "core-js": "^3.6.4",
     "deepmerge": "^3.2.0",
     "es6-symbol": "^3.1.1",
     "eslint-config-defaults": "^9.0.0",
@@ -30,28 +32,32 @@
     "immer": "^3.1.1",
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.11",
-    "lottie-react-native": "^2.6.1",
+    "lottie-react-native": "^3.3.2",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
     "prop-types": "^15.7.2",
-    "react": "16.8.3",
+    "react": "16.9.0",
     "react-fast-compare": "^2.0.4",
     "react-i18next": "9.0.2",
-    "react-native": "0.59.8",
+    "react-native": "0.61.5",
     "react-native-custom-picker": "^0.4.0",
     "react-native-device-info": "^2.0.1",
     "react-native-easy-grid": "^0.2.0",
     "react-native-exception-handler": "^2.10.8",
-    "react-native-gesture-handler": "^1.0.12",
+    "react-native-gesture-handler": "^1.5.6",
     "react-native-js-stepper": "^0.2.1",
     "react-native-keep-awake": "^4.0.0",
     "react-native-modal": "^9.0.0",
+    "react-native-reanimated": "^1.7.0",
     "react-native-restart": "0.0.12",
+    "react-native-safe-area-context": "^0.7.2",
+    "react-native-screens": "^2.0.0-beta.2",
     "react-native-splash-screen": "^3.1.1",
     "react-native-table-component": "^1.2.0",
     "react-native-vector-icons": "^6.4.2",
-    "react-navigation": "3.12.1",
-    "react-navigation-tabs": "^1.0.2",
+    "react-navigation": "^4.1.1",
+    "react-navigation-drawer": "^2.3.4",
+    "react-navigation-stack": "^2.1.1",
     "react-redux": "^7.1.0",
     "react-redux-decorate": "0.0.5",
     "reducer-class": "^1.4.0",
@@ -63,15 +69,22 @@
     "redux-thunk": "^2.3.0",
     "reflect-metadata": "^0.1.13",
     "reselect": "^4.0.0",
+    "rn-fetch-blob": "^0.12.0",
     "rn-viewpager": "^1.2.9",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.5.3",
-    "styled-components": "^4.1.2",
-    "use-redux": "^2.1.1"
+    "styled-components": "^4.1.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/runtime": "^7.8.4",
+    "@react-native-community/eslint-config": "^0.0.7",
+    "babel-jest": "^25.1.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.1.0",
+    "metro-react-native-babel-preset": "^0.58.0",
+    "react-test-renderer": "16.9.0",
     "@babel/cli": "7.4.4",
-    "@babel/core": "7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-transform-async-to-generator": "^7.4.4",
@@ -81,8 +94,7 @@
     "@babel/preset-env": "7.3.4",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "@babel/runtime": "^7.4.5",
-    "@babel/traverse": "7.3.4",
+    "@babel/traverse": "7.8.4",
     "@types/debug": "4.1.2",
     "@types/get-stdin": "^5.0.1",
     "@types/http-proxy-agent": "^2.0.1",
@@ -97,7 +109,6 @@
     "@types/voca": "^1.4.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.2",
-    "babel-jest": "24.1.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
@@ -105,7 +116,6 @@
     "docusaurus": "^1.6.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-flowtype": "^3.11.1",
     "eslint-plugin-import": "^2.18.0",
@@ -113,32 +123,19 @@
     "eslint-plugin-react": "^7.14.2",
     "flow-bin": "^0.94.0",
     "husky": "^3.0.0",
-    "jest": "^24.8.0",
     "jest-styled-components": "^6.3.3",
     "jetifier": "^1.6.4",
-    "metro-react-native-babel-preset": "0.53.0",
     "mocha": "^6.1.4",
     "prettier": "^1.15.3",
     "react-devtools": "^3.4.3",
     "react-doc-generator": "^1.2.5",
     "react-native-debugger-open": "^0.3.17",
-    "react-test-renderer": "16.8.3",
     "redux-devtools-extension": "^2.13.8"
   },
   "husky": {
     "hooks": {
       "pre-commit": "eslint src frontend_service --fix"
     }
-  },
-  "jest": {
-    "preset": "react-native",
-    "transformIgnorePatterns": [
-      "/node_modules/(?!native-base)/"
-    ],
-    "testEnvironment": "node",
-    "setupFiles": [
-      "./src/utils/jest/jestenv.js"
-    ]
   },
   "detox": {
     "configurations": {
@@ -162,5 +159,15 @@
       }
     },
     "test-runner": "jest"
+  },
+  "jest": {
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!native-base)/"
+    ],
+    "testEnvironment": "node",
+    "setupFiles": [
+      "./src/utils/jest/jestenv.js"
+    ]
   }
 }
