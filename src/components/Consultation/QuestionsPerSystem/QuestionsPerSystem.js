@@ -17,9 +17,8 @@ export default class QuestionsPerSystem extends React.Component<Props, State> {
     const { pageIndex } = this.props;
     if (nextProps.medicalCase.id === undefined) {
       return false;
-    } else {
-      return nextProps.selectedPage === pageIndex;
     }
+    return nextProps.selectedPage === pageIndex;
   }
 
   render() {
@@ -35,7 +34,7 @@ export default class QuestionsPerSystem extends React.Component<Props, State> {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {Object.keys(groupBySystem).length > 0 ? (
-          Object.keys(groupBySystem).map((keySystem) => <System system={keySystem} key={'system_' + keySystem} questions={groupBySystem[keySystem]} />)
+          Object.keys(groupBySystem).map((keySystem) => <System system={keySystem} key={`system_${keySystem}`} questions={groupBySystem[keySystem]} />)
         ) : (
           <View padding-auto margin-auto>
             <Text not-available>{t('patient_list:not_found')}</Text>

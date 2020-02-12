@@ -3,10 +3,10 @@
 import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
-import find from 'lodash/find';
 import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import NavigationService from '../../../engine/navigation/Navigation.service';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -18,24 +18,8 @@ type State = {};
 // Because a function component is causing error from wrappers
 export default class Tests extends React.Component<Props, State> {
   componentWillMount() {
-    const {
-      navigation,
-      medicalCase: { patient, nodes },
-    } = this.props;
-
-    const age = find(nodes, { reference: '1', category: 'demographic' });
-
-    let stringAge;
-    if (age === undefined) {
-      stringAge = 'The node age is not find';
-    } else {
-      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-    }
-
-    navigation.setParams({
-      title: 'Tests ',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    const { navigation } = this.props;
+    NavigationService.setParamsAge(navigation, 'Tests');
   }
 
   render() {
