@@ -1,5 +1,6 @@
 /** @format */
 
+import 'react-native-gesture-handler';
 import 'core-js';
 import 'es6-symbol/implement';
 import { AppRegistry } from 'react-native';
