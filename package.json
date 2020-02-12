@@ -47,6 +47,7 @@
     "react-native-keep-awake": "^4.0.0",
     "react-native-modal": "^9.0.0",
     "react-native-restart": "0.0.12",
+    "react-native-screens": "^2.0.0-beta.2",
     "react-native-splash-screen": "^3.1.1",
     "react-native-table-component": "^1.2.0",
     "react-native-vector-icons": "^6.4.2",
