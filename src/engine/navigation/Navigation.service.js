@@ -7,14 +7,21 @@ import { updateMedicalCaseProperty } from '../../../frontend_service/actions/cre
 
 let _navigator;
 
-// Set ref to navigator
+/**
+ * Set ref to navigator
+ * @param navigatorRef : ref of navigator (from AppContainer -> layout.template.js)
+ */
 function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
 }
 
-// Navigate to a specific route
-// This method is used when we dont have access to Navigation Context
-// Ex : from a function JS or from RxJs
+/**
+ * Navigate to a specific route
+ * This method is used when we dont have access to Navigation Context
+ *
+ * @param routeName : string : route
+ * @param params : object : params to pass to navigation
+ */
 function navigate(routeName, params = {}) {
   _navigator.dispatch(
     NavigationActions.navigate({
@@ -42,9 +49,13 @@ function getActiveRouteName(navigationState) {
   return route.routeName;
 }
 
-// Set params for the current screen
-// Get the date node and set has a params
-// Will be update on react-navigation v4
+/**
+ * Set params for the current screen
+ * Get the date node and set has a params
+ * Will be update on react-navigation v4
+ * @params : navigation : the current state navigation
+ * @params : string : set the title of the page
+ */
 function setParamsAge(navigation, name) {
   const state$ = store.getState();
 
@@ -72,7 +83,8 @@ function setParamsAge(navigation, name) {
  * Get the active route from react-navigation
  *
  * @return : object : the current route
- */ function getCurrentRoute() {
+ */
+function getCurrentRoute() {
   if (_navigator === undefined) {
     return null;
   }
