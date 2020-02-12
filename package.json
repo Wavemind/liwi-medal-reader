@@ -77,15 +77,8 @@
     "styled-components": "^4.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/runtime": "^7.8.4",
-    "@react-native-community/eslint-config": "^0.0.7",
-    "babel-jest": "^25.1.0",
-    "eslint": "^6.8.0",
-    "jest": "^25.1.0",
-    "metro-react-native-babel-preset": "^0.58.0",
-    "react-test-renderer": "16.9.0",
     "@babel/cli": "7.4.4",
+    "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/plugin-transform-async-to-generator": "^7.4.4",
@@ -95,7 +88,9 @@
     "@babel/preset-env": "7.3.4",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.8.4",
     "@babel/traverse": "7.8.4",
+    "@react-native-community/eslint-config": "^0.0.7",
     "@types/debug": "4.1.2",
     "@types/get-stdin": "^5.0.1",
     "@types/http-proxy-agent": "^2.0.1",
@@ -110,13 +105,16 @@
     "@types/voca": "^1.4.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.2",
+    "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-root-slash-import": "^1.1.0",
+    "detox": "^15.2.0",
     "docusaurus": "^1.6.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^6.8.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-flowtype": "^3.11.1",
     "eslint-plugin-import": "^2.18.0",
@@ -124,13 +122,16 @@
     "eslint-plugin-react": "^7.14.2",
     "flow-bin": "^0.94.0",
     "husky": "^3.0.0",
+    "jest": "^25.1.0",
     "jest-styled-components": "^6.3.3",
     "jetifier": "^1.6.4",
+    "metro-react-native-babel-preset": "^0.58.0",
     "mocha": "^6.1.4",
     "prettier": "^1.15.3",
     "react-devtools": "^3.4.3",
     "react-doc-generator": "^1.2.5",
     "react-native-debugger-open": "^0.3.17",
+    "react-test-renderer": "16.9.0",
     "redux-devtools-extension": "^2.13.8"
   },
   "husky": {
@@ -150,13 +151,21 @@
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
         "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
         "type": "android.emulator",
+        "device": {
+          "avdName": "Nexus_10_API_26",
+          "type": "Nexus_10_API_26",
+          "name": "Nexus_10_API_26"
+        },
         "name": "Nexus_10_API_26"
       },
-      "android.emu.release": {
-        "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
-        "build": "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
-        "type": "android.emulator",
-        "name": "Nexus_10_API_26"
+      "android.att.debug": {
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+        "type": "android.attached",
+        "device": {
+          "adbName": "62210121HY806C6012V"
+        },
+        "name": "62210121HY806C6012V"
       }
     },
     "test-runner": "jest"

@@ -50,7 +50,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
       if (encrypt1 !== encrypt2 || (!mediumRegex.test(code) && !mediumRegex.test(codeConfirmation))) {
         this.setState({
-          error: 'Your password is too weak or it\'s not the same',
+          error: "Your password is too weak or it's not the same",
         });
         return false;
       }
@@ -91,9 +91,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
       <View flex-container-column>
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
-            <LiwiTitle2 noBorder testID="welcome">
-              {t('code_session_screen:title')}
-            </LiwiTitle2>
+            <LiwiTitle2 noBorder>{t('code_session_screen:title')}</LiwiTitle2>
             <LiwiTitle2 noBorder testID="last_name">
               {session.data.first_name} {session.data.last_name}
             </LiwiTitle2>
