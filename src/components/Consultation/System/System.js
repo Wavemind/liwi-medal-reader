@@ -17,8 +17,12 @@ export default class System extends React.Component<Props, State> {
     questions: [],
   };
 
-  // Compare the new props to old props for optimization
-  // Return true if one question is different
+  /**
+   * Compare the new props to old props for optimization
+   * Return true if one question is different
+   * @params nextPropsQuestions : the new object questions
+   * @return boolean
+   */
   isSomeQuestionsDifferent = (nextPropsQuestions) => {
     const { questions } = this.props;
     return questions.some((question) => {
