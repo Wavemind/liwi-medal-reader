@@ -77,30 +77,28 @@ class LayoutTemplate extends React.Component<Props> {
     const theme = merge(baseTheme, liwi);
 
     return (
-      <NavigationContainer>
-        <Root>
-          <StyleProvider style={theme}>
-            {ready ? (
-              <Container>
-                <RootView>
-                  {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                  <AppContainer
-                    persistNavigationState={persistNavigationState}
-                    loadNavigationState={this.loadNavigationState}
-                    renderLoadingExperimental={() => <LiwiLoader />}
-                    ref={(navigatorRef) => {
-                      NavigationService.setTopLevelNavigator(navigatorRef);
-                    }}
-                    onNavigationStateChange={NavigationService.onNavigationStateChange}
-                  />
-                </RootView>
-              </Container>
-            ) : (
-              <LiwiLoader />
-            )}
-          </StyleProvider>
-        </Root>
-      </NavigationContainer>
+      <Root>
+        <StyleProvider style={theme}>
+          {ready ? (
+            <Container>
+              <RootView>
+                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                <AppContainer
+                  persistNavigationState={persistNavigationState}
+                  loadNavigationState={this.loadNavigationState}
+                  renderLoadingExperimental={() => <LiwiLoader />}
+                  ref={(navigatorRef) => {
+                    NavigationService.setTopLevelNavigator(navigatorRef);
+                  }}
+                  onNavigationStateChange={NavigationService.onNavigationStateChange}
+                />
+              </RootView>
+            </Container>
+          ) : (
+            <LiwiLoader />
+          )}
+        </StyleProvider>
+      </Root>
     );
   }
 }

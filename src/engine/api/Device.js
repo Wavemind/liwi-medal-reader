@@ -3,27 +3,28 @@ import { getItem } from './LocalStorage';
 
 // Return device information and his location
 export const getDeviceInformation = async () => {
+  const date = new Date();
   const manufacturer = DeviceInfo.getManufacturer();
   const deviceName = DeviceInfo.getDeviceName();
   const model = DeviceInfo.getModel();
   const systemName = DeviceInfo.getSystemName();
   const systemVersion = DeviceInfo.getSystemVersion();
-  const timezone = DeviceInfo.getTimezone();
+  const timezone = date.getTimezoneOffset();
   const version = DeviceInfo.getVersion();
-  let mac = await DeviceInfo.getMACAddress();
+  const mac = await DeviceInfo.getMacAddress();
 
   const location = await getItem('location');
 
-  let objReturned = {
+  const objReturned = {
     activity: {
       latitude: location?.coords?.latitude ?? null,
       longitude: location?.coords?.longitude ?? null,
-      timezone: timezone,
+      timezone,
       user_id: 'null',
-      version: version,
+      version,
       device_attributes: {
         mac_address: mac,
-        model: model,
+        model,
         brand: manufacturer,
         name: deviceName,
         os: systemName,
@@ -31,6 +32,8 @@ export const getDeviceInformation = async () => {
       },
     },
   };
+
+  console.log(objReturned);
 
   return objReturned;
 };
