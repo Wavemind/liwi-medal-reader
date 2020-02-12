@@ -8,4 +8,6 @@ const mapStateToProps = (medicalCase) => {
   return { medicalCase };
 };
 
-export default connect(mapStateToProps)(withSessions(withApplication(withNavigation(QuestionsPerSystem))));
+export default connect(mapStateToProps)(
+  withSessions(withApplication(withNavigation(QuestionsPerSystem)))
+);

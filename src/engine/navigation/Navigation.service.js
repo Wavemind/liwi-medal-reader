@@ -1,9 +1,9 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 import _ from 'lodash';
+import find from 'lodash/find';
 import { store } from '../../../frontend_service/store';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import find from 'lodash/find';
 
 let _navigator;
 
