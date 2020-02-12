@@ -88,11 +88,11 @@ export default class SetCodeSession extends React.Component<Props, State> {
     }
 
     return (
-      <View flex-container-column>
+      <View flex-container-column  testID="SetCodeSession">
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
             <LiwiTitle2 noBorder>{t('code_session_screen:title')}</LiwiTitle2>
-            <LiwiTitle2 noBorder testID="last_name">
+            <LiwiTitle2 noBorder>
               {session.data.first_name} {session.data.last_name}
             </LiwiTitle2>
             <Form>
