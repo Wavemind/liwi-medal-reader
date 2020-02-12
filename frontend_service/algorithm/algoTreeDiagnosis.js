@@ -243,7 +243,7 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
  * @return string: return the birthdate for the patient
  */
 export const showBirthDatePatient = (patient, state$) => {
-  // Replace the redux MC if we match the id
+  // Replace the redux medical case if we match the id
   patient.medicalCases.map((mc, i) => {
     if (mc.id === state$.id) {
       patient.medicalCases[i] = state$;
@@ -258,17 +258,17 @@ export const showBirthDatePatient = (patient, state$) => {
     }
   });
 
-  // Sort MC by updated_at for get the last
-  let r = medicalCaseWithBirthDate.sort((a, b) => {
+  // Sort medical cases by updated_at for get the last
+  let medicalCase = medicalCaseWithBirthDate.sort((a, b) => {
     let dateA = moment(a.updated_at);
     let dateB = moment(b.updated_at);
     return dateB.diff(dateA);
   });
 
-  // Mc match
-  if (r.length > 0) {
+  // Medical case match
+  if (medicalCase.length > 0) {
     // Parse date
-    return moment(find(r.first().nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
+    return moment(find(medicalCase.first().nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
   } else {
     return 'Age is not defined';
   }
