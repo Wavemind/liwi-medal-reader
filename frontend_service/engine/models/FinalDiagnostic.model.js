@@ -7,7 +7,7 @@ import { RequirementNodeModel } from './RequirementNodeModel';
 import {
   calculateCondition,
   comparingTopConditions,
-  reduceConditionArrayBoolean
+  reduceConditionArrayBoolean,
 } from '../../algorithm/algoConditionsHelpers';
 import { store } from '../../store';
 import { nodesType } from '../../constants';
@@ -167,15 +167,16 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
 
     // If this FD can be excluded by other high-priority FD
     if (this.excluded_by_final_diagnostics !== null) {
-      let excluding_node = state$.nodes[this.excluded_by_final_diagnostics];
+      let excludingNode = state$.nodes[this.excluded_by_final_diagnostics];
       do {
         // If this other high-priority FD is true so this is always false
-        if (excluding_node.calculateCondition() === true) {
+        if (excludingNode.calculateCondition() === true) {
           return false;
         }
-        excluding_node = state$.nodes[excluding_node.excluded_by_final_diagnostics];
+        excludingNode = state$.nodes[excludingNode.excluded_by_final_diagnostics];
 
-      } while (excluding_node !== undefined);
+      }
+      while (excludingNode !== undefined);
     }
 
     // TODO change the excluding final diagnostics (can have an impact on showed treatment and management... so useless for now)

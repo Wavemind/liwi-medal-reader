@@ -4,39 +4,25 @@ import React, { Suspense } from 'react';
 import { View } from 'native-base';
 
 import { NavigationScreenProps } from 'react-navigation';
-import find from 'lodash/find';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { categories } from '../../../../frontend_service/constants';
+import NavigationService from '../../../engine/navigation/Navigation.service';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
 const QuestionsPerSystem = React.lazy(() => import('../../../components/Consultation/QuestionsPerSystem'));
+
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Consultation extends React.Component<Props, State> {
   componentWillMount() {
-    const {
-      navigation,
-      medicalCase: { patient, nodes },
-    } = this.props;
+    const { navigation } = this.props;
 
-    const age = find(nodes, { reference: '1', category: 'demographic' });
-
-    let stringAge;
-    if (age === undefined) {
-      stringAge = 'The node age is not find';
-    } else {
-      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-    }
-
-    navigation.setParams({
-      title: 'Consultation  ',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    NavigationService.setParamsAge(navigation, 'Consultation');
   }
 
   render() {
@@ -48,10 +34,10 @@ export default class Consultation extends React.Component<Props, State> {
       updateMetaData,
     } = this.props;
 
-    let selectedPage = navigation.getParam('initialPage');
+    const selectedPage = navigation.getParam('initialPage');
 
-    // Filter questions medical history
-    let medical_history = medicalCase.nodes.filterBy(
+    // Medical history questions
+    const medicalHistory = medicalCase.nodes.filterBy(
       [
         {
           by: 'category',
@@ -74,8 +60,8 @@ export default class Consultation extends React.Component<Props, State> {
       false
     );
 
-    // Filter questions physical exam
-    let physical_exam = medicalCase.nodes.filterBy(
+    // Phisical exam questions
+    const physicalExam = medicalCase.nodes.filterBy(
       [
         {
           by: 'category',
@@ -93,12 +79,12 @@ export default class Consultation extends React.Component<Props, State> {
       false
     );
 
-    if (medicalCase.metaData.consultation.medicalHistory.length === 0 && medical_history.length !== 0) {
-      updateMetaData('consultation', 'medicalHistory', medical_history.map(({ id }) => id));
+    if (medicalCase.metaData.consultation.medicalHistory.length === 0 && medicalHistory.length !== 0) {
+      updateMetaData('consultation', 'medicalHistory', medicalHistory.map(({ id }) => id));
     }
 
-    if (medicalCase.metaData.consultation.physicalExam.length === 0 && physical_exam.length !== 0) {
-      updateMetaData('consultation', 'physicalExam', physical_exam.map(({ id }) => id));
+    if (medicalCase.metaData.consultation.physicalExam.length === 0 && physicalExam.length !== 0) {
+      updateMetaData('consultation', 'physicalExam', physicalExam.map(({ id }) => id));
     }
 
     return (
@@ -126,7 +112,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerSystem questions={medical_history} selectedPage={selectedPage} pageIndex={0} />
+                <QuestionsPerSystem questions={medicalHistory} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -135,7 +121,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerSystem questions={physical_exam} selectedPage={selectedPage} pageIndex={1} />
+                <QuestionsPerSystem questions={physicalExam} selectedPage={selectedPage} pageIndex={1} />
               </Suspense>
             ) : (
               <LiwiLoader />

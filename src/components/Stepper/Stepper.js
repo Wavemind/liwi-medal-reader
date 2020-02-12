@@ -16,7 +16,7 @@ import { styles } from './styles';
 import { liwiColors } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
-import { updateMedicalCaseProperty, clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
+import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 

@@ -15,9 +15,8 @@ import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchB
 import { styles } from './PatientUpsert.style';
 import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { categories, stage } from '../../../../frontend_service/constants';
+import { stage } from '../../../../frontend_service/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { NodesModel } from '../../../../frontend_service/engine/models/Nodes.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};

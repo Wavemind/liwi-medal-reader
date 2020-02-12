@@ -2,7 +2,6 @@
 
 import React, { Suspense } from 'react';
 import { Content, View } from 'native-base';
-import find from 'lodash/find';
 
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
@@ -10,6 +9,7 @@ import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import { Toaster } from '../../../utils/CustomToast';
+import NavigationService from '../../../engine/navigation/Navigation.service';
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
@@ -30,18 +30,7 @@ export default class Triage extends React.Component<Props, State> {
       medicalCase: { patient, nodes },
     } = this.props;
 
-    const age = find(nodes, { reference: '1', category: 'demographic' });
-    let stringAge;
-    if (age === undefined) {
-      stringAge = 'The node age is not find';
-    } else {
-      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-    }
-
-    navigation.setParams({
-      title: 'Triage',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    NavigationService.setParamsAge(navigation, 'Triage');
   }
 
   state = {
