@@ -182,6 +182,11 @@ export const diff = function(obj1, obj2) {
   return diffs;
 };
 
-export const roundSup = (v) => {
-  return Math.round(v * 10) / 10;
-};
+/**
+ * Round sup of number
+ *
+ * @param number : number to round
+ * @return number
+ * ex : roundSup(1.55555) => 1.6
+ */
+export const roundSup = (n) => Math.round(n * 10) / 10;
