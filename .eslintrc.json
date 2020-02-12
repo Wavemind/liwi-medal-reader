@@ -12,12 +12,7 @@
     "fetch": false,
     "navigator": false
   },
-  "extends": [
-    "airbnb",
-    "plugin:react/recommended",
-    "eslint:recommended",
-    "plugin:flowtype/recommended"
-  ],
+  "extends": ["airbnb", "plugin:react/recommended", "eslint:recommended", "plugin:flowtype/recommended"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 6,
@@ -50,7 +45,8 @@
     "react/display-name": 0,
     "react/sort-comp": 0,
     "import/no-cycle": [2, { "maxDepth": 1 }],
-    "react/prop-types": 0
-
+    "react/prop-types": 0,
+    "template-curly-spacing": "off",
+    "indent": "off"
   }
 }
