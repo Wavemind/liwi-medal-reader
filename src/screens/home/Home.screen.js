@@ -32,7 +32,7 @@ export default class Home extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    let algorithms = await getItems('algorithms');
+    const algorithms = await getItems('algorithms');
     this.setState({ algorithms });
   }
 

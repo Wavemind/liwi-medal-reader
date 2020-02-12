@@ -1,12 +1,12 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
-import DeviceInfo from 'react-native-device-info';
+import { NativeModules } from 'react-native';
 
 const languageDetector = {
   type: 'languageDetector',
   async: true, // flags below detection to be async
   detect: (callback) => {
-    const deviceLocale = DeviceInfo.getDeviceLocale();
+    const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
   init: () => {},

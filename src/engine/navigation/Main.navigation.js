@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Icon, Text } from 'native-base';
-import { createBottomTabNavigator, createDrawerNavigator, createStackNavigator } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createStackNavigator } from 'react-navigation-stack';
+
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
@@ -246,22 +248,11 @@ const HomeWithModal = createStackNavigator(
   }
 );
 
-let StackWithBottomNavigation = createBottomTabNavigator(
-  {
-    RootBottomTab: { screen: HomeWithModal },
-  },
-  {
-    tabBarComponent: () => {
-      return null;
-    },
-  }
-);
-
 const MainNavigation = () => {
   const drawerWidth = screenWidth / 2.2;
   return createDrawerNavigator(
     {
-      RootDrawer: { screen: StackWithBottomNavigation },
+      RootDrawer: { screen: HomeWithModal },
     },
     {
       drawerWidth,
