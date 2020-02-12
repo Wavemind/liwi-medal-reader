@@ -54,7 +54,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
 
   getDrugDoses = () => {
     const state$ = store.getState();
-    let weightNode = state$.nodes[this.weightQuestionId];
+    const weightNode = state$.nodes[this.weightQuestionId];
     if (weightNode.value !== null) {
       switch (this.treatmentType) {
         case healthCareType.liquid:
@@ -80,7 +80,8 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
             maxDoseCap,
             doseResult,
           };
-          // eslint-disable-next-line no-unreachable
+        default:
+          // TODO implement logic on the next feature posologie
           break;
       }
     }
