@@ -33,8 +33,7 @@ const DEFAULT_DISPLAY_INSETS = {
   right: 24,
 };
 
-const computeDisplayInsets = (insetsFromProps) =>
-  Object.assign({}, DEFAULT_DISPLAY_INSETS, insetsFromProps);
+const computeDisplayInsets = (insetsFromProps) => Object.assign({}, DEFAULT_DISPLAY_INSETS, insetsFromProps);
 
 const invertPlacement = (placement) => {
   switch (placement) {
@@ -64,9 +63,7 @@ class Tooltip extends Component {
     displayInsets: {},
     isVisible: false,
     onClose: () => {
-      console.warn(
-        '[react-native-walkthrough-tooltip] onClose prop no provided'
-      );
+      console.warn('[react-native-walkthrough-tooltip] onClose prop no provided');
     },
     placement: 'center', // falls back to "top" if there ARE children
     showChildInTooltip: true,
@@ -119,10 +116,7 @@ class Tooltip extends Component {
       displayInsets: computeDisplayInsets(props.displayInsets),
       // if we have no children, and place the tooltip at the "top" we want it to
       // behave like placement "bottom", i.e. display below the top of the screen
-      placement:
-        React.Children.count(props.children) === 0
-          ? invertPlacement(props.placement)
-          : props.placement,
+      placement: React.Children.count(props.children) === 0 ? invertPlacement(props.placement) : props.placement,
       readyToComputeGeom: false,
       waitingToComputeGeom: false,
       measurementsFinished: false,
@@ -163,10 +157,7 @@ class Tooltip extends Component {
     const nextState = {};
 
     // update placement in state if the prop changed
-    const nextPlacement =
-      React.Children.count(nextProps.children) === 0
-        ? invertPlacement(nextProps.placement)
-        : nextProps.placement;
+    const nextPlacement = React.Children.count(nextProps.children) === 0 ? invertPlacement(nextProps.placement) : nextProps.placement;
 
     if (nextPlacement !== prevState.placement) {
       nextState.placement = nextPlacement;
@@ -259,16 +250,11 @@ class Tooltip extends Component {
     const doMeasurement = () => {
       if (!this.isMeasuringChild) {
         this.isMeasuringChild = true;
-        if (
-          this.childWrapper.current &&
-          typeof this.childWrapper.current.measure === 'function'
-        ) {
-          this.childWrapper.current.measure(
-            (x, y, width, height, pageX, pageY) => {
-              const childRect = new Rect(pageX, pageY, width, height);
-              this.onMeasurementComplete(childRect);
-            }
-          );
+        if (this.childWrapper.current && typeof this.childWrapper.current.measure === 'function') {
+          this.childWrapper.current.measure((x, y, width, height, pageX, pageY) => {
+            const childRect = new Rect(pageX, pageY, width, height);
+            this.onMeasurementComplete(childRect);
+          });
         } else {
           this.doChildlessPlacement();
         }
@@ -323,10 +309,7 @@ class Tooltip extends Component {
       displayInsets,
       childRect,
       windowDims,
-      arrowSize:
-        innerPlacement === 'top' || innerPlacement === 'bottom'
-          ? arrowSize
-          : swapSizeDimmensions(arrowSize),
+      arrowSize: innerPlacement === 'top' || innerPlacement === 'bottom' ? arrowSize : swapSizeDimmensions(arrowSize),
       contentSize,
       childContentSpacing,
     };
@@ -352,12 +335,7 @@ class Tooltip extends Component {
   renderChildInTooltip = () => {
     const { childRect } = this.state;
     const { height, width, x, y } = childRect;
-    const {
-      onClose,
-      closeOnChildInteraction,
-      allowChildInteraction,
-      children,
-    } = this.props;
+    const { onClose, closeOnChildInteraction, allowChildInteraction, children } = this.props;
 
     const onTouchEnd = () => {
       if (closeOnChildInteraction) {
@@ -388,14 +366,7 @@ class Tooltip extends Component {
   };
 
   renderContentForTooltip = () => {
-    const {
-      measurementsFinished,
-      displayInsets,
-      placement,
-      adjustedContentSize,
-      anchorPoint,
-      tooltipOrigin,
-    } = this.state;
+    const { measurementsFinished, displayInsets, placement, adjustedContentSize, anchorPoint, tooltipOrigin } = this.state;
     const { props } = this;
     const generatedStyles = styleGenerator({
       adjustedContentSize: adjustedContentSize,
@@ -416,30 +387,19 @@ class Tooltip extends Component {
           <View style={[generatedStyles.backgroundStyle]}>
             <View style={generatedStyles.tooltipStyle}>
               {hasChildren ? <View style={generatedStyles.arrowStyle} /> : null}
-              <View
-                onLayout={this.measureContent}
-                style={generatedStyles.contentStyle}
-              >
+              <View onLayout={this.measureContent} style={generatedStyles.contentStyle}>
                 {props.content}
               </View>
             </View>
           </View>
-          {hasChildren && props.showChildInTooltip
-            ? this.renderChildInTooltip()
-            : null}
+          {hasChildren && props.showChildInTooltip ? this.renderChildInTooltip() : null}
         </View>
       </TouchableWithoutFeedback>
     );
   };
 
   render() {
-    const {
-      children,
-      isVisible,
-      useReactNativeModal,
-      onClose,
-      supportedOrientations,
-    } = this.props;
+    const { children, isVisible, useReactNativeModal, onClose, supportedOrientations } = this.props;
     const { waitingForInteractions } = this.state;
 
     const hasChildren = React.Children.count(children) > 0;
@@ -448,12 +408,7 @@ class Tooltip extends Component {
     return (
       <React.Fragment>
         {useReactNativeModal ? (
-          <Modal
-            transparent
-            visible={showTooltip}
-            onRequestClose={(e) => onClose(e, this.state)}
-            supportedOrientations={supportedOrientations}
-          >
+          <Modal transparent visible={showTooltip} onRequestClose={(e) => onClose(e, this.state)} supportedOrientations={supportedOrientations}>
             {this.renderContentForTooltip()}
           </Modal>
         ) : null}
@@ -465,9 +420,7 @@ class Tooltip extends Component {
           </View>
         ) : null}
 
-        {!useReactNativeModal && showTooltip
-          ? this.renderContentForTooltip()
-          : null}
+        {!useReactNativeModal && showTooltip ? this.renderContentForTooltip() : null}
       </React.Fragment>
     );
   }
