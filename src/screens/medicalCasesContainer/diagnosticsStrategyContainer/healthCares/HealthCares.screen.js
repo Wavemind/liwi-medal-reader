@@ -11,15 +11,20 @@ type Props = NavigationScreenProps & {};
 type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCares extends Component<Props, State> {
+  /**
+   *  Render content of modal healthCare
+   *
+   *  @params object : healthCare
+   */
   _renderHealthCareType = (healthCare) => {
     const {
       app: { t },
     } = this.props;
 
     const { drugDoses } = healthCare;
-    switch (healthCare.treatment_type) {
+    switch (healthCare.treatmentType) {
       case healthCareType.liquid:
-        break;
+        return null;
       case healthCareType.pill:
         return (
           <View>
@@ -29,8 +34,8 @@ export default class HealthCares extends Component<Props, State> {
             <Text>Reference : {healthCare.reference}</Text>
             <Text>Id : {healthCare.id}</Text>
             <SeparatorLine />
-            <Text>Pill Size : {healthCare.pill_size}</Text>
-            <Text>Maximum dose : {healthCare.maximal_dose}</Text>
+            <Text>Pill Size : {healthCare.pillSize}</Text>
+            <Text>Maximum dose : {healthCare.maximalDose}</Text>
             {drugDoses !== null ? (
               <>
                 <Text>Min dose (mg/Kg) : {drugDoses.minDoseMg}</Text>
@@ -45,10 +50,18 @@ export default class HealthCares extends Component<Props, State> {
           </View>
         );
         break;
+      default:
+        return null;
     }
   };
-  _renderHealthCare = (healthCare) => {
-    return Object.keys(healthCare).map((index) => (
+
+  /**
+   *  Render a healthcare by type
+   *
+   *  @params object : healthCare
+   */
+  _renderHealthCare = (healthCare) =>
+    Object.keys(healthCare).map((index) => (
       <View style={styles.blocManagement} key={index}>
         <Text style={styles.spaceText} size-auto key={'healthcare' + healthCare[index].reference}>
           {__DEV__ && `${healthCare[index].reference} - `}
@@ -58,7 +71,6 @@ export default class HealthCares extends Component<Props, State> {
         <ToolTipModal toolTipIcon>{this._renderHealthCareType(healthCare[index])}</ToolTipModal>
       </View>
     ));
-  };
 
   render() {
     const {
