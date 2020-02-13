@@ -1,13 +1,16 @@
+/* eslint-env detox/detox, mocha */
+
 const detox = require('detox');
+const { waitFor } = require('@babel/core/lib/gensync-utils/async');
 const config = require('../package.json').detox;
 
 describe('liwi Native Detox test', () => {
-  beforeEach(async () => {
-    if (typeof device == 'undefined') {
-      await detox.init(config);
-    }
-    await device.reloadReactNative({ delete: true, permissions: { location: 'always' } });
-  });
+  // beforeEach(async () => {
+  //   if (typeof device == 'undefined') {
+  //     await detox.init(config);
+  //   }
+  //   await device.reloadReactNative({ delete: true, permissions: { location: 'always' } });
+  // });
 
   it('should create new session on tablet, login and go to home', async () => {
     await expect(element(by.id('UnLockSession'))).toBeVisible();
