@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Image, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
 import { styles } from './ToolTipModal.style';
 import Tooltip from '../Tooltip/tooltip';
