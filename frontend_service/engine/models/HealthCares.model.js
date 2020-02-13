@@ -26,13 +26,13 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
 
     this.description = description;
     this.label = label;
-    this.weight_question_id = weight_question_id;
-    this.minimal_dose_per_kg = minimal_dose_per_kg;
-    this.maximal_dose_per_kg = maximal_dose_per_kg;
-    this.maximal_dose = maximal_dose;
-    this.doses_per_day = doses_per_day;
-    this.treatment_type = treatment_type;
-    this.pill_size = pill_size;
+    this.weightQuestionId = weight_question_id;
+    this.minimalDosePerKg = minimal_dose_per_kg;
+    this.maximalDosePerKg = maximal_dose_per_kg;
+    this.maximalDose = maximal_dose;
+    this.dosesPerDay = doses_per_day;
+    this.treatmentType = treatment_type;
+    this.pillSize = pill_size;
     this.drugDoses = drugDoses;
   }
 
@@ -52,26 +52,31 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     });
   };
 
+  /**
+   * Set the right dose calculation for the treatment.
+   *
+   * @return [object] : doses for the treatment, it depend by healthcare type (liquid, tab, pill, etc...)
+   */
   getDrugDoses = () => {
     const state$ = store.getState();
-    let weightNode = state$.nodes[this.weight_question_id];
+    const weightNode = state$.nodes[this.weightQuestionId];
     if (weightNode.value !== null) {
-      switch (this.treatment_type) {
+      switch (this.treatmentType) {
         case healthCareType.liquid:
           break;
 
         case healthCareType.pill:
           // First calcule min and max dose (mg/Kg)
-          let minDoseMg = roundSup((weightNode.value * this.minimal_dose_per_kg) / this.doses_per_day);
-          let maxDoseMg = roundSup((weightNode.value * this.maximal_dose_per_kg) / this.doses_per_day);
+          const minDoseMg = roundSup((weightNode.value * this.minimalDosePerKg) / this.dosesPerDay);
+          const maxDoseMg = roundSup((weightNode.value * this.maximalDosePerKg) / this.dosesPerDay);
 
           // Second calcule min and max dose (cap)
-          let minDoseCap = roundSup((1 / this.pill_size) * minDoseMg);
-          let maxDoseCap = roundSup((1 / this.pill_size) * maxDoseMg);
+          const minDoseCap = roundSup((1 / this.pillSize) * minDoseMg);
+          const maxDoseCap = roundSup((1 / this.pillSize) * maxDoseMg);
 
           // Define Dose Result
           // TODO Result more efficient with data from PMU... waiting
-          let doseResult = Math.floor(maxDoseCap);
+          const doseResult = Math.floor(maxDoseCap);
 
           return {
             minDoseMg,
@@ -80,7 +85,8 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
             maxDoseCap,
             doseResult,
           };
-          // eslint-disable-next-line no-unreachable
+        default:
+          // TODO implement logic on the next feature posologie
           break;
       }
     }

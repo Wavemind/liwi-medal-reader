@@ -151,15 +151,15 @@ export default class TooltipModal extends React.Component<Props, State> {
    * @param toolTip : data from the tooltip like origin on screen and size gives the position of the tooltip
    */
   onCloseToolTip = (reactNative, toolTip) => {
-    let xTouch = reactNative.nativeEvent.pageX;
-    let xTooltip = toolTip.tooltipOrigin.x;
-    let xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
+    const xTouch = reactNative.nativeEvent.pageX;
+    const xTooltip = toolTip.tooltipOrigin.x;
+    const xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
 
-    let yTouch = reactNative.nativeEvent.pageY;
-    let yTooltip = toolTip.tooltipOrigin.y;
-    let yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
+    const yTouch = reactNative.nativeEvent.pageY;
+    const yTooltip = toolTip.tooltipOrigin.y;
+    const yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
 
-    let insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
+    const insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
 
     if (!insideContent) {
       this.closeModal();
