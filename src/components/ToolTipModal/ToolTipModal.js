@@ -81,7 +81,7 @@ export default class TooltipModal extends React.Component<Props, State> {
             <View key={'step-name' + step.stepName}>
               <View style={styles.stepHeaderName}>
                 <Icon type="Ionicons" name="ios-arrow-round-forward" />
-                {stepToBeFill.length > 0 && <Text style={styles.stepName}>{step.stepName}</Text>}
+                {stepToBeFill.length > 1 && <Text style={styles.stepName}>{step.stepName}</Text>}
                 {step.isActionValid ? (
                   <Icon name="ios-checkmark" type="Ionicons" style={styles.iconValid} />
                 ) : (
