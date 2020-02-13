@@ -5,12 +5,17 @@ import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
 import NavigationService from '../Navigation.service';
-import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
+import {
+  BottomButtonsDrawer,
+  CategorieButton,
+  HeaderButtonsDrawer,
+  ItemButton,
+  PathBar,
+} from './Drawer.item.navigation';
 import { Toaster } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
 import { marginLeftDrawer } from '../../../utils/constants';
 // eslint-disable-next-line no-unused-vars
-import { DrawerMinify } from './Drawer.minify';
 
 type Props = NavigationScreenProps & {};
 

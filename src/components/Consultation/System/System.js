@@ -3,19 +3,26 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
-import { styles } from './ChiefComplaint.style';
+import { styles } from './System.style';
 import Questions from '../../QuestionsContainer/Questions';
+import { systems } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
-export default class ChiefComplaint extends React.Component<Props, State> {
+export default class System extends React.Component<Props, State> {
   // default settings
   static defaultProps = {
     questions: [],
   };
 
+  /**
+   * Compare the new props to old props for optimization
+   * Return true if one question is different
+   * @params nextPropsQuestions : the new object questions
+   * @return boolean
+   */
   isSomeQuestionsDifferent = (nextPropsQuestions) => {
     const { questions } = this.props;
     return questions.some((question) => {
@@ -28,28 +35,24 @@ export default class ChiefComplaint extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     // First fast comparaison if the number of questions is different
-    const { questions, complaintCategory } = this.props;
+    const { questions } = this.props;
     if (nextProps.questions.length !== questions.length) {
       return true;
     }
 
-    return complaintCategory.answer !== nextProps.complaintCategory.answer || this.isSomeQuestionsDifferent(nextProps.questions);
+    return this.isSomeQuestionsDifferent(nextProps.questions);
   }
 
   render() {
-    const { complaintCategory, questions } = this.props;
-
-    if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers).second()) || complaintCategory.answer === null) {
-      return null;
-    }
+    const { system, questions } = this.props;
 
     if (questions.length === 0) {
       return null;
     }
 
     return (
-      <View style={styles.spacingChiefComplaints} key={`complaintCategory_${complaintCategory.id}`}>
-        <Text customTitle>{complaintCategory.label}</Text>
+      <View style={styles.spacingChiefComplaints} key={`view_system_${system}`}>
+        <Text customTitle>{systems[system]}</Text>
         <Questions questions={questions} />
       </View>
     );

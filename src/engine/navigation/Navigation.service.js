@@ -1,18 +1,27 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 import _ from 'lodash';
+import find from 'lodash/find';
 import { store } from '../../../frontend_service/store';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 
 let _navigator;
 
+/**
+ * Set ref to navigator
+ * @param navigatorRef : ref of navigator (from AppContainer -> layout.template.js)
+ */
 function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
 }
 
-// Navigate to a specific route
-// This method is used when we dont have access to Navigation Context
-// Ex : from a function JS or from RxJs
+/**
+ * Navigate to a specific route
+ * This method is used when we dont have access to Navigation Context
+ *
+ * @param routeName : string : route
+ * @param params : object : params to pass to navigation
+ */
 function navigate(routeName, params = {}) {
   _navigator.dispatch(
     NavigationActions.navigate({
@@ -22,6 +31,12 @@ function navigate(routeName, params = {}) {
   );
 }
 
+/**
+ * Get the active route from react-navigation
+ *
+ * @param navigationState: Navigation : The state of react-navigation
+ * @return : string : the current route
+ */
 function getActiveRouteName(navigationState) {
   if (!navigationState) {
     return null;
@@ -34,7 +49,41 @@ function getActiveRouteName(navigationState) {
   return route.routeName;
 }
 
-// When we call this method, we get the current route, because the tree from react-navigaton is special
+/**
+ * Set params for the current screen
+ * Get the date node and set has a params
+ * Will be update on react-navigation v4
+ * @params : navigation : the current state navigation
+ * @params : string : set the title of the page
+ */
+function setParamsAge(navigation, name) {
+  const state$ = store.getState();
+
+  const { patient, nodes } = state$;
+
+  const age = find(nodes, { label: 'Age in months' });
+
+  let stringAge;
+
+  if (age !== undefined) {
+    stringAge = age.value === null ? 'Age is not defined' : `${age.value} months`;
+  } else {
+    stringAge = 'No question for age found';
+  }
+
+  const headerRight = `${patient.firstname} ${patient.lastname} | ${stringAge}`;
+
+  navigation.setParams({
+    title: name,
+    headerRight,
+  });
+}
+
+/**
+ * Get the active route from react-navigation
+ *
+ * @return : object : the current route
+ */
 function getCurrentRoute() {
   if (_navigator === undefined) {
     return null;
@@ -107,6 +156,7 @@ function onNavigationStateChange(prevState, currentState) {
 }
 
 export default {
+  setParamsAge,
   getActiveRouteName,
   onNavigationStateChange,
   resetActionStack,
