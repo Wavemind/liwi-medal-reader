@@ -22,9 +22,10 @@ i18n
       en: {
         tooltip: {
           forcegoto: 'I take risk, go to ',
-          goto: 'Go to the view',
+          goto: 'Back to the form',
           notcomplete: 'Is not complete !',
           more: 'more questions...',
+          uncompleted: 'Stage uncompleted',
         },
         algorithms: {
           never: 'Never synchronized data',
