@@ -53,6 +53,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   getGeo = async () => {
     const { t } = this.state;
+    console.log(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
     return await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
       title: t('popup:title'),
       message: t('popup:message'),

@@ -25,10 +25,12 @@ afterAll(async () => {
 });
 
 export const loadApp = () =>
-  it('should load app and accept permissions', async () => {
+  it('should load app ', async () => {
     await device.launchApp({ permissions: { location: 'always' } });
     await expect(element(by.id('UnLockSession'))).toBeVisible();
   });
+
+export const acceptPermissions = () => it('should accept permissions', async () => {});
 
 export const logIn = () =>
   it('should log in to main server', async () => {
