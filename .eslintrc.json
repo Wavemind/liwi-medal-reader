@@ -23,7 +23,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": ["react", "flowtype"],
+  "plugins": ["react", "flowtype", "detox"],
   "settings": {
     "import/resolver": {
       "node": {
