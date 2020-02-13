@@ -90,7 +90,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
           break;
       }
     }
-    return null;
+    return {};
   };
 
   /**
