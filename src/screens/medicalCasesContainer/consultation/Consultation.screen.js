@@ -14,7 +14,6 @@ const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
 const QuestionsPerSystem = React.lazy(() => import('../../../components/Consultation/QuestionsPerSystem'));
 
-
 type Props = NavigationScreenProps & {};
 type State = {};
 

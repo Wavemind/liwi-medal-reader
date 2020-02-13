@@ -36,7 +36,6 @@ function navigate(routeName, params = {}) {
  *
  * @return key : string : the current route key
  * @param state: Navigation : The state of react-navigation
-
  */
 function getActiveRouteByKey(key, state) {
   let { routes } = state;
@@ -57,7 +56,6 @@ function getActiveRouteByKey(key, state) {
  *
  * @return name : string : the current route name
  * @param state: Navigation : The state of react-navigation
-
  */
 function getActiveRouteByName(name, state) {
   let { routes } = state;

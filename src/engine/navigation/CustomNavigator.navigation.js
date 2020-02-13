@@ -42,6 +42,14 @@ const modelValidator = {
   questionsToBeFill: [],
 };
 
+/**
+ * Return the validation for the given step
+ *
+ * @param route : route from navigation
+ * @param lastState : lastState from state navigation
+ * @param validator : object contain all validation
+ * @return validator : may be updated in the function
+ */
 const validatorStep = (route, lastState, validator) => {
   const state$ = store.getState();
 
@@ -61,7 +69,13 @@ const validatorStep = (route, lastState, validator) => {
 };
 
 /**
- * @return {boolean}
+ * Return one validation inside an stage
+ * ex : Step firstLookAssessments
+ *
+ * @param criteria : object from the constant screens
+ * @param questions : questions used to validation
+ * @param stepName : stepName : step to validate
+ * @return {validator} :
  */
 function oneValidation(criteria, questions, stepName) {
   let state$ = store.getState();
@@ -107,7 +121,15 @@ function oneValidation(criteria, questions, stepName) {
   return staticValidator;
 }
 
-const validatorNavigate = (navigateRoute, lastState) => {
+/**
+ *  Defined all the logic for validation on navigation based on redux status
+ *
+ *
+ * @param navigateRoute : action from react navigation
+ * @param lastState
+ * @return {any}
+ */
+const validatorNavigate = (navigateRoute) => {
   // Break Ref JS
   let validator = JSON.parse(JSON.stringify(modelValidator));
 
@@ -191,10 +213,9 @@ const validatorNavigate = (navigateRoute, lastState) => {
       }
 
       // if route requested is min 2 step too long AND the routeToValidate is true
-
+      // TODO to test and maybe fix after the merge.specific  use case
       if (diffStatus > 1 && validator.isActionValid === false) {
         //const prevRoute = screens.find((w) => w.medicalCaseOrder === route.routeName);
-
       }
 
       console.log(diffStatus, requestedStatus, indexStatus, navigateRoute, routeToValidate, validator);
@@ -219,7 +240,7 @@ class CustomNavigator extends React.Component {
         case navigationActionConstant.navigate:
         case navigationActionConstant.replace:
           // eslint-disable-next-line no-case-declarations
-          validation = validatorNavigate(action, lastState);
+          validation = validatorNavigate(action);
           break;
 
         case navigationActionConstant.setParams:

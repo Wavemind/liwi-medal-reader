@@ -18,12 +18,18 @@ export default class TooltipModal extends React.Component<Props, State> {
     toolTipVisible: false,
   };
 
+  /**
+   * Render maximum 3 questions of the step not valid
+   *
+   * @param questions
+   * @return [array] : jsx text
+   */
   _renderQuestions = (questions) => {
     const {
       app: { t },
     } = this.props;
 
-    let rowQuestions = [];
+    const rowQuestions = [];
 
     let n = 0;
 
@@ -49,6 +55,11 @@ export default class TooltipModal extends React.Component<Props, State> {
     return rowQuestions;
   };
 
+  /**
+   *  Render the content of the modal when the validator has block the action navigation
+   *
+   * @return {jsx}
+   */
   _renderValidation = () => {
     const { screenToBeFill, stepToBeFill, routeRequested } = this.props.modalRedux.navigator;
     const {
@@ -58,18 +69,19 @@ export default class TooltipModal extends React.Component<Props, State> {
 
     return (
       <View style={styles.validation}>
-        <Text style={styles.warning}>Access refused !</Text>
-        <Image source={require('../../../assets/images/hand.png')} style={styles.hand} resizeMode="contain" />
-        <Text style={styles.blocScreen}>
-          <Text style={styles.screen}>{screenToBeFill}</Text> {t('tooltip:notcomplete')}
-        </Text>
+        <Text style={styles.warning}>{t('tooltip:uncompleted')}</Text>
+        {screenToBeFill !== 'PatientUpsert' && (
+          <Text style={styles.blocScreen}>
+            <Text style={styles.screen}>{screenToBeFill}</Text> {t('tooltip:notcomplete')}
+          </Text>
+        )}
         <SeparatorLine marginBottom={15} marginTop={15} />
         <View style={styles.stepContainer}>
           {stepToBeFill.map((step) => (
             <View key={'step-name' + step.stepName}>
               <View style={styles.stepHeaderName}>
                 <Icon type="Ionicons" name="ios-arrow-round-forward" />
-                <Text style={styles.stepName}>{step.stepName}</Text>
+                {stepToBeFill.length > 0 && <Text style={styles.stepName}>{step.stepName}</Text>}
                 {step.isActionValid ? (
                   <Icon name="ios-checkmark" type="Ionicons" style={styles.iconValid} />
                 ) : (
@@ -81,19 +93,22 @@ export default class TooltipModal extends React.Component<Props, State> {
           ))}
           <SeparatorLine marginBottom={15} marginTop={15} />
           <View style={{ flexDirection: 'row' }}>
-            <Button
-              style={styles.buttonNav}
-              light
-              onPress={() => {
-                this.closeModal();
-                const params = { force: true };
-                NavigationService.navigate(routeRequested, params);
-              }}
-            >
-              <Text>
-                {t('tooltip:forcegoto')} {routeRequested}
-              </Text>
-            </Button>
+            {__DEV__ && (
+              <Button
+                style={styles.buttonNav}
+                light
+                onPress={() => {
+                  this.closeModal();
+                  const params = { force: true };
+                  NavigationService.navigate(routeRequested, params);
+                }}
+              >
+                <Text>
+                  {t('tooltip:forcegoto')} {routeRequested}
+                </Text>
+              </Button>
+            )}
+
             <Button
               style={styles.buttonNav}
               success
@@ -109,9 +124,7 @@ export default class TooltipModal extends React.Component<Props, State> {
                 NavigationService.navigate(screenToBeFill, params);
               }}
             >
-              <Text>
-                {t('tooltip:goto')} {screenToBeFill}
-              </Text>
+              <Text>{t('tooltip:goto')}</Text>
             </Button>
           </View>
         </View>
@@ -119,6 +132,15 @@ export default class TooltipModal extends React.Component<Props, State> {
     );
   };
 
+  /**
+   * Render content of modal depending the source
+   *
+   * if JSX render children
+   * if redux render validation
+   *
+   * @return {*}
+   * @private
+   */
   _renderToolTipContent = () => {
     const { modalRedux, children, toolTipIcon } = this.props;
     const { toolTipVisible } = this.state;
@@ -166,6 +188,21 @@ export default class TooltipModal extends React.Component<Props, State> {
     }
   };
 
+  /**
+   * Close the modal depending the source
+   *
+   * isFromRedux is call by the reducer triggered by en action
+   *
+   * isFromJsx is call by render from JSX
+   * EX :
+   *      <ToolTipModal toolTipIcon>
+   *        <YourComponentContent/>
+   *      </ToolTipModal>
+   *
+   * redux is close by new action  updateModalFromRedux();
+   * jsx is close by setState inside this class
+   *
+   */
   closeModal = () => {
     const { modalRedux, updateModalFromRedux, toolTipIcon } = this.props;
     const { toolTipVisible } = this.state;
