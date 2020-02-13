@@ -3,12 +3,12 @@
 import { NavigationScreenProps } from 'react-navigation';
 import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
-import find from 'lodash/find';
 import HealthCaresQuestions from '../healthCaresQuestions';
 import HealthCares from '../healthCares';
 import { styles } from './DiagnosticsStrategy.style';
 import Stepper from '../../../../components/Stepper';
 import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
+import NavigationService from '../../../../engine/navigation/Navigation.service';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -27,18 +27,9 @@ export default class DiagnosesStrategy extends Component<Props, State> {
       app: { t },
     } = this.props;
 
-    const {
-      navigation,
-      medicalCase: { patient, nodes },
-    } = this.props;
+    const { navigation } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-
-    navigation.setParams({
-      title: t('navigation:diagnosticsstrategy'),
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    NavigationService.setParamsAge(navigation, t('navigation:diagnosticsstrategy'));
   }
   render() {
     const {

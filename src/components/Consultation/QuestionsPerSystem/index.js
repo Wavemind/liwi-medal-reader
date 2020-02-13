@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import ChiefComplaint from './ChiefComplaint';
+import QuestionsPerSystem from './QuestionsPerSystem';
 import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 
@@ -9,5 +9,5 @@ const mapStateToProps = (medicalCase) => {
 };
 
 export default connect(mapStateToProps)(
-  withSessions(withApplication(withNavigation(ChiefComplaint)))
+  withSessions(withApplication(withNavigation(QuestionsPerSystem)))
 );
