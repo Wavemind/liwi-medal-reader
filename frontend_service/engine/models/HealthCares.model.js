@@ -52,6 +52,11 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     });
   };
 
+  /**
+   * Set the right dose calculation for the treatment.
+   *
+   * @return [object] : doses for the treatment, it depend by healthcare type (liquid, tab, pill, etc...)
+   */
   getDrugDoses = () => {
     const state$ = store.getState();
     const weightNode = state$.nodes[this.weightQuestionId];
