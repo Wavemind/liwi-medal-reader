@@ -20,10 +20,10 @@ export const sessionsDuration = 30; // in minutes
 export const screenWidth = Dimensions.get('window').width;
 export const screenHeight = Dimensions.get('window').height;
 
-export const marginLeftDrawer = 0;
+export const marginLeftDrawer = 40;
 
 /*** STYLES COMMON **/
 const isTablet = DeviceInfo.isTablet();
 export const paddingIsTablet = () => (isTablet ? 30 : 5);
 export const marginIsTablet = () => (isTablet ? 50 : 20);
-export const fontSizeTextIsTablet = () => (isTablet ? 20 : 13);
+export const fontSizeTextIsTablet = () => (isTablet ? 18 : 13);
