@@ -32,6 +32,45 @@ function navigate(routeName, params = {}) {
 }
 
 /**
+ * Get the route by the given key
+ *
+ * @return key : string : the current route key
+ * @param state: Navigation : The state of react-navigation
+ */
+function getActiveRouteByKey(key, state) {
+  let { routes } = state;
+
+  for (const route of routes) {
+    if (route.key === key.key) {
+      return route;
+    } else {
+      if (route.routes !== undefined) {
+        return getActiveRouteByKey(key, route);
+      }
+    }
+  }
+}
+
+/**
+ * Get the route by the given name
+ *
+ * @return name : string : the current route name
+ * @param state: Navigation : The state of react-navigation
+ */
+function getActiveRouteByName(name, state) {
+  let { routes } = state;
+  for (const route of routes) {
+    if (route.routeName === name) {
+      return route;
+    } else {
+      if (route.routes !== undefined) {
+        return getActiveRouteByName(name, route);
+      }
+    }
+  }
+}
+
+/**
  * Get the active route from react-navigation
  *
  * @param navigationState: Navigation : The state of react-navigation
@@ -156,6 +195,8 @@ function onNavigationStateChange(prevState, currentState) {
 }
 
 export default {
+  getActiveRouteByKey,
+  getActiveRouteByName,
   setParamsAge,
   getActiveRouteName,
   onNavigationStateChange,

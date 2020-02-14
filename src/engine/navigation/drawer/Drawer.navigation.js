@@ -64,19 +64,19 @@ export default class Drawer extends Component<Props, State> {
     }
 
     // Switch render with enum
-    const enumRender = (item) => {
+    const enumRender = (item, i) => {
       const key = item.type;
 
       return {
-        categorie: <CategorieButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
-        item: <ItemButton areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
-        path: <PathBar areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        categorie: <CategorieButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item}  isDrawer={isDrawer} />,
+        item: <ItemButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item}  isDrawer={isDrawer} />,
+        path: <PathBar key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item}  isDrawer={isDrawer} />,
       }[key];
     };
 
     // Render items
     const renderDrawerButtons = (
-      <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((item) => enumRender(item))}</View>
+      <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((item, i) => enumRender(item, i))}</View>
     );
 
     return (
