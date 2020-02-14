@@ -150,7 +150,7 @@ export default class PatientProfile extends React.Component<Props, State> {
               <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={patient.id} />
               <Button
                 onPress={() => {
-                  if (medicalCase.id === undefined || medicalCase.isCreating === false) {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                     navigation.navigate('PatientUpsert', {
                       idPatient: patient.id,
                       newMedicalCase: true,

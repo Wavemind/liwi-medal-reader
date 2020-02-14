@@ -5,27 +5,20 @@ import SetCodeSession from 'screens/sessionsContainer/SetCodeSession';
 import { createSwitchNavigator } from 'react-navigation';
 import MainTabNavigator from './Main.navigation';
 
-const createRootNavigator = (signedIn = false) => {
-  return createSwitchNavigator(
-    {
-      Main: {
-        screen: MainTabNavigator(),
-      },
+export const RootMainNavigator = createSwitchNavigator({
+  Main: {
+    screen: MainTabNavigator(),
+  },
+});
 
-      UnlockSession: {
-        screen: UnlockSession,
-      },
-      NewSession: {
-        screen: NewSession,
-      },
-      SetCodeSession: {
-        screen: SetCodeSession,
-      },
-    },
-    {
-      initialRouteName: signedIn ? 'Main' : 'UnlockSession',
-    }
-  );
-};
-
-export default createRootNavigator;
+export const RootLoginNavigator = createSwitchNavigator({
+  UnlockSession: {
+    screen: UnlockSession,
+  },
+  NewSession: {
+    screen: NewSession,
+  },
+  SetCodeSession: {
+    screen: SetCodeSession,
+  },
+});

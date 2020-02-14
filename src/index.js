@@ -13,6 +13,7 @@ import CustomModal from './components/CustomModal';
 import { getItem } from './engine/api/LocalStorage';
 
 import Layout from './template/Layout.template';
+import TooltipModal from './components/ToolTipModal';
 
 export default class Root extends React.Component {
   async componentWillMount() {
@@ -30,6 +31,7 @@ export default class Root extends React.Component {
             <SessionsProvider>
               <Layout />
               <CustomModal />
+              <TooltipModal />
               {__DEV__ ? <WavemindTools /> : null}
             </SessionsProvider>
           </ApplicationProvider>
