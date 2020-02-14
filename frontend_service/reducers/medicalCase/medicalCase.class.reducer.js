@@ -99,9 +99,31 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.UPDATE_MEDICAL_CASE)
   updateMedicalCase(state, action) {
     const { property, newValue } = action.payload;
+
     return {
       ...state,
       [property]: newValue,
+    };
+  }
+
+  /**
+   * Update modal
+   *
+   * @payload content: Text that will be shown in modal
+   */
+  @Action(actions.MC_UPDATE_MODAL)
+  updateModalFromRedux(state, action) {
+    const { content, navigator } = action.payload;
+
+    const newModal = {
+      open: !state.modal.open,
+      content: content,
+      navigator: navigator,
+    };
+
+    return {
+      ...state,
+      modal: newModal,
     };
   }
 
@@ -176,6 +198,29 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
+   * Update the metadata in MC
+   *
+   * @payload screen: Main screen in MC (Triage...)
+   * @payload view: step in screen (sub view of screen)
+   * @payload value: Array of questions id
+   */
+  @Action(actions.MC_UPDATE_METADATA)
+  updateMetaData(state, action) {
+    const { screen, view, value } = action.payload;
+
+    return {
+      ...state,
+      metaData: {
+        ...state.metaData,
+        [screen]: {
+          ...state.metaData[screen],
+          [view]: value,
+        },
+      },
+    };
+  }
+
+  /**
    * Update the patient value
    *
    * @payload index: property in object patient
@@ -217,7 +262,7 @@ class MedicalCaseReducer extends ReducerClass {
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
-    if (state !== {} && medicalCase.id !== state.id) {
+    if (state !== {} && medicalCase?.id !== state?.id) {
       storeMedicalCase(state);
     }
 
@@ -240,6 +285,8 @@ class MedicalCaseReducer extends ReducerClass {
     }
 
     let modelsMedicalCase = this._instanceMedicalCase(action.payload);
+
+    modelsMedicalCase.modal.open = false;
 
     return {
       ...modelsMedicalCase,

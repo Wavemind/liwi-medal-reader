@@ -20,6 +20,13 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        tooltip: {
+          forcegoto: 'I take risk, go to ',
+          goto: 'Back to the form',
+          notcomplete: 'Is not complete !',
+          more: 'more questions...',
+          uncompleted: 'Stage uncompleted',
+        },
         algorithms: {
           never: 'Never synchronized data',
           last: 'Last synchronization attempt',
@@ -328,6 +335,7 @@ i18n
           final_diagnoses: 'Final diagnoses',
           healthcares_questions: 'Management questions',
           healthcares: 'Management',
+          healthcares_no_weight: 'No weight has been renseigned',
           waiting_triage: 'Waiting for triage',
           triage: 'Triage',
           waiting_consultation: 'Waiting for consultation',

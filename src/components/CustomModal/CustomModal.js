@@ -19,22 +19,26 @@ export default class CustomModal extends Component<Props, State> {
     contentModal: 'Default',
   };
 
-  // eslint-disable-next-line react/no-unused-state
-  _toggleModal = () => this.setState(prevVisibility => ({ isModalVisible: !prevVisibility}));
+  closeModal = () => {
+    const {
+      app: { set },
+    } = this.props;
+
+    set('isModalVisible', false);
+  };
 
   render() {
-    const { app: { isModalVisible, contentModal, set } }= this.props;
+    const {
+      app: { isModalVisible, contentModal },
+    } = this.props;
+
     return (
       <View style={styles.container}>
-        <Modal
-          isVisible={isModalVisible}
-          backdropOpacity={0.5}
-          onSwipeComplete={() => set('isModalVisible', false)}
-          swipeDirection="up"
-        >
-          <View style={styles.view}>
+        <Modal isVisible={isModalVisible} backdropOpacity={0.5} onSwipeComplete={this.closeModal} swipeDirection="up">
+          <View style={[styles.view]}>
             <Text>{contentModal}</Text>
-            <TouchableWithoutFeedback onPress={() => set('isModalVisible', false)}>
+
+            <TouchableWithoutFeedback onPress={this.closeModal}>
               <Text>Hide</Text>
             </TouchableWithoutFeedback>
           </View>

@@ -2,6 +2,9 @@
 
 import React from 'react';
 import { NavigationEvents } from 'react-navigation';
+import { View } from 'native-base';
+import Drawer from '../engine/navigation/drawer';
+import { screenWidth } from './constants';
 
 /**
  * @param Component
@@ -38,7 +41,10 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
 
     render() {
       const { navigationStatus } = this.state;
+      const { navigation } = this.props;
+      const drawerWidth = screenWidth / 2.2;
 
+      const showMiniDrawer = navigation.getParam('showMiniDrawer');
       return (
         <React.Fragment>
           <NavigationEvents
@@ -49,7 +55,17 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
               this.setState({ navigationStatus: payload.type });
             }}
           />
-          <Component {...this.props} focus={navigationStatus} />
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            {showMiniDrawer && (
+              <View>
+                <Drawer {...this.props} drawerWidth={drawerWidth} isDrawer={false} />
+              </View>
+            )}
+
+            <View style={{ flex: 1 }}>
+              <Component {...this.props} focus={navigationStatus} />
+            </View>
+          </View>
         </React.Fragment>
       );
     }
