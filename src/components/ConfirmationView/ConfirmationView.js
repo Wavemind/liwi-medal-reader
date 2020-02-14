@@ -43,7 +43,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
                   w50
                   iconLeft
                   onPress={() => {
-                    if (medicalCase.isCreating) {
+                    if (medicalCase.isNewCase) {
                       navigation.navigate(nextRoute, {
                         idPatient: idPatient,
                         newMedicalCase: false,
