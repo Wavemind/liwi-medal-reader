@@ -26,15 +26,8 @@ export default class Emergency extends React.Component<Props, State> {
       <Content>
         <View style={styles.view}>
           <LiwiTitle2>{t('emergency:emergency')}</LiwiTitle2>
-          <Text>
-            This page has been created to provide emergency assistance in case
-            of need
-          </Text>
-          <Image
-            style={styles.image}
-            resizeMode="cover"
-            source={require('../../../assets/images/emergency.jpg')}
-          />
+          <Text>This page has been created to provide emergency assistance in case of need</Text>
+          <Image style={styles.image} resizeMode="cover" source={require('../../../assets/images/emergency.jpg')} />
         </View>
       </Content>
     );

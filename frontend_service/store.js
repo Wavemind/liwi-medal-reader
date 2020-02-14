@@ -1,7 +1,7 @@
 import { applyMiddleware, createStore, compose } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { persistReducer, persistStore } from 'redux-persist';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import rootReducer from './reducers';
@@ -12,7 +12,7 @@ const persistConfig = {
   key: 'medicalCase',
   storage: FilesystemStorage,
   timeout: 10000,
-  stateReconciler: autoMergeLevel2, // see "Merge Process" section for details.
+  stateReconciler: hardSet, // see "Merge Process" section for details.
 };
 
 let composeEnhancers;
@@ -29,6 +29,6 @@ export const store = createStore(persistedReducer, middleware);
 
 epicMiddleware.run(rootEpic);
 
-export const persistor = persistStore(store, null, () => {
+export const persistor = persistStore(store, {}, async () => {
   // console.log('Rehydrate finish, here reducer returned', store.getState());
 });

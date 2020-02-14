@@ -30,9 +30,10 @@ export default class Consultation extends React.Component<Props, State> {
       focus,
       navigation,
       medicalCase,
+      updateMetaData,
     } = this.props;
 
-    let selectedPage = navigation.getParam('initialPage');
+    const selectedPage = navigation.getParam('initialPage');
 
     // Medical history questions
     const medicalHistory = medicalCase.nodes.filterBy(
@@ -55,7 +56,7 @@ export default class Consultation extends React.Component<Props, State> {
       ],
       'OR',
       'array',
-      false,
+      false
     );
 
     // Phisical exam questions
@@ -74,8 +75,16 @@ export default class Consultation extends React.Component<Props, State> {
       ],
       'OR',
       'array',
-      false,
+      false
     );
+
+    if (medicalCase.metaData.consultation.medicalHistory.length === 0 && medicalHistory.length !== 0) {
+      updateMetaData('consultation', 'medicalHistory', medicalHistory.map(({ id }) => id));
+    }
+
+    if (medicalCase.metaData.consultation.physicalExam.length === 0 && physicalExam.length !== 0) {
+      updateMetaData('consultation', 'physicalExam', physicalExam.map(({ id }) => id));
+    }
 
     return (
       <Suspense fallback={null}>
@@ -93,7 +102,7 @@ export default class Consultation extends React.Component<Props, State> {
             });
           }}
           icons={[{ name: 'comment-medical', type: 'FontAwesome5' }, { name: 'ios-body', type: 'Ionicons' }]}
-          steps={[t('consultation:medicalHistory'), t('consultation:physicalExam')]}
+          steps={[t('consultation:medical_history'), t('consultation:physical_exam')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Tests"

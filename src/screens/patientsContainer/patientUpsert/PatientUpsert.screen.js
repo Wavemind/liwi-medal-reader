@@ -51,7 +51,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       let generatedMedicalCase;
       if (newMedicalCase) {
         generatedMedicalCase = await this.generateMedicalCase();
-        generatedMedicalCase.isCreating = true;
+        generatedMedicalCase.isNewCase = true;
         await setMedicalCase({
           ...generatedMedicalCase,
           patient: { ...patient, medicalCases: [] }, // Force
@@ -162,8 +162,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
-      medicalCase.isCreating = false;
-      updateMedicalCaseProperty('isCreating', false);
+      medicalCase.isNewCase = 'false'; // Workaround because redux persist is buggy with boolean
+      updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
       patient.medicalCases.push(medicalCase);
       await patient.save();
       return true;
@@ -180,6 +180,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const {
       app: { t },
       medicalCase,
+      updateMetaData,
     } = this.props;
 
     let extraQuestions = [];
@@ -194,7 +195,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           },
         ],
         'OR',
-        'object',
+        'array',
         false
       );
     }
@@ -203,6 +204,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     if (patient !== null) {
       hasNoError = !_.isEmpty(patient?.validate());
+    }
+    console.log(medicalCase, extraQuestions);
+    if (medicalCase.nodes !== undefined && medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
+      updateMetaData('patientupsert', 'custom', extraQuestions.map(({ id }) => id));
     }
 
     return (
