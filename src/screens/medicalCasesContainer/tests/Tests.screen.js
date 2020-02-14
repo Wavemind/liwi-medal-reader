@@ -27,10 +27,15 @@ export default class Tests extends React.Component<Props, State> {
       medicalCase,
       app: { t },
       focus,
+      updateMetaData,
       navigation,
     } = this.props;
 
     let assessmentTest = medicalCase.nodes.filterBy([{ by: 'category', operator: 'equal', value: categories.assessment }]);
+
+    if (medicalCase.metaData.tests.tests.length === 0 && assessmentTest.length !== 0) {
+      updateMetaData('tests', 'tests', assessmentTest.map(({ id }) => id));
+    }
 
     return (
       <React.Suspense fallback={null}>

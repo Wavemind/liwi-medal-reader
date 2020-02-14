@@ -50,7 +50,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
 
       if (encrypt1 !== encrypt2 || (!mediumRegex.test(code) && !mediumRegex.test(codeConfirmation))) {
         this.setState({
-          error: 'Your password is too weak or it\'s not the same',
+          error: "Your password is too weak or it's not the same",
         });
         return false;
       }
