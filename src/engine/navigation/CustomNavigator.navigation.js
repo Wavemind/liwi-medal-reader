@@ -6,6 +6,14 @@ import NavigationService from './Navigation.service';
 import { store } from '../../../frontend_service/store';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 import { Toaster } from '../../utils/CustomToast';
+import {
+  questionsBasicMeasurements,
+  questionsComplaintCategory,
+  questionsFirstLookAssessement,
+  questionsMedicalHistory,
+  questionsPhysicalExam,
+  questionsTests,
+} from '../../../frontend_service/algorithm/questionsStage';
 
 const screens = [
   { key: 'Home' },
@@ -24,13 +32,15 @@ const screens = [
       complaintCategories: { answer: 'not_null', initialPage: 1, required: true },
       basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
+    generateQuestions: [questionsFirstLookAssessement, questionsComplaintCategory, questionsBasicMeasurements],
   },
   {
     key: 'Consultation',
     medicalCaseOrder: 2,
     validations: { medicalHistory: { is_mandatory: true, initialPage: 0 }, physicalExam: { is_mandatory: true, initialPage: 1 } },
+    generateQuestions: [questionsPhysicalExam, questionsMedicalHistory],
   },
-  { key: 'Tests', medicalCaseOrder: 3, validations: {} },
+  { key: 'Tests', medicalCaseOrder: 3, validations: {}, generateQuestions: [questionsTests] },
   { key: 'DiagnosticsStrategy', medicalCaseOrder: 4, validations: {} },
 ];
 
@@ -40,6 +50,7 @@ const modelValidator = {
   stepToBeFill: [],
   screenToBeFill: [],
   questionsToBeFill: [],
+  mustFinishStage: false,
 };
 
 /**
@@ -212,13 +223,41 @@ const validatorNavigate = (navigateRoute) => {
         validator.screenToBeFill = routeToValidate.key;
       }
 
-      // if route requested is min 2 step too long AND the routeToValidate is true
-      // TODO to test and maybe fix after the merge.specific  use case
-      if (diffStatus > 1 && validator.isActionValid === false) {
-        //const prevRoute = screens.find((w) => w.medicalCaseOrder === route.routeName);
-      }
+      /**
+       * if route requested is min 2 step too long AND the routeToValidate is true
+       * Pre-generate the questions for the stage concerned and test it !
+       */
+      if (diffStatus > 1 && validator.isActionValid === true) {
+        // Get the next route from the route to validate
+        const prevRoute = screens.find((w) => w.medicalCaseOrder === routeToValidate.medicalCaseOrder + 1);
 
-      console.log(diffStatus, requestedStatus, indexStatus, navigateRoute, routeToValidate, validator);
+        // As the questions for the views have not yet been generated, we are doing it now to validate them.
+        prevRoute.generateQuestions.map((func) => func());
+
+        // Get the new state updated by the last function
+        state$ = store.getState();
+
+        // Get the id to validated
+        const prevRoutequestionsToValidate = state$.metaData[prevRoute.key.toLowerCase()];
+
+        // Check route to validate screen if valid
+        screenResults = Object.keys(prevRoute.validations).map((validation) => {
+          let questions = prevRoutequestionsToValidate[validation];
+          let criteria = prevRoute.validations[validation];
+          // Validation on each Step
+          return oneValidation(criteria, questions, validation);
+        });
+
+        // All step has to be valide
+        validator.isActionValid = screenResults.every((c) => c.isActionValid === true);
+        validator.stepToBeFill = screenResults;
+
+        // If not set the strings
+        if (!validator.isActionValid) {
+          validator.routeRequested = navigateRoute.routeName;
+          validator.screenToBeFill = prevRoute.key;
+        }
+      }
 
       return validator;
     }

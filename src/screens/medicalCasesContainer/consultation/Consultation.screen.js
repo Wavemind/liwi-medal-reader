@@ -9,6 +9,7 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { categories } from '../../../../frontend_service/constants';
 import NavigationService from '../../../engine/navigation/Navigation.service';
+import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -29,62 +30,9 @@ export default class Consultation extends React.Component<Props, State> {
       app: { t },
       focus,
       navigation,
-      medicalCase,
-      updateMetaData,
     } = this.props;
 
     const selectedPage = navigation.getParam('initialPage');
-
-    // Medical history questions
-    const medicalHistory = medicalCase.nodes.filterBy(
-      [
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.symptom,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.exposure,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.vitalSignTriage,
-        },
-      ],
-      'OR',
-      'array',
-      false
-    );
-
-    // Phisical exam questions
-    const physicalExam = medicalCase.nodes.filterBy(
-      [
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.physicalExam,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.other,
-        },
-      ],
-      'OR',
-      'array',
-      false
-    );
-
-    if (medicalCase.metaData.consultation.medicalHistory.length === 0 && medicalHistory.length !== 0) {
-      updateMetaData('consultation', 'medicalHistory', medicalHistory.map(({ id }) => id));
-    }
-
-    if (medicalCase.metaData.consultation.physicalExam.length === 0 && physicalExam.length !== 0) {
-      updateMetaData('consultation', 'physicalExam', physicalExam.map(({ id }) => id));
-    }
 
     return (
       <Suspense fallback={null}>
@@ -111,7 +59,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerSystem questions={medicalHistory} selectedPage={selectedPage} pageIndex={0} />
+                <QuestionsPerSystem questions={questionsMedicalHistory()} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -120,7 +68,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <QuestionsPerSystem questions={physicalExam} selectedPage={selectedPage} pageIndex={1} />
+                <QuestionsPerSystem questions={questionsPhysicalExam()} selectedPage={selectedPage} pageIndex={1} />
               </Suspense>
             ) : (
               <LiwiLoader />

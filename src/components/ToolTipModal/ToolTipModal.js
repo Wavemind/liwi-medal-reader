@@ -67,6 +67,7 @@ export default class TooltipModal extends React.Component<Props, State> {
       patientId,
     } = this.props;
 
+
     return (
       <View style={styles.validation}>
         <Text style={styles.warning}>{t('tooltip:uncompleted')}</Text>
