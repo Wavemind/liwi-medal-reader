@@ -3,17 +3,17 @@ import { StyleSheet, TouchableOpacity as RNTouchableOpacity, View as RNView } fr
 import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from 'native-base';
 import { liwiColors } from '../utils/constants';
 
-export const Text = styled(LText)`
+export const Text = styled(LText).attrs({})`
   color: #4e4e4e;
   font-family: roboto;
   font-weight: bold;
   margin: 10px;
 `;
 
-export const ColCenter = styled(LCol).attrs((props) => ({
+export const ColCenter = styled(LCol).attrs({
   justifyContent: 'center',
   alignItems: 'center',
-}));
+})``;
 
 export const LiwiTitle2 = styled(LH2)`
   color: ${() => liwiColors.redColor};
@@ -40,7 +40,9 @@ export const LiwiTitle2 = styled(LH2)`
   }};
 `;
 
-export const LiwiTitle3 = styled(LH3)`
+export const LiwiTitle3 = styled(LH3).attrs({
+  color: liwiColors.whiteColor,
+})`
   margin: 20px 20px 10px 20px;
   padding: 8px;
   border-radius: 4px;
@@ -50,15 +52,17 @@ export const LiwiTitle3 = styled(LH3)`
   background-color: ${() => liwiColors.redColor};
 `;
 
-export const LiwiTitle4 = styled(LText)`
+export const LiwiTitle4 = styled(LText).attrs({
+  color: liwiColors.redColor,
+})`
   font-weight: bold;
   color: ${() => liwiColors.redColor};
   border-bottom-color: ${() => liwiColors.greyColor};
 `;
 
-export const RootView = styled(LView)`
-  flex: 1;
-`;
+export const RootView = styled(LView).attrs({
+  flex: 1,
+})``;
 
 export const RightView = styled(LView).attrs({
   flexDirection: 'row',
@@ -103,22 +107,22 @@ export const QuestionView = styled(LView).attrs({
   shadowOpacity: 1.0,
 })``;
 
-export const SeparatorLine = styled(RNView).attrs({
+export const SeparatorLine = styled(RNView).attrs((props) => ({
   backgroundColor: '#d6d6d6',
   height: 1,
-  marginBottom: (props) => {
+  marginBottom: () => {
     if (props.marginBottom !== undefined) {
       return props.marginBottom;
     }
     return 5;
   },
-  marginTop: (props) => {
+  marginTop: () => {
     if (props.marginTop !== undefined) {
       return props.marginTop;
     }
     return 5;
   },
-})``;
+}))``;
 
 export const PaddedView = styled(LView).attrs({})``;
 
