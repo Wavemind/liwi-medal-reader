@@ -6,7 +6,7 @@ import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { InstanceModel } from './Instance.model';
 import { valueFormats } from '../../constants';
-import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
+import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 
 interface QuestionsSequenceInterface {

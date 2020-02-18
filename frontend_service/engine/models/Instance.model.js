@@ -1,7 +1,7 @@
 // @flow
 
 import { RequirementNodeModel } from './RequirementNodeModel';
-import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
+import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 
 interface InstanceInterface {}
 

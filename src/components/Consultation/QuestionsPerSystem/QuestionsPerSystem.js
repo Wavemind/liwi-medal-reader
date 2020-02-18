@@ -29,8 +29,6 @@ export default class QuestionsPerSystem extends React.Component<Props, State> {
 
     const groupBySystem = _.groupBy(questions, 'system');
 
-    delete groupBySystem.null;
-
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {Object.keys(groupBySystem).length > 0 ? (
