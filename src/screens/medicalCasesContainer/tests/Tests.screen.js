@@ -3,11 +3,10 @@
 import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
-import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsTests } from '../../../../frontend_service/algorithm/questionsStage';
+import { questionsTests } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -25,10 +24,8 @@ export default class Tests extends React.Component<Props, State> {
 
   render() {
     const {
-      medicalCase,
       app: { t },
       focus,
-      updateMetaData,
       navigation,
     } = this.props;
 

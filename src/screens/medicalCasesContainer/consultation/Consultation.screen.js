@@ -7,9 +7,8 @@ import { NavigationScreenProps } from 'react-navigation';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { categories } from '../../../../frontend_service/constants';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage';
+import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 

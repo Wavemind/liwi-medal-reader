@@ -54,8 +54,12 @@ export default class Home extends React.Component<Props, State> {
     return (
       <View padding-auto>
         <View flex-container-column>
-          <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}
-                            callBackClose={this.callBackClose} />
+          <ConfirmationView
+            propsToolTipVisible={propsToolTipVisible}
+            nextRoute="PatientUpsert"
+            idPatient={null}
+            callBackClose={this.callBackClose}
+          />
           <View w50>
             <TouchableHighlight
               underlayColor="transparent"
@@ -88,8 +92,11 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton}
-                                onPress={() => navigation.navigate('PatientList')}>
+            <TouchableHighlight
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={() => navigation.navigate('PatientList')}
+            >
               <View>
                 <Icon type="MaterialCommunityIcons" name="account-multiple" style={styles.icons} navigation />
                 <Text size-auto center>
@@ -98,8 +105,11 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableHighlight>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton}
-                                onPress={() => navigation.navigate('MedicalCaseList')}>
+            <TouchableHighlight
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={() => navigation.navigate('MedicalCaseList')}
+            >
               <View>
                 <Icon type="MaterialCommunityIcons" name="format-list-checkbox" style={styles.icons} navigation />
                 <Text size-auto center>
@@ -110,8 +120,11 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton}
-                                onPress={() => navigation.navigate('Algorithms')}>
+            <TouchableHighlight
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={() => navigation.navigate('Algorithms')}
+            >
               <View>
                 <Icon type="AntDesign" name="sync" style={styles.icons} navigation />
                 <Text size-auto center>
@@ -119,8 +132,11 @@ export default class Home extends React.Component<Props, State> {
                 </Text>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton}
-                                onPress={() => navigation.navigate('Settings')}>
+            <TouchableHighlight
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={() => navigation.navigate('Settings')}
+            >
               <View>
                 <Icon type="AntDesign" name="setting" style={styles.icons} navigation />
                 <Text size-auto center>
@@ -146,8 +162,11 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableHighlight>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton}
-                                onPress={() => this.logout()}>
+            <TouchableHighlight
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={() => this.logout()}
+            >
               <View>
                 <Icon type="AntDesign" name="logout" style={styles.icons} navigation />
                 <Text size-auto center>

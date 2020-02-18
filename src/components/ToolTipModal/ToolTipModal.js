@@ -61,12 +61,12 @@ export default class TooltipModal extends React.Component<Props, State> {
    * @return {jsx}
    */
   _renderValidation = () => {
-    const { screenToBeFill, stepToBeFill, routeRequested } = this.props.modalRedux.navigator;
+    const { modalRedux } = this.props;
+    const { screenToBeFill, stepToBeFill, routeRequested } = modalRedux.navigator;
     const {
       app: { t },
       patientId,
     } = this.props;
-
 
     return (
       <View style={styles.validation}>
