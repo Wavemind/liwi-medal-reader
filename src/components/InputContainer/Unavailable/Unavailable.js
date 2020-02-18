@@ -13,9 +13,6 @@ type State = {};
 export default class Unavailable extends React.Component<Props, State> {
   state = {};
 
-  componentWillMount() {
-  }
-
   onPress = () => {
     const { setAnswerUnavailable, question, unavailableAnswer } = this.props;
 

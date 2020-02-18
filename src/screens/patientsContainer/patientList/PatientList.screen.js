@@ -43,7 +43,7 @@ export default class PatientList extends React.Component<Props, State> {
     return true;
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { navigation } = this.props;
 
     // Force refresh with a navigation.push

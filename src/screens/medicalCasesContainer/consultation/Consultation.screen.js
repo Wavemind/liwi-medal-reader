@@ -18,7 +18,7 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Consultation extends React.Component<Props, State> {
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
 
     NavigationService.setParamsAge(navigation, 'Consultation');

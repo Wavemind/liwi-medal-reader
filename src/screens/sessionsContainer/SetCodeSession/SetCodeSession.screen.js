@@ -28,9 +28,9 @@ export default class SetCodeSession extends React.Component<Props, State> {
     isLoading: false,
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { navigation } = this.props;
-    let session = await getSession(navigation.getParam('user_id'));
+    const session = await getSession(navigation.getParam('user_id'));
     this.setState({ session });
   }
 
@@ -88,7 +88,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
     }
 
     return (
-      <View flex-container-column  testID="SetCodeSession">
+      <View flex-container-column testID="SetCodeSession">
         <View margin-auto style={styles.centerVertically} padding-auto>
           <ScrollView>
             <LiwiTitle2 noBorder>{t('code_session_screen:title')}</LiwiTitle2>

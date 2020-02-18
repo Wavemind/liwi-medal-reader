@@ -16,8 +16,8 @@ import Layout from './template/Layout.template';
 import TooltipModal from './components/ToolTipModal';
 
 export default class Root extends React.Component {
-  async componentWillMount() {
-    let settings = await getItem('settings');
+  async componentDidMount() {
+    const settings = await getItem('settings');
     if (settings !== null && settings.app !== undefined && settings.app.awake) {
       KeepAwake.activate();
     }

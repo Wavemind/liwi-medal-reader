@@ -36,7 +36,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     ],
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { navigation } = this.props;
 
     // Force refresh with a navigation.push

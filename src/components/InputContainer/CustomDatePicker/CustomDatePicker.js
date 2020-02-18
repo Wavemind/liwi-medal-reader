@@ -17,7 +17,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
 
   static defaultProps = { iconName: false, iconType: false };
 
-  componentWillMount(): void {
+  componentDidMount(): void {
     const { init } = this.props;
     this.setState({ value: init });
   }
@@ -29,15 +29,10 @@ export default class CustomDatePicker extends React.Component<Props, State> {
     }
   }
 
-  shouldComponentUpdate(
-    nextProps: Readonly<P>,
-    nextState: Readonly<S>
-  ): boolean {
+  shouldComponentUpdate(nextProps: Readonly<P>, nextState: Readonly<S>): boolean {
     const { init, error } = this.props;
     const { value } = this.state;
-    return (
-      value !== nextState.value || init !== nextProps.init || error !== nextProps.error
-    );
+    return value !== nextState.value || init !== nextProps.init || error !== nextProps.error;
   }
 
   _handleChangeValue = (value) => {
@@ -54,18 +49,8 @@ export default class CustomDatePicker extends React.Component<Props, State> {
     return (
       <Form style={styles.form}>
         <View style={styles.view}>
-          {iconName && iconType ? (
-            <Icon name={iconName} type={iconType} style={styles.icon} />
-          ) : null}
-          <Text
-            style={
-              iconName && iconType
-                ? styles.textWithoutIcon
-                : styles.textWithIcon
-            }
-          >
-            {label}
-          </Text>
+          {iconName && iconType ? <Icon name={iconName} type={iconType} style={styles.icon} /> : null}
+          <Text style={iconName && iconType ? styles.textWithoutIcon : styles.textWithIcon}>{label}</Text>
           <Text error>{error}</Text>
         </View>
         <ViewBlocColor>

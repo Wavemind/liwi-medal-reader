@@ -49,7 +49,15 @@ export type StateApplicationContext = {
 export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
+    this.initializeAsync();
   }
+
+  initializeAsync = async () => {
+    await this.initContext();
+
+    AppState.addEventListener('change', this._handleAppStateChange);
+    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
+  };
 
   getGeo = async () => {
     const { t } = this.state;
@@ -173,12 +181,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     ready: false,
     currentRoute: null,
   };
-  async componentWillMount() {
-    await this.initContext();
 
-    AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
-  }
   _fetchDataWhenChange = async () => {
     const { user } = this.state;
     if (!isEmpty(user)) {

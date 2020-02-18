@@ -66,7 +66,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.initializeComponent();
   }
 

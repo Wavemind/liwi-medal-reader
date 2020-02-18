@@ -25,7 +25,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     firstRender: false,
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.getPatient();
   }
 

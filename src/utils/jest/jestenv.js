@@ -24,4 +24,3 @@ jest.mock('react-native-gesture-handler', () => {
     Direction: jest.fn(),
   };
 });
-
