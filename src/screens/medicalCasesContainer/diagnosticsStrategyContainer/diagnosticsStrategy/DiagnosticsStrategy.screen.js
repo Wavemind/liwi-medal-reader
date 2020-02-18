@@ -22,7 +22,7 @@ export default class DiagnosesStrategy extends Component<Props, State> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const {
       app: { t },
     } = this.props;

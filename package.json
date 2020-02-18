@@ -9,7 +9,7 @@
     "test": "jest",
     "detox-android": "detox test -c android.emu.debug",
     "detox-ios": "detox test -c ios.sim.debug",
-    "postinstall": "npx jetify -r",
+    "postinstall": "npx jetify -r && node ./scripts/silent.js ",
     "lint": "eslint ."
   },
   "dependencies": {

@@ -18,7 +18,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
     keyboardType: 'default',
   };
 
-  componentWillMount(): void {
+  componentDidMount(): void {
     const { init } = this.props;
     this.setState({ value: init });
   }

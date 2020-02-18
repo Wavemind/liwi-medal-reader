@@ -23,7 +23,7 @@ export default class Triage extends React.Component<Props, State> {
     super(props);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { navigation } = this.props;
 
     NavigationService.setParamsAge(navigation, 'Triage');

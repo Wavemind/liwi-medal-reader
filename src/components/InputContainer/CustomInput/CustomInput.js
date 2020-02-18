@@ -22,7 +22,7 @@ export default class CustomInput extends React.Component<Props, State> {
     autoCapitalize: 'none',
   };
 
-  componentWillMount(): void {
+  componentDidMount(): void {
     const { init } = this.props;
     this.setState({ value: init });
   }

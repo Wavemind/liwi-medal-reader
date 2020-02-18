@@ -27,9 +27,6 @@ type State = StateApplicationContext & {};
 console.disableYellowBox = true;
 
 export class JestWithContext extends React.Component<Props, State> {
-  componentWillMount() {
-  }
-
   render() {
     let ChilComponent = withSessions(withApplication(this.props.child));
 

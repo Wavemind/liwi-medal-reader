@@ -25,15 +25,7 @@ type State = { app: StateApplicationContext } & {
  * */
 export default class NavigationTriage extends React.Component<Props, State> {
   state = {
-    router: [
-      'FirstLookAssessments',
-      'ChiefComplaints',
-      'BasicMeasurements',
-      'MedicalHistory',
-      'PhysicalExam',
-      'Tests',
-      'DiagnosticsStrategy',
-    ],
+    router: ['FirstLookAssessments', 'ChiefComplaints', 'BasicMeasurements', 'MedicalHistory', 'PhysicalExam', 'Tests', 'DiagnosticsStrategy'],
     currentRoute: NavigationService.getCurrentRoute(),
     prevRoute: {},
     beginNavBool: false,
@@ -45,7 +37,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
     questionsInScreen: [],
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.initRouter();
   }
 
@@ -148,43 +140,19 @@ export default class NavigationTriage extends React.Component<Props, State> {
 
     return (
       <View bottom-view columns marginTop>
-        <Button
-          light
-          split
-          disabled={beginNavBool}
-          onPress={() => navigation.navigate(prevRoute)}
-        >
-          <Icon
-            style={styles.medicalCaseNavigationIcon}
-            dark
-            type="AntDesign"
-            name="left"
-          />
+        <Button light split disabled={beginNavBool} onPress={() => navigation.navigate(prevRoute)}>
+          <Icon style={styles.medicalCaseNavigationIcon} dark type="AntDesign" name="left" />
           <Text>{t('form:back')}</Text>
         </Button>
         {currentRoute?.params?.nextStage ? (
           <Button split onPress={this.closeStageStatus}>
-            <Icon
-              style={styles.rightMedicalCaseNavigationIcon}
-              dark
-              type="AntDesign"
-              name="closecircleo"
-            />
+            <Icon style={styles.rightMedicalCaseNavigationIcon} dark type="AntDesign" name="closecircleo" />
             <Text>{t('form:finish')}</Text>
           </Button>
         ) : null}
         <Button success split onPress={this.goToNextScreen}>
-          {!endNavBool ? (
-            <Text>{t('form:next')}</Text>
-          ) : (
-            <Text>{t('form:next_stage')}</Text>
-          )}
-          <Icon
-            style={styles.rightMedicalCaseNavigationIcon}
-            dark
-            type="AntDesign"
-            name="right"
-          />
+          {!endNavBool ? <Text>{t('form:next')}</Text> : <Text>{t('form:next_stage')}</Text>}
+          <Icon style={styles.rightMedicalCaseNavigationIcon} dark type="AntDesign" name="right" />
         </Button>
       </View>
     );

@@ -35,7 +35,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: i18n.t('navigation:home'),
-          headerLeft: (
+          headerLeft: () => (
             <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
               <Icon type="Entypo" name="menu" large />
             </Button>
@@ -195,16 +195,14 @@ const Stack = createStackNavigator(
   },
   {
     headerMode: 'float',
-    headerBackTitleVisible: false,
     defaultNavigationOptions: ({ navigation }) => {
       return {
-        headerBackTitleVisible: false,
-        headerLeft: (
+        headerLeft: () => (
           <Button iconMenu onPress={() => navigation.openDrawer()}>
             <Icon type="Entypo" name="menu" large />
           </Button>
         ),
-        headerRight: (
+        headerRight: () => (
           <Text
             style={{
               marginRight: 10,
@@ -242,14 +240,6 @@ const HomeWithModal = createStackNavigator(
   {
     mode: 'modal',
     headerMode: 'none',
-    cardStyle: {
-      opacity: 1,
-    },
-    transitionConfig: () => ({
-      containerStyle: {
-        backgroundColor: 'transparent',
-      },
-    }),
   }
 );
 

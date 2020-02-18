@@ -17,7 +17,7 @@ export default class Numeric extends React.Component<Props, State> {
     return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value || nextState.value !== value;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { question } = this.props;
     this.setState({ value: question.value });
   }

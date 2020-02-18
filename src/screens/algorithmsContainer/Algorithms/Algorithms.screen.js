@@ -64,7 +64,7 @@ export default class Algorithms extends React.Component<Props, State> {
     return true;
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.updateComponentState();
   }
 

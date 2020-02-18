@@ -70,7 +70,7 @@ export default class AnimatedPullToRefresh extends React.Component {
     animationBackgroundColor: 'white',
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),

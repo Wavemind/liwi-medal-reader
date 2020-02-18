@@ -39,9 +39,9 @@ export default class Settings extends React.Component<Props, State> {
     },
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { settings } = this.state;
-    let localStorageSettings = await getItem('settings');
+    const localStorageSettings = await getItem('settings');
     if (localStorageSettings !== null) {
       this.setState({
         settings: {
