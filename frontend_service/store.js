@@ -5,7 +5,7 @@ import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { persistReducer, persistStore } from 'redux-persist';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import rootReducer from './reducers';
-import rootEpic from './algorithm/epics';
+import rootEpic from './algorithm/epics.algo';
 
 const persistConfig = {
   debug: __DEV__,

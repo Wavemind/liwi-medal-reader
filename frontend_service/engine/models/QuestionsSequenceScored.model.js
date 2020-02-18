@@ -1,7 +1,7 @@
 // @flow
 
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
-import { comparingTopConditions } from '../../algorithm/algoConditionsHelpers';
+import { comparingTopConditions } from '../../algorithm/conditionsHelpers.algo';
 
 export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
   constructor(props) {

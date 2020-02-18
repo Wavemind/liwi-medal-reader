@@ -9,7 +9,7 @@ import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { routeDependingStatus } from '../../../../frontend_service/constants';
 import ConfirmationView from '../../../components/ConfirmationView';
-import { showBirthDatePatient } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
+import { showBirthDatePatient } from '../../../../frontend_service/algorithm/treeDiagnosis.algo';
 
 type Props = NavigationScreenProps & {};
 type State = {};

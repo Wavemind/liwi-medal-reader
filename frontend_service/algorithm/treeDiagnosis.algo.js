@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import moment from 'moment';
 import { nodesType } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
-import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './algoConditionsHelpers';
+import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './conditionsHelpers.algo';
 
 /**
  * Get the parents for an instance in a diagnostic

@@ -3,10 +3,10 @@
 import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
-import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
+import { questionsTests } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -24,18 +24,10 @@ export default class Tests extends React.Component<Props, State> {
 
   render() {
     const {
-      medicalCase,
       app: { t },
       focus,
-      updateMetaData,
       navigation,
     } = this.props;
-
-    let assessmentTest = medicalCase.nodes.filterBy([{ by: 'category', operator: 'equal', value: categories.assessment }]);
-
-    if (medicalCase.metaData.tests.tests.length === 0 && assessmentTest.length !== 0) {
-      updateMetaData('tests', 'tests', assessmentTest.map(({ id }) => id));
-    }
 
     return (
       <React.Suspense fallback={null}>
@@ -63,7 +55,7 @@ export default class Tests extends React.Component<Props, State> {
             <View style={styles.pad} key="questions-test">
               {focus === 'didFocus' ? (
                 <React.Suspense fallback={null}>
-                  <Questions questions={assessmentTest} />
+                  <Questions questions={questionsTests()} />
                 </React.Suspense>
               ) : (
                 <LiwiLoader />
