@@ -33,7 +33,5 @@ export const getDeviceInformation = async () => {
     },
   };
 
-  console.log(objReturned);
-
   return objReturned;
 };
