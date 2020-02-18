@@ -138,7 +138,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint src frontend_service --fix"
+      "pre-commit": "eslint src frontend_service"
     }
   },
   "detox": {
