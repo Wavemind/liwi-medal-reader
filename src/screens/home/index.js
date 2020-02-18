@@ -10,6 +10,4 @@ const mapStateToProps = (medicalCase) => {
   };
 };
 
-export default connect(mapStateToProps)(
-  withSessions(withApplication(WrapperNavigation(Home)))
-);
+export default connect(mapStateToProps)(withSessions(withApplication(WrapperNavigation(Home))));

@@ -15,7 +15,7 @@ import type { StateApplicationContext } from '../../../engine/contexts/Applicati
 import { medicalCaseStatus } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import ConfirmationView from '../../../components/ConfirmationView';
-import { showBirthDatePatient } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
+import { showBirthDatePatient } from '../../../../frontend_service/algorithm/treeDiagnosis.algo';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -215,7 +215,7 @@ export default class PatientList extends React.Component<Props, State> {
                 light
                 red
                 onPress={() => {
-                  if (medicalCase.id === undefined || medicalCase.isCreating === false) {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                     navigation.navigate('PatientUpsert', {
                       idPatient: null,
                       newMedicalCase: true,

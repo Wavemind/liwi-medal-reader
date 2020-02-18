@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
-import CustomModal from './CustomModal';
-import { withSessions } from '../../engine/contexts/Sessions.context';
+import ToolTipModal from './ToolTipModal';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
+  const modal = medicalCase.modal === undefined ? { open: false } : medicalCase.modal;
   return {
-    medicalCase,
+    modalRedux: modal,
+    patientId: medicalCase?.patient?.id,
   };
 };
 
@@ -19,4 +20,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(CustomModal)));
+)(withApplication(ToolTipModal));

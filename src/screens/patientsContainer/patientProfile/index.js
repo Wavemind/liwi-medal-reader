@@ -18,7 +18,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-
 const defaultProps = {
   navigationStatus: 'willBlur',
 };

@@ -16,6 +16,6 @@ export const styles = StyleSheet.create({
   },
   icons: {
     color: liwiColors.redColor,
-    fontSize: 45
-  }
+    fontSize: 45,
+  },
 });

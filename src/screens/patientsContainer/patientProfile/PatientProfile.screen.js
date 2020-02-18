@@ -9,7 +9,7 @@ import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { routeDependingStatus } from '../../../../frontend_service/constants';
 import ConfirmationView from '../../../components/ConfirmationView';
-import { showBirthDatePatient } from '../../../../frontend_service/algorithm/algoTreeDiagnosis';
+import { showBirthDatePatient } from '../../../../frontend_service/algorithm/treeDiagnosis.algo';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -150,7 +150,7 @@ export default class PatientProfile extends React.Component<Props, State> {
               <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={patient.id} />
               <Button
                 onPress={() => {
-                  if (medicalCase.id === undefined || medicalCase.isCreating === false) {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                     navigation.navigate('PatientUpsert', {
                       idPatient: patient.id,
                       newMedicalCase: true,
