@@ -6,7 +6,7 @@ import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
-import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
+import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 

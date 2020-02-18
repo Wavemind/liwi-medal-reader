@@ -15,7 +15,7 @@ import {
   dispatchRelatedNodeAction,
   updateMedicalCaseProperty,
 } from '../actions/creators.actions';
-import { getParentsNodes, getQuestionsSequenceStatus } from './algoTreeDiagnosis';
+import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
 

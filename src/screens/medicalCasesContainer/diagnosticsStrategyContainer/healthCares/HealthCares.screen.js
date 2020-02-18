@@ -49,7 +49,6 @@ export default class HealthCares extends Component<Props, State> {
             )}
           </View>
         );
-        break;
       default:
         return null;
     }

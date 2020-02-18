@@ -6,8 +6,10 @@ import { updateMetaData } from '../actions/creators.actions';
  * This file contains methods to filter questions to each stages / steps
  */
 
-// Medical history questions
-
+/**
+ * Get Medical History for consultation
+ * Update metadata
+ */
 export const questionsMedicalHistory = () => {
   const state$ = store.getState();
   const questions = state$.nodes.filterBy(
@@ -38,7 +40,10 @@ export const questionsMedicalHistory = () => {
   return questions;
 };
 
-// Phisical exam questions
+/**
+ * Get physical Exam for consultation
+ * Update metadata
+ */
 export const questionsPhysicalExam = () => {
   const state$ = store.getState();
   const questions = state$.nodes.filterBy(
@@ -66,6 +71,10 @@ export const questionsPhysicalExam = () => {
   return questions;
 };
 
+/**
+ * Get FirstLook Assessement for triage
+ * Update metadata
+ */
 export const questionsFirstLookAssessement = () => {
   const state$ = store.getState();
   let firstLookAssessement = [];
@@ -82,6 +91,10 @@ export const questionsFirstLookAssessement = () => {
   return firstLookAssessement;
 };
 
+/**
+ * Get ComplaintCategory for triage
+ * Update metadata
+ */
 export const questionsComplaintCategory = () => {
   const state$ = store.getState();
   let complaintCategory = [];
@@ -98,6 +111,10 @@ export const questionsComplaintCategory = () => {
   return complaintCategory;
 };
 
+/**
+ * Get Basic Measurements for triage
+ * Update metadata
+ */
 export const questionsBasicMeasurements = () => {
   const state$ = store.getState();
   let basicMeasurements = [];
@@ -118,6 +135,10 @@ export const questionsBasicMeasurements = () => {
   return basicMeasurements;
 };
 
+/**
+ * Get questions for Test
+ * Update metadata
+ */
 export const questionsTests = () => {
   const state$ = store.getState();
   let assessmentTest = [];

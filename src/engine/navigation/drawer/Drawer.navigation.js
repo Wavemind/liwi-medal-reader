@@ -68,9 +68,9 @@ export default class Drawer extends Component<Props, State> {
       const key = item.type;
 
       return {
-        categorie: <CategorieButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item}  isDrawer={isDrawer} />,
-        item: <ItemButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item}  isDrawer={isDrawer} />,
-        path: <PathBar key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item}  isDrawer={isDrawer} />,
+        categorie: <CategorieButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        item: <ItemButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        path: <PathBar key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
       }[key];
     };
 

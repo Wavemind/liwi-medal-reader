@@ -8,7 +8,7 @@ import {
   calculateCondition,
   comparingTopConditions,
   reduceConditionArrayBoolean,
-} from '../../algorithm/algoConditionsHelpers';
+} from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 import { nodesType } from '../../constants';
 
