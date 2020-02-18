@@ -274,10 +274,11 @@ class CustomNavigator extends React.Component {
       let validation = {
         isActionValid: true,
       };
-      const route = NavigationService.getActiveRouteByKey(action, lastState);
-      const currentRoute = NavigationService.getCurrentRoute();
-      const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
-      const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
+
+      let route;
+      let currentRoute;
+      let detailSetParamsRoute;
+      let detailValidation;
 
       switch (action.type) {
         case navigationActionConstant.navigate:
@@ -287,8 +288,12 @@ class CustomNavigator extends React.Component {
           break;
 
         case navigationActionConstant.setParams:
+          route = NavigationService.getActiveRouteByKey(action, lastState);
+          currentRoute = NavigationService.getCurrentRoute();
           validation = validatorStep(route, lastState, modelValidator);
 
+          detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
+          detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
           /** Change route params and dont block action **/
           if (validation.isActionValid === false && detailSetParamsRoute.validations[detailValidation]?.required === true) {
             action.params.initialPage = detailSetParamsRoute.validations[detailValidation].initialPage;
