@@ -2,14 +2,13 @@
 
 import React, { Suspense } from 'react';
 import { Content, View } from 'native-base';
-import find from 'lodash/find';
 
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
-import { categories } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
-import { Toaster } from '../../../utils/CustomToast';
+import NavigationService from '../../../engine/navigation/Navigation.service';
+import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessement } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
@@ -20,19 +19,14 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 export default class Triage extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+  }
+
   componentWillMount() {
-    const {
-      navigation,
-      medicalCase: { patient, nodes },
-    } = this.props;
+    const { navigation } = this.props;
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-
-    navigation.setParams({
-      title: 'Triage',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    NavigationService.setParamsAge(navigation, 'Triage');
   }
 
   state = {
@@ -42,48 +36,16 @@ export default class Triage extends React.Component<Props, State> {
   render() {
     const {
       app: { t },
-      medicalCase,
       focus,
       navigation,
     } = this.props;
 
-    let firstLookAssessement = [];
-
-    const ordersFirstLookAssessment = medicalCase.triage.orders[categories.firstLookAssessment];
-
-    ordersFirstLookAssessment.map((order) => {
-      firstLookAssessement.push(medicalCase.nodes[order]);
-    });
-
     const { widthView } = this.state;
 
-    const orders = medicalCase.triage.orders[categories.complaintCategory];
-    let complaintCategory = [];
-
-    orders.map((order) => {
-      complaintCategory.push(medicalCase.nodes[order]);
-    });
-
-    let basicMeasurements = [];
-    const orderedQuestions = medicalCase.triage.orders[categories.basicMeasurement];
-
-    orderedQuestions.map((orderedQuestion) => {
-      let question = medicalCase.nodes[orderedQuestion];
-      if (question.isDisplayedInTriage(medicalCase)) {
-        basicMeasurements.push(question);
-      }
-    });
-
+    let complaintCategory = questionsComplaintCategory();
     let complaintCategoryReady = complaintCategory.every((cc) => cc.answer !== null);
-    let selectedPage = navigation.getParam('initialPage');
     // Denied access to Basic measurement step if all chief complaints are not answered
-    if (selectedPage === 2 && !complaintCategoryReady) {
-      selectedPage = 1;
-      navigation.setParams({
-        initialPage: 1,
-      });
-      Toaster(t('triage:not_allowed'), { type: 'danger' }, { duration: 50000 });
-    }
+    let selectedPage = navigation.getParam('initialPage');
 
     return (
       <Suspense fallback={null}>
@@ -118,7 +80,7 @@ export default class Triage extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <Questions questions={firstLookAssessement} selectedPage={selectedPage} pageIndex={0} />
+                <Questions questions={questionsFirstLookAssessement()} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -155,7 +117,7 @@ export default class Triage extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' ? (
               <Suspense fallback={null}>
-                <Questions questions={basicMeasurements} selectedPage={selectedPage} pageIndex={2} />
+                <Questions questions={questionsBasicMeasurements()} selectedPage={selectedPage} pageIndex={2} />
               </Suspense>
             ) : (
               <LiwiLoader />

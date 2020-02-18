@@ -10,13 +10,15 @@ import { getItems, getSession, setItem } from '../../src/engine/api/LocalStorage
 // @return [Json] response from server
 // Https GET request
 export const get = async (params, userId) => {
-  let url = `${host}${params}`;
-  let header = await getHeaders('GET', false, userId);
+  const url = `${host}${params}`;
+  const header = await getHeaders('GET', false, userId);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
-  let httpcall = await request;
+  const httpcall = await request;
 
   if (httpcall.status === 500) {
+    const t = await httpcall.text();
+    console.warn(t, httpcall);
     Toaster('The server is not responding', { type: 'danger', duration: 4000 });
     return { errors: [] };
   } else {
@@ -32,13 +34,13 @@ export const get = async (params, userId) => {
 };
 
 export const syncMedicalCases = async (body, userId = null) => {
-  let url = `${hostDataServer}${'sync_medical_cases'}`;
-  let header = await getHeaders('POST', body, userId);
+  const url = `${hostDataServer}${'sync_medical_cases'}`;
+  const header = await getHeaders('POST', body, userId);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
 
-  let http = await request;
-  let response = await http.text();
+  const http = await request;
+  const response = await http.text();
   let json = false;
 
   try {
@@ -63,6 +65,7 @@ export const post = async (params, body = {}, userId = null) => {
   let header = await getHeaders('POST', body, userId);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
+
   let response = await request.json();
 
   // Display error

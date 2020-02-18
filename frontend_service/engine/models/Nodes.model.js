@@ -6,7 +6,7 @@ import { ManagementModel } from './Management.model';
 import { TreatmentModel } from './Treatment.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
-import { calculateCondition } from '../../algorithm/algoConditionsHelpers';
+import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 
@@ -148,12 +148,14 @@ export class NodesModel implements NodeInterface {
       Object.keys(finalDiagnostic.managements).forEach((key) => {
         if (calculateCondition(finalDiagnostic.managements[key])) {
           healthCares.managements[key] = this[key];
+          healthCares.managements[key].drugDoses = healthCares.managements[key].getDrugDoses();
         }
       });
 
       Object.keys(finalDiagnostic.treatments).forEach((key) => {
         if (calculateCondition(finalDiagnostic.treatments[key])) {
           healthCares.treatments[key] = this[key];
+          healthCares.treatments[key].drugDoses = healthCares.treatments[key].getDrugDoses();
         }
       });
     });

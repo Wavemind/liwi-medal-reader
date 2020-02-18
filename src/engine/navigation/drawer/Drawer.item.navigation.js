@@ -3,13 +3,45 @@ import React, { Component } from 'react';
 import { Button, Icon, Text } from 'native-base';
 import { TouchableOpacity, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import styled from 'styled-components';
 import { styles } from './Drawer.style';
 import { liwiColors } from '../../../utils/constants';
+import DrawerDot from './Drawer.dot';
+
+const WrapperMiniDrawerCategory = styled.TouchableOpacity`
+  padding: ${({ isDrawer }) => (isDrawer ? '13px 0' : '6px 0')};
+  height: ${({ isDrawer }) => (isDrawer ? 'auto' : '200px')};
+  width: ${({ isDrawer }) => (isDrawer ? 'auto' : '30px')};
+  margin-top: 10px;
+  margin-left: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: ${({ active }) => (active ? '#db473e' : '#e1e1e1')};
+  flex: 1;
+`;
+
+const SmallText = styled.Text`
+  color: ${({ active }) => (active ? '#ffffff' : '#3f3f3f')};
+  text-align: center;
+  text-transform: uppercase;
+  font-size: ${({ isDrawer }) => (isDrawer ? '23px' : '21px')};
+  line-height: ${({ isDrawer }) => (isDrawer ? '27px' : '25px')};
+  font-family: Roboto-Medium;
+  transform: ${({ isDrawer }) => (isDrawer ? 'rotate(0deg)' : 'rotate(-90deg)')};
+  width: ${({ isDrawer }) => (isDrawer ? 'auto' : '195px')};
+  flex: 1;
+`;
 
 export class CategorieButton extends Component<{ t: any, r: any }> {
   // Update the component only when needed
   shouldComponentUpdate(nextProps) {
-    let { r, areMedicalCaseInredux, routeName } = this.props;
+    let { r, areMedicalCaseInredux, routeName, isDrawer } = this.props;
+
+    if (isDrawer !== nextProps.isDrawer) {
+      return true;
+    }
 
     if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
       return true;
@@ -23,7 +55,23 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
   }
 
   render() {
-    let { t, r, name, initialPage, navigate } = this.props;
+    let { t, r, name, initialPage, navigate, isDrawer } = this.props;
+
+    // Small drawer
+    if (!isDrawer) {
+      return (
+        <WrapperMiniDrawerCategory
+          active={r.routeName === name}
+          isDrawer={isDrawer}
+          onStartShouldSetResponder={() => true}
+          onPress={() => navigate(name, initialPage)}
+        >
+          <SmallText isDrawer={isDrawer} active={r.routeName === name} numberOfLines={isDrawer ? 5 : 1}>
+            {t}
+          </SmallText>
+        </WrapperMiniDrawerCategory>
+      );
+    }
     return (
       <Button onPress={() => navigate(name, initialPage)} drawerCategorieButton style={[r.routeName === name ? styles.activeButtonCategorie : null]}>
         <Text drawerCategorieText style={[r.routeName === name ? null : styles.activeTextcategorie]}>
@@ -37,7 +85,11 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
 export class ItemButton extends Component<{ t: any, r: any }> {
   // Update the component only when needed
   shouldComponentUpdate(nextProps) {
-    let { r, routeName, areMedicalCaseInredux } = this.props;
+    let { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
+
+    if (isDrawer !== nextProps.isDrawer) {
+      return true;
+    }
 
     if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
       return true;
@@ -62,18 +114,22 @@ export class ItemButton extends Component<{ t: any, r: any }> {
   }
 
   render() {
-    let { t, r, initialPage, name, navigate } = this.props;
+    let { t, r, initialPage, name, navigate, isDrawer } = this.props;
+
+    let dotType;
+
+    if (r?.params?.initialPage >= initialPage && r.routeName === name) {
+      dotType = 'active';
+    }
+
     return (
       <Button onPress={() => navigate(name, initialPage)} drawerItemButton transparent>
-        <Icon
-          drawerItemIcon
-          style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}
-          type="Ionicons"
-          name={r?.params?.initialPage >= initialPage && r.routeName === name ? 'md-radio-button-on' : 'md-radio-button-off'}
-        />
-        <Text drawerItemText style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}>
-          {t}
-        </Text>
+        <DrawerDot type={dotType} onPress={() => navigate(name, initialPage)} isDrawer={isDrawer} />
+        {isDrawer ? (
+          <Text drawerItemText style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}>
+            {t}
+          </Text>
+        ) : null}
       </Button>
     );
   }
@@ -95,7 +151,7 @@ export const HeaderButtonsDrawer = withNavigation(
       const { r, navigation } = this.props;
 
       return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }} onStartShouldSetResponder={() => true}>
           <Button
             transparent
             style={{
@@ -143,7 +199,12 @@ export const BottomButtonsDrawer = withNavigation(
   class BottomButtonsDrawerClasse extends React.Component {
     // Update the component only when needed
     shouldComponentUpdate(nextProps) {
-      const { areMedicalCaseInredux } = this.props;
+      const { areMedicalCaseInredux, isDrawer } = this.props;
+
+      if (isDrawer !== nextProps.isDrawer) {
+        return true;
+      }
+
       if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
         return true;
       }
@@ -151,7 +212,7 @@ export const BottomButtonsDrawer = withNavigation(
     }
 
     render() {
-      const { navigation, medicalCase } = this.props;
+      const { navigation, medicalCase, isDrawer } = this.props;
       return (
         <View style={styles.bottom}>
           <Button
@@ -165,7 +226,7 @@ export const BottomButtonsDrawer = withNavigation(
             }
           >
             <Icon style={{ fontSize: 40 }} drawerBottomIcon type="FontAwesome5" name="file-medical" />
-            <Text style={styles.textBottom}>Current Summary</Text>
+            {isDrawer && <Text style={styles.textBottom}>Current Summary</Text>}
           </Button>
         </View>
       );
@@ -175,9 +236,13 @@ export const BottomButtonsDrawer = withNavigation(
 
 export class PathBar extends Component<{ routeName: string, initialPage: string }> {
   shouldComponentUpdate(nextProps) {
-    let { r, routeName, areMedicalCaseInredux } = this.props;
+    let { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
 
     if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+      return true;
+    }
+
+    if (isDrawer !== nextProps.isDrawer) {
       return true;
     }
 
@@ -200,16 +265,22 @@ export class PathBar extends Component<{ routeName: string, initialPage: string 
   }
 
   render() {
-    let { r, routeName, initialPage, navigate } = this.props;
+    let { r, routeName, initialPage, navigate, isDrawer } = this.props;
     let active = r?.params?.initialPage >= initialPage && r.routeName === routeName;
+
     return (
-      <TouchableOpacity onPress={() => navigate(routeName, initialPage)} style={{ marginTop: -2, marginBottom: -3, flex: 1, flexDirection: 'row' }}>
+      <TouchableOpacity
+        onPress={() => navigate(routeName, initialPage)}
+        style={{ marginTop: 2, marginBottom: 0, flex: 1, flexDirection: 'row' }}
+        onStartShouldSetResponder={() => true}
+      >
         <View
           style={{
             flex: 1,
             borderLeftWidth: 3,
             borderLeftColor: active ? liwiColors.redColor : liwiColors.greyColor,
-            marginLeft: 14,
+            marginLeft: isDrawer ? 19 : 24,
+            height: isDrawer ? 'auto' : 20,
           }}
         />
       </TouchableOpacity>

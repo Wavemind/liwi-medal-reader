@@ -22,8 +22,12 @@ export const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
   },
-  drawerMinifySmallify: { alignSelf: 'flex-end', flex: 1, backgroundColor: '#17881d' },
-  drawerMinifyView: { flex: 1, flexDirection: 'column', alignItems: 'flex-end' },
+  drawerMinifySmallify: {
+    // alignSelf: 'flex-end', flex: 1, backgroundColor: '#17881d'
+  },
+  drawerMinifyView: {
+    // flex: 1, flexDirection: 'column', alignItems: 'flex-end'
+  },
   drawerMinifyButton: {
     height: 30,
     padding: 0,

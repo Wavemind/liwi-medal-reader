@@ -13,10 +13,10 @@ export const styles = StyleSheet.create({
   },
 
   marginTop: {
-    marginTop: 20
+    marginTop: 20,
   },
 
   spaceText: {
-    marginBottom: 40
-  }
+    marginBottom: 40,
+  },
 });

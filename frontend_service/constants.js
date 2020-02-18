@@ -30,6 +30,11 @@ export const displayFormats = {
   date: 'Date',
 };
 
+export const healthCareType = {
+  pill: 'pill',
+  liquid: 'liquid',
+};
+
 // Value of answer accepted
 export const valueFormats = {
   array: 'Array',
@@ -38,12 +43,8 @@ export const valueFormats = {
   bool: 'Boolean',
   string: 'String',
   date: 'Date',
-};
-
-// Priority of questions
-export const priorities = {
-  basic: 'basic',
-  mandatory: 'mandatory',
+  present: 'Present',
+  positive: 'Positive',
 };
 
 // Stage of questions
@@ -54,12 +55,25 @@ export const stage = {
   consultation: 'consultation',
 };
 
+export const systems = {
+  general: 'General',
+  respiratory_circulation: 'Respiratory and circulatory system',
+  ear_nose_mouth_throat: 'Ear, nose, mouth and throat system',
+  visual: 'Visual system',
+  integumentary: 'Integumentary system',
+  digestive: 'Digestive system',
+  urinary_reproductive: 'Urinary and reproductive system',
+  nervous: 'Nervous system',
+  muscular_skeletal: 'Muscular and skeletal system',
+  null: 'General',
+};
+
 // Node category
 export const categories = {
   assessment: 'assessment_test',
-  chronicalCondition: 'chronical_condition',
-  basicMeasurement: 'basic_measurement',
-  firstLookAssessment: 'first_look_assessment',
+  chronicCondition: 'chronic_condition',
+  vitalSignTriage: 'vital_sign_triage',
+  emergencySign: 'emergency_sign',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
   symptom: 'symptom',
@@ -73,7 +87,10 @@ export const categories = {
   treatment: 'treatment',
   management: 'management',
   other: 'other',
-  treatment_condition: 'treatment_condition',
+  treatmentQuestion: 'treatment_question',
+  backgroundCalculation: 'background_calculation',
+  vitalSignConsultation: 'vital_sign_consultation',
+  observedPhysicalSign: 'observed_physical_sign',
 };
 
 // Type of nodes received from json
@@ -86,31 +103,35 @@ export const typeNode = {
 
 // Status of medical cases
 export const medicalCaseStatus = {
-  waitingTriage: { name: 'waiting_triage', index: 0 },
-  triage: { name: 'triage', index: 1 },
-  waitingConsultation: { name: 'waiting_consultation', index: 2 },
-  consultation: { name: 'consultation', index: 3 },
-  waitingTest: { name: 'waiting_test', index: 4 },
-  test: { name: 'test', index: 5 },
-  waitingDiagnostic: { name: 'waiting_diagnostic', index: 6 },
-  final_diagnostic: { name: 'final_diagnostic', index: 7 },
-  close: { name: 'close', index: 8 },
+  inCreation: { name: 'in_creation', index: -1, main: 0 },
+  waitingTriage: { name: 'waiting_triage', index: 0, main: null },
+  triage: { name: 'triage', index: 1, main: 1 },
+  waitingConsultation: { name: 'waiting_consultation', index: 2, main: null },
+  consultation: { name: 'consultation', index: 3, main: 2 },
+  waitingTests: { name: 'waiting_tests', index: 4, main: null },
+  tests: { name: 'tests', index: 5, main: 3 },
+  waitingDiagnostic: { name: 'waiting_diagnostic', index: 6, main: null },
+  final_diagnostic: { name: 'final_diagnostic', index: 7, main: 4 },
+  close: { name: 'close', index: 8, main: 5 },
 };
 
 export const routeDependingStatus = (medicalCase) => {
   let route;
 
   switch (medicalCase.status) {
+    case medicalCaseStatus.inCreation.name:
+      route = 'PatientUpsert';
+      break;
     case medicalCaseStatus.waitingTriage.name:
     case medicalCaseStatus.triage.name:
     case medicalCaseStatus.waitingConsultation.name:
       route = 'Triage';
       break;
     case medicalCaseStatus.consultation.name:
-    case medicalCaseStatus.waitingTest.name:
+    case medicalCaseStatus.waitingTests.name:
       route = 'Consultation';
       break;
-    case medicalCaseStatus.test.name:
+    case medicalCaseStatus.tests.name:
     case medicalCaseStatus.waitingDiagnostic.name:
       route = 'Tests';
       break;
@@ -123,4 +144,10 @@ export const routeDependingStatus = (medicalCase) => {
   }
 
   return route;
+};
+
+export const navigationActionConstant = {
+  navigate: 'Navigation/NAVIGATE',
+  replace: 'Navigation/REPLACE',
+  setParams: 'Navigation/SET_PARAMS',
 };

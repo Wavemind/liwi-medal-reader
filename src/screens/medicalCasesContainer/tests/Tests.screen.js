@@ -3,10 +3,10 @@
 import React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
-import find from 'lodash/find';
-import { categories } from '../../../../frontend_service/constants';
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import NavigationService from '../../../engine/navigation/Navigation.service';
+import { questionsTests } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -18,29 +18,16 @@ type State = {};
 // Because a function component is causing error from wrappers
 export default class Tests extends React.Component<Props, State> {
   componentWillMount() {
-    const {
-      navigation,
-      medicalCase: { patient, nodes },
-    } = this.props;
-
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-
-    navigation.setParams({
-      title: 'Tests ',
-      headerRight: `${patient.firstname} ${patient.lastname} | ${stringAge}`,
-    });
+    const { navigation } = this.props;
+    NavigationService.setParamsAge(navigation, 'Tests');
   }
 
   render() {
     const {
-      medicalCase,
       app: { t },
       focus,
       navigation,
     } = this.props;
-
-    let assessmentTest = medicalCase.nodes.filterBy([{ by: 'category', operator: 'equal', value: categories.assessment }]);
 
     return (
       <React.Suspense fallback={null}>
@@ -68,7 +55,7 @@ export default class Tests extends React.Component<Props, State> {
             <View style={styles.pad} key="questions-test">
               {focus === 'didFocus' ? (
                 <React.Suspense fallback={null}>
-                  <Questions questions={assessmentTest} />
+                  <Questions questions={questionsTests()} />
                 </React.Suspense>
               ) : (
                 <LiwiLoader />

@@ -26,9 +26,10 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
     let defaultTab = navigation.getParam('defaultTab');
 
     const age = find(nodes, { reference: '2', category: 'demographic' });
-
-    const stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
-
+    let stringAge;
+    if (age !== undefined) {
+      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+    }
 
     return (
       <View padding-auto flex>
