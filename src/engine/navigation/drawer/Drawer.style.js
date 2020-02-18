@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../../utils/constants';
+import { liwiColors, responsiveUi } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   tools: {
@@ -36,7 +36,6 @@ export const styles = StyleSheet.create({
     elevation: 3,
   },
   drawerMinifyText: {
-    backgroundColor: '#772888',
     margin: 0,
     textAlign: 'center',
   },
@@ -94,7 +93,7 @@ export const styles = StyleSheet.create({
     color: liwiColors.whiteColor,
   },
   iconTop: {
-    fontSize: 40,
+    fontSize: responsiveUi.iconSize(),
     color: liwiColors.whiteColor,
   },
   medicalCaseNavigationIcon: {
