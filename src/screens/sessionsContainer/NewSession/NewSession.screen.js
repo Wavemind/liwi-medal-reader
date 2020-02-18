@@ -79,44 +79,46 @@ export default class NewSession extends React.Component<Props, State> {
     }
 
     return (
-      <View flex-container-column testID="new_session">
-        <View margin-auto style={styles.centerVertically} padding-auto>
-          <ScrollView>
-            <LiwiTitle2 noBorder center>
-              {t('new_session:title')}
-            </LiwiTitle2>
-            <Form>
-              <CustomInput init={email} change={this.changeValueFromInput} index="email" placeholder={t('email')} condensed keyboardType="email-address" />
-              <CustomInput init={password} change={this.changeValueFromInput} index="password" placeholder={t('password')} secureTextEntry condensed />
-              <Button testID="connect_main" full style={styles.marginTop} onPress={() => this.signIn()} disabled={loading || success || !isConnected}>
-                <Text> {t('new_session:connect')} </Text>
-              </Button>
-            </Form>
-          </ScrollView>
+      <ScrollView>
+        <View flex-container-column testID="new_session">
+          <View margin-auto style={styles.centerVertically} padding-auto>
+            <ScrollView>
+              <LiwiTitle2 noBorder center>
+                {t('new_session:title')}
+              </LiwiTitle2>
+              <Form>
+                <CustomInput init={email} change={this.changeValueFromInput} index="email" placeholder={t('email')} condensed keyboardType="email-address" />
+                <CustomInput init={password} change={this.changeValueFromInput} index="password" placeholder={t('password')} secureTextEntry condensed />
+                <Button testID="connect_main" full style={styles.marginTop} onPress={() => this.signIn()} disabled={loading || success || !isConnected}>
+                  <Text> {t('new_session:connect')} </Text>
+                </Button>
+              </Form>
+            </ScrollView>
+          </View>
+          <View flex-center>
+            {loading ? <LottieView speed={3} source={require('../../../utils/animations/loading.json')} autoPlay style={styles.height} loop /> : null}
+            {success ? (
+              <LottieView
+                speed={0.5}
+                source={require('../../../utils/animations/done.json')}
+                autoPlay
+                loop={false}
+                style={styles.height}
+                onAnimationFinish={() => {
+                  navigation.navigate('SetCodeSession', {
+                    user_id: id,
+                  });
+                }}
+              />
+            ) : null}
+          </View>
+          <View bottom-view margin-auto padding-auto>
+            <Button onPress={this.unLockSessionScreen}>
+              <Text>{t('new_session:unlock_session')}</Text>
+            </Button>
+          </View>
         </View>
-        <View flex-center>
-          {loading ? <LottieView speed={3} source={require('../../../utils/animations/loading.json')} autoPlay style={styles.height} loop /> : null}
-          {success ? (
-            <LottieView
-              speed={0.5}
-              source={require('../../../utils/animations/done.json')}
-              autoPlay
-              loop={false}
-              style={styles.height}
-              onAnimationFinish={() => {
-                navigation.navigate('SetCodeSession', {
-                  user_id: id,
-                });
-              }}
-            />
-          ) : null}
-        </View>
-        <View bottom-view margin-auto padding-auto>
-          <Button onPress={this.unLockSessionScreen}>
-            <Text>{t('new_session:unlock_session')}</Text>
-          </Button>
-        </View>
-      </View>
+      </ScrollView>
     );
   }
 }

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../utils/constants';
+import { liwiColors, responsiveUi } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   navigationButton: {
@@ -16,6 +16,6 @@ export const styles = StyleSheet.create({
   },
   icons: {
     color: liwiColors.redColor,
-    fontSize: 45,
+    fontSize: responsiveUi.iconSize(),
   },
 });

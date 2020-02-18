@@ -2,6 +2,11 @@ import { StyleSheet } from 'react-native';
 import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
+  touchable: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   priority: {
     backgroundColor: '#d8d8d8',
   },
@@ -40,15 +45,15 @@ export const styles = StyleSheet.create({
   flexRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   flexColumn: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   unavailable: {
-    flex:1,
-    alignSelf:'flex-end',
-    flexDirection: 'row'
-  }
+    flex: 1,
+    alignSelf: 'flex-end',
+    flexDirection: 'row',
+  },
 });

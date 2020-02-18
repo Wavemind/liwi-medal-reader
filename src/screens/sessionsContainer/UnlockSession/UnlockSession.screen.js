@@ -70,9 +70,9 @@ export default class UnlockSession extends React.Component<Props, State> {
     } = this.props;
 
     return (
-      <View flex-container-column testID="UnLockSession">
-        <View margin-auto padding-auto>
-          <ScrollView>
+      <ScrollView testID="UnLockSession">
+        <View flex-container-column>
+          <View margin-auto padding-auto>
             <LottieView source={require('../../../utils/animations/unlock.json')} autoPlay style={styles.lottie} loop />
             <LiwiTitle2 noBorder center>
               {t('unlock_session:title')}
@@ -92,17 +92,17 @@ export default class UnlockSession extends React.Component<Props, State> {
             <Button full onPress={this.unLock} style={styles.button} disabled={loadingUnlock}>
               <Text>{t('unlock_session:unlock')}</Text>
             </Button>
-          </ScrollView>
-        </View>
-        <View bottom-view margin-auto padding-auto>
-          <View>
-            <Button onPress={this.newSessionScreen} disabled={!isConnected} testID="new_session">
-              <Text>{t('unlock_session:new_session')}</Text>
-            </Button>
-            {!isConnected && <Text>{t('notifications:no_internet')}</Text>}
+          </View>
+          <View bottom-view margin-auto padding-auto>
+            <View>
+              <Button onPress={this.newSessionScreen} disabled={!isConnected} testID="new_session">
+                <Text>{t('unlock_session:new_session')}</Text>
+              </Button>
+              {!isConnected && <Text>{t('notifications:no_internet')}</Text>}
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

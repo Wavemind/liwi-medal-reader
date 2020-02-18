@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
+import { responsiveUi } from '../../../../utils/constants';
 
 export const styles = StyleSheet.create({
   padded: {
-    padding: 20,
+    padding: responsiveUi.padding(),
   },
 });

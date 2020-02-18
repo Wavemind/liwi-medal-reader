@@ -1,4 +1,4 @@
-import { liwiColors, marginIsTablet, screenWidth } from '../../../utils/constants';
+import { liwiColors, marginIsTablet, responsiveUi, screenWidth } from '../../../utils/constants';
 
 export default {
   'NativeBase.ViewNB': {
@@ -41,7 +41,7 @@ export default {
       flexDirection: 'row',
     },
 
-    '.padding-auto': { padding: 20 },
+    '.padding-auto': { padding: responsiveUi.padding() },
 
     '.flex-center': {
       flexDirection: 'column',

@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../utils/constants';
+import { liwiColors, responsiveUi } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   buttonNext: {
     backgroundColor: liwiColors.greenColor,
   },
   pad: {
-    padding: 20,
+    padding: responsiveUi.padding(),
   },
   buttonPrev: {
     backgroundColor: liwiColors.redColor,

@@ -254,8 +254,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   error={errors.gender}
                 />
               </Col>
-              <Questions questions={extraQuestions} />
             </View>
+            <Questions questions={extraQuestions} />
             <View bottom-view>
               {algorithmReady ? (
                 !loading ? (

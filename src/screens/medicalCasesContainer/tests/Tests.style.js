@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { responsiveUi } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,7 +9,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   pad: {
-    paddingHorizontal: 20,
+    paddingHorizontal: responsiveUi.padding(),
     flex: 1,
   },
 });
