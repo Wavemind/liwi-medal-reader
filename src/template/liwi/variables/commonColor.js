@@ -14,14 +14,14 @@ export default {
   platformStyle,
   platform,
 
-  //Accordion
+  // Accordion
   headerStyle: '#edebed',
   iconStyle: '#000',
   contentStyle: '#f5f4f5',
   expandedIconStyle: '#000',
   accordionBorderColor: '#d3d3d3',
 
-  //Android
+  // Android
   androidRipple: true,
   androidRippleColor: 'rgba(256, 256, 256, 0.3)',
   androidRippleColorDark: 'rgba(0, 0, 0, 0.15)',
@@ -112,10 +112,10 @@ export default {
   brandDark: '#000',
   brandLight: '#f4f4f4',
 
-  //Container
+  // Container
   containerBgColor: '#fff',
 
-  //Date Picker
+  // Date Picker
   datePickerTextColor: '#000',
   datePickerBg: 'transparent',
 
@@ -264,7 +264,7 @@ export default {
   isIphoneX,
   inputGroupRoundedBorderRadius: 30,
 
-  //iPhoneX SafeArea
+  // iPhoneX SafeArea
   Inset: {
     portrait: {
       topInset: 24,

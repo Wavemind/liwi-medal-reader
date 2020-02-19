@@ -9,18 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View } from 'react-native';
 import rfcIsEqual from 'react-fast-compare';
-import {
-  computeBottomGeometry,
-  computeCenterGeomerty,
-  computeLeftGeometry,
-  computeRightGeometry,
-  computeTopGeometry,
-  makeChildlessRect,
-  Point,
-  Rect,
-  Size,
-  swapSizeDimmensions,
-} from './geom';
+import { computeBottomGeometry, computeCenterGeomerty, computeLeftGeometry, computeRightGeometry, computeTopGeometry, makeChildlessRect, Point, Rect, Size, swapSizeDimmensions } from './geom';
 import styleGenerator from './styles';
 import TooltipChildrenContext from './tooltip-children.context';
 
@@ -206,9 +195,9 @@ class Tooltip extends Component {
     const { windowDims, placement, displayInsets } = this.state;
     this.onMeasurementComplete(
       makeChildlessRect({
-        displayInsets: displayInsets,
-        placement: placement, // MUST use from state, not props
-        windowDims: windowDims,
+        displayInsets,
+        placement, // MUST use from state, not props
+        windowDims,
       })
     );
   };
@@ -369,14 +358,14 @@ class Tooltip extends Component {
     const { measurementsFinished, displayInsets, placement, adjustedContentSize, anchorPoint, tooltipOrigin } = this.state;
     const { props } = this;
     const generatedStyles = styleGenerator({
-      adjustedContentSize: adjustedContentSize,
-      anchorPoint: anchorPoint,
+      adjustedContentSize,
+      anchorPoint,
       arrowSize: props.arrowSize,
-      displayInsets: displayInsets,
-      measurementsFinished: measurementsFinished,
+      displayInsets,
+      measurementsFinished,
       ownProps: { ...props },
-      placement: placement,
-      tooltipOrigin: tooltipOrigin,
+      placement,
+      tooltipOrigin,
     });
 
     const hasChildren = React.Children.count(props.children) > 0;

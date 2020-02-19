@@ -42,11 +42,11 @@ export default class SetCodeSession extends React.Component<Props, State> {
   validateCode = () => {
     const { code, codeConfirmation } = this.state;
 
-    let mediumRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
+    const mediumRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
     if (code.length > 0 && codeConfirmation.length > 0) {
-      let encrypt1 = sha256.hmac(saltHash, code);
-      let encrypt2 = sha256.hmac(saltHash, codeConfirmation);
+      const encrypt1 = sha256.hmac(saltHash, code);
+      const encrypt2 = sha256.hmac(saltHash, codeConfirmation);
 
       if (encrypt1 !== encrypt2 || (!mediumRegex.test(code) && !mediumRegex.test(codeConfirmation))) {
         this.setState({
@@ -62,7 +62,7 @@ export default class SetCodeSession extends React.Component<Props, State> {
   // Save code in session
   setLocalCode = async () => {
     this.setState({ isLoading: true });
-    let result = await this.validateCode();
+    const result = await this.validateCode();
 
     if (result) {
       const { code } = this.state;
@@ -96,23 +96,8 @@ export default class SetCodeSession extends React.Component<Props, State> {
               {session.data.first_name} {session.data.last_name}
             </LiwiTitle2>
             <Form>
-              <CustomInput
-                init={code}
-                change={this.changeValueFromInput}
-                index="code"
-                secureTextEntry
-                placeholder={t('code_session_screen:your_code')}
-                condensed
-                error={error}
-              />
-              <CustomInput
-                init={codeConfirmation}
-                change={this.changeValueFromInput}
-                index="codeConfirmation"
-                secureTextEntry
-                placeholder={t('code_session_screen:type_your_code')}
-                condensed
-              />
+              <CustomInput init={code} change={this.changeValueFromInput} index="code" secureTextEntry placeholder={t('code_session_screen:your_code')} condensed error={error} />
+              <CustomInput init={codeConfirmation} change={this.changeValueFromInput} index="codeConfirmation" secureTextEntry placeholder={t('code_session_screen:type_your_code')} condensed />
               <Button testID="set_code" full style={styles.marginTop} onPress={() => this.setLocalCode()} disabled={isLoading}>
                 <Text> {t('code_session_screen:set_code')} </Text>
               </Button>

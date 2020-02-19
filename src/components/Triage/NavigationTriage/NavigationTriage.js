@@ -43,18 +43,18 @@ export default class NavigationTriage extends React.Component<Props, State> {
 
   /**
    * Sets in the state the next and prev action for the current screen
-   **/
+   * */
   initRouter = () => {
     const { router, currentRoute } = this.state;
 
     let prevRoute;
     let nextRoute;
 
-    let indexInRouter = router.findIndex((e) => e === currentRoute.routeName);
+    const indexInRouter = router.findIndex((e) => e === currentRoute.routeName);
 
-    let beginNavBool = currentRoute.key === router.first();
-    let endNavBool = currentRoute.key === router.last();
-    let insideNavBool = indexInRouter !== router.length;
+    const beginNavBool = currentRoute.key === router.first();
+    const endNavBool = currentRoute.key === router.last();
+    const insideNavBool = indexInRouter !== router.length;
 
     // Begin Nav Triage OR inside Nav && not at the end
     if ((beginNavBool || insideNavBool) && !endNavBool) {
@@ -83,7 +83,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
   /**
    * Return true if all question have been answered
    * @return [Boolean]
-   **/
+   * */
   isScreenValid = () => {
     const { medicalCase, questionsInScreen } = this.props;
     const { endNavBool } = this.state;
@@ -122,12 +122,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     const { state } = this;
-    return (
-      state.beginNavBool !== nextState.beginNavBool ||
-      state.endNavBool !== nextState.endNavBool ||
-      state.prevRoute !== nextState.prevRoute ||
-      state.nextRoute !== nextState.nextRoute
-    );
+    return state.beginNavBool !== nextState.beginNavBool || state.endNavBool !== nextState.endNavBool || state.prevRoute !== nextState.prevRoute || state.nextRoute !== nextState.nextRoute;
   }
 
   render() {

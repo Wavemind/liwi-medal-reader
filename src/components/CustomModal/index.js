@@ -16,7 +16,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(CustomModal)));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(CustomModal)));

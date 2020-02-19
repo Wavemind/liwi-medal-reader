@@ -62,7 +62,7 @@ export default class HealthCares extends Component<Props, State> {
   _renderHealthCare = (healthCare) =>
     Object.keys(healthCare).map((index) => (
       <View style={styles.blocManagement} key={index}>
-        <Text style={styles.spaceText} size-auto key={'healthcare' + healthCare[index].reference}>
+        <Text style={styles.spaceText} size-auto key={`healthcare${healthCare[index].reference}`}>
           {__DEV__ && `${healthCare[index].reference} - `}
           {healthCare[index].label}
         </Text>

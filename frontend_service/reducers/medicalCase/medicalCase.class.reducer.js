@@ -55,7 +55,7 @@ class MedicalCaseReducer extends ReducerClass {
   updateConditionValue(state, action) {
     const { index, callerId, value, type } = action.payload;
     let caller;
-    let newNode = {
+    const newNode = {
       ...state.nodes[index],
     };
 
@@ -68,16 +68,16 @@ class MedicalCaseReducer extends ReducerClass {
         break;
     }
 
-    let changeConditionValue = find(caller, (d) => d.id === callerId);
+    const changeConditionValue = find(caller, (d) => d.id === callerId);
 
     // IF not the same condition update the node
     if (changeConditionValue.conditionValue !== value) {
       // Update counter condition Value
       // Explicite comparaison boolean for understand the case of new condition value
       if (value === true) {
-        newNode.counter = newNode.counter + 1;
+        newNode.counter += 1;
       } else if (value === false) {
-        newNode.counter = newNode.counter - 1;
+        newNode.counter -= 1;
       }
       changeConditionValue.conditionValue = value;
     }
@@ -117,8 +117,8 @@ class MedicalCaseReducer extends ReducerClass {
 
     const newModal = {
       open: !state.modal.open,
-      content: content,
-      navigator: navigator,
+      content,
+      navigator,
     };
 
     return {
@@ -139,7 +139,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     state.nodes[indexPs] = state.nodes.instantiateNode({
       ...state.nodes[indexPs],
-      answer: answer,
+      answer,
     });
 
     return {
@@ -266,7 +266,7 @@ class MedicalCaseReducer extends ReducerClass {
       storeMedicalCase(state);
     }
 
-    let modelsMedicalCase = this._instanceMedicalCase(medicalCase);
+    const modelsMedicalCase = this._instanceMedicalCase(medicalCase);
 
     return {
       ...modelsMedicalCase,
@@ -284,7 +284,7 @@ class MedicalCaseReducer extends ReducerClass {
       return initialState;
     }
 
-    let modelsMedicalCase = this._instanceMedicalCase(action.payload);
+    const modelsMedicalCase = this._instanceMedicalCase(action.payload);
 
     modelsMedicalCase.modal.open = false;
 

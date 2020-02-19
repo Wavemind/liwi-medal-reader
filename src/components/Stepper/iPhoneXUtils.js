@@ -9,8 +9,7 @@ const X_HEIGHT: number = 812;
 function isIPhoneX(): boolean {
   return (
     Platform.OS === 'ios' &&
-    ((Dimensions.get('window').height === X_HEIGHT && Dimensions.get('window').width === X_WIDTH) ||
-      (Dimensions.get('window').height === X_WIDTH && Dimensions.get('window').width === X_HEIGHT))
+    ((Dimensions.get('window').height === X_HEIGHT && Dimensions.get('window').width === X_WIDTH) || (Dimensions.get('window').height === X_WIDTH && Dimensions.get('window').width === X_HEIGHT))
   );
 }
 

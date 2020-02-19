@@ -30,9 +30,8 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
     shouldComponentUpdate(nextProps, nextState) {
       if (props.navigationStatus === 'willBlur') {
         return nextState.navigationStatus === 'didFocus' || nextState.navigationStatus === 'willBlur';
-      } else {
-        return nextState.navigationStatus === 'didFocus';
       }
+      return nextState.navigationStatus === 'didFocus';
     }
 
     state = {

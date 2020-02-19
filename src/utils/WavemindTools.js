@@ -20,89 +20,82 @@ export default class WavemindTools extends Component {
 
     return (
       <View>
-        <Fab
-          active={active}
-          direction="up"
-          containerStyle={{}}
-          style={{ backgroundColor: '#ffb21d' }}
-          position="bottomRight"
-          onPress={() => this.setState({ active: !active })}
-        >
+        <Fab active={active} direction="up" containerStyle={{}} style={{ backgroundColor: '#ffb21d' }} position="bottomRight" onPress={() => this.setState({ active: !active })}>
           <Icon name="developer-mode" type="MaterialIcons" />
           {active
             ? [
                 <Button
-                  key="1"
-                  blue
-                  onPress={async () => {
+                key="1"
+                blue
+                onPress={async () => {
                     await clearPatients();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="AntDesign" name="deleteusergroup" />
-                </Button>,
+              >
+                <Icon type="AntDesign" name="deleteusergroup" />
+              </Button>,
                 <Button
-                  key="2"
-                  blue
-                  onPress={async () => {
+                key="2"
+                blue
+                onPress={async () => {
                     await clearLocalStorage();
                     await persistor.purge();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="MaterialCommunityIcons" name="delete-forever" />
-                </Button>,
+              >
+                <Icon type="MaterialCommunityIcons" name="delete-forever" />
+              </Button>,
                 <Button
-                  key="3"
-                  blue
-                  onPress={async () => {
+                key="3"
+                blue
+                onPress={async () => {
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="SimpleLineIcons" name="reload" />
-                </Button>,
+              >
+                <Icon type="SimpleLineIcons" name="reload" />
+              </Button>,
                 <Button
-                  key="4"
-                  blue
-                  onPress={async () => {
-                    let sessions = await getItems('sessions');
-                    let algorithms = await getItems('algorithms');
-                    let patients = await getItems('patients');
-                    let state$ = store.getState();
+                key="4"
+                blue
+                onPress={async () => {
+                    const sessions = await getItems('sessions');
+                    const algorithms = await getItems('algorithms');
+                    const patients = await getItems('patients');
+                    const state$ = store.getState();
                     let k = await FilesystemStorage.getItem('persist:medicalCase');
                     k = await JSON.parse(k);
                     // eslint-disable-next-line no-console
                     console.log({
                       persist: k,
-                      state$: state$,
+                      state$,
                       size_state$: memorySizeOf(state$),
-                      sessions: sessions,
+                      sessions,
                       size_sessions: memorySizeOf(sessions),
-                      algorithms: algorithms,
+                      algorithms,
                       size_algorithms: memorySizeOf(algorithms),
-                      patients: patients,
+                      patients,
                       size_patients: memorySizeOf(patients),
                     });
                   }}
-                >
-                  <Icon type="FontAwesome" name="database" />
-                </Button>,
+              >
+                <Icon type="FontAwesome" name="database" />
+              </Button>,
                 <Button
-                  key="5"
-                  blue
-                  onPress={async () => {
-                    let algo = require('../../frontend_service/api/algo_refractor_from_olga_14_10_19');
-                    let session = require('../../frontend_service/api/session');
+                key="5"
+                blue
+                onPress={async () => {
+                    const algo = require('../../frontend_service/api/algo_refractor_from_olga_14_10_19');
+                    const session = require('../../frontend_service/api/session');
 
                     await setItem('sessions', [session]);
                     await setItem('algorithms', [algo]);
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
-                </Button>,
+              >
+                <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
+              </Button>,
               ]
             : null}
         </Fab>

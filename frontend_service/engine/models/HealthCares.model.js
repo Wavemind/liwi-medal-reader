@@ -101,9 +101,9 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
    */
   getQuestions(instanceHealthcare) {
     const state$ = store.getState();
-    let questions = {};
+    const questions = {};
     instanceHealthcare.top_conditions.map((tp) => {
-      let node = state$.nodes[tp.first_node_id];
+      const node = state$.nodes[tp.first_node_id];
       if (node.type === nodesType.questionsSequence) {
         this.getQuestionsInQs(state$, questions, node);
       } else {

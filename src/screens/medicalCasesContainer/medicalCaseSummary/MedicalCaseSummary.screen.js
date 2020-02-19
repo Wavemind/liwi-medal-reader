@@ -23,12 +23,12 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
       navigation,
     } = this.props;
 
-    let defaultTab = navigation.getParam('defaultTab');
+    const defaultTab = navigation.getParam('defaultTab');
 
     const age = find(nodes, { reference: '2', category: 'demographic' });
     let stringAge;
     if (age !== undefined) {
-      stringAge = age.value === null ? 'Age is not defined' : age.value + ' months';
+      stringAge = age.value === null ? 'Age is not defined' : `${age.value} months`;
     }
 
     return (
@@ -56,13 +56,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
               <FinalDiagnosticsList />
             </Content>
           </Tab>
-          <Tab
-            heading="All questions"
-            tabStyle={LiwiTabStyle.tabStyle}
-            activeTextStyle={LiwiTabStyle.activeTextStyle}
-            textStyle={LiwiTabStyle.textStyle}
-            activeTabStyle={LiwiTabStyle.activeTabStyle}
-          >
+          <Tab heading="All questions" tabStyle={LiwiTabStyle.tabStyle} activeTextStyle={LiwiTabStyle.activeTextStyle} textStyle={LiwiTabStyle.textStyle} activeTabStyle={LiwiTabStyle.activeTabStyle}>
             <View>
               <Questions questions={nodes} />
             </View>

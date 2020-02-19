@@ -48,7 +48,10 @@ export default class Consultation extends React.Component<Props, State> {
               initialPage: e,
             });
           }}
-          icons={[{ name: 'comment-medical', type: 'FontAwesome5' }, { name: 'ios-body', type: 'Ionicons' }]}
+          icons={[
+            { name: 'comment-medical', type: 'FontAwesome5' },
+            { name: 'ios-body', type: 'Ionicons' },
+          ]}
           steps={[t('consultation:medical_history'), t('consultation:physical_exam')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}

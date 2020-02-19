@@ -48,7 +48,7 @@ export class PatientModel implements PatientModelInterface {
 
   // uniqueId incremented
   setId = async () => {
-    let patients = await this.getPatients();
+    const patients = await this.getPatients();
 
     let maxId = _.maxBy(patients, 'id');
     if (patients.length === 0) {
@@ -65,7 +65,7 @@ export class PatientModel implements PatientModelInterface {
 
   // Validate input
   validate = () => {
-    let errors = {};
+    const errors = {};
 
     if (this.firstname.trim() === '') {
       errors.firstname = i18n.t('form:required');

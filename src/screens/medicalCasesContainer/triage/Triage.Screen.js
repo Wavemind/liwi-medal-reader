@@ -8,11 +8,7 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import {
-  questionsBasicMeasurements,
-  questionsComplaintCategory,
-  questionsFirstLookAssessement,
-} from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessement } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
@@ -46,10 +42,10 @@ export default class Triage extends React.Component<Props, State> {
 
     const { widthView } = this.state;
 
-    let complaintCategory = questionsComplaintCategory();
-    let complaintCategoryReady = complaintCategory.every((cc) => cc.answer !== null);
+    const complaintCategory = questionsComplaintCategory();
+    const complaintCategoryReady = complaintCategory.every((cc) => cc.answer !== null);
     // Denied access to Basic measurement step if all chief complaints are not answered
-    let selectedPage = navigation.getParam('initialPage');
+    const selectedPage = navigation.getParam('initialPage');
 
     return (
       <Suspense fallback={null}>
@@ -97,19 +93,12 @@ export default class Triage extends React.Component<Props, State> {
                   <View
                     flex-container-fluid
                     onLayout={async (p) => {
-                      let w = await p.nativeEvent;
+                      const w = await p.nativeEvent;
                       this.setState({ widthView: w.layout.width });
                     }}
                   >
                     {complaintCategory.map((question, i) => (
-                      <Boolean
-                        key={question.id + 'chief_boolean'}
-                        widthView={widthView}
-                        question={question}
-                        index={i}
-                        selectedPage={selectedPage}
-                        pageIndex={1}
-                      />
+                      <Boolean key={`${question.id}chief_boolean`} widthView={widthView} question={question} index={i} selectedPage={selectedPage} pageIndex={1} />
                     ))}
                   </View>
                 </Content>

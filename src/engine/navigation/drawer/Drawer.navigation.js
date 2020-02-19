@@ -40,7 +40,7 @@ export default class Drawer extends Component<Props, State> {
     } = this.props;
 
     // Get current route from navigation
-    let r = NavigationService.getCurrentRoute();
+    const r = NavigationService.getCurrentRoute();
 
     // Is redux ready, for disabled buttons
     const areMedicalCaseInredux = medicalCase.id !== undefined;
@@ -49,7 +49,7 @@ export default class Drawer extends Component<Props, State> {
       if (areMedicalCaseInredux) {
         navigation.navigate({
           routeName: name,
-          params: { initialPage: initialPage },
+          params: { initialPage },
           key: name + initialPage,
         });
       } else {
@@ -69,18 +69,14 @@ export default class Drawer extends Component<Props, State> {
       const key = item.type;
 
       return {
-        categorie: (
-          <CategorieButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />
-        ),
-        item: <ItemButton key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
-        path: <PathBar key={key + i + '-enum'} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        categorie: <CategorieButton key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        item: <ItemButton key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        path: <PathBar key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
       }[key];
     };
 
     // Render items
-    const renderDrawerButtons = (
-      <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((item, i) => enumRender(item, i))}</View>
-    );
+    const renderDrawerButtons = <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((item, i) => enumRender(item, i))}</View>;
 
     return (
       <ScrollView

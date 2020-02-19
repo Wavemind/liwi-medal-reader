@@ -39,7 +39,7 @@ class DropDownMenu extends React.Component<Props, State> {
       { label: t('menu:strategy'), value: 'Strategy' },
     ];
 
-    let currentRoute = NavigationService.getCurrentRoute();
+    const currentRoute = NavigationService.getCurrentRoute();
 
     let value;
 

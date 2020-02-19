@@ -25,19 +25,18 @@ export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
 
     // Loop for top_conditions
     this.top_conditions.map((conditions) => {
+      const returnedBoolean = comparingTopConditions(this, conditions);
 
-      let returnedBoolean = comparingTopConditions(this, conditions);
-
-      scoreTotalPossible = scoreTotalPossible + conditions.score;
+      scoreTotalPossible += conditions.score;
       switch (returnedBoolean) {
         case true:
-          scoreTrue = scoreTrue + conditions.score;
+          scoreTrue += conditions.score;
           break;
         case false:
-          scoreFalse = scoreFalse + conditions.score;
+          scoreFalse += conditions.score;
           break;
         case null:
-          scoreNull = scoreNull + conditions.score;
+          scoreNull += conditions.score;
           break;
       }
 

@@ -1,7 +1,7 @@
 export const stringifyDeepRef = (item) => {
   let cache = [];
 
-  let replacer = JSON.stringify(item, function(key, value) {
+  const replacer = JSON.stringify(item, function(key, value) {
     if (typeof value === 'object' && value !== null) {
       if (cache.indexOf(value) !== -1) {
         // Duplicate reference found
@@ -24,7 +24,7 @@ export const stringifyDeepRef = (item) => {
 };
 
 export const memorySizeOf = (obj) => {
-  var bytes = 0;
+  let bytes = 0;
 
   function sizeOf(obj) {
     if (obj !== null && obj !== undefined) {
@@ -41,7 +41,7 @@ export const memorySizeOf = (obj) => {
         case 'object':
           var objClass = Object.prototype.toString.call(obj).slice(8, -1);
           if (objClass === 'Object' || objClass === 'Array') {
-            for (var key in obj) {
+            for (const key in obj) {
               if (!obj.hasOwnProperty(key)) continue;
               sizeOf(obj[key]);
             }
@@ -53,10 +53,10 @@ export const memorySizeOf = (obj) => {
   }
 
   function formatByteSize(bytes) {
-    if (bytes < 1024) return bytes + ' bytes';
-    else if (bytes < 1048576) return (bytes / 1024).toFixed(3) + ' KiB';
-    else if (bytes < 1073741824) return (bytes / 1048576).toFixed(3) + ' MiB';
-    else return (bytes / 1073741824).toFixed(3) + ' GiB';
+    if (bytes < 1024) return `${bytes} bytes`;
+    if (bytes < 1048576) return `${(bytes / 1024).toFixed(3)} KiB`;
+    if (bytes < 1073741824) return `${(bytes / 1048576).toFixed(3)} MiB`;
+    return `${(bytes / 1073741824).toFixed(3)} GiB`;
   }
 
   return formatByteSize(sizeOf(obj));
@@ -79,8 +79,8 @@ export const diff = function(obj1, obj2) {
   // Variables
   //
 
-  var diffs = {};
-  var key;
+  const diffs = {};
+  let key;
 
   //
   // Methods
@@ -92,12 +92,12 @@ export const diff = function(obj1, obj2) {
    * @param  {Array}   arr2 The second array
    * @return {Boolean}      If true, both arrays are equal
    */
-  var arraysMatch = function(arr1, arr2) {
+  const arraysMatch = function(arr1, arr2) {
     // Check if the arrays are the same length
     if (arr1.length !== arr2.length) return false;
 
     // Check if all items exist and are in the same order
-    for (var i = 0; i < arr1.length; i++) {
+    for (let i = 0; i < arr1.length; i++) {
       if (arr1[i] !== arr2[i]) return false;
     }
 
@@ -111,10 +111,10 @@ export const diff = function(obj1, obj2) {
    * @param  {*}      item2 The second item
    * @param  {String} key   The key in our object
    */
-  var compare = function(item1, item2, key) {
+  const compare = function(item1, item2, key) {
     // Get the object type
-    var type1 = Object.prototype.toString.call(item1);
-    var type2 = Object.prototype.toString.call(item2);
+    const type1 = Object.prototype.toString.call(item1);
+    const type2 = Object.prototype.toString.call(item2);
 
     // If type2 is undefined it has been removed
     if (type2 === '[object Undefined]') {
@@ -130,7 +130,7 @@ export const diff = function(obj1, obj2) {
 
     // If an object, compare recursively
     if (type1 === '[object Object]') {
-      var objDiff = diff(item1, item2);
+      const objDiff = diff(item1, item2);
       if (Object.keys(objDiff).length > 1) {
         diffs[key] = objDiff;
       }
@@ -151,10 +151,8 @@ export const diff = function(obj1, obj2) {
       if (item1.toString() !== item2.toString()) {
         diffs[key] = item2;
       }
-    } else {
-      if (item1 !== item2) {
-        diffs[key] = item2;
-      }
+    } else if (item1 !== item2) {
+      diffs[key] = item2;
     }
   };
 

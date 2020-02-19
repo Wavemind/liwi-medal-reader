@@ -68,10 +68,10 @@ const validatorStep = (route, lastState, validator) => {
     const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
     const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
 
-    let questionsToValidate = state$.metaData[route.routeName.toLowerCase()];
+    const questionsToValidate = state$.metaData[route.routeName.toLowerCase()];
 
-    let questions = questionsToValidate[detailValidation];
-    let criteria = detailSetParamsRoute.validations[detailValidation];
+    const questions = questionsToValidate[detailValidation];
+    const criteria = detailSetParamsRoute.validations[detailValidation];
 
     validator = oneValidation(criteria, questions, detailValidation);
   }
@@ -89,18 +89,18 @@ const validatorStep = (route, lastState, validator) => {
  * @return {validator} :
  */
 function oneValidation(criteria, questions, stepName) {
-  let state$ = store.getState();
+  const state$ = store.getState();
   let result;
   let isValid = true;
   // Break Ref JS
-  let staticValidator = JSON.parse(JSON.stringify(modelValidator));
+  const staticValidator = JSON.parse(JSON.stringify(modelValidator));
   staticValidator.stepName = stepName;
 
   Object.keys(criteria).map((c) => {
     switch (c) {
       case 'is_mandatory':
         questions.forEach((questionId) => {
-          let q = state$.nodes[questionId];
+          const q = state$.nodes[questionId];
           if (q.is_mandatory === true) {
             result = state$.nodes[questionId].answer !== null || state$.nodes[questionId].value !== null;
             if (!result) {
@@ -113,7 +113,7 @@ function oneValidation(criteria, questions, stepName) {
       case 'answer':
         if (criteria[c] === 'not_null') {
           questions.forEach((questionId) => {
-            let q = state$.nodes[questionId];
+            const q = state$.nodes[questionId];
             result = q.answer !== null;
             if (!result) {
               isValid = false;
@@ -142,9 +142,9 @@ function oneValidation(criteria, questions, stepName) {
  */
 const validatorNavigate = (navigateRoute) => {
   // Break Ref JS
-  let validator = JSON.parse(JSON.stringify(modelValidator));
+  const validator = JSON.parse(JSON.stringify(modelValidator));
 
-  /** Forced navigation **/
+  /** Forced navigation * */
   if (navigateRoute?.params?.force !== undefined && navigateRoute?.params?.force === true) {
     validator.isActionValid = true;
     return validator;
@@ -155,33 +155,33 @@ const validatorNavigate = (navigateRoute) => {
   // Get validation from constant
   const detailNavigateRoute = screens.find((s) => s.key === navigateRoute.routeName);
 
-  /** This route has no rule **/
+  /** This route has no rule * */
   if (detailNavigateRoute === undefined || detailNavigateRoute === null) {
     validator.isActionValid = true;
     return validator;
   }
 
-  /*** ----- Specific Validation -----  ***/
+  /** * ----- Specific Validation -----  ** */
 
-  /** This route is patientUpSert **/
+  /** This route is patientUpSert * */
   if (detailNavigateRoute.medicalCaseOrder === 0) {
     validator.isActionValid = true;
     return validator;
   }
 
-  /** MedicalCases Routes **/
+  /** MedicalCases Routes * */
 
   if (detailNavigateRoute.medicalCaseOrder !== undefined) {
-    /** the case is still in creation, do not permit to go into medical case **/
+    /** the case is still in creation, do not permit to go into medical case * */
     if (detailNavigateRoute.medicalCaseOrder > 0 && state$.isNewCase === true) {
       validator.isActionValid = false;
       return validator;
     }
 
     // Route depending status
-    let routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
+    const routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
 
-    /** The route requested is the route to validate  **/
+    /** The route requested is the route to validate  * */
     if (routeToValidate.key === detailNavigateRoute.key) {
       validator.isActionValid = true;
       return validator;
@@ -190,15 +190,15 @@ const validatorNavigate = (navigateRoute) => {
     // Route to validate is not null and can be validated
     if (routeToValidate !== undefined) {
       // Questions to be validated
-      let questionsToValidate = state$.metaData[routeToValidate.key.toLowerCase()];
+      const questionsToValidate = state$.metaData[routeToValidate.key.toLowerCase()];
 
       // Get order of screen
-      let indexStatus = _.find(medicalCaseStatus, (i) => i.name === state$.status).main;
+      const indexStatus = _.find(medicalCaseStatus, (i) => i.name === state$.status).main;
 
-      let requestedStatus = screens.find((s) => s.key === navigateRoute.routeName).medicalCaseOrder;
+      const requestedStatus = screens.find((s) => s.key === navigateRoute.routeName).medicalCaseOrder;
 
       // Diff between prev and next index in order
-      let diffStatus = requestedStatus - indexStatus;
+      const diffStatus = requestedStatus - indexStatus;
 
       /** Route is before so ok */
       if (diffStatus <= 0) {
@@ -208,8 +208,8 @@ const validatorNavigate = (navigateRoute) => {
 
       // Check route to validate screen if valid
       let screenResults = Object.keys(routeToValidate.validations).map((validation) => {
-        let questions = questionsToValidate[validation];
-        let criteria = routeToValidate.validations[validation];
+        const questions = questionsToValidate[validation];
+        const criteria = routeToValidate.validations[validation];
         // Validation on each Step
         return oneValidation(criteria, questions, validation);
       });
@@ -242,8 +242,8 @@ const validatorNavigate = (navigateRoute) => {
 
         // Check route to validate screen if valid
         screenResults = Object.keys(prevRoute.validations).map((validation) => {
-          let questions = prevRoutequestionsToValidate[validation];
-          let criteria = prevRoute.validations[validation];
+          const questions = prevRoutequestionsToValidate[validation];
+          const criteria = prevRoute.validations[validation];
           // Validation on each Step
           return oneValidation(criteria, questions, validation);
         });
@@ -294,12 +294,13 @@ class CustomNavigator extends React.Component {
 
           detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
           detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
-          /** Change route params and dont block action **/
+          /** Change route params and dont block action * */
           if (validation.isActionValid === false && detailSetParamsRoute.validations[detailValidation]?.required === true) {
             action.params.initialPage = detailSetParamsRoute.validations[detailValidation].initialPage;
-            Toaster(detailValidation + ' are invalid', { type: 'danger' }, { duration: 50000 });
+            Toaster(`${detailValidation} are invalid`, { type: 'danger' }, { duration: 50000 });
             return RootMainNavigator.router.getStateForAction(action, lastState);
-          } else if (route.routeName === currentRoute.routeName) {
+          }
+          if (route.routeName === currentRoute.routeName) {
             // If the set params is on the same route and has no required
             validation.isActionValid = true;
           }
@@ -309,10 +310,9 @@ class CustomNavigator extends React.Component {
 
       if (validation.isActionValid) {
         return RootMainNavigator.router.getStateForAction(action, lastState);
-      } else {
-        store.dispatch(updateModalFromRedux(null, validation));
-        return null;
       }
+      store.dispatch(updateModalFromRedux(null, validation));
+      return null;
     },
   };
 

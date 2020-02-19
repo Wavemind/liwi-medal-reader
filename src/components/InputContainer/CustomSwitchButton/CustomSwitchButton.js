@@ -32,7 +32,7 @@ export default class CustomSwitchButton extends React.Component<Props, State> {
 
   _handleChangeValue = (value) => {
     const { change, index } = this.props;
-    this.setState({ value: value });
+    this.setState({ value });
     change(index, value);
   };
 

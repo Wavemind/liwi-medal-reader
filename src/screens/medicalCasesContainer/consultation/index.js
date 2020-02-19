@@ -17,7 +17,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(WrapperNavigation(Consultation))));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(Consultation))));

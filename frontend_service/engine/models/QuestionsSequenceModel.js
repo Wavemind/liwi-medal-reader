@@ -19,8 +19,7 @@ interface QuestionsSequenceInterface {
   nodes: Object;
 }
 
-export class QuestionsSequenceModel extends NodeModel
-  implements QuestionsSequenceInterface {
+export class QuestionsSequenceModel extends NodeModel implements QuestionsSequenceInterface {
   constructor(props) {
     super(props);
 
@@ -77,17 +76,16 @@ export class QuestionsSequenceModel extends NodeModel
      *    If false the instance is closed (not answered or wrong answer)
      *  4. Return new array of top_condition
      */
-    let top_conditions_with_condition_value_true = filter(
-      this.top_conditions,
-      (top_condition) => {
-        let conditionValue = find(state$.nodes[top_condition.first_node_id].qs, (qs) => {return qs.id === this.id;}).conditionValue;
-        if (conditionValue === true) {
-          return true;
-        }
+    const top_conditions_with_condition_value_true = filter(this.top_conditions, (top_condition) => {
+      const { conditionValue } = find(state$.nodes[top_condition.first_node_id].qs, (qs) => {
+        return qs.id === this.id;
+      });
+      if (conditionValue === true) {
+        return true;
       }
-    );
+    });
 
-    let tempNodeFiltered = {
+    const tempNodeFiltered = {
       ...this,
       top_conditions: top_conditions_with_condition_value_true,
     };

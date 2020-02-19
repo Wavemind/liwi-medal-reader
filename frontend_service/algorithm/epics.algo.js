@@ -17,14 +17,14 @@ import {
 } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 
-/* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated.*/
+/* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated. */
 
 /**
  * Loop on diagnostics AND QS
  *
  * @params [Object] action$, [Object] state$
  * @return [Array][Object] arrayActions
- **/
+ * */
 // TODO make PS change side effect
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
@@ -41,7 +41,7 @@ export const epicCatchAnswer = (action$, state$) =>
       const relatedQuestionsSequence = currentNode.qs;
       const relatedNodes = currentNode.referenced_in;
 
-      let arrayActions = [];
+      const arrayActions = [];
 
       // Inject update
       arrayActions.push(updateMedicalCaseProperty('updated_at', moment().format()));
@@ -64,12 +64,12 @@ export const epicCatchAnswer = (action$, state$) =>
  *
  * @params [Object] action$, [Object] state$
  * @return [Array][Object] arrayActions
- **/
+ * */
 export const epicCatchDispatchNodeAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.HANDLE_NODE_CHANGED),
     switchMap((action) => {
-      let arrayActions = [];
+      const arrayActions = [];
       let caller;
 
       // TODO make a giant test about perf between ref id and object pass into action
@@ -121,7 +121,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       const { questionsSequenceId } = action.payload;
       const currentQuestionsSequence = state$.value.nodes[questionsSequenceId];
       let answerId = null;
-      let actions = [];
+      const actions = [];
       let statusQs;
       let questionsSequenceCondition = null;
 
@@ -145,16 +145,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
       }
 
       // eslint-disable-next-line no-console
-      console.log(
-        currentQuestionsSequence,
-        ' -> ce PS a comme réponse : ',
-        answerId,
-        'condition result : ',
-        questionsSequenceCondition,
-        ' and is ',
-        statusQs,
-        ' to calculate'
-      );
+      console.log(currentQuestionsSequence, ' -> ce PS a comme réponse : ', answerId, 'condition result : ', questionsSequenceCondition, ' and is ', statusQs, ' to calculate');
 
       // If the new answer of this QS is different from the older, we change it
       if (answerId !== currentQuestionsSequence.answer) {
@@ -201,7 +192,7 @@ export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
     switchMap((action) => {
       const { nodeId } = action.payload;
       const currentNode = state$.value.nodes[nodeId];
-      let actions = [];
+      const actions = [];
       let value = null;
 
       switch (currentNode.display_format) {
@@ -227,7 +218,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_CONDITION),
     switchMap((action) => {
-      let actions = [];
+      const actions = [];
 
       const { diagnosticId, nodeId } = action.payload;
 
@@ -236,14 +227,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       // INFO for debug if algo JSON is broken
       if (currentNode === undefined) {
         // eslint-disable-next-line no-console
-        console.log(
-          '%c --- DANGER --- ',
-          'background: #FF0000; color: #F6F3ED; padding: 5px',
-          ' The node',
-          nodeId,
-          'do not exist in diagnoses',
-          diagnosticId
-        );
+        console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', ' The node', nodeId, 'do not exist in diagnoses', diagnosticId);
         return of();
       }
 
@@ -255,9 +239,9 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
       // some() – returns true if the function returns true for at least one of the items
       // If one parentsNodes has to be show and answered
-      let parentConditionValue = parentsNodes.some((i) => {
-        let parentNode = state$.value.nodes[i];
-        let diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
+      const parentConditionValue = parentsNodes.some((i) => {
+        const parentNode = state$.value.nodes[i];
+        const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
         return parentNode.answer !== null && diagnostic.conditionValue === true;
       });
 

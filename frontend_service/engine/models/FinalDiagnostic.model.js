@@ -4,33 +4,17 @@ import find from 'lodash/find';
 import * as _ from 'lodash';
 import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
-import {
-  calculateCondition,
-  comparingTopConditions,
-  reduceConditionArrayBoolean,
-} from '../../algorithm/conditionsHelpers.algo';
+import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 import { nodesType } from '../../constants';
 
-interface FinalDiagnosticInterface {
-}
+interface FinalDiagnosticInterface {}
 
 export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticInterface {
   constructor(props) {
     super(props);
 
-    const {
-      label,
-      diagnostic_id,
-      treatments,
-      managements,
-      conditions,
-      top_conditions,
-      excluding_final_diagnostics = null,
-      excluded_by_final_diagnostics = null,
-      cc,
-      instances = [],
-    } = props;
+    const { label, diagnostic_id, treatments, managements, conditions, top_conditions, excluding_final_diagnostics = null, excluded_by_final_diagnostics = null, cc, instances = [] } = props;
 
     this.label = label;
     this.diagnostic_id = diagnostic_id;
@@ -63,14 +47,14 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     /**
      * Initial Var
      */
-    let currentNode = state$.nodes[instance.id];
-    let instanceConditionValue = find(currentNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
+    const currentNode = state$.nodes[instance.id];
+    const instanceConditionValue = find(currentNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
 
     /**
      * Get the condition of the instance link
      * Do not change to this.calculateCondtion -> infinite loop
      */
-    let instanceCondition = calculateCondition(instance);
+    const instanceCondition = calculateCondition(instance);
 
     // The condition path is not answered
     // Wait on user
@@ -88,26 +72,27 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return null;
     }
     // Remove path other dd
-    let childrenWithoutOtherDd = instance.children.filter((id) => {
+    const childrenWithoutOtherDd = instance.children.filter((id) => {
       if (state$.nodes[id].type === nodesType.finalDiagnostic && state$.nodes[id].id !== dd.id) {
         return false;
       }
       return true;
     });
 
-    let recursif = childrenWithoutOtherDd.map((childId) => {
-      let child = state$.nodes[childId];
+    const recursif = childrenWithoutOtherDd.map((childId) => {
+      const child = state$.nodes[childId];
       // If this is not the final DD we calculate the conditonValue of the child
       if (child.type === nodesType.question || child.type === nodesType.questionsSequence) {
         return this.recursiveNodeDd(state$, state$.diagnostics[dd.diagnostic_id].instances[child.id], dd);
-      } else if (child.id === dd.id && child.type === nodesType.finalDiagnostic) {
-        let top_conditions = _.filter(dd.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
+      }
+      if (child.id === dd.id && child.type === nodesType.finalDiagnostic) {
+        const top_conditions = _.filter(dd.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
         // We get the condition of the final link
-        let arrayBoolean = top_conditions.map((condition) => {
+        const arrayBoolean = top_conditions.map((condition) => {
           return comparingTopConditions(dd, condition);
         });
         // calcule final path
-        let r = reduceConditionArrayBoolean(arrayBoolean);
+        const r = reduceConditionArrayBoolean(arrayBoolean);
         return r;
       }
     });
@@ -129,8 +114,8 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    *      false = can't access the end anymore
    */
   getStatusOfDD = (state$, dd) => {
-    let topLevelNodes = [];
-    let instancesOfDiagnosticByDd = state$.diagnostics[dd.diagnostic_id].instances;
+    const topLevelNodes = [];
+    const instancesOfDiagnosticByDd = state$.diagnostics[dd.diagnostic_id].instances;
     // Set top Level Nodes
     Object.keys(instancesOfDiagnosticByDd).map((instanceId) => {
       // Is top level nodes
@@ -142,7 +127,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       }
     });
 
-    let allNodesAnsweredInDd = topLevelNodes.map((topNode) => this.recursiveNodeDd(state$, topNode, dd));
+    const allNodesAnsweredInDd = topLevelNodes.map((topNode) => this.recursiveNodeDd(state$, topNode, dd));
 
     return reduceConditionArrayBoolean(allNodesAnsweredInDd);
   };
@@ -153,17 +138,17 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    */
   calculateCondition = () => {
     const state$ = store.getState();
-    let conditioNValueTrue = [];
+    const conditioNValueTrue = [];
     // Generate only the top_condition with conditionValue to true => they are not disabled
     this.top_conditions.map((condition) => {
-      let findDDinNode = state$.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
+      const findDDinNode = state$.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
       if (findDDinNode.conditionValue === true) {
         conditioNValueTrue.push(condition);
       }
     });
 
     // Return the status of this dd
-    let statusOfDD = this.getStatusOfDD(state$, this);
+    const statusOfDD = this.getStatusOfDD(state$, this);
 
     // If this FD can be excluded by other high-priority FD
     if (this.excluded_by_final_diagnostics !== null) {
@@ -174,9 +159,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
           return false;
         }
         excludingNode = state$.nodes[excludingNode.excluded_by_final_diagnostics];
-
-      }
-      while (excludingNode !== undefined);
+      } while (excludingNode !== undefined);
     }
 
     // TODO change the excluding final diagnostics (can have an impact on showed treatment and management... so useless for now)
@@ -185,10 +168,12 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     }
     if (statusOfDD === false) {
       return false;
-    } else if (statusOfDD === null) {
+    }
+    if (statusOfDD === null) {
       return null;
-    } else if (statusOfDD === true) {
-      let tempDd = { ...this, top_conditions: conditioNValueTrue };
+    }
+    if (statusOfDD === true) {
+      const tempDd = { ...this, top_conditions: conditioNValueTrue };
       return calculateCondition(tempDd);
     }
   };
@@ -208,18 +193,18 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const state$ = store.getState();
     const { nodes } = state$;
 
-    let finalDiagnostics = nodes.filterByType(nodesType.finalDiagnostic);
+    const finalDiagnostics = nodes.filterByType(nodesType.finalDiagnostic);
 
     const finalDiagnosticsNull = [];
     const finalDiagnosticsTrue = [];
     const finalDiagnosticsFalse = [];
 
-    for (let index in finalDiagnostics) {
+    for (const index in finalDiagnostics) {
       if (finalDiagnostics.hasOwnProperty(index)) {
-        let finalDiagnostic = finalDiagnostics[index];
+        const finalDiagnostic = finalDiagnostics[index];
         const complaintCategory = nodes[finalDiagnostic.cc];
 
-        let condition = finalDiagnostic.calculateCondition();
+        const condition = finalDiagnostic.calculateCondition();
 
         if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers)[1])) {
           finalDiagnosticsFalse.push({

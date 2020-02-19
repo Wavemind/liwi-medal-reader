@@ -41,10 +41,10 @@ export default class PatientProfile extends React.Component<Props, State> {
   // Fetch patient in localstorage
   async getPatient() {
     const { navigation } = this.props;
-    let id = navigation.getParam('id');
+    const id = navigation.getParam('id');
 
-    let patient = await getItemFromArray('patients', 'id', id);
-    let algorithms = await getItems('algorithms');
+    const patient = await getItemFromArray('patients', 'id', id);
+    const algorithms = await getItems('algorithms');
     this.setState({
       patient,
       algorithms,
@@ -92,13 +92,13 @@ export default class PatientProfile extends React.Component<Props, State> {
 
       return (
         <ListItem
-          key={medicalCaseItem.id + '_mc'}
+          key={`${medicalCaseItem.id}_mc`}
           rounded
           block
           style={style}
           spaced
           onPress={async () => {
-            let medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
+            const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
 
             if (medicalCase.id !== medicalCaseItem.id) {
               await this.selectMedicalCase({
@@ -107,7 +107,7 @@ export default class PatientProfile extends React.Component<Props, State> {
               });
             }
 
-            let route = routeDependingStatus(medicalCaseRoute);
+            const route = routeDependingStatus(medicalCaseRoute);
             if (route !== undefined) {
               navigation.navigate(route);
             }

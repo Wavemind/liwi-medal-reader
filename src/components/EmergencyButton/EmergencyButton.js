@@ -19,7 +19,7 @@ export default class EmergencyButton extends Component {
           containerStyle={__DEV__ ? styles.container : {}}
           position="bottomRight"
           onPress={() => {
-            let cu = NavigationService.getCurrentRoute();
+            const cu = NavigationService.getCurrentRoute();
             const {
               app: { logged },
             } = this.props;
@@ -37,7 +37,7 @@ export default class EmergencyButton extends Component {
               NavigationService.navigate(navigationGoBack);
             } else {
               NavigationService.navigate('Emergency', {
-                navigationGoBack: navigationGoBack,
+                navigationGoBack,
               });
             }
           }}

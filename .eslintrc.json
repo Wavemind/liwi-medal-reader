@@ -49,6 +49,7 @@
     "template-curly-spacing": "off",
     "indent": "off",
     "max-len": "off",
+    "no-use-before-define": "off",
     "arrow-parens": "off",
     "arrow-body-style": ["off"],
     "global-require": "off"

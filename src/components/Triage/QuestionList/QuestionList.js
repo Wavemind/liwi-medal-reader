@@ -16,6 +16,7 @@ type State = { app: StateApplicationContext } & {};
  * */
 export default class QuestionList extends React.Component<Props, State> {
   state = {};
+
   static defaultProps = {};
 
   render() {
