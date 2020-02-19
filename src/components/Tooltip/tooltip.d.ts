@@ -5,12 +5,7 @@ declare module 'react-native-walkthrough-tooltip' {
   import React from 'react';
   import { GestureResponderEvent, StyleProp, ViewStyle } from 'react-native';
 
-  type Orientation =
-    | 'portrait'
-    | 'portrait-upside-down'
-    | 'landscape'
-    | 'landscape-left'
-    | 'landscape-right';
+  type Orientation = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
 
   export interface TooltipSize {
     width: number;

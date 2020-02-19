@@ -9,6 +9,4 @@ const mapStateToProps = (medicalCase) => {
   };
 };
 
-export default connect(mapStateToProps)(
-  withNavigation(withApplication(ConfirmationView))
-);
+export default connect(mapStateToProps)(withNavigation(withApplication(ConfirmationView)));

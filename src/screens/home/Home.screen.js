@@ -66,15 +66,13 @@ export default class Home extends React.Component<Props, State> {
                     type: 'danger',
                     duration: 4000,
                   });
+                } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
+                  navigation.navigate('PatientUpsert', {
+                    idPatient: null,
+                    newMedicalCase: true,
+                  });
                 } else {
-                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                    navigation.navigate('PatientUpsert', {
-                      idPatient: null,
-                      newMedicalCase: true,
-                    });
-                  } else {
-                    this.setState({ propsToolTipVisible: true });
-                  }
+                  this.setState({ propsToolTipVisible: true });
                 }
               }}
             >

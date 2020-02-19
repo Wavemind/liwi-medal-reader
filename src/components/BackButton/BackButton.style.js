@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
     width: 55,
     height: 55,
   },
-  Icon:{
+  Icon: {
     fontSize: 25,
     color: liwiColors.redColor,
-  }
+  },
 });

@@ -51,12 +51,7 @@ const arrowRotationForPlacement = (placement) => {
   }
 };
 
-const arrowPlacementStyles = ({
-  anchorPoint,
-  arrowSize,
-  placement,
-  tooltipOrigin,
-}) => {
+const arrowPlacementStyles = ({ anchorPoint, arrowSize, placement, tooltipOrigin }) => {
   // Create the arrow from a rectangle with the appropriate borderXWidth set
   // A rotation is then applied dependending on the placement
   // Also make it slightly bigger
@@ -131,32 +126,16 @@ const tooltipPlacementStyles = ({ arrowSize, placement, tooltipOrigin }) => {
 };
 
 const styleGenerator = (styleGeneratorProps) => {
-  const {
-    adjustedContentSize,
-    displayInsets,
-    measurementsFinished,
-    ownProps,
-    placement,
-  } = styleGeneratorProps;
+  const { adjustedContentSize, displayInsets, measurementsFinished, ownProps, placement } = styleGeneratorProps;
 
   const adjustedSizeAvailable = adjustedContentSize.width;
   const { backgroundColor } = ownProps;
 
-  const contentStyle = [
-    styles.content,
-    adjustedSizeAvailable && { ...adjustedContentSize },
-    ownProps.contentStyle,
-  ];
+  const contentStyle = [styles.content, adjustedSizeAvailable && { ...adjustedContentSize }, ownProps.contentStyle];
 
-  const contentBackgroundColor = StyleSheet.flatten(contentStyle)
-    .backgroundColor;
+  const contentBackgroundColor = StyleSheet.flatten(contentStyle).backgroundColor;
 
-  const arrowStyle = [
-    styles.arrow,
-    arrowPlacementStyles(styleGeneratorProps),
-    { borderTopColor: contentBackgroundColor },
-    ownProps.arrowStyle,
-  ];
+  const arrowStyle = [styles.arrow, arrowPlacementStyles(styleGeneratorProps), { borderTopColor: contentBackgroundColor }, ownProps.arrowStyle];
 
   return {
     arrowStyle: [...arrowStyle, getArrowRotation(arrowStyle, placement)],
@@ -171,16 +150,9 @@ const styleGenerator = (styleGeneratorProps) => {
         backgroundColor,
       },
     ],
-    containerStyle: [
-      styles.container,
-      adjustedSizeAvailable && measurementsFinished && styles.containerVisible,
-    ],
+    containerStyle: [styles.container, adjustedSizeAvailable && measurementsFinished && styles.containerVisible],
     contentStyle,
-    tooltipStyle: [
-      styles.tooltip,
-      tooltipPlacementStyles(styleGeneratorProps),
-      ownProps.tooltipStyle,
-    ],
+    tooltipStyle: [styles.tooltip, tooltipPlacementStyles(styleGeneratorProps), ownProps.tooltipStyle],
   };
 };
 

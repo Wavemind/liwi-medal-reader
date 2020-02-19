@@ -12,10 +12,7 @@ type State = {};
 export default class String extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
-    return (
-      nextProps.question.answer !== question.answer ||
-      nextProps.question.value !== question.value
-    );
+    return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
 
   state = {
@@ -29,7 +26,7 @@ export default class String extends React.Component<Props, State> {
 
   _onEndEditing = (value) => {
     const { setAnswer, question } = this.props;
-    if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '' ) {
+    if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
       setAnswer(question.id, value.nativeEvent.text);
     } else if (question.value !== null && value.nativeEvent.text === '') {
       setAnswer(question.id, null);
@@ -42,13 +39,7 @@ export default class String extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input
-          question
-          defaultValue={question.answer !== null ? question.value : null}
-          style={style}
-          onFocus={this._focus}
-          onEndEditing={this._onEndEditing}
-        />
+        <Input question defaultValue={question.answer !== null ? question.value : null} style={style} onFocus={this._focus} onEndEditing={this._onEndEditing} />
       </View>
     );
   }

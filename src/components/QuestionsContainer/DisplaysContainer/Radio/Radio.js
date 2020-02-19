@@ -12,7 +12,7 @@ type State = {};
 
 export default class Radio extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-    const {question} = this.props;
+    const { question } = this.props;
     return nextProps.question.answer !== question.answer;
   }
 
@@ -24,29 +24,14 @@ export default class Radio extends React.Component<Props, State> {
         {Object.keys(question.answers).map((id) => (
           <Grid key={id + '_radiobutton'}>
             <ColCenter>
-              <Text style={{ color: liwiColors.blackColor }}>
-                {question.answers[id].label}
-              </Text>
+              <Text style={{ color: liwiColors.blackColor }}>{question.answers[id].label}</Text>
             </ColCenter>
             <ColCenter>
-              <Button
-                square
-                onPress={() =>
-                  setAnswer(question.id, question.answers[id].id)
-                }
-              >
+              <Button square onPress={() => setAnswer(question.id, question.answers[id].id)}>
                 <Icon
-                  name={
-                    question.answer === question.answers[id].id
-                      ? 'radio-button-checked'
-                      : 'radio-button-unchecked'
-                  }
-                  type='MaterialIcons'
-                  style={
-                    question.answer === question.answers[id].id
-                      ? { color: liwiColors.greenColor }
-                      : { color: liwiColors.blackColor }
-                  }
+                  name={question.answer === question.answers[id].id ? 'radio-button-checked' : 'radio-button-unchecked'}
+                  type="MaterialIcons"
+                  style={question.answer === question.answers[id].id ? { color: liwiColors.greenColor } : { color: liwiColors.blackColor }}
                 />
               </Button>
             </ColCenter>

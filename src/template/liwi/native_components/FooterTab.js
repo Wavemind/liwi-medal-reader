@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import variable from '../variables/platform';
 
 export default (variables /*: * */ = variable) => {
-  const platform = variables.platform;
+  const { platform } = variables;
 
   const footerTabTheme = {
     'NativeBase.Button': {
@@ -66,8 +66,7 @@ export default (variables /*: * */ = variable) => {
         lineHeight: 16,
       },
     },
-    backgroundColor:
-      Platform.OS === 'android' ? variables.footerDefaultBg : undefined,
+    backgroundColor: Platform.OS === 'android' ? variables.footerDefaultBg : undefined,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,

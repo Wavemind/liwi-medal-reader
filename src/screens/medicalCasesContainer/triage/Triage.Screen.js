@@ -8,7 +8,11 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessement } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import {
+  questionsBasicMeasurements,
+  questionsComplaintCategory,
+  questionsFirstLookAssessement,
+} from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));

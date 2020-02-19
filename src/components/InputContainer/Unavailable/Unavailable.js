@@ -32,13 +32,6 @@ export default class Unavailable extends React.Component<Props, State> {
 
   render() {
     const { question, unavailableAnswer } = this.props;
-    return (
-      <CheckBox
-        style={styles.unavailableBox}
-        onPress={this.onPress}
-        color={liwiColors.redColor}
-        checked={question.answer === unavailableAnswer.id}
-      />
-    );
+    return <CheckBox style={styles.unavailableBox} onPress={this.onPress} color={liwiColors.redColor} checked={question.answer === unavailableAnswer.id} />;
   }
 }

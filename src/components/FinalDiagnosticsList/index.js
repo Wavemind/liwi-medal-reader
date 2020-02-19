@@ -9,6 +9,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(
-  withSessions(withApplication(FinalDiagnosticsList))
-);
+export default connect(mapStateToProps)(withSessions(withApplication(FinalDiagnosticsList)));

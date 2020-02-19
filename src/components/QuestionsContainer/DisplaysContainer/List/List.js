@@ -13,10 +13,7 @@ export default class List extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
 
-    return (
-      nextProps.question.answer !== question.answer ||
-      nextProps.question.value !== question.value
-    );
+    return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
 
   onValueChange = (value: string) => {
@@ -31,24 +28,12 @@ export default class List extends React.Component<Props, State> {
 
     Object.keys(question.answers).map((id) =>
       question.answers[id].value !== 'not_available'
-        ? PickerItem.push(
-          <Picker.Item
-            key={id + '_picker'}
-            label={question.answers[id].label}
-            value={String(id)}
-          />
-          )
+        ? PickerItem.push(<Picker.Item key={id + '_picker'} label={question.answers[id].label} value={String(id)} />)
         : null
     );
     return (
       <View answer>
-        <Picker
-          mode="dropdown"
-          iosHeader="Select "
-          style={styles.picker}
-          selectedValue={String(question.answer)}
-          onValueChange={this.onValueChange}
-        >
+        <Picker mode="dropdown" iosHeader="Select " style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange}>
           <Picker.Item label="Select" value={null} />
           {PickerItem}
         </Picker>

@@ -45,5 +45,5 @@ export const styles = StyleSheet.create({
 
   activeText: {
     color: liwiColors.whiteColor,
-  }
+  },
 });

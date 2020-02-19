@@ -15,10 +15,7 @@ type Props = {
 export default class Formula extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
-    return (
-      nextProps.question.answer !== question.answer ||
-      nextProps.question.value !== question.value
-    );
+    return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
 
   render() {
@@ -30,7 +27,7 @@ export default class Formula extends React.Component<Props> {
           question
           defaultValue={question.value !== null ? String(question.value) : 'not defined'}
           disabled
-          style={{backgroundColor: liwiColors.greyColor, textAlign:'center'}}
+          style={{ backgroundColor: liwiColors.greyColor, textAlign: 'center' }}
         />
       </View>
     );
