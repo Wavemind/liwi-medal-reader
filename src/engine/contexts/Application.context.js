@@ -97,7 +97,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   initContext = async () => {
     const sessions = await getSessions();
 
-    let finderActiveSession = find(sessions, (session) => {
+    const finderActiveSession = find(sessions, (session) => {
       const isStillActive = moment().isBefore(moment(session.active_since).add(sessionsDuration, 'minute'));
       return session.active && isStillActive;
     });

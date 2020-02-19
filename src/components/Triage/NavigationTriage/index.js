@@ -11,8 +11,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setStatus: (status, newValue) =>
-      dispatch(updateMedicalCaseProperty(status, newValue)),
+    setStatus: (status, newValue) => dispatch(updateMedicalCaseProperty(status, newValue)),
   };
 };
 

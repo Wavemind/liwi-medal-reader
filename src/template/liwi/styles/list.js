@@ -18,8 +18,8 @@ export default {
       },
       '.condensed': {
         paddingTop: 7,
-        paddingBottom: 7
-      }
+        paddingBottom: 7,
+      },
     },
   },
 };

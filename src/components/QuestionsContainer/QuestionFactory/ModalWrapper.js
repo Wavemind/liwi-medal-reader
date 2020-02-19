@@ -11,7 +11,6 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 class ModalWrapper extends React.Component<Props, State> {
-
   static defaultProps = {
     content: 'Modal content',
   };

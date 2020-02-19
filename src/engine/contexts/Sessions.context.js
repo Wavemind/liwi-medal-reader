@@ -22,10 +22,7 @@ export type SessionsProviderState = {
   logout: (userId: number) => Promise<any>,
 };
 
-export class SessionsProvider extends React.Component<
-  SessionsProviderProps,
-  SessionsProviderState
-> {
+export class SessionsProvider extends React.Component<SessionsProviderProps, SessionsProviderState> {
   constructor(props: SessionsProviderProps) {
     super(props);
     this.initContext();
@@ -108,18 +105,10 @@ export class SessionsProvider extends React.Component<
 
   render() {
     const { children } = this.props;
-    return (
-      <SessionsContext.Provider value={this.state}>
-        {children}
-      </SessionsContext.Provider>
-    );
+    return <SessionsContext.Provider value={this.state}>{children}</SessionsContext.Provider>;
   }
 }
 
-export const withSessions = (Component: React.ComponentType<any>) => (
-  props: any
-) => (
-  <SessionsContext.Consumer>
-    {(store) => <Component sessions={store} {...props} />}
-  </SessionsContext.Consumer>
+export const withSessions = (Component: React.ComponentType<any>) => (props: any) => (
+  <SessionsContext.Consumer>{(store) => <Component sessions={store} {...props} />}</SessionsContext.Consumer>
 );

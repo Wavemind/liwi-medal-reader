@@ -8,8 +8,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setAnswerUnavailable: (index, value) =>
-      dispatch(setAnswerUnavailable(index, value)),
+    setAnswerUnavailable: (index, value) => dispatch(setAnswerUnavailable(index, value)),
   };
 };
 export default connect(

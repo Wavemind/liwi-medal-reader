@@ -22,8 +22,7 @@ export const jestApplicationContextProps = {
     client: 'DrJntOtQVkNhBR2_46EFsA',
     expiry: '1563970500',
     uid: 'mickael.lacombe@wavemind.ch',
-    local_code:
-      'abc9b601505d31a95dfc3eccec0e9e899d71f316c11d660b14d2e56370eea7d5',
+    local_code: 'abc9b601505d31a95dfc3eccec0e9e899d71f316c11d660b14d2e56370eea7d5',
     active: true,
     active_since: '2019-07-11T11:08:31+02:00',
     lastLogin: 'Wed Jul 10 2019 12:17:37 GMT+0000',
@@ -34,7 +33,7 @@ export const jestApplicationContextProps = {
   isModalVisible: false,
   contentModal: 'initial',
   initialPosition: {},
-  t: () => {}
+  t: () => {},
 };
 
 export const jestSessionsContextProps = {
@@ -54,8 +53,7 @@ export const jestSessionsContextProps = {
       client: 'DrJntOtQVkNhBR2_46EFsA',
       expiry: '1563970500',
       uid: 'mickael.lacombe@wavemind.ch',
-      local_code:
-        'abc9b601505d31a95dfc3eccec0e9e899d71f316c11d660b14d2e56370eea7d5',
+      local_code: 'abc9b601505d31a95dfc3eccec0e9e899d71f316c11d660b14d2e56370eea7d5',
       active: true,
       active_since: '2019-07-11T11:08:31+02:00',
       lastLogin: 'Wed Jul 10 2019 12:17:37 GMT+0000',
@@ -75,8 +73,7 @@ export const jestSessionsContextProps = {
       client: 'T3lw1JQCIwoIpQtrrQZmKQ',
       expiry: '1563972139',
       uid: 'quentin.girard@wavemind.ch',
-      local_code:
-        'abc9b601505d31a95dfc3eccec0e9e899d71f316c11d660b14d2e56370eea7d5',
+      local_code: 'abc9b601505d31a95dfc3eccec0e9e899d71f316c11d660b14d2e56370eea7d5',
       active: false,
       active_since: false,
       lastLogin: 'Wed Jul 10 2019 12:42:27 GMT+0000',

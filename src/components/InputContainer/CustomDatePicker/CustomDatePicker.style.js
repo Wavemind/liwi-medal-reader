@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
 
   view: {
     flexDirection: 'row',
-    paddingBottom: 5
+    paddingBottom: 5,
   },
 
   textWithoutIcon: {

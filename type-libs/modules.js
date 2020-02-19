@@ -1,4 +1,4 @@
-// To avoid error because react-native module is from expo
+// @flow
 declare module 'react-native' {
   declare module.exports: any;
 }

@@ -6,5 +6,5 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 0,
     padding: 0,
-  }
+  },
 });

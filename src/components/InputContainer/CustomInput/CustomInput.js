@@ -7,7 +7,7 @@ import { Form, Icon, Input, Text } from 'native-base';
 import { styles } from './CustomInput.style';
 import { ViewBlocColor } from '../../../template/layout';
 
-type Props = NavigationScreenProps & { autoCapitalize: string};
+type Props = NavigationScreenProps & { autoCapitalize: string };
 type State = {};
 
 export default class CustomInput extends React.Component<Props, State> {

@@ -3,5 +3,5 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   unavailableBox: {
     marginRight: 45,
-  }
+  },
 });

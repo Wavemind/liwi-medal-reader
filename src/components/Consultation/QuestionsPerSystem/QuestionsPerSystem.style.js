@@ -10,6 +10,6 @@ export const styles = StyleSheet.create({
 
   spacingChiefComplaints: {
     paddingBottom: 10,
-    marginBottom: 20
+    marginBottom: 20,
   },
 });

@@ -15,7 +15,6 @@ type State = { app: StateApplicationContext } & {};
  * Component used to display list of triage questions
  * */
 export default class QuestionList extends React.Component<Props, State> {
-
   state = {};
   static defaultProps = {};
 

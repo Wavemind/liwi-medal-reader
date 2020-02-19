@@ -41,11 +41,7 @@ export default class PatientSummary extends Component<Props, State> {
             }
             style={styles.touchable}
           >
-            <Image
-              style={styleImage}
-              resizeMode="contain"
-              source={require('../../../../assets/images/profil.png')}
-            />
+            <Image style={styleImage} resizeMode="contain" source={require('../../../../assets/images/profil.png')} />
             <Text center>{t('patient_summary_menu:patient_profile')}</Text>
           </TouchableOpacity>
 
@@ -59,11 +55,7 @@ export default class PatientSummary extends Component<Props, State> {
             }
             style={styles.touchable}
           >
-            <Image
-              resizeMode="contain"
-              style={styleImage}
-              source={require('../../../../assets/images/summary.png')}
-            />
+            <Image resizeMode="contain" style={styleImage} source={require('../../../../assets/images/summary.png')} />
             <Text center>{t('patient_summary_menu:current_summary')}</Text>
           </TouchableOpacity>
 
@@ -77,11 +69,7 @@ export default class PatientSummary extends Component<Props, State> {
             }
             style={styles.touchable}
           >
-            <Image
-              resizeMode="contain"
-              style={styleImage}
-              source={require('../../../../assets/images/differential.png')}
-            />
+            <Image resizeMode="contain" style={styleImage} source={require('../../../../assets/images/differential.png')} />
             <Text center>{t('patient_summary_menu:differential_diagnoses')}</Text>
           </TouchableOpacity>
         </View>
