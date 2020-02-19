@@ -203,7 +203,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   async componentDidMount() {
-    let permissionReturned = await this.getGeo();
+    const permissionReturned = await this.getGeo();
     let location = {
       coords: {
         accuracy: 0,
@@ -257,6 +257,4 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) => (
-  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>
-);
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;

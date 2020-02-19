@@ -15,7 +15,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(withNavigation(NavigationTriage))));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(withNavigation(NavigationTriage))));

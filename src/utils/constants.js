@@ -1,7 +1,7 @@
 import { Dimensions } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-/*** COLORS *****/
+/** * COLORS **** */
 export const blueColor = '#fff';
 export const liwiColors = {
   redColor: '#db473e',
@@ -22,7 +22,7 @@ export const screenHeight = Dimensions.get('window').height;
 
 export const marginLeftDrawer = 40;
 
-/*** STYLES COMMON **/
+/** * STYLES COMMON * */
 export const isTablet = DeviceInfo.isTablet();
 export const paddingIsTablet = () => (isTablet ? 30 : 5);
 export const marginIsTablet = () => (isTablet ? 50 : 20);

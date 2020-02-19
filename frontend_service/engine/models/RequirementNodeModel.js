@@ -23,7 +23,7 @@ export class RequirementNodeModel implements RequirementNodeInterface {
     }
 
     // Loop for top_conditions
-    let conditionFinal = this.top_conditions.map((conditions) => {
+    const conditionFinal = this.top_conditions.map((conditions) => {
       return this.comparingTopConditions(state$, conditions);
     });
     // reduce here
@@ -71,9 +71,11 @@ export class RequirementNodeModel implements RequirementNodeInterface {
   comparingBooleanOr(firstBoolean, secondBoolean) {
     if (firstBoolean === true || secondBoolean === true) {
       return true;
-    } else if (firstBoolean === false && secondBoolean === false) {
+    }
+    if (firstBoolean === false && secondBoolean === false) {
       return false;
-    } else if (firstBoolean === null || secondBoolean === null) {
+    }
+    if (firstBoolean === null || secondBoolean === null) {
       return null;
     }
   }
@@ -88,15 +90,16 @@ export class RequirementNodeModel implements RequirementNodeInterface {
 
     if (operator === null) {
       return first_sub_condition;
-    } else {
-      second_sub_condition = this.checkOneCondition(state$, second_id, second_node_id, second_type);
-
-      if (operator === 'AND') {
-        return first_sub_condition && second_sub_condition;
-      } else if (operator === 'OR') {
-        return this.comparingBooleanOr(first_sub_condition, second_sub_condition);
-      }
     }
+    second_sub_condition = this.checkOneCondition(state$, second_id, second_node_id, second_type);
+
+    if (operator === 'AND') {
+      return first_sub_condition && second_sub_condition;
+    }
+    if (operator === 'OR') {
+      return this.comparingBooleanOr(first_sub_condition, second_sub_condition);
+    }
+
     return null;
   }
 }

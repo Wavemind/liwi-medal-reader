@@ -15,7 +15,7 @@ export const calculateCondition = (node) => {
   }
 
   // Loop for top_conditions
-  let conditionsArrayBoolean = returnConditionsArray(node);
+  const conditionsArrayBoolean = returnConditionsArray(node);
 
   return reduceConditionArrayBoolean(conditionsArrayBoolean);
 };
@@ -95,15 +95,16 @@ export const comparingTopConditions = (child, condition) => {
 
   if (operator === null) {
     return first_sub_condition;
-  } else {
-    second_sub_condition = checkOneCondition(child, second_id, second_node_id, second_type);
-
-    if (operator === 'AND') {
-      return first_sub_condition && second_sub_condition;
-    } else if (operator === 'OR') {
-      return comparingBooleanOr(first_sub_condition, second_sub_condition);
-    }
   }
+  second_sub_condition = checkOneCondition(child, second_id, second_node_id, second_type);
+
+  if (operator === 'AND') {
+    return first_sub_condition && second_sub_condition;
+  }
+  if (operator === 'OR') {
+    return comparingBooleanOr(first_sub_condition, second_sub_condition);
+  }
+
   return null;
 };
 
@@ -124,9 +125,11 @@ export const comparingTopConditions = (child, condition) => {
 const comparingBooleanOr = (firstBoolean, secondBoolean) => {
   if (firstBoolean === true || secondBoolean === true) {
     return true;
-  } else if (firstBoolean === false && secondBoolean === false) {
+  }
+  if (firstBoolean === false && secondBoolean === false) {
     return false;
-  } else if (firstBoolean === null || secondBoolean === null) {
+  }
+  if (firstBoolean === null || secondBoolean === null) {
     return null;
   }
 };

@@ -59,7 +59,7 @@ export default class Settings extends React.Component<Props, State> {
 
     this.setState(
       {
-        settings: settings,
+        settings,
       },
       async () => {
         await setItem('settings', settings);

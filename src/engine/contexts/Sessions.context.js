@@ -1,5 +1,5 @@
 // @flow
-/* eslint-disable react/no-unused-state*/
+/* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
 import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
@@ -109,6 +109,4 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
   }
 }
 
-export const withSessions = (Component: React.ComponentType<any>) => (props: any) => (
-  <SessionsContext.Consumer>{(store) => <Component sessions={store} {...props} />}</SessionsContext.Consumer>
-);
+export const withSessions = (Component: React.ComponentType<any>) => (props: any) => <SessionsContext.Consumer>{(store) => <Component sessions={store} {...props} />}</SessionsContext.Consumer>;

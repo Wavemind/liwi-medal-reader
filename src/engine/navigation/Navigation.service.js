@@ -38,15 +38,14 @@ function navigate(routeName, params = {}) {
  * @param state: Navigation : The state of react-navigation
  */
 function getActiveRouteByKey(key, state) {
-  let { routes } = state;
+  const { routes } = state;
 
   for (const route of routes) {
     if (route.key === key.key) {
       return route;
-    } else {
-      if (route.routes !== undefined) {
-        return getActiveRouteByKey(key, route);
-      }
+    }
+    if (route.routes !== undefined) {
+      return getActiveRouteByKey(key, route);
     }
   }
 }
@@ -58,14 +57,13 @@ function getActiveRouteByKey(key, state) {
  * @param state: Navigation : The state of react-navigation
  */
 function getActiveRouteByName(name, state) {
-  let { routes } = state;
+  const { routes } = state;
   for (const route of routes) {
     if (route.routeName === name) {
       return route;
-    } else {
-      if (route.routes !== undefined) {
-        return getActiveRouteByName(name, route);
-      }
+    }
+    if (route.routes !== undefined) {
+      return getActiveRouteByName(name, route);
     }
   }
 }
@@ -167,9 +165,9 @@ function resetActionStack(routeName, params) {
  */
 
 function onNavigationStateChange(prevState, currentState) {
-  let activeRoute = getActiveRouteName(currentState);
-  let prev = getActiveRouteName(prevState);
-  let cu = getCurrentRoute(currentState);
+  const activeRoute = getActiveRouteName(currentState);
+  const prev = getActiveRouteName(prevState);
+  const cu = getCurrentRoute(currentState);
 
   // prevent multiple execution
   if (activeRoute !== prev) {
@@ -177,12 +175,12 @@ function onNavigationStateChange(prevState, currentState) {
     // This route can change the status of MC
     if (cu.params !== undefined && cu?.params?.medicalCaseStatus !== undefined && state$.status !== cu.params.medicalCaseStatus) {
       // Find index in status
-      let currentStatus = _.find(medicalCaseStatus, (i) => {
+      const currentStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === state$.status;
       });
 
       // Find index in status
-      let routeStatus = _.find(medicalCaseStatus, (i) => {
+      const routeStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === cu.params.medicalCaseStatus;
       });
       // The status has to be changed !

@@ -15,9 +15,9 @@ import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean
  * @return {Array}
  */
 export const getParentsNodes = (state$, diagnosticId, nodeId) => {
-  let parentsNodes = [];
+  const parentsNodes = [];
 
-  let top_conditions = state$.value.diagnostics[diagnosticId].instances[nodeId].top_conditions;
+  const { top_conditions } = state$.value.diagnostics[diagnosticId].instances[nodeId];
 
   top_conditions.map((top) => {
     parentsNodes.push(top.first_node_id);
@@ -39,9 +39,9 @@ export const getParentsNodes = (state$, diagnosticId, nodeId) => {
  * @return {boolean|false|true|null}
  */
 export const nextChildFinalQs = (instance, finalQs) => {
-  let top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
+  const top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
   // We get the condition of the final link
-  let arrayBoolean = top_conditions.map((condition) => {
+  const arrayBoolean = top_conditions.map((condition) => {
     return comparingTopConditions(finalQs, condition);
   });
 
@@ -101,7 +101,7 @@ export const nextChildOtherQs = (state$, child, childConditionValue, qs, actions
  */
 const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
   return instance.children.map((childId) => {
-    let child = state$.value.nodes[childId];
+    const child = state$.value.nodes[childId];
 
     let childConditionValue;
 
@@ -125,18 +125,11 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
     }
     if (child.type === nodesType.questionsSequence) {
       return nextChildOtherQs(state$, child, childConditionValue, qs, actions);
-    } else if (child.type === nodesType.question) {
-      return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
-    } else {
-      console.warn(
-        '%c --- DANGER --- ',
-        'background: #FF0000; color: #F6F3ED; padding: 5px',
-        'This QS',
-        qs,
-        'You do not have to be here !! child in QS is wrong for : ',
-        child
-      );
     }
+    if (child.type === nodesType.question) {
+      return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+    }
+    console.warn('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'This QS', qs, 'You do not have to be here !! child in QS is wrong for : ', child);
   });
 };
 
@@ -154,8 +147,8 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   /**
    * Initial Var
    */
-  let currentNode = state$.value.nodes[instance.id];
-  let instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
+  const currentNode = state$.value.nodes[instance.id];
+  const instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
 
   /**
    * Get the condition of the instance link
@@ -194,17 +187,16 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
      * From this point we can process all children and go deeper in the tree
      * ProcessChildren return the boolean array of each branch
      */
-    let processChildren = InstanceChildrenOnQs(state$, instance, qs, actions, currentNode);
+    const processChildren = InstanceChildrenOnQs(state$, instance, qs, actions, currentNode);
 
     return reduceConditionArrayBoolean(processChildren);
 
     /**
      *  Here we have parcoured all the children
      */
-  } else {
-    // The node hasn't the expected answer BUT we are not a the end of the QS
-    return null;
   }
+  // The node hasn't the expected answer BUT we are not a the end of the QS
+  return null;
 };
 
 /**
@@ -222,7 +214,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
  *      false = can't access the end anymore
  */
 export const getQuestionsSequenceStatus = (state$, qs, actions) => {
-  let topLevelNodes = [];
+  const topLevelNodes = [];
 
   // Set top Level Nodes
   Object.keys(qs.instances).map((nodeId) => {
@@ -231,7 +223,7 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
     }
   });
 
-  let allNodesAnsweredInQs = topLevelNodes.map((topNode) => recursiveNodeQs(state$, topNode, qs, actions));
+  const allNodesAnsweredInQs = topLevelNodes.map((topNode) => recursiveNodeQs(state$, topNode, qs, actions));
 
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
@@ -259,9 +251,9 @@ export const showBirthDatePatient = (patient, state$) => {
   });
 
   // Sort medical cases by updated_at for get the last
-  let medicalCase = medicalCaseWithBirthDate.sort((a, b) => {
-    let dateA = moment(a.updated_at);
-    let dateB = moment(b.updated_at);
+  const medicalCase = medicalCaseWithBirthDate.sort((a, b) => {
+    const dateA = moment(a.updated_at);
+    const dateB = moment(b.updated_at);
     return dateB.diff(dateA);
   });
 
@@ -269,7 +261,6 @@ export const showBirthDatePatient = (patient, state$) => {
   if (medicalCase.length > 0) {
     // Parse date
     return moment(find(medicalCase.first().nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
-  } else {
-    return 'Age is not defined';
   }
+  return 'Age is not defined';
 };

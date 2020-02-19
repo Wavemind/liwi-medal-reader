@@ -26,7 +26,7 @@ export default class System extends React.Component<Props, State> {
   isSomeQuestionsDifferent = (nextPropsQuestions) => {
     const { questions } = this.props;
     return questions.some((question) => {
-      let nextQuestion = nextPropsQuestions.find((d) => d.id === question.id);
+      const nextQuestion = nextPropsQuestions.find((d) => d.id === question.id);
       if (nextQuestion === undefined || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value) {
         return true;
       }

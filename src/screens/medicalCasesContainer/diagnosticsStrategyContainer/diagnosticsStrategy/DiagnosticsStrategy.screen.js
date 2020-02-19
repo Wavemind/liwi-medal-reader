@@ -17,9 +17,8 @@ export default class DiagnosesStrategy extends Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     if (nextProps.medicalCase.id === undefined) {
       return false;
-    } else {
-      return true;
     }
+    return true;
   }
 
   componentDidMount() {
@@ -31,6 +30,7 @@ export default class DiagnosesStrategy extends Component<Props, State> {
 
     NavigationService.setParamsAge(navigation, t('navigation:diagnosticsstrategy'));
   }
+
   render() {
     const {
       app: { t },
@@ -43,7 +43,11 @@ export default class DiagnosesStrategy extends Component<Props, State> {
         validation={false}
         showTopStepper
         showBottomStepper
-        icons={[{ name: 'add-alert', type: 'MaterialIcons' }, { name: 'question-answer', type: 'MaterialIcons' }, { name: 'healing', type: 'MaterialIcons' }]}
+        icons={[
+          { name: 'add-alert', type: 'MaterialIcons' },
+          { name: 'question-answer', type: 'MaterialIcons' },
+          { name: 'healing', type: 'MaterialIcons' },
+        ]}
         steps={[t('medical_case:final_diagnoses'), t('medical_case:healthcares_questions'), t('medical_case:healthcares')]}
         backButtonTitle={t('medical_case:back')}
         nextButtonTitle={t('medical_case:next')}

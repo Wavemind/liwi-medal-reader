@@ -4,9 +4,9 @@ import { PixelRatio, StatusBar } from 'react-native';
 
 import variable from '../variables/platform';
 
-export default (variables /*: * */ = variable) => {
-  const platformStyle = variables.platformStyle;
-  const platform = variables.platform;
+export default (variables /* : * */ = variable) => {
+  const { platformStyle } = variables;
+  const { platform } = variables;
 
   const headerTheme = {
     '.span': {

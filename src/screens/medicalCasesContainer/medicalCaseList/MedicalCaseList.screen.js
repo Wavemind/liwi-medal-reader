@@ -28,12 +28,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     orderByLastName: null,
     orderByUpdate: null,
     filterTerm: '',
-    statuses: [
-      medicalCaseStatus.waitingTriage.name,
-      medicalCaseStatus.waitingConsultation.name,
-      medicalCaseStatus.waitingTests.name,
-      medicalCaseStatus.waitingDiagnostic.name,
-    ],
+    statuses: [medicalCaseStatus.waitingTriage.name, medicalCaseStatus.waitingConsultation.name, medicalCaseStatus.waitingTests.name, medicalCaseStatus.waitingDiagnostic.name],
   };
 
   async componentDidMount() {
@@ -50,8 +45,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState({ loading: true });
     const { medicalCase } = this.props;
 
-    let patients = await getArray('patients');
-    let medicalCases = [];
+    const patients = await getArray('patients');
+    const medicalCases = [];
 
     patients.map((patient) => {
       patient.medicalCases.map((medicalCaseLocalStorage) => {
@@ -67,7 +62,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     this.setState(
       {
-        medicalCases: medicalCases,
+        medicalCases,
       },
       () => this.settleMedicalCase()
     );
@@ -154,10 +149,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     // Filter patient based on first name and last name by search term
     let filteredMedicalCases = filter(medicalCases, (medicalCase) => {
-      return (
-        medicalCase.patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-        medicalCase.patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase())
-      );
+      return medicalCase.patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) || medicalCase.patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase());
     });
     // Filter patient based on medical case status
     filteredMedicalCases = filter(filteredMedicalCases, (medicalCase) => {
@@ -174,12 +166,13 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     } else if (orderByUpdate !== null) {
       orderedFilteredMedicalCases = filteredMedicalCases;
       orderedFilteredMedicalCases.sort((a, b) => {
-        let dateA = moment(a.updated_at);
-        let dateB = moment(b.updated_at);
+        const dateA = moment(a.updated_at);
+        const dateB = moment(b.updated_at);
 
         if (orderByUpdate === 'asc') {
           return dateB.diff(dateA);
-        } else if (orderByUpdate === 'desc') {
+        }
+        if (orderByUpdate === 'desc') {
           return dateA.diff(dateB);
         }
       });
@@ -219,10 +212,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 style={{
                   backgroundColor: '#ffffff',
                 }}
-                key={medicalCaseItem.id + '_medical_case_list'}
+                key={`${medicalCaseItem.id}_medical_case_list`}
                 spaced
                 onPress={async () => {
-                  let medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
+                  const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
 
                   if (medicalCase.id !== medicalCaseItem.id) {
                     await this.selectMedicalCase({
@@ -230,7 +223,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                     });
                   }
 
-                  let route = routeDependingStatus(medicalCaseRoute);
+                  const route = routeDependingStatus(medicalCaseRoute);
                   if (route !== undefined) {
                     navigation.navigate(route);
                   }
@@ -246,9 +239,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 </View>
 
                 <View w50>
-                  <Text>
-                    {medicalCase.id === medicalCaseItem.id ? moment(medicalCase.updated_at).calendar() : moment(medicalCaseItem.updated_at).calendar()}
-                  </Text>
+                  <Text>{medicalCase.id === medicalCaseItem.id ? moment(medicalCase.updated_at).calendar() : moment(medicalCaseItem.updated_at).calendar()}</Text>
                 </View>
               </ListItem>
             ))}
@@ -292,7 +283,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
             <Picker style={styles.picker} mode="dropdown" selectedValue={filterTerm} onValueChange={this.filterBy}>
               <Picker.Item label="" value="" />
               {statuses.map((status) => (
-                <Picker.Item label={t(`medical_case_list:${status}`)} key={status + 'status_list'} value={status} />
+                <Picker.Item label={t(`medical_case_list:${status}`)} key={`${status}status_list`} value={status} />
               ))}
             </Picker>
           </View>

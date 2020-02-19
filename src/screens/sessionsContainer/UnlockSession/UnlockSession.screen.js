@@ -41,19 +41,19 @@ export default class UnlockSession extends React.Component<Props, State> {
   // Send to context code and session for verification
   unLock = async () => {
     this.setState({ loadingUnlock: true });
-    let { code, email } = this.state;
+    const { code, email } = this.state;
     const {
       app,
       app: { t },
       sessions: { sessions },
     } = this.props;
 
-    let user = _.find(sessions, (session) => {
+    const user = _.find(sessions, (session) => {
       return session.data.email.toLowerCase() === email.toLowerCase();
     });
 
     if (user !== undefined) {
-      let result = await app.unLockSession(user.data.id, code);
+      const result = await app.unLockSession(user.data.id, code);
       Toaster(t(`notifications:${result}`, { type: 'danger' }));
     } else {
       Toaster(t('notifications:session_does_not_exist'), { type: 'danger' });
@@ -78,15 +78,7 @@ export default class UnlockSession extends React.Component<Props, State> {
               {t('unlock_session:title')}
             </LiwiTitle2>
             <Form>
-              <CustomInput
-                init={email}
-                change={this.changeValueFromInput}
-                index="email"
-                placeholder={t('unlock_session:email')}
-                condensed
-                keyboardType="email-address"
-                error={errors}
-              />
+              <CustomInput init={email} change={this.changeValueFromInput} index="email" placeholder={t('unlock_session:email')} condensed keyboardType="email-address" error={errors} />
               <CustomInput init={code} index="code" change={this.changeValueFromInput} secureTextEntry placeholder={t('unlock_session:code')} condensed />
             </Form>
             <Button full onPress={this.unLock} style={styles.button} disabled={loadingUnlock}>

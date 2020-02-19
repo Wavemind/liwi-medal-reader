@@ -35,7 +35,13 @@ export const questionsMedicalHistory = () => {
     false
   );
   if (state$.metaData.consultation.medicalHistory.length === 0 && questions.length !== 0) {
-    store.dispatch(updateMetaData('consultation', 'medicalHistory', questions.map(({ id }) => id)));
+    store.dispatch(
+      updateMetaData(
+        'consultation',
+        'medicalHistory',
+        questions.map(({ id }) => id)
+      )
+    );
   }
   return questions;
 };
@@ -65,7 +71,13 @@ export const questionsPhysicalExam = () => {
   );
 
   if (state$.metaData.consultation.physicalExam.length === 0 && questions.length !== 0) {
-    store.dispatch(updateMetaData('consultation', 'physicalExam', questions.map(({ id }) => id)));
+    store.dispatch(
+      updateMetaData(
+        'consultation',
+        'physicalExam',
+        questions.map(({ id }) => id)
+      )
+    );
   }
 
   return questions;
@@ -77,7 +89,7 @@ export const questionsPhysicalExam = () => {
  */
 export const questionsFirstLookAssessement = () => {
   const state$ = store.getState();
-  let firstLookAssessement = [];
+  const firstLookAssessement = [];
 
   const ordersFirstLookAssessment = state$.triage.orders[categories.emergencySign];
   ordersFirstLookAssessment.map((order) => {
@@ -85,7 +97,13 @@ export const questionsFirstLookAssessement = () => {
   });
 
   if (state$.metaData.triage.firstLookAssessments.length === 0 && firstLookAssessement.length !== 0) {
-    store.dispatch(updateMetaData('triage', 'firstLookAssessments', firstLookAssessement.map(({ id }) => id)));
+    store.dispatch(
+      updateMetaData(
+        'triage',
+        'firstLookAssessments',
+        firstLookAssessement.map(({ id }) => id)
+      )
+    );
   }
 
   return firstLookAssessement;
@@ -97,7 +115,7 @@ export const questionsFirstLookAssessement = () => {
  */
 export const questionsComplaintCategory = () => {
   const state$ = store.getState();
-  let complaintCategory = [];
+  const complaintCategory = [];
   const orders = state$.triage.orders[categories.complaintCategory];
 
   orders.map((order) => {
@@ -105,7 +123,13 @@ export const questionsComplaintCategory = () => {
   });
 
   if (state$.metaData.triage.complaintCategories.length === 0 && complaintCategory.length !== 0) {
-    store.dispatch(updateMetaData('triage', 'complaintCategories', complaintCategory.map(({ id }) => id)));
+    store.dispatch(
+      updateMetaData(
+        'triage',
+        'complaintCategories',
+        complaintCategory.map(({ id }) => id)
+      )
+    );
   }
 
   return complaintCategory;
@@ -117,11 +141,11 @@ export const questionsComplaintCategory = () => {
  */
 export const questionsBasicMeasurements = () => {
   const state$ = store.getState();
-  let basicMeasurements = [];
+  const basicMeasurements = [];
 
   const orderedQuestions = state$.triage.orders[categories.vitalSignTriage];
   orderedQuestions.map((orderedQuestion) => {
-    let question = state$.nodes[orderedQuestion];
+    const question = state$.nodes[orderedQuestion];
     if (question.isDisplayedInTriage(state$)) {
       basicMeasurements.push(question);
     }
@@ -129,7 +153,13 @@ export const questionsBasicMeasurements = () => {
 
   // Set Questions in State for validation
   if (state$.metaData.triage.basicMeasurements.length === 0 && basicMeasurements.length !== 0) {
-    store.dispatch(updateMetaData('triage', 'basicMeasurements', basicMeasurements.map(({ id }) => id)));
+    store.dispatch(
+      updateMetaData(
+        'triage',
+        'basicMeasurements',
+        basicMeasurements.map(({ id }) => id)
+      )
+    );
   }
 
   return basicMeasurements;
@@ -145,7 +175,13 @@ export const questionsTests = () => {
   assessmentTest = state$.nodes.filterBy([{ by: 'category', operator: 'equal', value: categories.assessment }]);
 
   if (state$.metaData.tests.tests.length === 0 && assessmentTest.length !== 0) {
-    store.dispatch(updateMetaData('tests', 'tests', assessmentTest.map(({ id }) => id)));
+    store.dispatch(
+      updateMetaData(
+        'tests',
+        'tests',
+        assessmentTest.map(({ id }) => id)
+      )
+    );
   }
 
   return assessmentTest;

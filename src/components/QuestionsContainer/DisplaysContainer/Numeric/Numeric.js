@@ -31,7 +31,7 @@ export default class Numeric extends React.Component<Props, State> {
   };
 
   _onEndEditing = (e) => {
-    let value = e.nativeEvent.text;
+    const value = e.nativeEvent.text;
     const { setAnswer, question } = this.props;
 
     if (value !== question.value && value !== '') {
@@ -44,7 +44,7 @@ export default class Numeric extends React.Component<Props, State> {
   onChange = (e) => {
     let value = e.nativeEvent.text;
 
-    let regWithComma = /^[0-9,]+$/;
+    const regWithComma = /^[0-9,]+$/;
 
     // Replace comma with dot
     if (regWithComma.test(value)) {
@@ -90,16 +90,7 @@ export default class Numeric extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input
-          keyboardType={keyboardType}
-          question
-          numeric
-          value={value}
-          onChange={this.onChange}
-          style={style}
-          onEndEditing={this._onEndEditing}
-          placeholder={placeholder}
-        />
+        <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this._onEndEditing} placeholder={placeholder} />
       </View>
     );
   }

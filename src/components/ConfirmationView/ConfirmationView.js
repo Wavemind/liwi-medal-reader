@@ -45,7 +45,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
                   onPress={() => {
                     if (medicalCase.isNewCase) {
                       navigation.navigate(nextRoute, {
-                        idPatient: idPatient,
+                        idPatient,
                         newMedicalCase: false,
                       });
                     }
@@ -65,7 +65,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
                     this.setState({ toolTipVisible: false });
                     callBackClose();
                     navigation.navigate(nextRoute, {
-                      idPatient: idPatient,
+                      idPatient,
                       newMedicalCase: true,
                     });
                   }}
@@ -93,15 +93,15 @@ export default class ConfirmationView extends React.Component<Props, State> {
    */
   onCloseToolTip = (reactNative, toolTip) => {
     const { callBackClose } = this.props;
-    let xTouch = reactNative.nativeEvent.pageX;
-    let xTooltip = toolTip.tooltipOrigin.x;
-    let xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
+    const xTouch = reactNative.nativeEvent.pageX;
+    const xTooltip = toolTip.tooltipOrigin.x;
+    const xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
 
-    let yTouch = reactNative.nativeEvent.pageY;
-    let yTooltip = toolTip.tooltipOrigin.y;
-    let yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
+    const yTouch = reactNative.nativeEvent.pageY;
+    const yTooltip = toolTip.tooltipOrigin.y;
+    const yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
 
-    let insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
+    const insideContent = xTouch > xTooltip && xTouch < xEndToolTip && yTouch > yTooltip && yTouch < yEndToolTip;
 
     if (!insideContent) {
       this.setState({ toolTipVisible: false });
@@ -121,14 +121,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
 
     return (
       <View flex={flex}>
-        <Tooltip
-          isVisible={toolTipVisible}
-          closeOnChildInteraction={false}
-          showChildInTooltip={false}
-          content={this._renderToolTipContent()}
-          placement="center"
-          onClose={this.onCloseToolTip}
-        />
+        <Tooltip isVisible={toolTipVisible} closeOnChildInteraction={false} showChildInTooltip={false} content={this._renderToolTipContent()} placement="center" onClose={this.onCloseToolTip} />
       </View>
     );
   }

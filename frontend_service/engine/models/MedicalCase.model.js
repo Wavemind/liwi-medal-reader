@@ -23,8 +23,8 @@ interface MedicalCaseInterface {
 
 export class MedicalCaseModel implements MedicalCaseInterface {
   create = async () => {
-    let algorithms = await getItems('algorithms');
-    let currentAlgorithm = find(algorithms, (a) => a.selected);
+    const algorithms = await getItems('algorithms');
+    const currentAlgorithm = find(algorithms, (a) => a.selected);
 
     await this.setInitialConditionValue(currentAlgorithm);
 
@@ -75,11 +75,11 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
   /**
    * For each medicalCase who exclude other diagnostic, we set the id in both side.
-   **/
+   * */
   generateExcludedId = async () => {
-    for (let index in this.nodes) {
+    for (const index in this.nodes) {
       if (this.nodes.hasOwnProperty(index)) {
-        let item = this.nodes[index];
+        const item = this.nodes[index];
 
         if (item.type === nodesType.finalDiagnostic && item.excluding_final_diagnostics !== null) {
           this.nodes[item.excluding_final_diagnostics].excluded_by_final_diagnostics = item.id;
@@ -90,10 +90,10 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
   /**
    * Generate id for a medical case
-   **/
+   * */
   generateId = async () => {
-    let patients = await getItem('patients');
-    let medicalCaseIds = [];
+    const patients = await getItem('patients');
+    const medicalCaseIds = [];
     let lastId = 0;
     let medicalCase = {};
 
@@ -116,7 +116,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
    * Set condition values of question in order to prepare them for second batch (before the triage one)
    * @param [Json] algorithm
    * @return [Json] algorithm
-   **/
+   * */
   setInitialConditionValue = async (algorithm) => {
     const { diagnostics, nodes } = algorithm;
     try {
@@ -146,8 +146,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
             if (nodes[id].stage === stage.registration) {
               nodes[id].conditionValue = true;
             } else {
-              let dd = nodes[id].dd?.some((e) => e.conditionValue);
-              let qs = nodes[id].qs?.some((e) => e.conditionValue);
+              const dd = nodes[id].dd?.some((e) => e.conditionValue);
+              const qs = nodes[id].qs?.some((e) => e.conditionValue);
               if (dd || qs) nodes[id].conditionValue = true;
             }
           });
@@ -163,7 +163,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
   /**
    * Recursive function to also set dd and qs parents of current qs
    * @params [Json][Integer][Integer] algorithm, parentId, id
-   **/
+   * */
   setParentConditionValue = (algorithm, parentId, id) => {
     let conditionValue = false;
     const { diagnostics, nodes } = algorithm;

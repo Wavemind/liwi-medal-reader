@@ -21,7 +21,4 @@ const defaultProps = {
   navigationStatus: 'willBlur',
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(WrapperNavigation(patientList, defaultProps))));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(patientList, defaultProps))));

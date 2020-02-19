@@ -32,10 +32,9 @@ export default class Questions extends React.Component<Props, State> {
           Object.keys(questions).map((i) => {
             // Detect Reference node
             if (questions[i].display_format === displayFormats.reference) {
-              return <QuestionReference question={questions[i]} key={i + '_ref_factory'} />;
-            } else {
-              return <QuestionFactory question={questions[i]} key={i + '_factory'} {...this.props} />;
+              return <QuestionReference question={questions[i]} key={`${i}_ref_factory`} />;
             }
+            return <QuestionFactory question={questions[i]} key={`${i}_factory`} {...this.props} />;
           })
         ) : (
           <View padding-auto margin-auto>

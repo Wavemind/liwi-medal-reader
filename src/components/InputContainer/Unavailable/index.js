@@ -11,7 +11,4 @@ const mapDispatchToProps = (dispatch) => {
     setAnswerUnavailable: (index, value) => dispatch(setAnswerUnavailable(index, value)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Unavailable);
+export default connect(mapStateToProps, mapDispatchToProps)(Unavailable);

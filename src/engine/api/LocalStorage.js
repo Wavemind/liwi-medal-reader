@@ -19,7 +19,7 @@ export const setItem = async (key, item) => {
       })
     );
   }
-  let controller = stringifyDeepRef(item);
+  const controller = stringifyDeepRef(item);
 
   return await AsyncStorage.setItem(key, controller);
 };
@@ -66,7 +66,7 @@ export const setItemFromArray = async (key, newItem, id) => {
   const items = await getArray(key);
 
   if (Array.isArray(items)) {
-    let index = findIndex(items, (item) => {
+    const index = findIndex(items, (item) => {
       return item.id === id;
     });
 
@@ -122,7 +122,7 @@ export const getArray = async (item) => {
 // @params [Object] medicalCase
 // Set medical case in local storage
 export const storeMedicalCase = async (medicalCase) => {
-  let patients = await getItems('patients');
+  const patients = await getItems('patients');
 
   if (Array.isArray(patients)) {
     patients.map((patient, patientID) => {
@@ -141,7 +141,7 @@ export const storeMedicalCase = async (medicalCase) => {
 // Generate a new medical case
 export const createMedicalCase = async (newMedicalCase) => {
   try {
-    let medicalCases = await getItems('medicalCases');
+    const medicalCases = await getItems('medicalCases');
     let maxId = maxBy(medicalCases, 'id');
 
     if (medicalCases.length === 0) {
@@ -165,7 +165,7 @@ export const updateSession = async (id, newSession) => {
   sessions = JSON.parse(sessions);
 
   if (Array.isArray(sessions)) {
-    let index = findIndex(sessions, (session) => {
+    const index = findIndex(sessions, (session) => {
       return session.data.id === id;
     });
 
@@ -227,7 +227,7 @@ export const getSession = async (id) => {
   sessions = JSON.parse(sessions);
 
   if (Array.isArray(sessions)) {
-    let findSession = sessions.find((session) => {
+    const findSession = sessions.find((session) => {
       return session.data.id === id;
     });
 
@@ -256,11 +256,11 @@ export const destroySession = async (id) => {
 // @params [Integer] id
 // Return patient medical cases
 export const getMedicalCase = async (id) => {
-  let patients = await getItems('patients');
+  const patients = await getItems('patients');
   let item = null;
 
   patients.map((patient) => {
-    let f = _.find(patient.medicalCases, (m) => m.id === id);
+    const f = _.find(patient.medicalCases, (m) => m.id === id);
     if (f !== undefined) {
       item = f;
     }

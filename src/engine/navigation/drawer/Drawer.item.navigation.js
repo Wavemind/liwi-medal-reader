@@ -37,7 +37,7 @@ const SmallText = styled.Text`
 export class CategorieButton extends Component<{ t: any, r: any }> {
   // Update the component only when needed
   shouldComponentUpdate(nextProps) {
-    let { r, areMedicalCaseInredux, routeName, isDrawer } = this.props;
+    const { r, areMedicalCaseInredux, routeName, isDrawer } = this.props;
 
     if (isDrawer !== nextProps.isDrawer) {
       return true;
@@ -55,17 +55,12 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
   }
 
   render() {
-    let { t, r, name, initialPage, navigate, isDrawer } = this.props;
+    const { t, r, name, initialPage, navigate, isDrawer } = this.props;
 
     // Small drawer
     if (!isDrawer) {
       return (
-        <WrapperMiniDrawerCategory
-          active={r.routeName === name}
-          isDrawer={isDrawer}
-          onStartShouldSetResponder={() => true}
-          onPress={() => navigate(name, initialPage)}
-        >
+        <WrapperMiniDrawerCategory active={r.routeName === name} isDrawer={isDrawer} onStartShouldSetResponder={() => true} onPress={() => navigate(name, initialPage)}>
           <SmallText isDrawer={isDrawer} active={r.routeName === name} numberOfLines={isDrawer ? 5 : 1}>
             {t}
           </SmallText>
@@ -85,7 +80,7 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
 export class ItemButton extends Component<{ t: any, r: any }> {
   // Update the component only when needed
   shouldComponentUpdate(nextProps) {
-    let { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
+    const { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
 
     if (isDrawer !== nextProps.isDrawer) {
       return true;
@@ -114,7 +109,7 @@ export class ItemButton extends Component<{ t: any, r: any }> {
   }
 
   render() {
-    let { t, r, initialPage, name, navigate, isDrawer } = this.props;
+    const { t, r, initialPage, name, navigate, isDrawer } = this.props;
 
     let dotType;
 
@@ -236,7 +231,7 @@ export const BottomButtonsDrawer = withNavigation(
 
 export class PathBar extends Component<{ routeName: string, initialPage: string }> {
   shouldComponentUpdate(nextProps) {
-    let { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
+    const { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
 
     if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
       return true;
@@ -265,15 +260,11 @@ export class PathBar extends Component<{ routeName: string, initialPage: string 
   }
 
   render() {
-    let { r, routeName, initialPage, navigate, isDrawer } = this.props;
-    let active = r?.params?.initialPage >= initialPage && r.routeName === routeName;
+    const { r, routeName, initialPage, navigate, isDrawer } = this.props;
+    const active = r?.params?.initialPage >= initialPage && r.routeName === routeName;
 
     return (
-      <TouchableOpacity
-        onPress={() => navigate(routeName, initialPage)}
-        style={{ marginTop: 2, marginBottom: 0, flex: 1, flexDirection: 'row' }}
-        onStartShouldSetResponder={() => true}
-      >
+      <TouchableOpacity onPress={() => navigate(routeName, initialPage)} style={{ marginTop: 2, marginBottom: 0, flex: 1, flexDirection: 'row' }} onStartShouldSetResponder={() => true}>
         <View
           style={{
             flex: 1,

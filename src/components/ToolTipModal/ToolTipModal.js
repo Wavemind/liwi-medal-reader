@@ -79,15 +79,11 @@ export default class TooltipModal extends React.Component<Props, State> {
         <SeparatorLine marginBottom={15} marginTop={15} />
         <View style={styles.stepContainer}>
           {stepToBeFill.map((step) => (
-            <View key={'step-name' + step.stepName}>
+            <View key={`step-name${step.stepName}`}>
               <View style={styles.stepHeaderName}>
                 <Icon type="Ionicons" name="ios-arrow-round-forward" />
                 {stepToBeFill.length > 1 && <Text style={styles.stepName}>{step.stepName}</Text>}
-                {step.isActionValid ? (
-                  <Icon name="ios-checkmark" type="Ionicons" style={styles.iconValid} />
-                ) : (
-                  <Icon name="cross" type="Entypo" style={styles.iconInValid} />
-                )}
+                {step.isActionValid ? <Icon name="ios-checkmark" type="Ionicons" style={styles.iconValid} /> : <Icon name="cross" type="Entypo" style={styles.iconInValid} />}
               </View>
               <View style={styles.questions}>{this._renderQuestions(step.questionsToBeFill)}</View>
             </View>
@@ -115,7 +111,7 @@ export default class TooltipModal extends React.Component<Props, State> {
               success
               onPress={() => {
                 this.closeModal();
-                let params = {};
+                const params = {};
 
                 if (screenToBeFill === 'PatientUpsert') {
                   params.idPatient = patientId;
@@ -182,7 +178,7 @@ export default class TooltipModal extends React.Component<Props, State> {
     const yTooltip = toolTip.tooltipOrigin.y;
     const yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
 
-    const insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
+    const insideContent = xTouch > xTooltip && xTouch < xEndToolTip && yTouch > yTooltip && yTouch < yEndToolTip;
 
     if (!insideContent) {
       this.closeModal();
@@ -240,14 +236,7 @@ export default class TooltipModal extends React.Component<Props, State> {
           </Button>
         ) : null}
 
-        <Tooltip
-          isVisible={isVisible}
-          closeOnChildInteraction={false}
-          showChildInTooltip={false}
-          content={this._renderToolTipContent()}
-          placement="center"
-          onClose={this.onCloseToolTip}
-        />
+        <Tooltip isVisible={isVisible} closeOnChildInteraction={false} showChildInTooltip={false} content={this._renderToolTipContent()} placement="center" onClose={this.onCloseToolTip} />
       </View>
     );
   }

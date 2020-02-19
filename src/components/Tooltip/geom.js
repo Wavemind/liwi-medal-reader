@@ -202,15 +202,4 @@ const computeRightGeometry = ({ childRect, contentSize, arrowSize, displayInsets
   };
 };
 
-export {
-  Point,
-  Size,
-  Rect,
-  swapSizeDimmensions,
-  makeChildlessRect,
-  computeCenterGeomerty,
-  computeTopGeometry,
-  computeBottomGeometry,
-  computeLeftGeometry,
-  computeRightGeometry,
-};
+export { Point, Size, Rect, swapSizeDimmensions, makeChildlessRect, computeCenterGeomerty, computeTopGeometry, computeBottomGeometry, computeLeftGeometry, computeRightGeometry };

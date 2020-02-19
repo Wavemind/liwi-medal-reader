@@ -39,6 +39,7 @@ export default class CustomInput extends React.Component<Props, State> {
     change(index, value.nativeEvent.text);
     this.setState({ value: value.nativeEvent.text });
   };
+
   render() {
     const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed, autoCapitalize } = this.props;
 

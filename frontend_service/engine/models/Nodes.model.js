@@ -55,8 +55,8 @@ export class NodesModel implements NodeInterface {
   filterBy(filters, operator = 'OR', formatReturn = 'array', counter = true) {
     this.filterByConditionValue();
 
-    //return the boolean for one filter
-    let switchTest = (filter, node) => {
+    // return the boolean for one filter
+    const switchTest = (filter, node) => {
       switch (filter.operator) {
         case 'equal':
           return node[filter.by] === filter.value;
@@ -65,12 +65,11 @@ export class NodesModel implements NodeInterface {
       }
     };
 
-    let counterFilter = (filter, node) => {
+    const counterFilter = (filter, node) => {
       if (counter) {
         return switchTest(filter, node) && node.counter > 0;
-      } else {
-        return switchTest(filter, node);
       }
+      return switchTest(filter, node);
     };
 
     let methodFilteringLodash;
@@ -92,7 +91,8 @@ export class NodesModel implements NodeInterface {
         return filters.every((filter) => {
           return counterFilter(filter, node);
         });
-      } else if (operator === 'OR') {
+      }
+      if (operator === 'OR') {
         // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
         // It returns a Boolean value.
         return filters.some((filter) => {
@@ -139,7 +139,7 @@ export class NodesModel implements NodeInterface {
    *
    */
   getHealthCares() {
-    let healthCares = { managements: {}, treatments: {} };
+    const healthCares = { managements: {}, treatments: {} };
 
     // Filter by final diagnostic
     const finalDiagnostics = FinalDiagnosticModel.all();
@@ -170,17 +170,17 @@ export class NodesModel implements NodeInterface {
     let questions = {};
     const finalDiagnostics = this.filterByType(nodesType.finalDiagnostic);
 
-    for (let index in finalDiagnostics) {
+    for (const index in finalDiagnostics) {
       if (finalDiagnostics.hasOwnProperty(index)) {
-        let finalDiagnostic = finalDiagnostics[index];
-        let condition = finalDiagnostic.calculateCondition();
+        const finalDiagnostic = finalDiagnostics[index];
+        const condition = finalDiagnostic.calculateCondition();
         if (condition === true) {
-          for (let indexManagement in finalDiagnostic.managements) {
+          for (const indexManagement in finalDiagnostic.managements) {
             this[indexManagement].getQuestions(finalDiagnostic);
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
-              let m = this[indexManagement];
+              const m = this[indexManagement];
 
-              let q = m.getQuestions(finalDiagnostic.managements[indexManagement]);
+              const q = m.getQuestions(finalDiagnostic.managements[indexManagement]);
               questions = {
                 ...questions,
                 ...q,
@@ -188,11 +188,11 @@ export class NodesModel implements NodeInterface {
             }
           }
 
-          for (let indexTreatment in finalDiagnostic.treatments) {
+          for (const indexTreatment in finalDiagnostic.treatments) {
             if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
-              let t = this[indexTreatment];
+              const t = this[indexTreatment];
 
-              let q = t.getQuestions(finalDiagnostic.treatments[indexTreatment]);
+              const q = t.getQuestions(finalDiagnostic.treatments[indexTreatment]);
               questions = {
                 ...questions,
                 ...q,
@@ -212,7 +212,7 @@ export class NodesModel implements NodeInterface {
    */
   instantiateNodes(nodes) {
     Object.keys(nodes).forEach((i) => {
-      let node = nodes[i];
+      const node = nodes[i];
       this[i] = this.instantiateNode(node);
     });
   }

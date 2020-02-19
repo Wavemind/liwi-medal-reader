@@ -3,9 +3,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import KeepAwake from 'react-native-keep-awake';
 import { ApplicationProvider } from './engine/contexts/Application.context';
 import { SessionsProvider } from './engine/contexts/Sessions.context';
-import KeepAwake from 'react-native-keep-awake';
 
 import WavemindTools from './utils/WavemindTools';
 import { persistor, store } from '../frontend_service/store';

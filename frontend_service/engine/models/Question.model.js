@@ -83,7 +83,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @return isDisplayed : boolean
    */
   isDisplayedInTriage(medicalCase) {
-    const conditions = medicalCase.triage.conditions;
+    const { conditions } = medicalCase.triage;
     let isDisplayed = true;
 
     // Skip if there is no conditions
@@ -116,29 +116,27 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     // Function to change the [id] into the answered value
     const replaceBracketToValue = (item) => {
       // Get the id from the brackets []
-      let id = item.match(/\d/g).join('');
+      const id = item.match(/\d/g).join('');
 
       // Get value of this node
       const nodeInBracket = state$.nodes[id];
       if (nodeInBracket.value === null || (nodeInBracket.value === 0 && nodeInBracket.answer === null)) {
         ready = false;
         return item;
-      } else {
-        switch (nodeInBracket.value_format) {
-          case valueFormats.date:
-            return moment().diff(moment(nodeInBracket.value).toDate(), item.search('ToMonth') > 0 ? 'months' : 'days');
-          default:
-            return nodeInBracket.value;
-        }
+      }
+      switch (nodeInBracket.value_format) {
+        case valueFormats.date:
+          return moment().diff(moment(nodeInBracket.value).toDate(), item.search('ToMonth') > 0 ? 'months' : 'days');
+        default:
+          return nodeInBracket.value;
       }
     };
     // Replace every bracket in the formula with it's value
-    let formula = this.formula.replace(findBracketId, replaceBracketToValue);
+    const formula = this.formula.replace(findBracketId, replaceBracketToValue);
     if (ready) {
       return eval(formula);
-    } else {
-      return null;
     }
+    return null;
   };
 
   /**
@@ -167,7 +165,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
     if (x !== null && y !== null && x in reference) {
       // Order the keys
-      let arr = Object.keys(reference[x]).sortByNumber();
+      const arr = Object.keys(reference[x]).sortByNumber();
 
       // if value smaller than smallest element return the smaller value
       if (reference[x][arr.first()] > y) {

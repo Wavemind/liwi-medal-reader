@@ -22,7 +22,7 @@ export default class Radio extends React.Component<Props, State> {
     return (
       <View style={styles.view}>
         {Object.keys(question.answers).map((id) => (
-          <Grid key={id + '_radiobutton'}>
+          <Grid key={`${id}_radiobutton`}>
             <ColCenter>
               <Text style={{ color: liwiColors.blackColor }}>{question.answers[id].label}</Text>
             </ColCenter>

@@ -17,7 +17,8 @@ export const manageSetAnswer = (index, value, dispatch, props) => {
   const { method = 'redux' } = props;
   if (method === 'redux') {
     return dispatch(setAnswer(index, value));
-  } else if (method === 'props') {
+  }
+  if (method === 'props') {
     return props?.onChange(index, value);
   }
 };

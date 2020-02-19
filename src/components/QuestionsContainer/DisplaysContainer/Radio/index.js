@@ -11,7 +11,4 @@ const mapDispatchToProps = (dispatch) => {
     setAnswer: (index, value) => dispatch(setAnswer(index, value)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Radio);
+export default connect(mapStateToProps, mapDispatchToProps)(Radio);

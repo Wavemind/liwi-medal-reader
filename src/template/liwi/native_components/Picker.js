@@ -3,7 +3,7 @@
 import variable from '../variables/platform';
 
 // eslint-disable-next-line no-unused-vars
-export default (variables /*: * */ = variable) => {
+export default (variables /* : * */ = variable) => {
   const pickerTheme = {
     '.note': {
       color: '#8F8E95',

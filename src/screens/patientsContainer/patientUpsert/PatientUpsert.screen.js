@@ -32,9 +32,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
   initializeComponent = async () => {
     const { navigation, setMedicalCase, medicalCase } = this.props;
     let patient = {};
-    let patientId = navigation.getParam('idPatient');
-    let newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
-    let algorithms = await getItems('algorithms');
+    const patientId = navigation.getParam('idPatient');
+    const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
+    const algorithms = await getItems('algorithms');
 
     if (patientId === null && newMedicalCase === true) {
       patient = new PatientModel();
@@ -75,7 +75,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   async getPatient() {
     const { navigation } = this.props;
-    let id = navigation.getParam('idPatient');
+    const id = navigation.getParam('idPatient');
     let patient = await getItemFromArray('patients', 'id', id);
 
     patient = new PatientModel(patient);
@@ -90,10 +90,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
   save = async (newRoute) => {
     await this.setState({ loading: true });
     const { navigation } = this.props;
-    let isSaved = await this.savePatient();
+    const isSaved = await this.savePatient();
 
     if (isSaved) {
-      let currentRoute = NavigationService.getCurrentRoute();
+      const currentRoute = NavigationService.getCurrentRoute();
       // Replace the nextRoute navigation at the current index
       navigation.dispatch(
         StackActions.replace({
@@ -121,7 +121,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   updatePatientValue = async (key, value) => {
     const { patient } = this.state;
-    const { updatePatient: updatePatient } = this.props;
+    const { updatePatient } = this.props;
     updatePatient(key, value);
     patient[key] = value;
     await this.setState({ patient });
@@ -147,7 +147,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @return [Object] medical case
    */
   generateMedicalCase = async () => {
-    let instanceMedicalCase = new MedicalCaseModel();
+    const instanceMedicalCase = new MedicalCaseModel();
     await instanceMedicalCase.create();
     return instanceMedicalCase;
   };
@@ -158,7 +158,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   savePatient = async () => {
     const { patient } = this.state;
     const { updateMedicalCaseProperty, medicalCase } = this.props;
-    let errors = await patient.validate();
+    const errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
@@ -167,10 +167,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
       patient.medicalCases.push(medicalCase);
       await patient.save();
       return true;
-    } else {
-      this.setState({ errors: errors });
-      return false;
     }
+    this.setState({ errors });
+    return false;
   };
 
   render() {
@@ -206,11 +205,15 @@ export default class PatientUpsert extends React.Component<Props, State> {
       hasNoError = !_.isEmpty(patient?.validate());
     }
     if (medicalCase.nodes !== undefined && medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
-      updateMetaData('patientupsert', 'custom', extraQuestions.map(({ id }) => id));
+      updateMetaData(
+        'patientupsert',
+        'custom',
+        extraQuestions.map(({ id }) => id)
+      );
     }
 
     return (
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID={'PatientUpsertScreen'}>
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
           <LiwiLoader />

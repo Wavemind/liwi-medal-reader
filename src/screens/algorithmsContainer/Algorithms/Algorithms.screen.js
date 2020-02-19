@@ -32,9 +32,9 @@ export default class Algorithms extends React.Component<Props, State> {
 
     const { medicalCase: reduxMedicalCase } = this.props;
 
-    let patients = await getItems('patients');
-    let synchronisation = await getItem('synchronisation');
-    let algorithms = await getItems('algorithms');
+    const patients = await getItems('patients');
+    const synchronisation = await getItem('synchronisation');
+    const algorithms = await getItems('algorithms');
 
     const medicalCases = [];
 
@@ -82,19 +82,17 @@ export default class Algorithms extends React.Component<Props, State> {
     medicalCases.map((mc) => {
       if (mc.synchronized_at === null) {
         neverSync++;
+      } else if (moment(mc.updated_at) > moment(mc.synchronized_at)) {
+        notSync++;
       } else {
-        if (moment(mc.updated_at) > moment(mc.synchronized_at)) {
-          notSync++;
-        } else {
-          sync++;
-        }
+        sync++;
       }
     });
 
     return (
       <ScrollView>
         {algorithms.map((algorithm) => (
-          <CardView elevation={5} key={algorithm.id + '_algorithm'} style={algorithm.selected ? styles.selected : styles.view}>
+          <CardView elevation={5} key={`${algorithm.id}_algorithm`} style={algorithm.selected ? styles.selected : styles.view}>
             <H2>{algorithm.name}</H2>
             <Text>versions : {algorithm.versions}</Text>
             <RightView>
@@ -158,7 +156,7 @@ export default class Algorithms extends React.Component<Props, State> {
   };
 
   updateAlgorithms = async () => {
-    let algorithms = await getItems('algorithms');
+    const algorithms = await getItems('algorithms');
     this.setState({
       algorithms,
     });
@@ -192,10 +190,10 @@ export default class Algorithms extends React.Component<Props, State> {
     // Store the redux medicalcase before send all data
     await storeMedicalCase(medicalCase);
 
-    let patients = await getItems('patients');
-    const body = { patients: patients };
-    let resultPosting = await syncMedicalCases(body, user?.data?.id);
-    let dateNow = moment().format();
+    const patients = await getItems('patients');
+    const body = { patients };
+    const resultPosting = await syncMedicalCases(body, user?.data?.id);
+    const dateNow = moment().format();
     if (resultPosting !== false) {
       // Do stuff on result
       patients.map((patient) => {

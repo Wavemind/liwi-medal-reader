@@ -75,15 +75,15 @@ class TooltipButton extends React.Component<Props, State> {
    * @param toolTip : data from the tooltip like origin on screen and size gives the position of the tooltip
    */
   onCloseToolTip = (reactNative, toolTip) => {
-    let xTouch = reactNative.nativeEvent.pageX;
-    let xTooltip = toolTip.tooltipOrigin.x;
-    let xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
+    const xTouch = reactNative.nativeEvent.pageX;
+    const xTooltip = toolTip.tooltipOrigin.x;
+    const xEndToolTip = toolTip.tooltipOrigin.x + toolTip.contentSize.width;
 
-    let yTouch = reactNative.nativeEvent.pageY;
-    let yTooltip = toolTip.tooltipOrigin.y;
-    let yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
+    const yTouch = reactNative.nativeEvent.pageY;
+    const yTooltip = toolTip.tooltipOrigin.y;
+    const yEndToolTip = toolTip.tooltipOrigin.y + toolTip.contentSize.height;
 
-    let insideContent = xTouch > xTooltip && xTouch < xEndToolTip && (yTouch > yTooltip && yTouch < yEndToolTip);
+    const insideContent = xTouch > xTooltip && xTouch < xEndToolTip && yTouch > yTooltip && yTouch < yEndToolTip;
 
     if (!insideContent) {
       this.setState({ toolTipVisible: false });
@@ -99,14 +99,7 @@ class TooltipButton extends React.Component<Props, State> {
         <TouchableOpacity style={styles.touchable} transparent onPress={() => this.setState({ toolTipVisible: true })}>
           <Icon type="AntDesign" name="info" style={styles.iconInfo} />
         </TouchableOpacity>
-        <Tooltip
-          isVisible={toolTipVisible}
-          closeOnChildInteraction={false}
-          showChildInTooltip={false}
-          content={this._renderToolTipContent()}
-          placement="center"
-          onClose={this.onCloseToolTip}
-        />
+        <Tooltip isVisible={toolTipVisible} closeOnChildInteraction={false} showChildInTooltip={false} content={this._renderToolTipContent()} placement="center" onClose={this.onCloseToolTip} />
       </View>
     );
   }
@@ -165,12 +158,7 @@ export default class Question extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const { question } = this.props;
 
-    return (
-      question.counter !== nextProps.question.counter ||
-      question.answer !== nextProps.question.answer ||
-      question.value !== nextProps.question.value ||
-      question.id !== nextProps.question.id
-    );
+    return question.counter !== nextProps.question.counter || question.answer !== nextProps.question.answer || question.value !== nextProps.question.value || question.id !== nextProps.question.id;
   }
 
   render() {
@@ -195,11 +183,7 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if (
-      question === undefined ||
-      question.type !== nodesType.question ||
-      (question.display_format === displayFormats.formula && question.label !== 'Age in months')
-    ) {
+    if (question === undefined || question.type !== nodesType.question || (question.display_format === displayFormats.formula && question.label !== 'Age in months')) {
       return null;
     }
 
@@ -216,16 +200,10 @@ export default class Question extends React.Component<Props, State> {
 
     // Construct generic Component for the question
     return (
-      <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={question.id + '_item'}>
+      <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
         <View style={styles.flexRow}>
-          <LabelQuestion
-            key={question.id + '_label'}
-            label={(__DEV__ ? question.counter + 'x - ' : '') + question.label}
-            flex={flexLabel}
-            marginLeft={0}
-            marginRight={10}
-          />
-          <WrapperQuestion key={question.id + '_answer'} question={question} flex={flexQuestion} {...this.props} />
+          <LabelQuestion key={`${question.id}_label`} label={(__DEV__ ? `${question.counter}x - ` : '') + question.label} flex={flexLabel} marginLeft={0} marginRight={10} />
+          <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
           <TooltipButton question={question} flex={flexToolTip} />
         </View>
         <View style={styles.unavailable}>

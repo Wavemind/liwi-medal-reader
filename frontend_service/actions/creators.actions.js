@@ -81,8 +81,8 @@ export const dispatchPSAction = (indexPS, indexNode) => ({
 export const updatePatient = (index, value) => ({
   type: actions.MC_UPDATE_PATIENT,
   payload: {
-    index: index,
-    value: value,
+    index,
+    value,
   },
 });
 

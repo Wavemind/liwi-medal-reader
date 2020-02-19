@@ -56,8 +56,8 @@ export default class PatientList extends React.Component<Props, State> {
   fetchPatients = async () => {
     this.setState({ loading: true });
     const { statuses } = this.state;
-    let patients = await getArray('patients');
-    let algorithms = await getItems('algorithms');
+    const patients = await getArray('patients');
+    const algorithms = await getItems('algorithms');
 
     patients.map((patient) => {
       patient.caseInProgress = false;
@@ -70,8 +70,8 @@ export default class PatientList extends React.Component<Props, State> {
 
     this.setState(
       {
-        patients: patients,
-        algorithms: algorithms,
+        patients,
+        algorithms,
       },
       () => this.settlePatients()
     );
@@ -122,7 +122,7 @@ export default class PatientList extends React.Component<Props, State> {
               <ListItem
                 rounded
                 block
-                key={patient.id + '_patient_list'}
+                key={`${patient.id}_patient_list`}
                 spaced
                 onPress={() =>
                   navigation.navigate('PatientProfile', {
@@ -163,7 +163,7 @@ export default class PatientList extends React.Component<Props, State> {
     const { patients, searchTerm, orderByFirstName, orderByLastName } = this.state;
 
     // Filter patient based on first name and last name by search term
-    let filteredPatients = filter(patients, (patient) => {
+    const filteredPatients = filter(patients, (patient) => {
       return patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) || patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase());
     });
 
