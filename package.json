@@ -49,6 +49,7 @@
     "react-native-js-stepper": "^0.2.1",
     "react-native-keep-awake": "^4.0.0",
     "react-native-modal": "^9.0.0",
+    "react-native-multiple-select": "^0.5.5",
     "react-native-reanimated": "^1.7.0",
     "react-native-restart": "0.0.12",
     "react-native-safe-area-context": "^0.7.2",

@@ -38,12 +38,12 @@ const styles: Object = StyleSheet.create({
     flex: 1,
   },
   topStepper: {
-    height: 60,
+    height: 65,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 20,
-    paddingBottom: 20,
+    paddingBottom: 5,
     elevation: 4,
     ...Platform.select({
       ios: {

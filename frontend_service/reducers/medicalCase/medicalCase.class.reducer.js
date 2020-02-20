@@ -91,6 +91,59 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
+   * Update property of the list of diagnoses
+   *
+   * @payload type: type of diagnoses ()
+   *    proposed: [], // Retaind by algo
+        custom: [], // Add by the input
+        additional: [] // Add even though it's false
+   * @payload diagnoses: Diagnoses
+   */
+  @Action(actions.SET_DIAGNOSES)
+  updateDiagnoses(state, action) {
+    const { type, diagnoses, actionDiagnoses } = action.payload;
+
+    switch (type) {
+      case 'proposed':
+        return {
+          ...state,
+          diagnoses: {
+            ...state.diagnoses,
+            [type]: { ...state.diagnoses[type], [diagnoses.id]: { ...diagnoses } },
+          },
+        };
+      case 'additional':
+        return {
+          ...state,
+          diagnoses: {
+            ...state.diagnoses,
+            [type]: { ...diagnoses },
+          },
+        };
+      case 'custom':
+        let newArray = state.diagnoses[type].slice();
+        let finder = newArray.find((d) => d.label === diagnoses.label);
+
+        if (finder === undefined) {
+          newArray.push(diagnoses);
+        } else if (actionDiagnoses === 'remove') {
+          newArray = newArray.filter((item) => item.label !== diagnoses.label);
+        } else {
+          finder = diagnoses;
+        }
+
+        return {
+          ...state,
+          diagnoses: {
+            ...state.diagnoses,
+            [type]: [...newArray],
+          },
+        };
+    }
+    return { ...state };
+  }
+
+  /**
    * Update property of medicalCase
    *
    * @payload property: Index in Object
