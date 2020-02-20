@@ -1,6 +1,6 @@
 import { withSessions } from 'engine/contexts/Sessions.context';
 import { connect } from 'react-redux';
-import FinalDiagnosticsList from './FinalDiagnosticsList';
+import FinalDiagnostic from './FinalDiagnostic';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { setDiagnoses } from '../../../frontend_service/actions/creators.actions';
 
@@ -19,4 +19,4 @@ const mapDispatchToProps = (dispatch, props) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(FinalDiagnosticsList)));
+)(withSessions(withApplication(FinalDiagnostic)));

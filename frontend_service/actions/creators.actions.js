@@ -17,6 +17,15 @@ export const setMedicalCase = (medicalCase) => ({
   },
 });
 
+export const setDiagnoses = (type, diagnoses, actionDiagnoses) => ({
+  type: actions.SET_DIAGNOSES,
+  payload: {
+    type,
+    diagnoses,
+    actionDiagnoses,
+  },
+});
+
 export const updateMetaData = (screen, view, value) => ({
   type: actions.MC_UPDATE_METADATA,
   payload: {

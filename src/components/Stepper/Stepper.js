@@ -360,6 +360,7 @@ class Stepper extends React.Component<Props, State> {
       bottomNavigationRightIconComponent,
       nextStage,
       nextStageString,
+      steps,
     } = this.props;
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
@@ -368,7 +369,17 @@ class Stepper extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        {showTopStepper ? <View style={[styles.topStepper, topStepperStyle]}>{this.renderSteps()}</View> : null}
+        {showTopStepper ? (
+          <View style={[styles.topStepper, topStepperStyle]}>
+            {steps.length >= 3 ? (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {this.renderSteps()}
+              </ScrollView>
+            ) : (
+              this.renderSteps()
+            )}
+          </View>
+        ) : null}
         {this.renderViewPager()}
         {showBottomStepper ? (
           <View

@@ -71,18 +71,16 @@ export default class TooltipModal extends React.Component<Props, State> {
     return (
       <View style={styles.validation}>
         <Text style={styles.warning}>{t('tooltip:uncompleted')}</Text>
-        {screenToBeFill !== 'PatientUpsert' && (
-          <Text style={styles.blocScreen}>
-            <Text style={styles.screen}>{screenToBeFill}</Text> {t('tooltip:notcomplete')}
-          </Text>
-        )}
+        <Text style={styles.blocScreen}>
+          <Text style={styles.screen}>{screenToBeFill !== 'PatientUpsert' ? screenToBeFill : t('tooltip:patientnotcomplete')}</Text> {t('tooltip:notcomplete')}
+        </Text>
         <SeparatorLine marginBottom={15} marginTop={15} />
         <View style={styles.stepContainer}>
           {stepToBeFill.map((step) => (
             <View key={`step-name${step.stepName}`}>
               <View style={styles.stepHeaderName}>
                 <Icon type="Ionicons" name="ios-arrow-round-forward" />
-                {stepToBeFill.length > 1 && <Text style={styles.stepName}>{step.stepName}</Text>}
+                <Text style={styles.stepName}>{stepToBeFill.length > 1 ? step.stepName : t('tooltip:invalidQuestions')}</Text>
                 {step.isActionValid ? <Icon name="ios-checkmark" type="Ionicons" style={styles.iconValid} /> : <Icon name="cross" type="Entypo" style={styles.iconInValid} />}
               </View>
               <View style={styles.questions}>{this._renderQuestions(step.questionsToBeFill)}</View>

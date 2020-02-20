@@ -14,7 +14,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     const {
       description = '',
       label = '',
-      weight_question_id = '',
+      weight_question_id = null,
       minimal_dose_per_kg = '',
       maximal_dose_per_kg = '',
       maximal_dose = '',
@@ -59,8 +59,10 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
    */
   getDrugDoses = () => {
     const state$ = store.getState();
+
     const weightNode = state$.nodes[this.weightQuestionId];
-    if (weightNode.value !== null) {
+
+    if (weightNode !== undefined && weightNode.value !== null) {
       switch (this.treatmentType) {
         case healthCareType.liquid:
           break;
