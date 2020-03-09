@@ -26,6 +26,14 @@ export default class AnimatedPullToRefresh extends React.Component {
     this.onEndAnimation = this.onEndAnimation.bind(this);
 
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
+      onPanResponderMove: this._handlePanResponderMove.bind(this),
+      onPanResponderRelease: this._handlePanResponderEnd.bind(this),
+      onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
+    });
   }
 
   static propTypes = {
@@ -69,16 +77,6 @@ export default class AnimatedPullToRefresh extends React.Component {
     pullHeight: 180,
     animationBackgroundColor: 'white',
   };
-
-  componentDidMount() {
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
-      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
-      onPanResponderMove: this._handlePanResponderMove.bind(this),
-      onPanResponderRelease: this._handlePanResponderEnd.bind(this),
-      onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
-    });
-  }
 
   componentWillReceiveProps(props) {
     if (this.props.isRefreshing !== props.isRefreshing) {
@@ -247,11 +245,7 @@ export default class AnimatedPullToRefresh extends React.Component {
           source={this.props.onRefreshAnimationSrc}
           progress={this.state.repeatAnimationProgress}
         />
-        <Animation
-          style={[animationStyle, { opacity: this.state.isRefreshAnimationEnded ? 1 : 0 }]}
-          source={this.props.onEndRefreshAnimationSrc}
-          progress={this.state.finalAnimationProgress}
-        />
+        <Animation style={[animationStyle, { opacity: this.state.isRefreshAnimationEnded ? 1 : 0 }]} source={this.props.onEndRefreshAnimationSrc} progress={this.state.finalAnimationProgress} />
 
         <ScrollView
           ref="scrollComponentRef"
