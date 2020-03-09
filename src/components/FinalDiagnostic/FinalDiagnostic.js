@@ -24,13 +24,15 @@ export default class FinalDiagnostic extends React.Component<{}> {
   }
 
   _handleClick = (bool) => {
-    const { setDiagnoses, id, diagnostic_id, label } = this.props;
+    const { setDiagnoses, id, diagnostic_id, label, drugs, managements } = this.props;
 
     setDiagnoses('proposed', {
       id,
       label,
       diagnostic_id,
       agreed: bool,
+      drugs,
+      managements,
     });
   };
 
@@ -59,7 +61,7 @@ export default class FinalDiagnostic extends React.Component<{}> {
           </LeftButton>
           <RightButton onPress={() => this._handleClick(false)} active={diagnoses.proposed[id]?.agreed === false}>
             <Text center white={diagnoses.proposed[id]?.agreed === false}>
-              {t('diagnoses:agree')}
+              {t('diagnoses:disagree')}
             </Text>
           </RightButton>
         </View>

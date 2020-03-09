@@ -41,7 +41,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
       setDiagnoses,
       medicalCase: { nodes },
     } = this.props;
-    let obj = {};
+    const obj = {};
     selectedItems.map((i) => {
       obj[i] = nodes[i];
     });
@@ -52,7 +52,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
   _addCustom = () => {
     const { setDiagnoses } = this.props;
     const { customDiagnoses } = this.state;
-    setDiagnoses('custom', { label: customDiagnoses });
+    setDiagnoses('custom', { label: customDiagnoses, drugs: [] });
     this.setState({ customDiagnoses: '' });
   };
 
@@ -83,7 +83,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
 
         <MultiSelect
           hideTags
-          items={[...finalDiagnostics.excluded, finalDiagnostics.not_defined]}
+          items={[...finalDiagnostics.excluded, ...finalDiagnostics.not_defined]}
           uniqueKey="id"
           onSelectedItemsChange={this.onSelectedItemsChange}
           selectedItems={selected}
@@ -105,8 +105,8 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
         <Text customTitle>{t('diagnoses:custom')}</Text>
         <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
           <Input style={{ flex: 1 }} common value={customDiagnoses} onChange={this._handleCustomInput} />
-          <Button style={{ width: 60 }} onPress={this._addCustom}>
-            <Icon active name="create-new-folder" type="MaterialIcons" />
+          <Button style={{ width: 50 }} onPress={this._addCustom}>
+            <Icon active name="create-new-folder" type="MaterialIcons" style={{ fontSize: 18 }} />
           </Button>
         </View>
         {diagnoses.custom.map((d) => (
@@ -114,8 +114,8 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
             <Text style={{ flex: 1 }} size-auto>
               {d.label}
             </Text>
-            <Button style={{ width: 60 }} onPress={() => this._removeCustom(d)}>
-              <Icon active name="delete" type="AntDesign" />
+            <Button style={{ width: 50 }} onPress={() => this._removeCustom(d)}>
+              <Icon active name="delete" type="AntDesign" style={{ fontSize: 18 }} />
             </Button>
           </View>
         ))}

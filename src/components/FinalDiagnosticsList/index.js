@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import FinalDiagnosticsList from './FinalDiagnosticsList';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { setDiagnoses } from '../../../frontend_service/actions/creators.actions';
+import { WrapperNavigation } from '../../utils/WrapperNavigation';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (medicalCase) => {
   return {
-    medicalCase: state,
+    medicalCase,
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setDiagnoses: (type, diagnoses, actionDiagnoses) => dispatch(setDiagnoses(type, diagnoses, actionDiagnoses)),
   };
@@ -19,4 +20,4 @@ const mapDispatchToProps = (dispatch, props) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withSessions(withApplication(FinalDiagnosticsList)));
+)(withSessions(withApplication(WrapperNavigation(FinalDiagnosticsList))));

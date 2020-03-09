@@ -140,7 +140,6 @@ export default {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 20,
     },
 
     '.bottomInput': {

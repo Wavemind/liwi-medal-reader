@@ -68,12 +68,14 @@ const validatorStep = (route, lastState, validator) => {
     const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
     const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
 
-    const questionsToValidate = state$.metaData[route.routeName.toLowerCase()];
+    if (detailValidation !== undefined) {
+      const questionsToValidate = state$.metaData[route.routeName.toLowerCase()];
 
-    const questions = questionsToValidate[detailValidation];
-    const criteria = detailSetParamsRoute.validations[detailValidation];
+      const questions = questionsToValidate[detailValidation];
+      const criteria = detailSetParamsRoute.validations[detailValidation];
 
-    validator = oneValidation(criteria, questions, detailValidation);
+      validator = oneValidation(criteria, questions, detailValidation);
+    }
   }
 
   return validator;
@@ -284,6 +286,7 @@ class CustomNavigator extends React.Component {
         case navigationActionConstant.navigate:
         case navigationActionConstant.replace:
           // eslint-disable-next-line no-case-declarations
+          console.log(action);
           validation = validatorNavigate(action);
           break;
 

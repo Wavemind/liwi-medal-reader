@@ -264,3 +264,26 @@ export const showBirthDatePatient = (patient, state$) => {
   }
   return 'Age is not defined';
 };
+
+/**
+ * @params diagnoses: New diagnoses will be placed into state
+ * @params drugs: all the drugs selected mannually
+ *
+ * Remove drugs from mannualy if new  diagnoses contain this drug (no duplicate !)
+ */
+export const newDrugsFilter = (diagnoses, drugs) => {
+  const newDrugs = { ...drugs };
+  const keyToRemove = [];
+
+  Object.keys(diagnoses).map((key) => {
+    Object.keys(diagnoses[key].drugs).map((drugKey) => {
+      // If the drug was already selected manually
+      if (drugs[drugKey] !== undefined) {
+        keyToRemove.push(drugKey);
+      }
+    });
+  });
+
+  keyToRemove.forEach((e) => delete newDrugs[e]);
+  return newDrugs;
+};

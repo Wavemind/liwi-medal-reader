@@ -103,7 +103,7 @@ export const auth = async (email, password) => {
   const body = await request.json();
   // Display error
   if (!request.ok) {
-    handleHttpError(body.errors);
+    handleHttpError(request.status);
     throw body;
   }
 

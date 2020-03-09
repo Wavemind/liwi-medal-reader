@@ -1,24 +1,64 @@
 // @flow
 import React, { Component } from 'react';
-import { Content, Text, View } from 'native-base';
+import { Content, Text, View, Picker, Button, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { styles } from './MedecinesFormulation.style';
-import ToolTipModal from '../../../../components/ToolTipModal';
-import { healthCareType } from '../../../../../frontend_service/constants';
-import { SeparatorLine } from '../../../../template/layout';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class MedecinesFormulations extends Component<Props, State> {
-  state = {};
+  state = { selected: '' };
+
+  onValueChange = (value, diagnoseId, type, drugId) => {
+    const { setFormulation } = this.props;
+    setFormulation(diagnoseId, value, type, drugId);
+  };
 
   static defaultProps = {};
 
+  _renderFormulation = (data, type) => {
+    const {
+      medicalCase: { nodes },
+    } = this.props;
+
+    return Object.keys(data).map((diagnoseId) => {
+      return Object.keys(data[diagnoseId].drugs).map((drugId) => {
+        const { id } = data[diagnoseId].drugs[drugId];
+        if (data[diagnoseId].drugs[drugId].agreed === false) {
+          return null;
+        }
+        return (
+          <>
+            <Text>{nodes[id]?.label}</Text>
+            <Picker
+              note
+              mode="dropdown"
+              style={{ width: 200 }}
+              selectedValue={data[diagnoseId]?.drugs[drugId]?.formulationSelected}
+              onValueChange={(value) => this.onValueChange(value, diagnoseId, type, drugId)}
+            >
+              <Picker.Item label={'Please select'} value={null} />
+              {nodes[id]?.formulations.map((f) => <Picker.Item label={f.medication_form} value={f.medication_form} />)}
+            </Picker>
+          </>
+        );
+      });
+    });
+  };
+
   render() {
+    const {
+      medicalCase: {
+        diagnoses: { proposed, additional },
+      },
+    } = this.props;
+
     return (
       <View>
-        <Text>MedecinesFormulations</Text>
+        <Text customTitle>Which formulation of medicine is available and appropriate for your patient?</Text>
+        {this._renderFormulation(proposed, 'proposed')}
+        <Text customTitle> Manually added medicine from dropdown list</Text>
+        {this._renderFormulation(additional, 'additional')}
       </View>
     );
   }

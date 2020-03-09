@@ -72,6 +72,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       proposed: {}, // Retaind by algo
       custom: [], // Add by the input
       additional: {}, // Add even though it's false
+      additionalDrugs: {},
+      customDrugs: [],
     };
 
     await this.generateExcludedId();

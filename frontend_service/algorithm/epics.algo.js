@@ -14,6 +14,7 @@ import {
   setAnswer,
   dispatchRelatedNodeAction,
   updateMedicalCaseProperty,
+  setDiagnoses,
 } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 
@@ -105,7 +106,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, "doesn't exist");
           return [];
       }
     })
@@ -162,11 +163,45 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_FINAL_DIAGNOSTIC_ACTION),
     switchMap((action) => {
+      let actions = [];
       const { diagnosticId, finalDiagnosticId } = action.payload;
       const finalDiagnostic = state$.value.nodes[finalDiagnosticId];
 
       // Get the conditions of the node
       const condition = finalDiagnostic.calculateCondition();
+
+      switch (condition) {
+        case true:
+          if (state$.value.diagnoses.proposed[finalDiagnosticId] === undefined) {
+            // add it
+            actions.push(
+              setDiagnoses('proposed', {
+                ...finalDiagnostic,
+                agreed: null,
+              })
+            );
+          }
+
+          if (state$.value.diagnoses.additional[finalDiagnosticId] !== undefined) {
+            actions.push(setDiagnoses('additional', finalDiagnostic, 'remove'));
+          }
+
+          break;
+        case false:
+          if (state$.value.diagnoses.proposed[finalDiagnosticId] !== undefined) {
+            // remove it
+            actions.push(setDiagnoses('proposed', finalDiagnostic, 'remove'));
+          }
+
+          if (state$.value.diagnoses.proposed[finalDiagnosticId] === undefined) {
+            // add it
+          }
+
+          break;
+        case null:
+      }
+
+      console.log(condition, diagnosticId, 'hola change !', state$.value.diagnoses);
 
       // eslint-disable-next-line no-console
       console.log(
@@ -181,7 +216,7 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
       );
 
       // Check the condition of the children
-      return of(...[]);
+      return of(...actions);
     })
     // TODO : Trigger Treatment/Management handling
   );
