@@ -26,6 +26,41 @@ export const setDiagnoses = (type, diagnoses, actionDiagnoses) => ({
   },
 });
 
+export const setMedecine = (type, diagnosesKey, medecineId, boolean) => ({
+  type: actions.SET_MEDECINE,
+  payload: {
+    type,
+    diagnosesKey,
+    medecineId,
+    boolean,
+  },
+});
+export const setCustomMedecine = (diagnosesKey, medecine, type) => ({
+  type: actions.SET_CUSTOM_MEDECINE,
+  payload: {
+    diagnosesKey,
+    medecine,
+    type,
+  },
+});
+
+export const setAdditionalMedecine = (medecines) => ({
+  type: actions.SET_ADDITIONAL_MEDECINE,
+  payload: {
+    medecines,
+  },
+});
+
+export const setFormulation = (diagnoseId, formulation, type, drugId) => ({
+  type: actions.SET_FORMULATION_SELECTED,
+  payload: {
+    diagnoseId,
+    formulation,
+    type,
+    drugId,
+  },
+});
+
 export const updateMetaData = (screen, view, value) => ({
   type: actions.MC_UPDATE_METADATA,
   payload: {

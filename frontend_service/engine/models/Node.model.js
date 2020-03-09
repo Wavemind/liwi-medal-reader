@@ -33,7 +33,7 @@ export class NodeModel implements NodeInterface {
    *
    */
   updateAnswer = (value) => {
-    let answer;
+    let answer = null;
 
     if (this.value_format === undefined) {
       return false;
@@ -54,7 +54,11 @@ export class NodeModel implements NodeInterface {
                   return value >= Number(answerCondition.value.split(',').first()) && value < Number(answerCondition.value.split(',').second());
               }
             });
-            answer = Number(answer);
+            if (answer !== undefined) {
+              answer = Number(answer);
+            } else {
+              answer = null;
+            }
           } else {
             answer = null;
           }
@@ -84,7 +88,6 @@ export class NodeModel implements NodeInterface {
     } else {
       answer = null;
     }
-
     // Assign final value
     this.answer = answer;
     this.value = value;

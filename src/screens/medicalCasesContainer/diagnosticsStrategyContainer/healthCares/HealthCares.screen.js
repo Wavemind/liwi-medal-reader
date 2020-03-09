@@ -6,6 +6,7 @@ import { styles } from './HealthCares.style';
 import ToolTipModal from '../../../../components/ToolTipModal';
 import { healthCareType } from '../../../../../frontend_service/constants';
 import { SeparatorLine } from '../../../../template/layout';
+import toReadableFraction from '../../../../utils/toReadableFraction';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -71,22 +72,115 @@ export default class HealthCares extends Component<Props, State> {
       </View>
     ));
 
-  render() {
+  _renderBreakable = (drug, node, drugDose) => {
+    //  12 hours for 5 days = recurrence for instance in diagnoses .duration
+    const unit = drugDose.doseResult / drugDose.breakable;
+    const num = Math.floor(unit);
+
+    const rest = drugDose.doseResult % drugDose.breakable;
+    let fractionString = '';
+    if (rest !== 0) {
+      let r = toReadableFraction(rest / drugDose.breakable);
+      if (r.numerator === 1 && r.denominator === 2) {
+        fractionString = '½ ';
+      } else if (r.numerator === 1 && r.denominator === 4) {
+        fractionString = '¼ ';
+      } else if (r.numerator === 3 && r.denominator === 4) {
+        fractionString = '¾ ';
+      } else {
+        // other fraction
+        fractionString = `${r.numerator} / ${r.denominator}`;
+      }
+    }
+
+    return (
+      <>
+        <Text customTitle>{node.label}</Text>
+        <Text>Mode {drug.formulationSelected}</Text>
+        {drugDose.doseResult === null ? (
+          <Text>{drugDose.no_possibility}</Text>
+        ) : (
+          <>
+            {Object.keys(drugDose).map((k) => (
+              <Text>
+                {k} vaut : {drugDose[k]}
+              </Text>
+            ))}
+            <Text>Give {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} mg</Text>
+            <Text>
+              Prescription : {num !== Infinity && num !== 0 ? num : null}
+              {num !== Infinity && num > 0 && fractionString !== '' && ' and '}
+              {fractionString}
+              {drugDose.dose_form}
+              mg tablet {drugDose.administration_route_name}
+            </Text>
+          </>
+        )}
+      </>
+    );
+  };
+
+  _renderDefault = (drug, node, drugDose) => {
+    return (
+      <>
+        <Text customTitle>{node.label}</Text>
+        <Text>Mode {drug.formulationSelected}</Text>
+        <Text>Duration :{drug.duration}</Text>
+        <Text>Administration :{drugDose.administration_route_name}</Text>
+      </>
+    );
+  };
+
+  _renderLiquid = (drug, node, drugDose) => {
+    const ratio = drugDose.liquid_concentration / drugDose.dose_form;
+    return (
+      <>
+        <Text customTitle>{node.label}</Text>
+        <Text>Mode {drug.formulationSelected}</Text>
+        <Text>
+          Give {ratio * drugDose.doseResult}mg : {drugDose.doses_per_day * drugDose.dose_form}ml of {drugDose.liquid_concentration}mg/{drugDose.dose_form}ml
+        </Text>
+        <Text>
+          every : {drugDose.recurrence} hours for {drug.duration} days
+        </Text>
+      </>
+    );
+  };
+
+  _renderDrugDose = (type) => {
     const {
-      medicalCase,
+      medicalCase: { diagnoses, nodes },
       app: { t },
     } = this.props;
 
-    const healthCares = medicalCase.nodes.getHealthCares();
+    return Object.keys(diagnoses[type]).map((diagnoseId) => {
+      return Object.keys(diagnoses[type][diagnoseId].drugs).map((drugId) => {
+        const drug = diagnoses[type][diagnoseId].drugs[drugId];
+        const node = nodes[drug.id];
+        const drugDose = node.getDrugDoses(drug.formulationSelected);
 
-    const { managements, treatments } = healthCares;
+        switch (drug.formulationSelected) {
+          case healthCareType.syrup:
+          case healthCareType.suspension:
+            return this._renderLiquid(drug, node, drugDose);
+          case healthCareType.tablet:
+            return this._renderBreakable(drug, node, drugDose);
+          default:
+            return this._renderDefault(drug, node, drugDose);
+        }
+      });
+    });
+  };
 
+  render() {
+    const {
+      medicalCase: { nodes },
+    } = this.props;
     return (
       <Content>
-        <Text customTitle>{t('medical_case:managements')}</Text>
-        {this._renderHealthCare(managements)}
-        <Text customTitle>{t('medical_case:treatments')}</Text>
-        {this._renderHealthCare(treatments)}
+        <Text>Weight : {nodes['3'].value}kg</Text>
+        {this._renderDrugDose('additional')}
+        {this._renderDrugDose('proposed')}
       </Content>
     );
   }

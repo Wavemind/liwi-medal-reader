@@ -58,6 +58,9 @@ export default {
       margin: 10,
       marginLeft: 0,
     },
+    '.smallTitle': {
+      color: liwiColors.redColor,
+    },
     '.subText': {
       color: liwiColors.redColor,
       fontSize: 26,
