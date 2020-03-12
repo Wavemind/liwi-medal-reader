@@ -66,13 +66,14 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
 
     const weightNode = state$.nodes[this.weight_question_id];
 
-    // select formulation
     let minDoseMg;
     let maxDoseMg;
     let doseResult;
     let doseResultMg;
     let recurrence;
     let pillSize;
+
+    // select formulation
     const formulation = this.formulations.find((e) => e.medication_form === formulationSelected);
 
     if (formulation === undefined) {
@@ -91,6 +92,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
           const minDoseMl = roundSup((minDoseMg * formulation.dose_form) / formulation.liquid_concentration);
           const maxDoseMl = roundSup((maxDoseMg * formulation.dose_form) / formulation.liquid_concentration);
 
+          // Round
           doseResult = Math.round((minDoseMl + maxDoseMl) / 2);
 
           if (doseResult > maxDoseMl) {
@@ -105,9 +107,8 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
             doseResult = (doseResultMg * formulation.dose_form) / formulation.liquid_concentration;
           }
 
+          // Frequency
           recurrence = 24 / formulation.doses_per_day;
-
-          //  12 hours for 5 days = recurrence for instance in diagnoses .duration
 
           return {
             minDoseMg,
@@ -161,7 +162,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
             ...formulation,
           };
         default:
-          // TODO implement logic on the next feature posologie
+          // Other use case will be here in futur
           break;
       }
     }

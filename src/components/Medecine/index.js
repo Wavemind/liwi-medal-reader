@@ -19,4 +19,4 @@ const mapDispatchToProps = (dispatch, props) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withApplication(WrapperNavigation(Medecine)));
+)(withApplication(Medecine));

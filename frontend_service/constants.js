@@ -32,6 +32,7 @@ export const displayFormats = {
   date: 'Date',
 };
 
+// Medication type
 export const healthCareType = {
   tablet: 'tablet',
   capsule: 'capsule',

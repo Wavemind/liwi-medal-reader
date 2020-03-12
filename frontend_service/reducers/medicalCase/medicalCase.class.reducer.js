@@ -100,6 +100,7 @@ class MedicalCaseReducer extends ReducerClass {
         custom: [], // Add by the input
         additional: [] // Add even though it's false
    * @payload diagnoses: Diagnoses
+   * @payload actionDiagnoses: Specific action to avoid multiple different action
    */
   @Action(actions.SET_DIAGNOSES)
   updateDiagnoses(state, action) {
@@ -107,13 +108,14 @@ class MedicalCaseReducer extends ReducerClass {
     let newDiagnoses;
     let newadditionnalDrugs;
 
+    // Depending of type
     switch (type) {
       case 'proposed':
+        // Add section
         if (actionDiagnoses === undefined || actionDiagnoses === 'add') {
           newDiagnoses = { ...state.diagnoses[type], [diagnoses.id]: { ...diagnoses } };
           newadditionnalDrugs = newDrugsFilter(newDiagnoses, state.diagnoses.additionalDrugs);
 
-          console.log(state.diagnoses.additionalDrugs, newadditionnalDrugs);
           return {
             ...state,
             diagnoses: {
@@ -218,11 +220,12 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
-   * Update custom medecine
+   * Set formulation for a drug
    *
-   * @payload diagnosesKey: the diagnosey identifiant
-   * @payload medecine: the medecine
-   * @payload type: add or remove (less action)
+   * @payload diagnoseId: the diagnosey identifiant
+   * @payload drugId: the drugId
+   * @payload type: key in diagnoses
+   * @payload formulation: string formulation
    */
   @Action(actions.SET_FORMULATION_SELECTED)
   setFormulationSelected(state, action) {
@@ -263,8 +266,6 @@ class MedicalCaseReducer extends ReducerClass {
       state.diagnoses.custom[diagnosesKey].drugs.push(medecine);
     } else if (type === 'remove') {
       state.diagnoses.custom[diagnosesKey].drugs = state.diagnoses.custom[diagnosesKey].drugs.filter((e) => e !== medecine);
-
-      console.log(diagnosesKey, medecine, state.diagnoses.custom[diagnosesKey].drugs, type);
     }
 
     return {

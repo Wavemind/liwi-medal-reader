@@ -10,6 +10,7 @@ import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 import { SeparatorLine } from '../../../../template/layout';
 import CustomMedecine from '../../../../components/CustomMedecine';
+import { diff } from '../../../../utils/swissKnives';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -18,6 +19,14 @@ export default class Medecines extends Component<Props, State> {
   state = {};
 
   static defaultProps = {};
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { pageIndex } = this.props;
+    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
+      return nextProps.selectedPage === pageIndex;
+    }
+    return true;
+  }
 
   onSelectedItemsChange = (selectedItems) => {
     const {

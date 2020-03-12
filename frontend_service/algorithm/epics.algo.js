@@ -163,17 +163,19 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_FINAL_DIAGNOSTIC_ACTION),
     switchMap((action) => {
-      let actions = [];
+      const actions = [];
       const { diagnosticId, finalDiagnosticId } = action.payload;
       const finalDiagnostic = state$.value.nodes[finalDiagnosticId];
 
       // Get the conditions of the node
       const condition = finalDiagnostic.calculateCondition();
 
+      // Depending the result of the condition
       switch (condition) {
         case true:
+          // If he was already in the additional section
           if (state$.value.diagnoses.proposed[finalDiagnosticId] === undefined) {
-            // add it
+            // Add it on proposed
             actions.push(
               setDiagnoses('proposed', {
                 ...finalDiagnostic,
@@ -182,6 +184,7 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
             );
           }
 
+          // Remove from additional if moved to proposed (no duplicata)
           if (state$.value.diagnoses.additional[finalDiagnosticId] !== undefined) {
             actions.push(setDiagnoses('additional', finalDiagnostic, 'remove'));
           }
@@ -189,19 +192,19 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
           break;
         case false:
           if (state$.value.diagnoses.proposed[finalDiagnosticId] !== undefined) {
-            // remove it
+            // Remove it from proposed
             actions.push(setDiagnoses('proposed', finalDiagnostic, 'remove'));
           }
 
-          if (state$.value.diagnoses.proposed[finalDiagnosticId] === undefined) {
-            // add it
+          if (state$.value.diagnoses.additional[finalDiagnosticId] === undefined) {
+            // Add it on additonal
+            // But the view already do it
+            // TODO disuss about that use case
           }
 
           break;
         case null:
       }
-
-      console.log(condition, diagnosticId, 'hola change !', state$.value.diagnoses);
 
       // eslint-disable-next-line no-console
       console.log(

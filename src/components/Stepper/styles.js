@@ -22,11 +22,11 @@ const styles: Object = StyleSheet.create({
   },
   activeStepTitleStyle: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 16,
   },
   inactiveStepTitleStyle: {
     fontWeight: 'normal',
-    fontSize: 18,
+    fontSize: 16,
   },
   activeStepNumberStyle: {
     color: 'white',
@@ -34,15 +34,13 @@ const styles: Object = StyleSheet.create({
   inactiveStepNumberStyle: {
     color: 'black',
   },
-  container: {
-    flex: 1,
-  },
+
   topStepper: {
     height: 65,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 5,
     elevation: 4,
     ...Platform.select({
@@ -107,14 +105,20 @@ const styles: Object = StyleSheet.create({
     backgroundColor: '#cdcdcd',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 45,
+    // marginHorizontal: 45,
     borderRadius: 45,
+  },
+  container: {
+    flex: 1,
   },
   stepTitle: {
     fontFamily: 'Avenir',
+    textAlign: 'center',
   },
   stepContainer: {
     alignItems: 'center',
+    flex: 1,
+    justifyContent: 'flex-start',
     marginHorizontal: 5,
   },
   bottomTextButtons: {
