@@ -115,7 +115,7 @@ i18n
           medecines_formulation: 'Medecine Formulations',
           final_diagnoses: 'Diagnoses',
           healthcares_questions: 'Management questions',
-          healthcares: 'Management',
+          healthcares: 'Treatments & Management',
           managements: 'Managements',
           treatments: 'Treatments',
           waiting_triage: 'Waiting for triage',

@@ -23,10 +23,10 @@ export default class Medecine extends Component<{}> {
 
     return (
       <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
-        <Text style={{ flex: 0.55 }} size-auto>
+        <Text style={{ flex: 0.5 }} size-auto>
           {node?.label}
         </Text>
-        <View style={{ flexDirection: 'row', flex: 0.45, height: 50 }}>
+        <View style={{ flexDirection: 'row', flex: 0.4, height: 50 }}>
           <LeftButton active={medecine.agreed === true} onPress={() => this._handleClick(true)}>
             <Text white={medecine.agreed === true} center>
               {t('diagnoses:agree')}
@@ -39,9 +39,7 @@ export default class Medecine extends Component<{}> {
           </RightButton>
         </View>
         <Button style={{ flex: 0.1 }}>
-          <Text center white={medecine.agreed === false}>
-            Not available
-          </Text>
+          <Icon name="block" type="Entypo" style={{ fontSize: 18 }} />
         </Button>
       </View>
     );

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
-
+import { styles } from './FinalDiagnostic.style';
 type Props = NavigationScreenProps & {};
 
 type State = {};
@@ -48,12 +48,12 @@ export default class FinalDiagnostic extends React.Component<{}> {
     } = this.props;
 
     return (
-      <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
-        <Text style={{ flex: 0.55 }} size-auto>
+      <View style={styles.container}>
+        <Text style={styles.flex} size-auto>
           <Icon type={type} name={name} style={style} /> {__DEV__ ? `${id} - ` : null}
           {label}
         </Text>
-        <View style={{ flexDirection: 'row', flex: 0.45, height: 50 }}>
+        <View style={style.containerButton}>
           <LeftButton active={diagnoses.proposed[id]?.agreed === true} onPress={() => this._handleClick(true)}>
             <Text white={diagnoses.proposed[id]?.agreed === true} center>
               {t('diagnoses:agree')}

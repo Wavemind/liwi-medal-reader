@@ -58,6 +58,13 @@ export default {
       margin: 10,
       marginLeft: 0,
     },
+    '.customSubTitle': {
+      fontSize: 20,
+      paddingBottom: 5,
+      paddingTop: 5,
+      fontWeight: 'bold',
+      marginLeft: 0,
+    },
     '.smallTitle': {
       color: liwiColors.redColor,
     },

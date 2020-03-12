@@ -80,9 +80,12 @@ export const questionsFirstLookAssessement = () => {
   const firstLookAssessement = [];
 
   const ordersFirstLookAssessment = state$.triage.orders[categories.emergencySign];
-  ordersFirstLookAssessment.map((order) => {
-    firstLookAssessement.push(state$.nodes[order]);
-  });
+
+  if (ordersFirstLookAssessment !== undefined) {
+    ordersFirstLookAssessment.map((order) => {
+      firstLookAssessement.push(state$.nodes[order]);
+    });
+  }
 
   if (state$.metaData.triage.firstLookAssessments.length === 0 && firstLookAssessement.length !== 0) {
     store.dispatch(updateMetaData('triage', 'firstLookAssessments', firstLookAssessement.map(({ id }) => id)));
@@ -120,12 +123,15 @@ export const questionsBasicMeasurements = () => {
   const basicMeasurements = [];
 
   const orderedQuestions = state$.triage.orders[categories.vitalSignTriage];
-  orderedQuestions.map((orderedQuestion) => {
-    const question = state$.nodes[orderedQuestion];
-    if (question.isDisplayedInTriage(state$)) {
-      basicMeasurements.push(question);
-    }
-  });
+
+  if (orderedQuestions !== undefined) {
+    orderedQuestions.map((orderedQuestion) => {
+      const question = state$.nodes[orderedQuestion];
+      if (question.isDisplayedInTriage(state$)) {
+        basicMeasurements.push(question);
+      }
+    });
+  }
 
   // Set Questions in State for validation
   if (state$.metaData.triage.basicMeasurements.length === 0 && basicMeasurements.length !== 0) {

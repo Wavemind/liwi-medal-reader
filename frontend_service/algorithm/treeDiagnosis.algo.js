@@ -283,7 +283,7 @@ export const newDrugsFilter = (diagnoses, drugs) => {
       }
     });
   });
-
+  // Delete by key
   keyToRemove.forEach((e) => delete newDrugs[e]);
   return newDrugs;
 };

@@ -14,6 +14,15 @@ export default class MedecinesFormulations extends Component<Props, State> {
     setFormulation(diagnoseId, value, type, drugId);
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const { pageIndex } = this.props;
+
+    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
+      return nextProps.selectedPage === pageIndex;
+    }
+    return true;
+  }
+
   static defaultProps = {};
 
   _renderFormulation = (data, type) => {

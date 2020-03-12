@@ -35,6 +35,7 @@ export const setMedecine = (type, diagnosesKey, medecineId, boolean) => ({
     boolean,
   },
 });
+
 export const setCustomMedecine = (diagnosesKey, medecine, type) => ({
   type: actions.SET_CUSTOM_MEDECINE,
   payload: {

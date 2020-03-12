@@ -12,6 +12,15 @@ type Props = NavigationScreenProps & {};
 type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCares extends Component<Props, State> {
+  shouldComponentUpdate(nextProps, nextState) {
+    const { pageIndex } = this.props;
+
+    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
+      return nextProps.selectedPage === pageIndex;
+    }
+    return true;
+  }
+
   /**
    *  Render content of modal healthCare
    *
@@ -72,6 +81,22 @@ export default class HealthCares extends Component<Props, State> {
       </View>
     ));
 
+  _renderCustom = () => {
+    const {
+      medicalCase: { diagnoses },
+    } = this.props;
+
+    return diagnoses.custom.map((c) => {
+      return (
+        <>
+          <Text customSubTitle>- {c.label}</Text>
+          {c.drugs.map((d) => (
+            <Text>{d}</Text>
+          ))}
+        </>
+      );
+    });
+  };
   _renderBreakable = (drug, node, drugDose) => {
     //  12 hours for 5 days = recurrence for instance in diagnoses .duration
     const unit = drugDose.doseResult / drugDose.breakable;
@@ -95,17 +120,12 @@ export default class HealthCares extends Component<Props, State> {
 
     return (
       <>
-        <Text customTitle>{node.label}</Text>
+        <Text customSubTitle>- {node.label}</Text>
         <Text>Mode {drug.formulationSelected}</Text>
         {drugDose.doseResult === null ? (
           <Text>{drugDose.no_possibility}</Text>
         ) : (
           <>
-            {Object.keys(drugDose).map((k) => (
-              <Text>
-                {k} vaut : {drugDose[k]}
-              </Text>
-            ))}
             <Text>Give {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} mg</Text>
             <Text>
               Prescription : {num !== Infinity && num !== 0 ? num : null}
@@ -123,7 +143,7 @@ export default class HealthCares extends Component<Props, State> {
   _renderDefault = (drug, node, drugDose) => {
     return (
       <>
-        <Text customTitle>{node.label}</Text>
+        <Text customSubTitle>- {node.label}</Text>
         <Text>Mode {drug.formulationSelected}</Text>
         <Text>Duration :{drug.duration}</Text>
         <Text>Administration :{drugDose.administration_route_name}</Text>
@@ -135,7 +155,7 @@ export default class HealthCares extends Component<Props, State> {
     const ratio = drugDose.liquid_concentration / drugDose.dose_form;
     return (
       <>
-        <Text customTitle>{node.label}</Text>
+        <Text customSubTitle>- {node.label}</Text>
         <Text>Mode {drug.formulationSelected}</Text>
         <Text>
           Give {ratio * drugDose.doseResult}mg : {drugDose.doses_per_day * drugDose.dose_form}ml of {drugDose.liquid_concentration}mg/{drugDose.dose_form}ml
@@ -145,6 +165,41 @@ export default class HealthCares extends Component<Props, State> {
         </Text>
       </>
     );
+  };
+
+  _renderDiagnoses = () => {
+    const {
+      medicalCase: { diagnoses, nodes },
+      app: { t },
+    } = this.props;
+
+    return (
+      <>
+        <Text customTitle>List of diagnoses </Text>
+        {Object.keys(diagnoses.proposed).map((pro) => (
+          <Text>{diagnoses.proposed[pro].label}</Text>
+        ))}
+        {Object.keys(diagnoses.additional).map((pro) => (
+          <Text>{diagnoses.additional[pro].label}</Text>
+        ))}
+      </>
+    );
+  };
+
+  _renderManagement = (key) => {
+    const {
+      medicalCase: { diagnoses, nodes },
+      app: { t },
+    } = this.props;
+
+    return Object.keys(diagnoses[key]).map((diagnoseId) => {
+      return Object.keys(diagnoses[key][diagnoseId].managements).map((id) => {
+        const management = diagnoses[key][diagnoseId].managements[id];
+        const node = nodes[management.id];
+
+        return <Text>{node.label}</Text>;
+      });
+    });
   };
 
   _renderDrugDose = (type) => {
@@ -176,11 +231,20 @@ export default class HealthCares extends Component<Props, State> {
     const {
       medicalCase: { nodes },
     } = this.props;
+
     return (
       <Content>
+        <Text customTitle>Summary Treatment</Text>
         <Text>Weight : {nodes['3'].value}kg</Text>
-        {this._renderDrugDose('additional')}
+        {this._renderDiagnoses()}
+        <Text customTitle>Medecine</Text>
         {this._renderDrugDose('proposed')}
+        {this._renderDrugDose('additional')}
+        <Text customTitle>Manually added drug </Text>
+        {this._renderCustom()}
+        <Text customTitle>Management and Counseling</Text>
+        {this._renderManagement('proposed')}
+        {this._renderManagement('additional')}
       </Content>
     );
   }

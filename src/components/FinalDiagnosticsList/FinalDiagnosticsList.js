@@ -21,9 +21,16 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
 
   // When we clear the store redux
   shouldComponentUpdate(nextProps: Props): boolean {
+    const { pageIndex } = this.props;
+
     if (nextProps.medicalCase.id === undefined) {
       return false;
     }
+
+    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
+      return nextProps.selectedPage === pageIndex;
+    }
+
     return true;
   }
 
@@ -61,6 +68,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
       setDiagnoses,
       medicalCase: { diagnoses },
       app: { t },
+      selectedPage,
     } = this.props;
     const { finalDiagnostics, customDiagnoses } = this.state;
 

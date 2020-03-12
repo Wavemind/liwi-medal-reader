@@ -286,7 +286,6 @@ class CustomNavigator extends React.Component {
         case navigationActionConstant.navigate:
         case navigationActionConstant.replace:
           // eslint-disable-next-line no-case-declarations
-          console.log(action);
           validation = validatorNavigate(action);
           break;
 
