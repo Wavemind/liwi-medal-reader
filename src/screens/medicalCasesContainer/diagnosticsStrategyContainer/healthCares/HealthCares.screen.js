@@ -158,7 +158,7 @@ export default class HealthCares extends Component<Props, State> {
         <Text customSubTitle>- {node.label}</Text>
         <Text>Mode {drug.formulationSelected}</Text>
         <Text>
-          Give {ratio * drugDose.doseResult}mg : {drugDose.doses_per_day * drugDose.dose_form}ml of {drugDose.liquid_concentration}mg/{drugDose.dose_form}ml
+          Give {ratio * drugDose.doseResult}mg : {drugDose.doseResult}ml of {drugDose.liquid_concentration}mg/{drugDose.dose_form}ml
         </Text>
         <Text>
           every : {drugDose.recurrence} hours for {drug.duration} days
