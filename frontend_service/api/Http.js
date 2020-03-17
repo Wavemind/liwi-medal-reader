@@ -2,7 +2,7 @@ import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
 import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
-
+import json from '../../frontend_service/api/json';
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
 import { getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
 
@@ -126,7 +126,9 @@ export const fetchAlgorithms = async (userId) => {
 
     await post('activities', deviceInfo);
 
-    const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
+    // const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
+
+    const serverAlgorithm = json;
 
     const localAlgorithms = await getItems('algorithms');
 

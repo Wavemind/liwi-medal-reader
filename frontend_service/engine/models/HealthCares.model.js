@@ -82,6 +82,8 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
 
     // protected by_age
     if ((weightNode !== undefined && weightNode.value !== null) || formulation.by_age === false) {
+      recurrence = 24 / formulation.doses_per_day;
+
       switch (formulation.medication_form) {
         case healthCareType.syrup:
         case healthCareType.suspension:
@@ -108,7 +110,6 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
           }
 
           // Frequency
-          recurrence = 24 / formulation.doses_per_day;
 
           return {
             minDoseMg,
@@ -159,6 +160,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
             minDoseCap,
             maxDoseCap,
             doseResult,
+            recurrence,
             ...formulation,
           };
         default:

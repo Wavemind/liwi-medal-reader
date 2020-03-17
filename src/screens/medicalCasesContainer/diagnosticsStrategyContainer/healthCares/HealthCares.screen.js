@@ -97,6 +97,31 @@ export default class HealthCares extends Component<Props, State> {
       );
     });
   };
+
+  _renderCapsule = (drug, node, drugDose) => {
+    console.log(drugDose);
+    return (
+      <>
+        <Text customSubTitle>- {node.label}</Text>
+        <Text>Mode {drug.formulationSelected}</Text>
+        {drugDose.doseResult === null ? (
+          <Text>{drugDose.no_possibility}</Text>
+        ) : (
+          <>
+            <Text>Give {drugDose.doseResult * drugDose.dose_form} mg</Text>
+            <Text>
+              Prescription : {drugDose.doseResult} capsule of {drugDose.dose_form}
+              mg {drugDose.administration_route_name}
+            </Text>
+            <Text>
+              every : {drugDose.recurrence} hours for {drug.duration} days
+            </Text>
+          </>
+        )}
+      </>
+    );
+  };
+
   _renderBreakable = (drug, node, drugDose) => {
     //  12 hours for 5 days = recurrence for instance in diagnoses .duration
     const unit = drugDose.doseResult / drugDose.breakable;
@@ -126,13 +151,15 @@ export default class HealthCares extends Component<Props, State> {
           <Text>{drugDose.no_possibility}</Text>
         ) : (
           <>
-            <Text>Give {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} mg</Text>
             <Text>
-              Prescription : {num !== Infinity && num !== 0 ? num : null}
+              Give {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} mg : {num !== Infinity && num !== 0 ? num : null}
               {num !== Infinity && num > 0 && fractionString !== '' && ' and '}
               {fractionString}
               {drugDose.dose_form}
               mg tablet {drugDose.administration_route_name}
+            </Text>
+            <Text>
+              every : {drugDose.recurrence} hours for {drug.duration} days
             </Text>
           </>
         )}
@@ -220,6 +247,8 @@ export default class HealthCares extends Component<Props, State> {
             return this._renderLiquid(drug, node, drugDose);
           case healthCareType.tablet:
             return this._renderBreakable(drug, node, drugDose);
+          case healthCareType.capsule:
+            return this._renderCapsule(drug, node, drugDose);
           default:
             return this._renderDefault(drug, node, drugDose);
         }
