@@ -15,6 +15,7 @@ export default {
       margin: 0,
       color: liwiColors.darkerGreyColor,
     },
+    '.italic': { fontStyle: 'italic', color: liwiColors.darkerGreyColor },
     '.light': {
       color: '#6a6a6a',
       borderRadius: 35,

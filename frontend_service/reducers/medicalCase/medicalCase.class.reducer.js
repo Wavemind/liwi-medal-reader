@@ -310,63 +310,12 @@ class MedicalCaseReducer extends ReducerClass {
       const { [medecineId]: dontwant, ...other } = state.diagnoses.additionalDrugs;
       newAdditionalDrugs = other;
     }
-    let other = '';
-    // check for doublon
-    if (type === 'additional') {
-      other = 'proposed';
-    } else if (type === 'proposed') {
-      other = 'additional';
-    }
-
-    let diagnoseToNullify = null;
-    let drugToNullify = null;
-    let maxDuration = 0;
-
-    if (boolean === true) {
-      Object.keys(state.diagnoses[other]).map((key) => {
-        Object.keys(state.diagnoses[other][key].drugs).map((id) => {
-          let n = state.diagnoses[other][key].drugs[id];
-          // Get the highest duration
-          if (Number(id) === medecineId && n.duration > maxDuration) {
-            maxDuration = n.duration;
-          }
-
-          // Get the drug to update to null
-          if (Number(id) === medecineId ) {
-            diagnoseToNullify = key;
-            drugToNullify = id;
-          }
-        });
-      });
-    }
-    let toUpdate = {};
-
-    if (diagnoseToNullify !== null) {
-      toUpdate = {
-        [other]: {
-          ...state.diagnoses[other],
-          [diagnoseToNullify]: {
-            ...state.diagnoses[other][diagnoseToNullify],
-            drugs: {
-              ...state.diagnoses[other][diagnoseToNullify].drugs,
-              [drugToNullify]: {
-                ...state.diagnoses[other][diagnoseToNullify].drugs[drugToNullify],
-                agreed: true,
-              },
-            },
-          },
-        },
-      };
-    }
-
-    const duration = maxDuration > 0 ? maxDuration : state.diagnoses[type][diagnosesKey].drugs[medecineId].duration;
 
     return {
       ...state,
       diagnoses: {
         ...state.diagnoses,
         additionalDrugs: { ...newAdditionalDrugs },
-        ...toUpdate,
         [type]: {
           ...state.diagnoses[type],
           [diagnosesKey]: {
@@ -375,7 +324,6 @@ class MedicalCaseReducer extends ReducerClass {
               ...state.diagnoses[type][diagnosesKey].drugs,
               [medecineId]: {
                 ...state.diagnoses[type][diagnosesKey].drugs[medecineId],
-                duration,
                 agreed: boolean,
               },
             },
