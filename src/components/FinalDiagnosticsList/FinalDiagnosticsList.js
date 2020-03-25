@@ -67,6 +67,8 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     const {
       setDiagnoses,
       medicalCase: { diagnoses },
+      medicalCase,
+
       app: { t },
       selectedPage,
     } = this.props;
@@ -76,7 +78,9 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
 
     return (
       <React.Fragment>
-        <Text customTitle>{t('diagnoses:proposed')}</Text>
+        <Text customTitle>
+          {t('diagnoses:proposed')} {medicalCase.name}
+        </Text>
         {finalDiagnostics.included.map((f) => (
           <FinalDiagnostic {...f} type="AntDesign" name="checkcircle" key={f.id} style={styles.greenIcon} setDiagnoses={setDiagnoses} />
         ))}

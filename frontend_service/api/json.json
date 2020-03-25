@@ -1,14 +1,14 @@
 {
   "id": 1,
   "algorithm_id": 1,
-  "name": "test",
-  "version": "Test",
+  "name": "ePoct+",
+  "version": "V1",
   "version_id": 1,
   "description": "",
   "triage": {
     "orders": {
-      "emergency_sign": [],
-      "complaint_category": [10],
+      "unique_triage_question": [],
+      "complaint_category": [10, 18, 19],
       "basic_measurement": [3],
       "chronic_condition": [],
       "other": [2]
@@ -17,12 +17,12 @@
   },
   "author": "Emmanuel Barchichat",
   "created_at": "2020-03-09T16:54:22.808+01:00",
-  "updated_at": "2020-03-09T16:54:22.837+01:00",
+  "updated_at": "2020-03-18T11:17:49.767+01:00",
   "diagnostics": {
     "1": {
       "id": 1,
       "reference": 1,
-      "label": "Test",
+      "label": "Malaria",
       "differential": {
         "top_conditions": [],
         "conditions": []
@@ -32,7 +32,14 @@
           "top_conditions": [],
           "conditions": [],
           "id": 9,
-          "children": [11],
+          "children": [11, 20],
+          "final_diagnostic_id": null
+        },
+        "22": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 22,
+          "children": [],
           "final_diagnostic_id": null
         }
       },
@@ -53,7 +60,7 @@
           "conditions": [],
           "diagnostic_id": 1,
           "id": 11,
-          "label": "Test",
+          "label": "Moderate Malaria",
           "type": "FinalDiagnostic",
           "drugs": {
             "12": {
@@ -87,6 +94,48 @@
               "description": null
             }
           },
+          "excluding_final_diagnostics": null,
+          "cc": 10
+        },
+        "20": {
+          "top_conditions": [
+            {
+              "first_id": 15,
+              "first_type": "Answer",
+              "first_node_id": 9,
+              "operator": null,
+              "second_id": null,
+              "second_type": null,
+              "second_node_id": null,
+              "score": null
+            }
+          ],
+          "conditions": [],
+          "diagnostic_id": 1,
+          "id": 20,
+          "label": "Sever malaria",
+          "type": "FinalDiagnostic",
+          "drugs": {
+            "21": {
+              "top_conditions": [
+                {
+                  "first_id": 24,
+                  "first_type": "Answer",
+                  "first_node_id": 22,
+                  "operator": null,
+                  "second_id": null,
+                  "second_type": null,
+                  "second_node_id": null,
+                  "score": null
+                }
+              ],
+              "conditions": [],
+              "id": 21,
+              "duration": 7,
+              "description": ""
+            }
+          },
+          "managements": {},
           "excluding_final_diagnostics": null,
           "cc": 10
         }
@@ -410,7 +459,7 @@
       "conditions": [],
       "diagnostic_id": 1,
       "id": 11,
-      "label": "Test",
+      "label": "Moderate Malaria",
       "type": "FinalDiagnostic",
       "drugs": {
         "12": {
@@ -541,8 +590,203 @@
       "type": "HealthCare",
       "category": "management",
       "reference": 1,
-      "label": "Refer",
+      "label": "Refer to the specific documentation",
       "description": null
+    },
+    "18": {
+      "id": 18,
+      "type": "Question",
+      "reference": 2,
+      "label": "Test",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "complaint_category",
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "20": {
+          "id": 20,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "21": {
+          "id": 21,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
+    },
+    "19": {
+      "id": 19,
+      "type": "Question",
+      "reference": 3,
+      "label": "Test",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "complaint_category",
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "22": {
+          "id": 22,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "23": {
+          "id": 23,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
+    },
+    "20": {
+      "top_conditions": [
+        {
+          "first_id": 15,
+          "first_type": "Answer",
+          "first_node_id": 9,
+          "operator": null,
+          "second_id": null,
+          "second_type": null,
+          "second_node_id": null,
+          "score": null
+        }
+      ],
+      "conditions": [],
+      "diagnostic_id": 1,
+      "id": 20,
+      "label": "Sever malaria",
+      "type": "FinalDiagnostic",
+      "drugs": {
+        "21": {
+          "top_conditions": [
+            {
+              "first_id": 24,
+              "first_type": "Answer",
+              "first_node_id": 22,
+              "operator": null,
+              "second_id": null,
+              "second_type": null,
+              "second_node_id": null,
+              "score": null
+            }
+          ],
+          "conditions": [],
+          "id": 21,
+          "duration": 7,
+          "description": ""
+        }
+      },
+      "managements": {},
+      "excluding_final_diagnostics": null,
+      "cc": 10
+    },
+    "21": {
+      "id": 21,
+      "type": "HealthCare",
+      "category": "drug",
+      "reference": 5,
+      "label": "Bepanthen",
+      "description": null,
+      "weight_question_id": 3,
+      "formulations": [
+        {
+          "medication_form": "drops",
+          "administration_route_category": "Mucocutaneous",
+          "administration_route_name": "Otic",
+          "liquid_concentration": null,
+          "dose_form": null,
+          "unique_dose": 2,
+          "by_age": false,
+          "breakable": null,
+          "minimal_dose_per_kg": null,
+          "maximal_dose_per_kg": null,
+          "maximal_dose": null,
+          "doses_per_day": 5
+        }
+      ]
+    },
+    "22": {
+      "id": 22,
+      "type": "Question",
+      "reference": 4,
+      "label": "Red eyes",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "consultation",
+      "system": "general",
+      "formula": null,
+      "category": "physical_exam",
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [
+        {
+          "id": 1,
+          "conditionValue": null
+        }
+      ],
+      "cc": [10],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "24": {
+          "id": 24,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "25": {
+          "id": 25,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
     }
   }
 }

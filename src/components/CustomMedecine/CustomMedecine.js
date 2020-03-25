@@ -33,11 +33,11 @@ export default class CustomMedecine extends Component<{}> {
 
     return (
       <View style={styles.container}>
-        <Text smallTitle size-auto>
+        <Text style={styles.title} size-auto>
           {diagnose.label}
         </Text>
         <View style={styles.item}>
-          <Input style={styles.input} common value={customDrug} onChange={this._handleCustomInput} placeholder={'Write the medecine'} />
+          <Input style={styles.input} common value={customDrug} onChange={this._handleCustomInput} placeholder={'Write the medicine'} />
           <Button style={styles.button} onPress={this._addCustom}>
             <Icon style={styles.icon} active name="create-new-folder" type="MaterialIcons" />
           </Button>

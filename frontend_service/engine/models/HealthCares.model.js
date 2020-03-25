@@ -24,6 +24,8 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
       drugDoses = null,
       formulations = [],
       formulationSelected = null,
+      is_anti_malarial = false,
+      is_antibiotic = false,
     } = props;
 
     this.description = description;
@@ -38,6 +40,8 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     this.drugDoses = drugDoses;
     this.formulations = formulations;
     this.formulationSelected = formulationSelected;
+    this.is_anti_malarial = is_anti_malarial;
+    this.is_antibiotic = is_antibiotic;
   }
 
   /**

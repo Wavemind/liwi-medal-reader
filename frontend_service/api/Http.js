@@ -126,9 +126,8 @@ export const fetchAlgorithms = async (userId) => {
 
     await post('activities', deviceInfo);
 
-    // const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
-
-    const serverAlgorithm = json;
+    const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
+    // const serverAlgorithm = json;
 
     const localAlgorithms = await getItems('algorithms');
 
