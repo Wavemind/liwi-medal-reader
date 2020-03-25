@@ -230,23 +230,38 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.SET_FORMULATION_SELECTED)
   setFormulationSelected(state, action) {
     const { type, diagnoseId, formulation, drugId } = action.payload;
+
+    let dataReturned = {};
+
+    if (type === 'additionalDrugs') {
+      dataReturned = {
+        ...state.diagnoses[type],
+        [drugId]: {
+          ...state.diagnoses[type][drugId],
+          formulationSelected: formulation,
+        },
+      };
+    } else {
+      dataReturned = {
+        ...state.diagnoses[type],
+        [diagnoseId]: {
+          ...state.diagnoses[type][diagnoseId],
+          drugs: {
+            ...state.diagnoses[type][diagnoseId].drugs,
+            [drugId]: {
+              ...state.diagnoses[type][diagnoseId].drugs[drugId],
+              formulationSelected: formulation,
+            },
+          },
+        },
+      };
+    }
+
     return {
       ...state,
       diagnoses: {
         ...state.diagnoses,
-        [type]: {
-          ...state.diagnoses[type],
-          [diagnoseId]: {
-            ...state.diagnoses[type][diagnoseId],
-            drugs: {
-              ...state.diagnoses[type][diagnoseId].drugs,
-              [drugId]: {
-                ...state.diagnoses[type][diagnoseId].drugs[drugId],
-                formulationSelected: formulation,
-              },
-            },
-          },
-        },
+        [type]: { ...dataReturned },
       },
     };
   }
@@ -280,7 +295,7 @@ class MedicalCaseReducer extends ReducerClass {
   /**
    * Update medecine
    *
-   * @payload type: Text that will be shown in modal
+   * @payload type: additional or proposed
    * @payload diagnosesKey: the diagnosey identifiant
    * @payload medecineId: the medecin identifiant
    * @payload boolean: the agreed / unagree value
@@ -288,10 +303,70 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.SET_MEDECINE)
   setMedecine(state, action) {
     const { type, diagnosesKey, medecineId, boolean } = action.payload;
+
+    let newAdditionalDrugs = state.diagnoses.additionalDrugs;
+    if (state.diagnoses.additionalDrugs[medecineId] !== undefined) {
+      // Remove from additionnal
+      const { [medecineId]: dontwant, ...other } = state.diagnoses.additionalDrugs;
+      newAdditionalDrugs = other;
+    }
+    let other = '';
+    // check for doublon
+    if (type === 'additional') {
+      other = 'proposed';
+    } else if (type === 'proposed') {
+      other = 'additional';
+    }
+
+    let diagnoseToNullify = null;
+    let drugToNullify = null;
+    let maxDuration = 0;
+
+    if (boolean === true) {
+      Object.keys(state.diagnoses[other]).map((key) => {
+        Object.keys(state.diagnoses[other][key].drugs).map((id) => {
+          let n = state.diagnoses[other][key].drugs[id];
+          // Get the highest duration
+          if (Number(id) === medecineId && n.duration > maxDuration) {
+            maxDuration = n.duration;
+          }
+
+          // Get the drug to update to null
+          if (Number(id) === medecineId ) {
+            diagnoseToNullify = key;
+            drugToNullify = id;
+          }
+        });
+      });
+    }
+    let toUpdate = {};
+
+    if (diagnoseToNullify !== null) {
+      toUpdate = {
+        [other]: {
+          ...state.diagnoses[other],
+          [diagnoseToNullify]: {
+            ...state.diagnoses[other][diagnoseToNullify],
+            drugs: {
+              ...state.diagnoses[other][diagnoseToNullify].drugs,
+              [drugToNullify]: {
+                ...state.diagnoses[other][diagnoseToNullify].drugs[drugToNullify],
+                agreed: true,
+              },
+            },
+          },
+        },
+      };
+    }
+
+    const duration = maxDuration > 0 ? maxDuration : state.diagnoses[type][diagnosesKey].drugs[medecineId].duration;
+
     return {
       ...state,
       diagnoses: {
         ...state.diagnoses,
+        additionalDrugs: { ...newAdditionalDrugs },
+        ...toUpdate,
         [type]: {
           ...state.diagnoses[type],
           [diagnosesKey]: {
@@ -300,6 +375,7 @@ class MedicalCaseReducer extends ReducerClass {
               ...state.diagnoses[type][diagnosesKey].drugs,
               [medecineId]: {
                 ...state.diagnoses[type][diagnosesKey].drugs[medecineId],
+                duration,
                 agreed: boolean,
               },
             },
@@ -327,6 +403,31 @@ class MedicalCaseReducer extends ReducerClass {
         ...state.diagnoses,
         additionalDrugs: {
           ...medecines,
+        },
+      },
+    };
+  }
+
+  /**
+   * Update medicine duration
+   *
+   * @payload id: id of the medicine
+   * @payload duration: the new value to update
+   */
+  @Action(actions.SET_ADDITIONAl_MEDICINE_DURATION)
+  setAdditionalMedecineDuration(state, action) {
+    const { id, duration } = action.payload;
+
+    return {
+      ...state,
+      diagnoses: {
+        ...state.diagnoses,
+        additionalDrugs: {
+          ...state.diagnoses.additionalDrugs,
+          [id]: {
+            ...state.diagnoses.additionalDrugs[id],
+            duration,
+          },
         },
       },
     };

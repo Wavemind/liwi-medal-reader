@@ -6,7 +6,9 @@ import { LeftButton, RightButton } from '../../template/layout';
 export default class Medecine extends Component<{}> {
   _handleClick = (boolean) => {
     const { medecine, diagnosesKey, setMedecine, type } = this.props;
-    setMedecine(type, diagnosesKey, medecine.id, boolean);
+    if (boolean !== medecine.agreed) {
+      setMedecine(type, diagnosesKey, medecine.id, boolean);
+    }
   };
 
   shouldComponentUpdate(nextProps) {

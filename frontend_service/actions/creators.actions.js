@@ -25,6 +25,13 @@ export const setDiagnoses = (type, diagnoses, actionDiagnoses) => ({
     actionDiagnoses,
   },
 });
+export const setAdditionalMedicineDuration = (id, duration) => ({
+  type: actions.SET_ADDITIONAl_MEDICINE_DURATION,
+  payload: {
+    id,
+    duration,
+  },
+});
 
 export const setMedecine = (type, diagnosesKey, medecineId, boolean) => ({
   type: actions.SET_MEDECINE,

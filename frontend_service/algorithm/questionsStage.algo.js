@@ -1,6 +1,7 @@
 import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData } from '../actions/creators.actions';
+import { calculateCondition } from './conditionsHelpers.algo';
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -27,7 +28,7 @@ export const questionsMedicalHistory = () => {
       {
         by: 'category',
         operator: 'equal',
-        value: categories.vitalSignTriage,
+        value: categories.basicMeasurement,
       },
     ],
     'OR',
@@ -122,7 +123,7 @@ export const questionsBasicMeasurements = () => {
   const state$ = store.getState();
   const basicMeasurements = [];
 
-  const orderedQuestions = state$.triage.orders[categories.vitalSignTriage];
+  const orderedQuestions = state$.triage.orders[categories.basicMeasurement];
 
   if (orderedQuestions !== undefined) {
     orderedQuestions.map((orderedQuestion) => {
@@ -155,4 +156,53 @@ export const questionsTests = () => {
   }
 
   return assessmentTest;
+};
+
+export const titleMannualyDiagnoses = () => {
+  const state$ = store.getState();
+  const {
+    diagnoses: { additional },
+  } = state$;
+
+  if (Object.keys(additional).length === 0) {
+    return false;
+  }
+  let firstToTrue = false;
+  Object.keys(additional).map((q) => {
+    Object.keys(additional[q].drugs).map((f) => {
+      if (additional[q].drugs[f].agreed === true) {
+        firstToTrue = true;
+      }
+    });
+  });
+
+  return firstToTrue;
+};
+
+export const titleManagementCounseling = () => {
+  const state$ = store.getState();
+  const { diagnoses } = state$;
+
+  if (Object.keys(diagnoses.additional).length === 0 && Object.keys(diagnoses.proposed).length === 0) {
+    return false;
+  }
+
+  let isPossible = false;
+  Object.keys(diagnoses.additional).map((id) => {
+    Object.keys(diagnoses.additional[id].managements).map((m) => {
+      if (calculateCondition(diagnoses.additional[id].managements[m]) === true) {
+        isPossible = true;
+      }
+    });
+  });
+
+  Object.keys(diagnoses.proposed).map((id) => {
+    Object.keys(diagnoses.proposed[id].managements).map((m) => {
+      if (calculateCondition(diagnoses.proposed[id].managements[m]) === true) {
+        isPossible = true;
+      }
+    });
+  });
+
+  return isPossible;
 };

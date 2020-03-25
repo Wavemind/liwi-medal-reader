@@ -111,8 +111,8 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
-          medecines: 'Medecines',
-          medecines_formulation: 'Medecine Formulations',
+          medecines: 'Medicines',
+          medecines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',
           healthcares_questions: 'Management questions',
           healthcares: 'Treatments & Management',
