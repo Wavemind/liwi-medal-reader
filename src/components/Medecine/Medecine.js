@@ -25,9 +25,11 @@ export default class Medecine extends Component<{}> {
 
     return (
       <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
-        <Text style={{ flex: 0.5 }} size-auto>
-          {node?.label}
-        </Text>
+        <View style={{ flex: 0.5 }}>
+          <Text size-auto>{node?.label}</Text>
+          <Text italic>Duration : {medecine.duration} days</Text>
+        </View>
+
         <View style={{ flexDirection: 'row', flex: 0.4, height: 50 }}>
           <LeftButton active={medecine.agreed === true} onPress={() => this._handleClick(true)}>
             <Text white={medecine.agreed === true} center>

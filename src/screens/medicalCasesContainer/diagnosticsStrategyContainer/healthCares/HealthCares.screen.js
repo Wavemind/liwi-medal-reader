@@ -1,13 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import { Content, Text, View } from 'native-base';
+import { Content, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { styles } from './HealthCares.style';
-import ToolTipModal from '../../../../components/ToolTipModal';
 import { healthCareType } from '../../../../../frontend_service/constants';
-import { SeparatorLine } from '../../../../template/layout';
 import toReadableFraction from '../../../../utils/toReadableFraction';
-import { titleManagementCounseling } from '../../../../../frontend_service/algorithm/questionsStage.algo';
+import { getDrugs, titleManagementCounseling } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 
 type Props = NavigationScreenProps & {};
@@ -22,66 +19,6 @@ export default class HealthCares extends Component<Props, State> {
     }
     return true;
   }
-
-  /**
-   *  Render content of modal healthCare
-   *
-   *  @params object : healthCare
-   */
-  _renderHealthCareType = (healthCare) => {
-    const {
-      app: { t },
-    } = this.props;
-
-    const { drugDoses } = healthCare;
-    switch (healthCare.treatmentType) {
-      case healthCareType.liquid:
-        return null;
-      case healthCareType.pill:
-        return (
-          <View>
-            <Text>{healthCare.label}</Text>
-            <Text>{healthCare.description}</Text>
-            <SeparatorLine />
-            <Text>Reference : {healthCare.reference}</Text>
-            <Text>Id : {healthCare.id}</Text>
-            <SeparatorLine />
-            <Text>Pill Size : {healthCare.pillSize}</Text>
-            <Text>Maximum dose : {healthCare.maximalDose}</Text>
-            {drugDoses !== null ? (
-              <>
-                <Text>Min dose (mg/Kg) : {drugDoses.minDoseMg}</Text>
-                <Text>Max dose (mg/kg) : {drugDoses.maxDoseMg}</Text>
-                <Text>Min dose (cap) : {drugDoses.minDoseCap}</Text>
-                <Text>Max dose (cap) : {drugDoses.maxDoseCap}</Text>
-                <Text>Dose result : {drugDoses.doseResult}</Text>
-              </>
-            ) : (
-              <Text error>{t('medical_case:healthcares_no_weight')}</Text>
-            )}
-          </View>
-        );
-      default:
-        return null;
-    }
-  };
-
-  /**
-   *  Render a healthcare by type
-   *
-   *  @params object : healthCare
-   */
-  _renderHealthCare = (healthCare) =>
-    Object.keys(healthCare).map((index) => (
-      <View style={styles.blocManagement} key={index}>
-        <Text style={styles.spaceText} size-auto key={`healthcare${healthCare[index].reference}`}>
-          {__DEV__ && `${healthCare[index].reference} - `}
-          {healthCare[index].label}
-        </Text>
-        {healthCare[index].description !== null ? <Text style={styles.desc}>{healthCare[index].description}</Text> : null}
-        <ToolTipModal toolTipIcon>{this._renderHealthCareType(healthCare[index])}</ToolTipModal>
-      </View>
-    ));
 
   _renderCustom = () => {
     const {
@@ -101,11 +38,10 @@ export default class HealthCares extends Component<Props, State> {
   };
 
   _renderCapsule = (drug, node, drugDose) => {
-    console.log(drugDose);
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
-        <Text>Mode {drug.formulationSelected}</Text>
+        <Text>Mode : {drug.formulationSelected}</Text>
         {drugDose.doseResult === null ? (
           <Text>{drugDose.no_possibility}</Text>
         ) : (
@@ -147,7 +83,7 @@ export default class HealthCares extends Component<Props, State> {
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
-        <Text>Mode {drug.formulationSelected}</Text>
+        <Text>Mode : {drug.formulationSelected}</Text>
         {drugDose.doseResult === null ? (
           <Text>{drugDose.no_possibility}</Text>
         ) : (
@@ -170,26 +106,28 @@ export default class HealthCares extends Component<Props, State> {
   };
 
   _renderDefault = (drug, node, drugDose) => {
+    let every = '';
+
+    if (drug.formulationSelected !== null) {
+      every = `every ${24 / drugDose.doses_per_day} hours for ${drug.duration} days`;
+    }
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
-        <Text>Mode {drug.formulationSelected}</Text>
+        <Text>Mode : {drug.formulationSelected === null ? ' No formulation selected !' : drug.formulationSelected}</Text>
         <Text>Duration : {drug.duration}</Text>
-        <Text>Administration : {drugDose.administration_route_name}</Text>
-        <Text>
-          every {24 / drugDose.doses_per_day} hours for {drug.duration} days
-        </Text>
+        {drug.formulationSelected !== null && <Text>Administration : {drugDose.administration_route_name}</Text>}
+        {drug.formulationSelected !== null && <Text>{every}</Text>}
       </>
     );
   };
 
   _renderLiquid = (drug, node, drugDose) => {
     const ratio = drugDose.liquid_concentration / drugDose.dose_form;
-    console.log(drug, drugDose);
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
-        <Text>Mode {drug.formulationSelected}</Text>
+        <Text>Mode : {drug.formulationSelected}</Text>
         <Text>
           Give {ratio * drugDose.doseResult}mg : {drugDose.doseResult}ml of {drugDose.liquid_concentration}mg/{drugDose.dose_form}ml
         </Text>
@@ -237,13 +175,12 @@ export default class HealthCares extends Component<Props, State> {
 
   _renderSwitchFormulation = (formulationSelected, drug) => {
     const {
-      medicalCase: { diagnoses, nodes },
+      medicalCase: { nodes },
       app: { t },
     } = this.props;
 
     const node = nodes[drug.id];
     const drugDose = node.getDrugDoses(drug.formulationSelected);
-
     switch (drug.formulationSelected) {
       case healthCareType.syrup:
       case healthCareType.suspension:
@@ -257,41 +194,14 @@ export default class HealthCares extends Component<Props, State> {
     }
   };
 
-  _renderAdditionalDrugDose = () => {
-    const {
-      medicalCase: {
-        diagnoses: { additionalDrugs },
-        nodes,
-      },
-      app: { t },
-    } = this.props;
+  _renderDrugDose = () => {
+    const drugs = getDrugs();
 
-    return Object.keys(additionalDrugs).map((drugId) => {
-      const drug = additionalDrugs[drugId];
-
+    return Object.keys(drugs).map((k) => {
+      let drug = drugs[k];
       if (drug.agreed) {
         return this._renderSwitchFormulation(drug.formulationSelected, drug);
       }
-
-      return null;
-    });
-  };
-
-  _renderDrugDose = (type) => {
-    const {
-      medicalCase: { diagnoses, nodes },
-      app: { t },
-    } = this.props;
-
-    return Object.keys(diagnoses[type]).map((diagnoseId) => {
-      return Object.keys(diagnoses[type][diagnoseId].drugs).map((drugId) => {
-        const drug = diagnoses[type][diagnoseId].drugs[drugId];
-        if (drug.agreed) {
-          return this._renderSwitchFormulation(drug.formulationSelected, drug);
-        }
-
-        return null;
-      });
     });
   };
 
@@ -306,11 +216,7 @@ export default class HealthCares extends Component<Props, State> {
         <Text>Weight : {nodes['3'].value}kg</Text>
         {this._renderDiagnoses()}
         <Text customTitle>Medicine</Text>
-        {this._renderDrugDose('proposed')}
-        {this._renderDrugDose('additional')}
-        {this._renderAdditionalDrugDose()}
-        <Text customTitle>Manually added drug </Text>
-        {this._renderCustom()}
+        {this._renderDrugDose()}
         {titleManagementCounseling() && <Text customTitle>Management and Counseling</Text>}
         {this._renderManagement('proposed')}
         {this._renderManagement('additional')}

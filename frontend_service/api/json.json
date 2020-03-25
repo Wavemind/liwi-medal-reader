@@ -116,6 +116,13 @@
           "label": "Sever malaria",
           "type": "FinalDiagnostic",
           "drugs": {
+            "15": {
+              "top_conditions": [],
+              "conditions": [],
+              "id": 15,
+              "duration": 25,
+              "description": ""
+            },
             "21": {
               "top_conditions": [
                 {
@@ -710,6 +717,13 @@
           "conditions": [],
           "id": 21,
           "duration": 7,
+          "description": ""
+        },
+        "15": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 15,
+          "duration": 25,
           "description": ""
         }
       },

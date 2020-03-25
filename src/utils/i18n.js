@@ -4,7 +4,7 @@ import { NativeModules } from 'react-native';
 
 const languageDetector = {
   type: 'languageDetector',
-  async: true, // flags below detection to be async
+  async: true, // flags below detection to be asyncw
   detect: (callback) => {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);

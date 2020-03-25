@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Input, Text, View } from 'native-base';
+import { Input, Text, View, Icon } from 'native-base';
 import { TextInput } from 'react-native';
 
 import { NavigationScreenProps } from 'react-navigation';
@@ -119,10 +119,12 @@ export default class Medecines extends Component<Props, State> {
             let isPossible = false;
 
             Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
-              isPossible = calculateCondition(diagnoses.proposed[key].drugs[treatmentId]);
+              if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
+                isPossible = true;
+              }
             });
 
-            if (true) {
+            if (isPossible) {
               return (
                 <>
                   <Text key={`${key}diagnoses`} size-auto style={styles.label}>
@@ -159,18 +161,26 @@ export default class Medecines extends Component<Props, State> {
 
         <View style={{ marginBottom: 20 }}>
           {Object.keys(diagnoses.additionalDrugs).map((s) => (
-            <>
-              <Text size-auto>
-                - {diagnoses.additionalDrugs[s].label}, medicine duration : {diagnoses.additionalDrugs[s].duration}
-              </Text>
-              <TextInput
-                keyboardType={'numeric'}
-                value={diagnoses.additionalDrugs[s].duration}
-                onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, s)}
-                maxLength={3}
-                placeholder={'Custom medicine duration'}
-              />
-            </>
+            <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
+              <View style={{ flex: 0.5 }}>
+                <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
+                <Text italic>Duration : {diagnoses.additionalDrugs[s].duration} days</Text>
+              </View>
+              <View style={{ flex: 0.5 }}>
+                <Text>Custom duration :</Text>
+                <View style={{ width: 150, borderRadius: 3, marginTop: 5, flexDirection: 'row', alignItems: 'center', backgroundColor: liwiColors.whiteColor }}>
+                  <Icon style={{ color: liwiColors.redColor, marginLeft: 5 }} type={'Feather'} name="clock" size={18} color="#000" />
+                  <TextInput
+                    style={{ width: 150, padding: 5, fontSize: 18 }}
+                    keyboardType={'numeric'}
+                    value={diagnoses.additionalDrugs[s].duration}
+                    onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, s)}
+                    maxLength={2}
+                    placeholder={'Write here'}
+                  />
+                </View>
+              </View>
+            </View>
           ))}
         </View>
 

@@ -62,7 +62,7 @@ export default class DiagnosesStrategy extends Component<Props, State> {
           { type: 'FontAwesome', name: 'balance-scale' },
           { name: 'healing', type: 'MaterialIcons' },
         ]}
-        steps={[t('medical_case:final_diagnoses'), 'Questions and interventions before treatment', t('medical_case:medecines'), t('medical_case:medecines_formulation'), t('medical_case:healthcares')]}
+        steps={[t('medical_case:final_diagnoses'), 'Treatment Conditions', t('medical_case:medecines'), t('medical_case:medecines_formulation'), t('medical_case:healthcares')]}
         backButtonTitle={t('medical_case:back')}
         nextButtonTitle={t('medical_case:next')}
         nextStage="finish"
