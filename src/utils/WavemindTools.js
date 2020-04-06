@@ -25,42 +25,43 @@ export default class WavemindTools extends Component {
           {active
             ? [
                 <Button
-                key="1"
-                blue
-                onPress={async () => {
+                  key="1"
+                  blue
+                  onPress={async () => {
                     await clearPatients();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="AntDesign" name="deleteusergroup" />
-              </Button>,
+                >
+                  <Icon type="AntDesign" name="deleteusergroup" />
+                </Button>,
                 <Button
-                key="2"
-                blue
-                onPress={async () => {
+                  key="2"
+                  blue
+                  onPress={async () => {
                     await clearLocalStorage();
                     await persistor.purge();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="MaterialCommunityIcons" name="delete-forever" />
-              </Button>,
+                >
+                  <Icon type="MaterialCommunityIcons" name="delete-forever" />
+                </Button>,
                 <Button
-                key="3"
-                blue
-                onPress={async () => {
+                  key="3"
+                  blue
+                  onPress={async () => {
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="SimpleLineIcons" name="reload" />
-              </Button>,
+                >
+                  <Icon type="SimpleLineIcons" name="reload" />
+                </Button>,
                 <Button
-                key="4"
-                blue
-                onPress={async () => {
+                  key="4"
+                  blue
+                  onPress={async () => {
                     const sessions = await getItems('sessions');
+                    const session = await getItems('session');
                     const algorithms = await getItems('algorithms');
                     const patients = await getItems('patients');
                     const state$ = store.getState();
@@ -71,21 +72,20 @@ export default class WavemindTools extends Component {
                       persist: k,
                       state$,
                       size_state$: memorySizeOf(state$),
-                      sessions,
-                      size_sessions: memorySizeOf(sessions),
+                      session,
                       algorithms,
                       size_algorithms: memorySizeOf(algorithms),
                       patients,
                       size_patients: memorySizeOf(patients),
                     });
                   }}
-              >
-                <Icon type="FontAwesome" name="database" />
-              </Button>,
+                >
+                  <Icon type="FontAwesome" name="database" />
+                </Button>,
                 <Button
-                key="5"
-                blue
-                onPress={async () => {
+                  key="5"
+                  blue
+                  onPress={async () => {
                     const algo = require('../../frontend_service/api/algo_refractor_from_olga_14_10_19');
                     const session = require('../../frontend_service/api/session');
 
@@ -93,9 +93,9 @@ export default class WavemindTools extends Component {
                     await setItem('algorithms', [algo]);
                     await RNRestart.Restart();
                   }}
-              >
-                <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
-              </Button>,
+                >
+                  <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
+                </Button>,
               ]
             : null}
         </Fab>

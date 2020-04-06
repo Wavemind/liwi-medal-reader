@@ -122,7 +122,7 @@ export default {
 
   // Font
   DefaultFontSize: 16,
-  fontFamily: platform === 'ios' ? 'System' : 'Roboto',
+  fontFamily: platform === 'ios' ? 'System' : 'Roboto-Light',
   fontSizeBase: 15,
   get fontSizeH1() {
     return this.fontSizeBase * 1.8;

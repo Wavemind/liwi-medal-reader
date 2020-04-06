@@ -124,7 +124,7 @@ const styles: Object = StyleSheet.create({
         fontFamily: 'System',
       },
       android: {
-        fontFamily: 'Roboto',
+        fontFamily: 'Roboto-Light',
       },
     }),
   },

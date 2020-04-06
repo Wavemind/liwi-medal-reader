@@ -2,9 +2,10 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import { Toaster } from '../../utils/CustomToast';
-import { destroySession, getSession, getSessions, setSessions, updateSession } from '../api/LocalStorage';
+import { destroySession, getSession, getSessions, setItem, setSessions, updateSession } from '../api/LocalStorage';
 import { auth, fetchAlgorithms } from '../../../frontend_service/api/Http';
 import i18n from '../../utils/i18n';
+import session from '../../../frontend_service/api/session';
 
 const defaultValue = {};
 const SessionsContext = React.createContext<Object>(defaultValue);
@@ -50,39 +51,14 @@ export class SessionsProvider extends React.Component<SessionsProviderProps, Ses
   // Create new session
   newSession = async (email: string, password: string) => {
     return new Promise(async (resolve, reject) => {
-      const credentials = await auth(email, password).catch((error) => {
-        return error;
-      });
+      // let credentials = await auth(email, password).catch((error) => {
+      //   return error;
+      // });
+
+      let credentials = session;
 
       if (credentials.success !== false || credentials.success === undefined) {
-        let sessions = await getSessions();
-        if (sessions === null) {
-          sessions = [];
-        }
-        if (Array.isArray(sessions)) {
-          const user = sessions.find((session) => {
-            return session.data.id === credentials.data.id;
-          });
-
-          if (!user || user.local_code === undefined) {
-            sessions.push(credentials);
-            await setSessions(sessions);
-            this.setState({ sessions });
-
-            return fetchAlgorithms(credentials.data.id)
-              .then(async () => {
-                resolve(credentials);
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          }
-
-          Toaster(i18n.t('notifications:session_already_exist'), {
-            type: 'danger',
-          });
-          reject('Already connected');
-        }
+        await setItem('session', session);
       }
       // Here if error network http
       reject(credentials);

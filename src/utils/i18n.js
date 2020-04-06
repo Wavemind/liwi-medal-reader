@@ -215,10 +215,12 @@ i18n
         },
         unlock_session: {
           email: 'Email',
+          assign: 'An administrator will assign you to a group',
           code: 'Code',
           unlock: 'Login',
-          title: 'Local login',
+          title: 'Sync with server',
           new_session: 'Create new session',
+          sync_group: 'Synchronize',
         },
         popup: {
           title: 'Please allow access to the position',

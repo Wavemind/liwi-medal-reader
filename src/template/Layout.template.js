@@ -48,6 +48,7 @@ class LayoutTemplate extends React.Component<Props> {
     } = this.props;
 
     let routes = null;
+
     // If the app come not from the background the item is set in app.context
     if (fromBackground === null && appState === 'active') {
       // first render of the app
@@ -57,8 +58,8 @@ class LayoutTemplate extends React.Component<Props> {
       routes = state;
       const { app } = this.props;
 
-      // This fix a bug when we reload the app in the setcodesession screen
-      if (routes !== null && routes.routes[routes.index].key === 'SetCodeSession' && app.logged === true) {
+      // This fix a bug when we reload the app in the userselection screen
+      if (routes !== null && routes.routes[routes.index].key.match(/UserSelection|SetCodeSession/) && app.logged === true) {
         routes = null;
       }
       // Set the flag background
@@ -69,15 +70,24 @@ class LayoutTemplate extends React.Component<Props> {
 
   render() {
     const {
-      app: { logged, ready },
+      app: { logged, ready, session },
     } = this.props;
 
     // Constant used in app
     let AppContainer;
+
     if (logged) {
       AppContainer = createAppContainer(CustomNavigator);
     } else {
-      AppContainer = createAppContainer(RootLoginNavigator);
+      let routeName = '';
+      if (session !== null) {
+        if (session.group === null) {
+          routeName = 'NewSession';
+        } else {
+          routeName = 'UnlockSession';
+        }
+      }
+      AppContainer = createAppContainer(RootLoginNavigator(routeName));
     }
 
     const baseTheme = getTheme(material);
@@ -93,7 +103,7 @@ class LayoutTemplate extends React.Component<Props> {
                 <AppContainer
                   logged={logged}
                   persistNavigationState={persistNavigationState}
-                  loadNavigationState={this.loadNavigationState}
+                  // loadNavigationState={this.loadNavigationState}
                   renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);

@@ -201,7 +201,7 @@ export default class PatientList extends React.Component<Props, State> {
           <LiwiTitle2 testID="patient_list" noBorder>
             {t('patient_list:search')}
           </LiwiTitle2>
-          <View flex-container-row style={styles.marginBottom}>
+          <View flex-container-row style={styles.marg}>
             <Item round style={styles.input}>
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
