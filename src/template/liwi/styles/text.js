@@ -58,6 +58,13 @@ export default {
       margin: 10,
       marginLeft: 0,
     },
+    '.bigTitle': {
+      color: liwiColors.redColor,
+      fontSize: 30,
+      padding: 20,
+      margin: 20,
+      marginLeft: 0,
+    },
     '.subText': {
       color: liwiColors.redColor,
       fontSize: 26,

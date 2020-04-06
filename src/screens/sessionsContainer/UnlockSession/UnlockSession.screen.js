@@ -1,100 +1,137 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
-import * as _ from 'lodash';
-import type { NavigationScreenProps } from 'react-navigation';
-import LottieView from 'lottie-react-native';
-import { Button, Form, Text, View } from 'native-base';
-import CustomInput from '../../../components/InputContainer/CustomInput';
-import { LiwiTitle2 } from '../../../template/layout';
-import type { SessionsProviderState } from '../../../engine/contexts/Sessions.context';
-import { styles } from './UnlockSession.style';
-import { Toaster } from '../../../utils/CustomToast';
+import { Button, Text, View } from 'native-base';
+import { getItem } from '../../../engine/api/LocalStorage';
+import { ApplicationContext } from '../../../engine/contexts/Application.context';
+import LiwiLoader from '../../../utils/LiwiLoader';
+import PINCode from '@haskkor/react-native-pincode';
+import { liwiColors, screenHeight } from '../../../utils/constants';
+import { Image } from 'react-native';
+import { styles } from '../UserSelection/UserSelection.style';
 
-type Props = NavigationScreenProps & { sessions: SessionsProviderState };
-type State = {
-  email: string,
-  code: string,
-  session: Object,
-  errors: Object,
-  loadingUnlock: false,
-};
+export default function PinSession() {
+  const [session, setSession] = React.useState(null);
+  const [ready, setReady] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [status, setStatus] = React.useState('success');
+  const [pin, setPin] = React.useState(0);
+  const app = React.useContext(ApplicationContext);
 
-export default class UnlockSession extends React.Component<Props, State> {
-  state = {
-    email: __DEV__ ? 'mickael.lacombe@wavemind.ch' : '',
-    code: __DEV__ ? '123456q' : '',
-    errors: null,
-  };
+  React.useEffect(() => {
+    (async function getSessionStorage() {
+      setSession(await getItem('session'));
+      setReady(true);
+    })();
+  }, []);
 
-  changeValueFromInput = (index, value) => {
-    this.setState({ [index]: value });
-  };
-
-  // Navigate to new session screen
-  newSessionScreen = () => {
-    const { navigation } = this.props;
-    navigation.navigate('NewSession');
-  };
-
-  // Send to context code and session for verification
-  unLock = async () => {
-    this.setState({ loadingUnlock: true });
-    const { code, email } = this.state;
-    const {
-      app,
-      app: { t },
-      sessions: { sessions },
-    } = this.props;
-
-    const user = _.find(sessions, (session) => {
-      return session.data.email.toLowerCase() === email.toLowerCase();
-    });
-
-    if (user !== undefined) {
-      const result = await app.unLockSession(user.data.id, code);
-      Toaster(t(`notifications:${result}`, { type: 'danger' }));
-    } else {
-      Toaster(t('notifications:session_does_not_exist'), { type: 'danger' });
-    }
-
-    this.setState({ loadingUnlock: false });
-  };
-
-  render() {
-    const { email, code, errors, loadingUnlock } = this.state;
-
-    const {
-      app: { isConnected, t },
-    } = this.props;
-
-    return (
-      <ScrollView testID="UnLockSession">
-        <View flex-container-column>
-          <View margin-auto padding-auto>
-            <LottieView source={require('../../../utils/animations/unlock.json')} autoPlay style={styles.lottie} loop />
-            <LiwiTitle2 noBorder center>
-              {t('unlock_session:title')}
-            </LiwiTitle2>
-            <Form>
-              <CustomInput init={email} change={this.changeValueFromInput} index="email" placeholder={t('unlock_session:email')} condensed keyboardType="email-address" error={errors} />
-              <CustomInput init={code} index="code" change={this.changeValueFromInput} secureTextEntry placeholder={t('unlock_session:code')} condensed />
-            </Form>
-            <Button full onPress={this.unLock} style={styles.button} disabled={loadingUnlock}>
-              <Text>{t('unlock_session:unlock')}</Text>
-            </Button>
-          </View>
-          <View bottom-view margin-auto padding-auto>
-            <View>
-              <Button onPress={this.newSessionScreen} disabled={!isConnected} testID="new_session">
-                <Text>{t('unlock_session:new_session')}</Text>
-              </Button>
-              {!isConnected && <Text>{t('notifications:no_internet')}</Text>}
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    );
+  if (ready === false) {
+    return null;
   }
+
+  const syncGroup = async () => {
+    setLoading(true);
+    if (await app.getGroupData()) {
+      setLoading(false);
+    }
+  };
+
+  const handleResultEnterPin = async (pinCode) => {
+    let pinCheck = await app.openSession(pinCode);
+
+    if (pinCheck) {
+      setStatus('success');
+    } else {
+      setStatus('failure');
+    }
+  };
+
+  console.log(app.user);
+
+  return (
+    <View testID="UnLockSession" style={{ flex: 1 }}>
+      <View flex-container-column>
+        {session?.group === null ? (
+          <View margin-auto padding-auto style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                alignContent: 'center',
+                marginTop: -50,
+              }}
+            >
+              {loading ? (
+                <LiwiLoader />
+              ) : (
+                <>
+                  <Text bigTitle noBorder>
+                    {app.t('unlock_session:title')}
+                  </Text>
+                  <Text size-auto>{app.t('unlock_session:assign')}</Text>
+                  <Button onPress={syncGroup} disabled={!app.isConnected} testID="new_session" style={{ alignSelf: 'center', marginTop: 30 }}>
+                    <Text size-auto>{app.t('unlock_session:sync_group')}</Text>
+                  </Button>
+                </>
+              )}
+            </View>
+            {!app.isConnected && <Text>{app.t('notifications:no_internet')}</Text>}
+          </View>
+        ) : (
+          <>
+            {app.user !== null && (
+              <View style={{ alignItems: 'center', marginTop: 20 }}>
+                <Image style={{ width: 90, height: 90, margin: 0 }} resizeMode="contain" source={require('../../../../assets/images/keys.png')} />
+                <Text style={{ textAlign: 'center' }} bigTitle>
+                  Already Logged as{' '}
+                  <Text style={{ textAlign: 'center', fontWeight: 'bold' }} bigTitle>
+                    {app.user.role}
+                  </Text>
+                </Text>
+              </View>
+            )}
+
+            <PINCode
+              passwordLength={session.group.passwordLength}
+              endProcessFunction={handleResultEnterPin}
+              disableLockScreen
+              status={'enter'}
+              pinStatus={status}
+              titleComponent={() => <Text customTitle>Enter the PIN to unlock the tablet</Text>}
+              storedPin={session.group.pinCode}
+              colorCircleButtons={liwiColors.darkerGreyColor}
+              colorPassword={liwiColors.redColor}
+              stylePinCodeButtonNumber={liwiColors.whiteColor}
+              numbersButtonOverlayColor={liwiColors.redColor}
+              stylePinCodeDeleteButtonColorShowUnderlay={liwiColors.redColor}
+              stylePinCodeDeleteButtonColorHideUnderlay={liwiColors.darkerGreyColor}
+              stylePinCodeColorTitle={liwiColors.redColor}
+              stylePinCodeDeleteButtonSize={30}
+              stylePinCodeDeleteButtonText={{ fontWeight: '200', marginTop: 5, fontSize: 18 }}
+              stylePinCodeRowButtons={{ justifyContent: 'center', alignItems: 'center', height: screenHeight / 10 }}
+              stylePinCodeColumnButtons={{ justifyContent: 'center', alignItems: 'center', width: 'auto' }}
+              stylePinCodeMainContainer={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+              stylePinCodeColumnDeleteButton={{
+                marginLeft: 30,
+                marginRight: -10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+              }}
+              stylePinCodeButtonCircle={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 80,
+                height: 80,
+                backgroundColor: 'rgb(78,80,83)',
+                borderRadius: 40,
+              }}
+            />
+          </>
+        )}
+      </View>
+    </View>
+  );
 }

@@ -12,10 +12,9 @@ export const styles = StyleSheet.create({
   },
 
   lottie: {
-    height: isTablet ? 200 : 100,
+    height: isTablet ? 100 : 50,
     alignSelf: 'center',
-
-    marginBottom: isTablet ? 100 : 20,
+    marginBottom: isTablet ? 50 : 10,
   },
 
   button: {

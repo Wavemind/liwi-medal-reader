@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 
 import HomeScreen from '../home';
+import { View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -16,7 +17,7 @@ export default class MainScreen extends React.Component<Props, State> {
     const { navigation } = this.props;
 
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: '#fff' }}>
         <HomeScreen navigation={navigation} />
       </ScrollView>
     );

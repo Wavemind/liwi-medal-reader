@@ -14,6 +14,7 @@ export const liwiColors = {
   darkGreyColor: '#a9a9a9',
   darkerGreyColor: '#757575',
   greenColor: '#4CAF50',
+  whiteDark: '#f9f9f9',
 };
 export const sessionsDuration = 30; // in minutes
 

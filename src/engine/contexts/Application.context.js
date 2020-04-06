@@ -10,13 +10,15 @@ import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 
-import { sessionsDuration } from '../../utils/constants';
-
-import { destroySession, getSession, getSessions, setActiveSession, setItem } from '../api/LocalStorage';
+import { destroySession, getItem, getSession, getSessions, setActiveSession, setItem } from '../api/LocalStorage';
+import NavigationService from '../navigation/Navigation.service';
 import { appInBackgroundStateKey, saltHash } from '../../../frontend_service/constants';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
+import sessionJson from '../../../frontend_service/api/session';
+import Toast from 'react-native-tiny-toast';
+import { liwiColors } from '../../utils/constants';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -71,10 +73,14 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   askGeo = async (enableHighAccuracy, callBack) => {
-    return Geolocation.getCurrentPosition(async (position) => callBack(position), async (error) => callBack(error), {
-      enableHighAccuracy,
-      timeout: 5000,
-    });
+    return Geolocation.getCurrentPosition(
+      async (position) => callBack(position),
+      async (error) => callBack(error),
+      {
+        enableHighAccuracy,
+        timeout: 5000,
+      }
+    );
   };
 
   // Set value in context
@@ -83,7 +89,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   // Log out
-  // TODO : check if duplicated from Session context is really necessary
   logout = async () => {
     const { user } = this.state;
     await destroySession(user.data.id);
@@ -95,25 +100,20 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // Load context of current user
   initContext = async () => {
-    const sessions = await getSessions();
-
-    const finderActiveSession = find(sessions, (session) => {
-      const isStillActive = moment().isBefore(moment(session.active_since).add(sessionsDuration, 'minute'));
-      return session.active && isStillActive;
-    });
-
-    if (finderActiveSession) {
-      this.setUserContext(finderActiveSession);
+    const session = await getItem('session');
+    const user = await getItem('user');
+    if (session !== null) {
+      this.setUserContext(session, user);
     } else {
       this.setState({ ready: true });
     }
   };
 
   // Set user context
-  setUserContext = (userData) => {
+  setUserContext = (session, user = null) => {
     this.setState({
-      logged: true,
-      user: userData,
+      session,
+      user,
       ready: true,
     });
   };
@@ -121,6 +121,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   // Unlock session from local credentials
   unLockSession = async (id: number, code: string) => {
     let session = await getSession(id);
+
     const encrypt = sha256.hmac(saltHash, code);
 
     if (code.length === 0) {
@@ -146,10 +147,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // Lock current session
   lockSession = async () => {
-    await setActiveSession();
     this.setState({
       logged: false,
-      user: {},
+      user: null,
     });
   };
 
@@ -160,16 +160,102 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
+  getGroupData = async () => {
+    const session = await getItem('session');
+
+    // let group = await auth(session).catch((error) => {
+    //   return error;
+    // });
+
+    await setTimeout(async () => {
+      const group = {
+        passwordLength: 4,
+        token: '123456789oiukjfdewtzujk',
+        pinCode: 1234,
+        name: 'Centre Médical Katboundou',
+        users: [
+          { id: 1, lastname: 'Steve', surname: 'Jacques', role: 'Clinician', preFix: 'Dr.' },
+          { id: 2, lastname: 'Bryan', surname: 'Druker', role: 'Lab', preFix: 'Mr.' },
+          { id: 5, lastname: 'Marie-Ange', surname: 'Briault', role: 'Nurse', preFix: 'Mrs.' },
+          { id: 6, lastname: 'Vincent', surname: 'Other name', role: 'Nurse', preFix: 'Mrs.' },
+        ],
+      };
+
+      if (group !== false) {
+        await setItem('session', { ...session, group });
+        this.setState({ session: { ...session, group } });
+        this.showSuccessToast('Receiving group data and users');
+        return true;
+      }
+    }, 5000);
+  };
+
+  openSession = async (pinCode) => {
+    const { session, user } = this.state;
+    if (session.group.pinCode === Number(pinCode)) {
+      this.showSuccessToast('Successful connect to your group');
+
+      if (user === null) {
+        await setTimeout(async () => {
+          NavigationService.navigate('UserSelection');
+        }, 1000);
+      } else {
+        await setTimeout(async () => {
+          this.setState({ logged: true });
+        }, 1000);
+      }
+
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  setUser = async (user) => {
+    await setItem('user', user);
+    this.setState({ user, logged: true });
+  };
+
+  showSuccessToast = (msg) => {
+    Toast.showSuccess(msg, {
+      position: 20,
+      containerStyle: { backgroundColor: liwiColors.greenColor },
+      textStyle: { color: liwiColors.whiteColor },
+      imgStyle: { height: 40 },
+    });
+  };
+
+  // Create new session
+  newSession = async (email: string, password: string) => {
+    // let credentials = await auth(email, password).catch((error) => {
+    //   return error;
+    // });
+
+    let credentials = sessionJson;
+
+    if (credentials !== false) {
+      let concatSession = { group: null, ...credentials };
+      await setItem('session', concatSession);
+      this.showSuccessToast('Successful tablet identification');
+      return true;
+    }
+
+    return false;
+  };
+
   state = {
     name: 'App',
     lang: 'fr',
     set: this.setValState,
     logged: false,
     initContext: this.initContext,
-    user: {},
+    setUser: this.setUser,
     logout: this.logout,
+    getGroupData: this.getGroupData,
     unLockSession: this.unLockSession,
+    openSession: this.openSession,
     lockSession: this.lockSession,
+    newSession: this.newSession,
     isConnected: true,
     medicalCase: {},
     appState: AppState.currentState,
@@ -180,11 +266,13 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     t: (translate) => i18n.t(translate),
     ready: false,
     currentRoute: null,
+    session: null,
+    user: null,
   };
 
   _fetchDataWhenChange = async () => {
     const { user } = this.state;
-    if (!isEmpty(user)) {
+    if (!isEmpty(user) && user?.data?.id) {
       await fetchAlgorithms(user.data.id);
     }
   };
@@ -241,7 +329,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       await setItem(appInBackgroundStateKey, true);
 
       this._fetchDataWhenChange();
-      this.setState({ appState: nextAppState });
+      this.setState({ appState: nextAppState, logged: false });
     }
 
     if (appState.match(/active/) && nextAppState.match(/inactive|background/)) {
