@@ -23,4 +23,7 @@ export const styles = StyleSheet.create({
   blocName: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' },
   blocBackground: { width: screenWidth, backgroundColor: liwiColors.lighterGreyColor },
   touchable: { elevation: 0, backgroundColor: 'transparent' },
+  textBloc: { flexDirection: 'row', paddingBottom: 5 },
+  textIcon: { fontSize: 25, color: liwiColors.redColor, marginRight: 5 },
+  roleText: { marginTop: 5, marginLeft: 15 }
 });
