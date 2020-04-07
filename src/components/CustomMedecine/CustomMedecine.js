@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import { Icon, Text, View, Button, Input } from 'native-base';
+import { Button, Icon, Input, Text, View } from 'native-base';
 import { styles } from './CustomMedecine.style';
+
 export default class CustomMedecine extends Component<{}> {
   state = {
     customDrug: '',

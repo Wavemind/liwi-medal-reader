@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import Medecine from './Medecine';
 import { withApplication } from '../../engine/contexts/Application.context';
-import { WrapperNavigation } from '../../utils/WrapperNavigation';
 import { setMedecine } from '../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase, props) => {
@@ -16,7 +15,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withApplication(Medecine));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(Medecine));

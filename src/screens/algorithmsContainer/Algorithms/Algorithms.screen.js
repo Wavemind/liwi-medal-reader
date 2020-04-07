@@ -36,8 +36,6 @@ export default class Algorithms extends React.Component<Props, State> {
     const synchronisation = await getItem('synchronisation');
     const algorithms = await getItems('algorithms');
 
-
-
     const medicalCases = [];
 
     patients.map((patient) =>

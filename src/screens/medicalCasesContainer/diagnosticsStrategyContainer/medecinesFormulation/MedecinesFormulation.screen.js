@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { Content, Text, View, Picker, Button, Icon } from 'native-base';
+import { Icon, Picker, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { healthCareType } from '../../../../../frontend_service/constants';
-import { getDrugs, titleMannualyDiagnoses } from '../../../../../frontend_service/algorithm/questionsStage.algo';
+import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { styles } from './MedecinesFormulation.style';
 
