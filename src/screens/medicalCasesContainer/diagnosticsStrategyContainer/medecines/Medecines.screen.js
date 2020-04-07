@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Input, Text, View, Icon } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import { TextInput } from 'react-native';
 
 import { NavigationScreenProps } from 'react-navigation';
@@ -10,7 +10,7 @@ import { categories } from '../../../../../frontend_service/constants';
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 import CustomMedecine from '../../../../components/CustomMedecine';
-import { calculateCondition, returnConditionsArray } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
+import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { styles } from './Medecines.style';
 
 type Props = NavigationScreenProps & {};
@@ -111,9 +111,36 @@ export default class Medecines extends Component<Props, State> {
       });
     });
 
-    return (
-      <View>
-        {isProposed && <Text customTitle>Medicines proposed by "{name}"</Text>}
+    const renderAdditional = (
+      <>
+        {Object.keys(diagnoses.additional).map((key) => {
+          return (
+            <>
+              <Text
+                key={`${key}diagnoses`}
+                size-auto
+                style={{
+                  backgroundColor: liwiColors.redColor,
+                  color: liwiColors.whiteColor,
+                  padding: 4,
+                  borderRadius: 2,
+                  paddingLeft: 20,
+                  marginBottom: 20,
+                }}
+              >
+                {diagnoses.additional[key].label}
+              </Text>
+              {Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
+                return <Medecine type={'additional'} key={`${treatmentId}_medecine`} medecine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+              })}
+            </>
+          );
+        })}
+      </>
+    );
+
+    const renderProposed = (
+      <>
         {Object.keys(diagnoses.proposed).map((key) => {
           if (diagnoses.proposed[key].agreed === true) {
             let isPossible = false;
@@ -143,19 +170,15 @@ export default class Medecines extends Component<Props, State> {
             return null;
           }
         })}
+      </>
+    );
+
+    return (
+      <View>
+        {isProposed && <Text customTitle>Medicines proposed by "{name}"</Text>}
+        {renderProposed}
         {isManually && <Text customTitle>Manually added Medicines</Text>}
-        {Object.keys(diagnoses.additional).map((key) => {
-          return (
-            <>
-              <Text key={`${key}diagnoses`} size-auto style={{ backgroundColor: liwiColors.redColor, color: liwiColors.whiteColor, padding: 4, borderRadius: 2, paddingLeft: 20, marginBottom: 20 }}>
-                {diagnoses.additional[key].label}
-              </Text>
-              {Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
-                return <Medecine type={'additional'} key={`${treatmentId}_medecine`} medecine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-              })}
-            </>
-          );
-        })}
+        {renderAdditional}
 
         {filteredAllDrugs.length > 0 && <Text customTitle>Additionnal Medicines</Text>}
 
@@ -168,7 +191,16 @@ export default class Medecines extends Component<Props, State> {
               </View>
               <View style={{ flex: 0.5 }}>
                 <Text>Custom duration :</Text>
-                <View style={{ width: 150, borderRadius: 3, marginTop: 5, flexDirection: 'row', alignItems: 'center', backgroundColor: liwiColors.whiteColor }}>
+                <View
+                  style={{
+                    width: 150,
+                    borderRadius: 3,
+                    marginTop: 5,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: liwiColors.whiteColor,
+                  }}
+                >
                   <Icon style={{ color: liwiColors.redColor, marginLeft: 5 }} type={'Feather'} name="clock" size={18} color="#000" />
                   <TextInput
                     style={{ width: 150, padding: 5, fontSize: 18 }}

@@ -20,23 +20,6 @@ export default class HealthCares extends Component<Props, State> {
     return true;
   }
 
-  _renderCustom = () => {
-    const {
-      medicalCase: { diagnoses },
-    } = this.props;
-
-    return diagnoses.custom.map((c) => {
-      return (
-        <>
-          <Text customSubTitle>- {c.label}</Text>
-          {c.drugs.map((d) => (
-            <Text>{d}</Text>
-          ))}
-        </>
-      );
-    });
-  };
-
   _renderCapsule = (drug, node, drugDose) => {
     return (
       <>
