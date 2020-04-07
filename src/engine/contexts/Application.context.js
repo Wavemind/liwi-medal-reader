@@ -63,10 +63,14 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   askGeo = async (enableHighAccuracy, callBack) => {
-    return Geolocation.getCurrentPosition(async (position) => callBack(position), async (error) => callBack(error), {
-      enableHighAccuracy,
-      timeout: 5000,
-    });
+    return Geolocation.getCurrentPosition(
+      async (position) => callBack(position),
+      async (error) => callBack(error),
+      {
+        enableHighAccuracy,
+        timeout: 5000,
+      }
+    );
   };
 
   // Set value in context
