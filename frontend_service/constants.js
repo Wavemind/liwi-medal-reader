@@ -101,6 +101,14 @@ export const typeNode = {
   treatment: 'Treatment',
 };
 
+export const userRole = {
+  clinician: 'Clinician',
+  registration: 'Registration Desk',
+  triage: 'Triage Nurse',
+  lab: 'lab',
+  pharmacist: 'Pharmacist',
+};
+
 // Status of medical cases
 export const medicalCaseStatus = {
   inCreation: { name: 'in_creation', index: -1, main: 0 },
