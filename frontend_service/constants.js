@@ -105,7 +105,7 @@ export const userRole = {
   clinician: 'Clinician',
   registration: 'Registration Desk',
   triage: 'Triage Nurse',
-  lab: 'lab',
+  lab: 'Lab',
   pharmacist: 'Pharmacist',
 };
 
