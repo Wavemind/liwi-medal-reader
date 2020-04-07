@@ -9,7 +9,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View } from 'react-native';
 import rfcIsEqual from 'react-fast-compare';
-import { computeBottomGeometry, computeCenterGeomerty, computeLeftGeometry, computeRightGeometry, computeTopGeometry, makeChildlessRect, Point, Rect, Size, swapSizeDimmensions } from './geom';
+import {
+  computeBottomGeometry,
+  computeCenterGeomerty,
+  computeLeftGeometry,
+  computeRightGeometry,
+  computeTopGeometry,
+  makeChildlessRect,
+  Point,
+  Rect,
+  Size,
+  swapSizeDimmensions,
+} from './geom';
 import styleGenerator from './styles';
 import TooltipChildrenContext from './tooltip-children.context';
 

@@ -1,7 +1,6 @@
 // @flow
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
-import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import { NavigationScreenProps } from 'react-navigation';
@@ -10,7 +9,7 @@ import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 
-import { destroySession, getItem, getSession, getSessions, setActiveSession, setItem } from '../api/LocalStorage';
+import { destroySession, getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
 import NavigationService from '../navigation/Navigation.service';
 import { appInBackgroundStateKey, saltHash } from '../../../frontend_service/constants';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';

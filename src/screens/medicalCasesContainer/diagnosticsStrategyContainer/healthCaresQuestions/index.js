@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import HealthCaresQuestions from './HealthCaresQuestions.screen';
-import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../../utils/WrapperNavigation';
 
@@ -10,4 +9,4 @@ const mapStateToProps = (medicalCase) => {
   };
 };
 
-export default connect(mapStateToProps)(withSessions(withApplication(WrapperNavigation(HealthCaresQuestions))));
+export default connect(mapStateToProps)(withApplication(WrapperNavigation(HealthCaresQuestions)));

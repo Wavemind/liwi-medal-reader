@@ -8,7 +8,6 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import PINCode from '@haskkor/react-native-pincode';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 import { Image } from 'react-native';
-import { styles } from '../UserSelection/UserSelection.style';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);

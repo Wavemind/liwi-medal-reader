@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import NavigationTriage from './NavigationTriage';
-import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { updateMedicalCaseProperty } from '../../../../frontend_service/actions/creators.actions';
 
@@ -15,4 +14,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(withNavigation(NavigationTriage))));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(withNavigation(NavigationTriage)));

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import patientProfile from './PatientProfile.screen';
-import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { setMedicalCase, updatePatient } from '../../../../frontend_service/actions/creators.actions';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
@@ -22,4 +21,4 @@ const defaultProps = {
   navigationStatus: 'willBlur',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(patientProfile, defaultProps))));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(WrapperNavigation(patientProfile, defaultProps)));

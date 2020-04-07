@@ -1,4 +1,3 @@
-import { withSessions } from 'engine/contexts/Sessions.context';
 import { withApplication } from 'engine/contexts/Application.context';
 import { connect } from 'react-redux';
 import Algorithms from './Algorithms.screen';
@@ -21,4 +20,4 @@ const defaultProps = {
   navigationStatus: 'willBlur',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(Algorithms, defaultProps))));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(WrapperNavigation(Algorithms, defaultProps)));
