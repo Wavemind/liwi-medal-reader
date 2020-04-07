@@ -149,7 +149,7 @@ export default class HealthCares extends Component<Props, State> {
         const management = diagnoses[key][diagnoseId].managements[id];
         const node = nodes[management.id];
         if (calculateCondition(management) === true) {
-          return <Text>{node.label}</Text>;
+          return <Text key={`${id}manag`}>{node.label}</Text>;
         }
         return null;
       });
