@@ -50,7 +50,7 @@ export default class HealthCares extends Component<Props, State> {
     const rest = drugDose.doseResult % drugDose.breakable;
     let fractionString = ' ';
     if (rest !== 0) {
-      let r = toReadableFraction(rest / drugDose.breakable);
+      const r = toReadableFraction(rest / drugDose.breakable);
       if (r.numerator === 1 && r.denominator === 2) {
         fractionString = '½ ';
       } else if (r.numerator === 1 && r.denominator === 4) {
@@ -130,9 +130,9 @@ export default class HealthCares extends Component<Props, State> {
     return (
       <>
         <Text customTitle>List of diagnoses </Text>
-        {Object.keys(diagnoses.proposed).map((pro) => diagnoses.proposed[pro].agreed && <Text>{diagnoses.proposed[pro].label}</Text>)}
+        {Object.keys(diagnoses.proposed).map((pro) => diagnoses.proposed[pro].agreed && <Text key={`${pro}prop`}>{diagnoses.proposed[pro].label}</Text>)}
         {Object.keys(diagnoses.additional).map((pro) => (
-          <Text>{diagnoses.additional[pro].label}</Text>
+          <Text key={`${pro}add`}>{diagnoses.additional[pro].label}</Text>
         ))}
       </>
     );
@@ -181,7 +181,7 @@ export default class HealthCares extends Component<Props, State> {
     const drugs = getDrugs();
 
     return Object.keys(drugs).map((k) => {
-      let drug = drugs[k];
+      const drug = drugs[k];
       if (drug.agreed) {
         return this._renderSwitchFormulation(drug.formulationSelected, drug);
       }

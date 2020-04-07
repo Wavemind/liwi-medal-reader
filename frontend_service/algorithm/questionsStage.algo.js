@@ -243,27 +243,41 @@ export const titleManagementCounseling = () => {
   return isPossible;
 };
 
+/**
+ * Get drugs and create one list from 3 sources
+ * - Proposed
+ * - Additional
+ * - AdditionalDrugs
+ *
+ * @return : concat all drugs
+ *
+ */
+
 export const getDrugs = () => {
   const state$ = store.getState();
   const {
     diagnoses,
     diagnoses: { additionalDrugs },
   } = state$;
+
   let drugs = {};
 
   const doubleString = ['proposed', 'additional'];
 
   doubleString.map((iteration) => {
     Object.keys(diagnoses[iteration]).map((diagnoseId) => {
+      // If diagnoses selected or additional (auto selected)
       if (diagnoses[iteration][diagnoseId].agreed === true || iteration === 'additional') {
+        // iterate over drugs
         Object.keys(diagnoses[iteration][diagnoseId].drugs).map((drugId) => {
           if (diagnoses[iteration][diagnoseId].drugs[drugId].agreed === true && calculateCondition(diagnoses[iteration][diagnoseId].drugs[drugId]) === true) {
             if (drugs[drugId] === undefined) {
-              // new one
+              // new one so add it
               drugs[drugId] = diagnoses[iteration][diagnoseId]?.drugs[drugId];
               drugs[drugId].diagnoses = [{ id: diagnoseId, type: iteration }];
             } else {
               // doublon
+              // manage it
               drugs[drugId].diagnoses.push({ id: diagnoseId, type: iteration });
               if (diagnoses[iteration][diagnoseId]?.drugs[drugId].duration > drugs[drugId].duration) {
                 drugs[drugId].duration = diagnoses[iteration][diagnoseId]?.drugs[drugId].duration;
@@ -275,13 +289,15 @@ export const getDrugs = () => {
     });
   });
 
+  // iterate over manually added drugs
   Object.keys(additionalDrugs).map((ky) => {
     if (drugs[ky] === undefined) {
-      // new one
+      // new one so add it
       drugs[ky] = additionalDrugs[ky];
       drugs[ky].diagnoses = [null];
     } else {
       // doublon
+      // manage it
       drugs[ky].diagnoses.push(null);
     }
   });
