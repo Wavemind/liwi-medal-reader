@@ -233,7 +233,6 @@ export default class Medecines extends Component<Props, State> {
             submitButtonText={t('diagnoses:close')}
           />
         )}
-
         {Object.keys(diagnoses.custom).length > 0 && <Text customTitle>Another diagnoses not proposed</Text>}
         {Object.keys(diagnoses.custom).map((w, i) => (
           <CustomMedecine diagnose={diagnoses.custom[w]} diagnoseKey={i} />
