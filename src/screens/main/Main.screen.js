@@ -5,7 +5,6 @@ import { ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 
 import HomeScreen from '../home';
-import { View } from 'native-base';
 
 type Props = NavigationScreenProps & {};
 type State = {};

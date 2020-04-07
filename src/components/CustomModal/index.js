@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import CustomModal from './CustomModal';
-import { withSessions } from '../../engine/contexts/Sessions.context';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 
@@ -16,4 +15,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(CustomModal)));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(CustomModal));

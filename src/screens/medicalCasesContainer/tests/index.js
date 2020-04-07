@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import Tests from './Tests.screen';
-import { withSessions } from '../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 import { updateMetaData } from '../../../../frontend_service/actions/creators.actions';
@@ -15,4 +14,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(Tests))));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(WrapperNavigation(Tests)));

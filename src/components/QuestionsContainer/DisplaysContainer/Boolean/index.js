@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import Boolean from './Boolean';
-import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
 
@@ -14,4 +13,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(Boolean)));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(Boolean));
