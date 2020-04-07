@@ -215,6 +215,17 @@ export const titleMannualyDiagnoses = () => {
   return firstToTrue;
 };
 
+// Return if isPossible to show the title
+
+/**
+ * Get drugs and create one list from 3 sources
+ * - Proposed
+ * - Additional
+ * - AdditionalDrugs
+ *
+ * @return : isPossible Boolean
+ *
+ */
 export const titleManagementCounseling = () => {
   const state$ = store.getState();
   const { diagnoses } = state$;
