@@ -25,6 +25,14 @@ export default class Drawer extends Component<Props, State> {
     isDrawer: false,
   };
 
+  state = {
+    refParent: null,
+  };
+
+  _setScrollPosition = (y) => {
+    this.scrollView.scrollTo({ y: y, animated: false });
+  };
+
   logout = async () => {
     const {
       app: { lockSession },
@@ -36,6 +44,10 @@ export default class Drawer extends Component<Props, State> {
     const { navigation } = this.props;
     navigation.navigate(path);
   };
+
+  setRef(scrollView) {
+    this.scrollView = scrollView;
+  }
 
   render() {
     const {
@@ -75,7 +87,9 @@ export default class Drawer extends Component<Props, State> {
       const key = item.type;
 
       return {
-        categorie: <CategorieButton key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        categorie: (
+          <CategorieButton _setScrollPosition={this._setScrollPosition} key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />
+        ),
         item: <ItemButton key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
         path: <PathBar key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
       }[key];
@@ -89,6 +103,9 @@ export default class Drawer extends Component<Props, State> {
         style={{
           elevation: 5,
           backgroundColor: '#f5f5f5',
+        }}
+        ref={(scrollView) => {
+          this.scrollView = scrollView;
         }}
         contentContainerStyle={{ flexGrow: 1, zIndex: 10000 }}
         isDrawer={isDrawer}

@@ -68,6 +68,13 @@ export class MedicalCaseModel implements MedicalCaseInterface {
         managementQuestions: [],
       },
     };
+    this.diagnoses = {
+      proposed: {}, // Retaind by algo
+      custom: [], // Add by the input
+      additional: {}, // Add even though it's false
+      additionalDrugs: {},
+      customDrugs: [],
+    };
 
     await this.generateExcludedId();
     await this.generateId();

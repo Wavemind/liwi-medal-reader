@@ -42,7 +42,7 @@ export const responsiveUi = {
   textFontSize: () => {
     switch (true) {
       case screenWidth < screensScale.s:
-        return 14;
+        return 13;
       case screenWidth > screensScale.m && screenWidth < screensScale.l:
         return 18;
       case screenWidth > screensScale.l:

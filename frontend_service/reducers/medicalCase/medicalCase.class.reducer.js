@@ -2,12 +2,14 @@ import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { nodesType } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
+import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 
 export const initialState = null;
 
@@ -91,6 +93,96 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
+   * Update property of the list of diagnoses
+   *
+   * @payload type: type of diagnoses ()
+   *    proposed: [], // Retaind by algo
+        custom: [], // Add by the input
+        additional: [] // Add even though it's false
+   * @payload diagnoses: Diagnoses
+   * @payload actionDiagnoses: Specific action to avoid multiple different action
+   */
+  @Action(actions.SET_DIAGNOSES)
+  updateDiagnoses(state, action) {
+    const { type, diagnoses, actionDiagnoses } = action.payload;
+    let newDiagnoses;
+    let newadditionnalDrugs;
+
+    // Depending of type
+    switch (type) {
+      case 'proposed':
+        // Add section
+        if (actionDiagnoses === undefined || actionDiagnoses === 'add') {
+          newDiagnoses = { ...state.diagnoses[type], [diagnoses.id]: { ...diagnoses } };
+          newadditionnalDrugs = newDrugsFilter(newDiagnoses, state.diagnoses.additionalDrugs);
+
+          return {
+            ...state,
+            diagnoses: {
+              ...state.diagnoses,
+              [type]: { ...newDiagnoses },
+              additionalDrugs: { ...newadditionnalDrugs },
+            },
+          };
+        } else if (actionDiagnoses === 'remove') {
+          const { [diagnoses.id]: diagnose, ...without } = state.diagnoses[type];
+          return {
+            ...state,
+            diagnoses: {
+              ...state.diagnoses,
+              [type]: { ...without },
+            },
+          };
+        }
+        break;
+      case 'additional':
+        if (actionDiagnoses === undefined || actionDiagnoses === 'add') {
+          newDiagnoses = { ...diagnoses };
+          newadditionnalDrugs = newDrugsFilter(newDiagnoses, state.diagnoses.additionalDrugs);
+
+          return {
+            ...state,
+            diagnoses: {
+              ...state.diagnoses,
+              [type]: { ...newDiagnoses },
+              additionalDrugs: { ...newadditionnalDrugs },
+            },
+          };
+        } else if (actionDiagnoses === 'remove') {
+          const { [diagnoses.id]: diagnose, ...without } = state.diagnoses[type];
+          return {
+            ...state,
+            diagnoses: {
+              ...state.diagnoses,
+              [type]: { ...without },
+            },
+          };
+        }
+        break;
+      case 'custom':
+        let newArray = state.diagnoses[type].slice();
+        let finder = newArray.find((d) => d.label === diagnoses.label);
+
+        if (finder === undefined) {
+          newArray.push(diagnoses);
+        } else if (actionDiagnoses === 'remove') {
+          newArray = newArray.filter((item) => item.label !== diagnoses.label);
+        } else {
+          finder = diagnoses;
+        }
+
+        return {
+          ...state,
+          diagnoses: {
+            ...state.diagnoses,
+            [type]: [...newArray],
+          },
+        };
+    }
+    return { ...state };
+  }
+
+  /**
    * Update property of medicalCase
    *
    * @payload property: Index in Object
@@ -124,6 +216,168 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...state,
       modal: newModal,
+    };
+  }
+
+  /**
+   * Set formulation for a drug
+   *
+   * @payload diagnoseId: the diagnosey identifiant
+   * @payload drugId: the drugId
+   * @payload type: key in diagnoses
+   * @payload formulation: string formulation
+   */
+  @Action(actions.SET_FORMULATION_SELECTED)
+  setFormulationSelected(state, action) {
+    const { type, diagnoseId, formulation, drugId } = action.payload;
+
+    let dataReturned = {};
+
+    if (type === 'additionalDrugs') {
+      dataReturned = {
+        ...state.diagnoses[type],
+        [drugId]: {
+          ...state.diagnoses[type][drugId],
+          formulationSelected: formulation,
+        },
+      };
+    } else {
+      dataReturned = {
+        ...state.diagnoses[type],
+        [diagnoseId]: {
+          ...state.diagnoses[type][diagnoseId],
+          drugs: {
+            ...state.diagnoses[type][diagnoseId].drugs,
+            [drugId]: {
+              ...state.diagnoses[type][diagnoseId].drugs[drugId],
+              formulationSelected: formulation,
+            },
+          },
+        },
+      };
+    }
+
+    return {
+      ...state,
+      diagnoses: {
+        ...state.diagnoses,
+        [type]: { ...dataReturned },
+      },
+    };
+  }
+
+  /**
+   * Update custom medecine
+   *
+   * @payload diagnosesKey: the diagnosey identifiant
+   * @payload medecine: the medecine
+   * @payload type: add or remove (less action)
+   */
+  @Action(actions.SET_CUSTOM_MEDECINE)
+  setCustomMedecine(state, action) {
+    const { diagnosesKey, medecine, type } = action.payload;
+
+    if (type === 'add') {
+      state.diagnoses.custom[diagnosesKey].drugs.push(medecine);
+    } else if (type === 'remove') {
+      state.diagnoses.custom[diagnosesKey].drugs = state.diagnoses.custom[diagnosesKey].drugs.filter((e) => e !== medecine);
+    }
+
+    return {
+      ...state,
+      diagnoses: {
+        ...state.diagnoses,
+        custom: [...state.diagnoses.custom],
+      },
+    };
+  }
+
+  /**
+   * Update medecine
+   *
+   * @payload type: additional or proposed
+   * @payload diagnosesKey: the diagnosey identifiant
+   * @payload medecineId: the medecin identifiant
+   * @payload boolean: the agreed / unagree value
+   */
+  @Action(actions.SET_MEDECINE)
+  setMedecine(state, action) {
+    const { type, diagnosesKey, medecineId, boolean } = action.payload;
+
+    let newAdditionalDrugs = state.diagnoses.additionalDrugs;
+    if (state.diagnoses.additionalDrugs[medecineId] !== undefined) {
+      // Remove from additionnal
+      const { [medecineId]: dontwant, ...other } = state.diagnoses.additionalDrugs;
+      newAdditionalDrugs = other;
+    }
+
+    return {
+      ...state,
+      diagnoses: {
+        ...state.diagnoses,
+        additionalDrugs: { ...newAdditionalDrugs },
+        [type]: {
+          ...state.diagnoses[type],
+          [diagnosesKey]: {
+            ...state.diagnoses[type][diagnosesKey],
+            drugs: {
+              ...state.diagnoses[type][diagnosesKey].drugs,
+              [medecineId]: {
+                ...state.diagnoses[type][diagnosesKey].drugs[medecineId],
+                agreed: boolean,
+              },
+            },
+          },
+        },
+      },
+    };
+  }
+
+  /**
+   * Update medecine
+   *
+   * @payload type: Text that will be shown in modal
+   * @payload diagnosesKey: the diagnosey identifiant
+   * @payload medecineId: the medecin identifiant
+   * @payload boolean: the agreed / unagree value
+   */
+  @Action(actions.SET_ADDITIONAL_MEDECINE)
+  setAdditionalMedecine(state, action) {
+    const { medecines } = action.payload;
+
+    return {
+      ...state,
+      diagnoses: {
+        ...state.diagnoses,
+        additionalDrugs: {
+          ...medecines,
+        },
+      },
+    };
+  }
+
+  /**
+   * Update medicine duration
+   *
+   * @payload id: id of the medicine
+   * @payload duration: the new value to update
+   */
+  @Action(actions.SET_ADDITIONAl_MEDICINE_DURATION)
+  setAdditionalMedecineDuration(state, action) {
+    const { id, duration } = action.payload;
+
+    return {
+      ...state,
+      diagnoses: {
+        ...state.diagnoses,
+        additionalDrugs: {
+          ...state.diagnoses.additionalDrugs,
+          [id]: {
+            ...state.diagnoses.additionalDrugs[id],
+            duration,
+          },
+        },
+      },
     };
   }
 

@@ -46,6 +46,7 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
       const drawerWidth = screenWidth / 2.2;
 
       const showMiniDrawer = navigation?.getParam('showMiniDrawer');
+
       return (
         <React.Fragment>
           <NavigationEvents

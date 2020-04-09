@@ -51,15 +51,7 @@ export type StateApplicationContext = {
 export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
-    this.initializeAsync();
   }
-
-  initializeAsync = async () => {
-    await this.initContext();
-
-    AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
-  };
 
   getGeo = async () => {
     const { t } = this.state;
@@ -256,7 +248,12 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     session: null,
     user: null,
   };
+  async componentWillMount() {
+    await this.initContext();
 
+    AppState.addEventListener('change', this._handleAppStateChange);
+    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
+  }
   _fetchDataWhenChange = async () => {
     await fetchAlgorithms();
   };
@@ -275,7 +272,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   async componentDidMount() {
-    const permissionReturned = await this.getGeo();
+    let permissionReturned = await this.getGeo();
     let location = {
       coords: {
         accuracy: 0,

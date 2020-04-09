@@ -4,7 +4,7 @@ import { NativeModules } from 'react-native';
 
 const languageDetector = {
   type: 'languageDetector',
-  async: true, // flags below detection to be async
+  async: true, // flags below detection to be asyncw
   detect: (callback) => {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
@@ -20,12 +20,26 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        diagnoses: {
+          add: 'Create',
+          proposed: 'Diagnoses proposed by',
+          agree: 'Agree',
+          close: 'Close',
+          select: '  Please select...', // Keep the space at the begin of string
+          search: 'Search by name',
+          disagree: 'Disagree',
+          custom: 'Do you want to manually add another diagnosis not proposed ?',
+          titleadditional: 'Additional selected',
+          additional: 'Do you want to add an additional diagnosis not proposed ?',
+        },
         tooltip: {
+          invalidQuestions: 'Question(s) to fill',
           forcegoto: 'Allow in DEV ',
           goto: 'Back to the form',
           notcomplete: 'Is not complete !',
           more: 'more questions...',
           uncompleted: 'Stage uncompleted',
+          patientnotcomplete: 'The creation of the patient',
         },
         algorithms: {
           never: 'Never synchronized data',
@@ -97,9 +111,11 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
-          final_diagnoses: 'Final diagnoses',
+          medecines: 'Medicines',
+          medecines_formulation: 'Medicine Formulations',
+          final_diagnoses: 'Diagnoses',
           healthcares_questions: 'Management questions',
-          healthcares: 'Management',
+          healthcares: 'Treatments & Management',
           managements: 'Managements',
           treatments: 'Treatments',
           waiting_triage: 'Waiting for triage',

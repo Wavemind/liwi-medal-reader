@@ -14,11 +14,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
   constructor(props) {
     super(props);
 
-    const { label, diagnostic_id, treatments, managements, conditions, top_conditions, excluding_final_diagnostics = null, excluded_by_final_diagnostics = null, cc, instances = [] } = props;
+    const { label, diagnostic_id, drugs, managements, conditions, top_conditions, excluding_final_diagnostics = null, excluded_by_final_diagnostics = null, cc, instances = [] } = props;
 
     this.label = label;
     this.diagnostic_id = diagnostic_id;
-    this.treatments = treatments;
+    this.drugs = drugs;
     this.managements = managements;
     this.conditions = conditions;
     this.top_conditions = top_conditions;
