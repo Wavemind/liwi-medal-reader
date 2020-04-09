@@ -8,11 +8,7 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import {
-  questionsBasicMeasurements,
-  questionsComplaintCategory,
-  questionsFirstLookAssessement,
-} from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessement } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
@@ -70,7 +66,11 @@ export default class Triage extends React.Component<Props, State> {
           }}
           initialPage={selectedPage}
           showBottomStepper
-          icons={[{ name: 'eye-plus', type: 'MaterialCommunityIcons' }, { name: 'view-module', type: 'MaterialIcons' }, { name: 'healing', type: 'MaterialIcons' }]}
+          icons={[
+            { name: 'eye-plus', type: 'MaterialCommunityIcons' },
+            { name: 'view-module', type: 'MaterialIcons' },
+            { name: 'healing', type: 'MaterialIcons' },
+          ]}
           steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:basic_measurement')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
@@ -78,7 +78,7 @@ export default class Triage extends React.Component<Props, State> {
           nextStageString={t('medical_case:consultation')}
         >
           <View style={styles.pad}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <Questions questions={questionsFirstLookAssessement()} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
@@ -87,7 +87,7 @@ export default class Triage extends React.Component<Props, State> {
             )}
           </View>
           <View style={styles.flex}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <Content>
                   <View
@@ -108,7 +108,7 @@ export default class Triage extends React.Component<Props, State> {
             )}
           </View>
           <View style={styles.pad}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <Questions questions={questionsBasicMeasurements()} selectedPage={selectedPage} pageIndex={2} />
               </Suspense>
