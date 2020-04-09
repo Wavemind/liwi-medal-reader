@@ -88,7 +88,8 @@ const validatorStep = (route, lastState, validator) => {
  * @param criteria : object from the constant screens
  * @param questions : questions used to validation
  * @param stepName : stepName : step to validate
- * @return {validator}
+ * @return {validator} :
+ */
 function oneValidation(criteria, questions, stepName) {
   const state$ = store.getState();
   let result;
