@@ -11,8 +11,9 @@ import { getItem, getItems, getSession, setItem } from '../../src/engine/api/Loc
 // Https GET request
 export const get = async (params) => {
   const url = `${host}${params}`;
-  console.log(url);
   const header = await getHeaders('GET', false);
+
+  console.log(header);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
   const httpcall = await request;
@@ -60,9 +61,9 @@ export const syncMedicalCases = async (body, userId = null) => {
 // @params [String] params, [Object] body, [Integer] userId, [String] method
 // @return [Object] response from server
 // Https POST request
-export const post = async (params, body = {}) => {
+export const post = async (params, body = {}, config = {}) => {
   const url = `${host}${params}`;
-  const header = await getHeaders('POST', body);
+  const header = await getHeaders('POST', body, config);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
 
@@ -96,6 +97,7 @@ export const auth = async (email, password) => {
       password,
     }),
   }).catch((error) => {
+    console.log(error);
     handleHttpError(error);
     if (error instanceof Error) {
       throw { success: false };
@@ -123,7 +125,7 @@ export const auth = async (email, password) => {
 export const fetchAlgorithms = async () => {
   return new Promise(async (resolve) => {
     const deviceInfo = await getDeviceInformation();
-
+    console.warn('fetch algorithm');
     const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.mac_address}`);
 
     const localAlgorithms = await getItems('algorithms');
@@ -157,7 +159,7 @@ export const fetchAlgorithms = async () => {
 // @params [String] method, [Object] body, [Integer] userId
 // @return [Object] header
 // Set header credentials to communicate with server
-const getHeaders = async (method = 'GET', body = false) => {
+const getHeaders = async (method = 'GET', body = false, config = {}) => {
   const credentials = await getItem('session');
 
   if (credentials !== null) {
@@ -165,6 +167,7 @@ const getHeaders = async (method = 'GET', body = false) => {
       method,
       headers: {
         'access-token': credentials.access_token,
+        'group-token': credentials?.group?.token,
         client: credentials.client,
         uid: credentials.uid,
         expiry: credentials.expiry,

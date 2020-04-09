@@ -90,10 +90,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // Log out
   logout = async () => {
-    const { user } = this.state;
-    await destroySession(user.data.id);
+    await setItem('user', null);
     this.setState({
-      user: {},
+      user: null,
       logged: false,
     });
   };
@@ -133,7 +132,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
       const { isConnected } = this.state;
 
-      if (isConnected) await fetchAlgorithms(id);
+      if (isConnected) await fetchAlgorithms();
 
       session = await getSession(id);
 
@@ -166,19 +165,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const group = await get(`devices/${deviceInfo.mac_address}`);
 
     console.log(group);
-
-    // const group = {
-    //   passwordLength: 4,
-    //   token: '123456789oiukjfdewtzujk',
-    //   pinCode: 1234,
-    //   name: 'Centre Médical Katboundou',
-    //   users: [
-    //     { id: 1, lastname: 'Steve', surname: 'Jacques', role: 'Clinician', preFix: 'Dr.' },
-    //     { id: 2, lastname: 'Bryan', surname: 'Druker', role: 'Lab', preFix: 'Mr.' },
-    //     { id: 5, lastname: 'Marie-Ange', surname: 'Briault', role: 'Nurse', preFix: 'Mrs.' },
-    //     { id: 6, lastname: 'Vincent', surname: 'Other name', role: 'Nurse', preFix: 'Mrs.' },
-    //   ],
-    // };
 
     if (group !== false && group.errors === undefined) {
       await setItem('session', { ...session, group });
@@ -236,9 +222,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       await setItem('session', concatSession);
 
       const deviceInfo = await getDeviceInformation();
-
       // Register device
-      const register = await post('devices', { device: { ...deviceInfo } });
+      const register = await post('devices', { device: { ...deviceInfo } }, { token: 'group' });
 
       if (register === true) {
         this.showSuccessToast('Successful tablet identification');
@@ -276,10 +261,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   _fetchDataWhenChange = async () => {
-    const { user } = this.state;
-    if (!isEmpty(user) && user?.data?.id) {
-      await fetchAlgorithms(user.data.id);
-    }
+    await fetchAlgorithms();
   };
 
   _handleConnectivityChange = async (isConnected) => {

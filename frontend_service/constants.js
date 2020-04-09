@@ -1,4 +1,6 @@
-export const host = 'http://liwi.wavelab.top/api/v1/';
+export const host = 'https://liwi.wavelab.top/api/v1/';
+// export const host = 'https://08eb2790.ngrok.io/api/v1/';
+
 export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
 export const navigationStateKey = 'navigationState';
@@ -103,10 +105,11 @@ export const typeNode = {
 
 export const userRole = {
   clinician: 'Clinician',
-  registration: 'Registration Desk',
-  triage: 'Triage Nurse',
+  registration_desk: 'Registration Desk',
+  triage_nurse: 'Triage Nurse',
   lab: 'Lab',
   pharmacist: 'Pharmacist',
+  guest: 'Guest',
 };
 
 // Status of medical cases

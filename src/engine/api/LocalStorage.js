@@ -241,19 +241,6 @@ export const getSession = async (id) => {
 };
 
 // @params [Integer] id
-// Destroy session in local storage
-export const destroySession = async (id) => {
-  let sessions = await AsyncStorage.getItem('sessions');
-  sessions = JSON.parse(sessions);
-
-  if (Array.isArray(sessions)) {
-    remove(sessions, (session) => session.data.id === id);
-  }
-  await setSessions(sessions);
-  return true;
-};
-
-// @params [Integer] id
 // Return patient medical cases
 export const getMedicalCase = async (id) => {
   const patients = await getItems('patients');

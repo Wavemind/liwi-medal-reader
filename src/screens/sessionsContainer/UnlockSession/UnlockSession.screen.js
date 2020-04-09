@@ -8,6 +8,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import PINCode from '@haskkor/react-native-pincode';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 import { Image } from 'react-native';
+import { userRole } from '../../../../frontend_service/constants';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
@@ -30,9 +31,8 @@ export default function PinSession() {
 
   const syncGroup = async () => {
     setLoading(true);
-    if (await app.getGroupData()) {
-      setLoading(false);
-    }
+    await app.getGroupData();
+    setLoading(false);
   };
 
   const handleResultEnterPin = async (pinCode) => {
@@ -86,7 +86,7 @@ export default function PinSession() {
                 <Text style={{ textAlign: 'center' }} bigTitle>
                   Already Logged as{' '}
                   <Text style={{ textAlign: 'center', fontWeight: 'bold' }} bigTitle>
-                    {app.user.role}
+                    {userRole[app.user.role]}
                   </Text>
                 </Text>
               </View>
