@@ -13,8 +13,6 @@ export const get = async (params) => {
   const url = `${host}${params}`;
   const header = await getHeaders('GET', false);
 
-  console.log(header);
-
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
   const httpcall = await request;
 
@@ -97,7 +95,6 @@ export const auth = async (email, password) => {
       password,
     }),
   }).catch((error) => {
-    console.log(error);
     handleHttpError(error);
     if (error instanceof Error) {
       throw { success: false };

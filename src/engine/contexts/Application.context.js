@@ -164,8 +164,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const deviceInfo = await getDeviceInformation();
     const group = await get(`devices/${deviceInfo.mac_address}`);
 
-    console.log(group);
-
     if (group !== false && group.errors === undefined) {
       await setItem('session', { ...session, group });
       this.setState({ session: { ...session, group } });
@@ -178,7 +176,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   openSession = async (pinCode) => {
     const { session, user } = this.state;
-    console.log(session.group.pin_code, pinCode);
     if (session.group.pin_code === pinCode) {
       this.showSuccessToast('Successful connect to your group');
 
