@@ -45,8 +45,6 @@ export default function PinSession() {
     }
   };
 
-  console.log(app.user, session);
-
   return (
     <View testID="UnLockSession" style={{ flex: 1 }}>
       <View flex-container-column>
