@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { Content, Text, View, Picker, Button, Icon } from 'native-base';
+import { Icon, Picker, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { healthCareType } from '../../../../../frontend_service/constants';
-import { getDrugs, titleMannualyDiagnoses } from '../../../../../frontend_service/algorithm/questionsStage.algo';
+import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { styles } from './MedecinesFormulation.style';
 
@@ -85,7 +85,7 @@ export default class MedecinesFormulations extends Component<Props, State> {
                 onSelect(f.medication_form);
               }
 
-              return <Picker.Item label={`${f.medication_form} : ${string} ${isPossible ? this.showSize(f.medication_form) : ''}`} value={isPossible ? f.medication_form : false} />;
+              return <Picker.Item key={f} label={`${f.medication_form} : ${string} ${isPossible ? this.showSize(f.medication_form) : ''}`} value={isPossible ? f.medication_form : false} />;
             })}
           </Picker>
         </View>
@@ -111,6 +111,7 @@ export default class MedecinesFormulations extends Component<Props, State> {
     });
 
     const formulations = getDrugs();
+
     const generateFormulation = () =>
       Object.keys(formulations).map((fm) => {
         const selected = formulations[fm].formulationSelected === undefined ? null : formulations[fm].formulationSelected;
@@ -121,7 +122,6 @@ export default class MedecinesFormulations extends Component<Props, State> {
     return (
       <View style={styles.container}>
         {Object.keys(formulations).length > 0 && <Text customTitle>Which formulation of medicine is available and appropriate for your patient?</Text>}
-
         {generateFormulation()}
       </View>
     );

@@ -66,7 +66,11 @@ export default class Triage extends React.Component<Props, State> {
           }}
           initialPage={selectedPage}
           showBottomStepper
-          icons={[{ name: 'eye-plus', type: 'MaterialCommunityIcons' }, { name: 'view-module', type: 'MaterialIcons' }, { name: 'healing', type: 'MaterialIcons' }]}
+          icons={[
+            { name: 'eye-plus', type: 'MaterialCommunityIcons' },
+            { name: 'view-module', type: 'MaterialIcons' },
+            { name: 'healing', type: 'MaterialIcons' },
+          ]}
           steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:basic_measurement')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}

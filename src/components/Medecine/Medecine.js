@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Icon, Text, View, Button } from 'native-base';
+import { Button, Icon, Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
 
 export default class Medecine extends Component<{}> {

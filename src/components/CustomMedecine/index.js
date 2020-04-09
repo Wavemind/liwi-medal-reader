@@ -15,7 +15,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withApplication(CustomMedecine));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(CustomMedecine));

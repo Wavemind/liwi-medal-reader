@@ -3,7 +3,7 @@ import MedecinesFormulations from './MedecinesFormulation.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../../utils/WrapperNavigation';
-import { setAdditionalMedecine, setFormulation } from '../../../../../frontend_service/actions/creators.actions';
+import { setFormulation } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -17,7 +17,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(WrapperNavigation(MedecinesFormulations))));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(MedecinesFormulations))));

@@ -10,7 +10,7 @@
  * @returns {String} The fraction object in string format.
  */
 
-export default function formatReadableFraction(fractionObject, isImproper=false) {
+export default function formatReadableFraction(fractionObject, isImproper = false) {
   let { denominator, error, numerator } = fractionObject;
 
   // When the numerator is 0, return an empty string instead of
