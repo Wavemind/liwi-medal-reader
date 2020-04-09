@@ -5,6 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './FinalDiagnostic.style';
+
 type Props = NavigationScreenProps & {};
 
 type State = {};

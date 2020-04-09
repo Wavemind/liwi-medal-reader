@@ -266,6 +266,7 @@ i18n
           available_algorithms: 'Available algorithms',
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
+          conditions: 'Treatment Conditions',
         },
         common: {
           back: 'Back',

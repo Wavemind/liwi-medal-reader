@@ -16,7 +16,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withSessions(withApplication(FinalDiagnostic)));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(FinalDiagnostic)));

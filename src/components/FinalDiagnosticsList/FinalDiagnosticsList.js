@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Icon, Text, View, Input, Button, Item } from 'native-base';
+import { Button, Icon, Input, Text, View } from 'native-base';
 import { styles } from './FinalDiagnosticsList.style';
 import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
 import FinalDiagnostic from '../FinalDiagnostic';
