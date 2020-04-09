@@ -67,7 +67,7 @@ export default class Medecines extends Component<Props, State> {
 
   render() {
     const {
-      medicalCase: { diagnoses, name, nodes },
+      medicalCase: { diagnoses, algorithm_name, nodes },
       app: { t },
     } = this.props;
 
@@ -113,7 +113,7 @@ export default class Medecines extends Component<Props, State> {
 
     return (
       <View>
-        {isProposed && <Text customTitle>Medicines proposed by "{name}"</Text>}
+        {isProposed && <Text customTitle>Medicines proposed by "{algorithm_name}"</Text>}
         {Object.keys(diagnoses.proposed).map((key) => {
           if (diagnoses.proposed[key].agreed === true) {
             let isPossible = false;
