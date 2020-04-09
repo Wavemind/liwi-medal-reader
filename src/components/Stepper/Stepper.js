@@ -13,7 +13,7 @@ import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './styles';
-import { liwiColors } from '../../utils/constants';
+import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
@@ -282,7 +282,7 @@ class Stepper extends React.Component<Props, State> {
 
         return (
           <TouchableOpacity onPress={() => this.handleBottomStepper(index)} key={`TouchableOpacity${index}`}>
-            <View key={`step${index}`} style={styles.stepContainer}>
+            <View key={`step${index}`} style={[styles.stepContainer, { width: screenWidth / steps.length - 20 }]}>
               <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
                 {index < this.state.page && this.props.validate ? (
                   this.state.error ? (
@@ -360,6 +360,7 @@ class Stepper extends React.Component<Props, State> {
       bottomNavigationRightIconComponent,
       nextStage,
       nextStageString,
+      steps,
     } = this.props;
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
@@ -368,7 +369,17 @@ class Stepper extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        {showTopStepper ? <View style={[styles.topStepper, topStepperStyle]}>{this.renderSteps()}</View> : null}
+        {showTopStepper ? (
+          <View style={[styles.topStepper, topStepperStyle]}>
+            {steps.length >= 30 ? (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {this.renderSteps()}
+              </ScrollView>
+            ) : (
+              this.renderSteps()
+            )}
+          </View>
+        ) : null}
         {this.renderViewPager()}
         {showBottomStepper ? (
           <View

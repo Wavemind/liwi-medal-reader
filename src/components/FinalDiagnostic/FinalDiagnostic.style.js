@@ -15,4 +15,7 @@ export const styles = StyleSheet.create({
   grayIcon: {
     color: liwiColors.darkerGreyColor,
   },
+  flex: { flex: 0.55 },
+  containerButton: { flexDirection: 'row', flex: 0.4, height: 50 },
+  container: { flex: 1, flexDirection: 'row', marginBottom: 5 },
 });

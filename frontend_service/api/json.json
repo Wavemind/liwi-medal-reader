@@ -1,0 +1,806 @@
+{
+  "id": 1,
+  "algorithm_id": 1,
+  "name": "ePoct+",
+  "version": "V1",
+  "version_id": 1,
+  "description": "",
+  "triage": {
+    "orders": {
+      "unique_triage_question": [],
+      "complaint_category": [10, 18, 19],
+      "basic_measurement": [3],
+      "chronic_condition": [],
+      "other": [2]
+    },
+    "conditions": {}
+  },
+  "author": "Emmanuel Barchichat",
+  "created_at": "2020-03-09T16:54:22.808+01:00",
+  "updated_at": "2020-03-18T11:17:49.767+01:00",
+  "diagnostics": {
+    "1": {
+      "id": 1,
+      "reference": 1,
+      "label": "Malaria",
+      "differential": {
+        "top_conditions": [],
+        "conditions": []
+      },
+      "instances": {
+        "9": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 9,
+          "children": [11, 20],
+          "final_diagnostic_id": null
+        },
+        "22": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 22,
+          "children": [],
+          "final_diagnostic_id": null
+        }
+      },
+      "final_diagnostics": {
+        "11": {
+          "top_conditions": [
+            {
+              "first_id": 14,
+              "first_type": "Answer",
+              "first_node_id": 9,
+              "operator": null,
+              "second_id": null,
+              "second_type": null,
+              "second_node_id": null,
+              "score": null
+            }
+          ],
+          "conditions": [],
+          "diagnostic_id": 1,
+          "id": 11,
+          "label": "Moderate Malaria",
+          "type": "FinalDiagnostic",
+          "drugs": {
+            "12": {
+              "top_conditions": [],
+              "conditions": [],
+              "id": 12,
+              "duration": 5,
+              "description": "DDD"
+            },
+            "13": {
+              "top_conditions": [],
+              "conditions": [],
+              "id": 13,
+              "duration": 1,
+              "description": ""
+            },
+            "15": {
+              "top_conditions": [],
+              "conditions": [],
+              "id": 15,
+              "duration": 5,
+              "description": ""
+            }
+          },
+          "managements": {
+            "16": {
+              "top_conditions": [],
+              "conditions": [],
+              "id": 16,
+              "duration": null,
+              "description": null
+            }
+          },
+          "excluding_final_diagnostics": null,
+          "cc": 10
+        },
+        "20": {
+          "top_conditions": [
+            {
+              "first_id": 15,
+              "first_type": "Answer",
+              "first_node_id": 9,
+              "operator": null,
+              "second_id": null,
+              "second_type": null,
+              "second_node_id": null,
+              "score": null
+            }
+          ],
+          "conditions": [],
+          "diagnostic_id": 1,
+          "id": 20,
+          "label": "Sever malaria",
+          "type": "FinalDiagnostic",
+          "drugs": {
+            "15": {
+              "top_conditions": [],
+              "conditions": [],
+              "id": 15,
+              "duration": 25,
+              "description": ""
+            },
+            "21": {
+              "top_conditions": [
+                {
+                  "first_id": 24,
+                  "first_type": "Answer",
+                  "first_node_id": 22,
+                  "operator": null,
+                  "second_id": null,
+                  "second_type": null,
+                  "second_node_id": null,
+                  "score": null
+                }
+              ],
+              "conditions": [],
+              "id": 21,
+              "duration": 7,
+              "description": ""
+            }
+          },
+          "managements": {},
+          "excluding_final_diagnostics": null,
+          "cc": 10
+        }
+      }
+    }
+  },
+  "nodes": {
+    "1": {
+      "id": 1,
+      "type": "Question",
+      "reference": 1,
+      "label": "Birth date",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "registration",
+      "system": null,
+      "formula": null,
+      "category": "demographic",
+      "value_format": "Date",
+      "display_format": "Date",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [6, 2],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {}
+    },
+    "2": {
+      "id": 2,
+      "type": "Question",
+      "reference": 1,
+      "label": "Age in days",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "triage",
+      "system": null,
+      "formula": "[ToDay(1)]",
+      "category": "background_calculation",
+      "value_format": "Float",
+      "display_format": "Formula",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {}
+    },
+    "3": {
+      "id": 3,
+      "type": "Question",
+      "reference": 1,
+      "label": "Weight (kg)",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "basic_measurement",
+      "value_format": "Float",
+      "display_format": "Input",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {}
+    },
+    "4": {
+      "id": 4,
+      "type": "Question",
+      "reference": 1,
+      "label": "Heart rate",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "consultation",
+      "system": null,
+      "formula": null,
+      "category": "vital_sign_anthropometric",
+      "value_format": "Float",
+      "display_format": "Input",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {}
+    },
+    "5": {
+      "id": 5,
+      "type": "Question",
+      "reference": 2,
+      "label": "Respiratory rate",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "consultation",
+      "system": null,
+      "formula": null,
+      "category": "vital_sign_anthropometric",
+      "value_format": "Float",
+      "display_format": "Input",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [9],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {}
+    },
+    "6": {
+      "id": 6,
+      "type": "Question",
+      "reference": 2,
+      "label": "Age in months",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "registration",
+      "system": null,
+      "formula": "[ToMonth(1)]",
+      "category": "background_calculation",
+      "value_format": "Float",
+      "display_format": "Formula",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [9],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "1": {
+          "id": 1,
+          "reference": 1,
+          "label": "less than 2 months",
+          "value": "2",
+          "operator": "less"
+        },
+        "2": {
+          "id": 2,
+          "reference": 2,
+          "label": "between 2 and 6 months",
+          "value": "2, 6",
+          "operator": "between"
+        },
+        "3": {
+          "id": 3,
+          "reference": 3,
+          "label": "between 6 and 12 months",
+          "value": "6, 12",
+          "operator": "between"
+        },
+        "4": {
+          "id": 4,
+          "reference": 4,
+          "label": "between 12 and 24 months",
+          "value": "12, 24",
+          "operator": "between"
+        },
+        "5": {
+          "id": 5,
+          "reference": 5,
+          "label": "between 24 and 36 months",
+          "value": "24, 36",
+          "operator": "between"
+        },
+        "6": {
+          "id": 6,
+          "reference": 6,
+          "label": "between 36 and 60 months",
+          "value": "36, 60",
+          "operator": "between"
+        },
+        "7": {
+          "id": 7,
+          "reference": 7,
+          "label": "more than 60 months",
+          "value": "60",
+          "operator": "more_or_equal"
+        }
+      }
+    },
+    "9": {
+      "id": 9,
+      "type": "Question",
+      "reference": 3,
+      "label": "Respiratory rate in percentile",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "consultation",
+      "system": null,
+      "formula": null,
+      "category": "physical_exam",
+      "value_format": "Integer",
+      "display_format": "Reference",
+      "qs": [],
+      "dd": [
+        {
+          "id": 1,
+          "conditionValue": null
+        }
+      ],
+      "cc": [10],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": 6,
+      "reference_table_y_id": 5,
+      "reference_table_male": "respiratory_rate_table",
+      "reference_table_female": "respiratory_rate_table",
+      "answer": null,
+      "answers": {
+        "13": {
+          "id": 13,
+          "reference": 1,
+          "label": "less than 75th",
+          "value": "75",
+          "operator": "less"
+        },
+        "14": {
+          "id": 14,
+          "reference": 2,
+          "label": "between 75th and 97th",
+          "value": "75, 97",
+          "operator": "between"
+        },
+        "15": {
+          "id": 15,
+          "reference": 3,
+          "label": "more than 97th",
+          "value": "97",
+          "operator": "more_or_equal"
+        }
+      }
+    },
+    "10": {
+      "id": 10,
+      "type": "Question",
+      "reference": 1,
+      "label": "Test",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "complaint_category",
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "16": {
+          "id": 16,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "17": {
+          "id": 17,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
+    },
+    "11": {
+      "top_conditions": [
+        {
+          "first_id": 14,
+          "first_type": "Answer",
+          "first_node_id": 9,
+          "operator": null,
+          "second_id": null,
+          "second_type": null,
+          "second_node_id": null,
+          "score": null
+        }
+      ],
+      "conditions": [],
+      "diagnostic_id": 1,
+      "id": 11,
+      "label": "Moderate Malaria",
+      "type": "FinalDiagnostic",
+      "drugs": {
+        "12": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 12,
+          "duration": 5,
+          "description": "DDD"
+        },
+        "13": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 13,
+          "duration": 1,
+          "description": ""
+        },
+        "15": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 15,
+          "duration": 5,
+          "description": ""
+        }
+      },
+      "managements": {
+        "16": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 16,
+          "duration": null,
+          "description": null
+        }
+      },
+      "excluding_final_diagnostics": null,
+      "cc": 10
+    },
+    "12": {
+      "id": 12,
+      "type": "HealthCare",
+      "category": "drug",
+      "reference": 1,
+      "label": "Paracetamol",
+      "description": "TTT",
+      "weight_question_id": 3,
+      "formulations": [
+        {
+          "medication_form": "tablet",
+          "administration_route_category": "Enteral",
+          "administration_route_name": "Orally",
+          "liquid_concentration": null,
+          "dose_form": 500,
+          "unique_dose": null,
+          "by_age": false,
+          "breakable": 4,
+          "minimal_dose_per_kg": 50.0,
+          "maximal_dose_per_kg": 100.0,
+          "maximal_dose": 5000.0,
+          "doses_per_day": 4
+        }
+      ]
+    },
+    "13": {
+      "id": 13,
+      "type": "HealthCare",
+      "category": "drug",
+      "reference": 2,
+      "label": "Voltaren",
+      "description": null,
+      "weight_question_id": 3,
+      "formulations": [
+        {
+          "medication_form": "cream",
+          "administration_route_category": "Mucocutaneous",
+          "administration_route_name": "Cutaneous",
+          "liquid_concentration": null,
+          "dose_form": null,
+          "unique_dose": 1,
+          "by_age": false,
+          "breakable": null,
+          "minimal_dose_per_kg": null,
+          "maximal_dose_per_kg": null,
+          "maximal_dose": null,
+          "doses_per_day": 1
+        }
+      ]
+    },
+    "15": {
+      "id": 15,
+      "type": "HealthCare",
+      "category": "drug",
+      "reference": 4,
+      "label": "Amox HD",
+      "description": null,
+      "weight_question_id": 3,
+      "formulations": [
+        {
+          "medication_form": "capsule",
+          "administration_route_category": "Enteral",
+          "administration_route_name": "Orally",
+          "liquid_concentration": null,
+          "dose_form": 250,
+          "unique_dose": null,
+          "by_age": false,
+          "breakable": null,
+          "minimal_dose_per_kg": 80.0,
+          "maximal_dose_per_kg": 100.0,
+          "maximal_dose": 3000.0,
+          "doses_per_day": 3
+        },
+        {
+          "medication_form": "suspension",
+          "administration_route_category": "Parenteral injectable",
+          "administration_route_name": "IV",
+          "liquid_concentration": 125,
+          "dose_form": 5,
+          "unique_dose": null,
+          "by_age": false,
+          "breakable": null,
+          "minimal_dose_per_kg": 80.0,
+          "maximal_dose_per_kg": 100.0,
+          "maximal_dose": 3000.0,
+          "doses_per_day": 3
+        }
+      ]
+    },
+    "16": {
+      "id": 16,
+      "type": "HealthCare",
+      "category": "management",
+      "reference": 1,
+      "label": "Refer to the specific documentation",
+      "description": null
+    },
+    "18": {
+      "id": 18,
+      "type": "Question",
+      "reference": 2,
+      "label": "Test",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "complaint_category",
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "20": {
+          "id": 20,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "21": {
+          "id": 21,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
+    },
+    "19": {
+      "id": 19,
+      "type": "Question",
+      "reference": 3,
+      "label": "Test",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "complaint_category",
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "22": {
+          "id": 22,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "23": {
+          "id": 23,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
+    },
+    "20": {
+      "top_conditions": [
+        {
+          "first_id": 15,
+          "first_type": "Answer",
+          "first_node_id": 9,
+          "operator": null,
+          "second_id": null,
+          "second_type": null,
+          "second_node_id": null,
+          "score": null
+        }
+      ],
+      "conditions": [],
+      "diagnostic_id": 1,
+      "id": 20,
+      "label": "Sever malaria",
+      "type": "FinalDiagnostic",
+      "drugs": {
+        "21": {
+          "top_conditions": [
+            {
+              "first_id": 24,
+              "first_type": "Answer",
+              "first_node_id": 22,
+              "operator": null,
+              "second_id": null,
+              "second_type": null,
+              "second_node_id": null,
+              "score": null
+            }
+          ],
+          "conditions": [],
+          "id": 21,
+          "duration": 7,
+          "description": ""
+        },
+        "15": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 15,
+          "duration": 25,
+          "description": ""
+        }
+      },
+      "managements": {},
+      "excluding_final_diagnostics": null,
+      "cc": 10
+    },
+    "21": {
+      "id": 21,
+      "type": "HealthCare",
+      "category": "drug",
+      "reference": 5,
+      "label": "Bepanthen",
+      "description": null,
+      "weight_question_id": 3,
+      "formulations": [
+        {
+          "medication_form": "drops",
+          "administration_route_category": "Mucocutaneous",
+          "administration_route_name": "Otic",
+          "liquid_concentration": null,
+          "dose_form": null,
+          "unique_dose": 2,
+          "by_age": false,
+          "breakable": null,
+          "minimal_dose_per_kg": null,
+          "maximal_dose_per_kg": null,
+          "maximal_dose": null,
+          "doses_per_day": 5
+        }
+      ]
+    },
+    "22": {
+      "id": 22,
+      "type": "Question",
+      "reference": 4,
+      "label": "Red eyes",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "consultation",
+      "system": "general",
+      "formula": null,
+      "category": "physical_exam",
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [
+        {
+          "id": 1,
+          "conditionValue": null
+        }
+      ],
+      "cc": [10],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "answer": null,
+      "answers": {
+        "24": {
+          "id": 24,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "25": {
+          "id": 25,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
+    }
+  }
+}

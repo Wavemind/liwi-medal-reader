@@ -13,6 +13,10 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Home extends React.Component<Props, State> {
+  static defaultProps = {
+    app: { t: () => {} },
+  };
+
   state = {
     algorithms: [],
     propsToolTipVisible: false,
@@ -48,6 +52,10 @@ export default class Home extends React.Component<Props, State> {
       app: { t, user },
       medicalCase,
     } = this.props;
+
+    if (t === undefined) {
+      return null;
+    }
 
     const { algorithms, propsToolTipVisible } = this.state;
 

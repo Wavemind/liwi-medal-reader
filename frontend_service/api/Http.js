@@ -2,7 +2,7 @@ import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
 import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
-
+import json from '../../frontend_service/api/json';
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
 import { getItem, getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
 
