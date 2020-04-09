@@ -16,21 +16,17 @@ export const getDeviceInformation = async () => {
   const location = await getItem('location');
 
   const objReturned = {
-    activity: {
-      latitude: location?.coords?.latitude ?? null,
-      longitude: location?.coords?.longitude ?? null,
-      timezone,
-      user_id: 'null',
-      version,
-      device_attributes: {
-        mac_address: mac,
-        model,
-        brand: manufacturer,
-        name: deviceName,
-        os: systemName,
-        os_version: systemVersion,
-      },
-    },
+    latitude: location?.coords?.latitude ?? null,
+    longitude: location?.coords?.longitude ?? null,
+    timezone,
+    user_id: 'null',
+    version,
+    mac_address: mac,
+    model,
+    brand: manufacturer,
+    name: deviceName,
+    os: systemName,
+    os_version: systemVersion,
   };
 
   return objReturned;

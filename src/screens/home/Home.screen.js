@@ -55,7 +55,7 @@ export default class Home extends React.Component<Props, State> {
       <View padding-auto testID="HomeScreen" style={{ backgroundColor: '#fff' }}>
         <View flex-container-column>
           <Text bigTitle style={{ textAlign: 'center' }}>
-            Welcome {user.preFix} {user.surname} {user.lastname}
+            Welcome {user.preFix} {user.first_name} {user.last_name}
           </Text>
           <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} />
           <View w50>
