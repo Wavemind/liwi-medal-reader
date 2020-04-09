@@ -168,7 +168,8 @@ export default class Algorithms extends React.Component<Props, State> {
     const {
       app: { user },
     } = this.props;
-    await fetchAlgorithms(user.data.id);
+
+    await fetchAlgorithms();
     await this.updateAlgorithms();
     this.setState({ isRefreshing: false });
   };

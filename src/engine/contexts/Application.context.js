@@ -9,15 +9,16 @@ import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 
+import Toast from 'react-native-tiny-toast';
 import { destroySession, getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
 import NavigationService from '../navigation/Navigation.service';
 import { appInBackgroundStateKey, saltHash } from '../../../frontend_service/constants';
-import { fetchAlgorithms } from '../../../frontend_service/api/Http';
+import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
 import sessionJson from '../../../frontend_service/api/session';
-import Toast from 'react-native-tiny-toast';
 import { liwiColors } from '../../utils/constants';
+import { getDeviceInformation } from '../api/Device';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -161,37 +162,38 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   getGroupData = async () => {
     const session = await getItem('session');
+    const deviceInfo = await getDeviceInformation();
+    const group = await get(`devices/${deviceInfo.mac_address}`);
 
-    // let group = await auth(session).catch((error) => {
-    //   return error;
-    // });
+    console.log(group);
 
-    await setTimeout(async () => {
-      const group = {
-        passwordLength: 4,
-        token: '123456789oiukjfdewtzujk',
-        pinCode: 1234,
-        name: 'Centre Médical Katboundou',
-        users: [
-          { id: 1, lastname: 'Steve', surname: 'Jacques', role: 'Clinician', preFix: 'Dr.' },
-          { id: 2, lastname: 'Bryan', surname: 'Druker', role: 'Lab', preFix: 'Mr.' },
-          { id: 5, lastname: 'Marie-Ange', surname: 'Briault', role: 'Nurse', preFix: 'Mrs.' },
-          { id: 6, lastname: 'Vincent', surname: 'Other name', role: 'Nurse', preFix: 'Mrs.' },
-        ],
-      };
+    // const group = {
+    //   passwordLength: 4,
+    //   token: '123456789oiukjfdewtzujk',
+    //   pinCode: 1234,
+    //   name: 'Centre Médical Katboundou',
+    //   users: [
+    //     { id: 1, lastname: 'Steve', surname: 'Jacques', role: 'Clinician', preFix: 'Dr.' },
+    //     { id: 2, lastname: 'Bryan', surname: 'Druker', role: 'Lab', preFix: 'Mr.' },
+    //     { id: 5, lastname: 'Marie-Ange', surname: 'Briault', role: 'Nurse', preFix: 'Mrs.' },
+    //     { id: 6, lastname: 'Vincent', surname: 'Other name', role: 'Nurse', preFix: 'Mrs.' },
+    //   ],
+    // };
 
-      if (group !== false) {
-        await setItem('session', { ...session, group });
-        this.setState({ session: { ...session, group } });
-        this.showSuccessToast('Receiving group data and users');
-        return true;
-      }
-    }, 5000);
+    if (group !== false && group.errors === undefined) {
+      await setItem('session', { ...session, group });
+      this.setState({ session: { ...session, group } });
+      this.showSuccessToast('Receiving group data and medical staff');
+      return true;
+    }
+
+    return false;
   };
 
   openSession = async (pinCode) => {
     const { session, user } = this.state;
-    if (session.group.pinCode === Number(pinCode)) {
+    console.log(session.group.pin_code, pinCode);
+    if (session.group.pin_code === pinCode) {
       this.showSuccessToast('Successful connect to your group');
 
       if (user === null) {
@@ -205,9 +207,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       }
 
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   setUser = async (user) => {
@@ -226,19 +227,24 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // Create new session
   newSession = async (email: string, password: string) => {
-    // let credentials = await auth(email, password).catch((error) => {
-    //   return error;
-    // });
+    const session = await auth(email, password).catch((error) => {
+      return error;
+    });
 
-    let credentials = sessionJson;
-
-    if (credentials !== false) {
-      let concatSession = { group: null, ...credentials };
+    if (session?.success !== false) {
+      const concatSession = { group: null, ...session };
       await setItem('session', concatSession);
-      this.showSuccessToast('Successful tablet identification');
-      return true;
-    }
 
+      const deviceInfo = await getDeviceInformation();
+
+      // Register device
+      const register = await post('devices', { device: { ...deviceInfo } });
+
+      if (register === true) {
+        this.showSuccessToast('Successful tablet identification');
+        return true;
+      }
+    }
     return false;
   };
 

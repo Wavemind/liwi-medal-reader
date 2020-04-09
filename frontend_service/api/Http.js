@@ -4,14 +4,15 @@ import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
 
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
-import { getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
+import { getItem, getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
 
 // @params [String] params, [Integer] userId
 // @return [Json] response from server
 // Https GET request
-export const get = async (params, userId) => {
+export const get = async (params) => {
   const url = `${host}${params}`;
-  const header = await getHeaders('GET', false, userId);
+  console.log(url);
+  const header = await getHeaders('GET', false);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
   const httpcall = await request;
@@ -22,6 +23,7 @@ export const get = async (params, userId) => {
     Toaster('The server is not responding', { type: 'danger', duration: 4000 });
     return { errors: [] };
   }
+
   const response = await httpcall.json();
 
   // Display error
@@ -58,9 +60,9 @@ export const syncMedicalCases = async (body, userId = null) => {
 // @params [String] params, [Object] body, [Integer] userId, [String] method
 // @return [Object] response from server
 // Https POST request
-export const post = async (params, body = {}, userId = null) => {
+export const post = async (params, body = {}) => {
   const url = `${host}${params}`;
-  const header = await getHeaders('POST', body, userId);
+  const header = await getHeaders('POST', body);
 
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
 
@@ -118,15 +120,11 @@ export const auth = async (email, password) => {
 
 // @params [Integer] userId
 // Promise fetch algorithm from server
-export const fetchAlgorithms = async (userId) => {
+export const fetchAlgorithms = async () => {
   return new Promise(async (resolve) => {
     const deviceInfo = await getDeviceInformation();
 
-    deviceInfo.activity.user_id = userId;
-
-    await post('activities', deviceInfo);
-
-    const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.activity.device_attributes.mac_address}`, userId);
+    const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.mac_address}`);
 
     const localAlgorithms = await getItems('algorithms');
 
@@ -159,16 +157,17 @@ export const fetchAlgorithms = async (userId) => {
 // @params [String] method, [Object] body, [Integer] userId
 // @return [Object] header
 // Set header credentials to communicate with server
-const getHeaders = async (method = 'GET', body = false, userId = null) => {
-  const credentials = async () => await getSession(userId);
-  return credentials().then((data) => {
+const getHeaders = async (method = 'GET', body = false) => {
+  const credentials = await getItem('session');
+
+  if (credentials !== null) {
     const header = {
       method,
       headers: {
-        'access-token': data.access_token,
-        client: data.client,
-        uid: data.uid,
-        expiry: data.expiry,
+        'access-token': credentials.access_token,
+        client: credentials.client,
+        uid: credentials.uid,
+        expiry: credentials.expiry,
       },
     };
     if (method === 'POST' || method === 'PATCH') {
@@ -177,5 +176,7 @@ const getHeaders = async (method = 'GET', body = false, userId = null) => {
       header.headers['Content-Type'] = 'application/json';
     }
     return header;
-  });
+  }
+
+  return null;
 };

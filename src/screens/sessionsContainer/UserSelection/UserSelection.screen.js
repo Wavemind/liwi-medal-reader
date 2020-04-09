@@ -13,8 +13,8 @@ export default function UserSelection() {
   // Hooks
   const [selectedUser, setUser] = React.useState({
     id: null,
-    lastname: '',
-    firstname: '',
+    last_name: '',
+    first_name: '',
     role: '',
   });
 
@@ -24,7 +24,7 @@ export default function UserSelection() {
 
   const switchIcon = (role) => {
     switch (role) {
-      case 'Clinician':
+      case 'clinician':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/doc.png')} />;
       case 'Lab':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/scientist.png')} />;
@@ -53,9 +53,8 @@ export default function UserSelection() {
           <Text style={styles.desc}>{user.role}</Text>
           {switchIcon(user.role)}
           <View style={styles.blocName}>
-            <Text style={{ ...styles.title, color: liwiColors.blackLightColor }}>{user.preFix} </Text>
-            <Text style={styles.title}>{user?.surname} </Text>
-            <Text style={styles.title}>{user?.name} </Text>
+            <Text style={styles.title}>{user?.first_name} </Text>
+            <Text style={styles.title}>{user?.last_name}</Text>
           </View>
 
           {selectedUser?.id === user.id && <Icon type="AntDesign" name="checkcircleo" style={styles.icon} />}
@@ -73,9 +72,9 @@ export default function UserSelection() {
             <View style={styles.items}>
               <CustomInput
                 condensed
-                init={selectedUser.lastname}
+                init={selectedUser.last_name}
                 label={app.t('patient:first_name')}
-                change={(e, i) => setUser({ ...selectedUser, lastname: i })}
+                change={(e, i) => setUser({ ...selectedUser, last_name: i })}
                 index="lastname"
                 iconName="user"
                 iconType="AntDesign"
@@ -85,9 +84,9 @@ export default function UserSelection() {
             <View style={styles.items}>
               <CustomInput
                 condensed
-                init={selectedUser.surname}
+                init={selectedUser.first_name}
                 label={app.t('patient:last_name')}
-                change={(e, i) => setUser({ ...selectedUser, surname: i })}
+                change={(e, i) => setUser({ ...selectedUser, first_name: i })}
                 index="surname"
                 iconName="user"
                 iconType="AntDesign"
@@ -129,7 +128,7 @@ export default function UserSelection() {
       <View flex-container-column flex-center>
         <Text bigTitle>Who are you ?</Text>
         <View style={styles.blocParent}>
-          {session.group.users.map((user) => renderBloc(user))}
+          {session.group.medical_staffs.map((user) => renderBloc(user))}
           {renderBloc({ role: 'Guest', lastname: '', surname: '', id: false })}
         </View>
         {selectButton}

@@ -45,7 +45,7 @@ export default function PinSession() {
     }
   };
 
-  console.log(app.user);
+  console.log(app.user, session);
 
   return (
     <View testID="UnLockSession" style={{ flex: 1 }}>
@@ -93,13 +93,13 @@ export default function PinSession() {
             )}
 
             <PINCode
-              passwordLength={session.group.passwordLength}
+              passwordLength={session.group.pin_code.length}
               endProcessFunction={handleResultEnterPin}
               disableLockScreen
               status={'enter'}
               pinStatus={status}
               titleComponent={() => <Text customTitle>Enter the PIN to unlock the tablet</Text>}
-              storedPin={session.group.pinCode}
+              storedPin={session.group.pin_code}
               colorCircleButtons={liwiColors.darkerGreyColor}
               colorPassword={liwiColors.redColor}
               stylePinCodeButtonNumber={liwiColors.whiteColor}
