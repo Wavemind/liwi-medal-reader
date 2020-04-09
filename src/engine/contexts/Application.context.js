@@ -1,7 +1,6 @@
 // @flow
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
-import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import { NavigationScreenProps } from 'react-navigation';
 import { AppState, PermissionsAndroid } from 'react-native';
@@ -10,13 +9,12 @@ import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 
 import Toast from 'react-native-tiny-toast';
-import { destroySession, getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
+import { getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
 import NavigationService from '../navigation/Navigation.service';
 import { appInBackgroundStateKey, saltHash } from '../../../frontend_service/constants';
 import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
-import sessionJson from '../../../frontend_service/api/session';
 import { liwiColors } from '../../utils/constants';
 import { getDeviceInformation } from '../api/Device';
 
@@ -158,6 +156,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (group !== false && group.errors === undefined) {
       await setItem('session', { ...session, group });
+      await fetchAlgorithms();
       this.setState({ session: { ...session, group } });
       this.showSuccessToast('Receiving group data and medical staff');
       return true;
