@@ -28,12 +28,13 @@ import { screenWidth } from './constants';
 export const WrapperNavigation = (Component: React.ComponentType<any>, props = { navigationStatus: 'didFocus' }) =>
   class extends Component<any> {
     shouldComponentUpdate(nextProps, nextState) {
+      console.log(nextState.navigationStatus, Component);
 
       if (props.navigationStatus === 'willBlur') {
         return nextState.navigationStatus === 'didFocus' || nextState.navigationStatus === 'willBlur';
       }
 
-      return nextState.navigationStatus === 'didFocus';
+      return nextState.navigationStatus === 'didFocus' || nextState.navigationStatus === 'willFocus';
     }
 
     state = {
@@ -47,14 +48,19 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
 
       const showMiniDrawer = navigation?.getParam('showMiniDrawer');
 
+      console.log(navigationStatus);
+
       return (
         <React.Fragment>
           <NavigationEvents
-            onDidFocus={(payload) => {
+            onDidFocus={() => {
               this.setState({ navigationStatus: 'didFocus' });
             }}
-            onWillBlur={(payload) => {
-              this.setState({ navigationStatus: payload.type });
+            onWillBlur={() => {
+              this.setState({ navigationStatus: 'willBlur' });
+            }}
+            onWillFocus={() => {
+              this.setState({ navigationStatus: 'willFocus' });
             }}
           />
           <View style={{ flex: 1, flexDirection: 'row' }}>

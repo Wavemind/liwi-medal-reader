@@ -62,7 +62,7 @@ export default class Consultation extends React.Component<Props, State> {
           nextStageString={t('medical_case:test')}
         >
           <View style={styles.pad}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <QuestionsPerSystem questions={questionsMedicalHistory()} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
@@ -71,7 +71,7 @@ export default class Consultation extends React.Component<Props, State> {
             )}
           </View>
           <View style={styles.pad}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <QuestionsPerSystem questions={questionsPhysicalExam()} selectedPage={selectedPage} pageIndex={1} />
               </Suspense>

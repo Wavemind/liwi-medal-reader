@@ -162,7 +162,7 @@ export default class Algorithms extends React.Component<Props, State> {
   };
 
   componentWillReceiveProps = async (nextProps) => {
-    if (nextProps.focus === 'didFocus') {
+    if (nextProps.focus === 'didFocus' || nextProps.focus === 'willFocus') {
       await this.updateComponentState();
     }
   };
