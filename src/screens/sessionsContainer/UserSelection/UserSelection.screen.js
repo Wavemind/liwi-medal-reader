@@ -26,9 +26,9 @@ export default function UserSelection() {
     switch (role) {
       case 'clinician':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/doc.png')} />;
-      case 'Lab':
+      case 'lab':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/scientist.png')} />;
-      case 'Nurse':
+      case 'triage_nurse':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/nurse.png')} />;
       default:
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/guest.png')} />;
@@ -50,7 +50,7 @@ export default function UserSelection() {
             elevation: selectedUser?.id === user.id ? 5 : 0.5,
           }}
         >
-          <Text style={styles.desc}>{user.role}</Text>
+          <Text style={styles.desc}>{userRole[user.role]}</Text>
           {switchIcon(user.role)}
           <View style={styles.blocName}>
             <Text style={styles.title}>{user?.first_name} </Text>
@@ -101,9 +101,7 @@ export default function UserSelection() {
               </View>
               <Picker note mode="dropdown" style={{ flex: 1 }} selectedValue={selectedUser.role} onValueChange={(e) => setUser({ ...selectedUser, role: e })}>
                 <Picker.Item label="Select the role" value={null} />
-                {Object.keys(userRole).map((e) => (
-                  <Picker.Item label={userRole[e]} value={e} key={e} />
-                ))}
+                {Object.keys(userRole).map((e) => e !== 'guest' && <Picker.Item label={userRole[e]} value={e} key={e} />)}
               </Picker>
             </View>
           </View>
@@ -114,9 +112,9 @@ export default function UserSelection() {
 
   const selectButton = (
     <>
-      {selectedUser !== null && selectedUser.lastname !== '' && selectedUser.surname !== '' && selectedUser.role !== null && (
+      {selectedUser !== null && selectedUser.last_name !== '' && selectedUser.first_name !== '' && selectedUser.role !== null && (
         <Button onPress={() => app.setUser(selectedUser)} style={styles.button}>
-          <Text size-auto>Select {selectedUser?.role}</Text>
+          <Text size-auto>Select {userRole[selectedUser?.role]}</Text>
           <Icon name="arrowright" type="AntDesign" />
         </Button>
       )}
@@ -129,7 +127,7 @@ export default function UserSelection() {
         <Text bigTitle>Who are you ?</Text>
         <View style={styles.blocParent}>
           {session.group.medical_staffs.map((user) => renderBloc(user))}
-          {renderBloc({ role: 'Guest', lastname: '', surname: '', id: false })}
+          {renderBloc({ role: 'guest', last_name: '', first_name: '', id: false })}
         </View>
         {selectButton}
         {inputs}

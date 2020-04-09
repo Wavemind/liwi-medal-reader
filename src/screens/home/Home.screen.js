@@ -26,9 +26,9 @@ export default class Home extends React.Component<Props, State> {
 
   logout = async () => {
     const {
-      app: { lockSession },
+      app: { logout },
     } = this.props;
-    await lockSession();
+    await logout();
   };
 
   async componentDidMount() {
