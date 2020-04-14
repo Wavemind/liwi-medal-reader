@@ -214,6 +214,10 @@ i18n
           connect: 'Login',
         },
         unlock_session: {
+          who: 'Who are you ?',
+          fill: 'Fill the missing informations as Guest',
+          pin: 'Enter the PIN to unlock the tablet',
+          already: 'Already Logged as',
           email: 'Email',
           assign: 'An administrator will assign you to a group',
           code: 'Code',
