@@ -43,7 +43,10 @@ export default function toReadableFraction(decimal, shouldFormat = false) {
   // Create a matrix.
   // The numerator and denominator of the final fraction will be the
   // first column of the matrix (m[0][0] and m[1][0]).
-  let matrix = [[1, 0], [0, 1]];
+  let matrix = [
+    [1, 0],
+    [0, 1],
+  ];
 
   let x = decimal;
   let term;

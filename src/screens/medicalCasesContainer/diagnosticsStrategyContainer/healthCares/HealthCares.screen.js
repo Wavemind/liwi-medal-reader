@@ -21,24 +21,10 @@ export default class HealthCares extends Component<Props, State> {
     return true;
   }
 
-  _renderCustom = () => {
-    const {
-      medicalCase: { diagnoses },
-    } = this.props;
-
-    return diagnoses.custom.map((c) => {
-      return (
-        <>
-          <Text customSubTitle>- {c.label}</Text>
-          {c.drugs.map((d) => (
-            <Text>{d}</Text>
-          ))}
-        </>
-      );
-    });
-  };
-
   _renderCapsule = (drug, node, drugDose) => {
+    const {
+      app: { t },
+    } = this.props;
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
@@ -48,11 +34,11 @@ export default class HealthCares extends Component<Props, State> {
         ) : (
           <>
             <Text>
-              Give {drugDose.doseResult * drugDose.dose_form} mg : {drugDose.doseResult} capsule of {drugDose.dose_form}
-              mg {drugDose.administration_route_name}
+              {t('drug:give')} {drugDose.doseResult * drugDose.dose_form} {t('drug:mg')} : {drugDose.doseResult} {t('drug:caps')} {drugDose.dose_form}
+              {t('drug:mg')} {drugDose.administration_route_name}
             </Text>
             <Text>
-              every {drugDose.recurrence} hours for {drug.duration} days
+              {t('drug:every')} {drugDose.recurrence} {t('drug:h')} {drug.duration} {t('drug:days')}
             </Text>
           </>
         )}
@@ -61,6 +47,9 @@ export default class HealthCares extends Component<Props, State> {
   };
 
   _renderBreakable = (drug, node, drugDose) => {
+    const {
+      app: { t },
+    } = this.props;
     //  12 hours for 5 days = recurrence for instance in diagnoses .duration
     const unit = drugDose.doseResult / drugDose.breakable;
     const num = Math.floor(unit);
@@ -68,7 +57,7 @@ export default class HealthCares extends Component<Props, State> {
     const rest = drugDose.doseResult % drugDose.breakable;
     let fractionString = ' ';
     if (rest !== 0) {
-      let r = toReadableFraction(rest / drugDose.breakable);
+      const r = toReadableFraction(rest / drugDose.breakable);
       if (r.numerator === 1 && r.denominator === 2) {
         fractionString = '½ ';
       } else if (r.numerator === 1 && r.denominator === 4) {
@@ -84,21 +73,25 @@ export default class HealthCares extends Component<Props, State> {
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
-        <Text>Mode : {drug.formulationSelected}</Text>
+        <Text>
+          {t('drug:mode')} : {drug.formulationSelected}
+        </Text>
         {drugDose.doseResult === null ? (
           <Text>{drugDose.no_possibility}</Text>
         ) : (
           <>
             <Text>
-              Give {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} mg : {num !== Infinity && num !== 0 ? `${num}` : null}
+              {t('drug:give')} {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} {t('drug:mg')} : {num !== Infinity && num !== 0 ? `${num}` : null}
               {fractionString}
               {num !== Infinity && num > 0 && fractionString !== ' ' && ' '}
-              tablet of
+              {t('drug:tablet')}
               {` ${drugDose.dose_form} `}
-              mg {drugDose.administration_route_name}
+              {t('drug:mg')} {drugDose.administration_route_name}
             </Text>
             <Text>
-              every {drugDose.recurrence} hours for {drug.duration} days
+              {t('drug:every')}
+              {drugDose.recurrence} {t('drug:h')}
+              {drug.duration} {t('drug:days')}
             </Text>
           </>
         )}
@@ -107,6 +100,9 @@ export default class HealthCares extends Component<Props, State> {
   };
 
   _renderDefault = (drug, node, drugDose) => {
+    const {
+      app: { t },
+    } = this.props;
     let every = '';
 
     if (drug.formulationSelected !== null) {
@@ -115,25 +111,42 @@ export default class HealthCares extends Component<Props, State> {
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
-        <Text>Mode : {drug.formulationSelected === null ? ' No formulation selected !' : drug.formulationSelected}</Text>
-        <Text>Duration : {drug.duration}</Text>
-        {drug.formulationSelected !== null && <Text>Administration : {drugDose.administration_route_name}</Text>}
+        <Text>
+          {t('drug:mode')} : {drug.formulationSelected === null ? ' No formulation selected !' : drug.formulationSelected}
+        </Text>
+        <Text>
+          {t('drug:d')} : {drug.duration}
+        </Text>
+        {drug.formulationSelected !== null && (
+          <Text>
+            {t('drug:admin')} : {drugDose.administration_route_name}
+          </Text>
+        )}
         {drug.formulationSelected !== null && <Text>{every}</Text>}
       </>
     );
   };
 
   _renderLiquid = (drug, node, drugDose) => {
+    const {
+      app: { t },
+    } = this.props;
     const ratio = drugDose.liquid_concentration / drugDose.dose_form;
     return (
       <>
         <Text customSubTitle>- {node.label}</Text>
-        <Text>Mode : {drug.formulationSelected}</Text>
         <Text>
-          Give {ratio * drugDose.doseResult}mg : {drugDose.doseResult}ml of {drugDose.liquid_concentration}mg/{drugDose.dose_form}ml
+          {t('drug:mode')} : {drug.formulationSelected}
         </Text>
         <Text>
-          every {drugDose.recurrence} hours for {drug.duration} days
+          {t('drug:give')} {ratio * drugDose.doseResult}
+          {t('drug:mg')} : {drugDose.doseResult}
+          {t('drug:mf')} {t('drug:of')} {drugDose.liquid_concentration}
+          {t('drug:mg')}/{drugDose.dose_form}
+          {t('drug:ml')}
+        </Text>
+        <Text>
+          {t('drug:every')} {drugDose.recurrence} {t('drug:h')} {drug.duration} {t('drug:days')}
         </Text>
       </>
     );
@@ -141,16 +154,16 @@ export default class HealthCares extends Component<Props, State> {
 
   _renderDiagnoses = () => {
     const {
-      medicalCase: { diagnoses, nodes },
+      medicalCase: { diagnoses },
       app: { t },
     } = this.props;
 
     return (
       <>
-        <Text customTitle>List of diagnoses </Text>
-        {Object.keys(diagnoses.proposed).map((pro) => diagnoses.proposed[pro].agreed && <Text>{diagnoses.proposed[pro].label}</Text>)}
+        <Text customTitle>{t('diagnoses:list')} </Text>
+        {Object.keys(diagnoses.proposed).map((pro) => diagnoses.proposed[pro].agreed && <Text key={`${pro}prop`}>{diagnoses.proposed[pro].label}</Text>)}
         {Object.keys(diagnoses.additional).map((pro) => (
-          <Text>{diagnoses.additional[pro].label}</Text>
+          <Text key={`${pro}add`}>{diagnoses.additional[pro].label}</Text>
         ))}
       </>
     );
@@ -167,7 +180,7 @@ export default class HealthCares extends Component<Props, State> {
         const management = diagnoses[key][diagnoseId].managements[id];
         const node = nodes[management.id];
         if (calculateCondition(management) === true) {
-          return <Text>{node.label}</Text>;
+          return <Text key={`${id}manag`}>{node.label}</Text>;
         }
         return null;
       });
@@ -209,18 +222,21 @@ export default class HealthCares extends Component<Props, State> {
   render() {
     const {
       medicalCase: { nodes },
+      app: { t },
     } = this.props;
 
     const weight = find(nodes, { reference: 1, category: categories.basicMeasurement });
 
     return (
       <Content>
-        <Text customTitle>Summary Treatment</Text>
-        <Text>Weight : {weight.value}kg</Text>
+        <Text customTitle> {t('diagnoses:sum')}</Text>
+        <Text>
+          {t('diagnoses:weight')} : {weight.value}kg
+        </Text>
         {this._renderDiagnoses()}
-        <Text customTitle>Medicine</Text>
+        <Text customTitle>{t('diagnoses:medicine')}</Text>
         {this._renderDrugDose()}
-        {titleManagementCounseling() && <Text customTitle>Management and Counseling</Text>}
+        {titleManagementCounseling() && <Text customTitle>{t('diagnoses:man')}</Text>}
         {this._renderManagement('proposed')}
         {this._renderManagement('additional')}
       </Content>

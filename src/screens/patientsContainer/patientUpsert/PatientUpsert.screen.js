@@ -205,7 +205,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
       hasNoError = !_.isEmpty(patient?.validate());
     }
     if (medicalCase.nodes !== undefined && medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
-      updateMetaData('patientupsert', 'custom', extraQuestions.map(({ id }) => id));
+      updateMetaData(
+        'patientupsert',
+        'custom',
+        extraQuestions.map(({ id }) => id)
+      );
     }
 
     return (

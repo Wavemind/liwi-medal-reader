@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import MedecinesFormulations from './MedecinesFormulation.screen';
+import MedecinesFormulations from './MedicinesFormulation.screen';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../../utils/WrapperNavigation';
-import { setAdditionalMedecine, setFormulation } from '../../../../../frontend_service/actions/creators.actions';
+import { setFormulation } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return {

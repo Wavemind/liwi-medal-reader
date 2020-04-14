@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
-import { Icon, Text, View, Button } from 'native-base';
+import { Button, Icon, Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
+import { styles } from './Medicine.style';
 
-export default class Medecine extends Component<{}> {
+export default class Medicine extends Component<{}> {
   _handleClick = (boolean) => {
     const { medecine, diagnosesKey, setMedecine, type } = this.props;
     if (boolean !== medecine.agreed) {
@@ -24,13 +25,13 @@ export default class Medecine extends Component<{}> {
     } = this.props;
 
     return (
-      <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
-        <View style={{ flex: 0.5 }}>
+      <View style={styles.main}>
+        <View style={styles.flex}>
           <Text size-auto>{node?.label}</Text>
           <Text italic>Duration : {medecine.duration} days</Text>
         </View>
 
-        <View style={{ flexDirection: 'row', flex: 0.4, height: 50 }}>
+        <View style={styles.content}>
           <LeftButton active={medecine.agreed === true} onPress={() => this._handleClick(true)}>
             <Text white={medecine.agreed === true} center>
               {t('diagnoses:agree')}
@@ -42,8 +43,8 @@ export default class Medecine extends Component<{}> {
             </Text>
           </RightButton>
         </View>
-        <Button style={{ flex: 0.1 }}>
-          <Icon name="block" type="Entypo" style={{ fontSize: 18 }} />
+        <Button style={styles.smallFlex}>
+          <Icon name="block" type="Entypo" style={styles.iconSize} />
         </Button>
       </View>
     );
