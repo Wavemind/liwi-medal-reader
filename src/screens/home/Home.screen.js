@@ -52,7 +52,7 @@ export default class Home extends React.Component<Props, State> {
     const { algorithms, propsToolTipVisible } = this.state;
 
     return (
-      <View padding-auto testID="HomeScreen" style={{ backgroundColor: '#fff' }}>
+      <View padding-auto testID="HomeScreen" style={styles.back}>
         <View flex-container-column>
           <Text bigTitle style={{ textAlign: 'center' }}>
             Welcome {user.preFix} {user.first_name} {user.last_name}

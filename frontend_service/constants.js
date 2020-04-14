@@ -1,6 +1,4 @@
 export const host = 'https://liwi.wavelab.top/api/v1/';
-// export const host = 'https://08eb2790.ngrok.io/api/v1/';
-
 export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
 export const navigationStateKey = 'navigationState';

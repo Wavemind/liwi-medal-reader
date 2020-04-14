@@ -19,7 +19,6 @@ export const getDeviceInformation = async () => {
     latitude: location?.coords?.latitude ?? null,
     longitude: location?.coords?.longitude ?? null,
     timezone,
-    user_id: 'null',
     version,
     mac_address: mac,
     model,

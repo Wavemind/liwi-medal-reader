@@ -9,13 +9,12 @@ import PINCode from '@haskkor/react-native-pincode';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 import { Image } from 'react-native';
 import { userRole } from '../../../../frontend_service/constants';
-
+import { styles } from './UnlockSession.style';
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
   const [ready, setReady] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [status, setStatus] = React.useState('success');
-  const [pin, setPin] = React.useState(0);
   const app = React.useContext(ApplicationContext);
 
   React.useEffect(() => {
@@ -46,20 +45,11 @@ export default function PinSession() {
   };
 
   return (
-    <View testID="UnLockSession" style={{ flex: 1 }}>
+    <View testID="UnLockSession" style={styles.flex}>
       <View flex-container-column>
         {session?.group === null ? (
-          <View margin-auto padding-auto style={{ flex: 1 }}>
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
-                alignContent: 'center',
-                marginTop: -50,
-              }}
-            >
+          <View margin-auto padding-auto style={styles.flex}>
+            <View style={styles.bloc}>
               {loading ? (
                 <LiwiLoader />
               ) : (
@@ -68,7 +58,7 @@ export default function PinSession() {
                     {app.t('unlock_session:title')}
                   </Text>
                   <Text size-auto>{app.t('unlock_session:assign')}</Text>
-                  <Button onPress={syncGroup} disabled={!app.isConnected} testID="new_session" style={{ alignSelf: 'center', marginTop: 30 }}>
+                  <Button onPress={syncGroup} disabled={!app.isConnected} testID="new_session" style={styles.buttonSync}>
                     <Text size-auto>{app.t('unlock_session:sync_group')}</Text>
                   </Button>
                 </>
@@ -79,11 +69,11 @@ export default function PinSession() {
         ) : (
           <>
             {app.user !== null && (
-              <View style={{ alignItems: 'center', marginTop: 20 }}>
-                <Image style={{ width: 90, height: 90, margin: 0 }} resizeMode="contain" source={require('../../../../assets/images/keys.png')} />
-                <Text style={{ textAlign: 'center' }} bigTitle>
-                  Already Logged as{' '}
-                  <Text style={{ textAlign: 'center', fontWeight: 'bold' }} bigTitle>
+              <View style={styles.appContent}>
+                <Image style={styles.imgKeys} resizeMode="contain" source={require('../../../../assets/images/keys.png')} />
+                <Text style={styles.align} bigTitle>
+                  {app.t('unlock_session:already')}{' '}
+                  <Text style={styles.textRole} bigTitle>
                     {userRole[app.user.role]}
                   </Text>
                 </Text>
@@ -96,7 +86,7 @@ export default function PinSession() {
               disableLockScreen
               status={'enter'}
               pinStatus={status}
-              titleComponent={() => <Text customTitle>Enter the PIN to unlock the tablet</Text>}
+              titleComponent={() => <Text customTitle>{app.t('unlock_session:pin')} </Text>}
               storedPin={session.group.pin_code}
               colorCircleButtons={liwiColors.darkerGreyColor}
               colorPassword={liwiColors.redColor}
@@ -110,21 +100,8 @@ export default function PinSession() {
               stylePinCodeRowButtons={{ justifyContent: 'center', alignItems: 'center', height: screenHeight / 10 }}
               stylePinCodeColumnButtons={{ justifyContent: 'center', alignItems: 'center', width: 'auto' }}
               stylePinCodeMainContainer={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-              stylePinCodeColumnDeleteButton={{
-                marginLeft: 30,
-                marginRight: -10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}
-              stylePinCodeButtonCircle={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 80,
-                height: 80,
-                backgroundColor: 'rgb(78,80,83)',
-                borderRadius: 40,
-              }}
+              stylePinCodeColumnDeleteButton={styles.stylePinCodeColumnDeleteButton}
+              stylePinCodeButtonCircle={styles.stylePinCodeButtonCircle}
             />
           </>
         )}

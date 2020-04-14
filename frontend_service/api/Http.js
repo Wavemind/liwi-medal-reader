@@ -6,9 +6,12 @@ import { getDeviceInformation } from '../../src/engine/api/Device';
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
 import { getItem, getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
 
-// @params [String] params, [Integer] userId
-// @return [Json] response from server
-// Https GET request
+/**
+ * Https GET request
+ *  @params [String] params
+ *  @return [Json] response from server
+ */
+
 export const get = async (params) => {
   const url = `${host}${params}`;
   const header = await getHeaders('GET', false);
