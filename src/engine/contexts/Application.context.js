@@ -194,7 +194,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   openSession = async (pinCode) => {
     const { session, user } = this.state;
     if (session.group.pin_code === pinCode) {
-      this.showSuccessToast('Successful connect to your group');
+      this.showSuccessToast('Successful Connection');
 
       if (user === null) {
         await setTimeout(async () => {
