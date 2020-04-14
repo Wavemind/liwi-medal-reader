@@ -54,7 +54,7 @@ export default class FinalDiagnostic extends React.Component<{}> {
           <Icon type={type} name={name} style={style} /> {__DEV__ ? `${id} - ` : null}
           {label}
         </Text>
-        <View style={{ flexDirection: 'row', flex: 0.4, height: 50 }}>
+        <View style={styles.bloc}>
           <LeftButton active={diagnoses.proposed[id]?.agreed === true} onPress={() => this._handleClick(true)}>
             <Text white={diagnoses.proposed[id]?.agreed === true} center>
               {t('diagnoses:agree')}

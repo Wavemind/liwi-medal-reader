@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import CustomMedecine from './CustomMedecine';
+import CustomMedicine from './CustomMedicine';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { setCustomMedecine } from '../../../frontend_service/actions/creators.actions';
 
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withApplication(CustomMedecine));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(CustomMedicine));

@@ -5,12 +5,12 @@ import { NavigationScreenProps } from 'react-navigation';
 import { healthCareType } from '../../../../../frontend_service/constants';
 import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
-import { styles } from './MedecinesFormulation.style';
+import { styles } from './MedicinesFormulation.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
-export default class MedecinesFormulations extends Component<Props, State> {
+export default class MedicinesFormulations extends Component<Props, State> {
   onValueChange = (value, node, drugId) => {
     const { setFormulation } = this.props;
     if (value !== false) {
@@ -51,13 +51,14 @@ export default class MedecinesFormulations extends Component<Props, State> {
   _renderDrug = (instance, selected, onSelect) => {
     const {
       medicalCase: { nodes },
+      app: { t },
     } = this.props;
 
     return (
       <View style={styles.blocDrug}>
         <View style={styles.flex}>
           <Text size-auto>{nodes[instance.id]?.label}</Text>
-          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${nodes[e.id].label} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : 'None'))}</Text>
+          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${nodes[e.id].label} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
         </View>
         <View style={styles.select}>
           <Icon name="arrow-drop-down" type="MaterialIcons" style={styles.pickerIcon} />
@@ -98,6 +99,7 @@ export default class MedecinesFormulations extends Component<Props, State> {
       medicalCase: {
         diagnoses: { proposed },
       },
+      app: { t },
     } = this.props;
 
     let isProposed = false;
@@ -121,7 +123,7 @@ export default class MedecinesFormulations extends Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        {Object.keys(formulations).length > 0 && <Text customTitle>Which formulation of medicine is available and appropriate for your patient?</Text>}
+        {Object.keys(formulations).length > 0 && <Text customTitle>{t('diagnoses:which')}</Text>}
         {generateFormulation()}
       </View>
     );

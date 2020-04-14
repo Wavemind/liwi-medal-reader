@@ -17,4 +17,12 @@ export const styles = StyleSheet.create({
   icon: { color: liwiColors.redColor, marginLeft: 5 },
   text: { width: 150, padding: 5, fontSize: 18 },
   searchInputStyle: { color: '#CCC' },
+  additionalText: {
+    backgroundColor: liwiColors.redColor,
+    color: liwiColors.whiteColor,
+    padding: 4,
+    borderRadius: 2,
+    paddingLeft: 20,
+    marginBottom: 20,
+  },
 });
