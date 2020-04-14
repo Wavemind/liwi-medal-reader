@@ -6,6 +6,8 @@ import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
 
+const Realm = require('realm');
+
 interface PatientModelInterface {
   id: number;
   firstname: string;
@@ -21,9 +23,8 @@ export class PatientModel implements PatientModelInterface {
   }
 
   // Generate default patient value
-  create = (props = {}) => {
+  create = async (props = {}) => {
     const {
-      id = null,
       firstname = __DEV__ ? 'John' : '',
       lastname = __DEV__ ? 'Doe' : '',
       birthdate = moment('1970-01-01T00:00:00.000').format(),
@@ -32,6 +33,7 @@ export class PatientModel implements PatientModelInterface {
       main_data_patient_id = null,
     } = props;
 
+    await this.setId();
     this.firstname = firstname;
     this.lastname = lastname;
     this.birthdate = birthdate;
@@ -39,11 +41,22 @@ export class PatientModel implements PatientModelInterface {
     this.medicalCases = medicalCases;
     this.main_data_patient_id = main_data_patient_id;
 
-    if (id === null) {
-      this.setId();
-    } else {
-      this.id = id;
-    }
+    Realm.open({
+      schema: [PatientModel, MedicalCaseModel],
+    }).then((realm) => {
+      realm.write(() => {
+        realm.create('Patient', {
+          id: this.id,
+          first_name: this.firstname,
+          last_name: this.lastname,
+          birth_Date: this.birthdate,
+          gender: this.gender,
+          medical_cases: this.medicalCases,
+          main_data_patient_id: this.main_data_patient_id,
+        });
+      });
+    });
+
   };
 
   // uniqueId incremented
@@ -93,9 +106,15 @@ export class PatientModel implements PatientModelInterface {
 }
 
 PatientModel.schema = {
-  name: 'PatientModel',
+  name: 'Patient',
+  primaryKey: 'id',
   properties: {
+    id: 'int',
     firstName: 'string',
     lastName: 'string',
+    birthDate: 'date',
+    gender: 'string',
+    medicalCases: { type: 'list', objectType: 'MedicalCase' },
+    mainDataPatientId: { type: 'int', optional: true },
   },
 };

@@ -16,6 +16,9 @@ import { medicalCaseStatus } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import ConfirmationView from '../../../components/ConfirmationView';
 import { showBirthDatePatient } from '../../../../frontend_service/algorithm/treeDiagnosis.algo';
+import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+
+const Realm = require('realm');
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -73,7 +76,7 @@ export default class PatientList extends React.Component<Props, State> {
         patients,
         algorithms,
       },
-      () => this.settlePatients()
+      () => this.settlePatients(),
     );
   };
 
@@ -85,7 +88,7 @@ export default class PatientList extends React.Component<Props, State> {
         orderByFirstName: orderByFirstName === 'asc' ? 'desc' : 'asc',
         orderByLastName: null,
       },
-      () => this.settlePatients()
+      () => this.settlePatients(),
     );
   };
 
@@ -96,7 +99,7 @@ export default class PatientList extends React.Component<Props, State> {
         orderByLastName: orderByLastName === 'asc' ? 'desc' : 'asc',
         orderByFirstName: null,
       },
-      () => this.settlePatients()
+      () => this.settlePatients(),
     );
   };
 
@@ -195,6 +198,14 @@ export default class PatientList extends React.Component<Props, State> {
       medicalCase,
     } = this.props;
 
+    Realm.open({ schema: [PatientModel] }).then((realm) => {
+      const patients = realm.objects('Patient');
+      console.log(patients);
+    })
+      .catch(error => {
+        console.log('ERROR', error);
+      });
+
     return (
       <ScrollView>
         <View padding-auto flex-container-column>
@@ -203,10 +214,11 @@ export default class PatientList extends React.Component<Props, State> {
           </LiwiTitle2>
           <View flex-container-row style={styles.marg}>
             <Item round style={styles.input}>
-              <Icon active name="search" />
-              <Input value={searchTerm} onChangeText={this.searchBy} />
+              <Icon active name="search"/>
+              <Input value={searchTerm} onChangeText={this.searchBy}/>
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
+                              nextRoute="PatientUpsert" idPatient={null}/>
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
@@ -226,25 +238,25 @@ export default class PatientList extends React.Component<Props, State> {
                 }}
                 disabled={isGeneratingPatient}
               >
-                <Icon type="MaterialCommunityIcons" name="plus" white />
+                <Icon type="MaterialCommunityIcons" name="plus" white/>
               </Button>
             ) : null}
           </View>
 
-          <SeparatorLine />
+          <SeparatorLine/>
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByFirstName}>
-              {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+              {orderByFirstName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
               <Text>{t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light onPress={this.orderByLastName}>
-              {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+              {orderByLastName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
               <Text>{t('patient_list:surname')}</Text>
             </Button>
           </View>
-          {loading ? <LiwiLoader /> : this._renderPatients()}
+          {loading ? <LiwiLoader/> : this._renderPatients()}
         </View>
       </ScrollView>
     );
