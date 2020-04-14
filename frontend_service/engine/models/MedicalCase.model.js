@@ -29,6 +29,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     await this.setInitialConditionValue(currentAlgorithm);
 
     this.name = currentAlgorithm.name;
+    this.algorithm_name = currentAlgorithm.algorithm_name;
+    this.version_name = currentAlgorithm.version_name;
     this.version = currentAlgorithm.version;
     this.version_id = currentAlgorithm.version_id !== undefined ? currentAlgorithm.version_id : null;
     this.algorithm_id = currentAlgorithm.algorithm_id;

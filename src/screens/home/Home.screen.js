@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from 'react';
-import { TouchableHighlight } from 'react-native';
+import { Image, TouchableHighlight } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { Toaster } from '../../utils/CustomToast';

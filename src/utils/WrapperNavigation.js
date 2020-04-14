@@ -31,7 +31,8 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
       if (props.navigationStatus === 'willBlur') {
         return nextState.navigationStatus === 'didFocus' || nextState.navigationStatus === 'willBlur';
       }
-      return nextState.navigationStatus === 'didFocus';
+
+      return nextState.navigationStatus === 'didFocus' || nextState.navigationStatus === 'willFocus';
     }
 
     state = {
@@ -48,11 +49,14 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
       return (
         <React.Fragment>
           <NavigationEvents
-            onDidFocus={(payload) => {
-              this.setState({ navigationStatus: payload.type });
+            onDidFocus={() => {
+              this.setState({ navigationStatus: 'didFocus' });
             }}
-            onWillBlur={(payload) => {
-              this.setState({ navigationStatus: payload.type });
+            onWillBlur={() => {
+              this.setState({ navigationStatus: 'willBlur' });
+            }}
+            onWillFocus={() => {
+              this.setState({ navigationStatus: 'willFocus' });
             }}
           />
           <View style={{ flex: 1, flexDirection: 'row' }}>

@@ -78,7 +78,7 @@ export default class Triage extends React.Component<Props, State> {
           nextStageString={t('medical_case:consultation')}
         >
           <View style={styles.pad}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <Questions questions={questionsFirstLookAssessement()} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
@@ -87,7 +87,7 @@ export default class Triage extends React.Component<Props, State> {
             )}
           </View>
           <View style={styles.flex}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <Content>
                   <View
@@ -108,7 +108,7 @@ export default class Triage extends React.Component<Props, State> {
             )}
           </View>
           <View style={styles.pad}>
-            {focus === 'didFocus' ? (
+            {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={null}>
                 <Questions questions={questionsBasicMeasurements()} selectedPage={selectedPage} pageIndex={2} />
               </Suspense>
