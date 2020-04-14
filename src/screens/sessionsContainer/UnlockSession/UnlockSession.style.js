@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
   appContent: { alignItems: 'center', marginTop: 20 },
 
   buttonSync: { alignSelf: 'center', marginTop: 30 },
+  buttonLogout: { alignSelf: 'center' },
   imgKeys: { width: 90, height: 90, margin: 0 },
   lottie: {
     height: isTablet ? 100 : 50,

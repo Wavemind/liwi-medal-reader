@@ -72,11 +72,16 @@ export default function PinSession() {
               <View style={styles.appContent}>
                 <Image style={styles.imgKeys} resizeMode="contain" source={require('../../../../assets/images/keys.png')} />
                 <Text style={styles.align} bigTitle>
-                  {app.t('unlock_session:already')}{' '}
+                  {app.t('unlock_session:already')}
+                  {'\n '}
                   <Text style={styles.textRole} bigTitle>
-                    {userRole[app.user.role]}
+                    {app.user.last_name} {app.user.first_name}{' '}
                   </Text>
+                  {userRole[app.user.role]}
                 </Text>
+                <Button onPress={app.logout} style={styles.buttonLogout}>
+                  <Text size-auto>{app.t('unlock_session:logout')}</Text>
+                </Button>
               </View>
             )}
 

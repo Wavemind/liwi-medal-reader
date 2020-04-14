@@ -225,6 +225,7 @@ i18n
           title: 'Sync with server',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
+          logout: 'logout'
         },
         popup: {
           title: 'Please allow access to the position',
