@@ -2,10 +2,11 @@
 import React, { Component } from 'react';
 import { Content, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { healthCareType } from '../../../../../frontend_service/constants';
+import { categories, healthCareType } from '../../../../../frontend_service/constants';
 import toReadableFraction from '../../../../utils/toReadableFraction';
 import { getDrugs, titleManagementCounseling } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
+import find from 'lodash/find';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -181,7 +182,7 @@ export default class HealthCares extends Component<Props, State> {
     const drugs = getDrugs();
 
     return Object.keys(drugs).map((k) => {
-      const drug = drugs[k];
+      let drug = drugs[k];
       if (drug.agreed) {
         return this._renderSwitchFormulation(drug.formulationSelected, drug);
       }
@@ -193,10 +194,12 @@ export default class HealthCares extends Component<Props, State> {
       medicalCase: { nodes },
     } = this.props;
 
+    const weight = find(nodes, { reference: 1, category: categories.basicMeasurement });
+
     return (
       <Content>
         <Text customTitle>Summary Treatment</Text>
-        <Text>Weight : {nodes['3'].value}kg</Text>
+        <Text>Weight : {weight.value}kg</Text>
         {this._renderDiagnoses()}
         <Text customTitle>Medicine</Text>
         {this._renderDrugDose()}

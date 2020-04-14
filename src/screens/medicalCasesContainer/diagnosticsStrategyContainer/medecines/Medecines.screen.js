@@ -58,7 +58,7 @@ export default class Medecines extends Component<Props, State> {
   };
 
   _changeCustomDuration = (value, id) => {
-    const reg = new RegExp(/^\d+$/);
+    var reg = new RegExp(/^\d+$/);
 
     const { setAdditionalMedicineDuration } = this.props;
     if (reg.test(value) || value === '') {
@@ -68,7 +68,7 @@ export default class Medecines extends Component<Props, State> {
 
   render() {
     const {
-      medicalCase: { diagnoses, name, nodes },
+      medicalCase: { diagnoses, algorithm_name, nodes },
       app: { t },
     } = this.props;
 
@@ -115,36 +115,9 @@ export default class Medecines extends Component<Props, State> {
       });
     });
 
-    const renderAdditional = (
-      <>
-        {Object.keys(diagnoses.additional).map((key) => {
-          return (
-            <>
-              <Text
-                key={`${key}diagnoses`}
-                size-auto
-                style={{
-                  backgroundColor: liwiColors.redColor,
-                  color: liwiColors.whiteColor,
-                  padding: 4,
-                  borderRadius: 2,
-                  paddingLeft: 20,
-                  marginBottom: 20,
-                }}
-              >
-                {diagnoses.additional[key].label}
-              </Text>
-              {Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
-                return <Medecine type="additional" key={`${treatmentId}_medecine`} medecine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-              })}
-            </>
-          );
-        })}
-      </>
-    );
-
-    const renderProposed = (
-      <>
+    return (
+      <View>
+        {isProposed && <Text customTitle>Medicines proposed by "{algorithm_name}"</Text>}
         {Object.keys(diagnoses.proposed).map((key) => {
           if (diagnoses.proposed[key].agreed === true) {
             let isPossible = false;
@@ -163,7 +136,7 @@ export default class Medecines extends Component<Props, State> {
                   </Text>
                   {Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
                     if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
-                      return <Medecine type="proposed" key={`${treatmentId}_medecine`} medecine={diagnoses.proposed[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+                      return <Medecine type={'proposed'} key={`${treatmentId}_medecine`} medecine={diagnoses.proposed[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
                     }
                     return null;
                   })}
@@ -174,15 +147,19 @@ export default class Medecines extends Component<Props, State> {
             return null;
           }
         })}
-      </>
-    );
-
-    return (
-      <View>
-        {isProposed && <Text customTitle>Medicines proposed by "{name}"</Text>}
-        {renderProposed}
         {isManually && <Text customTitle>Manually added Medicines</Text>}
-        {renderAdditional}
+        {Object.keys(diagnoses.additional).map((key) => {
+          return (
+            <>
+              <Text key={`${key}diagnoses`} size-auto style={{ backgroundColor: liwiColors.redColor, color: liwiColors.whiteColor, padding: 4, borderRadius: 2, paddingLeft: 20, marginBottom: 20 }}>
+                {diagnoses.additional[key].label}
+              </Text>
+              {Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
+                return <Medecine type={'additional'} key={`${treatmentId}_medecine`} medecine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+              })}
+            </>
+          );
+        })}
 
         {filteredAllDrugs.length > 0 && <Text customTitle>Additionnal Medicines</Text>}
 

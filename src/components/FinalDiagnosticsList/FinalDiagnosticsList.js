@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Button, Icon, Input, Text, View } from 'native-base';
+import { Icon, Text, View, Input, Button, Item } from 'native-base';
 import { styles } from './FinalDiagnosticsList.style';
 import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
 import FinalDiagnostic from '../FinalDiagnostic';
@@ -79,7 +79,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     return (
       <React.Fragment>
         <Text customTitle>
-          {t('diagnoses:proposed')} {medicalCase.name}
+          {t('diagnoses:proposed')} {medicalCase.algorithm_name}
         </Text>
         {finalDiagnostics.included.map((f) => (
           <FinalDiagnostic {...f} type="AntDesign" name="checkcircle" key={f.id} style={styles.greenIcon} setDiagnoses={setDiagnoses} />

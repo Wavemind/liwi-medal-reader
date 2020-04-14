@@ -93,22 +93,9 @@ export default class Algorithms extends React.Component<Props, State> {
       <ScrollView>
         {algorithms.map((algorithm) => (
           <CardView elevation={5} key={`${algorithm.id}_algorithm`} style={algorithm.selected ? styles.selected : styles.view}>
-            <H2>{algorithm.name}</H2>
-            <Text>versions : {algorithm.versions}</Text>
+            <H2>{algorithm.algorithm_name}</H2>
             <RightView>
-              <Button
-                disabled
-                key={algorithm.versions}
-                onPress={() => {
-                  navigation.navigate('Algorithm', {
-                    algoId: algorithm.algorithm_id,
-                    algoVersion: algorithm.version,
-                    title: algorithm.name,
-                  });
-                }}
-              >
-                <Text>V : {algorithm.version}</Text>
-              </Button>
+              <Text> : {algorithm.version_name}</Text>
             </RightView>
           </CardView>
         ))}
@@ -168,13 +155,14 @@ export default class Algorithms extends React.Component<Props, State> {
     const {
       app: { user },
     } = this.props;
-    await fetchAlgorithms(user.data.id);
+
+    await fetchAlgorithms();
     await this.updateAlgorithms();
     this.setState({ isRefreshing: false });
   };
 
   componentWillReceiveProps = async (nextProps) => {
-    if (nextProps.focus === 'didFocus') {
+    if (nextProps.focus === 'didFocus' || nextProps.focus === 'willFocus') {
       await this.updateComponentState();
     }
   };
