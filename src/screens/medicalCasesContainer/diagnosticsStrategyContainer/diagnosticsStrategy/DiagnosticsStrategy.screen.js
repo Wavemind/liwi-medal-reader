@@ -9,8 +9,8 @@ import { styles } from './DiagnosticsStrategy.style';
 import Stepper from '../../../../components/Stepper';
 import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
 import NavigationService from '../../../../engine/navigation/Navigation.service';
-import Medecines from '../medecines';
-import MedecinesFormulations from '../medecinesFormulation';
+import Medicines from '../medicines';
+import MedicinesFormulations from '../medicinesFormulation';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -62,7 +62,7 @@ export default class DiagnosesStrategy extends Component<Props, State> {
           { type: 'FontAwesome', name: 'balance-scale' },
           { name: 'healing', type: 'MaterialIcons' },
         ]}
-        steps={[t('medical_case:final_diagnoses'), 'Treatment Conditions', t('medical_case:medecines'), t('medical_case:medecines_formulation'), t('medical_case:healthcares')]}
+        steps={[t('medical_case:final_diagnoses'), t('medical_case:conditions'), t('medical_case:medecines'), t('medical_case:medecines_formulation'), t('medical_case:healthcares')]}
         backButtonTitle={t('medical_case:back')}
         nextButtonTitle={t('medical_case:next')}
         nextStage="finish"
@@ -79,13 +79,12 @@ export default class DiagnosesStrategy extends Component<Props, State> {
         </View>
         <View style={styles.pad}>
           <ScrollView>
-            <Medecines key="Medecines" selectedPage={selectedPage} pageIndex={2} />
+            <Medecines key="Medicines" selectedPage={selectedPage} pageIndex={2} />
           </ScrollView>
         </View>
         <View style={styles.pad}>
-          <MedecinesFormulations key="MedecinesFormulations" selectedPage={selectedPage} pageIndex={3} />
+          <MedecinesFormulations key="MedicinesFormulations" selectedPage={selectedPage} pageIndex={3} />
         </View>
-
         <View style={styles.pad}>
           <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={4} />
         </View>

@@ -11,7 +11,7 @@ type State = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCaresQuestions extends Component<Props, State> {
   shouldComponentUpdate(nextProps, nextState) {
-    const { pageIndex, navigation } = this.props;
+    const { pageIndex } = this.props;
 
     if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
       return nextProps.selectedPage === pageIndex;

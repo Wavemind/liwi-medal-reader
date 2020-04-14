@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
   greenIcon: {
     color: liwiColors.greenColor,
   },
+  bloc: { flexDirection: 'row', flex: 0.4, height: 50 },
   grayIcon: {
     color: liwiColors.darkerGreyColor,
   },

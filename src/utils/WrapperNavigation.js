@@ -48,8 +48,6 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
 
       const showMiniDrawer = navigation?.getParam('showMiniDrawer');
 
-      console.log(navigationStatus);
-
       return (
         <React.Fragment>
           <NavigationEvents

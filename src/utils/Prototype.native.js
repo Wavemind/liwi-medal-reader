@@ -17,7 +17,7 @@
  * @param obj2
  * @return {boolean}
  */
-Object.compare = function(obj1, obj2) {
+Object.compare = function (obj1, obj2) {
   if (obj1 !== undefined || obj2 !== undefined) {
     let p;
     // Loop through properties in object 1
@@ -58,7 +58,7 @@ Object.compare = function(obj1, obj2) {
  *
  * @return {*}
  */
-Array.prototype.first = function() {
+Array.prototype.first = function () {
   return this[0];
 };
 
@@ -70,7 +70,7 @@ Array.prototype.first = function() {
  *
  * @return {*}
  */
-Array.prototype.second = function() {
+Array.prototype.second = function () {
   return this[1];
 };
 
@@ -82,12 +82,12 @@ Array.prototype.second = function() {
  *
  * @return {*}
  */
-Array.prototype.last = function() {
+Array.prototype.last = function () {
   return this[this.length - 1];
 };
 
 // Function used to order the keys in the array of values
-Array.prototype.sortByNumber = function() {
+Array.prototype.sortByNumber = function () {
   return this.sort((a, b) => {
     if (Number(a) < Number(b)) {
       return -1;
@@ -105,7 +105,7 @@ Array.prototype.sortByNumber = function() {
       yourArray.isEmpty() // return true / false
  * @return {boolean}
  */
-Array.prototype.isEmpty = function() {
+Array.prototype.isEmpty = function () {
   return this === undefined || this.length === 0;
 };
 
