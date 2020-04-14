@@ -91,3 +91,11 @@ export class PatientModel implements PatientModelInterface {
     return await getArray('patients');
   };
 }
+
+PatientModel.schema = {
+  name: 'PatientModel',
+  properties: {
+    firstName: 'string',
+    lastName: 'string',
+  },
+};
