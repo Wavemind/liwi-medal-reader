@@ -17,6 +17,8 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
   },
+  flex: {flex: 1},
+  blocInput: {flex: 1, flexDirection: 'row' },
   items: { flex: 1, margin: 10 },
   blocParent: { flex: 1, flexDirection: 'row', flexWrap: 'wrap' },
   button: { flexDirection: 'row', marginBottom: 20, alignSelf: 'flex-end', marginRight: 20, height: 'auto', justifyContent: 'center', flexWrap: 'wrap' },
@@ -25,5 +27,5 @@ export const styles = StyleSheet.create({
   touchable: { elevation: 0, backgroundColor: 'transparent' },
   textBloc: { flexDirection: 'row', paddingBottom: 5 },
   textIcon: { fontSize: 25, color: liwiColors.redColor, marginRight: 5 },
-  roleText: { marginTop: 5, marginLeft: 15 }
+  roleText: { marginTop: 5, marginLeft: 15 },
 });

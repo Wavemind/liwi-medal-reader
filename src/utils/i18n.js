@@ -258,6 +258,10 @@ i18n
           connect: 'Login',
         },
         unlock_session: {
+          who: 'Who are you ?',
+          fill: 'Fill the missing informations as Guest',
+          pin: 'Enter the PIN to unlock the tablet',
+          already: 'Already Logged as',
           email: 'Email',
           assign: 'An administrator will assign you to a group',
           code: 'Code',
@@ -265,6 +269,7 @@ i18n
           title: 'Sync with server',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
+          logout: 'logout'
         },
         popup: {
           title: 'Please allow access to the position',

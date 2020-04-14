@@ -79,11 +79,11 @@ export default class DiagnosesStrategy extends Component<Props, State> {
         </View>
         <View style={styles.pad}>
           <ScrollView>
-            <Medecines key="Medicines" selectedPage={selectedPage} pageIndex={2} />
+            <Medicines key="Medicines" selectedPage={selectedPage} pageIndex={2} />
           </ScrollView>
         </View>
         <View style={styles.pad}>
-          <MedecinesFormulations key="MedicinesFormulations" selectedPage={selectedPage} pageIndex={3} />
+          <MedicinesFormulations key="MedicinesFormulations" selectedPage={selectedPage} pageIndex={3} />
         </View>
         <View style={styles.pad}>
           <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={4} />
