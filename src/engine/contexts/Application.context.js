@@ -17,10 +17,8 @@ import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/
 import i18n from '../../utils/i18n';
 import { liwiColors } from '../../utils/constants';
 import { getDeviceInformation } from '../api/Device';
-import { PatientModel } from '../../../frontend_service/engine/models/Patient.model';
 
 const defaultValue = {};
-const Realm = require('realm');
 
 export const ApplicationContext = React.createContext<Object>(defaultValue);
 
@@ -298,21 +296,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     } else {
       await setItem('location', location);
     }
-
-    Realm.open({
-      schema: [{
-        name: 'PatientModel',
-        properties: {
-          firstName: 'string',
-          lastName: 'string',
-        },
-      }],
-    }).then((realm) => {
-      realm.write(() => {
-        realm.create('PatientModel', { firstName: 'Jean', lastName: 'Neige' });
-      });
-      this.setState({ realm });
-    });
   }
 
   componentWillUnmount() {

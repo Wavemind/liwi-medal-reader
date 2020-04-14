@@ -28,8 +28,6 @@ import { screenWidth } from './constants';
 export const WrapperNavigation = (Component: React.ComponentType<any>, props = { navigationStatus: 'didFocus' }) =>
   class extends Component<any> {
     shouldComponentUpdate(nextProps, nextState) {
-      console.log(nextState.navigationStatus, Component);
-
       if (props.navigationStatus === 'willBlur') {
         return nextState.navigationStatus === 'didFocus' || nextState.navigationStatus === 'willBlur';
       }
@@ -47,8 +45,6 @@ export const WrapperNavigation = (Component: React.ComponentType<any>, props = {
       const drawerWidth = screenWidth / 2.2;
 
       const showMiniDrawer = navigation?.getParam('showMiniDrawer');
-
-      console.log(navigationStatus);
 
       return (
         <React.Fragment>

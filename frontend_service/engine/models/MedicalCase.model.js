@@ -206,3 +206,12 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     });
   };
 }
+
+MedicalCaseModel.schema = {
+  name: 'MedicalCase',
+  primaryKey: 'id',
+  properties: {
+    id: 'int',
+
+  },
+};
