@@ -102,6 +102,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const session = await getItem('session');
     const user = await getItem('user');
     if (session !== null) {
+      await this.getGroupData(false);
       this.setUserContext(session, user);
     } else {
       this.setState({ ready: true });
@@ -164,7 +165,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * Call with the button synchronize in screen UnLockSession.screen.js
    * @return boolean
    */
-  getGroupData = async () => {
+  getGroupData = async (showToast = true) => {
     const session = await getItem('session');
     const deviceInfo = await getDeviceInformation();
     // Send data to server
@@ -177,7 +178,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       // Set data in context
       this.setState({ session: { ...session, group } });
       // Show success toast
-      this.showSuccessToast('Receiving group data and medical staff');
+      showToast ? this.showSuccessToast('Receiving group data and medical staff') : null;
       return true;
     }
 
