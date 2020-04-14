@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import Medecines from './Medecines.screen';
+import Medicines from './Medicines.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../../utils/WrapperNavigation';
-import { setAdditionalMedecine, setAdditionalMedicineDuration } from '../../../../../frontend_service/actions/creators.actions';
+import { setAdditionalMedicine, setAdditionalMedicineDuration } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -13,9 +13,9 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setAdditionalMedecine: (medecines) => dispatch(setAdditionalMedecine(medecines)),
+    setAdditionalMedicine: (medecines) => dispatch(setAdditionalMedicine(medecines)),
     setAdditionalMedicineDuration: (id, duration) => dispatch(setAdditionalMedicineDuration(id, duration)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(Medecines))));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(Medicines))));

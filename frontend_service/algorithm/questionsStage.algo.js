@@ -194,36 +194,11 @@ export const questionsTests = () => {
   return assessmentTest;
 };
 
-export const titleMannualyDiagnoses = () => {
-  const state$ = store.getState();
-  const {
-    diagnoses: { additional },
-  } = state$;
-
-  if (Object.keys(additional).length === 0) {
-    return false;
-  }
-  let firstToTrue = false;
-  Object.keys(additional).map((q) => {
-    Object.keys(additional[q].drugs).map((f) => {
-      if (additional[q].drugs[f].agreed === true) {
-        firstToTrue = true;
-      }
-    });
-  });
-
-  return firstToTrue;
-};
-
-// Return if isPossible to show the title
-
 /**
- * Get drugs and create one list from 3 sources
- * - Proposed
- * - Additional
- * - AdditionalDrugs
  *
- * @return : isPossible Boolean
+ * Define if the title of drugs additional / proposed must be shown
+ *
+ * @return :  Boolean
  *
  */
 export const titleManagementCounseling = () => {
@@ -255,15 +230,14 @@ export const titleManagementCounseling = () => {
 };
 
 /**
- * Get drugs and create one list from 3 sources
+ * Get drugs from 3 objects and return one object (manual merging)
+ * Object from :
  * - Proposed
  * - Additional
- * - AdditionalDrugs
  *
- * @return : concat all drugs
+ * @return : object list all drugs
  *
  */
-
 export const getDrugs = () => {
   const state$ = store.getState();
   const {

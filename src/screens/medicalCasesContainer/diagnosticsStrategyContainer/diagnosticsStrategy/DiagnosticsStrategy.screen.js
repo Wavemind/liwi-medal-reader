@@ -9,8 +9,8 @@ import { styles } from './DiagnosticsStrategy.style';
 import Stepper from '../../../../components/Stepper';
 import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
 import NavigationService from '../../../../engine/navigation/Navigation.service';
-import Medecines from '../medecines';
-import MedecinesFormulations from '../medecinesFormulation';
+import Medicines from '../medicines';
+import MedicinesFormulations from '../medicinesFormulation';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -79,11 +79,11 @@ export default class DiagnosesStrategy extends Component<Props, State> {
         </View>
         <View style={styles.pad}>
           <ScrollView>
-            <Medecines key="Medecines" selectedPage={selectedPage} pageIndex={2} />
+            <Medecines key="Medicines" selectedPage={selectedPage} pageIndex={2} />
           </ScrollView>
         </View>
         <View style={styles.pad}>
-          <MedecinesFormulations key="MedecinesFormulations" selectedPage={selectedPage} pageIndex={3} />
+          <MedecinesFormulations key="MedicinesFormulations" selectedPage={selectedPage} pageIndex={3} />
         </View>
         <View style={styles.pad}>
           <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={4} />

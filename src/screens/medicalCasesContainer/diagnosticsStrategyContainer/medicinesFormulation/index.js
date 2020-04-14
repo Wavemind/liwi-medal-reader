@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import MedecinesFormulations from './MedecinesFormulation.screen';
+import MedicinesFormulations from './MedicinesFormulation.screen';
 import { withSessions } from '../../../../engine/contexts/Sessions.context';
 import { withApplication } from '../../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../../utils/WrapperNavigation';
@@ -17,4 +17,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(MedecinesFormulations))));
+export default connect(mapStateToProps, mapDispatchToProps)(withSessions(withApplication(WrapperNavigation(MedicinesFormulations))));

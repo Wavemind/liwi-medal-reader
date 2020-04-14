@@ -105,7 +105,6 @@ const styles: Object = StyleSheet.create({
     backgroundColor: '#cdcdcd',
     alignItems: 'center',
     justifyContent: 'center',
-    // marginHorizontal: 45,
     borderRadius: 45,
   },
   container: {
