@@ -38,8 +38,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     this.nodes = { ...currentAlgorithm.nodes };
     this.selected = currentAlgorithm.selected;
     this.triage = currentAlgorithm.triage;
-    this.updated_at = moment().format();
     this.synchronized_at = null;
+    this.updated_at = moment().format();
     this.created_at = moment().format();
     this.status = medicalCaseStatus.inCreation.name;
     this.main_data_medical_case_id = null;
@@ -206,12 +206,3 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     });
   };
 }
-
-MedicalCaseModel.schema = {
-  name: 'MedicalCase',
-  primaryKey: 'id',
-  properties: {
-    id: 'int',
-
-  },
-};
