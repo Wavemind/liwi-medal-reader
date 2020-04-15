@@ -2,6 +2,8 @@
 
 import * as _ from 'lodash';
 import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
+
 import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage';
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
@@ -33,45 +35,37 @@ export class PatientModel implements PatientModelInterface {
       main_data_patient_id = null,
     } = props;
 
-    await this.setId();
+    if (this.id === undefined) {
+      this.id = uuidv4();
+    }
     this.firstname = firstname;
     this.lastname = lastname;
     this.birthdate = birthdate;
     this.gender = gender;
     this.medicalCases = medicalCases;
     this.main_data_patient_id = main_data_patient_id;
-
-    Realm.open({
-      schema: [PatientModel],
-    }).then((realm) => {
-      realm.write(() => {
-        realm.create('Patient', {
-          id: this.id,
-          first_name: this.firstname,
-          last_name: this.lastname,
-          birth_Date: this.birthdate,
-          gender: this.gender,
-          medical_cases: JSON.stringify(this.medicalCases),
-          main_data_patient_id: this.main_data_patient_id,
-        });
-      });
-    });
-  };
-
-  // uniqueId incremented
-  setId = async () => {
-    const patients = await this.getPatients();
-
-    let maxId = _.maxBy(patients, 'id');
-    if (patients.length === 0) {
-      maxId = { id: 0 };
-    }
-    this.id = maxId.id + 1;
   };
 
   // Create patient and push it in local storage
   save = async () => {
     const flatten = { ...this };
+
+    await Realm.open({
+      schema: [PatientModel],
+    }).then((realm) => {
+      realm.write(() => {
+        realm.create('Patient', {
+          id: this.id,
+          firstname: this.firstname,
+          lastname: this.lastname,
+          birthdate: this.birthdate,
+          gender: this.gender,
+          medicalCases: this.medicalCases,
+          main_data_patient_id: this.main_data_patient_id,
+        });
+      });
+    });
+
     await setItemFromArray('patients', flatten, flatten.id);
   };
 
@@ -108,12 +102,12 @@ PatientModel.schema = {
   name: 'Patient',
   primaryKey: 'id',
   properties: {
-    id: 'int',
-    first_name: 'string',
-    last_name: 'string',
-    birth_Date: 'date',
+    id: 'string',
+    firstname: 'string',
+    lastname: 'string',
+    birthdate: 'date',
     gender: 'string',
-    medical_cases: 'string?',
+    medicalCases: 'string?[]',
     main_data_patient_id: { type: 'int', optional: true },
   },
 };
