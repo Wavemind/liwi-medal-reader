@@ -5,6 +5,9 @@ import { getDeviceInformation } from '../../src/engine/api/Device';
 import json from '../../frontend_service/api/json';
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
 import { getItem, getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
+import { store } from '../store';
+import { updateModalFromRedux } from '../actions/creators.actions';
+import i18n from '../../src/utils/i18n';
 
 /**
  * Https GET request
@@ -144,10 +147,22 @@ export const fetchAlgorithms = async () => {
         resolve(serverAlgorithm.errors);
         return null;
       }
+
       if (algorithm !== -1) {
         // Algorithm container already in local, replace this local algo
         localAlgorithms[algorithm] = serverAlgorithm;
         localAlgorithms[algorithm].selected = true;
+
+        // Update popup only if version has changed
+        if (algorithmSelected.version_id !== serverAlgorithm.version_id && algorithmSelected.algorithm_id === serverAlgorithm.algorithm_id) {
+          store.dispatch(
+            updateModalFromRedux(localAlgorithms[algorithm].version_name, null, {
+              title: i18n.t('popup:version'),
+              author: localAlgorithms[algorithm].author,
+              description: localAlgorithms[algorithm].description,
+            })
+          );
+        }
       } else {
         // Algorithm not existing in local, push it
         serverAlgorithm.selected = true;
