@@ -49,7 +49,7 @@ export class PatientModel implements PatientModelInterface {
   // Create patient and push it in local storage
   save = async () => {
     const flatten = { ...this };
-
+console.log(JSON.stringify([1, 'false', false]))
     await Realm.open({
       schema: [PatientModel],
     }).then((realm) => {
