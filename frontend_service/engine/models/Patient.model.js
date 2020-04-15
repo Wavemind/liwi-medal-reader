@@ -51,12 +51,11 @@ export class PatientModel implements PatientModelInterface {
           last_name: this.lastname,
           birth_Date: this.birthdate,
           gender: this.gender,
-          medical_cases: this.medicalCases,
+          medical_cases: JSON.stringify(this.medicalCases),
           main_data_patient_id: this.main_data_patient_id,
         });
       });
     });
-
   };
 
   // uniqueId incremented
@@ -114,7 +113,7 @@ PatientModel.schema = {
     lastName: 'string',
     birthDate: 'date',
     gender: 'string',
-    medicalCases: { type: 'list', objectType: 'MedicalCase' },
+    medicalCases: 'string?',
     mainDataPatientId: { type: 'int', optional: true },
   },
 };
