@@ -1,6 +1,7 @@
 import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData } from '../actions/creators.actions';
+import { calculateCondition } from './conditionsHelpers.algo';
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -27,7 +28,7 @@ export const questionsMedicalHistory = () => {
       {
         by: 'category',
         operator: 'equal',
-        value: categories.vitalSignTriage,
+        value: categories.basicMeasurement,
       },
     ],
     'OR',
@@ -92,9 +93,12 @@ export const questionsFirstLookAssessement = () => {
   const firstLookAssessement = [];
 
   const ordersFirstLookAssessment = state$.triage.orders[categories.emergencySign];
-  ordersFirstLookAssessment.map((order) => {
-    firstLookAssessement.push(state$.nodes[order]);
-  });
+
+  if (ordersFirstLookAssessment !== undefined) {
+    ordersFirstLookAssessment.map((order) => {
+      firstLookAssessement.push(state$.nodes[order]);
+    });
+  }
 
   if (state$.metaData.triage.firstLookAssessments.length === 0 && firstLookAssessement.length !== 0) {
     store.dispatch(
@@ -143,13 +147,16 @@ export const questionsBasicMeasurements = () => {
   const state$ = store.getState();
   const basicMeasurements = [];
 
-  const orderedQuestions = state$.triage.orders[categories.vitalSignTriage];
-  orderedQuestions.map((orderedQuestion) => {
-    const question = state$.nodes[orderedQuestion];
-    if (question.isDisplayedInTriage(state$)) {
-      basicMeasurements.push(question);
-    }
-  });
+  const orderedQuestions = state$.triage.orders[categories.basicMeasurement];
+
+  if (orderedQuestions !== undefined) {
+    orderedQuestions.map((orderedQuestion) => {
+      const question = state$.nodes[orderedQuestion];
+      if (question.isDisplayedInTriage(state$)) {
+        basicMeasurements.push(question);
+      }
+    });
+  }
 
   // Set Questions in State for validation
   if (state$.metaData.triage.basicMeasurements.length === 0 && basicMeasurements.length !== 0) {
@@ -185,4 +192,100 @@ export const questionsTests = () => {
   }
 
   return assessmentTest;
+};
+
+/**
+ *
+ * Define if the title of drugs additional / proposed must be shown
+ *
+ * @return :  Boolean
+ *
+ */
+export const titleManagementCounseling = () => {
+  const state$ = store.getState();
+  const { diagnoses } = state$;
+
+  if (Object.keys(diagnoses.additional).length === 0 && Object.keys(diagnoses.proposed).length === 0) {
+    return false;
+  }
+
+  let isPossible = false;
+  Object.keys(diagnoses.additional).map((id) => {
+    Object.keys(diagnoses.additional[id].managements).map((m) => {
+      if (calculateCondition(diagnoses.additional[id].managements[m]) === true) {
+        isPossible = true;
+      }
+    });
+  });
+
+  Object.keys(diagnoses.proposed).map((id) => {
+    Object.keys(diagnoses.proposed[id].managements).map((m) => {
+      if (calculateCondition(diagnoses.proposed[id].managements[m]) === true) {
+        isPossible = true;
+      }
+    });
+  });
+
+  return isPossible;
+};
+
+/**
+ * Get drugs from 3 objects and return one object (manual merging)
+ * Object from :
+ * - Proposed
+ * - Additional
+ *
+ * @return : object list all drugs
+ *
+ */
+export const getDrugs = () => {
+  const state$ = store.getState();
+  const {
+    diagnoses,
+    diagnoses: { additionalDrugs },
+  } = state$;
+
+  let drugs = {};
+
+  const doubleString = ['proposed', 'additional'];
+
+  doubleString.map((iteration) => {
+    Object.keys(diagnoses[iteration]).map((diagnoseId) => {
+      // If diagnoses selected or additional (auto selected)
+      if (diagnoses[iteration][diagnoseId].agreed === true || iteration === 'additional') {
+        // iterate over drugs
+        Object.keys(diagnoses[iteration][diagnoseId].drugs).map((drugId) => {
+          if (diagnoses[iteration][diagnoseId].drugs[drugId].agreed === true && calculateCondition(diagnoses[iteration][diagnoseId].drugs[drugId]) === true) {
+            if (drugs[drugId] === undefined) {
+              // new one so add it
+              drugs[drugId] = diagnoses[iteration][diagnoseId]?.drugs[drugId];
+              drugs[drugId].diagnoses = [{ id: diagnoseId, type: iteration }];
+            } else {
+              // doublon
+              // manage it
+              drugs[drugId].diagnoses.push({ id: diagnoseId, type: iteration });
+              if (diagnoses[iteration][diagnoseId]?.drugs[drugId].duration > drugs[drugId].duration) {
+                drugs[drugId].duration = diagnoses[iteration][diagnoseId]?.drugs[drugId].duration;
+              }
+            }
+          }
+        });
+      }
+    });
+  });
+
+  // iterate over manually added drugs
+  Object.keys(additionalDrugs).map((ky) => {
+    if (drugs[ky] === undefined) {
+      // new one so add it
+      drugs[ky] = additionalDrugs[ky];
+      drugs[ky].diagnoses = [null];
+    } else {
+      // doublon
+      // manage it
+      drugs[ky].diagnoses.push(null);
+    }
+  });
+
+  return drugs;
 };

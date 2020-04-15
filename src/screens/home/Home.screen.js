@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from 'react';
-import { TouchableHighlight } from 'react-native';
+import { Image, TouchableHighlight } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { Toaster } from '../../utils/CustomToast';
@@ -13,6 +13,10 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Home extends React.Component<Props, State> {
+  static defaultProps = {
+    app: { t: () => {} },
+  };
+
   state = {
     algorithms: [],
     propsToolTipVisible: false,
@@ -48,6 +52,10 @@ export default class Home extends React.Component<Props, State> {
       app: { t },
       medicalCase,
     } = this.props;
+
+    if (t === undefined) {
+      return null;
+    }
 
     const { algorithms, propsToolTipVisible } = this.state;
 

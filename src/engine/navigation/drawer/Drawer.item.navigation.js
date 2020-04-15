@@ -55,12 +55,24 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
   }
 
   render() {
-    const { t, r, name, initialPage, navigate, isDrawer } = this.props;
+    const { t, r, name, initialPage, navigate, isDrawer, _setScrollPosition, refParent } = this.props;
 
     // Small drawer
     if (!isDrawer) {
       return (
-        <WrapperMiniDrawerCategory active={r.routeName === name} isDrawer={isDrawer} onStartShouldSetResponder={() => true} onPress={() => navigate(name, initialPage)}>
+        <WrapperMiniDrawerCategory
+          ref={(button) => (this.button = button)}
+          onLayout={({ nativeEvent }) => {
+            // Set scrollView Y if active
+            if (r.routeName === name) {
+              _setScrollPosition(nativeEvent.layout.y);
+            }
+          }}
+          active={r.routeName === name}
+          isDrawer={isDrawer}
+          onStartShouldSetResponder={() => true}
+          onPress={() => navigate(name, initialPage)}
+        >
           <SmallText isDrawer={isDrawer} active={r.routeName === name} numberOfLines={isDrawer ? 5 : 1}>
             {t}
           </SmallText>

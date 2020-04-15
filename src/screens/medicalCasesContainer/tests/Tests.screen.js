@@ -53,7 +53,7 @@ export default class Tests extends React.Component<Props, State> {
         >
           {[
             <View style={styles.pad} key="questions-test">
-              {focus === 'didFocus' ? (
+              {focus === 'didFocus' || focus === 'willFocus' ? (
                 <React.Suspense fallback={null}>
                   <Questions questions={questionsTests()} />
                 </React.Suspense>

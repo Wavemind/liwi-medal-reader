@@ -48,6 +48,7 @@
     "react/prop-types": 0,
     "template-curly-spacing": "off",
     "indent": "off",
+    "no-underscore-dangle": "off",
     "max-len": "off",
     "no-use-before-define": "off",
     "arrow-parens": "off",
