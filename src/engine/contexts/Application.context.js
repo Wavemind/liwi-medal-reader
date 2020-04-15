@@ -11,12 +11,13 @@ import Geolocation from '@react-native-community/geolocation';
 import Toast from 'react-native-tiny-toast';
 import { getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
 import NavigationService from '../navigation/Navigation.service';
-import { appInBackgroundStateKey, saltHash } from '../../../frontend_service/constants';
+import { appInBackgroundStateKey, host, saltHash } from '../../../frontend_service/constants';
 import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
 import { liwiColors } from '../../utils/constants';
 import { getDeviceInformation } from '../api/Device';
+import { handleHttpError } from '../../utils/CustomToast';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -49,6 +50,16 @@ export type StateApplicationContext = {
 export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
+    NetInfo.configure({
+      reachabilityUrl: 'https://httpstat.us/200',
+      reachabilityTest: async (response) => {
+        console.log(response);
+        return response.status === 200;
+      },
+      reachabilityLongTimeout: 60 * 1000, // 60s
+      reachabilityShortTimeout: 5 * 1000, // 5s
+      reachabilityRequestTimeout: 15 * 1000, // 15s
+    });
     this.initializeAsync();
   }
 
@@ -56,7 +67,12 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     await this.initContext();
 
     AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
+
+    this.unsubscribeNetInfo = NetInfo.addEventListener(this._handleConnectivityChange);
+
+    let localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
+    let d = await localDataOn.text();
+    console.log(d, localDataOn);
   };
 
   getGeo = async () => {
@@ -292,17 +308,19 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     await fetchAlgorithms();
   };
 
-  _handleConnectivityChange = async (isConnected) => {
-    if (isConnected.type.match(/wifi|cellular/)) {
-      this.setState({
-        isConnected: true,
-      });
-      await this._fetchDataWhenChange();
-    } else if (isConnected.type.match(/unknown|none/)) {
-      this.setState({
-        isConnected: false,
-      });
-    }
+  _handleConnectivityChange = async (state) => {
+    console.log(state);
+
+    // if (isConnected.type.match(/wifi|cellular/)) {
+    //   this.setState({
+    //     isConnected: true,
+    //   });
+    //   await this._fetchDataWhenChange();
+    // } else if (isConnected.type.match(/unknown|none/)) {
+    //   this.setState({
+    //     isConnected: false,
+    //   });
+    // }
   };
 
   async componentDidMount() {
@@ -333,7 +351,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 
   componentWillUnmount() {
-    NetInfo.removeEventListener('connectionChange', this._handleConnectivityChange);
+    this.unsubscribeNetInfo();
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
