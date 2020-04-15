@@ -8949,7 +8949,6 @@ node-notifier@^6.0.0:
 node-pre-gyp@^0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.13.0.tgz#df9ab7b68dd6498137717838e4f92a33fc9daa42"
-  integrity sha512-Md1D3xnEne8b/HGVQkZZwV27WUi1ZRuZBij24TNaZwUPU3ZAFtvT6xxJGaUVillfmMKnn5oD1HoGsp2Ftik7SQ==
   dependencies:
     detect-libc "^1.0.2"
     mkdirp "^0.5.1"
@@ -10726,7 +10725,6 @@ readdirp@^2.0.0, readdirp@^2.2.1:
 realm@3.6.5:
   version "3.6.5"
   resolved "https://registry.yarnpkg.com/realm/-/realm-3.6.5.tgz#08e8a3b33af1387eb6db97e8258bef5aaabd387a"
-  integrity sha512-rFk3P4hh0RXWU8rEcNeX5MnC+H5yUBxzUIgoRgYDR/gJ/znrB3k0jTtZYhUcCCCRIRPkE91d1omX9dIvT84R+Q==
   dependencies:
     command-line-args "^4.0.6"
     decompress "^4.2.0"
@@ -12071,7 +12069,6 @@ tar-stream@^2.0.0:
 tar@^4:
   version "4.4.13"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
-  integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
   dependencies:
     chownr "^1.1.1"
     fs-minipass "^1.2.5"
@@ -12646,6 +12643,10 @@ utils-merge@1.0.1:
 uuid@^3.0.0, uuid@^3.0.1, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
+
+uuid@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
 
 v8-compile-cache@^2.0.3:
   version "2.1.0"
