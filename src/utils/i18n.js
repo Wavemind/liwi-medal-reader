@@ -269,9 +269,13 @@ i18n
           title: 'Sync with server',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
-          logout: 'logout'
+          logout: 'logout',
         },
         popup: {
+          desc: 'Description',
+          version_name: 'version',
+          version: 'Update of version',
+          by: 'by',
           title: 'Please allow access to the position',
           message: 'Location sharing is mandatory in order to use the medical service',
           ask_me_later: 'Ask me later',

@@ -116,33 +116,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // Unlock session from local credentials
-  unLockSession = async (id: number, code: string) => {
-    let session = await getSession(id);
-
-    const encrypt = sha256.hmac(saltHash, code);
-
-    if (code.length === 0) {
-      return 'empty_code';
-    }
-
-    if (session.local_code === encrypt) {
-      await setActiveSession(id);
-
-      const { isConnected } = this.state;
-
-      if (isConnected) await fetchAlgorithms();
-
-      session = await getSession(id);
-
-      this.setUserContext(session);
-
-      // here push settings
-    } else {
-      return 'invalid_code';
-    }
-  };
-
   // Lock current session
   lockSession = async () => {
     this.setState({
@@ -174,7 +147,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       // merge data in local
       await setItem('session', { ...session, group });
       // Set data in context
-      await fetchAlgorithms();
+      // await fetchAlgorithms();
       this.setState({ session: { ...session, group } });
       // Show success toast
       showToast ? this.showSuccessToast('Receiving group data and medical staff') : null;
@@ -269,7 +242,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     setUser: this.setUser,
     logout: this.logout,
     getGroupData: this.getGroupData,
-    unLockSession: this.unLockSession,
     openSession: this.openSession,
     lockSession: this.lockSession,
     newSession: this.newSession,
@@ -289,7 +261,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // fetch algorithms when change
   _fetchDataWhenChange = async () => {
-    await fetchAlgorithms();
+    // await fetchAlgorithms();
   };
 
   _handleConnectivityChange = async (isConnected) => {
@@ -306,7 +278,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   async componentDidMount() {
-    console.log('hola start');
     let permissionReturned = await this.getGeo();
     let location = {
       coords: {
@@ -341,7 +312,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   _handleAppStateChange = async (nextAppState) => {
     const { appState } = this.state;
     if (appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.warn('---> Liwi came back from background', nextAppState);
+      console.warn('---> Liwi came back from backgrond', nextAppState);
       await setItem(appInBackgroundStateKey, true);
 
       this._fetchDataWhenChange();
