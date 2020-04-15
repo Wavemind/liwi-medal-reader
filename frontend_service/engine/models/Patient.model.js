@@ -42,7 +42,7 @@ export class PatientModel implements PatientModelInterface {
     this.main_data_patient_id = main_data_patient_id;
 
     Realm.open({
-      schema: [PatientModel, MedicalCaseModel],
+      schema: [PatientModel],
     }).then((realm) => {
       realm.write(() => {
         realm.create('Patient', {
@@ -109,11 +109,11 @@ PatientModel.schema = {
   primaryKey: 'id',
   properties: {
     id: 'int',
-    firstName: 'string',
-    lastName: 'string',
-    birthDate: 'date',
+    first_name: 'string',
+    last_name: 'string',
+    birth_Date: 'date',
     gender: 'string',
-    medicalCases: 'string?',
-    mainDataPatientId: { type: 'int', optional: true },
+    medical_cases: 'string?',
+    main_data_patient_id: { type: 'int', optional: true },
   },
 };
