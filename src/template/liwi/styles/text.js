@@ -15,6 +15,7 @@ export default {
       margin: 0,
       color: liwiColors.darkerGreyColor,
     },
+    '.italic': { fontStyle: 'italic', color: liwiColors.darkerGreyColor },
     '.light': {
       color: '#6a6a6a',
       borderRadius: 35,
@@ -57,6 +58,16 @@ export default {
       padding: 10,
       margin: 10,
       marginLeft: 0,
+    },
+    '.customSubTitle': {
+      fontSize: 20,
+      paddingBottom: 5,
+      paddingTop: 5,
+      fontWeight: 'bold',
+      marginLeft: 0,
+    },
+    '.smallTitle': {
+      color: liwiColors.redColor,
     },
     '.subText': {
       color: liwiColors.redColor,

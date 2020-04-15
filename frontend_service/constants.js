@@ -1,4 +1,6 @@
 export const host = 'http://liwi.wavelab.top/api/v1/';
+// export const host = 'http://192.168.31.214:3000/api/v1/';
+// export const host = 'https://medalc.unisante.ch/api/v1';
 export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
 export const navigationStateKey = 'navigationState';
@@ -30,9 +32,21 @@ export const displayFormats = {
   date: 'Date',
 };
 
+// Medication type
 export const healthCareType = {
-  pill: 'pill',
-  liquid: 'liquid',
+  tablet: 'tablet',
+  capsule: 'capsule',
+  suspension: 'suspension',
+  syrup: 'syrup',
+  suppository: 'suppository',
+  drops: 'drops',
+  solution: 'solution',
+  patch: 'patch',
+  cream: 'cream',
+  ointment: 'ointment',
+  gel: 'gel',
+  spray: 'spray',
+  inhaler: 'inhaler',
 };
 
 // Value of answer accepted
@@ -72,8 +86,8 @@ export const systems = {
 export const categories = {
   assessment: 'assessment_test',
   chronicCondition: 'chronic_condition',
-  vitalSignTriage: 'vital_sign_triage',
-  emergencySign: 'emergency_sign',
+  basicMeasurement: 'basic_measurement',
+  uniqueTriageQuestion: 'unique_triage_question',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
   symptom: 'symptom',
@@ -84,13 +98,15 @@ export const categories = {
   triage: 'triage',
   vaccine: 'vaccine',
   scored: 'scored',
-  treatment: 'treatment',
+  drug: 'drug',
   management: 'management',
   other: 'other',
   treatmentQuestion: 'treatment_question',
   backgroundCalculation: 'background_calculation',
-  vitalSignConsultation: 'vital_sign_consultation',
+  vitalSignAnthropometric: 'vital_sign_anthropometric',
   observedPhysicalSign: 'observed_physical_sign',
+  consultationRelated: 'consultation_related',
+  uniqueTriagePhysicalSign: 'unique_triage_physical_sign',
 };
 
 // Type of nodes received from json

@@ -4,7 +4,7 @@ import { NativeModules } from 'react-native';
 
 const languageDetector = {
   type: 'languageDetector',
-  async: true, // flags below detection to be async
+  async: true, // flags below detection to be asyncw
   detect: (callback) => {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
@@ -20,12 +20,54 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        drug: {
+          give: 'Give',
+          mg: 'mg',
+          caps: 'capsule of',
+          every: 'every',
+          h: 'hours for',
+          days: 'days',
+          mode: 'Mode',
+          tablet: 'tablet of',
+          d: 'duration',
+          admin: 'Administration',
+          ml: 'ml',
+          of: 'of',
+        },
+        diagnoses: {
+          which: 'Whidiagch formulation of medicine is available and appropriate for your patient?',
+          none: 'none',
+          custom_duration: 'Custom duration',
+          duration: 'duration',
+          add_medicine: 'Additionnal Medicines',
+          proposed_medicine: 'Medicines proposed by',
+          another: 'Another diagnoses not proposed',
+          manually_medicine: 'Manually added Medicines',
+          list: 'List of diagnoses',
+          add: 'Create',
+          weight: 'weight',
+          sum: 'Summary Treatment',
+          proposed: 'Diagnoses proposed by',
+          agree: 'Agree',
+          man: 'Management & Counseling',
+          medicine: 'Medicine',
+          close: 'Close',
+          select: '  Please select...', // Keep the space at the begin of string
+          search: 'Search by name',
+          disagree: 'Disagree',
+          custom: 'Do you want to manually add another diagnosis not proposed ?',
+          titleadditional: 'Additional selected',
+          additional: 'Do you want to add an additional diagnosis not proposed ?',
+          write: 'Write the medicine',
+        },
         tooltip: {
+          invalidQuestions: 'Question(s) to fill',
           forcegoto: 'Allow in DEV ',
           goto: 'Back to the form',
           notcomplete: 'Is not complete !',
           more: 'more questions...',
           uncompleted: 'Stage uncompleted',
+          patientnotcomplete: 'The creation of the patient',
         },
         algorithms: {
           never: 'Never synchronized data',
@@ -97,9 +139,11 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
-          final_diagnoses: 'Final diagnoses',
+          medecines: 'Medicines',
+          medecines_formulation: 'Medicine Formulations',
+          final_diagnoses: 'Diagnoses',
           healthcares_questions: 'Management questions',
-          healthcares: 'Management',
+          healthcares: 'Treatments & Management',
           managements: 'Managements',
           treatments: 'Treatments',
           waiting_triage: 'Waiting for triage',
@@ -250,6 +294,7 @@ i18n
           available_algorithms: 'Available algorithms',
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
+          conditions: 'Treatment Conditions',
         },
         common: {
           back: 'Back',

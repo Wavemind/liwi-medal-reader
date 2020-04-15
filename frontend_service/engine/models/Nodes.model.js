@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { categories, nodesType } from '../../constants';
 import { NodeModel } from './Node.model';
 import { ManagementModel } from './Management.model';
-import { TreatmentModel } from './Treatment.model';
+import { DrugModel } from './Drug.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
 import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
@@ -134,12 +134,12 @@ export class NodesModel implements NodeInterface {
    * @return
    * Object healthCares : {
    *   managements: {},
-   *   treatments: {},
+   *   drugs: {},
    * }
    *
    */
   getHealthCares() {
-    const healthCares = { managements: {}, treatments: {} };
+    const healthCares = { managements: {}, drugs: {} };
 
     // Filter by final diagnostic
     const finalDiagnostics = FinalDiagnosticModel.all();
@@ -152,10 +152,10 @@ export class NodesModel implements NodeInterface {
         }
       });
 
-      Object.keys(finalDiagnostic.treatments).forEach((key) => {
-        if (calculateCondition(finalDiagnostic.treatments[key])) {
-          healthCares.treatments[key] = this[key];
-          healthCares.treatments[key].drugDoses = healthCares.treatments[key].getDrugDoses();
+      Object.keys(finalDiagnostic.drugs).forEach((key) => {
+        if (calculateCondition(finalDiagnostic.drugs[key])) {
+          healthCares.drugs[key] = this[key];
+          healthCares.drugs[key].drugDoses = healthCares.drugs[key].getDrugDoses();
         }
       });
     });
@@ -188,11 +188,11 @@ export class NodesModel implements NodeInterface {
             }
           }
 
-          for (const indexTreatment in finalDiagnostic.treatments) {
-            if (finalDiagnostic.treatments.hasOwnProperty(indexTreatment)) {
+          for (const indexTreatment in finalDiagnostic.drugs) {
+            if (finalDiagnostic.drugs.hasOwnProperty(indexTreatment)) {
               const t = this[indexTreatment];
 
-              const q = t.getQuestions(finalDiagnostic.treatments[indexTreatment]);
+              const q = t.getQuestions(finalDiagnostic.drugs[indexTreatment]);
               questions = {
                 ...questions,
                 ...q,
@@ -260,8 +260,8 @@ export class NodesModel implements NodeInterface {
           case categories.management:
             instantiatedNode = new ManagementModel({ ...node });
             break;
-          case categories.treatment:
-            instantiatedNode = new TreatmentModel({ ...node });
+          case categories.drug:
+            instantiatedNode = new DrugModel({ ...node });
             break;
         }
         break;

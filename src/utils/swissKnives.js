@@ -1,7 +1,7 @@
 export const stringifyDeepRef = (item) => {
   let cache = [];
 
-  const replacer = JSON.stringify(item, function(key, value) {
+  const replacer = JSON.stringify(item, function (key, value) {
     if (typeof value === 'object' && value !== null) {
       if (cache.indexOf(value) !== -1) {
         // Duplicate reference found
@@ -69,7 +69,7 @@ export const memorySizeOf = (obj) => {
  *
  */
 
-export const diff = function(obj1, obj2) {
+export const diff = function (obj1, obj2) {
   // Make sure an object to compare is provided
   if (!obj2 || Object.prototype.toString.call(obj2) !== '[object Object]') {
     return obj1;
@@ -92,7 +92,7 @@ export const diff = function(obj1, obj2) {
    * @param  {Array}   arr2 The second array
    * @return {Boolean}      If true, both arrays are equal
    */
-  const arraysMatch = function(arr1, arr2) {
+  const arraysMatch = function (arr1, arr2) {
     // Check if the arrays are the same length
     if (arr1.length !== arr2.length) return false;
 
@@ -111,7 +111,7 @@ export const diff = function(obj1, obj2) {
    * @param  {*}      item2 The second item
    * @param  {String} key   The key in our object
    */
-  const compare = function(item1, item2, key) {
+  const compare = function (item1, item2, key) {
     // Get the object type
     const type1 = Object.prototype.toString.call(item1);
     const type2 = Object.prototype.toString.call(item2);

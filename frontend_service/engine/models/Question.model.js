@@ -10,6 +10,8 @@ const references = {
   z_score_female_table: require('../../api/z_score_female_table.json'),
   heart_rate_table: require('../../api/heart_rate_table.json'),
   respiratory_rate_table: require('../../api/respiratory_rate_table.json'),
+  muac_z_score_female_table: require('../../api/muac_z_score_female.json'),
+  muac_z_score_male_table: require('../../api/muac_z_score_male.json'),
 };
 
 interface QuestionInterface {
@@ -52,6 +54,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       reference_table_male = '',
       reference_table_female = '',
       system = '',
+      is_identifiable = false,
+      is_triage = false,
     } = props;
 
     this.description = description;
@@ -75,6 +79,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.reference_table_male = reference_table_male;
     this.reference_table_female = reference_table_female;
     this.system = system;
+    this.is_identifiable = is_identifiable;
+    this.is_triage = is_triage;
   }
 
   /**
