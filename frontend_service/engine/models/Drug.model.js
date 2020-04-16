@@ -151,7 +151,7 @@ export class DrugModel extends HealthCaresModel implements TreatmentInterface {
           } else {
             // Out of possiblity
             return {
-              no_possibility: 'The weight has no correspondance',
+              no_possibility: 'No compatible option for this weight',
               doseResult: null,
             };
           }
