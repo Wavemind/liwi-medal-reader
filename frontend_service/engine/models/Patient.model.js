@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage';
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
+import { createObject } from '../../../src/engine/api/databaseStorage';
 
-const Realm = require('realm');
 
 interface PatientModelInterface {
   id: number;
@@ -20,7 +20,7 @@ interface PatientModelInterface {
 }
 
 export class PatientModel implements PatientModelInterface {
-  constructor(props) {
+  constructor(props = {}) {
     this.create(props);
   }
 
@@ -37,33 +37,29 @@ export class PatientModel implements PatientModelInterface {
 
     if (this.id === undefined) {
       this.id = uuidv4();
+      this.firstname = firstname;
+      this.lastname = lastname;
+      this.birthdate = birthdate;
+      this.gender = gender;
+      this.medicalCases = medicalCases;
+      this.main_data_patient_id = main_data_patient_id;
     }
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.birthdate = birthdate;
-    this.gender = gender;
-    this.medicalCases = medicalCases;
-    this.main_data_patient_id = main_data_patient_id;
   };
 
   // Create patient and push it in local storage
   save = async () => {
     const flatten = { ...this };
-console.log(JSON.stringify([1, 'false', false]))
-    await Realm.open({
-      schema: [PatientModel],
-    }).then((realm) => {
-      realm.write(() => {
-        realm.create('Patient', {
-          id: this.id,
-          firstname: this.firstname,
-          lastname: this.lastname,
-          birthdate: this.birthdate,
-          gender: this.gender,
-          medicalCases: this.medicalCases,
-          main_data_patient_id: this.main_data_patient_id,
-        });
-      });
+
+    const medicalCase = this.medicalCases[this.medicalCases.length - 1]
+
+    createObject('Patient', {
+      id: this.id,
+      firstname: this.firstname,
+      lastname: this.lastname,
+      birthdate: this.birthdate,
+      gender: this.gender,
+      medicalCases: [{ id: uuidv4(), created_at: 'string', json: JSON.stringify(medicalCase) }],
+      main_data_patient_id: this.main_data_patient_id,
     });
 
     await setItemFromArray('patients', flatten, flatten.id);
@@ -96,6 +92,18 @@ console.log(JSON.stringify([1, 'false', false]))
   getPatients = async () => {
     return await getArray('patients');
   };
+
+  /**
+  * Defines if the patient has at least one medical case on going
+  * @returns Boolean
+  */
+  hasCaseInProgress = () => {
+    this.medicalCases.map((medicalCase) => {
+      if (medicalCase.status !== medicalCaseStatus.close)
+        return true;
+    });
+    return false;
+  };
 }
 
 PatientModel.schema = {
@@ -107,7 +115,8 @@ PatientModel.schema = {
     lastname: 'string',
     birthdate: 'date',
     gender: 'string',
-    medicalCases: 'string?[]',
+    medicalCases: 'MedicalCase[]',
     main_data_patient_id: { type: 'int', optional: true },
   },
 };
+

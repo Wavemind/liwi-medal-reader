@@ -2,17 +2,22 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
+
 import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
 import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
+import { ListView } from 'realm/react-native';
+
+
 import { styles } from './MedicalCaseList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray } from '../../../engine/api/LocalStorage';
 import { medicalCaseStatus, routeDependingStatus } from '../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { getAll } from '../../../engine/api/databaseStorage';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -38,34 +43,19 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     navigation.addListener('willFocus', async () => {
       await this.filterMedicalCases();
     });
+    await this.filterMedicalCases();
   }
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
     this.setState({ loading: true });
-    const { medicalCase } = this.props;
 
-    const patients = await getArray('patients');
-    const medicalCases = [];
+    const medicalCases = getAll('MedicalCase');
 
-    patients.map((patient) => {
-      patient.medicalCases.map((medicalCaseLocalStorage) => {
-        if (medicalCaseLocalStorage.id !== medicalCase.id) {
-          medicalCaseLocalStorage.patient = { ...patient, medicalCases: [] };
-          medicalCases.push(medicalCaseLocalStorage);
-        } else {
-          medicalCase.patient = { ...patient, medicalCases: [] };
-          medicalCases.push(medicalCase);
-        }
-      });
+    this.setState({
+      medicalCases,
+      loading: false
     });
-
-    this.setState(
-      {
-        medicalCases,
-      },
-      () => this.settleMedicalCase()
-    );
   };
 
   // Update state switch asc / desc
@@ -203,58 +193,52 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     return medicalCases.length > 0 ? (
       [
-        orderedFilteredMedicalCases.length > 0 ? (
-          <List block key="medicalCaseList">
-            {orderedFilteredMedicalCases.map((medicalCaseItem) => (
-              <ListItem
-                rounded
-                block
-                style={{
-                  backgroundColor: '#ffffff',
-                }}
-                key={`${medicalCaseItem.id}_medical_case_list`}
-                spaced
-                onPress={async () => {
-                  const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
+        <List block key="medicalCaseList">
+          {medicalCases.map((medicalCaseItem) => (
+            <ListItem
+              rounded
+              block
+              style={{
+                backgroundColor: '#ffffff',
+              }}
+              key={`${medicalCaseItem.id}_medical_case_list`}
+              spaced
+              onPress={async () => {
+                const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
 
-                  if (medicalCase.id !== medicalCaseItem.id) {
-                    await this.selectMedicalCase({
-                      ...medicalCaseItem,
-                    });
-                  }
+                if (medicalCase.id !== medicalCaseItem.id) {
+                  await this.selectMedicalCase({
+                    ...medicalCaseItem,
+                  });
+                }
 
-                  const route = routeDependingStatus(medicalCaseRoute);
-                  if (route !== undefined) {
-                    navigation.navigate(route);
-                  }
-                }}
-              >
-                <View w50>
-                  <Text>
-                    {medicalCaseItem.patient.id} : {medicalCaseItem.patient.lastname} {medicalCaseItem.patient.firstname}
-                  </Text>
-                </View>
-                <View w50>
-                  <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
-                </View>
+                const route = routeDependingStatus(medicalCaseRoute);
+                if (route !== undefined) {
+                  navigation.navigate(route);
+                }
+              }}
+            >
+              <View w50>
+                <Text>
+                  {medicalCaseItem.patient.id} : {medicalCaseItem.patient.lastname} {medicalCaseItem.patient.firstname}
+                </Text>
+              </View>
+              <View w50>
+                <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
+              </View>
 
-                <View w50>
-                  <Text>{medicalCase.id === medicalCaseItem.id ? moment(medicalCase.updated_at).calendar() : moment(medicalCaseItem.updated_at).calendar()}</Text>
-                </View>
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          <View padding-auto margin-auto>
-            <Text not-available>{t('medical_case_list:not_found')}</Text>
-          </View>
-        ),
+              <View w50>
+                <Text>{medicalCase.id === medicalCaseItem.id ? moment(medicalCase.updated_at).calendar() : moment(medicalCaseItem.updated_at).calendar()}</Text>
+              </View>
+            </ListItem>
+          ))}
+        </List>
       ]
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
+        </View>
+      );
   };
 
   render() {

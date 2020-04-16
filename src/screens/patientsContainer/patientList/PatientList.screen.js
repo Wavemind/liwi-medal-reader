@@ -4,39 +4,27 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
 
-import filter from 'lodash/filter';
-import orderBy from 'lodash/orderBy';
-import includes from 'lodash/includes';
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getArray, getItems } from '../../../engine/api/LocalStorage';
-import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
-import { medicalCaseStatus } from '../../../../frontend_service/constants';
+import { getItems } from '../../../engine/api/LocalStorage';
+import { getAll } from '../../../engine/api/databaseStorage';
+import { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import ConfirmationView from '../../../components/ConfirmationView';
 import { showBirthDatePatient } from '../../../../frontend_service/algorithm/treeDiagnosis.algo';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 
-const Realm = require('realm');
-
-type Props = NavigationScreenProps & {};
-type State = StateApplicationContext & {};
-
-export default class PatientList extends React.Component<Props, State> {
+export default class PatientList extends React.Component {
   state = {
-    patients: [],
     propsToolTipVisible: false,
     loading: false,
     searchTerm: '',
-    orderByFirstName: 'asc',
-    orderByLastName: null,
     isGeneratingPatient: false,
     algorithms: [],
-    statuses: [medicalCaseStatus.close],
+    patients: [],
   };
 
-  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
+  shouldComponentUpdate(nextProps, nextState) {
     const { focus } = this.props;
     const { searchTerm } = this.state;
 
@@ -58,54 +46,16 @@ export default class PatientList extends React.Component<Props, State> {
   // Get all medical case with waiting for... status
   fetchPatients = async () => {
     this.setState({ loading: true });
-    const { statuses } = this.state;
-    const patients = await getArray('patients');
+    const patients = getAll('Patient');
     const algorithms = await getItems('algorithms');
-
-    patients.map((patient) => {
-      patient.caseInProgress = false;
-      patient.medicalCases.map((medicalCase) => {
-        if (!includes(statuses, medicalCase.status)) {
-          patient.caseInProgress = true;
-        }
-      });
-    });
-
+    console.log("Coucou")
     this.setState(
       {
-        patients,
         algorithms,
-      },
-      () => this.settlePatients(),
+        patients,
+        loading: false
+      }
     );
-  };
-
-  // Update state switch asc / desc
-  orderByFirstName = () => {
-    const { orderByFirstName } = this.state;
-    this.setState(
-      {
-        orderByFirstName: orderByFirstName === 'asc' ? 'desc' : 'asc',
-        orderByLastName: null,
-      },
-      () => this.settlePatients(),
-    );
-  };
-
-  orderByLastName = () => {
-    const { orderByLastName } = this.state;
-    this.setState(
-      {
-        orderByLastName: orderByLastName === 'asc' ? 'desc' : 'asc',
-        orderByFirstName: null,
-      },
-      () => this.settlePatients(),
-    );
-  };
-
-  // Set string search
-  searchBy = (searchTerm) => {
-    this.setState({ searchTerm }), () => this.settlePatients();
   };
 
   _renderPatients = () => {
@@ -115,72 +65,42 @@ export default class PatientList extends React.Component<Props, State> {
       medicalCase,
     } = this.props;
 
-    const { orderedFilteredPatients, patients } = this.state;
+    const { patients } = this.state;
+    console.log(this.state);
 
     return patients.length > 0 ? (
-      [
-        orderedFilteredPatients.length > 0 ? (
-          <List block key="patientList">
-            {orderedFilteredPatients.map((patient) => (
-              <ListItem
-                rounded
-                block
-                key={`${patient.id}_patient_list`}
-                spaced
-                onPress={() =>
-                  navigation.navigate('PatientProfile', {
-                    id: patient.id,
-                  })
-                }
-              >
-                <View w50>
-                  <Text>
-                    {patient.id} : {patient.lastname} {patient.firstname}
-                  </Text>
-                </View>
-                <View w50>
-                  <Text>{showBirthDatePatient(patient, medicalCase)}</Text>
-                </View>
-                <View w50>
-                  <Text>{patient.caseInProgress ? t('patient_list:case_in_progress') : null}</Text>
-                </View>
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          <View padding-auto margin-auto>
-            <Text not-available>{t('patient_list:not_found')}</Text>
-          </View>
-        ),
-      ]
+      <List block key="patientList">
+        {patients.map((patient) => (
+          <ListItem
+            rounded
+            block
+            key={`${patient.id}_patient_list`}
+            spaced
+            onPress={() =>
+              navigation.navigate('PatientProfile', {
+                id: patient.id,
+              })
+            }
+          >
+            <View w50>
+              <Text>
+                {patient.firstname} {patient.lastname}
+              </Text>
+            </View>
+            <View w50>
+              <Text>{showBirthDatePatient(patient, medicalCase)}</Text>
+            </View>
+            <View w50>
+              <Text>{patient.hasCaseInProgress ? t('patient_list:case_in_progress') : null}</Text>
+            </View>
+          </ListItem>
+        ))}
+      </List>
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('patient_list:no_patients')}</Text>
-      </View>
-    );
-  };
-
-  settlePatients = () => {
-    this.setState({ loading: true });
-
-    const { patients, searchTerm, orderByFirstName, orderByLastName } = this.state;
-
-    // Filter patient based on first name and last name by search term
-    const filteredPatients = filter(patients, (patient) => {
-      return patient?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) || patient?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase());
-    });
-
-    let orderedFilteredPatients;
-
-    if (orderByFirstName !== null) {
-      orderedFilteredPatients = orderBy(filteredPatients, ['firstname'], [orderByFirstName]);
-    }
-
-    if (orderByLastName !== null) {
-      orderedFilteredPatients = orderBy(filteredPatients, ['lastname'], [orderByLastName]);
-    }
-
-    this.setState({ orderedFilteredPatients, loading: false });
+        <View padding-auto margin-auto>
+          <Text not-available>{t('patient_list:no_patients')}</Text>
+        </View>
+      );
   };
 
   callBackClose = () => {
@@ -198,14 +118,6 @@ export default class PatientList extends React.Component<Props, State> {
       medicalCase,
     } = this.props;
 
-    Realm.open({ schema: [PatientModel] }).then((realm) => {
-      const patients = realm.objects('Patient');
-      console.log(patients);
-    })
-      .catch(error => {
-        console.log('ERROR', error);
-      });
-
     return (
       <ScrollView>
         <View padding-auto flex-container-column>
@@ -214,11 +126,11 @@ export default class PatientList extends React.Component<Props, State> {
           </LiwiTitle2>
           <View flex-container-row style={styles.marg}>
             <Item round style={styles.input}>
-              <Icon active name="search"/>
-              <Input value={searchTerm} onChangeText={this.searchBy}/>
+              <Icon active name="search" />
+              <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
             <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
-                              nextRoute="PatientUpsert" idPatient={null}/>
+              nextRoute="PatientUpsert" idPatient={null} />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
@@ -238,25 +150,25 @@ export default class PatientList extends React.Component<Props, State> {
                 }}
                 disabled={isGeneratingPatient}
               >
-                <Icon type="MaterialCommunityIcons" name="plus" white/>
+                <Icon type="MaterialCommunityIcons" name="plus" white />
               </Button>
             ) : null}
           </View>
 
-          <SeparatorLine/>
+          <SeparatorLine />
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByFirstName}>
-              {orderByFirstName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+              {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light onPress={this.orderByLastName}>
-              {orderByLastName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+              {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:surname')}</Text>
             </Button>
           </View>
-          {loading ? <LiwiLoader/> : this._renderPatients()}
+          {loading ? <LiwiLoader /> : this._renderPatients()}
         </View>
       </ScrollView>
     );
