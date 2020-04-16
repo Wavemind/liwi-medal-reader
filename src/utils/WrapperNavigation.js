@@ -28,8 +28,6 @@ import { screenWidth } from './constants';
 export const WrapperNavigation = (Component: React.ComponentType<any>, props = { navigationStatus: 'didFocus' }) =>
   class extends Component<any> {
     shouldComponentUpdate(nextProps, nextState) {
-      console.log(nextState.navigationStatus, Component);
-
       if (props.navigationStatus === 'willBlur') {
         return nextState.navigationStatus === 'didFocus' || nextState.navigationStatus === 'willBlur';
       }
