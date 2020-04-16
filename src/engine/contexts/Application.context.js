@@ -306,7 +306,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   async componentDidMount() {
-    console.log('hola start');
     let permissionReturned = await this.getGeo();
     let location = {
       coords: {
