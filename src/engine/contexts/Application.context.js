@@ -17,8 +17,11 @@ import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/
 import i18n from '../../utils/i18n';
 import { liwiColors } from '../../utils/constants';
 import { getDeviceInformation } from '../api/Device';
+import { PatientModel } from '../../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 
 const defaultValue = {};
+
 
 export const ApplicationContext = React.createContext<Object>(defaultValue);
 
@@ -92,8 +95,13 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   initContext = async () => {
     const session = await getItem('session');
     const user = await getItem('user');
+
     if (session !== null) {
-      this.setUserContext(session, user);
+      this.setState({
+        session,
+        user,
+        ready: true,
+      });
     } else {
       this.setState({ ready: true });
     }
@@ -101,11 +109,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   // Set user context
   setUserContext = (session, user = null) => {
-    this.setState({
-      session,
-      user,
-      ready: true,
-    });
+
   };
 
   // Unlock session from local credentials
@@ -327,4 +331,4 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component) => (props) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
