@@ -55,9 +55,9 @@ i18n
           select: '  Please select...', // Keep the space at the begin of string
           search: 'Search by name',
           disagree: 'Disagree',
-          custom: 'Do you want to manually add another diagnosis not proposed ?',
+          custom: 'Do you want to manually add another diagnosis not proposed?',
           titleadditional: 'Additional selected',
-          additional: 'Do you want to add an additional diagnosis not proposed ?',
+          additional: 'Do you want to add an additional diagnosis not proposed?',
           write: 'Write the medicine',
         },
         tooltip: {
@@ -81,7 +81,7 @@ i18n
           uptdate: 'Synchronized',
         },
         confirm: {
-          message: 'Do you want to close the current case and create new one ?',
+          message: 'Do you want to close the current case and create new one?',
           new: 'Create new case',
           continue: 'Continue creating case',
         },
@@ -258,7 +258,7 @@ i18n
           connect: 'Login',
         },
         unlock_session: {
-          who: 'Who are you ?',
+          who: 'Who are you?',
           fill: 'Fill the missing informations as Guest',
           pin: 'Enter the PIN to unlock the tablet',
           already: 'Already Logged as',

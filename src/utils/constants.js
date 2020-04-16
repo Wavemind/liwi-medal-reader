@@ -44,9 +44,9 @@ export const responsiveUi = {
       case screenWidth < screensScale.s:
         return 13;
       case screenWidth > screensScale.m && screenWidth < screensScale.l:
-        return 18;
+        return 16;
       case screenWidth > screensScale.l:
-        return 20;
+        return 18;
     }
   },
   padding: () => {
