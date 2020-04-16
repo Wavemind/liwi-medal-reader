@@ -13,6 +13,7 @@ import { getItem, getItems, getSession, setItem } from '../../src/engine/api/Loc
  */
 
 export const get = async (params) => {
+  console.log(params);
   const url = `${host}${params}`;
   const header = await getHeaders('GET', false);
 

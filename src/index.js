@@ -13,6 +13,7 @@ import { getItem } from './engine/api/LocalStorage';
 
 import Layout from './template/Layout.template';
 import TooltipModal from './components/ToolTipModal';
+import StatusIndicator from './components/StatusIndicator';
 
 export default class Root extends React.Component {
   async componentDidMount() {
@@ -31,6 +32,7 @@ export default class Root extends React.Component {
             <CustomModal />
             <TooltipModal />
             {__DEV__ ? <WavemindTools /> : null}
+            <StatusIndicator />
           </ApplicationProvider>
         </PersistGate>
       </Provider>
