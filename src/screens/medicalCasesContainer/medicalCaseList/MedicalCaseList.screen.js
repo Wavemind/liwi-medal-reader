@@ -10,7 +10,7 @@ import moment from 'moment';
 import { styles } from './MedicalCaseList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getArray } from '../../../engine/api/LocalStorage';
-import { medicalCaseStatus, routeDependingStatus } from '../../../../frontend_service/constants';
+import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
@@ -19,10 +19,11 @@ type State = StateApplicationContext & {};
 
 export default class MedicalCaseList extends React.Component<Props, State> {
   state = {
+    lockMedicalCases: {},
     medicalCases: [],
     orderedFilteredMedicalCases: [],
     searchTerm: '',
-    loading: false,
+    loading: true,
     orderByFirstName: 'asc',
     orderByStatus: null,
     orderByLastName: null,
@@ -47,6 +48,14 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     const patients = await getArray('patients');
     const medicalCases = [];
+    // Fake async
+    let lockMedicalCases = {
+      0: { locked: false },
+      1: { locked: true, by: 'Albert', at: '01-01-2020' },
+      2: { locked: false },
+      3: { locked: false },
+      4: { locked: false },
+    };
 
     patients.map((patient) => {
       patient.medicalCases.map((medicalCaseLocalStorage) => {
@@ -63,6 +72,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState(
       {
         medicalCases,
+        lockMedicalCases,
       },
       () => this.settleMedicalCase()
     );
@@ -197,52 +207,66 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
-    const { medicalCase, navigation } = this.props;
+    const { medicalCase, navigation, app, updateModalFromRedux } = this.props;
 
-    const { orderedFilteredMedicalCases, medicalCases } = this.state;
+    const { orderedFilteredMedicalCases, medicalCases, lockMedicalCases } = this.state;
 
     return medicalCases.length > 0 ? (
       [
         orderedFilteredMedicalCases.length > 0 ? (
           <List block key="medicalCaseList">
-            {orderedFilteredMedicalCases.map((medicalCaseItem) => (
-              <ListItem
-                rounded
-                block
-                style={{
-                  backgroundColor: '#ffffff',
-                }}
-                key={`${medicalCaseItem.id}_medical_case_list`}
-                spaced
-                onPress={async () => {
-                  const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
+            {orderedFilteredMedicalCases.map((medicalCaseItem) => {
+              // IS open
+              if (lockMedicalCases[medicalCaseItem.id].locked === false) {
+              } else {
+              }
 
-                  if (medicalCase.id !== medicalCaseItem.id) {
-                    await this.selectMedicalCase({
-                      ...medicalCaseItem,
-                    });
-                  }
+              return (
+                <ListItem
+                  rounded
+                  block
+                  style={{
+                    backgroundColor: '#ffffff',
+                  }}
+                  key={`${medicalCaseItem.id}_medical_case_list`}
+                  spaced
+                  onPress={async () => {
+                    // IF is not locked
+                    if (lockMedicalCases[medicalCaseItem.id].locked === false) {
+                      const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
 
-                  const route = routeDependingStatus(medicalCaseRoute);
-                  if (route !== undefined) {
-                    navigation.navigate(route);
-                  }
-                }}
-              >
-                <View w50>
-                  <Text>
-                    {medicalCaseItem.patient.id} : {medicalCaseItem.patient.lastname} {medicalCaseItem.patient.firstname}
-                  </Text>
-                </View>
-                <View w50>
-                  <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
-                </View>
+                      if (medicalCase.id !== medicalCaseItem.id) {
+                        await this.selectMedicalCase({
+                          ...medicalCaseItem,
+                        });
+                      }
 
-                <View w50>
-                  <Text>{medicalCase.id === medicalCaseItem.id ? moment(medicalCase.updated_at).calendar() : moment(medicalCaseItem.updated_at).calendar()}</Text>
-                </View>
-              </ListItem>
-            ))}
+                      const route = routeDependingStatus(medicalCaseRoute);
+                      if (route !== undefined) {
+                        navigation.navigate(route);
+                      }
+                    } else {
+                      // IS locked
+                      updateModalFromRedux(null, { ...lockMedicalCases[medicalCaseItem.id], id: medicalCaseItem.id }, toolTipType.medicalCaseLocked);
+                    }
+                  }}
+                >
+                  <View w50>
+                    <Text>
+                      {medicalCaseItem.patient.id}: {medicalCaseItem.patient.lastname} {medicalCaseItem.patient.firstname}
+                    </Text>
+                  </View>
+                  <View w50>
+                    <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
+                  </View>
+
+                  <View w50>
+                    <Text>{medicalCase.id === medicalCaseItem.id ? moment(medicalCase.updated_at).calendar() : moment(medicalCaseItem.updated_at).calendar()}</Text>
+                  </View>
+                  {lockMedicalCases[medicalCaseItem.id].locked ? <Icon type={'AntDesign'} name={'lock'} style={styles.lock} /> : <Icon type={'AntDesign'} name={'unlock'} style={styles.unlock} />}
+                </ListItem>
+              );
+            })}
           </List>
         ) : (
           <View padding-auto margin-auto>
@@ -263,6 +287,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     const {
       app: { t },
     } = this.props;
+
 
     // Order the medical case
     return (

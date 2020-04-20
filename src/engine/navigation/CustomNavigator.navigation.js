@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { RootMainNavigator } from './Root.navigation';
-import { medicalCaseStatus, navigationActionConstant, routeDependingStatus } from '../../../frontend_service/constants';
+import { medicalCaseStatus, navigationActionConstant, routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from './Navigation.service';
 import { store } from '../../../frontend_service/store';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
@@ -313,7 +313,7 @@ class CustomNavigator extends React.Component {
       if (validation.isActionValid) {
         return RootMainNavigator.router.getStateForAction(action, lastState);
       }
-      store.dispatch(updateModalFromRedux(null, validation));
+      store.dispatch(updateModalFromRedux(null, { validation }, toolTipType.validation));
       return null;
     },
   };

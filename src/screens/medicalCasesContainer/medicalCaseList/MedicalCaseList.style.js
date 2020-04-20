@@ -30,6 +30,9 @@ export const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 
+  lock: { color: liwiColors.redColor },
+  unlock: { color: liwiColors.greenColor },
+
   sorted: {
     marginTop: 30,
     alignItems: 'flex-start',

@@ -205,12 +205,13 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.MC_UPDATE_MODAL)
   updateModalFromRedux(state, action) {
-    const { content, navigator } = action.payload;
+    const { content, type, params } = action.payload;
 
     const newModal = {
       open: !state.modal.open,
       content,
-      navigator,
+      type,
+      params,
     };
 
     return {

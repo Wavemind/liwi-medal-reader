@@ -269,13 +269,18 @@ i18n
           title: 'Sync with server',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
-          logout: 'logout'
+          logout: 'logout',
         },
         popup: {
+          unlock: 'Force Unlock the case (at your own risk)',
+          close: 'Close the modal',
           title: 'Please allow access to the position',
           message: 'Location sharing is mandatory in order to use the medical service',
           ask_me_later: 'Ask me later',
           cancel: 'cancel',
+          by: 'by',
+          isLocked: 'This Medical Case is locked',
+          at: 'at',
         },
         sessions: {
           active: 'Sessions active',
