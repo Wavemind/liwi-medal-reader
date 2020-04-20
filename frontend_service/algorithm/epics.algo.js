@@ -196,12 +196,6 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
             actions.push(setDiagnoses('proposed', finalDiagnostic, 'remove'));
           }
 
-          if (state$.value.diagnoses.additional[finalDiagnosticId] === undefined) {
-            // Add it on additonal
-            // But the view already do it
-            // TODO disuss about that use case
-          }
-
           break;
         case null:
       }
@@ -221,7 +215,6 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
       // Check the condition of the children
       return of(...actions);
     })
-    // TODO : Trigger Treatment/Management handling
   );
 
 export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>

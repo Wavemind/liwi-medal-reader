@@ -70,7 +70,6 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
       medicalCase,
 
       app: { t },
-      selectedPage,
     } = this.props;
     const { finalDiagnostics, customDiagnoses } = this.state;
 
@@ -109,25 +108,25 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
           selectedItemIconColor={liwiColors.redColor}
           itemTextColor="#000"
           displayKey="label"
-          searchInputStyle={{ color: '#CCC' }}
+          searchInputStyle={styles.selectColor}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
         />
 
         <Text customTitle>{t('diagnoses:custom')}</Text>
-        <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
-          <Input style={{ flex: 1 }} common value={customDiagnoses} onChange={this._handleCustomInput} />
-          <Button style={{ width: 50 }} onPress={this._addCustom}>
-            <Icon active name="create-new-folder" type="MaterialIcons" style={{ fontSize: 18 }} />
+        <View style={styles.customContent}>
+          <Input style={styles.flex} common value={customDiagnoses} onChange={this._handleCustomInput} />
+          <Button style={styles.width50} onPress={this._addCustom}>
+            <Icon active name="create-new-folder" type="MaterialIcons" style={styles.iconSize} />
           </Button>
         </View>
         {diagnoses.custom.map((d) => (
-          <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
-            <Text style={{ flex: 1 }} size-auto>
+          <View style={styles.customItem}>
+            <Text style={styles.flex} size-auto>
               {d.label}
             </Text>
-            <Button style={{ width: 50 }} onPress={() => this._removeCustom(d)}>
-              <Icon active name="delete" type="AntDesign" style={{ fontSize: 18 }} />
+            <Button style={styles.width50} onPress={() => this._removeCustom(d)}>
+              <Icon active name="delete" type="AntDesign" style={styles.iconSize} />
             </Button>
           </View>
         ))}

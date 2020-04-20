@@ -10,4 +10,3 @@ export const styles = StyleSheet.create({
   drugContainer: { flex: 1, flexDirection: 'row', marginBottom: 5 },
   title: { backgroundColor: liwiColors.redColor, color: liwiColors.whiteColor, padding: 4, borderRadius: 2, paddingLeft: 20, marginBottom: 20 },
 });
-

@@ -194,27 +194,13 @@ export const questionsTests = () => {
   return assessmentTest;
 };
 
-export const titleMannualyDiagnoses = () => {
-  const state$ = store.getState();
-  const {
-    diagnoses: { additional },
-  } = state$;
-
-  if (Object.keys(additional).length === 0) {
-    return false;
-  }
-  let firstToTrue = false;
-  Object.keys(additional).map((q) => {
-    Object.keys(additional[q].drugs).map((f) => {
-      if (additional[q].drugs[f].agreed === true) {
-        firstToTrue = true;
-      }
-    });
-  });
-
-  return firstToTrue;
-};
-
+/**
+ *
+ * Define if the title of drugs additional / proposed must be shown
+ *
+ * @return :  Boolean
+ *
+ */
 export const titleManagementCounseling = () => {
   const state$ = store.getState();
   const { diagnoses } = state$;
@@ -243,27 +229,40 @@ export const titleManagementCounseling = () => {
   return isPossible;
 };
 
+/**
+ * Get drugs from 3 objects and return one object (manual merging)
+ * Object from :
+ * - Proposed
+ * - Additional
+ *
+ * @return : object list all drugs
+ *
+ */
 export const getDrugs = () => {
   const state$ = store.getState();
   const {
     diagnoses,
     diagnoses: { additionalDrugs },
   } = state$;
+
   let drugs = {};
 
   const doubleString = ['proposed', 'additional'];
 
   doubleString.map((iteration) => {
     Object.keys(diagnoses[iteration]).map((diagnoseId) => {
+      // If diagnoses selected or additional (auto selected)
       if (diagnoses[iteration][diagnoseId].agreed === true || iteration === 'additional') {
+        // iterate over drugs
         Object.keys(diagnoses[iteration][diagnoseId].drugs).map((drugId) => {
           if (diagnoses[iteration][diagnoseId].drugs[drugId].agreed === true && calculateCondition(diagnoses[iteration][diagnoseId].drugs[drugId]) === true) {
             if (drugs[drugId] === undefined) {
-              // new one
+              // new one so add it
               drugs[drugId] = diagnoses[iteration][diagnoseId]?.drugs[drugId];
               drugs[drugId].diagnoses = [{ id: diagnoseId, type: iteration }];
             } else {
               // doublon
+              // manage it
               drugs[drugId].diagnoses.push({ id: diagnoseId, type: iteration });
               if (diagnoses[iteration][diagnoseId]?.drugs[drugId].duration > drugs[drugId].duration) {
                 drugs[drugId].duration = diagnoses[iteration][diagnoseId]?.drugs[drugId].duration;
@@ -275,13 +274,15 @@ export const getDrugs = () => {
     });
   });
 
+  // iterate over manually added drugs
   Object.keys(additionalDrugs).map((ky) => {
     if (drugs[ky] === undefined) {
-      // new one
+      // new one so add it
       drugs[ky] = additionalDrugs[ky];
       drugs[ky].diagnoses = [null];
     } else {
       // doublon
+      // manage it
       drugs[ky].diagnoses.push(null);
     }
   });

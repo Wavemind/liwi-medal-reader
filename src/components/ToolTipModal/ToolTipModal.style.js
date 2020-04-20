@@ -49,11 +49,13 @@ export const styles = StyleSheet.create({
     paddingRight: 0,
     paddingLeft: 0,
   },
+  textBold: { fontFamily: 'Roboto-Bold', color: liwiColors.redColor, marginTop: 10, textTransform: 'capitalize' },
   flexRow: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  content: { textAlign: 'center' },
   flexColumn: {
     flex: 1,
     flexDirection: 'column',
