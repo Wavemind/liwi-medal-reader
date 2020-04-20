@@ -8,6 +8,8 @@ import max from 'lodash/max';
 import { v4 as uuidv4 } from 'uuid';
 import { medicalCaseStatus, nodesType, stage } from '../../constants';
 import { getItem, getItems } from '../../../src/engine/api/LocalStorage';
+import { realm } from '../../../src/engine/api/databaseStorage';
+import { findById } from '../../../src/engine/api/databaseStorage';
 
 interface MedicalCaseInterface {
   props: {
@@ -39,8 +41,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       this.nodes = { ...currentAlgorithm.nodes };
       this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
-      this.updated_at = moment().toDate();;
-      this.created_at = moment().toDate();;
+      this.updated_at = moment().toDate();
+      this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
@@ -80,6 +82,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       this.generateExcludedId();
     }
     else {
+      console.time()
       const json = JSON.parse(this.json); // WARNING this might slow down the app
 
       this.version_id = json.version_id;
@@ -96,13 +99,17 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       };
       this.metaData = json.metaData;
       this.diagnoses = json.diagnoses;
+      console.timeEnd()
+
     }
     return this;
   }
 
-  create = async () => {
-
-  };
+  writeValue = (field, value) => {
+    realm().write(() => {
+      this[field] = value;
+    });
+  }
 
   /**
    * For each medicalCase who exclude other diagnostic, we set the id in both side.
@@ -205,7 +212,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
   };
 
   getPatient = () => {
-    return this.patient[0];
+    return findById('Patient', this.patient_id);
   }
 }
 
@@ -219,7 +226,7 @@ MedicalCaseModel.schema = {
     created_at: 'date',
     updated_at: 'date',
     status: 'string',
-    patient: { type: 'linkingObjects', objectType: 'Patient', property: 'medicalCases' }
+    patient_id: 'string'
   },
 };
 
