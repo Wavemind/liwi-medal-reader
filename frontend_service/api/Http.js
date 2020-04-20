@@ -15,6 +15,7 @@ import i18n from '../../src/utils/i18n';
  */
 
 export const get = async (params) => {
+  console.log(params);
   const url = `${host}${params}`;
   const header = await getHeaders('GET', false);
 
