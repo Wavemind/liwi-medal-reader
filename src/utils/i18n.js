@@ -35,7 +35,7 @@ i18n
           of: 'of',
         },
         diagnoses: {
-          which: 'Whidiagch formulation of medicine is available and appropriate for your patient?',
+          which: 'Which formulation of medicine is available and appropriate for your patient?',
           none: 'none',
           custom_duration: 'Custom duration',
           duration: 'duration',
