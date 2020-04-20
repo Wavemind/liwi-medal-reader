@@ -8,16 +8,12 @@ import filter from 'lodash/filter';
 import orderBy from 'lodash/orderBy';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
-import { ListView } from 'realm/react-native';
-
 
 import { styles } from './MedicalCaseList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getArray } from '../../../engine/api/LocalStorage';
 import { medicalCaseStatus, routeDependingStatus } from '../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { getAll } from '../../../engine/api/databaseStorage';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -48,13 +44,14 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
+    const { app: { database, isConnected } } = this.props;
     this.setState({ loading: true });
 
-    const medicalCases = getAll('MedicalCase');
+    const medicalCases = database.getAll(isConnected, 'MedicalCase');
 
     this.setState({
       medicalCases,
-      loading: false
+      loading: false,
     });
   };
 
@@ -68,7 +65,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: null,
         orderByFirstName: orderByFirstName === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase()
+      () => this.settleMedicalCase(),
     );
   };
 
@@ -81,7 +78,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByFirstName: null,
         orderByLastName: orderByLastName === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase()
+      () => this.settleMedicalCase(),
     );
   };
 
@@ -95,7 +92,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: null,
         orderByStatus: orderByStatus === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase()
+      () => this.settleMedicalCase(),
     );
   };
 
@@ -109,7 +106,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: orderByUpdate === 'asc' ? 'desc' : 'asc',
         orderByStatus: null,
       },
-      () => this.settleMedicalCase()
+      () => this.settleMedicalCase(),
     );
   };
 
@@ -123,7 +120,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: null,
         orderByLastName: null,
       },
-      () => this.settleMedicalCase()
+      () => this.settleMedicalCase(),
     );
   };
 
@@ -232,13 +229,13 @@ export default class MedicalCaseList extends React.Component<Props, State> {
               </View>
             </ListItem>
           ))}
-        </List>
+        </List>,
       ]
     ) : (
-        <View padding-auto margin-auto>
-          <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
-        </View>
-      );
+      <View padding-auto margin-auto>
+        <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
+      </View>
+    );
   };
 
   render() {
@@ -255,8 +252,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
           <LiwiTitle2 noBorder>{t('medical_case_list:search')}</LiwiTitle2>
           <View flex-container-row>
             <Item round style={styles.input}>
-              <Icon active name="search" />
-              <Input value={searchTerm} onChangeText={this.searchBy} />
+              <Icon active name="search"/>
+              <Input value={searchTerm} onChangeText={this.searchBy}/>
             </Item>
           </View>
           <View flex-container-row style={styles.filter}>
@@ -265,37 +262,37 @@ export default class MedicalCaseList extends React.Component<Props, State> {
             </Button>
             <Text style={styles.textFilter}>{t('medical_case_list:waiting')}</Text>
             <Picker style={styles.picker} mode="dropdown" selectedValue={filterTerm} onValueChange={this.filterBy}>
-              <Picker.Item label="" value="" />
+              <Picker.Item label="" value=""/>
               {statuses.map((status) => (
-                <Picker.Item label={t(`medical_case_list:${status}`)} key={`${status}status_list`} value={status} />
+                <Picker.Item label={t(`medical_case_list:${status}`)} key={`${status}status_list`} value={status}/>
               ))}
             </Picker>
           </View>
 
-          <SeparatorLine />
+          <SeparatorLine/>
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('medical_case_list:sort')}</Text>
             <View style={styles.filters}>
               <Button center rounded light onPress={this.orderByFirstName}>
-                {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+                {orderByFirstName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
                 <Text>{t('medical_case_list:name')}</Text>
               </Button>
               <Button center rounded light onPress={this.orderByLastName}>
-                {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+                {orderByLastName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
                 <Text>{t('medical_case_list:surname')}</Text>
               </Button>
               <Button center rounded light onPress={this.orderByStatus}>
-                {orderByStatus === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+                {orderByStatus === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
                 <Text>{t('medical_case_list:status')}</Text>
               </Button>
               <Button center rounded light onPress={this.orderByUpdate}>
-                {orderByUpdate === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
+                {orderByUpdate === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
                 <Text>{t('medical_case_list:update')}</Text>
               </Button>
             </View>
           </View>
-          {loading ? <LiwiLoader /> : this._renderMedicalCase()}
+          {loading ? <LiwiLoader/> : this._renderMedicalCase()}
         </View>
       </ScrollView>
     );
