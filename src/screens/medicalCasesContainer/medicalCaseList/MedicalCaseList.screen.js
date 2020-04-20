@@ -9,7 +9,6 @@ import orderBy from 'lodash/orderBy';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 
-
 import { styles } from './MedicalCaseList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { medicalCaseStatus, routeDependingStatus } from '../../../../frontend_service/constants';

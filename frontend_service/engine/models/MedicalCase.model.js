@@ -82,7 +82,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       this.generateExcludedId();
     }
     else {
-      console.time()
       const json = JSON.parse(this.json); // WARNING this might slow down the app
 
       this.version_id = json.version_id;
@@ -99,21 +98,13 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       };
       this.metaData = json.metaData;
       this.diagnoses = json.diagnoses;
-      console.timeEnd()
-
     }
     return this;
   }
 
-  writeValue = (field, value) => {
-    realm().write(() => {
-      this[field] = value;
-    });
-  }
-
   /**
-   * For each medicalCase who exclude other diagnostic, we set the id in both side.
-   * */
+  * For each medicalCase who exclude other diagnostic, we set the id in both side.
+  * */
   generateExcludedId = () => {
     for (const index in this.nodes) {
       if (this.nodes.hasOwnProperty(index)) {
@@ -127,10 +118,10 @@ export class MedicalCaseModel implements MedicalCaseInterface {
   };
 
   /**
-   * Set condition values of question in order to prepare them for second batch (before the triage one)
-   * @param [Json] algorithm
-   * @return [Json] algorithm
-   * */
+  * Set condition values of question in order to prepare them for second batch (before the triage one)
+  * @param [Json] algorithm
+  * @return [Json] algorithm
+  * */
   setInitialConditionValue = async (algorithm) => {
     const { diagnostics, nodes } = algorithm;
     try {
@@ -175,9 +166,9 @@ export class MedicalCaseModel implements MedicalCaseInterface {
   };
 
   /**
-   * Recursive function to also set dd and qs parents of current qs
-   * @params [Json][Integer][Integer] algorithm, parentId, id
-   * */
+  * Recursive function to also set dd and qs parents of current qs
+  * @params [Json][Integer][Integer] algorithm, parentId, id
+  * */
   setParentConditionValue = (algorithm, parentId, id) => {
     let conditionValue = false;
     const { diagnostics, nodes } = algorithm;
@@ -211,8 +202,24 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     });
   };
 
+
+  /**
+  * Returns the linked Patient
+  * @return {Patient} - The related Patient.
+  */
   getPatient = () => {
     return findById('Patient', this.patient_id);
+  }
+
+  /**
+  * Write a value in the database
+  * @param {string} field - The attribute to update.
+  * @param {any} value - The value to set.
+  */
+  writeValue = (field, value) => {
+    realm().write(() => {
+      this[field] = value;
+    });
   }
 }
 

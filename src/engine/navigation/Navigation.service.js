@@ -170,7 +170,6 @@ function onNavigationStateChange(prevState, currentState) {
   const prev = getActiveRouteName(prevState);
   const cu = getCurrentRoute(currentState);
 
-
   // prevent multiple execution
   if (activeRoute !== prev) {
     const state$ = store.getState();

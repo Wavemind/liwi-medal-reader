@@ -22,7 +22,6 @@ import { MedicalCaseModel } from '../../../frontend_service/engine/models/Medica
 
 const defaultValue = {};
 
-
 export const ApplicationContext = React.createContext<Object>(defaultValue);
 
 type Props = NavigationScreenProps & {
