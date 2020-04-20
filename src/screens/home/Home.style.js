@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
     backgroundColor: liwiColors.whiteDark,
-    // borderWidth: 1,
     borderColor: liwiColors.lightGreyColor,
     borderRadius: 3,
     elevation: 1,
@@ -21,5 +20,6 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
+  back: { backgroundColor: '#fff' },
   textButton: { color: liwiColors.blackLightColor },
 });

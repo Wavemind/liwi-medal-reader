@@ -20,10 +20,37 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        drug: {
+          give: 'Give',
+          mg: 'mg',
+          caps: 'capsule of',
+          every: 'every',
+          h: 'hours for',
+          days: 'days',
+          mode: 'Mode',
+          tablet: 'tablet of',
+          d: 'duration',
+          admin: 'Administration',
+          ml: 'ml',
+          of: 'of',
+        },
         diagnoses: {
+          which: 'Which formulation of medicine is available and appropriate for your patient?',
+          none: 'none',
+          custom_duration: 'Custom duration',
+          duration: 'duration',
+          add_medicine: 'Additionnal Medicines',
+          proposed_medicine: 'Medicines proposed by',
+          another: 'Another diagnoses not proposed',
+          manually_medicine: 'Manually added Medicines',
+          list: 'List of diagnoses',
           add: 'Create',
+          weight: 'weight',
+          sum: 'Summary Treatment',
           proposed: 'Diagnoses proposed by',
           agree: 'Agree',
+          man: 'Management & Counseling',
+          medicine: 'Medicine',
           close: 'Close',
           select: '  Please select...', // Keep the space at the begin of string
           search: 'Search by name',
@@ -31,6 +58,7 @@ i18n
           custom: 'Do you want to manually add another diagnosis not proposed ?',
           titleadditional: 'Additional selected',
           additional: 'Do you want to add an additional diagnosis not proposed ?',
+          write: 'Write the medicine',
         },
         tooltip: {
           invalidQuestions: 'Question(s) to fill',
@@ -232,6 +260,10 @@ i18n
           connect: 'Login',
         },
         unlock_session: {
+          who: 'Who are you ?',
+          fill: 'Fill the missing informations as Guest',
+          pin: 'Enter the PIN to unlock the tablet',
+          already: 'Already Logged as',
           email: 'Email',
           assign: 'An administrator will assign you to a group',
           code: 'Code',
@@ -239,6 +271,7 @@ i18n
           title: 'Sync with server',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
+          logout: 'logout'
         },
         popup: {
           title: 'Please allow access to the position',
@@ -270,6 +303,7 @@ i18n
           available_algorithms: 'Available algorithms',
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
+          conditions: 'Treatment Conditions',
         },
         common: {
           back: 'Back',

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-import { Icon, Text, View, Button, Input } from 'native-base';
-import { styles } from './CustomMedecine.style';
-export default class CustomMedecine extends Component<{}> {
+import { Button, Icon, Input, Text, View } from 'native-base';
+import { styles } from './CustomMedicine.style';
+
+export default class CustomMedicine extends Component<{}> {
   state = {
     customDrug: '',
   };
@@ -37,7 +38,7 @@ export default class CustomMedecine extends Component<{}> {
           {diagnose.label}
         </Text>
         <View style={styles.item}>
-          <Input style={styles.input} common value={customDrug} onChange={this._handleCustomInput} placeholder={'Write the medicine'} />
+          <Input style={styles.input} common value={customDrug} onChange={this._handleCustomInput} placeholder={t('diagnoses:write')} />
           <Button style={styles.button} onPress={this._addCustom}>
             <Icon style={styles.icon} active name="create-new-folder" type="MaterialIcons" />
           </Button>
