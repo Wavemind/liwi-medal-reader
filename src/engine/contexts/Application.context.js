@@ -259,17 +259,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     user: null,
   };
 
-  // fetch algorithms when change
-  _fetchDataWhenChange = async () => {
-    // await fetchAlgorithms();
-  };
-
   _handleConnectivityChange = async (isConnected) => {
     if (isConnected.type.match(/wifi|cellular/)) {
       this.setState({
         isConnected: true,
       });
-      await this._fetchDataWhenChange();
     } else if (isConnected.type.match(/unknown|none/)) {
       this.setState({
         isConnected: false,
@@ -315,7 +309,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       console.warn('---> Liwi came back from backgrond', nextAppState);
       await setItem(appInBackgroundStateKey, true);
 
-      this._fetchDataWhenChange();
       this.setState({ appState: nextAppState, logged: false });
     }
 
