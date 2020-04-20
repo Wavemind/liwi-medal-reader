@@ -57,7 +57,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   _handleLocalData = async () => {
     let localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
     let request = await localDataOn;
-    console.log(request);
     if (request === undefined || request?.status !== 200) {
       this.disconnectApp();
     }
@@ -191,7 +190,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @return boolean
    */
   getGroupData = async (showToast = true) => {
-    const { isConnected } = this.state;
+    const { isConnected, t } = this.state;
     if (isConnected) {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
@@ -206,7 +205,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         await fetchAlgorithms();
         this.setState({ session: { ...session, group } });
         // Show success toast
-        showToast ? this.showSuccessToast('Receiving group data and medical staff') : null;
+        showToast ? this.showSuccessToast(t('notifications:get_group')) : null;
         return true;
       }
     }
@@ -369,7 +368,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (this.unsubscribeNetInfo !== undefined && isFunction(this.unsubscribeNetInfo)) {
       this.unsubscribeNetInfo();
     }
-    console.log(this.unsubscribeIntervalLocalData);
 
     if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
       this.unsubscribeIntervalLocalData();
