@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => { },
+  cacheUserLanguage: () => { },
 };
 
 i18n
@@ -135,6 +135,7 @@ i18n
           devices: 'Medical devices',
           tests: 'Medical tests available',
           awake: 'Keep awake',
+          production: 'Serveur de production',
           app: 'Application',
         },
         work_case: {

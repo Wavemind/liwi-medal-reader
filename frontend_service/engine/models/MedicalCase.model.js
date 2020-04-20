@@ -5,6 +5,7 @@ import find from 'lodash/find';
 import forEach from 'lodash/forEach';
 import maxBy from 'lodash/maxBy';
 import max from 'lodash/max';
+import { v4 as uuidv4 } from 'uuid';
 import { medicalCaseStatus, nodesType, stage } from '../../constants';
 import { getItem, getItems } from '../../../src/engine/api/LocalStorage';
 
@@ -22,70 +23,92 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
+
+  constructor(props, currentAlgorithm) {
+
+    if (this.id === undefined) {
+      this.setInitialConditionValue(currentAlgorithm);
+      this.id = uuidv4();
+      this.name = currentAlgorithm.name;
+      this.algorithm_name = currentAlgorithm.algorithm_name;
+      this.version_name = currentAlgorithm.version_name;
+      this.version = currentAlgorithm.version;
+      this.version_id = currentAlgorithm.version_id !== undefined ? currentAlgorithm.version_id : null;
+      this.algorithm_id = currentAlgorithm.algorithm_id;
+      this.diagnostics = currentAlgorithm.diagnostics;
+      this.nodes = { ...currentAlgorithm.nodes };
+      this.triage = currentAlgorithm.triage;
+      this.synchronized_at = null;
+      this.updated_at = moment().toDate();;
+      this.created_at = moment().toDate();;
+      this.status = medicalCaseStatus.inCreation.name;
+      this.main_data_medical_case_id = null;
+      this.complaintCategories = [];
+      this.isNewCase = true;
+      this.modal = {
+        open: false,
+        content: '',
+        navigator: {},
+      };
+      this.metaData = {
+        patientupsert: {
+          custom: [],
+        },
+        triage: {
+          firstLookAssessments: [],
+          complaintCategories: [],
+          basicMeasurements: [],
+        },
+        consultation: {
+          medicalHistory: [],
+          physicalExam: [],
+        },
+        tests: {
+          tests: [],
+        },
+        diagnosticsStrategy: {
+          managementQuestions: [],
+        },
+      };
+      this.diagnoses = {
+        proposed: {}, // Retaind by algo
+        custom: [], // Add by the input
+        additional: {}, // Add even though it's false
+        additionalDrugs: {},
+        customDrugs: [],
+      };
+      this.generateExcludedId();
+    }
+    else {
+      const json = JSON.parse(this.json); // WARNING this might slow down the app
+
+      this.version_id = json.version_id;
+      this.algorithm_id = json.algorithm_id;
+      this.diagnostics = json.diagnostics;
+      this.nodes = json.nodes;
+      this.triage = json.triage;
+      this.complaintCategories = json.complaintCategories;
+      this.isNewCase = false;
+      this.modal = {
+        open: false,
+        content: '',
+        navigator: {},
+      };
+      this.metaData = json.metaData;
+      this.diagnoses = json.diagnoses;
+    }
+    console.log(this);
+    return this;
+  }
+
   create = async () => {
-    const algorithms = await getItems('algorithms');
-    const currentAlgorithm = find(algorithms, (a) => a.selected);
 
-    await this.setInitialConditionValue(currentAlgorithm);
-
-    this.name = currentAlgorithm.name;
-    this.algorithm_name = currentAlgorithm.algorithm_name;
-    this.version_name = currentAlgorithm.version_name;
-    this.version = currentAlgorithm.version;
-    this.version_id = currentAlgorithm.version_id !== undefined ? currentAlgorithm.version_id : null;
-    this.algorithm_id = currentAlgorithm.algorithm_id;
-    this.diagnostics = currentAlgorithm.diagnostics;
-    this.nodes = { ...currentAlgorithm.nodes };
-    this.selected = currentAlgorithm.selected;
-    this.triage = currentAlgorithm.triage;
-    this.synchronized_at = null;
-    this.updated_at = moment().format();
-    this.created_at = moment().format();
-    this.status = medicalCaseStatus.inCreation.name;
-    this.main_data_medical_case_id = null;
-    this.complaintCategories = [];
-    this.isNewCase = true;
-    this.modal = {
-      open: false,
-      content: '',
-      navigator: {},
-    };
-    this.metaData = {
-      patientupsert: {
-        custom: [],
-      },
-      triage: {
-        firstLookAssessments: [],
-        complaintCategories: [],
-        basicMeasurements: [],
-      },
-      consultation: {
-        medicalHistory: [],
-        physicalExam: [],
-      },
-      tests: {
-        tests: [],
-      },
-      diagnosticsStrategy: {
-        managementQuestions: [],
-      },
-    };
-    this.diagnoses = {
-      proposed: {}, // Retaind by algo
-      custom: [], // Add by the input
-      additional: {}, // Add even though it's false
-      additionalDrugs: {},
-      customDrugs: [],
-    };
-
-    await this.generateExcludedId();
-    await this.generateId();
   };
 
   /**
    * For each medicalCase who exclude other diagnostic, we set the id in both side.
    * */
-  generateExcludedId = async () => {
+  generateExcludedId = () => {
     for (const index in this.nodes) {
       if (this.nodes.hasOwnProperty(index)) {
         const item = this.nodes[index];
@@ -95,30 +118,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
         }
       }
     }
-  };
-
-  /**
-   * Generate id for a medical case
-   * */
-  generateId = async () => {
-    const patients = await getItem('patients');
-    const medicalCaseIds = [];
-    let lastId = 0;
-    let medicalCase = {};
-
-    // Find highest id in all medical cases
-    forEach(patients, (p) => {
-      medicalCase = maxBy(p.medicalCases, 'id');
-      if (medicalCase !== undefined) {
-        medicalCaseIds.push(medicalCase.id);
-      }
-    });
-
-    if (medicalCaseIds.length !== 0) {
-      lastId = max(medicalCaseIds);
-    }
-
-    this.id = lastId + 1;
   };
 
   /**
@@ -205,6 +204,10 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       }
     });
   };
+
+  getPatient = () => {
+    return this.patient[0];
+  }
 }
 
 MedicalCaseModel.schema = {
@@ -212,8 +215,10 @@ MedicalCaseModel.schema = {
   primaryKey: 'id',
   properties: {
     id: 'string',
-    created_at: 'string',
     json: 'string',
+    synchronized_at: 'date?',
+    created_at: 'date',
+    updated_at: 'date',
     patient: { type: 'linkingObjects', objectType: 'Patient', property: 'medicalCases' }
   },
 };

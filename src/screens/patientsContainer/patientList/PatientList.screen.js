@@ -9,10 +9,8 @@ import { styles } from './PatientList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import { getItems } from '../../../engine/api/LocalStorage';
 import { getAll } from '../../../engine/api/databaseStorage';
-import { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import ConfirmationView from '../../../components/ConfirmationView';
-import { showBirthDatePatient } from '../../../../frontend_service/algorithm/treeDiagnosis.algo';
 
 export default class PatientList extends React.Component {
   state = {
@@ -36,7 +34,6 @@ export default class PatientList extends React.Component {
 
   async componentDidMount() {
     const { navigation } = this.props;
-
     // Force refresh with a navigation.push
     navigation.addListener('willFocus', async () => {
       await this.fetchPatients();
@@ -48,7 +45,7 @@ export default class PatientList extends React.Component {
     this.setState({ loading: true });
     const patients = getAll('Patient');
     const algorithms = await getItems('algorithms');
-    console.log("Coucou")
+
     this.setState(
       {
         algorithms,
@@ -62,11 +59,9 @@ export default class PatientList extends React.Component {
     const {
       navigation,
       app: { t },
-      medicalCase,
     } = this.props;
 
     const { patients } = this.state;
-    console.log(this.state);
 
     return patients.length > 0 ? (
       <List block key="patientList">
@@ -88,7 +83,7 @@ export default class PatientList extends React.Component {
               </Text>
             </View>
             <View w50>
-              <Text>{showBirthDatePatient(patient, medicalCase)}</Text>
+              <Text>{patient.printBirhdate()}</Text>
             </View>
             <View w50>
               <Text>{patient.hasCaseInProgress ? t('patient_list:case_in_progress') : null}</Text>

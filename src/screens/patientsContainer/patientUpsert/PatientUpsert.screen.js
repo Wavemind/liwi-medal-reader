@@ -18,6 +18,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import { stage } from '../../../../frontend_service/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { getAll } from '../../../engine/api/databaseStorage';
+import { findById } from '../../../engine/api/databaseStorage';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -48,11 +49,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (algorithms.length === 0) {
       this.setState({ patient });
     } else {
-      // Generate medical case
-      let generatedMedicalCase;
       if (newMedicalCase) {
-        generatedMedicalCase = await this.generateMedicalCase();
-        generatedMedicalCase.isNewCase = true;
+        let generatedMedicalCase = await new MedicalCaseModel({}, algorithms[algorithms.length - 1]);
+
         await setMedicalCase({
           ...generatedMedicalCase,
           patient: { ...patient, medicalCases: [] }, // Force
@@ -90,10 +89,20 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @params [String] route
    */
   save = async (newRoute) => {
-    await this.setState({ loading: true });
-    const { navigation } = this.props;
-    const isSaved = await this.savePatient();
+    const { navigation, medicalCase, updateMedicalCaseProperty } = this.props;
+    const patientId = navigation.getParam('idPatient');
+    let isSaved = false;
 
+    await this.setState({ loading: true });
+
+    updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
+
+    if (patientId !== null) {
+      const patient = findById('Patient', patientId);
+      isSaved = patient.addMedicalCase(medicalCase);
+    } else {
+      isSaved = await this.savePatient();
+    }
     if (isSaved) {
       const currentRoute = NavigationService.getCurrentRoute();
       // Replace the nextRoute navigation at the current index
@@ -144,30 +153,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   /**
-   * Generate medical case for current patient
-   * @params [Object] patient
-   * @return [Object] medical case
-   */
-  generateMedicalCase = async () => {
-    const instanceMedicalCase = new MedicalCaseModel();
-    await instanceMedicalCase.create();
-    return instanceMedicalCase;
-  };
-
-  /**
    * Set patient and medical case in localStorage
    */
   savePatient = async () => {
     const { patient } = this.state;
-    const { updateMedicalCaseProperty, medicalCase } = this.props;
+    const { medicalCase } = this.props;
     const errors = await patient.validate();
 
     // Create patient if there are no errors
     if (_.isEmpty(errors)) {
-      medicalCase.isNewCase = 'false'; // Workaround because redux persist is buggy with boolean
-      updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
       patient.medicalCases.push(medicalCase);
       await patient.save();
+
       return true;
     }
     this.setState({ errors });

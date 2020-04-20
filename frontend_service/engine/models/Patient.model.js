@@ -3,11 +3,13 @@
 import * as _ from 'lodash';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
+import find from 'lodash/find';
 
-import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage';
+
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
 import { createObject } from '../../../src/engine/api/databaseStorage';
+import { realm } from '../../../src/engine/api/databaseStorage';
 
 
 interface PatientModelInterface {
@@ -21,11 +23,6 @@ interface PatientModelInterface {
 
 export class PatientModel implements PatientModelInterface {
   constructor(props = {}) {
-    this.create(props);
-  }
-
-  // Generate default patient value
-  create = async (props = {}) => {
     const {
       firstname = __DEV__ ? 'John' : '',
       lastname = __DEV__ ? 'Doe' : '',
@@ -44,12 +41,10 @@ export class PatientModel implements PatientModelInterface {
       this.medicalCases = medicalCases;
       this.main_data_patient_id = main_data_patient_id;
     }
-  };
+  }
 
   // Create patient and push it in local storage
   save = async () => {
-    const flatten = { ...this };
-
     const medicalCase = this.medicalCases[this.medicalCases.length - 1]
 
     createObject('Patient', {
@@ -58,11 +53,17 @@ export class PatientModel implements PatientModelInterface {
       lastname: this.lastname,
       birthdate: this.birthdate,
       gender: this.gender,
-      medicalCases: [{ id: uuidv4(), created_at: 'string', json: JSON.stringify(medicalCase) }],
+      medicalCases: [{ ...medicalCase, json: JSON.stringify(medicalCase) }],
       main_data_patient_id: this.main_data_patient_id,
     });
+  };
 
-    await setItemFromArray('patients', flatten, flatten.id);
+  addMedicalCase = (medicalCase) => {
+    medicalCase.json = JSON.stringify(medicalCase);
+    realm().write(() => {
+      this.medicalCases.push(medicalCase);
+    });
+    return true;
   };
 
   // Validate input
@@ -88,11 +89,6 @@ export class PatientModel implements PatientModelInterface {
     return errors;
   };
 
-  // Get all patients in store
-  getPatients = async () => {
-    return await getArray('patients');
-  };
-
   /**
   * Defines if the patient has at least one medical case on going
   * @returns Boolean
@@ -103,6 +99,34 @@ export class PatientModel implements PatientModelInterface {
         return true;
     });
     return false;
+  };
+
+  /**
+   * @return string: return the birthdate for the patient
+   */
+  printBirhdate = () => {
+
+    // Filter medicalCase with date not null
+    const medicalCaseWithBirthDate = this.medicalCases.filter((e) => {
+      const date = find(e.nodes, { reference: 1, category: 'demographic', stage: 'registration' });
+      if (date !== undefined) {
+        return date.value !== null;
+      }
+    });
+
+    // Sort medical cases by updated_at for get the last
+    const medicalCase = medicalCaseWithBirthDate.sort((a, b) => {
+      const dateA = moment(a.updated_at);
+      const dateB = moment(b.updated_at);
+      return dateB.diff(dateA);
+    })[0];
+
+    // Medical case match
+    if (medicalCase) {
+      // Parse date
+      return moment(find(medicalCase.nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
+    }
+    return 'Age is not defined';
   };
 }
 
