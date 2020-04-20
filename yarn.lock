@@ -1855,9 +1855,9 @@
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.7.tgz#a65ce0702f55cb67fd777995de6fc7b3e5781903"
 
-"@react-native-community/netinfo@3.3.0-reachability.4":
-  version "3.3.0-reachability.4"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-3.3.0-reachability.4.tgz#af70ba0bfe5698c6caf8bfb95334ede7a3845775"
+"@react-native-community/netinfo@5.7.1":
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.7.1.tgz#715a6061307055c6aa59c901bca313050695f75e"
 
 "@react-native-community/viewpager@^1.1.7":
   version "1.1.7"

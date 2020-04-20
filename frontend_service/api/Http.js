@@ -3,7 +3,7 @@ import find from 'lodash/find';
 import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
 import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
-import { getItem, getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
+import { getItem, getItems, setItem } from '../../src/engine/api/LocalStorage';
 import { store } from '../store';
 import { updateModalFromRedux } from '../actions/creators.actions';
 import i18n from '../../src/utils/i18n';
@@ -15,7 +15,6 @@ import i18n from '../../src/utils/i18n';
  */
 
 export const get = async (params) => {
-  console.log(params);
   const url = `${host}${params}`;
   const header = await getHeaders('GET', false);
 

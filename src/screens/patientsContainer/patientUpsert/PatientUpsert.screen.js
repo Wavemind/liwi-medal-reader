@@ -13,12 +13,10 @@ import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
 import { styles } from './PatientUpsert.style';
-import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
+import { getItems } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { stage } from '../../../../frontend_service/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { getAll } from '../../../engine/api/databaseStorage';
-import { findById } from '../../../engine/api/databaseStorage';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -74,12 +72,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * Get patient with id in navigation props
    */
   async getPatient() {
-    const { navigation } = this.props;
+    const { navigation, app:{dataStorage, isConnected} } = this.props;
 
     const id = navigation.getParam('idPatient');
     //    let patient = await getItemFromArray('patients', 'id', id);
 
-    const patient = getAll('Patient').filtered('id == $0', id)[0];
+    const patient = database.getAll(isConnected, 'Patient').filtered('id == $0', id)[0];
 
     return patient;
   }
@@ -89,7 +87,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @params [String] route
    */
   save = async (newRoute) => {
-    const { navigation, medicalCase, updateMedicalCaseProperty } = this.props;
+    const { navigation, medicalCase, updateMedicalCaseProperty, app:{database, isConnected} } = this.props;
     const patientId = navigation.getParam('idPatient');
     let isSaved = false;
 
@@ -98,7 +96,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
 
     if (patientId !== null) {
-      const patient = findById('Patient', patientId);
+      const patient = database.findById(isConnected, 'Patient', patientId);
       isSaved = patient.addMedicalCase(medicalCase);
     } else {
       isSaved = await this.savePatient();
@@ -119,7 +117,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               routeName: newRoute,
             }),
           ],
-        })
+        }),
       );
 
       await this.setState({ loading: false });
@@ -194,7 +192,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         ],
         'OR',
         'array',
-        false
+        false,
       );
     }
 
@@ -207,79 +205,82 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData(
         'patientupsert',
         'custom',
-        extraQuestions.map(({ id }) => id)
+        extraQuestions.map(({ id }) => id),
       );
     }
 
     return (
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="always"
+        testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
-          <LiwiLoader />
+          <LiwiLoader/>
         ) : (
-            <React.Fragment>
-              <View>
-                <Col>
-                  <CustomInput
-                    init={patient.firstname}
-                    label={t('patient:first_name')}
-                    change={updatePatientValue}
-                    index="firstname"
-                    iconName="user"
-                    iconType="AntDesign"
-                    error={errors.firstname}
-                    autoCapitalize="sentences"
-                  />
-                  <CustomInput
-                    init={patient.lastname}
-                    label={t('patient:last_name')}
-                    change={updatePatientValue}
-                    index="lastname"
-                    iconName="user"
-                    iconType="AntDesign"
-                    error={errors.lastname}
-                    autoCapitalize="sentences"
-                  />
-                </Col>
-                <Col>
-                  <CustomSwitchButton
-                    init={patient.gender}
-                    label={t('patient:gender')}
-                    change={updatePatientValue}
-                    index="gender"
-                    label1={t('patient:male')}
-                    label2={t('patient:female')}
-                    value1="male"
-                    value2="female"
-                    iconName="human-male-female"
-                    iconType="MaterialCommunityIcons"
-                    error={errors.gender}
-                  />
-                </Col>
-              </View>
-              <Questions questions={extraQuestions} />
-              <View bottom-view>
-                {algorithmReady ? (
-                  !loading ? (
-                    <View columns>
-                      <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
-                        <Text>{t('patient_upsert:save_and_wait')}</Text>
-                      </Button>
-                      <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
-                        <Text>{t('patient_upsert:save_and_case')}</Text>
-                      </Button>
-                    </View>
-                  ) : (
-                      <LiwiLoader />
-                    )
+          <React.Fragment>
+            <View>
+              <Col>
+                <CustomInput
+                  init={patient.firstname}
+                  label={t('patient:first_name')}
+                  change={updatePatientValue}
+                  index="firstname"
+                  iconName="user"
+                  iconType="AntDesign"
+                  error={errors.firstname}
+                  autoCapitalize="sentences"
+                />
+                <CustomInput
+                  init={patient.lastname}
+                  label={t('patient:last_name')}
+                  change={updatePatientValue}
+                  index="lastname"
+                  iconName="user"
+                  iconType="AntDesign"
+                  error={errors.lastname}
+                  autoCapitalize="sentences"
+                />
+              </Col>
+              <Col>
+                <CustomSwitchButton
+                  init={patient.gender}
+                  label={t('patient:gender')}
+                  change={updatePatientValue}
+                  index="gender"
+                  label1={t('patient:male')}
+                  label2={t('patient:female')}
+                  value1="male"
+                  value2="female"
+                  iconName="human-male-female"
+                  iconType="MaterialCommunityIcons"
+                  error={errors.gender}
+                />
+              </Col>
+            </View>
+            <Questions questions={extraQuestions}/>
+            <View bottom-view>
+              {algorithmReady ? (
+                !loading ? (
+                  <View columns>
+                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
+                      <Text>{t('patient_upsert:save_and_wait')}</Text>
+                    </Button>
+                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
+                      <Text>{t('patient_upsert:save_and_case')}</Text>
+                    </Button>
+                  </View>
                 ) : (
-                    <View columns>
-                      <Text>{t('work_case:no_algorithm')}</Text>
-                    </View>
-                  )}
-              </View>
-            </React.Fragment>
-          )}
+                  <LiwiLoader/>
+                )
+              ) : (
+                <View columns>
+                  <Text>{t('work_case:no_algorithm')}</Text>
+                </View>
+              )}
+            </View>
+          </React.Fragment>
+        )}
       </ScrollView>
     );
   }

@@ -2,14 +2,12 @@
 import * as React from 'react';
 import { Button, List, ListItem, Text, View } from 'native-base';
 import moment from 'moment';
-import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './PatientProfile.style';
-import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
+import { getItems } from '../../../engine/api/LocalStorage';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { routeDependingStatus } from '../../../../frontend_service/constants';
 import ConfirmationView from '../../../components/ConfirmationView';
-import { findById } from '../../../engine/api/databaseStorage';
 
 export default class PatientProfile extends React.Component {
   state = {
@@ -36,10 +34,10 @@ export default class PatientProfile extends React.Component {
   }
 
   async getPatient() {
-    const { navigation } = this.props;
+    const { navigation, app:{database} } = this.props;
     const id = navigation.getParam('id');
 
-    const patient = findById('Patient', id);
+    const patient = database.findById('Patient', id);
 
     const algorithms = await getItems('algorithms');
     this.setState({

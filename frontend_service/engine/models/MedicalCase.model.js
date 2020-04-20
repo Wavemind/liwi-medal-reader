@@ -1,13 +1,8 @@
 // @flow
 
 import moment from 'moment';
-import find from 'lodash/find';
-import forEach from 'lodash/forEach';
-import maxBy from 'lodash/maxBy';
-import max from 'lodash/max';
 import { v4 as uuidv4 } from 'uuid';
 import { medicalCaseStatus, nodesType, stage } from '../../constants';
-import { getItem, getItems } from '../../../src/engine/api/LocalStorage';
 
 interface MedicalCaseInterface {
   props: {
@@ -23,9 +18,7 @@ interface MedicalCaseInterface {
 }
 
 export class MedicalCaseModel implements MedicalCaseInterface {
-
   constructor(props, currentAlgorithm) {
-
     if (this.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuidv4();
@@ -39,8 +32,8 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       this.nodes = { ...currentAlgorithm.nodes };
       this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
-      this.updated_at = moment().toDate();;
-      this.created_at = moment().toDate();;
+      this.updated_at = moment().toDate();
+      this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
@@ -72,15 +65,14 @@ export class MedicalCaseModel implements MedicalCaseInterface {
         },
       };
       this.diagnoses = {
-        proposed: {}, // Retaind by algo
+        proposed: {}, // Retained by algo
         custom: [], // Add by the input
         additional: {}, // Add even though it's false
         additionalDrugs: {},
         customDrugs: [],
       };
       this.generateExcludedId();
-    }
-    else {
+    } else {
       const json = JSON.parse(this.json); // WARNING this might slow down the app
 
       this.version_id = json.version_id;
@@ -98,7 +90,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       this.metaData = json.metaData;
       this.diagnoses = json.diagnoses;
     }
-    console.log(this);
     return this;
   }
 
@@ -208,7 +199,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
 
   getPatient = () => {
     return this.patient[0];
-  }
+  };
 }
 
 MedicalCaseModel.schema = {
@@ -220,7 +211,6 @@ MedicalCaseModel.schema = {
     synchronized_at: 'date?',
     created_at: 'date',
     updated_at: 'date',
-    patient: { type: 'linkingObjects', objectType: 'Patient', property: 'medicalCases' }
+    patient: { type: 'linkingObjects', objectType: 'Patient', property: 'medicalCases' },
   },
 };
-

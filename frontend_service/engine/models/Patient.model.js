@@ -1,16 +1,12 @@
 // @flow
 
-import * as _ from 'lodash';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import find from 'lodash/find';
 
-
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
-import { createObject } from '../../../src/engine/api/databaseStorage';
-import { realm } from '../../../src/engine/api/databaseStorage';
-
+import Database from '../../../src/engine/api/Database';
 
 interface PatientModelInterface {
   id: number;
@@ -45,9 +41,9 @@ export class PatientModel implements PatientModelInterface {
 
   // Create patient and push it in local storage
   save = async () => {
-    const medicalCase = this.medicalCases[this.medicalCases.length - 1]
-
-    createObject('Patient', {
+    const medicalCase = this.medicalCases[this.medicalCases.length - 1];
+    const database = new Database();
+    database.createObject('Patient', {
       id: this.id,
       firstname: this.firstname,
       lastname: this.lastname,
@@ -90,9 +86,9 @@ export class PatientModel implements PatientModelInterface {
   };
 
   /**
-  * Defines if the patient has at least one medical case on going
-  * @returns Boolean
-  */
+   * Defines if the patient has at least one medical case on going
+   * @returns Boolean
+   */
   hasCaseInProgress = () => {
     this.medicalCases.map((medicalCase) => {
       if (medicalCase.status !== medicalCaseStatus.close)
@@ -124,7 +120,11 @@ export class PatientModel implements PatientModelInterface {
     // Medical case match
     if (medicalCase) {
       // Parse date
-      return moment(find(medicalCase.nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
+      return moment(find(medicalCase.nodes, {
+        reference: 1,
+        category: 'demographic',
+        stage: 'registration',
+      }).value).format('ll');
     }
     return 'Age is not defined';
   };
@@ -143,4 +143,3 @@ PatientModel.schema = {
     main_data_patient_id: { type: 'int', optional: true },
   },
 };
-

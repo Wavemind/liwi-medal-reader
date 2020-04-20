@@ -1,26 +1,23 @@
 // @flow
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
-import { sha256 } from 'js-sha256';
-import { NavigationScreenProps } from 'react-navigation';
-import { AppState, PermissionsAndroid } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
-import Geolocation from '@react-native-community/geolocation';
+import { NavigationScreenProps } from 'react-navigation';
+import { AppState, PermissionsAndroid } from 'react-native';
 
 import Toast from 'react-native-tiny-toast';
-import { getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
-import NavigationService from '../navigation/Navigation.service';
-import { appInBackgroundStateKey, host, saltHash, secondStatusLocalData } from '../../../frontend_service/constants';
-import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
-
 import i18n from '../../utils/i18n';
-import { liwiColors } from '../../utils/constants';
+import NavigationService from '../navigation/Navigation.service';
+import Database from '../api/Database';
+import { appInBackgroundStateKey, secondStatusLocalData } from '../../../frontend_service/constants';
+import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
+import { getItem, setItem } from '../api/LocalStorage';
 import { getDeviceInformation } from '../api/Device';
 import { handleHttpError } from '../../utils/CustomToast';
+import { liwiColors } from '../../utils/constants';
 import { isFunction } from '../../utils/swissKnives';
-import { PatientModel } from '../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 
 const defaultValue = {};
 export const ApplicationContext = React.createContext<Object>(defaultValue);
@@ -56,10 +53,21 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.initializeAsync();
   }
 
+  initializeAsync = async () => {
+    await this.initContext();
+
+    AppState.addEventListener('change', this._handleAppStateChange);
+
+    this.unsubscribeNetInfo = NetInfo.addEventListener(this._handleConnectivityChange);
+    const { isConnected } = this.state;
+    isConnected && this.startIntervalLocalData();
+  };
+
   _handleLocalData = async () => {
-    let localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
-    let request = await localDataOn;
-    console.log(request);
+    // TODO: put local-data ip
+    const localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
+    const request = await localDataOn;
+
     if (request === undefined || request?.status !== 200) {
       this.disconnectApp();
     }
@@ -74,16 +82,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   startIntervalLocalData = () => {
     this.unsubscribeIntervalLocalData = setInterval(this._handleLocalData, secondStatusLocalData);
-  };
-
-  initializeAsync = async () => {
-    await this.initContext();
-
-    AppState.addEventListener('change', this._handleAppStateChange);
-
-    this.unsubscribeNetInfo = NetInfo.addEventListener(this._handleConnectivityChange);
-    const { isConnected } = this.state;
-    isConnected && this.startIntervalLocalData();
   };
 
   getGeo = async () => {
@@ -126,24 +124,20 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   initContext = async () => {
     const session = await getItem('session');
     const user = await getItem('user');
-
     const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
     if (session !== null) {
       isConnected && (await this.getGroupData(false));
-      this.setUserContext(session, user, { isConnected });
+      const database = new Database();
+      this.setState({
+        session,
+        user,
+        ready: true,
+        isConnected,
+        database,
+      });
     } else {
       this.setState({ ready: true, isConnected });
     }
-  };
-
-  // Set user context
-  setUserContext = (session, user = null, extraParams = {}) => {
-    this.setState({
-      session,
-      user,
-      ready: true,
-      ...extraParams,
-    });
   };
 
   // Lock current session
@@ -242,7 +236,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * Create new session from NewSession
    */
   newSession = async (email: string, password: string) => {
-    // auth with serveur
+    // auth with server
     const session = await auth(email, password).catch((error) => {
       return error;
     });
@@ -254,11 +248,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       await setItem('session', concatSession);
 
       const deviceInfo = await getDeviceInformation();
-      // Register device to serveur
+      // Register device to server
       const register = await post('devices', { device: { ...deviceInfo } }, { token: 'group' });
 
       if (register === true) {
-        //Show toast
+        // Show toast
         this.showSuccessToast('Successfull tablet identification');
         return true;
       }
@@ -344,7 +338,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (this.unsubscribeNetInfo !== undefined && isFunction(this.unsubscribeNetInfo)) {
       this.unsubscribeNetInfo();
     }
-    console.log(this.unsubscribeIntervalLocalData);
 
     if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
       this.unsubscribeIntervalLocalData();
