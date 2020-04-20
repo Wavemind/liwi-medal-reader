@@ -41,9 +41,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (patientId === null && newMedicalCase === true) {
       patient = new PatientModel();
     } else if (patientId !== null && newMedicalCase === true) {
-      patient = await this.getPatient();
+      patient = findById('Patient', patientId);
     } else if (newMedicalCase === false) {
-      patient = new PatientModel(medicalCase.patient);
+      patient = findById('Patient', patientId);
     }
 
     if (algorithms.length === 0) {
@@ -68,20 +68,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   async componentDidMount() {
     await this.initializeComponent();
-  }
-
-  /**
-   * Get patient with id in navigation props
-   */
-  async getPatient() {
-    const { navigation } = this.props;
-
-    const id = navigation.getParam('idPatient');
-    //    let patient = await getItemFromArray('patients', 'id', id);
-
-    const patient = getAll('Patient').filtered('id == $0', id)[0];
-
-    return patient;
   }
 
   /**
@@ -206,7 +192,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (medicalCase.nodes !== undefined && medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
       updateMetaData('patientupsert', 'custom', extraQuestions.map(({ id }) => id));
     }
-
     return (
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>

@@ -111,6 +111,7 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
+          in_creation: "Demographic",
           medecines: 'Medicines',
           medecines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',
@@ -349,6 +350,7 @@ i18n
           login: 'Connecter',
         },
         medical_case: {
+          in_creation: "Demographic",
           managements: 'Managements',
           treatments: 'Treatments',
           final_diagnoses: 'Final diagnoses',

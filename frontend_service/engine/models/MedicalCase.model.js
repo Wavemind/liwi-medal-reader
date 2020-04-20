@@ -97,7 +97,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       this.metaData = json.metaData;
       this.diagnoses = json.diagnoses;
     }
-    console.log(this);
     return this;
   }
 
@@ -219,6 +218,7 @@ MedicalCaseModel.schema = {
     synchronized_at: 'date?',
     created_at: 'date',
     updated_at: 'date',
+    status: 'string',
     patient: { type: 'linkingObjects', objectType: 'Patient', property: 'medicalCases' }
   },
 };
