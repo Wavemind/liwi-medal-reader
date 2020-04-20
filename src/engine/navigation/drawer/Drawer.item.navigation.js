@@ -1,7 +1,7 @@
 // @Flow
 import React, { Component } from 'react';
 import { Button, Icon, Text } from 'native-base';
-import { TouchableOpacity, View, findNodeHandle, ScrollView, UIManager } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import styled from 'styled-components';
 import { styles } from './Drawer.style';

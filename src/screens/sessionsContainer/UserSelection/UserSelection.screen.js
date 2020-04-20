@@ -22,6 +22,7 @@ export default function UserSelection() {
 
   const { session } = app;
 
+  // Render Image depending role
   const switchIcon = (role) => {
     switch (role) {
       case 'clinician':
@@ -67,8 +68,8 @@ export default function UserSelection() {
     <>
       {selectedUser?.id === false && (
         <View style={styles.blocBackground}>
-          <Text bigTitle>Fill the missing informations as Guest</Text>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Text bigTitle>{app.t('unlock_session:fill')}</Text>
+          <View style={styles.blocInput}>
             <View style={styles.items}>
               <CustomInput
                 condensed
@@ -99,7 +100,7 @@ export default function UserSelection() {
                 <Icon name={'medical-bag'} type={'MaterialCommunityIcons'} style={styles.textIcon} />
                 <Text style={styles.roleText}>Role</Text>
               </View>
-              <Picker note mode="dropdown" style={{ flex: 1 }} selectedValue={selectedUser.role} onValueChange={(e) => setUser({ ...selectedUser, role: e })}>
+              <Picker note mode="dropdown" style={styles.flex} selectedValue={selectedUser.role} onValueChange={(e) => setUser({ ...selectedUser, role: e })}>
                 <Picker.Item label="Select the role" value={null} />
                 {Object.keys(userRole).map((e) => e !== 'guest' && <Picker.Item label={userRole[e]} value={e} key={e} />)}
               </Picker>
@@ -124,7 +125,7 @@ export default function UserSelection() {
   return (
     <ScrollView testID="UnLockSession">
       <View flex-container-column flex-center>
-        <Text bigTitle>Who are you ?</Text>
+        <Text bigTitle>{app.t('unlock_session:who')}</Text>
         <View style={styles.blocParent}>
           {session.group.medical_staffs.map((user) => renderBloc(user))}
           {renderBloc({ role: 'guest', last_name: '', first_name: '', id: false })}

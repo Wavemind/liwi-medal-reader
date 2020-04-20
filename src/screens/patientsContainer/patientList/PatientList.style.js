@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     width: '90%',
   },
 
-  marg: {
+  margin: {
     marginBottom: 40,
   },
 

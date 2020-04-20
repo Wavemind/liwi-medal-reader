@@ -52,7 +52,15 @@ export type StateApplicationContext = {
 export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
+    this.initializeAsync();
   }
+
+  initializeAsync = async () => {
+    await this.initContext();
+
+    AppState.addEventListener('change', this._handleAppStateChange);
+    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
+  };
 
   getGeo = async () => {
     const { t } = this.state;
@@ -96,6 +104,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const user = await getItem('user');
 
     if (session !== null) {
+      await this.getGroupData(false);
       this.setState({
         session,
         user,
@@ -104,11 +113,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     } else {
       this.setState({ ready: true });
     }
-  };
-
-  // Set user context
-  setUserContext = (session, user = null) => {
-
   };
 
   // Unlock session from local credentials
@@ -153,26 +157,43 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  getGroupData = async () => {
+  /**
+   * Get the data for the group
+   * Call with the button synchronize in screen UnLockSession.screen.js
+   * @return boolean
+   */
+  getGroupData = async (showToast = true) => {
     const session = await getItem('session');
     const deviceInfo = await getDeviceInformation();
+    // Send data to server
     const group = await get(`devices/${deviceInfo.mac_address}`);
 
+    // If no error
     if (group !== false && group.errors === undefined) {
+      // merge data in local
       await setItem('session', { ...session, group });
+      // Set data in context
       await fetchAlgorithms();
       this.setState({ session: { ...session, group } });
-      this.showSuccessToast('Receiving group data and medical staff');
+      // Show success toast
+      showToast ? this.showSuccessToast('Receiving group data and medical staff') : null;
       return true;
     }
 
     return false;
   };
 
+  /**
+   * Get the pin code from screen
+   * Redirect to userSelection if not opened
+   * Redirect to home if already opened
+   * @params string: pinCode : pin code from screen
+   * @return boolean
+   */
   openSession = async (pinCode) => {
     const { session, user } = this.state;
     if (session.group.pin_code === pinCode) {
-      this.showSuccessToast('Successful connect to your group');
+      this.showSuccessToast('Connection successful');
 
       if (user === null) {
         await setTimeout(async () => {
@@ -190,10 +211,17 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   setUser = async (user) => {
+    // Set user in local storage
     await setItem('user', user);
+
+    // Set user in context
     this.setState({ user, logged: true });
   };
 
+  /**
+   * Show a toast with success styles
+   *  @params string msg : String to pass in message
+   */
   showSuccessToast = (msg) => {
     Toast.showSuccess(msg, {
       position: 20,
@@ -203,22 +231,28 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // Create new session
+  /**
+   * Create new session from NewSession
+   */
   newSession = async (email: string, password: string) => {
+    // auth with serveur
     const session = await auth(email, password).catch((error) => {
       return error;
     });
 
+    // if no error set the tablet
     if (session?.success !== false) {
       const concatSession = { group: null, ...session };
+      // Set item in localstorage
       await setItem('session', concatSession);
 
       const deviceInfo = await getDeviceInformation();
-      // Register device
+      // Register device to serveur
       const register = await post('devices', { device: { ...deviceInfo } }, { token: 'group' });
 
       if (register === true) {
-        this.showSuccessToast('Successful tablet identification');
+        //Show toast
+        this.showSuccessToast('Successfull tablet identification');
         return true;
       }
     }
@@ -254,10 +288,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   async componentWillMount() {
     await this.initContext();
-
-    AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
   }
+
+  // fetch algorithms when change
   _fetchDataWhenChange = async () => {
     await fetchAlgorithms();
   };
