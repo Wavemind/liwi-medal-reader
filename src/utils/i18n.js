@@ -269,7 +269,7 @@ i18n
           title: 'Sync with server',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
-          logout: 'logout'
+          logout: 'logout',
         },
         popup: {
           title: 'Please allow access to the position',
@@ -316,6 +316,7 @@ i18n
           session_already_exist: 'Session already exist',
           no_internet: "You don't have internet connection",
           algorithm_updated: 'Your algorithm has been updated',
+          get_group: 'Receiving group data and medical staff',
         },
       },
       fr: {
