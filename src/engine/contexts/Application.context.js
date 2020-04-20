@@ -273,6 +273,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     openSession: this.openSession,
     lockSession: this.lockSession,
     newSession: this.newSession,
+    showSuccessToast: this.showSuccessToast,
     isConnected: true,
     medicalCase: {},
     appState: AppState.currentState,

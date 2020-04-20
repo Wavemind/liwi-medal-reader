@@ -116,6 +116,13 @@ export const typeNode = {
   treatment: 'Treatment',
 };
 
+// Type of Tool Tip
+export const toolTipType = {
+  medicalCaseLocked: 'medicalCaseLocked',
+  algorithmVersion: 'algorithmVersion',
+  validation: 'validation',
+};
+
 export const userRole = {
   clinician: 'Clinician',
   registration_desk: 'Registration Desk',

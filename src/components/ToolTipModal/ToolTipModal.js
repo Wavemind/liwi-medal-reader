@@ -6,6 +6,8 @@ import { styles } from './ToolTipModal.style';
 import Tooltip from '../Tooltip/tooltip';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { SeparatorLine } from '../../template/layout';
+import { toolTipType } from '../../../frontend_service/constants';
+import { handleHttpError } from '../../utils/CustomToast';
 
 // TODO implement scu
 
@@ -151,11 +153,77 @@ export default class TooltipModal extends React.Component<Props, State> {
               <Icon name="close" type="AntDesign" style={styles.icon} />
             </Button>
             {isFromJsx && children}
-            {isFromRedux ? modalRedux.content !== null ? <Text>{modalRedux.content}</Text> : this._renderValidation() : null}
+            {isFromRedux && this.renderTypeModal()}
           </View>
         </ScrollView>
       </View>
     );
+  };
+
+  unlockMedicalCase = async (id) => {
+    const {
+      app: { showSuccessToast },
+    } = this.props;
+    let localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
+    let request = await localDataOn;
+    if (request !== undefined || request?.status === 200) {
+      // Success unlock
+      showSuccessToast('Success unlock !!');
+    }
+  };
+
+  /**
+   * Depending Type render specific JSX
+   */
+  renderTypeModal = () => {
+    const {
+      modalRedux,
+      app: { t },
+    } = this.props;
+
+    switch (modalRedux.type) {
+      case toolTipType.medicalCaseLocked:
+        return (
+          <View style={styles.content}>
+            <Text style={styles.warning}>{t('popup:isLocked')}</Text>
+            <Text style={styles.textBold}>{t('popup:by')}</Text>
+            <Text style={styles.textSub}>{modalRedux.params.by}</Text>
+            <Text style={styles.textBold}>{t('popup:at')}</Text>
+            <Text style={styles.textSub}>{modalRedux.params.at}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Button
+                style={styles.buttonNav}
+                danger
+                onPress={() => {
+                  this.closeModal();
+                  this.unlockMedicalCase(modalRedux.params.id);
+                }}
+              >
+                <Text>{t('popup:unlock')}</Text>
+              </Button>
+
+              <Button
+                style={styles.buttonNav}
+                success
+                onPress={() => {
+                  this.closeModal();
+                }}
+              >
+                <Text>{t('popup:close')}</Text>
+              </Button>
+            </View>
+          </View>
+        );
+
+      case toolTipType.algorithmVersion:
+        return <View></View>;
+
+      case toolTipType.validation:
+        return this._renderValidation();
+
+      default:
+        return <View></View>;
+    }
   };
 
   /**

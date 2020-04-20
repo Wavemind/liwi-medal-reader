@@ -43,6 +43,7 @@ export default {
     },
     '.center': {
       textAlign: 'center',
+      alignSelf: 'center',
       textAlignVertical: 'center',
     },
     '.not-available': {
