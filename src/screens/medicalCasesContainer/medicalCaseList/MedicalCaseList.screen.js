@@ -220,7 +220,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
             >
               <View w50>
                 <Text>
-                  {medicalCaseItem.patient.id} : {medicalCaseItem.patient.lastname} {medicalCaseItem.patient.firstname}
+                  {medicalCaseItem.getPatient()?.lastname} {medicalCaseItem.getPatient()?.firstname}
                 </Text>
               </View>
               <View w50>

@@ -1,6 +1,5 @@
 import find from 'lodash/find';
 import * as _ from 'lodash';
-import moment from 'moment';
 import { nodesType } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
 import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './conditionsHelpers.algo';
@@ -228,42 +227,6 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
 
-/**
- * @params patient: Patient
- * @params state$: All the state of the reducer
- *
- * @return string: return the birthdate for the patient
- */
-export const showBirthDatePatient = (patient, state$) => {
-  // Replace the redux medical case if we match the id
-  patient.medicalCases.map((mc, i) => {
-    if (mc.id === state$.id) {
-      patient.medicalCases[i] = state$;
-    }
-  });
-
-  // Filter medicalCase with date not null
-  const medicalCaseWithBirthDate = patient.medicalCases.filter((e) => {
-    const date = find(e.nodes, { reference: 1, category: 'demographic', stage: 'registration' });
-    if (date !== undefined) {
-      return date.value !== null;
-    }
-  });
-
-  // Sort medical cases by updated_at for get the last
-  const medicalCase = medicalCaseWithBirthDate.sort((a, b) => {
-    const dateA = moment(a.updated_at);
-    const dateB = moment(b.updated_at);
-    return dateB.diff(dateA);
-  });
-
-  // Medical case match
-  if (medicalCase.length > 0) {
-    // Parse date
-    return moment(find(medicalCase.first().nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
-  }
-  return 'Age is not defined';
-};
 
 /**
  * @params diagnoses: New diagnoses will be placed into state
