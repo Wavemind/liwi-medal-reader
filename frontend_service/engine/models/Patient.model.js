@@ -53,18 +53,20 @@ export class PatientModel implements PatientModelInterface {
       lastname: this.lastname,
       birthdate: this.birthdate,
       gender: this.gender,
-      medicalCases: [{ ...medicalCase, json: JSON.stringify(medicalCase) }],
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
       main_data_patient_id: this.main_data_patient_id,
     });
   };
 
   addMedicalCase = (medicalCase) => {
+    medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
     realm().write(() => {
       this.medicalCases.push(medicalCase);
     });
     return true;
   };
+
 
   // Validate input
   validate = () => {

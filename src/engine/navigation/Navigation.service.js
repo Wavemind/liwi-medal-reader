@@ -4,6 +4,7 @@ import find from 'lodash/find';
 import { store } from '../../../frontend_service/store';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import { findById } from '../api/databaseStorage';
 
 let _navigator;
 
@@ -69,7 +70,7 @@ function getActiveRouteByName(name, state) {
 }
 
 /**
- * Get the active route from react-navigation
+ * Get the active route string name from react-navigation
  *
  * @param navigationState: Navigation : The state of react-navigation
  * @return : string : the current route
@@ -96,7 +97,7 @@ function getActiveRouteName(navigationState) {
 function setParamsAge(navigation, name) {
   const state$ = store.getState();
 
-  const { patient, nodes } = state$;
+  const { getPatient, nodes } = state$;
 
   const age = find(nodes, { label: 'Age in months' });
 
@@ -108,7 +109,7 @@ function setParamsAge(navigation, name) {
     stringAge = 'No question for age found';
   }
 
-  const headerRight = `${patient.firstname} ${patient.lastname} | ${stringAge}`;
+  const headerRight = `${getPatient()?.firstname} ${getPatient()?.lastname} | ${stringAge}`;
 
   navigation.setParams({
     title: name,
@@ -169,9 +170,11 @@ function onNavigationStateChange(prevState, currentState) {
   const prev = getActiveRouteName(prevState);
   const cu = getCurrentRoute(currentState);
 
+
   // prevent multiple execution
   if (activeRoute !== prev) {
     const state$ = store.getState();
+
     // This route can change the status of MC
     if (cu.params !== undefined && cu?.params?.medicalCaseStatus !== undefined && state$.status !== cu.params.medicalCaseStatus) {
       // Find index in status
@@ -185,6 +188,8 @@ function onNavigationStateChange(prevState, currentState) {
       });
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
+        const medicalCase = findById('MedicalCase', state$.id);
+        medicalCase.writeValue('status', routeStatus.name);
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }

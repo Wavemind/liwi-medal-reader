@@ -38,11 +38,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const algorithms = await getItems('algorithms');
 
-    if (patientId === null && newMedicalCase === true) {
+    if (patientId === null) {
       patient = new PatientModel();
-    } else if (patientId !== null && newMedicalCase === true) {
-      patient = findById('Patient', patientId);
-    } else if (newMedicalCase === false) {
+    } else {
       patient = findById('Patient', patientId);
     }
 
