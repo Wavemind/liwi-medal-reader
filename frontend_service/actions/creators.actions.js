@@ -33,7 +33,7 @@ export const setAdditionalMedicineDuration = (id, duration) => ({
   },
 });
 
-export const setMedecine = (type, diagnosesKey, medecineId, boolean) => ({
+export const setMedicine = (type, diagnosesKey, medecineId, boolean) => ({
   type: actions.SET_MEDECINE,
   payload: {
     type,
@@ -52,7 +52,7 @@ export const setCustomMedecine = (diagnosesKey, medecine, type) => ({
   },
 });
 
-export const setAdditionalMedecine = (medecines) => ({
+export const setAdditionalMedicine = (medecines) => ({
   type: actions.SET_ADDITIONAL_MEDECINE,
   payload: {
     medecines,
@@ -78,11 +78,12 @@ export const updateMetaData = (screen, view, value) => ({
   },
 });
 
-export const updateModalFromRedux = (content = '', navigator) => ({
+export const updateModalFromRedux = (content = '', navigator, params = {}) => ({
   type: actions.MC_UPDATE_MODAL,
   payload: {
     content,
     navigator,
+    params,
   },
 });
 

@@ -5,6 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Icon, Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './FinalDiagnostic.style';
+
 type Props = NavigationScreenProps & {};
 
 type State = {};
@@ -53,7 +54,7 @@ export default class FinalDiagnostic extends React.Component<{}> {
           <Icon type={type} name={name} style={style} /> {__DEV__ ? `${id} - ` : null}
           {label}
         </Text>
-        <View style={{ flexDirection: 'row', flex: 0.4, height: 50 }}>
+        <View style={styles.bloc}>
           <LeftButton active={diagnoses.proposed[id]?.agreed === true} onPress={() => this._handleClick(true)}>
             <Text white={diagnoses.proposed[id]?.agreed === true} center>
               {t('diagnoses:agree')}
