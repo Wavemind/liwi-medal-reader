@@ -70,14 +70,15 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const request = await localDataOn;
 
     if (request === undefined || request?.status !== 200) {
-      this.disconnectApp();
+      await this.disconnectApp();
     }
   };
 
-  disconnectApp = () => {
+  disconnectApp = async () => {
     if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
       this.unsubscribeIntervalLocalData();
     }
+    await setItem('isConnected', false);
     this.setState({ isConnected: false });
   };
 
@@ -129,7 +130,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (session !== null) {
       isConnected && (await this.getGroupData(false));
+
       const database = new Database();
+
       this.setState({
         session,
         user,
@@ -298,15 +301,17 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (isConnected !== this.state.isConnected) {
       if (isConnected === true) {
-        this.connectApp();
+        await this.connectApp();
       } else {
-        this.disconnectApp();
+        await this.disconnectApp();
       }
     }
   };
 
-  connectApp = () => {
+  // When status goes to isConnected True
+  connectApp = async () => {
     this.startIntervalLocalData();
+    await setItem('isConnected', true);
     this.setState({ isConnected: true });
   };
 
