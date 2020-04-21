@@ -225,6 +225,7 @@ i18n
           gender: 'Gender *',
           male: 'Male',
           female: 'Female',
+          age_not_defined: 'Age is not defined',
         },
         login: {
           title: 'Login',
@@ -317,6 +318,7 @@ i18n
           session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: "You don't have internet connection",
+          connection_successful: 'Connection successful',
           algorithm_updated: 'Your algorithm has been updated',
         },
       },
