@@ -291,11 +291,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     user: null,
   };
 
-  // fetch algorithms when change
-  _fetchDataWhenChange = async () => {
-    await fetchAlgorithms();
-  };
-
   _handleConnectivityChange = async (state) => {
     const { isConnected } = state;
 
