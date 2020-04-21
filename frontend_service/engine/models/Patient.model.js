@@ -102,7 +102,7 @@ export class PatientModel implements PatientModelInterface {
    * @return string: return the full name ofthe patient
    */
   fullName = () => {
-    return `${this.firstname} ${this.firstname}`;
+    return `${this.firstname} ${this.lastname}`;
   };
 
   /**

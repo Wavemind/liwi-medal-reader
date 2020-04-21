@@ -180,13 +180,11 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   _renderMedicalCase = () => {
+    const { medicalCases } = this.state;
     const {
+      navigation,
       app: { t },
     } = this.props;
-
-    const { navigation } = this.props;
-
-    const { orderedFilteredMedicalCases, medicalCases } = this.state;
 
     return medicalCases.length > 0 ? (
       [
@@ -201,7 +199,6 @@ export default class MedicalCaseList extends React.Component<Props, State> {
               key={`${medicalCase.id}_medical_case_list`}
               spaced
               onPress={async () => {
-
                 await this.selectMedicalCase({
                   ...medicalCase,
                 });
@@ -218,7 +215,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
             >
               <View w50>
                 <Text>
-                  {medicalCase.getPatient()?.lastname} {medicalCase.getPatient()?.firstname}
+                  {medicalCase.getPatient()?.fullName()}
                 </Text>
               </View>
               <View w50>
