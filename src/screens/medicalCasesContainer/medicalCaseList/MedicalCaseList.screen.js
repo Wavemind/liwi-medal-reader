@@ -184,48 +184,49 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
-    const { medicalCase, navigation } = this.props;
+    const { navigation } = this.props;
 
     const { orderedFilteredMedicalCases, medicalCases } = this.state;
 
     return medicalCases.length > 0 ? (
       [
         <List block key="medicalCaseList">
-          {medicalCases.map((medicalCaseItem) => (
+          {medicalCases.map((medicalCase) => (
             <ListItem
               rounded
               block
               style={{
                 backgroundColor: '#ffffff',
               }}
-              key={`${medicalCaseItem.id}_medical_case_list`}
+              key={`${medicalCase.id}_medical_case_list`}
               spaced
               onPress={async () => {
-                const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
 
-                if (medicalCase.id !== medicalCaseItem.id) {
-                  await this.selectMedicalCase({
-                    ...medicalCaseItem,
-                  });
-                }
+                await this.selectMedicalCase({
+                  ...medicalCase,
+                });
 
-                const route = routeDependingStatus(medicalCaseRoute);
+                const route = routeDependingStatus(medicalCase);
+
                 if (route !== undefined) {
-                  navigation.navigate(route);
+                  navigation.navigate(route, {
+                    idPatient: medicalCase.getPatient().id,
+                    newMedicalCase: false,
+                  });
                 }
               }}
             >
               <View w50>
                 <Text>
-                  {medicalCaseItem.getPatient()?.lastname} {medicalCaseItem.getPatient()?.firstname}
+                  {medicalCase.getPatient()?.lastname} {medicalCase.getPatient()?.firstname}
                 </Text>
               </View>
               <View w50>
-                <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
+                <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
               </View>
 
               <View w50>
-                <Text>{medicalCase.id === medicalCaseItem.id ? moment(medicalCase.updated_at).calendar() : moment(medicalCaseItem.updated_at).calendar()}</Text>
+                <Text>{moment(medicalCase.updated_at).calendar()}</Text>
               </View>
             </ListItem>
           ))}

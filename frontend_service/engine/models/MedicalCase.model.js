@@ -3,6 +3,7 @@
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { medicalCaseStatus, nodesType, stage } from '../../constants';
+import Database from '../../../src/engine/api/Database';
 
 interface MedicalCaseInterface {
   props: {
@@ -92,10 +93,6 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     }
     return this;
   }
-
-  create = async () => {
-
-  };
 
   /**
    * For each medicalCase who exclude other diagnostic, we set the id in both side.
@@ -197,8 +194,26 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     });
   };
 
+
+  /**
+   * Returns the linked Patient
+   * @return {Patient} - The related Patient.
+   */
   getPatient = () => {
-    return this.patient[0];
+    const database = new Database();
+    return database.findById('Patient', this.patient_id);
+  };
+
+  /**
+   * Write a value in the database
+   * @param {string} field - The attribute to update.
+   * @param {any} value - The value to set.
+   */
+  writeValue = (field, value) => {
+    const database = new Database();
+    database.realm.write(() => {
+      this[field] = value;
+    });
   };
 }
 
@@ -211,6 +226,7 @@ MedicalCaseModel.schema = {
     synchronized_at: 'date?',
     created_at: 'date',
     updated_at: 'date',
-    patient: { type: 'linkingObjects', objectType: 'Patient', property: 'medicalCases' },
+    status: 'string',
+    patient_id: 'string',
   },
 };

@@ -35,7 +35,7 @@ i18n
           of: 'of',
         },
         diagnoses: {
-          which: 'Whidiagch formulation of medicine is available and appropriate for your patient?',
+          which: 'Which formulation of medicine is available and appropriate for your patient?',
           none: 'none',
           custom_duration: 'Custom duration',
           duration: 'duration',
@@ -55,9 +55,9 @@ i18n
           select: '  Please select...', // Keep the space at the begin of string
           search: 'Search by name',
           disagree: 'Disagree',
-          custom: 'Do you want to manually add another diagnosis not proposed ?',
+          custom: 'Do you want to manually add another diagnosis not proposed?',
           titleadditional: 'Additional selected',
-          additional: 'Do you want to add an additional diagnosis not proposed ?',
+          additional: 'Do you want to add an additional diagnosis not proposed?',
           write: 'Write the medicine',
         },
         tooltip: {
@@ -81,7 +81,7 @@ i18n
           uptdate: 'Synchronized',
         },
         confirm: {
-          message: 'Do you want to close the current case and create new one ?',
+          message: 'Do you want to close the current case and create new one?',
           new: 'Create new case',
           continue: 'Continue creating case',
         },
@@ -139,6 +139,7 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
+          in_creation: "Demographic",
           medecines: 'Medicines',
           medecines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',
@@ -224,6 +225,7 @@ i18n
           gender: 'Gender *',
           male: 'Male',
           female: 'Female',
+          age_not_defined: 'Age is not defined',
         },
         login: {
           title: 'Login',
@@ -259,7 +261,7 @@ i18n
           connect: 'Login',
         },
         unlock_session: {
-          who: 'Who are you ?',
+          who: 'Who are you?',
           fill: 'Fill the missing informations as Guest',
           pin: 'Enter the PIN to unlock the tablet',
           already: 'Already Logged as',
@@ -320,7 +322,9 @@ i18n
           session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: "You don't have internet connection",
+          connection_successful: 'Connection successful',
           algorithm_updated: 'Your algorithm has been updated',
+          get_group: 'Receiving group data and medical staff',
         },
       },
       fr: {
@@ -387,6 +391,7 @@ i18n
           login: 'Connecter',
         },
         medical_case: {
+          in_creation: "Demographic",
           managements: 'Managements',
           treatments: 'Treatments',
           final_diagnoses: 'Final diagnoses',

@@ -49,14 +49,16 @@ export class PatientModel implements PatientModelInterface {
       lastname: this.lastname,
       birthdate: this.birthdate,
       gender: this.gender,
-      medicalCases: [{ ...medicalCase, json: JSON.stringify(medicalCase) }],
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
       main_data_patient_id: this.main_data_patient_id,
     });
   };
 
   addMedicalCase = (medicalCase) => {
+    medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
-    realm().write(() => {
+    const database = new Database();
+    database.realm.write(() => {
       this.medicalCases.push(medicalCase);
     });
     return true;
@@ -98,9 +100,16 @@ export class PatientModel implements PatientModelInterface {
   };
 
   /**
-   * @return string: return the birthdate for the patient
-   */
-  printBirhdate = () => {
+  * @return string: return the full name ofthe patient
+  */
+  full_name = () => {
+    return this.firstname + " " + this.firstname;
+  };
+
+  /**
+  * @return string: return the birthdate for the patient
+  */
+  printBirthdate = () => {
 
     // Filter medicalCase with date not null
     const medicalCaseWithBirthDate = this.medicalCases.filter((e) => {
@@ -126,7 +135,7 @@ export class PatientModel implements PatientModelInterface {
         stage: 'registration',
       }).value).format('ll');
     }
-    return 'Age is not defined';
+    return i18n.t('patient:age_not_defined');
   };
 }
 

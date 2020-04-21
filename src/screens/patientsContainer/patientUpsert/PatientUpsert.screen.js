@@ -36,12 +36,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const algorithms = await getItems('algorithms');
 
-    if (patientId === null && newMedicalCase === true) {
+    if (patientId === null) {
       patient = new PatientModel();
-    } else if (patientId !== null && newMedicalCase === true) {
-      patient = await this.getPatient();
-    } else if (newMedicalCase === false) {
-      patient = new PatientModel(medicalCase.patient);
+    } else {
+      patient = findById('Patient', patientId);
     }
 
     if (algorithms.length === 0) {
@@ -66,20 +64,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   async componentDidMount() {
     await this.initializeComponent();
-  }
-
-  /**
-   * Get patient with id in navigation props
-   */
-  async getPatient() {
-    const { navigation, app:{dataStorage, isConnected} } = this.props;
-
-    const id = navigation.getParam('idPatient');
-    //    let patient = await getItemFromArray('patients', 'id', id);
-
-    const patient = database.getAll(isConnected, 'Patient').filtered('id == $0', id)[0];
-
-    return patient;
   }
 
   /**
@@ -208,7 +192,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
         extraQuestions.map(({ id }) => id),
       );
     }
-
     return (
       <ScrollView
         contentContainerStyle={styles.container}
