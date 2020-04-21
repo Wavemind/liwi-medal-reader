@@ -44,10 +44,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
   // Get all medical case with waiting for... status
   filterMedicalCases = async () => {
-    const { app: { database, isConnected } } = this.props;
+    const { app: { database } } = this.props;
     this.setState({ loading: true });
 
-    const medicalCases = database.getAll(isConnected, 'MedicalCase');
+    const medicalCases = await database.getAll('MedicalCase');
 
     this.setState({
       medicalCases,

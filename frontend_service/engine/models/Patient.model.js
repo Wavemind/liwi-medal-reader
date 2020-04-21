@@ -43,7 +43,7 @@ export class PatientModel implements PatientModelInterface {
   save = async () => {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
     const database = new Database();
-    database.createObject('Patient', {
+    return database.createObject('Patient', {
       id: this.id,
       firstname: this.firstname,
       lastname: this.lastname,
@@ -54,11 +54,11 @@ export class PatientModel implements PatientModelInterface {
     });
   };
 
-  addMedicalCase = (medicalCase) => {
+  addMedicalCase = async (medicalCase) => {
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
     const database = new Database();
-    database.writeArray(true, 'Patient', this.id, 'medicalCases', medicalCase);
+    await database.writeArray('Patient', this.id, 'medicalCases', medicalCase);
     return true;
   };
 

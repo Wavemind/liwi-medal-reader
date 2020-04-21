@@ -40,18 +40,19 @@ export default class PatientList extends React.Component {
 
   // Get all medical case with waiting for... status
   fetchPatients = async () => {
-    const { app: { database, isConnected } } = this.props;
+    const {
+      app: { database },
+    } = this.props;
     this.setState({ loading: true });
-    const patients = database.getAll(isConnected, 'Patient');
+
+    const patients = await database.getAll('Patient');
     const algorithms = await getItems('algorithms');
 
-    this.setState(
-      {
-        algorithms,
-        patients,
-        loading: false,
-      },
-    );
+    this.setState({
+      algorithms,
+      patients,
+      loading: false,
+    });
   };
 
   _renderPatients = () => {
@@ -77,9 +78,7 @@ export default class PatientList extends React.Component {
             }
           >
             <View w50>
-              <Text>
-                {patient.fullName()}
-              </Text>
+              <Text>{patient.fullName()}</Text>
             </View>
             <View w50>
               <Text>{patient.printBirthdate()}</Text>
@@ -120,11 +119,11 @@ export default class PatientList extends React.Component {
           </LiwiTitle2>
           <View flex-container-row style={styles.margin}>
             <Item round style={styles.input}>
-              <Icon active name="search"/>
-              <Input value={searchTerm} onChangeText={this.searchBy}/>
+              <Icon active name="search" />
+              <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
-                              nextRoute="PatientUpsert" idPatient={null}/>
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}
+            />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
@@ -144,25 +143,25 @@ export default class PatientList extends React.Component {
                 }}
                 disabled={isGeneratingPatient}
               >
-                <Icon type="MaterialCommunityIcons" name="plus" white/>
+                <Icon type="MaterialCommunityIcons" name="plus" white />
               </Button>
             ) : null}
           </View>
 
-          <SeparatorLine/>
+          <SeparatorLine />
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
             <Button center rounded light onPress={this.orderByFirstName}>
-              {orderByFirstName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+              {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:name')}</Text>
             </Button>
             <Button center rounded light onPress={this.orderByLastName}>
-              {orderByLastName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+              {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:surname')}</Text>
             </Button>
           </View>
-          {loading ? <LiwiLoader/> : this._renderPatients()}
+          {loading ? <LiwiLoader /> : this._renderPatients()}
         </View>
       </ScrollView>
     );

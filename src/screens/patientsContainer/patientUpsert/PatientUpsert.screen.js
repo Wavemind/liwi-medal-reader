@@ -71,7 +71,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @params [String] route
    */
   save = async (newRoute) => {
-    const { navigation, medicalCase, updateMedicalCaseProperty, app:{database, isConnected} } = this.props;
+    const { navigation, medicalCase, updateMedicalCaseProperty, app:{database} } = this.props;
     const patientId = navigation.getParam('idPatient');
     let isSaved = false;
 
@@ -80,7 +80,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
 
     if (patientId !== null) {
-      const patient = database.findById(isConnected, 'Patient', patientId);
+      const patient = database.findById('Patient', patientId);
       isSaved = patient.addMedicalCase(medicalCase);
     } else {
       isSaved = await this.savePatient();
