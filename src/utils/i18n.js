@@ -320,6 +320,7 @@ i18n
           session_already_exist: 'Session already exist',
           no_internet: "You don't have internet connection",
           algorithm_updated: 'Your algorithm has been updated',
+          get_group: 'Receiving group data and medical staff',
         },
       },
       fr: {

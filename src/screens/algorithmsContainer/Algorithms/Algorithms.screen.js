@@ -71,7 +71,7 @@ export default class Algorithms extends React.Component<Props, State> {
   contentView = () => {
     const { synchronisation, medicalCases, algorithms } = this.state;
     const {
-      app: { t },
+      app: { t, isConnected },
       navigation,
     } = this.props;
 
@@ -133,7 +133,7 @@ export default class Algorithms extends React.Component<Props, State> {
             </View>
           )}
           <View flex-center-row>
-            <Button style={styles.marginTop} onPress={this.sendSync}>
+            <Button style={styles.marginTop} onPress={this.sendSync} disabled={!isConnected}>
               <Text>{t('algorithms:synchronize')}</Text>
             </Button>
           </View>
@@ -151,14 +151,16 @@ export default class Algorithms extends React.Component<Props, State> {
 
   // Fetch algorithms from server and save it in local storage
   onRefresh = async () => {
-    this.setState({ isRefreshing: true });
     const {
-      app: { user },
+      app: { isConnected },
     } = this.props;
 
-    await fetchAlgorithms();
-    await this.updateAlgorithms();
-    this.setState({ isRefreshing: false });
+    if (isConnected) {
+      this.setState({ isRefreshing: true });
+      await fetchAlgorithms();
+      await this.updateAlgorithms();
+      this.setState({ isRefreshing: false });
+    }
   };
 
   componentWillReceiveProps = async (nextProps) => {
