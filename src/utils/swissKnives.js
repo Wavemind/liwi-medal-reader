@@ -188,3 +188,13 @@ export const diff = function (obj1, obj2) {
  * ex : roundSup(1.55555) => 1.6
  */
 export const roundSup = (n) => Math.round(n * 10) / 10;
+
+/**
+ * Return is variable is function or not
+ *
+ * @param functionToCheck
+ * @return {*|boolean}
+ */
+export function isFunction(functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+}

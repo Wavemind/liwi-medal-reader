@@ -11,7 +11,7 @@ import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 
-export const initialState = null;
+export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
 /**
  * Reducer
@@ -205,12 +205,13 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.MC_UPDATE_MODAL)
   updateModalFromRedux(state, action) {
-    const { content, navigator } = action.payload;
+    const { content, navigator, params } = action.payload;
 
     const newModal = {
       open: !state.modal.open,
       content,
       navigator,
+      params,
     };
 
     return {
