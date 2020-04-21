@@ -142,33 +142,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // Unlock session from local credentials
-  unLockSession = async (id: number, code: string) => {
-    let session = await getSession(id);
-
-    const encrypt = sha256.hmac(saltHash, code);
-
-    if (code.length === 0) {
-      return 'empty_code';
-    }
-
-    if (session.local_code === encrypt) {
-      await setActiveSession(id);
-
-      const { isConnected } = this.state;
-
-      if (isConnected) await fetchAlgorithms();
-
-      session = await getSession(id);
-
-      this.setUserContext(session);
-
-      // here push settings
-    } else {
-      return 'invalid_code';
-    }
-  };
-
   // Lock current session
   lockSession = async () => {
     this.setState({
@@ -298,7 +271,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     setUser: this.setUser,
     logout: this.logout,
     getGroupData: this.getGroupData,
-    unLockSession: this.unLockSession,
     openSession: this.openSession,
     lockSession: this.lockSession,
     newSession: this.newSession,
@@ -382,7 +354,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       console.warn('---> Liwi came back from background', nextAppState);
       await setItem(appInBackgroundStateKey, true);
 
-      this._fetchDataWhenChange();
       this.setState({ appState: nextAppState, logged: false });
     }
 
