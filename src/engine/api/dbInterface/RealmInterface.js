@@ -45,4 +45,18 @@ export default class RealmInterface {
   getAll = (model) => {
     return this.realm().objects(model);
   };
+
+  writeField = (model, id, field, value) => {
+    const object = this.findById(model, id);
+    return this.realm().write(() => {
+      object[field] = value;
+    });
+  };
+
+  writeArray = (model, id, field, value) => {
+    const object = this.findById(model, id);
+    return this.realm().write(() => {
+      object[field].push(value);
+    });
+  };
 }

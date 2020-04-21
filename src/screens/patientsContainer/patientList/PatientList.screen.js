@@ -78,7 +78,7 @@ export default class PatientList extends React.Component {
           >
             <View w50>
               <Text>
-                {patient.full_name()}
+                {patient.fullName()}
               </Text>
             </View>
             <View w50>
