@@ -4,7 +4,6 @@ import { MedicalCaseModel } from '../../../../frontend_service/engine/models/Med
 const Realm = require('realm');
 
 export default class RealmInterface {
-
   /**
    * Generates and returns a realm database object
    * @returns { Realm } - A realm database object

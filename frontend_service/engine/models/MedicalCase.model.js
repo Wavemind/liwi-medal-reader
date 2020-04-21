@@ -201,7 +201,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
    */
   getPatient = () => {
     const database = new Database();
-    return database.findById(true, 'Patient', this.patient_id);
+    return database.findById('Patient', this.patient_id);
   };
 
   /**
@@ -211,7 +211,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
    */
   writeValue = (field, value) => {
     const database = new Database();
-    database.writeField(true, 'MedicalCase', this.id, field, value);
+    return database.writeField('MedicalCase', this.id, field, value);
   };
 }
 
