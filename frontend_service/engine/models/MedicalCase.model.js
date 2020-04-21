@@ -49,6 +49,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       open: false,
       content: '',
       navigator: {},
+      params: {},
     };
     this.metaData = {
       patientupsert: {

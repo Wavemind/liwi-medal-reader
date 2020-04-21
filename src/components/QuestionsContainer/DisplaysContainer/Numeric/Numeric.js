@@ -90,7 +90,7 @@ export default class Numeric extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this._onEndEditing} placeholder={placeholder} />
+        <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this._onEndEditing} placeholder={placeholder} l/>
       </View>
     );
   }
