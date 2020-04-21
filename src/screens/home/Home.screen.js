@@ -8,6 +8,7 @@ import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { Toaster } from '../../utils/CustomToast';
 import ConfirmationView from '../../components/ConfirmationView';
+import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -36,6 +37,7 @@ export default class Home extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
+    await fetchAlgorithms();
     const algorithms = await getItems('algorithms');
     this.setState({ algorithms });
   }

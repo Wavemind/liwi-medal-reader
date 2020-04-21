@@ -78,11 +78,12 @@ export const updateMetaData = (screen, view, value) => ({
   },
 });
 
-export const updateModalFromRedux = (content = '', navigator) => ({
+export const updateModalFromRedux = (content = '', navigator, params = {}) => ({
   type: actions.MC_UPDATE_MODAL,
   payload: {
     content,
     navigator,
+    params,
   },
 });
 
