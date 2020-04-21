@@ -86,7 +86,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
                 onSelect(f.medication_form);
               }
 
-              return <Picker.Item key={f} label={`${f.medication_form} : ${string} ${isPossible ? this.showSize(f.medication_form) : ''}`} value={isPossible ? f.medication_form : false} />;
+              return <Picker.Item key={f} label={`${f.medication_form}: ${string} ${isPossible ? this.showSize(f.medication_form) : ''}`} value={isPossible ? f.medication_form : false} />;
             })}
           </Picker>
         </View>
