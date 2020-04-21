@@ -20,6 +20,7 @@ import { liwiColors } from '../../utils/constants';
 import { isFunction } from '../../utils/swissKnives';
 
 const defaultValue = {};
+
 export const ApplicationContext = React.createContext<Object>(defaultValue);
 
 type Props = NavigationScreenProps & {
@@ -125,6 +126,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const session = await getItem('session');
     const user = await getItem('user');
     const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
+
     if (session !== null) {
       isConnected && (await this.getGroupData(false));
       const database = new Database();
@@ -161,7 +163,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @return boolean
    */
   getGroupData = async (showToast = true) => {
-    const { isConnected } = this.state;
+    const { isConnected, t } = this.state;
     if (isConnected) {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
@@ -176,7 +178,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         await fetchAlgorithms();
         this.setState({ session: { ...session, group } });
         // Show success toast
-        showToast ? this.showSuccessToast('Receiving group data and medical staff') : null;
+        showToast ? this.showSuccessToast(t('notifications:get_group')) : null;
         return true;
       }
     }
@@ -192,9 +194,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @return boolean
    */
   openSession = async (pinCode) => {
-    const { session, user } = this.state;
+    const { session, user, t } = this.state;
     if (session.group.pin_code === pinCode) {
-      this.showSuccessToast('Successful Connection');
+      this.showSuccessToast(t('notifications:connection_successful'));
 
       if (user === null) {
         await setTimeout(async () => {
@@ -352,7 +354,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       console.warn('---> Liwi came back from background', nextAppState);
       await setItem(appInBackgroundStateKey, true);
 
-      this._fetchDataWhenChange();
       this.setState({ appState: nextAppState, logged: false });
     }
 
@@ -369,4 +370,4 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component) => (props) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;

@@ -2,11 +2,12 @@
 
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
-import { Icon, Text, View, Input, Button, Item } from 'native-base';
+import { Icon, Text, View, Input, Button } from 'native-base';
+import MultiSelect from 'react-native-multiple-select';
+
 import { styles } from './FinalDiagnosticsList.style';
 import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
 import FinalDiagnostic from '../FinalDiagnostic';
-import MultiSelect from 'react-native-multiple-select';
 import { liwiColors } from '../../utils/constants';
 
 type Props = NavigationScreenProps & {};
