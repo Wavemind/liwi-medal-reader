@@ -21,19 +21,19 @@ export default class Database {
     return this.realmInterface.getAll(model);
   };
 
-  findById = async (model, id) => {
+  findById = (model, id) => {
     return this.realmInterface.findById(model, id);
   };
 
-  createObject = async (model, obj) => {
+  createObject = (model, obj) => {
     return this.realmInterface.createObject(model, obj);
   };
 
-  writeField = async (model, id, field, value) => {
+  writeField = (model, id, field, value) => {
     return this.realmInterface.writeField(model, id, field, value);
   };
 
-  writeArray = async (model, id, field, value) => {
+  writeArray = (model, id, field, value) => {
     return this.realmInterface.writeArray(model, id, field, value);
   };
 }

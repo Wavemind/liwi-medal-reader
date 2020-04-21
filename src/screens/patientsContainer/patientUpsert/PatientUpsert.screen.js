@@ -1,21 +1,22 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
-import { ScrollView } from 'react-native';
-import { Button, Col, Text, View } from 'native-base';
 import * as _ from 'lodash';
+import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
+import { Button, Col, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
+
 import NavigationService from '../../../engine/navigation/Navigation.service';
+import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
-import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
 
-import { styles } from './PatientUpsert.style';
 import { getItems } from '../../../engine/api/LocalStorage';
-import LiwiLoader from '../../../utils/LiwiLoader';
+import { styles } from './PatientUpsert.style';
 import { stage } from '../../../../frontend_service/constants';
+import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 
 type Props = NavigationScreenProps & {};
@@ -30,7 +31,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   initializeComponent = async () => {
-    const { navigation, setMedicalCase, medicalCase } = this.props;
+    const { navigation, setMedicalCase, app: { database } } = this.props;
     let patient = {};
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
@@ -39,14 +40,14 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (patientId === null) {
       patient = new PatientModel();
     } else {
-      patient = findById('Patient', patientId);
+      patient = database.findById('Patient', patientId);
     }
 
     if (algorithms.length === 0) {
       this.setState({ patient });
     } else {
       if (newMedicalCase) {
-        let generatedMedicalCase = await new MedicalCaseModel({}, algorithms[algorithms.length - 1]);
+        const generatedMedicalCase = await new MedicalCaseModel({}, algorithms[algorithms.length - 1]);
 
         await setMedicalCase({
           ...generatedMedicalCase,
@@ -71,7 +72,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @params [String] route
    */
   save = async (newRoute) => {
-    const { navigation, medicalCase, updateMedicalCaseProperty, app:{database} } = this.props;
+    const { navigation, medicalCase, updateMedicalCaseProperty, app: { database } } = this.props;
     const patientId = navigation.getParam('idPatient');
     let isSaved = false;
 
@@ -118,20 +119,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     updatePatient(key, value);
     patient[key] = value;
     await this.setState({ patient });
-  };
-
-  /**
-   *  Update patient value in storage and redirect to patient profile
-   */
-  updatePatient = async () => {
-    await this.setState({ loading: true });
-    const { navigation } = this.props;
-    const {
-      patient: { id },
-    } = this.state;
-    await this.savePatient();
-    navigation.dispatch(NavigationActions.back('patientProfile', { id }));
-    await this.setState({ loading: false });
   };
 
   /**
