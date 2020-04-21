@@ -17,8 +17,6 @@ import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/
 import i18n from '../../utils/i18n';
 import { liwiColors } from '../../utils/constants';
 import { getDeviceInformation } from '../api/Device';
-import { PatientModel } from '../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 
 const defaultValue = {};
 
@@ -193,7 +191,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   openSession = async (pinCode) => {
     const { session, user } = this.state;
     if (session.group.pin_code === pinCode) {
-      this.showSuccessToast('Connection successful');
+      this.showSuccessToast(t('notifications:connection_successful'));
 
       if (user === null) {
         await setTimeout(async () => {

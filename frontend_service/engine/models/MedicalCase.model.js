@@ -1,15 +1,9 @@
 // @flow
 
 import moment from 'moment';
-import find from 'lodash/find';
-import forEach from 'lodash/forEach';
-import maxBy from 'lodash/maxBy';
-import max from 'lodash/max';
 import { v4 as uuidv4 } from 'uuid';
 import { medicalCaseStatus, nodesType, stage } from '../../constants';
-import { getItem, getItems } from '../../../src/engine/api/LocalStorage';
-import { realm } from '../../../src/engine/api/databaseStorage';
-import { findById } from '../../../src/engine/api/databaseStorage';
+import { realm, findById } from '../../../src/engine/api/databaseStorage';
 
 interface MedicalCaseInterface {
   props: {

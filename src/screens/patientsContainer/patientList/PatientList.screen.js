@@ -79,11 +79,11 @@ export default class PatientList extends React.Component {
           >
             <View w50>
               <Text>
-                {patient.firstname} {patient.lastname}
+                {patient.full_name()}
               </Text>
             </View>
             <View w50>
-              <Text>{patient.printBirhdate()}</Text>
+              <Text>{patient.printBirthdate()}</Text>
             </View>
             <View w50>
               <Text>{patient.hasCaseInProgress ? t('patient_list:case_in_progress') : null}</Text>

@@ -5,11 +5,9 @@ import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import find from 'lodash/find';
 
-
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
-import { createObject } from '../../../src/engine/api/databaseStorage';
-import { realm } from '../../../src/engine/api/databaseStorage';
+import { createObject, realm } from '../../../src/engine/api/databaseStorage';
 
 
 interface PatientModelInterface {
@@ -45,7 +43,7 @@ export class PatientModel implements PatientModelInterface {
 
   // Create patient and push it in local storage
   save = async () => {
-    const medicalCase = this.medicalCases[this.medicalCases.length - 1]
+    const medicalCase = this.medicalCases[this.medicalCases.length - 1];
 
     createObject('Patient', {
       id: this.id,
@@ -104,9 +102,16 @@ export class PatientModel implements PatientModelInterface {
   };
 
   /**
-   * @return string: return the birthdate for the patient
-   */
-  printBirhdate = () => {
+  * @return string: return the full name ofthe patient
+  */
+  full_name = () => {
+    return this.firstname + " " + this.firstname;
+  };
+
+  /**
+  * @return string: return the birthdate for the patient
+  */
+  printBirthdate = () => {
 
     // Filter medicalCase with date not null
     const medicalCaseWithBirthDate = this.medicalCases.filter((e) => {
@@ -128,7 +133,7 @@ export class PatientModel implements PatientModelInterface {
       // Parse date
       return moment(find(medicalCase.nodes, { reference: 1, category: 'demographic', stage: 'registration' }).value).format('ll');
     }
-    return 'Age is not defined';
+    return i18n.t('patient:age_not_defined');
   };
 }
 
