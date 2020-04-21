@@ -3,36 +3,37 @@ import { getItem } from './LocalStorage';
 
 export default class Database {
   constructor() {
+    // Interface
+    this.realmInterface = new RealmInterface();
+
     this.initDatabase();
   }
 
   initDatabase = async () => {
     const session = await getItem('session');
+    this.isConnected = await getItem('isConnected');
     this.architecture = session.group.architecture;
     this.localDataIp = session.group.local_data_ip;
     this.mainDataIp = session.group.main_data_ip;
-
-    // Interface
-    this.realmInterface = new RealmInterface();
   };
 
-  getAll = async (isConnected, model) => {
+  getAll = async (model) => {
     return this.realmInterface.getAll(model);
   };
 
-  findById = (isConnected, model, id) => {
+  findById = (model, id) => {
     return this.realmInterface.findById(model, id);
   };
 
-  createObject = (isConnected, model, obj) => {
+  createObject = (model, obj) => {
     return this.realmInterface.createObject(model, obj);
   };
 
-  writeField = (isConnected, model, id, field, value) => {
+  writeField = (model, id, field, value) => {
     return this.realmInterface.writeField(model, id, field, value);
   };
 
-  writeArray = (isConnected, model, id, field, value) => {
+  writeArray = (model, id, field, value) => {
     return this.realmInterface.writeArray(model, id, field, value);
   };
 }

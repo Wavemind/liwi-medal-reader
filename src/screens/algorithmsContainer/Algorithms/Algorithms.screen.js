@@ -72,7 +72,6 @@ export default class Algorithms extends React.Component<Props, State> {
     const { synchronisation, medicalCases, algorithms } = this.state;
     const {
       app: { t, isConnected },
-      navigation,
     } = this.props;
 
     let notSync = 0;
