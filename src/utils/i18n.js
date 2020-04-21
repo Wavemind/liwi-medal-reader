@@ -55,9 +55,9 @@ i18n
           select: '  Please select...', // Keep the space at the begin of string
           search: 'Search by name',
           disagree: 'Disagree',
-          custom: 'Do you want to manually add another diagnosis not proposed ?',
+          custom: 'Do you want to manually add another diagnosis not proposed?',
           titleadditional: 'Additional selected',
-          additional: 'Do you want to add an additional diagnosis not proposed ?',
+          additional: 'Do you want to add an additional diagnosis not proposed?',
           write: 'Write the medicine',
         },
         tooltip: {
@@ -81,7 +81,7 @@ i18n
           uptdate: 'Synchronized',
         },
         confirm: {
-          message: 'Do you want to close the current case and create new one ?',
+          message: 'Do you want to close the current case and create new one?',
           new: 'Create new case',
           continue: 'Continue creating case',
         },
@@ -261,7 +261,7 @@ i18n
           connect: 'Login',
         },
         unlock_session: {
-          who: 'Who are you ?',
+          who: 'Who are you?',
           fill: 'Fill the missing informations as Guest',
           pin: 'Enter the PIN to unlock the tablet',
           already: 'Already Logged as',
@@ -272,9 +272,13 @@ i18n
           title: 'Sync with server',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
-          logout: 'logout'
+          logout: 'logout',
         },
         popup: {
+          desc: 'Description',
+          version_name: 'version',
+          version: 'Update of version',
+          by: 'by',
           title: 'Please allow access to the position',
           message: 'Location sharing is mandatory in order to use the medical service',
           ask_me_later: 'Ask me later',
@@ -320,6 +324,7 @@ i18n
           no_internet: "You don't have internet connection",
           connection_successful: 'Connection successful',
           algorithm_updated: 'Your algorithm has been updated',
+          get_group: 'Receiving group data and medical staff',
         },
       },
       fr: {

@@ -11,12 +11,14 @@ import Geolocation from '@react-native-community/geolocation';
 import Toast from 'react-native-tiny-toast';
 import { getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
 import NavigationService from '../navigation/Navigation.service';
-import { appInBackgroundStateKey, saltHash } from '../../../frontend_service/constants';
+import { appInBackgroundStateKey, host, saltHash, secondStatusLocalData } from '../../../frontend_service/constants';
 import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
 import { liwiColors } from '../../utils/constants';
 import { getDeviceInformation } from '../api/Device';
+import { handleHttpError } from '../../utils/CustomToast';
+import { isFunction } from '../../utils/swissKnives';
 
 const defaultValue = {};
 
@@ -53,11 +55,33 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.initializeAsync();
   }
 
+  _handleLocalData = async () => {
+    let localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
+    let request = await localDataOn;
+    if (request === undefined || request?.status !== 200) {
+      this.disconnectApp();
+    }
+  };
+
+  disconnectApp = () => {
+    if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
+      this.unsubscribeIntervalLocalData();
+    }
+    this.setState({ isConnected: false });
+  };
+
+  startIntervalLocalData = () => {
+    this.unsubscribeIntervalLocalData = setInterval(this._handleLocalData, secondStatusLocalData);
+  };
+
   initializeAsync = async () => {
     await this.initContext();
 
     AppState.addEventListener('change', this._handleAppStateChange);
-    NetInfo.addEventListener('connectionChange', this._handleConnectivityChange);
+
+    this.unsubscribeNetInfo = NetInfo.addEventListener(this._handleConnectivityChange);
+    const { isConnected } = this.state;
+    isConnected && this.startIntervalLocalData();
   };
 
   getGeo = async () => {
@@ -100,43 +124,18 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   initContext = async () => {
     const session = await getItem('session');
     const user = await getItem('user');
+    const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
 
     if (session !== null) {
-      await this.getGroupData(false);
+      isConnected && (await this.getGroupData(false));
       this.setState({
         session,
         user,
         ready: true,
+        isConnected,
       });
     } else {
       this.setState({ ready: true });
-    }
-  };
-
-  // Unlock session from local credentials
-  unLockSession = async (id: number, code: string) => {
-    let session = await getSession(id);
-
-    const encrypt = sha256.hmac(saltHash, code);
-
-    if (code.length === 0) {
-      return 'empty_code';
-    }
-
-    if (session.local_code === encrypt) {
-      await setActiveSession(id);
-
-      const { isConnected } = this.state;
-
-      if (isConnected) await fetchAlgorithms();
-
-      session = await getSession(id);
-
-      this.setUserContext(session);
-
-      // here push settings
-    } else {
-      return 'invalid_code';
     }
   };
 
@@ -161,21 +160,24 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @return boolean
    */
   getGroupData = async (showToast = true) => {
-    const session = await getItem('session');
-    const deviceInfo = await getDeviceInformation();
-    // Send data to server
-    const group = await get(`devices/${deviceInfo.mac_address}`);
+    const { isConnected, t } = this.state;
+    if (isConnected) {
+      const session = await getItem('session');
+      const deviceInfo = await getDeviceInformation();
+      // Send data to server
+      const group = await get(`devices/${deviceInfo.mac_address}`);
 
-    // If no error
-    if (group !== false && group.errors === undefined) {
-      // merge data in local
-      await setItem('session', { ...session, group });
-      // Set data in context
-      await fetchAlgorithms();
-      this.setState({ session: { ...session, group } });
-      // Show success toast
-      showToast ? this.showSuccessToast('Receiving group data and medical staff') : null;
-      return true;
+      // If no error
+      if (group !== false && group.errors === undefined) {
+        // merge data in local
+        await setItem('session', { ...session, group });
+        // Set data in context
+        await fetchAlgorithms();
+        this.setState({ session: { ...session, group } });
+        // Show success toast
+        showToast ? this.showSuccessToast(t('notifications:get_group')) : null;
+        return true;
+      }
     }
 
     return false;
@@ -266,7 +268,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     setUser: this.setUser,
     logout: this.logout,
     getGroupData: this.getGroupData,
-    unLockSession: this.unLockSession,
     openSession: this.openSession,
     lockSession: this.lockSession,
     newSession: this.newSession,
@@ -284,26 +285,26 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     user: null,
   };
 
-  async componentWillMount() {
-    await this.initContext();
-  }
-
   // fetch algorithms when change
   _fetchDataWhenChange = async () => {
     await fetchAlgorithms();
   };
 
-  _handleConnectivityChange = async (isConnected) => {
-    if (isConnected.type.match(/wifi|cellular/)) {
-      this.setState({
-        isConnected: true,
-      });
-      await this._fetchDataWhenChange();
-    } else if (isConnected.type.match(/unknown|none/)) {
-      this.setState({
-        isConnected: false,
-      });
+  _handleConnectivityChange = async (state) => {
+    const { isConnected } = state;
+
+    if (isConnected !== this.state.isConnected) {
+      if (isConnected === true) {
+        this.connectApp();
+      } else {
+        this.disconnectApp();
+      }
     }
+  };
+
+  connectApp = () => {
+    this.startIntervalLocalData();
+    this.setState({ isConnected: true });
   };
 
   async componentDidMount() {
@@ -333,7 +334,13 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 
   componentWillUnmount() {
-    NetInfo.removeEventListener('connectionChange', this._handleConnectivityChange);
+    if (this.unsubscribeNetInfo !== undefined && isFunction(this.unsubscribeNetInfo)) {
+      this.unsubscribeNetInfo();
+    }
+
+    if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
+      this.unsubscribeIntervalLocalData();
+    }
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
@@ -344,7 +351,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       console.warn('---> Liwi came back from background', nextAppState);
       await setItem(appInBackgroundStateKey, true);
 
-      this._fetchDataWhenChange();
       this.setState({ appState: nextAppState, logged: false });
     }
 
@@ -361,4 +367,4 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component) => (props) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;

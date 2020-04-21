@@ -137,7 +137,12 @@ export default class TooltipModal extends React.Component<Props, State> {
    * @private
    */
   _renderToolTipContent = () => {
-    const { modalRedux, children, toolTipIcon } = this.props;
+    const {
+      modalRedux,
+      children,
+      toolTipIcon,
+      app: { t },
+    } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
@@ -151,7 +156,25 @@ export default class TooltipModal extends React.Component<Props, State> {
               <Icon name="close" type="AntDesign" style={styles.icon} />
             </Button>
             {isFromJsx && children}
-            {isFromRedux ? modalRedux.content !== null ? <Text>{modalRedux.content}</Text> : this._renderValidation() : null}
+            {isFromRedux ? (
+              modalRedux.content !== null ? (
+                <View style={styles.content}>
+                  <Text style={styles.warning}>{modalRedux.params.title}</Text>
+                  <Text style={styles.textBold}>{t('popup:version_name')}</Text>
+                  <Text>{modalRedux.content}</Text>
+                  {modalRedux.params.description !== null && (
+                    <>
+                      <Text style={styles.textBold}>{t('popup:desc')}</Text>
+                      <Text>{modalRedux.params.description}</Text>
+                    </>
+                  )}
+                  <Text style={styles.textBold}>{t('popup:by')}</Text>
+                  <Text>{modalRedux.params.author}</Text>
+                </View>
+              ) : (
+                this._renderValidation()
+              )
+            ) : null}
           </View>
         </ScrollView>
       </View>
