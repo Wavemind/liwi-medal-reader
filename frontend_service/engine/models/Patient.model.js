@@ -58,9 +58,7 @@ export class PatientModel implements PatientModelInterface {
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
     const database = new Database();
-    database.realm.write(() => {
-      this.medicalCases.push(medicalCase);
-    });
+    database.writeArray(true, 'Patient', this.id, 'medicalCases', medicalCase);
     return true;
   };
 
@@ -93,24 +91,24 @@ export class PatientModel implements PatientModelInterface {
    */
   hasCaseInProgress = () => {
     this.medicalCases.map((medicalCase) => {
-      if (medicalCase.status !== medicalCaseStatus.close)
+      if (medicalCase.status !== medicalCaseStatus.close) {
         return true;
+      }
     });
     return false;
   };
 
   /**
-  * @return string: return the full name ofthe patient
-  */
-  full_name = () => {
-    return this.firstname + " " + this.firstname;
+   * @return string: return the full name ofthe patient
+   */
+  fullName = () => {
+    return `${this.firstname} ${this.firstname}`;
   };
 
   /**
-  * @return string: return the birthdate for the patient
-  */
+   * @return string: return the birthdate for the patient
+   */
   printBirthdate = () => {
-
     // Filter medicalCase with date not null
     const medicalCaseWithBirthDate = this.medicalCases.filter((e) => {
       const date = find(e.nodes, { reference: 1, category: 'demographic', stage: 'registration' });
@@ -129,11 +127,13 @@ export class PatientModel implements PatientModelInterface {
     // Medical case match
     if (medicalCase) {
       // Parse date
-      return moment(find(medicalCase.nodes, {
-        reference: 1,
-        category: 'demographic',
-        stage: 'registration',
-      }).value).format('ll');
+      return moment(
+        find(medicalCase.nodes, {
+          reference: 1,
+          category: 'demographic',
+          stage: 'registration',
+        }).value
+      ).format('ll');
     }
     return i18n.t('patient:age_not_defined');
   };

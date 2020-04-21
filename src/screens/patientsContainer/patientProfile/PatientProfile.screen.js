@@ -123,7 +123,7 @@ export default class PatientProfile extends React.Component {
     ) : (
         <View padding-auto flex>
           <LiwiTitle2 noBorder>
-            {patient.full_name()}
+            {patient.fullName()}
           </LiwiTitle2>
           <Text>
             {patient.printBirthdate()} - {patient.gender}

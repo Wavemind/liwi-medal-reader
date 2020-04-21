@@ -27,4 +27,12 @@ export default class Database {
   createObject = (isConnected, model, obj) => {
     return this.realmInterface.createObject(model, obj);
   };
+
+  writeField = (isConnected, model, id, field, value) => {
+    return this.realmInterface.writeField(model, id, field, value);
+  };
+
+  writeArray = (isConnected, model, id, field, value) => {
+    return this.realmInterface.writeArray(model, id, field, value);
+  };
 }
