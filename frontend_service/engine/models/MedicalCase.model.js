@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { medicalCaseStatus, nodesType, stage } from '../../constants';
+import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
 import Database from '../../../src/engine/api/Database';
 
 export class MedicalCaseModel {
@@ -89,7 +89,7 @@ export class MedicalCaseModel {
       if (this.nodes.hasOwnProperty(index)) {
         const item = this.nodes[index];
 
-        if (item.type === nodesType.finalDiagnostic && item.excluding_final_diagnostics !== null) {
+        if (item.type === nodeTypes.finalDiagnostic && item.excluding_final_diagnostics !== null) {
           this.nodes[item.excluding_final_diagnostics].excluded_by_final_diagnostics = item.id;
         }
       }
@@ -127,7 +127,7 @@ export class MedicalCaseModel {
       Object.keys(nodes).map((nodeId) => {
         if (nodes[nodeId].type.match(/^Question$/)) {
           nodes[nodeId].referenced_in.map((id) => {
-            if (nodes[id].stage === stage.registration) {
+            if (nodes[id].stage === stages.registration) {
               nodes[id].conditionValue = true;
             } else {
               const dd = nodes[id].dd?.some((e) => e.conditionValue);

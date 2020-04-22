@@ -15,7 +15,7 @@ import { LiwiTitle2 } from '../../../template/layout';
 
 import { getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
-import { stage } from '../../../../frontend_service/constants';
+import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 
@@ -31,7 +31,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   initializeComponent = async () => {
-    const { navigation, setMedicalCase, app: { database } } = this.props;
+    const {
+      navigation,
+      setMedicalCase,
+      app: { database },
+    } = this.props;
     let patient = {};
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
@@ -72,13 +76,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @params [String] route
    */
   save = async (newRoute) => {
-    const { navigation, medicalCase, updateMedicalCaseProperty, app: { database } } = this.props;
+    const {
+      navigation,
+      medicalCase,
+      updateMedicalCaseProperty,
+      app: { database },
+    } = this.props;
     const patientId = navigation.getParam('idPatient');
     let isSaved = false;
 
     await this.setState({ loading: true });
 
-    updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
+    updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
 
     if (patientId !== null) {
       const patient = database.findById('Patient', patientId);
@@ -102,7 +111,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               routeName: newRoute,
             }),
           ],
-        }),
+        })
       );
 
       await this.setState({ loading: false });
@@ -158,12 +167,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
           {
             by: 'stage',
             operator: 'equal',
-            value: stage.registration,
+            value: stages.registration,
           },
         ],
         'OR',
         'array',
-        false,
+        false
       );
     }
 
@@ -176,60 +185,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData(
         'patientupsert',
         'custom',
-        extraQuestions.map(({ id }) => id),
+        extraQuestions.map(({ id }) => id)
       );
     }
 
     return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="always"
-        testID="PatientUpsertScreen">
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
-          <LiwiLoader/>
+          <LiwiLoader />
         ) : (
           <React.Fragment>
-            <View>
-              <Col>
-                <CustomInput
-                  init={patient.firstname}
-                  label={t('patient:first_name')}
-                  change={updatePatientValue}
-                  index="firstname"
-                  iconName="user"
-                  iconType="AntDesign"
-                  error={errors.firstname}
-                  autoCapitalize="sentences"
-                />
-                <CustomInput
-                  init={patient.lastname}
-                  label={t('patient:last_name')}
-                  change={updatePatientValue}
-                  index="lastname"
-                  iconName="user"
-                  iconType="AntDesign"
-                  error={errors.lastname}
-                  autoCapitalize="sentences"
-                />
-              </Col>
-              <Col>
-                <CustomSwitchButton
-                  init={patient.gender}
-                  label={t('patient:gender')}
-                  change={updatePatientValue}
-                  index="gender"
-                  label1={t('patient:male')}
-                  label2={t('patient:female')}
-                  value1="male"
-                  value2="female"
-                  iconName="human-male-female"
-                  iconType="MaterialCommunityIcons"
-                  error={errors.gender}
-                />
-              </Col>
-            </View>
-            <Questions questions={extraQuestions}/>
+            <Questions questions={extraQuestions} />
             <View bottom-view>
               {algorithmReady ? (
                 !loading ? (
@@ -242,7 +209,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                     </Button>
                   </View>
                 ) : (
-                  <LiwiLoader/>
+                  <LiwiLoader />
                 )
               ) : (
                 <View columns>
