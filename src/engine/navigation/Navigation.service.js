@@ -165,7 +165,7 @@ function resetActionStack(routeName, params) {
  * @param currentState: Navigation : The state of react-navigation
  */
 
-function onNavigationStateChange(prevState, currentState) {
+async function onNavigationStateChange(prevState, currentState) {
   const activeRoute = getActiveRouteName(currentState);
   const prev = getActiveRouteName(prevState);
   const cu = getCurrentRoute(currentState);
@@ -180,16 +180,14 @@ function onNavigationStateChange(prevState, currentState) {
       const currentStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === state$.status;
       });
-
       // Find index in status
       const routeStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === cu.params.medicalCaseStatus;
       });
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
-        const database = new Database();
-        const medicalCase = database.findById('MedicalCase', state$.id);
-        medicalCase.writeValue('status', routeStatus.name);
+        const database = await new Database();
+        database.update('MedicalCase', state$.id, 'status', routeStatus.name);
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }

@@ -36,12 +36,16 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const algorithms = await getItems('algorithms');
+console.log("le patient id", patientId)
 
     if (patientId === null) {
       patient = new PatientModel();
     } else {
-      patient = database.findById('Patient', patientId);
+      console.log('ici ?')
+      patient = await database.findById('Patient', patientId);
     }
+
+    console.log("dans l'initialize", patient)
 
     if (algorithms.length === 0) {
       this.setState({ patient });
@@ -179,6 +183,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
         extraQuestions.map(({ id }) => id),
       );
     }
+
+    console.log(patient)
+
     return (
       <ScrollView
         contentContainerStyle={styles.container}

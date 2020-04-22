@@ -3,37 +3,72 @@ import { getItem } from './LocalStorage';
 
 export default class Database {
   constructor() {
-    // Interface
-    this.realmInterface = new RealmInterface();
-
-    this.initDatabase();
+    return (async () => {
+      const session = await getItem('session');
+      this.isConnected = await getItem('isConnected');
+      this.architecture = session.group.architecture;
+      this.realmInterface = new RealmInterface();
+      return this;
+    })();
   }
 
-  initDatabase = async () => {
-    const session = await getItem('session');
-    this.isConnected = await getItem('isConnected');
-    this.architecture = session.group.architecture;
-    this.localDataIp = session.group.local_data_ip;
-    this.mainDataIp = session.group.main_data_ip;
+  /**
+   * Returns all the entry on a specific model
+   * @param { string } model - The model name of the data we want to retrieve
+   * @returns { Collection } - A collection of all the data
+   */
+  getAll = (model) => {
+    const dbInterface = this.checkInterface();
+    return this[dbInterface].getAll(model);
   };
 
-  getAll = async (model) => {
-    return this.realmInterface.getAll(model);
-  };
-
+  /**
+   * Fetch single entry
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The id of the object we want
+   * @returns { collection } - The wanted object
+   */
   findById = (model, id) => {
-    return this.realmInterface.findById(model, id);
+    const dbInterface = this.checkInterface();
+    return this[dbInterface].findById(model, id);
   };
 
-  createObject = (model, obj) => {
-    return this.realmInterface.createObject(model, obj);
+  /**
+   * Creates an entry of a specific model in the database
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { object } object - The value of the object
+   */
+  insert = (model, object) => {
+    const dbInterface = this.checkInterface();
+    return this[dbInterface].insert(model, object);
   };
 
-  writeField = (model, id, field, value) => {
-    return this.realmInterface.writeField(model, id, field, value);
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } field - The field to update
+   * @param { any } value - value to update
+   * @param { object } object - The value of the object
+   */
+  update = (model, id, field, value) => {
+    const dbInterface = this.checkInterface();
+    return this[dbInterface].update(model, id, field, value);
   };
 
-  writeArray = (model, id, field, value) => {
-    return this.realmInterface.writeArray(model, id, field, value);
+  /**
+   * Define interface by connection and group architecture
+   * @returns {string} interface to use
+   */
+  checkInterface = () => {
+    let dbInterface = '';
+
+    if (this.architecture === 'standalone' || this.isConnected === 'false') {
+      dbInterface = 'realmInterface';
+    } else {
+      dbInterface = 'httpInterface';
+    }
+
+    return dbInterface;
   };
 }

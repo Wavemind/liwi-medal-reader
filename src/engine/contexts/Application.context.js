@@ -131,7 +131,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (session !== null) {
       isConnected && (await this.getGroupData(false));
 
-      const database = new Database();
+      const database = await new Database();
 
       this.setState({
         session,
