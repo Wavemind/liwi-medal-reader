@@ -28,17 +28,22 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient: null,
     loading: true,
     algorithmReady: false,
+    outsider: null,
   };
 
   initializeComponent = async () => {
-    const { navigation, setMedicalCase, app: { database } } = this.props;
+    const {
+      navigation,
+      setMedicalCase,
+      app: { database },
+    } = this.props;
     let patient = {};
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
+    const outsider = navigation.getParam('outsider'); // boolean
     const algorithms = await getItems('algorithms');
-
     if (patientId === null) {
-      patient = new PatientModel();
+      patient = new PatientModel({ outsider });
     } else {
       patient = database.findById('Patient', patientId);
     }
@@ -56,6 +61,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       }
 
       this.setState({
+        outsider,
         patient,
         algorithmReady: true,
         loading: false,
@@ -72,7 +78,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * @params [String] route
    */
   save = async (newRoute) => {
-    const { navigation, medicalCase, updateMedicalCaseProperty, app: { database } } = this.props;
+    const {
+      navigation,
+      medicalCase,
+      updateMedicalCaseProperty,
+      app: { database },
+    } = this.props;
     const patientId = navigation.getParam('idPatient');
     let isSaved = false;
 
@@ -102,7 +113,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               routeName: newRoute,
             }),
           ],
-        }),
+        })
       );
 
       await this.setState({ loading: false });
@@ -142,7 +153,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady } = this.state;
+    const { patient, errors, loading, algorithmReady, outsider } = this.state;
 
     const {
       app: { t },
@@ -163,7 +174,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         ],
         'OR',
         'array',
-        false,
+        false
       );
     }
 
@@ -176,17 +187,16 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData(
         'patientupsert',
         'custom',
-        extraQuestions.map(({ id }) => id),
+        extraQuestions.map(({ id }) => id)
       );
     }
+
+
     return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="always"
-        testID="PatientUpsertScreen">
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
-          <LiwiLoader/>
+          <LiwiLoader />
         ) : (
           <React.Fragment>
             <View>
@@ -211,6 +221,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   error={errors.lastname}
                   autoCapitalize="sentences"
                 />
+                {outsider !== null && (
+                  <CustomInput
+                    init={patient.reason}
+                    label={t('patient:reason')}
+                    change={updatePatientValue}
+                    index="reason"
+                    iconName="sign-out"
+                    iconType="FontAwesome"
+                    error={errors.reason}
+                    autoCapitalize="sentences"
+                  />
+                )}
               </Col>
               <Col>
                 <CustomSwitchButton
@@ -228,7 +250,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 />
               </Col>
             </View>
-            <Questions questions={extraQuestions}/>
+            <Questions questions={extraQuestions} />
             <View bottom-view>
               {algorithmReady ? (
                 !loading ? (
@@ -241,7 +263,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                     </Button>
                   </View>
                 ) : (
-                  <LiwiLoader/>
+                  <LiwiLoader />
                 )
               ) : (
                 <View columns>

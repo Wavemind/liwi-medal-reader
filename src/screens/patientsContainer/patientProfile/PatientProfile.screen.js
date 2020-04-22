@@ -34,10 +34,14 @@ export default class PatientProfile extends React.Component {
   }
 
   async getPatient() {
-    const { navigation, app:{database} } = this.props;
+    const {
+      navigation,
+      app: { database },
+    } = this.props;
     const id = navigation.getParam('id');
 
     const patient = database.findById('Patient', id);
+
 
     const algorithms = await getItems('algorithms');
     this.setState({
@@ -121,50 +125,48 @@ export default class PatientProfile extends React.Component {
     return !firstRender ? (
       <LiwiLoader />
     ) : (
-        <View padding-auto flex>
-          <LiwiTitle2 noBorder>
-            {patient.fullName()}
-          </LiwiTitle2>
-          <Text>
-            {patient.printBirthdate()} - {patient.gender}
-          </Text>
+      <View padding-auto flex>
+        <LiwiTitle2 noBorder>{patient.fullName()}</LiwiTitle2>
+        <Text>
+          {patient.printBirthdate()} - {patient.gender}
+        </Text>
 
-          <SeparatorLine style={styles.bottomMargin} />
-          {algorithms.length > 0 ? (
-            <View flex>
-              <View>
-                {patient.medicalCases.length > 0 ? (
-                  <List block>{_renderMedicalCases}</List>
-                ) : (
-                    <View padding-auto margin-auto>
-                      <Text not-available>{t('work_case:no_medical_cases')}</Text>
-                    </View>
-                  )}
-              </View>
-              <View bottom-view>
-                <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={patient.id} />
-                <Button
-                  onPress={() => {
-                    if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                      navigation.navigate('PatientUpsert', {
-                        idPatient: patient.id,
-                        newMedicalCase: true,
-                      });
-                    } else {
-                      this.setState({ propsToolTipVisible: true });
-                    }
-                  }}
-                >
-                  <Text>{t('work_case:create')}</Text>
-                </Button>
-              </View>
+        <SeparatorLine style={styles.bottomMargin} />
+        {algorithms.length > 0 ? (
+          <View flex>
+            <View>
+              {patient.medicalCases.length > 0 ? (
+                <List block>{_renderMedicalCases}</List>
+              ) : (
+                <View padding-auto margin-auto>
+                  <Text not-available>{t('work_case:no_medical_cases')}</Text>
+                </View>
+              )}
             </View>
-          ) : (
-              <View padding-auto margin-auto>
-                <Text>{t('work_case:no_algorithm')}</Text>
-              </View>
-            )}
-        </View>
-      );
+            <View bottom-view>
+              <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={patient.id} />
+              <Button
+                onPress={() => {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: patient.id,
+                      newMedicalCase: true,
+                    });
+                  } else {
+                    this.setState({ propsToolTipVisible: true });
+                  }
+                }}
+              >
+                <Text>{t('work_case:create')}</Text>
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text>{t('work_case:no_algorithm')}</Text>
+          </View>
+        )}
+      </View>
+    );
   }
 }
