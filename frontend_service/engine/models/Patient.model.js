@@ -8,16 +8,7 @@ import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
 import Database from '../../../src/engine/api/Database';
 
-interface PatientModelInterface {
-  id: number;
-  firstname: string;
-  lastname: string;
-  birthdate: string;
-  gender: string;
-  medicalCases: [MedicalCaseModel];
-}
-
-export class PatientModel implements PatientModelInterface {
+export class PatientModel {
   constructor(props = {}) {
     const {
       firstname = __DEV__ ? 'John' : '',
@@ -42,8 +33,8 @@ export class PatientModel implements PatientModelInterface {
   // Create patient and push it in local storage
   save = async () => {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
-    const database = new Database();
-    return database.createObject('Patient', {
+    const database = await new Database();
+    return database.insert('Patient', {
       id: this.id,
       firstname: this.firstname,
       lastname: this.lastname,
@@ -57,8 +48,8 @@ export class PatientModel implements PatientModelInterface {
   addMedicalCase = async (medicalCase) => {
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
-    const database = new Database();
-    await database.writeArray('Patient', this.id, 'medicalCases', medicalCase);
+    const database = await new Database();
+    await database.update('Patient', this.id, 'medicalCases', medicalCase);
     return true;
   };
 
@@ -99,7 +90,7 @@ export class PatientModel implements PatientModelInterface {
   };
 
   /**
-   * @return string: return the full name ofthe patient
+   * @return string: return the full name patient
    */
   fullName = () => {
     return `${this.firstname} ${this.lastname}`;
