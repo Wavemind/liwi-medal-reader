@@ -78,7 +78,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
       this.unsubscribeIntervalLocalData();
     }
-    await setItem('isConnected', "false");
+    await setItem('isConnected', 'false');
     this.setState({ isConnected: false });
   };
 
@@ -277,6 +277,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     openSession: this.openSession,
     lockSession: this.lockSession,
     newSession: this.newSession,
+    showSuccessToast: this.showSuccessToast,
     isConnected: true,
     medicalCase: {},
     appState: AppState.currentState,
@@ -306,7 +307,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   // When status goes to isConnected True
   connectApp = async () => {
     this.startIntervalLocalData();
-    await setItem('isConnected', "true");
+    await setItem('isConnected', 'true');
     this.setState({ isConnected: true });
   };
 

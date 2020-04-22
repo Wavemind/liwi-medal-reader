@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => { },
-  cacheUserLanguage: () => { },
+  init: () => {},
+  cacheUserLanguage: () => {},
 };
 
 i18n
@@ -89,6 +89,7 @@ i18n
           emergency: 'Emergency assistance',
           back: 'Back to home',
         },
+        qrcode: { scan: 'Scan the Qr code', open: 'Right reading Qrcode and data. Opening Patient' },
         summary: {
           title: 'Current summary',
           diagnoses: 'Diagnoses',
@@ -139,7 +140,7 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
-          in_creation: "Demographic",
+          in_creation: 'Demographic',
           medecines: 'Medicines',
           medecines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',
@@ -226,6 +227,7 @@ i18n
           male: 'Male',
           female: 'Female',
           age_not_defined: 'Age is not defined',
+          reason: 'Reason of the outsider',
         },
         login: {
           title: 'Login',
@@ -302,6 +304,7 @@ i18n
           case_in_progress: 'Case in progress',
           synchronize: 'Synchronize',
           patient_add: 'New patient',
+          patient_qr: 'Open patient by Qrcode',
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
@@ -391,7 +394,7 @@ i18n
           login: 'Connecter',
         },
         medical_case: {
-          in_creation: "Demographic",
+          in_creation: 'Demographic',
           managements: 'Managements',
           treatments: 'Treatments',
           final_diagnoses: 'Final diagnoses',

@@ -14,6 +14,8 @@ interface PatientModelInterface {
   lastname: string;
   birthdate: string;
   gender: string;
+  outsider: Object;
+  reason: string;
   medicalCases: [MedicalCaseModel];
 }
 
@@ -24,15 +26,19 @@ export class PatientModel implements PatientModelInterface {
       lastname = __DEV__ ? 'Doe' : '',
       birthdate = moment('1970-01-01T00:00:00.000').format(),
       gender = __DEV__ ? 'male' : '',
+      outsider = null,
       medicalCases = [],
       main_data_patient_id = null,
+      reason = '',
     } = props;
 
     if (this.id === undefined) {
       this.id = uuidv4();
+      this.outsider = outsider;
       this.firstname = firstname;
       this.lastname = lastname;
       this.birthdate = birthdate;
+      this.reason = reason;
       this.gender = gender;
       this.medicalCases = medicalCases;
       this.main_data_patient_id = main_data_patient_id;
@@ -46,9 +52,11 @@ export class PatientModel implements PatientModelInterface {
     return database.createObject('Patient', {
       id: this.id,
       firstname: this.firstname,
+      outsider: JSON.stringify(this.outsider),
       lastname: this.lastname,
       birthdate: this.birthdate,
       gender: this.gender,
+      reason: this.reason,
       medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
       main_data_patient_id: this.main_data_patient_id,
     });
@@ -80,6 +88,10 @@ export class PatientModel implements PatientModelInterface {
 
     if (this.birthdate === '') {
       errors.birthdate = i18n.t('form:required');
+    }
+
+    if (this.reason.trim() === '') {
+      errors.reason = i18n.t('form:required');
     }
 
     return errors;
@@ -148,6 +160,8 @@ PatientModel.schema = {
     lastname: 'string',
     birthdate: 'date',
     gender: 'string',
+    outsider: 'string',
+    reason: 'string',
     medicalCases: 'MedicalCase[]',
     main_data_patient_id: { type: 'int', optional: true },
   },
