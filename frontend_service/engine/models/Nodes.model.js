@@ -176,8 +176,6 @@ export class NodesModel implements NodeInterface {
         const condition = finalDiagnostic.calculateCondition();
         if (condition === true) {
           for (const indexManagement in finalDiagnostic.managements) {
-            console.log(indexManagement);
-            console.log(this);
             this[indexManagement].getQuestions(finalDiagnostic);
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
               const m = this[indexManagement];
