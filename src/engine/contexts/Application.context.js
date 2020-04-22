@@ -1,8 +1,6 @@
 // @flow
-/* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import Geolocation from '@react-native-community/geolocation';
-import NetInfo from '@react-native-community/netinfo';
 import moment from 'moment';
 import { NavigationScreenProps } from 'react-navigation';
 import { AppState, PermissionsAndroid } from 'react-native';
@@ -15,9 +13,7 @@ import { appInBackgroundStateKey, secondStatusLocalData } from '../../../fronten
 import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
 import { getItem, setItem } from '../api/LocalStorage';
 import { getDeviceInformation } from '../api/Device';
-import { handleHttpError } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
-import { isFunction } from '../../utils/swissKnives';
 
 const defaultValue = {};
 
@@ -54,38 +50,41 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.initializeAsync();
   }
 
+  // TODO comment
   initializeAsync = async () => {
     await this.initContext();
-
     AppState.addEventListener('change', this._handleAppStateChange);
+  };
 
-    this.unsubscribeNetInfo = NetInfo.addEventListener(this._handleConnectivityChange);
+  // TODO comment
+  _handleLocalData = async (firstTime = false) => {
     const { isConnected } = this.state;
-    isConnected && this.startIntervalLocalData();
-  };
-
-  _handleLocalData = async () => {
-    // TODO: put local-data ip
-    const localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
-    const request = await localDataOn;
-
-    if (request === undefined || request?.status !== 200) {
-      await this.disconnectApp();
+    // TODO use local data IP
+    const request = await fetch('http://192.168.1.128:3636', 'GET').catch(async () => {
+      if (isConnected || firstTime) {
+        await this.disconnectApp();
+      }
+    });
+    if (request !== undefined) {
+      await this.connectApp();
     }
   };
 
+  // TODO comment
   disconnectApp = async () => {
-    if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
-      this.unsubscribeIntervalLocalData();
-    }
-    await setItem('isConnected', "false");
+    await setItem('isConnected', false);
     this.setState({ isConnected: false });
-  };
-
-  startIntervalLocalData = () => {
     this.unsubscribeIntervalLocalData = setInterval(this._handleLocalData, secondStatusLocalData);
   };
 
+  // TODO comment
+  connectApp = async () => {
+    clearInterval(this.unsubscribeIntervalLocalData);
+    await setItem('isConnected', true);
+    this.setState({ isConnected: true });
+  };
+
+  // TODO comment
   getGeo = async () => {
     const { t } = this.state;
     return await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
@@ -97,6 +96,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
+  // TODO comment
   askGeo = async (enableHighAccuracy, callBack) => {
     return Geolocation.getCurrentPosition(
       async (position) => callBack(position),
@@ -104,15 +104,17 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       {
         enableHighAccuracy,
         timeout: 5000,
-      }
+      },
     );
   };
 
+  // TODO comment
   // Set value in context
   setValState = async (prop: any, value: any) => {
     await this.setState({ [prop]: value });
   };
 
+  // TODO comment
   // Log out
   logout = async () => {
     await setItem('user', null);
@@ -122,14 +124,17 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
+  // TODO comment
   // Load context of current user
   initContext = async () => {
     const session = await getItem('session');
-    const user = await getItem('user');
-    const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
+
+    await this._handleLocalData(true);
+    const { isConnected } = this.state; // isConnected is set in handleLocalData->disconnectApp. DO NOT MOVE this
 
     if (session !== null) {
-      isConnected && (await this.getGroupData(false));
+      const user = await getItem('user');
+      await this.getGroupData(false);
 
       const database = await new Database();
 
@@ -145,6 +150,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     }
   };
 
+  // TODO comment
   // Lock current session
   lockSession = async () => {
     this.setState({
@@ -153,6 +159,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
+  // TODO comment
   setModal = async (content) => {
     this.setState({
       isModalVisible: true,
@@ -160,6 +167,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
+  // TODO comment
   /**
    * Get the data for the group
    * Call with the button synchronize in screen UnLockSession.screen.js
@@ -216,6 +224,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     return false;
   };
 
+  // TODO comment
   setUser = async (user) => {
     // Set user in local storage
     await setItem('user', user);
@@ -237,6 +246,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
+  // TODO comment
   /**
    * Create new session from NewSession
    */
@@ -277,7 +287,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     openSession: this.openSession,
     lockSession: this.lockSession,
     newSession: this.newSession,
-    isConnected: true,
+    isConnected: false,
     medicalCase: {},
     appState: AppState.currentState,
     setModal: this.setModal,
@@ -289,30 +299,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     currentRoute: null,
     session: null,
     user: null,
-  };
-
-  // fetch algorithms when change
-  _fetchDataWhenChange = async () => {
-    await fetchAlgorithms();
-  };
-
-  _handleConnectivityChange = async (state) => {
-    const { isConnected } = state;
-
-    if (isConnected !== this.state.isConnected) {
-      if (isConnected === true) {
-        await this.connectApp();
-      } else {
-        await this.disconnectApp();
-      }
-    }
-  };
-
-  // When status goes to isConnected True
-  connectApp = async () => {
-    this.startIntervalLocalData();
-    await setItem('isConnected', "true");
-    this.setState({ isConnected: true });
   };
 
   async componentDidMount() {
@@ -342,13 +328,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 
   componentWillUnmount() {
-    if (this.unsubscribeNetInfo !== undefined && isFunction(this.unsubscribeNetInfo)) {
-      this.unsubscribeNetInfo();
-    }
-
-    if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
-      this.unsubscribeIntervalLocalData();
-    }
+    clearInterval(this.unsubscribeIntervalLocalData);
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
@@ -370,9 +350,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   render() {
     const { children } = this.props;
-
     return <ApplicationContext.Provider value={this.state}>{children}</ApplicationContext.Provider>;
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) =>
+  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
