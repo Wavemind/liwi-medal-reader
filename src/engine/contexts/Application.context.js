@@ -125,8 +125,12 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.setState({ isConnected: status });
   };
 
-  // TODO comment
-  getGeo = async () => {
+  /**
+   * Ask user to allow access to location
+   * @returns {Promise<*>}
+   * @private
+   */
+  _askGeo = async () => {
     const { t } = this.state;
     return await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
       title: t('popup:title'),
@@ -137,8 +141,13 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // TODO comment
-  askGeo = async (enableHighAccuracy, callBack) => {
+  /**
+   * Get geolocalization
+   * @param enableHighAccuracy
+   * @param callBack
+   * @returns {Promise<void>}
+   */
+  _getGeo = async (enableHighAccuracy, callBack) => {
     return Geolocation.getCurrentPosition(
       async (position) => callBack(position),
       async (error) => callBack(error),
@@ -149,14 +158,21 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     );
   };
 
-  // TODO comment
-  // Set value in context
+  /**
+   * Set value in context state
+   * @param {any} prop - Key to update in state
+   * @param {any} value - Value to set in state
+   * @returns {Promise<void>}
+   */
   setValState = async (prop: any, value: any) => {
     await this.setState({ [prop]: value });
   };
 
-  // TODO comment
-  // Log out
+  // TODO: Check useness of this method and lockSession method
+  /**
+   * Logout user
+   * @returns {Promise<void>}
+   */
   logout = async () => {
     await setItem('user', null);
     this.setState({
@@ -165,8 +181,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // TODO comment
-  // Lock current session
+  // TODO: Check useness of this method and logout method
+  /**
+   * Lock session
+   * @returns {Promise<void>}
+   */
   lockSession = async () => {
     this.setState({
       logged: false,
@@ -174,7 +193,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // TODO comment
+  /**
+   * Display modal and set content
+   * @param {any} content - What will be displayed
+   * @returns {Promise<void>}
+   */
   setModal = async (content) => {
     this.setState({
       isModalVisible: true,
@@ -182,11 +205,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // TODO comment
   /**
-   * Get the data for the group
-   * Call with the button synchronize in screen UnLockSession.screen.js
-   * @return boolean
+   * Fetch group info from medal-c
+   * @param { boolean } showToast - Display a notification
+   * @returns {Promise<boolean>}
    */
   getGroupData = async (showToast = true) => {
     const { isConnected, t } = this.state;
@@ -204,8 +226,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         await fetchAlgorithms();
         this.setState({ session: { ...session, group } });
         // Show success toast
-        showToast ? this.showSuccessToast(t('notifications:get_group')) : null;
+        showToast ? this._displayNotification(t('notifications:get_group'), liwiColors.greenColor) : null;
         return true;
+      } else {
+        this._displayNotification(group.errors, liwiColors.redColor);
       }
     }
 
@@ -216,13 +240,13 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * Get the pin code from screen
    * Redirect to userSelection if not opened
    * Redirect to home if already opened
-   * @params string: pinCode : pin code from screen
+   * @params { string }: pinCode : pin code from screen
    * @return boolean
    */
   openSession = async (pinCode) => {
     const { session, user, t } = this.state;
     if (session.group.pin_code === pinCode) {
-      this.showSuccessToast(t('notifications:connection_successful'));
+      this._displayNotification(t('notifications:connection_successful'));
 
       if (user === null) {
         await setTimeout(async () => {
@@ -239,31 +263,36 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     return false;
   };
 
-  // TODO comment
+  /**
+   * Store user in state context and local storage
+   * @param { object } user - User to store
+   * @returns {Promise<void>}
+   */
   setUser = async (user) => {
-    // Set user in local storage
     await setItem('user', user);
-
-    // Set user in context
     this.setState({ user, logged: true });
   };
 
   /**
-   * Show a toast with success styles
-   *  @params string msg : String to pass in message
+   * Display a toast
+   * @param {string} message - Message to display
+   * @param {string} color - Background color
+   * @private
    */
-  showSuccessToast = (msg) => {
-    Toast.showSuccess(msg, {
+  _displayNotification = (message, color) => {
+    Toast.show(message, {
       position: 20,
-      containerStyle: { backgroundColor: liwiColors.greenColor },
+      containerStyle: { backgroundColor: color },
       textStyle: { color: liwiColors.whiteColor },
       imgStyle: { height: 40 },
     });
   };
 
-  // TODO comment
   /**
-   * Create new session from NewSession
+   * Authenticate user and then register device in medal-c
+   * @param { string } email - User email
+   * @param { string } password - User password
+   * @returns {Promise<boolean>}
    */
   newSession = async (email: string, password: string) => {
     // auth with server
@@ -283,7 +312,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
       if (register === true) {
         // Show toast
-        this.showSuccessToast('Successfull tablet identification');
+        this._displayNotification(t('notifications:device_registered'), liwiColors.greenColor);
         return true;
       }
     }
@@ -291,33 +320,33 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   state = {
-    name: 'App',
-    lang: 'fr',
-    set: this.setValState,
-    logged: false,
-    setUser: this.setUser,
-    logout: this.logout,
-    getGroupData: this.getGroupData,
-    subscribePingApplicationServer: this.subscribePingApplicationServer,
-    openSession: this.openSession,
-    lockSession: this.lockSession,
-    newSession: this.newSession,
-    isConnected: false,
-    medicalCase: {},
     appState: AppState.currentState,
-    setModal: this.setModal,
-    isModalVisible: false,
     contentModal: 'initial',
-    initialPosition: {},
-    t: (translate) => i18n.t(translate),
-    ready: false,
     currentRoute: null,
+    initialPosition: {},
+    isModalVisible: false,
+    isConnected: false,
+    lang: 'fr',
+    logged: false,
+    name: 'App',
+    medicalCase: {},
+    ready: false,
     session: null,
     user: null,
+    getGroupData: this.getGroupData,
+    logout: this.logout,
+    lockSession: this.lockSession,
+    newSession: this.newSession,
+    openSession: this.openSession,
+    set: this.setValState,
+    subscribePingApplicationServer: this.subscribePingApplicationServer,
+    setModal: this.setModal,
+    setUser: this.setUser,
+    t: (translate) => i18n.t(translate),
   };
 
   async componentDidMount() {
-    let permissionReturned = await this.getGeo();
+    const permissionReturned = await this._askGeo(); // keep
     let location = {
       coords: {
         accuracy: 0,
@@ -333,7 +362,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     location.date = moment().toISOString();
 
     if (permissionReturned === 'granted') {
-      await this.askGeo(true, async (cb) => {
+      await this._getGeo(true, async (cb) => {
         location = { ...location, ...cb };
         await setItem('location', location);
       });
@@ -347,13 +376,17 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  // If the app is active or not
+  /**
+   * Set new state when closing the app
+   * @param { object } nextAppState - Next state
+   * @returns {Promise<void>}
+   * @private
+   */
   _handleAppStateChange = async (nextAppState) => {
     const { appState } = this.state;
     if (appState.match(/inactive|background/) && nextAppState === 'active') {
       console.warn('---> Liwi came back from background', nextAppState);
       await setItem(appInBackgroundStateKey, true);
-
       this.setState({ appState: nextAppState, logged: false });
     }
 
