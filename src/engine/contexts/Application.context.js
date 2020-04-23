@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import * as NetInfo from '@react-native-community/netinfo';
 import Geolocation from '@react-native-community/geolocation';
 import moment from 'moment';
 import { NavigationScreenProps } from 'react-navigation';
@@ -27,7 +28,6 @@ export type StateApplicationContext = {
   name: string,
   lang: string,
   set: (prop: any, value: any) => Promise<any>,
-  initContext: () => Promise<any>,
   logged: boolean,
   user: Object,
   logout: () => Promise<any>,
@@ -47,41 +47,82 @@ export type StateApplicationContext = {
 export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
-    this.initializeAsync();
+    this._init();
   }
 
-  // TODO comment
-  initializeAsync = async () => {
-    await this.initContext();
+  /**
+   * Initialize context and event listener
+   * @returns {Promise<void>}
+   * @private
+   */
+  _init = async () => {
+    const session = await getItem('session');
+
+    // Session already exist
+    if (session !== null && session?.group !== null) {
+      await this._handleApplicationServer(true);
+      await this.getGroupData(false);
+
+      const user = await getItem('user');
+      const { isConnected } = this.state;
+      const database = await new Database();
+
+      this.setState({
+        session,
+        user,
+        ready: true,
+        database,
+        isConnected,
+      });
+
+      // Start ping to local or main data server
+      this.subscribePingApplicationServer();
+    } else {
+      // First time tablet is used
+      const netInfoConnection = await NetInfo.fetch();
+      const { isConnected } = netInfoConnection;
+      await setItem('isConnected', isConnected);
+      this.setState({ ready: true, isConnected });
+    }
+
     AppState.addEventListener('change', this._handleAppStateChange);
   };
 
-  // TODO comment
-  _handleLocalData = async (firstTime = false) => {
+  /**
+   * Start an interval to ping application server like main data or local data
+   */
+  subscribePingApplicationServer = () => {
+    this.unsubscribePingApplicationServer = setInterval(this._handleApplicationServer, secondStatusLocalData);
+  };
+
+  /**
+   * Ping local or main data to define status of the app
+   * @param {boolean} firstTime - Force call to this._setAppStatus(false) to initialize it
+   * @returns {Promise<void>}
+   */
+  _handleApplicationServer = async (firstTime = false) => {
     const { isConnected } = this.state;
-    // TODO use local data IP
-    const request = await fetch('http://192.168.1.128:3636', 'GET').catch(async () => {
+    const session = await getItem('session');
+    const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
+    const request = await fetch(ip, 'GET').catch(async () => {
       if (isConnected || firstTime) {
-        await this.disconnectApp();
+        await this._setAppStatus(false);
       }
     });
-    if (request !== undefined) {
-      await this.connectApp();
+    if (request !== undefined && !isConnected) {
+      await this._setAppStatus(true);
     }
   };
 
-  // TODO comment
-  disconnectApp = async () => {
-    await setItem('isConnected', false);
-    this.setState({ isConnected: false });
-    this.unsubscribeIntervalLocalData = setInterval(this._handleLocalData, secondStatusLocalData);
-  };
-
-  // TODO comment
-  connectApp = async () => {
-    clearInterval(this.unsubscribeIntervalLocalData);
-    await setItem('isConnected', true);
-    this.setState({ isConnected: true });
+  /**
+   * Store in state and local storage connection status
+   * @param { boolean } status - connection status
+   * @returns {Promise<void>}
+   * @private
+   */
+  _setAppStatus = async (status) => {
+    await setItem('isConnected', status);
+    this.setState({ isConnected: status });
   };
 
   // TODO comment
@@ -122,32 +163,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       user: null,
       logged: false,
     });
-  };
-
-  // TODO comment
-  // Load context of current user
-  initContext = async () => {
-    const session = await getItem('session');
-
-    await this._handleLocalData(true);
-    const { isConnected } = this.state; // isConnected is set in handleLocalData->disconnectApp. DO NOT MOVE this
-
-    if (session !== null) {
-      const user = await getItem('user');
-      await this.getGroupData(false);
-
-      const database = await new Database();
-
-      this.setState({
-        session,
-        user,
-        ready: true,
-        isConnected,
-        database,
-      });
-    } else {
-      this.setState({ ready: true, isConnected });
-    }
   };
 
   // TODO comment
@@ -280,10 +295,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     lang: 'fr',
     set: this.setValState,
     logged: false,
-    initContext: this.initContext,
     setUser: this.setUser,
     logout: this.logout,
     getGroupData: this.getGroupData,
+    subscribePingApplicationServer: this.subscribePingApplicationServer,
     openSession: this.openSession,
     lockSession: this.lockSession,
     newSession: this.newSession,
@@ -328,7 +343,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 
   componentWillUnmount() {
-    clearInterval(this.unsubscribeIntervalLocalData);
+    clearInterval(this.unsubscribePingApplicationServer);
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 

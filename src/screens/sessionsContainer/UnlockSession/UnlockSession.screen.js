@@ -31,6 +31,7 @@ export default function PinSession() {
   const syncGroup = async () => {
     setLoading(true);
     await app.getGroupData();
+    await app.subscribePingApplicationServer();
     setLoading(false);
   };
 
