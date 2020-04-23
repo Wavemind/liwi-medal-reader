@@ -216,7 +216,7 @@ i18n
           not_found: 'No match found',
           waiting_triage: 'Triage',
           waiting_consultation: 'Consultation',
-          waiting_test: 'Test',
+          waiting_test: 'fish
           waiting_diagnostic: 'Diagnosis',
         },
         patient: {
