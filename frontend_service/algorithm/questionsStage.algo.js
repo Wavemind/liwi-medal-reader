@@ -60,11 +60,6 @@ export const questionsPhysicalExam = () => {
         operator: 'equal',
         value: categories.physicalExam,
       },
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.other,
-      },
     ],
     'OR',
     'array',

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Content, Text } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { categories, healthCareType } from '../../../../../frontend_service/constants';
+import { categories, medicationForms } from '../../../../../frontend_service/constants';
 import toReadableFraction from '../../../../utils/toReadableFraction';
 import { getDrugs, titleManagementCounseling } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
@@ -196,12 +196,12 @@ export default class HealthCares extends Component<Props, State> {
     const node = nodes[drug.id];
     const drugDose = node.getDrugDoses(drug.formulationSelected);
     switch (drug.formulationSelected) {
-      case healthCareType.syrup:
-      case healthCareType.suspension:
+      case medicationForms.syrup:
+      case medicationForms.suspension:
         return this._renderLiquid(drug, node, drugDose);
-      case healthCareType.tablet:
+      case medicationForms.tablet:
         return this._renderBreakable(drug, node, drugDose);
-      case healthCareType.capsule:
+      case medicationForms.capsule:
         return this._renderCapsule(drug, node, drugDose);
       default:
         return this._renderDefault(drug, node, drugDose);

@@ -4,7 +4,7 @@ import type { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
-import { displayFormats, nodesType, valueFormats } from '../../../../frontend_service/constants';
+import { displayFormats, nodeTypes, valueFormats } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { styles } from './Question.factory.style';
 import Boolean from '../DisplaysContainer/Boolean';
@@ -135,7 +135,7 @@ class WrapperQuestion extends React.Component<Props, State> {
       case displayFormats.date:
         WrapperAnswer = () => <Date question={question} {...this.props} />;
         break;
-      case displayFormats.list:
+      case displayFormats.dropDownList:
         WrapperAnswer = () => <List question={question} {...this.props} />;
         break;
       case displayFormats.reference:
@@ -183,7 +183,7 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if (question === undefined || question.type !== nodesType.question || (question.display_format === displayFormats.formula && question.label !== 'Age in months')) {
+    if (question === undefined || question.type !== nodeTypes.question || (question.display_format === displayFormats.formula && question.label !== 'Age in months')) {
       return null;
     }
 

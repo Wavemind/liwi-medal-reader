@@ -8,7 +8,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import PINCode from '@haskkor/react-native-pincode';
 import { liwiColors, screenHeight } from '../../../utils/constants';
 import { Image } from 'react-native';
-import { userRole } from '../../../../frontend_service/constants';
+import { userRoles } from '../../../../frontend_service/constants';
 import { styles } from './UnlockSession.style';
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
@@ -31,6 +31,7 @@ export default function PinSession() {
   const syncGroup = async () => {
     setLoading(true);
     await app.getGroupData();
+    await app.subscribePingApplicationServer();
     setLoading(false);
   };
 
@@ -77,7 +78,7 @@ export default function PinSession() {
                   <Text style={styles.textRole} bigTitle>
                     {app.user.last_name} {app.user.first_name}{' '}
                   </Text>
-                  {userRole[app.user.role]}
+                  {userRoles[app.user.role]}
                 </Text>
                 <Button onPress={app.logout} style={styles.buttonLogout}>
                   <Text size-auto>{app.t('unlock_session:logout')}</Text>

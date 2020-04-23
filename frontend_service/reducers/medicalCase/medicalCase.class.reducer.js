@@ -5,7 +5,7 @@ import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { nodesType } from '../../constants';
+import { nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
@@ -62,10 +62,10 @@ class MedicalCaseReducer extends ReducerClass {
     };
 
     switch (type) {
-      case nodesType.diagnostic:
+      case nodeTypes.diagnostic:
         caller = newNode.dd;
         break;
-      case nodesType.questionsSequence:
+      case nodeTypes.questionsSequence:
         caller = newNode.qs;
         break;
     }

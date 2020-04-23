@@ -2,23 +2,10 @@
 
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { medicalCaseStatus, nodesType, stage } from '../../constants';
+import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
 import Database from '../../../src/engine/api/Database';
 
-interface MedicalCaseInterface {
-  props: {
-    id?: number,
-    userId?: number,
-    created_at: string,
-    algorithmReady?: boolean,
-    comments?: mixed,
-    nodes: Object,
-    diagnostics: Object,
-    createdDate: Date,
-  };
-}
-
-export class MedicalCaseModel implements MedicalCaseInterface {
+export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
     if (this.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
@@ -102,7 +89,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       if (this.nodes.hasOwnProperty(index)) {
         const item = this.nodes[index];
 
-        if (item.type === nodesType.finalDiagnostic && item.excluding_final_diagnostics !== null) {
+        if (item.type === nodeTypes.finalDiagnostic && item.excluding_final_diagnostics !== null) {
           this.nodes[item.excluding_final_diagnostics].excluded_by_final_diagnostics = item.id;
         }
       }
@@ -140,7 +127,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
       Object.keys(nodes).map((nodeId) => {
         if (nodes[nodeId].type.match(/^Question$/)) {
           nodes[nodeId].referenced_in.map((id) => {
-            if (nodes[id].stage === stage.registration) {
+            if (nodes[id].stage === stages.registration) {
               nodes[id].conditionValue = true;
             } else {
               const dd = nodes[id].dd?.some((e) => e.conditionValue);
@@ -168,7 +155,7 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     if (!nodes[parentId].dd.isEmpty()) {
       nodes[parentId].dd.map((dd) => {
         // If the instance is related to the main diagram
-        // If the node has an final_diagnostic_id it's belongs to a healthcare so don't set conditionValue
+        // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
         if (diagnostics[dd.id].instances[parentId].final_diagnostic_id === null) {
           dd.conditionValue = diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
         } else {
@@ -194,24 +181,13 @@ export class MedicalCaseModel implements MedicalCaseInterface {
     });
   };
 
-
   /**
    * Returns the linked Patient
    * @return {Patient} - The related Patient.
    */
-  getPatient = () => {
-    const database = new Database();
+  getPatient = async () => {
+    const database = await new Database();
     return database.findById('Patient', this.patient_id);
-  };
-
-  /**
-   * Write a value in the database
-   * @param {string} field - The attribute to update.
-   * @param {any} value - The value to set.
-   */
-  writeValue = (field, value) => {
-    const database = new Database();
-    return database.writeField('MedicalCase', this.id, field, value);
   };
 }
 

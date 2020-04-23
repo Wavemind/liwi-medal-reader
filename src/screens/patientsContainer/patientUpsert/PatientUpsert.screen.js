@@ -15,7 +15,7 @@ import { LiwiTitle2 } from '../../../template/layout';
 
 import { getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
-import { stage } from '../../../../frontend_service/constants';
+import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 
@@ -47,7 +47,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (patientId === null) {
       patient = new PatientModel({ outsider, identifier });
     } else {
-      patient = database.findById('Patient', patientId);
+      patient = await database.findById('Patient', patientId);
     }
 
     if (algorithms.length === 0) {
@@ -91,7 +91,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     await this.setState({ loading: true });
 
-    updateMedicalCaseProperty('isNewCase', false); // Workauround because redux persist is buggy with boolean
+    updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
 
     if (patientId !== null) {
       const patient = database.findById('Patient', patientId);
@@ -155,7 +155,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady, outsider } = this.state;
+    const { patient, errors, loading, algorithmReady,outsider } = this.state;
 
     const {
       app: { t },
@@ -171,7 +171,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           {
             by: 'stage',
             operator: 'equal',
-            value: stage.registration,
+            value: stages.registration,
           },
         ],
         'OR',
@@ -193,8 +193,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       );
     }
 
-    console.log(patient, outsider !== null, outsider);
-
     return (
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
@@ -204,26 +202,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           <React.Fragment>
             <View>
               <Col>
-                <CustomInput
-                  init={patient.firstname}
-                  label={t('patient:first_name')}
-                  change={updatePatientValue}
-                  index="firstname"
-                  iconName="user"
-                  iconType="AntDesign"
-                  error={errors.firstname}
-                  autoCapitalize="sentences"
-                />
-                <CustomInput
-                  init={patient.lastname}
-                  label={t('patient:last_name')}
-                  change={updatePatientValue}
-                  index="lastname"
-                  iconName="user"
-                  iconType="AntDesign"
-                  error={errors.lastname}
-                  autoCapitalize="sentences"
-                />
+                <Text></Text>
                 {outsider === null && (
                   <CustomInput
                     init={patient.reason}
@@ -236,21 +215,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
                     autoCapitalize="sentences"
                   />
                 )}
-              </Col>
-              <Col>
-                <CustomSwitchButton
-                  init={patient.gender}
-                  label={t('patient:gender')}
-                  change={updatePatientValue}
-                  index="gender"
-                  label1={t('patient:male')}
-                  label2={t('patient:female')}
-                  value1="male"
-                  value2="female"
-                  iconName="human-male-female"
-                  iconType="MaterialCommunityIcons"
-                  error={errors.gender}
-                />
               </Col>
             </View>
             <Questions questions={extraQuestions} />
