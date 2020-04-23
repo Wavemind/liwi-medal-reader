@@ -33,27 +33,16 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    const { navigation } = this.props;
-
-    // Force refresh with a navigation.push
-    navigation.addListener('willFocus', async () => {
-      await this.filterMedicalCases();
-    });
-    await this.filterMedicalCases();
-  }
-
-  // Get all medical case with waiting for... status
-  filterMedicalCases = async () => {
     const { app: { database } } = this.props;
     this.setState({ loading: true });
 
-    const medicalCases = await database.getAll('MedicalCase');
+    const medicalCases = database.getAll('MedicalCase');
 
     this.setState({
       medicalCases,
       loading: false,
     });
-  };
+  }
 
   // Update state switch asc / desc
   orderByFirstName = () => {
@@ -180,11 +169,12 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   _renderMedicalCase = () => {
-    const { medicalCases } = this.state;
     const {
       navigation,
       app: { t },
     } = this.props;
+
+    const { medicalCases } = this.state;
 
     return medicalCases.length > 0 ? (
       [
@@ -207,16 +197,14 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
                 if (route !== undefined) {
                   navigation.navigate(route, {
-                    idPatient: medicalCase.getPatient().id,
+                    idPatient: medicalCase.patient_id,
                     newMedicalCase: false,
                   });
                 }
               }}
             >
               <View w50>
-                <Text>
-                  {medicalCase.getPatient()?.fullName()}
-                </Text>
+                <Text>{medicalCase.id}</Text>
               </View>
               <View w50>
                 <Text>{t(`medical_case:${medicalCase.status}`)}</Text>

@@ -16,45 +16,41 @@ type State = {};
 export default class QrCodePatient extends React.Component<Props, State> {
   state = {
     readSuccess: false,
+    oldQrcode: null,
+    newId: false,
   };
 
   onSuccess = async (e) => {
-    const { showSuccessToast, database, t } = this.props.app;
+    const { _displayNotification, database, t } = this.props.app;
     const { navigation, closeModal } = this.props;
     const json = await JSON.parse(e.data);
 
     // QRcode valid ?
     if ('uid' in json && 'studyID' in json && 'groupID' in json) {
-      this.setState({ readSuccess: true });
-
       const patients = await database.getAll('Patient');
       let patient = null;
-      patients.map((patientItem) => {
-        console.log(patientItem);
-        if (patientItem?.identifier?.uid === json.uid) {
+      patients.map(async (patientItem) => {
+        const identifier = await JSON.parse(patientItem.identifier);
+
+        if (identifier?.uid === json.uid) {
           patient = patientItem;
         }
       });
 
       const session = await getItem('session');
 
-      console.log(patient, patients, session, json);
+      // Stop reading
+      if ((session?.group?.id !== json.groupID && patient !== null) || patient === null) {
+        await this.setState({ readSuccess: true });
+      }
+
+      const { readSuccess, oldQrcode } = this.state;
 
       if (patient !== null) {
         // Patient exist what ever the medical station (already declared outsider if goes here)
         navigation.navigate('PatientUpsert', {
           idPatient: json.uid,
           newMedicalCase: true,
-        });
-      } else if (session?.group?.id !== json.groupID) {
-        // This patient is not from this medical station
-        navigation.navigate('PatientUpsert', {
-          idPatient: null,
-          newMedicalCase: true,
-          outsider: {
-            ...json,
-            reason: '',
-          },
         });
       } else if (patient === null && session?.group?.id === json.groupID) {
         // Correct medical station but patient does not exist
@@ -67,8 +63,24 @@ export default class QrCodePatient extends React.Component<Props, State> {
         });
       }
 
-      showSuccessToast(t('qrcode:open'));
-      closeModal();
+      if (session?.group?.id !== json.groupID && readSuccess === true && oldQrcode !== null) {
+        navigation.navigate('PatientUpsert', {
+          idPatient: null,
+          newMedicalCase: true,
+          identifier: { ...json },
+          outsider: {
+            ...oldQrcode,
+          },
+        });
+      } else {
+        // need to re scan
+        this.setState({ newId: true, oldQrcode: json });
+      }
+
+      if (readSuccess) {
+        _displayNotification(t('qrcode:open'));
+        closeModal();
+      }
     }
   };
 
@@ -77,13 +89,14 @@ export default class QrCodePatient extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
-    const { readSuccess } = this.state;
+    const { readSuccess, newId } = this.state;
 
     return (
       <View style={styles.content}>
         <Text style={styles.centerText} customSubTitle>
           {t('qrcode:scan')}
         </Text>
+        {newId && <Text>You have to rescan the new id</Text>}
         <QRCodeScanner
           onRead={this.onSuccess}
           showMarker

@@ -8,7 +8,7 @@ export default class RealmInterface {
    * Generates and returns a realm database object
    * @returns { Realm } - A realm database object
    */
-  realm = () => {
+  _realm = () => {
     return new Realm({
       schema: [PatientModel, MedicalCaseModel],
       deleteRealmIfMigrationNeeded: true,
@@ -17,45 +17,50 @@ export default class RealmInterface {
 
   /**
    * Creates an entry of a specific model in the database
-   * @param { string } - The model name of the data we want to retreive
-   * @param { integer } - The value of the object
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { object } object - The value of the object
    */
-  createObject = (model, obj) => {
-    this.realm().write(() => {
-      this.realm().create(model, obj);
+  insert = (model, object) => {
+    this._realm().write(() => {
+      this._realm().create(model, object);
     });
   };
 
   /**
-   * Retruns the entry of a specific model with an id
-   * @param { string } - The model name of the data we want to retreive
-   * @param { integer } - The id of the object we want
+   * Returns the entry of a specific model with an id
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The id of the object we want
    * @returns { Collection } - The wanted object
    */
   findById = (model, id) => {
-    return this.realm().objects(model).filtered('id = $0', id)[0];
+    return this._realm().objects(model).filtered('id = $0', id)[0];
   };
 
   /**
-   * Retruns all the entry on a specific model
-   * @param { string } - The model name of the data we want to retreive
+   * Returns all the entry on a specific model
+   * @param { string } model - The model name of the data we want to retrieve
    * @returns { Collection } - A collection of all the data
    */
   getAll = (model) => {
-    return this.realm().objects(model);
+    return this._realm().objects(model);
   };
 
-  writeField = (model, id, field, value) => {
-    const object = this.findById(model, id);
-    return this.realm().write(() => {
-      object[field] = value;
-    });
-  };
-
-  writeArray = (model, id, field, value) => {
-    const object = this.findById(model, id);
-    return this.realm().write(() => {
-      object[field].push(value);
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } field - The field to update
+   * @param { any } value - value to update
+   * @param { object } object - The value of the object
+   */
+  update = (model, id, field, value) => {
+    this._realm().write(() => {
+      if (typeof value === 'object') {
+        const object = this.findById(model, id);
+        object[field].push(value);
+      } else {
+        this._realm().create(model, { id, [field]: value }, 'modified');
+      }
     });
   };
 }

@@ -6,7 +6,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { styles } from '../../../engine/navigation/drawer/Drawer.style';
-import { stage } from '../../../../frontend_service/constants';
+import { stages } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {
   questionsInScreen: Array,
@@ -94,7 +94,7 @@ export default class NavigationTriage extends React.Component<Props, State> {
 
     // Verify if all questions of triage stage is answered
     if (endNavBool) {
-      const triageQuestions = medicalCase.nodes.filterByStage(stage.triage);
+      const triageQuestions = medicalCase.nodes.filterByStage(stages.triage);
       return medicalCase.nodes.isAllAnswered(triageQuestions);
     }
 

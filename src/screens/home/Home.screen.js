@@ -123,10 +123,7 @@ export default class Home extends React.Component<Props, State> {
                     duration: 4000,
                   });
                 } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                  navigation.navigate('PatientUpsert', {
-                    idPatient: null,
-                    newMedicalCase: true,
-                  });
+                  this.setState({ modalQrCode: true });
                 } else {
                   this.setState({ propsToolTipVisible: true, qrcode: true });
                 }

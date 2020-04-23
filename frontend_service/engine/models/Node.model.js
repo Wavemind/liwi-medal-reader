@@ -1,9 +1,9 @@
 // @flow
 import findKey from 'lodash/findKey';
-import { categories, nodesType, valueFormats } from '../../constants';
+import { categories, nodeTypes, valueFormats } from '../../constants';
 import { MedicalCaseModel } from './MedicalCase.model';
 
-const { qs, d, fd, m, q, t } = nodesType;
+const { qs, d, fd, m, q, t } = nodeTypes;
 
 interface NodeInterface {
   id: number;

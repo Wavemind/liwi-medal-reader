@@ -1,6 +1,6 @@
 import find from 'lodash/find';
 import * as _ from 'lodash';
-import { nodesType } from '../constants';
+import { nodeTypes } from '../constants';
 import { updateConditionValue } from '../actions/creators.actions';
 import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './conditionsHelpers.algo';
 
@@ -118,14 +118,14 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
     /**
      * If the child is the current QS
      */
-    if (child.id === qs.id && child.type === nodesType.questionsSequence) {
+    if (child.id === qs.id && child.type === nodeTypes.questionsSequence) {
       // The branch is open and we can set the answer of this QS
       return nextChildFinalQs(instance, child, qs);
     }
-    if (child.type === nodesType.questionsSequence) {
+    if (child.type === nodeTypes.questionsSequence) {
       return nextChildOtherQs(state$, child, childConditionValue, qs, actions);
     }
-    if (child.type === nodesType.question) {
+    if (child.type === nodeTypes.question) {
       return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
     }
     console.warn('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'This QS', qs, 'You do not have to be here !! child in QS is wrong for : ', child);
