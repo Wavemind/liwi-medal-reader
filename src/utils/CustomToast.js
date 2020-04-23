@@ -1,37 +1,35 @@
 // @flow
-import { Toast } from 'native-base';
+import Toast from 'react-native-tiny-toast';
 import isArray from 'lodash/isArray';
+import { liwiColors } from './constants';
 
-interface ToastType {
-  buttonText?: string;
-  type?: 'warning' | 'success' | 'danger';
-  position?: string;
-  duration?: number;
-}
-
-export const handleHttpError = async (errors: any) => {
+export const handleHttpError = (errors: any) => {
   // Array of errors maps throw or display it
   if (errors instanceof Error) {
-    Toaster(errors.toString(), { type: 'danger' });
+    displayNotification(errors.toString(), liwiColors.redColor);
   } else if (isArray(errors)) {
     errors.map((error) => {
-      Toaster(error, { type: 'danger' });
+      displayNotification(error, liwiColors.redColor);
     });
   } else {
-    Toaster(errors, { type: 'danger' });
+    displayNotification(errors, liwiColors.redColor);
   }
 };
 
-export const Toaster = (text: string = 'Default', params: ToastType = {}) => {
-  const { buttonText = null, type = 'warning', position = 'bottom', duration = 2000 } = params;
-
-  Toast.show({
-    text,
-    buttonText,
-    type,
-    position,
-    buttonTextStyle: { color: '#008000' },
-    buttonStyle: { backgroundColor: '#5cb85c' },
-    duration,
+/**
+ * Display a toast
+ * @param {string} message - Message to display
+ * @param {string} color - Background color
+ * @private
+ */
+export const displayNotification = (message, color) => {
+  Toast.show(message, {
+    position: 20,
+    textStyle: { color: liwiColors.whiteColor },
+    containerStyle: {
+      minWidth: 105,
+      minHeight: 60,
+      backgroundColor: color,
+    },
   });
 };
