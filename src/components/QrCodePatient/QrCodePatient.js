@@ -27,11 +27,20 @@ export default class QrCodePatient extends React.Component<Props, State> {
     if ('uid' in json && 'studyID' in json && 'groupID' in json) {
       this.setState({ readSuccess: true });
 
-      const patient = await database.findById('Patient', json.uid);
+      const patients = await database.getAll('Patient');
+      let patient = null;
+      patients.map((patientItem) => {
+        console.log(patientItem);
+        if (patientItem?.identifier?.uid === json.uid) {
+          patient = patientItem;
+        }
+      });
+
       const session = await getItem('session');
 
+      console.log(patient, patients, session, json);
 
-      if (patient !== undefined) {
+      if (patient !== null) {
         // Patient exist what ever the medical station (already declared outsider if goes here)
         navigation.navigate('PatientUpsert', {
           idPatient: json.uid,
@@ -47,11 +56,14 @@ export default class QrCodePatient extends React.Component<Props, State> {
             reason: '',
           },
         });
-      } else if (patient !== undefined && session?.group?.id === json.groupID) {
+      } else if (patient === null && session?.group?.id === json.groupID) {
         // Correct medical station but patient does not exist
         navigation.navigate('PatientUpsert', {
           idPatient: null,
           newMedicalCase: true,
+          identifier: {
+            ...json,
+          },
         });
       }
 

@@ -40,10 +40,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let patient = {};
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
-    const outsider = navigation.getParam('outsider'); // boolean
+    const outsider = navigation.getParam('outsider'); // Object
+    const identifier = navigation.getParam('identifier'); // Object
     const algorithms = await getItems('algorithms');
+
     if (patientId === null) {
-      patient = new PatientModel({ outsider });
+      patient = new PatientModel({ outsider, identifier });
     } else {
       patient = database.findById('Patient', patientId);
     }
@@ -191,6 +193,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       );
     }
 
+    console.log(patient, outsider !== null, outsider);
 
     return (
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
@@ -221,7 +224,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   error={errors.lastname}
                   autoCapitalize="sentences"
                 />
-                {outsider !== null && (
+                {outsider === null && (
                   <CustomInput
                     init={patient.reason}
                     label={t('patient:reason')}

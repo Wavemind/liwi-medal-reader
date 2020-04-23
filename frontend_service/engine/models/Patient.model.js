@@ -16,6 +16,7 @@ interface PatientModelInterface {
   gender: string;
   outsider: Object;
   reason: string;
+  identifier: string;
   medicalCases: [MedicalCaseModel];
 }
 
@@ -29,6 +30,7 @@ export class PatientModel implements PatientModelInterface {
       outsider = null,
       medicalCases = [],
       main_data_patient_id = null,
+      identifier = null,
       reason = '',
     } = props;
 
@@ -40,9 +42,12 @@ export class PatientModel implements PatientModelInterface {
       this.birthdate = birthdate;
       this.reason = reason;
       this.gender = gender;
+      this.identifier = identifier;
       this.medicalCases = medicalCases;
       this.main_data_patient_id = main_data_patient_id;
     }
+
+    console.log(this);
   }
 
   // Create patient and push it in local storage
@@ -53,6 +58,7 @@ export class PatientModel implements PatientModelInterface {
       id: this.id,
       firstname: this.firstname,
       outsider: JSON.stringify(this.outsider),
+      identifier: JSON.stringify(this.identifier),
       lastname: this.lastname,
       birthdate: this.birthdate,
       gender: this.gender,
@@ -90,7 +96,7 @@ export class PatientModel implements PatientModelInterface {
       errors.birthdate = i18n.t('form:required');
     }
 
-    if (this.reason.trim() === '') {
+    if (this.outsider !== null && this.reason.trim() === '') {
       errors.reason = i18n.t('form:required');
     }
 
@@ -161,6 +167,7 @@ PatientModel.schema = {
     birthdate: 'date',
     gender: 'string',
     outsider: 'string',
+    identifier: 'string',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
     main_data_patient_id: { type: 'int', optional: true },
