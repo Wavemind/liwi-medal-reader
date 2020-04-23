@@ -17,7 +17,7 @@ export default class HttpInterface {
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
    */
-  insert = (model, object) => {
+  insert = async (model, object) => {
     console.log('httpInterface insert');
   };
 
@@ -27,8 +27,10 @@ export default class HttpInterface {
    * @param { integer } id - The id of the object we want
    * @returns { Collection } - The wanted object
    */
-  findById = (model, id) => {
-    console.log('httpInterface find by id');
+  findById = async (model, id) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
+    const header = await this._setHeaders();
+    return this._fetch(url, header);
   };
 
   /**
@@ -50,7 +52,7 @@ export default class HttpInterface {
    * @param { any } value - value to update
    * @param { object } object - The value of the object
    */
-  update = (model, id, field, value) => {
+  update = async (model, id, field, value) => {
     console.log('httpInterface update');
   };
 
@@ -79,6 +81,9 @@ export default class HttpInterface {
     switch (model) {
       case 'Patient':
         route = 'patients';
+        break;
+      case 'MedicalCase':
+        route = 'medical_cases';
         break;
       default:
         console.log('route doesn\'t exist', model);

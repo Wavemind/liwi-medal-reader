@@ -29,7 +29,7 @@ export default class Database {
    * Fetch single entry
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The id of the object we want
-   * @returns { collection } - The wanted object
+   * @returns { collection } - Object fetch
    */
   findById = (model, id) => {
     const dbInterface = this._checkInterface();
