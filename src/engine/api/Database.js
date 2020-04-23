@@ -1,4 +1,6 @@
 import RealmInterface from './dbInterface/RealmInterface';
+import HttpInterface from './dbInterface/HttpInterface';
+
 import { getItem } from './LocalStorage';
 
 export default class Database {
@@ -8,6 +10,7 @@ export default class Database {
       this.isConnected = await getItem('isConnected');
       this.architecture = session.group.architecture;
       this.realmInterface = new RealmInterface();
+      this.httpInterface = new HttpInterface();
       return this;
     })();
   }
@@ -62,8 +65,7 @@ export default class Database {
    */
   checkInterface = () => {
     let dbInterface = '';
-
-    if (this.architecture === 'standalone' || this.isConnected === 'false') {
+    if (this.architecture === 'standalone' || !this.isConnected) {
       dbInterface = 'realmInterface';
     } else {
       dbInterface = 'httpInterface';

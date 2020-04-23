@@ -8,7 +8,7 @@ export default class RealmInterface {
    * Generates and returns a realm database object
    * @returns { Realm } - A realm database object
    */
-  realm = () => {
+  _realm = () => {
     return new Realm({
       schema: [PatientModel, MedicalCaseModel],
       deleteRealmIfMigrationNeeded: true,
@@ -21,8 +21,8 @@ export default class RealmInterface {
    * @param { object } object - The value of the object
    */
   insert = (model, object) => {
-    this.realm().write(() => {
-      this.realm().create(model, object);
+    this._realm().write(() => {
+      this._realm().create(model, object);
     });
   };
 
@@ -33,7 +33,7 @@ export default class RealmInterface {
    * @returns { Collection } - The wanted object
    */
   findById = (model, id) => {
-    return this.realm().objects(model).filtered('id = $0', id)[0];
+    return this._realm().objects(model).filtered('id = $0', id)[0];
   };
 
   /**
@@ -42,7 +42,7 @@ export default class RealmInterface {
    * @returns { Collection } - A collection of all the data
    */
   getAll = (model) => {
-    return this.realm().objects(model);
+    return this._realm().objects(model);
   };
 
   /**
@@ -54,12 +54,12 @@ export default class RealmInterface {
    * @param { object } object - The value of the object
    */
   update = (model, id, field, value) => {
-    this.realm().write(() => {
+    this._realm().write(() => {
       if (typeof value === 'object') {
         const object = this.findById(model, id);
         object[field].push(value);
       } else {
-        this.realm().create(model, { id, [field]: value }, 'modified');
+        this._realm().create(model, { id, [field]: value }, 'modified');
       }
     });
   };
