@@ -30,7 +30,9 @@ export class PatientModel {
       this.birthdate = birthdate;
       this.reason = reason;
       this.gender = gender;
-      this.identifier = identifier;
+      this.uid = identifier.uid.toString();
+      this.studyID = identifier.studyID.toString();
+      this.groupID = identifier.groupID.toString();
       this.medicalCases = medicalCases;
       this.main_data_patient_id = main_data_patient_id;
     }
@@ -40,17 +42,11 @@ export class PatientModel {
   save = async () => {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
     const database = await new Database();
+    this.json = JSON.stringify
+
     return database.insert('Patient', {
-      id: this.id,
-      firstname: this.firstname,
-      outsider: JSON.stringify(this.outsider),
-      identifier: JSON.stringify(this.identifier),
-      lastname: this.lastname,
-      birthdate: this.birthdate,
-      gender: this.gender,
-      reason: this.reason,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
-      main_data_patient_id: this.main_data_patient_id,
+      ...this,
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
     });
   };
 
@@ -82,7 +78,7 @@ export class PatientModel {
       errors.birthdate = i18n.t('form:required');
     }
 
-    if (this.outsider !== null && this.reason.trim() === '') {
+    if (this.second_uid !== null && this.reason.trim() === '') {
       errors.reason = i18n.t('form:required');
     }
 
@@ -152,8 +148,12 @@ PatientModel.schema = {
     lastname: 'string',
     birthdate: 'date',
     gender: 'string',
-    outsider: 'string',
-    identifier: 'string',
+    uid: 'string',
+    studyID: 'string',
+    groupID: 'string',
+    second_uid: 'string?',
+    second_studyID: 'string?',
+    second_groupID: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
     main_data_patient_id: { type: 'int', optional: true },

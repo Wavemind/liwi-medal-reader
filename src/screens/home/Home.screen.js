@@ -116,10 +116,7 @@ export default class Home extends React.Component<Props, State> {
               style={styles.navigationButton}
               onPress={() => {
                 if (algorithms.length === 0) {
-                  Toaster(t('work_case:no_algorithm'), {
-                    type: 'danger',
-                    duration: 4000,
-                  });
+                  displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
                 } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                   this.setState({ modalQrCode: true });
                 } else {
