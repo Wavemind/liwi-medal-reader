@@ -54,7 +54,7 @@ export default class Database {
    * @return { object } object - The value of the object
    */
   update = (model, id, fields) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].update(model, id, fields);
   };
 
@@ -67,9 +67,9 @@ export default class Database {
    * @return { object } object - The value of the object
    */
   push = (model, id, field, value) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].push(model, id, field, value);
-  }
+  };
 
   /**
    * Define interface by connection and group architecture
@@ -84,6 +84,6 @@ export default class Database {
       dbInterface = 'httpInterface';
     }
 
-    return 'httpInterface';
+    return dbInterface;
   };
 }

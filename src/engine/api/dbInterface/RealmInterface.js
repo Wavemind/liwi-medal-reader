@@ -50,6 +50,7 @@ export default class RealmInterface {
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
    * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
    */
   update = (model, id, fields) => {
     this._realm().write(() => {
@@ -63,11 +64,12 @@ export default class RealmInterface {
    * @param { integer } id - The row to update
    * @param { string } field - The field to update
    * @param { any } value - value to update
+   * @returns { Collection } - Updated object
    */
   push = (model, id, field, value) => {
     this._realm().write(() => {
       const object = this.findById(model, id);
       object[field].push(value);
     });
-  }
+  };
 }

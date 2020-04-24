@@ -50,12 +50,27 @@ export default class HttpInterface {
    * Update or insert value in a existing row
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
+   */
+  update = async (model, id, fields) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
+    const header = await this._setHeaders('PUT', fields);
+    return this._fetch(url, header);
+  };
+
+  /**
+   * Push an object in a existing object based on model name and id
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
    * @param { string } field - The field to update
    * @param { any } value - value to update
-   * @param { object } object - The value of the object
+   * @returns { Collection } - Updated object
    */
-  update = async (model, id, field, value) => {
-    console.log('httpInterface update');
+  push = async (model, id, field, value) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
+    const header = await this._setHeaders('PUT', { [field]: value });
+    return this._fetch(url, header);
   };
 
   /**
