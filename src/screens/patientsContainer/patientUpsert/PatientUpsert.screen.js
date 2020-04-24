@@ -1,14 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import * as _ from 'lodash';
 import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
-import { Button, Col, Text, View } from 'native-base';
+import { Button, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
-import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
@@ -136,17 +133,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
   savePatient = async () => {
     const { patient } = this.state;
     const { medicalCase } = this.props;
-    const errors = await patient.validate();
 
     // Create patient if there are no errors
-    if (_.isEmpty(errors)) {
-      patient.medicalCases.push(medicalCase);
-      await patient.save();
-
-      return true;
-    }
-    this.setState({ errors });
-    return false;
+    patient.medicalCases.push(medicalCase);
+    await patient.save();
+    return true;
   };
 
   render() {
@@ -176,11 +167,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       );
     }
 
-    let hasNoError = false;
-
-    if (patient !== null) {
-      hasNoError = !_.isEmpty(patient?.validate());
-    }
     if (medicalCase.nodes !== undefined && medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
       updateMetaData(
         'patientupsert',
@@ -201,10 +187,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
               {algorithmReady ? (
                 !loading ? (
                   <View columns>
-                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
+                    <Button light split onPress={() => save('PatientList')}>
                       <Text>{t('patient_upsert:save_and_wait')}</Text>
                     </Button>
-                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
+                    <Button success split onPress={() => save('Triage')}>
                       <Text>{t('patient_upsert:save_and_case')}</Text>
                     </Button>
                   </View>
