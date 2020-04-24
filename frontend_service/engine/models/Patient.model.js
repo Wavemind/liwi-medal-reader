@@ -15,16 +15,17 @@ export class PatientModel {
       lastname = __DEV__ ? 'Doe' : '',
       birthdate = moment('1970-01-01T00:00:00.000').format(),
       gender = __DEV__ ? 'male' : '',
-      outsider = null,
+      otherFacilityData = null,
       medicalCases = [],
       main_data_patient_id = null,
       identifier = null,
       reason = '',
     } = props;
 
+    console.log(otherFacilityData);
+
     if (this.id === undefined) {
       this.id = uuidv4();
-      this.outsider = outsider;
       this.firstname = firstname;
       this.lastname = lastname;
       this.birthdate = birthdate;
@@ -33,6 +34,15 @@ export class PatientModel {
       this.uid = identifier.uid.toString();
       this.studyID = identifier.studyID.toString();
       this.groupID = identifier.groupID.toString();
+      if (otherFacilityData !== null) {
+        this.second_uid = otherFacilityData.uid.toString();
+        this.second_studyID = otherFacilityData.studyID.toString();
+        this.second_groupID = otherFacilityData.groupID.toString();
+      } else {
+        this.second_uid = null;
+        this.second_studyID = null;
+        this.second_groupID = null;
+      }
       this.medicalCases = medicalCases;
       this.main_data_patient_id = main_data_patient_id;
     }
@@ -81,6 +91,7 @@ export class PatientModel {
     if (this.second_uid !== null && this.reason.trim() === '') {
       errors.reason = i18n.t('form:required');
     }
+    console.log(this, errors)
 
     return errors;
   };

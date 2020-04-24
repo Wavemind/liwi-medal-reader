@@ -30,6 +30,7 @@ export const displayNotification = (message, color) => {
       minWidth: 105,
       minHeight: 60,
       backgroundColor: color,
+      zIndex: 2000,
     },
   });
 };
