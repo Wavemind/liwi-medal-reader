@@ -18,7 +18,7 @@
  * @return {boolean}
  */
 Object.compare = function (obj1, obj2) {
-  if (obj1 !== undefined || obj2 !== undefined) {
+  if (obj1 !== undefined || obj2 !== undefined || obj1 !== null || obj2 !== null) {
     let p;
     // Loop through properties in object 1
     for (p in obj1) {
@@ -151,7 +151,7 @@ console.disableYellowBox = true;
 
 if (!__DEV__) {
   // eslint-disable-next-line no-console
-  console.log = () => {};
-  console.error = () => {};
-  console.warn = () => {};
+  console.log = () => { };
+  console.error = () => { };
+  console.warn = () => { };
 }
