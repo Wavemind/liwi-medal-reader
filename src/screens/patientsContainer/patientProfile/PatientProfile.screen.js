@@ -42,7 +42,6 @@ export default class PatientProfile extends React.Component {
 
     const patient = database.findById('Patient', id);
 
-
     const algorithms = await getItems('algorithms');
     this.setState({
       patient,
@@ -113,7 +112,7 @@ export default class PatientProfile extends React.Component {
           }}
         >
           <View w50>
-            <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
+            <Text>{moment(medicalCaseItem.updated_at).format('lll')}</Text>
           </View>
           <View w50>
             <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
@@ -125,11 +124,13 @@ export default class PatientProfile extends React.Component {
     return !firstRender ? (
       <LiwiLoader />
     ) : (
-      <View padding-auto flex>
-        <LiwiTitle2 noBorder>{patient.fullName()}</LiwiTitle2>
-        <Text>
-          {patient.printBirthdate()} - {patient.gender}
-        </Text>
+        <View padding-auto flex>
+          <LiwiTitle2 noBorder>
+            {patient.fullName()}
+          </LiwiTitle2>
+          <Text>
+            {patient.printBirthdate()} - {patient.gender}
+          </Text>
 
         <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
