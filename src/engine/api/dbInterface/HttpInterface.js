@@ -18,7 +18,9 @@ export default class HttpInterface {
    * @param { object } object - The value of the object
    */
   insert = async (model, object) => {
-    console.log('httpInterface insert');
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
+    const header = await this._setHeaders('POST', object);
+    return this._fetch(url, header);
   };
 
   /**
