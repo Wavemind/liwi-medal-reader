@@ -49,7 +49,7 @@ export class PatientModel {
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
     const database = await new Database();
-    await database.update('Patient', this.id, 'medicalCases', medicalCase);
+    await database.push('Patient', this.id, 'medicalCases', medicalCase);
     return true;
   };
 
