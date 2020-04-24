@@ -72,6 +72,15 @@ export default class Database {
   };
 
   /**
+   * Unlock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  unlockMedicalCase = (id) => {
+    return this.httpInterface.unlockMedicalCase(id);
+  };
+
+  /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
    * @private
@@ -84,6 +93,6 @@ export default class Database {
       dbInterface = 'httpInterface';
     }
 
-    return dbInterface;
+    return 'httpInterface';
   };
 }
