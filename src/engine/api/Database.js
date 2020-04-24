@@ -10,7 +10,7 @@ export default class Database {
       this.isConnected = await getItem('isConnected');
       this.architecture = session.group.architecture;
       this.realmInterface = new RealmInterface();
-      this.httpInterface = new HttpInterface();
+      this.httpInterface = await new HttpInterface();
       return this;
     })();
   }
@@ -21,7 +21,7 @@ export default class Database {
    * @returns { Collection } - A collection of all the data
    */
   getAll = (model) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].getAll(model);
   };
 
@@ -29,10 +29,10 @@ export default class Database {
    * Fetch single entry
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The id of the object we want
-   * @returns { collection } - The wanted object
+   * @returns { collection } - Object fetch
    */
   findById = (model, id) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].findById(model, id);
   };
 
@@ -42,7 +42,7 @@ export default class Database {
    * @param { object } object - The value of the object
    */
   insert = (model, object) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].insert(model, object);
   };
 
@@ -54,7 +54,7 @@ export default class Database {
    * @return { object } object - The value of the object
    */
   update = (model, id, fields) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].update(model, id, fields);
   };
 
@@ -67,15 +67,16 @@ export default class Database {
    * @return { object } object - The value of the object
    */
   push = (model, id, field, value) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].push(model, id, field, value);
-  }
+  };
 
   /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
+   * @private
    */
-  checkInterface = () => {
+  _checkInterface = () => {
     let dbInterface = '';
     if (this.architecture === 'standalone' || !this.isConnected) {
       dbInterface = 'realmInterface';
