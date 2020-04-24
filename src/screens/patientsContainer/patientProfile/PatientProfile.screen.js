@@ -34,7 +34,7 @@ export default class PatientProfile extends React.Component {
   }
 
   async getPatient() {
-    const { navigation, app:{database} } = this.props;
+    const { navigation, app: { database } } = this.props;
     const id = navigation.getParam('id');
 
     const patient = database.findById('Patient', id);
@@ -109,7 +109,7 @@ export default class PatientProfile extends React.Component {
           }}
         >
           <View w50>
-            <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
+            <Text>{moment(medicalCaseItem.updated_at).format('lll')}</Text>
           </View>
           <View w50>
             <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
