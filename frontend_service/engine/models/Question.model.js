@@ -17,6 +17,7 @@ const references = {
 interface QuestionInterface {
   answer: string;
   answers: Object;
+  answer_stage: string;
   description: string;
   label: string;
   category: string;
@@ -35,6 +36,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     const {
       answer = null,
       answers = {},
+      answer_stage = '',
       description = '',
       label = '',
       category = '',

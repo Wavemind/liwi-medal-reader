@@ -50,14 +50,26 @@ export default class Database {
    * Update or insert value in a existing row
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @return { object } object - The value of the object
+   */
+  update = (model, id, fields) => {
+    const dbInterface = this.checkInterface();
+    return this[dbInterface].update(model, id, fields);
+  };
+
+  /**
+   * Push an object in a existing object based on model name and id
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
    * @param { string } field - The field to update
    * @param { any } value - value to update
-   * @param { object } object - The value of the object
+   * @return { object } object - The value of the object
    */
-  update = (model, id, field, value) => {
+  push = (model, id, field, value) => {
     const dbInterface = this.checkInterface();
-    return this[dbInterface].update(model, id, field, value);
-  };
+    return this[dbInterface].push(model, id, field, value);
+  }
 
   /**
    * Define interface by connection and group architecture
