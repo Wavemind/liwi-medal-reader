@@ -2,11 +2,12 @@ import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
 import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
-import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
+import { handleHttpError, displayNotification } from '../../src/utils/CustomToast';
 import { getItem, getItems, setItem } from '../../src/engine/api/LocalStorage';
 import { store } from '../store';
 import { updateModalFromRedux } from '../actions/creators.actions';
 import i18n from '../../src/utils/i18n';
+import { liwiColors } from '../../src/utils/constants';
 
 /**
  * Https GET request
@@ -24,7 +25,7 @@ export const get = async (params) => {
   if (httpcall.status === 500) {
     const t = await httpcall.text();
     console.warn(t, httpcall);
-    Toaster('The server is not responding', { type: 'danger', duration: 4000 });
+    displayNotification('The server is not responding', liwiColors.redColor);
     return { errors: [] };
   }
 
