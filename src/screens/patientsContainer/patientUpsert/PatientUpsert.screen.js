@@ -28,7 +28,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient: null,
     loading: true,
     algorithmReady: false,
-    outsider: null,
+    otherFacilityData: null,
   };
 
   initializeComponent = async () => {
@@ -40,12 +40,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let patient = {};
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
-    const outsider = navigation.getParam('outsider'); // Object
+    const otherFacilityData = navigation.getParam('otherFacilityData'); // Object
     const identifier = navigation.getParam('identifier'); // Object
     const algorithms = await getItems('algorithms');
 
     if (patientId === null) {
-      patient = new PatientModel({ outsider, identifier });
+      patient = new PatientModel({ otherFacilityData, identifier });
     } else {
       patient = await database.findBy('Patient', patientId);
     }
@@ -63,7 +63,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       }
 
       this.setState({
-        outsider,
+        otherFacilityData,
         patient,
         algorithmReady: true,
         loading: false,
@@ -155,7 +155,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady, outsider } = this.state;
+    const { patient, errors, loading, algorithmReady, otherFacilityData } = this.state;
 
     const {
       app: { t },
@@ -191,6 +191,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         extraQuestions.map(({ id }) => id)
       );
     }
+    console.log(otherFacilityData);
 
     return (
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
@@ -199,10 +200,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
           <LiwiLoader />
         ) : (
             <React.Fragment>
+
+              <Questions questions={extraQuestions} />
               <View>
                 <Col>
-                  <Text></Text>
-                  {outsider === null && (
+                  {otherFacilityData !== undefined && (
                     <CustomInput
                       init={patient.reason}
                       label={t('patient:reason')}
@@ -216,7 +218,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   )}
                 </Col>
               </View>
-              <Questions questions={extraQuestions} />
               <View bottom-view>
                 {algorithmReady ? (
                   !loading ? (
