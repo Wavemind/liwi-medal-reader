@@ -9,77 +9,78 @@ import { AppRegistry, StyleSheet, TouchableOpacity, Linking } from 'react-native
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { liwiColors, screenHeight, screenWidth } from '../../utils/constants';
 import { getItem } from '../../engine/api/LocalStorage';
+import { displayNotification } from '../../utils/CustomToast';
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
 export default class QrCodePatient extends React.Component<Props, State> {
   state = {
-    readSuccess: false,
+    rescan: false,
     oldQrcode: null,
     newId: false,
   };
 
   onSuccess = async (e) => {
-    const { _displayNotification, database, t } = this.props.app;
+    const { database, t } = this.props.app;
     const { navigation, closeModal } = this.props;
     const json = await JSON.parse(e.data);
 
+
     // QRcode valid ?
     if ('uid' in json && 'studyID' in json && 'groupID' in json) {
-      const patients = await database.getAll('Patient');
-      let patient = null;
-      patients.map(async (patientItem) => {
-        const identifier = await JSON.parse(patientItem.identifier);
+      const patient = await database.findBy('Patient', json.uid, 'uid');
 
-        if (identifier?.uid === json.uid) {
-          patient = patientItem;
-        }
-      });
 
       const session = await getItem('session');
 
-      // Stop reading
-      if ((session?.group?.id !== json.groupID && patient !== null) || patient === null) {
-        await this.setState({ readSuccess: true });
+      if ((session?.group?.id !== json.groupID && patient !== null)) {
+        await this.setState({ rescan: true });
       }
-
-      const { readSuccess, oldQrcode } = this.state;
-
+      console.log(json, session?.group);
+      const { rescan, oldQrcode } = this.state;
       if (patient !== null) {
         // Patient exist what ever the medical station (already declared outsider if goes here)
         navigation.navigate('PatientUpsert', {
-          idPatient: json.uid,
+          idPatient: patient.id,
           newMedicalCase: true,
         });
-      } else if (patient === null && session?.group?.id === json.groupID) {
-        // Correct medical station but patient does not exist
-        navigation.navigate('PatientUpsert', {
-          idPatient: null,
-          newMedicalCase: true,
-          identifier: {
-            ...json,
-          },
-        });
-      }
 
-      if (session?.group?.id !== json.groupID && readSuccess === true && oldQrcode !== null) {
-        navigation.navigate('PatientUpsert', {
-          idPatient: null,
-          newMedicalCase: true,
-          identifier: { ...json },
-          outsider: {
-            ...oldQrcode,
-          },
-        });
-      } else {
-        // need to re scan
-        this.setState({ newId: true, oldQrcode: json });
-      }
-
-      if (readSuccess) {
-        _displayNotification(t('qrcode:open'));
+        // TODO remove duplication
+        displayNotification(t('qrcode:open'), liwiColors.greenColor);
         closeModal();
+      } else {
+        if (session?.group?.id === json.groupID) {
+          // Correct medical station but patient does not exist
+          navigation.navigate('PatientUpsert', {
+            idPatient: null,
+            newMedicalCase: true,
+            identifier: {
+              ...json,
+            },
+          });
+          displayNotification(t('qrcode:open'), liwiColors.greenColor);
+          closeModal();
+        }
+        // Wrong medical center
+        else if (rescan === true && oldQrcode !== null) {
+          navigation.navigate('PatientUpsert', {
+            idPatient: null,
+            newMedicalCase: true,
+            identifier: { ...json },
+            outsider: {
+              ...oldQrcode,
+            },
+          });
+          displayNotification(t('qrcode:open'), liwiColors.greenColor);
+          closeModal();
+          // Going to ask the new Code
+          this.setState({ newId: true, oldQrcode: json });
+        }
+        // We need no scan another QR code for the patient
+        else {
+
+        }
       }
     }
   };
@@ -89,7 +90,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
       app: { t },
     } = this.props;
 
-    const { readSuccess, newId } = this.state;
+    const { rescan, newId } = this.state;
 
     return (
       <View style={styles.content}>
@@ -101,7 +102,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
           onRead={this.onSuccess}
           showMarker
           containerStyle={{ flex: 1, flexDirection: 'column' }}
-          reactivate={readSuccess}
+          reactivate={rescan}
           cameraStyle={{ height: 100, width: 'auto', flex: 1 }}
           markerStyle={{
             width: screenWidth / 2,

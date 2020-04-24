@@ -31,10 +31,10 @@ export default class Database {
    * @param { integer } id - The id of the object we want
    * @returns { collection } - Object fetch
    */
-  findById = (model, id) => {
+  findBy = (model, value, field = 'id') => {
     const dbInterface = this._checkInterface();
-    return this[dbInterface].findById(model, id);
-  };
+    return this[dbInterface].findBy(model, value, field);
+  }
 
   /**
    * Creates an entry of a specific model in the database

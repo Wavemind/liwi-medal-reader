@@ -47,7 +47,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (patientId === null) {
       patient = new PatientModel({ outsider, identifier });
     } else {
-      patient = await database.findById('Patient', patientId);
+      patient = await database.findBy('Patient', patientId);
     }
 
     if (algorithms.length === 0) {
@@ -94,7 +94,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
 
     if (patientId !== null) {
-      const patient = database.findById('Patient', patientId);
+      const patient = database.findBy('Patient', patientId);
       isSaved = patient.addMedicalCase(medicalCase);
     } else {
       isSaved = await this.savePatient();
@@ -155,7 +155,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady,outsider } = this.state;
+    const { patient, errors, loading, algorithmReady, outsider } = this.state;
 
     const {
       app: { t },
@@ -181,7 +181,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     let hasNoError = false;
-
     if (patient !== null) {
       hasNoError = !_.isEmpty(patient?.validate());
     }
@@ -199,47 +198,47 @@ export default class PatientUpsert extends React.Component<Props, State> {
         {loading ? (
           <LiwiLoader />
         ) : (
-          <React.Fragment>
-            <View>
-              <Col>
-                <Text></Text>
-                {outsider === null && (
-                  <CustomInput
-                    init={patient.reason}
-                    label={t('patient:reason')}
-                    change={updatePatientValue}
-                    index="reason"
-                    iconName="sign-out"
-                    iconType="FontAwesome"
-                    error={errors.reason}
-                    autoCapitalize="sentences"
-                  />
-                )}
-              </Col>
-            </View>
-            <Questions questions={extraQuestions} />
-            <View bottom-view>
-              {algorithmReady ? (
-                !loading ? (
-                  <View columns>
-                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_wait')}</Text>
-                    </Button>
-                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_case')}</Text>
-                    </Button>
-                  </View>
+            <React.Fragment>
+              <View>
+                <Col>
+                  <Text></Text>
+                  {outsider === null && (
+                    <CustomInput
+                      init={patient.reason}
+                      label={t('patient:reason')}
+                      change={updatePatientValue}
+                      index="reason"
+                      iconName="sign-out"
+                      iconType="FontAwesome"
+                      error={errors.reason}
+                      autoCapitalize="sentences"
+                    />
+                  )}
+                </Col>
+              </View>
+              <Questions questions={extraQuestions} />
+              <View bottom-view>
+                {algorithmReady ? (
+                  !loading ? (
+                    <View columns>
+                      <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
+                        <Text>{t('patient_upsert:save_and_wait')}</Text>
+                      </Button>
+                      <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
+                        <Text>{t('patient_upsert:save_and_case')}</Text>
+                      </Button>
+                    </View>
+                  ) : (
+                      <LiwiLoader />
+                    )
                 ) : (
-                  <LiwiLoader />
-                )
-              ) : (
-                <View columns>
-                  <Text>{t('work_case:no_algorithm')}</Text>
-                </View>
-              )}
-            </View>
-          </React.Fragment>
-        )}
+                    <View columns>
+                      <Text>{t('work_case:no_algorithm')}</Text>
+                    </View>
+                  )}
+              </View>
+            </React.Fragment>
+          )}
       </ScrollView>
     );
   }
