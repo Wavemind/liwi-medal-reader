@@ -282,6 +282,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @returns {Promise<boolean>}
    */
   newSession = async (email: string, password: string) => {
+    const { t } = this.state;
+
     // auth with server
     const session = await auth(email, password).catch((error) => {
       return error;
