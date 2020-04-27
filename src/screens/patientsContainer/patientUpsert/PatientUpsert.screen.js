@@ -28,7 +28,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient: null,
     loading: true,
     algorithmReady: false,
-    outsider: null,
+    otherFacilityData: null,
   };
 
   initializeComponent = async () => {
@@ -40,14 +40,14 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let patient = {};
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
-    const outsider = navigation.getParam('outsider'); // Object
+    const otherFacilityData = navigation.getParam('otherFacilityData'); // Object
     const identifier = navigation.getParam('identifier'); // Object
     const algorithms = await getItems('algorithms');
 
     if (patientId === null) {
-      patient = new PatientModel({ outsider, identifier });
+      patient = new PatientModel({ otherFacilityData, identifier });
     } else {
-      patient = await database.findById('Patient', patientId);
+      patient = await database.findBy('Patient', patientId);
     }
 
     if (algorithms.length === 0) {
@@ -63,7 +63,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       }
 
       this.setState({
-        outsider,
+        otherFacilityData,
         patient,
         algorithmReady: true,
         loading: false,
@@ -94,7 +94,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
 
     if (patientId !== null) {
-      const patient = database.findById('Patient', patientId);
+      const patient = database.findBy('Patient', patientId);
       isSaved = patient.addMedicalCase(medicalCase);
     } else {
       isSaved = await this.savePatient();
@@ -155,7 +155,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady,outsider } = this.state;
+    const { patient, errors, loading, algorithmReady, otherFacilityData } = this.state;
 
     const {
       app: { t },
@@ -181,7 +181,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     let hasNoError = false;
-
     if (patient !== null) {
       hasNoError = !_.isEmpty(patient?.validate());
     }
@@ -192,6 +191,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         extraQuestions.map(({ id }) => id)
       );
     }
+    console.log(otherFacilityData);
 
     return (
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
@@ -199,47 +199,47 @@ export default class PatientUpsert extends React.Component<Props, State> {
         {loading ? (
           <LiwiLoader />
         ) : (
-          <React.Fragment>
-            <View>
-              <Col>
-                <Text></Text>
-                {outsider === null && (
-                  <CustomInput
-                    init={patient.reason}
-                    label={t('patient:reason')}
-                    change={updatePatientValue}
-                    index="reason"
-                    iconName="sign-out"
-                    iconType="FontAwesome"
-                    error={errors.reason}
-                    autoCapitalize="sentences"
-                  />
-                )}
-              </Col>
-            </View>
-            <Questions questions={extraQuestions} />
-            <View bottom-view>
-              {algorithmReady ? (
-                !loading ? (
-                  <View columns>
-                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_wait')}</Text>
-                    </Button>
-                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_case')}</Text>
-                    </Button>
-                  </View>
+            <React.Fragment>
+
+              <Questions questions={extraQuestions} />
+              <View>
+                <Col>
+                  {otherFacilityData !== undefined && (
+                    <CustomInput
+                      init={patient.reason}
+                      label={t('patient:reason')}
+                      change={updatePatientValue}
+                      index="reason"
+                      iconName="sign-out"
+                      iconType="FontAwesome"
+                      error={errors.reason}
+                      autoCapitalize="sentences"
+                    />
+                  )}
+                </Col>
+              </View>
+              <View bottom-view>
+                {algorithmReady ? (
+                  !loading ? (
+                    <View columns>
+                      <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
+                        <Text>{t('patient_upsert:save_and_wait')}</Text>
+                      </Button>
+                      <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
+                        <Text>{t('patient_upsert:save_and_case')}</Text>
+                      </Button>
+                    </View>
+                  ) : (
+                      <LiwiLoader />
+                    )
                 ) : (
-                  <LiwiLoader />
-                )
-              ) : (
-                <View columns>
-                  <Text>{t('work_case:no_algorithm')}</Text>
-                </View>
-              )}
-            </View>
-          </React.Fragment>
-        )}
+                    <View columns>
+                      <Text>{t('work_case:no_algorithm')}</Text>
+                    </View>
+                  )}
+              </View>
+            </React.Fragment>
+          )}
       </ScrollView>
     );
   }

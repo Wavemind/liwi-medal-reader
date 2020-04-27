@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => { },
+  cacheUserLanguage: () => { },
 };
 
 i18n
@@ -89,7 +89,11 @@ i18n
           emergency: 'Emergency assistance',
           back: 'Back to home',
         },
-        qrcode: { scan: 'Scan the Qr code', open: 'Right reading Qrcode and data. Opening Patient' },
+        qrcode: {
+          scan: 'Scan the QR code',
+          open: 'Right reading Qrcode and data. Opening Patient',
+          new_sticker_notification: 'You need to give another sticker to the patient'
+        },
         summary: {
           title: 'Current summary',
           diagnoses: 'Diagnoses',
@@ -227,7 +231,7 @@ i18n
           male: 'Male',
           female: 'Female',
           age_not_defined: 'Age is not defined',
-          reason: 'Reason of the outsider',
+          reason: 'Reason fr changing facility',
         },
         login: {
           title: 'Login',
