@@ -2,6 +2,7 @@
 import findKey from 'lodash/findKey';
 import { categories, nodeTypes, valueFormats } from '../../constants';
 import { MedicalCaseModel } from './MedicalCase.model';
+import NavigationService from 'engine/navigation/Navigation.service';
 
 const { qs, d, fd, m, q, t } = nodeTypes;
 
@@ -90,6 +91,7 @@ export class NodeModel implements NodeInterface {
     }
     // Assign final value
     this.answer = answer;
+    this.answer_stage = NavigationService.getCurrentRoute().routeName;
     this.value = value;
   };
 }

@@ -97,7 +97,7 @@ function getActiveRouteName(navigationState) {
 function setParamsAge(navigation, name) {
   const state$ = store.getState();
 
-  const { getPatient, nodes } = state$;
+  const { nodes } = state$;
 
   const age = find(nodes, { label: 'Age in months' });
 
@@ -109,7 +109,7 @@ function setParamsAge(navigation, name) {
     stringAge = 'No question for age found';
   }
 
-  const headerRight = `${getPatient()?.firstname} ${getPatient()?.lastname} | ${stringAge}`;
+  const headerRight = `TBD TBD | TBD`;
 
   navigation.setParams({
     title: name,
@@ -187,7 +187,7 @@ async function onNavigationStateChange(prevState, currentState) {
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
         const database = await new Database();
-        database.update('MedicalCase', state$.id, 'status', routeStatus.name);
+        database.update('MedicalCase', state$.id, {'status': routeStatus.name});
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }

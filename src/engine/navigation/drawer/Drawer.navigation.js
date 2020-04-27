@@ -12,8 +12,9 @@ import {
   ItemButton,
   PathBar,
 } from './Drawer.item.navigation';
-import { Toaster } from '../../../utils/CustomToast';
+import { displayNotification } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
+import { liwiColors } from '../../../utils/constants';
 // eslint-disable-next-line no-unused-vars
 
 type Props = NavigationScreenProps & {};
@@ -71,10 +72,7 @@ export default class Drawer extends Component<Props, State> {
           key: name + initialPage,
         });
       } else {
-        Toaster(t('menu:noredux'), {
-          type: 'warning',
-          duration: 5000,
-        });
+        displayNotification(t('menu:noredux'), liwiColors.redColor);
       }
     };
 

@@ -45,7 +45,7 @@ export default class PatientList extends React.Component {
     } = this.props;
     this.setState({ loading: true });
 
-    const patients = database.getAll('Patient');
+    const patients = await database.getAll('Patient');
     const algorithms = await getItems('algorithms');
 
     this.setState({
@@ -78,13 +78,7 @@ export default class PatientList extends React.Component {
             }
           >
             <View w50>
-              <Text>{patient.fullName()}</Text>
-            </View>
-            <View w50>
-              <Text>{patient.printBirthdate()}</Text>
-            </View>
-            <View w50>
-              <Text>{patient.hasCaseInProgress ? t('patient_list:case_in_progress') : null}</Text>
+              <Text>{patient.id}</Text>
             </View>
           </ListItem>
         ))}
