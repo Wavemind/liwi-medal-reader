@@ -5,7 +5,7 @@ import { medicalCaseStatus, navigationActionConstant, routeDependingStatus } fro
 import NavigationService from './Navigation.service';
 import { store } from '../../../frontend_service/store';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
-import { Toaster } from '../../utils/CustomToast';
+import { displayNotification } from '../../utils/CustomToast';
 import {
   questionsBasicMeasurements,
   questionsComplaintCategory,
@@ -14,6 +14,7 @@ import {
   questionsPhysicalExam,
   questionsTests,
 } from '../../../frontend_service/algorithm/questionsStage.algo';
+import { liwiColors } from '../../utils/constants';
 
 const screens = [
   { key: 'Home' },
@@ -299,7 +300,7 @@ class CustomNavigator extends React.Component {
           /** Change route params and dont block action * */
           if (validation.isActionValid === false && detailSetParamsRoute.validations[detailValidation]?.required === true) {
             action.params.initialPage = detailSetParamsRoute.validations[detailValidation].initialPage;
-            Toaster(`${detailValidation} are invalid`, { type: 'danger' }, { duration: 50000 });
+            displayNotification(`${detailValidation} are invalid`, liwiColors.redColor);
             return RootMainNavigator.router.getStateForAction(action, lastState);
           }
           if (route.routeName === currentRoute.routeName) {

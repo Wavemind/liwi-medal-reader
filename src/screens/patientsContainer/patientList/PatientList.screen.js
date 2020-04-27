@@ -45,7 +45,8 @@ export default class PatientList extends React.Component {
     } = this.props;
     this.setState({ loading: true });
 
-    const patients = database.getAll('Patient');
+    const patients = await database.getAll('Patient');
+    console.log(patients);
     const algorithms = await getItems('algorithms');
     this.setState({
       algorithms,
@@ -61,6 +62,7 @@ export default class PatientList extends React.Component {
     } = this.props;
 
     const { patients } = this.state;
+    patients.map((patient) => (console.log(patient)));
 
     return patients.length > 0 ? (
       <List block key="patientList">
@@ -89,10 +91,10 @@ export default class PatientList extends React.Component {
         ))}
       </List>
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('patient_list:no_patients')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('patient_list:no_patients')}</Text>
+        </View>
+      );
   };
 
   callBackClose = () => {

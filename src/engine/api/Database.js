@@ -10,7 +10,7 @@ export default class Database {
       this.isConnected = await getItem('isConnected');
       this.architecture = session.group.architecture;
       this.realmInterface = new RealmInterface();
-      this.httpInterface = new HttpInterface();
+      this.httpInterface = await new HttpInterface();
       return this;
     })();
   }
@@ -21,7 +21,7 @@ export default class Database {
    * @returns { Collection } - A collection of all the data
    */
   getAll = (model) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].getAll(model);
   };
 
@@ -29,12 +29,12 @@ export default class Database {
    * Fetch single entry
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The id of the object we want
-   * @returns { collection } - The wanted object
+   * @returns { collection } - Object fetch
    */
-  findById = (model, id) => {
-    const dbInterface = this.checkInterface();
-    return this[dbInterface].findById(model, id);
-  };
+  findBy = (model, value, field = 'id') => {
+    const dbInterface = this._checkInterface();
+    return this[dbInterface].findBy(model, value, field);
+  }
 
   /**
    * Creates an entry of a specific model in the database
@@ -42,7 +42,7 @@ export default class Database {
    * @param { object } object - The value of the object
    */
   insert = (model, object) => {
-    const dbInterface = this.checkInterface();
+    const dbInterface = this._checkInterface();
     return this[dbInterface].insert(model, object);
   };
 
@@ -50,20 +50,33 @@ export default class Database {
    * Update or insert value in a existing row
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @return { object } object - The value of the object
+   */
+  update = (model, id, fields) => {
+    const dbInterface = this._checkInterface();
+    return this[dbInterface].update(model, id, fields);
+  };
+
+  /**
+   * Push an object in a existing object based on model name and id
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
    * @param { string } field - The field to update
    * @param { any } value - value to update
-   * @param { object } object - The value of the object
+   * @return { object } object - The value of the object
    */
-  update = (model, id, field, value) => {
-    const dbInterface = this.checkInterface();
-    return this[dbInterface].update(model, id, field, value);
+  push = (model, id, field, value) => {
+    const dbInterface = this._checkInterface();
+    return this[dbInterface].push(model, id, field, value);
   };
 
   /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
+   * @private
    */
-  checkInterface = () => {
+  _checkInterface = () => {
     let dbInterface = '';
     if (this.architecture === 'standalone' || !this.isConnected) {
       dbInterface = 'realmInterface';

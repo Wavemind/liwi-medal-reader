@@ -6,9 +6,10 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
-import { Toaster } from '../../utils/CustomToast';
+import { displayNotification } from '../../utils/CustomToast';
 import ConfirmationView from '../../components/ConfirmationView';
 import { fetchAlgorithms } from '../../../frontend_service/api/Http';
+import { liwiColors } from '../../utils/constants';
 import ToolTipModal from '../../components/ToolTipModal';
 import QrCodePatient from '../../components/QrCodePatient';
 
@@ -90,10 +91,7 @@ export default class Home extends React.Component<Props, State> {
               style={styles.navigationButton}
               onPress={() => {
                 if (algorithms.length === 0) {
-                  Toaster(t('work_case:no_algorithm'), {
-                    type: 'danger',
-                    duration: 4000,
-                  });
+                  displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
                 } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                   navigation.navigate('PatientUpsert', {
                     idPatient: null,
@@ -118,10 +116,7 @@ export default class Home extends React.Component<Props, State> {
               style={styles.navigationButton}
               onPress={() => {
                 if (algorithms.length === 0) {
-                  Toaster(t('work_case:no_algorithm'), {
-                    type: 'danger',
-                    duration: 4000,
-                  });
+                  displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
                 } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                   this.setState({ modalQrCode: true });
                 } else {
