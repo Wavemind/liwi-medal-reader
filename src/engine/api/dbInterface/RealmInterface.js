@@ -39,6 +39,15 @@ export default class RealmInterface {
     return object === undefined ? null : object;
   };
 
+  /**
+  * Returns the entry of a specific model with an id
+  * @param { string } model - The model name of the data we want to retrieve
+  * @param { integer } id - The id of the object we want
+  * @returns { Collection } - The wanted object
+  */
+  findById = (model, id) => {
+    return this._realm().objects(model).filtered('id = $0', id)[0];
+  };
 
   /**
    * Returns all the entry on a specific model
