@@ -6,14 +6,14 @@ import moment from 'moment';
 import { NavigationScreenProps } from 'react-navigation';
 import { AppState, PermissionsAndroid } from 'react-native';
 
-import Toast from 'react-native-tiny-toast';
 import i18n from '../../utils/i18n';
 import NavigationService from '../navigation/Navigation.service';
 import Database from '../api/Database';
 import { appInBackgroundStateKey, secondStatusLocalData } from '../../../frontend_service/constants';
 import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
-import { getItem, setItem } from '../api/LocalStorage';
 import { getDeviceInformation } from '../api/Device';
+import { displayNotification } from '../../utils/CustomToast';
+import { getItem, setItem } from '../api/LocalStorage';
 import { liwiColors } from '../../utils/constants';
 
 const defaultValue = {};
@@ -99,6 +99,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * Ping local or main data to define status of the app
    * @param {boolean} firstTime - Force call to this._setAppStatus(false) to initialize it
    * @returns {Promise<void>}
+   * @private
    */
   _handleApplicationServer = async (firstTime = false) => {
     const { isConnected } = this.state;
@@ -147,6 +148,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @param enableHighAccuracy
    * @param callBack
    * @returns {Promise<void>}
+   * @private
    */
   _getGeo = async (enableHighAccuracy, callBack) => {
     return Geolocation.getCurrentPosition(
@@ -227,10 +229,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         await fetchAlgorithms();
         this.setState({ session: { ...session, group } });
         // Show success toast
-        showToast ? this._displayNotification(t('notifications:get_group'), liwiColors.greenColor) : null;
+        showToast ? displayNotification(t('notifications:get_group'), liwiColors.greenColor) : null;
         return true;
       } else {
-        this._displayNotification(group.errors, liwiColors.redColor);
+        displayNotification(group.errors, liwiColors.redColor);
       }
     }
 
@@ -247,7 +249,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   openSession = async (pinCode) => {
     const { session, user, t } = this.state;
     if (session.group.pin_code === pinCode) {
-      this._displayNotification(t('notifications:connection_successful'));
+      displayNotification(t('notifications:connection_successful'), liwiColors.greenColor);
 
       if (user === null) {
         await setTimeout(async () => {
@@ -275,27 +277,14 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   /**
-   * Display a toast
-   * @param {string} message - Message to display
-   * @param {string} color - Background color
-   * @private
-   */
-  _displayNotification = (message, color) => {
-    Toast.show(message, {
-      position: 20,
-      containerStyle: { backgroundColor: color },
-      textStyle: { color: liwiColors.whiteColor },
-      imgStyle: { height: 40 },
-    });
-  };
-
-  /**
    * Authenticate user and then register device in medal-c
    * @param { string } email - User email
    * @param { string } password - User password
    * @returns {Promise<boolean>}
    */
   newSession = async (email: string, password: string) => {
+    const { t } = this.state;
+
     // auth with server
     const session = await auth(email, password).catch((error) => {
       return error;
@@ -313,7 +302,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
       if (register === true) {
         // Show toast
-        this._displayNotification(t('notifications:device_registered'), liwiColors.greenColor);
+        displayNotification(t('notifications:device_registered'), liwiColors.greenColor);
         return true;
       }
     }

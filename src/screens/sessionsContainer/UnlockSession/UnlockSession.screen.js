@@ -1,15 +1,16 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Text, View } from 'native-base';
-import { getItem } from '../../../engine/api/LocalStorage';
-import { ApplicationContext } from '../../../engine/contexts/Application.context';
-import LiwiLoader from '../../../utils/LiwiLoader';
-import PINCode from '@haskkor/react-native-pincode';
-import { liwiColors, screenHeight } from '../../../utils/constants';
 import { Image } from 'react-native';
+import { Button, Text, View } from 'native-base';
+import PINCode from '@haskkor/react-native-pincode';
+import LiwiLoader from '../../../utils/LiwiLoader';
+import { ApplicationContext } from '../../../engine/contexts/Application.context';
+import { liwiColors, screenHeight } from '../../../utils/constants';
 import { userRoles } from '../../../../frontend_service/constants';
+import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './UnlockSession.style';
+
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
   const [ready, setReady] = React.useState(false);
@@ -36,7 +37,7 @@ export default function PinSession() {
   };
 
   const handleResultEnterPin = async (pinCode) => {
-    let pinCheck = await app.openSession(pinCode);
+    const pinCheck = await app.openSession(pinCode);
 
     if (pinCheck) {
       setStatus('success');
@@ -76,7 +77,7 @@ export default function PinSession() {
                   {app.t('unlock_session:already')}
                   {'\n '}
                   <Text style={styles.textRole} bigTitle>
-                    {app.user.last_name} {app.user.first_name}{' '}
+                    {app.user.first_name} {app.user.last_name}{' '}
                   </Text>
                   {userRoles[app.user.role]}
                 </Text>
@@ -90,7 +91,7 @@ export default function PinSession() {
               passwordLength={session.group.pin_code.length}
               endProcessFunction={handleResultEnterPin}
               disableLockScreen
-              status={'enter'}
+              status="enter"
               pinStatus={status}
               titleComponent={() => <Text customTitle>{app.t('unlock_session:pin')} </Text>}
               storedPin={session.group.pin_code}

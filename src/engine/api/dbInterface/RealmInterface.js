@@ -7,6 +7,7 @@ export default class RealmInterface {
   /**
    * Generates and returns a realm database object
    * @returns { Realm } - A realm database object
+   * @private
    */
   _realm = () => {
     return new Realm({
@@ -49,18 +50,27 @@ export default class RealmInterface {
    * Update or insert value in a existing row
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
+   */
+  update = (model, id, fields) => {
+    this._realm().write(() => {
+      this._realm().create(model, { id, ...fields }, 'modified');
+    });
+  };
+
+  /**
+   * Push an object in a existing object based on model name and id
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
    * @param { string } field - The field to update
    * @param { any } value - value to update
-   * @param { object } object - The value of the object
+   * @returns { Collection } - Updated object
    */
-  update = (model, id, field, value) => {
+  push = (model, id, field, value) => {
     this._realm().write(() => {
-      if (typeof value === 'object') {
-        const object = this.findById(model, id);
-        object[field].push(value);
-      } else {
-        this._realm().create(model, { id, [field]: value }, 'modified');
-      }
+      const object = this.findById(model, id);
+      object[field].push(value);
     });
   };
 }
