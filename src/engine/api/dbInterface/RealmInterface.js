@@ -28,14 +28,17 @@ export default class RealmInterface {
   };
 
   /**
-   * Returns the entry of a specific model with an id
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The id of the object we want
-   * @returns { Collection } - The wanted object
-   */
-  findById = (model, id) => {
-    return this._realm().objects(model).filtered('id = $0', id)[0];
+    * Returns the entry of a specific model with an id
+    * @param { string } model - The model name of the data we want to retrieve
+    * @param { integer } value - The id of the object we want
+    * @param { string } field - The field we wanna search for
+    * @returns { Collection } - The wanted object
+    */
+  findBy = (model, value, field = 'id') => {
+    const object = this._realm().objects(model).filtered(field + ' = $0', value)[0];
+    return object === undefined ? null : object;
   };
+
 
   /**
    * Returns all the entry on a specific model
