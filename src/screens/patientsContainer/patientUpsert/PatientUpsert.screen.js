@@ -44,6 +44,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const identifier = navigation.getParam('identifier'); // Object
     const algorithms = await getItems('algorithms');
 
+    console.log(otherFacilityData);
     if (patientId === null) {
       patient = new PatientModel({ otherFacilityData, identifier });
     } else {
@@ -191,8 +192,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
         extraQuestions.map(({ id }) => id)
       );
     }
-    console.log(otherFacilityData);
-
     return (
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>

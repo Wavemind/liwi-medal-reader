@@ -46,7 +46,6 @@ export default class PatientList extends React.Component {
     this.setState({ loading: true });
 
     const patients = await database.getAll('Patient');
-    console.log(patients);
     const algorithms = await getItems('algorithms');
     this.setState({
       algorithms,
