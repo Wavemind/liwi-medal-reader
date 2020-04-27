@@ -62,7 +62,6 @@ export class MedicalCaseModel {
       this.generateExcludedId();
     } else {
       const json = JSON.parse(this.json); // WARNING this might slow down the app
-
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;
@@ -197,6 +196,7 @@ MedicalCaseModel.schema = {
   properties: {
     id: 'string',
     json: 'string',
+    activities: 'Activity[]',
     synchronized_at: 'date?',
     created_at: 'date',
     updated_at: 'date',

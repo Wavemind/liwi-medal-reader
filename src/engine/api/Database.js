@@ -34,14 +34,14 @@ export default class Database {
   findBy = (model, value, field = 'id') => {
     const dbInterface = this._checkInterface();
     return this[dbInterface].findBy(model, value, field);
-  }
+  };
 
   /**
-  * Fetch single entry
-  * @param { string } model - The model name of the data we want to retrieve
-  * @param { integer } id - The id of the object we want
-  * @returns { collection } - Object fetch
-  */
+   * Fetch single entry
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The id of the object we want
+   * @returns { collection } - Object fetch
+   */
   findById = (model, id) => {
     const dbInterface = this._checkInterface();
     return this[dbInterface].findById(model, id);
@@ -88,7 +88,8 @@ export default class Database {
    * @returns {string}
    */
   unlockMedicalCase = (id) => {
-    return this.httpInterface.unlockMedicalCase(id);
+    const dbInterface = this._checkInterface();
+    return this[dbInterface].unlockMedicalCase(id);
   };
 
   /**
@@ -104,6 +105,6 @@ export default class Database {
       dbInterface = 'httpInterface';
     }
 
-    return 'httpInterface';
+    return dbInterface;
   };
 }
