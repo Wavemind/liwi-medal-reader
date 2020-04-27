@@ -40,11 +40,13 @@ export default class QrCodePatient extends React.Component<Props, State> {
       const session = await getItem('session');
 
       // Stop reading
-      if ((session?.group?.id !== json.groupID && patient !== null) || patient === null) {
+      if ((session?.group?.id !== json.groupID && patient !== null) || (session?.group?.id === json.groupID && patient === null)) {
         await this.setState({ readSuccess: true });
       }
 
       const { readSuccess, oldQrcode } = this.state;
+
+      console.log(readSuccess, oldQrcode);
 
       if (patient !== null) {
         // Patient exist what ever the medical station (already declared outsider if goes here)
