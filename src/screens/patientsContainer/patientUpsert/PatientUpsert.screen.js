@@ -44,7 +44,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const identifier = navigation.getParam('identifier'); // Object
     const algorithms = await getItems('algorithms');
 
-    console.log(otherFacilityData);
     if (patientId === null) {
       patient = new PatientModel({ otherFacilityData, identifier });
     } else {
