@@ -142,6 +142,10 @@ export class PatientModel {
     }
     return i18n.t('patient:age_not_defined');
   };
+
+  wasInOtherFacility = () => {
+    return this.second_uid !== null;
+  };
 }
 
 PatientModel.schema = {

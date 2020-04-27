@@ -63,7 +63,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       }
 
       this.setState({
-        otherFacilityData,
         patient,
         algorithmReady: true,
         loading: false,
@@ -155,7 +154,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady, otherFacilityData } = this.state;
+    const { patient, errors, loading, algorithmReady } = this.state;
 
     const {
       app: { t },
@@ -202,7 +201,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               <Questions questions={extraQuestions} />
               <View>
                 <Col>
-                  {otherFacilityData !== undefined && (
+                  {patient.wasInOtherFacility !== null && (
                     <CustomInput
                       init={patient.reason}
                       label={t('patient:reason')}
