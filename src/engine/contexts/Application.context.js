@@ -125,6 +125,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.setState({ isConnected: status });
   };
 
+
   /**
    * Ask user to allow access to location
    * @returns {Promise<*>}
