@@ -187,7 +187,7 @@ async function onNavigationStateChange(prevState, currentState) {
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
         const database = await new Database();
-        database.update('MedicalCase', state$.id, {'status': routeStatus.name});
+        database.update('MedicalCase', state$.id, { status: routeStatus.name });
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }
