@@ -61,7 +61,6 @@ export default class PatientList extends React.Component {
     } = this.props;
 
     const { patients } = this.state;
-    patients.map((patient) => (console.log(patient)));
 
     return patients.length > 0 ? (
       <List block key="patientList">

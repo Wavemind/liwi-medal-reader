@@ -70,7 +70,6 @@ export default class RealmInterface {
    */
   push = (model, id, field, value) => {
     const object = this.findBy(model, id);
-    console.log(object, value);
     this._realm().write(() => {
       object[field].push(value);
     });

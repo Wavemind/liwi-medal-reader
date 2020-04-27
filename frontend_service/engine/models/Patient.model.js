@@ -22,8 +22,6 @@ export class PatientModel {
       reason = '',
     } = props;
 
-    console.log(otherFacilityData);
-
     if (this.id === undefined) {
       this.id = uuidv4();
       this.firstname = firstname;
