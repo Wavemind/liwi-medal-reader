@@ -34,6 +34,7 @@ export class PatientModel {
       this.uid = identifier.uid.toString();
       this.studyID = identifier.studyID.toString();
       this.groupID = identifier.groupID.toString();
+
       if (otherFacilityData !== null) {
         this.second_uid = otherFacilityData.uid.toString();
         this.second_studyID = otherFacilityData.studyID.toString();
@@ -87,11 +88,6 @@ export class PatientModel {
     if (this.birthdate === '') {
       errors.birthdate = i18n.t('form:required');
     }
-
-    if (this.second_uid !== null && this.reason.trim() === '') {
-      errors.reason = i18n.t('form:required');
-    }
-    console.log(this, errors)
 
     return errors;
   };
