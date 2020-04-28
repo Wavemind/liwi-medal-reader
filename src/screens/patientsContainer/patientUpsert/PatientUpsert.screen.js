@@ -18,6 +18,7 @@ import { styles } from './PatientUpsert.style';
 import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
+import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -152,6 +153,65 @@ export default class PatientUpsert extends React.Component<Props, State> {
     return false;
   };
 
+  renderIdentifierData = () => {
+    const { patient } = this.state;
+    const { t } = this.props.app;
+
+    if (patient === null) {
+      return null;
+    }
+
+    const { uid, studyID, groupID, secondUid, secondStudyID, secondGroupID } = patient;
+
+    return (
+      <View>
+        <Text customSubTitle>{t('patient_upsert:identifier')}</Text>
+        <View w50>
+          <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
+          <Text style={styles.identifierText} right>
+            {uid}
+          </Text>
+        </View>
+        <View w50>
+          <Text style={styles.identifierText}>{t('patient_upsert:studyID')}</Text>
+          <Text style={styles.identifierText} right>
+            {studyID}
+          </Text>
+        </View>
+
+        <View w50>
+          <Text style={styles.identifierText}>{t('patient_upsert:groupID')}</Text>
+          <Text style={styles.identifierText} right>
+            {groupID}
+          </Text>
+        </View>
+
+        {secondUid !== null && (
+          <>
+            <View w50>
+              <Text style={styles.identifierText}>{t('patient_upsert:secondUid')}</Text>
+              <Text style={styles.identifierText} right>
+                {secondUid}
+              </Text>
+            </View>
+            <View w50>
+              <Text style={styles.identifierText}>{t('patient_upsert:secondStudyID')}</Text>
+              <Text style={styles.identifierText} right>
+                {secondStudyID}
+              </Text>
+            </View>
+            <View w50>
+              <Text style={styles.identifierText}>{t('patient_upsert:secondGroupID')}</Text>
+              <Text style={styles.identifierText} right>
+                {secondGroupID}
+              </Text>
+            </View>
+          </>
+        )}
+      </View>
+    );
+  };
+
   render() {
     const { updatePatientValue, save } = this;
     const { patient, errors, loading, algorithmReady } = this.state;
@@ -198,9 +258,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
           <LiwiLoader />
         ) : (
           <React.Fragment>
-            <Questions questions={extraQuestions} />
             <View>
               <Col>
+                {this.renderIdentifierData()}
                 {patient.wasInOtherFacility() && (
                   <CustomInput
                     init={patient.reason}
@@ -215,6 +275,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 )}
               </Col>
             </View>
+            <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+            <Questions questions={extraQuestions} />
             <View bottom-view>
               {algorithmReady ? (
                 !loading ? (

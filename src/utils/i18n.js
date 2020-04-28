@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => { },
-  cacheUserLanguage: () => { },
+  init: () => {},
+  cacheUserLanguage: () => {},
 };
 
 i18n
@@ -92,7 +92,7 @@ i18n
         qrcode: {
           scan: 'Scan the QR code',
           open: 'Right reading Qrcode and data. Opening Patient',
-          new_sticker_notification: 'You need to give another sticker to the patient'
+          new_sticker_notification: 'You need to give another sticker to the patient',
         },
         summary: {
           title: 'Current summary',
@@ -203,6 +203,14 @@ i18n
           differential_diagnoses: 'Differential diagnoses',
         },
         patient_upsert: {
+          uid: 'UID',
+          studyID: 'Study ID',
+          groupID: 'Group ID',
+          secondUid: 'Second UID',
+          secondStudyID: 'Second study ID',
+          secondGroupID: 'Second group ID',
+          identifier: 'Identifier Data',
+          questions: 'Questions',
           title: 'Patient',
           save_and_wait: 'Save + add to waiting list',
           save_and_case: 'Save + create new case',

@@ -34,13 +34,13 @@ export class PatientModel {
       this.groupID = identifier.groupID.toString();
 
       if (otherFacilityData !== null) {
-        this.second_uid = otherFacilityData.uid.toString();
-        this.second_studyID = otherFacilityData.studyID.toString();
-        this.second_groupID = otherFacilityData.groupID.toString();
+        this.secondUid = otherFacilityData.uid.toString();
+        this.secondStudyID = otherFacilityData.studyID.toString();
+        this.secondGroupID = otherFacilityData.groupID.toString();
       } else {
-        this.second_uid = null;
-        this.second_studyID = null;
-        this.second_groupID = null;
+        this.secondUid = null;
+        this.secondStudyID = null;
+        this.secondGroupID = null;
       }
       this.medicalCases = medicalCases;
       this.main_data_patient_id = main_data_patient_id;
@@ -144,7 +144,7 @@ export class PatientModel {
   };
 
   wasInOtherFacility = () => {
-    return this.second_uid !== null;
+    return this.secondUid !== null;
   };
 }
 
@@ -160,9 +160,9 @@ PatientModel.schema = {
     uid: 'string',
     studyID: 'string',
     groupID: 'string',
-    second_uid: 'string?',
-    second_studyID: 'string?',
-    second_groupID: 'string?',
+    secondUid: 'string?',
+    secondStudyID: 'string?',
+    secondGroupID: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
     main_data_patient_id: { type: 'int', optional: true },
