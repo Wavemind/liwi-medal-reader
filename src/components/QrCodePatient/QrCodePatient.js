@@ -41,10 +41,8 @@ export default class QrCodePatient extends React.Component<Props, State> {
       const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'second_uid');
 
       if (patient !== null) {
-        navigation.navigate('PatientUpsert', {
-          idPatient: patient.id,
-          newMedicalCase: true,
-          otherFacilityData: otherQR,
+        navigation.navigate('PatientProfile', {
+          id: patient.id,
         });
         displayNotification(t('qrcode:open'), liwiColors.greenColor);
         closeModal();
