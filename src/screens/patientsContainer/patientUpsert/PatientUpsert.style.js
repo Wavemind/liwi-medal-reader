@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { responsiveUi } from '../../../utils/constants';
+import { liwiColors, responsiveUi } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   paddingAuto: {
@@ -12,7 +12,17 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-
+  identifierText: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    padding: 5,
+    margin: 5,
+    backgroundColor: liwiColors.whiteDark,
+    borderColor: liwiColors.lightGreyColor,
+    borderRadius: 3,
+    elevation: 1,
+  },
   columns: {
     flex: 1,
     flexDirection: 'row',
