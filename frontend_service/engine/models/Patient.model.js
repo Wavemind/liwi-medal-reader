@@ -15,32 +15,34 @@ export class PatientModel {
       reason = '',
     } = props;
 
-    if (this.id === undefined && id === undefined) {
-      this.id = uuidv4();
-      this.medicalCases = medicalCases;
-      this.main_data_patient_id = main_data_patient_id;
-      this.uid = identifier.uid.toString();
-      this.studyID = identifier.studyID.toString();
-      this.groupID = identifier.groupID.toString();
-
-      if (otherFacilityData !== null) {
-        this.secondUid = otherFacilityData.uid.toString();
-        this.secondStudyID = otherFacilityData.studyID.toString();
-        this.secondGroupID = otherFacilityData.groupID.toString();
-      } else {
-        this.secondUid = null;
-        this.secondStudyID = null;
-        this.secondGroupID = null;
+    if (this.id === undefined) {
+      if (id !== undefined) {
+        this.id = id;
+        this.medicalCases = [];
+        props.medicalCases.forEach((medicalCase) => {
+          this.medicalCases.push(new MedicalCaseModel(medicalCase));
+        });
       }
-    } else {
-      this.id = id;
-      this.medicalCases = [];
-      props.medicalCases.forEach((medicalCase) => {
-        this.medicalCases.push(new MedicalCaseModel(medicalCase));
-      });
+      else {
+        this.id = uuidv4();
+        this.medicalCases = medicalCases;
+        this.main_data_patient_id = main_data_patient_id;
+        this.uid = identifier.uid.toString();
+        this.studyID = identifier.studyID.toString();
+        this.groupID = identifier.groupID.toString();
+        this.reason = reason;
+
+        if (otherFacilityData !== null) {
+          this.secondUid = otherFacilityData.uid.toString();
+          this.secondStudyID = otherFacilityData.studyID.toString();
+          this.secondGroupID = otherFacilityData.groupID.toString();
+        } else {
+          this.secondUid = null;
+          this.secondStudyID = null;
+          this.secondGroupID = null;
+        }
+      }
     }
-    this.reason = reason;
-    this.identifier = identifier;
   }
 
   /**
@@ -52,6 +54,10 @@ export class PatientModel {
     const database = await new Database();
     this.json = JSON.stringify
 
+    console.log({
+      ...this,
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
+    });
     return database.insert('Patient', {
       ...this,
       medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
