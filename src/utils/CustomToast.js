@@ -3,8 +3,11 @@ import Toast from 'react-native-tiny-toast';
 import isArray from 'lodash/isArray';
 import { liwiColors } from './constants';
 
+/**
+ * Display errors in a toast
+ * @param {any} errors - Can be an hash, array or simple messages
+ */
 export const handleHttpError = (errors: any) => {
-  // Array of errors maps throw or display it
   if (errors instanceof Error) {
     displayNotification(errors.toString(), liwiColors.redColor);
   } else if (isArray(errors)) {

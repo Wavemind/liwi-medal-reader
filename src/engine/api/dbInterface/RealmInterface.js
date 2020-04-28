@@ -7,6 +7,7 @@ export default class RealmInterface {
   /**
    * Generates and returns a realm database object
    * @returns { Realm } - A realm database object
+   * @private
    */
   _realm = () => {
     return new Realm({
