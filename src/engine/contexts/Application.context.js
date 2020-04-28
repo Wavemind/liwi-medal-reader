@@ -62,10 +62,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (session !== null && session?.group !== null) {
       await this._handleApplicationServer(true);
       await this.getGroupData(false);
-
+      const database = await new Database();
       const user = await getItem('user');
       const { isConnected } = this.state;
-      const database = await new Database();
 
       this.setState({
         session,
@@ -304,6 +303,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     // if no error set the tablet
     if (session?.success !== false) {
       const concatSession = { group: null, ...session };
+
       // Set item in localstorage
       await setItem('session', concatSession);
 

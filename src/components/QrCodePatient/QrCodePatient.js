@@ -1,15 +1,14 @@
 // @flow
 
 import * as React from 'react';
+import * as _ from 'lodash';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
-import { styles } from './QrCodePatient.style';
-import { AppRegistry, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import * as _ from 'lodash';
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import { liwiColors, screenHeight, screenWidth } from '../../utils/constants';
+import { styles } from './QrCodePatient.style';
 import { getItem } from '../../engine/api/LocalStorage';
+import { liwiColors } from '../../utils/constants';
 import { displayNotification } from '../../utils/CustomToast';
 
 type Props = NavigationScreenProps & {};
@@ -20,13 +19,11 @@ export default class QrCodePatient extends React.Component<Props, State> {
   state = {
     generateNewQR: false,
     otherQR: null,
-    newId: false,
   };
 
   onSuccess = async (e) => {
-    const { database, t } = this.props.app;
-    const { navigation, closeModal } = this.props;
-    const { generateNewQR, otherQR } = this.state;
+    const { navigation, closeModal, app: { database, t } } = this.props;
+    const { otherQR } = this.state;
     const json = await JSON.parse(e.data);
 
     console.log(json);
@@ -49,7 +46,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
         closeModal();
       }
       // Correct facility but patient does not exist
-      else if (sameFacility && patient === null) {
+      else if (sameFacility) {
         navigation.navigate('PatientUpsert', {
           idPatient: null,
           newMedicalCase: true,
@@ -79,26 +76,17 @@ export default class QrCodePatient extends React.Component<Props, State> {
     return (
       <View style={styles.content}>
         <Text style={styles.centerText} customSubTitle>
-          {generateNewQR ? 'You need to generate a new sticker' : t('qrcode:scan')}
+          {generateNewQR ? t('qrcode:new') : t('qrcode:scan')}
         </Text>
 
         <QRCodeScanner
           onRead={this.onSuccess}
           showMarker
-          containerStyle={{ flex: 1, flexDirection: 'column' }}
-          reactivate={true}
+          reactivate
           reactivateTimeout={2000}
-          cameraStyle={{ height: 100, width: 'auto', flex: 1 }}
-          markerStyle={{
-            width: screenWidth / 2,
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            borderColor: liwiColors.whiteColor,
-            borderStyle: 'dashed',
-            borderWidth: 2,
-            borderRadius: 3,
-            position: 'relative',
-          }}
+          cameraStyle={styles.camera}
+          containerStyle={styles.content}
+          markerStyle={styles.marker}
         />
       </View>
     );
