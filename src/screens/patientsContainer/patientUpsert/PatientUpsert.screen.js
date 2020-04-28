@@ -190,53 +190,54 @@ export default class PatientUpsert extends React.Component<Props, State> {
         extraQuestions.map(({ id }) => id)
       );
     }
+
+    console.log(patient !== null && patient.wasInOtherFacility());
     return (
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
         <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
         {loading ? (
           <LiwiLoader />
         ) : (
-            <React.Fragment>
-
-              <Questions questions={extraQuestions} />
-              <View>
-                <Col>
-                  {patient.wasInOtherFacility !== null && (
-                    <CustomInput
-                      init={patient.reason}
-                      label={t('patient:reason')}
-                      change={updatePatientValue}
-                      index="reason"
-                      iconName="sign-out"
-                      iconType="FontAwesome"
-                      error={errors.reason}
-                      autoCapitalize="sentences"
-                    />
-                  )}
-                </Col>
-              </View>
-              <View bottom-view>
-                {algorithmReady ? (
-                  !loading ? (
-                    <View columns>
-                      <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
-                        <Text>{t('patient_upsert:save_and_wait')}</Text>
-                      </Button>
-                      <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
-                        <Text>{t('patient_upsert:save_and_case')}</Text>
-                      </Button>
-                    </View>
-                  ) : (
-                      <LiwiLoader />
-                    )
+          <React.Fragment>
+            <Questions questions={extraQuestions} />
+            <View>
+              <Col>
+                {patient.wasInOtherFacility() && (
+                  <CustomInput
+                    init={patient.reason}
+                    label={t('patient:reason')}
+                    change={updatePatientValue}
+                    index="reason"
+                    iconName="sign-out"
+                    iconType="FontAwesome"
+                    error={errors.reason}
+                    autoCapitalize="sentences"
+                  />
+                )}
+              </Col>
+            </View>
+            <View bottom-view>
+              {algorithmReady ? (
+                !loading ? (
+                  <View columns>
+                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
+                      <Text>{t('patient_upsert:save_and_wait')}</Text>
+                    </Button>
+                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
+                      <Text>{t('patient_upsert:save_and_case')}</Text>
+                    </Button>
+                  </View>
                 ) : (
-                    <View columns>
-                      <Text>{t('work_case:no_algorithm')}</Text>
-                    </View>
-                  )}
-              </View>
-            </React.Fragment>
-          )}
+                  <LiwiLoader />
+                )
+              ) : (
+                <View columns>
+                  <Text>{t('work_case:no_algorithm')}</Text>
+                </View>
+              )}
+            </View>
+          </React.Fragment>
+        )}
       </ScrollView>
     );
   }

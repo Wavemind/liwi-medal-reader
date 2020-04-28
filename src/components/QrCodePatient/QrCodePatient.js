@@ -7,7 +7,6 @@ import { styles } from './QrCodePatient.style';
 import { AppRegistry, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import * as _ from 'lodash';
 
-
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { liwiColors, screenHeight, screenWidth } from '../../utils/constants';
 import { getItem } from '../../engine/api/LocalStorage';
@@ -37,7 +36,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
     // QRcode valid ?
     if ('uid' in json && 'studyID' in json && 'groupID' in json) {
       const session = await getItem('session');
-      const sameFacility = session?.group?.id === json.groupID
+      const sameFacility = session?.group?.id === json.groupID;
       const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'second_uid');
 
       if (patient !== null) {
