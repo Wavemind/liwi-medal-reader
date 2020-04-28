@@ -256,19 +256,23 @@ class Stepper extends React.Component<Props, State> {
     const medicalCase = store.getState();
 
     if (endMedicalCase === true) {
-      store.dispatch(updateMedicalCaseProperty('status', medicalCaseStatus.close.name));
+      medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
-
-      NavigationService.resetActionStack('Home');
     }
+
     const database = await new Database();
     medicalCase.json = JSON.stringify(medicalCase);
     database.update('MedicalCase', medicalCase.id, medicalCase);
 
-    navigation.navigate({
-      routeName: nextStage,
-      params: paramsNextStage,
-    });
+    if (endMedicalCase === true) {
+      NavigationService.resetActionStack('Home');
+    }
+    else {
+      navigation.navigate({
+        routeName: nextStage,
+        params: paramsNextStage,
+      });
+    }
   };
 
   renderSteps = () => {
