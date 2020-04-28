@@ -30,7 +30,6 @@ export default class QrCodePatient extends React.Component<Props, State> {
     const { generateNewQR, otherQR } = this.state;
     const json = await JSON.parse(e.data);
 
-    console.log(otherQR, json, otherQR == json, otherQR === json)
     if (_.isEqual(otherQR, json)) {
       return;
     }
@@ -38,60 +37,34 @@ export default class QrCodePatient extends React.Component<Props, State> {
     // QRcode valid ?
     if ('uid' in json && 'studyID' in json && 'groupID' in json) {
       const session = await getItem('session');
+      const sameFacility = session?.group?.id === json.groupID
+      const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'second_uid');
 
-      // If in the right medical center
-      if (session?.group?.id === json.groupID) {
-        const patient = await database.findBy('Patient', json.uid, 'uid');
-
-        if (patient !== null) {
-          // Patient exist what ever the medical station (already declared in another facility if goes here)
-          navigation.navigate('PatientUpsert', {
-            idPatient: patient.id,
-            newMedicalCase: true,
-          });
-        } else {
-          // Correct medical station but patient does not exist
-          navigation.navigate('PatientUpsert', {
-            idPatient: null,
-            newMedicalCase: true,
-            identifier: {
-              ...json,
-            },
-          });
-        }
+      if (patient !== null) {
+        navigation.navigate('PatientProfile', {
+          id: patient.id,
+        });
+        displayNotification(t('qrcode:open'), liwiColors.greenColor);
+        closeModal();
+      }
+      // Correct facility but patient does not exist
+      else if (sameFacility && patient === null) {
+        navigation.navigate('PatientUpsert', {
+          idPatient: null,
+          newMedicalCase: true,
+          identifier: {
+            ...json,
+          },
+          otherFacilityData: otherQR,
+        });
         // TODO remove duplication
         displayNotification(t('qrcode:open'), liwiColors.greenColor);
         closeModal();
       }
       // Another medical center
       else {
-        const patient = await database.findBy('Patient', json.uid, 'second_uid');
-
-        if (generateNewQR === true && otherQR !== null) {
-          navigation.navigate('PatientUpsert', {
-            idPatient: null,
-            newMedicalCase: true,
-            identifier: { ...json },
-            otherFacilityData: {
-              ...otherQR,
-            },
-          });
-          displayNotification(t('qrcode:open'), liwiColors.greenColor);
-          closeModal();
-        }
-
-        if (patient !== null) {
-          navigation.navigate('PatientUpsert', {
-            idPatient: patient.id,
-            newMedicalCase: true,
-          });
-          displayNotification(t('qrcode:open'), liwiColors.greenColor);
-          closeModal();
-        }
-        else {
-          // We give him another QR sticker
-          await this.setState({ generateNewQR: true, otherQR: json });
-        }
+        // We give him another QR sticker
+        await this.setState({ generateNewQR: true, otherQR: json });
       }
     }
   };

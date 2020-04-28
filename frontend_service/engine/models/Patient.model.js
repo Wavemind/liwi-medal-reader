@@ -22,8 +22,6 @@ export class PatientModel {
       reason = '',
     } = props;
 
-    console.log(otherFacilityData);
-
     if (this.id === undefined) {
       this.id = uuidv4();
       this.firstname = firstname;
@@ -34,6 +32,7 @@ export class PatientModel {
       this.uid = identifier.uid.toString();
       this.studyID = identifier.studyID.toString();
       this.groupID = identifier.groupID.toString();
+
       if (otherFacilityData !== null) {
         this.second_uid = otherFacilityData.uid.toString();
         this.second_studyID = otherFacilityData.studyID.toString();
@@ -87,11 +86,6 @@ export class PatientModel {
     if (this.birthdate === '') {
       errors.birthdate = i18n.t('form:required');
     }
-
-    if (this.second_uid !== null && this.reason.trim() === '') {
-      errors.reason = i18n.t('form:required');
-    }
-    console.log(this, errors)
 
     return errors;
   };
@@ -147,6 +141,10 @@ export class PatientModel {
       ).format('ll');
     }
     return i18n.t('patient:age_not_defined');
+  };
+
+  wasInOtherFacility = () => {
+    return this.second_uid !== null;
   };
 }
 
