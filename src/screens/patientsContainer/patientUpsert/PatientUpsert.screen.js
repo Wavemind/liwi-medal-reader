@@ -37,7 +37,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const algorithms = await getItems('algorithms');
-
+console.log(patientId);
     if (patientId === null) {
       patient = new PatientModel();
     } else {
@@ -85,6 +85,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     await this.setState({ loading: true });
 
     updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
+
 
     if (patientId !== null) {
       const patient = database.findById('Patient', patientId);

@@ -7,7 +7,8 @@ import Database from '../../../src/engine/api/Database';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-    if (this.id === undefined) {
+
+    if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuidv4();
       this.name = currentAlgorithm.name;
@@ -61,7 +62,16 @@ export class MedicalCaseModel {
       };
       this.generateExcludedId();
     } else {
-      const json = JSON.parse(this.json); // WARNING this might slow down the app
+      const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
+
+      if (this.json === undefined) {
+        this.id = json.id;
+        this.json = props.json;
+        this.created_at = props.created_at;
+        this.updated_at = props.updated_at;
+        this.status = props.status;
+        this.patient_id = props.patient_id;
+      }
 
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
@@ -108,7 +118,7 @@ export class MedicalCaseModel {
         if (nodes[nodeId].type.match(/^Question$|^QuestionsSequence$/)) {
           nodes[nodeId].dd.map((dd) => {
             // If the instance is related to the main diagram
-            // If the node has an final_diagnostic_id it's belongs to a healthcare so don't set conditionValue
+            // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
             if (diagnostics[dd.id].instances[nodeId].final_diagnostic_id === null) {
               dd.conditionValue = diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
             } else {

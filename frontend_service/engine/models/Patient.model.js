@@ -2,15 +2,22 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import Database from '../../../src/engine/api/Database';
+import { MedicalCaseModel } from './MedicalCase.model';
 
 export class PatientModel {
   constructor(props = {}) {
-    const { medicalCases = [], main_data_patient_id = null } = props;
+    const { id, medicalCases = [], main_data_patient_id = null } = props;
 
-    if (this.id === undefined) {
+    if (this.id === undefined && id === undefined) {
       this.id = uuidv4();
       this.medicalCases = medicalCases;
       this.main_data_patient_id = main_data_patient_id;
+    } else {
+      this.id = props.id;
+      this.medicalCases = [];
+      props.medicalCases.forEach((medicalCase) => {
+        this.medicalCases.push(new MedicalCaseModel(medicalCase));
+      });
     }
   }
 

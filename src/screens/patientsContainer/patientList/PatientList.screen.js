@@ -20,16 +20,6 @@ export default class PatientList extends React.Component {
     patients: [],
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const { focus } = this.props;
-    const { searchTerm } = this.state;
-
-    if ((nextProps.focus === 'didFocus' && (focus === undefined || focus === null)) || nextState.searchTerm !== searchTerm) {
-      this.fetchPatients();
-    }
-    return true;
-  }
-
   async componentDidMount() {
     const { navigation } = this.props;
     // Force refresh with a navigation.push
@@ -46,6 +36,7 @@ export default class PatientList extends React.Component {
     this.setState({ loading: true });
 
     const patients = await database.getAll('Patient');
+    console.log(patients)
     const algorithms = await getItems('algorithms');
 
     this.setState({
