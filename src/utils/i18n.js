@@ -341,6 +341,7 @@ i18n
           connection_successful: 'Connection successful',
           algorithm_updated: 'Your algorithm has been updated',
           get_group: 'Receiving group data and medical staff',
+          device_registered: 'Device registered',
         },
       },
       fr: {

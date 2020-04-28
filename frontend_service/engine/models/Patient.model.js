@@ -19,6 +19,9 @@ export class PatientModel {
       if (id !== undefined) {
         this.id = id;
         this.medicalCases = [];
+        this.uid = identifier.uid.toString();
+        this.studyID = identifier.studyID.toString();
+        this.groupID = identifier.groupID.toString();
         props.medicalCases.forEach((medicalCase) => {
           this.medicalCases.push(new MedicalCaseModel(medicalCase));
         });
