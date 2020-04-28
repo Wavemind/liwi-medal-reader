@@ -77,13 +77,7 @@ export default class PatientList extends React.Component {
             }
           >
             <View w50>
-              <Text>{patient.fullName()}</Text>
-            </View>
-            <View w50>
-              <Text>{patient.printBirthdate()}</Text>
-            </View>
-            <View w50>
-              <Text>{patient.hasCaseInProgress ? t('patient_list:case_in_progress') : null}</Text>
+              <Text>{patient.id}</Text>
             </View>
           </ListItem>
         ))}

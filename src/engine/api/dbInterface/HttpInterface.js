@@ -1,13 +1,17 @@
 import { getItem } from '../LocalStorage';
-import { handleHttpError, displayNotification } from '../../../utils/CustomToast';
-import { liwiColors } from '../../../utils/constants';
+import { handleHttpError } from '../../../utils/CustomToast';
+import { getDeviceInformation } from '../Device';
 
 export default class HttpInterface {
   constructor() {
     return (async () => {
       const session = await getItem('session');
+      const user = await getItem('user');
+      const deviceInfo = await getDeviceInformation();
       this.localDataIp = session.group.local_data_ip;
       this.mainDataIp = session.group.main_data_ip;
+      this.macAddress = deviceInfo.mac_address;
+      this.clinician = `${user.first_name} ${user.last_name}`;
       return this;
     })();
   }
@@ -74,6 +78,17 @@ export default class HttpInterface {
   };
 
   /**
+   * Unlock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  unlockMedicalCase = async (id) => {
+    const url = `${this.localDataIp}/api/medical_cases/${id}/unlock`;
+    const header = await this._setHeaders();
+    return this._fetch(url, header);
+  };
+
+  /**
    * Make the request and parse result
    * @param { string } url - Url to bind
    * @param { object } header - Header options
@@ -88,10 +103,16 @@ export default class HttpInterface {
       return result;
     }
 
-    displayNotification(result, liwiColors.redColor);
+    handleHttpError(result);
     return [];
   };
 
+  /**
+   * Map model to local data route
+   * @param { string } model - The model name of the data we want to retrieve
+   * @returns { string } - local data route
+   * @private
+   */
   _mapModelToRoute = (model) => {
     let route = '';
 
@@ -119,12 +140,15 @@ export default class HttpInterface {
   _setHeaders = async (method = 'GET', body = false) => {
     const header = {
       method,
-      headers: {},
+      headers: {
+        'mac-address': this.macAddress,
+        clinician: this.clinician,
+      },
     };
 
     if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
       header.body = JSON.stringify(body);
-      header.headers.Accept = 'application/json, text/plain';
+      header.headers['Accept'] = 'application/json';
       header.headers['Content-Type'] = 'application/json';
     }
 
