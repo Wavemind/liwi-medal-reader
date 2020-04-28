@@ -11,18 +11,21 @@ import { PatientModel } from '../../../../frontend_service/engine/models/Patient
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
+import Stepper from '../../../components/Stepper';
 
 import { styles } from './PatientUpsert.style';
 import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { stage } from '../../../../frontend_service/constants';
 import Questions from '../../../components/QuestionsContainer/Questions';
+import { Suspense } from 'react';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class PatientUpsert extends React.Component<Props, State> {
   state = {
+    newMedicalCase: true,
     errors: {},
     patient: null,
     loading: true,
@@ -62,6 +65,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         patient,
         algorithmReady: true,
         loading: false,
+        newMedicalCase,
       });
     }
   };
@@ -174,7 +178,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady } = this.state;
+    const { patient, errors, loading, algorithmReady, newMedicalCase } = this.state;
 
     const {
       app: { t },
@@ -213,75 +217,101 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     return (
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
-        <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
-        {loading ? (
-          <LiwiLoader />
-        ) : (
-          <React.Fragment>
-            <View>
-              <Col>
-                <CustomInput
-                  init={patient.firstname}
-                  label={t('patient:first_name')}
-                  change={updatePatientValue}
-                  index="firstname"
-                  iconName="user"
-                  iconType="AntDesign"
-                  error={errors.firstname}
-                  autoCapitalize="sentences"
-                />
-                <CustomInput
-                  init={patient.lastname}
-                  label={t('patient:last_name')}
-                  change={updatePatientValue}
-                  index="lastname"
-                  iconName="user"
-                  iconType="AntDesign"
-                  error={errors.lastname}
-                  autoCapitalize="sentences"
-                />
-              </Col>
-              <Col>
-                <CustomSwitchButton
-                  init={patient.gender}
-                  label={t('patient:gender')}
-                  change={updatePatientValue}
-                  index="gender"
-                  label1={t('patient:male')}
-                  label2={t('patient:female')}
-                  value1="male"
-                  value2="female"
-                  iconName="human-male-female"
-                  iconType="MaterialCommunityIcons"
-                  error={errors.gender}
-                />
-              </Col>
-            </View>
-            <Questions questions={extraQuestions} />
-            <View bottom-view>
-              {algorithmReady ? (
-                !loading ? (
-                  <View columns>
-                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_wait')}</Text>
-                    </Button>
-                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_case')}</Text>
-                    </Button>
-                  </View>
-                ) : (
-                  <LiwiLoader />
-                )
-              ) : (
-                <View columns>
-                  <Text>{t('work_case:no_algorithm')}</Text>
+      <Stepper
+        ref={(ref: any) => {
+          this.stepper = ref;
+        }}
+        validation={false}
+        onPageSelected={(e) => {
+          navigation.setParams({
+            initialPage: e,
+          });
+        }}
+        initialPage={0}
+        showBottomStepper={!newMedicalCase}
+        icons={[{ name: 'test-tube', type: 'MaterialCommunityIcons' }]}
+        steps={[t('medical_case:triage')]}
+        backButtonTitle={t('medical_case:back')}
+        nextButtonTitle={t('medical_case:next')}
+        nextStage="Triage"
+        nextStageString={t('navigation:triage')}
+      >
+        {[
+          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
+            <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+            {loading ? (
+              <LiwiLoader />
+            ) : (
+              <React.Fragment>
+                <View>
+                  <Col>
+                    <CustomInput
+                      init={patient.firstname}
+                      label={t('patient:first_name')}
+                      change={updatePatientValue}
+                      index="firstname"
+                      iconName="user"
+                      iconType="AntDesign"
+                      error={errors.firstname}
+                      autoCapitalize="sentences"
+                    />
+                    <CustomInput
+                      init={patient.lastname}
+                      label={t('patient:last_name')}
+                      change={updatePatientValue}
+                      index="lastname"
+                      iconName="user"
+                      iconType="AntDesign"
+                      error={errors.lastname}
+                      autoCapitalize="sentences"
+                    />
+                  </Col>
+                  <Col>
+                    <CustomSwitchButton
+                      init={patient.gender}
+                      label={t('patient:gender')}
+                      change={updatePatientValue}
+                      index="gender"
+                      label1={t('patient:male')}
+                      label2={t('patient:female')}
+                      value1="male"
+                      value2="female"
+                      iconName="human-male-female"
+                      iconType="MaterialCommunityIcons"
+                      error={errors.gender}
+                    />
+                  </Col>
                 </View>
-              )}
-            </View>
-          </React.Fragment>
-        )}
-      </ScrollView>
+                <Questions questions={extraQuestions} />
+                <View bottom-view>
+                  {algorithmReady ? (
+                    !loading ? (
+                      <>
+                        {newMedicalCase && (
+                          <View columns>
+                            <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
+                              <Text>{t('patient_upsert:save_and_wait')}</Text>
+                            </Button>
+                            <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
+                              <Text>{t('patient_upsert:save_and_case')}</Text>
+                            </Button>
+                          </View>
+                        )}
+                      </>
+                    ) : (
+                      <LiwiLoader />
+                    )
+                  ) : (
+                    <View columns>
+                      <Text>{t('work_case:no_algorithm')}</Text>
+                    </View>
+                  )}
+                </View>
+              </React.Fragment>
+            )}
+          </ScrollView>,
+        ]}
+      </Stepper>
     );
   }
 }

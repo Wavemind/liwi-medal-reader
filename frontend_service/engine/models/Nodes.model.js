@@ -10,7 +10,7 @@ import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 
-interface NodeInterface { }
+interface NodeInterface {}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {
@@ -176,8 +176,6 @@ export class NodesModel implements NodeInterface {
         const condition = finalDiagnostic.calculateCondition();
         if (condition === true) {
           for (const indexManagement in finalDiagnostic.managements) {
-            console.log(indexManagement);
-            console.log(this);
             this[indexManagement].getQuestions(finalDiagnostic);
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
               const m = this[indexManagement];
