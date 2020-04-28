@@ -122,10 +122,15 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @private
    */
   _setAppStatus = async (status) => {
-    const { isConnected } = this.state;
+    const { isConnected, database } = this.state;
 
     // Connected again
     if (status === true && isConnected === false) {
+      const medicalCases = await database.getAll('MedicalCase');
+      const activity = await database.getAll('Activity');
+
+      console.log(medicalCases, activity);
+
       // need to test send data
     }
 

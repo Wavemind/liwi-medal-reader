@@ -29,6 +29,8 @@ export default class QrCodePatient extends React.Component<Props, State> {
     const { generateNewQR, otherQR } = this.state;
     const json = await JSON.parse(e.data);
 
+    console.log(json);
+
     if (_.isEqual(otherQR, json)) {
       return;
     }
