@@ -55,7 +55,7 @@ export class PatientModel {
   save = async () => {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
     const database = await new Database();
-    this.json = JSON.stringify
+    this.json = JSON.stringify;
 
     console.log({
       ...this,

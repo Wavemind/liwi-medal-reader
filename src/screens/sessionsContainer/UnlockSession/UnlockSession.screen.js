@@ -10,6 +10,7 @@ import { liwiColors, screenHeight } from '../../../utils/constants';
 import { userRoles } from '../../../../frontend_service/constants';
 import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './UnlockSession.style';
+import Database from '../../../engine/api/Database';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
@@ -33,6 +34,8 @@ export default function PinSession() {
     setLoading(true);
     await app.getGroupData();
     await app.subscribePingApplicationServer();
+    const database = await new Database();
+    await app.set('database', database);
     setLoading(false);
   };
 
