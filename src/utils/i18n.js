@@ -122,6 +122,7 @@ i18n
           unavailable: 'Unavailable',
         },
         menu: {
+          patientUpsert: 'Patient Data',
           triage: 'Triage',
           first_look_assessments: 'First look assessment',
           basic_measurements: 'Basic measurements',
@@ -311,7 +312,7 @@ i18n
           back: 'Back',
           disconnect: 'Disconnect',
           consultation: 'Consultation',
-          patient_data: 'Patient data',
+          patient_data: 'Patient',
         },
         notifications: {
           empty_code: 'Your code is empty, please write it',
