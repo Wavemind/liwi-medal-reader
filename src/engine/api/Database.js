@@ -28,13 +28,14 @@ export default class Database {
   /**
    * Fetch single entry
    * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The id of the object we want
+   * @param { string } value - The value of the object we want
+   * @param { string } field - the field we wanna search on
    * @returns { collection } - Object fetch
    */
-  findById = (model, id) => {
+  findBy = (model, value, field = 'id') => {
     const dbInterface = this._checkInterface();
-    return this[dbInterface].findById(model, id);
-  };
+    return this[dbInterface].findBy(model, value, field);
+  }
 
   /**
    * Creates an entry of a specific model in the database
@@ -93,6 +94,6 @@ export default class Database {
       dbInterface = 'httpInterface';
     }
 
-    return 'httpInterface';
+    return dbInterface;
   };
 }

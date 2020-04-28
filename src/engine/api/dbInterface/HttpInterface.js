@@ -34,7 +34,7 @@ export default class HttpInterface {
    * @param { integer } id - The id of the object we want
    * @returns { Collection } - The wanted object
    */
-  findById = async (model, id) => {
+  findBy = async (model, id) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);

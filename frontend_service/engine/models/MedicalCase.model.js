@@ -197,7 +197,7 @@ export class MedicalCaseModel {
    */
   getPatient = async () => {
     const database = await new Database();
-    return database.findById('Patient', this.patient_id);
+    return database.findBy('Patient', this.patient_id);
   };
 }
 

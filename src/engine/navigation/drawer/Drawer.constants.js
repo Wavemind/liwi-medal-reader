@@ -5,6 +5,13 @@ export const renderingDrawerItems = [
   {
     type: 'categorie',
     initialPage: 0,
+    name: 'PatientUpsert',
+    routeName: 'PatientUpsert',
+    t: i18n.t('menu:patientUpsert'),
+  },
+  {
+    type: 'categorie',
+    initialPage: 0,
     name: 'Triage',
     routeName: 'Triage',
     t: i18n.t('menu:triage'),
