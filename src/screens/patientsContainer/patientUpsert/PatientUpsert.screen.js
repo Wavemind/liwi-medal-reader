@@ -7,8 +7,6 @@ import { Button, Col, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import CustomSwitchButton from '../../../components/InputContainer/CustomSwitchButton';
-import CustomInput from '../../../components/InputContainer/CustomInput/CustomInput';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
@@ -18,7 +16,6 @@ import { styles } from './PatientUpsert.style';
 import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -38,7 +35,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
       setMedicalCase,
       app: { database },
     } = this.props;
+
     let patient = {};
+
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacilityData = navigation.getParam('otherFacilityData'); // Object
@@ -186,7 +185,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           </Text>
         </View>
 
-        {secondUid !== null && (
+        {patient.wasInOtherFacility() && (
           <>
             <View w50>
               <Text style={styles.identifierText}>{t('patient_upsert:secondUid')}</Text>
@@ -257,48 +256,48 @@ export default class PatientUpsert extends React.Component<Props, State> {
         {loading ? (
           <LiwiLoader />
         ) : (
-          <React.Fragment>
-            <View>
-              <Col>
-                {this.renderIdentifierData()}
-                {patient.wasInOtherFacility() && (
-                  <CustomInput
-                    init={patient.reason}
-                    label={t('patient:reason')}
-                    change={updatePatientValue}
-                    index="reason"
-                    iconName="sign-out"
-                    iconType="FontAwesome"
-                    error={errors.reason}
-                    autoCapitalize="sentences"
-                  />
-                )}
-              </Col>
-            </View>
-            <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-            <Questions questions={extraQuestions} />
-            <View bottom-view>
-              {algorithmReady ? (
-                !loading ? (
-                  <View columns>
-                    <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_wait')}</Text>
-                    </Button>
-                    <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
-                      <Text>{t('patient_upsert:save_and_case')}</Text>
-                    </Button>
-                  </View>
+            <React.Fragment>
+              <View>
+                <Col>
+                  {this.renderIdentifierData()}
+                  {patient.wasInOtherFacility() && (
+                    <CustomInput
+                      init={patient.reason}
+                      label={t('patient:reason')}
+                      change={updatePatientValue}
+                      index="reason"
+                      iconName="sign-out"
+                      iconType="FontAwesome"
+                      error={errors.reason}
+                      autoCapitalize="sentences"
+                    />
+                  )}
+                </Col>
+              </View>
+              <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+              <Questions questions={extraQuestions} />
+              <View bottom-view>
+                {algorithmReady ? (
+                  !loading ? (
+                    <View columns>
+                      <Button light split onPress={() => save('PatientList')} disabled={hasNoError}>
+                        <Text>{t('patient_upsert:save_and_wait')}</Text>
+                      </Button>
+                      <Button success split onPress={() => save('Triage')} disabled={hasNoError}>
+                        <Text>{t('patient_upsert:save_and_case')}</Text>
+                      </Button>
+                    </View>
+                  ) : (
+                      <LiwiLoader />
+                    )
                 ) : (
-                  <LiwiLoader />
-                )
-              ) : (
-                <View columns>
-                  <Text>{t('work_case:no_algorithm')}</Text>
-                </View>
-              )}
-            </View>
-          </React.Fragment>
-        )}
+                    <View columns>
+                      <Text>{t('work_case:no_algorithm')}</Text>
+                    </View>
+                  )}
+              </View>
+            </React.Fragment>
+          )}
       </ScrollView>
     );
   }
