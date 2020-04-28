@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import QuestionFactory from '../QuestionFactory';
-import { stage } from '../../../../frontend_service/constants';
+import { stages } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -45,8 +45,8 @@ export default class QuestionsReference extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <QuestionFactory {...this.props} question={question} key={`${question.id}_factory`} />
-        {nodeX.stage !== stage.triage ? <QuestionFactory {...this.props} question={nodeX} key={`${nodeX.id}_factory` + '_ref'} /> : null}
-        {nodeY.stage !== stage.triage ? <QuestionFactory {...this.props} question={nodeY} key={`${nodeY.id}_factory` + '_ref'} /> : null}
+        {nodeX.stage !== stages.triage ? <QuestionFactory {...this.props} question={nodeX} key={`${nodeX.id}_factory` + '_ref'} /> : null}
+        {nodeY.stage !== stages.triage ? <QuestionFactory {...this.props} question={nodeY} key={`${nodeY.id}_factory` + '_ref'} /> : null}
       </React.Fragment>
     );
   }

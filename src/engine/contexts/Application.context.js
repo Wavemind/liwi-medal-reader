@@ -1,26 +1,23 @@
 // @flow
-/* eslint-disable react/no-unused-state */
 import * as React from 'react';
-import { sha256 } from 'js-sha256';
+import * as NetInfo from '@react-native-community/netinfo';
+import Geolocation from '@react-native-community/geolocation';
+import moment from 'moment';
 import { NavigationScreenProps } from 'react-navigation';
 import { AppState, PermissionsAndroid } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
-import moment from 'moment';
-import Geolocation from '@react-native-community/geolocation';
-
-import Toast from 'react-native-tiny-toast';
-import { getItem, getSession, setActiveSession, setItem } from '../api/LocalStorage';
-import NavigationService from '../navigation/Navigation.service';
-import { appInBackgroundStateKey, host, saltHash, secondStatusLocalData } from '../../../frontend_service/constants';
-import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
 
 import i18n from '../../utils/i18n';
-import { liwiColors } from '../../utils/constants';
+import NavigationService from '../navigation/Navigation.service';
+import Database from '../api/Database';
+import { appInBackgroundStateKey, secondStatusLocalData } from '../../../frontend_service/constants';
+import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
 import { getDeviceInformation } from '../api/Device';
-import { handleHttpError } from '../../utils/CustomToast';
-import { isFunction } from '../../utils/swissKnives';
+import { displayNotification } from '../../utils/CustomToast';
+import { getItem, setItem } from '../api/LocalStorage';
+import { liwiColors } from '../../utils/constants';
 
 const defaultValue = {};
+
 export const ApplicationContext = React.createContext<Object>(defaultValue);
 
 type Props = NavigationScreenProps & {
@@ -31,7 +28,6 @@ export type StateApplicationContext = {
   name: string,
   lang: string,
   set: (prop: any, value: any) => Promise<any>,
-  initContext: () => Promise<any>,
   logged: boolean,
   user: Object,
   logout: () => Promise<any>,
@@ -51,39 +47,91 @@ export type StateApplicationContext = {
 export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
   constructor(props: Props) {
     super(props);
-    this.initializeAsync();
+    this._init();
   }
 
-  _handleLocalData = async () => {
-    let localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
-    let request = await localDataOn;
-    if (request === undefined || request?.status !== 200) {
-      this.disconnectApp();
+  /**
+   * Initialize context and event listener
+   * @returns {Promise<void>}
+   * @private
+   */
+  _init = async () => {
+    const session = await getItem('session');
+
+    // Session already exist
+    if (session !== null && session?.group !== null) {
+      await this._handleApplicationServer(true);
+      await this.getGroupData(false);
+
+      const user = await getItem('user');
+      const { isConnected } = this.state;
+      const database = await new Database();
+
+      this.setState({
+        session,
+        user,
+        ready: true,
+        database,
+        isConnected,
+      });
+
+      // Start ping to local or main data server
+      this.subscribePingApplicationServer();
+    } else {
+      // First time tablet is used
+      const netInfoConnection = await NetInfo.fetch();
+      const { isConnected } = netInfoConnection;
+      await setItem('isConnected', isConnected);
+      this.setState({ ready: true, isConnected });
     }
-  };
-
-  disconnectApp = () => {
-    if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
-      this.unsubscribeIntervalLocalData();
-    }
-    this.setState({ isConnected: false });
-  };
-
-  startIntervalLocalData = () => {
-    this.unsubscribeIntervalLocalData = setInterval(this._handleLocalData, secondStatusLocalData);
-  };
-
-  initializeAsync = async () => {
-    await this.initContext();
 
     AppState.addEventListener('change', this._handleAppStateChange);
-
-    this.unsubscribeNetInfo = NetInfo.addEventListener(this._handleConnectivityChange);
-    const { isConnected } = this.state;
-    isConnected && this.startIntervalLocalData();
   };
 
-  getGeo = async () => {
+  /**
+   * Start an interval to ping application server like main data or local data
+   */
+  subscribePingApplicationServer = () => {
+    this.unsubscribePingApplicationServer = setInterval(this._handleApplicationServer, secondStatusLocalData);
+  };
+
+  /**
+   * Ping local or main data to define status of the app
+   * @param {boolean} firstTime - Force call to this._setAppStatus(false) to initialize it
+   * @returns {Promise<void>}
+   * @private
+   */
+  _handleApplicationServer = async (firstTime = false) => {
+    const { isConnected } = this.state;
+    const session = await getItem('session');
+    const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
+    const request = await fetch(ip, 'GET').catch(async () => {
+      if (isConnected || firstTime) {
+        await this._setAppStatus(false);
+      }
+    });
+    if (request !== undefined && !isConnected) {
+      await this._setAppStatus(true);
+    }
+  };
+
+  /**
+   * Store in state and local storage connection status
+   * @param { boolean } status - connection status
+   * @returns {Promise<void>}
+   * @private
+   */
+  _setAppStatus = async (status) => {
+    await setItem('isConnected', status);
+    this.setState({ isConnected: status });
+  };
+
+  /**
+   * Ask user to allow access to location
+   * @returns {Promise<*>}
+   * @private
+   */
+  _askGeo = async () => {
     const { t } = this.state;
     return await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
       title: t('popup:title'),
@@ -94,7 +142,14 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  askGeo = async (enableHighAccuracy, callBack) => {
+  /**
+   * Get geolocalization
+   * @param enableHighAccuracy
+   * @param callBack
+   * @returns {Promise<void>}
+   * @private
+   */
+  _getGeo = async (enableHighAccuracy, callBack) => {
     return Geolocation.getCurrentPosition(
       async (position) => callBack(position),
       async (error) => callBack(error),
@@ -105,12 +160,21 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     );
   };
 
-  // Set value in context
+  /**
+   * Set value in context state
+   * @param {any} prop - Key to update in state
+   * @param {any} value - Value to set in state
+   * @returns {Promise<void>}
+   */
   setValState = async (prop: any, value: any) => {
     await this.setState({ [prop]: value });
   };
 
-  // Log out
+  // TODO: Check useness of this method and lockSession method
+  /**
+   * Logout user
+   * @returns {Promise<void>}
+   */
   logout = async () => {
     await setItem('user', null);
     this.setState({
@@ -119,30 +183,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // Load context of current user
-  initContext = async () => {
-    const session = await getItem('session');
-    const user = await getItem('user');
-    const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
-    if (session !== null) {
-      isConnected && (await this.getGroupData(false));
-      this.setUserContext(session, user, { isConnected });
-    } else {
-      this.setState({ ready: true, isConnected });
-    }
-  };
-
-  // Set user context
-  setUserContext = (session, user = null, extraParams = {}) => {
-    this.setState({
-      session,
-      user,
-      ready: true,
-      ...extraParams,
-    });
-  };
-
-  // Lock current session
+  // TODO: Check useness of this method and logout method
+  /**
+   * Lock session
+   * @returns {Promise<void>}
+   */
   lockSession = async () => {
     this.setState({
       logged: false,
@@ -150,6 +195,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
+  /**
+   * Display modal and set content
+   * @param {any} content - What will be displayed
+   * @returns {Promise<void>}
+   */
   setModal = async (content) => {
     this.setState({
       isModalVisible: true,
@@ -158,9 +208,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   /**
-   * Get the data for the group
-   * Call with the button synchronize in screen UnLockSession.screen.js
-   * @return boolean
+   * Fetch group info from medal-c
+   * @param { boolean } showToast - Display a notification
+   * @returns {Promise<boolean>}
    */
   getGroupData = async (showToast = true) => {
     const { isConnected, t } = this.state;
@@ -178,8 +228,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         await fetchAlgorithms();
         this.setState({ session: { ...session, group } });
         // Show success toast
-        showToast ? this.showSuccessToast(t('notifications:get_group')) : null;
+        showToast ? displayNotification(t('notifications:get_group'), liwiColors.greenColor) : null;
         return true;
+      } else {
+        displayNotification(group.errors, liwiColors.redColor);
       }
     }
 
@@ -190,13 +242,13 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * Get the pin code from screen
    * Redirect to userSelection if not opened
    * Redirect to home if already opened
-   * @params string: pinCode : pin code from screen
+   * @params { string }: pinCode : pin code from screen
    * @return boolean
    */
   openSession = async (pinCode) => {
-    const { session, user } = this.state;
+    const { session, user, t } = this.state;
     if (session.group.pin_code === pinCode) {
-      this.showSuccessToast('Successful Connection');
+      displayNotification(t('notifications:connection_successful'), liwiColors.greenColor);
 
       if (user === null) {
         await setTimeout(async () => {
@@ -213,32 +265,26 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     return false;
   };
 
+  /**
+   * Store user in state context and local storage
+   * @param { object } user - User to store
+   * @returns {Promise<void>}
+   */
   setUser = async (user) => {
-    // Set user in local storage
     await setItem('user', user);
-
-    // Set user in context
     this.setState({ user, logged: true });
   };
 
   /**
-   * Show a toast with success styles
-   *  @params string msg : String to pass in message
-   */
-  showSuccessToast = (msg) => {
-    Toast.showSuccess(msg, {
-      position: 20,
-      containerStyle: { backgroundColor: liwiColors.greenColor },
-      textStyle: { color: liwiColors.whiteColor },
-      imgStyle: { height: 40 },
-    });
-  };
-
-  /**
-   * Create new session from NewSession
+   * Authenticate user and then register device in medal-c
+   * @param { string } email - User email
+   * @param { string } password - User password
+   * @returns {Promise<boolean>}
    */
   newSession = async (email: string, password: string) => {
-    // auth with serveur
+    const { t } = this.state;
+
+    // auth with server
     const session = await auth(email, password).catch((error) => {
       return error;
     });
@@ -250,12 +296,12 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       await setItem('session', concatSession);
 
       const deviceInfo = await getDeviceInformation();
-      // Register device to serveur
+      // Register device to server
       const register = await post('devices', { device: { ...deviceInfo } }, { token: 'group' });
 
       if (register === true) {
-        //Show toast
-        this.showSuccessToast('Successfull tablet identification');
+        // Show toast
+        displayNotification(t('notifications:device_registered'), liwiColors.greenColor);
         return true;
       }
     }
@@ -263,55 +309,33 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   state = {
-    name: 'App',
-    lang: 'fr',
-    set: this.setValState,
-    logged: false,
-    initContext: this.initContext,
-    setUser: this.setUser,
-    logout: this.logout,
-    getGroupData: this.getGroupData,
-    openSession: this.openSession,
-    lockSession: this.lockSession,
-    newSession: this.newSession,
-    isConnected: true,
-    medicalCase: {},
     appState: AppState.currentState,
-    setModal: this.setModal,
-    isModalVisible: false,
     contentModal: 'initial',
-    initialPosition: {},
-    t: (translate) => i18n.t(translate),
-    ready: false,
     currentRoute: null,
+    initialPosition: {},
+    isModalVisible: false,
+    isConnected: false,
+    lang: 'fr',
+    logged: false,
+    name: 'App',
+    medicalCase: {},
+    ready: false,
     session: null,
     user: null,
-  };
-
-  // fetch algorithms when change
-  _fetchDataWhenChange = async () => {
-    await fetchAlgorithms();
-  };
-
-  _handleConnectivityChange = async (state) => {
-    const { isConnected } = state;
-
-    if (isConnected !== this.state.isConnected) {
-      if (isConnected === true) {
-        this.connectApp();
-      } else {
-        this.disconnectApp();
-      }
-    }
-  };
-
-  connectApp = () => {
-    this.startIntervalLocalData();
-    this.setState({ isConnected: true });
+    getGroupData: this.getGroupData,
+    logout: this.logout,
+    lockSession: this.lockSession,
+    newSession: this.newSession,
+    openSession: this.openSession,
+    set: this.setValState,
+    subscribePingApplicationServer: this.subscribePingApplicationServer,
+    setModal: this.setModal,
+    setUser: this.setUser,
+    t: (translate) => i18n.t(translate),
   };
 
   async componentDidMount() {
-    let permissionReturned = await this.getGeo();
+    const permissionReturned = await this._askGeo(); // keep
     let location = {
       coords: {
         accuracy: 0,
@@ -327,7 +351,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     location.date = moment().toISOString();
 
     if (permissionReturned === 'granted') {
-      await this.askGeo(true, async (cb) => {
+      await this._getGeo(true, async (cb) => {
         location = { ...location, ...cb };
         await setItem('location', location);
       });
@@ -337,23 +361,21 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 
   componentWillUnmount() {
-    if (this.unsubscribeNetInfo !== undefined && isFunction(this.unsubscribeNetInfo)) {
-      this.unsubscribeNetInfo();
-    }
-
-    if (this.unsubscribeIntervalLocalData !== undefined && isFunction(this.unsubscribeIntervalLocalData)) {
-      this.unsubscribeIntervalLocalData();
-    }
+    clearInterval(this.unsubscribePingApplicationServer);
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  // If the app is active or not
+  /**
+   * Set new state when closing the app
+   * @param { object } nextAppState - Next state
+   * @returns {Promise<void>}
+   * @private
+   */
   _handleAppStateChange = async (nextAppState) => {
     const { appState } = this.state;
     if (appState.match(/inactive|background/) && nextAppState === 'active') {
       console.warn('---> Liwi came back from background', nextAppState);
       await setItem(appInBackgroundStateKey, true);
-
       this.setState({ appState: nextAppState, logged: false });
     }
 
@@ -365,7 +387,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   render() {
     const { children } = this.props;
-
     return <ApplicationContext.Provider value={this.state}>{children}</ApplicationContext.Provider>;
   }
 }

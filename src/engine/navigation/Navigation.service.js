@@ -4,6 +4,7 @@ import find from 'lodash/find';
 import { store } from '../../../frontend_service/store';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import Database from '../api/Database';
 
 let _navigator;
 
@@ -69,7 +70,7 @@ function getActiveRouteByName(name, state) {
 }
 
 /**
- * Get the active route from react-navigation
+ * Get the active route string name from react-navigation
  *
  * @param navigationState: Navigation : The state of react-navigation
  * @return : string : the current route
@@ -96,7 +97,7 @@ function getActiveRouteName(navigationState) {
 function setParamsAge(navigation, name) {
   const state$ = store.getState();
 
-  const { patient, nodes } = state$;
+  const { nodes } = state$;
 
   const age = find(nodes, { label: 'Age in months' });
 
@@ -108,7 +109,7 @@ function setParamsAge(navigation, name) {
     stringAge = 'No question for age found';
   }
 
-  const headerRight = `${patient.firstname} ${patient.lastname} | ${stringAge}`;
+  const headerRight = `TBD TBD | TBD`;
 
   navigation.setParams({
     title: name,
@@ -164,7 +165,7 @@ function resetActionStack(routeName, params) {
  * @param currentState: Navigation : The state of react-navigation
  */
 
-function onNavigationStateChange(prevState, currentState) {
+async function onNavigationStateChange(prevState, currentState) {
   const activeRoute = getActiveRouteName(currentState);
   const prev = getActiveRouteName(prevState);
   const cu = getCurrentRoute(currentState);
@@ -172,19 +173,21 @@ function onNavigationStateChange(prevState, currentState) {
   // prevent multiple execution
   if (activeRoute !== prev) {
     const state$ = store.getState();
+
     // This route can change the status of MC
     if (cu.params !== undefined && cu?.params?.medicalCaseStatus !== undefined && state$.status !== cu.params.medicalCaseStatus) {
       // Find index in status
       const currentStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === state$.status;
       });
-
       // Find index in status
       const routeStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === cu.params.medicalCaseStatus;
       });
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
+        const database = await new Database();
+        database.update('MedicalCase', state$.id, {'status': routeStatus.name});
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }
@@ -194,12 +197,9 @@ function onNavigationStateChange(prevState, currentState) {
 
 export default {
   getActiveRouteByKey,
-  getActiveRouteByName,
   setParamsAge,
-  getActiveRouteName,
   onNavigationStateChange,
   resetActionStack,
-  getRouter,
   navigate,
   setTopLevelNavigator,
   getCurrentRoute,
