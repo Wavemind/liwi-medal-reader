@@ -11,7 +11,6 @@ import ConfirmationView from '../../../components/ConfirmationView';
 
 export default class PatientProfile extends React.Component {
   state = {
-    propsToolTipVisible: false,
     patient: {
       birthdate: '01/01/1900',
       medicalCases: [],
@@ -56,14 +55,9 @@ export default class PatientProfile extends React.Component {
     await setMedicalCase(medicalCase);
   };
 
-  callBackClose = () => {
-    this.setState({
-      propsToolTipVisible: false,
-    });
-  };
 
   render() {
-    const { patient, algorithms, firstRender, propsToolTipVisible } = this.state;
+    const { patient, algorithms, firstRender } = this.state;
 
     const {
       navigation,
@@ -145,17 +139,12 @@ export default class PatientProfile extends React.Component {
                   )}
               </View>
               <View bottom-view>
-                <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={patient.id} />
                 <Button
                   onPress={() => {
-                    if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                      navigation.navigate('PatientUpsert', {
-                        idPatient: patient.id,
-                        newMedicalCase: true,
-                      });
-                    } else {
-                      this.setState({ propsToolTipVisible: true });
-                    }
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: patient.id,
+                      newMedicalCase: true,
+                    });
                   }}
                 >
                   <Text>{t('work_case:create')}</Text>
