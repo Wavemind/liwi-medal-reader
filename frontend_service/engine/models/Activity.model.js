@@ -13,12 +13,12 @@ export class ActivityModel {
     const { stage, nodes, user, medicalCaseId } = props;
 
     const session = await getItem('session');
-    this.isConnected = await getItem('isConnected');
     const deviceInfo = await getDeviceInformation();
     this.timestamp = new Date();
     this.stage = stage;
     this.nodes = JSON.stringify(nodes);
     this.user = user.toString();
+    this.synchronized_at = null;
     this.medicalCaseId = medicalCaseId.toString();
     this.mode = session.group.architecture;
     this.groupId = session.group.id.toString();
@@ -31,6 +31,7 @@ ActivityModel.schema = {
   primaryKey: 'id',
   properties: {
     id: 'string',
+    synchronized_at: 'date?',
     timestamp: 'date',
     stage: 'string',
     user: 'string',
