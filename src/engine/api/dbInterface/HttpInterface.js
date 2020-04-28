@@ -37,7 +37,8 @@ export default class HttpInterface {
   findById = async (model, id) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
     const header = await this._setHeaders();
-    return this._fetch(url, header);
+    const data = await this._fetch(url, header);
+    return this._initClasses(data, model);
   };
 
   /**
@@ -49,8 +50,7 @@ export default class HttpInterface {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
-    const test = await this._initClasses(data, model);
-    return test;
+    return this._initClasses(data, model);
   };
 
   /**
@@ -173,17 +173,31 @@ export default class HttpInterface {
     this.clinician = `${user?.first_name} ${user?.last_name}`;
   };
 
-  // TODO: try to find better way
+  /**
+   * Generate class
+   * @param { array|object } data - Data retrived from server
+   * @param { string } model - Class name
+   * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
+   * @private
+   */
   _initClasses = async (data, model) => {
     const object = [];
     if (model === 'Patient') {
-      data.forEach((item) => {
-        object.push(new PatientModel(item));
-      });
+      if (data instanceof Array) {
+        data.forEach((item) => {
+          object.push(new PatientModel(item));
+        });
+      } else {
+        return new PatientModel(data);
+      }
     } else {
-      data.forEach((item) => {
-        object.push(new MedicalCaseModel(item));
-      });
+      if (data instanceof Array) {
+        data.forEach((item) => {
+          object.push(new MedicalCaseModel(item));
+        });
+      } else {
+        return new MedicalCaseModel(data);
+      }
     }
     return object;
   };
