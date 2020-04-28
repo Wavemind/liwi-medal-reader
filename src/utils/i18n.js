@@ -91,6 +91,7 @@ i18n
         },
         qrcode: {
           scan: 'Scan the QR code',
+          new: 'You need to generate a new sticker',
           open: 'Right reading Qrcode and data. Opening Patient',
           new_sticker_notification: 'You need to give another sticker to the patient',
         },
