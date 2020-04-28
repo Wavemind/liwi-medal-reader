@@ -121,6 +121,13 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @private
    */
   _setAppStatus = async (status) => {
+    const { isConnected } = this.state;
+
+    // Connected again
+    if (status === true && isConnected === false) {
+      // need to test send data
+    }
+
     await setItem('isConnected', status);
     this.setState({ isConnected: status });
   };
