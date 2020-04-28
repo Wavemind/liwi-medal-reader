@@ -127,7 +127,7 @@ export default class HttpInterface {
         route = 'medical_cases';
         break;
       default:
-        console.log('route doesn\'t exist', model);
+        console.warn("route doesn't exist", model);
     }
 
     return route;
