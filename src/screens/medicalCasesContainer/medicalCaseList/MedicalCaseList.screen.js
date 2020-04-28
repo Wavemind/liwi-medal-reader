@@ -37,7 +37,6 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState({ loading: true });
 
     const medicalCases = await database.getAll('MedicalCase');
-    console.log(medicalCases);
 
     this.setState({
       medicalCases,
@@ -176,7 +175,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     } = this.props;
 
     const { medicalCases } = this.state;
-console.log(medicalCases);
+
     return medicalCases.length > 0 ? (
       [
         <List block key="medicalCaseList">
@@ -198,7 +197,7 @@ console.log(medicalCases);
 
                 if (route !== undefined) {
                   navigation.navigate(route, {
-                    idPatient: medicalCase.patient.id,
+                    idPatient: medicalCase.patient_id,
                     newMedicalCase: false,
                   });
                 }
