@@ -89,6 +89,11 @@ i18n
           emergency: 'Emergency assistance',
           back: 'Back to home',
         },
+        qrcode: {
+          scan: 'Scan the QR code',
+          open: 'Right reading Qrcode and data. Opening Patient',
+          new_sticker_notification: 'You need to give another sticker to the patient',
+        },
         summary: {
           title: 'Current summary',
           diagnoses: 'Diagnoses',
@@ -140,6 +145,7 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
+          in_creation: 'Demographic',
           medecines: 'Medicines',
           medecines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',
@@ -164,6 +170,7 @@ i18n
           devices: 'Medical devices',
           tests: 'Medical tests available',
           awake: 'Keep awake',
+          production: 'Serveur de production',
           app: 'Application',
         },
         work_case: {
@@ -197,6 +204,14 @@ i18n
           differential_diagnoses: 'Differential diagnoses',
         },
         patient_upsert: {
+          uid: 'UID',
+          studyID: 'Study ID',
+          groupID: 'Group ID',
+          secondUid: 'Second UID',
+          secondStudyID: 'Second study ID',
+          secondGroupID: 'Second group ID',
+          identifier: 'Identifier Data',
+          questions: 'Questions',
           title: 'Patient',
           save_and_wait: 'Save + add to waiting list',
           save_and_case: 'Save + create new case',
@@ -224,6 +239,8 @@ i18n
           gender: 'Gender *',
           male: 'Male',
           female: 'Female',
+          age_not_defined: 'Age is not defined',
+          reason: 'Reason fr changing facility',
         },
         login: {
           title: 'Login',
@@ -300,6 +317,7 @@ i18n
           case_in_progress: 'Case in progress',
           synchronize: 'Synchronize',
           patient_add: 'New patient',
+          patient_qr: 'Open patient by Qrcode',
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
@@ -320,6 +338,7 @@ i18n
           session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: "You don't have internet connection",
+          connection_successful: 'Connection successful',
           algorithm_updated: 'Your algorithm has been updated',
           get_group: 'Receiving group data and medical staff',
         },
@@ -388,6 +407,7 @@ i18n
           login: 'Connecter',
         },
         medical_case: {
+          in_creation: 'Demographic',
           managements: 'Managements',
           treatments: 'Treatments',
           final_diagnoses: 'Final diagnoses',

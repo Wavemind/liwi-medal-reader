@@ -1,7 +1,7 @@
 // @flow
 
 import { HealthCaresModel } from './HealthCares.model';
-import { healthCareType, nodesType } from '../../constants';
+import { medicationForms, nodeTypes } from '../../constants';
 import { store } from '../../store';
 import { roundSup } from '../../../src/utils/swissKnives';
 
@@ -40,7 +40,7 @@ export class DrugModel extends HealthCaresModel {
     this.is_antibiotic = is_antibiotic;
   }
 
- 
+
   /**
    * Set the right dose calculation for the treatment.
    *
@@ -70,8 +70,8 @@ export class DrugModel extends HealthCaresModel {
       recurrence = 24 / formulation.doses_per_day;
 
       switch (formulation.medication_form) {
-        case healthCareType.syrup:
-        case healthCareType.suspension:
+        case medicationForms.syrup:
+        case medicationForms.suspension:
           minDoseMg = roundSup((weightNode.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
           maxDoseMg = roundSup((weightNode.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
 
@@ -107,8 +107,8 @@ export class DrugModel extends HealthCaresModel {
             ...formulation,
           };
 
-        case healthCareType.capsule:
-        case healthCareType.tablet:
+        case medicationForms.capsule:
+        case medicationForms.tablet:
           // First calcule min and max dose (mg/Kg)
           minDoseMg = roundSup((weightNode.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
           maxDoseMg = roundSup((weightNode.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);

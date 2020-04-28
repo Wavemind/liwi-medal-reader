@@ -1,66 +1,70 @@
 // @flow
 
-import * as _ from 'lodash';
 import moment from 'moment';
-import { getArray, setItemFromArray } from '../../../src/engine/api/LocalStorage';
+import { v4 as uuidv4 } from 'uuid';
+import find from 'lodash/find';
+
 import { MedicalCaseModel } from './MedicalCase.model';
 import i18n from '../../../src/utils/i18n';
+import Database from '../../../src/engine/api/Database';
 
-interface PatientModelInterface {
-  id: number;
-  firstname: string;
-  lastname: string;
-  birthdate: string;
-  gender: string;
-  medicalCases: [MedicalCaseModel];
-}
-
-export class PatientModel implements PatientModelInterface {
-  constructor(props) {
-    this.create(props);
-  }
-
-  // Generate default patient value
-  create = (props = {}) => {
+export class PatientModel {
+  constructor(props = {}) {
     const {
-      id = null,
       firstname = __DEV__ ? 'John' : '',
       lastname = __DEV__ ? 'Doe' : '',
       birthdate = moment('1970-01-01T00:00:00.000').format(),
       gender = __DEV__ ? 'male' : '',
+      otherFacilityData = null,
       medicalCases = [],
       main_data_patient_id = null,
+      identifier = null,
+      reason = '',
     } = props;
 
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.birthdate = birthdate;
-    this.gender = gender;
-    this.medicalCases = medicalCases;
-    this.main_data_patient_id = main_data_patient_id;
+    if (this.id === undefined) {
+      this.id = uuidv4();
+      this.firstname = firstname;
+      this.lastname = lastname;
+      this.birthdate = birthdate;
+      this.reason = reason;
+      this.gender = gender;
+      this.uid = identifier.uid.toString();
+      this.studyID = identifier.studyID.toString();
+      this.groupID = identifier.groupID.toString();
 
-    if (id === null) {
-      this.setId();
-    } else {
-      this.id = id;
+      if (otherFacilityData !== null) {
+        this.secondUid = otherFacilityData.uid.toString();
+        this.secondStudyID = otherFacilityData.studyID.toString();
+        this.secondGroupID = otherFacilityData.groupID.toString();
+      } else {
+        this.secondUid = null;
+        this.secondStudyID = null;
+        this.secondGroupID = null;
+      }
+      this.medicalCases = medicalCases;
+      this.main_data_patient_id = main_data_patient_id;
     }
-  };
-
-  // uniqueId incremented
-  setId = async () => {
-    const patients = await this.getPatients();
-
-    let maxId = _.maxBy(patients, 'id');
-    if (patients.length === 0) {
-      maxId = { id: 0 };
-    }
-    this.id = maxId.id + 1;
-  };
+  }
 
   // Create patient and push it in local storage
   save = async () => {
-    const flatten = { ...this };
-    await setItemFromArray('patients', flatten, flatten.id);
+    const medicalCase = this.medicalCases[this.medicalCases.length - 1];
+    const database = await new Database();
+    this.json = JSON.stringify
+
+    return database.insert('Patient', {
+      ...this,
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
+    });
+  };
+
+  addMedicalCase = async (medicalCase) => {
+    medicalCase.patient_id = this.id;
+    medicalCase.json = JSON.stringify(medicalCase);
+    const database = await new Database();
+    await database.push('Patient', this.id, 'medicalCases', medicalCase);
+    return true;
   };
 
   // Validate input
@@ -86,8 +90,81 @@ export class PatientModel implements PatientModelInterface {
     return errors;
   };
 
-  // Get all patients in store
-  getPatients = async () => {
-    return await getArray('patients');
+  /**
+   * Defines if the patient has at least one medical case on going
+   * @returns Boolean
+   */
+  hasCaseInProgress = () => {
+    this.medicalCases.map((medicalCase) => {
+      if (medicalCase.status !== medicalCaseStatus.close) {
+        return true;
+      }
+    });
+    return false;
+  };
+
+  /**
+   * @return string: return the full name patient
+   */
+  fullName = () => {
+    return `${this.firstname} ${this.lastname}`;
+  };
+
+  /**
+   * @return string: return the birthdate for the patient
+   */
+  printBirthdate = () => {
+    // Filter medicalCase with date not null
+    const medicalCaseWithBirthDate = this.medicalCases.filter((e) => {
+      const date = find(e.nodes, { reference: 1, category: 'demographic', stage: 'registration' });
+      if (date !== undefined) {
+        return date.value !== null;
+      }
+    });
+
+    // Sort medical cases by updated_at for get the last
+    const medicalCase = medicalCaseWithBirthDate.sort((a, b) => {
+      const dateA = moment(a.updated_at);
+      const dateB = moment(b.updated_at);
+      return dateB.diff(dateA);
+    })[0];
+
+    // Medical case match
+    if (medicalCase) {
+      // Parse date
+      return moment(
+        find(medicalCase.nodes, {
+          reference: 1,
+          category: 'demographic',
+          stage: 'registration',
+        }).value
+      ).format('ll');
+    }
+    return i18n.t('patient:age_not_defined');
+  };
+
+  wasInOtherFacility = () => {
+    return this.secondUid !== null;
   };
 }
+
+PatientModel.schema = {
+  name: 'Patient',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    firstname: 'string',
+    lastname: 'string',
+    birthdate: 'date',
+    gender: 'string',
+    uid: 'string',
+    studyID: 'string',
+    groupID: 'string',
+    secondUid: 'string?',
+    secondStudyID: 'string?',
+    secondGroupID: 'string?',
+    reason: 'string',
+    medicalCases: 'MedicalCase[]',
+    main_data_patient_id: { type: 'int', optional: true },
+  },
+};

@@ -38,7 +38,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
         <View style={styles.patientInfo}>
           <View flex-container-fluid>
             <Text size-auto>
-              {patient.firstname} {patient.lastname}
+              {patient.fullName()}
             </Text>
             <Text size-auto>{patient.gender}</Text>
             <Text size-auto>{stringAge}</Text>
