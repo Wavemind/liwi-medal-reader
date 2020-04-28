@@ -10,7 +10,7 @@ import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 
-interface NodeInterface { }
+interface NodeInterface {}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {

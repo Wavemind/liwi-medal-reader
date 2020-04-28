@@ -30,6 +30,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
       navigation,
       callBackClose,
       medicalCase,
+      qrcode,
     } = this.props;
 
     return (
@@ -51,7 +52,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
                     }
 
                     this.setState({ toolTipVisible: false });
-                    callBackClose();
+                    callBackClose(true);
                   }}
                   style={styles.buttonPrev}
                 >
@@ -63,11 +64,13 @@ export default class ConfirmationView extends React.Component<Props, State> {
                   success
                   onPress={() => {
                     this.setState({ toolTipVisible: false });
-                    callBackClose();
-                    navigation.navigate(nextRoute, {
-                      idPatient,
-                      newMedicalCase: true,
-                    });
+                    callBackClose(false);
+                    if (qrcode === false) {
+                      navigation.navigate(nextRoute, {
+                        idPatient,
+                        newMedicalCase: true,
+                      });
+                    }
                   }}
                   style={styles.buttonNext}
                 >
@@ -105,7 +108,7 @@ export default class ConfirmationView extends React.Component<Props, State> {
 
     if (!insideContent) {
       this.setState({ toolTipVisible: false });
-      callBackClose();
+      callBackClose(true);
     }
   };
 

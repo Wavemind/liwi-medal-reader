@@ -37,7 +37,6 @@ export default class PatientList extends React.Component {
 
     const patients = await database.getAll('Patient');
     const algorithms = await getItems('algorithms');
-
     this.setState({
       algorithms,
       patients,
@@ -74,10 +73,10 @@ export default class PatientList extends React.Component {
         ))}
       </List>
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('patient_list:no_patients')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('patient_list:no_patients')}</Text>
+        </View>
+      );
   };
 
   callBackClose = () => {
@@ -106,8 +105,7 @@ export default class PatientList extends React.Component {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}
-            />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"

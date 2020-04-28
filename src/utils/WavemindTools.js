@@ -20,7 +20,7 @@ export default class WavemindTools extends Component {
 
     return (
       <View>
-        <Fab active={active} direction="up" containerStyle={{}} style={{ backgroundColor: '#ffb21d' }} position="bottomRight" onPress={() => this.setState({ active: !active })}>
+        <Fab active={active} direction="up" containerStyle={{}} style={{ backgroundColor: '#ffb21d', margin: 20 }} position="bottomRight" onPress={() => this.setState({ active: !active })}>
           <Icon name="developer-mode" type="MaterialIcons" />
           {active
             ? [

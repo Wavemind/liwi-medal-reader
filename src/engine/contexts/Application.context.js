@@ -156,7 +156,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       {
         enableHighAccuracy,
         timeout: 5000,
-      },
+      }
     );
   };
 
@@ -391,5 +391,4 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) =>
-  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
