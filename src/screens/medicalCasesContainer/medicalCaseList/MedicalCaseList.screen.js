@@ -36,7 +36,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     const { app: { database } } = this.props;
     this.setState({ loading: true });
 
-    const medicalCases = database.getAll('MedicalCase');
+    const medicalCases = await database.getAll('MedicalCase');
 
     this.setState({
       medicalCases,

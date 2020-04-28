@@ -66,6 +66,14 @@ export default class Drawer extends Component<Props, State> {
 
     const navigate = (name, initialPage) => {
       if (areMedicalCaseInredux) {
+        if (name === 'PatientUpsert') {
+          navigation.navigate({
+            routeName: name,
+            params: { initialPage, idPatient: medicalCase?.patient?.id, newMedicalCase: false },
+            key: name + initialPage,
+          });
+        }
+
         navigation.navigate({
           routeName: name,
           params: { initialPage },
