@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
-import { Button, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
+import { Button, Text, View, Col } from 'native-base';
+import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
@@ -16,9 +16,8 @@ import { styles } from './PatientUpsert.style';
 import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { Suspense } from 'react';
-import { Col } from 'native-base';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
+import { validatorNavigate } from '../../../engine/navigation/CustomNavigator.navigation';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -30,7 +29,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient: null,
     loading: true,
     algorithmReady: false,
-    otherFacilityData: null,
+    otherFacility: null,
   };
 
   initializeComponent = async () => {
@@ -44,12 +43,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
-    const otherFacilityData = navigation.getParam('otherFacilityData'); // Object
-    const identifier = navigation.getParam('identifier'); // Object
+    const otherFacility = navigation.getParam('otherFacility'); // Object
+    const facility = navigation.getParam('facility'); // Object
     const algorithms = await getItems('algorithms');
 
     if (patientId === null) {
-      patient = new PatientModel({ otherFacilityData, identifier });
+      patient = new PatientModel({ otherFacility, facility });
     } else {
       patient = await database.findBy('Patient', patientId);
     }
@@ -90,6 +89,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       navigation,
       medicalCase,
       updateMedicalCaseProperty,
+      updateModalFromRedux,
       app: { database },
     } = this.props;
     const patientId = navigation.getParam('idPatient');
@@ -97,35 +97,39 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     await this.setState({ loading: true });
 
-    updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
+    const validator = validatorNavigate({ type: "Navigation/NAVIGATE", routeName: newRoute, params: { initialPage: 0 }, key: "Triage" });
 
-    if (patientId !== null) {
-      const patient = await database.findBy('Patient', patientId);
-      isSaved = patient.addMedicalCase(medicalCase);
+    if (validator.stepToBeFill[0].isActionValid === false) {
+      updateModalFromRedux(null, validator);
     } else {
-      isSaved = await this.savePatient();
+      updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
+      if (patientId !== null || patientId === undefined) {
+        const patient = await database.findBy('Patient', patientId);
+        isSaved = patient.addMedicalCase(medicalCase);
+      } else {
+        isSaved = await this.savePatient();
+      }
+      if (isSaved) {
+        const currentRoute = NavigationService.getCurrentRoute();
+        // Replace the nextRoute navigation at the current index
+        navigation.dispatch(
+          StackActions.replace({
+            index: currentRoute.index,
+            newKey: newRoute,
+            routeName: newRoute,
+            params: {
+              initialPage: 0,
+            },
+            actions: [
+              NavigationActions.navigate({
+                routeName: newRoute,
+              }),
+            ],
+          }),
+        );
+      }
     }
-    if (isSaved) {
-      const currentRoute = NavigationService.getCurrentRoute();
-      // Replace the nextRoute navigation at the current index
-      navigation.dispatch(
-        StackActions.replace({
-          index: currentRoute.index,
-          newKey: newRoute,
-          routeName: newRoute,
-          params: {
-            initialPage: 0,
-          },
-          actions: [
-            NavigationActions.navigate({
-              routeName: newRoute,
-            }),
-          ],
-        })
-      );
-
-      await this.setState({ loading: false });
-    }
+    await this.setState({ loading: false });
   };
 
   /**
@@ -161,11 +165,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
       return null;
     }
 
-    const { uid, studyID, groupID, secondUid, secondStudyID, secondGroupID } = patient;
+    const { uid, studyId, groupId, otherUid, otherStudyId, otherGroupId } = patient;
 
     return (
       <View>
-        <Text customSubTitle>{t('patient_upsert:identifier')}</Text>
+        <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
           <Text style={styles.identifierText} right>
@@ -173,37 +177,37 @@ export default class PatientUpsert extends React.Component<Props, State> {
           </Text>
         </View>
         <View w50>
-          <Text style={styles.identifierText}>{t('patient_upsert:studyID')}</Text>
+          <Text style={styles.identifierText}>{t('patient_upsert:studyId')}</Text>
           <Text style={styles.identifierText} right>
-            {studyID}
+            {studyId}
           </Text>
         </View>
 
         <View w50>
-          <Text style={styles.identifierText}>{t('patient_upsert:groupID')}</Text>
+          <Text style={styles.identifierText}>{t('patient_upsert:groupId')}</Text>
           <Text style={styles.identifierText} right>
-            {groupID}
+            {groupId}
           </Text>
         </View>
 
         {patient.wasInOtherFacility() && (
           <>
             <View w50>
-              <Text style={styles.identifierText}>{t('patient_upsert:secondUid')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:otherUid')}</Text>
               <Text style={styles.identifierText} right>
-                {secondUid}
+                {otherUid}
               </Text>
             </View>
             <View w50>
-              <Text style={styles.identifierText}>{t('patient_upsert:secondStudyID')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:otherStudyId')}</Text>
               <Text style={styles.identifierText} right>
-                {secondStudyID}
+                {otherStudyId}
               </Text>
             </View>
             <View w50>
-              <Text style={styles.identifierText}>{t('patient_upsert:secondGroupID')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:otherGroupId')}</Text>
               <Text style={styles.identifierText} right>
-                {secondGroupID}
+                {otherGroupId}
               </Text>
             </View>
           </>
@@ -236,7 +240,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         ],
         'OR',
         'array',
-        false
+        false,
       );
     }
 
@@ -244,7 +248,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData(
         'patientupsert',
         'custom',
-        extraQuestions.map(({ id }) => id)
+        extraQuestions.map(({ id }) => id),
       );
     }
 
@@ -269,7 +273,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
+          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
+                      testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
               <LiwiLoader />
