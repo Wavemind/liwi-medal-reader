@@ -39,7 +39,6 @@ export default class QrCodePatient extends React.Component<Props, State> {
       const session = await getItem('session');
       const sameFacility = session?.group?.id === json.groupId;
       const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'otherUid');
-
       if (patient !== null) {
         navigation.navigate('PatientProfile', {
           id: patient.id,
