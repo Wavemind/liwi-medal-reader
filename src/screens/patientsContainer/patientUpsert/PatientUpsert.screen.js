@@ -18,6 +18,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { Suspense } from 'react';
 import { Col } from 'native-base';
+import CustomInput from '../../../components/InputContainer/CustomInput/index';
 
 type Props = NavigationScreenProps & {};
 type State = {};
