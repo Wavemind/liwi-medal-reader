@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => { },
+  cacheUserLanguage: () => { },
 };
 
 i18n
@@ -128,7 +128,7 @@ i18n
           unavailable: 'Unavailable',
         },
         menu: {
-          patientUpsert: 'Patient Data',
+          patientUpsert: 'Registration',
           triage: 'Triage',
           first_look_assessments: 'First look assessment',
           basic_measurements: 'Basic measurements',
