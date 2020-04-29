@@ -44,6 +44,41 @@ export default class PatientList extends React.Component {
     });
   };
 
+  _renderPatient = (patient) => {
+    const {
+      navigation,
+      app: { t },
+    } = this.props;
+
+    let first_top_right_question = null;
+    let second_top_right_question = null;
+
+    patient.medicalCases.map((mc) => {
+      if (mc.nodes[mc.first_top_right_question_id].value !== null && mc.nodes[mc.second_top_right_question_id].value !== null) {
+        first_top_right_question = mc.nodes[mc.first_top_right_question_id].value;
+        second_top_right_question = mc.nodes[mc.second_top_right_question_id].value;
+      }
+    });
+
+    return (
+      <ListItem
+        rounded
+        block
+        key={`${patient.id}_patient_list`}
+        spaced
+        onPress={() =>
+          navigation.navigate('PatientProfile', {
+            id: patient.id,
+          })
+        }
+      >
+        <View w50>
+          <Text>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+        </View>
+      </ListItem>
+    );
+  };
+
   _renderPatients = () => {
     const {
       navigation,
@@ -54,29 +89,13 @@ export default class PatientList extends React.Component {
 
     return patients.length > 0 ? (
       <List block key="patientList">
-        {patients.map((patient) => (
-          <ListItem
-            rounded
-            block
-            key={`${patient.id}_patient_list`}
-            spaced
-            onPress={() =>
-              navigation.navigate('PatientProfile', {
-                id: patient.id,
-              })
-            }
-          >
-            <View w50>
-              <Text>{patient.id}</Text>
-            </View>
-          </ListItem>
-        ))}
+        {patients.map((patient) => this._renderPatient(patient))}
       </List>
     ) : (
-        <View padding-auto margin-auto>
-          <Text not-available>{t('patient_list:no_patients')}</Text>
-        </View>
-      );
+      <View padding-auto margin-auto>
+        <Text not-available>{t('patient_list:no_patients')}</Text>
+      </View>
+    );
   };
 
   callBackClose = () => {
@@ -134,11 +153,11 @@ export default class PatientList extends React.Component {
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
-            <Button center rounded light onPress={this.orderByFirstName}>
+            <Button disabled center rounded light onPress={this.orderByFirstName}>
               {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:name')}</Text>
             </Button>
-            <Button center rounded light onPress={this.orderByLastName}>
+            <Button disabled center rounded light onPress={this.orderByLastName}>
               {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:surname')}</Text>
             </Button>

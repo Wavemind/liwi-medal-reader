@@ -421,8 +421,6 @@ class MedicalCaseReducer extends ReducerClass {
     state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
     state.nodes[index].updateAnswer(value);
 
-
-
     return {
       ...state,
       nodes: new NodesModel(state.nodes),
