@@ -95,7 +95,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     await this.setState({ loading: true });
 
-    const validator = validatorNavigate({ type: "Navigation/NAVIGATE", routeName: newRoute, params: { initialPage: 0 }, key: "Triage" });
+    const validator = validatorNavigate({ type: "Navigation/NAVIGATE", routeName: 'Triage', params: { initialPage: 0 }, key: "Triage" });
 
     if (validator.stepToBeFill[0].isActionValid === false) {
       updateModalFromRedux(null, validator);
@@ -103,7 +103,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
       if (patientId !== null || patientId === undefined) {
         const patient = await database.findBy('Patient', patientId);
-        isSaved = patien.addMedicalCase(medicalCase);
+        isSaved = patient.addMedicalCase(medicalCase);
         updateMedicalCaseProperty('patient_id', patient.id)
       } else {
         isSaved = await this.savePatient();
@@ -149,7 +149,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   savePatient = async () => {
     const { patient } = this.state;
-    const { medicalCase } = this.props;
+    const { medicalCase, updateMedicalCaseProperty } = this.props;
 
     // Create patient if there are no errors
     patient.medicalCases.push(medicalCase);
