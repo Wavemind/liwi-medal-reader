@@ -17,6 +17,7 @@ import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
+import { validatorNavigate } from '../../../engine/navigation/CustomNavigator.navigation';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -86,6 +87,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       navigation,
       medicalCase,
       updateMedicalCaseProperty,
+      updateModalFromRedux,
       app: { database },
     } = this.props;
     const patientId = navigation.getParam('idPatient');
@@ -93,35 +95,39 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     await this.setState({ loading: true });
 
-    updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
+    const validator = validatorNavigate({ type: "Navigation/NAVIGATE", routeName: newRoute, params: { initialPage: 0 }, key: "Triage" });
 
-    if (patientId !== null) {
-      const patient = await database.findBy('Patient', patientId);
-      isSaved = patient.addMedicalCase(medicalCase);
+    if (validator.stepToBeFill[0].isActionValid === false) {
+      updateModalFromRedux(null, validator);
     } else {
-      isSaved = await this.savePatient();
+      updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
+      if (patientId !== null || patientId === undefined) {
+        const patient = await database.findBy('Patient', patientId);
+        isSaved = patient.addMedicalCase(medicalCase);
+      } else {
+        isSaved = await this.savePatient();
+      }
+      if (isSaved) {
+        const currentRoute = NavigationService.getCurrentRoute();
+        // Replace the nextRoute navigation at the current index
+        navigation.dispatch(
+          StackActions.replace({
+            index: currentRoute.index,
+            newKey: newRoute,
+            routeName: newRoute,
+            params: {
+              initialPage: 0,
+            },
+            actions: [
+              NavigationActions.navigate({
+                routeName: newRoute,
+              }),
+            ],
+          }),
+        );
+      }
     }
-    if (isSaved) {
-      const currentRoute = NavigationService.getCurrentRoute();
-      // Replace the nextRoute navigation at the current index
-      navigation.dispatch(
-        StackActions.replace({
-          index: currentRoute.index,
-          newKey: newRoute,
-          routeName: newRoute,
-          params: {
-            initialPage: 0,
-          },
-          actions: [
-            NavigationActions.navigate({
-              routeName: newRoute,
-            }),
-          ],
-        }),
-      );
-
-      await this.setState({ loading: false });
-    }
+    await this.setState({ loading: false });
   };
 
   /**
@@ -152,7 +158,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
   renderIdentifierData = () => {
     const { patient } = this.state;
     const { t } = this.props.app;
-    console.log(patient);
     if (patient === null) {
       return null;
     }
@@ -265,57 +270,57 @@ export default class PatientUpsert extends React.Component<Props, State> {
       >
         {[
           <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
-                      testID="PatientUpsertScreen">
+            testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
-              <LiwiLoader/>
+              <LiwiLoader />
             ) : (
-              <>
-                <View>
-                  <Col>
-                    {this.renderIdentifierData()}
-                    {patient.wasInOtherFacility() && (
-                      <CustomInput
-                        init={patient.reason}
-                        label={t('patient:reason')}
-                        change={updatePatientValue}
-                        index="reason"
-                        iconName="sign-out"
-                        iconType="FontAwesome"
-                        error={errors.reason}
-                        autoCapitalize="sentences"
-                      />
-                    )}
-                  </Col>
-                </View>
-                <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-                <Questions questions={extraQuestions}/>
-                <View bottom-view>
-                  {algorithmReady ? (
-                    !loading ? (
-                      <>
-                        {newMedicalCase && (
-                          <View columns>
-                            <Button light split onPress={() => save('PatientList')}>
-                              <Text>{t('patient_upsert:save_and_wait')}</Text>
-                            </Button>
-                            <Button success split onPress={() => save('Triage')}>
-                              <Text>{t('patient_upsert:save_and_case')}</Text>
-                            </Button>
-                          </View>
-                        )}
-                      </>
+                <>
+                  <View>
+                    <Col>
+                      {this.renderIdentifierData()}
+                      {patient.wasInOtherFacility() && (
+                        <CustomInput
+                          init={patient.reason}
+                          label={t('patient:reason')}
+                          change={updatePatientValue}
+                          index="reason"
+                          iconName="sign-out"
+                          iconType="FontAwesome"
+                          error={errors.reason}
+                          autoCapitalize="sentences"
+                        />
+                      )}
+                    </Col>
+                  </View>
+                  <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+                  <Questions questions={extraQuestions} />
+                  <View bottom-view>
+                    {algorithmReady ? (
+                      !loading ? (
+                        <>
+                          {newMedicalCase && (
+                            <View columns>
+                              <Button light split onPress={() => save('PatientList')}>
+                                <Text>{t('patient_upsert:save_and_wait')}</Text>
+                              </Button>
+                              <Button success split onPress={() => save('Triage')}>
+                                <Text>{t('patient_upsert:save_and_case')}</Text>
+                              </Button>
+                            </View>
+                          )}
+                        </>
+                      ) : (
+                          <LiwiLoader />
+                        )
                     ) : (
-                      <LiwiLoader/>
-                    )
-                  ) : (
-                    <View columns>
-                      <Text>{t('work_case:no_algorithm')}</Text>
-                    </View>
-                  )}
-                </View>
-              </>
-            )}
+                        <View columns>
+                          <Text>{t('work_case:no_algorithm')}</Text>
+                        </View>
+                      )}
+                  </View>
+                </>
+              )}
           </ScrollView>,
         ]}
       </Stepper>
