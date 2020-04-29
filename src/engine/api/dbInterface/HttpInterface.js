@@ -40,7 +40,10 @@ export default class HttpInterface {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/find_by?field=${field}&value=${value}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
-    return this._initClasses(data, model);
+    if (data !== null) {
+      return this._initClasses(data, model);
+    }
+    return data;
   };
 
   /**
@@ -52,7 +55,10 @@ export default class HttpInterface {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
-    return this._initClasses(data, model);
+    if (data !== null) {
+      return this._initClasses(data, model);
+    }
+    return data;
   };
 
   /**
@@ -103,13 +109,12 @@ export default class HttpInterface {
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
     const result = await httpRequest.json();
-
     if (httpRequest.status === 200) {
       return result;
     }
 
     handleHttpError(result);
-    return [];
+    return null;
   };
 
   /**
@@ -129,7 +134,7 @@ export default class HttpInterface {
         route = 'medical_cases';
         break;
       default:
-        console.warn("route doesn't exist", model);
+        console.warn('route doesn\'t exist', model);
     }
 
     return route;
@@ -192,14 +197,12 @@ export default class HttpInterface {
       } else {
         return new PatientModel(data);
       }
+    } else if (data instanceof Array) {
+      data.forEach((item) => {
+        object.push(new MedicalCaseModel(item));
+      });
     } else {
-      if (data instanceof Array) {
-        data.forEach((item) => {
-          object.push(new MedicalCaseModel(item));
-        });
-      } else {
-        return new MedicalCaseModel(data);
-      }
+      return new MedicalCaseModel(data);
     }
     return object;
   };
