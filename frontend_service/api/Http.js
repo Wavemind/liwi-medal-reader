@@ -8,7 +8,6 @@ import { store } from '../store';
 import { updateModalFromRedux } from '../actions/creators.actions';
 import i18n from '../../src/utils/i18n';
 import { liwiColors } from '../../src/utils/constants';
-import alainJson from '../api/alain.json';
 /**
  * Https GET request
  *  @params [String] params
@@ -131,8 +130,7 @@ export const fetchAlgorithms = async () => {
     if (credentials !== null && credentials.group !== null) {
       console.warn('fetch algorithm');
 
-      // const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.mac_address}`);
-      const serverAlgorithm = alainJson;
+      const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.mac_address}`);
 
       const localAlgorithms = await getItems('algorithms');
 
