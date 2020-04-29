@@ -25,7 +25,6 @@ export default class HttpInterface {
    */
   insert = async (model, object) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
-    console.log('insert', object);
     const header = await this._setHeaders('POST', object);
     return this._fetch(url, header);
   };
@@ -103,9 +102,7 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
-    console.log(httpRequest)
     const result = await httpRequest.json();
-    console.log(result)
 
     if (httpRequest.status === 200) {
       return result;

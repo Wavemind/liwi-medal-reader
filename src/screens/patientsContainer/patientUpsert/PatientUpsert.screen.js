@@ -152,7 +152,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   renderIdentifierData = () => {
     const { patient } = this.state;
     const { t } = this.props.app;
-    console.log(patient);
+
     if (patient === null) {
       return null;
     }
