@@ -158,6 +158,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   renderIdentifierData = () => {
     const { patient } = this.state;
     const { t } = this.props.app;
+
     if (patient === null) {
       return null;
     }
@@ -270,7 +271,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       >
         {[
           <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
-            testID="PatientUpsertScreen">
+                      testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
               <LiwiLoader />

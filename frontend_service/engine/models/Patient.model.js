@@ -15,8 +15,6 @@ export class PatientModel {
       reason = '',
     } = props;
 
-
-
     if (this.id === undefined) {
       if (otherFacility !== null) {
         this.otherUid = otherFacility?.uid?.toString();
@@ -39,6 +37,7 @@ export class PatientModel {
 
       if (id !== undefined) {
         this.id = id;
+        this.medicalCases = [];
         medicalCases.forEach((medicalCase) => {
           this.medicalCases.push(new MedicalCaseModel(medicalCase));
         });
@@ -76,6 +75,10 @@ export class PatientModel {
     return true;
   };
 
+  /**
+   * Test if patient was already registered in an another facility
+   * @returns {boolean}
+   */
   wasInOtherFacility = () => {
     return this.otherUid !== null;
   };
