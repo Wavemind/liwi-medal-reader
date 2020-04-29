@@ -101,6 +101,9 @@ function setParamsAge(name) {
   const { nodes, left_top_question_id, first_top_right_question_id, second_top_right_question_id } = state$;
 
   const showValue = (node) => {
+    if (node === undefined) {
+      return '';
+    }
     if (node.value_format === valueFormats.date && node.value !== null) {
       return `| ${moment(node.value).format('L')}`;
     }
