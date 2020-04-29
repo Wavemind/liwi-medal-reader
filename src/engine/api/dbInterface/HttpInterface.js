@@ -10,6 +10,7 @@ export default class HttpInterface {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
       this.localDataIp = session.group.local_data_ip;
+      this.localDataIp = 'http://192.168.111.1:3636';
       this.mainDataIp = session.group.main_data_ip;
       this.macAddress = deviceInfo.mac_address;
       await this._setClinician();
@@ -24,6 +25,7 @@ export default class HttpInterface {
    */
   insert = async (model, object) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
+    console.log('insert', object);
     const header = await this._setHeaders('POST', object);
     return this._fetch(url, header);
   };
@@ -31,11 +33,12 @@ export default class HttpInterface {
   /**
    * Returns the entry of a specific model with an id
    * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The id of the object we want
+   * @param { string } value - Value to find in database row
+   * @param { string } field - database column
    * @returns { Collection } - The wanted object
    */
   findBy = async (model, value, field) => {
-    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/searchBy?field=${field}&value=${value}`;
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/find_by?field=${field}&value=${value}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
     return this._initClasses(data, model);
@@ -100,7 +103,9 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+    console.log(httpRequest)
     const result = await httpRequest.json();
+    console.log(result)
 
     if (httpRequest.status === 200) {
       return result;

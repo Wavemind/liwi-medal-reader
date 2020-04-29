@@ -39,7 +39,7 @@ export default class PatientProfile extends React.Component {
     const id = navigation.getParam('id');
 
     const patient = await database.findBy('Patient', id);
-
+console.log(patient);
     const algorithms = await getItems('algorithms');
     this.setState({
       patient,
@@ -53,7 +53,6 @@ export default class PatientProfile extends React.Component {
     const { setMedicalCase } = this.props;
     await setMedicalCase(medicalCase);
   };
-
 
   render() {
     const { patient, algorithms, firstRender } = this.state;

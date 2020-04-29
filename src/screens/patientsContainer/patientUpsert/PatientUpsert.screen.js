@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
-import { Button, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
+import { Button, Text, View, Col } from 'native-base';
+import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
@@ -16,8 +16,6 @@ import { styles } from './PatientUpsert.style';
 import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { Suspense } from 'react';
-import { Col } from 'native-base';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 
 type Props = NavigationScreenProps & {};
@@ -30,7 +28,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient: null,
     loading: true,
     algorithmReady: false,
-    otherFacilityData: null,
+    otherFacility: null,
   };
 
   initializeComponent = async () => {
@@ -44,12 +42,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     const patientId = navigation.getParam('idPatient');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
-    const otherFacilityData = navigation.getParam('otherFacilityData'); // Object
-    const identifier = navigation.getParam('identifier'); // Object
+    const otherFacility = navigation.getParam('otherFacility'); // Object
+    const facility = navigation.getParam('facility'); // Object
     const algorithms = await getItems('algorithms');
 
     if (patientId === null) {
-      patient = new PatientModel({ otherFacilityData, identifier });
+      patient = new PatientModel({ otherFacility, facility });
     } else {
       patient = await database.findBy('Patient', patientId);
     }
@@ -119,7 +117,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
               routeName: newRoute,
             }),
           ],
-        })
+        }),
       );
 
       await this.setState({ loading: false });
@@ -154,16 +152,16 @@ export default class PatientUpsert extends React.Component<Props, State> {
   renderIdentifierData = () => {
     const { patient } = this.state;
     const { t } = this.props.app;
-
+    console.log(patient);
     if (patient === null) {
       return null;
     }
 
-    const { uid, studyID, groupID, secondUid, secondStudyID, secondGroupID } = patient;
+    const { uid, studyId, groupId, otherUid, otherStudyId, otherGroupId } = patient;
 
     return (
       <View>
-        <Text customSubTitle>{t('patient_upsert:identifier')}</Text>
+        <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
           <Text style={styles.identifierText} right>
@@ -171,37 +169,37 @@ export default class PatientUpsert extends React.Component<Props, State> {
           </Text>
         </View>
         <View w50>
-          <Text style={styles.identifierText}>{t('patient_upsert:studyID')}</Text>
+          <Text style={styles.identifierText}>{t('patient_upsert:studyId')}</Text>
           <Text style={styles.identifierText} right>
-            {studyID}
+            {studyId}
           </Text>
         </View>
 
         <View w50>
-          <Text style={styles.identifierText}>{t('patient_upsert:groupID')}</Text>
+          <Text style={styles.identifierText}>{t('patient_upsert:groupId')}</Text>
           <Text style={styles.identifierText} right>
-            {groupID}
+            {groupId}
           </Text>
         </View>
 
         {patient.wasInOtherFacility() && (
           <>
             <View w50>
-              <Text style={styles.identifierText}>{t('patient_upsert:secondUid')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:otherUid')}</Text>
               <Text style={styles.identifierText} right>
-                {secondUid}
+                {otherUid}
               </Text>
             </View>
             <View w50>
-              <Text style={styles.identifierText}>{t('patient_upsert:secondStudyID')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:otherStudyId')}</Text>
               <Text style={styles.identifierText} right>
-                {secondStudyID}
+                {otherStudyId}
               </Text>
             </View>
             <View w50>
-              <Text style={styles.identifierText}>{t('patient_upsert:secondGroupID')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:otherGroupId')}</Text>
               <Text style={styles.identifierText} right>
-                {secondGroupID}
+                {otherGroupId}
               </Text>
             </View>
           </>
@@ -233,7 +231,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         ],
         'OR',
         'array',
-        false
+        false,
       );
     }
 
@@ -241,7 +239,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData(
         'patientupsert',
         'custom',
-        extraQuestions.map(({ id }) => id)
+        extraQuestions.map(({ id }) => id),
       );
     }
 
@@ -266,57 +264,58 @@ export default class PatientUpsert extends React.Component<Props, State> {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
+          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
+                      testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
-              <LiwiLoader />
+              <LiwiLoader/>
             ) : (
-                <>
-                  <View>
-                    <Col>
-                      {this.renderIdentifierData()}
-                      {patient.wasInOtherFacility() && (
-                        <CustomInput
-                          init={patient.reason}
-                          label={t('patient:reason')}
-                          change={updatePatientValue}
-                          index="reason"
-                          iconName="sign-out"
-                          iconType="FontAwesome"
-                          error={errors.reason}
-                          autoCapitalize="sentences"
-                        />
-                      )}
-                    </Col>
-                  </View>
-                  <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-                  <Questions questions={extraQuestions} />
-                  <View bottom-view>
-                    {algorithmReady ? (
-                      !loading ? (
-                        <>
-                          {newMedicalCase && (
-                            <View columns>
-                              <Button light split onPress={() => save('PatientList')}>
-                                <Text>{t('patient_upsert:save_and_wait')}</Text>
-                              </Button>
-                              <Button success split onPress={() => save('Triage')}>
-                                <Text>{t('patient_upsert:save_and_case')}</Text>
-                              </Button>
-                            </View>
-                          )}
-                        </>
-                      ) : (
-                          <LiwiLoader />
-                        )
+              <>
+                <View>
+                  <Col>
+                    {this.renderIdentifierData()}
+                    {patient.wasInOtherFacility() && (
+                      <CustomInput
+                        init={patient.reason}
+                        label={t('patient:reason')}
+                        change={updatePatientValue}
+                        index="reason"
+                        iconName="sign-out"
+                        iconType="FontAwesome"
+                        error={errors.reason}
+                        autoCapitalize="sentences"
+                      />
+                    )}
+                  </Col>
+                </View>
+                <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+                <Questions questions={extraQuestions}/>
+                <View bottom-view>
+                  {algorithmReady ? (
+                    !loading ? (
+                      <>
+                        {newMedicalCase && (
+                          <View columns>
+                            <Button light split onPress={() => save('PatientList')}>
+                              <Text>{t('patient_upsert:save_and_wait')}</Text>
+                            </Button>
+                            <Button success split onPress={() => save('Triage')}>
+                              <Text>{t('patient_upsert:save_and_case')}</Text>
+                            </Button>
+                          </View>
+                        )}
+                      </>
                     ) : (
-                        <View columns>
-                          <Text>{t('work_case:no_algorithm')}</Text>
-                        </View>
-                      )}
-                  </View>
-                </>
-              )}
+                      <LiwiLoader/>
+                    )
+                  ) : (
+                    <View columns>
+                      <Text>{t('work_case:no_algorithm')}</Text>
+                    </View>
+                  )}
+                </View>
+              </>
+            )}
           </ScrollView>,
         ]}
       </Stepper>

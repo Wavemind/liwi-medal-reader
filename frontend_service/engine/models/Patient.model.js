@@ -10,40 +10,38 @@ export class PatientModel {
       id,
       medicalCases = [],
       main_data_patient_id = null,
-      otherFacilityData = null,
-      identifier = null,
+      otherFacility = null,
+      facility = null,
       reason = '',
     } = props;
+
+    if (otherFacility !== null) {
+      this.otherUid = otherFacility?.uid?.toString();
+      this.otherStudyId = otherFacility?.studyId?.toString();
+      this.otherGroupId = otherFacility?.groupId?.toString();
+    } else {
+      this.otherUid = null;
+      this.otherStudyId = null;
+      this.otherGroupId = null;
+    }
+
+    this.main_data_patient_id = main_data_patient_id;
+
+    this.uid = facility?.uid?.toString();
+    this.studyId = facility?.studyId?.toString();
+    this.groupId = facility?.groupId?.toString();
+    this.reason = reason;
+
+    this.medicalCases = medicalCases;
 
     if (this.id === undefined) {
       if (id !== undefined) {
         this.id = id;
-        this.medicalCases = [];
-        this.uid = identifier.uid.toString();
-        this.studyID = identifier.studyID.toString();
-        this.groupID = identifier.groupID.toString();
-        props.medicalCases.forEach((medicalCase) => {
+        medicalCases.forEach((medicalCase) => {
           this.medicalCases.push(new MedicalCaseModel(medicalCase));
         });
-      }
-      else {
+      } else {
         this.id = uuidv4();
-        this.medicalCases = medicalCases;
-        this.main_data_patient_id = main_data_patient_id;
-        this.uid = identifier.uid.toString();
-        this.studyID = identifier.studyID.toString();
-        this.groupID = identifier.groupID.toString();
-        this.reason = reason;
-
-        if (otherFacilityData !== null) {
-          this.secondUid = otherFacilityData.uid.toString();
-          this.secondStudyID = otherFacilityData.studyID.toString();
-          this.secondGroupID = otherFacilityData.groupID.toString();
-        } else {
-          this.secondUid = null;
-          this.secondStudyID = null;
-          this.secondGroupID = null;
-        }
       }
     }
   }
@@ -57,13 +55,9 @@ export class PatientModel {
     const database = await new Database();
     this.json = JSON.stringify;
 
-    console.log({
-      ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
-    });
     return database.insert('Patient', {
       ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
     });
   };
 
@@ -80,21 +74,8 @@ export class PatientModel {
     return true;
   };
 
-  /**
-   * Defines if the patient has at least one medical case on going
-   * @returns Boolean
-   */
-  hasCaseInProgress = () => {
-    this.medicalCases.map((medicalCase) => {
-      if (medicalCase.status !== medicalCaseStatus.close) {
-        return true;
-      }
-    });
-    return false;
-  };
-
   wasInOtherFacility = () => {
-    return this.secondUid !== null;
+    return this.otherUid !== null;
   };
 }
 
@@ -104,11 +85,11 @@ PatientModel.schema = {
   properties: {
     id: 'string',
     uid: 'string',
-    studyID: 'string',
-    groupID: 'string',
-    secondUid: 'string?',
-    secondStudyID: 'string?',
-    secondGroupID: 'string?',
+    studyId: 'string',
+    groupId: 'string',
+    otherUid: 'string?',
+    otherStudyId: 'string?',
+    otherGroupId: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
     main_data_patient_id: { type: 'int', optional: true },
