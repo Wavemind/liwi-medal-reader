@@ -143,7 +143,8 @@ function oneValidation(criteria, questions, stepName) {
  * @param lastState
  * @return {any}
  */
-const validatorNavigate = (navigateRoute) => {
+export const validatorNavigate = (navigateRoute) => {
+
   // Break Ref JS
   const validator = JSON.parse(JSON.stringify(modelValidator));
 
@@ -176,10 +177,6 @@ const validatorNavigate = (navigateRoute) => {
 
   if (detailNavigateRoute.medicalCaseOrder !== undefined) {
     /** the case is still in creation, do not permit to go into medical case * */
-    if (detailNavigateRoute.medicalCaseOrder > 0 && state$.isNewCase === true) {
-      validator.isActionValid = false;
-      return validator;
-    }
 
     // Route depending status
     const routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
@@ -216,6 +213,8 @@ const validatorNavigate = (navigateRoute) => {
         // Validation on each Step
         return oneValidation(criteria, questions, validation);
       });
+
+
 
       // All step has to be valide
       validator.isActionValid = screenResults.every((c) => c.isActionValid === true);
@@ -261,7 +260,6 @@ const validatorNavigate = (navigateRoute) => {
           validator.screenToBeFill = prevRoute.key;
         }
       }
-
       return validator;
     }
   }

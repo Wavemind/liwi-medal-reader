@@ -15,33 +15,35 @@ export class PatientModel {
       reason = '',
     } = props;
 
-    if (otherFacility !== null) {
-      this.otherUid = otherFacility?.uid?.toString();
-      this.otherStudyId = otherFacility?.studyId?.toString();
-      this.otherGroupId = otherFacility?.groupId?.toString();
-    } else {
-      this.otherUid = null;
-      this.otherStudyId = null;
-      this.otherGroupId = null;
-    }
 
-    this.main_data_patient_id = main_data_patient_id;
-
-    this.uid = facility?.uid?.toString();
-    this.studyId = facility?.studyId?.toString();
-    this.groupId = facility?.groupId?.toString();
-    this.reason = reason;
-
-    this.medicalCases = medicalCases;
 
     if (this.id === undefined) {
+      if (otherFacility !== null) {
+        this.otherUid = otherFacility?.uid?.toString();
+        this.otherStudyId = otherFacility?.studyId?.toString();
+        this.otherGroupId = otherFacility?.groupId?.toString();
+      } else {
+        this.otherUid = null;
+        this.otherStudyId = null;
+        this.otherGroupId = null;
+      }
+
+      this.main_data_patient_id = main_data_patient_id;
+
+      this.uid = facility?.uid?.toString();
+      this.studyId = facility?.studyId?.toString();
+      this.groupId = facility?.groupId?.toString();
+      this.reason = reason;
+
+      this.medicalCases = medicalCases;
+
       if (id !== undefined) {
         this.id = id;
         medicalCases.forEach((medicalCase) => {
           this.medicalCases.push(new MedicalCaseModel(medicalCase));
         });
       } else {
-        this.id = uuidv4();
+        this.id = null;
       }
     }
   }
@@ -54,7 +56,7 @@ export class PatientModel {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
     const database = await new Database();
     this.json = JSON.stringify;
-
+    this.id = uuidv4();
     return database.insert('Patient', {
       ...this,
       medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
