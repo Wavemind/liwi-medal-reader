@@ -103,10 +103,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
       if (patientId !== null || patientId === undefined) {
         const patient = await database.findBy('Patient', patientId);
-        isSaved = patient.addMedicalCase(medicalCase);
+        isSaved = patien.addMedicalCase(medicalCase);
+        updateMedicalCaseProperty('patient_id', patient.id)
       } else {
         isSaved = await this.savePatient();
       }
+
       if (isSaved) {
         const currentRoute = NavigationService.getCurrentRoute();
         // Replace the nextRoute navigation at the current index
@@ -152,6 +154,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     // Create patient if there are no errors
     patient.medicalCases.push(medicalCase);
     await patient.save();
+    updateMedicalCaseProperty('patient_id', patient.id)
     return true;
   };
 
@@ -271,7 +274,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       >
         {[
           <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
-                      testID="PatientUpsertScreen">
+            testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
               <LiwiLoader />
