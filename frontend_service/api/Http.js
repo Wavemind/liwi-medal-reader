@@ -72,9 +72,6 @@ export const post = async (params, body = {}, config = {}) => {
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
   const response = await request.json();
 
-  console.log(request);
-  console.log(response);
-
   // Display error
   if (!request.ok) {
     handleHttpError(response.errors);

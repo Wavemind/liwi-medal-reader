@@ -128,8 +128,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       const medicalCases = await database.getAll('MedicalCase');
       const activity = await database.getAll('Activity');
 
-      console.log(medicalCases, activity);
-
       // need to test send data
     }
 
