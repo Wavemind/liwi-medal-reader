@@ -343,7 +343,7 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload boolean: the agreed / unagree value
    */
   @Action(actions.SET_ADDITIONAL_MEDECINE)
-  setAdditionalMedecine(state, action) {
+  setAdditionalMedicine(state, action) {
     const { medecines } = action.payload;
 
     return {
@@ -364,7 +364,7 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload duration: the new value to update
    */
   @Action(actions.SET_ADDITIONAl_MEDICINE_DURATION)
-  setAdditionalMedecineDuration(state, action) {
+  setAdditionalMedicineDuration(state, action) {
     const { id, duration } = action.payload;
 
     return {

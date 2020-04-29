@@ -31,7 +31,7 @@ export default class Medicines extends Component<Props, State> {
 
   onSelectedItemsChange = (selectedItems) => {
     const {
-      setAdditionalMedecine,
+      setAdditionalMedicine,
       medicalCase: { nodes, diagnostics },
     } = this.props;
 
@@ -54,7 +54,7 @@ export default class Medicines extends Component<Props, State> {
       objMedicine[i].duration = duration;
     });
 
-    setAdditionalMedecine(objMedicine);
+    setAdditionalMedicine(objMedicine);
   };
 
   _changeCustomDuration = (value, id) => {
