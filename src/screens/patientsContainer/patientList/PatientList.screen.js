@@ -54,15 +54,15 @@ export default class PatientList extends React.Component {
     let second_top_right_question = null;
 
     patient.medicalCases.map((mc) => {
-      console.log(mc, mc.first_top_right_question_id !== null, mc.second_top_right_question_id !== null);
+
       if (
         mc.first_top_right_question_id !== null &&
         mc.second_top_right_question_id !== null &&
-        mc.nodes[mc.first_top_right_question_id].value !== null &&
-        mc.nodes[mc.second_top_right_question_id].value !== null
+        mc.nodes[mc.first_top_right_question_id]?.value !== null &&
+        mc.nodes[mc.second_top_right_question_id]?.value !== null
       ) {
-        first_top_right_question = mc.nodes[mc.first_top_right_question_id].value;
-        second_top_right_question = mc.nodes[mc.second_top_right_question_id].value;
+        first_top_right_question = mc.nodes[mc.first_top_right_question_id]?.value;
+        second_top_right_question = mc.nodes[mc.second_top_right_question_id]?.value;
       }
     });
 
@@ -98,10 +98,10 @@ export default class PatientList extends React.Component {
         {patients.map((patient) => this._renderPatient(patient))}
       </List>
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('patient_list:no_patients')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('patient_list:no_patients')}</Text>
+        </View>
+      );
   };
 
   callBackClose = () => {
