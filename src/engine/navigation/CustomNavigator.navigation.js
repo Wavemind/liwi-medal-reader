@@ -106,6 +106,7 @@ function oneValidation(criteria, questions, stepName) {
           const q = state$.nodes[questionId];
           if (q.is_mandatory === true) {
             result = state$.nodes[questionId].answer !== null || state$.nodes[questionId].value !== null;
+
             if (!result) {
               isValid = false;
               staticValidator.questionsToBeFill.push(state$.nodes[questionId]);
@@ -143,7 +144,7 @@ function oneValidation(criteria, questions, stepName) {
  * @param lastState
  * @return {any}
  */
-const validatorNavigate = (navigateRoute) => {
+export const validatorNavigate = (navigateRoute) => {
   // Break Ref JS
   const validator = JSON.parse(JSON.stringify(modelValidator));
 

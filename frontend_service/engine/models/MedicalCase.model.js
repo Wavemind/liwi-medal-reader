@@ -7,7 +7,6 @@ import Database from '../../../src/engine/api/Database';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-
     if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuidv4();
@@ -24,6 +23,11 @@ export class MedicalCaseModel {
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
+
+      this.left_top_question_id = currentAlgorithm.left_top_question_id;
+      this.first_top_right_question_id = currentAlgorithm.first_top_right_question_id;
+      this.second_top_right_question_id = currentAlgorithm.second_top_right_question_id;
+
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
       this.isNewCase = true;
@@ -72,6 +76,10 @@ export class MedicalCaseModel {
         this.status = props.status;
         this.patient_id = props.patient_id;
       }
+
+      this.left_top_question_id = json.left_top_question_id;
+      this.first_top_right_question_id = json.first_top_right_question_id;
+      this.second_top_right_question_id = json.second_top_right_question_id;
 
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;

@@ -1,0 +1,622 @@
+{
+  "version_id": 1,
+  "version_name": "Test",
+  "description": "Desc",
+  "algorithm_id": 1,
+  "algorithm_name": "test",
+  "left_top_question_id": 1,
+  "first_top_right_question_id": 45,
+  "second_top_right_question_id": 46,
+  "triage": {
+    "orders": {
+      "unique_triage_question": [],
+      "complaint_category": [12],
+      "basic_measurement": [6, 3],
+      "chronic_condition": [],
+      "other": []
+    },
+    "conditions": {}
+  },
+  "author": "Emmanuel Barchichat",
+  "created_at": "2020-03-30T16:59:58.959+02:00",
+  "updated_at": "2020-04-27T15:02:46.626+02:00",
+  "diagnostics": {
+    "1": {
+      "id": 1,
+      "reference": 1,
+      "label": "Severe LRTI",
+      "differential": {
+        "top_conditions": [],
+        "conditions": []
+      },
+      "instances": {
+        "8": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 8,
+          "children": [13],
+          "final_diagnostic_id": null
+        },
+        "33": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 33,
+          "children": [35],
+          "final_diagnostic_id": 13
+        }
+      },
+      "final_diagnostics": {
+        "13": {
+          "top_conditions": [
+            {
+              "first_id": 9,
+              "first_type": "Answer",
+              "first_node_id": 8,
+              "operator": null,
+              "second_id": null,
+              "second_type": null,
+              "second_node_id": null,
+              "score": null
+            }
+          ],
+          "conditions": [],
+          "diagnostic_id": 1,
+          "id": 13,
+          "label": "Malaria",
+          "type": "FinalDiagnostic",
+          "drugs": {},
+          "managements": {},
+          "excluding_final_diagnostics": null,
+          "cc": 12
+        }
+      }
+    }
+  },
+  "nodes": {
+    "1": {
+      "id": 1,
+      "type": "Question",
+      "reference": 1,
+      "label": "Birth date",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "registration",
+      "system": null,
+      "formula": null,
+      "category": "basic_demographic",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Date",
+      "display_format": "Date",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [7, 2],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    },
+    "2": {
+      "id": 2,
+      "type": "Question",
+      "reference": 2,
+      "label": "Age in days",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "registration",
+      "system": null,
+      "formula": "[ToDay(1)]",
+      "category": "demographic",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Float",
+      "display_format": "Formula",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [8],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    },
+    "3": {
+      "id": 3,
+      "type": "Question",
+      "reference": 1,
+      "label": "Weight (kg)",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "basic_measurement",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Float",
+      "display_format": "Input",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [8],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    },
+    "4": {
+      "id": 4,
+      "type": "Question",
+      "reference": 1,
+      "label": "Heart rate",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "consultation",
+      "system": null,
+      "formula": null,
+      "category": "vital_sign_anthropometric",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Float",
+      "display_format": "Input",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [9],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    },
+    "5": {
+      "id": 5,
+      "type": "Question",
+      "reference": 2,
+      "label": "Respiratory rate",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "consultation",
+      "system": null,
+      "formula": null,
+      "category": "vital_sign_anthropometric",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Float",
+      "display_format": "Input",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    },
+    "6": {
+      "id": 6,
+      "type": "Question",
+      "reference": 2,
+      "label": "MUAC",
+      "description": "Mid Upper Arm Circumference",
+      "is_mandatory": false,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "basic_measurement",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Float",
+      "display_format": "Input",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    },
+    "7": {
+      "id": 7,
+      "type": "Question",
+      "reference": 1,
+      "label": "Age in months",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "registration",
+      "system": null,
+      "formula": "[ToMonth(1)]",
+      "category": "background_calculation",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Float",
+      "display_format": "Formula",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [9],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {
+        "1": {
+          "id": 1,
+          "reference": 1,
+          "label": "less than 2 months",
+          "value": "2",
+          "operator": "less"
+        },
+        "2": {
+          "id": 2,
+          "reference": 2,
+          "label": "between 2 and 6 months",
+          "value": "2, 6",
+          "operator": "between"
+        },
+        "3": {
+          "id": 3,
+          "reference": 3,
+          "label": "between 6 and 12 months",
+          "value": "6, 12",
+          "operator": "between"
+        },
+        "4": {
+          "id": 4,
+          "reference": 4,
+          "label": "between 12 and 24 months",
+          "value": "12, 24",
+          "operator": "between"
+        },
+        "5": {
+          "id": 5,
+          "reference": 5,
+          "label": "between 24 and 36 months",
+          "value": "24, 36",
+          "operator": "between"
+        },
+        "6": {
+          "id": 6,
+          "reference": 6,
+          "label": "between 36 and 60 months",
+          "value": "36, 60",
+          "operator": "between"
+        },
+        "7": {
+          "id": 7,
+          "reference": 7,
+          "label": "more than 60 months",
+          "value": "60",
+          "operator": "more_or_equal"
+        }
+      }
+    },
+    "8": {
+      "id": 8,
+      "type": "Question",
+      "reference": 2,
+      "label": "Weight for age (z-score)",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "consultation",
+      "system": null,
+      "formula": null,
+      "category": "background_calculation",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Integer",
+      "display_format": "Reference",
+      "qs": [],
+      "dd": [
+        {
+          "id": 1,
+          "conditionValue": null
+        }
+      ],
+      "cc": [12],
+      "conditioned_by_cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": 2,
+      "reference_table_y_id": 3,
+      "reference_table_male": "z_score_male_table",
+      "reference_table_female": "z_score_female_table",
+      "cc_general": true,
+      "answer": null,
+      "answers": {
+        "8": {
+          "id": 8,
+          "reference": 1,
+          "label": "less than -3 z-score",
+          "value": "-3",
+          "operator": "less"
+        },
+        "9": {
+          "id": 9,
+          "reference": 2,
+          "label": "-2 z-score",
+          "value": "-3, -2",
+          "operator": "between"
+        },
+        "10": {
+          "id": 10,
+          "reference": 3,
+          "label": "more than -2 z-score",
+          "value": "-2",
+          "operator": "more_or_equal"
+        }
+      }
+    },
+    "9": {
+      "id": 9,
+      "type": "Question",
+      "reference": 3,
+      "label": "Heart rate in percentile",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "consultation",
+      "system": null,
+      "formula": null,
+      "category": "background_calculation",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Integer",
+      "display_format": "Reference",
+      "qs": [
+        {
+          "id": 33,
+          "conditionValue": null
+        }
+      ],
+      "dd": [],
+      "cc": [12],
+      "conditioned_by_cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": 7,
+      "reference_table_y_id": 4,
+      "reference_table_male": "heart_rate_table",
+      "reference_table_female": "heart_rate_table",
+      "cc_general": true,
+      "answer": null,
+      "answers": {
+        "11": {
+          "id": 11,
+          "reference": 1,
+          "label": "less than 90th",
+          "value": "90",
+          "operator": "less"
+        },
+        "12": {
+          "id": 12,
+          "reference": 2,
+          "label": "more than 90th",
+          "value": "90",
+          "operator": "more_or_equal"
+        }
+      }
+    },
+    "12": {
+      "id": 12,
+      "type": "Question",
+      "reference": 1,
+      "label": "EyeComplaint",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "triage",
+      "system": null,
+      "formula": null,
+      "category": "complaint_category",
+      "is_triage": false,
+      "is_identifiable": false,
+      "value_format": "Boolean",
+      "display_format": "RadioButton",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {
+        "19": {
+          "id": 19,
+          "reference": 1,
+          "label": "Yes",
+          "value": null,
+          "operator": null
+        },
+        "20": {
+          "id": 20,
+          "reference": 3,
+          "label": "No",
+          "value": null,
+          "operator": null
+        }
+      }
+    },
+    "13": {
+      "top_conditions": [
+        {
+          "first_id": 9,
+          "first_type": "Answer",
+          "first_node_id": 8,
+          "operator": null,
+          "second_id": null,
+          "second_type": null,
+          "second_node_id": null,
+          "score": null
+        }
+      ],
+      "conditions": [],
+      "diagnostic_id": 1,
+      "id": 13,
+      "label": "Malaria",
+      "type": "FinalDiagnostic",
+      "drugs": {},
+      "managements": {},
+      "excluding_final_diagnostics": null,
+      "cc": 12
+    },
+    "33": {
+      "top_conditions": [
+        {
+          "first_id": 11,
+          "first_type": "Answer",
+          "first_node_id": 9,
+          "operator": null,
+          "second_id": null,
+          "second_type": null,
+          "second_node_id": null,
+          "score": 65
+        }
+      ],
+      "conditions": [],
+      "id": 33,
+      "reference": 1,
+      "min_score": 50,
+      "type": "QuestionsSequence",
+      "category": "scored",
+      "instances": {
+        "9": {
+          "top_conditions": [],
+          "conditions": [],
+          "id": 9,
+          "children": [33],
+          "final_diagnostic_id": null
+        }
+      },
+      "answers": {
+        "21": {
+          "id": 21,
+          "reference": 1,
+          "label": "Yes"
+        },
+        "22": {
+          "id": 22,
+          "reference": 3,
+          "label": "No"
+        }
+      },
+      "qs": [],
+      "dd": [
+        {
+          "id": 1,
+          "conditionValue": null
+        }
+      ],
+      "conditioned_by_cc": [],
+      "answer": null
+    },
+    "45": {
+      "id": 45,
+      "type": "Question",
+      "reference": 1,
+      "label": "First name",
+      "description": null,
+      "is_mandatory": false,
+      "stage": "registration",
+      "system": null,
+      "formula": null,
+      "category": "basic_demographic",
+      "is_triage": false,
+      "is_identifiable": true,
+      "value_format": "String",
+      "display_format": "String",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    },
+    "46": {
+      "id": 46,
+      "type": "Question",
+      "reference": 3,
+      "label": "Last name",
+      "description": null,
+      "is_mandatory": true,
+      "stage": "registration",
+      "system": null,
+      "formula": null,
+      "category": "basic_demographic",
+      "is_triage": false,
+      "is_identifiable": true,
+      "value_format": "String",
+      "display_format": "String",
+      "qs": [],
+      "dd": [],
+      "cc": [],
+      "conditioned_by_cc": [],
+      "referenced_in": [],
+      "counter": 0,
+      "value": null,
+      "reference_table_x_id": null,
+      "reference_table_y_id": null,
+      "reference_table_male": null,
+      "reference_table_female": null,
+      "cc_general": true,
+      "answer": null,
+      "answers": {}
+    }
+  }
+}

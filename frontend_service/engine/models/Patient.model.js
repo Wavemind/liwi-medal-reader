@@ -6,33 +6,25 @@ import { MedicalCaseModel } from './MedicalCase.model';
 
 export class PatientModel {
   constructor(props = {}) {
-    const {
-      id,
-      medicalCases = [],
-      main_data_patient_id = null,
-      otherFacilityData = null,
-      identifier = null,
-      reason = '',
-    } = props;
+    const { id, medicalCases = [], main_data_patient_id = null, otherFacilityData = null, identifier = null, reason = '' } = props;
 
     if (this.id === undefined) {
       if (id !== undefined) {
         this.id = id;
         this.medicalCases = [];
-        this.uid = identifier.uid.toString();
-        this.studyID = identifier.studyID.toString();
-        this.groupID = identifier.groupID.toString();
+        this.uid = identifier?.uid.toString();
+        this.studyID = identifier?.studyID.toString();
+        this.groupID = identifier?.groupID.toString();
         props.medicalCases.forEach((medicalCase) => {
           this.medicalCases.push(new MedicalCaseModel(medicalCase));
         });
-      }
-      else {
+      } else {
         this.id = uuidv4();
         this.medicalCases = medicalCases;
         this.main_data_patient_id = main_data_patient_id;
-        this.uid = identifier.uid.toString();
-        this.studyID = identifier.studyID.toString();
-        this.groupID = identifier.groupID.toString();
+        this.uid = identifier?.uid.toString();
+        this.studyID = identifier?.studyID.toString();
+        this.groupID = identifier?.groupID.toString();
         this.reason = reason;
 
         if (otherFacilityData !== null) {
@@ -59,11 +51,11 @@ export class PatientModel {
 
     console.log({
       ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
     });
     return database.insert('Patient', {
       ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }]
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
     });
   };
 

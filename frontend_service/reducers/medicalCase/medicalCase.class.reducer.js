@@ -10,6 +10,7 @@ import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
+import NavigationService from '../../../src/engine/navigation/Navigation.service';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -419,6 +420,8 @@ class MedicalCaseReducer extends ReducerClass {
     // Instantiate new object with answered question with new answer value
     state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
     state.nodes[index].updateAnswer(value);
+
+
 
     return {
       ...state,
