@@ -24,9 +24,9 @@ export class MedicalCaseModel {
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
 
-      this.left_top_question_id = currentAlgorithm.left_top_question_id;
-      this.first_top_right_question_id = currentAlgorithm.first_top_right_question_id;
-      this.second_top_right_question_id = currentAlgorithm.second_top_right_question_id;
+      this.left_top_question_id = currentAlgorithm.left_top_question_id ?? null;
+      this.first_top_right_question_id = currentAlgorithm.first_top_right_question_id ?? null;
+      this.second_top_right_question_id = currentAlgorithm.second_top_right_question_id ?? null;
 
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
