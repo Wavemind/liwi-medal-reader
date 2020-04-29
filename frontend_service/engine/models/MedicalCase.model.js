@@ -7,7 +7,6 @@ import Database from '../../../src/engine/api/Database';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-
     if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuidv4();

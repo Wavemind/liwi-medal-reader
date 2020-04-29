@@ -6,14 +6,7 @@ import { MedicalCaseModel } from './MedicalCase.model';
 
 export class PatientModel {
   constructor(props = {}) {
-    const {
-      id,
-      medicalCases = [],
-      main_data_patient_id = null,
-      otherFacility = null,
-      facility = null,
-      reason = '',
-    } = props;
+    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '' } = props;
 
     if (this.id === undefined) {
       if (otherFacility !== null) {
@@ -28,9 +21,9 @@ export class PatientModel {
 
       this.main_data_patient_id = main_data_patient_id;
 
-      this.uid = facility?.uid?.toString();
-      this.studyId = facility?.studyId?.toString();
-      this.groupId = facility?.groupId?.toString();
+      this.uid = facility !== null ? facility?.uid?.toString() : null;
+      this.studyId = facility !== null ? facility?.studyId?.toString() : null;
+      this.groupId = facility !== null ? facility?.groupId?.toString() : null;
       this.reason = reason;
 
       this.medicalCases = medicalCases;
