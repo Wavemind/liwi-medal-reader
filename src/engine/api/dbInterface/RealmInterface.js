@@ -22,7 +22,6 @@ export default class RealmInterface {
    * @param { object } object - The value of the object
    */
   insert = (model, object) => {
-    console.log(object);
     this._realm().write(() => {
       this._realm().create(model, object);
     });
