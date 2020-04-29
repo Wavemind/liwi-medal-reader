@@ -3,11 +3,9 @@
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
-import Database from '../../../src/engine/api/Database';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-
     if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuidv4();
@@ -189,15 +187,6 @@ export class MedicalCaseModel {
         instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
       }
     });
-  };
-
-  /**
-   * Returns the linked Patient
-   * @return {Patient} - The related Patient.
-   */
-  getPatient = async () => {
-    const database = await new Database();
-    return database.findBy('Patient', this.patient_id);
   };
 }
 

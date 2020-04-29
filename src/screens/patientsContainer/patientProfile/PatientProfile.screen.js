@@ -68,13 +68,12 @@ export default class PatientProfile extends React.Component {
 
     // Display list of medical cases
     const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
-
       return (
         <ListItem
           key={`${medicalCase.id}_mc`}
           rounded
           block
-          style={{backgroundColor: '#ffffff'}}
+          style={{ backgroundColor: '#ffffff' }}
           spaced
           onPress={async () => {
             await this.selectMedicalCase({
@@ -109,37 +108,37 @@ export default class PatientProfile extends React.Component {
           {patient.id}
         </LiwiTitle2>
 
-          <SeparatorLine style={styles.bottomMargin} />
-          {algorithms.length > 0 ? (
-            <View flex>
-              <View>
-                {patient.medicalCases.length > 0 ? (
-                  <List block>{_renderMedicalCases}</List>
-                ) : (
-                    <View padding-auto margin-auto>
-                      <Text not-available>{t('work_case:no_medical_cases')}</Text>
-                    </View>
-                  )}
-              </View>
-              <View bottom-view>
-                <Button
-                  onPress={() => {
-                    navigation.navigate('PatientUpsert', {
-                      idPatient: patient.id,
-                      newMedicalCase: true,
-                    });
-                  }}
-                >
-                  <Text>{t('work_case:create')}</Text>
-                </Button>
-              </View>
+        <SeparatorLine style={styles.bottomMargin}/>
+        {algorithms.length > 0 ? (
+          <View flex>
+            <View>
+              {patient.medicalCases.length > 0 ? (
+                <List block>{_renderMedicalCases}</List>
+              ) : (
+                <View padding-auto margin-auto>
+                  <Text not-available>{t('work_case:no_medical_cases')}</Text>
+                </View>
+              )}
             </View>
-          ) : (
-              <View padding-auto margin-auto>
-                <Text>{t('work_case:no_algorithm')}</Text>
-              </View>
-            )}
-        </View>
-      );
+            <View bottom-view>
+              <Button
+                onPress={() => {
+                  navigation.navigate('PatientUpsert', {
+                    idPatient: patient.id,
+                    newMedicalCase: true,
+                  });
+                }}
+              >
+                <Text>{t('work_case:create')}</Text>
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text>{t('work_case:no_algorithm')}</Text>
+          </View>
+        )}
+      </View>
+    );
   }
 }
