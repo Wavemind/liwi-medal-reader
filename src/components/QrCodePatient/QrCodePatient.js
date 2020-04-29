@@ -33,10 +33,10 @@ export default class QrCodePatient extends React.Component<Props, State> {
     }
 
     // QRcode valid ?
-    if ('uid' in json && 'studyID' in json && 'groupID' in json) {
+    if ('uid' in json && 'studyId' in json && 'groupId' in json) {
       const session = await getItem('session');
-      const sameFacility = session?.group?.id === json.groupID;
-      const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'secondUid');
+      const sameFacility = session?.group?.id === json.groupId;
+      const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'otherUid');
 
       if (patient !== null) {
         navigation.navigate('PatientProfile', {
@@ -50,10 +50,10 @@ export default class QrCodePatient extends React.Component<Props, State> {
         navigation.navigate('PatientUpsert', {
           idPatient: null,
           newMedicalCase: true,
-          identifier: {
+          facility: {
             ...json,
           },
-          otherFacilityData: otherQR,
+          otherFacility: otherQR,
         });
         // TODO remove duplication
         displayNotification(t('qrcode:open'), liwiColors.greenColor);
