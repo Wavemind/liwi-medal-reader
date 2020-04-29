@@ -22,7 +22,11 @@ export default class QrCodePatient extends React.Component<Props, State> {
   };
 
   onSuccess = async (e) => {
-    const { navigation, closeModal, app: { database, t } } = this.props;
+    const {
+      navigation,
+      closeModal,
+      app: { database, t },
+    } = this.props;
     const { otherQR } = this.state;
     const json = await JSON.parse(e.data);
 
@@ -79,15 +83,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
           {generateNewQR ? t('qrcode:new') : t('qrcode:scan')}
         </Text>
 
-        <QRCodeScanner
-          onRead={this.onSuccess}
-          showMarker
-          reactivate
-          reactivateTimeout={2000}
-          cameraStyle={styles.camera}
-          containerStyle={styles.content}
-          markerStyle={styles.marker}
-        />
+        <QRCodeScanner onRead={this.onSuccess} showMarker reactivate reactivateTimeout={2000} cameraStyle={styles.camera} containerStyle={styles.content} markerStyle={styles.marker} />
       </View>
     );
   }
