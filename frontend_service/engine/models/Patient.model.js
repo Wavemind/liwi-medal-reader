@@ -15,28 +15,29 @@ export class PatientModel {
       reason = '',
     } = props;
 
-    if (otherFacility !== null) {
-      this.otherUid = otherFacility?.uid?.toString();
-      this.otherStudyId = otherFacility?.studyId?.toString();
-      this.otherGroupId = otherFacility?.groupId?.toString();
-    } else {
-      this.otherUid = null;
-      this.otherStudyId = null;
-      this.otherGroupId = null;
-    }
-
-    this.main_data_patient_id = main_data_patient_id;
-
-    this.uid = facility?.uid?.toString();
-    this.studyId = facility?.studyId?.toString();
-    this.groupId = facility?.groupId?.toString();
-    this.reason = reason;
-
-    this.medicalCases = medicalCases;
-
     if (this.id === undefined) {
+      if (otherFacility !== null) {
+        this.otherUid = otherFacility?.uid?.toString();
+        this.otherStudyId = otherFacility?.studyId?.toString();
+        this.otherGroupId = otherFacility?.groupId?.toString();
+      } else {
+        this.otherUid = null;
+        this.otherStudyId = null;
+        this.otherGroupId = null;
+      }
+
+      this.main_data_patient_id = main_data_patient_id;
+
+      this.uid = facility?.uid?.toString();
+      this.studyId = facility?.studyId?.toString();
+      this.groupId = facility?.groupId?.toString();
+      this.reason = reason;
+
+      this.medicalCases = medicalCases;
+
       if (id !== undefined) {
         this.id = id;
+        this.medicalCases = [];
         medicalCases.forEach((medicalCase) => {
           this.medicalCases.push(new MedicalCaseModel(medicalCase));
         });
@@ -74,6 +75,10 @@ export class PatientModel {
     return true;
   };
 
+  /**
+   * Test if patient was already registered in an another facility
+   * @returns {boolean}
+   */
   wasInOtherFacility = () => {
     return this.otherUid !== null;
   };
