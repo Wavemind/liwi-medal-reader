@@ -107,11 +107,11 @@ export default class PatientProfile extends React.Component {
       if (
         mc.first_top_right_question_id !== null &&
         mc.second_top_right_question_id !== null &&
-        mc.nodes[mc.first_top_right_question_id].value !== null &&
-        mc.nodes[mc.second_top_right_question_id].value !== null
+        mc.nodes[mc.first_top_right_question_id]?.value !== null &&
+        mc.nodes[mc.second_top_right_question_id]?.value !== null
       ) {
-        first_top_right_question = mc.nodes[mc.first_top_right_question_id].value;
-        second_top_right_question = mc.nodes[mc.second_top_right_question_id].value;
+        first_top_right_question = mc.nodes[mc.first_top_right_question_id]?.value;
+        second_top_right_question = mc.nodes[mc.second_top_right_question_id]?.value;
       }
     });
 
