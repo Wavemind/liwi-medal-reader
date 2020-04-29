@@ -102,7 +102,7 @@ function setParamsAge(name) {
 
   const showValue = (node) => {
     if (node.value_format === valueFormats.date && node.value !== null) {
-      return moment(node.value).format('L');
+      return `| ${moment(node.value).format('L')}`;
     }
 
     if (node.value === null) {
@@ -112,7 +112,7 @@ function setParamsAge(name) {
     return node.value;
   };
 
-  const headerRight = `${showValue(nodes[first_top_right_question_id])} ${showValue(nodes[second_top_right_question_id])} | ${showValue(nodes[left_top_question_id])}`;
+  const headerRight = `${showValue(nodes[first_top_right_question_id])} ${showValue(nodes[second_top_right_question_id])} ${showValue(nodes[left_top_question_id])}`;
   const currentRoute = getCurrentRoute();
 
   const action = NavigationActions.setParams({
