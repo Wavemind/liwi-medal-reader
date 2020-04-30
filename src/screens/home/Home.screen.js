@@ -96,7 +96,6 @@ export default class Home extends React.Component<Props, State> {
                   navigation.navigate('PatientUpsert', {
                     idPatient: null,
                     newMedicalCase: true,
-                    $,
                   });
                 } else {
                   this.setState({ propsToolTipVisible: true, qrcode: false });
