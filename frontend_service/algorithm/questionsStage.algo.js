@@ -87,7 +87,7 @@ export const questionsFirstLookAssessement = () => {
   const state$ = store.getState();
   const firstLookAssessement = [];
 
-  const ordersFirstLookAssessment = state$.triage.orders[categories.emergencySign];
+  const ordersFirstLookAssessment = state$.orders[categories.emergencySign];
 
   if (ordersFirstLookAssessment !== undefined) {
     ordersFirstLookAssessment.map((order) => {
@@ -115,7 +115,7 @@ export const questionsFirstLookAssessement = () => {
 export const questionsComplaintCategory = () => {
   const state$ = store.getState();
   const complaintCategory = [];
-  const orders = state$.triage.orders[categories.complaintCategory];
+  const orders = state$.orders[categories.complaintCategory];
 
   orders.map((order) => {
     complaintCategory.push(state$.nodes[order]);
@@ -142,7 +142,7 @@ export const questionsBasicMeasurements = () => {
   const state$ = store.getState();
   const basicMeasurements = [];
 
-  const orderedQuestions = state$.triage.orders[categories.basicMeasurement];
+  const orderedQuestions = state$.orders[categories.basicMeasurement];
 
   if (orderedQuestions !== undefined) {
     orderedQuestions.map((orderedQuestion) => {

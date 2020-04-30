@@ -8,10 +8,7 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import {
-  questionsMedicalHistory,
-  questionsPhysicalExam,
-} from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -24,7 +21,7 @@ export default class Consultation extends React.Component<Props, State> {
   componentDidMount() {
     const { navigation } = this.props;
 
-    NavigationService.setParamsAge(navigation, 'Consultation');
+    NavigationService.setParamsAge('Consultation');
   }
 
   render() {

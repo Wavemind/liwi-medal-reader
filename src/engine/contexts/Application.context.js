@@ -62,10 +62,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (session !== null && session?.group !== null) {
       await this._handleApplicationServer(true);
       await this.getGroupData(false);
-
+      const database = await new Database();
       const user = await getItem('user');
       const { isConnected } = this.state;
-      const database = await new Database();
 
       this.setState({
         session,
@@ -122,10 +121,18 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @private
    */
   _setAppStatus = async (status) => {
+    const { isConnected, database } = this.state;
+
+    // Connected again
+    if (status === true && isConnected === false) {
+      // const medicalCases = await database.getAll('MedicalCase');
+      // const activity = await database.getAll('Activity');
+      // need to test send data
+    }
+
     await setItem('isConnected', status);
     this.setState({ isConnected: status });
   };
-
 
   /**
    * Ask user to allow access to location
@@ -157,7 +164,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       {
         enableHighAccuracy,
         timeout: 5000,
-      },
+      }
     );
   };
 
@@ -293,6 +300,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     // if no error set the tablet
     if (session?.success !== false) {
       const concatSession = { group: null, ...session };
+
       // Set item in localstorage
       await setItem('session', concatSession);
 
@@ -392,5 +400,4 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) =>
-  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;

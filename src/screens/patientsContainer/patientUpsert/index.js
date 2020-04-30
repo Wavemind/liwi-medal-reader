@@ -6,6 +6,7 @@ import {
   updateMedicalCaseProperty,
   updateMetaData,
   updatePatient,
+  updateModalFromRedux
 } from '../../../../frontend_service/actions/creators.actions';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 
@@ -21,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     updatePatient: (index, value) => dispatch(updatePatient(index, value)),
     updateMedicalCaseProperty: (property, newValue) => dispatch(updateMedicalCaseProperty(property, newValue)),
     updateMetaData: (screen, view, value) => dispatch(updateMetaData(screen, view, value)),
+    updateModalFromRedux: (content, validation) => dispatch(updateModalFromRedux(content, validation)),
   };
 };
 

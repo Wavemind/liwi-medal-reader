@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { isTablet, liwiColors, screenWidth } from '../../../utils/constants';
+import { isTablet, liwiColors, screenHeight, screenWidth } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
 
-  flex: { flex: 1 },
+  flex: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: screenHeight },
 
   height: {
     height: 200,
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
 
   appContent: { alignItems: 'center', marginTop: 20 },
 
-  buttonSync: { alignSelf: 'center', marginTop: 30 },
+  buttonSync: { alignSelf: 'center' },
   buttonLogout: { alignSelf: 'center' },
   imgKeys: { width: 90, height: 90, margin: 0 },
   lottie: {
@@ -56,8 +56,7 @@ export const styles = StyleSheet.create({
   stylePinCodeButtonCircle: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 80,
-    height: 80,
+
     backgroundColor: 'rgb(78,80,83)',
     borderRadius: 40,
   },

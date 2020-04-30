@@ -8,8 +8,9 @@ import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
 import ConfirmationView from '../../components/ConfirmationView';
-import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 import { liwiColors } from '../../utils/constants';
+import ToolTipModal from '../../components/ToolTipModal';
+import QrCodePatient from '../../components/QrCodePatient';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -20,14 +21,16 @@ export default class Home extends React.Component<Props, State> {
   };
 
   state = {
+    qrcode: false,
+    modalQrCode: false,
     algorithms: [],
     propsToolTipVisible: false,
   };
 
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
-    const { algorithms, propsToolTipVisible } = this.state;
+    const { algorithms, propsToolTipVisible, modalQrCode } = this.state;
     const { medicalCase } = this.props;
-    return algorithms !== nextState.algorithms || propsToolTipVisible !== nextState.propsToolTipVisible || Object.compare(medicalCase, nextProps.medicalCase);
+    return algorithms !== nextState.algorithms || propsToolTipVisible !== nextState.propsToolTipVisible || Object.compare(medicalCase, nextProps.medicalCase) || modalQrCode !== nextProps.modalQrCode;
   }
 
   logout = async () => {
@@ -38,15 +41,22 @@ export default class Home extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    await fetchAlgorithms();
     const algorithms = await getItems('algorithms');
     this.setState({ algorithms });
   }
 
-  callBackClose = () => {
-    this.setState({
-      propsToolTipVisible: false,
-    });
+  callBackClose = (canContinue) => {
+    const { qrcode } = this.state;
+    if (qrcode && !canContinue) {
+      this.setState({
+        propsToolTipVisible: false,
+        modalQrCode: true,
+      });
+    } else {
+      this.setState({
+        propsToolTipVisible: false,
+      });
+    }
   };
 
   render() {
@@ -60,7 +70,7 @@ export default class Home extends React.Component<Props, State> {
       return null;
     }
 
-    const { algorithms, propsToolTipVisible } = this.state;
+    const { algorithms, propsToolTipVisible, qrcode, modalQrCode } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen" style={styles.back}>
@@ -68,7 +78,10 @@ export default class Home extends React.Component<Props, State> {
           <Text bigTitle style={{ textAlign: 'center' }}>
             Welcome {user.preFix} {user.first_name} {user.last_name}
           </Text>
-          <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} />
+          <ToolTipModal visible={modalQrCode} closeModal={() => this.setState({ modalQrCode: false })}>
+            <QrCodePatient closeModal={() => this.setState({ modalQrCode: false })} />
+          </ToolTipModal>
+          <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} qrcode={qrcode} />
           <View w50>
             <TouchableHighlight
               testID="GoToPatientUpsert"
@@ -83,7 +96,7 @@ export default class Home extends React.Component<Props, State> {
                     newMedicalCase: true,
                   });
                 } else {
-                  this.setState({ propsToolTipVisible: true });
+                  this.setState({ propsToolTipVisible: true, qrcode: false });
                 }
               }}
             >
@@ -91,6 +104,28 @@ export default class Home extends React.Component<Props, State> {
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/heartbeat.png')} />
                 <Text size-auto center style={styles.textButton}>
                   {t('navigation:patient_add')}
+                </Text>
+              </View>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              testID="GoToPatientUpsert"
+              underlayColor="transparent"
+              style={styles.navigationButton}
+              onPress={() => {
+                if (algorithms.length === 0) {
+                  displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
+                } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
+                  this.setState({ modalQrCode: true });
+                } else {
+                  this.setState({ propsToolTipVisible: true, qrcode: true });
+                }
+              }}
+            >
+              <View style={styles.blocContainer}>
+                <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/qr_code.png')} />
+                <Text size-auto center style={styles.textButton}>
+                  {t('navigation:patient_qr')}
                 </Text>
               </View>
             </TouchableHighlight>

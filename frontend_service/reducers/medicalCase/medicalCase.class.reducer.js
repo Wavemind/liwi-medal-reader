@@ -10,6 +10,7 @@ import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
+import NavigationService from '../../../src/engine/navigation/Navigation.service';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -343,7 +344,7 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload boolean: the agreed / unagree value
    */
   @Action(actions.SET_ADDITIONAL_MEDECINE)
-  setAdditionalMedecine(state, action) {
+  setAdditionalMedicine(state, action) {
     const { medecines } = action.payload;
 
     return {
@@ -364,7 +365,7 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload duration: the new value to update
    */
   @Action(actions.SET_ADDITIONAl_MEDICINE_DURATION)
-  setAdditionalMedecineDuration(state, action) {
+  setAdditionalMedicineDuration(state, action) {
     const { id, duration } = action.payload;
 
     return {

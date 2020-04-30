@@ -33,10 +33,12 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    const { app: { database } } = this.props;
+    const {
+      app: { database },
+    } = this.props;
     this.setState({ loading: true });
 
-    const medicalCases = database.getAll('MedicalCase');
+    const medicalCases = await database.getAll('MedicalCase');
 
     this.setState({
       medicalCases,
@@ -54,7 +56,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: null,
         orderByFirstName: orderByFirstName === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -67,7 +69,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByFirstName: null,
         orderByLastName: orderByLastName === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -81,7 +83,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: null,
         orderByStatus: orderByStatus === 'asc' ? 'desc' : 'asc',
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -95,7 +97,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: orderByUpdate === 'asc' ? 'desc' : 'asc',
         orderByStatus: null,
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -109,7 +111,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         orderByUpdate: null,
         orderByLastName: null,
       },
-      () => this.settleMedicalCase(),
+      () => this.settleMedicalCase()
     );
   };
 
@@ -179,42 +181,56 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     return medicalCases.length > 0 ? (
       [
         <List block key="medicalCaseList">
-          {medicalCases.map((medicalCase) => (
-            <ListItem
-              rounded
-              block
-              style={{
-                backgroundColor: '#ffffff',
-              }}
-              key={`${medicalCase.id}_medical_case_list`}
-              spaced
-              onPress={async () => {
-                await this.selectMedicalCase({
-                  ...medicalCase,
-                });
+          {medicalCases.map((medicalCase) => {
+            let first_top_right_question = null;
+            let second_top_right_question = null;
+            if (
+              medicalCase.first_top_right_question_id !== null &&
+              medicalCase.second_top_right_question_id !== null &&
+              medicalCase.nodes[medicalCase.first_top_right_question_id]?.value !== null &&
+              medicalCase.nodes[medicalCase.second_top_right_question_id]?.value !== null
+            ) {
+              first_top_right_question = medicalCase.nodes[medicalCase.first_top_right_question_id]?.value;
+              second_top_right_question = medicalCase.nodes[medicalCase.second_top_right_question_id]?.value;
+            }
 
-                const route = routeDependingStatus(medicalCase);
-
-                if (route !== undefined) {
-                  navigation.navigate(route, {
-                    idPatient: medicalCase.patient_id,
-                    newMedicalCase: false,
+            return (
+              <ListItem
+                rounded
+                block
+                style={{
+                  backgroundColor: '#ffffff',
+                }}
+                key={`${medicalCase.id}_medical_case_list`}
+                spaced
+                onPress={async () => {
+                  await this.selectMedicalCase({
+                    ...medicalCase,
                   });
-                }
-              }}
-            >
-              <View w50>
-                <Text>{medicalCase.id}</Text>
-              </View>
-              <View w50>
-                <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
-              </View>
 
-              <View w50>
-                <Text>{moment(medicalCase.updated_at).calendar()}</Text>
-              </View>
-            </ListItem>
-          ))}
+                  const route = routeDependingStatus(medicalCase);
+
+                  if (route !== undefined) {
+                    navigation.navigate(route, {
+                      idPatient: medicalCase.patient_id,
+                      newMedicalCase: false,
+                    });
+                  }
+                }}
+              >
+                <View w50>
+                  <Text>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : medicalCase.id}</Text>
+                </View>
+                <View w50>
+                  <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
+                </View>
+
+                <View w50>
+                  <Text>{moment(medicalCase.updated_at).calendar()}</Text>
+                </View>
+              </ListItem>
+            );
+          })}
         </List>,
       ]
     ) : (
@@ -238,8 +254,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
           <LiwiTitle2 noBorder>{t('medical_case_list:search')}</LiwiTitle2>
           <View flex-container-row>
             <Item round style={styles.input}>
-              <Icon active name="search"/>
-              <Input value={searchTerm} onChangeText={this.searchBy}/>
+              <Icon active name="search" />
+              <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
           </View>
           <View flex-container-row style={styles.filter}>
@@ -248,37 +264,37 @@ export default class MedicalCaseList extends React.Component<Props, State> {
             </Button>
             <Text style={styles.textFilter}>{t('medical_case_list:waiting')}</Text>
             <Picker style={styles.picker} mode="dropdown" selectedValue={filterTerm} onValueChange={this.filterBy}>
-              <Picker.Item label="" value=""/>
+              <Picker.Item label="" value="" />
               {statuses.map((status) => (
-                <Picker.Item label={t(`medical_case_list:${status}`)} key={`${status}status_list`} value={status}/>
+                <Picker.Item label={t(`medical_case_list:${status}`)} key={`${status}status_list`} value={status} />
               ))}
             </Picker>
           </View>
 
-          <SeparatorLine/>
+          <SeparatorLine />
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('medical_case_list:sort')}</Text>
             <View style={styles.filters}>
               <Button center rounded light onPress={this.orderByFirstName}>
-                {orderByFirstName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+                {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
                 <Text>{t('medical_case_list:name')}</Text>
               </Button>
               <Button center rounded light onPress={this.orderByLastName}>
-                {orderByLastName === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+                {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
                 <Text>{t('medical_case_list:surname')}</Text>
               </Button>
               <Button center rounded light onPress={this.orderByStatus}>
-                {orderByStatus === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+                {orderByStatus === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
                 <Text>{t('medical_case_list:status')}</Text>
               </Button>
               <Button center rounded light onPress={this.orderByUpdate}>
-                {orderByUpdate === 'asc' ? <Icon name="arrow-down"/> : <Icon name="arrow-up"/>}
+                {orderByUpdate === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
                 <Text>{t('medical_case_list:update')}</Text>
               </Button>
             </View>
           </View>
-          {loading ? <LiwiLoader/> : this._renderMedicalCase()}
+          {loading ? <LiwiLoader /> : this._renderMedicalCase()}
         </View>
       </ScrollView>
     );
