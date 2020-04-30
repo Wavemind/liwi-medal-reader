@@ -1,14 +1,14 @@
 // @flow
 
 import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
     if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
-      this.id = uuidv4();
+      this.id = uuid.v1();
       this.name = currentAlgorithm.name;
       this.algorithm_name = currentAlgorithm.algorithm_name;
       this.version_name = currentAlgorithm.version_name;

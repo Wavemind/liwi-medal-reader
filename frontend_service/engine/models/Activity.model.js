@@ -1,6 +1,6 @@
 // @flow
 
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import { getDeviceInformation } from '../../../src/engine/api/Device';
 
@@ -9,7 +9,7 @@ export class ActivityModel {
 
   constructorAsync = async (props) => {
     const { stage, nodes, user, medicalCaseId } = props;
-    this.id = uuidv4();
+    this.id = uuid.v1();
 
     const session = await getItem('session');
     const deviceInfo = await getDeviceInformation();
