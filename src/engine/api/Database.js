@@ -85,7 +85,7 @@ export default class Database {
    * Define interface by connection and group architecture
    * @returns {string} interface to use
    * @private
-   */
+   */ 
   _checkInterface = () => {
     let dbInterface = '';
     if (this.architecture === 'standalone' || !this.isConnected) {

@@ -73,7 +73,7 @@ export class PatientModel {
    * @returns {boolean}
    */
   wasInOtherFacility = () => {
-    return this.other_uid !== null;
+    return this.other_uid !== null && this.other_uid !== undefined;
   };
 }
 
