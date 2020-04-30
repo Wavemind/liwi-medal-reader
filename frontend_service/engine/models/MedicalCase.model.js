@@ -65,7 +65,6 @@ export class MedicalCaseModel {
       };
       this.generateExcludedId();
     } else {
-      const json = JSON.parse(this.json); // WARNING this might slow down the app
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
       if (this.json === undefined) {
