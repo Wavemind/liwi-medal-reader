@@ -1,6 +1,6 @@
 // @flow
 
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 
@@ -48,7 +48,7 @@ export class PatientModel {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
     const database = await new Database();
     this.json = JSON.stringify;
-    this.id = uuidv4();
+    this.id = uuid.v1();
     return database.insert('Patient', {
       ...this,
       medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
