@@ -276,52 +276,52 @@ export default class PatientUpsert extends React.Component<Props, State> {
             {loading ? (
               <LiwiLoader />
             ) : (
-                <>
-                  <View>
-                    <Col>
-                      {this.renderIdentifierData()}
-                      {patient.wasInOtherFacility() && (
-                        <CustomInput
-                          init={patient.reason}
-                          label={t('patient:reason')}
-                          change={updatePatientValue}
-                          index="reason"
-                          iconName="sign-out"
-                          iconType="FontAwesome"
-                          error={errors.reason}
-                          autoCapitalize="sentences"
-                        />
-                      )}
-                    </Col>
-                  </View>
-                  <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-                  <Questions questions={extraQuestions} />
-                  <View bottom-view>
-                    {algorithmReady ? (
-                      !loading ? (
-                        <>
-                          {newMedicalCase && (
-                            <View columns>
-                              <Button light split onPress={() => save('PatientList')}>
-                                <Text>{t('patient_upsert:save_and_wait')}</Text>
-                              </Button>
-                              <Button success split onPress={() => save('Triage')}>
-                                <Text>{t('patient_upsert:save_and_case')}</Text>
-                              </Button>
-                            </View>
-                          )}
-                        </>
-                      ) : (
-                          <LiwiLoader />
-                        )
+              <>
+                <View>
+                  <Col>
+                    {this.renderIdentifierData()}
+                    {patient.wasInOtherFacility() && (
+                      <CustomInput
+                        init={patient.reason}
+                        label={t('patient:reason')}
+                        change={updatePatientValue}
+                        index="reason"
+                        iconName="sign-out"
+                        iconType="FontAwesome"
+                        error={errors.reason}
+                        autoCapitalize="sentences"
+                      />
+                    )}
+                  </Col>
+                </View>
+                <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+                <Questions questions={extraQuestions} />
+                <View bottom-view>
+                  {algorithmReady ? (
+                    !loading ? (
+                      <>
+                        {newMedicalCase && (
+                          <View columns>
+                            <Button light split onPress={() => save('PatientList')}>
+                              <Text>{t('patient_upsert:save_and_wait')}</Text>
+                            </Button>
+                            <Button success split onPress={() => save('Triage')}>
+                              <Text>{t('patient_upsert:save_and_case')}</Text>
+                            </Button>
+                          </View>
+                        )}
+                      </>
                     ) : (
-                        <View columns>
-                          <Text>{t('work_case:no_algorithm')}</Text>
-                        </View>
-                      )}
-                  </View>
-                </>
-              )}
+                      <LiwiLoader />
+                    )
+                  ) : (
+                    <View columns>
+                      <Text>{t('work_case:no_algorithm')}</Text>
+                    </View>
+                  )}
+                </View>
+              </>
+            )}
           </ScrollView>,
         ]}
       </Stepper>
