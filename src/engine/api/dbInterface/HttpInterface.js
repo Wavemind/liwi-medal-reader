@@ -107,6 +107,8 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+
+    // TODO need to be carefull with.json() when http 500
     const result = await httpRequest.json();
 
     if (httpRequest.status === 200) {

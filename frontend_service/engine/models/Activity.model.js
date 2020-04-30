@@ -5,12 +5,11 @@ import { getItem } from '../../../src/engine/api/LocalStorage';
 import { getDeviceInformation } from '../../../src/engine/api/Device';
 
 export class ActivityModel {
-  constructor() {
-    this.id = uuidv4();
-  }
+  constructor() {}
 
   constructorAsync = async (props) => {
     const { stage, nodes, user, medicalCaseId } = props;
+    this.id = uuidv4();
 
     const session = await getItem('session');
     const deviceInfo = await getDeviceInformation();
