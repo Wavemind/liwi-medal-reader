@@ -69,7 +69,6 @@ export const post = async (params, body = {}, config = {}) => {
 
   const header = await getHeaders('POST', body, config);
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
-  console.log('ICIewfwefdff');
 
   const response = await request.json();
 
@@ -105,8 +104,6 @@ export const auth = async (email, password) => {
       throw { success: false };
     }
   });
-  console.log('ICIdeweeeff');
-
   const body = await request.json();
 
   // Display error

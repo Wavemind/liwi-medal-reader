@@ -35,12 +35,12 @@ export default class QrCodePatient extends React.Component<Props, State> {
     }
 
     // QRcode valid ?
-    if ('uid' in json && 'studyId' in json && 'groupId' in json) {
+    if ('uid' in json && 'study_id' in json && 'group_id' in json) {
       const session = await getItem('session');
 
-      const sameFacility = session?.group?.id === json.groupId;
+      const sameFacility = session?.group?.id === json.group_id;
 
-      const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'otherUid');
+      const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'other_uid');
 
       if (patient !== null) {
         navigation.navigate('PatientProfile', {
