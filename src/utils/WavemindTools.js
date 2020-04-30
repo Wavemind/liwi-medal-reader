@@ -6,6 +6,9 @@ import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/a
 import NavigationService from '../engine/navigation/Navigation.service';
 import { persistor, store } from '../../frontend_service/store';
 import { memorySizeOf } from './swissKnives';
+import Realm from 'realm';
+import { PatientModel } from '../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../frontend_service/engine/models/MedicalCase.model';
 
 export default class WavemindTools extends Component {
   constructor(props) {
@@ -39,6 +42,10 @@ export default class WavemindTools extends Component {
                   key="2"
                   blue
                   onPress={async () => {
+                    await Realm.deleteFile({
+                      schema: [PatientModel, MedicalCaseModel],
+                      deleteRealmIfMigrationNeeded: true,
+                    });
                     await clearLocalStorage();
                     await persistor.purge();
                     NavigationService.navigate('NewSession');
