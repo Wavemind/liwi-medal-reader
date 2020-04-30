@@ -2,9 +2,10 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import _ from 'lodash';
 import find from 'lodash/find';
 import { store } from '../../../frontend_service/store';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { medicalCaseStatus, valueFormats } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import Database from '../api/Database';
+import moment from 'moment';
 
 let _navigator;
 
@@ -94,27 +95,35 @@ function getActiveRouteName(navigationState) {
  * @params : navigation : the current state navigation
  * @params : string : set the title of the page
  */
-function setParamsAge(navigation, name) {
+function setParamsAge(name) {
   const state$ = store.getState();
 
-  const { nodes } = state$;
+  const { nodes, left_top_question_id, first_top_right_question_id, second_top_right_question_id } = state$;
 
-  const age = find(nodes, { label: 'Age in months' });
+  const showValue = (node) => {
+    if (node === undefined) {
+      return '';
+    }
+    if (node.value_format === valueFormats.date && node.value !== null) {
+      return `| ${moment(node.value).format('L')}`;
+    }
 
-  let stringAge;
+    if (node.value === null) {
+      return '';
+    }
 
-  if (age !== undefined) {
-    stringAge = age.value === null ? 'Age is not defined' : `${age.value} months`;
-  } else {
-    stringAge = 'No question for age found';
-  }
+    return node.value;
+  };
 
-  const headerRight = `TBD TBD | TBD`;
+  const headerRight = `${showValue(nodes[first_top_right_question_id])} ${showValue(nodes[second_top_right_question_id])} ${showValue(nodes[left_top_question_id])}`;
+  const currentRoute = getCurrentRoute();
 
-  navigation.setParams({
-    title: name,
-    headerRight,
+  const action = NavigationActions.setParams({
+    ...currentRoute,
+    params: { title: name, headerRight },
   });
+
+  _navigator.dispatch(action);
 }
 
 /**
@@ -187,7 +196,7 @@ async function onNavigationStateChange(prevState, currentState) {
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
         const database = await new Database();
-        database.update('MedicalCase', state$.id, {'status': routeStatus.name});
+        database.update('MedicalCase', state$.id, { status: routeStatus.name });
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }

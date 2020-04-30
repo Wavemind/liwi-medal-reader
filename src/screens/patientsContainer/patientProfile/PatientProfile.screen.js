@@ -100,15 +100,28 @@ export default class PatientProfile extends React.Component {
       );
     });
 
+    let first_top_right_question = null;
+    let second_top_right_question = null;
+
+    patient.medicalCases.map((mc) => {
+      if (
+        mc.first_top_right_question_id !== null &&
+        mc.second_top_right_question_id !== null &&
+        mc.nodes[mc.first_top_right_question_id]?.value !== null &&
+        mc.nodes[mc.second_top_right_question_id]?.value !== null
+      ) {
+        first_top_right_question = mc.nodes[mc.first_top_right_question_id]?.value;
+        second_top_right_question = mc.nodes[mc.second_top_right_question_id]?.value;
+      }
+    });
+
     return !firstRender ? (
-      <LiwiLoader/>
+      <LiwiLoader />
     ) : (
       <View padding-auto flex>
-        <LiwiTitle2 noBorder>
-          {patient.id}
-        </LiwiTitle2>
+        <LiwiTitle2 noBorder>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</LiwiTitle2>
 
-        <SeparatorLine style={styles.bottomMargin}/>
+        <SeparatorLine style={styles.bottomMargin} />
         {algorithms.length > 0 ? (
           <View flex>
             <View>
