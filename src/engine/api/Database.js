@@ -78,14 +78,15 @@ export default class Database {
    * @returns {string}
    */
   unlockMedicalCase = (id) => {
-    return this.httpInterface.unlockMedicalCase(id);
+    const dbInterface = this._checkInterface();
+    return this[dbInterface].unlockMedicalCase(id);
   };
 
   /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
    * @private
-   */ 
+   */
   _checkInterface = () => {
     let dbInterface = '';
     if (this.architecture === 'standalone' || !this.isConnected) {
