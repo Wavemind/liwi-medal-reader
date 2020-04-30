@@ -68,13 +68,12 @@ export default class PatientProfile extends React.Component {
 
     // Display list of medical cases
     const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
-
       return (
         <ListItem
           key={`${medicalCase.id}_mc`}
           rounded
           block
-          style={{backgroundColor: '#ffffff'}}
+          style={{ backgroundColor: '#ffffff' }}
           spaced
           onPress={async () => {
             await this.selectMedicalCase({
@@ -101,45 +100,58 @@ export default class PatientProfile extends React.Component {
       );
     });
 
+    let first_top_right_question = null;
+    let second_top_right_question = null;
+
+    patient.medicalCases.map((mc) => {
+      if (
+        mc.first_top_right_question_id !== null &&
+        mc.second_top_right_question_id !== null &&
+        mc.nodes[mc.first_top_right_question_id]?.value !== null &&
+        mc.nodes[mc.second_top_right_question_id]?.value !== null
+      ) {
+        first_top_right_question = mc.nodes[mc.first_top_right_question_id]?.value;
+        second_top_right_question = mc.nodes[mc.second_top_right_question_id]?.value;
+      }
+    });
+
     return !firstRender ? (
-      <LiwiLoader/>
+      <LiwiLoader />
     ) : (
       <View padding-auto flex>
-        <LiwiTitle2 noBorder>
-          {patient.id}
-        </LiwiTitle2>
+        <LiwiTitle2 noBorder>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</LiwiTitle2>
 
-          <SeparatorLine style={styles.bottomMargin} />
-          {algorithms.length > 0 ? (
-            <View flex>
-              <View>
-                {patient.medicalCases.length > 0 ? (
-                  <List block>{_renderMedicalCases}</List>
-                ) : (
-                    <View padding-auto margin-auto>
-                      <Text not-available>{t('work_case:no_medical_cases')}</Text>
-                    </View>
-                  )}
-              </View>
-              <View bottom-view>
-                <Button
-                  onPress={() => {
-                    navigation.navigate('PatientUpsert', {
-                      idPatient: patient.id,
-                      newMedicalCase: true,
-                    });
-                  }}
-                >
-                  <Text>{t('work_case:create')}</Text>
-                </Button>
-              </View>
+        <SeparatorLine style={styles.bottomMargin} />
+        {algorithms.length > 0 ? (
+          <View flex>
+            <View>
+              {patient.medicalCases.length > 0 ? (
+                <List block>{_renderMedicalCases}</List>
+              ) : (
+                <View padding-auto margin-auto>
+                  <Text not-available>{t('work_case:no_medical_cases')}</Text>
+                </View>
+              )}
             </View>
-          ) : (
-              <View padding-auto margin-auto>
-                <Text>{t('work_case:no_algorithm')}</Text>
-              </View>
-            )}
-        </View>
-      );
+            <View bottom-view>
+              <Button
+                onPress={() => {
+                  navigation.navigate('PatientUpsert', {
+                    idPatient: patient.id,
+                    newMedicalCase: true,
+                  });
+                }}
+              >
+                <Text>{t('work_case:create')}</Text>
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text>{t('work_case:no_algorithm')}</Text>
+          </View>
+        )}
+      </View>
+    );
   }
 }

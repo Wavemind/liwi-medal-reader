@@ -17,6 +17,7 @@ import {
   setDiagnoses,
 } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
+import NavigationService from '../../src/engine/navigation/Navigation.service';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated. */
 
@@ -55,6 +56,10 @@ export const epicCatchAnswer = (action$, state$) =>
       }
 
       relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
+
+      if (index === state$.value.left_top_question_id || index === state$.value.first_top_right_question_id || index === state$.value.second_top_right_question_id) {
+        NavigationService.setParamsAge();
+      }
 
       return of(...arrayActions);
     })

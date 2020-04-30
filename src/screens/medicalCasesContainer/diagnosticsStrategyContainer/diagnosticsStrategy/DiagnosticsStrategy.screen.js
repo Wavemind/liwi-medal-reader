@@ -23,7 +23,7 @@ export default class DiagnosesStrategy extends Component<Props, State> {
 
     const { navigation } = this.props;
 
-    NavigationService.setParamsAge(navigation, t('navigation:diagnosticsstrategy'));
+    NavigationService.setParamsAge(t('navigation:diagnosticsstrategy'));
   }
 
   render() {
