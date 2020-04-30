@@ -8,7 +8,6 @@ import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
 import ConfirmationView from '../../components/ConfirmationView';
-import { fetchAlgorithms } from '../../../frontend_service/api/Http';
 import { liwiColors } from '../../utils/constants';
 import ToolTipModal from '../../components/ToolTipModal';
 import QrCodePatient from '../../components/QrCodePatient';
@@ -42,7 +41,6 @@ export default class Home extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    // await fetchAlgorithms();
     const algorithms = await getItems('algorithms');
     this.setState({ algorithms });
   }

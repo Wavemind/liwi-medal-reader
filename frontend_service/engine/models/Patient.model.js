@@ -10,20 +10,20 @@ export class PatientModel {
 
     if (this.id === undefined) {
       if (otherFacility !== null) {
-        this.otherUid = otherFacility?.uid?.toString();
-        this.otherStudyId = otherFacility?.studyId?.toString();
-        this.otherGroupId = otherFacility?.groupId?.toString();
+        this.other_uid = otherFacility?.uid?.toString();
+        this.other_study_id = otherFacility?.study_id?.toString();
+        this.other_group_iId = otherFacility?.group_id?.toString();
       } else {
-        this.otherUid = null;
-        this.otherStudyId = null;
-        this.otherGroupId = null;
+        this.other_uid = null;
+        this.other_study_id = null;
+        this.other_group_iId = null;
       }
 
       this.main_data_patient_id = main_data_patient_id;
 
       this.uid = facility !== null ? facility?.uid?.toString() : null;
-      this.studyId = facility !== null ? facility?.studyId?.toString() : null;
-      this.groupId = facility !== null ? facility?.groupId?.toString() : null;
+      this.study_id = facility !== null ? facility?.study_id?.toString() : null;
+      this.group_id = facility !== null ? facility?.group_id?.toString() : null;
       this.reason = reason;
 
       this.medicalCases = medicalCases;
@@ -73,7 +73,7 @@ export class PatientModel {
    * @returns {boolean}
    */
   wasInOtherFacility = () => {
-    return this.otherUid !== null;
+    return this.other_uid !== null;
   };
 }
 
@@ -83,11 +83,11 @@ PatientModel.schema = {
   properties: {
     id: 'string',
     uid: 'string',
-    studyId: 'string',
-    groupId: 'string',
-    otherUid: 'string?',
-    otherStudyId: 'string?',
-    otherGroupId: 'string?',
+    study_id: 'string',
+    group_id: 'string',
+    other_uid: 'string?',
+    other_study_id: 'string?',
+    other_group_iId: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
     main_data_patient_id: { type: 'int', optional: true },
