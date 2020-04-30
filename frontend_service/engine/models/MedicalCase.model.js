@@ -19,11 +19,11 @@ export class MedicalCaseModel {
       this.diagnostics = currentAlgorithm.diagnostics;
       this.nodes = { ...currentAlgorithm.nodes };
       this.orders = currentAlgorithm.orders;
+      this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
-      console.log(currentAlgorithm);
       this.left_top_question_id = currentAlgorithm.left_top_question_id ?? null;
       this.first_top_right_question_id = currentAlgorithm.first_top_right_question_id ?? null;
       this.second_top_right_question_id = currentAlgorithm.second_top_right_question_id ?? null;
@@ -86,6 +86,7 @@ export class MedicalCaseModel {
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
       this.orders = json.orders;
+      this.triage = json.triage;
       this.complaintCategories = json.complaintCategories;
       this.isNewCase = false;
       this.modal = {
