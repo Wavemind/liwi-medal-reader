@@ -125,9 +125,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     // Connected again
     if (status === true && isConnected === false) {
-      const medicalCases = await database.getAll('MedicalCase');
-      const activity = await database.getAll('Activity');
-
+      // const medicalCases = await database.getAll('MedicalCase');
+      // const activity = await database.getAll('Activity');
       // need to test send data
     }
 

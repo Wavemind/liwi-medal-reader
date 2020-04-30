@@ -17,9 +17,10 @@ import StatusIndicator from './components/StatusIndicator';
 
 export default class Root extends React.Component {
   async componentDidMount() {
-    // // TODO: HOT FIX due to parse json errors. Issue not close yet - 28.04.2020
-    // // TODO: https://github.com/facebook/react-native/issues/25701
-    // // TODO: Patch from https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529
+    // TODO: HOT FIX due to parse json errors. Issue not close yet - 28.04.2020
+    // TODO: https://github.com/facebook/react-native/issues/25701
+    // TODO: Patch from https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529
+
     // global.XMLHttpRequest = global.originalXMLHttpRequest || global.XMLHttpRequest;
     // global.FormData = global.originalFormData || global.FormData;
     //

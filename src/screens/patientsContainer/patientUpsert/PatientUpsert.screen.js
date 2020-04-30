@@ -65,6 +65,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
         });
       }
 
+      NavigationService.setParamsAge('Patient');
+
       this.setState({
         patient,
         algorithmReady: true,
@@ -104,9 +106,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
       if (patientId !== null || patientId === undefined) {
         const patient = await database.findBy('Patient', patientId);
         isSaved = patient.addMedicalCase(medicalCase);
+        updateMedicalCaseProperty('patient_id', patient.id);
       } else {
         isSaved = await this.savePatient();
       }
+
       if (isSaved) {
         const currentRoute = NavigationService.getCurrentRoute();
         // Replace the nextRoute navigation at the current index
@@ -147,11 +151,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   savePatient = async () => {
     const { patient } = this.state;
-    const { medicalCase } = this.props;
+    const { medicalCase, updateMedicalCaseProperty } = this.props;
 
     // Create patient if there are no errors
     patient.medicalCases.push(medicalCase);
     await patient.save();
+    updateMedicalCaseProperty('patient_id', patient.id);
     return true;
   };
 
@@ -212,6 +217,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   render() {
     const { updatePatientValue, save } = this;
     const { patient, errors, loading, algorithmReady, newMedicalCase } = this.state;
+    const { navigation } = this.props;
 
     const {
       app: { t },
@@ -278,7 +284,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
                       <CustomInput
                         init={patient.reason}
                         label={t('patient:reason')}
-                        style={styles.identifierText}
                         change={updatePatientValue}
                         index="reason"
                         iconName="sign-out"

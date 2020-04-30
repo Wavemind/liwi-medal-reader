@@ -106,6 +106,7 @@ function oneValidation(criteria, questions, stepName) {
           const q = state$.nodes[questionId];
           if (q.is_mandatory === true) {
             result = state$.nodes[questionId].answer !== null || state$.nodes[questionId].value !== null;
+
             if (!result) {
               isValid = false;
               staticValidator.questionsToBeFill.push(state$.nodes[questionId]);
@@ -144,7 +145,6 @@ function oneValidation(criteria, questions, stepName) {
  * @return {any}
  */
 export const validatorNavigate = (navigateRoute) => {
-
   // Break Ref JS
   const validator = JSON.parse(JSON.stringify(modelValidator));
 
@@ -176,7 +176,6 @@ export const validatorNavigate = (navigateRoute) => {
   /** MedicalCases Routes * */
 
   if (detailNavigateRoute.medicalCaseOrder !== undefined) {
-    /** the case is still in creation, do not permit to go into medical case * */
 
     // Route depending status
     const routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
@@ -213,8 +212,6 @@ export const validatorNavigate = (navigateRoute) => {
         // Validation on each Step
         return oneValidation(criteria, questions, validation);
       });
-
-
 
       // All step has to be valide
       validator.isActionValid = screenResults.every((c) => c.isActionValid === true);

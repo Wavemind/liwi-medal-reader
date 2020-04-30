@@ -8,7 +8,6 @@ import { store } from '../store';
 import { updateModalFromRedux } from '../actions/creators.actions';
 import i18n from '../../src/utils/i18n';
 import { liwiColors } from '../../src/utils/constants';
-
 /**
  * Https GET request
  *  @params [String] params
