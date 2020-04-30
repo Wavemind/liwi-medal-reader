@@ -65,6 +65,7 @@ export class MedicalCaseModel {
       };
       this.generateExcludedId();
     } else {
+      const json = JSON.parse(this.json); // WARNING this might slow down the app
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
       if (this.json === undefined) {
@@ -206,6 +207,7 @@ MedicalCaseModel.schema = {
   properties: {
     id: 'string',
     json: 'string',
+    activities: 'Activity[]',
     synchronized_at: 'date?',
     created_at: 'date',
     updated_at: 'date',

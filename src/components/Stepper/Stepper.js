@@ -20,6 +20,9 @@ import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_s
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
+import { diff, difference, differenceNodes } from '../../utils/swissKnives';
+import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
+import uuid from 'rn-fetch-blob/utils/uuid';
 
 type Props = {
   children: any,
@@ -182,9 +185,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page - 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page - 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page - 1);
   };
 
@@ -198,9 +201,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page + 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page + 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page + 1);
   };
 
@@ -251,7 +254,7 @@ class Stepper extends React.Component<Props, State> {
   };
 
   nextStage = async () => {
-    const { navigation, nextStage, endMedicalCase, paramsNextStage } = this.props;
+    const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
 
     const medicalCase = store.getState();
 
@@ -261,7 +264,18 @@ class Stepper extends React.Component<Props, State> {
     }
 
     const database = await new Database();
+    const databaseMedicalCase = database.findBy('MedicalCase', medicalCase.id);
+    const activity = await new ActivityModel();
+
+    await activity.constructorAsync({
+      nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
+      stage: NavigationService.getCurrentRoute().routeName,
+      user: app.user.id,
+      medicalCaseId: medicalCase.id,
+    });
+
     medicalCase.json = JSON.stringify(medicalCase);
+    database.push('MedicalCase', medicalCase.id, 'activities', activity);
     database.update('MedicalCase', medicalCase.id, medicalCase);
 
     if (endMedicalCase === true) {
@@ -298,11 +312,11 @@ class Stepper extends React.Component<Props, State> {
                   this.state.error ? (
                     <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                      <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
-                    )
+                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                  )
                 ) : (
-                    <Icon {...iconConfig} />
-                  )}
+                  <Icon {...iconConfig} />
+                )}
               </View>
               <Text style={[styles.stepTitle, isSelected ? activeStepTitleStyle : inactiveStepTitleStyle]}>{step}</Text>
             </View>
@@ -386,8 +400,8 @@ class Stepper extends React.Component<Props, State> {
                 {this.renderSteps()}
               </ScrollView>
             ) : (
-                this.renderSteps()
-              )}
+              this.renderSteps()
+            )}
           </View>
         ) : null}
         {this.renderViewPager()}
@@ -418,15 +432,15 @@ class Stepper extends React.Component<Props, State> {
                 </View>
               </PlatformTouchableNative>
             ) : (
-                nextStage !== null && (
-                  <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
-                    <View style={[styles.button]}>
-                      <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
-                    </View>
-                  </PlatformTouchableNative>
-                )
-              )}
+              nextStage !== null && (
+                <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+                  <View style={[styles.button]}>
+                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
+                    {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
+                  </View>
+                </PlatformTouchableNative>
+              )
+            )}
           </View>
         ) : null}
       </View>
