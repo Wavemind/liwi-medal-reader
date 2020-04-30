@@ -169,7 +169,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       return null;
     }
 
-    const { otherUid, otherStudyId, otherGroupId } = patient;
+    const { other_uid, other_study_id, other_group_iId } = patient;
 
     return (
       <View>
@@ -179,33 +179,33 @@ export default class PatientUpsert extends React.Component<Props, State> {
           <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.uid} change={updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
         <View w50 style={styles.containerText}>
-          <Text style={styles.identifierText}>{t('patient_upsert:studyId')}</Text>
-          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.studyId} change={updatePatientValue} index="studyId" autoCapitalize="sentences" />
+          <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
+          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.study_id} change={updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
-          <Text style={styles.identifierText}>{t('patient_upsert:groupId')}</Text>
-          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.groupId} change={updatePatientValue} index="groupId" autoCapitalize="sentences" />
+          <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
+          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.group_id} change={updatePatientValue} index="group_id" autoCapitalize="sentences" />
         </View>
 
         {patient.wasInOtherFacility() && (
           <>
             <View w50 style={styles.containerText}>
-              <Text style={styles.identifierText}>{t('patient_upsert:otherUid')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:other_uid')}</Text>
               <Text style={styles.identifierText} right>
-                {otherUid}
+                {other_uid}
               </Text>
             </View>
             <View w50 style={styles.containerText}>
-              <Text style={styles.identifierText}>{t('patient_upsert:otherStudyId')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:other_study_id')}</Text>
               <Text style={styles.identifierText} right>
-                {otherStudyId}
+                {other_study_id}
               </Text>
             </View>
             <View w50 style={styles.containerText}>
-              <Text style={styles.identifierText}>{t('patient_upsert:otherGroupId')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:other_group_iId')}</Text>
               <Text style={styles.identifierText} right>
-                {otherGroupId}
+                {other_group_iId}
               </Text>
             </View>
           </>
