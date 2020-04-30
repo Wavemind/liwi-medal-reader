@@ -95,7 +95,7 @@ function getActiveRouteName(navigationState) {
  * @params : navigation : the current state navigation
  * @params : string : set the title of the page
  */
-function setParamsAge(name) {
+function setParamsAge(name = '') {
   const state$ = store.getState();
 
   const { nodes, left_top_question_id, first_top_right_question_id, second_top_right_question_id } = state$;

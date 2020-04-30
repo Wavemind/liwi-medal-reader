@@ -35,7 +35,7 @@ export default class Database {
   findBy = (model, value, field = 'id') => {
     const dbInterface = this._checkInterface();
     return this[dbInterface].findBy(model, value, field);
-  }
+  };
 
   /**
    * Creates an entry of a specific model in the database
@@ -94,6 +94,6 @@ export default class Database {
       dbInterface = 'httpInterface';
     }
 
-    return dbInterface;
+    return 'httpInterface';
   };
 }

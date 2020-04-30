@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { isTablet, liwiColors, screenWidth } from '../../../utils/constants';
+import { isTablet, liwiColors, screenHeight, screenWidth } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
 
-  flex: { flex: 1 },
+  flex: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: screenHeight },
 
   height: {
     height: 200,
