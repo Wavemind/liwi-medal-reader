@@ -61,6 +61,8 @@ export default class Drawer extends Component<Props, State> {
     // Get current route from navigation
     const r = NavigationService.getCurrentRoute();
 
+    console.log(medicalCase);
+
     // Is redux ready, for disabled buttons
     const areMedicalCaseInredux = medicalCase.id !== undefined;
 
@@ -69,7 +71,7 @@ export default class Drawer extends Component<Props, State> {
         if (name === 'PatientUpsert') {
           navigation.navigate({
             routeName: name,
-            params: { initialPage, idPatient: medicalCase?.patient?.id, newMedicalCase: false },
+            params: { initialPage, idPatient: medicalCase?.patient_id, newMedicalCase: false },
             key: name + initialPage,
           });
         }

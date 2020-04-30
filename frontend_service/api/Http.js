@@ -8,7 +8,6 @@ import { store } from '../store';
 import { updateModalFromRedux } from '../actions/creators.actions';
 import i18n from '../../src/utils/i18n';
 import { liwiColors } from '../../src/utils/constants';
-
 /**
  * Https GET request
  *  @params [String] params
@@ -71,9 +70,6 @@ export const post = async (params, body = {}, config = {}) => {
   const header = await getHeaders('POST', body, config);
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
   const response = await request.json();
-
-  console.log(request);
-  console.log(response);
 
   // Display error
   if (!request.ok) {
