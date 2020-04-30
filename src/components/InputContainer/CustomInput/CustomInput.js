@@ -14,6 +14,7 @@ export default class CustomInput extends React.Component<Props, State> {
   state = { value: '' };
 
   static defaultProps = {
+    style: {},
     iconName: false,
     iconType: false,
     keyboardType: 'default',
@@ -41,19 +42,23 @@ export default class CustomInput extends React.Component<Props, State> {
   };
 
   render() {
-    const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed, autoCapitalize } = this.props;
+    const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed, autoCapitalize, style } = this.props;
 
     const { value } = this.state;
 
     return (
-      <Form style={condensed ? null : styles.form}>
-        <View style={styles.view}>
-          {iconName && iconType ? <Icon name={iconName} type={iconType} style={styles.icon} /> : null}
-          <Text style={iconName && iconType ? styles.textWithoutIcon : styles.textWithIcon}>{label}</Text>
-          <Text error>{error}</Text>
-        </View>
-        <ViewBlocColor>
+      <Form style={{ ...(condensed ? null : styles.form), flex: 1 }}>
+        {iconName && iconType ? (
+          <View style={styles.view}>
+            {iconName && iconType ? <Icon name={iconName} type={iconType} style={styles.icon} /> : null}
+            <Text style={iconName && iconType ? styles.textWithoutIcon : styles.textWithIcon}>{label}</Text>
+            <Text error>{error}</Text>
+          </View>
+        ) : null}
+
+        <View>
           <Input
+            style={style}
             autoCapitalize={autoCapitalize}
             common
             keyboardType={keyboardType}
@@ -63,7 +68,7 @@ export default class CustomInput extends React.Component<Props, State> {
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
           />
-        </ViewBlocColor>
+        </View>
       </Form>
     );
   }
