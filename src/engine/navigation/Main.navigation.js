@@ -205,7 +205,7 @@ const Stack = createStackNavigator(
         headerRight: () => (
           <Text
             style={{
-              marginRight: 10,
+              marginRight: 50,
               fontSize: 20,
               fontWeight: '500',
               color: liwiColors.blackLightColor,

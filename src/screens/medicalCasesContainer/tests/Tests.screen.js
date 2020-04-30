@@ -19,7 +19,7 @@ type State = {};
 export default class Tests extends React.Component<Props, State> {
   componentDidMount() {
     const { navigation } = this.props;
-    NavigationService.setParamsAge(navigation, 'Tests');
+    NavigationService.setParamsAge('Tests');
   }
 
   render() {

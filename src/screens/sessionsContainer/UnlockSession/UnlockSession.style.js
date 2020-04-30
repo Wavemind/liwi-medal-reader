@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
 
   appContent: { alignItems: 'center', marginTop: 20 },
 
-  buttonSync: { alignSelf: 'center', marginTop: 30 },
+  buttonSync: { alignSelf: 'center' },
   buttonLogout: { alignSelf: 'center' },
   imgKeys: { width: 90, height: 90, margin: 0 },
   lottie: {
@@ -56,8 +56,7 @@ export const styles = StyleSheet.create({
   stylePinCodeButtonCircle: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 80,
-    height: 80,
+
     backgroundColor: 'rgb(78,80,83)',
     borderRadius: 40,
   },
