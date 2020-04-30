@@ -23,6 +23,9 @@ export default {
     '.white': {
       color: liwiColors.whiteColor,
     },
+    '.right': {
+      textAlign: 'right',
+    },
     '.error': {
       color: liwiColors.redColor,
     },
@@ -70,8 +73,8 @@ export default {
       fontSize: 20,
       paddingBottom: 5,
       paddingTop: 5,
-      fontWeight: 'bold',
-      marginLeft: 0,
+      fontFamily: 'Roboto-Bold',
+      marginLeft: 5,
     },
     '.smallTitle': {
       color: liwiColors.redColor,

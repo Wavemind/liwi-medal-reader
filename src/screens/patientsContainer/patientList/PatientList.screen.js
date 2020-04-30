@@ -20,16 +20,6 @@ export default class PatientList extends React.Component {
     patients: [],
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const { focus } = this.props;
-    const { searchTerm } = this.state;
-
-    if ((nextProps.focus === 'didFocus' && (focus === undefined || focus === null)) || nextState.searchTerm !== searchTerm) {
-      this.fetchPatients();
-    }
-    return true;
-  }
-
   async componentDidMount() {
     const { navigation } = this.props;
     // Force refresh with a navigation.push
@@ -47,12 +37,52 @@ export default class PatientList extends React.Component {
 
     const patients = await database.getAll('Patient');
     const algorithms = await getItems('algorithms');
-
     this.setState({
       algorithms,
       patients,
       loading: false,
     });
+  };
+
+  _renderPatient = (patient) => {
+    const {
+      navigation,
+      app: { t },
+    } = this.props;
+
+    let first_top_right_question = null;
+    let second_top_right_question = null;
+
+    patient.medicalCases.map((mc) => {
+
+      if (
+        mc.first_top_right_question_id !== null &&
+        mc.second_top_right_question_id !== null &&
+        mc.nodes[mc.first_top_right_question_id]?.value !== null &&
+        mc.nodes[mc.second_top_right_question_id]?.value !== null
+      ) {
+        first_top_right_question = mc.nodes[mc.first_top_right_question_id]?.value;
+        second_top_right_question = mc.nodes[mc.second_top_right_question_id]?.value;
+      }
+    });
+
+    return (
+      <ListItem
+        rounded
+        block
+        key={`${patient.id}_patient_list`}
+        spaced
+        onPress={() =>
+          navigation.navigate('PatientProfile', {
+            id: patient.id,
+          })
+        }
+      >
+        <View w50>
+          <Text>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+        </View>
+      </ListItem>
+    );
   };
 
   _renderPatients = () => {
@@ -65,29 +95,13 @@ export default class PatientList extends React.Component {
 
     return patients.length > 0 ? (
       <List block key="patientList">
-        {patients.map((patient) => (
-          <ListItem
-            rounded
-            block
-            key={`${patient.id}_patient_list`}
-            spaced
-            onPress={() =>
-              navigation.navigate('PatientProfile', {
-                id: patient.id,
-              })
-            }
-          >
-            <View w50>
-              <Text>{patient.id}</Text>
-            </View>
-          </ListItem>
-        ))}
+        {patients.map((patient) => this._renderPatient(patient))}
       </List>
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('patient_list:no_patients')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('patient_list:no_patients')}</Text>
+        </View>
+      );
   };
 
   callBackClose = () => {
@@ -116,8 +130,7 @@ export default class PatientList extends React.Component {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}
-            />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
             {algorithms.length > 0 ? (
               <Button
                 testID="create_patient"
@@ -146,11 +159,11 @@ export default class PatientList extends React.Component {
 
           <View flex-container-row style={styles.sorted}>
             <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
-            <Button center rounded light onPress={this.orderByFirstName}>
+            <Button disabled center rounded light onPress={this.orderByFirstName}>
               {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:name')}</Text>
             </Button>
-            <Button center rounded light onPress={this.orderByLastName}>
+            <Button disabled center rounded light onPress={this.orderByLastName}>
               {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
               <Text>{t('patient_list:surname')}</Text>
             </Button>

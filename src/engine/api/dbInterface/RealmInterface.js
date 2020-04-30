@@ -36,20 +36,8 @@ export default class RealmInterface {
    * @returns { Collection } - The wanted object
    */
   findBy = (model, value, field = 'id') => {
-    const object = this._realm()
-      .objects(model)
-      .filtered(field + ' = $0', value)[0];
+    const object = this._realm().objects(model).filtered(field + ' = $0', value)[0];
     return object === undefined ? null : object;
-  };
-
-  /**
-   * Returns the entry of a specific model with an id
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The id of the object we want
-   * @returns { Collection } - The wanted object
-   */
-  findById = (model, id) => {
-    return this._realm().objects(model).filtered('id = $0', id)[0];
   };
 
   /**
@@ -83,8 +71,8 @@ export default class RealmInterface {
    * @returns { Collection } - Updated object
    */
   push = (model, id, field, value) => {
+    const object = this.findBy(model, id);
     this._realm().write(() => {
-      const object = this.findById(model, id);
       object[field].push(value);
     });
   };

@@ -3,11 +3,10 @@
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
-import Database from '../../../src/engine/api/Database';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-    if (this.id === undefined) {
+    if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuidv4();
       this.name = currentAlgorithm.name;
@@ -18,11 +17,16 @@ export class MedicalCaseModel {
       this.algorithm_id = currentAlgorithm.algorithm_id;
       this.diagnostics = currentAlgorithm.diagnostics;
       this.nodes = { ...currentAlgorithm.nodes };
+      this.orders = currentAlgorithm.orders;
       this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
+      this.left_top_question_id = currentAlgorithm.left_top_question_id ?? null;
+      this.first_top_right_question_id = currentAlgorithm.first_top_right_question_id ?? null;
+      this.second_top_right_question_id = currentAlgorithm.second_top_right_question_id ?? null;
+
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
       this.isNewCase = true;
@@ -62,10 +66,26 @@ export class MedicalCaseModel {
       this.generateExcludedId();
     } else {
       const json = JSON.parse(this.json); // WARNING this might slow down the app
+      const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
+
+      if (this.json === undefined) {
+        this.id = json.id;
+        this.json = props.json;
+        this.created_at = props.created_at;
+        this.updated_at = props.updated_at;
+        this.status = props.status;
+        this.patient_id = props.patient_id;
+      }
+
+      this.left_top_question_id = json.left_top_question_id ?? null;
+      this.first_top_right_question_id = json.first_top_right_question_id ?? null;
+      this.second_top_right_question_id = json.second_top_right_question_id ?? null;
+
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
+      this.orders = json.orders;
       this.triage = json.triage;
       this.complaintCategories = json.complaintCategories;
       this.isNewCase = false;
@@ -107,7 +127,7 @@ export class MedicalCaseModel {
         if (nodes[nodeId].type.match(/^Question$|^QuestionsSequence$/)) {
           nodes[nodeId].dd.map((dd) => {
             // If the instance is related to the main diagram
-            // If the node has an final_diagnostic_id it's belongs to a healthcare so don't set conditionValue
+            // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
             if (diagnostics[dd.id].instances[nodeId].final_diagnostic_id === null) {
               dd.conditionValue = diagnostics[dd.id].instances[nodeId].top_conditions.length === 0;
             } else {
@@ -178,15 +198,6 @@ export class MedicalCaseModel {
         instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
       }
     });
-  };
-
-  /**
-   * Returns the linked Patient
-   * @return {Patient} - The related Patient.
-   */
-  getPatient = async () => {
-    const database = await new Database();
-    return database.findById('Patient', this.patient_id);
   };
 }
 

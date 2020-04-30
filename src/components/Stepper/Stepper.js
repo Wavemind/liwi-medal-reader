@@ -259,11 +259,10 @@ class Stepper extends React.Component<Props, State> {
     const medicalCase = store.getState();
 
     if (endMedicalCase === true) {
-      store.dispatch(updateMedicalCaseProperty('status', medicalCaseStatus.close.name));
+      medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
-
-      NavigationService.resetActionStack('Home');
     }
+
     const database = await new Database();
     const databaseMedicalCase = database.findBy('MedicalCase', medicalCase.id);
     const activity = await new ActivityModel();
@@ -279,10 +278,15 @@ class Stepper extends React.Component<Props, State> {
     database.push('MedicalCase', medicalCase.id, 'activities', activity);
     database.update('MedicalCase', medicalCase.id, medicalCase);
 
-    navigation.navigate({
-      routeName: nextStage,
-      params: paramsNextStage,
-    });
+    if (endMedicalCase === true) {
+      NavigationService.resetActionStack('Home');
+    }
+    else {
+      navigation.navigate({
+        routeName: nextStage,
+        params: paramsNextStage,
+      });
+    }
   };
 
   renderSteps = () => {

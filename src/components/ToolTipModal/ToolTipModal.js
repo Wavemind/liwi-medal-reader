@@ -12,6 +12,7 @@ import { SeparatorLine } from '../../template/layout';
 export default class TooltipModal extends React.Component<Props, State> {
   static defaultProps = {
     toolTipIcon: false,
+    visible: false,
   };
 
   state = {
@@ -140,13 +141,13 @@ export default class TooltipModal extends React.Component<Props, State> {
     const {
       modalRedux,
       children,
-      toolTipIcon,
+      visible,
       app: { t },
     } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible || toolTipIcon;
+    const isFromJsx = toolTipVisible || visible;
 
     return (
       <View>
@@ -222,11 +223,12 @@ export default class TooltipModal extends React.Component<Props, State> {
    *
    */
   closeModal = () => {
-    const { modalRedux, updateModalFromRedux, toolTipIcon } = this.props;
+    const { modalRedux, updateModalFromRedux, visible, closeModal } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible || toolTipIcon;
+    const isFromJsx = toolTipVisible;
+    const isFromProps = visible;
 
     if (isFromRedux) {
       updateModalFromRedux();
@@ -235,15 +237,19 @@ export default class TooltipModal extends React.Component<Props, State> {
     if (isFromJsx) {
       this.setState({ toolTipVisible: false });
     }
+
+    if (isFromProps) {
+      closeModal();
+    }
   };
 
   render() {
     const { toolTipVisible } = this.state;
-    const { flex, modalRedux, toolTipIcon } = this.props;
+    const { flex, modalRedux, toolTipIcon, visible } = this.props;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible || toolTipIcon;
-    const isVisible = isFromRedux || toolTipVisible;
+    const isFromJsx = toolTipVisible || visible;
+    const isVisible = isFromRedux || isFromJsx;
 
     if (isFromJsx === false && isFromRedux === false) {
       return null;

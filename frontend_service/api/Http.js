@@ -8,7 +8,6 @@ import { store } from '../store';
 import { updateModalFromRedux } from '../actions/creators.actions';
 import i18n from '../../src/utils/i18n';
 import { liwiColors } from '../../src/utils/constants';
-
 /**
  * Https GET request
  *  @params [String] params
@@ -22,9 +21,9 @@ export const get = async (params) => {
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
   const httpcall = await request;
 
-  if (httpcall.status === 500) {
+  if (httpcall.status === 500 || httpcall.status === 404) {
     const t = await httpcall.text();
-    console.warn(t, httpcall);
+    console.warn(url, t, httpcall);
     displayNotification('The server is not responding', liwiColors.redColor);
     return { errors: [] };
   }
@@ -67,8 +66,8 @@ export const syncMedicalCases = async (body, userId = null) => {
 // Https POST request
 export const post = async (params, body = {}, config = {}) => {
   const url = `${host}${params}`;
-  const header = await getHeaders('POST', body, config);
 
+  const header = await getHeaders('POST', body, config);
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
 
   const response = await request.json();
@@ -89,11 +88,10 @@ export const post = async (params, body = {}, config = {}) => {
 // Https request for authentication
 export const auth = async (email, password) => {
   const url = `${host}auth/sign_in`;
-
   const request = await fetch(url, {
     method: 'post',
     headers: {
-      Accept: 'application/json, text/plain',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -106,15 +104,15 @@ export const auth = async (email, password) => {
       throw { success: false };
     }
   });
-
   const body = await request.json();
+
   // Display error
   if (!request.ok) {
     handleHttpError(body.errors);
     throw body;
   }
 
-  return await {
+  return {
     ...body,
     access_token: await request.headers.get('access-token'),
     client: await request.headers.get('client'),
@@ -192,9 +190,9 @@ const getHeaders = async (method = 'GET', body = false, config = {}) => {
         expiry: credentials.expiry,
       },
     };
-    if (method === 'POST' || method === 'PATCH') {
+    if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
       header.body = JSON.stringify(body);
-      header.headers.Accept = 'application/json, text/plain';
+      header.headers.Accept = 'application/json';
       header.headers['Content-Type'] = 'application/json';
     }
     return header;

@@ -1,17 +1,18 @@
 import { getItem } from '../LocalStorage';
 import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
+import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 
 export default class HttpInterface {
   constructor() {
     return (async () => {
       const session = await getItem('session');
-      const user = await getItem('user');
       const deviceInfo = await getDeviceInformation();
       this.localDataIp = session.group.local_data_ip;
       this.mainDataIp = session.group.main_data_ip;
       this.macAddress = deviceInfo.mac_address;
-      this.clinician = `${user.first_name} ${user.last_name}`;
+      await this._setClinician();
       return this;
     })();
   }
@@ -30,13 +31,18 @@ export default class HttpInterface {
   /**
    * Returns the entry of a specific model with an id
    * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The id of the object we want
+   * @param { string } value - Value to find in database row
+   * @param { string } field - database column
    * @returns { Collection } - The wanted object
    */
-  findById = async (model, id) => {
-    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
+  findBy = async (model, value, field) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/find_by?field=${field}&value=${value}`;
     const header = await this._setHeaders();
-    return this._fetch(url, header);
+    const data = await this._fetch(url, header);
+    if (data !== null) {
+      return this._initClasses(data, model);
+    }
+    return data;
   };
 
   /**
@@ -47,7 +53,11 @@ export default class HttpInterface {
   getAll = async (model) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
     const header = await this._setHeaders();
-    return this._fetch(url, header);
+    const data = await this._fetch(url, header);
+    if (data !== null) {
+      return this._initClasses(data, model);
+    }
+    return data;
   };
 
   /**
@@ -104,7 +114,7 @@ export default class HttpInterface {
     }
 
     handleHttpError(result);
-    return [];
+    return null;
   };
 
   /**
@@ -124,7 +134,7 @@ export default class HttpInterface {
         route = 'medical_cases';
         break;
       default:
-        console.log('route doesn\'t exist', model);
+        console.warn("route doesn't exist", model);
     }
 
     return route;
@@ -138,6 +148,10 @@ export default class HttpInterface {
    * @private
    */
   _setHeaders = async (method = 'GET', body = false) => {
+    if (this.clinician === null) {
+      await this._setClinician();
+    }
+
     const header = {
       method,
       headers: {
@@ -153,5 +167,43 @@ export default class HttpInterface {
     }
 
     return header;
+  };
+
+  /**
+   * Set value of clinician with params from local storage
+   * Due to missing user info on tablet initialization
+   * @returns {Promise<void>}
+   * @private
+   */
+  _setClinician = async () => {
+    const user = await getItem('user');
+    this.clinician = `${user?.first_name} ${user?.last_name}`;
+  };
+
+  /**
+   * Generate class
+   * @param { array|object } data - Data retrived from server
+   * @param { string } model - Class name
+   * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
+   * @private
+   */
+  _initClasses = async (data, model) => {
+    const object = [];
+    if (model === 'Patient') {
+      if (data instanceof Array) {
+        data.forEach((item) => {
+          object.push(new PatientModel(item));
+        });
+      } else {
+        return new PatientModel(data);
+      }
+    } else if (data instanceof Array) {
+      data.forEach((item) => {
+        object.push(new MedicalCaseModel(item));
+      });
+    } else {
+      return new MedicalCaseModel(data);
+    }
+    return object;
   };
 }
