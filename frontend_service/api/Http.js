@@ -21,9 +21,9 @@ export const get = async (params) => {
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
   const httpcall = await request;
 
-  if (httpcall.status === 500) {
+  if (httpcall.status === 500 || httpcall.status === 404) {
     const t = await httpcall.text();
-    console.warn(t, httpcall);
+    console.warn(url, t, httpcall);
     displayNotification('The server is not responding', liwiColors.redColor);
     return { errors: [] };
   }
@@ -69,6 +69,8 @@ export const post = async (params, body = {}, config = {}) => {
 
   const header = await getHeaders('POST', body, config);
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
+  console.log('ICIewfwefdff');
+
   const response = await request.json();
 
   // Display error
@@ -103,6 +105,7 @@ export const auth = async (email, password) => {
       throw { success: false };
     }
   });
+  console.log('ICIdeweeeff');
 
   const body = await request.json();
 

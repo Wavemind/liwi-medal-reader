@@ -107,7 +107,13 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+
+    const r = await httpRequest;
+
+    console.log(r);
+
     const result = await httpRequest.json();
+
     if (httpRequest.status === 200) {
       return result;
     }
@@ -133,7 +139,7 @@ export default class HttpInterface {
         route = 'medical_cases';
         break;
       default:
-        console.warn('route doesn\'t exist', model);
+        console.warn("route doesn't exist", model);
     }
 
     return route;

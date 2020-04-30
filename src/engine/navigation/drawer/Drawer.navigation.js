@@ -5,13 +5,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
 import NavigationService from '../Navigation.service';
-import {
-  BottomButtonsDrawer,
-  CategorieButton,
-  HeaderButtonsDrawer,
-  ItemButton,
-  PathBar,
-} from './Drawer.item.navigation';
+import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
 import { displayNotification } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
 import { liwiColors } from '../../../utils/constants';
@@ -60,8 +54,6 @@ export default class Drawer extends Component<Props, State> {
 
     // Get current route from navigation
     const r = NavigationService.getCurrentRoute();
-
-    console.log(medicalCase);
 
     // Is redux ready, for disabled buttons
     const areMedicalCaseInredux = medicalCase.id !== undefined;

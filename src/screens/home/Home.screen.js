@@ -42,7 +42,7 @@ export default class Home extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    await fetchAlgorithms();
+    // await fetchAlgorithms();
     const algorithms = await getItems('algorithms');
     this.setState({ algorithms });
   }
@@ -96,6 +96,7 @@ export default class Home extends React.Component<Props, State> {
                   navigation.navigate('PatientUpsert', {
                     idPatient: null,
                     newMedicalCase: true,
+                    $,
                   });
                 } else {
                   this.setState({ propsToolTipVisible: true, qrcode: false });
