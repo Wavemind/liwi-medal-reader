@@ -97,7 +97,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     await this.setState({ loading: true });
 
-    const validator = validatorNavigate({ type: "Navigation/NAVIGATE", routeName: newRoute, params: { initialPage: 0 }, key: "Triage" });
+    const validator = validatorNavigate({ type: "Navigation/NAVIGATE", routeName: 'Triage', params: { initialPage: 0 }, key: "Triage" });
 
     if (validator.stepToBeFill[0].isActionValid === false) {
       updateModalFromRedux(null, validator);
@@ -106,9 +106,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
       if (patientId !== null || patientId === undefined) {
         const patient = await database.findBy('Patient', patientId);
         isSaved = patient.addMedicalCase(medicalCase);
+        updateMedicalCaseProperty('patient_id', patient.id)
       } else {
         isSaved = await this.savePatient();
       }
+
       if (isSaved) {
         const currentRoute = NavigationService.getCurrentRoute();
         // Replace the nextRoute navigation at the current index
@@ -149,11 +151,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
    */
   savePatient = async () => {
     const { patient } = this.state;
-    const { medicalCase } = this.props;
+    const { medicalCase, updateMedicalCaseProperty } = this.props;
 
     // Create patient if there are no errors
     patient.medicalCases.push(medicalCase);
     await patient.save();
+    updateMedicalCaseProperty('patient_id', patient.id)
     return true;
   };
 
@@ -274,7 +277,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       >
         {[
           <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
-                      testID="PatientUpsertScreen">
+            testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
               <LiwiLoader />
