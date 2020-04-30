@@ -97,7 +97,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     await this.setState({ loading: true });
 
-    const validator = validatorNavigate({ type: "Navigation/NAVIGATE", routeName: 'Triage', params: { initialPage: 0 }, key: "Triage" });
+    const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: newRoute, params: { initialPage: 0 }, key: 'Triage' });
 
     if (validator.stepToBeFill[0].isActionValid === false) {
       updateModalFromRedux(null, validator);
@@ -106,7 +106,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       if (patientId !== null || patientId === undefined) {
         const patient = await database.findBy('Patient', patientId);
         isSaved = patient.addMedicalCase(medicalCase);
-        updateMedicalCaseProperty('patient_id', patient.id)
+        updateMedicalCaseProperty('patient_id', patient.id);
       } else {
         isSaved = await this.savePatient();
       }
@@ -127,7 +127,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 routeName: newRoute,
               }),
             ],
-          }),
+          })
         );
       }
     }
@@ -156,58 +156,53 @@ export default class PatientUpsert extends React.Component<Props, State> {
     // Create patient if there are no errors
     patient.medicalCases.push(medicalCase);
     await patient.save();
-    updateMedicalCaseProperty('patient_id', patient.id)
+    updateMedicalCaseProperty('patient_id', patient.id);
     return true;
   };
 
   renderIdentifierData = () => {
     const { patient } = this.state;
     const { t } = this.props.app;
+    const { updatePatientValue } = this;
 
     if (patient === null) {
       return null;
     }
 
-    const { uid, studyId, groupId, otherUid, otherStudyId, otherGroupId } = patient;
+    const { otherUid, otherStudyId, otherGroupId } = patient;
 
     return (
       <View>
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
-        <View w50>
+        <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <Text style={styles.identifierText} right>
-            {uid}
-          </Text>
+          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.uid} change={updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
-        <View w50>
+        <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:studyId')}</Text>
-          <Text style={styles.identifierText} right>
-            {studyId}
-          </Text>
+          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.studyId} change={updatePatientValue} index="studyId" autoCapitalize="sentences" />
         </View>
 
-        <View w50>
+        <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:groupId')}</Text>
-          <Text style={styles.identifierText} right>
-            {groupId}
-          </Text>
+          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.groupId} change={updatePatientValue} index="groupId" autoCapitalize="sentences" />
         </View>
 
         {patient.wasInOtherFacility() && (
           <>
-            <View w50>
+            <View w50 style={styles.containerText}>
               <Text style={styles.identifierText}>{t('patient_upsert:otherUid')}</Text>
               <Text style={styles.identifierText} right>
                 {otherUid}
               </Text>
             </View>
-            <View w50>
+            <View w50 style={styles.containerText}>
               <Text style={styles.identifierText}>{t('patient_upsert:otherStudyId')}</Text>
               <Text style={styles.identifierText} right>
                 {otherStudyId}
               </Text>
             </View>
-            <View w50>
+            <View w50 style={styles.containerText}>
               <Text style={styles.identifierText}>{t('patient_upsert:otherGroupId')}</Text>
               <Text style={styles.identifierText} right>
                 {otherGroupId}
@@ -243,7 +238,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         ],
         'OR',
         'array',
-        false,
+        false
       );
     }
 
@@ -251,7 +246,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData(
         'patientupsert',
         'custom',
-        extraQuestions.map(({ id }) => id),
+        extraQuestions.map(({ id }) => id)
       );
     }
 
@@ -276,8 +271,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
-            testID="PatientUpsertScreen">
+          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
               <LiwiLoader />
