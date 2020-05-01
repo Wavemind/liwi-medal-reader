@@ -1,7 +1,8 @@
+const Realm = require('realm');
+
+import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-
-const Realm = require('realm');
 
 export default class RealmInterface {
   /**
@@ -11,7 +12,7 @@ export default class RealmInterface {
    */
   _realm = () => {
     return new Realm({
-      schema: [PatientModel, MedicalCaseModel],
+      schema: [PatientModel, MedicalCaseModel, ActivityModel],
       deleteRealmIfMigrationNeeded: true,
     });
   };

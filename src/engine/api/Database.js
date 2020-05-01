@@ -78,7 +78,8 @@ export default class Database {
    * @returns {string}
    */
   unlockMedicalCase = (id) => {
-    return this.httpInterface.unlockMedicalCase(id);
+    const dbInterface = this._checkInterface();
+    return this[dbInterface].unlockMedicalCase(id);
   };
 
   /**
