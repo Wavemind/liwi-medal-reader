@@ -3,11 +3,12 @@
 import * as React from 'react';
 import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Icon, Picker, Text, View } from 'native-base';
+
 import { ApplicationContext } from '../../../engine/contexts/Application.context';
-import { liwiColors } from '../../../utils/constants';
-import { styles } from './UserSelection.style';
 import CustomInput from '../../../components/InputContainer/CustomInput';
 import { userRoles } from '../../../../frontend_service/constants';
+import { getItem } from '../../../engine/api/LocalStorage';
+import { styles } from './UserSelection.style';
 
 export default function UserSelection() {
   // Hooks
@@ -17,10 +18,22 @@ export default function UserSelection() {
     first_name: '',
     role: '',
   });
+  const [session, setSession] = React.useState(null);
+  const [ready, setReady] = React.useState(false);
+
+  React.useEffect(() => {
+    (async function getSessionStorage() {
+      setSession(await getItem('session'));
+      setReady(true);
+    })();
+  }, []);
+
+  if (ready === false) {
+    return null;
+  }
 
   const app = React.useContext(ApplicationContext);
-
-  const { session } = app;
+  const { t } = app;
 
   // Render Image depending role
   const switchIcon = (role) => {
@@ -68,13 +81,13 @@ export default function UserSelection() {
     <>
       {selectedUser?.id === false && (
         <View style={styles.blocBackground}>
-          <Text bigTitle>{app.t('unlock_session:fill')}</Text>
+          <Text bigTitle>{t('unlock_session:fill')}</Text>
           <View style={styles.blocInput}>
             <View style={styles.items}>
               <CustomInput
                 condensed
                 init={selectedUser.last_name}
-                label={app.t('patient:first_name')}
+                label={t('patient:first_name')}
                 change={(e, i) => setUser({ ...selectedUser, last_name: i })}
                 index="lastname"
                 iconName="user"
@@ -86,7 +99,7 @@ export default function UserSelection() {
               <CustomInput
                 condensed
                 init={selectedUser.first_name}
-                label={app.t('patient:last_name')}
+                label={t('patient:last_name')}
                 change={(e, i) => setUser({ ...selectedUser, first_name: i })}
                 index="surname"
                 iconName="user"
@@ -125,7 +138,7 @@ export default function UserSelection() {
   return (
     <ScrollView testID="UnLockSession">
       <View flex-container-column flex-center>
-        <Text bigTitle>{app.t('unlock_session:who')}</Text>
+        <Text bigTitle>{t('unlock_session:who')}</Text>
         <View style={styles.blocParent}>
           {session.group.medical_staffs.map((user) => renderBloc(user))}
           {renderBloc({ role: 'guest', last_name: '', first_name: '', id: false })}

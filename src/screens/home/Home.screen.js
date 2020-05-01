@@ -23,14 +23,14 @@ export default class Home extends React.Component<Props, State> {
   state = {
     qrcode: false,
     modalQrCode: false,
-    algorithms: [],
+    algorithm: null,
     propsToolTipVisible: false,
   };
 
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
-    const { algorithms, propsToolTipVisible, modalQrCode } = this.state;
+    const { algorithm, propsToolTipVisible, modalQrCode } = this.state;
     const { medicalCase } = this.props;
-    return algorithms !== nextState.algorithms || propsToolTipVisible !== nextState.propsToolTipVisible || Object.compare(medicalCase, nextProps.medicalCase) || modalQrCode !== nextProps.modalQrCode;
+    return propsToolTipVisible !== nextState.propsToolTipVisible || Object.compare(medicalCase, nextProps.medicalCase) || modalQrCode !== nextProps.modalQrCode;
   }
 
   logout = async () => {
@@ -41,8 +41,8 @@ export default class Home extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    const algorithms = await getItems('algorithms');
-    this.setState({ algorithms });
+    const algorithm = await getItems('algorithm');
+    this.setState({ algorithm });
   }
 
   callBackClose = (canContinue) => {
@@ -70,7 +70,7 @@ export default class Home extends React.Component<Props, State> {
       return null;
     }
 
-    const { algorithms, propsToolTipVisible, qrcode, modalQrCode } = this.state;
+    const { algorithm, propsToolTipVisible, qrcode, modalQrCode } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen" style={styles.back}>
@@ -88,7 +88,7 @@ export default class Home extends React.Component<Props, State> {
               underlayColor="transparent"
               style={styles.navigationButton}
               onPress={() => {
-                if (algorithms.length === 0) {
+                if (algorithm === null) {
                   displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
                 } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                   navigation.navigate('PatientUpsert', {
@@ -113,7 +113,7 @@ export default class Home extends React.Component<Props, State> {
               underlayColor="transparent"
               style={styles.navigationButton}
               onPress={() => {
-                if (algorithms.length === 0) {
+                if (algorithm === null) {
                   displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
                 } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
                   this.setState({ modalQrCode: true });

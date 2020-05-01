@@ -45,7 +45,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
     const facility = navigation.getParam('facility'); // Object
-    const algorithms = await getItems('algorithms');
+    const algorithm = await getItems('algorithm');
 
     if (patientId === null) {
       patient = new PatientModel({ otherFacility, facility });
@@ -53,11 +53,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
       patient = await database.findBy('Patient', patientId);
     }
 
-    if (algorithms.length === 0) {
-      this.setState({ patient });
-    } else {
+
       if (newMedicalCase) {
-        const generatedMedicalCase = await new MedicalCaseModel({}, algorithms[algorithms.length - 1]);
+        const generatedMedicalCase = await new MedicalCaseModel({}, algorithm);
 
         await setMedicalCase({
           ...generatedMedicalCase,
@@ -73,7 +71,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         loading: false,
         newMedicalCase,
       });
-    }
+
   };
 
   async componentDidMount() {

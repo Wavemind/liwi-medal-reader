@@ -16,7 +16,7 @@ export default class PatientList extends React.Component {
     loading: false,
     searchTerm: '',
     isGeneratingPatient: false,
-    algorithms: [],
+    algorithm: null,
     patients: [],
   };
 
@@ -36,9 +36,9 @@ export default class PatientList extends React.Component {
     this.setState({ loading: true });
 
     const patients = await database.getAll('Patient');
-    const algorithms = await getItems('algorithms');
+    const algorithm = await getItems('algorithm');
     this.setState({
-      algorithms,
+      algorithm,
       patients,
       loading: false,
     });
@@ -111,7 +111,7 @@ export default class PatientList extends React.Component {
   };
 
   render() {
-    const { loading, searchTerm, orderByFirstName, isGeneratingPatient, algorithms, propsToolTipVisible, orderByLastName } = this.state;
+    const { loading, searchTerm, orderByFirstName, isGeneratingPatient, algorithm, propsToolTipVisible, orderByLastName } = this.state;
 
     const {
       app: { t },
@@ -131,7 +131,7 @@ export default class PatientList extends React.Component {
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
             <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
-            {algorithms.length > 0 ? (
+            {algorithm !== null ? (
               <Button
                 testID="create_patient"
                 center

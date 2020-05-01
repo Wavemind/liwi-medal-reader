@@ -7,14 +7,19 @@ import { NavigationScreenProps } from 'react-navigation';
 import { AppState, PermissionsAndroid } from 'react-native';
 
 import i18n from '../../utils/i18n';
-import NavigationService from '../navigation/Navigation.service';
 import Database from '../api/Database';
 import { appInBackgroundStateKey, secondStatusLocalData } from '../../../frontend_service/constants';
-import { auth, fetchAlgorithms, get, post } from '../../../frontend_service/api/Http';
-import { getDeviceInformation } from '../api/Device';
+import {
+  auth,
+  getGroup,
+  getAlgorithm,
+  registerDevice,
+} from '../../../frontend_service/api/Http';
+import { getItem, getItems, setItem } from '../api/LocalStorage';
+import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 import { displayNotification } from '../../utils/CustomToast';
-import { getItem, setItem } from '../api/LocalStorage';
 import { liwiColors } from '../../utils/constants';
+import { store } from '../../../frontend_service/store';
 
 const defaultValue = {};
 
@@ -61,8 +66,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     // Session already exist
     if (session !== null && session?.group !== null) {
       await this._handleApplicationServer(true);
-      await this.getGroupData(false);
-      const database = await new Database();
       const user = await getItem('user');
       const { isConnected } = this.state;
 
@@ -70,7 +73,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         session,
         user,
         ready: true,
-        database,
         isConnected,
       });
 
@@ -104,7 +106,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const { isConnected } = this.state;
     const session = await getItem('session');
     const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
-    const request = await fetch(ip, 'GET').catch(async () => {
+    const request = await fetch(ip, 'GET').catch(async (error) => {
       if (isConnected || firstTime) {
         await this._setAppStatus(false);
       }
@@ -141,7 +143,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   _askGeo = async () => {
     const { t } = this.state;
-    return await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
       title: t('popup:title'),
       message: t('popup:message'),
       buttonNeutral: t('popup:ask_me_later'),
@@ -164,7 +166,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       {
         enableHighAccuracy,
         timeout: 5000,
-      }
+      },
     );
   };
 
@@ -215,62 +217,38 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  /**
-   * Fetch group info from medal-c
-   * @param { boolean } showToast - Display a notification
-   * @returns {Promise<boolean>}
-   */
-  getGroupData = async (showToast = true) => {
-    const { isConnected, t } = this.state;
-    if (isConnected) {
-      const session = await getItem('session');
-      const deviceInfo = await getDeviceInformation();
-      // Send data to server
-      const group = await get(`devices/${deviceInfo.mac_address}`);
-
-      // If no error
-      if (group !== false && group.errors === undefined) {
-        // merge data in local
-        await setItem('session', { ...session, group });
-        // Set data in context
-        await fetchAlgorithms();
-        this.setState({ session: { ...session, group } });
-        // Show success toast
-        showToast ? displayNotification(t('notifications:get_group'), liwiColors.greenColor) : null;
-        return true;
-      } else {
-        displayNotification(group.errors, liwiColors.redColor);
-      }
-    }
-
-    return false;
+  getGroup = async () => {
+    const group = await getGroup();
+    const session = await getItem('session');
+    await setItem('session', { ...session, group });
+    this.setState({ session: { ...session, group } });
+    return group;
   };
 
   /**
-   * Get the pin code from screen
-   * Redirect to userSelection if not opened
-   * Redirect to home if already opened
-   * @params { string }: pinCode : pin code from screen
-   * @return boolean
+   * Fetch group and algorithm from medal-c
+   * @returns {Promise<boolean>}
    */
-  openSession = async (pinCode) => {
-    const { session, user, t } = this.state;
-    if (session.group.pin_code === pinCode) {
-      displayNotification(t('notifications:connection_successful'), liwiColors.greenColor);
+  setInitialData = async () => {
+    const group = await this.getGroup();
+    // TODO: Faire un test si le group est bien récupérer quand les serveurs renverrons tous un json pour les erreurs 500 et 404
+    const newAlgorithm = await getAlgorithm();
+    newAlgorithm.selected = true;
+    const currentAlgorithm = await getItems('algorithm');
 
-      if (user === null) {
-        await setTimeout(async () => {
-          NavigationService.navigate('UserSelection');
-        }, 1000);
-      } else {
-        await setTimeout(async () => {
-          this.setState({ logged: true });
-        }, 1000);
-      }
-
-      return true;
+    // Update popup only if version has changed
+    if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
+      store.dispatch(
+        updateModalFromRedux(newAlgorithm.version_name, null, {
+          title: i18n.t('popup:version'),
+          author: newAlgorithm.author,
+          description: newAlgorithm.description,
+        })
+      );
     }
-    return false;
+    const database = await new Database();
+    await this.setState({ database });
+    await setItem('algorithm', newAlgorithm);
   };
 
   /**
@@ -291,22 +269,14 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   newSession = async (email: string, password: string) => {
     const { t } = this.state;
-
-    // auth with server
-    const session = await auth(email, password).catch((error) => {
-      return error;
-    });
+    const session = await auth(email, password);
 
     // if no error set the tablet
     if (session?.success !== false) {
       const concatSession = { group: null, ...session };
-
       // Set item in localstorage
       await setItem('session', concatSession);
-
-      const deviceInfo = await getDeviceInformation();
-      // Register device to server
-      const register = await post('devices', { device: { ...deviceInfo } }, { token: 'group' });
+      const register = await registerDevice();
 
       if (register === true) {
         // Show toast
@@ -327,15 +297,14 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     lang: 'fr',
     logged: false,
     name: 'App',
+    session: null,
     medicalCase: {},
     ready: false,
-    session: null,
     user: null,
-    getGroupData: this.getGroupData,
+    setInitialData: this.setInitialData,
     logout: this.logout,
     lockSession: this.lockSession,
     newSession: this.newSession,
-    openSession: this.openSession,
     set: this.setValState,
     subscribePingApplicationServer: this.subscribePingApplicationServer,
     setModal: this.setModal,
@@ -400,4 +369,5 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) =>
+  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
