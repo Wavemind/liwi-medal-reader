@@ -14,7 +14,7 @@ export default class PatientProfile extends React.Component {
     patient: {
       medicalCases: [],
     },
-    algorithms: [],
+    algorithm: null,
     firstRender: false,
   };
 
@@ -39,10 +39,10 @@ export default class PatientProfile extends React.Component {
     const id = navigation.getParam('id');
 
     const patient = await database.findBy('Patient', id);
-    const algorithms = await getItems('algorithms');
+    const algorithm = await getItems('algorithm');
     this.setState({
       patient,
-      algorithms,
+      algorithm,
       firstRender: true,
     });
   }
@@ -54,7 +54,7 @@ export default class PatientProfile extends React.Component {
   };
 
   render() {
-    const { patient, algorithms, firstRender } = this.state;
+    const { patient, algorithm, firstRender } = this.state;
 
     const {
       navigation,
@@ -122,7 +122,7 @@ export default class PatientProfile extends React.Component {
         <LiwiTitle2 noBorder>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</LiwiTitle2>
 
         <SeparatorLine style={styles.bottomMargin} />
-        {algorithms.length > 0 ? (
+        {algorithm !== null ? (
           <View flex>
             <View>
               {patient.medicalCases.length > 0 ? (

@@ -69,7 +69,7 @@ export default class WavemindTools extends Component {
                   onPress={async () => {
                     const sessions = await getItems('sessions');
                     const session = await getItems('session');
-                    const algorithms = await getItems('algorithms');
+                    const algorithm = await getItems('algorithm');
                     const patients = await getItems('patients');
                     const state$ = store.getState();
                     let k = await FilesystemStorage.getItem('persist:medicalCase');
@@ -80,8 +80,8 @@ export default class WavemindTools extends Component {
                       state$,
                       size_state$: memorySizeOf(state$),
                       session,
-                      algorithms,
-                      size_algorithms: memorySizeOf(algorithms),
+                      algorithm,
+                      size_algorithms: memorySizeOf(algorithm),
                       patients,
                       size_patients: memorySizeOf(patients),
                     });
