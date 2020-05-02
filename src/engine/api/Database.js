@@ -94,7 +94,6 @@ export default class Database {
     } else {
       dbInterface = 'httpInterface';
     }
-
     return dbInterface;
   };
 }
