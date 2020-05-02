@@ -136,6 +136,27 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.setState({ isConnected: status });
   };
 
+  _connectionLost = () => {
+    const { session } = this.state;
+
+
+  }
+
+  _connectionSuccessful = () => {
+    const { session, database } = this.state;
+
+    if (session.group.architecture === 'client_server') {
+      const activities = database.getAll();
+      const localDatabase = new RealmInterface();
+      activities.map((activity) => {
+        database.insert('Activity', activity);
+        localDatabase.delete(activity);
+      });
+    } else {
+      // TODO send activities to Main Data
+    }
+  }
+
   /**
    * Ask user to allow access to location
    * @returns {Promise<*>}

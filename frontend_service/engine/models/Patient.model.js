@@ -90,6 +90,6 @@ PatientModel.schema = {
     other_group_iId: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
-    main_data_patient_id: { type: 'int', optional: true },
+    fail_safe: 'bool',
   },
 };
