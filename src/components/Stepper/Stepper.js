@@ -12,6 +12,8 @@ import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes } fro
 import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import _ from 'lodash';
+
 import { styles } from './styles';
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
@@ -256,7 +258,7 @@ class Stepper extends React.Component<Props, State> {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
 
     const medicalCase = store.getState();
-    const currentRoute = NavigationService.getCurrentRoute().routeName;
+    const currentRoute = NavigationService.getCurrentRoute();
     const database = await new Database();
 
     const currentStatus = _.find(medicalCaseStatus, (i) => i.name === medicalCase.status);

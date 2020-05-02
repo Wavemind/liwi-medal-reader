@@ -1,10 +1,6 @@
 import { NavigationActions, StackActions } from 'react-navigation';
-import _ from 'lodash';
-import find from 'lodash/find';
 import { store } from '../../../frontend_service/store';
-import { medicalCaseStatus, valueFormats } from '../../../frontend_service/constants';
-import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import Database from '../api/Database';
+import { valueFormats } from '../../../frontend_service/constants';
 import moment from 'moment';
 
 let _navigator;
@@ -166,47 +162,11 @@ function resetActionStack(routeName, params) {
   _navigator.dispatch(resetAction);
 }
 
-// eslint-disable-next-line no-unused-vars
-/**
- * Change the status of the medicalCase depending his status
- *
- * @param prevState: Navigation : The state of react-navigation
- * @param currentState: Navigation : The state of react-navigation
- */
 
-async function onNavigationStateChange(prevState, currentState) {
-  const activeRoute = getActiveRouteName(currentState);
-  const prev = getActiveRouteName(prevState);
-
-  // prevent multiple execution
-  if (activeRoute !== prev) {
-    const state$ = store.getState();
-
-    // This route can change the status of MC
-    if (cu.params !== undefined && cu?.params?.medicalCaseStatus !== undefined && state$.status !== cu.params.medicalCaseStatus) {
-      // Find index in status
-      const currentStatus = _.find(medicalCaseStatus, (i) => {
-        return i.name === state$.status;
-      });
-      // Find index in status
-      const routeStatus = _.find(medicalCaseStatus, (i) => {
-        return i.name === cu.params.medicalCaseStatus;
-      });
-      // The status has to be changed !
-      if (currentStatus?.index < routeStatus?.index) {
-        const database = await new Database();
-        database.update('MedicalCase', state$.id, { status: routeStatus.name });
-        // Dispatch an action redux to update the status
-        store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
-      }
-    }
-  }
-}
 
 export default {
   getActiveRouteByKey,
   setParamsAge,
-  onNavigationStateChange,
   resetActionStack,
   navigate,
   setTopLevelNavigator,
