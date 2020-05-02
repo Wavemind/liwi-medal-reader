@@ -20,7 +20,7 @@ import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_s
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
-import { diff, difference, differenceNodes } from '../../utils/swissKnives';
+import { differenceNodes } from '../../utils/swissKnives';
 import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
 
 type Props = {
@@ -256,26 +256,38 @@ class Stepper extends React.Component<Props, State> {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
 
     const medicalCase = store.getState();
+    const currentRoute = NavigationService.getCurrentRoute().routeName;
+    const database = await new Database();
+
+    const currentStatus = _.find(medicalCaseStatus, (i) => i.name === medicalCase.status);
+    const newStatus = _.find(medicalCaseStatus, (i) => i.name === currentRoute.params.medicalCaseStatus);
 
     if (endMedicalCase === true) {
       medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
     }
 
-    const database = await new Database();
-    const databaseMedicalCase = database.findBy('MedicalCase', medicalCase.id);
+    // The status has changed
+    if (currentStatus?.index < newStatus?.index) {
+      medicalCase.status = newStatus.name;
+      store.dispatch(updateMedicalCaseProperty('status', newStatus.name));
+    }
 
-    const activity = await new ActivityModel({
-      nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
-      stage: NavigationService.getCurrentRoute().routeName,
-      user: app.user.id,
-      medical_case_id: medicalCase.id,
-    });
+    if (nextStage !== "Triage") {
+      const databaseMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
 
-    medicalCase.json = JSON.stringify(medicalCase);
-    medicalCase.activities.push(activity);
-    
-    database.update('MedicalCase', medicalCase.id, medicalCase);
+      const activity = await new ActivityModel({
+        nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
+        stage: NavigationService.getCurrentRoute().routeName,
+        user: app.user.id,
+        medical_case_id: medicalCase.id,
+      });
+
+      medicalCase.json = JSON.stringify(medicalCase);
+      medicalCase.activities.push(activity);
+
+      database.update('MedicalCase', medicalCase.id, medicalCase);
+    }
 
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');

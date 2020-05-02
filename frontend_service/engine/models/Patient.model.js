@@ -3,6 +3,9 @@
 import uuid from 'react-native-uuid';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
+import { ActivityModel } from './Activity.model';
+import { differenceNodes } from '../../../src/utils/swissKnives';
+import { getItem } from '../../../src/engine/api/LocalStorage';
 
 export class PatientModel {
   constructor(props = {}) {
@@ -46,12 +49,22 @@ export class PatientModel {
    */
   save = async () => {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
+    const currentAlgorithm = await getItem('algorithm');
+    const user = await getItem('user');
     const database = await new Database();
     this.json = JSON.stringify;
-    this.id = uuid.v1();
+    this.id = uuid.v4();
+
+    const activity = await new ActivityModel({
+      user: user.id,
+      stage: 'registration',
+      nodes: differenceNodes(medicalCase.nodes, currentAlgorithm.nodes),
+      medical_case_id: medicalCase.id.toString()
+    });
+    console.log(activity);
     return database.insert('Patient', {
       ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activity: activity }],
     });
   };
 
