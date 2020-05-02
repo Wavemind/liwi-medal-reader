@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Icon, Picker, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { healthCareType } from '../../../../../frontend_service/constants';
+import { medicationForms } from '../../../../../frontend_service/constants';
 import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { styles } from './MedicinesFormulation.style';
@@ -37,11 +37,11 @@ export default class MedicinesFormulations extends Component<Props, State> {
 
   showSize = (type) => {
     switch (type) {
-      case healthCareType.syrup:
-      case healthCareType.suspension:
+      case medicationForms.syrup:
+      case medicationForms.suspension:
         return 'ml';
-      case healthCareType.tablet:
-      case healthCareType.capsule:
+      case medicationForms.tablet:
+      case medicationForms.capsule:
         return 'mg';
       default:
         return ' dose';

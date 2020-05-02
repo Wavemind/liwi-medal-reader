@@ -2,8 +2,10 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import _ from 'lodash';
 import find from 'lodash/find';
 import { store } from '../../../frontend_service/store';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { medicalCaseStatus, valueFormats } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import Database from '../api/Database';
+import moment from 'moment';
 
 let _navigator;
 
@@ -69,7 +71,7 @@ function getActiveRouteByName(name, state) {
 }
 
 /**
- * Get the active route from react-navigation
+ * Get the active route string name from react-navigation
  *
  * @param navigationState: Navigation : The state of react-navigation
  * @return : string : the current route
@@ -93,27 +95,35 @@ function getActiveRouteName(navigationState) {
  * @params : navigation : the current state navigation
  * @params : string : set the title of the page
  */
-function setParamsAge(navigation, name) {
+function setParamsAge(name = '') {
   const state$ = store.getState();
 
-  const { patient, nodes } = state$;
+  const { nodes, left_top_question_id, first_top_right_question_id, second_top_right_question_id } = state$;
 
-  const age = find(nodes, { label: 'Age in months' });
+  const showValue = (node) => {
+    if (node === undefined) {
+      return '';
+    }
+    if (node.value_format === valueFormats.date && node.value !== null) {
+      return `| ${moment(node.value).format('L')}`;
+    }
 
-  let stringAge;
+    if (node.value === null) {
+      return '';
+    }
 
-  if (age !== undefined) {
-    stringAge = age.value === null ? 'Age is not defined' : `${age.value} months`;
-  } else {
-    stringAge = 'No question for age found';
-  }
+    return node.value;
+  };
 
-  const headerRight = `${patient.firstname} ${patient.lastname} | ${stringAge}`;
+  const headerRight = `${showValue(nodes[first_top_right_question_id])} ${showValue(nodes[second_top_right_question_id])} ${showValue(nodes[left_top_question_id])}`;
+  const currentRoute = getCurrentRoute();
 
-  navigation.setParams({
-    title: name,
-    headerRight,
+  const action = NavigationActions.setParams({
+    ...currentRoute,
+    params: { title: name, headerRight },
   });
+
+  _navigator.dispatch(action);
 }
 
 /**
@@ -164,7 +174,7 @@ function resetActionStack(routeName, params) {
  * @param currentState: Navigation : The state of react-navigation
  */
 
-function onNavigationStateChange(prevState, currentState) {
+async function onNavigationStateChange(prevState, currentState) {
   const activeRoute = getActiveRouteName(currentState);
   const prev = getActiveRouteName(prevState);
   const cu = getCurrentRoute(currentState);
@@ -172,19 +182,21 @@ function onNavigationStateChange(prevState, currentState) {
   // prevent multiple execution
   if (activeRoute !== prev) {
     const state$ = store.getState();
+
     // This route can change the status of MC
     if (cu.params !== undefined && cu?.params?.medicalCaseStatus !== undefined && state$.status !== cu.params.medicalCaseStatus) {
       // Find index in status
       const currentStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === state$.status;
       });
-
       // Find index in status
       const routeStatus = _.find(medicalCaseStatus, (i) => {
         return i.name === cu.params.medicalCaseStatus;
       });
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
+        const database = await new Database();
+        database.update('MedicalCase', state$.id, { status: routeStatus.name });
         // Dispatch an action redux to update the status
         store.dispatch(updateMedicalCaseProperty('status', routeStatus.name));
       }
@@ -194,12 +206,9 @@ function onNavigationStateChange(prevState, currentState) {
 
 export default {
   getActiveRouteByKey,
-  getActiveRouteByName,
   setParamsAge,
-  getActiveRouteName,
   onNavigationStateChange,
   resetActionStack,
-  getRouter,
   navigate,
   setTopLevelNavigator,
   getCurrentRoute,

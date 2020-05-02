@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import moment from 'moment';
 import { actions } from '../actions/types.actions';
-import { displayFormats, nodesType } from '../constants';
+import { displayFormats, nodeTypes } from '../constants';
 import {
   updateConditionValue,
   dispatchFinalDiagnosticAction,
@@ -17,6 +17,7 @@ import {
   setDiagnoses,
 } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
+import NavigationService from '../../src/engine/navigation/Navigation.service';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated. */
 
@@ -47,14 +48,18 @@ export const epicCatchAnswer = (action$, state$) =>
       // Inject update
       arrayActions.push(updateMedicalCaseProperty('updated_at', moment().format()));
 
-      relatedDiagnostics.map((diagnostic) => arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodesType.diagnostic)));
+      relatedDiagnostics.map((diagnostic) => arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodeTypes.diagnostic)));
 
       // We tell the related nodes to update themself
-      if (currentNode.type === nodesType.question) {
+      if (currentNode.type === nodeTypes.question) {
         relatedNodes.map((relatedNodeId) => arrayActions.push(dispatchRelatedNodeAction(relatedNodeId)));
       }
 
       relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
+
+      if (index === state$.value.left_top_question_id || index === state$.value.first_top_right_question_id || index === state$.value.second_top_right_question_id) {
+        NavigationService.setParamsAge();
+      }
 
       return of(...arrayActions);
     })
@@ -77,21 +82,21 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       // TODO Test get node in state and comare with object in action, are there somes differences ?
       const { nodeId, callerId, callerType } = action.payload;
 
-      if (callerType === nodesType.diagnostic) caller = state$.value.diagnostics[callerId];
-      else if (callerType !== nodesType.diagnostic) caller = state$.value.nodes[callerId];
+      if (callerType === nodeTypes.diagnostic) caller = state$.value.diagnostics[callerId];
+      else if (callerType !== nodeTypes.diagnostic) caller = state$.value.nodes[callerId];
 
       let nodeChildren;
 
       // What do we do with this child -> switch according to type
       switch (caller.type) {
-        case nodesType.question:
+        case nodeTypes.question:
           return of(dispatchCondition(nodeId, caller.id));
-        case nodesType.finalDiagnostic:
+        case nodeTypes.finalDiagnostic:
           return of(dispatchFinalDiagnosticAction(nodeId, caller.id));
-        case nodesType.healthCare:
+        case nodeTypes.healthCare:
           // TODO: to implement
           return [];
-        case nodesType.diagnostic:
+        case nodeTypes.diagnostic:
           // Get children of the node in the current diagnostic
           nodeChildren = caller.instances[nodeId].children;
           // Check children of the node in the current diagnostic and process them as well.
@@ -100,7 +105,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           });
 
           return of(...arrayActions);
-        case nodesType.questionsSequence:
+        case nodeTypes.questionsSequence:
           // TODO : Handle QS
           // HERE calcule condition of node type PS
           return of(dispatchCondition(nodeId, caller.id));
@@ -295,7 +300,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
         // If the node is answered go his children
         if (state$.value.nodes[nodeId].answer !== null) {
-          actions.push(dispatchNodeAction(nodeId, diagnosticId, nodesType.diagnostic));
+          actions.push(dispatchNodeAction(nodeId, diagnosticId, nodeTypes.diagnostic));
         }
       }
 
