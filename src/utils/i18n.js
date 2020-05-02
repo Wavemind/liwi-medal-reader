@@ -241,7 +241,7 @@ i18n
           male: 'Male',
           female: 'Female',
           age_not_defined: 'Age is not defined',
-          reason: 'Reason fr changing facility',
+          reason: 'Reason for changing facility',
         },
         login: {
           title: 'Login',
