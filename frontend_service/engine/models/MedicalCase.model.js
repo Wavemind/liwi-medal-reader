@@ -212,5 +212,6 @@ MedicalCaseModel.schema = {
     updated_at: 'date',
     status: 'string',
     patient_id: 'string',
+    fail_safe: 'bool',
   },
 };
