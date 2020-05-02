@@ -26,10 +26,7 @@ export const handleHttpError = (errors: any) => {
  * @private
  */
 export const displayNotification = (message, color) => {
-  if (typeof message !== 'string') {
-    console.warn('You should send only string in notification', message);
-  }
-  Toast.show(JSON.stringify(message), {
+  Toast.show(message, {
     position: 20,
     textStyle: { color: liwiColors.whiteColor },
     containerStyle: {

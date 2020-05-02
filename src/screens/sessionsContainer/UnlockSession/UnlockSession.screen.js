@@ -1,16 +1,18 @@
 // @flow
-
 import * as React from 'react';
+import PINCode from '@haskkor/react-native-pincode';
 import { Image, ScrollView } from 'react-native';
 import { Button, Text, View } from 'native-base';
-import PINCode from '@haskkor/react-native-pincode';
-import LiwiLoader from '../../../utils/LiwiLoader';
+
+import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ApplicationContext } from '../../../engine/contexts/Application.context';
-import { liwiColors, screenHeight, screensScale, screenWidth } from '../../../utils/constants';
 import { userRoles } from '../../../../frontend_service/constants';
 import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './UnlockSession.style';
+import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
+import { displayNotification } from '../../../utils/CustomToast';
+import NavigationService from '../../../engine/navigation/Navigation.service';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
@@ -30,38 +32,44 @@ export default function PinSession() {
     return null;
   }
 
-  const syncGroup = async () => {
+  /**
+   * Get group, algorithm and store it in local storage
+   * @returns {Promise<void>}
+   */
+  const createSession = async () => {
     setLoading(true);
-    await app.getGroupData();
+    await app.setInitialData();
     await app.subscribePingApplicationServer();
-    const database = await new Database();
-    await app.set('database', database);
     setLoading(false);
   };
 
-  const handleResultEnterPin = async (pinCode) => {
-    const pinCheck = await app.openSession(pinCode);
+  /**
+   * Get the pin code from screen
+   * Redirect to userSelection if not opened
+   * Redirect to home if already opened
+   * @params { string }: pinCode : pin code from screen
+   */
+  const openSession = async (pinCode) => {
+    const { user, t } = app;
+    setLoading(true);
 
-    if (pinCheck) {
+    if (session.group.pin_code === pinCode) {
+      displayNotification(t('notifications:connection_successful'), liwiColors.greenColor);
+      await app.setInitialData();
+
+      if (user === null) {
+        await setTimeout(async () => {
+          NavigationService.navigate('UserSelection');
+        }, 10000);
+      } else {
+        app.set('logged', true);
+      }
       setStatus('success');
     } else {
       setStatus('failure');
     }
+    setLoading(false);
   };
-
-  let divider = 10;
-  let extraStyle = { width: 80, height: 80 };
-  let buttonStyle = { marginTop: 30 };
-  let textCustom = { marginTop: 30, color: liwiColors.redColor };
-
-  // Change flex for small screen
-
-  if (screenWidth < screensScale.s) {
-    divider = 8;
-    extraStyle = { width: 60, height: 60 };
-    buttonStyle = { margin: 0, marginTop: 10 };
-    textCustom = { marginTop: 10, color: liwiColors.redColor };
-  }
 
   return (
     <ScrollView>
@@ -71,14 +79,15 @@ export default function PinSession() {
             <View margin-auto padding-auto style={styles.flex}>
               <View style={styles.bloc}>
                 {loading ? (
-                  <LiwiLoader />
+                  <LiwiLoader/>
                 ) : (
                   <>
                     <Text bigTitle noBorder>
                       {app.t('unlock_session:title')}
                     </Text>
                     <Text size-auto>{app.t('unlock_session:assign')}</Text>
-                    <Button onPress={syncGroup} disabled={!app.isConnected} testID="new_session" style={styles.buttonSync}>
+                    <Button onPress={createSession} disabled={!app.isConnected} testID="new_session"
+                            style={styles.buttonSync}>
                       <Text size-auto>{app.t('unlock_session:sync_group')}</Text>
                     </Button>
                   </>
@@ -90,7 +99,8 @@ export default function PinSession() {
             <>
               {app.user !== null && (
                 <View style={styles.appContent}>
-                  <Image style={styles.imgKeys} resizeMode="contain" source={require('../../../../assets/images/keys.png')} />
+                  <Image style={styles.imgKeys} resizeMode="contain"
+                         source={require('../../../../assets/images/keys.png')}/>
                   <Text style={styles.align} bigTitle={screenWidth > screensScale.s}>
                     {app.t('unlock_session:already')}
                     {'\n '}
@@ -99,7 +109,7 @@ export default function PinSession() {
                     </Text>
                     {userRoles[app.user.role]}
                   </Text>
-                  <Button onPress={app.logout} style={{ ...styles.buttonLogout, ...buttonStyle }}>
+                  <Button onPress={app.logout} style={styles.buttonLogout}>
                     <Text size-auto>{app.t('unlock_session:logout')}</Text>
                   </Button>
                 </View>
@@ -107,11 +117,11 @@ export default function PinSession() {
 
               <PINCode
                 passwordLength={session.group.pin_code.length}
-                endProcessFunction={handleResultEnterPin}
+                endProcessFunction={openSession}
                 disableLockScreen
                 status="enter"
                 pinStatus={status}
-                titleComponent={() => <Text style={{ ...textCustom }}>{app.t('unlock_session:pin')} </Text>}
+                titleComponent={() => <Text style={styles.textCustom}>{app.t('unlock_session:pin')} </Text>}
                 storedPin={session.group.pin_code}
                 colorCircleButtons={liwiColors.darkerGreyColor}
                 colorPassword={liwiColors.redColor}
@@ -121,12 +131,12 @@ export default function PinSession() {
                 stylePinCodeDeleteButtonColorHideUnderlay={liwiColors.darkerGreyColor}
                 stylePinCodeColorTitle={liwiColors.redColor}
                 stylePinCodeDeleteButtonSize={30}
-                stylePinCodeDeleteButtonText={{ fontWeight: '200', marginTop: 5, fontSize: 18 }}
-                stylePinCodeRowButtons={{ justifyContent: 'center', alignItems: 'center', height: screenHeight / divider }}
-                stylePinCodeColumnButtons={{ justifyContent: 'center', alignItems: 'center', width: 'auto' }}
-                stylePinCodeMainContainer={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                stylePinCodeDeleteButtonText={styles.stylePinCodeDeleteButtonText}
+                stylePinCodeRowButtons={styles.stylePinCodeRowButtons}
+                stylePinCodeColumnButtons={styles.stylePinCodeColumnButtons}
+                stylePinCodeMainContainer={styles.stylePinCodeMainContainer}
                 stylePinCodeColumnDeleteButton={styles.stylePinCodeColumnDeleteButton}
-                stylePinCodeButtonCircle={{ ...styles.stylePinCodeButtonCircle, ...extraStyle }}
+                stylePinCodeButtonCircle={styles.stylePinCodeButtonCircle}
               />
             </>
           )}
