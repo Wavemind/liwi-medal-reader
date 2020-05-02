@@ -3,25 +3,27 @@
 import uuid from 'react-native-uuid';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import { getDeviceInformation } from '../../../src/engine/api/Device';
+import { moment } from 'moment';
 
 export class ActivityModel {
-  constructor() {}
+  constructor(props) {
 
-  constructorAsync = async (props) => {
-    const { stage, nodes, user, medicalCaseId } = props;
-    this.id = uuid.v1();
+    return (async () => {
+      const { stage, nodes, user, medical_case_id } = props;
+      const session = await getItem('session');
+      const deviceInfo = await getDeviceInformation();
 
-    const session = await getItem('session');
-    const deviceInfo = await getDeviceInformation();
-    this.timestamp = new Date();
-    this.stage = stage;
-    this.nodes = JSON.stringify(nodes);
-    this.user = user.toString();
-    this.synchronized_at = null;
-    this.medicalCaseId = medicalCaseId.toString();
-    this.mode = session.group.architecture;
-    this.groupId = session.group.id.toString();
-    this.macAdresse = deviceInfo.mac_address;
+      this.id = uuid.v4();
+      this.stage = stage;
+      this.nodes = JSON.stringify(nodes);
+      this.clinician = user.toString();
+      this.medical_case_id = medical_case_id.toString();
+      this.mode = session.group.architecture;
+      this.group_id = session.group.id.toString();
+      this.mac_address = deviceInfo.mac_address;
+      this.created_at = moment().toDate();
+      this.synchronized_at = null;
+    })();
   };
 }
 
@@ -30,15 +32,14 @@ ActivityModel.schema = {
   primaryKey: 'id',
   properties: {
     id: 'string',
-    synchronized_at: 'date?',
-    timestamp: 'date',
     stage: 'string',
     user: 'string',
     nodes: 'string',
     mode: 'string',
-    groupId: 'string',
-    macAdresse: 'string',
-    medicalCaseId: 'string?',
-    patientId: 'string?',
+    group_id: 'string',
+    mac_address: 'string',
+    medical_case_id: 'string?',
+    created_at: 'date',
+    synchronized_at: 'date?',
   },
 };
