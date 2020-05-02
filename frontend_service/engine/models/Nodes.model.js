@@ -1,6 +1,6 @@
 // @flow
 import _ from 'lodash';
-import { categories, nodesType } from '../../constants';
+import { categories, nodeTypes } from '../../constants';
 import { NodeModel } from './Node.model';
 import { ManagementModel } from './Management.model';
 import { DrugModel } from './Drug.model';
@@ -10,7 +10,7 @@ import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 
-interface NodeInterface { }
+interface NodeInterface {}
 
 export class NodesModel implements NodeInterface {
   constructor(props) {
@@ -168,7 +168,7 @@ export class NodesModel implements NodeInterface {
    */
   getHealthCaresQuestions() {
     let questions = {};
-    const finalDiagnostics = this.filterByType(nodesType.finalDiagnostic);
+    const finalDiagnostics = this.filterByType(nodeTypes.finalDiagnostic);
 
     for (const index in finalDiagnostics) {
       if (finalDiagnostics.hasOwnProperty(index)) {
@@ -176,8 +176,6 @@ export class NodesModel implements NodeInterface {
         const condition = finalDiagnostic.calculateCondition();
         if (condition === true) {
           for (const indexManagement in finalDiagnostic.managements) {
-            console.log(indexManagement);
-            console.log(this);
             this[indexManagement].getQuestions(finalDiagnostic);
             if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
               const m = this[indexManagement];
@@ -234,7 +232,7 @@ export class NodesModel implements NodeInterface {
 
     // Based on the node type
     switch (node.type) {
-      case nodesType.questionsSequence:
+      case nodeTypes.questionsSequence:
         switch (node.category) {
           case categories.scored:
             instantiatedNode = new QuestionsSequenceScoredModel({
@@ -251,13 +249,13 @@ export class NodesModel implements NodeInterface {
         }
         break;
 
-      case nodesType.question:
+      case nodeTypes.question:
         instantiatedNode = new QuestionModel({
           ...node,
           medicalCase: this,
         });
         break;
-      case nodesType.healthCare:
+      case nodeTypes.healthCare:
         switch (node.category) {
           case categories.management:
             instantiatedNode = new ManagementModel({ ...node });
@@ -267,7 +265,7 @@ export class NodesModel implements NodeInterface {
             break;
         }
         break;
-      case nodesType.finalDiagnostic:
+      case nodeTypes.finalDiagnostic:
         instantiatedNode = new FinalDiagnosticModel({ ...node });
         break;
       default:

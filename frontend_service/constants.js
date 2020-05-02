@@ -1,40 +1,33 @@
+// Server address
 export const host = 'https://liwi.wavelab.top/api/v1/';
 // export const host = 'https://medalc.unisante.ch/api/v1';
 export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
-export const secondStatusLocalData = 5000;
+export const secondStatusLocalData = 10000;
 
 export const navigationStateKey = 'navigationState';
-export const alreadyLaunchedStateKey = 'alreadyLaunched';
 export const appInBackgroundStateKey = 'appBackground';
-// Hash used to encrypt local password
-export const saltHash = 'x9gKs?RBf*96RK2DAM+&$CYv7A3Gjp=?X&RBLS%9KeL8Q3dSGjUzL_?2Vye3';
 
 // Nodes types
-export const nodesType = {
+export const nodeTypes = {
   diagnostic: 'diagnostic',
   finalDiagnostic: 'FinalDiagnostic',
-  management: 'Management',
   questionsSequence: 'QuestionsSequence',
   question: 'Question',
-  treatment: 'Treatment',
   healthCare: 'HealthCare',
 };
 
-// Display answer format
 export const displayFormats = {
   radioButton: 'RadioButton',
-  checkBox: 'CheckBox',
   input: 'Input',
-  list: 'DropDownList',
+  dropDownList: 'DropDownList',
   formula: 'Formula',
-  reference: 'Reference',
+  reference: 'Reference', // table reference
   string: 'String',
   date: 'Date',
 };
 
-// Medication type
-export const healthCareType = {
+export const medicationForms = {
   tablet: 'tablet',
   capsule: 'capsule',
   suspension: 'suspension',
@@ -62,12 +55,12 @@ export const valueFormats = {
   positive: 'Positive',
 };
 
-// Stage of questions
-export const stage = {
+export const stages = {
   registration: 'registration',
   triage: 'triage',
   test: 'test',
   consultation: 'consultation',
+  diagnosis_management: 'diagnosis_management',
 };
 
 export const systems = {
@@ -80,10 +73,9 @@ export const systems = {
   urinary_reproductive: 'Urinary and reproductive system',
   nervous: 'Nervous system',
   muscular_skeletal: 'Muscular and skeletal system',
-  null: 'General',
+  null: 'General', // TODO: must be remove when all diag is ok ! 22.04.2020
 };
 
-// Node category
 export const categories = {
   assessment: 'assessment_test',
   chronicCondition: 'chronic_condition',
@@ -101,7 +93,6 @@ export const categories = {
   scored: 'scored',
   drug: 'drug',
   management: 'management',
-  other: 'other',
   treatmentQuestion: 'treatment_question',
   backgroundCalculation: 'background_calculation',
   vitalSignAnthropometric: 'vital_sign_anthropometric',
@@ -110,15 +101,7 @@ export const categories = {
   uniqueTriagePhysicalSign: 'unique_triage_physical_sign',
 };
 
-// Type of nodes received from json
-export const typeNode = {
-  question: 'Question',
-  management: 'Management',
-  questionsSequence: 'QuestionsSequence',
-  treatment: 'Treatment',
-};
-
-export const userRole = {
+export const userRoles = {
   clinician: 'Clinician',
   registration_desk: 'Registration Desk',
   triage_nurse: 'Triage Nurse',

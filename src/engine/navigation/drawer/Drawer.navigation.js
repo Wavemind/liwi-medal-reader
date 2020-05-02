@@ -5,15 +5,10 @@ import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
 import NavigationService from '../Navigation.service';
-import {
-  BottomButtonsDrawer,
-  CategorieButton,
-  HeaderButtonsDrawer,
-  ItemButton,
-  PathBar,
-} from './Drawer.item.navigation';
-import { Toaster } from '../../../utils/CustomToast';
+import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
+import { displayNotification } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
+import { liwiColors } from '../../../utils/constants';
 // eslint-disable-next-line no-unused-vars
 
 type Props = NavigationScreenProps & {};
@@ -65,16 +60,21 @@ export default class Drawer extends Component<Props, State> {
 
     const navigate = (name, initialPage) => {
       if (areMedicalCaseInredux) {
+        if (name === 'PatientUpsert') {
+          navigation.navigate({
+            routeName: name,
+            params: { initialPage, idPatient: medicalCase?.patient_id, newMedicalCase: false },
+            key: name + initialPage,
+          });
+        }
+
         navigation.navigate({
           routeName: name,
           params: { initialPage },
           key: name + initialPage,
         });
       } else {
-        Toaster(t('menu:noredux'), {
-          type: 'warning',
-          duration: 5000,
-        });
+        displayNotification(t('menu:noredux'), liwiColors.redColor);
       }
     };
 

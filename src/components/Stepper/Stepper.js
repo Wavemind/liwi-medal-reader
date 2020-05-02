@@ -19,6 +19,9 @@ import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
+import Database from '../../engine/api/Database';
+import { diff, difference, differenceNodes } from '../../utils/swissKnives';
+import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
 
 type Props = {
   children: any,
@@ -249,20 +252,39 @@ class Stepper extends React.Component<Props, State> {
     });
   };
 
-  nextStage = () => {
-    const { navigation, nextStage, endMedicalCase, paramsNextStage } = this.props;
+  nextStage = async () => {
+    const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
+
+    const medicalCase = store.getState();
 
     if (endMedicalCase === true) {
-      store.dispatch(updateMedicalCaseProperty('status', medicalCaseStatus.close.name));
+      medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
-
-      NavigationService.resetActionStack('Home');
     }
 
-    navigation.navigate({
-      routeName: nextStage,
-      params: paramsNextStage,
+    const database = await new Database();
+    const databaseMedicalCase = database.findBy('MedicalCase', medicalCase.id);
+    const activity = await new ActivityModel();
+
+    await activity.constructorAsync({
+      nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
+      stage: NavigationService.getCurrentRoute().routeName,
+      user: app.user.id,
+      medicalCaseId: medicalCase.id,
     });
+
+    medicalCase.json = JSON.stringify(medicalCase);
+    database.push('MedicalCase', medicalCase.id, 'activities', activity);
+    database.update('MedicalCase', medicalCase.id, medicalCase);
+
+    if (endMedicalCase === true) {
+      NavigationService.resetActionStack('Home');
+    } else {
+      navigation.navigate({
+        routeName: nextStage,
+        params: paramsNextStage,
+      });
+    }
   };
 
   renderSteps = () => {
