@@ -177,7 +177,6 @@ function resetActionStack(routeName, params) {
 async function onNavigationStateChange(prevState, currentState) {
   const activeRoute = getActiveRouteName(currentState);
   const prev = getActiveRouteName(prevState);
-  const cu = getCurrentRoute(currentState);
 
   // prevent multiple execution
   if (activeRoute !== prev) {
