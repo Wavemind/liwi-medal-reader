@@ -20,7 +20,7 @@ export default class StatusIndicator extends React.Component<Props, State> {
 
   render() {
     const {
-      app: { t, isConnected },
+      app: { isConnected },
     } = this.props;
 
     return (
