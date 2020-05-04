@@ -68,7 +68,6 @@ export default class Database {
    */
   push = async (model, id, field, value) => {
     const dbInterface = await this._checkInterface();
-    console.log(value);
     return this[dbInterface].push(model, id, field, value);
   };
 
