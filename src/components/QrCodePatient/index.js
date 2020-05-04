@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import QrCodePatient from './QrCodePatient';
 import { withApplication } from '../../engine/contexts/Application.context';
-import { setDiagnoses } from '../../../frontend_service/actions/creators.actions';
 import { WrapperNavigation } from '../../utils/WrapperNavigation';
 import { withNavigation } from 'react-navigation';
 

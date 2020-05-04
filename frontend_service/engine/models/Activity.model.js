@@ -15,7 +15,7 @@ export class ActivityModel {
       this.id = uuid.v4();
       this.stage = stage;
       this.nodes = JSON.stringify(nodes);
-      this.clinician = user.toString();
+      this.clinician = user.first_name + " " + user.last_name;
       this.medical_case_id = medical_case_id.toString();
       this.mode = session.group.architecture;
       this.mac_address = deviceInfo.mac_address;
