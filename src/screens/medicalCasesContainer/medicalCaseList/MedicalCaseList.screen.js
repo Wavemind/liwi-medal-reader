@@ -195,8 +195,6 @@ export default class MedicalCaseList extends React.Component<Props, State> {
               second_top_right_question = medicalCase.nodes[medicalCase.second_top_right_question_id]?.value;
             }
 
-            console.log(medicalCase);
-
             return (
               <ListItem
                 rounded
@@ -207,19 +205,22 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={`${medicalCase.id}_medical_case_list`}
                 spaced
                 onPress={async () => {
-                  await this.selectMedicalCase({
-                    ...medicalCase,
-                  });
-
-                  //updateModalFromRedux(null, { ...lockMedicalCases[medicalCaseItem.id], id: medicalCaseItem.id }, toolTipType.medicalCaseLocked);
-
-                  const route = routeDependingStatus(medicalCase);
-
-                  if (route !== undefined) {
-                    navigation.navigate(route, {
-                      idPatient: medicalCase.patient_id,
-                      newMedicalCase: false,
+                  // If medicalCase is open by clinician
+                  if (medicalCase.clinician !== null) {
+                    updateModalFromRedux({ ...medicalCase }, toolTipType.medicalCaseLocked);
+                  } else {
+                    await this.selectMedicalCase({
+                      ...medicalCase,
                     });
+
+                    const route = routeDependingStatus(medicalCase);
+
+                    if (route !== undefined) {
+                      navigation.navigate(route, {
+                        idPatient: medicalCase.patient_id,
+                        newMedicalCase: false,
+                      });
+                    }
                   }
                 }}
               >

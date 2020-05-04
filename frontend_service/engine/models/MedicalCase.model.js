@@ -6,6 +6,8 @@ import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
+    console.log(props, currentAlgorithm);
+
     if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v1();
@@ -65,6 +67,9 @@ export class MedicalCaseModel {
       };
       this.generateExcludedId();
     } else {
+      this.clinician = props.clinician;
+      this.mac_address = props.mac_address;
+
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
       if (this.json === undefined) {
