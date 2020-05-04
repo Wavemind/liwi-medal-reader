@@ -10,8 +10,9 @@ export class MedicalCaseModel {
 
     if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
-      this.id = uuid.v1();
+      this.id = uuid.v4();
       this.name = currentAlgorithm.name;
+      this.activities = [];
       this.algorithm_name = currentAlgorithm.algorithm_name;
       this.version_name = currentAlgorithm.version_name;
       this.version = currentAlgorithm.version;
@@ -65,6 +66,8 @@ export class MedicalCaseModel {
         additionalDrugs: {},
         customDrugs: [],
       };
+      this.fail_safe = false;
+
       this.generateExcludedId();
     } else {
       this.clinician = props.clinician;
@@ -84,7 +87,6 @@ export class MedicalCaseModel {
       this.left_top_question_id = json.left_top_question_id ?? null;
       this.first_top_right_question_id = json.first_top_right_question_id ?? null;
       this.second_top_right_question_id = json.second_top_right_question_id ?? null;
-
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;
@@ -217,5 +219,6 @@ MedicalCaseModel.schema = {
     updated_at: 'date',
     status: 'string',
     patient_id: 'string',
+    fail_safe: 'bool',
   },
 };
