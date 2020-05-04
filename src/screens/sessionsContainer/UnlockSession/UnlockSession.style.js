@@ -1,29 +1,48 @@
 import { StyleSheet } from 'react-native';
-import { isTablet, liwiColors, screenWidth } from '../../../utils/constants';
+import { liwiColors, screenHeight, screensScale, screenWidth } from '../../../utils/constants';
+
+let divider = 10;
+let extraStyle = { width: 80, height: 80 };
+let buttonStyle = { marginTop: 30 };
+let textCustom = { marginTop: 30, color: liwiColors.redColor };
+
+// Change flex for small screen
+if (screenWidth < screensScale.s) {
+  divider = 8;
+  extraStyle = { width: 60, height: 60 };
+  buttonStyle = { margin: 0, marginTop: 10 };
+  textCustom = { marginTop: 10, color: liwiColors.redColor };
+}
 
 export const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
+  flex: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: screenHeight,
   },
 
-  flex: { flex: 1 },
-
-  height: {
-    height: 200,
+  appContent: {
+    alignItems: 'center',
+    marginTop: 20,
   },
 
-  appContent: { alignItems: 'center', marginTop: 20 },
+  textCustom: {
+    ...textCustom,
+  },
 
-  buttonSync: { alignSelf: 'center', marginTop: 30 },
-  buttonLogout: { alignSelf: 'center' },
-  imgKeys: { width: 90, height: 90, margin: 0 },
-  lottie: {
-    height: isTablet ? 100 : 50,
+  buttonSync: { alignSelf: 'center' },
+
+  buttonLogout: {
     alignSelf: 'center',
-    marginBottom: isTablet ? 50 : 10,
+    ...buttonStyle,
   },
+
+  imgKeys: { width: 90, height: 90, margin: 0 },
+
   textRole: { textAlign: 'center', fontWeight: 'bold' },
+
   align: { textAlign: 'center' },
 
   bloc: {
@@ -35,17 +54,6 @@ export const styles = StyleSheet.create({
     marginTop: -50,
   },
 
-  button: {
-    marginTop: 50,
-  },
-
-  view: {
-    width: screenWidth * 0.8,
-    borderColor: liwiColors.redColor,
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 30,
-  },
   stylePinCodeColumnDeleteButton: {
     marginLeft: 30,
     marginRight: -10,
@@ -53,12 +61,30 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
   },
+
   stylePinCodeButtonCircle: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 80,
-    height: 80,
     backgroundColor: 'rgb(78,80,83)',
     borderRadius: 40,
+    ...extraStyle,
   },
+
+  stylePinCodeDeleteButtonText: {
+    fontWeight: '200',
+    marginTop: 5,
+    fontSize: 18,
+  },
+
+  stylePinCodeRowButtons: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: screenHeight / divider,
+  },
+
+  stylePinCodeColumnButtons: {
+    justifyContent: 'center', alignItems: 'center', width: 'auto'
+  },
+
+  stylePinCodeMainContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' }
 });

@@ -6,6 +6,9 @@ import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/a
 import NavigationService from '../engine/navigation/Navigation.service';
 import { persistor, store } from '../../frontend_service/store';
 import { memorySizeOf } from './swissKnives';
+import Realm from 'realm';
+import { PatientModel } from '../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../frontend_service/engine/models/MedicalCase.model';
 
 export default class WavemindTools extends Component {
   constructor(props) {
@@ -20,7 +23,7 @@ export default class WavemindTools extends Component {
 
     return (
       <View>
-        <Fab active={active} direction="up" containerStyle={{}} style={{ backgroundColor: '#ffb21d' }} position="bottomRight" onPress={() => this.setState({ active: !active })}>
+        <Fab active={active} direction="up" containerStyle={{}} style={{ backgroundColor: '#ffb21d', margin: 20 }} position="bottomRight" onPress={() => this.setState({ active: !active })}>
           <Icon name="developer-mode" type="MaterialIcons" />
           {active
             ? [
@@ -39,6 +42,10 @@ export default class WavemindTools extends Component {
                   key="2"
                   blue
                   onPress={async () => {
+                    await Realm.deleteFile({
+                      schema: [PatientModel, MedicalCaseModel],
+                      deleteRealmIfMigrationNeeded: true,
+                    });
                     await clearLocalStorage();
                     await persistor.purge();
                     NavigationService.navigate('NewSession');
@@ -62,7 +69,7 @@ export default class WavemindTools extends Component {
                   onPress={async () => {
                     const sessions = await getItems('sessions');
                     const session = await getItems('session');
-                    const algorithms = await getItems('algorithms');
+                    const algorithm = await getItems('algorithm');
                     const patients = await getItems('patients');
                     const state$ = store.getState();
                     let k = await FilesystemStorage.getItem('persist:medicalCase');
@@ -73,8 +80,8 @@ export default class WavemindTools extends Component {
                       state$,
                       size_state$: memorySizeOf(state$),
                       session,
-                      algorithms,
-                      size_algorithms: memorySizeOf(algorithms),
+                      algorithm,
+                      size_algorithms: memorySizeOf(algorithm),
                       patients,
                       size_patients: memorySizeOf(patients),
                     });

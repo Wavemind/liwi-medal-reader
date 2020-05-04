@@ -25,11 +25,6 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
     const defaultTab = navigation.getParam('defaultTab');
 
-    const age = find(nodes, { reference: '2', category: 'demographic' });
-    let stringAge;
-    if (age !== undefined) {
-      stringAge = age.value === null ? 'Age is not defined' : `${age.value} months`;
-    }
 
     return (
       <View padding-auto flex>
@@ -38,10 +33,8 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
         <View style={styles.patientInfo}>
           <View flex-container-fluid>
             <Text size-auto>
-              {patient.firstname} {patient.lastname}
+              {patient.id}
             </Text>
-            <Text size-auto>{patient.gender}</Text>
-            <Text size-auto>{stringAge}</Text>
           </View>
         </View>
         <Tabs initialPage={defaultTab} tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>

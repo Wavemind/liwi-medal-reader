@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable no-case-declarations */
 import { NodeModel } from './Node.model';
-import { healthCareType, nodesType } from '../../constants';
+import { medicationForms, nodeTypes } from '../../constants';
 import { store } from '../../store';
 import { roundSup } from '../../../src/utils/swissKnives';
 
@@ -32,7 +32,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
     const questions = {};
     instanceHealthcare.top_conditions.map((tp) => {
       const node = state$.nodes[tp.first_node_id];
-      if (node.type === nodesType.questionsSequence) {
+      if (node.type === nodeTypes.questionsSequence) {
         this.getQuestionsInQs(state$, questions, node);
       } else {
         questions[tp.first_node_id] = node;
@@ -49,7 +49,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
   */
   getQuestionsInQs = (state$, questions, node) => {
     Object.keys(node.instances).map((id) => {
-      if (state$.nodes[id].type === nodesType.questionsSequence) {
+      if (state$.nodes[id].type === nodeTypes.questionsSequence) {
         this.getQuestionsInQs(state$, questions, state$.nodes[id]);
       } else {
         questions[id] = state$.nodes[id];

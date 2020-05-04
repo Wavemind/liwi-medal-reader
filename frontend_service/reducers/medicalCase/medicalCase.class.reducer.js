@@ -5,13 +5,14 @@ import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { nodesType } from '../../constants';
+import { nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
+import NavigationService from '../../../src/engine/navigation/Navigation.service';
 
-export const initialState = null;
+export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
 /**
  * Reducer
@@ -62,10 +63,10 @@ class MedicalCaseReducer extends ReducerClass {
     };
 
     switch (type) {
-      case nodesType.diagnostic:
+      case nodeTypes.diagnostic:
         caller = newNode.dd;
         break;
-      case nodesType.questionsSequence:
+      case nodeTypes.questionsSequence:
         caller = newNode.qs;
         break;
     }
@@ -205,13 +206,12 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.MC_UPDATE_MODAL)
   updateModalFromRedux(state, action) {
-    const { content, type, params } = action.payload;
+    const { params, type } = action.payload;
 
     const newModal = {
       open: !state.modal.open,
-      content,
-      type,
       params,
+      type,
     };
 
     return {
@@ -343,7 +343,7 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload boolean: the agreed / unagree value
    */
   @Action(actions.SET_ADDITIONAL_MEDECINE)
-  setAdditionalMedecine(state, action) {
+  setAdditionalMedicine(state, action) {
     const { medecines } = action.payload;
 
     return {
@@ -364,7 +364,7 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload duration: the new value to update
    */
   @Action(actions.SET_ADDITIONAl_MEDICINE_DURATION)
-  setAdditionalMedecineDuration(state, action) {
+  setAdditionalMedicineDuration(state, action) {
     const { id, duration } = action.payload;
 
     return {

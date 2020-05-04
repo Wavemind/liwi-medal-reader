@@ -1,27 +1,20 @@
 // @flow
 import * as React from 'react';
-import { Button, List, ListItem, Text, View } from 'native-base';
 import moment from 'moment';
-import type { NavigationScreenProps } from 'react-navigation';
-import { styles } from './PatientProfile.style';
-import { getItemFromArray, getItems } from '../../../engine/api/LocalStorage';
+import { Button, List, ListItem, Text, View } from 'native-base';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import LiwiLoader from '../../../utils/LiwiLoader';
 import { routeDependingStatus } from '../../../../frontend_service/constants';
+import { getItems } from '../../../engine/api/LocalStorage';
+import { styles } from './PatientProfile.style';
 import ConfirmationView from '../../../components/ConfirmationView';
-import { showBirthDatePatient } from '../../../../frontend_service/algorithm/treeDiagnosis.algo';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class PatientProfile extends React.Component<Props, State> {
+export default class PatientProfile extends React.Component {
   state = {
-    propsToolTipVisible: false,
     patient: {
-      birthdate: '01/01/1900',
       medicalCases: [],
     },
-    algorithms: [],
+    algorithm: null,
     firstRender: false,
   };
 
@@ -29,7 +22,7 @@ export default class PatientProfile extends React.Component<Props, State> {
     await this.getPatient();
   }
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps) {
     const { focus } = this.props;
 
     if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null || focus === 'willBlur')) {
@@ -38,16 +31,18 @@ export default class PatientProfile extends React.Component<Props, State> {
     return true;
   }
 
-  // Fetch patient in localstorage
   async getPatient() {
-    const { navigation } = this.props;
+    const {
+      navigation,
+      app: { database },
+    } = this.props;
     const id = navigation.getParam('id');
 
-    const patient = await getItemFromArray('patients', 'id', id);
-    const algorithms = await getItems('algorithms');
+    const patient = await database.findBy('Patient', id);
+    const algorithm = await getItems('algorithm');
     this.setState({
       patient,
-      algorithms,
+      algorithm,
       firstRender: true,
     });
   }
@@ -58,84 +53,76 @@ export default class PatientProfile extends React.Component<Props, State> {
     await setMedicalCase(medicalCase);
   };
 
-  callBackClose = () => {
-    this.setState({
-      propsToolTipVisible: false,
-    });
-  };
-
-  // TODO: L'edit n'a plus tellement de sense vu que maintenant rien n'est push dans le local storage tant qu'il ne créer pas de nouveau cas medical
-  // TODO: Est-ce que on ferait pas une nouvelle vue ?
-
   render() {
-    const { patient, algorithms, firstRender, propsToolTipVisible } = this.state;
+    const { patient, algorithm, firstRender } = this.state;
 
     const {
       navigation,
-      medicalCase,
       app: { t },
     } = this.props;
 
     const flatPatient = {
       ...patient,
     };
-
     delete flatPatient.medicalCases;
 
     // Display list of medical cases
-    const _renderMedicalCases = patient.medicalCases.map((medicalCaseItem) => {
-      const { medicalCase } = this.props;
-
-      const style = {
-        backgroundColor: '#ffffff',
-      };
-
+    const _renderMedicalCases = patient.medicalCases.map((medicalCase) => {
       return (
         <ListItem
-          key={`${medicalCaseItem.id}_mc`}
+          key={`${medicalCase.id}_mc`}
           rounded
           block
-          style={style}
+          style={{ backgroundColor: '#ffffff' }}
           spaced
           onPress={async () => {
-            const medicalCaseRoute = medicalCase.id === medicalCaseItem.id ? medicalCase : medicalCaseItem;
+            await this.selectMedicalCase({
+              ...medicalCase,
+              patient: flatPatient,
+            });
 
-            if (medicalCase.id !== medicalCaseItem.id) {
-              await this.selectMedicalCase({
-                ...medicalCaseItem,
-                patient: flatPatient,
-              });
-            }
-
-            const route = routeDependingStatus(medicalCaseRoute);
+            const route = routeDependingStatus(medicalCase);
             if (route !== undefined) {
-              navigation.navigate(route);
+              navigation.navigate(route, {
+                idPatient: patient.id,
+                newMedicalCase: false,
+              });
             }
           }}
         >
           <View w50>
-            <Text>{moment(medicalCaseItem.createdDate).format('lll')}</Text>
+            <Text>{moment(medicalCase.updated_at).format('lll')}</Text>
           </View>
           <View w50>
-            <Text>{t(`medical_case:${medicalCase.id === medicalCaseItem.id ? medicalCase.status : medicalCaseItem.status}`)}</Text>
+            <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
           </View>
         </ListItem>
       );
+    });
+
+    let first_top_right_question = null;
+    let second_top_right_question = null;
+
+    patient.medicalCases.map((mc) => {
+      if (
+        mc.first_top_right_question_id !== null &&
+        mc.second_top_right_question_id !== null &&
+        mc.nodes[mc.first_top_right_question_id]?.value !== null &&
+        mc.nodes[mc.second_top_right_question_id]?.value !== null
+      ) {
+        first_top_right_question = mc.nodes[mc.first_top_right_question_id]?.value;
+        second_top_right_question = mc.nodes[mc.second_top_right_question_id]?.value;
+      }
     });
 
     return !firstRender ? (
       <LiwiLoader />
     ) : (
       <View padding-auto flex>
-        <LiwiTitle2 noBorder>
-          {patient.firstname} {patient.lastname}
-        </LiwiTitle2>
-        <Text>
-          {showBirthDatePatient(patient, medicalCase)} - {patient.gender}
-        </Text>
+        <LiwiTitle2 noBorder>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</LiwiTitle2>
 
         <SeparatorLine style={styles.bottomMargin} />
-        {algorithms.length > 0 ? (
+        {algorithm !== null ? (
           <View flex>
             <View>
               {patient.medicalCases.length > 0 ? (
@@ -147,17 +134,12 @@ export default class PatientProfile extends React.Component<Props, State> {
               )}
             </View>
             <View bottom-view>
-              <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={patient.id} />
               <Button
                 onPress={() => {
-                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                    navigation.navigate('PatientUpsert', {
-                      idPatient: patient.id,
-                      newMedicalCase: true,
-                    });
-                  } else {
-                    this.setState({ propsToolTipVisible: true });
-                  }
+                  navigation.navigate('PatientUpsert', {
+                    idPatient: patient.id,
+                    newMedicalCase: true,
+                  });
                 }}
               >
                 <Text>{t('work_case:create')}</Text>
