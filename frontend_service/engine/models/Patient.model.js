@@ -30,6 +30,7 @@ export class PatientModel {
       this.reason = reason;
 
       this.medicalCases = medicalCases;
+      this.fail_safe = false;
 
       if (id !== undefined) {
         this.id = id;
@@ -61,7 +62,6 @@ export class PatientModel {
       nodes: differenceNodes(medicalCase.nodes, currentAlgorithm.nodes),
       medical_case_id: medicalCase.id.toString()
     });
-    console.log(activity);
     return database.insert('Patient', {
       ...this,
       medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activities: [activity] }],

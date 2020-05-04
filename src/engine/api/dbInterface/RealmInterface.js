@@ -3,6 +3,7 @@ const Realm = require('realm');
 import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { getItem } from '../LocalStorage';
 
 export default class RealmInterface {
   /**
@@ -80,7 +81,7 @@ export default class RealmInterface {
    * @returns { Collection } - Updated object
    */
   push = async (model, id, field, value) => {
-    const object = this.findBy(model, id);
+    const object = await this.findBy(model, id);
     if (session.group.architecture === 'client_server')
       fields = { ...value, fail_safe: true };
     this._realm().write(() => {

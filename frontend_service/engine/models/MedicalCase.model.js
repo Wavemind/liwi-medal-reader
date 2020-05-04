@@ -64,6 +64,8 @@ export class MedicalCaseModel {
         additionalDrugs: {},
         customDrugs: [],
       };
+      this.fail_safe = false;
+
       this.generateExcludedId();
     } else {
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
@@ -80,7 +82,6 @@ export class MedicalCaseModel {
       this.left_top_question_id = json.left_top_question_id ?? null;
       this.first_top_right_question_id = json.first_top_right_question_id ?? null;
       this.second_top_right_question_id = json.second_top_right_question_id ?? null;
-      this.activities = [];
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;

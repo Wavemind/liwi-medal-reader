@@ -278,7 +278,7 @@ class Stepper extends React.Component<Props, State> {
       medicalCase.json = JSON.stringify(medicalCase);
       medicalCase.activities.push(activity);
 
-      database.update('MedicalCase', medicalCase.id, medicalCase);
+      await database.update('MedicalCase', medicalCase.id, medicalCase);
     }
 
     if (endMedicalCase === true) {
