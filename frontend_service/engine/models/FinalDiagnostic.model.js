@@ -6,7 +6,7 @@ import { NodeModel } from './Node.model';
 import { RequirementNodeModel } from './RequirementNodeModel';
 import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
-import { nodesType } from '../../constants';
+import { nodeTypes } from '../../constants';
 
 interface FinalDiagnosticInterface {}
 
@@ -73,7 +73,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     }
     // Remove path other dd
     const childrenWithoutOtherDd = instance.children.filter((id) => {
-      if (state$.nodes[id].type === nodesType.finalDiagnostic && state$.nodes[id].id !== dd.id) {
+      if (state$.nodes[id].type === nodeTypes.finalDiagnostic && state$.nodes[id].id !== dd.id) {
         return false;
       }
       return true;
@@ -82,10 +82,10 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const recursif = childrenWithoutOtherDd.map((childId) => {
       const child = state$.nodes[childId];
       // If this is not the final DD we calculate the conditonValue of the child
-      if (child.type === nodesType.question || child.type === nodesType.questionsSequence) {
+      if (child.type === nodeTypes.question || child.type === nodeTypes.questionsSequence) {
         return this.recursiveNodeDd(state$, state$.diagnostics[dd.diagnostic_id].instances[child.id], dd);
       }
-      if (child.id === dd.id && child.type === nodesType.finalDiagnostic) {
+      if (child.id === dd.id && child.type === nodeTypes.finalDiagnostic) {
         const top_conditions = _.filter(dd.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
         // We get the condition of the final link
         const arrayBoolean = top_conditions.map((condition) => {
@@ -193,7 +193,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const state$ = store.getState();
     const { nodes } = state$;
 
-    const finalDiagnostics = nodes.filterByType(nodesType.finalDiagnostic);
+    const finalDiagnostics = nodes.filterByType(nodeTypes.finalDiagnostic);
 
     const finalDiagnosticsNull = [];
     const finalDiagnosticsTrue = [];

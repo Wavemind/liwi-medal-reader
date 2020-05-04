@@ -1,45 +1,68 @@
-import findIndex from 'lodash/findIndex';
-import find from 'lodash/find';
 import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
-import json from '../../frontend_service/api/json';
-import { handleHttpError, Toaster } from '../../src/utils/CustomToast';
-import { getItem, getItems, getSession, setItem } from '../../src/engine/api/LocalStorage';
+import { handleHttpError } from '../../src/utils/CustomToast';
+import { getItem } from '../../src/engine/api/LocalStorage';
 
 /**
- * Https GET request
- *  @params [String] params
- *  @return [Json] response from server
+ * Get group configuration by device mac address
+ * @returns {Promise<string|Array>}
  */
-
-export const get = async (params) => {
-  const url = `${host}${params}`;
-  const header = await getHeaders('GET', false);
-
-  const request = await fetch(url, header).catch((error) => handleHttpError(error));
-  const httpcall = await request;
-
-  if (httpcall.status === 500) {
-    const t = await httpcall.text();
-    console.warn(t, httpcall);
-    Toaster('The server is not responding', { type: 'danger', duration: 4000 });
-    return { errors: [] };
-  }
-
-  const response = await httpcall.json();
-
-  // Display error
-  if (!request.ok) {
-    handleHttpError(response.errors);
-  }
-
-  return response;
+export const getGroup = async () => {
+  const deviceInfo = await getDeviceInformation();
+  const url = `${host}devices/${deviceInfo.mac_address}`;
+  const header = await _setHeaders();
+  return _fetch(url, header);
 };
 
+/**
+ * Get an algorithm attached to the group
+ * @returns {Promise<string|Array>}
+ */
+export const getAlgorithm = async () => {
+  const deviceInfo = await getDeviceInformation();
+  const url = `${host}versions?mac_address=${deviceInfo.mac_address}`;
+  const header = await _setHeaders();
+  return _fetch(url, header);
+};
+
+/**
+ * Auth user to medal-c
+ * @param { string } email - User email
+ * @param { string } password - User password
+ * @returns {Promise<{access_token: any, uid: any, client: any, expiry: any}|null>}
+ */
+export const auth = async (email, password) => {
+  const url = `${host}auth/sign_in`;
+  const header = await _setHeaders('POST', { email, password });
+  const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+  const result = await httpRequest.json();
+
+  if (httpRequest.status === 200) {
+    return {
+      ...result,
+      access_token: await httpRequest.headers.get('access-token'),
+      client: await httpRequest.headers.get('client'),
+      expiry: await httpRequest.headers.get('expiry'),
+      uid: await httpRequest.headers.get('uid'),
+    };
+  }
+
+  handleHttpError(result.errors);
+  return result;
+};
+
+export const registerDevice = async () => {
+  const deviceInfo = await getDeviceInformation();
+  const url = `${host}devices`;
+  const header = await _setHeaders('POST', { device: { ...deviceInfo } });
+  const response = await _fetch(url, header);
+  return response !== null;
+};
+
+// TODO: normaly doesn't work
 export const syncMedicalCases = async (body, userId = null) => {
   const url = `${hostDataServer}${'sync_medical_cases'}`;
-  const header = await getHeaders('POST', body, userId);
-
+  const header = await _setHeaders('POST', body, userId);
   const request = await fetch(url, header).catch((error) => handleHttpError(error));
 
   const http = await request;
@@ -59,131 +82,51 @@ export const syncMedicalCases = async (body, userId = null) => {
   return false;
 };
 
-// @params [String] params, [Object] body, [Integer] userId, [String] method
-// @return [Object] response from server
-// Https POST request
-export const post = async (params, body = {}, config = {}) => {
-  const url = `${host}${params}`;
-  const header = await getHeaders('POST', body, config);
+/**
+ * Make the request and parse result
+ * @param { string } url - Url to bind
+ * @param { object } header - Header options
+ * @returns {Promise<string|array>}
+ * @private
+ */
+const _fetch = async (url, header) => {
+  const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+  const result = await httpRequest.json();
 
-  const request = await fetch(url, header).catch((error) => handleHttpError(error));
-
-  const response = await request.json();
-
-  // Display error
-  if (!request.ok) {
-    handleHttpError(response.errors);
+  if (httpRequest.status === 200) {
+    return result;
   }
 
-  if (request.status === 200) {
-    return true;
-  }
-  return false;
+  handleHttpError(result);
+  return null;
 };
 
-// @params [String] email, [String] password
-// @return [Object] response from server
-// Https request for authentication
-export const auth = async (email, password) => {
-  const url = `${host}auth/sign_in`;
-
-  const request = await fetch(url, {
-    method: 'post',
-    headers: {
-      Accept: 'application/json, text/plain',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-  }).catch((error) => {
-    handleHttpError(error);
-    if (error instanceof Error) {
-      throw { success: false };
-    }
-  });
-
-  const body = await request.json();
-  // Display error
-  if (!request.ok) {
-    handleHttpError(body.errors);
-    throw body;
-  }
-
-  return await {
-    ...body,
-    access_token: await request.headers.get('access-token'),
-    client: await request.headers.get('client'),
-    expiry: await request.headers.get('expiry'),
-    uid: await request.headers.get('uid'),
-  };
-};
-
-// @params [Integer] userId
-// Promise fetch algorithm from server
-export const fetchAlgorithms = async () => {
-  return new Promise(async (resolve) => {
-    const deviceInfo = await getDeviceInformation();
-    const credentials = await getItem('session');
-    if (credentials !== null && credentials.group !== null) {
-      console.warn('fetch algorithm');
-
-      const serverAlgorithm = await get(`versions?mac_address=${deviceInfo.mac_address}`);
-
-      const localAlgorithms = await getItems('algorithms');
-
-      const algorithm = findIndex(localAlgorithms, (a) => a.algorithm_id === serverAlgorithm.algorithm_id);
-      const algorithmSelected = find(localAlgorithms, (a) => a.selected === true);
-
-      if (algorithmSelected !== undefined) {
-        algorithmSelected.selected = false;
-      }
-
-      if (serverAlgorithm.errors) {
-        resolve(serverAlgorithm.errors);
-        return null;
-      }
-      if (algorithm !== -1) {
-        // Algorithm container already in local, replace this local algo
-        localAlgorithms[algorithm] = serverAlgorithm;
-        localAlgorithms[algorithm].selected = true;
-      } else {
-        // Algorithm not existing in local, push it
-        serverAlgorithm.selected = true;
-        localAlgorithms.push(serverAlgorithm);
-      }
-
-      await setItem('algorithms', localAlgorithms);
-      resolve('finish');
-    }
-  });
-};
-
-// @params [String] method, [Object] body, [Integer] userId
-// @return [Object] header
-// Set header credentials to communicate with server
-const getHeaders = async (method = 'GET', body = false, config = {}) => {
+/**
+ * Set header credentials to communicate with server
+ * @params [String] method
+ * @params [Object] body
+ * @return [Object] header
+ * @private
+ */
+const _setHeaders = async (method = 'GET', body = false) => {
   const credentials = await getItem('session');
 
-  if (credentials !== null) {
-    const header = {
-      method,
-      headers: {
-        'access-token': credentials.access_token,
-        'group-token': credentials?.group?.token,
-        client: credentials.client,
-        uid: credentials.uid,
-        expiry: credentials.expiry,
-      },
-    };
-    if (method === 'POST' || method === 'PATCH') {
-      header.body = JSON.stringify(body);
-      header.headers.Accept = 'application/json, text/plain';
-      header.headers['Content-Type'] = 'application/json';
-    }
-    return header;
+  const header = {
+    method,
+    headers: {
+      'access-token': credentials?.access_token,
+      'group-token': credentials?.group?.token,
+      client: credentials?.client,
+      uid: credentials?.uid,
+      expiry: credentials?.expiry,
+    },
+  };
+
+  if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
+    header.body = JSON.stringify(body);
+    header.headers['Accept'] = 'application/json';
+    header.headers['Content-Type'] = 'application/json';
   }
 
-  return null;
+  return header;
 };

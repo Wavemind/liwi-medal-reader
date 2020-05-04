@@ -37,7 +37,7 @@ const persistNavigationState = async (navState) => {
 
 class LayoutTemplate extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.app.appState !== 'background';
+    return nextProps.app.appState !== 'background' && nextProps.app.session !== this.props.session;
   }
 
   loadNavigationState = async () => {
@@ -99,12 +99,12 @@ class LayoutTemplate extends React.Component<Props> {
           {ready ? (
             <Container>
               <RootView>
-                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
                 <AppContainer
                   logged={logged}
                   persistNavigationState={persistNavigationState}
                   // loadNavigationState={this.loadNavigationState}
-                  renderLoadingExperimental={() => <LiwiLoader />}
+                  renderLoadingExperimental={() => <LiwiLoader/>}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
@@ -115,7 +115,7 @@ class LayoutTemplate extends React.Component<Props> {
               </RootView>
             </Container>
           ) : (
-            <LiwiLoader />
+            <LiwiLoader/>
           )}
         </StyleProvider>
       </Root>

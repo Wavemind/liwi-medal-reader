@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const stringifyDeepRef = (item) => {
   let cache = [];
 
@@ -188,3 +190,38 @@ export const diff = function (obj1, obj2) {
  * ex : roundSup(1.55555) => 1.6
  */
 export const roundSup = (n) => Math.round(n * 10) / 10;
+
+/**
+ * Return is variable is function or not
+ *
+ * @param functionToCheck
+ * @return {*|boolean}
+ */
+export function isFunction(functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+}
+
+/**
+ * Diff nodes
+ * @param  {Object} newNodes Nodes Object compared
+ * @param  {Object} oldNodes Old NodesObject to compare with
+ * @return {Object}        Return a new array who represent the diff
+ */
+export function differenceNodes(newNodes, oldNodes) {
+  const diff = [];
+  Object.keys(newNodes).map((key) => {
+    const log = {};
+    const iterator = ['value', 'answer'];
+
+    const isDifferent = iterator.some((index) => newNodes[key][index] !== oldNodes[key][index]);
+
+    if (isDifferent) {
+      log.id = key;
+      log.value = newNodes[key].value;
+      log.answer = newNodes[key].answer;
+      diff.push(log);
+    }
+  });
+
+  return diff;
+}

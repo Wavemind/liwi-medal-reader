@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => { },
+  cacheUserLanguage: () => { },
 };
 
 i18n
@@ -89,6 +89,12 @@ i18n
           emergency: 'Emergency assistance',
           back: 'Back to home',
         },
+        qrcode: {
+          scan: 'Scan the QR code',
+          new: 'You need to generate a new sticker',
+          open: 'Right reading Qrcode and data. Opening Patient',
+          new_sticker_notification: 'You need to give another sticker to the patient',
+        },
         summary: {
           title: 'Current summary',
           diagnoses: 'Diagnoses',
@@ -122,6 +128,7 @@ i18n
           unavailable: 'Unavailable',
         },
         menu: {
+          patientUpsert: 'Registration',
           triage: 'Triage',
           first_look_assessments: 'First look assessment',
           basic_measurements: 'Basic measurements',
@@ -139,6 +146,7 @@ i18n
           noredux: 'There is no medical Case loaded',
         },
         medical_case: {
+          in_creation: 'Demographic',
           medecines: 'Medicines',
           medecines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',
@@ -163,6 +171,7 @@ i18n
           devices: 'Medical devices',
           tests: 'Medical tests available',
           awake: 'Keep awake',
+          production: 'Serveur de production',
           app: 'Application',
         },
         work_case: {
@@ -196,6 +205,14 @@ i18n
           differential_diagnoses: 'Differential diagnoses',
         },
         patient_upsert: {
+          uid: 'UID',
+          study_id: 'Study ID',
+          group_id: 'Group ID',
+          other_uid: 'Other UID',
+          other_study_id: 'Other study ID',
+          other_group_iId: 'Other group ID',
+          facility: 'Facility data',
+          questions: 'Questions',
           title: 'Patient',
           save_and_wait: 'Save + add to waiting list',
           save_and_case: 'Save + create new case',
@@ -223,6 +240,8 @@ i18n
           gender: 'Gender *',
           male: 'Male',
           female: 'Female',
+          age_not_defined: 'Age is not defined',
+          reason: 'Reason for changing facility',
         },
         login: {
           title: 'Login',
@@ -274,6 +293,9 @@ i18n
         popup: {
           unlock: 'Force Unlock the case (at your own risk)',
           close: 'Close the modal',
+          desc: 'Description',
+          version_name: 'version',
+          version: 'Update of version',
           title: 'Please allow access to the position',
           message: 'Location sharing is mandatory in order to use the medical service',
           ask_me_later: 'Ask me later',
@@ -300,6 +322,7 @@ i18n
           case_in_progress: 'Case in progress',
           synchronize: 'Synchronize',
           patient_add: 'New patient',
+          patient_qr: 'Open patient by Qrcode',
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
@@ -312,7 +335,7 @@ i18n
           back: 'Back',
           disconnect: 'Disconnect',
           consultation: 'Consultation',
-          patient_data: 'Patient data',
+          patient_data: 'Patient',
         },
         notifications: {
           empty_code: 'Your code is empty, please write it',
@@ -320,7 +343,10 @@ i18n
           session_does_not_exist: 'Your local user does not exist, please try again',
           session_already_exist: 'Session already exist',
           no_internet: "You don't have internet connection",
+          connection_successful: 'Connection successful',
           algorithm_updated: 'Your algorithm has been updated',
+          get_group: 'Receiving group data and medical staff',
+          device_registered: 'Device registered',
         },
       },
       fr: {
@@ -387,6 +413,7 @@ i18n
           login: 'Connecter',
         },
         medical_case: {
+          in_creation: 'Demographic',
           managements: 'Managements',
           treatments: 'Treatments',
           final_diagnoses: 'Final diagnoses',

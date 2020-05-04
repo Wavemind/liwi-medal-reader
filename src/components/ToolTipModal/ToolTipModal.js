@@ -14,6 +14,7 @@ import { handleHttpError } from '../../utils/CustomToast';
 export default class TooltipModal extends React.Component<Props, State> {
   static defaultProps = {
     toolTipIcon: false,
+    visible: false,
   };
 
   state = {
@@ -139,11 +140,16 @@ export default class TooltipModal extends React.Component<Props, State> {
    * @private
    */
   _renderToolTipContent = () => {
-    const { modalRedux, children, toolTipIcon } = this.props;
+    const {
+      modalRedux,
+      children,
+      visible,
+      app: { t },
+    } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible || toolTipIcon;
+    const isFromJsx = toolTipVisible || visible;
 
     return (
       <View>
@@ -160,6 +166,31 @@ export default class TooltipModal extends React.Component<Props, State> {
     );
   };
 
+  _renderAlgorithmVersion = () => {
+    const {
+      modalRedux,
+      children,
+      visible,
+      app: { t },
+    } = this.props;
+
+    return (
+      <View style={styles.content}>
+        <Text style={styles.warning}>{modalRedux.params.title}</Text>
+        <Text style={styles.textBold}>{t('popup:version_name')}</Text>
+        <Text>{modalRedux.content}</Text>
+        {modalRedux.params.description !== null && (
+          <>
+            <Text style={styles.textBold}>{t('popup:desc')}</Text>
+            <Text>{modalRedux.params.description}</Text>
+          </>
+        )}
+        <Text style={styles.textBold}>{t('popup:by')}</Text>
+        <Text>{modalRedux.params.author}</Text>
+      </View>
+    );
+  };
+
   unlockMedicalCase = async (id) => {
     const {
       app: { showSuccessToast },
@@ -170,6 +201,44 @@ export default class TooltipModal extends React.Component<Props, State> {
       // Success unlock
       showSuccessToast('Success unlock !!');
     }
+  };
+
+  _renderMedicalCaseLocked = () => {
+    const {
+      modalRedux,
+      app: { t },
+    } = this.props;
+    return (
+      <View style={styles.content}>
+        <Text style={styles.warning}>{t('popup:isLocked')}</Text>
+        <Text style={styles.textBold}>{t('popup:by')}</Text>
+        <Text style={styles.textSub}>{modalRedux.params.by}</Text>
+        <Text style={styles.textBold}>{t('popup:at')}</Text>
+        <Text style={styles.textSub}>{modalRedux.params.at}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Button
+            style={styles.buttonNav}
+            danger
+            onPress={() => {
+              this.closeModal();
+              this.unlockMedicalCase(modalRedux.params.id);
+            }}
+          >
+            <Text>{t('popup:unlock')}</Text>
+          </Button>
+
+          <Button
+            style={styles.buttonNav}
+            success
+            onPress={() => {
+              this.closeModal();
+            }}
+          >
+            <Text>{t('popup:close')}</Text>
+          </Button>
+        </View>
+      </View>
+    );
   };
 
   /**
@@ -183,40 +252,10 @@ export default class TooltipModal extends React.Component<Props, State> {
 
     switch (modalRedux.type) {
       case toolTipType.medicalCaseLocked:
-        return (
-          <View style={styles.content}>
-            <Text style={styles.warning}>{t('popup:isLocked')}</Text>
-            <Text style={styles.textBold}>{t('popup:by')}</Text>
-            <Text style={styles.textSub}>{modalRedux.params.by}</Text>
-            <Text style={styles.textBold}>{t('popup:at')}</Text>
-            <Text style={styles.textSub}>{modalRedux.params.at}</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Button
-                style={styles.buttonNav}
-                danger
-                onPress={() => {
-                  this.closeModal();
-                  this.unlockMedicalCase(modalRedux.params.id);
-                }}
-              >
-                <Text>{t('popup:unlock')}</Text>
-              </Button>
-
-              <Button
-                style={styles.buttonNav}
-                success
-                onPress={() => {
-                  this.closeModal();
-                }}
-              >
-                <Text>{t('popup:close')}</Text>
-              </Button>
-            </View>
-          </View>
-        );
+        return this._renderMedicalCaseLocked();
 
       case toolTipType.algorithmVersion:
-        return <View></View>;
+        return this._renderAlgorithmVersion();
 
       case toolTipType.validation:
         return this._renderValidation();
@@ -267,11 +306,12 @@ export default class TooltipModal extends React.Component<Props, State> {
    *
    */
   closeModal = () => {
-    const { modalRedux, updateModalFromRedux, toolTipIcon } = this.props;
+    const { modalRedux, updateModalFromRedux, visible, closeModal } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible || toolTipIcon;
+    const isFromJsx = toolTipVisible;
+    const isFromProps = visible;
 
     if (isFromRedux) {
       updateModalFromRedux();
@@ -280,15 +320,19 @@ export default class TooltipModal extends React.Component<Props, State> {
     if (isFromJsx) {
       this.setState({ toolTipVisible: false });
     }
+
+    if (isFromProps) {
+      closeModal();
+    }
   };
 
   render() {
     const { toolTipVisible } = this.state;
-    const { flex, modalRedux, toolTipIcon } = this.props;
+    const { flex, modalRedux, toolTipIcon, visible } = this.props;
 
     const isFromRedux = modalRedux.open;
-    const isFromJsx = toolTipVisible || toolTipIcon;
-    const isVisible = isFromRedux || toolTipVisible;
+    const isFromJsx = toolTipVisible || visible;
+    const isVisible = isFromRedux || isFromJsx;
 
     if (isFromJsx === false && isFromRedux === false) {
       return null;
