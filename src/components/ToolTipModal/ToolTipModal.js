@@ -6,7 +6,7 @@ import { styles } from './ToolTipModal.style';
 import Tooltip from '../Tooltip/tooltip';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { SeparatorLine } from '../../template/layout';
-import { toolTipType } from '../../../frontend_service/constants';
+import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
 import { handleHttpError } from '../../utils/CustomToast';
 
 // TODO implement scu
@@ -65,7 +65,7 @@ export default class TooltipModal extends React.Component<Props, State> {
    */
   _renderValidation = () => {
     const { modalRedux } = this.props;
-    const { screenToBeFill, stepToBeFill, routeRequested } = modalRedux.navigator;
+    const { screenToBeFill, stepToBeFill, routeRequested } = modalRedux.params;
     const {
       app: { t },
       patientId,
@@ -193,13 +193,27 @@ export default class TooltipModal extends React.Component<Props, State> {
 
   unlockMedicalCase = async (id) => {
     const {
-      app: { showSuccessToast },
+      modalRedux,
+      app: { t, database },
+      setMedicalCase,
     } = this.props;
-    let localDataOn = await fetch('https://httpstat.us/200', 'GET').catch((error) => handleHttpError(error));
-    let request = await localDataOn;
-    if (request !== undefined || request?.status === 200) {
-      // Success unlock
-      showSuccessToast('Success unlock !!');
+
+    const { medicalCase } = modalRedux.params;
+
+    await database.unlockMedicalCase(id);
+
+    await setMedicalCase(medicalCase);
+
+    const route = routeDependingStatus(medicalCase);
+
+    await database.lockMedicalCase(medicalCase.id);
+
+    if (route !== undefined) {
+      this.closeModal();
+      NavigationService.navigate(route, {
+        idPatient: medicalCase.patient_id,
+        newMedicalCase: false,
+      });
     }
   };
 
@@ -208,20 +222,21 @@ export default class TooltipModal extends React.Component<Props, State> {
       modalRedux,
       app: { t },
     } = this.props;
+
+    const { medicalCase } = modalRedux.params;
+
     return (
       <View style={styles.content}>
         <Text style={styles.warning}>{t('popup:isLocked')}</Text>
         <Text style={styles.textBold}>{t('popup:by')}</Text>
-        <Text style={styles.textSub}>{modalRedux.params.by}</Text>
-        <Text style={styles.textBold}>{t('popup:at')}</Text>
-        <Text style={styles.textSub}>{modalRedux.params.at}</Text>
+        <Text style={styles.textSub}>{medicalCase.clinician}</Text>
+
         <View style={{ flexDirection: 'row' }}>
           <Button
             style={styles.buttonNav}
             danger
-            onPress={() => {
-              this.closeModal();
-              this.unlockMedicalCase(modalRedux.params.id);
+            onPress={async () => {
+              await this.unlockMedicalCase(medicalCase.id);
             }}
           >
             <Text>{t('popup:unlock')}</Text>

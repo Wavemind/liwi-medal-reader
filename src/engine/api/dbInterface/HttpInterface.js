@@ -25,7 +25,6 @@ export default class HttpInterface {
   insert = async (model, object) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
     const header = await this._setHeaders('POST', object);
-    console.log(object);
     return this._fetch(url, header);
   };
 
@@ -102,6 +101,17 @@ export default class HttpInterface {
   };
 
   /**
+   * lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  lockMedicalCase = async (id) => {
+    const url = `${this.localDataIp}/api/medical_cases/${id}/lock`;
+    const header = await this._setHeaders();
+    return this._fetch(url, header);
+  };
+
+  /**
    * Make the request and parse result
    * @param { string } url - Url to bind
    * @param { object } header - Header options
@@ -109,14 +119,9 @@ export default class HttpInterface {
    * @private
    */
   _fetch = async (url, header) => {
-    console.log(url);
-
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
-    console.log(httpRequest);
-
     // TODO need to be carefull with.json() when http 500
     const result = await httpRequest.json();
-    console.log(result);
 
     if (httpRequest.status === 200) {
       return result;
