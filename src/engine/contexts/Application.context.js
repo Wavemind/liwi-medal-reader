@@ -108,6 +108,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
+      await this._connectionSuccessful();
     }
   };
 
@@ -130,6 +131,27 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     await setItem('isConnected', status);
     this.setState({ isConnected: status });
   };
+
+  _connectionLost = () => {
+    const { session } = this.state;
+
+
+  }
+
+  _connectionSuccessful = async () => {
+    const { session, database } = this.state;
+    const localDatabase = new RealmInterface();
+
+    if (session.group.architecture === 'client_server') {
+      const patients = await localDatabase.getAll('Patient');
+      patients.map(async (patient) => {
+        await idatabase.insert('Activity', patient);
+        await localDatabase.delete(patient);
+      });
+    } else {
+      // TODO send activities to Main Data
+    }
+  }
 
   /**
    * Ask user to allow access to location
