@@ -153,7 +153,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const { medicalCase, updateMedicalCaseProperty } = this.props;
 
     // Create patient if there are no errors
-    patient.medicalCases.push(medicalCase);
+    await patient.medicalCases.push(medicalCase);
     await patient.save();
     updateMedicalCaseProperty('patient_id', patient.id);
     return true;

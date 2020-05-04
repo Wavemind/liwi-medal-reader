@@ -109,6 +109,8 @@ export default class HttpInterface {
    * @private
    */
   _fetch = async (url, header) => {
+    console.log(url);
+
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
     console.log(httpRequest);
 

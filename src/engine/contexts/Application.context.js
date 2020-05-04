@@ -113,6 +113,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
+      await this._connectionSuccessful();
     }
   };
 
@@ -142,15 +143,15 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   }
 
-  _connectionSuccessful = () => {
+  _connectionSuccessful = async () => {
     const { session, database } = this.state;
+    const localDatabase = new RealmInterface();
 
     if (session.group.architecture === 'client_server') {
-      const activities = database.getAll();
-      const localDatabase = new RealmInterface();
-      activities.map((activity) => {
-        database.insert('Activity', activity);
-        localDatabase.delete(activity);
+      const patients = await localDatabase.getAll('Patient');
+      patients.map(async (patient) => {
+        await idatabase.insert('Activity', patient);
+        await localDatabase.delete(patient);
       });
     } else {
       // TODO send activities to Main Data

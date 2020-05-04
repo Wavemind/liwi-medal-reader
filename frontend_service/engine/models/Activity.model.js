@@ -21,6 +21,7 @@ export class ActivityModel {
       this.mac_address = deviceInfo.mac_address;
       this.created_at = moment().toDate();
       this.synchronized_at = null;
+      this.fail_safe = false;
       return this;
     })();
   };
@@ -32,12 +33,13 @@ ActivityModel.schema = {
   properties: {
     id: 'string',
     stage: 'string',
-    user: 'string',
+    clinician: 'string',
     nodes: 'string',
     mode: 'string',
     mac_address: 'string',
     medical_case_id: 'string?',
     created_at: 'date',
     synchronized_at: 'date?',
+    fail_safe: 'bool',
   },
 };
