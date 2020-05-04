@@ -82,6 +82,16 @@ export default class Database {
   };
 
   /**
+   * Lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  lockMedicalCase = async (id) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].lockMedicalCase(id);
+  };
+
+  /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
    * @private

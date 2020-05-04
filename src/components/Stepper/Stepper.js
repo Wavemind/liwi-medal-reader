@@ -24,6 +24,7 @@ import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { differenceNodes } from '../../utils/swissKnives';
 import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
+import { validatorNavigate } from '../../engine/navigation/CustomNavigator.navigation';
 
 type Props = {
   children: any,
@@ -186,9 +187,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page - 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page - 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page - 1);
   };
 
@@ -202,9 +203,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page + 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page + 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page + 1);
   };
 
@@ -265,7 +266,7 @@ class Stepper extends React.Component<Props, State> {
       store.dispatch(clearMedicalCase());
     }
 
-    if (nextStage !== "Triage") {
+    if (nextStage !== 'Triage') {
       const databaseMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
 
       const activity = await new ActivityModel({
@@ -275,7 +276,7 @@ class Stepper extends React.Component<Props, State> {
         medical_case_id: medicalCase.id,
       });
 
-      medicalCase.json = JSON.stringify(medicalCase);
+      medicalCase.json = JSON.stringify({ ...medicalCase, json: null });
       medicalCase.activities.push(activity);
 
       await database.update('MedicalCase', medicalCase.id, medicalCase);
@@ -314,11 +315,11 @@ class Stepper extends React.Component<Props, State> {
                   this.state.error ? (
                     <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                      <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
-                    )
+                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                  )
                 ) : (
-                    <Icon {...iconConfig} />
-                  )}
+                  <Icon {...iconConfig} />
+                )}
               </View>
               <Text style={[styles.stepTitle, isSelected ? activeStepTitleStyle : inactiveStepTitleStyle]}>{step}</Text>
             </View>
@@ -375,6 +376,41 @@ class Stepper extends React.Component<Props, State> {
       </ViewPager>
     );
   };
+  /**
+   *  On save case
+   *  Update status and unlock case
+   *  Rediect to home
+   */
+  onSaveCase = async () => {
+    const {
+      navigation,
+      app: { database },
+      paramsNextStage,
+      nextStage,
+    } = this.props;
+    let medicalCase = store.getState();
+
+    const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: nextStage, params: paramsNextStage, key: nextStage });
+
+    // Can we update the next status ? All questions are valid ?
+    if (validator.isActionValid === true) {
+      let currentStatus = medicalCaseStatus[medicalCase.status].index;
+      let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
+      // Find next status
+      if (nextStatus !== undefined) {
+        await database.update('MedicalCase', medicalCase.id, { status: nextStatus.name });
+      }
+    }
+
+    medicalCase.json = JSON.stringify({ ...medicalCase, json: null });
+
+    let json = await database.update('MedicalCase', medicalCase.id, medicalCase);
+
+    console.log(await JSON.parse(json.json), medicalCase);
+    await database.unlockMedicalCase(medicalCase.id);
+
+    navigation.navigate('Home');
+  };
 
   render() {
     const {
@@ -402,8 +438,8 @@ class Stepper extends React.Component<Props, State> {
                 {this.renderSteps()}
               </ScrollView>
             ) : (
-                this.renderSteps()
-              )}
+              this.renderSteps()
+            )}
           </View>
         ) : null}
         {this.renderViewPager()}
@@ -426,23 +462,32 @@ class Stepper extends React.Component<Props, State> {
               </PlatformTouchableNative>
             ) : null}
             {this.renderDots()}
+            <View style={{ selfAlign: 'flex-end', justifyContent: 'flex-end', flex: 1, alignContent: 'flex-end', alignItems: 'flex-end' }}>
+              <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
+                <View style={[styles.button]}>
+                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>Save</Text>
+                  {bottomNavigationRightIconComponent || <Icon style={{ margin: 5, fontSize: 15 }} name="save" type={'Fontisto'} size={15} />}
+                </View>
+              </PlatformTouchableNative>
+            </View>
+
             {showNext ? (
-              <PlatformTouchableNative onPress={this.onPressNext} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+              <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>
                 <View style={styles.button}>
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                   {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                 </View>
               </PlatformTouchableNative>
             ) : (
-                nextStage !== null && (
-                  <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
-                    <View style={[styles.button]}>
-                      <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
-                    </View>
-                  </PlatformTouchableNative>
-                )
-              )}
+              nextStage !== null && (
+                <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
+                  <View style={[styles.button]}>
+                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
+                    {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
+                  </View>
+                </PlatformTouchableNative>
+              )
+            )}
           </View>
         ) : null}
       </View>
