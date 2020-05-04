@@ -108,6 +108,9 @@ class LayoutTemplate extends React.Component<Props> {
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
+                  onNavigationStateChange={(prevState, currentState) => {
+                    NavigationService.onNavigationStateChange(prevState, currentState);
+                  }}
                 />
               </RootView>
             </Container>

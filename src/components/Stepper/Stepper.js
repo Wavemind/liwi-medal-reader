@@ -258,21 +258,11 @@ class Stepper extends React.Component<Props, State> {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
 
     const medicalCase = store.getState();
-    const currentRoute = NavigationService.getCurrentRoute();
     const database = await new Database();
-
-    const currentStatus = _.find(medicalCaseStatus, (i) => i.name === medicalCase.status);
-    const newStatus = _.find(medicalCaseStatus, (i) => i.name === currentRoute.params.medicalCaseStatus);
 
     if (endMedicalCase === true) {
       medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
-    }
-
-    // The status has changed
-    if (currentStatus?.index < newStatus?.index) {
-      medicalCase.status = newStatus.name;
-      store.dispatch(updateMedicalCaseProperty('status', newStatus.name));
     }
 
     if (nextStage !== "Triage") {
@@ -281,7 +271,7 @@ class Stepper extends React.Component<Props, State> {
       const activity = await new ActivityModel({
         nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
         stage: NavigationService.getCurrentRoute().routeName,
-        user: app.user.id,
+        user: app.user,
         medical_case_id: medicalCase.id,
       });
 

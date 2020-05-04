@@ -56,7 +56,7 @@ export class PatientModel {
     this.id = uuid.v4();
 
     const activity = await new ActivityModel({
-      user: user.id,
+      user: user,
       stage: 'registration',
       nodes: differenceNodes(medicalCase.nodes, currentAlgorithm.nodes),
       medical_case_id: medicalCase.id.toString()
@@ -64,7 +64,7 @@ export class PatientModel {
     console.log(activity);
     return database.insert('Patient', {
       ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activity: activity }],
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activities: [activity] }],
     });
   };
 
@@ -74,8 +74,19 @@ export class PatientModel {
    * @returns {Promise<boolean>}
    */
   addMedicalCase = async (medicalCase) => {
+    const currentAlgorithm = await getItem('algorithm');
+    const user = await getItem('user');
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
+
+    const activity = await new ActivityModel({
+      user: user,
+      stage: 'registration',
+      nodes: differenceNodes(medicalCase.nodes, currentAlgorithm.nodes),
+      medical_case_id: medicalCase.id.toString()
+    });
+
+    medicalCase.activities = [activity];
     const database = await new Database();
     await database.push('Patient', this.id, 'medicalCases', medicalCase);
     return true;

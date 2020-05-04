@@ -69,6 +69,7 @@ export default class Database {
    */
   push = (model, id, field, value) => {
     const dbInterface = this._checkInterface();
+    console.log(value);
     return this[dbInterface].push(model, id, field, value);
   };
 
