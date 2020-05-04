@@ -20,6 +20,7 @@ import { updateModalFromRedux } from '../../../frontend_service/actions/creators
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 import { store } from '../../../frontend_service/store';
+import RealmInterface from '../api/dbInterface/RealmInterface';
 
 const defaultValue = {};
 
@@ -113,7 +114,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
-      await this._connectionSuccessful();
+      if (session.group.architecture === 'client_server') {
+        await this._sendFailSafeData();
+      }
     }
   };
 
@@ -124,39 +127,19 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @private
    */
   _setAppStatus = async (status) => {
-    const { isConnected, database } = this.state;
-
-    // Connected again
-    if (status === true && isConnected === false) {
-      // const medicalCases = await database.getAll('MedicalCase');
-      // const activity = await database.getAll('Activity');
-      // need to test send data
-    }
-
     await setItem('isConnected', status);
     this.setState({ isConnected: status });
   };
 
-  _connectionLost = () => {
-    const { session } = this.state;
-
-
-  }
-
-  _connectionSuccessful = async () => {
-    const { session, database } = this.state;
+  _sendFailSafeData = async () => {
+    const { database } = this.state;
     const localDatabase = new RealmInterface();
-
-    if (session.group.architecture === 'client_server') {
-      const patients = await localDatabase.getAll('Patient');
-      patients.map(async (patient) => {
-        await idatabase.insert('Activity', patient);
-        await localDatabase.delete(patient);
-      });
-    } else {
-      // TODO send activities to Main Data
-    }
-  }
+    const patients = await localDatabase.getAll('Patient');
+    patients.map(async (patient) => {
+      await database.insert('Activity', patient);
+      await localDatabase.delete(patient);
+    });
+  };
 
   /**
    * Ask user to allow access to location
@@ -265,7 +248,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
           title: i18n.t('popup:version'),
           author: newAlgorithm.author,
           description: newAlgorithm.description,
-        })
+        }),
       );
     }
     const database = await new Database();
