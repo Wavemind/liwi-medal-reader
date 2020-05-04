@@ -177,22 +177,17 @@ function resetActionStack(routeName, params) {
 async function onNavigationStateChange(prevState, currentState) {
   const activeRoute = getActiveRouteName(currentState);
   const prev = getActiveRouteName(prevState);
-  const cu = getCurrentRoute(currentState);
+  const currentRoute = getCurrentRoute(currentState);
 
   // prevent multiple execution
   if (activeRoute !== prev) {
     const state$ = store.getState();
 
     // This route can change the status of MC
-    if (cu.params !== undefined && cu?.params?.medicalCaseStatus !== undefined && state$.status !== cu.params.medicalCaseStatus) {
-      // Find index in status
-      const currentStatus = _.find(medicalCaseStatus, (i) => {
-        return i.name === state$.status;
-      });
-      // Find index in status
-      const routeStatus = _.find(medicalCaseStatus, (i) => {
-        return i.name === cu.params.medicalCaseStatus;
-      });
+    if (currentRoute.params !== undefined && currentRoute?.params?.medicalCaseStatus !== undefined && state$.status !== currentRoute.params.medicalCaseStatus) {
+      const currentStatus = _.find(medicalCaseStatus, (i) => i.name === state$.status);
+      const routeStatus = _.find(medicalCaseStatus, (i) => i.name === currentRoute.params.medicalCaseStatus);
+
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {
         const database = await new Database();

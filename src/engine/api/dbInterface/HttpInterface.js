@@ -25,6 +25,7 @@ export default class HttpInterface {
   insert = async (model, object) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
     const header = await this._setHeaders('POST', object);
+    console.log(object);
     return this._fetch(url, header);
   };
 
@@ -70,6 +71,8 @@ export default class HttpInterface {
   update = async (model, id, fields) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
     const header = await this._setHeaders('PUT', fields);
+    console.log(fields);
+
     return this._fetch(url, header);
   };
 
@@ -107,9 +110,11 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+    console.log(httpRequest);
 
     // TODO need to be carefull with.json() when http 500
     const result = await httpRequest.json();
+    console.log(result);
 
     if (httpRequest.status === 200) {
       return result;
@@ -157,8 +162,8 @@ export default class HttpInterface {
     const header = {
       method,
       headers: {
-        'mac-address': this.macAddress,
-        clinician: this.clinician,
+        'x-mac-address': this.macAddress,
+        'x-clinician': this.clinician,
       },
     };
 
