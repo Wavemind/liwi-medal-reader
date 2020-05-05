@@ -167,7 +167,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase } = this.props;
-    await setMedicalCase(medicalCase);
+    await setMedicalCase({ ...medicalCase, patient: await medicalCase.getPatient() });
   };
 
   _renderMedicalCase = () => {
@@ -206,6 +206,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 onPress={async () => {
                   await this.selectMedicalCase({
                     ...medicalCase,
+
                   });
 
                   const route = routeDependingStatus(medicalCase);
@@ -234,10 +235,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         </List>,
       ]
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
+        </View>
+      );
   };
 
   render() {
