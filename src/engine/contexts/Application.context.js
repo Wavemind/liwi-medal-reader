@@ -130,10 +130,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const { database } = this.state;
     const localDatabase = new RealmInterface();
     const patients = await localDatabase.getAll('Patient');
-    patients.map(async (patient) => {
-      await database.insert('Activity', patient);
-      await localDatabase.delete(patient);
-    });
+    // patients.map(async (patient) => {
+    //   await database.insert('Activity', patient);
+    //   await localDatabase.delete(patient);
+    // });
   };
 
   /**

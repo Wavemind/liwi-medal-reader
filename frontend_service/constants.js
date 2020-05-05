@@ -8,6 +8,11 @@ export const secondStatusLocalData = 10000;
 export const navigationStateKey = 'navigationState';
 export const appInBackgroundStateKey = 'appBackground';
 
+export const databaseInterface = {
+  realmInterface: 'realmInterface',
+  httpInterface: 'httpInterface',
+};
+
 // Nodes types
 export const nodeTypes = {
   diagnostic: 'diagnostic',

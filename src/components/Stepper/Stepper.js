@@ -19,7 +19,7 @@ import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { databaseInterface, medicalCaseStatus } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { differenceNodes } from '../../utils/swissKnives';
@@ -122,7 +122,14 @@ class Stepper extends React.Component<Props, State> {
       width: 0,
       height: 0,
       error: false,
+      status: '',
     };
+  }
+
+  async componentDidMount(): * {
+    const { database } = this.props.app;
+    let status = await database._checkInterface();
+    this.setState({ status });
   }
 
   componentWillReceiveProps(nextProps: Props, nextContext: *): * {
@@ -412,6 +419,26 @@ class Stepper extends React.Component<Props, State> {
     navigation.navigate('Home');
   };
 
+  _renderSaveButton = () => {
+    const { bottomNavigationRightIconComponent } = this.props;
+    const { status } = this.state;
+
+    if (status === databaseInterface.realmInterface) {
+      return null;
+    }
+
+    return (
+      <View style={{ selfAlign: 'flex-end', justifyContent: 'flex-end', flex: 1, alignContent: 'flex-end', alignItems: 'flex-end' }}>
+        <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
+          <View style={[styles.button]}>
+            <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>Save</Text>
+            {bottomNavigationRightIconComponent || <Icon style={{ margin: 5, fontSize: 15 }} name="save" type={'Fontisto'} size={15} />}
+          </View>
+        </PlatformTouchableNative>
+      </View>
+    );
+  };
+
   render() {
     const {
       showTopStepper,
@@ -423,6 +450,7 @@ class Stepper extends React.Component<Props, State> {
       nextStage,
       nextStageString,
       steps,
+      app,
     } = this.props;
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
@@ -462,14 +490,7 @@ class Stepper extends React.Component<Props, State> {
               </PlatformTouchableNative>
             ) : null}
             {this.renderDots()}
-            <View style={{ selfAlign: 'flex-end', justifyContent: 'flex-end', flex: 1, alignContent: 'flex-end', alignItems: 'flex-end' }}>
-              <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
-                <View style={[styles.button]}>
-                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>Save</Text>
-                  {bottomNavigationRightIconComponent || <Icon style={{ margin: 5, fontSize: 15 }} name="save" type={'Fontisto'} size={15} />}
-                </View>
-              </PlatformTouchableNative>
-            </View>
+            {this._renderSaveButton()}
 
             {showNext ? (
               <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>

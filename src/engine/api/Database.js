@@ -2,6 +2,7 @@ import RealmInterface from './dbInterface/RealmInterface';
 import HttpInterface from './dbInterface/HttpInterface';
 
 import { getItem } from './LocalStorage';
+import { databaseInterface } from '../../../frontend_service/constants';
 
 export default class Database {
   constructor() {
@@ -100,9 +101,9 @@ export default class Database {
     let dbInterface = '';
     const isConnected = await getItem('isConnected');
     if (this.architecture === 'standalone' || !isConnected) {
-      dbInterface = 'realmInterface';
+      dbInterface = databaseInterface.realmInterface;
     } else {
-      dbInterface = 'httpInterface';
+      dbInterface = databaseInterface.httpInterface;
     }
     return dbInterface;
   };
