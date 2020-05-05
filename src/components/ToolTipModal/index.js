@@ -8,8 +8,7 @@ const mapStateToProps = (medicalCase) => {
 
   if (modal.params === undefined) {
     modal.params = {
-      showClose: true
-      ,
+      showClose: true,
     };
   }
 
