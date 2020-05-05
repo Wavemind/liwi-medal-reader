@@ -12,11 +12,11 @@ export default class RealmInterface {
    * @private
    */
   _realm = () => {
-    var key = new Int8Array(64);  // pupulate with a secure key
+    var key = new Int8Array(64); // pupulate with a secure key
     return new Realm({
       schema: [PatientModel, MedicalCaseModel, ActivityModel],
       deleteRealmIfMigrationNeeded: true,
-      encryptionKey: key
+      encryptionKey: key,
     });
   };
 
@@ -27,8 +27,7 @@ export default class RealmInterface {
    */
   insert = async (model, object) => {
     const session = await getItem('session');
-    if (session.group.architecture === 'client_server')
-      object = { ...object, fail_safe: true };
+    if (session.group.architecture === 'client_server') object = { ...object, fail_safe: true };
     this._realm().write(() => {
       this._realm().create(model, object);
     });
@@ -42,7 +41,9 @@ export default class RealmInterface {
    * @returns { Collection } - The wanted object
    */
   findBy = (model, value, field = 'id') => {
-    const object = this._realm().objects(model).filtered(field + ' = $0', value)[0];
+    const object = this._realm()
+      .objects(model)
+      .filtered(field + ' = $0', value)[0];
     return object === undefined ? null : object;
   };
 
@@ -64,13 +65,19 @@ export default class RealmInterface {
    */
   update = async (model, id, fields) => {
     const session = await getItem('session');
-    if (session.group.architecture === 'client_server')
-      fields = { ...fields, fail_safe: true };
+    if (session.group.architecture === 'client_server') fields = { ...fields, fail_safe: true };
 
     this._realm().write(() => {
       this._realm().create(model, { id, ...fields }, 'modified');
     });
   };
+
+  /**
+   * Blank method used in HTTPinterface
+   */
+  unlockMedicalCase = () => {};
+
+  lockMedicalCase = () => {};
 
   /**
    * Push an object in a existing object based on model name and id
@@ -82,11 +89,9 @@ export default class RealmInterface {
    */
   push = async (model, id, field, value) => {
     const object = await this.findBy(model, id);
-    if (session.group.architecture === 'client_server')
-      fields = { ...value, fail_safe: true };
+    if (session.group.architecture === 'client_server') fields = { ...value, fail_safe: true };
     this._realm().write(() => {
       object[field].push(value);
     });
   };
 }
-
