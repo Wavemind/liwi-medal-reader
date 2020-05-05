@@ -397,7 +397,8 @@ class Stepper extends React.Component<Props, State> {
       nextStage,
       updateModalFromRedux,
     } = this.props;
-    updateModalFromRedux({ closeIcon: false }, toolTipType.loading);
+    console.time();
+    updateModalFromRedux({ showClose: false }, toolTipType.loading);
 
     let medicalCase = store.getState();
 
@@ -419,9 +420,9 @@ class Stepper extends React.Component<Props, State> {
     let json = await database.update('MedicalCase', medicalCase.id, medicalCase);
 
     await database.unlockMedicalCase(medicalCase.id);
-    updateModalFromRedux({ closeIcon: false }, toolTipType.loading);
+    updateModalFromRedux({ showClose: false }, toolTipType.loading);
     displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
-
+    console.timeEnd();
     navigation.navigate('Home');
   };
 

@@ -7,7 +7,6 @@ import Tooltip from '../Tooltip/tooltip';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { SeparatorLine } from '../../template/layout';
 import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
-import { handleHttpError } from '../../utils/CustomToast';
 import LiwiLoader from '../../utils/LiwiLoader';
 
 // TODO implement scu
@@ -152,13 +151,17 @@ export default class TooltipModal extends React.Component<Props, State> {
     const isFromRedux = modalRedux.open;
     const isFromJsx = toolTipVisible || visible;
 
+    const showClose = modalRedux.params.showClose === undefined ? true : modalRedux.params.showClose;
+
     return (
       <View>
         <ScrollView>
           <View onStartShouldSetResponder={() => true}>
-            <Button onPress={this.closeModal} rounded style={styles.button}>
-              <Icon name="close" type="AntDesign" style={styles.icon} />
-            </Button>
+            {showClose && (
+              <Button onPress={this.closeModal} rounded style={styles.button}>
+                <Icon name="close" type="AntDesign" style={styles.icon} />
+              </Button>
+            )}
             {isFromJsx && children}
             {isFromRedux && this.renderTypeModal()}
           </View>
@@ -258,7 +261,13 @@ export default class TooltipModal extends React.Component<Props, State> {
   };
 
   _renderLoading = () => {
-    return <LiwiLoader />;
+    const { t } = this.props.app;
+    return (
+      <View>
+        <Text style={styles.content}>{t('popup:startSave')}</Text>
+        <LiwiLoader />
+      </View>
+    );
   };
 
   /**
@@ -359,8 +368,6 @@ export default class TooltipModal extends React.Component<Props, State> {
     if (isFromJsx === false && isFromRedux === false) {
       return null;
     }
-
-    console.log(modalRedux);
 
     return (
       <View flex={flex}>
