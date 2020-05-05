@@ -428,6 +428,9 @@ class Stepper extends React.Component<Props, State> {
     if (medicalCase.activities?.length > 0) {
       newActivities = medicalCase.activities.map((activity) => activity);
     }
+
+    console.log(activity, newActivities);
+
     newActivities.push(activity);
 
     // parse json to send localdata

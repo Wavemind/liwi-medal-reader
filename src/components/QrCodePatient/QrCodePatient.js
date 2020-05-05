@@ -1,15 +1,15 @@
 // @flow
 
-import * as React from "react";
-import * as _ from "lodash";
-import QRCodeScanner from "react-native-qrcode-scanner";
-import { NavigationScreenProps } from "react-navigation";
-import { Text, View } from "native-base";
+import * as React from 'react';
+import * as _ from 'lodash';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { NavigationScreenProps } from 'react-navigation';
+import { Text, View } from 'native-base';
 
-import { styles } from "./QrCodePatient.style";
-import { getItem } from "../../engine/api/LocalStorage";
-import { liwiColors } from "../../utils/constants";
-import { displayNotification } from "../../utils/CustomToast";
+import { styles } from './QrCodePatient.style';
+import { getItem } from '../../engine/api/LocalStorage';
+import { liwiColors } from '../../utils/constants';
+import { displayNotification } from '../../utils/CustomToast';
 
 type Props = NavigationScreenProps & {};
 
