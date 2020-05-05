@@ -184,7 +184,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
-          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.group_id} change={updatePatientValue} index="group_id" autoCapitalize="sentences" />
+          <CustomInput placeholder={'...'} keyboardType = 'number-pad' condensed style={styles.identifierText} init={patient.group_id} change={updatePatientValue} index="group_id" autoCapitalize="sentences" />
         </View>
 
         {patient.wasInOtherFacility() && (
