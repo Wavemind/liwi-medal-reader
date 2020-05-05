@@ -68,22 +68,13 @@ export class PatientModel {
    */
   addMedicalCase = async (medicalCase) => {
     const user = await getItem('user');
-    const session = await getItem('session');
-    const isConnected = await getItem('isConnected');
     const database = await new Database();
+    const activity = await medicalCase.generateActivity('registration', user);
 
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
 
-    console.log(isConnected,)
-    if (session.group.architecture === 'client_server' || !isConnected) {
-      const patient = await database.findBy('Patient', medicalCase.patient_id);
-      if (patient === null) {
-        database.insert('Patient', { ...this });
-      }
-    }
-
-    const activity = await medicalCase.generateActivity('registration', user);
+    await medicalCase.handleFailSafe();
 
     medicalCase.activities = [activity];
     await database.push('Patient', this.id, 'medicalCases', medicalCase);

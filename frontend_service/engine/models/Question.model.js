@@ -91,19 +91,18 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @return isDisplayed : boolean
    */
   isDisplayedInTriage(medicalCase) {
-    // console.log(medicalCase);
-    // const { conditions } = medicalCase.triage;
+    const { conditions } = medicalCase.triage;
     let isDisplayed = true;
 
     // Skip if there is no conditions
-    // if (conditions?.[this.id] !== undefined) {
-    //   isDisplayed = false;
-    //   conditions[this.id].map((condition) => {
-    //     if (medicalCase.nodes[condition.complaint_category_id].answer === condition.answer_id) {
-    //       isDisplayed = true;
-    //     }
-    //   });
-    // }
+    if (conditions?.[this.id] !== undefined) {
+      isDisplayed = false;
+      conditions[this.id].map((condition) => {
+        if (medicalCase.nodes[condition.complaint_category_id].answer === condition.answer_id) {
+          isDisplayed = true;
+        }
+      });
+    }
 
     return isDisplayed;
   }

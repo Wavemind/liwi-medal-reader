@@ -18,7 +18,6 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import { validatorNavigate } from '../../../engine/navigation/CustomNavigator.navigation';
-import uuid from 'react-native-uuid';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -175,7 +174,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={uuid.v4()} change={updatePatientValue} index="uid" autoCapitalize="sentences" />
+          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.uid} change={updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
@@ -184,7 +183,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
-          <CustomInput placeholder={'...'} keyboardType = 'number-pad' condensed style={styles.identifierText} init={patient.group_id} change={updatePatientValue} index="group_id" autoCapitalize="sentences" />
+          <CustomInput placeholder={'...'} keyboardType='number-pad' condensed style={styles.identifierText} init={patient.group_id} change={updatePatientValue} index="group_id" autoCapitalize="sentences" />
         </View>
 
         {patient.wasInOtherFacility() && (

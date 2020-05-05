@@ -7,6 +7,7 @@ import { getItem } from '../../../src/engine/api/LocalStorage';
 import Database from '../../../src/engine/api/Database';
 import { differenceNodes } from '../../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
+import { store } from '../../store';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -71,23 +72,26 @@ export class MedicalCaseModel {
       this.fail_safe = false;
 
       this.generateExcludedId();
+
+      this.json = JSON.stringify(this);
+
     } else {
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
-      if (this.json === undefined) {
+      if (props !== undefined) {
         this.id = json.id;
         this.json = props.json;
         this.created_at = props.created_at;
         this.updated_at = props.updated_at;
         this.status = props.status;
         this.patient_id = props.patient_id;
+        this.activities = props.activities;
       }
 
       this.left_top_question_id = json.left_top_question_id ?? null;
       this.first_top_right_question_id = json.first_top_right_question_id ?? null;
       this.second_top_right_question_id = json.second_top_right_question_id ?? null;
       this.version_id = json.version_id;
-      this.activities = json.activities;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
@@ -205,16 +209,51 @@ export class MedicalCaseModel {
       }
     });
   };
+  /**
+   * Will set the needed value in the database if we switch to fail Safe mode
+   */
+  handleFailSafe = async () => {
+    const session = await getItem('session');
+    const isConnected = await getItem('isConnected');
+    const database = await new Database();
+    const storeMedicalCase = store.getState();
 
+    if (session.group.architecture === 'client_server' && !isConnected) {
+      // Find patient in Realm
+      const patient = await database.findBy('Patient', this.patient_id);
+      if (patient === null) {
+        database.insert('Patient', { ...storeMedicalCase.patient });
+      }
+    }
+  };
+  /**
+   * Returns the patient linked to a medical case
+   */
+  getPatient = async () => {
+    const database = await new Database();
+    const storeMedicalCase = store.getState();
+
+    if (storeMedicalCase.id === this.id) {
+      return storeMedicalCase.patient;
+    }
+    else {
+      return database.findBy('Patient', this.patient_id);
+    }
+  }
+  /**
+   * Will generate an activity for a medical case comparing the current value and the
+   * one stored in the database
+   * @param  {String} stage name of the current stage
+   * @param  {String} user The clinician that did the activity
+   */
   generateActivity = async (stage, user) => {
-    console.log("dasdsa");
     const session = await getItem('session');
     const isConnected = await getItem('isConnected');
     const algorithm = await getItem('algorithm');
     const database = await new Database();
     let differenceNode = [];
 
-    if (session.group.architecture === 'client_server' || !isConnected) {
+    if (session.group.architecture === 'client_server' && !isConnected) {
       const medicalCase = await database.findBy('MedicalCase', this.id);
       if (medicalCase === null) {
         differenceNode = differenceNodes(this.nodes, algorithm.nodes);

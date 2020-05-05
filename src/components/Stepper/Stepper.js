@@ -25,6 +25,7 @@ import Database from '../../engine/api/Database';
 import { differenceNodes } from '../../utils/swissKnives';
 import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
 import { getItem } from '../../engine/api/LocalStorage';
+import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 
 type Props = {
   children: any,
@@ -257,47 +258,31 @@ class Stepper extends React.Component<Props, State> {
 
   nextStage = async () => {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
-    const medicalCase = store.getState();
+    const medicalCaseObject = store.getState();
     const database = await new Database();
-    const session = await getItem('session');
-    const isConnected = await getItem('isConnected');
-    const algorithm = await getItem('algorithm');
+    const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+
+    await medicalCase.handleFailSafe();
 
     let newActivities = [];
-    let differenceNode = [];
 
     if (endMedicalCase === true) {
       medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
     }
 
-    if (session.group.architecture === 'client_server' || !isConnected) {
-      const dbMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
-      if (dbMedicalCase === null) {
-        differenceNode = differenceNodes(medicalCase.nodes, algorithm.nodes);
-      }
-      else {
-        differenceNode = differenceNodes(medicalCase.nodes, dbMedicalCase.nodes);
-      }
-    }
-
-    const activity = await new ActivityModel({
-      nodes: differenceNode,
-      stage: NavigationService.getCurrentRoute().routeName,
-      user: app.user,
-      medical_case_id: medicalCase.id,
-    });
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user);
 
     // You are probably wondering why I do this shit...
     // well it's because of Realm I cannot edit an existing object,
     // so I cannot add the activity with a simple push... I am sorry
-    if (medicalCase.activities.length > 0) {
+    if (medicalCase.activities?.length > 0) {
       newActivities = medicalCase.activities.map((activity) => activity);
     }
 
     newActivities.push(activity);
 
-    medicalCase.json = JSON.stringify({ ...medicalCase, json: null });
+    medicalCase.json = JSON.stringify({ ...medicalCase, json: "{}" });
     await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
 
     if (endMedicalCase === true) {
@@ -347,6 +332,7 @@ class Stepper extends React.Component<Props, State> {
     }
     return null;
   };
+
 
   /**
    * Render a ScrollView on iOS
