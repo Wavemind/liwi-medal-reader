@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { liwiColors, screenWidth } from '../../../utils/constants';
+import { StyleSheet } from "react-native";
+import { liwiColors, screenWidth } from "../../../utils/constants";
 
 export const styles = StyleSheet.create({
   title: { color: liwiColors.blackLightColor, fontSize: 22, fontWeight: '100', fontFamily: 'Roboto-Light' },

@@ -18,12 +18,11 @@ import { styles } from './styles';
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
-import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import { clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
 import { databaseInterface, medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
-import { differenceNodes } from '../../utils/swissKnives';
-import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
+import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate } from '../../engine/navigation/CustomNavigator.navigation';
 import { displayNotification } from '../../utils/CustomToast';
 
@@ -265,30 +264,32 @@ class Stepper extends React.Component<Props, State> {
 
   nextStage = async () => {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
-
-    const medicalCase = store.getState();
+    const medicalCaseObject = store.getState();
     const database = await new Database();
+    const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+
+    await medicalCase.handleFailSafe();
+
+    let newActivities = [];
 
     if (endMedicalCase === true) {
       medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
     }
 
-    if (nextStage !== 'Triage') {
-      const databaseMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user);
 
-      const activity = await new ActivityModel({
-        nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
-        stage: NavigationService.getCurrentRoute().routeName,
-        user: app.user,
-        medical_case_id: medicalCase.id,
-      });
-
-      medicalCase.json = JSON.stringify({ ...medicalCase, json: null });
-      medicalCase.activities.push(activity);
-
-      await database.update('MedicalCase', medicalCase.id, medicalCase);
+    // You are probably wondering why I do this shit...
+    // well it's because of Realm I cannot edit an existing object,
+    // so I cannot add the activity with a simple push... I am sorry
+    if (medicalCase.activities?.length > 0) {
+      newActivities = medicalCase.activities.map((activity) => activity);
     }
+
+    newActivities.push(activity);
+
+    medicalCase.json = JSON.stringify({ ...medicalCase, json: '{}' });
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
 
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');
@@ -387,7 +388,7 @@ class Stepper extends React.Component<Props, State> {
   /**
    *  On save case
    *  Update status and unlock case
-   *  Rediect to home
+   *  Redirect to home
    */
   onSaveCase = async () => {
     const {
@@ -401,6 +402,7 @@ class Stepper extends React.Component<Props, State> {
 
     let medicalCase = store.getState();
 
+    // Validate current stage
     const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: nextStage, params: paramsNextStage, key: nextStage });
 
     // Can we update the next status ? All questions are valid ?
@@ -414,12 +416,15 @@ class Stepper extends React.Component<Props, State> {
       }
     }
 
-    medicalCase.json = JSON.stringify({ ...medicalCase, json: null });
+    // parse json to send localdata
+    medicalCase.json = JSON.stringify({ ...medicalCase, json: '{}' });
 
     let json = await database.update('MedicalCase', medicalCase.id, medicalCase);
 
     await database.unlockMedicalCase(medicalCase.id);
+    // Close loader
     updateModalFromRedux({ showClose: false }, toolTipType.loading);
+    // SHow success message
     displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
     navigation.navigate('Home');
   };

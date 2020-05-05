@@ -1,5 +1,5 @@
 /*eslint-disable */
-import { setNativeExceptionHandler } from 'react-native-exception-handler';
+import { setNativeExceptionHandler } from "react-native-exception-handler";
 
 //For most use cases:
 setNativeExceptionHandler((exceptionString) => {

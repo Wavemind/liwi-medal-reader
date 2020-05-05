@@ -1,11 +1,11 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { Text, View } from 'native-base';
-import { styles } from './System.style';
-import Questions from '../../QuestionsContainer/Questions';
-import { systems } from '../../../../frontend_service/constants';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import { Text, View } from "native-base";
+import { styles } from "./System.style";
+import Questions from "../../QuestionsContainer/Questions";
+import { systems } from "../../../../frontend_service/constants";
 
 type Props = NavigationScreenProps & {};
 

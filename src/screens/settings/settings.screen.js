@@ -1,10 +1,10 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Text } from 'native-base';
-import { ScrollView } from 'react-native';
-import { getItem, setItem } from '../../engine/api/LocalStorage';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Text } from "native-base";
+import { ScrollView } from "react-native";
+import { getItem, setItem } from "../../engine/api/LocalStorage";
 
 type Props = NavigationScreenProps & {};
 

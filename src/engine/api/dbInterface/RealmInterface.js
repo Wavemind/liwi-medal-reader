@@ -1,9 +1,9 @@
 const Realm = require('realm');
 
-import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { getItem } from '../LocalStorage';
+import { ActivityModel } from "../../../../frontend_service/engine/models/Activity.model";
+import { PatientModel } from "../../../../frontend_service/engine/models/Patient.model";
+import { MedicalCaseModel } from "../../../../frontend_service/engine/models/MedicalCase.model";
+import { getItem } from "../LocalStorage";
 
 export default class RealmInterface {
   /**

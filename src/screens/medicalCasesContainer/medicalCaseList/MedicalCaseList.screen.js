@@ -1,20 +1,20 @@
 // @flow
 
-import * as React from 'react';
-import { ScrollView } from 'react-native';
+import * as React from "react";
+import { ScrollView } from "react-native";
 
-import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from 'native-base';
-import filter from 'lodash/filter';
-import orderBy from 'lodash/orderBy';
-import { NavigationScreenProps } from 'react-navigation';
-import moment from 'moment';
+import { Button, Icon, Input, Item, List, ListItem, Picker, Text, View } from "native-base";
+import filter from "lodash/filter";
+import orderBy from "lodash/orderBy";
+import { NavigationScreenProps } from "react-navigation";
+import moment from "moment";
 
-import { styles } from './MedicalCaseList.style';
-import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
-import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
-import LiwiLoader from '../../../utils/LiwiLoader';
-import { getDeviceInformation } from '../../../engine/api/Device';
+import { styles } from "./MedicalCaseList.style";
+import { LiwiTitle2, SeparatorLine } from "../../../template/layout";
+import { medicalCaseStatus, routeDependingStatus, toolTipType } from "../../../../frontend_service/constants";
+import type { StateApplicationContext } from "../../../engine/contexts/Application.context";
+import LiwiLoader from "../../../utils/LiwiLoader";
+import { getDeviceInformation } from "../../../engine/api/Device";
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -171,7 +171,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   // Select a medical case and redirect to patient's view
   selectMedicalCase = async (medicalCase) => {
     const { setMedicalCase } = this.props;
-    await setMedicalCase(medicalCase);
+    await setMedicalCase({ ...medicalCase, patient: await medicalCase.getPatient() });
   };
 
   _renderMedicalCase = () => {
@@ -211,6 +211,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 onPress={async () => {
                   // If medicalCase is open by clinician
                   if (medicalCase.clinician !== null && medicalCase.mac_address !== deviceInfo.mac_address) {
+                    // show locked info
                     updateModalFromRedux({ medicalCase }, toolTipType.medicalCaseLocked);
                   } else {
                     await this.selectMedicalCase({
@@ -253,10 +254,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
         </List>,
       ]
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
+        </View>
+      );
   };
 
   render() {

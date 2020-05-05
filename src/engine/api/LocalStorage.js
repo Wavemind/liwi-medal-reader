@@ -1,10 +1,9 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import moment from 'moment';
-import remove from 'lodash/remove';
-import findIndex from 'lodash/findIndex';
-import _ from 'lodash';
-import maxBy from 'lodash/maxBy';
-import { stringifyDeepRef } from '../../utils/swissKnives';
+import AsyncStorage from "@react-native-community/async-storage";
+import moment from "moment";
+import findIndex from "lodash/findIndex";
+import _ from "lodash";
+import maxBy from "lodash/maxBy";
+import { stringifyDeepRef } from "../../utils/swissKnives";
 
 // @params [String] key, [Object] item
 // @return [Object] saved object

@@ -1,12 +1,12 @@
 // @flow
 
-import React from 'react';
-import type { NavigationScreenProps } from 'react-navigation';
-import { View } from 'native-base';
-import { styles } from './Tests.style';
-import LiwiLoader from '../../../utils/LiwiLoader';
-import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsTests } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import React from "react";
+import type { NavigationScreenProps } from "react-navigation";
+import { View } from "native-base";
+import { styles } from "./Tests.style";
+import LiwiLoader from "../../../utils/LiwiLoader";
+import NavigationService from "../../../engine/navigation/Navigation.service";
+import { questionsTests } from "../../../../frontend_service/algorithm/questionsStage.algo";
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 

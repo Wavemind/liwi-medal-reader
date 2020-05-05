@@ -1,5 +1,5 @@
-import { liwiColors } from '../../../utils/constants';
-import variables from '../variables/material';
+import { liwiColors } from "../../../utils/constants";
+import variables from "../variables/material";
 
 export default {
   'NativeBase.Button': {

@@ -1,11 +1,11 @@
 // @flow
-import React from 'react';
-import { Text, View } from 'native-base';
-import { CustomPicker } from 'react-native-custom-picker';
-import { NavigationScreenProps } from 'react-navigation';
-import type { StateApplicationContext } from '../contexts/Application.context';
-import { withApplication } from '../contexts/Application.context';
-import NavigationService from './Navigation.service';
+import React from "react";
+import { Text, View } from "native-base";
+import { CustomPicker } from "react-native-custom-picker";
+import { NavigationScreenProps } from "react-navigation";
+import type { StateApplicationContext } from "../contexts/Application.context";
+import { withApplication } from "../contexts/Application.context";
+import NavigationService from "./Navigation.service";
 
 type Props = NavigationScreenProps & {};
 

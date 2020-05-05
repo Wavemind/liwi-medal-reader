@@ -7,7 +7,7 @@
 // More info:
 // https://en.wikipedia.org/wiki/Continued_fraction
 
-import formatReadableFraction from './formatReadableFraction.js';
+import formatReadableFraction from "./formatReadableFraction.js";
 
 /**
  * Converts a decimal to a human readable fraction with a maximum

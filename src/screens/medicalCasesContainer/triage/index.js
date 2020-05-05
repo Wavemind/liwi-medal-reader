@@ -1,8 +1,8 @@
-import { connect } from 'react-redux';
-import Triage from './Triage.Screen';
-import { withApplication } from '../../../engine/contexts/Application.context';
-import { WrapperNavigation } from '../../../utils/WrapperNavigation';
-import { updateMetaData } from '../../../../frontend_service/actions/creators.actions';
+import { connect } from "react-redux";
+import Triage from "./Triage.Screen";
+import { withApplication } from "../../../engine/contexts/Application.context";
+import { WrapperNavigation } from "../../../utils/WrapperNavigation";
+import { updateMetaData } from "../../../../frontend_service/actions/creators.actions";
 
 const mapStateToProps = (medicalCase) => {
   return {

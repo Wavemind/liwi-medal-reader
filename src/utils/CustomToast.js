@@ -1,7 +1,7 @@
 // @flow
-import Toast from 'react-native-tiny-toast';
-import isArray from 'lodash/isArray';
-import { liwiColors } from './constants';
+import Toast from "react-native-tiny-toast";
+import isArray from "lodash/isArray";
+import { liwiColors } from "./constants";
 
 /**
  * Display errors in a toast

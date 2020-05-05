@@ -1,8 +1,8 @@
 // @flow
 
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
-import variable from '../variables/platform';
+import variable from "../variables/platform";
 
 export default (variables /* : * */ = variable) => {
   const subtitleTheme = {

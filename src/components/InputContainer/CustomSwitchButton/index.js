@@ -1,3 +1,3 @@
-import CustomSwitchButton from './CustomSwitchButton';
+import CustomSwitchButton from "./CustomSwitchButton";
 
 export default CustomSwitchButton;

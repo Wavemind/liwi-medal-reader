@@ -1,7 +1,7 @@
 // @flow
-import * as React from 'react';
-import LottieView from 'lottie-react-native';
-import { View } from 'native-base';
+import * as React from "react";
+import LottieView from "lottie-react-native";
+import { View } from "native-base";
 
 type Props = { style?: Object };
 type State = {};

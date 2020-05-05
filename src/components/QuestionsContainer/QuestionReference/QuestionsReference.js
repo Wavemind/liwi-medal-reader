@@ -1,9 +1,9 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import QuestionFactory from '../QuestionFactory';
-import { stages } from '../../../../frontend_service/constants';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import QuestionFactory from "../QuestionFactory";
+import { stages } from "../../../../frontend_service/constants";
 
 type Props = NavigationScreenProps & {};
 

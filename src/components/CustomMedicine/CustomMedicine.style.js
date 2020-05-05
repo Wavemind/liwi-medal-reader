@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../utils/constants';
+import { StyleSheet } from "react-native";
+import { liwiColors } from "../../utils/constants";
 
 export const styles = StyleSheet.create({
   container: { padding: 10, borderRadius: 2, marginBottom: 20 },

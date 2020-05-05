@@ -1,6 +1,6 @@
-import i18n from 'i18next';
-import { reactI18nextModule } from 'react-i18next';
-import { NativeModules } from 'react-native';
+import i18n from "i18next";
+import { reactI18nextModule } from "react-i18next";
+import { NativeModules } from "react-native";
 
 const languageDetector = {
   type: 'languageDetector',
@@ -210,7 +210,7 @@ i18n
           group_id: 'Group ID',
           other_uid: 'Other UID',
           other_study_id: 'Other study ID',
-          other_group_iId: 'Other group ID',
+          other_group_id: 'Other group ID',
           facility: 'Facility data',
           questions: 'Questions',
           title: 'Patient',

@@ -1,4 +1,4 @@
-import i18n from '../../../utils/i18n';
+import i18n from "../../../utils/i18n";
 
 // routing render by object, more clean
 export const renderingDrawerItems = [

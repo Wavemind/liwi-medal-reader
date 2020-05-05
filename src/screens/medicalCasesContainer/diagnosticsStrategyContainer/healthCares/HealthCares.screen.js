@@ -1,12 +1,12 @@
 // @flow
-import React, { Component } from 'react';
-import { Content, Text } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { categories, medicationForms } from '../../../../../frontend_service/constants';
-import toReadableFraction from '../../../../utils/toReadableFraction';
-import { getDrugs, titleManagementCounseling } from '../../../../../frontend_service/algorithm/questionsStage.algo';
-import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
-import find from 'lodash/find';
+import React, { Component } from "react";
+import { Content, Text } from "native-base";
+import { NavigationScreenProps } from "react-navigation";
+import { categories, medicationForms } from "../../../../../frontend_service/constants";
+import toReadableFraction from "../../../../utils/toReadableFraction";
+import { getDrugs, titleManagementCounseling } from "../../../../../frontend_service/algorithm/questionsStage.algo";
+import { calculateCondition } from "../../../../../frontend_service/algorithm/conditionsHelpers.algo";
+import find from "lodash/find";
 
 type Props = NavigationScreenProps & {};
 type State = {};

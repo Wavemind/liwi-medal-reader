@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
-import Boolean from './Boolean';
-import { withApplication } from '../../../../engine/contexts/Application.context';
-import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
+import { connect } from "react-redux";
+import Boolean from "./Boolean";
+import { withApplication } from "../../../../engine/contexts/Application.context";
+import { manageSetAnswer } from "../../../../../frontend_service/engine/utilsDispatcher";
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };

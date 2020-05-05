@@ -1,8 +1,8 @@
-import { getItem } from '../LocalStorage';
-import { handleHttpError } from '../../../utils/CustomToast';
-import { getDeviceInformation } from '../Device';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { getItem } from "../LocalStorage";
+import { handleHttpError } from "../../../utils/CustomToast";
+import { getDeviceInformation } from "../Device";
+import { PatientModel } from "../../../../frontend_service/engine/models/Patient.model";
+import { MedicalCaseModel } from "../../../../frontend_service/engine/models/MedicalCase.model";
 
 export default class HttpInterface {
   constructor() {
@@ -110,6 +110,12 @@ export default class HttpInterface {
     return this._fetch(url, header);
   };
 
+  synchronizePatients = async (patients) => {
+    const url = `${this.localDataIp}/api/patients/synchronize`;
+    const header = await this._setHeaders('POST', { patients });
+    return this._fetch(url, header);
+  }
+
   /**
    * Make the request and parse result
    * @param { string } url - Url to bind
@@ -118,15 +124,18 @@ export default class HttpInterface {
    * @private
    */
   _fetch = async (url, header) => {
-    const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+    const httpRequest = await fetch(url, header).catch((error) => {
+      if (httpRequest.status === 500) {
+        handleHttpError(error);
+      }
+    });
+
     // TODO need to be carefull with.json() when http 500
     const result = await httpRequest.json();
 
     if (httpRequest.status === 200) {
       return result;
     }
-
-    handleHttpError(result);
     return null;
   };
 
