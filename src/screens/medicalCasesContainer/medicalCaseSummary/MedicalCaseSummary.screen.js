@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { Content, Tab, Tabs, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import find from 'lodash/find';
 import { styles } from './MedicalCaseSummary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
@@ -18,7 +17,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
   render() {
     const {
-      medicalCase: { nodes, patient },
+      medicalCase,
       app: { t },
       navigation,
     } = this.props;
@@ -33,7 +32,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
         <View style={styles.patientInfo}>
           <View flex-container-fluid>
             <Text size-auto>
-              {patient.id}
+              {medicalCase.patient_id}
             </Text>
           </View>
         </View>
@@ -51,7 +50,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
           </Tab>
           <Tab heading="All questions" tabStyle={LiwiTabStyle.tabStyle} activeTextStyle={LiwiTabStyle.activeTextStyle} textStyle={LiwiTabStyle.textStyle} activeTabStyle={LiwiTabStyle.activeTabStyle}>
             <View>
-              <Questions questions={nodes} />
+              <Questions questions={medicalCase.nodes} />
             </View>
           </Tab>
         </Tabs>
