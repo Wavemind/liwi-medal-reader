@@ -6,8 +6,11 @@ import { setMedicalCase, updateModalFromRedux } from '../../../frontend_service/
 const mapStateToProps = (medicalCase) => {
   const modal = medicalCase.modal === undefined ? { open: false, params: { showClose: true } } : medicalCase.modal;
 
-  if (modal.params.showClose === undefined) {
-    modal.params.showClose = true;
+  if (modal.params === undefined) {
+    modal.params = {
+      showClose: true
+      ,
+    };
   }
 
   return {
