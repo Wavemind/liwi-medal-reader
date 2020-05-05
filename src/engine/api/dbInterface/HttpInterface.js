@@ -70,7 +70,6 @@ export default class HttpInterface {
   update = async (model, id, fields) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
     const header = await this._setHeaders('PUT', fields);
-    console.log(fields);
 
     return this._fetch(url, header);
   };

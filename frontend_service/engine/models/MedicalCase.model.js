@@ -6,8 +6,6 @@ import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-    console.log(props, currentAlgorithm);
-
     if (this.id === undefined && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
