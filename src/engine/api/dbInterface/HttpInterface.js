@@ -121,7 +121,6 @@ export default class HttpInterface {
 
     // TODO need to be carefull with.json() when http 500
     const result = await httpRequest.json();
-    console.log(result);
 
     if (httpRequest.status === 200) {
       return result;
