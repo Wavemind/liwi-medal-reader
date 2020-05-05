@@ -20,7 +20,6 @@ import { updateModalFromRedux } from '../../../frontend_service/actions/creators
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 import { store } from '../../../frontend_service/store';
-import RealmInterface from '../api/dbInterface/RealmInterface';
 
 const defaultValue = {};
 
@@ -63,7 +62,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   _init = async () => {
     const session = await getItem('session');
-
     // Session already exist
     if (session !== null && session?.group !== null) {
       await this._handleApplicationServer(true);
@@ -94,6 +92,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * Start an interval to ping application server like main data or local data
    */
   subscribePingApplicationServer = () => {
+    console.log("ddasdsa");
+
     this.unsubscribePingApplicationServer = setInterval(this._handleApplicationServer, secondStatusLocalData);
   };
 
@@ -106,7 +106,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   _handleApplicationServer = async (firstTime = false) => {
     const { isConnected } = this.state;
     const session = await getItem('session');
-    const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
+    const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip + "123";
+    console.log(ip);
+
     const request = await fetch(ip, 'GET').catch(async (error) => {
       if (isConnected || firstTime) {
         await this._setAppStatus(false);
@@ -132,13 +134,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   _sendFailSafeData = async () => {
-    const { database } = this.state;
-    const localDatabase = new RealmInterface();
-    const patients = await localDatabase.getAll('Patient');
-    patients.map(async (patient) => {
-      await database.insert('Activity', patient);
-      await localDatabase.delete(patient);
-    });
+    const database = await new Database();
+    const patients = await database.realmInterface.getAll('Patient');
+
+    await database.httpInterface.synchronizePatients(patients);
+    // TODO : DELETE PATIENTS !!!!
   };
 
   /**

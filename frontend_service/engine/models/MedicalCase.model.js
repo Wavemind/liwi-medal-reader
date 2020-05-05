@@ -3,6 +3,10 @@
 import moment from 'moment';
 import uuid from 'react-native-uuid';
 import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
+import { getItem } from '../../../src/engine/api/LocalStorage';
+import Database from '../../../src/engine/api/Database';
+import { differenceNodes } from '../../../src/utils/swissKnives';
+import { ActivityModel } from './Activity.model';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -199,6 +203,32 @@ export class MedicalCaseModel {
       if (instanceQs.id === parentId) {
         instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
       }
+    });
+  };
+
+  generateActivity = async (stage, user) => {
+    console.log("dasdsa");
+    const session = await getItem('session');
+    const isConnected = await getItem('isConnected');
+    const algorithm = await getItem('algorithm');
+    const database = await new Database();
+    let differenceNode = [];
+
+    if (session.group.architecture === 'client_server' || !isConnected) {
+      const medicalCase = await database.findBy('MedicalCase', this.id);
+      if (medicalCase === null) {
+        differenceNode = differenceNodes(this.nodes, algorithm.nodes);
+      }
+      else {
+        differenceNode = differenceNodes(this.nodes, medicalCase.nodes);
+      }
+    }
+
+    return await new ActivityModel({
+      nodes: differenceNode,
+      stage: stage,
+      user: user,
+      medical_case_id: this.id,
     });
   };
 }
