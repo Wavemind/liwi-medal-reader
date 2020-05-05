@@ -248,8 +248,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         }),
       );
     }
-    const database = await new Database();
-    await this.setState({ database });
     await setItem('algorithm', newAlgorithm);
   };
 

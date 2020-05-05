@@ -24,7 +24,6 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
     const defaultTab = navigation.getParam('defaultTab');
 
-
     return (
       <View padding-auto flex>
         <BackButton />
