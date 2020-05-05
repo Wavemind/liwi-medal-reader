@@ -87,6 +87,7 @@ export class MedicalCaseModel {
       this.first_top_right_question_id = json.first_top_right_question_id ?? null;
       this.second_top_right_question_id = json.second_top_right_question_id ?? null;
       this.version_id = json.version_id;
+      this.activities = json.activities;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
