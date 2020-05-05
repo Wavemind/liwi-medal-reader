@@ -1,16 +1,16 @@
 // @flow
 
-import { NavigationScreenProps } from 'react-navigation';
-import React, { Component } from 'react';
-import { ScrollView, View } from 'react-native';
-import HealthCaresQuestions from '../healthCaresQuestions';
-import HealthCares from '../healthCares';
-import { styles } from './DiagnosticsStrategy.style';
-import Stepper from '../../../../components/Stepper';
-import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
-import NavigationService from '../../../../engine/navigation/Navigation.service';
-import Medicines from '../medicines';
-import MedicinesFormulations from '../medicinesFormulation';
+import { NavigationScreenProps } from "react-navigation";
+import React, { Component } from "react";
+import { ScrollView, View } from "react-native";
+import HealthCaresQuestions from "../healthCaresQuestions";
+import HealthCares from "../healthCares";
+import { styles } from "./DiagnosticsStrategy.style";
+import Stepper from "../../../../components/Stepper";
+import FinalDiagnosticsList from "../../../../components/FinalDiagnosticsList";
+import NavigationService from "../../../../engine/navigation/Navigation.service";
+import Medicines from "../medicines";
+import MedicinesFormulations from "../medicinesFormulation";
 
 type Props = NavigationScreenProps & {};
 type State = {};

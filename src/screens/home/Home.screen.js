@@ -1,16 +1,16 @@
 // @flow
 
-import * as React from 'react';
-import { Image, TouchableHighlight } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
-import { Text, View } from 'native-base';
-import { styles } from './Home.style';
-import { getItems } from '../../engine/api/LocalStorage';
-import { displayNotification } from '../../utils/CustomToast';
-import ConfirmationView from '../../components/ConfirmationView';
-import { liwiColors } from '../../utils/constants';
-import ToolTipModal from '../../components/ToolTipModal';
-import QrCodePatient from '../../components/QrCodePatient';
+import * as React from "react";
+import { Image, TouchableHighlight } from "react-native";
+import { NavigationScreenProps } from "react-navigation";
+import { Text, View } from "native-base";
+import { styles } from "./Home.style";
+import { getItems } from "../../engine/api/LocalStorage";
+import { displayNotification } from "../../utils/CustomToast";
+import ConfirmationView from "../../components/ConfirmationView";
+import { liwiColors } from "../../utils/constants";
+import ToolTipModal from "../../components/ToolTipModal";
+import QrCodePatient from "../../components/QrCodePatient";
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -28,17 +28,10 @@ export default class Home extends React.Component<Props, State> {
   };
 
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
-    const { algorithm, propsToolTipVisible, modalQrCode } = this.state;
+    const { propsToolTipVisible, modalQrCode } = this.state;
     const { medicalCase } = this.props;
     return propsToolTipVisible !== nextState.propsToolTipVisible || Object.compare(medicalCase, nextProps.medicalCase) || modalQrCode !== nextProps.modalQrCode;
   }
-
-  logout = async () => {
-    const {
-      app: { logout },
-    } = this.props;
-    await logout();
-  };
 
   async componentDidMount() {
     const algorithm = await getItems('algorithm');
@@ -62,13 +55,9 @@ export default class Home extends React.Component<Props, State> {
   render() {
     const {
       navigation,
-      app: { t, user },
+      app: { t, user, logout },
       medicalCase,
     } = this.props;
-
-    if (t === undefined) {
-      return null;
-    }
 
     const { algorithm, propsToolTipVisible, qrcode, modalQrCode } = this.state;
 
@@ -186,7 +175,7 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableHighlight>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => this.logout()}>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => logout()}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/logout.png')} />
                 <Text size-auto center style={styles.textButton}>

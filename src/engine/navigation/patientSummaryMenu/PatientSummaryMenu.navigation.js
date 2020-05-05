@@ -1,10 +1,10 @@
 // @flow
 
-import React, { Component } from 'react';
-import { Text, View } from 'native-base';
-import { Image, TouchableOpacity } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
-import { styles } from './PatientSummaryMenu.style';
+import React, { Component } from "react";
+import { Text, View } from "native-base";
+import { Image, TouchableOpacity } from "react-native";
+import { NavigationScreenProps } from "react-navigation";
+import { styles } from "./PatientSummaryMenu.style";
 
 type Props = NavigationScreenProps & {};
 type State = {};

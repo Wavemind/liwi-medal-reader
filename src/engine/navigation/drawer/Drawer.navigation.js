@@ -1,14 +1,20 @@
 // @flow
-import React, { Component } from 'react';
-import { ScrollView, View } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
-import { styles } from './Drawer.style';
-import type { StateApplicationContext } from '../../contexts/Application.context';
-import NavigationService from '../Navigation.service';
-import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
-import { displayNotification } from '../../../utils/CustomToast';
-import { renderingDrawerItems } from './Drawer.constants';
-import { liwiColors } from '../../../utils/constants';
+import React, { Component } from "react";
+import { ScrollView, View } from "react-native";
+import { NavigationScreenProps } from "react-navigation";
+import { styles } from "./Drawer.style";
+import type { StateApplicationContext } from "../../contexts/Application.context";
+import NavigationService from "../Navigation.service";
+import {
+  BottomButtonsDrawer,
+  CategorieButton,
+  HeaderButtonsDrawer,
+  ItemButton,
+  PathBar
+} from "./Drawer.item.navigation";
+import { displayNotification } from "../../../utils/CustomToast";
+import { renderingDrawerItems } from "./Drawer.constants";
+import { liwiColors } from "../../../utils/constants";
 // eslint-disable-next-line no-unused-vars
 
 type Props = NavigationScreenProps & {};

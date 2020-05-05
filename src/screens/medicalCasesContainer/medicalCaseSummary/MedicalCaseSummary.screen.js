@@ -1,14 +1,13 @@
 // @flow
 
-import * as React from 'react';
-import { Content, Tab, Tabs, Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import find from 'lodash/find';
-import { styles } from './MedicalCaseSummary.style';
-import Questions from '../../../components/QuestionsContainer/Questions';
-import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
-import BackButton from '../../../components/BackButton';
-import FinalDiagnosticsList from '../../../components/FinalDiagnosticsList';
+import * as React from "react";
+import { Content, Tab, Tabs, View } from "native-base";
+import { NavigationScreenProps } from "react-navigation";
+import { styles } from "./MedicalCaseSummary.style";
+import Questions from "../../../components/QuestionsContainer/Questions";
+import { LiwiTabStyle, LiwiTitle2 } from "../../../template/layout";
+import BackButton from "../../../components/BackButton";
+import FinalDiagnosticsList from "../../../components/FinalDiagnosticsList";
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -18,7 +17,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
   render() {
     const {
-      medicalCase: { nodes, patient },
+      medicalCase: { nodes },
       app: { t },
       navigation,
     } = this.props;

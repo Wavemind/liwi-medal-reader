@@ -1,20 +1,25 @@
-import React from 'react';
-import _ from 'lodash';
-import { RootMainNavigator } from './Root.navigation';
-import { medicalCaseStatus, navigationActionConstant, routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
-import NavigationService from './Navigation.service';
-import { store } from '../../../frontend_service/store';
-import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
-import { displayNotification } from '../../utils/CustomToast';
+import React from "react";
+import _ from "lodash";
+import { RootMainNavigator } from "./Root.navigation";
+import {
+  medicalCaseStatus,
+  navigationActionConstant,
+  routeDependingStatus,
+  toolTipType
+} from "../../../frontend_service/constants";
+import NavigationService from "./Navigation.service";
+import { store } from "../../../frontend_service/store";
+import { updateModalFromRedux } from "../../../frontend_service/actions/creators.actions";
+import { displayNotification } from "../../utils/CustomToast";
 import {
   questionsBasicMeasurements,
   questionsComplaintCategory,
   questionsFirstLookAssessement,
   questionsMedicalHistory,
   questionsPhysicalExam,
-  questionsTests,
-} from '../../../frontend_service/algorithm/questionsStage.algo';
-import { liwiColors } from '../../utils/constants';
+  questionsTests
+} from "../../../frontend_service/algorithm/questionsStage.algo";
+import { liwiColors } from "../../utils/constants";
 
 const screens = [
   { key: 'Home' },

@@ -1,8 +1,8 @@
 /* @flow */
 
-import { Platform, StyleSheet } from 'react-native';
-import { isIPhoneX } from './iPhoneXUtils';
-import { liwiColors, responsiveUi } from '../../utils/constants';
+import { Platform, StyleSheet } from "react-native";
+import { isIPhoneX } from "./iPhoneXUtils";
+import { liwiColors, responsiveUi } from "../../utils/constants";
 
 const styles: Object = StyleSheet.create({
   activeDotStyle: {

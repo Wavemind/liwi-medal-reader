@@ -1,9 +1,9 @@
-import NewSession from 'screens/sessionsContainer/NewSession';
-import UnlockSession from 'screens/sessionsContainer/UnlockSession';
+import NewSession from "screens/sessionsContainer/NewSession";
+import UnlockSession from "screens/sessionsContainer/UnlockSession";
 
-import { createSwitchNavigator } from 'react-navigation';
-import MainTabNavigator from './Main.navigation';
-import UserSelection from '../../screens/sessionsContainer/UserSelection';
+import { createSwitchNavigator } from "react-navigation";
+import MainTabNavigator from "./Main.navigation";
+import UserSelection from "../../screens/sessionsContainer/UserSelection";
 
 export const RootMainNavigator = createSwitchNavigator({
   Main: {

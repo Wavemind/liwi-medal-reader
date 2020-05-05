@@ -1,14 +1,13 @@
 // @flow
-import * as React from 'react';
-import moment from 'moment';
-import { Button, Icon, List, ListItem, Text, View } from 'native-base';
-import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
-import { getItems } from '../../../engine/api/LocalStorage';
-import { styles } from './PatientProfile.style';
-import ConfirmationView from '../../../components/ConfirmationView';
-import LiwiLoader from '../../../utils/LiwiLoader';
-import { getDeviceInformation } from '../../../engine/api/Device';
+import * as React from "react";
+import moment from "moment";
+import { Button, Icon, List, ListItem, Text, View } from "native-base";
+import { LiwiTitle2, SeparatorLine } from "../../../template/layout";
+import { routeDependingStatus, toolTipType } from "../../../../frontend_service/constants";
+import { getItems } from "../../../engine/api/LocalStorage";
+import { styles } from "./PatientProfile.style";
+import LiwiLoader from "../../../utils/LiwiLoader";
+import { getDeviceInformation } from "../../../engine/api/Device";
 
 export default class PatientProfile extends React.Component {
   state = {

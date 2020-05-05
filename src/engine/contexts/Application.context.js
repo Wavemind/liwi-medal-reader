@@ -1,21 +1,20 @@
 // @flow
-import * as React from 'react';
-import * as NetInfo from '@react-native-community/netinfo';
-import Geolocation from '@react-native-community/geolocation';
-import moment from 'moment';
-import { NavigationScreenProps } from 'react-navigation';
-import { AppState, PermissionsAndroid } from 'react-native';
+import * as React from "react";
+import * as NetInfo from "@react-native-community/netinfo";
+import Geolocation from "@react-native-community/geolocation";
+import moment from "moment";
+import { NavigationScreenProps } from "react-navigation";
+import { AppState, PermissionsAndroid } from "react-native";
 
-import i18n from '../../utils/i18n';
-import Database from '../api/Database';
-import { appInBackgroundStateKey, secondStatusLocalData, toolTipType } from '../../../frontend_service/constants';
-import { auth, getGroup, getAlgorithm, registerDevice } from '../../../frontend_service/api/Http';
-import { getItem, getItems, setItem } from '../api/LocalStorage';
-import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
-import { displayNotification } from '../../utils/CustomToast';
-import { liwiColors } from '../../utils/constants';
-import { store } from '../../../frontend_service/store';
-import RealmInterface from '../api/dbInterface/RealmInterface';
+import i18n from "../../utils/i18n";
+import Database from "../api/Database";
+import { appInBackgroundStateKey, secondStatusLocalData, toolTipType } from "../../../frontend_service/constants";
+import { auth, getAlgorithm, getGroup, registerDevice } from "../../../frontend_service/api/Http";
+import { getItem, getItems, setItem } from "../api/LocalStorage";
+import { updateModalFromRedux } from "../../../frontend_service/actions/creators.actions";
+import { displayNotification } from "../../utils/CustomToast";
+import { liwiColors } from "../../utils/constants";
+import { store } from "../../../frontend_service/store";
 
 const defaultValue = {};
 
@@ -58,7 +57,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   _init = async () => {
     const session = await getItem('session');
-
     // Session already exist
     if (session !== null && session?.group !== null) {
       await this._handleApplicationServer(true);
@@ -102,6 +100,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const { isConnected } = this.state;
     const session = await getItem('session');
     const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
+
     const request = await fetch(ip, 'GET').catch(async (error) => {
       if (isConnected || firstTime) {
         await this._setAppStatus(false);
@@ -127,13 +126,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   _sendFailSafeData = async () => {
-    const { database } = this.state;
-    const localDatabase = new RealmInterface();
-    const patients = await localDatabase.getAll('Patient');
-    // patients.map(async (patient) => {
-    //   await database.insert('Activity', patient);
-    //   await localDatabase.delete(patient);
-    // });
+    const database = await new Database();
+    const patients = await database.realmInterface.getAll('Patient');
+
+    await database.httpInterface.synchronizePatients(patients);
+    // TODO : DELETE PATIENTS !!!!
   };
 
   /**
@@ -245,8 +242,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         )
       );
     }
-    const database = await new Database();
-    await this.setState({ database });
     await setItem('algorithm', newAlgorithm);
   };
 

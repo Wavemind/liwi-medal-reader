@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import Unavailable from './Unavailable';
-import { setAnswerUnavailable } from '../../../../frontend_service/actions/creators.actions';
+import { connect } from "react-redux";
+import Unavailable from "./Unavailable";
+import { setAnswerUnavailable } from "../../../../frontend_service/actions/creators.actions";
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };

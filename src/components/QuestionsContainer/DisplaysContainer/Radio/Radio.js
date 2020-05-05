@@ -1,11 +1,11 @@
 // @flow
 
-import * as React from 'react';
-import type { NavigationScreenProps } from 'react-navigation';
-import { Button, Grid, Icon, Text, View } from 'native-base';
-import { liwiColors } from '../../../../utils/constants';
-import { ColCenter } from '../../../../template/layout';
-import { styles } from './Radio.style';
+import * as React from "react";
+import type { NavigationScreenProps } from "react-navigation";
+import { Button, Grid, Icon, Text, View } from "native-base";
+import { liwiColors } from "../../../../utils/constants";
+import { ColCenter } from "../../../../template/layout";
+import { styles } from "./Radio.style";
 
 type Props = NavigationScreenProps & {};
 type State = {};

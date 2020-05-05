@@ -1,17 +1,17 @@
 // @flow
-import React, { Component } from 'react';
-import { Icon, Text, View } from 'native-base';
-import { TextInput } from 'react-native';
+import React, { Component } from "react";
+import { Icon, Text, View } from "native-base";
+import { TextInput } from "react-native";
 
-import { NavigationScreenProps } from 'react-navigation';
-import MultiSelect from 'react-native-multiple-select';
-import _ from 'lodash';
-import { liwiColors } from '../../../../utils/constants';
-import Medecine from '../../../../components/Medicine';
-import { categories } from '../../../../../frontend_service/constants';
-import CustomMedecine from '../../../../components/CustomMedicine';
-import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
-import { styles } from './Medicines.style';
+import { NavigationScreenProps } from "react-navigation";
+import MultiSelect from "react-native-multiple-select";
+import _ from "lodash";
+import { liwiColors } from "../../../../utils/constants";
+import Medecine from "../../../../components/Medicine";
+import { categories } from "../../../../../frontend_service/constants";
+import CustomMedecine from "../../../../components/CustomMedicine";
+import { calculateCondition } from "../../../../../frontend_service/algorithm/conditionsHelpers.algo";
+import { styles } from "./Medicines.style";
 
 type Props = NavigationScreenProps & {};
 type State = {};

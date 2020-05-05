@@ -1,4 +1,4 @@
-import MatrixMath from 'react-native/Libraries/Utilities/MatrixMath';
+import MatrixMath from "react-native/Libraries/Utilities/MatrixMath";
 
 function transformOrigin(matrix, origin) {
   const { x, y, z } = origin;

@@ -1,8 +1,8 @@
-import RealmInterface from './dbInterface/RealmInterface';
-import HttpInterface from './dbInterface/HttpInterface';
+import RealmInterface from "./dbInterface/RealmInterface";
+import HttpInterface from "./dbInterface/HttpInterface";
 
-import { getItem } from './LocalStorage';
-import { databaseInterface } from '../../../frontend_service/constants';
+import { getItem } from "./LocalStorage";
+import { databaseInterface } from "../../../frontend_service/constants";
 
 export default class Database {
   constructor() {

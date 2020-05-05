@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import ToolTipModal from './ToolTipModal';
-import { withApplication } from '../../engine/contexts/Application.context';
+import { connect } from "react-redux";
+import ToolTipModal from "./ToolTipModal";
+import { withApplication } from "../../engine/contexts/Application.context";
 import { setMedicalCase, updateModalFromRedux } from "../../../frontend_service/actions/creators.actions";
 
 const mapStateToProps = (medicalCase) => {

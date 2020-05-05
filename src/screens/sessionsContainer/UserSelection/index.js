@@ -1,3 +1,3 @@
-import UserSelection from './UserSelection.screen';
+import UserSelection from "./UserSelection.screen";
 
 export default UserSelection;

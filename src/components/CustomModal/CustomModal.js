@@ -1,11 +1,11 @@
 // @flow
-import React, { Component } from 'react';
-import Modal from 'react-native-modal';
-import { TouchableWithoutFeedback } from 'react-native';
-import { Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { styles } from './CustomModal.style';
-import type { StateApplicationContext } from '../../engine/contexts/Application.context';
+import React, { Component } from "react";
+import Modal from "react-native-modal";
+import { TouchableWithoutFeedback } from "react-native";
+import { Text, View } from "native-base";
+import { NavigationScreenProps } from "react-navigation";
+import { styles } from "./CustomModal.style";
+import type { StateApplicationContext } from "../../engine/contexts/Application.context";
 
 type Props = NavigationScreenProps & {};
 

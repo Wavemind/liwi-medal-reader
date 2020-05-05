@@ -1,21 +1,21 @@
 // @flow
 
-import * as React from 'react';
-import { createAppContainer } from 'react-navigation';
-import getTheme from 'template/liwi/native_components/index.ignore';
-import material from 'template/liwi/variables/material';
-import liwi from 'template/liwi/styles';
-import merge from 'deepmerge';
-import { RootView } from 'template/layout';
-import { Platform, StatusBar } from 'react-native';
-import { Container, Root, StyleProvider } from 'native-base';
-import { withApplication } from '../engine/contexts/Application.context';
-import NavigationService from '../engine/navigation/Navigation.service';
-import LiwiLoader from '../utils/LiwiLoader';
-import { getItem, setItem } from '../engine/api/LocalStorage';
-import { appInBackgroundStateKey, navigationStateKey } from '../../frontend_service/constants';
-import CustomNavigator from '../engine/navigation/CustomNavigator.navigation';
-import { RootLoginNavigator } from '../engine/navigation/Root.navigation';
+import * as React from "react";
+import { createAppContainer } from "react-navigation";
+import getTheme from "template/liwi/native_components/index.ignore";
+import material from "template/liwi/variables/material";
+import liwi from "template/liwi/styles";
+import merge from "deepmerge";
+import { RootView } from "template/layout";
+import { Platform, StatusBar } from "react-native";
+import { Container, Root, StyleProvider } from "native-base";
+import { withApplication } from "../engine/contexts/Application.context";
+import NavigationService from "../engine/navigation/Navigation.service";
+import LiwiLoader from "../utils/LiwiLoader";
+import { getItem, setItem } from "../engine/api/LocalStorage";
+import { appInBackgroundStateKey, navigationStateKey } from "../../frontend_service/constants";
+import CustomNavigator from "../engine/navigation/CustomNavigator.navigation";
+import { RootLoginNavigator } from "../engine/navigation/Root.navigation";
 
 type Props = {
   app: {

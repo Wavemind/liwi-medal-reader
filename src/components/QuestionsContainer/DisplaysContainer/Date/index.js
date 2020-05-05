@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import Date from './Date';
-import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
+import { connect } from "react-redux";
+import Date from "./Date";
+import { manageSetAnswer } from "../../../../../frontend_service/engine/utilsDispatcher";
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };

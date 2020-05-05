@@ -1,13 +1,13 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { View } from 'react-native';
-import { DatePicker, Form, Icon, Text } from 'native-base';
-import moment from 'moment';
-import { styles } from './CustomDatePicker.style';
-import { ViewBlocColor } from '../../../template/layout';
-import { liwiColors } from '../../../utils/constants';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import { View } from "react-native";
+import { DatePicker, Form, Icon, Text } from "native-base";
+import moment from "moment";
+import { styles } from "./CustomDatePicker.style";
+import { ViewBlocColor } from "../../../template/layout";
+import { liwiColors } from "../../../utils/constants";
 
 type Props = NavigationScreenProps & {};
 type State = {};

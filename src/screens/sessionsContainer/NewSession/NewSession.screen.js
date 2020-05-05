@@ -1,13 +1,13 @@
 // @flow
 
-import * as React from 'react';
-import LottieView from 'lottie-react-native';
-import { Button, Form, Text, View } from 'native-base';
-import { ScrollView } from 'react-native';
-import { styles } from './NewSession.style';
-import CustomInput from '../../../components/InputContainer/CustomInput';
-import NavigationService from '../../../engine/navigation/Navigation.service';
-import { ApplicationContext } from '../../../engine/contexts/Application.context';
+import * as React from "react";
+import LottieView from "lottie-react-native";
+import { Button, Form, Text, View } from "native-base";
+import { ScrollView } from "react-native";
+import { styles } from "./NewSession.style";
+import CustomInput from "../../../components/InputContainer/CustomInput";
+import NavigationService from "../../../engine/navigation/Navigation.service";
+import { ApplicationContext } from "../../../engine/contexts/Application.context";
 
 export default function HookSession() {
   const [loading, setLoading] = React.useState(false);
