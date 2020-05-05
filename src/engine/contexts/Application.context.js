@@ -134,8 +134,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const database = await new Database();
     const patients = await database.realmInterface.getAll('Patient');
 
-    await database.httpInterface.synchronizePatients(patients);
-    // TODO : DELETE PATIENTS !!!!
+    const success = await database.httpInterface.synchronizePatients(patients);
+    if (success.status === 200) {
+      database.realmInterface.delete();
+    }
   };
 
   /**
