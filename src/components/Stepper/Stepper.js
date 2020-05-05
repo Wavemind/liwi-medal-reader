@@ -19,12 +19,13 @@ import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import { databaseInterface, medicalCaseStatus } from '../../../frontend_service/constants';
+import { databaseInterface, medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { differenceNodes } from '../../utils/swissKnives';
 import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
 import { validatorNavigate } from '../../engine/navigation/CustomNavigator.navigation';
+import { displayNotification } from '../../utils/CustomToast';
 
 type Props = {
   children: any,
@@ -391,10 +392,13 @@ class Stepper extends React.Component<Props, State> {
   onSaveCase = async () => {
     const {
       navigation,
-      app: { database },
+      app: { database, t },
       paramsNextStage,
       nextStage,
+      updateModalFromRedux,
     } = this.props;
+    updateModalFromRedux({ closeIcon: false }, toolTipType.loading);
+
     let medicalCase = store.getState();
 
     const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: nextStage, params: paramsNextStage, key: nextStage });
@@ -415,6 +419,8 @@ class Stepper extends React.Component<Props, State> {
     let json = await database.update('MedicalCase', medicalCase.id, medicalCase);
 
     await database.unlockMedicalCase(medicalCase.id);
+    updateModalFromRedux({ closeIcon: false }, toolTipType.loading);
+    displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
 
     navigation.navigate('Home');
   };

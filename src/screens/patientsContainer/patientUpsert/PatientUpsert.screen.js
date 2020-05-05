@@ -11,7 +11,7 @@ import { MedicalCaseModel } from '../../../../frontend_service/engine/models/Med
 import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
-import { getItems } from '../../../engine/api/LocalStorage';
+import { getItem, getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
 import { stages, toolTipType } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -43,12 +43,17 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let patient = {};
 
     const patientId = navigation.getParam('idPatient');
+    const session = await getItem('session');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
-    const facility = navigation.getParam('facility'); // Object
+    let facility = navigation.getParam('facility'); // Object
     const algorithm = await getItems('algorithm');
 
     if (patientId === null) {
+      if (facility === undefined) {
+        facility = { uid: uuid.v4(), group_id: session.group.id };
+      }
+      //
       patient = new PatientModel({ otherFacility, facility });
     } else {
       patient = await database.findBy('Patient', patientId);

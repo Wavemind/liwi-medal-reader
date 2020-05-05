@@ -111,6 +111,7 @@ export const toolTipType = {
   medicalCaseLocked: 'medicalCaseLocked',
   algorithmVersion: 'algorithmVersion',
   validation: 'validation',
+  loading: 'loading',
 };
 
 export const userRoles = {
