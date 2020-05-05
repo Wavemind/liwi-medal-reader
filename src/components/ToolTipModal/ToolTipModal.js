@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ScrollView } from "react-native";
-import { Button, Icon, Text, View } from "native-base";
-import { styles } from "./ToolTipModal.style";
-import Tooltip from "../Tooltip/tooltip";
-import NavigationService from "../../engine/navigation/Navigation.service";
-import { SeparatorLine } from "../../template/layout";
-import { routeDependingStatus, toolTipType } from "../../../frontend_service/constants";
-import LiwiLoader from "../../utils/LiwiLoader";
+import { ScrollView } from 'react-native';
+import { Button, Icon, Text, View } from 'native-base';
+import { styles } from './ToolTipModal.style';
+import Tooltip from '../Tooltip/tooltip';
+import NavigationService from '../../engine/navigation/Navigation.service';
+import { SeparatorLine } from '../../template/layout';
+import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
+import LiwiLoader from '../../utils/LiwiLoader';
 
 // TODO implement scu
 
@@ -288,6 +288,7 @@ export default class TooltipModal extends React.Component<Props, State> {
 
       case toolTipType.validation:
         return this._renderValidation();
+
       case toolTipType.loading:
         return this._renderLoading();
 

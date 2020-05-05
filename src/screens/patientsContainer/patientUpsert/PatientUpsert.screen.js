@@ -101,7 +101,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: 'Triage', params: { initialPage: 0 }, key: 'Triage' });
 
     if (validator.stepToBeFill[0].isActionValid === false) {
-      updateModalFromRedux({ ...validator }, toolTipType.validation);
+      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
     } else {
       updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
       if (patientId !== null || patientId === undefined) {
