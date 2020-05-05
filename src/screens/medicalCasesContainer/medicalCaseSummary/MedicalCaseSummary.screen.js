@@ -25,18 +25,10 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
     const defaultTab = navigation.getParam('defaultTab');
 
-
     return (
       <View padding-auto flex>
         <BackButton />
         <LiwiTitle2 marginTop>{t('summary:title')}</LiwiTitle2>
-        <View style={styles.patientInfo}>
-          <View flex-container-fluid>
-            <Text size-auto>
-              {patient.id}
-            </Text>
-          </View>
-        </View>
         <Tabs initialPage={defaultTab} tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>
           <Tab
             heading={t('summary:diagnoses')}

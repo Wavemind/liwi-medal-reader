@@ -394,11 +394,12 @@ class Stepper extends React.Component<Props, State> {
 
     // Can we update the next status ? All questions are valid ?
     if (validator.isActionValid === true) {
-      let currentStatus = medicalCaseStatus[medicalCase.status].index;
+      let currentStatus = medicalCaseStatus[medicalCase.status];
       let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
       // Find next status
-      if (nextStatus !== undefined) {
+      if (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name) {
         await database.update('MedicalCase', medicalCase.id, { status: nextStatus.name });
+        medicalCase.status = nextStatus.name;
       }
     }
 
@@ -406,7 +407,6 @@ class Stepper extends React.Component<Props, State> {
 
     let json = await database.update('MedicalCase', medicalCase.id, medicalCase);
 
-    console.log(await JSON.parse(json.json), medicalCase);
     await database.unlockMedicalCase(medicalCase.id);
 
     navigation.navigate('Home');

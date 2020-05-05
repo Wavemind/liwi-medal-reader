@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => { },
-  cacheUserLanguage: () => { },
+  init: () => {},
+  cacheUserLanguage: () => {},
 };
 
 i18n
@@ -423,10 +423,11 @@ i18n
           waiting_triage: 'Waiting for triage',
           triage: 'Triage',
           waiting_consultation: 'Waiting for consultation',
+          waiting_tests: 'Waiting for tests',
           consultation: 'Consultation',
           waiting_test: 'Waiting for test',
           test: 'Test',
-          waiting_final_diagnostic: 'Wait for diagnosis',
+          waiting_diagnostic: 'Waiting for diagnostic',
           final_diagnostic: 'Diagnosis',
           close: 'Close',
         },
