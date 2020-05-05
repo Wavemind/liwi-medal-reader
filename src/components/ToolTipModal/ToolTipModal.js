@@ -8,6 +8,7 @@ import NavigationService from '../../engine/navigation/Navigation.service';
 import { SeparatorLine } from '../../template/layout';
 import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
 import { handleHttpError } from '../../utils/CustomToast';
+import LiwiLoader from '../../utils/LiwiLoader';
 
 // TODO implement scu
 
@@ -256,6 +257,10 @@ export default class TooltipModal extends React.Component<Props, State> {
     );
   };
 
+  _renderLoading = () => {
+    return <LiwiLoader />;
+  };
+
   /**
    * Depending Type render specific JSX
    */
@@ -274,6 +279,8 @@ export default class TooltipModal extends React.Component<Props, State> {
 
       case toolTipType.validation:
         return this._renderValidation();
+      case toolTipType.loading:
+        return this._renderLoading();
 
       default:
         return <View></View>;
@@ -352,6 +359,8 @@ export default class TooltipModal extends React.Component<Props, State> {
     if (isFromJsx === false && isFromRedux === false) {
       return null;
     }
+
+    console.log(modalRedux);
 
     return (
       <View flex={flex}>
