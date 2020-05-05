@@ -1,12 +1,10 @@
-import { connect } from "react-redux";
-import ToolTipModal from "./ToolTipModal";
-import { withApplication } from "../../engine/contexts/Application.context";
-import { setMedicalCase, updateModalFromRedux } from "../../../frontend_service/actions/creators.actions";
+import { connect } from 'react-redux';
+import ToolTipModal from './ToolTipModal';
+import { withApplication } from '../../engine/contexts/Application.context';
+import { setMedicalCase, updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
-  const modal = medicalCase.modal === undefined ? { open: false } : medicalCase.modal;
-
-
+  const modal = medicalCase.modal === undefined ? { open: false, params: {} } : medicalCase.modal;
 
   return {
     modalRedux: modal,

@@ -211,6 +211,7 @@ export class MedicalCaseModel {
       }
     });
   };
+
   /**
    * Will set the needed value in the database if we switch to fail Safe mode
    */
@@ -228,6 +229,7 @@ export class MedicalCaseModel {
       }
     }
   };
+
   /**
    * Returns the patient linked to a medical case
    */
@@ -237,10 +239,10 @@ export class MedicalCaseModel {
 
     if (storeMedicalCase.id === this.id) {
       return storeMedicalCase.patient;
-    } else {
-      return database.findBy('Patient', this.patient_id);
     }
+    return database.findBy('Patient', this.patient_id);
   };
+
   /**
    * Will generate an activity for a medical case comparing the current value and the
    * one stored in the database
@@ -248,25 +250,22 @@ export class MedicalCaseModel {
    * @param  {String} user The clinician that did the activity
    */
   generateActivity = async (stage, user) => {
-    const session = await getItem('session');
-    const isConnected = await getItem('isConnected');
     const algorithm = await getItem('algorithm');
     const database = await new Database();
     let differenceNode = [];
 
-    if (session.group.architecture === 'client_server' && !isConnected) {
-      const medicalCase = await database.findBy('MedicalCase', this.id);
-      if (medicalCase === null) {
-        differenceNode = differenceNodes(this.nodes, algorithm.nodes);
-      } else {
-        differenceNode = differenceNodes(this.nodes, medicalCase.nodes);
-      }
+    const medicalCase = await database.findBy('MedicalCase', this.id);
+    if (medicalCase === null) {
+      // TODO maybe check version id algo is not different ?
+      differenceNode = differenceNodes(this.nodes, algorithm.nodes);
+    } else {
+      differenceNode = differenceNodes(this.nodes, medicalCase.nodes);
     }
 
-    return await new ActivityModel({
+    return new ActivityModel({
       nodes: differenceNode,
-      stage: stage,
-      user: user,
+      stage,
+      user,
       medical_case_id: this.id,
     });
   };
