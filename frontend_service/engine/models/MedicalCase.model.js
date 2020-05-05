@@ -103,8 +103,8 @@ export class MedicalCaseModel {
       this.isNewCase = false;
       this.modal = {
         open: false,
-        content: '',
-        navigator: {},
+        params: { showClose: true },
+        type: '',
       };
       this.metaData = json.metaData;
       this.diagnoses = json.diagnoses;
