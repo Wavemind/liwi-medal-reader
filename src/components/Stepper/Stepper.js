@@ -399,6 +399,10 @@ class Stepper extends React.Component<Props, State> {
       updateModalFromRedux,
     } = this.props;
 
+    const { showBack, showNext } = this.state;
+
+    console.log(showBack, showNext);
+
     const medicalCaseObject = store.getState();
     let newActivities = [];
 
@@ -449,9 +453,14 @@ class Stepper extends React.Component<Props, State> {
 
   _renderSaveButton = () => {
     const { bottomNavigationRightIconComponent } = this.props;
-    const { status } = this.state;
+    const { status, showNext } = this.state;
 
     if (status === databaseInterface.realmInterface) {
+      return null;
+    }
+
+    // Not at the end of this stepper
+    if (showNext) {
       return null;
     }
 
