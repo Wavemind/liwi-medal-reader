@@ -291,7 +291,7 @@ i18n
           logout: 'logout',
         },
         popup: {
-          startSave: '',
+          startSave: 'Saving in local data...',
           saveSuccess: 'Save with success on local data',
           unlock: 'Force Unlock the case (at your own risk)',
           close: 'Close the modal',
