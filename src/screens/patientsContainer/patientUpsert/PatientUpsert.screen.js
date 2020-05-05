@@ -168,7 +168,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       return null;
     }
 
-    const { other_uid, other_study_id, other_group_iId } = patient;
+    const { other_uid, other_study_id, other_group_id } = patient;
 
     return (
       <View>
@@ -202,9 +202,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
               </Text>
             </View>
             <View w50 style={styles.containerText}>
-              <Text style={styles.identifierText}>{t('patient_upsert:other_group_iId')}</Text>
+              <Text style={styles.identifierText}>{t('patient_upsert:other_group_id')}</Text>
               <Text style={styles.identifierText} right>
-                {other_group_iId}
+                {other_group_id}
               </Text>
             </View>
           </>

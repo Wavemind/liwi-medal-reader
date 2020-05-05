@@ -24,6 +24,7 @@ import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { differenceNodes } from '../../utils/swissKnives';
 import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
+import { getItem } from '../../engine/api/LocalStorage';
 
 type Props = {
   children: any,
@@ -256,30 +257,48 @@ class Stepper extends React.Component<Props, State> {
 
   nextStage = async () => {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
-
     const medicalCase = store.getState();
     const database = await new Database();
+    const session = await getItem('session');
+    const isConnected = await getItem('isConnected');
+    const algorithm = await getItem('algorithm');
+
+    let newActivities = [];
+    let differenceNode = [];
 
     if (endMedicalCase === true) {
       medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
     }
 
-    if (nextStage !== "Triage") {
-      const databaseMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
-
-      const activity = await new ActivityModel({
-        nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
-        stage: NavigationService.getCurrentRoute().routeName,
-        user: app.user,
-        medical_case_id: medicalCase.id,
-      });
-
-      medicalCase.json = JSON.stringify(medicalCase);
-      medicalCase.activities.push(activity);
-
-      await database.update('MedicalCase', medicalCase.id, medicalCase);
+    if (session.group.architecture === 'client_server' || !isConnected) {
+      const dbMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+      if (dbMedicalCase === null) {
+        differenceNode = differenceNodes(medicalCase.nodes, algorithm.nodes);
+      }
+      else {
+        differenceNode = differenceNodes(medicalCase.nodes, dbMedicalCase.nodes);
+      }
     }
+
+    const activity = await new ActivityModel({
+      nodes: differenceNode,
+      stage: NavigationService.getCurrentRoute().routeName,
+      user: app.user,
+      medical_case_id: medicalCase.id,
+    });
+
+    // You are probably wondering why I do this shit...
+    // well it's because of Realm I cannot edit an existing object,
+    // so I cannot add the activity with a simple push... I am sorry
+    if (medicalCase.activities.length > 0) {
+      newActivities = medicalCase.activities.map((activity) => activity);
+    }
+
+    newActivities.push(activity);
+
+    medicalCase.json = JSON.stringify({ ...medicalCase, json: null });
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
 
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');
