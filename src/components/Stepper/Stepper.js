@@ -266,6 +266,7 @@ class Stepper extends React.Component<Props, State> {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
     const medicalCaseObject = store.getState();
     const database = await new Database();
+
     const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
     await medicalCase.handleFailSafe();
@@ -273,7 +274,7 @@ class Stepper extends React.Component<Props, State> {
     let newActivities = [];
 
     if (endMedicalCase === true) {
-      medicalCase.status = medicalCaseStatus.close.name;
+      medicalCaseObject.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
     }
 
@@ -282,14 +283,14 @@ class Stepper extends React.Component<Props, State> {
     // You are probably wondering why I do this shit...
     // well it's because of Realm I cannot edit an existing object,
     // so I cannot add the activity with a simple push... I am sorry
-    if (medicalCase.activities?.length > 0) {
-      newActivities = medicalCase.activities.map((activity) => activity);
+    if (medicalCaseObject.activities?.length > 0) {
+      newActivities = medicalCaseObject.activities.map((activity) => activity);
     }
 
     newActivities.push(activity);
 
-    medicalCase.json = JSON.stringify({ ...medicalCase, json: '{}' });
-    await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
+    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
 
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');
@@ -401,12 +402,13 @@ class Stepper extends React.Component<Props, State> {
 
     const { showBack, showNext } = this.state;
 
-    console.log(showBack, showNext);
-
     const medicalCaseObject = store.getState();
+
     let newActivities = [];
 
     let medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+
+    await medicalCase.handleFailSafe();
 
     updateModalFromRedux({ showClose: false }, toolTipType.loading);
 
@@ -420,7 +422,7 @@ class Stepper extends React.Component<Props, State> {
       // Find next status
       if (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name) {
         await database.update('MedicalCase', medicalCase.id, { status: nextStatus.name });
-        medicalCase.status = nextStatus.name;
+        medicalCaseObject.status = nextStatus.name;
       }
     }
 
@@ -433,14 +435,12 @@ class Stepper extends React.Component<Props, State> {
       newActivities = medicalCase.activities.map((activity) => activity);
     }
 
-    console.log(activity, newActivities);
-
     newActivities.push(activity);
 
     // parse json to send localdata
-    medicalCase.json = JSON.stringify({ ...medicalCase, json: '{}' });
+    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: null });
 
-    await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
 
     await database.unlockMedicalCase(medicalCase.id);
     // Close loader
