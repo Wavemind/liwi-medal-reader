@@ -106,8 +106,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   _handleApplicationServer = async (firstTime = false) => {
     const { isConnected } = this.state;
     const session = await getItem('session');
-    const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip + "123";
-    console.log(ip);
+    const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
 
     const request = await fetch(ip, 'GET').catch(async (error) => {
       if (isConnected || firstTime) {

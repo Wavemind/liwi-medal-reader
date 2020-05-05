@@ -13,6 +13,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
 import { displayNotification } from '../../../utils/CustomToast';
 import NavigationService from '../../../engine/navigation/Navigation.service';
+import * as NetInfo from '@react-native-community/netinfo';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
@@ -56,7 +57,9 @@ export default function PinSession() {
 
     if (session.group.pin_code === pinCode) {
       displayNotification(app.t('notifications:connection_successful'), liwiColors.greenColor);
-      if (session.isConnected) {
+      const netInfoConnection = await NetInfo.fetch();
+      const { isConnected } = netInfoConnection;
+      if (isConnected) {
         await app.setInitialData();
       }
       const database = await new Database();
