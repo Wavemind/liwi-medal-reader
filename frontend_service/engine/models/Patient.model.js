@@ -3,6 +3,7 @@
 import uuid from 'react-native-uuid';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
+import { getItem } from '../../../src/engine/api/LocalStorage';
 
 export class PatientModel {
   constructor(props = {}) {
@@ -12,11 +13,11 @@ export class PatientModel {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
         this.other_study_id = otherFacility?.study_id?.toString();
-        this.other_group_iId = otherFacility?.group_id?.toString();
+        this.other_group_id = otherFacility?.group_id?.toString();
       } else {
         this.other_uid = null;
         this.other_study_id = null;
-        this.other_group_iId = null;
+        this.other_group_id = null;
       }
 
       this.main_data_patient_id = main_data_patient_id;
@@ -27,6 +28,7 @@ export class PatientModel {
       this.reason = reason;
 
       this.medicalCases = medicalCases;
+      this.fail_safe = false;
 
       if (id !== undefined) {
         this.id = id;
@@ -46,12 +48,16 @@ export class PatientModel {
    */
   save = async () => {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
+    const user = await getItem('user');
     const database = await new Database();
     this.json = JSON.stringify;
-    this.id = uuid.v1();
+    this.id = uuid.v4();
+
+    const activity = await medicalCase.generateActivity('registration', user);
+
     return database.insert('Patient', {
       ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase) }],
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activities: [activity] }],
     });
   };
 
@@ -61,9 +67,16 @@ export class PatientModel {
    * @returns {Promise<boolean>}
    */
   addMedicalCase = async (medicalCase) => {
+    const user = await getItem('user');
+    const database = await new Database();
+    const activity = await medicalCase.generateActivity('registration', user);
+
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);
-    const database = await new Database();
+
+    await medicalCase.handleFailSafe();
+
+    medicalCase.activities = [activity];
     await database.push('Patient', this.id, 'medicalCases', medicalCase);
     return true;
   };
@@ -87,9 +100,9 @@ PatientModel.schema = {
     group_id: 'string',
     other_uid: 'string?',
     other_study_id: 'string?',
-    other_group_iId: 'string?',
+    other_group_id: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
-    main_data_patient_id: { type: 'int', optional: true },
+    fail_safe: 'bool',
   },
 };

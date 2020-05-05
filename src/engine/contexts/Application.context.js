@@ -62,7 +62,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   _init = async () => {
     const session = await getItem('session');
-
     // Session already exist
     if (session !== null && session?.group !== null) {
       await this._handleApplicationServer(true);
@@ -106,6 +105,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const { isConnected } = this.state;
     const session = await getItem('session');
     const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
+
     const request = await fetch(ip, 'GET').catch(async (error) => {
       if (isConnected || firstTime) {
         await this._setAppStatus(false);
@@ -113,6 +113,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
+      if (session.group.architecture === 'client_server') {
+        await this._sendFailSafeData();
+      }
     }
   };
 
@@ -123,17 +126,18 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @private
    */
   _setAppStatus = async (status) => {
-    const { isConnected, database } = this.state;
-
-    // Connected again
-    if (status === true && isConnected === false) {
-      // const medicalCases = await database.getAll('MedicalCase');
-      // const activity = await database.getAll('Activity');
-      // need to test send data
-    }
-
     await setItem('isConnected', status);
     this.setState({ isConnected: status });
+  };
+
+  _sendFailSafeData = async () => {
+    const database = await new Database();
+    const patients = await database.realmInterface.getAll('Patient');
+
+    const success = await database.httpInterface.synchronizePatients(patients);
+    if (success.status === 200) {
+      database.realmInterface.delete();
+    }
   };
 
   /**
@@ -243,11 +247,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
           title: i18n.t('popup:version'),
           author: newAlgorithm.author,
           description: newAlgorithm.description,
-        })
+        }),
       );
     }
-    const database = await new Database();
-    await this.setState({ database });
     await setItem('algorithm', newAlgorithm);
   };
 

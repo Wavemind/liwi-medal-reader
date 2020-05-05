@@ -1,9 +1,8 @@
 // @flow
 /* eslint-disable no-case-declarations */
 import { NodeModel } from './Node.model';
-import { medicationForms, nodeTypes } from '../../constants';
+import { nodeTypes } from '../../constants';
 import { store } from '../../store';
-import { roundSup } from '../../../src/utils/swissKnives';
 
 interface HealthCaresInterface { }
 

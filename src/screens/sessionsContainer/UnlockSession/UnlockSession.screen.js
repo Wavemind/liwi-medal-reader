@@ -13,6 +13,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
 import { displayNotification } from '../../../utils/CustomToast';
 import NavigationService from '../../../engine/navigation/Navigation.service';
+import * as NetInfo from '@react-native-community/netinfo';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
@@ -39,6 +40,8 @@ export default function PinSession() {
   const createSession = async () => {
     setLoading(true);
     await app.setInitialData();
+    const database = await new Database();
+    await app.set('database', database);
     await app.subscribePingApplicationServer();
     setLoading(false);
   };
@@ -50,17 +53,20 @@ export default function PinSession() {
    * @params { string }: pinCode : pin code from screen
    */
   const openSession = async (pinCode) => {
-    const { user, t } = app;
     setLoading(true);
 
     if (session.group.pin_code === pinCode) {
-      displayNotification(t('notifications:connection_successful'), liwiColors.greenColor);
-      await app.setInitialData();
+      displayNotification(app.t('notifications:connection_successful'), liwiColors.greenColor);
+      const netInfoConnection = await NetInfo.fetch();
+      const { isConnected } = netInfoConnection;
+      if (isConnected) {
+        await app.setInitialData();
+      }
+      const database = await new Database();
+      await app.set('database', database);
 
-      if (user === null) {
-        await setTimeout(async () => {
-          NavigationService.navigate('UserSelection');
-        }, 10000);
+      if (app.user === null) {
+        NavigationService.navigate('UserSelection');
       } else {
         app.set('logged', true);
       }
