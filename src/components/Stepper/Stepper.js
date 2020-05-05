@@ -12,6 +12,8 @@ import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes } fro
 import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import _ from 'lodash';
+
 import { styles } from './styles';
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
@@ -20,8 +22,10 @@ import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_s
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
-import { diff, difference, differenceNodes } from '../../utils/swissKnives';
+import { differenceNodes } from '../../utils/swissKnives';
 import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
+import { getItem } from '../../engine/api/LocalStorage';
+import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 
 type Props = {
   children: any,
@@ -184,9 +188,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-          x: (this.state.page - 1) * this.state.width,
-          animated: true,
-        })
+        x: (this.state.page - 1) * this.state.width,
+        animated: true,
+      })
       : this.handleBottomStepper(this.state.page - 1);
   };
 
@@ -200,9 +204,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-          x: (this.state.page + 1) * this.state.width,
-          animated: true,
-        })
+        x: (this.state.page + 1) * this.state.width,
+        animated: true,
+      })
       : this.handleBottomStepper(this.state.page + 1);
   };
 
@@ -254,28 +258,32 @@ class Stepper extends React.Component<Props, State> {
 
   nextStage = async () => {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
+    const medicalCaseObject = store.getState();
+    const database = await new Database();
+    const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
-    const medicalCase = store.getState();
+    await medicalCase.handleFailSafe();
+
+    let newActivities = [];
 
     if (endMedicalCase === true) {
       medicalCase.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
     }
 
-    const database = await new Database();
-    const databaseMedicalCase = database.findBy('MedicalCase', medicalCase.id);
-    const activity = await new ActivityModel();
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user);
 
-    await activity.constructorAsync({
-      nodes: differenceNodes(medicalCase.nodes, databaseMedicalCase.nodes),
-      stage: NavigationService.getCurrentRoute().routeName,
-      user: app.user.id,
-      medicalCaseId: medicalCase.id,
-    });
+    // You are probably wondering why I do this shit...
+    // well it's because of Realm I cannot edit an existing object,
+    // so I cannot add the activity with a simple push... I am sorry
+    if (medicalCase.activities?.length > 0) {
+      newActivities = medicalCase.activities.map((activity) => activity);
+    }
 
-    medicalCase.json = JSON.stringify(medicalCase);
-    database.push('MedicalCase', medicalCase.id, 'activities', activity);
-    database.update('MedicalCase', medicalCase.id, medicalCase);
+    newActivities.push(activity);
+
+    medicalCase.json = JSON.stringify({ ...medicalCase, json: "{}" });
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
 
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');
@@ -310,11 +318,11 @@ class Stepper extends React.Component<Props, State> {
                   this.state.error ? (
                     <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
-                  )
+                      <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                    )
                 ) : (
-                  <Icon {...iconConfig} />
-                )}
+                    <Icon {...iconConfig} />
+                  )}
               </View>
               <Text style={[styles.stepTitle, isSelected ? activeStepTitleStyle : inactiveStepTitleStyle]}>{step}</Text>
             </View>
@@ -324,6 +332,7 @@ class Stepper extends React.Component<Props, State> {
     }
     return null;
   };
+
 
   /**
    * Render a ScrollView on iOS
@@ -398,8 +407,8 @@ class Stepper extends React.Component<Props, State> {
                 {this.renderSteps()}
               </ScrollView>
             ) : (
-              this.renderSteps()
-            )}
+                this.renderSteps()
+              )}
           </View>
         ) : null}
         {this.renderViewPager()}
@@ -430,15 +439,15 @@ class Stepper extends React.Component<Props, State> {
                 </View>
               </PlatformTouchableNative>
             ) : (
-              nextStage !== null && (
-                <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
-                  <View style={[styles.button]}>
-                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                    {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
-                  </View>
-                </PlatformTouchableNative>
-              )
-            )}
+                nextStage !== null && (
+                  <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+                    <View style={[styles.button]}>
+                      <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
+                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
+                    </View>
+                  </PlatformTouchableNative>
+                )
+              )}
           </View>
         ) : null}
       </View>

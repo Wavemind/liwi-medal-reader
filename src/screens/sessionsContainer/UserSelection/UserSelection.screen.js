@@ -11,7 +11,6 @@ import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './UserSelection.style';
 
 export default function UserSelection() {
-  // Hooks
   const [selectedUser, setUser] = React.useState({
     id: null,
     last_name: '',
@@ -20,6 +19,9 @@ export default function UserSelection() {
   });
   const [session, setSession] = React.useState(null);
   const [ready, setReady] = React.useState(false);
+
+  const app = React.useContext(ApplicationContext);
+  const { t } = app;
 
   React.useEffect(() => {
     (async function getSessionStorage() {
@@ -32,10 +34,11 @@ export default function UserSelection() {
     return null;
   }
 
-  const app = React.useContext(ApplicationContext);
-  const { t } = app;
-
-  // Render Image depending role
+  /**
+   * Render icon on role dependency
+   * @param role
+   * @returns {*}
+   */
   const switchIcon = (role) => {
     switch (role) {
       case 'clinician':
@@ -49,11 +52,17 @@ export default function UserSelection() {
     }
   };
 
-  const renderBloc = (user) => {
+  /**
+   * Render clinician button to select a clinician
+   * @param user
+   * @returns {*}
+   */
+  const renderClinician = (user) => {
     return (
       <TouchableOpacity
         activeOpacity={1}
         style={styles.touchable}
+        key={user.id}
         onPress={() => {
           setUser(user);
         }}
@@ -67,8 +76,8 @@ export default function UserSelection() {
           <Text style={styles.desc}>{userRoles[user.role]}</Text>
           {switchIcon(user.role)}
           <View style={styles.blocName}>
-            <Text style={styles.title}>{user?.first_name} </Text>
-            <Text style={styles.title}>{user?.last_name}</Text>
+            <Text style={styles.title}>{user.first_name} </Text>
+            <Text style={styles.title}>{user.last_name}</Text>
           </View>
 
           {selectedUser?.id === user.id && <Icon type="AntDesign" name="checkcircleo" style={styles.icon} />}
@@ -77,6 +86,9 @@ export default function UserSelection() {
     );
   };
 
+  /**
+   * Render inputs for guest clinician
+   */
   const inputs = (
     <>
       {selectedUser?.id === false && (
@@ -110,7 +122,7 @@ export default function UserSelection() {
 
             <View style={styles.items}>
               <View style={styles.textBloc}>
-                <Icon name={'medical-bag'} type={'MaterialCommunityIcons'} style={styles.textIcon} />
+                <Icon name={'medical-bag'} type="MaterialCommunityIcons" style={styles.textIcon} />
                 <Text style={styles.roleText}>Role</Text>
               </View>
               <Picker note mode="dropdown" style={styles.flex} selectedValue={selectedUser.role} onValueChange={(e) => setUser({ ...selectedUser, role: e })}>
@@ -124,26 +136,20 @@ export default function UserSelection() {
     </>
   );
 
-  const selectButton = (
-    <>
-      {selectedUser !== null && selectedUser.last_name !== '' && selectedUser.first_name !== '' && selectedUser.role !== null && (
-        <Button onPress={() => app.setUser(selectedUser)} style={styles.button}>
-          <Text size-auto>Select {userRoles[selectedUser?.role]}</Text>
-          <Icon name="arrowright" type="AntDesign" />
-        </Button>
-      )}
-    </>
-  );
-
   return (
     <ScrollView testID="UnLockSession">
       <View flex-container-column flex-center>
         <Text bigTitle>{t('unlock_session:who')}</Text>
         <View style={styles.blocParent}>
-          {session.group.medical_staffs.map((user) => renderBloc(user))}
-          {renderBloc({ role: 'guest', last_name: '', first_name: '', id: false })}
+          {session.group.medical_staffs.map((user) => renderClinician(user))}
+          {renderClinician({ role: 'guest', last_name: '', first_name: '', id: false })}
         </View>
-        {selectButton}
+        {selectedUser !== null && selectedUser.last_name !== '' && selectedUser.first_name !== '' && selectedUser.role !== null && (
+          <Button onPress={() => app.setUser(selectedUser)} style={styles.button}>
+            <Text size-auto>Select {userRoles[selectedUser?.role]}</Text>
+            <Icon name="arrowright" type="AntDesign" />
+          </Button>
+        )}
         {inputs}
       </View>
     </ScrollView>

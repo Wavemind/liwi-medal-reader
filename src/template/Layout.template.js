@@ -99,12 +99,12 @@ class LayoutTemplate extends React.Component<Props> {
           {ready ? (
             <Container>
               <RootView>
-                {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
+                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <AppContainer
                   logged={logged}
                   persistNavigationState={persistNavigationState}
                   // loadNavigationState={this.loadNavigationState}
-                  renderLoadingExperimental={() => <LiwiLoader/>}
+                  renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
@@ -115,8 +115,8 @@ class LayoutTemplate extends React.Component<Props> {
               </RootView>
             </Container>
           ) : (
-            <LiwiLoader/>
-          )}
+              <LiwiLoader />
+            )}
         </StyleProvider>
       </Root>
     );

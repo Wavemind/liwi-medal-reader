@@ -7,7 +7,6 @@ export default class Database {
   constructor() {
     return (async () => {
       const session = await getItem('session');
-      this.isConnected = await getItem('isConnected');
       this.architecture = session.group.architecture;
       this.realmInterface = new RealmInterface();
       this.httpInterface = await new HttpInterface();
@@ -20,8 +19,8 @@ export default class Database {
    * @param { string } model - The model name of the data we want to retrieve
    * @returns { Collection } - A collection of all the data
    */
-  getAll = (model) => {
-    const dbInterface = this._checkInterface();
+  getAll = async (model) => {
+    const dbInterface = await this._checkInterface();
     return this[dbInterface].getAll(model);
   };
 
@@ -32,8 +31,8 @@ export default class Database {
    * @param { string } field - the field we wanna search on
    * @returns { collection } - Object fetch
    */
-  findBy = (model, value, field = 'id') => {
-    const dbInterface = this._checkInterface();
+  findBy = async (model, value, field = 'id') => {
+    const dbInterface = await this._checkInterface();
     return this[dbInterface].findBy(model, value, field);
   };
 
@@ -42,8 +41,8 @@ export default class Database {
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
    */
-  insert = (model, object) => {
-    const dbInterface = this._checkInterface();
+  insert = async (model, object) => {
+    const dbInterface = await this._checkInterface();
     return this[dbInterface].insert(model, object);
   };
 
@@ -54,8 +53,8 @@ export default class Database {
    * @param { string } fields - The field to update
    * @return { object } object - The value of the object
    */
-  update = (model, id, fields) => {
-    const dbInterface = this._checkInterface();
+  update = async (model, id, fields) => {
+    const dbInterface = await this._checkInterface();
     return this[dbInterface].update(model, id, fields);
   };
 
@@ -67,8 +66,8 @@ export default class Database {
    * @param { any } value - value to update
    * @return { object } object - The value of the object
    */
-  push = (model, id, field, value) => {
-    const dbInterface = this._checkInterface();
+  push = async (model, id, field, value) => {
+    const dbInterface = await this._checkInterface();
     return this[dbInterface].push(model, id, field, value);
   };
 
@@ -77,8 +76,8 @@ export default class Database {
    * @param {integer} id - Medical case id
    * @returns {string}
    */
-  unlockMedicalCase = (id) => {
-    const dbInterface = this._checkInterface();
+  unlockMedicalCase = async (id) => {
+    const dbInterface = await this._checkInterface();
     return this[dbInterface].unlockMedicalCase(id);
   };
 
@@ -87,9 +86,10 @@ export default class Database {
    * @returns {string} interface to use
    * @private
    */
-  _checkInterface = () => {
+  _checkInterface = async () => {
     let dbInterface = '';
-    if (this.architecture === 'standalone' || !this.isConnected) {
+    const isConnected = await getItem('isConnected');
+    if (this.architecture === 'standalone' || !isConnected) {
       dbInterface = 'realmInterface';
     } else {
       dbInterface = 'httpInterface';
