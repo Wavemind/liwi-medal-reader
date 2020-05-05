@@ -20,6 +20,13 @@ export default class RealmInterface {
     });
   };
 
+  delete = (object) => {
+    this._realm().write(() => {
+      realm.delete(object); // Deletes all books
+    });
+
+  }
+
   /**
    * Creates an entry of a specific model in the database
    * @param { string } model - The model name of the data we want to retrieve
