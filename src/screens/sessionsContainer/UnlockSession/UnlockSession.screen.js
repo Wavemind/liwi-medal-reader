@@ -50,17 +50,14 @@ export default function PinSession() {
    * @params { string }: pinCode : pin code from screen
    */
   const openSession = async (pinCode) => {
-    const { user, t } = app;
     setLoading(true);
 
     if (session.group.pin_code === pinCode) {
-      displayNotification(t('notifications:connection_successful'), liwiColors.greenColor);
+      displayNotification(app.t('notifications:connection_successful'), liwiColors.greenColor);
       await app.setInitialData();
 
-      if (user === null) {
-        await setTimeout(async () => {
-          NavigationService.navigate('UserSelection');
-        }, 10000);
+      if (app.user === null) {
+        NavigationService.navigate('UserSelection');
       } else {
         app.set('logged', true);
       }
