@@ -4,7 +4,11 @@ import { withApplication } from '../../engine/contexts/Application.context';
 import { setMedicalCase, updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
-  const modal = medicalCase.modal === undefined ? { open: false, params: {} } : medicalCase.modal;
+  const modal = medicalCase.modal === undefined ? { open: false, params: { showClose: true } } : medicalCase.modal;
+
+  if (modal.params.showClose === undefined) {
+    modal.params.showClose = true;
+  }
 
   return {
     modalRedux: modal,
