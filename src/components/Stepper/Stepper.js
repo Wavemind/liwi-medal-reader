@@ -267,6 +267,7 @@ class Stepper extends React.Component<Props, State> {
     const medicalCaseObject = store.getState();
     const database = await new Database();
 
+    // TODO medicalCase / medicalCaseObject confusing, need refractor this shit !
     const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
     await medicalCase.handleFailSafe();
