@@ -1,23 +1,24 @@
 // @flow
 
-import * as React from "react";
-import { ScrollView } from "react-native";
-import { Button, Col, Text, View } from "native-base";
-import { NavigationActions, NavigationScreenProps, StackActions } from "react-navigation";
+import * as React from 'react';
+import { ScrollView } from 'react-native';
+import { Button, Col, Text, View } from 'native-base';
+import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
 
-import NavigationService from "../../../engine/navigation/Navigation.service";
-import { PatientModel } from "../../../../frontend_service/engine/models/Patient.model";
-import { MedicalCaseModel } from "../../../../frontend_service/engine/models/MedicalCase.model";
-import { LiwiTitle2 } from "../../../template/layout";
-import Stepper from "../../../components/Stepper";
+import NavigationService from '../../../engine/navigation/Navigation.service';
+import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { LiwiTitle2 } from '../../../template/layout';
+import Stepper from '../../../components/Stepper';
 
-import { getItem, getItems } from "../../../engine/api/LocalStorage";
-import { styles } from "./PatientUpsert.style";
-import { stages, toolTipType } from "../../../../frontend_service/constants";
-import LiwiLoader from "../../../utils/LiwiLoader";
-import Questions from "../../../components/QuestionsContainer/Questions";
-import CustomInput from "../../../components/InputContainer/CustomInput/index";
-import { validatorNavigate } from "../../../engine/navigation/CustomNavigator.navigation";
+import { getItem, getItems } from '../../../engine/api/LocalStorage';
+import { styles } from './PatientUpsert.style';
+import { stages, toolTipType } from '../../../../frontend_service/constants';
+import LiwiLoader from '../../../utils/LiwiLoader';
+import Questions from '../../../components/QuestionsContainer/Questions';
+import CustomInput from '../../../components/InputContainer/CustomInput/index';
+import { validatorNavigate } from '../../../engine/navigation/CustomNavigator.navigation';
+import uuid from 'react-native-uuid';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -52,7 +53,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       if (facility === undefined) {
         facility = { uid: uuid.v4(), group_id: session.group.id };
       }
-      //
       patient = new PatientModel({ otherFacility, facility });
     } else {
       patient = await database.findBy('Patient', patientId);
@@ -187,7 +187,16 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
-          <CustomInput placeholder={'...'} keyboardType='number-pad' condensed style={styles.identifierText} init={patient.group_id} change={updatePatientValue} index="group_id" autoCapitalize="sentences" />
+          <CustomInput
+            placeholder={'...'}
+            keyboardType="number-pad"
+            condensed
+            style={styles.identifierText}
+            init={patient.group_id}
+            change={updatePatientValue}
+            index="group_id"
+            autoCapitalize="sentences"
+          />
         </View>
 
         {patient.wasInOtherFacility() && (

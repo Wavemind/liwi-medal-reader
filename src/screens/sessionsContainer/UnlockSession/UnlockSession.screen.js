@@ -1,18 +1,19 @@
 // @flow
-import * as React from "react";
-import PINCode from "@haskkor/react-native-pincode";
-import { Image, ScrollView } from "react-native";
-import { Button, Text, View } from "native-base";
+import * as React from 'react';
+import PINCode from '@haskkor/react-native-pincode';
+import { Image, ScrollView } from 'react-native';
+import { Button, Text, View } from 'native-base';
 
-import { liwiColors, screensScale, screenWidth } from "../../../utils/constants";
-import { ApplicationContext } from "../../../engine/contexts/Application.context";
-import { userRoles } from "../../../../frontend_service/constants";
-import { getItem } from "../../../engine/api/LocalStorage";
-import { styles } from "./UnlockSession.style";
-import LiwiLoader from "../../../utils/LiwiLoader";
-import { displayNotification } from "../../../utils/CustomToast";
-import NavigationService from "../../../engine/navigation/Navigation.service";
-import * as NetInfo from "@react-native-community/netinfo";
+import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
+import { ApplicationContext } from '../../../engine/contexts/Application.context';
+import { userRoles } from '../../../../frontend_service/constants';
+import { getItem } from '../../../engine/api/LocalStorage';
+import { styles } from './UnlockSession.style';
+import LiwiLoader from '../../../utils/LiwiLoader';
+import { displayNotification } from '../../../utils/CustomToast';
+import NavigationService from '../../../engine/navigation/Navigation.service';
+import * as NetInfo from '@react-native-community/netinfo';
+import Database from '../../../engine/api/Database';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);

@@ -74,7 +74,6 @@ export class MedicalCaseModel {
       this.generateExcludedId();
 
       this.json = JSON.stringify(this);
-
     } else {
       this.clinician = props.clinician;
       this.mac_address = props.mac_address;
@@ -238,11 +237,10 @@ export class MedicalCaseModel {
 
     if (storeMedicalCase.id === this.id) {
       return storeMedicalCase.patient;
-    }
-    else {
+    } else {
       return database.findBy('Patient', this.patient_id);
     }
-  }
+  };
   /**
    * Will generate an activity for a medical case comparing the current value and the
    * one stored in the database
@@ -260,8 +258,7 @@ export class MedicalCaseModel {
       const medicalCase = await database.findBy('MedicalCase', this.id);
       if (medicalCase === null) {
         differenceNode = differenceNodes(this.nodes, algorithm.nodes);
-      }
-      else {
+      } else {
         differenceNode = differenceNodes(this.nodes, medicalCase.nodes);
       }
     }

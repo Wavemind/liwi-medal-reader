@@ -393,14 +393,18 @@ class Stepper extends React.Component<Props, State> {
   onSaveCase = async () => {
     const {
       navigation,
-      app: { database, t },
+      app: { database, t, user },
       paramsNextStage,
       nextStage,
       updateModalFromRedux,
     } = this.props;
-    updateModalFromRedux({ showClose: false }, toolTipType.loading);
 
-    let medicalCase = store.getState();
+    const medicalCaseObject = store.getState();
+    let newActivities = [];
+
+    let medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+
+    updateModalFromRedux({ showClose: false }, toolTipType.loading);
 
     // Validate current stage
     const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: nextStage, params: paramsNextStage, key: nextStage });
@@ -416,16 +420,27 @@ class Stepper extends React.Component<Props, State> {
       }
     }
 
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user);
+
+    // You are probably wondering why I do this shit...
+    // well it's because of Realm I cannot edit an existing object,
+    // so I cannot add the activity with a simple push... I am sorry
+    if (medicalCase.activities?.length > 0) {
+      newActivities = medicalCase.activities.map((activity) => activity);
+    }
+    newActivities.push(activity);
+
     // parse json to send localdata
     medicalCase.json = JSON.stringify({ ...medicalCase, json: '{}' });
 
-    let json = await database.update('MedicalCase', medicalCase.id, medicalCase);
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
 
     await database.unlockMedicalCase(medicalCase.id);
     // Close loader
     updateModalFromRedux({ showClose: false }, toolTipType.loading);
     // SHow success message
     displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
+    // store.dispatch(clearMedicalCase());
     navigation.navigate('Home');
   };
 

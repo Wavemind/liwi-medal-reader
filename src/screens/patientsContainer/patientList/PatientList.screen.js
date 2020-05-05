@@ -1,14 +1,14 @@
 // @flow
 
-import * as React from "react";
-import { ScrollView } from "react-native";
-import { Button, Icon, Input, Item, List, ListItem, Text, View } from "native-base";
+import * as React from 'react';
+import { ScrollView } from 'react-native';
+import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
 
-import { styles } from "./PatientList.style";
-import { LiwiTitle2, SeparatorLine } from "../../../template/layout";
-import { getItems } from "../../../engine/api/LocalStorage";
-import LiwiLoader from "../../../utils/LiwiLoader";
-import ConfirmationView from "../../../components/ConfirmationView";
+import { styles } from './PatientList.style';
+import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
+import { getItems } from '../../../engine/api/LocalStorage';
+import LiwiLoader from '../../../utils/LiwiLoader';
+import ConfirmationView from '../../../components/ConfirmationView';
 
 export default class PatientList extends React.Component {
   state = {
@@ -36,6 +36,7 @@ export default class PatientList extends React.Component {
     this.setState({ loading: true });
 
     const patients = await database.getAll('Patient');
+
     const algorithm = await getItems('algorithm');
     this.setState({
       algorithm,
@@ -54,7 +55,6 @@ export default class PatientList extends React.Component {
     let second_top_right_question = null;
 
     patient.medicalCases.map((mc) => {
-
       if (
         mc.first_top_right_question_id !== null &&
         mc.second_top_right_question_id !== null &&
@@ -98,10 +98,10 @@ export default class PatientList extends React.Component {
         {patients.map((patient) => this._renderPatient(patient))}
       </List>
     ) : (
-        <View padding-auto margin-auto>
-          <Text not-available>{t('patient_list:no_patients')}</Text>
-        </View>
-      );
+      <View padding-auto margin-auto>
+        <Text not-available>{t('patient_list:no_patients')}</Text>
+      </View>
+    );
   };
 
   callBackClose = () => {
