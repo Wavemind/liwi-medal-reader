@@ -274,7 +274,7 @@ class Stepper extends React.Component<Props, State> {
         user: app.user,
         medical_case_id: medicalCase.id,
       });
-console.log('ICI', medicalCase);
+
       medicalCase.json = JSON.stringify(medicalCase);
       medicalCase.activities.push(activity);
 
