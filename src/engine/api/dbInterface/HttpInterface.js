@@ -1,3 +1,5 @@
+import fetch from '../../../utils/fetchWithTimeout';
+
 import { getItem } from '../LocalStorage';
 import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
@@ -10,7 +12,6 @@ export default class HttpInterface {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
       this.localDataIp = session.group.local_data_ip;
-      this.localDataIp = "http://192.168.1.128:3636";
       this.mainDataIp = session.group.main_data_ip;
       this.macAddress = deviceInfo.mac_address;
       await this._setClinician();
@@ -126,17 +127,20 @@ export default class HttpInterface {
    * @private
    */
   _fetch = async (url, header) => {
-    const httpRequest = await fetch(url, header);
-    const result = await httpRequest.json();
+    const httpRequest = await fetch(url, header).catch((error) => {
+      handleHttpError(error);
+    });
 
-    if (httpRequest.status === 200) {
-      return result;
-    } else if (httpRequest.status === 500) {
-      handleHttpError(result.message);
+    // In case of fetch timeout
+    if (httpRequest !== undefined) {
+      const result = await httpRequest.json();
+      if (httpRequest.status === 200) {
+        return result;
+      } else if (httpRequest.status === 500) {
+        handleHttpError(result.message);
+      }
     }
 
-    console.log(httpRequest);
-    console.log(result);
     return null;
   };
 

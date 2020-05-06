@@ -28,7 +28,7 @@ export type StateApplicationContext = {
   name: string,
   lang: string,
   set: (prop: any, value: any) => Promise<any>,
-  logged: boolean,  
+  logged: boolean,
   user: Object,
   logout: () => Promise<any>,
   unLockSession: (id: number, code: string) => Promise<any>,
@@ -109,7 +109,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
-      if (session.group.architecture === 'client_server') {
+      if (session.group.architecture === 'client_server' && !firstTime) {
         await this._sendFailSafeData();
       }
     }
@@ -126,12 +126,17 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.setState({ isConnected: status });
   };
 
+  /**
+   * Send fail safe data when connection lost on client server architecture
+   * @returns {Promise<void>}
+   * @private
+   */
   _sendFailSafeData = async () => {
     const database = await new Database();
     const patients = await database.realmInterface.getAll('Patient');
     const success = await database.httpInterface.synchronizePatients(patients);
 
-    if (success === "Synchronize success") {
+    if (success === 'Synchronize success') {
       // database.realmInterface.delete();
     }
   };
