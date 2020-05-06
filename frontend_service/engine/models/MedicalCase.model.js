@@ -287,8 +287,6 @@ export class MedicalCaseModel {
       differenceNode = differenceNodes(this.nodes, medicalCase.nodes);
     }
 
-    console.log(differenceNode);
-
     return new ActivityModel({
       nodes: differenceNode,
       stage,

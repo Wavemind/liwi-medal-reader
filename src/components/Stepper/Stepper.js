@@ -194,9 +194,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page - 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page - 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page - 1);
   };
 
@@ -210,9 +210,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page + 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page + 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page + 1);
   };
 
@@ -326,11 +326,11 @@ class Stepper extends React.Component<Props, State> {
                   this.state.error ? (
                     <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                      <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
-                    )
+                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                  )
                 ) : (
-                    <Icon {...iconConfig} />
-                  )}
+                  <Icon {...iconConfig} />
+                )}
               </View>
               <Text style={[styles.stepTitle, isSelected ? activeStepTitleStyle : inactiveStepTitleStyle]}>{step}</Text>
             </View>
@@ -416,7 +416,6 @@ class Stepper extends React.Component<Props, State> {
 
     // Can we update the next status ? All questions are valid ?
     if (validator.isActionValid === true) {
-
       let currentStatus = medicalCaseStatus[medicalCase.status];
       let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
       // Find next status
@@ -499,8 +498,8 @@ class Stepper extends React.Component<Props, State> {
                 {this.renderSteps()}
               </ScrollView>
             ) : (
-                this.renderSteps()
-              )}
+              this.renderSteps()
+            )}
           </View>
         ) : null}
         {this.renderViewPager()}
@@ -533,15 +532,15 @@ class Stepper extends React.Component<Props, State> {
                 </View>
               </PlatformTouchableNative>
             ) : (
-                nextStage !== null && (
-                  <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
-                    <View style={[styles.button]}>
-                      <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
-                    </View>
-                  </PlatformTouchableNative>
-                )
-              )}
+              nextStage !== null && (
+                <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
+                  <View style={[styles.button]}>
+                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
+                    {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
+                  </View>
+                </PlatformTouchableNative>
+              )
+            )}
           </View>
         ) : null}
       </View>

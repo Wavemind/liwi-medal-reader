@@ -135,8 +135,6 @@ export default class HttpInterface {
     // let t = await f.text();
     // console.log(t, f);
 
-    console.log(httpRequest);
-
     // TODO need to be carefull with.json() when http 500
     const result = await httpRequest.json();
 

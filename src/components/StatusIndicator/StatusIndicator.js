@@ -1,10 +1,10 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { Icon, View } from "native-base";
-import { styles } from "./StatusIndicator.style";
-import { liwiColors } from "../../utils/constants";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { Icon, View } from 'native-base';
+import { styles } from './StatusIndicator.style';
+import { liwiColors } from '../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 
