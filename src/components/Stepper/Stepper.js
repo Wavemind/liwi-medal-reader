@@ -279,7 +279,7 @@ class Stepper extends React.Component<Props, State> {
       store.dispatch(clearMedicalCase());
     }
 
-    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user);
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user, medicalCaseObject.nodes);
 
     // You are probably wondering why I do this shit...
     // well it's because of Realm I cannot edit an existing object,
@@ -425,7 +425,7 @@ class Stepper extends React.Component<Props, State> {
       }
     }
 
-    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user);
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
 
     // You are probably wondering why I do this shit...
     // well it's because of Realm I cannot edit an existing object,

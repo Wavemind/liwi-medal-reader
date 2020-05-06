@@ -109,7 +109,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
-      if (session.group.architecture === 'client_server') {
+      if (session.group.architecture === 'client_server' && !firstTime) {
         await this._sendFailSafeData();
       }
     }
@@ -126,6 +126,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     this.setState({ isConnected: status });
   };
 
+  /**
+   * Send fail safe data when connection lost on client server architecture
+   * @returns {Promise<void>}
+   * @private
+   */
   _sendFailSafeData = async () => {
     const database = await new Database();
     const patients = await database.realmInterface.getAll('Patient');
@@ -166,7 +171,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       {
         enableHighAccuracy,
         timeout: 5000,
-      }
+      },
     );
   };
 
@@ -231,21 +236,27 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   setInitialData = async () => {
     const group = await this.getGroup();
-    // TODO: Faire un test si le group est bien récupérer quand les serveurs renverrons tous un json pour les erreurs 500 et 404
-    const newAlgorithm = await getAlgorithm();
-    newAlgorithm.selected = true;
-    const currentAlgorithm = await getItems('algorithm');
+    if (group !== null) {
+      const newAlgorithm = await getAlgorithm();
+      newAlgorithm.selected = true;
+      const currentAlgorithm = await getItems('algorithm');
 
-    // Update popup only if version has changed
-    if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
-      store.dispatch(
-        updateModalFromRedux(
-          { title: i18n.t('popup:version'), version_name: newAlgorithm.version_name, author: newAlgorithm.author, description: newAlgorithm.description },
-          toolTipType.algorithmVersion
-        )
-      );
+      // Update popup only if version has changed
+      if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
+        store.dispatch(
+          updateModalFromRedux(
+            {
+              title: i18n.t('popup:version'),
+              version_name: newAlgorithm.version_name,
+              author: newAlgorithm.author,
+              description: newAlgorithm.description,
+            },
+            toolTipType.algorithmVersion,
+          ),
+        );
+      }
+      await setItem('algorithm', newAlgorithm);
     }
-    await setItem('algorithm', newAlgorithm);
   };
 
   /**
@@ -366,4 +377,5 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) =>
+  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
