@@ -292,7 +292,7 @@ class Stepper extends React.Component<Props, State> {
 
     medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
     await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
-
+    displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');
     } else {
@@ -445,7 +445,7 @@ class Stepper extends React.Component<Props, State> {
     await database.unlockMedicalCase(medicalCase.id);
     // Close loader
     updateModalFromRedux({ showClose: false }, toolTipType.loading);
-    // SHow success message
+    // Show success message
     displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
     // store.dispatch(clearMedicalCase());
     navigation.navigate('Home');
