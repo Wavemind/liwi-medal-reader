@@ -46,10 +46,9 @@ export class PatientModel {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
     const user = await getItem('user');
     const database = await new Database();
-    this.json = JSON.stringify;
     this.id = uuid.v4();
 
-    const activity = await medicalCase.generateActivity('registration', user);
+    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
 
     return database.insert('Patient', {
       ...this,
@@ -65,7 +64,7 @@ export class PatientModel {
   addMedicalCase = async (medicalCase) => {
     const user = await getItem('user');
     const database = await new Database();
-    const activity = await medicalCase.generateActivity('registration', user);
+    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
 
     medicalCase.patient_id = this.id;
     medicalCase.json = JSON.stringify(medicalCase);

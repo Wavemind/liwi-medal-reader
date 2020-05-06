@@ -11,6 +11,7 @@ import { store } from '../../store';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
+    console.log(this, props)
     if ((this.id === undefined || this.id === null) && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
@@ -75,7 +76,6 @@ export class MedicalCaseModel {
 
       this.json = JSON.stringify(this);
     } else {
-
 
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
@@ -274,17 +274,18 @@ export class MedicalCaseModel {
    * @param  {String} stage name of the current stage
    * @param  {String} user The clinician that did the activity
    */
-  generateActivity = async (stage, user) => {
+  generateActivity = async (stage, user, nodes) => {
     const algorithm = await getItem('algorithm');
     const database = await new Database();
     let differenceNode = [];
 
     const medicalCase = await database.findBy('MedicalCase', this.id);
+
     if (medicalCase === null) {
       // TODO maybe check version id algo is not different ?
-      differenceNode = differenceNodes(this.nodes, algorithm.nodes);
+      differenceNode = differenceNodes(nodes, algorithm.nodes);
     } else {
-      differenceNode = differenceNodes(this.nodes, medicalCase.nodes);
+      differenceNode = differenceNodes(nodes, medicalCase.nodes);
     }
 
     console.log(differenceNode);
