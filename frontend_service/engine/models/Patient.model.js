@@ -8,8 +8,7 @@ import { getItem } from '../../../src/engine/api/LocalStorage';
 export class PatientModel {
   constructor(props = {}) {
     const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '' } = props;
-
-    if (this.id === undefined) {
+    if (this.id === undefined || this.id === null) {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
         this.other_study_id = otherFacility?.study_id?.toString();
@@ -32,10 +31,7 @@ export class PatientModel {
 
       if (id !== undefined) {
         this.id = id;
-        this.medicalCases = [];
-        medicalCases.forEach((medicalCase) => {
-          this.medicalCases.push(new MedicalCaseModel(medicalCase));
-        });
+        this.medicalCases = medicalCases.map((medicalCase) => new MedicalCaseModel(medicalCase));
       } else {
         this.id = null;
       }
@@ -103,6 +99,6 @@ PatientModel.schema = {
     other_group_id: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
-    fail_safe: 'bool',
+    fail_safe: { type: 'bool', default: false }
   },
 };

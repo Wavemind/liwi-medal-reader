@@ -82,9 +82,9 @@ export default class RealmInterface {
   /**
    * Blank method used in HTTPinterface
    */
-  unlockMedicalCase = () => {};
+  unlockMedicalCase = () => { };
 
-  lockMedicalCase = () => {};
+  lockMedicalCase = () => { };
 
   /**
    * Push an object in a existing object based on model name and id
