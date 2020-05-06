@@ -1,3 +1,5 @@
+import fetch from '../../../utils/fetchWithTimeout';
+
 import { getItem } from '../LocalStorage';
 import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
@@ -126,21 +128,19 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => {
-      if (httpRequest.status === 500) {
-        handleHttpError(error);
-      }
+      handleHttpError(error);
     });
 
-    // let f = await httpRequest;
-    // let t = await f.text();
-    // console.log(t, f);
-
-    // TODO need to be carefull with.json() when http 500
-    const result = await httpRequest.json();
-
-    if (httpRequest.status === 200) {
-      return result;
+    // In case of fetch timeout
+    if (httpRequest !== undefined) {
+      const result = await httpRequest.json();
+      if (httpRequest.status === 200) {
+        return result;
+      } else if (httpRequest.status === 500) {
+        handleHttpError(result.message);
+      }
     }
+
     return null;
   };
 
@@ -182,6 +182,8 @@ export default class HttpInterface {
     const header = {
       method,
       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
         'x-mac-address': this.macAddress,
         'x-clinician': this.clinician,
       },
@@ -189,8 +191,6 @@ export default class HttpInterface {
 
     if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
       header.body = JSON.stringify(body);
-      header.headers['Accept'] = 'application/json';
-      header.headers['Content-Type'] = 'application/json';
     }
 
     return header;

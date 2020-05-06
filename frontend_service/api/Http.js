@@ -114,18 +114,19 @@ const _setHeaders = async (method = 'GET', body = false) => {
   const header = {
     method,
     headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
       'access-token': credentials?.access_token,
       'group-token': credentials?.group?.token,
       client: credentials?.client,
       uid: credentials?.uid,
       expiry: credentials?.expiry,
+
     },
   };
 
   if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
     header.body = JSON.stringify(body);
-    header.headers['Accept'] = 'application/json';
-    header.headers['Content-Type'] = 'application/json';
   }
 
   return header;
