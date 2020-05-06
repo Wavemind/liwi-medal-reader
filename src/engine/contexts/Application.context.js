@@ -28,7 +28,7 @@ export type StateApplicationContext = {
   name: string,
   lang: string,
   set: (prop: any, value: any) => Promise<any>,
-  logged: boolean,
+  logged: boolean,  
   user: Object,
   logout: () => Promise<any>,
   unLockSession: (id: number, code: string) => Promise<any>,
@@ -106,6 +106,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         await this._setAppStatus(false);
       }
     });
+
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
       if (session.group.architecture === 'client_server') {
@@ -128,10 +129,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   _sendFailSafeData = async () => {
     const database = await new Database();
     const patients = await database.realmInterface.getAll('Patient');
-
     const success = await database.httpInterface.synchronizePatients(patients);
-    if (success.status === 200) {
-      database.realmInterface.delete();
+
+    if (success === "Synchronize success") {
+      // database.realmInterface.delete();
     }
   };
 

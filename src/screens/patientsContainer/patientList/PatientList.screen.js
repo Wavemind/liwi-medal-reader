@@ -98,10 +98,10 @@ export default class PatientList extends React.Component {
         {patients.map((patient) => this._renderPatient(patient))}
       </List>
     ) : (
-      <View padding-auto margin-auto>
-        <Text not-available>{t('patient_list:no_patients')}</Text>
-      </View>
-    );
+        <View padding-auto margin-auto>
+          <Text not-available>{t('patient_list:no_patients')}</Text>
+        </View>
+      );
   };
 
   callBackClose = () => {

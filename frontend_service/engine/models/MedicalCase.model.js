@@ -11,7 +11,7 @@ import { store } from '../../store';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-    if (this.id === undefined && props.id === undefined) {
+    if ((this.id === undefined || this.id === null) && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
       this.name = currentAlgorithm.name;
@@ -75,8 +75,7 @@ export class MedicalCaseModel {
 
       this.json = JSON.stringify(this);
     } else {
-      this.clinician = props.clinician;
-      this.mac_address = props.mac_address;
+
 
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
@@ -88,6 +87,8 @@ export class MedicalCaseModel {
         this.status = props.status;
         this.patient_id = props.patient_id;
         this.activities = props.activities;
+        this.clinician = props.clinician;
+        this.mac_address = props.mac_address;
       }
 
       this.left_top_question_id = json.left_top_question_id ?? null;
@@ -111,6 +112,30 @@ export class MedicalCaseModel {
     }
     return this;
   }
+
+  isMaxStage = (stage) => {
+    switch (this.status) {
+      case 'in_creation':
+        return stage === "PatientUpsert"
+        break;
+      case 'waiting_triage':
+      case 'triage':
+        return stage === "Consultation"
+      case 'waiting_consultation':
+      case 'consultation':
+        return stage === "Tests"
+      case 'waiting_tests':
+      case 'tests':
+        return stage === "DiagnosticsStrategy"
+      case 'waiting_diagnostic':
+      case 'final_diagnostic':
+        return stage === "finish"
+      case 'close':
+      default:
+        return false;
+    }
+
+  };
 
   /**
    * For each medicalCase who exclude other diagnostic, we set the id in both side.
@@ -225,7 +250,7 @@ export class MedicalCaseModel {
       // Find patient in Realm
       const patient = await database.findBy('Patient', this.patient_id);
       if (patient === null) {
-        database.insert('Patient', { ...storeMedicalCase.patient });
+        await database.insert('Patient', { ...storeMedicalCase.patient, id: storeMedicalCase.patient_id, medicalCases: [this] });
       }
     }
   };
@@ -285,6 +310,6 @@ MedicalCaseModel.schema = {
     updated_at: 'date',
     status: 'string',
     patient_id: 'string',
-    fail_safe: 'bool',
+    fail_safe: { type: 'bool', default: false }
   },
 };
