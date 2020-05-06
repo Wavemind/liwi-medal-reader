@@ -183,7 +183,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     const { medicalCases, deviceInfo } = this.state;
 
-    return medicalCases.length > 0 ? (
+    return medicalCases !== null ? (
       [
         <List block key="medicalCaseList">
           {medicalCases.map((medicalCase) => {

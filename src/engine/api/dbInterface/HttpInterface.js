@@ -10,6 +10,7 @@ export default class HttpInterface {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
       this.localDataIp = session.group.local_data_ip;
+      this.localDataIp = "http://192.168.1.128:3636";
       this.mainDataIp = session.group.main_data_ip;
       this.macAddress = deviceInfo.mac_address;
       await this._setClinician();
@@ -125,24 +126,17 @@ export default class HttpInterface {
    * @private
    */
   _fetch = async (url, header) => {
-    const httpRequest = await fetch(url, header).catch((error) => {
-      if (httpRequest.status === 500) {
-        handleHttpError(error);
-      }
-    });
-
-    // let f = await httpRequest;
-    // let t = await f.text();
-    // console.log(t, f);
-
-    console.log(httpRequest);
-
-    // TODO need to be carefull with.json() when http 500
+    const httpRequest = await fetch(url, header);
     const result = await httpRequest.json();
 
     if (httpRequest.status === 200) {
       return result;
+    } else if (httpRequest.status === 500) {
+      handleHttpError(result.message);
     }
+
+    console.log(httpRequest);
+    console.log(result);
     return null;
   };
 
@@ -184,6 +178,8 @@ export default class HttpInterface {
     const header = {
       method,
       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
         'x-mac-address': this.macAddress,
         'x-clinician': this.clinician,
       },
@@ -191,8 +187,6 @@ export default class HttpInterface {
 
     if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
       header.body = JSON.stringify(body);
-      header.headers['Accept'] = 'application/json';
-      header.headers['Content-Type'] = 'application/json';
     }
 
     return header;
