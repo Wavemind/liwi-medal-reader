@@ -1,20 +1,20 @@
 // @flow
-import * as React from "react";
-import * as NetInfo from "@react-native-community/netinfo";
-import Geolocation from "@react-native-community/geolocation";
-import moment from "moment";
-import { NavigationScreenProps } from "react-navigation";
-import { AppState, PermissionsAndroid } from "react-native";
+import * as React from 'react';
+import * as NetInfo from '@react-native-community/netinfo';
+import Geolocation from '@react-native-community/geolocation';
+import moment from 'moment';
+import { NavigationScreenProps } from 'react-navigation';
+import { AppState, PermissionsAndroid } from 'react-native';
 
-import i18n from "../../utils/i18n";
-import Database from "../api/Database";
-import { appInBackgroundStateKey, secondStatusLocalData, toolTipType } from "../../../frontend_service/constants";
-import { auth, getAlgorithm, getGroup, registerDevice } from "../../../frontend_service/api/Http";
-import { getItem, getItems, setItem } from "../api/LocalStorage";
-import { updateModalFromRedux } from "../../../frontend_service/actions/creators.actions";
-import { displayNotification } from "../../utils/CustomToast";
-import { liwiColors } from "../../utils/constants";
-import { store } from "../../../frontend_service/store";
+import i18n from '../../utils/i18n';
+import Database from '../api/Database';
+import { appInBackgroundStateKey, secondStatusLocalData, toolTipType } from '../../../frontend_service/constants';
+import { auth, getAlgorithm, getGroup, registerDevice } from '../../../frontend_service/api/Http';
+import { getItem, getItems, setItem } from '../api/LocalStorage';
+import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
+import { displayNotification } from '../../utils/CustomToast';
+import { liwiColors } from '../../utils/constants';
+import { store } from '../../../frontend_service/store';
 
 const defaultValue = {};
 
@@ -28,7 +28,7 @@ export type StateApplicationContext = {
   name: string,
   lang: string,
   set: (prop: any, value: any) => Promise<any>,
-  logged: boolean,  
+  logged: boolean,
   user: Object,
   logout: () => Promise<any>,
   unLockSession: (id: number, code: string) => Promise<any>,
@@ -131,7 +131,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const patients = await database.realmInterface.getAll('Patient');
     const success = await database.httpInterface.synchronizePatients(patients);
 
-    if (success === "Synchronize success") {
+    if (success === 'Synchronize success') {
       // database.realmInterface.delete();
     }
   };

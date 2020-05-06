@@ -2,7 +2,6 @@ import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
-import findIndex from 'lodash/findIndex';
 import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { nodeTypes } from '../../constants';
@@ -10,7 +9,6 @@ import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
-import NavigationService from '../../../src/engine/navigation/Navigation.service';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -503,7 +501,9 @@ class MedicalCaseReducer extends ReducerClass {
   medicalCaseClear(state) {
     storeMedicalCase(state);
 
-    return {};
+    return {
+      ...initialState,
+    };
   }
 
   /**
