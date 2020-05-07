@@ -47,197 +47,191 @@ export default class HttpInterface {
     return data;
   };
 
-  isLocked = async(id) => {
-    const url = `${this.localDataIp}/api/medical_cases/${id}/is_lock`;
+  /**
+   * Returns all the entry on a specific model
+   * @param { string } model - The model name of the data we want to retrieve
+   * @returns { Collection } - A collection of all the data
+   */
+  getAll = async (model) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
     const header = await this._setHeaders();
-    return this._fetch(url, header);
-  }
-
-/**
- * Returns all the entry on a specific model
- * @param { string } model - The model name of the data we want to retrieve
- * @returns { Collection } - A collection of all the data
- */
-getAll = async (model) => {
-  const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
-  const header = await this._setHeaders();
-  const data = await this._fetch(url, header);
-  if (data !== null) {
-    const values = this._initClasses(data, model);
-    return values;
-  }
-  return data;
-};
-
-/**
- * Update or insert value in a existing row
- * @param { string } model - The model name of the data we want to retrieve
- * @param { integer } id - The row to update
- * @param { string } fields - The field to update
- * @returns { Collection } - Updated object
- */
-update = async (model, id, fields) => {
-  const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
-  const header = await this._setHeaders('PUT', fields);
-
-  return this._fetch(url, header);
-};
-
-/**
- * Push an object in a existing object based on model name and id
- * @param { string } model - The model name of the data we want to retrieve
- * @param { integer } id - The row to update
- * @param { string } field - The field to update
- * @param { any } value - value to update
- * @returns { Collection } - Updated object
- */
-push = async (model, id, field, value) => {
-  const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
-  const header = await this._setHeaders('PUT', { [field]: value });
-  return this._fetch(url, header);
-};
-
-/**
- * Unlock a medical case when device is in client server architecture
- * @param {integer} id - Medical case id
- * @returns {string}
- */
-unlockMedicalCase = async (id) => {
-  const url = `${this.localDataIp}/api/medical_cases/${id}/unlock`;
-  const header = await this._setHeaders();
-  return this._fetch(url, header);
-};
-
-/**
- * lock a medical case when device is in client server architecture
- * @param {integer} id - Medical case id
- * @returns {string}
- */
-lockMedicalCase = async (id) => {
-  const url = `${this.localDataIp}/api/medical_cases/${id}/lock`;
-  const header = await this._setHeaders();
-  return this._fetch(url, header);
-};
-
-synchronizePatients = async (patients) => {
-  const url = `${this.localDataIp}/api/patients/synchronize`;
-  const header = await this._setHeaders('POST', { patients });
-  return this._fetch(url, header);
-};
-
-/**
- * Make the request and parse result
- * @param { string } url - Url to bind
- * @param { object } header - Header options
- * @returns {Promise<string|array>}
- * @private
- */
-_fetch = async (url, header) => {
-  const httpRequest = await fetch(url, header).catch((error) => {
-    handleHttpError(error);
-  });
-
-  // In case of fetch timeout
-  if (httpRequest !== undefined) {
-    const result = await httpRequest.json();
-    if (httpRequest.status === 200) {
-      return result;
-    } else if (httpRequest.status > 404) {
-      handleHttpError(result.message);
-      console.log(result);
+    const data = await this._fetch(url, header);
+    if (data !== null) {
+      const values = this._initClasses(data, model);
+      return values;
     }
-  }
-
-  return null;
-};
-
-/**
- * Map model to local data route
- * @param { string } model - The model name of the data we want to retrieve
- * @returns { string } - local data route
- * @private
- */
-_mapModelToRoute = (model) => {
-  let route = '';
-
-  switch (model) {
-    case 'Patient':
-      route = 'patients';
-      break;
-    case 'MedicalCase':
-      route = 'medical_cases';
-      break;
-    default:
-      console.warn("route doesn't exist", model);
-  }
-
-  return route;
-};
-
-/**
- * Set header credentials to communicate with server
- * @params [String] method
- * @params [Object] body
- * @return [Object] header
- * @private
- */
-_setHeaders = async (method = 'GET', body = false) => {
-  if (this.clinician === null) {
-    await this._setClinician();
-  }
-
-  const header = {
-    method,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'x-mac-address': this.macAddress,
-      'x-clinician': this.clinician,
-    },
+    return data;
   };
 
-  if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
-    header.body = JSON.stringify(body);
-  }
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
+   */
+  update = async (model, id, fields) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
+    const header = await this._setHeaders('PUT', fields);
 
-  return header;
-};
+    return this._fetch(url, header);
+  };
 
-/**
- * Set value of clinician with params from local storage
- * Due to missing user info on tablet initialization
- * @returns {Promise<void>}
- * @private
- */
-_setClinician = async () => {
-  const user = await getItem('user');
-  this.clinician = `${user?.first_name} ${user?.last_name}`;
-};
+  /**
+   * Push an object in a existing object based on model name and id
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } field - The field to update
+   * @param { any } value - value to update
+   * @returns { Collection } - Updated object
+   */
+  push = async (model, id, field, value) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
+    const header = await this._setHeaders('PUT', { [field]: value });
+    return this._fetch(url, header);
+  };
 
-/**
- * Generate class
- * @param { array|object } data - Data retrived from server
- * @param { string } model - Class name
- * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
- * @private
- */
-_initClasses = async (data, model) => {
-  const object = [];
-  if (model === 'Patient') {
-    if (data instanceof Array) {
+  /**
+   * Unlock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  unlockMedicalCase = async (id) => {
+    const url = `${this.localDataIp}/api/medical_cases/${id}/unlock`;
+    const header = await this._setHeaders();
+    return this._fetch(url, header);
+  };
+
+  /**
+   * lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  lockMedicalCase = async (id) => {
+    const url = `${this.localDataIp}/api/medical_cases/${id}/lock`;
+    const header = await this._setHeaders();
+    return this._fetch(url, header);
+  };
+
+  synchronizePatients = async (patients) => {
+    const url = `${this.localDataIp}/api/patients/synchronize`;
+    const header = await this._setHeaders('POST', { patients });
+    return this._fetch(url, header);
+  };
+
+  /**
+   * Make the request and parse result
+   * @param { string } url - Url to bind
+   * @param { object } header - Header options
+   * @returns {Promise<string|array>}
+   * @private
+   */
+  _fetch = async (url, header) => {
+    const httpRequest = await fetch(url, header).catch((error) => {
+      handleHttpError(error);
+    });
+
+    // In case of fetch timeout
+    if (httpRequest !== undefined) {
+      const result = await httpRequest.json();
+      if (httpRequest.status === 200) {
+        return result;
+      } else if (httpRequest.status > 404) {
+        handleHttpError(result.message);
+        console.log(result);
+      }
+    }
+
+    return null;
+  };
+
+  /**
+   * Map model to local data route
+   * @param { string } model - The model name of the data we want to retrieve
+   * @returns { string } - local data route
+   * @private
+   */
+  _mapModelToRoute = (model) => {
+    let route = '';
+
+    switch (model) {
+      case 'Patient':
+        route = 'patients';
+        break;
+      case 'MedicalCase':
+        route = 'medical_cases';
+        break;
+      default:
+        console.warn("route doesn't exist", model);
+    }
+
+    return route;
+  };
+
+  /**
+   * Set header credentials to communicate with server
+   * @params [String] method
+   * @params [Object] body
+   * @return [Object] header
+   * @private
+   */
+  _setHeaders = async (method = 'GET', body = false) => {
+    if (this.clinician === null) {
+      await this._setClinician();
+    }
+
+    const header = {
+      method,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-mac-address': this.macAddress,
+        'x-clinician': this.clinician,
+      },
+    };
+
+    if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
+      header.body = JSON.stringify(body);
+    }
+
+    return header;
+  };
+
+  /**
+   * Set value of clinician with params from local storage
+   * Due to missing user info on tablet initialization
+   * @returns {Promise<void>}
+   * @private
+   */
+  _setClinician = async () => {
+    const user = await getItem('user');
+    this.clinician = `${user?.first_name} ${user?.last_name}`;
+  };
+
+  /**
+   * Generate class
+   * @param { array|object } data - Data retrived from server
+   * @param { string } model - Class name
+   * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
+   * @private
+   */
+  _initClasses = async (data, model) => {
+    const object = [];
+    if (model === 'Patient') {
+      if (data instanceof Array) {
+        data.forEach((item) => {
+          object.push(new PatientModel(item));
+        });
+      } else {
+        return new PatientModel(data);
+      }
+    } else if (data instanceof Array) {
       data.forEach((item) => {
-        object.push(new PatientModel(item));
+        object.push(new MedicalCaseModel(item));
       });
     } else {
-      return new PatientModel(data);
+      return new MedicalCaseModel(data);
     }
-  } else if (data instanceof Array) {
-    data.forEach((item) => {
-      object.push(new MedicalCaseModel(item));
-    });
-  } else {
-    return new MedicalCaseModel(data);
-  }
-  return object;
-};
+    return object;
+  };
 }

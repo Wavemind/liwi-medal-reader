@@ -9,8 +9,8 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => {},
-  cacheUserLanguage: () => {},
+  init: () => { },
+  cacheUserLanguage: () => { },
 };
 
 i18n
@@ -303,7 +303,7 @@ i18n
           ask_me_later: 'Ask me later',
           cancel: 'cancel',
           by: 'by',
-          isLocked: 'This Medical Case is locked',
+          isLocked: 'Case is locked',
           at: 'at',
         },
         sessions: {
