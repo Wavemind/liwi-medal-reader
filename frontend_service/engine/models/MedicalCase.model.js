@@ -294,10 +294,13 @@ export class MedicalCaseModel {
       medical_case_id: this.id,
     });
   };
-
+  /**
+   * Defines if the case is locked
+   */
   isLocked = async () => {
     const deviceInfo = await getDeviceInformation();
-    return this.clinician !== null && this.mac_address !== deviceInfo.mac_address
+    const user = await getItem('user');
+    return !(this.clinician === null && this.mac_address === null || this.clinican === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address)
   };
 }
 

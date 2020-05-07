@@ -205,11 +205,11 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={`${medicalCase.id}_medical_case_list`}
                 spaced
                 onPress={async () => {
-                  const remoteMedicalCase = database.findBy('Patient', medicalCase.id);
+                  const remoteMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
                   // If medicalCase is open by clinician
                   if (remoteMedicalCase.isLocked()) {
                     // show locked info
-                    updateModalFromRedux({ remoteMedicalCase }, toolTipType.medicalCaseLocked);
+                    updateModalFromRedux({ medicalCase: remoteMedicalCase }, toolTipType.medicalCaseLocked);
                   } else {
                     await this.selectMedicalCase({
                       ...medicalCase,
