@@ -211,7 +211,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 onPress={async () => {
                   const remoteMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
                   // If medicalCase is open by clinician
-                  if (remoteMedicalCase.isLocked()) {
+                  if (remoteMedicalCase.isLocked(deviceInfo, user)) {
                     // show locked info
                     updateModalFromRedux({ medicalCase: remoteMedicalCase }, toolTipType.medicalCaseLocked);
                   } else {
@@ -260,10 +260,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   render() {
-    const { searchTerm, orderByFirstName, statuses, filterTerm, orderByStatus, loading, orderByUpdate, orderByLastName } = this.state;
+    const { searchTerm, orderByFirstName, statuses, filterTerm, orderByStatus, loading, orderByUpdate, orderByLastName, deviceInfo } = this.state;
 
     const {
-      app: { t },
+      app: { t, user },
     } = this.props;
 
     // Order the medical case
