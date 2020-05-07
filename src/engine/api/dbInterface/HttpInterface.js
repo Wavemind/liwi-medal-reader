@@ -136,7 +136,7 @@ export default class HttpInterface {
       const result = await httpRequest.json();
       if (httpRequest.status === 200) {
         return result;
-      } else if (httpRequest.status === 500) {
+      } else if (httpRequest.status > 404) {
         handleHttpError(result.message);
       }
     }

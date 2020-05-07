@@ -117,7 +117,6 @@ export class MedicalCaseModel {
     switch (this.status) {
       case 'in_creation':
         return stage === "PatientUpsert"
-        break;
       case 'waiting_triage':
       case 'triage':
         return stage === "Consultation"
