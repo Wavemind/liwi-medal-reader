@@ -298,7 +298,7 @@ export class MedicalCaseModel {
    * Defines if the case is locked
    */
   isLocked = (deviceInfo, user) => {
-    return !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address));
+    return this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address));
   };
 }
 
