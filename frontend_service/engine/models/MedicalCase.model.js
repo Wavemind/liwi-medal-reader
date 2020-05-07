@@ -296,7 +296,7 @@ export class MedicalCaseModel {
 
   isLocked = async () => {
     const database = await new Database();
-    return database.isLocked(this);
+    return database.isLocked(this.id);
   };
 }
 

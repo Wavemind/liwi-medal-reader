@@ -209,9 +209,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={`${medicalCase.id}_medical_case_list`}
                 spaced
                 onPress={async () => {
-
                   // If medicalCase is open by clinician
-                  if (medicalCase.isLocked()) {
+                  if (await medicalCase.isLocked()) {
                     // show locked info
                     updateModalFromRedux({ medicalCase }, toolTipType.medicalCaseLocked);
                   } else {
