@@ -26,8 +26,6 @@ export default class RealmInterface {
     });
   }
 
-  isLocked = (object) => {return false;}
-
   /**
    * Creates an entry of a specific model in the database
    * @param { string } model - The model name of the data we want to retrieve

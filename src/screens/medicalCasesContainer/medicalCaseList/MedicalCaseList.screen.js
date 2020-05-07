@@ -14,7 +14,6 @@ import { LiwiTitle2, SeparatorLine } from "../../../template/layout";
 import { medicalCaseStatus, routeDependingStatus, toolTipType } from "../../../../frontend_service/constants";
 import type { StateApplicationContext } from "../../../engine/contexts/Application.context";
 import LiwiLoader from "../../../utils/LiwiLoader";
-import { getDeviceInformation } from "../../../engine/api/Device";
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -28,7 +27,6 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     orderByFirstName: 'asc',
     orderByStatus: null,
     orderByLastName: null,
-    deviceInfo: null,
     orderByUpdate: null,
     filterTerm: '',
     statuses: [medicalCaseStatus.waitingTriage.name, medicalCaseStatus.waitingConsultation.name, medicalCaseStatus.waitingTests.name, medicalCaseStatus.waitingDiagnostic.name],
@@ -41,12 +39,10 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState({ loading: true });
 
     const medicalCases = await database.getAll('MedicalCase');
-    const deviceInfo = await getDeviceInformation();
 
     this.setState({
       medicalCases,
       loading: false,
-      deviceInfo,
     });
   }
 
@@ -181,7 +177,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       updateModalFromRedux,
     } = this.props;
 
-    const { medicalCases, deviceInfo } = this.state;
+    const { medicalCases } = this.state;
 
     return medicalCases !== null ? (
       [
@@ -209,10 +205,11 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={`${medicalCase.id}_medical_case_list`}
                 spaced
                 onPress={async () => {
+                  const remoteMedicalCase = database.findBy('Patient', medicalCase.id);
                   // If medicalCase is open by clinician
-                  if (await medicalCase.isLocked()) {
+                  if (remoteMedicalCase.isLocked()) {
                     // show locked info
-                    updateModalFromRedux({ medicalCase }, toolTipType.medicalCaseLocked);
+                    updateModalFromRedux({ remoteMedicalCase }, toolTipType.medicalCaseLocked);
                   } else {
                     await this.selectMedicalCase({
                       ...medicalCase,
@@ -242,11 +239,9 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                   <Text>{moment(medicalCase.updated_at).calendar()}</Text>
                 </View>
                 <View w50>
-                  {medicalCase.clinician !== null && medicalCase.mac_address !== deviceInfo.mac_address ? (
+                  {medicalCase.isLocked() ? (
                     <Icon name={'lock'} type={'EvilIcons'} style={styles.lock} />
-                  ) : (
-                      <Icon name={'unlock'} type={'EvilIcons'} style={styles.unlock} />
-                    )}
+                  ) : null}
                 </View>
               </ListItem>
             );
