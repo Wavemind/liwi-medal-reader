@@ -209,8 +209,9 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={`${medicalCase.id}_medical_case_list`}
                 spaced
                 onPress={async () => {
+
                   // If medicalCase is open by clinician
-                  if (medicalCase.clinician !== null && medicalCase.mac_address !== deviceInfo.mac_address) {
+                  if (medicalCase.isLocked()) {
                     // show locked info
                     updateModalFromRedux({ medicalCase }, toolTipType.medicalCaseLocked);
                   } else {
@@ -245,8 +246,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                   {medicalCase.clinician !== null && medicalCase.mac_address !== deviceInfo.mac_address ? (
                     <Icon name={'lock'} type={'EvilIcons'} style={styles.lock} />
                   ) : (
-                    <Icon name={'unlock'} type={'EvilIcons'} style={styles.unlock} />
-                  )}
+                      <Icon name={'unlock'} type={'EvilIcons'} style={styles.unlock} />
+                    )}
                 </View>
               </ListItem>
             );

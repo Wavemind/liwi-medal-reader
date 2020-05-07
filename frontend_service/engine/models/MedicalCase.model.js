@@ -11,7 +11,6 @@ import { store } from '../../store';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-    console.log(this, props)
     if ((this.id === undefined || this.id === null) && props.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
@@ -293,6 +292,11 @@ export class MedicalCaseModel {
       user,
       medical_case_id: this.id,
     });
+  };
+
+  isLocked = async () => {
+    const database = await new Database();
+    return database.isLocked(this);
   };
 }
 
