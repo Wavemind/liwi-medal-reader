@@ -228,7 +228,6 @@ export default class TooltipModal extends React.Component<Props, State> {
     } = this.props;
 
     const { medicalCase } = modalRedux.params;
-
     return (
       <View style={styles.content}>
         <Text style={styles.warning}>{t('popup:isLocked')}</Text>
