@@ -14,6 +14,7 @@ import { LiwiTitle2, SeparatorLine } from "../../../template/layout";
 import { medicalCaseStatus, routeDependingStatus, toolTipType } from "../../../../frontend_service/constants";
 import type { StateApplicationContext } from "../../../engine/contexts/Application.context";
 import LiwiLoader from "../../../utils/LiwiLoader";
+import { getDeviceInformation } from '../../../engine/api/Device';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -28,6 +29,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     orderByStatus: null,
     orderByLastName: null,
     orderByUpdate: null,
+    deviceInfo: null,
     filterTerm: '',
     statuses: [medicalCaseStatus.waitingTriage.name, medicalCaseStatus.waitingConsultation.name, medicalCaseStatus.waitingTests.name, medicalCaseStatus.waitingDiagnostic.name],
   };
@@ -39,9 +41,11 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     this.setState({ loading: true });
 
     const medicalCases = await database.getAll('MedicalCase');
+    const deviceInfo = await getDeviceInformation();
 
     this.setState({
       medicalCases,
+      deviceInfo,
       loading: false,
     });
   }
@@ -173,11 +177,11 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   _renderMedicalCase = () => {
     const {
       navigation,
-      app: { t, database },
+      app: { t, database, user },
       updateModalFromRedux,
     } = this.props;
 
-    const { medicalCases } = this.state;
+    const { medicalCases, deviceInfo } = this.state;
 
     return medicalCases !== null ? (
       [
@@ -239,7 +243,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                   <Text>{moment(medicalCase.updated_at).calendar()}</Text>
                 </View>
                 <View w50>
-                  {medicalCase.isLocked() ? (
+                  {medicalCase.isLocked(deviceInfo, user) ? (
                     <Icon name={'lock'} type={'EvilIcons'} style={styles.lock} />
                   ) : null}
                 </View>
