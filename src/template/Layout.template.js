@@ -142,17 +142,17 @@ class LayoutTemplate extends React.Component<Props> {
                   navigationState={navigationState}
                   logged={logged}
                   persistNavigationState={persistNavigationState}
-                  loadNavigationState={
-                    // Trick because react-naviation is buggy on first load
-                    logged
-                      ? () => {
-                          if (logged) {
-                            return navigationState;
-                          }
-                          return null;
-                        }
-                      : false
-                  }
+                  // loadNavigationState={
+                  //   // Trick because react-naviation is buggy on first load
+                  //   logged
+                  //     ? () => {
+                  //         if (logged) {
+                  //           return navigationState;
+                  //         }
+                  //         return null;
+                  //       }
+                  //     : false
+                  // }
                   renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);
@@ -164,8 +164,8 @@ class LayoutTemplate extends React.Component<Props> {
               </RootView>
             </Container>
           ) : (
-            <LiwiLoader />
-          )}
+              <LiwiLoader />
+            )}
         </StyleProvider>
       </Root>
     );

@@ -47,6 +47,11 @@ export default class Database {
     return this[dbInterface].insert(model, object);
   };
 
+  isLocked = async (object) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].isLocked(object);
+  }
+
   /**
    * Update or insert value in a existing row
    * @param { string } model - The model name of the data we want to retrieve

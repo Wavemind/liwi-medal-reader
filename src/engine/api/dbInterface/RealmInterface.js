@@ -24,8 +24,9 @@ export default class RealmInterface {
     this._realm().write(() => {
       realm.delete(object); // Deletes all books
     });
-
   }
+
+  isLocked = (object) => {return false;}
 
   /**
    * Creates an entry of a specific model in the database

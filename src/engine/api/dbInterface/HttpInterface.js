@@ -47,6 +47,12 @@ export default class HttpInterface {
     return data;
   };
 
+  isLocked = async (object) => {
+    const url = `${this.localDataIp}/api/medical_cases/${object.id}/is_lock`;
+    const header = await this._setHeaders();
+    return await this._fetch(url, header);
+  }
+
   /**
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
@@ -138,6 +144,7 @@ export default class HttpInterface {
         return result;
       } else if (httpRequest.status > 404) {
         handleHttpError(result.message);
+        console.warn(result);
       }
     }
 
