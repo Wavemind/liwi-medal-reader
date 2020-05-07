@@ -47,9 +47,9 @@ export default class Database {
     return this[dbInterface].insert(model, object);
   };
 
-  isLocked = async (object) => {
+  isLocked = async (id) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].isLocked(object);
+    return this[dbInterface].isLocked(id);
   }
 
   /**
