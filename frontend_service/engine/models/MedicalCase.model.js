@@ -78,6 +78,7 @@ export class MedicalCaseModel {
     } else {
 
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
+      console.log(props, this, json);
 
       if (props !== undefined) {
         this.id = json.id;

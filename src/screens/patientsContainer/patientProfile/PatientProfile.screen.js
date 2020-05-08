@@ -61,7 +61,7 @@ export default class PatientProfile extends React.Component {
 
     const {
       navigation,
-      app: { t, database },
+      app: { t, database, user },
       updateModalFromRedux,
       setMedicalCase,
     } = this.props;
@@ -81,9 +81,11 @@ export default class PatientProfile extends React.Component {
           style={{ backgroundColor: '#ffffff' }}
           spaced
           onPress={async () => {
+            const remoteMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
             // If medicalCase is open by clinician
-            if (medicalCase.clinician !== null && medicalCase.mac_address !== deviceInfo.mac_address) {
-              updateModalFromRedux({ medicalCase }, toolTipType.medicalCaseLocked);
+            if (remoteMedicalCase.isLocked(deviceInfo, user)) {
+              // show locked info
+              updateModalFromRedux({ medicalCase: remoteMedicalCase }, toolTipType.medicalCaseLocked);
             } else {
               await setMedicalCase(medicalCase);
 
@@ -107,11 +109,11 @@ export default class PatientProfile extends React.Component {
             <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
           </View>
           <View w50>
-            {medicalCase.clinician !== null && medicalCase.mac_address !== deviceInfo.mac_address ? (
+            {medicalCase.isLocked(deviceInfo, user) ? (
               <Icon name={'lock'} type={'EvilIcons'} style={styles.lock} />
             ) : (
-              <Icon name={'unlock'} type={'EvilIcons'} style={styles.unlock} />
-            )}
+                <Icon name={'unlock'} type={'EvilIcons'} style={styles.unlock} />
+              )}
           </View>
         </ListItem>
       );
@@ -135,40 +137,40 @@ export default class PatientProfile extends React.Component {
     return !firstRender ? (
       <LiwiLoader />
     ) : (
-      <View padding-auto flex>
-        <LiwiTitle2 noBorder>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</LiwiTitle2>
+        <View padding-auto flex>
+          <LiwiTitle2 noBorder>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</LiwiTitle2>
 
-        <SeparatorLine style={styles.bottomMargin} />
-        {algorithm !== null ? (
-          <View flex>
-            <View>
-              {patient.medicalCases.length > 0 ? (
-                <List block>{_renderMedicalCases}</List>
-              ) : (
-                <View padding-auto margin-auto>
-                  <Text not-available>{t('work_case:no_medical_cases')}</Text>
-                </View>
-              )}
+          <SeparatorLine style={styles.bottomMargin} />
+          {algorithm !== null ? (
+            <View flex>
+              <View>
+                {patient.medicalCases.length > 0 ? (
+                  <List block>{_renderMedicalCases}</List>
+                ) : (
+                    <View padding-auto margin-auto>
+                      <Text not-available>{t('work_case:no_medical_cases')}</Text>
+                    </View>
+                  )}
+              </View>
+              <View bottom-view>
+                <Button
+                  onPress={() => {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: patient.id,
+                      newMedicalCase: true,
+                    });
+                  }}
+                >
+                  <Text>{t('work_case:create')}</Text>
+                </Button>
+              </View>
             </View>
-            <View bottom-view>
-              <Button
-                onPress={() => {
-                  navigation.navigate('PatientUpsert', {
-                    idPatient: patient.id,
-                    newMedicalCase: true,
-                  });
-                }}
-              >
-                <Text>{t('work_case:create')}</Text>
-              </Button>
-            </View>
-          </View>
-        ) : (
-          <View padding-auto margin-auto>
-            <Text>{t('work_case:no_algorithm')}</Text>
-          </View>
-        )}
-      </View>
-    );
+          ) : (
+              <View padding-auto margin-auto>
+                <Text>{t('work_case:no_algorithm')}</Text>
+              </View>
+            )}
+        </View>
+      );
   }
 }
