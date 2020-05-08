@@ -63,16 +63,15 @@ export class PatientModel {
    */
   addMedicalCase = async (medicalCase) => {
     const user = await getItem('user');
+    const medicalCaseClass = new MedicalCaseModel(medicalCase);
     const database = await new Database();
-    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
+    const activity = await medicalCase.generateActivity('registration', user, medicalCaseClass.nodes);
+    medicalCaseClass.patient_id = this.id;
+    medicalCaseClass.json = JSON.stringify(medicalCaseClass);
+    await medicalCaseClass.handleFailSafe();
+    medicalCaseClass.activities = [activity];
+    await database.push('Patient', this.id, 'medicalCases', medicalCaseClass);
 
-    medicalCase.patient_id = this.id;
-    medicalCase.json = JSON.stringify(medicalCase);
-
-    await medicalCase.handleFailSafe();
-
-    medicalCase.activities = [activity];
-    await database.push('Patient', this.id, 'medicalCases', medicalCase);
     return true;
   };
 

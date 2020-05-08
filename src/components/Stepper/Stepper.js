@@ -291,6 +291,7 @@ class Stepper extends React.Component<Props, State> {
     newActivities.push(activity);
 
     medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
+
     await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
     displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
     if (endMedicalCase === true) {
