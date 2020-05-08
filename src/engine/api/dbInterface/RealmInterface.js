@@ -1,9 +1,9 @@
 const Realm = require('realm');
 
-import { ActivityModel } from "../../../../frontend_service/engine/models/Activity.model";
-import { PatientModel } from "../../../../frontend_service/engine/models/Patient.model";
-import { MedicalCaseModel } from "../../../../frontend_service/engine/models/MedicalCase.model";
-import { getItem } from "../LocalStorage";
+import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
+import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { getItem } from '../LocalStorage';
 
 export default class RealmInterface {
   /**
@@ -24,7 +24,7 @@ export default class RealmInterface {
     this._realm().write(() => {
       realm.delete(object); // Deletes all books
     });
-  }
+  };
 
   /**
    * Creates an entry of a specific model in the database
@@ -71,19 +71,22 @@ export default class RealmInterface {
    */
   update = async (model, id, fields) => {
     const session = await getItem('session');
-    if (session.group.architecture === 'client_server') fields = { ...fields, fail_safe: true };
-
+    if (session.group.architecture === 'client_server') {
+      fields = { ...fields, fail_safe: true };
+    }
     this._realm().write(() => {
       this._realm().create(model, { id, ...fields }, 'modified');
     });
   };
 
   /**
-   * Blank method used in HTTPinterface
+   * Blank method used in httpInterface
    */
-  unlockMedicalCase = () => { };
+  unlockMedicalCase = () => {
+  };
 
-  lockMedicalCase = () => { };
+  lockMedicalCase = () => {
+  };
 
   /**
    * Push an object in a existing object based on model name and id
@@ -94,8 +97,11 @@ export default class RealmInterface {
    * @returns { Collection } - Updated object
    */
   push = async (model, id, field, value) => {
+    const session = await getItem('session');
     const object = await this.findBy(model, id);
-    if (session.group.architecture === 'client_server') fields = { ...value, fail_safe: true };
+    if (session.group.architecture === 'client_server') {
+      value = { ...value, fail_safe: true };
+    }
     this._realm().write(() => {
       object[field].push(value);
     });

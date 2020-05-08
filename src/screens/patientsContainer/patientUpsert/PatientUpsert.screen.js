@@ -106,7 +106,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
       if (patientId !== null || patientId === undefined) {
         const patient = await database.findBy('Patient', patientId);
-        isSaved = patient.addMedicalCase(medicalCase);
+        isSaved = await patient.addMedicalCase(medicalCase);
         updateMedicalCaseProperty('patient_id', patient.id);
       } else {
         isSaved = await this.savePatient();

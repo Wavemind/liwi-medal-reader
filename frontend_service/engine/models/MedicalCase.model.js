@@ -12,7 +12,7 @@ import { getDeviceInformation } from '../../../src/engine/api/Device';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-    if ((this.id === undefined || this.id === null) && props.id === undefined) {
+    if ((this.id === undefined || this.id === null) && props?.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
       this.name = currentAlgorithm.name;
@@ -78,8 +78,6 @@ export class MedicalCaseModel {
     } else {
 
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
-      console.log(props, this, json);
-
       if (props !== undefined) {
         this.id = json.id;
         this.json = props.json;
