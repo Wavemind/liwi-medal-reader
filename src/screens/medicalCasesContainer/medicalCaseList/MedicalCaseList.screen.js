@@ -11,9 +11,11 @@ import moment from 'moment';
 
 import { styles } from './MedicalCaseList.style';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { medicalCaseStatus, routeDependingStatus } from '../../../../frontend_service/constants';
+import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { getDeviceInformation } from '../../../engine/api/Device';
+import { getItem } from '../../../engine/api/LocalStorage';
 
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
@@ -23,11 +25,12 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     medicalCases: [],
     orderedFilteredMedicalCases: [],
     searchTerm: '',
-    loading: false,
+    loading: true,
     orderByFirstName: 'asc',
     orderByStatus: null,
     orderByLastName: null,
     orderByUpdate: null,
+    deviceInfo: null,
     filterTerm: '',
     statuses: [medicalCaseStatus.waitingTriage.name, medicalCaseStatus.waitingConsultation.name, medicalCaseStatus.waitingTests.name, medicalCaseStatus.waitingDiagnostic.name],
   };
@@ -38,10 +41,14 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     } = this.props;
     this.setState({ loading: true });
 
+    const isConnected = await getItem('isConnected');
     const medicalCases = await database.getAll('MedicalCase');
+    const deviceInfo = await getDeviceInformation();
 
     this.setState({
       medicalCases,
+      deviceInfo,
+      isConnected,
       loading: false,
     });
   }
@@ -173,12 +180,13 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   _renderMedicalCase = () => {
     const {
       navigation,
-      app: { t },
+      app: { t, database, user },
+      updateModalFromRedux,
     } = this.props;
 
-    const { medicalCases } = this.state;
+    const { medicalCases, deviceInfo, isConnected } = this.state;
 
-    return medicalCases.length > 0 ? (
+    return medicalCases !== null ? (
       [
         <List block key="medicalCaseList">
           {medicalCases.map((medicalCase) => {
@@ -204,18 +212,26 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 key={`${medicalCase.id}_medical_case_list`}
                 spaced
                 onPress={async () => {
-                  await this.selectMedicalCase({
-                    ...medicalCase,
-
-                  });
-
-                  const route = routeDependingStatus(medicalCase);
-
-                  if (route !== undefined) {
-                    navigation.navigate(route, {
-                      idPatient: medicalCase.patient_id,
-                      newMedicalCase: false,
+                  const remoteMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+                  // If medicalCase is open by clinician
+                  if (remoteMedicalCase.isLocked(deviceInfo, user) && isConnected) {
+                    // show locked info
+                    updateModalFromRedux({ medicalCase: remoteMedicalCase }, toolTipType.medicalCaseLocked);
+                  } else {
+                    await this.selectMedicalCase({
+                      ...medicalCase,
                     });
+
+                    await database.lockMedicalCase(medicalCase.id);
+
+                    const route = routeDependingStatus(medicalCase);
+
+                    if (route !== undefined) {
+                      navigation.navigate(route, {
+                        idPatient: medicalCase.patient_id,
+                        newMedicalCase: false,
+                      });
+                    }
                   }
                 }}
               >
@@ -229,23 +245,24 @@ export default class MedicalCaseList extends React.Component<Props, State> {
                 <View w50>
                   <Text>{moment(medicalCase.updated_at).calendar()}</Text>
                 </View>
+                {isConnected ? <View w50>{medicalCase.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}</View> : null}
               </ListItem>
             );
           })}
         </List>,
       ]
     ) : (
-        <View padding-auto margin-auto>
-          <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
-        </View>
-      );
+      <View padding-auto margin-auto>
+        <Text not-available>{t('medical_case_list:no_medical_cases')}</Text>
+      </View>
+    );
   };
 
   render() {
-    const { searchTerm, orderByFirstName, statuses, filterTerm, orderByStatus, loading, orderByUpdate, orderByLastName } = this.state;
+    const { searchTerm, orderByFirstName, statuses, filterTerm, orderByStatus, loading, orderByUpdate, orderByLastName, deviceInfo } = this.state;
 
     const {
-      app: { t },
+      app: { t, user },
     } = this.props;
 
     // Order the medical case

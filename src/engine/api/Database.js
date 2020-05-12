@@ -1,7 +1,8 @@
-import RealmInterface from './dbInterface/RealmInterface';
-import HttpInterface from './dbInterface/HttpInterface';
+import RealmInterface from "./dbInterface/RealmInterface";
+import HttpInterface from "./dbInterface/HttpInterface";
 
-import { getItem } from './LocalStorage';
+import { getItem } from "./LocalStorage";
+import { databaseInterface } from "../../../frontend_service/constants";
 
 export default class Database {
   constructor() {
@@ -82,6 +83,16 @@ export default class Database {
   };
 
   /**
+   * Lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  lockMedicalCase = async (id) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].lockMedicalCase(id);
+  };
+
+  /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
    * @private
@@ -90,9 +101,9 @@ export default class Database {
     let dbInterface = '';
     const isConnected = await getItem('isConnected');
     if (this.architecture === 'standalone' || !isConnected) {
-      dbInterface = 'realmInterface';
+      dbInterface = databaseInterface.realmInterface;
     } else {
-      dbInterface = 'httpInterface';
+      dbInterface = databaseInterface.httpInterface;
     }
     return dbInterface;
   };

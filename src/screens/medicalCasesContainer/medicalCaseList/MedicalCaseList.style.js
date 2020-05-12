@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../../utils/constants';
+import { StyleSheet } from "react-native";
+import { liwiColors } from "../../../utils/constants";
 
 export const styles = StyleSheet.create({
   input: {
@@ -29,6 +29,9 @@ export const styles = StyleSheet.create({
     borderLeftColor: liwiColors.redColor,
     textTransform: 'uppercase',
   },
+
+  lock: { color: liwiColors.redColor },
+  unlock: { color: liwiColors.greenColor },
 
   sorted: {
     marginTop: 30,

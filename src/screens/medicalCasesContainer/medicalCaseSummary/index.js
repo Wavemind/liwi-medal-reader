@@ -1,8 +1,8 @@
-import { connect } from 'react-redux';
-import MedicalCaseSummary from './MedicalCaseSummary.screen';
-import { withApplication } from '../../../engine/contexts/Application.context';
-import { setMedicalCase, updatePatient } from '../../../../frontend_service/actions/creators.actions';
-import { WrapperNavigation } from '../../../utils/WrapperNavigation';
+import { connect } from "react-redux";
+import MedicalCaseSummary from "./MedicalCaseSummary.screen";
+import { withApplication } from "../../../engine/contexts/Application.context";
+import { setMedicalCase, updatePatient } from "../../../../frontend_service/actions/creators.actions";
+import { WrapperNavigation } from "../../../utils/WrapperNavigation";
 
 const mapStateToProps = (medicalCase) => {
   return {

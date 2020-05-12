@@ -1,3 +1,5 @@
+import fetch from '../../../utils/fetchWithTimeout';
+
 import { getItem } from '../LocalStorage';
 import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
@@ -55,7 +57,8 @@ export default class HttpInterface {
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
     if (data !== null) {
-      return this._initClasses(data, model);
+      const values = this._initClasses(data, model);
+      return values;
     }
     return data;
   };
@@ -99,11 +102,22 @@ export default class HttpInterface {
     return this._fetch(url, header);
   };
 
+  /**
+   * lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  lockMedicalCase = async (id) => {
+    const url = `${this.localDataIp}/api/medical_cases/${id}/lock`;
+    const header = await this._setHeaders();
+    return this._fetch(url, header);
+  };
+
   synchronizePatients = async (patients) => {
     const url = `${this.localDataIp}/api/patients/synchronize`;
     const header = await this._setHeaders('POST', { patients });
     return this._fetch(url, header);
-  }
+  };
 
   /**
    * Make the request and parse result
@@ -114,17 +128,20 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => {
-      if (httpRequest.status === 500) {
-        handleHttpError(error);
-      }
+      handleHttpError(error);
     });
 
-    // TODO need to be carefull with.json() when http 500
-    const result = await httpRequest.json();
-
-    if (httpRequest.status === 200) {
-      return result;
+    // In case of fetch timeout
+    if (httpRequest !== undefined) {
+      const result = await httpRequest.json();
+      if (httpRequest.status === 200) {
+        return result;
+      } else if (httpRequest.status > 404) {
+        handleHttpError(result.message);
+        console.log(result);
+      }
     }
+
     return null;
   };
 
@@ -166,6 +183,8 @@ export default class HttpInterface {
     const header = {
       method,
       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
         'x-mac-address': this.macAddress,
         'x-clinician': this.clinician,
       },
@@ -173,8 +192,6 @@ export default class HttpInterface {
 
     if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
       header.body = JSON.stringify(body);
-      header.headers['Accept'] = 'application/json';
-      header.headers['Content-Type'] = 'application/json';
     }
 
     return header;

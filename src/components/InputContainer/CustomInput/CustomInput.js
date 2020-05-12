@@ -1,11 +1,10 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { View } from 'react-native';
-import { Form, Icon, Input, Text } from 'native-base';
-import { styles } from './CustomInput.style';
-import { ViewBlocColor } from '../../../template/layout';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import { View } from "react-native";
+import { Form, Icon, Input, Text } from "native-base";
+import { styles } from "./CustomInput.style";
 
 type Props = NavigationScreenProps & { autoCapitalize: string };
 type State = {};

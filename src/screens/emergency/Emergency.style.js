@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { screenWidth } from '../../utils/constants';
+import { StyleSheet } from "react-native";
+import { screenWidth } from "../../utils/constants";
 
 export const styles = StyleSheet.create({
   view: { padding: 20 },

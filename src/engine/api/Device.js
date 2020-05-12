@@ -1,5 +1,5 @@
-import DeviceInfo from 'react-native-device-info';
-import { getItem } from './LocalStorage';
+import DeviceInfo from "react-native-device-info";
+import { getItem } from "./LocalStorage";
 
 // Return device information and his location
 export const getDeviceInformation = async () => {

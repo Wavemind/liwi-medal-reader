@@ -6,7 +6,13 @@ export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 export const secondStatusLocalData = 5000;
 
 export const navigationStateKey = 'navigationState';
+export const navigationRoute = 'navigationRoute';
 export const appInBackgroundStateKey = 'appBackground';
+
+export const databaseInterface = {
+  realmInterface: 'realmInterface',
+  httpInterface: 'httpInterface',
+};
 
 // Nodes types
 export const nodeTypes = {
@@ -101,6 +107,14 @@ export const categories = {
   uniqueTriagePhysicalSign: 'unique_triage_physical_sign',
 };
 
+// Type of Tool Tip
+export const toolTipType = {
+  medicalCaseLocked: 'medicalCaseLocked',
+  algorithmVersion: 'algorithmVersion',
+  validation: 'validation',
+  loading: 'loading',
+};
+
 export const userRoles = {
   clinician: 'Clinician',
   registration_desk: 'Registration Desk',
@@ -133,18 +147,18 @@ export const routeDependingStatus = (medicalCase) => {
       break;
     case medicalCaseStatus.waitingTriage.name:
     case medicalCaseStatus.triage.name:
-    case medicalCaseStatus.waitingConsultation.name:
       route = 'Triage';
       break;
     case medicalCaseStatus.consultation.name:
-    case medicalCaseStatus.waitingTests.name:
+    case medicalCaseStatus.waitingConsultation.name:
       route = 'Consultation';
       break;
     case medicalCaseStatus.tests.name:
-    case medicalCaseStatus.waitingDiagnostic.name:
+    case medicalCaseStatus.waitingTests.name:
       route = 'Tests';
       break;
     case medicalCaseStatus.final_diagnostic.name:
+    case medicalCaseStatus.waitingDiagnostic.name:
       route = 'DiagnosticsStrategy';
       break;
     case medicalCaseStatus.close.name:

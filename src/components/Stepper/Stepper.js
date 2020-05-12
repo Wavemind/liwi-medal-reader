@@ -18,14 +18,13 @@ import { styles } from './styles';
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
-import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
+import { databaseInterface, medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
-import { differenceNodes } from '../../utils/swissKnives';
-import { ActivityModel } from '../../../frontend_service/engine/models/Activity.model';
-import { getItem } from '../../engine/api/LocalStorage';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
+import { validatorNavigate } from '../../engine/navigation/CustomNavigator.navigation';
+import { displayNotification } from '../../utils/CustomToast';
 
 type Props = {
   children: any,
@@ -123,7 +122,14 @@ class Stepper extends React.Component<Props, State> {
       width: 0,
       height: 0,
       error: false,
+      status: '',
     };
+  }
+
+  async componentDidMount(): * {
+    const { database } = this.props.app;
+    let status = await database._checkInterface();
+    this.setState({ status });
   }
 
   componentWillReceiveProps(nextProps: Props, nextContext: *): * {
@@ -188,9 +194,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page - 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page - 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page - 1);
   };
 
@@ -204,9 +210,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-        x: (this.state.page + 1) * this.state.width,
-        animated: true,
-      })
+          x: (this.state.page + 1) * this.state.width,
+          animated: true,
+        })
       : this.handleBottomStepper(this.state.page + 1);
   };
 
@@ -260,6 +266,8 @@ class Stepper extends React.Component<Props, State> {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
     const medicalCaseObject = store.getState();
     const database = await new Database();
+
+    // TODO medicalCase / medicalCaseObject confusing, need refractor this shit !
     const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
     await medicalCase.handleFailSafe();
@@ -267,24 +275,25 @@ class Stepper extends React.Component<Props, State> {
     let newActivities = [];
 
     if (endMedicalCase === true) {
-      medicalCase.status = medicalCaseStatus.close.name;
+      medicalCaseObject.status = medicalCaseStatus.close.name;
       store.dispatch(clearMedicalCase());
     }
 
-    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user);
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user, medicalCaseObject.nodes);
 
     // You are probably wondering why I do this shit...
     // well it's because of Realm I cannot edit an existing object,
     // so I cannot add the activity with a simple push... I am sorry
-    if (medicalCase.activities?.length > 0) {
-      newActivities = medicalCase.activities.map((activity) => activity);
+    if (medicalCaseObject.activities?.length > 0) {
+      newActivities = medicalCaseObject.activities.map((activity) => activity);
     }
 
     newActivities.push(activity);
 
-    medicalCase.json = JSON.stringify({ ...medicalCase, json: "{}" });
-    await database.update('MedicalCase', medicalCase.id, { ...medicalCase, activities: newActivities });
+    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
 
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+    displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');
     } else {
@@ -318,11 +327,11 @@ class Stepper extends React.Component<Props, State> {
                   this.state.error ? (
                     <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                      <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
-                    )
+                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                  )
                 ) : (
-                    <Icon {...iconConfig} />
-                  )}
+                  <Icon {...iconConfig} />
+                )}
               </View>
               <Text style={[styles.stepTitle, isSelected ? activeStepTitleStyle : inactiveStepTitleStyle]}>{step}</Text>
             </View>
@@ -332,7 +341,6 @@ class Stepper extends React.Component<Props, State> {
     }
     return null;
   };
-
 
   /**
    * Render a ScrollView on iOS
@@ -380,6 +388,89 @@ class Stepper extends React.Component<Props, State> {
       </ViewPager>
     );
   };
+  /**
+   *  On save case
+   *  Update status and unlock case
+   *  Redirect to home
+   */
+  onSaveCase = async () => {
+    const {
+      navigation,
+      app: { database, t, user },
+      paramsNextStage,
+      nextStage,
+      updateModalFromRedux,
+    } = this.props;
+
+    const medicalCaseObject = store.getState();
+
+    let newActivities = [];
+
+    let medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+
+    await medicalCase.handleFailSafe();
+
+    updateModalFromRedux({ showClose: false }, toolTipType.loading);
+
+    // Validate current stage
+    const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: nextStage, params: paramsNextStage, key: nextStage });
+
+    // Can we update the next status ? All questions are valid ?
+    if (validator.isActionValid === true) {
+      let currentStatus = medicalCaseStatus[medicalCase.status];
+      let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
+      // Find next status
+
+      if (medicalCase.isMaxStage(nextStage) && (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name)) {
+        medicalCaseObject.status = nextStatus.name;
+      }
+    }
+
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
+
+    // You are probably wondering why I do this shit...
+    // well it's because of Realm I cannot edit an existing object,
+    // so I cannot add the activity with a simple push... I am sorry
+    if (medicalCase.activities?.length > 0) {
+      newActivities = medicalCase.activities.map((activity) => activity);
+    }
+
+    newActivities.push(activity);
+
+    // parse json to send localdata
+    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: null });
+
+    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+
+    await database.unlockMedicalCase(medicalCase.id);
+    // Close loader
+    updateModalFromRedux({ showClose: false }, toolTipType.loading);
+    // Show success message
+    displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
+    // store.dispatch(clearMedicalCase());
+    navigation.navigate('Home');
+  };
+
+  _renderSaveButton = () => {
+    const { bottomNavigationRightIconComponent } = this.props;
+    const { status, showNext } = this.state;
+
+    // Not at the end of this stepper
+    if (showNext) {
+      return null;
+    }
+
+    return (
+      <View style={{ selfAlign: 'flex-end', justifyContent: 'flex-end', flex: 1, alignContent: 'flex-end', alignItems: 'flex-end' }}>
+        <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
+          <View style={[styles.button]}>
+            <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>Save</Text>
+            {bottomNavigationRightIconComponent || <Icon style={{ margin: 5, fontSize: 15 }} name="save" type={'Fontisto'} size={15} />}
+          </View>
+        </PlatformTouchableNative>
+      </View>
+    );
+  };
 
   render() {
     const {
@@ -392,6 +483,7 @@ class Stepper extends React.Component<Props, State> {
       nextStage,
       nextStageString,
       steps,
+      app,
     } = this.props;
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
@@ -407,8 +499,8 @@ class Stepper extends React.Component<Props, State> {
                 {this.renderSteps()}
               </ScrollView>
             ) : (
-                this.renderSteps()
-              )}
+              this.renderSteps()
+            )}
           </View>
         ) : null}
         {this.renderViewPager()}
@@ -431,23 +523,25 @@ class Stepper extends React.Component<Props, State> {
               </PlatformTouchableNative>
             ) : null}
             {this.renderDots()}
+            {this._renderSaveButton()}
+
             {showNext ? (
-              <PlatformTouchableNative onPress={this.onPressNext} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+              <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>
                 <View style={styles.button}>
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                   {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                 </View>
               </PlatformTouchableNative>
             ) : (
-                nextStage !== null && (
-                  <PlatformTouchableNative onPress={this.nextStage} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
-                    <View style={[styles.button]}>
-                      <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
-                    </View>
-                  </PlatformTouchableNative>
-                )
-              )}
+              nextStage !== null && (
+                <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
+                  <View style={[styles.button]}>
+                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
+                    {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
+                  </View>
+                </PlatformTouchableNative>
+              )
+            )}
           </View>
         ) : null}
       </View>

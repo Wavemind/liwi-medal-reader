@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Text, View, Col } from 'native-base';
+import { Button, Col, Text, View } from 'native-base';
 import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
@@ -11,13 +11,14 @@ import { MedicalCaseModel } from '../../../../frontend_service/engine/models/Med
 import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
-import { getItems } from '../../../engine/api/LocalStorage';
+import { getItem, getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
-import { stages } from '../../../../frontend_service/constants';
+import { stages, toolTipType } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import { validatorNavigate } from '../../../engine/navigation/CustomNavigator.navigation';
+import uuid from 'react-native-uuid';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -42,17 +43,20 @@ export default class PatientUpsert extends React.Component<Props, State> {
     let patient = {};
 
     const patientId = navigation.getParam('idPatient');
+    const session = await getItem('session');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
-    const facility = navigation.getParam('facility'); // Object
+    let facility = navigation.getParam('facility'); // Object
     const algorithm = await getItems('algorithm');
 
     if (patientId === null) {
+      if (facility === undefined) {
+        facility = { uid: uuid.v4(), group_id: session.group.id };
+      }
       patient = new PatientModel({ otherFacility, facility });
     } else {
       patient = await database.findBy('Patient', patientId);
     }
-
 
     if (newMedicalCase) {
       const generatedMedicalCase = await new MedicalCaseModel({}, algorithm);
@@ -71,7 +75,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       loading: false,
       newMedicalCase,
     });
-
   };
 
   async componentDidMount() {
@@ -98,18 +101,19 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: 'Triage', params: { initialPage: 0 }, key: 'Triage' });
 
     if (validator.stepToBeFill[0].isActionValid === false) {
-      updateModalFromRedux(null, validator);
+      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
     } else {
       updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
       if (patientId !== null || patientId === undefined) {
         const patient = await database.findBy('Patient', patientId);
-        isSaved = patient.addMedicalCase(medicalCase);
+        isSaved = await patient.addMedicalCase(medicalCase);
         updateMedicalCaseProperty('patient_id', patient.id);
       } else {
         isSaved = await this.savePatient();
       }
 
       if (isSaved) {
+        await database.lockMedicalCase(medicalCase.id);
         const currentRoute = NavigationService.getCurrentRoute();
         // Replace the nextRoute navigation at the current index
         navigation.dispatch(
@@ -183,7 +187,16 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
-          <CustomInput placeholder={'...'} keyboardType='number-pad' condensed style={styles.identifierText} init={patient.group_id} change={updatePatientValue} index="group_id" autoCapitalize="sentences" />
+          <CustomInput
+            placeholder={'...'}
+            keyboardType="number-pad"
+            condensed
+            style={styles.identifierText}
+            init={patient.group_id}
+            change={updatePatientValue}
+            index="group_id"
+            autoCapitalize="sentences"
+          />
         </View>
 
         {patient.wasInOtherFacility() && (
@@ -223,6 +236,8 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData,
     } = this.props;
 
+    const { isNewCase } = medicalCase;
+
     let extraQuestions = [];
     if (medicalCase.nodes !== undefined) {
       // Get nodes to display in registration stage
@@ -260,7 +275,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           });
         }}
         initialPage={0}
-        showBottomStepper={!newMedicalCase}
+        showBottomStepper={!newMedicalCase || !isNewCase}
         icons={[{ name: 'test-tube', type: 'MaterialCommunityIcons' }]}
         steps={[t('medical_case:triage')]}
         backButtonTitle={t('medical_case:back')}
@@ -298,7 +313,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                     {algorithmReady ? (
                       !loading ? (
                         <>
-                          {newMedicalCase && (
+                          {newMedicalCase || isNewCase ? (
                             <View columns>
                               <Button light split onPress={() => save('PatientList')}>
                                 <Text>{t('patient_upsert:save_and_wait')}</Text>
@@ -307,7 +322,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                                 <Text>{t('patient_upsert:save_and_case')}</Text>
                               </Button>
                             </View>
-                          )}
+                          ) : null}
                         </>
                       ) : (
                           <LiwiLoader />

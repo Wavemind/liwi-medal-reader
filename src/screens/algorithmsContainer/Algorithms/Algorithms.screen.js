@@ -1,16 +1,16 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { Button, H2, Icon, Text, View } from 'native-base';
-import { ScrollView } from 'react-native';
-import moment from 'moment';
-import { getItem, getItems, setItem, storeMedicalCase } from '../../../engine/api/LocalStorage';
-import AnimatedPullToRefresh from '../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh';
-import { fetchAlgorithms, syncMedicalCases } from '../../../../frontend_service/api/Http';
-import { styles } from './Algorithms.style';
-import { CardView, LiwiTitle4, RightView } from '../../../template/layout';
-import LiwiLoader from '../../../utils/LiwiLoader';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import { Button, H2, Icon, Text, View } from "native-base";
+import { ScrollView } from "react-native";
+import moment from "moment";
+import { getItem, getItems, setItem, storeMedicalCase } from "../../../engine/api/LocalStorage";
+import AnimatedPullToRefresh from "../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh";
+import { fetchAlgorithms, syncMedicalCases } from "../../../../frontend_service/api/Http";
+import { styles } from "./Algorithms.style";
+import { CardView, LiwiTitle4, RightView } from "../../../template/layout";
+import LiwiLoader from "../../../utils/LiwiLoader";
 
 type Props = NavigationScreenProps & {};
 type State = { algorithms: Array<Object> };

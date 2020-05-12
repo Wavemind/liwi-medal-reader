@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
-import QuestionsReference from './QuestionsReference';
+import { connect } from "react-redux";
+import QuestionsReference from "./QuestionsReference";
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };

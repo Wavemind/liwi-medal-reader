@@ -1,14 +1,18 @@
 // @flow
 
-import React, { Suspense } from 'react';
-import { Content, View } from 'native-base';
+import React, { Suspense } from "react";
+import { Content, View } from "native-base";
 
-import { NavigationScreenProps } from 'react-navigation';
-import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
-import LiwiLoader from '../../../utils/LiwiLoader';
-import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
-import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessement } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { NavigationScreenProps } from "react-navigation";
+import { styles } from "../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style";
+import LiwiLoader from "../../../utils/LiwiLoader";
+import type { StateApplicationContext } from "../../../engine/contexts/Application.context";
+import NavigationService from "../../../engine/navigation/Navigation.service";
+import {
+  questionsBasicMeasurements,
+  questionsComplaintCategory,
+  questionsFirstLookAssessement
+} from "../../../../frontend_service/algorithm/questionsStage.algo";
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));

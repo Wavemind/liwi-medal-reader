@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { Button, Fab, Icon, View } from 'native-base';
-import RNRestart from 'react-native-restart';
-import FilesystemStorage from 'redux-persist-filesystem-storage';
-import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/api/LocalStorage';
-import NavigationService from '../engine/navigation/Navigation.service';
-import { persistor, store } from '../../frontend_service/store';
-import { memorySizeOf } from './swissKnives';
-import Realm from 'realm';
-import { PatientModel } from '../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../frontend_service/engine/models/MedicalCase.model';
+import React, { Component } from "react";
+import { Button, Fab, Icon, View } from "native-base";
+import RNRestart from "react-native-restart";
+import FilesystemStorage from "redux-persist-filesystem-storage";
+import { clearLocalStorage, clearPatients, getItems, setItem } from "../engine/api/LocalStorage";
+import NavigationService from "../engine/navigation/Navigation.service";
+import { persistor, store } from "../../frontend_service/store";
+import { memorySizeOf } from "./swissKnives";
+import Realm from "realm";
+import { PatientModel } from "../../frontend_service/engine/models/Patient.model";
+import { MedicalCaseModel } from "../../frontend_service/engine/models/MedicalCase.model";
 
 export default class WavemindTools extends Component {
   constructor(props) {

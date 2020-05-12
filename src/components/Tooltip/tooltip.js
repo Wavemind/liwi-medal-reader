@@ -5,10 +5,10 @@
  *
  */
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View } from 'react-native';
-import rfcIsEqual from 'react-fast-compare';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Dimensions, InteractionManager, Modal, TouchableWithoutFeedback, View } from "react-native";
+import rfcIsEqual from "react-fast-compare";
 import {
   computeBottomGeometry,
   computeCenterGeomerty,
@@ -19,10 +19,10 @@ import {
   Point,
   Rect,
   Size,
-  swapSizeDimmensions,
-} from './geom';
-import styleGenerator from './styles';
-import TooltipChildrenContext from './tooltip-children.context';
+  swapSizeDimmensions
+} from "./geom";
+import styleGenerator from "./styles";
+import TooltipChildrenContext from "./tooltip-children.context";
 
 export { TooltipChildrenContext };
 

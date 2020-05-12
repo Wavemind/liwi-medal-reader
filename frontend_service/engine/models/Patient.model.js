@@ -8,8 +8,7 @@ import { getItem } from '../../../src/engine/api/LocalStorage';
 export class PatientModel {
   constructor(props = {}) {
     const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '' } = props;
-
-    if (this.id === undefined) {
+    if (this.id === undefined || this.id === null) {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
         this.other_study_id = otherFacility?.study_id?.toString();
@@ -32,10 +31,7 @@ export class PatientModel {
 
       if (id !== undefined) {
         this.id = id;
-        this.medicalCases = [];
-        medicalCases.forEach((medicalCase) => {
-          this.medicalCases.push(new MedicalCaseModel(medicalCase));
-        });
+        this.medicalCases = medicalCases.map((medicalCase) => new MedicalCaseModel(medicalCase));
       } else {
         this.id = null;
       }
@@ -50,10 +46,9 @@ export class PatientModel {
     const medicalCase = this.medicalCases[this.medicalCases.length - 1];
     const user = await getItem('user');
     const database = await new Database();
-    this.json = JSON.stringify;
     this.id = uuid.v4();
 
-    const activity = await medicalCase.generateActivity('registration', user);
+    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
 
     return database.insert('Patient', {
       ...this,
@@ -68,16 +63,15 @@ export class PatientModel {
    */
   addMedicalCase = async (medicalCase) => {
     const user = await getItem('user');
+    const medicalCaseClass = new MedicalCaseModel(medicalCase);
     const database = await new Database();
-    const activity = await medicalCase.generateActivity('registration', user);
+    const activity = await medicalCase.generateActivity('registration', user, medicalCaseClass.nodes);
+    medicalCaseClass.patient_id = this.id;
+    medicalCaseClass.json = JSON.stringify(medicalCaseClass);
+    await medicalCaseClass.handleFailSafe();
+    medicalCaseClass.activities = [activity];
+    await database.push('Patient', this.id, 'medicalCases', medicalCaseClass);
 
-    medicalCase.patient_id = this.id;
-    medicalCase.json = JSON.stringify(medicalCase);
-
-    await medicalCase.handleFailSafe();
-
-    medicalCase.activities = [activity];
-    await database.push('Patient', this.id, 'medicalCases', medicalCase);
     return true;
   };
 
@@ -103,6 +97,6 @@ PatientModel.schema = {
     other_group_id: 'string?',
     reason: 'string',
     medicalCases: 'MedicalCase[]',
-    fail_safe: 'bool',
+    fail_safe: { type: 'bool', default: false }
   },
 };

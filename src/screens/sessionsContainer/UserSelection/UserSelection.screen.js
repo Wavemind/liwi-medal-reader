@@ -1,14 +1,14 @@
 // @flow
 
-import * as React from 'react';
-import { Image, ScrollView, TouchableOpacity } from 'react-native';
-import { Button, Icon, Picker, Text, View } from 'native-base';
+import * as React from "react";
+import { Image, ScrollView, TouchableOpacity } from "react-native";
+import { Button, Icon, Picker, Text, View } from "native-base";
 
-import { ApplicationContext } from '../../../engine/contexts/Application.context';
-import CustomInput from '../../../components/InputContainer/CustomInput';
-import { userRoles } from '../../../../frontend_service/constants';
-import { getItem } from '../../../engine/api/LocalStorage';
-import { styles } from './UserSelection.style';
+import { ApplicationContext } from "../../../engine/contexts/Application.context";
+import CustomInput from "../../../components/InputContainer/CustomInput";
+import { userRoles } from "../../../../frontend_service/constants";
+import { getItem } from "../../../engine/api/LocalStorage";
+import { styles } from "./UserSelection.style";
 
 export default function UserSelection() {
   const [selectedUser, setUser] = React.useState({

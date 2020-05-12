@@ -1,5 +1,5 @@
-import { Dimensions } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { Dimensions } from "react-native";
+import DeviceInfo from "react-native-device-info";
 
 /** * COLORS **** */
 export const blueColor = '#fff';

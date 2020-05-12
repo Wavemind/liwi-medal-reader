@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
-import Medicine from './Medicine';
-import { withApplication } from '../../engine/contexts/Application.context';
-import { setMedicine } from '../../../frontend_service/actions/creators.actions';
+import { connect } from "react-redux";
+import Medicine from "./Medicine";
+import { withApplication } from "../../engine/contexts/Application.context";
+import { setMedicine } from "../../../frontend_service/actions/creators.actions";
 
 const mapStateToProps = (medicalCase, props) => {
   return {

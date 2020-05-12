@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../utils/constants';
+import { StyleSheet } from "react-native";
+import { liwiColors } from "../../utils/constants";
 
 export const styles = StyleSheet.create({
   priority: {
@@ -49,12 +49,13 @@ export const styles = StyleSheet.create({
     paddingRight: 0,
     paddingLeft: 0,
   },
-  textBold: { fontFamily: 'Roboto-Bold', color: liwiColors.redColor, marginTop: 10, textTransform: 'capitalize' },
+  textBold: { fontFamily: 'Roboto-Bold', color: liwiColors.redColor, marginTop: 10, textTransform: 'capitalize', alignSelf: 'center' },
   flexRow: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  textSub: { alignSelf: 'center' },
   content: { textAlign: 'center' },
   flexColumn: {
     flex: 1,

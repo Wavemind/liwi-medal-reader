@@ -8,10 +8,11 @@ import Database from '../../../src/engine/api/Database';
 import { differenceNodes } from '../../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
 import { store } from '../../store';
+import { getDeviceInformation } from '../../../src/engine/api/Device';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
-    if (this.id === undefined && props.id === undefined) {
+    if ((this.id === undefined || this.id === null) && props?.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
       this.name = currentAlgorithm.name;
@@ -74,10 +75,9 @@ export class MedicalCaseModel {
       this.generateExcludedId();
 
       this.json = JSON.stringify(this);
-
     } else {
-      const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
+      const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
       if (props !== undefined) {
         this.id = json.id;
         this.json = props.json;
@@ -86,6 +86,8 @@ export class MedicalCaseModel {
         this.status = props.status;
         this.patient_id = props.patient_id;
         this.activities = props.activities;
+        this.clinician = props.clinician;
+        this.mac_address = props.mac_address;
       }
 
       this.left_top_question_id = json.left_top_question_id ?? null;
@@ -101,14 +103,37 @@ export class MedicalCaseModel {
       this.isNewCase = false;
       this.modal = {
         open: false,
-        content: '',
-        navigator: {},
+        params: { showClose: true },
+        type: '',
       };
       this.metaData = json.metaData;
       this.diagnoses = json.diagnoses;
     }
     return this;
   }
+
+  isMaxStage = (stage) => {
+    switch (this.status) {
+      case 'in_creation':
+        return stage === "PatientUpsert"
+      case 'waiting_triage':
+      case 'triage':
+        return stage === "Consultation"
+      case 'waiting_consultation':
+      case 'consultation':
+        return stage === "Tests"
+      case 'waiting_tests':
+      case 'tests':
+        return stage === "DiagnosticsStrategy"
+      case 'waiting_diagnostic':
+      case 'final_diagnostic':
+        return stage === "finish"
+      case 'close':
+      default:
+        return false;
+    }
+
+  };
 
   /**
    * For each medicalCase who exclude other diagnostic, we set the id in both side.
@@ -209,6 +234,7 @@ export class MedicalCaseModel {
       }
     });
   };
+
   /**
    * Will set the needed value in the database if we switch to fail Safe mode
    */
@@ -222,10 +248,11 @@ export class MedicalCaseModel {
       // Find patient in Realm
       const patient = await database.findBy('Patient', this.patient_id);
       if (patient === null) {
-        database.insert('Patient', { ...storeMedicalCase.patient });
+        await database.insert('Patient', { ...storeMedicalCase.patient, id: storeMedicalCase.patient_id, medicalCases: [this] });
       }
     }
   };
+
   /**
    * Returns the patient linked to a medical case
    */
@@ -236,39 +263,42 @@ export class MedicalCaseModel {
     if (storeMedicalCase.id === this.id) {
       return storeMedicalCase.patient;
     }
-    else {
-      return database.findBy('Patient', this.patient_id);
-    }
-  }
+    return database.findBy('Patient', this.patient_id);
+  };
+
   /**
    * Will generate an activity for a medical case comparing the current value and the
    * one stored in the database
    * @param  {String} stage name of the current stage
    * @param  {String} user The clinician that did the activity
    */
-  generateActivity = async (stage, user) => {
-    const session = await getItem('session');
-    const isConnected = await getItem('isConnected');
+  generateActivity = async (stage, user, nodes) => {
     const algorithm = await getItem('algorithm');
     const database = await new Database();
     let differenceNode = [];
 
-    if (session.group.architecture === 'client_server' && !isConnected) {
-      const medicalCase = await database.findBy('MedicalCase', this.id);
-      if (medicalCase === null) {
-        differenceNode = differenceNodes(this.nodes, algorithm.nodes);
-      }
-      else {
-        differenceNode = differenceNodes(this.nodes, medicalCase.nodes);
-      }
+    const medicalCase = await database.findBy('MedicalCase', this.id);
+
+    if (medicalCase === null) {
+      // TODO maybe check version id algo is not different ?
+      differenceNode = differenceNodes(nodes, algorithm.nodes);
+    } else {
+      differenceNode = differenceNodes(nodes, medicalCase.nodes);
     }
 
-    return await new ActivityModel({
+    return new ActivityModel({
       nodes: differenceNode,
-      stage: stage,
-      user: user,
+      stage,
+      user,
       medical_case_id: this.id,
     });
+  };
+  /**
+   * Defines if the case is locked
+   */
+  isLocked = (deviceInfo, user) => {
+
+    return this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address));
   };
 }
 
@@ -284,6 +314,6 @@ MedicalCaseModel.schema = {
     updated_at: 'date',
     status: 'string',
     patient_id: 'string',
-    fail_safe: 'bool',
+    fail_safe: { type: 'bool', default: false }
   },
 };

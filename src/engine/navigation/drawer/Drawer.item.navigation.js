@@ -1,12 +1,12 @@
 // @Flow
-import React, { Component } from 'react';
-import { Button, Icon, Text } from 'native-base';
-import { TouchableOpacity, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
-import styled from 'styled-components';
-import { styles } from './Drawer.style';
-import { liwiColors } from '../../../utils/constants';
-import DrawerDot from './Drawer.dot';
+import React, { Component } from "react";
+import { Button, Icon, Text } from "native-base";
+import { TouchableOpacity, View } from "react-native";
+import { withNavigation } from "react-navigation";
+import styled from "styled-components";
+import { styles } from "./Drawer.style";
+import { liwiColors } from "../../../utils/constants";
+import DrawerDot from "./Drawer.dot";
 
 const WrapperMiniDrawerCategory = styled.TouchableOpacity`
   padding: ${({ isDrawer }) => (isDrawer ? '13px 0' : '6px 0')};

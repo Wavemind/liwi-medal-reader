@@ -25,6 +25,7 @@ export const setDiagnoses = (type, diagnoses, actionDiagnoses) => ({
     actionDiagnoses,
   },
 });
+
 export const setAdditionalMedicineDuration = (id, duration) => ({
   type: actions.SET_ADDITIONAl_MEDICINE_DURATION,
   payload: {
@@ -78,12 +79,11 @@ export const updateMetaData = (screen, view, value) => ({
   },
 });
 
-export const updateModalFromRedux = (content = '', navigator, params = {}) => ({
+export const updateModalFromRedux = (params = {}, type = '') => ({
   type: actions.MC_UPDATE_MODAL,
   payload: {
-    content,
-    navigator,
     params,
+    type,
   },
 });
 

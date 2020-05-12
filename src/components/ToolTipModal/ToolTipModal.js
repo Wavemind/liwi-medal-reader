@@ -6,6 +6,8 @@ import { styles } from './ToolTipModal.style';
 import Tooltip from '../Tooltip/tooltip';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { SeparatorLine } from '../../template/layout';
+import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
+import LiwiLoader from '../../utils/LiwiLoader';
 
 // TODO implement scu
 
@@ -63,7 +65,7 @@ export default class TooltipModal extends React.Component<Props, State> {
    */
   _renderValidation = () => {
     const { modalRedux } = this.props;
-    const { screenToBeFill, stepToBeFill, routeRequested } = modalRedux.navigator;
+    const { screenToBeFill, stepToBeFill, routeRequested } = modalRedux.params;
     const {
       app: { t },
       patientId,
@@ -149,37 +151,149 @@ export default class TooltipModal extends React.Component<Props, State> {
     const isFromRedux = modalRedux.open;
     const isFromJsx = toolTipVisible || visible;
 
+    const showClose = modalRedux.params.showClose === undefined ? true : modalRedux.params.showClose;
+
     return (
       <View>
         <ScrollView>
           <View onStartShouldSetResponder={() => true}>
-            <Button onPress={this.closeModal} rounded style={styles.button}>
-              <Icon name="close" type="AntDesign" style={styles.icon} />
-            </Button>
+            {showClose && (
+              <Button onPress={this.closeModal} rounded style={styles.button}>
+                <Icon name="close" type="AntDesign" style={styles.icon} />
+              </Button>
+            )}
             {isFromJsx && children}
-            {isFromRedux ? (
-              modalRedux.content !== null ? (
-                <View style={styles.content}>
-                  <Text style={styles.warning}>{modalRedux.params.title}</Text>
-                  <Text style={styles.textBold}>{t('popup:version_name')}</Text>
-                  <Text>{modalRedux.content}</Text>
-                  {modalRedux.params.description !== null && (
-                    <>
-                      <Text style={styles.textBold}>{t('popup:desc')}</Text>
-                      <Text>{modalRedux.params.description}</Text>
-                    </>
-                  )}
-                  <Text style={styles.textBold}>{t('popup:by')}</Text>
-                  <Text>{modalRedux.params.author}</Text>
-                </View>
-              ) : (
-                this._renderValidation()
-              )
-            ) : null}
+            {isFromRedux && this.renderTypeModal()}
           </View>
         </ScrollView>
       </View>
     );
+  };
+
+  _renderAlgorithmVersion = () => {
+    const {
+      modalRedux,
+      children,
+      visible,
+      app: { t },
+    } = this.props;
+
+    return (
+      <View style={styles.content}>
+        <Text style={styles.warning}>{modalRedux.params.title}</Text>
+        <Text style={styles.textBold}>{t('popup:version_name')}</Text>
+        <Text>{modalRedux.content}</Text>
+        {modalRedux.params.description !== null && (
+          <>
+            <Text style={styles.textBold}>{t('popup:desc')}</Text>
+            <Text>{modalRedux.params.description}</Text>
+          </>
+        )}
+        <Text style={styles.textBold}>{t('popup:by')}</Text>
+        <Text>{modalRedux.params.author}</Text>
+      </View>
+    );
+  };
+
+  unlockMedicalCase = async (id) => {
+    const {
+      modalRedux,
+      app: { t, database },
+      setMedicalCase,
+    } = this.props;
+
+    const { medicalCase } = modalRedux.params;
+
+    await database.unlockMedicalCase(id);
+
+    await setMedicalCase(medicalCase);
+
+    const route = routeDependingStatus(medicalCase);
+
+    await database.lockMedicalCase(medicalCase.id);
+
+    if (route !== undefined) {
+      this.closeModal();
+      NavigationService.navigate(route, {
+        idPatient: medicalCase.patient_id,
+        newMedicalCase: false,
+      });
+    }
+  };
+
+  _renderMedicalCaseLocked = () => {
+    const {
+      modalRedux,
+      app: { t },
+    } = this.props;
+
+    const { medicalCase } = modalRedux.params;
+    return (
+      <View style={styles.content}>
+        <Text style={styles.warning}>{t('popup:isLocked')}</Text>
+        <Text style={styles.textBold}>{t('popup:by')}</Text>
+        <Text style={styles.textSub}>{medicalCase.clinician}</Text>
+
+        <View style={{ flexDirection: 'row' }}>
+          <Button
+            style={styles.buttonNav}
+            danger
+            onPress={async () => {
+              await this.unlockMedicalCase(medicalCase.id);
+            }}
+          >
+            <Text>{t('popup:unlock')}</Text>
+          </Button>
+
+          <Button
+            style={styles.buttonNav}
+            success
+            onPress={() => {
+              this.closeModal();
+            }}
+          >
+            <Text>{t('popup:close')}</Text>
+          </Button>
+        </View>
+      </View>
+    );
+  };
+
+  _renderLoading = () => {
+    const { t } = this.props.app;
+    return (
+      <View>
+        <Text style={styles.content}>{t('popup:startSave')}</Text>
+        <LiwiLoader />
+      </View>
+    );
+  };
+
+  /**
+   * Depending Type render specific JSX
+   */
+  renderTypeModal = () => {
+    const {
+      modalRedux,
+      app: { t },
+    } = this.props;
+
+    switch (modalRedux.type) {
+      case toolTipType.medicalCaseLocked:
+        return this._renderMedicalCaseLocked();
+
+      case toolTipType.algorithmVersion:
+        return this._renderAlgorithmVersion();
+
+      case toolTipType.validation:
+        return this._renderValidation();
+
+      case toolTipType.loading:
+        return this._renderLoading();
+
+      default:
+        return <View></View>;
+    }
   };
 
   /**

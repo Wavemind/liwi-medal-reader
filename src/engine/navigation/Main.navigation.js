@@ -1,26 +1,26 @@
-import React from 'react';
-import { Button, Icon, Text } from 'native-base';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createStackNavigator } from 'react-navigation-stack';
+import React from "react";
+import { Button, Icon, Text } from "native-base";
+import { createDrawerNavigator } from "react-navigation-drawer";
+import { createStackNavigator } from "react-navigation-stack";
 
-import Algorithms from '../../screens/algorithmsContainer/Algorithms';
-import Drawer from './drawer';
-import MainScreen from '../../screens/main/Main.screen';
-import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
-import PatientProfile from '../../screens/patientsContainer/patientProfile';
-import PatientList from '../../screens/patientsContainer/patientList';
-import Settings from '../../screens/settings';
-import i18n from '../../utils/i18n';
+import Algorithms from "../../screens/algorithmsContainer/Algorithms";
+import Drawer from "./drawer";
+import MainScreen from "../../screens/main/Main.screen";
+import PatientUpsert from "../../screens/patientsContainer/patientUpsert";
+import PatientProfile from "../../screens/patientsContainer/patientProfile";
+import PatientList from "../../screens/patientsContainer/patientList";
+import Settings from "../../screens/settings";
+import i18n from "../../utils/i18n";
 
-import { liwiColors, screenWidth } from '../../utils/constants';
-import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
-import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
-import Tests from '../../screens/medicalCasesContainer/tests';
-import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
-import Triage from '../../screens/medicalCasesContainer/triage';
-import Consultation from '../../screens/medicalCasesContainer/consultation';
-import Emergency from '../../screens/emergency';
+import { liwiColors, screenWidth } from "../../utils/constants";
+import MedicalCaseSummary from "../../screens/medicalCasesContainer/medicalCaseSummary";
+import MedicalCaseList from "../../screens/medicalCasesContainer/medicalCaseList";
+import Tests from "../../screens/medicalCasesContainer/tests";
+import DiagnosticsStrategy from "../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy";
+import { medicalCaseStatus } from "../../../frontend_service/constants";
+import Triage from "../../screens/medicalCasesContainer/triage";
+import Consultation from "../../screens/medicalCasesContainer/consultation";
+import Emergency from "../../screens/emergency";
 
 // We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator(

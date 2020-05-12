@@ -1,8 +1,8 @@
 /*eslint-disable */
 
-import { getJSExceptionHandler, setJSExceptionHandler } from 'react-native-exception-handler';
-import { Alert } from 'react-native';
-import RNRestart from 'react-native-restart';
+import { getJSExceptionHandler, setJSExceptionHandler } from "react-native-exception-handler";
+import { Alert } from "react-native";
+import RNRestart from "react-native-restart";
 
 // For most use cases:
 // registering the error handler (maybe u can do this in the index.android.js or index.ios.js)

@@ -1,10 +1,10 @@
 // @flow
-import * as React from 'react';
-import { Button, Text } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { liwiColors } from '../../../utils/constants';
-import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
-import { withApplication } from '../../../engine/contexts/Application.context';
+import * as React from "react";
+import { Button, Text } from "native-base";
+import { NavigationScreenProps } from "react-navigation";
+import { liwiColors } from "../../../utils/constants";
+import type { StateApplicationContext } from "../../../engine/contexts/Application.context";
+import { withApplication } from "../../../engine/contexts/Application.context";
 
 type Props = NavigationScreenProps & {};
 

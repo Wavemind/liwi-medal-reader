@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { Button, Icon, Text, View } from 'native-base';
-import { LeftButton, RightButton } from '../../template/layout';
-import { styles } from './Medicine.style';
+import { Button, Icon, Text, View } from "native-base";
+import { LeftButton, RightButton } from "../../template/layout";
+import { styles } from "./Medicine.style";
 
 export default class Medicine extends Component<{}> {
   _handleClick = (boolean) => {

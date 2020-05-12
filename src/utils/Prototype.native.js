@@ -18,36 +18,40 @@
  * @return {boolean}
  */
 Object.compare = function (obj1, obj2) {
-  if (obj1 !== undefined || obj2 !== undefined || obj1 !== null || obj2 !== null) {
-    let p;
-    // Loop through properties in object 1
-    for (p in obj1) {
-      // Check property exists on both objects
-      if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+  try {
+    if (obj1 !== undefined || obj2 !== undefined || obj1 !== null || obj2 !== null) {
+      let p;
+      // Loop through properties in object 1
+      for (p in obj1) {
+        // Check property exists on both objects
+        if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
 
-      switch (typeof obj1[p]) {
-        // Deep compare objects
-        case 'object':
-          if (!Object.compare(obj1[p], obj2[p])) return false;
-          break;
-        // Compare function code
-        case 'function':
-          if (typeof obj2[p] === 'undefined' || (p !== 'compare' && obj1[p].toString() !== obj2[p].toString())) return false;
-          break;
-        // Compare values
-        default:
-          if (obj1[p] !== obj2[p]) return false;
+        switch (typeof obj1[p]) {
+          // Deep compare objects
+          case 'object':
+            if (!Object.compare(obj1[p], obj2[p])) return false;
+            break;
+          // Compare function code
+          case 'function':
+            if (typeof obj2[p] === 'undefined' || (p !== 'compare' && obj1[p].toString() !== obj2[p].toString())) return false;
+            break;
+          // Compare values
+          default:
+            if (obj1[p] !== obj2[p]) return false;
+        }
       }
-    }
 
-    // Check object 2 for any extra properties
-    for (p in obj2) {
-      if (typeof obj1[p] === 'undefined') return false;
+      // Check object 2 for any extra properties
+      for (p in obj2) {
+        if (typeof obj1[p] === 'undefined') return false;
+      }
+      return true;
     }
-    return true;
+    // If obj is undefined
+    return false;
+  } catch (error) {
+    return false;
   }
-  // If obj is undefined
-  return false;
 };
 
 /**
