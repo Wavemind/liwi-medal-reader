@@ -1,6 +1,6 @@
-import i18n from 'i18next';
-import { reactI18nextModule } from 'react-i18next';
-import { NativeModules } from 'react-native';
+import i18n from "i18next";
+import { reactI18nextModule } from "react-i18next";
+import { NativeModules } from "react-native";
 
 const languageDetector = {
   type: 'languageDetector',
@@ -291,14 +291,20 @@ i18n
           logout: 'logout',
         },
         popup: {
+          startSave: 'Saving in local data...',
+          saveSuccess: 'Save with success on local data',
+          unlock: 'Force Unlock the case (at your own risk)',
+          close: 'Close the modal',
           desc: 'Description',
           version_name: 'version',
           version: 'Update of version',
-          by: 'by',
           title: 'Please allow access to the position',
           message: 'Location sharing is mandatory in order to use the medical service',
           ask_me_later: 'Ask me later',
           cancel: 'cancel',
+          by: 'by',
+          isLocked: 'Case is locked',
+          at: 'at',
         },
         sessions: {
           active: 'Sessions active',
@@ -419,10 +425,11 @@ i18n
           waiting_triage: 'Waiting for triage',
           triage: 'Triage',
           waiting_consultation: 'Waiting for consultation',
+          waiting_tests: 'Waiting for tests',
           consultation: 'Consultation',
           waiting_test: 'Waiting for test',
           test: 'Test',
-          waiting_final_diagnostic: 'Wait for diagnosis',
+          waiting_diagnostic: 'Waiting for diagnostic',
           final_diagnostic: 'Diagnosis',
           close: 'Close',
         },

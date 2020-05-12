@@ -1,11 +1,11 @@
 // @flow
-import React, { Component } from 'react';
-import { Icon, Picker, Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { medicationForms } from '../../../../../frontend_service/constants';
-import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
-import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
-import { styles } from './MedicinesFormulation.style';
+import React, { Component } from "react";
+import { Icon, Picker, Text, View } from "native-base";
+import { NavigationScreenProps } from "react-navigation";
+import { medicationForms } from "../../../../../frontend_service/constants";
+import { getDrugs } from "../../../../../frontend_service/algorithm/questionsStage.algo";
+import { calculateCondition } from "../../../../../frontend_service/algorithm/conditionsHelpers.algo";
+import { styles } from "./MedicinesFormulation.style";
 
 type Props = NavigationScreenProps & {};
 type State = {};

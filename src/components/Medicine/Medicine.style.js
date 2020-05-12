@@ -1,5 +1,4 @@
-import { StyleSheet } from 'react-native';
-import { liwiColors } from '../../utils/constants';
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   width50: { width: 50 },

@@ -1,7 +1,7 @@
 // @flow
-import Toast from 'react-native-tiny-toast';
-import isArray from 'lodash/isArray';
-import { liwiColors } from './constants';
+import Toast from "react-native-tiny-toast";
+import isArray from "lodash/isArray";
+import { liwiColors } from "./constants";
 
 /**
  * Display errors in a toast
@@ -26,14 +26,19 @@ export const handleHttpError = (errors: any) => {
  * @private
  */
 export const displayNotification = (message, color) => {
-  Toast.show(message, {
-    position: 20,
-    textStyle: { color: liwiColors.whiteColor },
-    containerStyle: {
-      minWidth: 105,
-      minHeight: 60,
-      backgroundColor: color,
-      zIndex: 2000,
-    },
-  });
+  // TODO if mesage is not a string JSON.parse without "" ??
+  if (typeof message !== 'string') {
+    console.warn('You should send only string in notification', message);
+  } else {
+    Toast.show(message, {
+      position: 20,
+      textStyle: { color: liwiColors.whiteColor },
+      containerStyle: {
+        minWidth: 105,
+        minHeight: 60,
+        backgroundColor: color,
+        zIndex: 2000,
+      },
+    });
+  }
 };

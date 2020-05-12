@@ -1,9 +1,9 @@
 // @flow
 
-import * as React from 'react';
-import { Picker, View } from 'native-base';
-import type { NavigationScreenProps } from 'react-navigation';
-import { styles } from './List.style';
+import * as React from "react";
+import { Picker, View } from "native-base";
+import type { NavigationScreenProps } from "react-navigation";
+import { styles } from "./List.style";
 
 type Props = NavigationScreenProps & {};
 

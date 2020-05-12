@@ -1,12 +1,12 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { ScrollView } from 'react-native';
-import { Text, View } from 'native-base';
-import _ from 'lodash';
-import { styles } from './QuestionsPerSystem.style';
-import System from '../System';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import { ScrollView } from "react-native";
+import { Text, View } from "native-base";
+import _ from "lodash";
+import { styles } from "./QuestionsPerSystem.style";
+import System from "../System";
 
 type Props = NavigationScreenProps & {};
 

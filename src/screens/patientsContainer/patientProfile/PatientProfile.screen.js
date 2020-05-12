@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react';
 import moment from 'moment';
-import { Button, List, ListItem, Text, View } from 'native-base';
+import { Button, Icon, List, ListItem, Text, View } from 'native-base';
 import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { routeDependingStatus } from '../../../../frontend_service/constants';
+import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import { getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
-import ConfirmationView from '../../../components/ConfirmationView';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { getDeviceInformation } from '../../../engine/api/Device';
 
 export default class PatientProfile extends React.Component {
   state = {
@@ -16,9 +16,13 @@ export default class PatientProfile extends React.Component {
     },
     algorithm: null,
     firstRender: false,
+    deviceInfo: null,
   };
 
   async componentDidMount() {
+    const deviceInfo = await getDeviceInformation();
+    const isConnected = await getItems('isConnected');
+    this.setState({ deviceInfo, isConnected });
     await this.getPatient();
   }
 
@@ -54,11 +58,13 @@ export default class PatientProfile extends React.Component {
   };
 
   render() {
-    const { patient, algorithm, firstRender } = this.state;
+    const { patient, algorithm, firstRender, deviceInfo, isConnected } = this.state;
 
     const {
       navigation,
-      app: { t },
+      app: { t, database, user },
+      updateModalFromRedux,
+      setMedicalCase,
     } = this.props;
 
     const flatPatient = {
@@ -76,17 +82,24 @@ export default class PatientProfile extends React.Component {
           style={{ backgroundColor: '#ffffff' }}
           spaced
           onPress={async () => {
-            await this.selectMedicalCase({
-              ...medicalCase,
-              patient: flatPatient,
-            });
+            const remoteMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+            // If medicalCase is open by clinician
+            if (remoteMedicalCase.isLocked(deviceInfo, user) && isConnected) {
+              // show locked info
+              updateModalFromRedux({ medicalCase: remoteMedicalCase }, toolTipType.medicalCaseLocked);
+            } else {
+              await setMedicalCase(medicalCase);
 
-            const route = routeDependingStatus(medicalCase);
-            if (route !== undefined) {
-              navigation.navigate(route, {
-                idPatient: patient.id,
-                newMedicalCase: false,
-              });
+              await database.lockMedicalCase(medicalCase.id);
+
+              const route = routeDependingStatus(medicalCase);
+
+              if (route !== undefined) {
+                navigation.navigate(route, {
+                  idPatient: medicalCase.patient_id,
+                  newMedicalCase: false,
+                });
+              }
             }
           }}
         >
@@ -96,6 +109,7 @@ export default class PatientProfile extends React.Component {
           <View w50>
             <Text>{t(`medical_case:${medicalCase.status}`)}</Text>
           </View>
+          {isConnected ? <View w50>{medicalCase.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}</View> : null}
         </ListItem>
       );
     });

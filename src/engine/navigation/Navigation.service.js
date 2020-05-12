@@ -1,11 +1,10 @@
-import { NavigationActions, StackActions } from 'react-navigation';
-import _ from 'lodash';
-import find from 'lodash/find';
-import { store } from '../../../frontend_service/store';
-import { medicalCaseStatus, valueFormats } from '../../../frontend_service/constants';
-import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import Database from '../api/Database';
-import moment from 'moment';
+import { NavigationActions, StackActions } from "react-navigation";
+import _ from "lodash";
+import { store } from "../../../frontend_service/store";
+import { medicalCaseStatus, valueFormats } from "../../../frontend_service/constants";
+import { updateMedicalCaseProperty } from "../../../frontend_service/actions/creators.actions";
+import Database from "../api/Database";
+import moment from "moment";
 
 let _navigator;
 

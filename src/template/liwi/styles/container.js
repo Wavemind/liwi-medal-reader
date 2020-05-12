@@ -1,4 +1,4 @@
-import { liwiColors, marginIsTablet, responsiveUi, screenWidth } from '../../../utils/constants';
+import { liwiColors, marginIsTablet, responsiveUi, screenWidth } from "../../../utils/constants";
 
 export default {
   'NativeBase.ViewNB': {

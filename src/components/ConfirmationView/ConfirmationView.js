@@ -1,9 +1,9 @@
 // @flow
-import * as React from 'react';
-import { ScrollView } from 'react-native';
-import { Button, Icon, Text, View } from 'native-base';
-import { styles } from './ConfirmationView.styles';
-import Tooltip from '../Tooltip/tooltip';
+import * as React from "react";
+import { ScrollView } from "react-native";
+import { Button, Icon, Text, View } from "native-base";
+import { styles } from "./ConfirmationView.styles";
+import Tooltip from "../Tooltip/tooltip";
 
 export default class ConfirmationView extends React.Component<Props, State> {
   state = {

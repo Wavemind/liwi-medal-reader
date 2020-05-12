@@ -36,6 +36,7 @@ export default class PatientList extends React.Component {
     this.setState({ loading: true });
 
     const patients = await database.getAll('Patient');
+
     const algorithm = await getItems('algorithm');
     this.setState({
       algorithm,
@@ -54,7 +55,6 @@ export default class PatientList extends React.Component {
     let second_top_right_question = null;
 
     patient.medicalCases.map((mc) => {
-
       if (
         mc.first_top_right_question_id !== null &&
         mc.second_top_right_question_id !== null &&
@@ -93,7 +93,7 @@ export default class PatientList extends React.Component {
 
     const { patients } = this.state;
 
-    return patients.length > 0 ? (
+    return patients !== null ? (
       <List block key="patientList">
         {patients.map((patient) => this._renderPatient(patient))}
       </List>

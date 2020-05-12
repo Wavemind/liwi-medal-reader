@@ -1,10 +1,10 @@
 // @flow
 
-import { PixelRatio, Platform } from 'react-native';
+import { PixelRatio, Platform } from "react-native";
 
-import pickerTheme from './Picker';
-import variable from '../variables/platform';
-import { liwiColors } from '../../../utils/constants';
+import pickerTheme from "./Picker";
+import variable from "../variables/platform";
+import { liwiColors } from "../../../utils/constants";
 
 export default (variables /* : * */ = variable) => {
   const { platform } = variables;

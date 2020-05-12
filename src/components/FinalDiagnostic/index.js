@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
-import FinalDiagnostic from './FinalDiagnostic';
-import { withApplication } from '../../engine/contexts/Application.context';
-import { setDiagnoses } from '../../../frontend_service/actions/creators.actions';
+import { connect } from "react-redux";
+import FinalDiagnostic from "./FinalDiagnostic";
+import { withApplication } from "../../engine/contexts/Application.context";
+import { setDiagnoses } from "../../../frontend_service/actions/creators.actions";
 
 const mapStateToProps = (state) => {
   return {

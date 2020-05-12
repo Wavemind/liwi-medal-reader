@@ -1,6 +1,6 @@
 /* @flow */
 
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Platform } from "react-native";
 
 // Taken from: https://mydevice.io/devices/
 const X_WIDTH: number = 375;

@@ -1,11 +1,11 @@
 // @flow
 
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { Content, Text, View } from 'native-base';
-import { Image } from 'react-native';
-import { LiwiTitle2 } from '../../template/layout';
-import { styles } from './Emergency.style';
+import * as React from "react";
+import { NavigationScreenProps } from "react-navigation";
+import { Content, Text, View } from "native-base";
+import { Image } from "react-native";
+import { LiwiTitle2 } from "../../template/layout";
+import { styles } from "./Emergency.style";
 
 type Props = NavigationScreenProps & {};
 

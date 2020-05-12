@@ -1,13 +1,13 @@
 // @flow
 
-import * as React from 'react';
-import { Content, Tab, Tabs, Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-import { styles } from './MedicalCaseSummary.style';
-import Questions from '../../../components/QuestionsContainer/Questions';
-import { LiwiTabStyle, LiwiTitle2 } from '../../../template/layout';
-import BackButton from '../../../components/BackButton';
-import FinalDiagnosticsList from '../../../components/FinalDiagnosticsList';
+import * as React from "react";
+import { Content, Tab, Tabs, View } from "native-base";
+import { NavigationScreenProps } from "react-navigation";
+import { styles } from "./MedicalCaseSummary.style";
+import Questions from "../../../components/QuestionsContainer/Questions";
+import { LiwiTabStyle, LiwiTitle2 } from "../../../template/layout";
+import BackButton from "../../../components/BackButton";
+import FinalDiagnosticsList from "../../../components/FinalDiagnosticsList";
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -17,7 +17,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
 
   render() {
     const {
-      medicalCase,
+      medicalCase: { nodes },
       app: { t },
       navigation,
     } = this.props;
@@ -28,13 +28,6 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
       <View padding-auto flex>
         <BackButton />
         <LiwiTitle2 marginTop>{t('summary:title')}</LiwiTitle2>
-        <View style={styles.patientInfo}>
-          <View flex-container-fluid>
-            <Text size-auto>
-              {medicalCase.patient_id}
-            </Text>
-          </View>
-        </View>
         <Tabs initialPage={defaultTab} tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>
           <Tab
             heading={t('summary:diagnoses')}
@@ -49,7 +42,7 @@ export default class MedicalCaseSummary extends React.Component<Props, State> {
           </Tab>
           <Tab heading="All questions" tabStyle={LiwiTabStyle.tabStyle} activeTextStyle={LiwiTabStyle.activeTextStyle} textStyle={LiwiTabStyle.textStyle} activeTabStyle={LiwiTabStyle.activeTabStyle}>
             <View>
-              <Questions questions={medicalCase.nodes} />
+              <Questions questions={nodes} />
             </View>
           </Tab>
         </Tabs>

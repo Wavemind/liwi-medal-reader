@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { liwiColors, screenHeight, screensScale, screenWidth } from '../../../utils/constants';
+import { StyleSheet } from "react-native";
+import { liwiColors, screenHeight, screensScale, screenWidth } from "../../../utils/constants";
 
 let divider = 10;
 let extraStyle = { width: 80, height: 80 };

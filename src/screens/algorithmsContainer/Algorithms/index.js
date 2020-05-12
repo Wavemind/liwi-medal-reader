@@ -1,8 +1,8 @@
-import { withApplication } from 'engine/contexts/Application.context';
-import { connect } from 'react-redux';
-import Algorithms from './Algorithms.screen';
-import { updateMedicalCaseProperty } from '../../../../frontend_service/actions/creators.actions';
-import { WrapperNavigation } from '../../../utils/WrapperNavigation';
+import { withApplication } from "engine/contexts/Application.context";
+import { connect } from "react-redux";
+import Algorithms from "./Algorithms.screen";
+import { updateMedicalCaseProperty } from "../../../../frontend_service/actions/creators.actions";
+import { WrapperNavigation } from "../../../utils/WrapperNavigation";
 
 const mapStateToProps = (medicalCase) => {
   return {

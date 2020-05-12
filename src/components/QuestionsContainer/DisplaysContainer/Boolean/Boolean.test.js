@@ -1,9 +1,9 @@
-import * as React from 'react';
-import renderer from 'react-test-renderer';
+import * as React from "react";
+import renderer from "react-test-renderer";
 // setup file
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import Boolean from './Boolean';
+import { configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import Boolean from "./Boolean";
 
 configure({ adapter: new Adapter() });
 /*

@@ -1,5 +1,5 @@
-import { liwiColors } from 'utils/constants';
-import { responsiveUi } from '../../../utils/constants';
+import { liwiColors } from "utils/constants";
+import { responsiveUi } from "../../../utils/constants";
 
 export default {
   'NativeBase.H2': {
@@ -46,6 +46,7 @@ export default {
     },
     '.center': {
       textAlign: 'center',
+      alignSelf: 'center',
       textAlignVertical: 'center',
     },
     '.not-available': {

@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { RootMainNavigator } from './Root.navigation';
-import { medicalCaseStatus, navigationActionConstant, routeDependingStatus } from '../../../frontend_service/constants';
+import { medicalCaseStatus, navigationActionConstant, routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from './Navigation.service';
 import { store } from '../../../frontend_service/store';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
@@ -176,7 +176,6 @@ export const validatorNavigate = (navigateRoute) => {
   /** MedicalCases Routes * */
 
   if (detailNavigateRoute.medicalCaseOrder !== undefined) {
-
     // Route depending status
     const routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
 
@@ -264,6 +263,8 @@ export const validatorNavigate = (navigateRoute) => {
 };
 
 class CustomNavigator extends React.Component {
+  static state = {};
+
   static router = {
     ...RootMainNavigator.router,
     getStateForAction: (action, lastState) => {
@@ -309,7 +310,8 @@ class CustomNavigator extends React.Component {
       if (validation.isActionValid) {
         return RootMainNavigator.router.getStateForAction(action, lastState);
       }
-      store.dispatch(updateModalFromRedux(null, validation));
+      store.dispatch(updateModalFromRedux({ ...validation }, toolTipType.validation));
+
       return null;
     },
   };

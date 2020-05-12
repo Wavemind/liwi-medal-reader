@@ -2,8 +2,8 @@
 // Original definitions by: Siraj Alam https://github.com/sirajalam049
 
 declare module 'react-native-walkthrough-tooltip' {
-  import React from 'react';
-  import { GestureResponderEvent, StyleProp, ViewStyle } from 'react-native';
+  import React from "react";
+  import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
 
   type Orientation = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
 

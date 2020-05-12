@@ -1,5 +1,5 @@
-import { screenWidth } from 'utils/constants';
-import { liwiColors } from '../../../utils/constants';
+import { screenWidth } from "utils/constants";
+import { liwiColors } from "../../../utils/constants";
 
 export default {
   'NativeBase.Item': {

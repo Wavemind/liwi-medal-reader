@@ -8,7 +8,7 @@ import { getDeviceInformation } from '../../../src/engine/api/Device';
 export class ActivityModel {
   constructor(props) {
     if (this.id === undefined) {
-    return (async () => {
+      return (async () => {
         const { stage, nodes, user, medical_case_id } = props;
         const session = await getItem('session');
         const deviceInfo = await getDeviceInformation();
@@ -42,6 +42,6 @@ ActivityModel.schema = {
     medical_case_id: 'string?',
     created_at: 'date',
     synchronized_at: 'date?',
-    fail_safe: 'bool',
+    fail_safe: { type: 'bool', default: false }
   },
 };

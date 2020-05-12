@@ -1,10 +1,10 @@
 // @flow
 
-import * as React from 'react';
-import { DatePicker, View } from 'native-base';
-import type { NavigationScreenProps } from 'react-navigation';
-import moment from 'moment';
-import { styles } from './Date.style';
+import * as React from "react";
+import { DatePicker, View } from "native-base";
+import type { NavigationScreenProps } from "react-navigation";
+import moment from "moment";
+import { styles } from "./Date.style";
 
 type Props = NavigationScreenProps & {};
 

@@ -10,10 +10,10 @@ import { userRoles } from '../../../../frontend_service/constants';
 import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './UnlockSession.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import Database from '../../../engine/api/Database';
 import { displayNotification } from '../../../utils/CustomToast';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import * as NetInfo from '@react-native-community/netinfo';
+import Database from '../../../engine/api/Database';
 
 export default function PinSession() {
   const [session, setSession] = React.useState(null);
@@ -85,15 +85,14 @@ export default function PinSession() {
             <View margin-auto padding-auto style={styles.flex}>
               <View style={styles.bloc}>
                 {loading ? (
-                  <LiwiLoader/>
+                  <LiwiLoader />
                 ) : (
                   <>
                     <Text bigTitle noBorder>
                       {app.t('unlock_session:title')}
                     </Text>
                     <Text size-auto>{app.t('unlock_session:assign')}</Text>
-                    <Button onPress={createSession} disabled={!app.isConnected} testID="new_session"
-                            style={styles.buttonSync}>
+                    <Button onPress={createSession} disabled={!app.isConnected} testID="new_session" style={styles.buttonSync}>
                       <Text size-auto>{app.t('unlock_session:sync_group')}</Text>
                     </Button>
                   </>
@@ -105,8 +104,7 @@ export default function PinSession() {
             <>
               {app.user !== null && (
                 <View style={styles.appContent}>
-                  <Image style={styles.imgKeys} resizeMode="contain"
-                         source={require('../../../../assets/images/keys.png')}/>
+                  <Image style={styles.imgKeys} resizeMode="contain" source={require('../../../../assets/images/keys.png')} />
                   <Text style={styles.align} bigTitle={screenWidth > screensScale.s}>
                     {app.t('unlock_session:already')}
                     {'\n '}
