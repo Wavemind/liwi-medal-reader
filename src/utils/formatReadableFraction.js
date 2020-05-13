@@ -11,7 +11,7 @@
  */
 
 export default function formatReadableFraction(fractionObject, isImproper = false) {
-  let { denominator, error, numerator } = fractionObject;
+  const { denominator, numerator } = fractionObject;
 
   // When the numerator is 0, return an empty string instead of
   // '0/denominator'.
@@ -26,11 +26,11 @@ export default function formatReadableFraction(fractionObject, isImproper = fals
   }
 
   // Grab the whole number.
-  let wholeNumber = Math.floor(numerator / denominator);
+  const wholeNumber = Math.floor(numerator / denominator);
   // Grab the remainder which will be the numerator in the remainder fraction.
-  let remainder = numerator % denominator;
+  const remainder = numerator % denominator;
   // Same concept as above, don't show the remainder if the numerator is 0.
-  let isRemainderShown = remainder !== 0;
+  const isRemainderShown = remainder !== 0;
 
   return `${wholeNumber}${isRemainderShown ? ` ${remainder}/${denominator}` : ''}`;
 }

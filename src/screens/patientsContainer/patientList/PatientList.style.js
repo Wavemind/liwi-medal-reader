@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { liwiColors } from "../../../utils/constants";
+import { StyleSheet } from 'react-native';
+import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   input: {
@@ -12,6 +12,10 @@ export const styles = StyleSheet.create({
 
   picker: {
     backgroundColor: liwiColors.lightGreyColor,
+  },
+
+  background: {
+    backgroundColor: liwiColors.whiteDark,
   },
 
   textFilter: {
