@@ -103,7 +103,7 @@ class LayoutTemplate extends React.Component<Props> {
 
   render() {
     const {
-      app: { logged, ready, session, isConnected },
+      app: { logged, ready, session },
     } = this.props;
 
     const { navigationState, mustSetNavigation } = this.state;
