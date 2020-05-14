@@ -97,7 +97,7 @@ const _fetch = async (url, header) => {
     return result;
   }
 
-  handleHttpError(result);
+  handleHttpError(result.error);
   return null;
 };
 
