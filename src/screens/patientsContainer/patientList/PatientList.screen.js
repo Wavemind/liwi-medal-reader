@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
+import { ScrollView, RefreshControl } from 'react-native';
+import { Button, Icon, Input, Item, List, ListItem, Text, View, Content, Container } from 'native-base';
 
 import { styles } from './PatientList.style';
 import { SeparatorLine } from '../../../template/layout';
@@ -10,7 +10,7 @@ import { getItems } from '../../../engine/api/LocalStorage';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import ConfirmationView from '../../../components/ConfirmationView';
 import { liwiColors } from '../../../utils/constants';
-import { Collapse, CollapseBody, CollapseHeader } from 'accordion-collapse-react-native';
+import Filter from '../../../components/Filter';
 
 export default class PatientList extends React.Component {
   state = {
@@ -27,6 +27,8 @@ export default class PatientList extends React.Component {
     // Force refresh with a navigation.push
     // navigation.addListener('willFocus', async () => {
     await this.fetchPatients();
+    const algorithm = await getItems('algorithm');
+    this.setState({ algorithm });
     // });
   }
 
@@ -41,10 +43,8 @@ export default class PatientList extends React.Component {
     this.setState({ loading: true });
 
     const patients = await database.getAll('Patient');
-    const algorithm = await getItems('algorithm');
 
     this.setState({
-      algorithm,
       patients,
       loading: false,
     });
@@ -114,82 +114,71 @@ export default class PatientList extends React.Component {
     } = this.props;
 
     return (
-      <ScrollView>
+      <Content refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.fetchPatients()}/>}>
         <View padding-auto flex-container-column>
-          {loading ? (
-            <LiwiLoader/>
-          ) : (
+          <View flex-container-row>
+            <Item round style={styles.input}>
+              <Icon active name="search"/>
+              <Input value={searchTerm} onChangeText={this.searchBy}/>
+            </Item>
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
+                              nextRoute="PatientUpsert" idPatient={null}
+            />
+            {algorithm !== null ? (
+              <Button
+                testID="create_patient"
+                center
+                rounded
+                light
+                red
+                onPress={() => {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: null,
+                      newMedicalCase: true,
+                    });
+                  } else {
+                    this.setState({ propsToolTipVisible: true });
+                  }
+                }}
+                disabled={isGeneratingPatient}
+              >
+                <Icon type="MaterialCommunityIcons" name="plus" white/>
+              </Button>
+            ) : null}
+          </View>
+
+          <Filter/>
+
+          <SeparatorLine/>
+
+          {patients !== null ? (
             <>
               <View flex-container-row>
-                <Item round style={styles.input}>
-                  <Icon active name="search"/>
-                  <Input value={searchTerm} onChangeText={this.searchBy}/>
-                </Item>
-                <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
-                                  nextRoute="PatientUpsert" idPatient={null}
-                />
-                {algorithm !== null ? (
-                  <Button
-                    testID="create_patient"
-                    center
-                    rounded
-                    light
-                    red
-                    onPress={() => {
-                      if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                        navigation.navigate('PatientUpsert', {
-                          idPatient: null,
-                          newMedicalCase: true,
-                        });
-                      } else {
-                        this.setState({ propsToolTipVisible: true });
-                      }
-                    }}
-                    disabled={isGeneratingPatient}
-                  >
-                    <Icon type="MaterialCommunityIcons" name="plus" white/>
-                  </Button>
-                ) : null}
+                <Button iconRight light style={{ flex: 0.33, backgroundColor: liwiColors.greyColor }}>
+                  <Text>Nom</Text>
+                  <Icon name="arrow-up"/>
+                </Button>
+                <Button iconRight light style={{ flex: 0.33, backgroundColor: liwiColors.greyColor }}>
+                  <Text>Prénom</Text>
+                </Button>
+                <Button iconRight light style={{ flex: 0.33, backgroundColor: liwiColors.greyColor }}>
+                  <Text>Status</Text>
+                </Button>
               </View>
-
-              <Collapse>
-                <CollapseHeader style={{marginTop: 5, backgroundColor: liwiColors.redColor, paddingTop: 15, paddingBottom: 15, alignItems: 'center'}}>
-                    <Text white>Add filter</Text>
-                </CollapseHeader>
-                <CollapseBody>
-                  <Text>Ta daa!</Text>
-                </CollapseBody>
-              </Collapse>
-
-              <SeparatorLine/>
-
-              {patients !== null ? (
-                <>
-                  <View flex-container-row>
-                    <Button iconRight light style={{flex: 0.33, backgroundColor: liwiColors.greyColor}}>
-                      <Text>Nom</Text>
-                      <Icon name='arrow-up' />
-                    </Button>
-                    <Button iconRight light style={{flex: 0.33, backgroundColor: liwiColors.greyColor}}>
-                      <Text>Prénom</Text>
-                    </Button>
-                    <Button iconRight light style={{flex: 0.33, backgroundColor: liwiColors.greyColor}}>
-                      <Text>Status</Text>
-                    </Button>
-                  </View>
-                  <List block key="patientList">
-                    {patients.map((patient) => this._renderPatient(patient))}
-                  </List>
-                </>
-              ) : (
-                <View padding-auto margin-auto>
-                  <Text not-available>{t('patient_list:no_patients')}</Text>
-                </View>
-              )}
+              <List
+                block
+                key="patientList">
+                {patients.map((patient) => this._renderPatient(patient))}
+              </List>
             </>
+          ) : (
+            <View padding-auto margin-auto>
+              <Text not-available>{t('patient_list:no_patients')}</Text>
+            </View>
           )}
         </View>
-      </ScrollView>
+      </Content>
     );
   }
 }
