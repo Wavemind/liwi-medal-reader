@@ -28,7 +28,7 @@ type Props = {
 
 // eslint-disable-next-line no-unused-vars
 const persistNavigationState = async (navState) => {
-  let route = NavigationService.getCurrentRoute();
+  const route = NavigationService.getCurrentRoute();
 
   try {
     // Dont set route if login process
@@ -105,23 +105,16 @@ class LayoutTemplate extends React.Component<Props> {
     const {
       app: { logged, ready, session },
     } = this.props;
-
     const { navigationState, mustSetNavigation } = this.state;
 
-    // Constant used in app
     let AppContainer;
 
     if (logged) {
-      // Add initial routename state
       AppContainer = createAppContainer(CustomNavigator);
     } else {
       let routeName = '';
       if (session !== null) {
-        if (session.group === null) {
-          routeName = 'NewSession';
-        } else {
-          routeName = 'UnlockSession';
-        }
+        routeName = 'UnlockSession';
       }
       AppContainer = createAppContainer(RootLoginNavigator(routeName));
     }
@@ -164,8 +157,8 @@ class LayoutTemplate extends React.Component<Props> {
               </RootView>
             </Container>
           ) : (
-              <LiwiLoader />
-            )}
+            <LiwiLoader />
+          )}
         </StyleProvider>
       </Root>
     );
