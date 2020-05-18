@@ -41,7 +41,7 @@ export default {
       flexDirection: 'row',
     },
 
-    '.padding-auto': { padding: responsiveUi.padding() },
+    '.padding-auto': { paddingLeft: responsiveUi.padding(), paddingRight: responsiveUi.padding() },
 
     '.flex-center': {
       flexDirection: 'column',

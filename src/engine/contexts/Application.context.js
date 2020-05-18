@@ -259,6 +259,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         await setItem('algorithm', newAlgorithm);
       }
     }
+
+    return group;
   };
 
   /**
