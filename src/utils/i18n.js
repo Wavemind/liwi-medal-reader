@@ -20,6 +20,9 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        application: {
+          loading: 'Loading...',
+        },
         drug: {
           give: 'Give',
           mg: 'mg',
