@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Text } from "native-base";
+import { Text } from 'native-base';
 import { Collapse, CollapseBody, CollapseHeader } from 'accordion-collapse-react-native';
 import { styles } from './Filter.style';
 
 export default class Filter extends Component {
-
   render() {
     return (
       <Collapse>
