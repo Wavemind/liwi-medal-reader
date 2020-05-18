@@ -50,10 +50,11 @@ export default class HttpInterface {
   /**
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } page - Pagination. if null, retrieved all information
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model) => {
-    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}`;
+  getAll = async (model, page) => {
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
     if (data !== null) {
@@ -130,7 +131,6 @@ export default class HttpInterface {
     const httpRequest = await fetch(url, header).catch((error) => {
       handleHttpError(error);
     });
-
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();
@@ -138,7 +138,6 @@ export default class HttpInterface {
         return result;
       } else if (httpRequest.status > 404) {
         handleHttpError(result.message);
-        console.log(result);
       }
     }
 
@@ -210,7 +209,7 @@ export default class HttpInterface {
 
   /**
    * Generate class
-   * @param { array|object } data - Data retrived from server
+   * @param { array|object } data - Data retrieved from server
    * @param { string } model - Class name
    * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
    * @private

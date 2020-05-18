@@ -39,10 +39,12 @@ export default function PinSession() {
    */
   const createSession = async () => {
     setLoading(true);
-    await app.setInitialData();
-    const database = await new Database();
-    await app.set('database', database);
-    await app.subscribePingApplicationServer();
+    const result = await app.setInitialData();
+    if (result !== null) {
+      const database = await new Database();
+      await app.set('database', database);
+      await app.subscribePingApplicationServer();
+    }
     setLoading(false);
   };
 
@@ -56,7 +58,6 @@ export default function PinSession() {
     setLoading(true);
 
     if (session.group.pin_code === pinCode) {
-      displayNotification(app.t('notifications:connection_successful'), liwiColors.greenColor);
       const netInfoConnection = await NetInfo.fetch();
       const { isConnected } = netInfoConnection;
       if (isConnected) {
