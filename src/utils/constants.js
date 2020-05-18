@@ -1,5 +1,5 @@
-import { Dimensions } from "react-native";
-import DeviceInfo from "react-native-device-info";
+import { Dimensions } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 /** * COLORS **** */
 export const blueColor = '#fff';
@@ -30,6 +30,7 @@ export const paddingIsTablet = () => (isTablet ? 30 : 5);
 export const marginIsTablet = () => (isTablet ? 50 : 20);
 
 export const fontSizeTextIsTablet = () => (isTablet ? 18 : 14);
+export const elementPerPage = 15;
 
 export const screensScale = {
   xs: 360,
