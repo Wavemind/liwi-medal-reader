@@ -11,7 +11,7 @@ import { memorySizeOf } from './swissKnives';
 import { PatientModel } from '../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../frontend_service/engine/models/MedicalCase.model';
 import Database from '../engine/api/Database';
-import {patientTemplate} from './PatientTemplate';
+import {patientTemplate} from './template/PatientTemplate';
 
 export default class WavemindTools extends Component {
   constructor(props) {
@@ -25,6 +25,7 @@ export default class WavemindTools extends Component {
     let i = 0;
     for (i = 0; i < 1200; i++) {
       const patient = patientTemplate();
+      console.log(patient);
       const database = await new Database();
       await database.insert('Patient', patient);
       console.log(i);
