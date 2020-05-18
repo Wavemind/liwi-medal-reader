@@ -11,7 +11,7 @@ export default class HttpInterface {
     return (async () => {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
-      this.localDataIp = 'http://192.168.31.214:3000';
+      this.localDataIp = session.group.local_data_ip;
       this.mainDataIp = session.group.main_data_ip;
       this.macAddress = deviceInfo.mac_address;
       await this._setClinician();

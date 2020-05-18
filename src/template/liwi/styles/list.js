@@ -1,4 +1,4 @@
-import { liwiColors } from "../../../utils/constants";
+import { liwiColors } from '../../../utils/constants';
 
 export default {
   'NativeBase.List': {
@@ -7,14 +7,17 @@ export default {
         margin: 0,
       },
 
-      '.rounded': {
-        borderRadius: 5,
-        borderWidth: 1,
+      '.white': {
         paddingLeft: 10,
-        borderColor: liwiColors.blackColor,
+        elevation: 1,
+        borderWidth: 0,
+        backgroundColor: liwiColors.whiteDark,
       },
       '.spaced': {
-        marginBottom: 10,
+        paddingTop: 20,
+        paddingBottom: 20,
+        marginTop: 2,
+        marginBottom: 2,
       },
       '.condensed': {
         paddingTop: 7,
