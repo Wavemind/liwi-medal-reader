@@ -97,6 +97,6 @@ PatientModel.schema = {
     other_group_id: 'string?',
     reason: 'string?',
     medicalCases: 'MedicalCase[]',
-    fail_safe: { type: 'bool', default: false }
+    fail_safe: { type: 'bool', default: false },
   },
 };

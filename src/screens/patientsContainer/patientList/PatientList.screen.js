@@ -134,13 +134,13 @@ export default class PatientList extends React.Component {
     const { patients, currentPage } = this.state;
     this.setState(
       {
-        loading: true
+        loading: true,
       },
       async () => {
         const newPatients = await database.getAll("Patient", currentPage);
         this.setState({
           patients: patients.concat(newPatients),
-          loading: false
+          loading: false,
         });
       }
     );

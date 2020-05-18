@@ -59,13 +59,15 @@ export default class RealmInterface {
    * @returns { Collection } - A collection of all the data
    */
   getAll = (model, page = null) => {
+    let result = null;
     if (page === null) {
-      return this._realm().objects(model);
+      result = this._realm().objects(model);
+    }   else {
+      result = this._realm()
+        .objects(model)
+        .slice((page - 1) * elementPerPage, elementPerPage * page);
     }
-
-    return this._realm()
-      .objects(model)
-      .slice((page - 1) * elementPerPage, elementPerPage * page);
+    return result.length === 0 ? null : result;
   };
 
   /**
