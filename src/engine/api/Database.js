@@ -105,6 +105,6 @@ export default class Database {
     } else {
       dbInterface = databaseInterface.httpInterface;
     }
-    return dbInterface;
+    return databaseInterface.realmInterface;
   };
 }

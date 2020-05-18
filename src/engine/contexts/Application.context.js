@@ -238,24 +238,26 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const group = await this.getGroup();
     if (group !== null) {
       const newAlgorithm = await getAlgorithm();
-      newAlgorithm.selected = true;
-      const currentAlgorithm = await getItems('algorithm');
+      if (newAlgorithm !== null) {
+        newAlgorithm.selected = true;
+        const currentAlgorithm = await getItems('algorithm');
 
-      // Update popup only if version has changed
-      if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
-        store.dispatch(
-          updateModalFromRedux(
-            {
-              title: i18n.t('popup:version'),
-              version_name: newAlgorithm.version_name,
-              author: newAlgorithm.author,
-              description: newAlgorithm.description,
-            },
-            toolTipType.algorithmVersion,
-          ),
-        );
+        // Update popup only if version has changed
+        if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
+          store.dispatch(
+            updateModalFromRedux(
+              {
+                title: i18n.t('popup:version'),
+                version_name: newAlgorithm.version_name,
+                author: newAlgorithm.author,
+                description: newAlgorithm.description,
+              },
+              toolTipType.algorithmVersion,
+            ),
+          );
+        }
+        await setItem('algorithm', newAlgorithm);
       }
-      await setItem('algorithm', newAlgorithm);
     }
   };
 
