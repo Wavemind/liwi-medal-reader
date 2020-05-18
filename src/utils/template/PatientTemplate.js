@@ -1186,4 +1186,5 @@ export const patientTemplate = () => {
   medicalCase.json = JSON.stringify(medicalCase);
   medicalCase.patient_id = patient.id;
   patient.medicalCases.push(medicalCase);
+  return patient;
 };
