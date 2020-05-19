@@ -59,7 +59,7 @@ export default class ListContent extends React.Component<Props, State> {
   };
 
   /**
-   * Separator between flatlist item
+   * Separator between flatList item
    * @returns {*}
    */
   _renderSeparator = () => {
