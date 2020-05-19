@@ -24,6 +24,8 @@ export const screenHeight = Dimensions.get('window').height;
 export const isTablet = DeviceInfo.isTablet();
 export const marginIsTablet = () => (isTablet ? 50 : 20);
 
+export const elementPerPage = 15;
+
 export const screensScale = {
   xs: 360,
   s: 412,

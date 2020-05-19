@@ -24,16 +24,12 @@ export class MedicalCaseModel {
       this.algorithm_id = currentAlgorithm.algorithm_id;
       this.diagnostics = currentAlgorithm.diagnostics;
       this.nodes = { ...currentAlgorithm.nodes };
-      this.orders = currentAlgorithm.orders;
       this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
-      this.left_top_question_id = currentAlgorithm.left_top_question_id ?? null;
-      this.first_top_right_question_id = currentAlgorithm.first_top_right_question_id ?? null;
-      this.second_top_right_question_id = currentAlgorithm.second_top_right_question_id ?? null;
-
+      this.mobile_config = currentAlgorithm.mobile_config ?? null;
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
       this.isNewCase = true;
@@ -90,14 +86,11 @@ export class MedicalCaseModel {
         this.mac_address = props.mac_address;
       }
 
-      this.left_top_question_id = json.left_top_question_id ?? null;
-      this.first_top_right_question_id = json.first_top_right_question_id ?? null;
-      this.second_top_right_question_id = json.second_top_right_question_id ?? null;
+      this.mobile_config = json.mobile_config ?? null;
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
-      this.orders = json.orders;
       this.triage = json.triage;
       this.complaintCategories = json.complaintCategories;
       this.isNewCase = false;

@@ -1,9 +1,10 @@
-const Realm = require('realm');
-
 import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { getItem } from '../LocalStorage';
+import { elementPerPage } from '../../../utils/constants';
+
+const Realm = require('realm');
 
 export default class RealmInterface {
   /**
@@ -12,7 +13,7 @@ export default class RealmInterface {
    * @private
    */
   _realm = () => {
-    var key = new Int8Array(64); // pupulate with a secure key
+    const key = new Int8Array(64); // pupulate with a secure key
     return new Realm({
       schema: [PatientModel, MedicalCaseModel, ActivityModel],
       deleteRealmIfMigrationNeeded: true,
@@ -47,19 +48,24 @@ export default class RealmInterface {
    * @returns { Collection } - The wanted object
    */
   findBy = (model, value, field = 'id') => {
-    const object = this._realm()
-      .objects(model)
-      .filtered(field + ' = $0', value)[0];
+    const object = this._realm().objects(model).filtered(`${field} = $0`, value)[0];
     return object === undefined ? null : object;
   };
 
   /**
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } page - Used for pagination,tells what page to show
    * @returns { Collection } - A collection of all the data
    */
-  getAll = (model) => {
-    return this._realm().objects(model);
+  getAll = (model, page = null) => {
+    if (page === null) {
+      return this._realm().objects(model);
+    } else {
+      return this._realm()
+        .objects(model)
+        .slice((page - 1) * elementPerPage, elementPerPage * page);
+    }
   };
 
   /**
@@ -82,11 +88,9 @@ export default class RealmInterface {
   /**
    * Blank method used in httpInterface
    */
-  unlockMedicalCase = () => {
-  };
+  unlockMedicalCase = () => {};
 
-  lockMedicalCase = () => {
-  };
+  lockMedicalCase = () => {};
 
   /**
    * Push an object in a existing object based on model name and id
