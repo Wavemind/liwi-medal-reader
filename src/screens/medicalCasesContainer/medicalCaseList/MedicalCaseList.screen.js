@@ -193,13 +193,13 @@ export default class MedicalCaseList extends React.Component<Props, State> {
             let first_top_right_question = null;
             let second_top_right_question = null;
             if (
-              medicalCase.first_top_right_question_id !== null &&
-              medicalCase.second_top_right_question_id !== null &&
-              medicalCase.nodes[medicalCase.first_top_right_question_id]?.value !== null &&
-              medicalCase.nodes[medicalCase.second_top_right_question_id]?.value !== null
+              medicalCase.mobile_config.first_top_right_question_id !== null &&
+              medicalCase.mobile_config.second_top_right_question_id !== null &&
+              medicalCase.nodes[medicalCase.mobile_config.first_top_right_question_id]?.value !== null &&
+              medicalCase.nodes[medicalCase.mobile_config.second_top_right_question_id]?.value !== null
             ) {
-              first_top_right_question = medicalCase.nodes[medicalCase.first_top_right_question_id]?.value;
-              second_top_right_question = medicalCase.nodes[medicalCase.second_top_right_question_id]?.value;
+              first_top_right_question = medicalCase.nodes[medicalCase.mobile_config.first_top_right_question_id]?.value;
+              second_top_right_question = medicalCase.nodes[medicalCase.mobile_config.second_top_right_question_id]?.value;
             }
 
             return (
