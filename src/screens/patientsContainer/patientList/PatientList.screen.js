@@ -10,7 +10,6 @@ import { getItems } from "../../../engine/api/LocalStorage";
 import ConfirmationView from "../../../components/ConfirmationView";
 import { liwiColors } from "../../../utils/constants";
 import Filter from "../../../components/Filter";
-import LiwiLoader from "../../../utils/LiwiLoader";
 
 export default class PatientList extends React.Component {
   state = {
