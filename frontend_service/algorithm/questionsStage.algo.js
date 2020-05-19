@@ -87,7 +87,7 @@ export const questionsFirstLookAssessement = () => {
   const state$ = store.getState();
   const firstLookAssessement = [];
 
-  const ordersFirstLookAssessment = state$.orders[categories.emergencySign];
+  const ordersFirstLookAssessment = state$.mobile_config.questions_orders[categories.emergencySign];
 
   if (ordersFirstLookAssessment !== undefined) {
     ordersFirstLookAssessment.map((order) => {
@@ -115,7 +115,7 @@ export const questionsFirstLookAssessement = () => {
 export const questionsComplaintCategory = () => {
   const state$ = store.getState();
   const complaintCategory = [];
-  const orders = state$.orders[categories.complaintCategory];
+  const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
 
   orders.map((order) => {
     complaintCategory.push(state$.nodes[order]);
@@ -142,7 +142,7 @@ export const questionsBasicMeasurements = () => {
   const state$ = store.getState();
   const basicMeasurements = [];
 
-  const orderedQuestions = state$.orders[categories.basicMeasurement];
+  const orderedQuestions = state$.mobile_config.questions_orders[categories.basicMeasurement];
 
   if (orderedQuestions !== undefined) {
     orderedQuestions.map((orderedQuestion) => {

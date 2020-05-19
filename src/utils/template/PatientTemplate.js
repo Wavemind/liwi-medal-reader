@@ -1129,15 +1129,6 @@ export const patientTemplate = () => {
         },
       },
     },
-    orders: {
-      basic_measurement: [39, 42],
-      consultation_related: [],
-      complaint_category: [49, 50, 51, 48, 52, 53, 54, 55, 56, 57, 58, 76],
-      basic_demographic: [74, 75, 37],
-      demographic: [],
-      unique_triage_physical_sign: [],
-      unique_triage_question: [],
-    },
     triage: { conditions: { '37': [{ complaint_category_id: 97, answer_id: 144 }] } },
     synchronized_at: null,
     updated_at: faker.fake('{{date.past}}'),
@@ -1166,9 +1157,20 @@ export const patientTemplate = () => {
         firstLookAssessments: [],
       },
     },
-    left_top_question_id: 37,
-    first_top_right_question_id: 74,
-    second_top_right_question_id: 75,
+    mobile_config: {
+      left_top_question_id: 37,
+      first_top_right_question_id: 74,
+      second_top_right_question_id: 75,
+      questions_orders: {
+        basic_measurement: [39, 42],
+        consultation_related: [],
+        complaint_category: [49, 50, 51, 48, 52, 53, 54, 55, 56, 57, 58, 76],
+        basic_demographic: [74, 75, 37],
+        demographic: [],
+        unique_triage_physical_sign: [],
+        unique_triage_question: [],
+      },
+    },
     activities: [
       {
         id: uuid.v4(),
@@ -1186,4 +1188,5 @@ export const patientTemplate = () => {
   medicalCase.json = JSON.stringify(medicalCase);
   medicalCase.patient_id = patient.id;
   patient.medicalCases.push(medicalCase);
+  return patient;
 };

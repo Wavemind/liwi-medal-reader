@@ -1,56 +1,64 @@
 // @flow
 
-import * as React from 'react';
-import { ScrollView } from 'react-native';
-import { Button, Icon, Input, Item, List, ListItem, Text, View } from 'native-base';
+import * as React from "react";
+import { FlatList } from "react-native";
+import { Button, Icon, Input, Item, ListItem, Text, View } from "native-base";
 
-import { styles } from './PatientList.style';
-import { LiwiTitle2, SeparatorLine } from '../../../template/layout';
-import { getItems } from '../../../engine/api/LocalStorage';
-import LiwiLoader from '../../../utils/LiwiLoader';
-import ConfirmationView from '../../../components/ConfirmationView';
+import { styles } from "./PatientList.style";
+import { SeparatorLine } from "../../../template/layout";
+import { getItems } from "../../../engine/api/LocalStorage";
+import ConfirmationView from "../../../components/ConfirmationView";
+import { liwiColors } from "../../../utils/constants";
+import Filter from "../../../components/Filter";
+import LiwiLoader from "../../../utils/LiwiLoader";
 
 export default class PatientList extends React.Component {
   state = {
     propsToolTipVisible: false,
     loading: false,
-    searchTerm: '',
+    searchTerm: "",
     isGeneratingPatient: false,
     algorithm: null,
     patients: [],
+    currentPage: 1
   };
+
+  constructor() {
+    super();
+  }
 
   async componentDidMount() {
     const { navigation } = this.props;
     // Force refresh with a navigation.push
-    navigation.addListener('willFocus', async () => {
-      await this.fetchPatients();
-    });
+    // navigation.addListener('willFocus', async () => {
+    await this.fetchPatients();
+    const algorithm = await getItems("algorithm");
+    this.setState({ algorithm });
+    // });
   }
 
-  // Get all medical case with waiting for... status
+  /**
+   * Fetch patients and algorithm
+   * @returns {Promise<void>}
+   */
   fetchPatients = async () => {
     const {
-      app: { database },
+      app: { database }
     } = this.props;
+    const { currentPage } = this.state;
     this.setState({ loading: true });
 
-    const patients = await database.getAll('Patient');
+    const patients = await database.getAll("Patient", 1);
 
-    const algorithm = await getItems('algorithm');
     this.setState({
-      algorithm,
       patients,
-      loading: false,
+      currentPage: currentPage + 1,
+      loading: false
     });
   };
 
   _renderPatient = (patient) => {
-    const {
-      navigation,
-      app: { t },
-    } = this.props;
-
+    const { navigation } = this.props;
     let first_top_right_question = null;
     let second_top_right_question = null;
 
@@ -66,71 +74,119 @@ export default class PatientList extends React.Component {
       }
     });
 
+    // Faire une division par le nombre de champs a afficher et mettre ce résultat dans le flex
+
     return (
       <ListItem
-        rounded
-        block
+        style={{
+          paddingLeft: 10,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 1
+          },
+          shadowOpacity: 0.2,
+          shadowRadius: 1.41,
+
+          elevation: 2,
+          borderRadius: 4,
+          height: 80,
+          marginRight: 5,
+          marginLeft: 5,
+          borderWidth: 0,
+          paddingTop: 20,
+          paddingBottom: 20,
+          backgroundColor: liwiColors.whiteDark
+        }}
         key={`${patient.id}_patient_list`}
-        spaced
         onPress={() =>
-          navigation.navigate('PatientProfile', {
-            id: patient.id,
+          navigation.navigate("PatientProfile", {
+            id: patient.id
           })
         }
       >
-        <View w50>
-          <Text>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+        <View w33>
+          <Text
+            size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+        </View>
+        <View w33>
+          <Text
+            size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+        </View>
+        <View w33>
+          <Text
+            size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
         </View>
       </ListItem>
     );
   };
 
-  _renderPatients = () => {
-    const {
-      navigation,
-      app: { t },
-    } = this.props;
-
-    const { patients } = this.state;
-
-    return patients !== null ? (
-      <List block key="patientList">
-        {patients.map((patient) => this._renderPatient(patient))}
-      </List>
-    ) : (
-        <View padding-auto margin-auto>
-          <Text not-available>{t('patient_list:no_patients')}</Text>
-        </View>
-      );
-  };
-
   callBackClose = () => {
     this.setState({
-      propsToolTipVisible: false,
+      propsToolTipVisible: false
     });
   };
 
+  _handleLoadMore = () => {
+    const {
+      app: { database }
+    } = this.props;
+    const { patients, currentPage } = this.state;
+    this.setState(
+      {
+        loading: true,
+      },
+      async () => {
+        const newPatients = await database.getAll("Patient", currentPage);
+        this.setState({
+          patients: patients.concat(newPatients),
+          loading: false,
+        });
+      }
+    );
+  };
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 3,
+          width: "100%",
+          backgroundColor: liwiColors.lighterGreyColor
+        }}
+      />
+    );
+  };
+
+  renderFooter = () => {
+    if (!this.state.loading && this.state.currentPage === 1) return null;
+    return (
+      <View margin-auto>
+        <Text center>Loading</Text>
+      </View>
+    );
+  };
+
   render() {
-    const { loading, searchTerm, orderByFirstName, isGeneratingPatient, algorithm, propsToolTipVisible, orderByLastName } = this.state;
+    const { loading, searchTerm, isGeneratingPatient, algorithm, propsToolTipVisible, patients } = this.state;
 
     const {
       app: { t },
       navigation,
-      medicalCase,
+      medicalCase
     } = this.props;
 
     return (
-      <ScrollView>
-        <View padding-auto flex-container-column>
-          <LiwiTitle2 testID="patient_list" noBorder>
-            {t('patient_list:search')}
-          </LiwiTitle2>
-          <View flex-container-row style={styles.margin}>
-            <Item round style={styles.input}>
-              <Icon active name="search" />
-              <Input value={searchTerm} onChangeText={this.searchBy} />
+      <>
+        <View padding-auto style={{ marginTop: 10 }}>
+          <View style={{ flexDirection: "row" }}>
+            <Item style={styles.input} round>
+              <Icon active name="search"/>
+              <Input value={searchTerm} onChangeText={this.searchBy}/>
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
+                              nextRoute="PatientUpsert" idPatient={null}
+            />
             {algorithm !== null ? (
               <Button
                 testID="create_patient"
@@ -139,10 +195,10 @@ export default class PatientList extends React.Component {
                 light
                 red
                 onPress={() => {
-                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                    navigation.navigate('PatientUpsert', {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === "false") {
+                    navigation.navigate("PatientUpsert", {
                       idPatient: null,
-                      newMedicalCase: true,
+                      newMedicalCase: true
                     });
                   } else {
                     this.setState({ propsToolTipVisible: true });
@@ -150,27 +206,56 @@ export default class PatientList extends React.Component {
                 }}
                 disabled={isGeneratingPatient}
               >
-                <Icon type="MaterialCommunityIcons" name="plus" white />
+                <Icon type="MaterialCommunityIcons" name="plus" white/>
               </Button>
             ) : null}
           </View>
 
-          <SeparatorLine />
+          <Filter/>
 
-          <View flex-container-row style={styles.sorted}>
-            <Text style={styles.textSorted}>{t('patient_list:sort')}</Text>
-            <Button disabled center rounded light onPress={this.orderByFirstName}>
-              {orderByFirstName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
-              <Text>{t('patient_list:name')}</Text>
-            </Button>
-            <Button disabled center rounded light onPress={this.orderByLastName}>
-              {orderByLastName === 'asc' ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />}
-              <Text>{t('patient_list:surname')}</Text>
-            </Button>
-          </View>
-          {loading ? <LiwiLoader /> : this._renderPatients()}
+          <SeparatorLine/>
         </View>
-      </ScrollView>
+
+        {patients !== null ? (
+          <>
+            <View padding-auto style={{ flexDirection: "row", paddingBottom: 5 }}>
+              <Button iconRight center light style={{ flex: 0.33, borderRadius: 5 }}
+                      onPress={() => console.log("je toggle")}>
+                <Text>Nom</Text>
+                <Icon name="arrow-up"/>
+              </Button>
+              <Button iconRight center light style={{ flex: 0.33, borderRadius: 5 }}>
+                <Text>Prénom</Text>
+              </Button>
+              <Button iconRight center light style={{ flex: 0.33, borderRadius: 5 }}>
+                <Text>Status</Text>
+              </Button>
+            </View>
+            <View padding-auto>
+              <FlatList
+                key="patientList"
+                nestedScrollEnabled
+                data={patients}
+                refreshing={loading}
+                contentContainerStyle={{ paddingBottom: 220 }}
+                onRefresh={this.fetchPatients}
+                renderItem={(patient) => this._renderPatient(patient.item)}
+                onEndReached={({ distanceFromEnd }) => {
+                  this._handleLoadMore();
+                }}
+                onEndReachedThreshold={0.01}
+                ItemSeparatorComponent={this.renderSeparator}
+                keyExtractor={(patient) => patient.id}
+                ListFooterComponent={this.renderFooter}
+              />
+            </View>
+          </>
+        ) : (
+          <View padding-auto margin-auto>
+            <Text not-available>{t("patient_list:no_patients")}</Text>
+          </View>
+        )}
+      </>
     );
   }
 }
