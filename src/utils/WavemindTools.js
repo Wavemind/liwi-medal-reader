@@ -1,14 +1,17 @@
-import React, { Component } from "react";
-import { Button, Fab, Icon, View } from "native-base";
-import RNRestart from "react-native-restart";
-import FilesystemStorage from "redux-persist-filesystem-storage";
-import { clearLocalStorage, clearPatients, getItems, setItem } from "../engine/api/LocalStorage";
-import NavigationService from "../engine/navigation/Navigation.service";
-import { persistor, store } from "../../frontend_service/store";
-import { memorySizeOf } from "./swissKnives";
-import Realm from "realm";
-import { PatientModel } from "../../frontend_service/engine/models/Patient.model";
-import { MedicalCaseModel } from "../../frontend_service/engine/models/MedicalCase.model";
+import React, { Component } from 'react';
+import { Button, Fab, Icon, View } from 'native-base';
+import RNRestart from 'react-native-restart';
+import FilesystemStorage from 'redux-persist-filesystem-storage';
+import Realm from 'realm';
+
+import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/api/LocalStorage';
+import NavigationService from '../engine/navigation/Navigation.service';
+import { persistor, store } from '../../frontend_service/store';
+import { memorySizeOf } from './swissKnives';
+import { PatientModel } from '../../frontend_service/engine/models/Patient.model';
+import { MedicalCaseModel } from '../../frontend_service/engine/models/MedicalCase.model';
+import Database from '../engine/api/Database';
+import {patientTemplate} from './template/PatientTemplate';
 
 export default class WavemindTools extends Component {
   constructor(props) {
@@ -17,6 +20,16 @@ export default class WavemindTools extends Component {
       active: false,
     };
   }
+
+  generatePatients = async () => {
+    let i = 0;
+    for (i = 0; i < 1200; i++) {
+      const patient = patientTemplate();
+      const database = await new Database();
+      await database.insert('Patient', patient);
+      console.log(i);
+    }
+  };
 
   render() {
     const { active } = this.state;
@@ -27,21 +40,30 @@ export default class WavemindTools extends Component {
           <Icon name="developer-mode" type="MaterialIcons" />
           {active
             ? [
-                <Button
-                  key="1"
+              <Button
+                  key="0"
                   blue
                   onPress={async () => {
+                    await this.generatePatients();
+                  }}
+                >
+                  <Icon type="AntDesign" name="areachart" />
+                </Button>,
+                <Button
+                key="1"
+                blue
+                onPress={async () => {
                     await clearPatients();
                     NavigationService.navigate('SignIn');
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="AntDesign" name="deleteusergroup" />
-                </Button>,
+              >
+                <Icon type="AntDesign" name="deleteusergroup" />
+              </Button>,
                 <Button
-                  key="2"
-                  blue
-                  onPress={async () => {
+                key="2"
+                blue
+                onPress={async () => {
                     await Realm.deleteFile({
                       schema: [PatientModel, MedicalCaseModel],
                       deleteRealmIfMigrationNeeded: true,
@@ -51,22 +73,22 @@ export default class WavemindTools extends Component {
                     NavigationService.navigate('NewSession');
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="MaterialCommunityIcons" name="delete-forever" />
-                </Button>,
+              >
+                <Icon type="MaterialCommunityIcons" name="delete-forever" />
+              </Button>,
                 <Button
-                  key="3"
-                  blue
-                  onPress={async () => {
+                key="3"
+                blue
+                onPress={async () => {
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="SimpleLineIcons" name="reload" />
-                </Button>,
+              >
+                <Icon type="SimpleLineIcons" name="reload" />
+              </Button>,
                 <Button
-                  key="4"
-                  blue
-                  onPress={async () => {
+                key="4"
+                blue
+                onPress={async () => {
                     const sessions = await getItems('sessions');
                     const session = await getItems('session');
                     const algorithm = await getItems('algorithm');
@@ -86,13 +108,13 @@ export default class WavemindTools extends Component {
                       size_patients: memorySizeOf(patients),
                     });
                   }}
-                >
-                  <Icon type="FontAwesome" name="database" />
-                </Button>,
+              >
+                <Icon type="FontAwesome" name="database" />
+              </Button>,
                 <Button
-                  key="5"
-                  blue
-                  onPress={async () => {
+                key="5"
+                blue
+                onPress={async () => {
                     const algo = require('../../frontend_service/api/algo_refractor_from_olga_14_10_19');
                     const session = require('../../frontend_service/api/session');
 
@@ -100,9 +122,9 @@ export default class WavemindTools extends Component {
                     await setItem('algorithms', [algo]);
                     await RNRestart.Restart();
                   }}
-                >
-                  <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
-                </Button>,
+              >
+                <Icon type="MaterialCommunityIcons" name="lan-disconnect" />
+              </Button>,
               ]
             : null}
         </Fab>

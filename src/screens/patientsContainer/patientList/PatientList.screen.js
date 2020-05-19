@@ -12,17 +12,6 @@ import { liwiColors } from '../../../utils/constants';
 import Filter from '../../../components/Filter';
 import LiwiLoader from "../../../utils/LiwiLoader";
 
-
-var BUTTONS = [
-  "Option 0",
-  "Option 1",
-  "Option 2",
-  "Delete",
-  "Cancel"
-];
-var DESTRUCTIVE_INDEX = 3;
-var CANCEL_INDEX = 4;
-
 export default class PatientList extends React.Component {
   state = {
     propsToolTipVisible: false,

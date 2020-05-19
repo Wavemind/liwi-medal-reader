@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native';
 import { Button, Col, Text, View } from 'native-base';
 import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
 
+import uuid from 'react-native-uuid';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
@@ -18,7 +19,6 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import { validatorNavigate } from '../../../engine/navigation/CustomNavigator.navigation';
-import uuid from 'react-native-uuid';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -98,12 +98,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     await this.setState({ loading: true });
 
-    const validator = validatorNavigate({
-      type: 'Navigation/NAVIGATE',
-      routeName: 'Triage',
-      params: { initialPage: 0 },
-      key: 'Triage',
-    });
+    const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: 'Triage', params: { initialPage: 0 }, key: 'Triage' });
 
     if (validator.stepToBeFill[0].isActionValid === false) {
       updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
@@ -134,7 +129,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 routeName: newRoute,
               }),
             ],
-          }),
+          })
         );
       }
     }
