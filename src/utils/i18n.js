@@ -22,6 +22,7 @@ i18n
       en: {
         application: {
           loading: 'Loading...',
+          no_data: 'No data available',
         },
         drug: {
           give: 'Give',
@@ -187,6 +188,7 @@ i18n
         },
         patient_detail: {},
         patient_list: {
+          add: 'Add patient',
           all: 'All',
           waiting: 'Patients waiting for',
           search: 'Search',
