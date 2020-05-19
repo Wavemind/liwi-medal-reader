@@ -96,8 +96,7 @@ const _fetch = async (url, header) => {
   if (httpRequest.status === 200) {
     return result;
   }
-
-  handleHttpError(result.errors);
+  handleHttpError(result.error);
   return null;
 };
 
@@ -114,14 +113,13 @@ const _setHeaders = async (method = 'GET', body = false) => {
   const header = {
     method,
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       'access-token': credentials?.access_token,
       'group-token': credentials?.group?.token,
       client: credentials?.client,
       uid: credentials?.uid,
       expiry: credentials?.expiry,
-
     },
   };
 

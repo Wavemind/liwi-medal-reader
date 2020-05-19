@@ -335,6 +335,7 @@ i18n
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
+          filter: 'Filters',
         },
         common: {
           back: 'Back',
