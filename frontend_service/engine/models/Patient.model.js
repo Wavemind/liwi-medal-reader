@@ -4,10 +4,11 @@ import uuid from 'react-native-uuid';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 import { getItem } from '../../../src/engine/api/LocalStorage';
+import { PatientValueModel } from './PatientValue.model';
 
 export class PatientModel {
   constructor(props = {}) {
-    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '' } = props;
+    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patient_values = null } = props;
     if (this.id === undefined || this.id === null) {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
@@ -20,7 +21,8 @@ export class PatientModel {
       }
 
       this.main_data_patient_id = main_data_patient_id;
-
+      // TODO when local-data ready
+      // this.patientValues = patient_values?.map((patient_value => new PatientValueModel(patient_value)));
       this.uid = facility !== null ? facility?.uid?.toString() : null;
       this.study_id = facility !== null ? facility?.study_id?.toString() : null;
       this.group_id = facility !== null ? facility?.group_id?.toString() : null;
@@ -37,24 +39,6 @@ export class PatientModel {
       }
     }
   }
-
-  /**
-   * Save patient in database
-   * @returns {Promise<void|string|Array|v.Chain|v.ExplicitChain<string>>}
-   */
-  save = async () => {
-    const medicalCase = this.medicalCases[this.medicalCases.length - 1];
-    const user = await getItem('user');
-    const database = await new Database();
-    this.id = uuid.v4();
-
-    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
-
-    return database.insert('Patient', {
-      ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activities: [activity] }],
-    });
-  };
 
   /**
    * Push a medical case in a patient
@@ -75,6 +59,33 @@ export class PatientModel {
     return true;
   };
 
+  getPatientValues = async () => {
+    const database = await new Database();
+    return database.where('PatientValue', this.id, 'patient_id');
+  };
+
+  getLabelFromPatientValue = async (nodeList) => {
+    nodeList.map(async (node) =>(await this.getPatientValues()).find((patientValue) => patientValue.node_id === node).value);
+  };
+
+  /**
+   * Save patient in database
+   * @returns {Promise<void|string|Array|v.Chain|v.ExplicitChain<string>>}
+   */
+  save = async () => {
+    const medicalCase = this.medicalCases[this.medicalCases.length - 1];
+    const user = await getItem('user');
+    const database = await new Database();
+    this.id = uuid.v4();
+
+    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
+
+    return database.insert('Patient', {
+      ...this,
+      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activities: [activity] }],
+    });
+  };
+
   /**
    * Test if patient was already registered in an another facility
    * @returns {boolean}
@@ -82,6 +93,7 @@ export class PatientModel {
   wasInOtherFacility = () => {
     return this.other_uid !== null && this.other_uid !== undefined;
   };
+
 }
 
 PatientModel.schema = {
