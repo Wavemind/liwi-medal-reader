@@ -57,7 +57,7 @@ export const epicCatchAnswer = (action$, state$) =>
 
       relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
 
-      if (index === state$.value.left_top_question_id || index === state$.value.first_top_right_question_id || index === state$.value.second_top_right_question_id) {
+      if (index === state$.value.mobile_config.left_top_question_id || index === state$.value.mobile_config.first_top_right_question_id || index === state$.value.mobile_config.second_top_right_question_id) {
         NavigationService.setParamsAge();
       }
 

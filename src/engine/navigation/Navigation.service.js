@@ -96,8 +96,7 @@ function getActiveRouteName(navigationState) {
  */
 function setParamsAge(name = '') {
   const state$ = store.getState();
-
-  const { nodes, left_top_question_id, first_top_right_question_id, second_top_right_question_id } = state$;
+  const { nodes, mobile_config } = state$;
 
   const showValue = (node) => {
     if (node === undefined) {
@@ -114,7 +113,7 @@ function setParamsAge(name = '') {
     return node.value;
   };
 
-  const headerRight = `${showValue(nodes[first_top_right_question_id])} ${showValue(nodes[second_top_right_question_id])} ${showValue(nodes[left_top_question_id])}`;
+  const headerRight = `${showValue(nodes[mobile_config.first_top_right_question_id])} ${showValue(nodes[mobile_config.second_top_right_question_id])} ${showValue(nodes[mobile_config.left_top_question_id])}`;
   const currentRoute = getCurrentRoute();
 
   const action = NavigationActions.setParams({
