@@ -21,6 +21,7 @@
     "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/netinfo": "5.7.1",
     "@react-native-community/viewpager": "^1.1.7",
+    "accordion-collapse-react-native": "^0.2.10",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-react-native": "^5.0.2",
     "color": "^3.1.2",
