@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
 
   round: {
-    borderRadius: 50,
+    borderRadius: '50px',
     height: 60,
     width: 60,
   },

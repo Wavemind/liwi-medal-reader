@@ -8,7 +8,6 @@ import Database from '../../../src/engine/api/Database';
 import { differenceNodes } from '../../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
 import { store } from '../../store';
-import { getDeviceInformation } from '../../../src/engine/api/Device';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {

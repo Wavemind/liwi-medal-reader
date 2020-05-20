@@ -20,7 +20,7 @@ export default {
     },
 
     '.round': {
-      borderRadius: 50,
+      borderRadius: '50px',
       backgroundColor: liwiColors.darkGreyColor,
       height: 40,
       width: 40,
