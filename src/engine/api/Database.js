@@ -1,8 +1,8 @@
-import RealmInterface from "./dbInterface/RealmInterface";
-import HttpInterface from "./dbInterface/HttpInterface";
+import RealmInterface from './dbInterface/RealmInterface';
+import HttpInterface from './dbInterface/HttpInterface';
 
-import { getItem } from "./LocalStorage";
-import { databaseInterface } from "../../../frontend_service/constants";
+import { getItem } from './LocalStorage';
+import { databaseInterface } from '../../../frontend_service/constants';
 
 export default class Database {
   constructor() {
@@ -14,17 +14,6 @@ export default class Database {
       return this;
     })();
   }
-
-  /**
-   * Returns all the entry on a specific model
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } page - Pagination. if null, retrieved all information
-   * @returns { Collection } - A collection of all the data
-   */
-  getAll = async (model, page) => {
-    const dbInterface = await this._checkInterface();
-    return this[dbInterface].getAll(model, page);
-  };
 
   /**
    * Fetch single entry
@@ -39,6 +28,17 @@ export default class Database {
   };
 
   /**
+   * Returns all the entry on a specific model
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } page - Pagination. if null, retrieved all information
+   * @returns { Collection } - A collection of all the data
+   */
+  getAll = async (model, page) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].getAll(model, page);
+  };
+
+  /**
    * Creates an entry of a specific model in the database
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
@@ -49,15 +49,13 @@ export default class Database {
   };
 
   /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @return { object } object - The value of the object
+   * Lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
    */
-  update = async (model, id, fields) => {
+  lockMedicalCase = async (id) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].update(model, id, fields);
+    return this[dbInterface].lockMedicalCase(id);
   };
 
   /**
@@ -73,6 +71,11 @@ export default class Database {
     return this[dbInterface].push(model, id, field, value);
   };
 
+  search = async (query) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].search(query);
+  };
+
   /**
    * Unlock a medical case when device is in client server architecture
    * @param {integer} id - Medical case id
@@ -84,13 +87,15 @@ export default class Database {
   };
 
   /**
-   * Lock a medical case when device is in client server architecture
-   * @param {integer} id - Medical case id
-   * @returns {string}
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @return { object } object - The value of the object
    */
-  lockMedicalCase = async (id) => {
+  update = async (model, id, fields) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].lockMedicalCase(id);
+    return this[dbInterface].update(model, id, fields);
   };
 
   /**
