@@ -1,10 +1,13 @@
 // @flow
 
 import uuid from 'react-native-uuid';
+import moment from 'moment';
+import I18n from '../../../src/utils/i18n';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import { PatientValueModel } from './PatientValue.model';
+import { displayFormats } from '../../constants';
 
 export class PatientModel {
   constructor(props = {}) {
@@ -59,8 +62,20 @@ export class PatientModel {
     return true;
   };
 
-  getLabelFromPatientValue = (nodeList) => {
-    return nodeList.map((node) => this.patientValues.find((patientValue) => patientValue.node_id === node)?.value);
+  /**
+   *
+   * @param {array} nodeList - Node id to retrieved
+   * @param {object} nodes - List of nodes in algorithm
+   * @returns {string|date} - value to display
+   */
+  getLabelFromPatientValue = (nodeList, nodes) => {
+    return nodeList.map((nodeId) => {
+      const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
+      if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
+        return moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+      }
+      return currentPatientValue.value;
+    });
   };
 
   /**

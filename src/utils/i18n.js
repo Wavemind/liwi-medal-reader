@@ -23,6 +23,7 @@ i18n
         application: {
           loading: 'Loading...',
           no_data: 'No data available',
+          date_format: 'Do MMMM YY',
         },
         drug: {
           give: 'Give',

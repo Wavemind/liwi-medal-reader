@@ -26,7 +26,7 @@ export default class ListContent extends React.Component<Props, State> {
 
   async componentDidMount() {
     const { list } = this.props;
-    await this.fetchList();
+    await this._fetchList();
 
     const algorithm = await getItems('algorithm');
 
@@ -40,7 +40,7 @@ export default class ListContent extends React.Component<Props, State> {
    * Fetch data
    * @returns {Promise<void>}
    */
-  fetchList = async () => {
+  _fetchList = async () => {
     const {
       app: { database },
       model,
@@ -72,10 +72,11 @@ export default class ListContent extends React.Component<Props, State> {
    * @returns {*}
    * @private
    */
-  _renderPatient = (item) => {
+  _renderItem = (item) => {
     const { navigation, itemNavigation } = this.props;
-    const { columns } = this.state;
+    const { columns, nodes } = this.state;
     const size = 1 / columns.length;
+    const columnsValue = item.getLabelFromPatientValue(columns, nodes);
 
     return (
       <ListItem
@@ -87,9 +88,9 @@ export default class ListContent extends React.Component<Props, State> {
           })
         }
       >
-        {columns.map((column) => (
-          <View style={{ flex: size }}>
-            <Text size-auto>{}</Text>
+        {columnsValue.map((value) => (
+          <View style={{ flex: size }} key={`${item.id}_${value}`}>
+            <Text size-auto>{value}</Text>
           </View>
         ))}
       </ListItem>
@@ -156,7 +157,7 @@ export default class ListContent extends React.Component<Props, State> {
       <>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
-            <Button iconRight center light style={[{ flex: 1 / columns.length }, styles.sortButton]}>
+            <Button key={column} iconRight center light style={[{ flex: 1 / columns.length }, styles.sortButton]}>
               <Text>{nodes[column].label}</Text>
               <Icon name="arrow-up" />
             </Button>
@@ -171,8 +172,8 @@ export default class ListContent extends React.Component<Props, State> {
             data={data}
             refreshing={loading}
             contentContainerStyle={styles.flatList}
-            onRefresh={this.fetchList}
-            renderItem={(value) => this._renderPatient(value.item)}
+            onRefresh={this._fetchList}
+            renderItem={(value) => this._renderItem(value.item)}
             onEndReached={({ distanceFromEnd }) => {
               if (!isLastBatch) {
                 this._handleLoadMore();

@@ -14,6 +14,8 @@ import NavigationService from '../../../engine/navigation/Navigation.service';
 import Database from '../../../engine/api/Database';
 
 export default class UnLockSession extends React.Component<Props, State> {
+  _isMounted = false;
+
   state = {
     session: null,
     loading: false,
@@ -31,6 +33,14 @@ export default class UnLockSession extends React.Component<Props, State> {
       session,
     });
   };
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   /**
    * Get group, algorithm and store it in local storage

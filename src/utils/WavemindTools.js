@@ -24,7 +24,7 @@ export default class WavemindTools extends Component {
   generatePatients = async () => {
     let i = 0;
     for (i = 0; i < 1200; i++) {
-      const patient = patientTemplate();
+      const patient = await patientTemplate();
       const database = await new Database();
       await database.insert('Patient', patient);
       console.log(i);
