@@ -32,7 +32,6 @@ export default class ListContent extends React.Component<Props, State> {
 
     const columns = algorithm.mobile_config[list];
     const { nodes } = algorithm;
-
     this.setState({ columns, nodes, firstLoading: false });
   }
 
@@ -58,12 +57,34 @@ export default class ListContent extends React.Component<Props, State> {
     });
   };
 
+
   /**
-   * Separator between flatList item
-   * @returns {*}
+   * Load more item to display
+   * @private
    */
-  _renderSeparator = () => {
-    return <View style={styles.separator} />;
+  _handleLoadMore = () => {
+    const {
+      app: { database },
+      model,
+    } = this.props;
+    const { data, currentPage } = this.state;
+
+    this.setState(
+      {
+        loading: true,
+      },
+      async () => {
+        const newData = await database.getAll(model, currentPage);
+        const isLastBatch = newData.length === 0;
+
+        this.setState({
+          data: data.concat(newData),
+          currentPage: currentPage + 1,
+          isLastBatch,
+          loading: false,
+        });
+      }
+    );
   };
 
   /**
@@ -98,32 +119,11 @@ export default class ListContent extends React.Component<Props, State> {
   };
 
   /**
-   * Load more item to display
-   * @private
+   * Separator between flatList item
+   * @returns {*}
    */
-  _handleLoadMore = () => {
-    const {
-      app: { database },
-      model,
-    } = this.props;
-    const { data, currentPage } = this.state;
-
-    this.setState(
-      {
-        loading: true,
-      },
-      async () => {
-        const newData = await database.getAll(model, currentPage);
-        const isLastBatch = newData.length === 0;
-
-        this.setState({
-          data: data.concat(newData),
-          currentPage: currentPage + 1,
-          isLastBatch,
-          loading: false,
-        });
-      }
-    );
+  _renderSeparator = () => {
+    return <View style={styles.separator} />;
   };
 
   /**
@@ -157,9 +157,8 @@ export default class ListContent extends React.Component<Props, State> {
       <>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
-            <Button key={column} iconRight center light style={[{ flex: 1 / columns.length }, styles.sortButton]}>
+            <Button key={column} iconRight center light style={[{ flex: (1 / columns.length) }, styles.sortButton]}>
               <Text>{nodes[column].label}</Text>
-              <Icon name="arrow-up" />
             </Button>
           ))}
           <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filter')}>
