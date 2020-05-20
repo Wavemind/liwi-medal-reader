@@ -71,6 +71,7 @@ export default class RealmInterface {
     this._realm().write(() => {
       this._realm().create(model, object);
     });
+
     this._savePatientValue(model, object);
   };
 
@@ -152,7 +153,7 @@ export default class RealmInterface {
   };
 
   /**
-   * Saves the patient Values based on the activities on the object
+   * Saves the patient values based on the activities on the object
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
    * @private
@@ -160,12 +161,14 @@ export default class RealmInterface {
   _savePatientValue = (model, object) => {
     const medicalCase = this._getMedicalCaseFromModel(model, object);
 
+    // Will update the patient values based on activities so we only take the edits
     const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
 
     const patient = this.findBy('Patient', medicalCase.patient_id);
     nodeActivities.map((node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
         const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
+        // If the values dosen't exist we create it otherwise we edit it
         if (patientValue === undefined) {
           this.push('Patient', medicalCase.patient_id, 'patientValues', {
             id: uuid.v4(),

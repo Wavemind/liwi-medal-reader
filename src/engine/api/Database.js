@@ -94,9 +94,11 @@ export default class Database {
   };
 
   /**
-   * Lock a medical case when device is in client server architecture
-   * @param {integer} id - Medical case id
-   * @returns {string}
+   * Finds a collection of objects based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - A collection of wanted values
    */
   where = async (model, value, field) => {
     const dbInterface = await this._checkInterface();
@@ -116,6 +118,6 @@ export default class Database {
     } else {
       dbInterface = databaseInterface.httpInterface;
     }
-    return databaseInterface.realmInterface;
+    return dbInterface;
   };
 }
