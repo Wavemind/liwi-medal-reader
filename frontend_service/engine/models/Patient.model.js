@@ -68,20 +68,18 @@ export class PatientModel {
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
-  getLabelFromPatientValue = (nodeList, nodes) => {
-    return nodeList.map((nodeId) => {
-      let displayedValue = '';
+  getLabelFromPatientValue = (nodeId, nodes) => {
+    let displayedValue = '';
 
-      const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
-      if (currentPatientValue !== undefined) {
-        if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
-          displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
-        } else {
-          displayedValue = currentPatientValue.value;
-        }
+    const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
+    if (currentPatientValue !== undefined) {
+      if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
+        displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+      } else {
+        displayedValue = currentPatientValue.value;
       }
-      return displayedValue;
-    });
+    }
+    return displayedValue;
   };
 
   /**

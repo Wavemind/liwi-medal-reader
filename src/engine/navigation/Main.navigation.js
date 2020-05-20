@@ -67,7 +67,7 @@ const Stack = createStackNavigator(
       },
       navigationOptions: () => {
         return {
-          header: null,
+          headerShown: false,
           mode: 'modal',
         };
       },

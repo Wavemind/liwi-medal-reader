@@ -54,10 +54,11 @@ export default class RealmInterface {
     if (page === null) {
       return this._realm().objects(model);
     }
-    return this._realm()
+    const test = this._realm()
       .objects(model)
       .sorted('updated_at', 'ASC')
       .slice((page - 1) * elementPerPage, elementPerPage * page);
+    return test;
   };
 
   /**

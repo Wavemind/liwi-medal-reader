@@ -26,6 +26,7 @@ export default class ListContent extends React.Component<Props, State> {
 
   async componentDidMount() {
     const { list } = this.props;
+
     await this._fetchList();
 
     const algorithm = await getItems('algorithm');
@@ -97,7 +98,6 @@ export default class ListContent extends React.Component<Props, State> {
     const { navigation, itemNavigation } = this.props;
     const { columns, nodes } = this.state;
     const size = 1 / columns.length;
-    const columnsValue = item.getLabelFromPatientValue(columns, nodes);
 
     return (
       <ListItem
@@ -109,9 +109,9 @@ export default class ListContent extends React.Component<Props, State> {
           })
         }
       >
-        {columnsValue.map((value) => (
-          <View style={{ flex: size }} key={`${item.id}_${value}`}>
-            <Text size-auto>{value}</Text>
+        {columns.map((nodeId) => (
+          <View style={{ flex: size }} key={`${item.id}_${nodeId}`}>
+            <Text size-auto>{item.getLabelFromPatientValue(nodeId, nodes)}</Text>
           </View>
         ))}
       </ListItem>
@@ -148,6 +148,7 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       app: { t },
       navigation,
+
     } = this.props;
     const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
