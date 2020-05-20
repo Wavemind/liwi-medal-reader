@@ -1,25 +1,25 @@
 // @flow
 
-import * as React from "react";
-import { FlatList } from "react-native";
-import { Button, Icon, Input, Item, ListItem, Text, View } from "native-base";
+import * as React from 'react';
+import { FlatList } from 'react-native';
+import { Button, Icon, Input, Item, ListItem, Text, View } from 'native-base';
 
-import { styles } from "./PatientList.style";
-import { SeparatorLine } from "../../../template/layout";
-import { getItems } from "../../../engine/api/LocalStorage";
-import ConfirmationView from "../../../components/ConfirmationView";
-import { liwiColors } from "../../../utils/constants";
-import Filter from "../../../components/Filter";
+import { styles } from './PatientList.style';
+import { SeparatorLine } from '../../../template/layout';
+import { getItems } from '../../../engine/api/LocalStorage';
+import ConfirmationView from '../../../components/ConfirmationView';
+import { liwiColors } from '../../../utils/constants';
+import Filter from '../../../components/Filter';
 
 export default class PatientList extends React.Component {
   state = {
     propsToolTipVisible: false,
     loading: false,
-    searchTerm: "",
+    searchTerm: '',
     isGeneratingPatient: false,
     algorithm: null,
     patients: [],
-    currentPage: 1
+    currentPage: 1,
   };
 
   constructor() {
@@ -27,11 +27,10 @@ export default class PatientList extends React.Component {
   }
 
   async componentDidMount() {
-    const { navigation } = this.props;
     // Force refresh with a navigation.push
     // navigation.addListener('willFocus', async () => {
     await this.fetchPatients();
-    const algorithm = await getItems("algorithm");
+    const algorithm = await getItems('algorithm');
     this.setState({ algorithm });
     // });
   }
@@ -42,17 +41,16 @@ export default class PatientList extends React.Component {
    */
   fetchPatients = async () => {
     const {
-      app: { database }
+      app: { database },
     } = this.props;
     const { currentPage } = this.state;
     this.setState({ loading: true });
 
-    const patients = await database.getAll("Patient", 1);
-
+    const patients = await database.getAll('Patient', 1);
     this.setState({
       patients,
       currentPage: currentPage + 1,
-      loading: false
+      loading: false,
     });
   };
 
@@ -79,10 +77,10 @@ export default class PatientList extends React.Component {
       <ListItem
         style={{
           paddingLeft: 10,
-          shadowColor: "#000",
+          shadowColor: '#000',
           shadowOffset: {
             width: 0,
-            height: 1
+            height: 1,
           },
           shadowOpacity: 0.2,
           shadowRadius: 1.41,
@@ -95,26 +93,23 @@ export default class PatientList extends React.Component {
           borderWidth: 0,
           paddingTop: 20,
           paddingBottom: 20,
-          backgroundColor: liwiColors.whiteDark
+          backgroundColor: liwiColors.whiteDark,
         }}
         key={`${patient.id}_patient_list`}
         onPress={() =>
-          navigation.navigate("PatientProfile", {
-            id: patient.id
+          navigation.navigate('PatientProfile', {
+            id: patient.id,
           })
         }
       >
         <View w33>
-          <Text
-            size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+          <Text size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
         </View>
         <View w33>
-          <Text
-            size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+          <Text size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
         </View>
         <View w33>
-          <Text
-            size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
+          <Text size-auto>{first_top_right_question !== null ? `${first_top_right_question} ${second_top_right_question}` : patient.id}</Text>
         </View>
       </ListItem>
     );
@@ -122,13 +117,13 @@ export default class PatientList extends React.Component {
 
   callBackClose = () => {
     this.setState({
-      propsToolTipVisible: false
+      propsToolTipVisible: false,
     });
   };
 
   _handleLoadMore = () => {
     const {
-      app: { database }
+      app: { database },
     } = this.props;
     const { patients, currentPage } = this.state;
     this.setState(
@@ -136,7 +131,7 @@ export default class PatientList extends React.Component {
         loading: true,
       },
       async () => {
-        const newPatients = await database.getAll("Patient", currentPage);
+        const newPatients = await database.getAll('Patient', currentPage);
         this.setState({
           patients: patients.concat(newPatients),
           loading: false,
@@ -150,8 +145,8 @@ export default class PatientList extends React.Component {
       <View
         style={{
           height: 3,
-          width: "100%",
-          backgroundColor: liwiColors.lighterGreyColor
+          width: '100%',
+          backgroundColor: liwiColors.lighterGreyColor,
         }}
       />
     );
@@ -172,19 +167,18 @@ export default class PatientList extends React.Component {
     const {
       app: { t },
       navigation,
-      medicalCase
+      medicalCase,
     } = this.props;
 
     return (
       <>
         <View padding-auto style={{ marginTop: 10 }}>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <Item style={styles.input} round>
-              <Icon active name="search"/>
-              <Input value={searchTerm} onChangeText={this.searchBy}/>
+              <Icon active name="search" />
+              <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible}
-                              nextRoute="PatientUpsert" idPatient={null}
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}
             />
             {algorithm !== null ? (
               <Button
@@ -194,10 +188,10 @@ export default class PatientList extends React.Component {
                 light
                 red
                 onPress={() => {
-                  if (medicalCase.id === undefined || medicalCase.isNewCase === "false") {
-                    navigation.navigate("PatientUpsert", {
+                  if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
+                    navigation.navigate('PatientUpsert', {
                       idPatient: null,
-                      newMedicalCase: true
+                      newMedicalCase: true,
                     });
                   } else {
                     this.setState({ propsToolTipVisible: true });
@@ -205,23 +199,22 @@ export default class PatientList extends React.Component {
                 }}
                 disabled={isGeneratingPatient}
               >
-                <Icon type="MaterialCommunityIcons" name="plus" white/>
+                <Icon type="MaterialCommunityIcons" name="plus" white />
               </Button>
             ) : null}
           </View>
 
-          <Filter/>
+          <Filter />
 
-          <SeparatorLine/>
+          <SeparatorLine />
         </View>
 
         {patients !== null ? (
           <>
-            <View padding-auto style={{ flexDirection: "row", paddingBottom: 5 }}>
-              <Button iconRight center light style={{ flex: 0.33, borderRadius: 5 }}
-                      onPress={() => console.log("je toggle")}>
+            <View padding-auto style={{ flexDirection: 'row', paddingBottom: 5 }}>
+              <Button iconRight center light style={{ flex: 0.33, borderRadius: 5 }} onPress={() => console.log('je toggle')}>
                 <Text>Nom</Text>
-                <Icon name="arrow-up"/>
+                <Icon name="arrow-up" />
               </Button>
               <Button iconRight center light style={{ flex: 0.33, borderRadius: 5 }}>
                 <Text>Prénom</Text>
@@ -251,7 +244,7 @@ export default class PatientList extends React.Component {
           </>
         ) : (
           <View padding-auto margin-auto>
-            <Text not-available>{t("patient_list:no_patients")}</Text>
+            <Text not-available>{t('patient_list:no_patients')}</Text>
           </View>
         )}
       </>
