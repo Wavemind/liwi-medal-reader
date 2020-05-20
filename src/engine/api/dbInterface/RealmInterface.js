@@ -26,12 +26,6 @@ export default class RealmInterface {
     });
   };
 
-  delete = (object) => {
-    this._realm().write(() => {
-      realm.delete(object);
-    });
-  };
-
   /**
    * Finds a object based on a field and a value
    * @param { string } model - The model name of the data we want to retrieve
@@ -42,6 +36,12 @@ export default class RealmInterface {
   findBy = (model, value, field = 'id') => {
     const object = this._realm().objects(model).filtered(`${field} = $0`, value)[0];
     return object === undefined ? null : object;
+  };
+
+  delete = (object) => {
+    this._realm().write(() => {
+      realm.delete(object);
+    });
   };
 
   /**
@@ -75,31 +75,6 @@ export default class RealmInterface {
     this._savePatientValue(model, object);
   };
 
-  /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @returns { Collection } - Updated object
-   */
-  update = async (model, id, fields) => {
-    const session = await getItem('session');
-    if (session.group.architecture === 'client_server') {
-      fields = { ...fields, fail_safe: true };
-    }
-
-    this._realm().write(() => {
-      this._realm().create(model, { id, ...fields }, 'modified');
-    });
-    const object = this.findBy(model, id);
-    if (['Patient', 'MedicalCase'].includes(model)) this._savePatientValue(model, object);
-  };
-
-  /**
-   * Blank method used in httpInterface
-   */
-  unlockMedicalCase = () => {};
-
   lockMedicalCase = () => {};
 
   /**
@@ -121,6 +96,36 @@ export default class RealmInterface {
       object[field].push(value);
     });
     if (field === 'medicalCases') this._savePatientValue(model, object);
+  };
+
+  search = async (query) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].search(query);
+  };
+
+  /**
+   * Blank method used in httpInterface
+   */
+  unlockMedicalCase = () => {};
+
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
+   */
+  update = async (model, id, fields) => {
+    const session = await getItem('session');
+    if (session.group.architecture === 'client_server') {
+      fields = { ...fields, fail_safe: true };
+    }
+
+    this._realm().write(() => {
+      this._realm().create(model, { id, ...fields }, 'modified');
+    });
+    const object = this.findBy(model, id);
+    if (['Patient', 'MedicalCase'].includes(model)) this._savePatientValue(model, object);
   };
 
   /**
