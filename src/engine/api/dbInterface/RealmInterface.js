@@ -71,6 +71,7 @@ export default class RealmInterface {
     this._realm().write(() => {
       this._realm().create(model, object);
     });
+
     this._savePatientValue(model, object);
   };
 
@@ -86,6 +87,7 @@ export default class RealmInterface {
     if (session.group.architecture === 'client_server') {
       fields = { ...fields, fail_safe: true };
     }
+
     this._realm().write(() => {
       this._realm().create(model, { id, ...fields }, 'modified');
     });
@@ -121,10 +123,24 @@ export default class RealmInterface {
     if (field === 'medicalCases') this._savePatientValue(model, object);
   };
 
+  /**
+   * Finds a collection of objects based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - A collection of wanted values
+   */
   where = async (model, value, field) => {
     return this._realm().objects(model).filtered(`${field} = $0`, value);
   };
 
+  /**
+   * Returns the medical case
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { object } object - The value of the object
+   * @returns { MedicalCaseModel } returns the medical case
+   * @private
+   */
   _getMedicalCaseFromModel = (model, object) => {
     switch (model) {
       case 'MedicalCase':
@@ -136,15 +152,23 @@ export default class RealmInterface {
     }
   };
 
+  /**
+   * Saves the patient values based on the activities on the object
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { object } object - The value of the object
+   * @private
+   */
   _savePatientValue = (model, object) => {
     const medicalCase = this._getMedicalCaseFromModel(model, object);
 
+    // Will update the patient values based on activities so we only take the edits
     const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
 
     const patient = this.findBy('Patient', medicalCase.patient_id);
     nodeActivities.map((node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
         const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
+        // If the values dosen't exist we create it otherwise we edit it
         if (patientValue === undefined) {
           this.push('Patient', medicalCase.patient_id, 'patientValues', {
             id: uuid.v4(),
