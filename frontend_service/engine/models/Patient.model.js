@@ -49,7 +49,7 @@ export class PatientModel {
     const user = await getItem('user');
     const medicalCaseClass = new MedicalCaseModel(medicalCase);
     const database = await new Database();
-    const activity = await medicalCase.generateActivity('registration', user, medicalCaseClass.nodes);
+    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
     medicalCaseClass.patient_id = this.id;
     medicalCaseClass.json = JSON.stringify(medicalCaseClass);
     await medicalCaseClass.handleFailSafe();
@@ -59,13 +59,8 @@ export class PatientModel {
     return true;
   };
 
-  getPatientValues = async () => {
-    const database = await new Database();
-    return database.where('PatientValue', this.id, 'patient_id');
-  };
-
-  getLabelFromPatientValue = async (nodeList) => {
-    nodeList.map(async (node) =>(await this.getPatientValues()).find((patientValue) => patientValue.node_id === node).value);
+  getLabelFromPatientValue = (nodeList) => {
+    return nodeList.map((node) => this.patientValues.find((patientValue) => patientValue.node_id === node)?.value);
   };
 
   /**
@@ -93,7 +88,6 @@ export class PatientModel {
   wasInOtherFacility = () => {
     return this.other_uid !== null && this.other_uid !== undefined;
   };
-
 }
 
 PatientModel.schema = {
@@ -109,6 +103,7 @@ PatientModel.schema = {
     other_group_id: 'string?',
     reason: 'string?',
     medicalCases: 'MedicalCase[]',
+    patientValues: 'PatientValue[]',
     fail_safe: { type: 'bool', default: false },
   },
 };
