@@ -271,7 +271,6 @@ export class MedicalCaseModel {
     let differenceNode = [];
 
     const medicalCase = await database.findBy('MedicalCase', this.id);
-
     if (medicalCase === null) {
       // TODO maybe check version id algo is not different ?
       differenceNode = differenceNodes(nodes, algorithm.nodes);
@@ -290,7 +289,6 @@ export class MedicalCaseModel {
    * Defines if the case is locked
    */
   isLocked = (deviceInfo, user) => {
-
     return this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address));
   };
 }

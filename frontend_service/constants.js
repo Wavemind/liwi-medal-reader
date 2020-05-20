@@ -86,6 +86,7 @@ export const categories = {
   assessment: 'assessment_test',
   chronicCondition: 'chronic_condition',
   basicMeasurement: 'basic_measurement',
+  basicDemographic: 'basic_demographic',
   uniqueTriageQuestion: 'unique_triage_question',
   exposure: 'exposure',
   physicalExam: 'physical_exam',

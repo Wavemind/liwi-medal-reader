@@ -94,6 +94,16 @@ export default class Database {
   };
 
   /**
+   * Lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
+   */
+  where = async (model, value, field) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].where(model, value, field);
+  };
+
+  /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
    * @private
@@ -106,6 +116,6 @@ export default class Database {
     } else {
       dbInterface = databaseInterface.httpInterface;
     }
-    return dbInterface;
+    return databaseInterface.realmInterface;
   };
 }
