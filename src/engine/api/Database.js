@@ -94,6 +94,18 @@ export default class Database {
   };
 
   /**
+   * Finds a collection of objects based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - A collection of wanted values
+   */
+  where = async (model, value, field) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].where(model, value, field);
+  };
+
+  /**
    * Define interface by connection and group architecture
    * @returns {string} interface to use
    * @private

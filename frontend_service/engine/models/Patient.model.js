@@ -4,10 +4,11 @@ import uuid from 'react-native-uuid';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 import { getItem } from '../../../src/engine/api/LocalStorage';
+import { PatientValueModel } from './PatientValue.model';
 
 export class PatientModel {
   constructor(props = {}) {
-    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '' } = props;
+    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patient_values = null } = props;
     if (this.id === undefined || this.id === null) {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
@@ -20,7 +21,8 @@ export class PatientModel {
       }
 
       this.main_data_patient_id = main_data_patient_id;
-
+      // TODO when local-data ready
+      // this.patientValues = patient_values?.map((patient_value => new PatientValueModel(patient_value)));
       this.uid = facility !== null ? facility?.uid?.toString() : null;
       this.study_id = facility !== null ? facility?.study_id?.toString() : null;
       this.group_id = facility !== null ? facility?.group_id?.toString() : null;
@@ -39,6 +41,29 @@ export class PatientModel {
   }
 
   /**
+   * Push a medical case in a patient
+   * @param { object } medicalCase
+   * @returns {Promise<boolean>}
+   */
+  addMedicalCase = async (medicalCase) => {
+    const user = await getItem('user');
+    const medicalCaseClass = new MedicalCaseModel(medicalCase);
+    const database = await new Database();
+    const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
+    medicalCaseClass.patient_id = this.id;
+    medicalCaseClass.json = JSON.stringify(medicalCaseClass);
+    await medicalCaseClass.handleFailSafe();
+    medicalCaseClass.activities = [activity];
+    await database.push('Patient', this.id, 'medicalCases', medicalCaseClass);
+
+    return true;
+  };
+
+  getLabelFromPatientValue = (nodeList) => {
+    return nodeList.map((node) => this.patientValues.find((patientValue) => patientValue.node_id === node)?.value);
+  };
+
+  /**
    * Save patient in database
    * @returns {Promise<void|string|Array|v.Chain|v.ExplicitChain<string>>}
    */
@@ -54,25 +79,6 @@ export class PatientModel {
       ...this,
       medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activities: [activity] }],
     });
-  };
-
-  /**
-   * Push a medical case in a patient
-   * @param { object } medicalCase
-   * @returns {Promise<boolean>}
-   */
-  addMedicalCase = async (medicalCase) => {
-    const user = await getItem('user');
-    const medicalCaseClass = new MedicalCaseModel(medicalCase);
-    const database = await new Database();
-    const activity = await medicalCase.generateActivity('registration', user, medicalCaseClass.nodes);
-    medicalCaseClass.patient_id = this.id;
-    medicalCaseClass.json = JSON.stringify(medicalCaseClass);
-    await medicalCaseClass.handleFailSafe();
-    medicalCaseClass.activities = [activity];
-    await database.push('Patient', this.id, 'medicalCases', medicalCaseClass);
-
-    return true;
   };
 
   /**
@@ -97,6 +103,7 @@ PatientModel.schema = {
     other_group_id: 'string?',
     reason: 'string?',
     medicalCases: 'MedicalCase[]',
+    patientValues: 'PatientValue[]',
     fail_safe: { type: 'bool', default: false },
   },
 };

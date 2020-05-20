@@ -136,7 +136,6 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.14.2",
     "flow-bin": "^0.94.0",
-    "husky": "^3.0.0",
     "jest": "^25.1.0",
     "jest-styled-components": "^6.3.3",
     "jetifier": "^1.6.4",
@@ -148,11 +147,6 @@
     "react-native-debugger-open": "^0.3.17",
     "react-test-renderer": "16.9.0",
     "redux-devtools-extension": "^2.13.8"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "eslint src frontend_service"
-    }
   },
   "detox": {
     "configurations": {
