@@ -1,51 +1,61 @@
 // @flow
 import * as React from 'react';
 import PINCode from '@haskkor/react-native-pincode';
-import { Image, ScrollView } from 'react-native';
+import * as NetInfo from '@react-native-community/netinfo';
 import { Button, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
 
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
-import { ApplicationContext } from '../../../engine/contexts/Application.context';
 import { userRoles } from '../../../../frontend_service/constants';
 import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './UnlockSession.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { displayNotification } from '../../../utils/CustomToast';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import * as NetInfo from '@react-native-community/netinfo';
 import Database from '../../../engine/api/Database';
 
-export default function PinSession() {
-  const [session, setSession] = React.useState(null);
-  const [ready, setReady] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [status, setStatus] = React.useState('success');
-  const app = React.useContext(ApplicationContext);
+export default class UnLockSession extends React.Component<Props, State> {
+  _isMounted = false;
 
-  React.useEffect(() => {
-    (async function getSessionStorage() {
-      setSession(await getItem('session'));
-      setReady(true);
-    })();
-  }, []);
+  state = {
+    session: null,
+    loading: false,
+    status: 'success',
+  };
 
-  if (ready === false) {
-    return null;
+  constructor() {
+    super();
+    this.init();
+  }
+
+  init = async () => {
+    const session = await getItem('session');
+    this.setState({
+      session,
+    });
+  };
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
    * Get group, algorithm and store it in local storage
    * @returns {Promise<void>}
    */
-  const createSession = async () => {
-    setLoading(true);
+  createSession = async () => {
+    this.setState({ loading: true });
+    const { app } = this.props;
     const result = await app.setInitialData();
     if (result !== null) {
       const database = await new Database();
       await app.set('database', database);
       await app.subscribePingApplicationServer();
     }
-    setLoading(false);
+    this.setState({ loading: true });
   };
 
   /**
@@ -54,8 +64,9 @@ export default function PinSession() {
    * Redirect to home if already opened
    * @params { string }: pinCode : pin code from screen
    */
-  const openSession = async (pinCode) => {
-    setLoading(true);
+  openSession = async (pinCode) => {
+    const { session } = this.state;
+    const { app } = this.props;
 
     if (session.group.pin_code === pinCode) {
       const netInfoConnection = await NetInfo.fetch();
@@ -71,82 +82,85 @@ export default function PinSession() {
       } else {
         app.set('logged', true);
       }
-      setStatus('success');
+      this.setState({ status: 'success' });
     } else {
-      setStatus('failure');
+      this.setState({ status: 'failure' });
     }
-    setLoading(false);
   };
 
-  return (
-    <ScrollView>
-      <View testID="UnLockSession" style={styles.flex}>
-        <View flex-container-column>
-          {session?.group === null ? (
-            <View margin-auto padding-auto style={styles.flex}>
-              <View style={styles.bloc}>
-                {loading ? (
-                  <LiwiLoader />
-                ) : (
-                  <>
-                    <Text bigTitle noBorder>
-                      {app.t('unlock_session:title')}
-                    </Text>
-                    <Text size-auto>{app.t('unlock_session:assign')}</Text>
-                    <Button onPress={createSession} disabled={!app.isConnected} testID="new_session" style={styles.buttonSync}>
-                      <Text size-auto>{app.t('unlock_session:sync_group')}</Text>
-                    </Button>
-                  </>
-                )}
-              </View>
-              {!app.isConnected && <Text>{app.t('notifications:no_internet')}</Text>}
-            </View>
-          ) : (
-            <>
-              {app.user !== null && (
-                <View style={styles.appContent}>
-                  <Image style={styles.imgKeys} resizeMode="contain" source={require('../../../../assets/images/keys.png')} />
-                  <Text style={styles.align} bigTitle={screenWidth > screensScale.s}>
-                    {app.t('unlock_session:already')}
-                    {'\n '}
-                    <Text style={styles.textRole} bigTitle={screenWidth > screensScale.s}>
-                      {app.user.first_name} {app.user.last_name}{' '}
-                    </Text>
-                    {userRoles[app.user.role]}
-                  </Text>
-                  <Button onPress={app.logout} style={styles.buttonLogout}>
-                    <Text size-auto>{app.t('unlock_session:logout')}</Text>
-                  </Button>
-                </View>
-              )}
+  render() {
+    const { app } = this.props;
+    const { session, loading, status } = this.state;
 
-              <PINCode
-                passwordLength={session.group.pin_code.length}
-                endProcessFunction={openSession}
-                disableLockScreen
-                status="enter"
-                pinStatus={status}
-                titleComponent={() => <Text style={styles.textCustom}>{app.t('unlock_session:pin')} </Text>}
-                storedPin={session.group.pin_code}
-                colorCircleButtons={liwiColors.darkerGreyColor}
-                colorPassword={liwiColors.redColor}
-                stylePinCodeButtonNumber={liwiColors.whiteColor}
-                numbersButtonOverlayColor={liwiColors.redColor}
-                stylePinCodeDeleteButtonColorShowUnderlay={liwiColors.redColor}
-                stylePinCodeDeleteButtonColorHideUnderlay={liwiColors.darkerGreyColor}
-                stylePinCodeColorTitle={liwiColors.redColor}
-                stylePinCodeDeleteButtonSize={30}
-                stylePinCodeDeleteButtonText={styles.stylePinCodeDeleteButtonText}
-                stylePinCodeRowButtons={styles.stylePinCodeRowButtons}
-                stylePinCodeColumnButtons={styles.stylePinCodeColumnButtons}
-                stylePinCodeMainContainer={styles.stylePinCodeMainContainer}
-                stylePinCodeColumnDeleteButton={styles.stylePinCodeColumnDeleteButton}
-                stylePinCodeButtonCircle={styles.stylePinCodeButtonCircle}
-              />
-            </>
-          )}
+    return (
+      <ScrollView>
+        <View testID="UnLockSession" style={styles.flex}>
+          <View flex-container-column>
+            {session?.group === null ? (
+              <View margin-auto padding-auto style={styles.flex}>
+                <View style={styles.bloc}>
+                  {loading ? (
+                    <LiwiLoader />
+                  ) : (
+                    <>
+                      <Text bigTitle noBorder>
+                        {app.t('unlock_session:title')}
+                      </Text>
+                      <Text size-auto>{app.t('unlock_session:assign')}</Text>
+                      <Button onPress={this.createSession} disabled={!app.isConnected} testID="new_session" style={styles.buttonSync}>
+                        <Text size-auto>{app.t('unlock_session:sync_group')}</Text>
+                      </Button>
+                    </>
+                  )}
+                </View>
+                {!app.isConnected && <Text>{app.t('notifications:no_internet')}</Text>}
+              </View>
+            ) : (
+              <>
+                {app.user !== null && (
+                  <View style={styles.appContent}>
+                    <Text style={styles.align} bigTitle={screenWidth > screensScale.s}>
+                      {app.t('unlock_session:already')}
+                      {'\n '}
+                      <Text style={styles.textRole} bigTitle={screenWidth > screensScale.s}>
+                        {app.user.first_name} {app.user.last_name}{' '}
+                      </Text>
+                      {userRoles[app.user.role]}
+                    </Text>
+                    <Button onPress={app.logout} style={styles.buttonLogout}>
+                      <Text size-auto>{app.t('unlock_session:logout')}</Text>
+                    </Button>
+                  </View>
+                )}
+
+                <PINCode
+                  passwordLength={session?.group.pin_code.length}
+                  endProcessFunction={this.openSession}
+                  disableLockScreen
+                  status="enter"
+                  pinStatus={status}
+                  titleComponent={() => <Text style={styles.textCustom}>{app.t('unlock_session:pin')} </Text>}
+                  storedPin={session?.group.pin_code}
+                  colorCircleButtons={liwiColors.darkerGreyColor}
+                  colorPassword={liwiColors.redColor}
+                  stylePinCodeButtonNumber={liwiColors.whiteColor}
+                  numbersButtonOverlayColor={liwiColors.redColor}
+                  stylePinCodeDeleteButtonColorShowUnderlay={liwiColors.redColor}
+                  stylePinCodeDeleteButtonColorHideUnderlay={liwiColors.darkerGreyColor}
+                  stylePinCodeColorTitle={liwiColors.redColor}
+                  stylePinCodeDeleteButtonSize={30}
+                  stylePinCodeDeleteButtonText={styles.stylePinCodeDeleteButtonText}
+                  stylePinCodeRowButtons={styles.stylePinCodeRowButtons}
+                  stylePinCodeColumnButtons={styles.stylePinCodeColumnButtons}
+                  stylePinCodeMainContainer={styles.stylePinCodeMainContainer}
+                  stylePinCodeColumnDeleteButton={styles.stylePinCodeColumnDeleteButton}
+                  stylePinCodeButtonCircle={styles.stylePinCodeButtonCircle}
+                />
+              </>
+            )}
+          </View>
         </View>
-      </View>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  }
 }

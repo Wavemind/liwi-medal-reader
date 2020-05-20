@@ -7,6 +7,7 @@ import { styles } from "./BackButton.style";
 
 type Props = NavigationScreenProps & {};
 
+// TODO: used only in medical case summary
 export default function BackButton(props: Props) {
   const { navigation } = props;
   return (
