@@ -6,7 +6,6 @@ import { Button, H2, Icon, Text, View } from "native-base";
 import { ScrollView } from "react-native";
 import moment from "moment";
 import { getItem, getItems, setItem, storeMedicalCase } from "../../../engine/api/LocalStorage";
-import AnimatedPullToRefresh from "../../../components/AnimatedPullToRefresh/AnimatedPullToRefresh";
 import { fetchAlgorithms, syncMedicalCases } from "../../../../frontend_service/api/Http";
 import { styles } from "./Algorithms.style";
 import { CardView, LiwiTitle4, RightView } from "../../../template/layout";
@@ -226,16 +225,7 @@ export default class Algorithms extends React.Component<Props, State> {
           {!ready && focus === 'didFocus' ? (
             <LiwiLoader />
           ) : (
-            <AnimatedPullToRefresh
-              isRefreshing={isRefreshing}
-              onRefresh={this.onRefresh}
-              pullHeight={100}
-              contentView={this.contentView()}
-              onPullAnimationSrc={require('../../../utils/animations/medical.json')}
-              onStartRefreshAnimationSrc={require('../../../utils/animations/medical.json')}
-              onRefreshAnimationSrc={require('../../../utils/animations/medical.json')}
-              onEndRefreshAnimationSrc={require('../../../utils/animations/medical.json')}
-            />
+            <Text>Coucou</Text>
           )}
         </View>
       </View>

@@ -1,13 +1,14 @@
 // @flow
 
-import * as React from "react";
-import LottieView from "lottie-react-native";
-import { Button, Form, Text, View } from "native-base";
-import { ScrollView } from "react-native";
-import { styles } from "./NewSession.style";
-import CustomInput from "../../../components/InputContainer/CustomInput";
-import NavigationService from "../../../engine/navigation/Navigation.service";
-import { ApplicationContext } from "../../../engine/contexts/Application.context";
+import * as React from 'react';
+import LottieView from 'lottie-react-native';
+import { Button, Form, Text, View } from 'native-base';
+import { ScrollView } from 'react-native';
+import { styles } from './NewSession.style';
+import CustomInput from '../../../components/InputContainer/CustomInput';
+import NavigationService from '../../../engine/navigation/Navigation.service';
+import { ApplicationContext } from '../../../engine/contexts/Application.context';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
 export default function HookSession() {
   const [loading, setLoading] = React.useState(false);
@@ -34,8 +35,10 @@ export default function HookSession() {
           <ScrollView>
             <Text bigTitle>{t('new_session:title')}</Text>
             <Form>
-              <CustomInput init={email} change={(index, value) => setEmail(value)} index="email" placeholder={t('email')} condensed keyboardType="email-address" />
-              <CustomInput init={password} change={(index, value) => setPassword(value)} index="password" placeholder={t('password')} secureTextEntry condensed />
+              <CustomInput init={email} change={(index, value) => setEmail(value)} index="email" placeholder={t('email')} condensed keyboardType="email-address"
+              />
+              <CustomInput init={password} change={(index, value) => setPassword(value)} index="password" placeholder={t('password')} secureTextEntry condensed
+              />
               <Button testID="connect_main" full style={styles.marginTop} onPress={() => signIn()} disabled={loading || success || !isConnected}>
                 <Text> {t('new_session:connect')} </Text>
               </Button>
@@ -43,7 +46,7 @@ export default function HookSession() {
           </ScrollView>
         </View>
         <View flex-center>
-          {loading ? <LottieView speed={3} source={require('../../../utils/animations/loading.json')} autoPlay style={styles.height} loop /> : null}
+          {loading ? <LiwiLoader style={styles.height} /> : null}
           {success ? (
             <LottieView
               speed={0.5}

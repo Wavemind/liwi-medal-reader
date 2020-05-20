@@ -17,7 +17,7 @@ export default class RealmInterface {
    * @private
    */
   _realm = () => {
-    const key = new Int8Array(64); // pupulate with a secure key
+    const key = new Int8Array(64); // populate with a secure key
 
     return new Realm({
       schema: [PatientValueModel, PatientModel, MedicalCaseModel, ActivityModel],

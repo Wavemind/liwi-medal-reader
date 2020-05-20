@@ -20,6 +20,11 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        application: {
+          loading: 'Loading...',
+          no_data: 'No data available',
+          date_format: 'Do MMMM YY',
+        },
         drug: {
           give: 'Give',
           mg: 'mg',
@@ -184,6 +189,7 @@ i18n
         },
         patient_detail: {},
         patient_list: {
+          add: 'Add patient',
           all: 'All',
           waiting: 'Patients waiting for',
           search: 'Search',
@@ -332,6 +338,7 @@ i18n
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
+          filter: 'Filters',
         },
         common: {
           back: 'Back',
