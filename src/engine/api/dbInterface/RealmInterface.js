@@ -56,6 +56,7 @@ export default class RealmInterface {
     }
     return this._realm()
       .objects(model)
+      .sorted('updated_at', 'ASC')
       .slice((page - 1) * elementPerPage, elementPerPage * page);
   };
 
@@ -168,7 +169,7 @@ export default class RealmInterface {
     nodeActivities.map((node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
         const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
-        // If the values dosen't exist we create it otherwise we edit it
+        // If the values doesn't exist we create it otherwise we edit it
         if (patientValue === undefined) {
           this.push('Patient', medicalCase.patient_id, 'patientValues', {
             id: uuid.v4(),
