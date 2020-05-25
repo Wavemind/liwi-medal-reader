@@ -19,11 +19,12 @@ export default class Database {
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Pagination. if null, retrieved all information
+   * @param { object } filters - Array of filters defined by {key: .., value: ..}. if null, retrieved all information
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model, page) => {
+  getAll = async (model, page = null, filters = null) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].getAll(model, page);
+    return this[dbInterface].getAll(model, page, filters);
   };
 
   /**

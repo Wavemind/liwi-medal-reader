@@ -23,7 +23,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": ["react", "flowtype", "detox"],
+  "plugins": ["react", "flowtype", "detox", "prettier"],
   "settings": {
     "import/resolver": {
       "node": {
@@ -53,6 +53,7 @@
     "no-use-before-define": "off",
     "arrow-parens": "off",
     "arrow-body-style": ["off"],
-    "global-require": "off"
+    "global-require": "off",
+    "prettier/prettier": "error"
   }
 }

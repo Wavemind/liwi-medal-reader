@@ -300,7 +300,7 @@ export default (variables /* : * */ = variable) => {
           paddingLeft: 15,
           paddingRight: 12,
           paddingHorizontal: 15,
-          borderRadius: 50,
+          borderRadius: '50px',
           'NativeBase.Icon': {
             color: variables.toolbarBtnColor,
             fontSize: variables.iconHeaderSize - 2,

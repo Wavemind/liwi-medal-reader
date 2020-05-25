@@ -25,6 +25,7 @@ import Database from '../../engine/api/Database';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate } from '../../engine/navigation/CustomNavigator.navigation';
 import { displayNotification } from '../../utils/CustomToast';
+import moment from "moment";
 
 type Props = {
   children: any,
@@ -293,6 +294,7 @@ class Stepper extends React.Component<Props, State> {
     medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
 
     await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+    await database.update('Patient', medicalCase.patient_id, { updated_at: moment().toDate() });
     displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');
