@@ -36,6 +36,12 @@ export default class ListContent extends React.Component<Props, State> {
     this.setState({ columns, nodes, firstLoading: false });
   }
 
+  async componentDidUpdate(nextProp, nextState){
+    if(nextProp.query !== this.props.query) {
+      await this._fetchList();
+    }
+  }
+
   /**
    * Fetch data
    * @returns {Promise<void>}
@@ -44,13 +50,12 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       app: { database },
       model,
+      query,
     } = this.props;
     const { currentPage } = this.state;
 
     this.setState({ loading: true });
-
-    const data = await database.getAll(model, 1);
-
+    const data = await database.getAll(model, 1, { query });
     this.setState({
       data,
       currentPage: currentPage + 1,

@@ -71,10 +71,13 @@ export class PatientModel {
   getLabelFromPatientValue = (nodeList, nodes) => {
     return nodeList.map((nodeId) => {
       const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
-      if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
-        return moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+      if (currentPatientValue !== undefined) {
+        if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
+          return moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+        }
+        return currentPatientValue.value;
       }
-      return currentPatientValue.value;
+      return '';
     });
   };
 
