@@ -11,8 +11,7 @@ export default class LiwiLoader extends React.Component<Props, State> {
 
   static defaultProps = {
     style: {
-      height: 100,
-      width: 100,
+      width: '100%',
       display: 'flex',
     },
   };
@@ -33,7 +32,7 @@ export default class LiwiLoader extends React.Component<Props, State> {
           ref={(loading) => {
             this.loading = loading;
           }}
-          speed={3}
+          speed={1}
           source={require('./animations/loading.json')}
           style={style}
           loop

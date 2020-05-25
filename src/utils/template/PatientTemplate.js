@@ -1,7 +1,10 @@
 import uuid from 'react-native-uuid';
 import moment from 'moment';
 
-export const patientTemplate = () => {
+import { differenceNodes } from '../swissKnives';
+import { getItem } from '../../engine/api/LocalStorage';
+
+export const patientTemplate = async () => {
   const faker = require('faker');
   const patient = {
     id: uuid.v4(),
@@ -9,8 +12,10 @@ export const patientTemplate = () => {
     study_id: 'BigStudy',
     group_id: '5',
     medicalCases: [],
+    updated_at: faker.fake('{{date.past}}'),
     fail_safe: false,
   };
+  const algorithm = await getItem('algorithm');
 
   const medicalCase = {
     id: uuid.v4(),
@@ -1171,20 +1176,20 @@ export const patientTemplate = () => {
         unique_triage_question: [],
       },
     },
-    activities: [
-      {
-        id: uuid.v4(),
-        stage: 'creation',
-        clinician: 'Alain Fresco',
-        nodes: '[]',
-        mode: 'client-server',
-        mac_address: faker.fake('{{internet.mac}}'),
-        created_at: moment().toDate(),
-        synchronized_at: moment().toDate(),
-        fail_safe: false,
-      },
-    ],
   };
+  medicalCase.activities = [
+    {
+      id: uuid.v4(),
+      stage: 'creation',
+      clinician: 'Alain Fresco',
+      nodes: JSON.stringify(differenceNodes(medicalCase.nodes, algorithm.nodes)),
+      mode: 'client-server',
+      mac_address: faker.fake('{{internet.mac}}'),
+      created_at: moment().toDate(),
+      synchronized_at: moment().toDate(),
+      fail_safe: false,
+    },
+  ];
   medicalCase.json = JSON.stringify(medicalCase);
   medicalCase.patient_id = patient.id;
   patient.medicalCases.push(medicalCase);

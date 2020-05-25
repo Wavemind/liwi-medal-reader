@@ -20,6 +20,12 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: {
+        application: {
+          loading: 'Loading...',
+          no_data: 'No data available',
+          date_format: 'Do MMMM YY',
+          select: 'Select',
+        },
         drug: {
           give: 'Give',
           mg: 'mg',
@@ -158,8 +164,9 @@ i18n
           triage: 'Triage',
           waiting_consultation: 'Waiting for consultation',
           consultation: 'Consultation',
-          waiting_test: 'Waiting for test',
-          test: 'Test',
+          waiting_tests: 'Waiting for test',
+          tests: 'Tests',
+          waiting_diagnostic: 'Waiting for diagnostic',
           waiting_final_diagnostic: 'Wait for diagnosis',
           final_diagnostic: 'Diagnosis',
           close: 'Close',
@@ -184,6 +191,7 @@ i18n
         },
         patient_detail: {},
         patient_list: {
+          add: 'Add patient',
           all: 'All',
           waiting: 'Patients waiting for',
           search: 'Search',
@@ -332,6 +340,7 @@ i18n
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
+          filter: 'Filters',
         },
         common: {
           back: 'Back',
