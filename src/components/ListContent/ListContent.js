@@ -160,7 +160,7 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       app: { t },
     } = this.props;
-    const { data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
+    const { model, data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
@@ -172,6 +172,7 @@ export default class ListContent extends React.Component<Props, State> {
               <Text>{nodes[column].label}</Text>
             </Button>
           ))}
+          {model === 'MedicalCase' ? (
           <View style={styles.filterButton}>
             <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>
               <Picker.Item label={t('application:select')} value={null} />
@@ -180,6 +181,7 @@ export default class ListContent extends React.Component<Props, State> {
               ))}
             </Picker>
           </View>
+          ) : null}
         </View>
         <View padding-auto>
           <FlatList
