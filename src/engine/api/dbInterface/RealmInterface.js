@@ -48,17 +48,21 @@ export default class RealmInterface {
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Used for pagination,tells what page to show
+   * @param { object } filters - Array of filters defined by {key: .., value: ..}. if null, retrieved all information
    * @returns { Collection } - A collection of all the data
    */
-  getAll = (model, page = null) => {
+  getAll = (model, page, filters) => {
     if (page === null) {
       return this._realm().objects(model);
     }
-    const test = this._realm()
+
+    const query = this._generateFilteredQuery(filters);
+
+    return this._realm()
       .objects(model)
+      .filtered(query)
       .sorted('updated_at', 'ASC')
       .slice((page - 1) * elementPerPage, elementPerPage * page);
-    return test;
   };
 
   /**
@@ -152,6 +156,25 @@ export default class RealmInterface {
       default:
         console.error('Wrong model :', model, object);
     }
+  };
+
+  /**
+   * Generate query with filters
+   * @param {object} filters - Filter object with key and value
+   * @returns {string}
+   * @private
+   */
+  _generateFilteredQuery = (filters) => {
+    let query = '';
+    if (filters !== null) {
+      Object.keys(filters).forEach((key) => {
+        query += `${filters[key].key} == ${filters[key].value}`;
+        if (key + 1 < filters.length) {
+          query += ' OR ';
+        }
+      });
+    }
+    return query;
   };
 
   /**

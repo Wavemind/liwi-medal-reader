@@ -2,12 +2,13 @@
 
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Button, Icon, ListItem, Text, View } from 'native-base';
+import { Button, Picker, ListItem, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -22,6 +23,7 @@ export default class ListContent extends React.Component<Props, State> {
     currentPage: 1,
     isLastBatch: false,
     firstLoading: true,
+    status: null,
   };
 
   async componentDidMount() {
@@ -45,19 +47,29 @@ export default class ListContent extends React.Component<Props, State> {
       app: { database },
       model,
     } = this.props;
-    const { currentPage } = this.state;
+    const { currentPage, status } = this.state;
 
     this.setState({ loading: true });
 
-    const data = await database.getAll(model, 1);
+    const data = await database.getAll(model, 1, status !== null ? { key: 'status', value: status } : null);
 
     this.setState({
       data,
       currentPage: currentPage + 1,
       loading: false,
+      isLastBatch: false,
     });
   };
 
+  /**
+   * Filter by status
+   * @param {string} value - Change status type
+   * @private
+   */
+  _changeStatus = (value) => {
+    this.setState({ status: value });
+    this._fetchList();
+  };
 
   /**
    * Load more item to display
@@ -68,14 +80,14 @@ export default class ListContent extends React.Component<Props, State> {
       app: { database },
       model,
     } = this.props;
-    const { data, currentPage } = this.state;
+    const { data, currentPage, status } = this.state;
 
     this.setState(
       {
         loading: true,
       },
       async () => {
-        const newData = await database.getAll(model, currentPage);
+        const newData = await database.getAll(model, currentPage, status !== null ? { key: 'status', value: status } : null);
         const isLastBatch = newData.length === 0;
 
         this.setState({
@@ -147,10 +159,8 @@ export default class ListContent extends React.Component<Props, State> {
   render() {
     const {
       app: { t },
-      navigation,
-
     } = this.props;
-    const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
+    const { data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
@@ -158,13 +168,18 @@ export default class ListContent extends React.Component<Props, State> {
       <>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
-            <Button key={column} iconRight center light style={[{ flex: (1 / columns.length) }, styles.sortButton]}>
+            <Button key={column} iconRight center light style={[{ flex: 1 / columns.length }, styles.sortButton]}>
               <Text>{nodes[column].label}</Text>
             </Button>
           ))}
-          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filter')}>
-            <Icon type="FontAwesome" name="filter" />
-          </Button>
+          <View style={styles.filterButton}>
+            <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>
+              <Picker.Item label={t('application:select')} value={null} />
+              {Object.keys(medicalCaseStatus).map((key) => (
+                <Picker.Item label={t(`medical_case:${medicalCaseStatus[key].name}`)} value={medicalCaseStatus[key].name} />
+              ))}
+            </Picker>
+          </View>
         </View>
         <View padding-auto>
           <FlatList

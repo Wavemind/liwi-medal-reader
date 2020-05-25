@@ -5,12 +5,13 @@ import moment from 'moment';
 import I18n from '../../../src/utils/i18n';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
+import { PatientValueModel } from './PatientValue.model';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import { displayFormats } from '../../constants';
 
 export class PatientModel {
   constructor(props = {}) {
-    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patient_values = null } = props;
+    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patientValues = null } = props;
     if (this.id === undefined || this.id === null) {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
@@ -21,11 +22,9 @@ export class PatientModel {
         this.other_study_id = null;
         this.other_group_id = null;
       }
-
       this.updated_at = moment().toDate();
       this.main_data_patient_id = main_data_patient_id;
-      // TODO when local-data ready
-      // this.patientValues = patient_values?.map((patient_value => new PatientValueModel(patient_value)));
+      this.patientValues = patientValues?.map((patientValue => new PatientValueModel(patientValue)));
       this.uid = facility !== null ? facility?.uid?.toString() : null;
       this.study_id = facility !== null ? facility?.study_id?.toString() : null;
       this.group_id = facility !== null ? facility?.group_id?.toString() : null;
@@ -70,7 +69,6 @@ export class PatientModel {
    */
   getLabelFromPatientValue = (nodeId, nodes) => {
     let displayedValue = '';
-
     const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
     if (currentPatientValue !== undefined) {
       if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
