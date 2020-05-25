@@ -63,7 +63,7 @@ export class PatientModel {
 
   /**
    * Get value of patient value
-   * @param {array} nodeList - Node id to retrieved
+   * @param {integer} nodeId - Node id to retrieved
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
