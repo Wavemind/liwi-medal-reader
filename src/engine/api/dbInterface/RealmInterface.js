@@ -56,10 +56,16 @@ export default class RealmInterface {
       return this._realm().objects(model);
     }
     let result = await this._realm().objects(model);
+    const filters = this._generateFilteredQuery(params.filters);
 
     if (params.query !== '' && model === 'Patient') result = await result.filtered(`patientValues.value LIKE "*${params.query}*"`);
 
-    return result.slice((page - 1) * elementPerPage, page * elementPerPage);
+
+    return this._realm()
+      .objects(model)
+      .filtered(filters)
+      .sorted('updated_at', 'ASC')
+      .slice((page - 1) * elementPerPage, elementPerPage * page);
   };
 
   /**
@@ -99,10 +105,6 @@ export default class RealmInterface {
       object[field].push(value);
     });
     if (field === 'medicalCases') this._savePatientValue(model, object);
-  };
-
-  search = async (query) =>{
-    return this._realm().objects('Patient').filtered(`patientValues.value LIKE "*${query}*"`);
   };
 
   /**
@@ -160,6 +162,25 @@ export default class RealmInterface {
   };
 
   /**
+   * Generate query with filters
+   * @param {object} filters - Filter object with key and value
+   * @returns {string}
+   * @private
+   */
+  _generateFilteredQuery = (filters) => {
+    let query = '';
+    if (filters !== null) {
+      Object.keys(filters).forEach((key) => {
+        query += `${filters[key].key} == ${filters[key].value}`;
+        if (key + 1 < filters.length) {
+          query += ' OR ';
+        }
+      });
+    }
+    return query;
+  };
+
+  /**
    * Saves the patient values based on the activities on the object
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
@@ -175,7 +196,7 @@ export default class RealmInterface {
     nodeActivities.map((node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
         const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
-        // If the values dosen't exist we create it otherwise we edit it
+        // If the values doesn't exist we create it otherwise we edit it
         if (patientValue === undefined) {
           this.push('Patient', medicalCase.patient_id, 'patientValues', {
             id: uuid.v4(),

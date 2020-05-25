@@ -2,12 +2,13 @@
 
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Button, Icon, ListItem, Text, View } from 'native-base';
+import { Button, Picker, ListItem, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -22,17 +23,18 @@ export default class ListContent extends React.Component<Props, State> {
     currentPage: 1,
     isLastBatch: false,
     firstLoading: true,
+    status: null,
   };
 
   async componentDidMount() {
     const { list } = this.props;
+
     await this._fetchList();
 
     const algorithm = await getItems('algorithm');
 
     const columns = algorithm.mobile_config[list];
     const { nodes } = algorithm;
-
     this.setState({ columns, nodes, firstLoading: false });
   }
 
@@ -52,23 +54,65 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { currentPage } = this.state;
+    const { currentPage, status } = this.state;
 
     this.setState({ loading: true });
-    const data = await database.getAll(model, 1, { query });
+    const options = {
+      query,
+      filter: status !== null ? { key: 'status', value: status } : null
+    };
+    const data = await database.getAll(model, 1, options);
+
     this.setState({
       data,
       currentPage: currentPage + 1,
       loading: false,
+      isLastBatch: false,
     });
   };
 
   /**
-   * Separator between flatList item
-   * @returns {*}
+   * Filter by status
+   * @param {string} value - Change status type
+   * @private
    */
-  _renderSeparator = () => {
-    return <View style={styles.separator} />;
+  _changeStatus = (value) => {
+    this.setState({ status: value });
+    this._fetchList();
+  };
+
+  /**
+   * Load more item to display
+   * @private
+   */
+  _handleLoadMore = () => {
+    const {
+      app: { database },
+      model,
+      query
+    } = this.props;
+    const { data, currentPage, status } = this.state;
+
+    this.setState(
+      {
+        loading: true,
+      },
+      async () => {
+        const options = {
+          query,
+          filter: status !== null ? { key: 'status', value: status } : null
+        };
+        const newData = await database.getAll(model, currentPage, options);
+        const isLastBatch = newData.length === 0;
+
+        this.setState({
+          data: data.concat(newData),
+          currentPage: currentPage + 1,
+          isLastBatch,
+          loading: false,
+        });
+      }
+    );
   };
 
   /**
@@ -81,7 +125,6 @@ export default class ListContent extends React.Component<Props, State> {
     const { navigation, itemNavigation } = this.props;
     const { columns, nodes } = this.state;
     const size = 1 / columns.length;
-    const columnsValue = item.getLabelFromPatientValue(columns, nodes);
 
     return (
       <ListItem
@@ -93,9 +136,9 @@ export default class ListContent extends React.Component<Props, State> {
           })
         }
       >
-        {columnsValue.map((value) => (
-          <View style={{ flex: size }} key={`${item.id}_${value}`}>
-            <Text size-auto>{value}</Text>
+        {columns.map((nodeId) => (
+          <View style={{ flex: size }} key={`${item.id}_${nodeId}`}>
+            <Text size-auto>{item.getLabelFromPatientValue(nodeId, nodes)}</Text>
           </View>
         ))}
       </ListItem>
@@ -103,32 +146,11 @@ export default class ListContent extends React.Component<Props, State> {
   };
 
   /**
-   * Load more item to display
-   * @private
+   * Separator between flatList item
+   * @returns {*}
    */
-  _handleLoadMore = () => {
-    const {
-      app: { database },
-      model,
-    } = this.props;
-    const { data, currentPage } = this.state;
-
-    this.setState(
-      {
-        loading: true,
-      },
-      async () => {
-        const newData = await database.getAll(model, currentPage);
-        const isLastBatch = newData.length === 0;
-
-        this.setState({
-          data: data.concat(newData),
-          currentPage: currentPage + 1,
-          isLastBatch,
-          loading: false,
-        });
-      }
-    );
+  _renderSeparator = () => {
+    return <View style={styles.separator} />;
   };
 
   /**
@@ -152,9 +174,8 @@ export default class ListContent extends React.Component<Props, State> {
   render() {
     const {
       app: { t },
-      navigation,
     } = this.props;
-    const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
+    const { model, data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
@@ -164,12 +185,18 @@ export default class ListContent extends React.Component<Props, State> {
           {columns.map((column) => (
             <Button key={column} iconRight center light style={[{ flex: 1 / columns.length }, styles.sortButton]}>
               <Text>{nodes[column].label}</Text>
-              <Icon name="arrow-up" />
             </Button>
           ))}
-          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filter')}>
-            <Icon type="FontAwesome" name="filter" />
-          </Button>
+          {model === 'MedicalCase' ? (
+          <View style={styles.filterButton}>
+            <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>
+              <Picker.Item label={t('application:select')} value={null} />
+              {Object.keys(medicalCaseStatus).map((key) => (
+                <Picker.Item label={t(`medical_case:${medicalCaseStatus[key].name}`)} value={medicalCaseStatus[key].name} />
+              ))}
+            </Picker>
+          </View>
+          ) : null}
         </View>
         <View padding-auto>
           <FlatList

@@ -236,6 +236,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   setInitialData = async () => {
     const group = await this.getGroup();
+
     if (group !== null) {
       const newAlgorithm = await getAlgorithm();
       if (newAlgorithm !== null) {

@@ -1,8 +1,8 @@
-import RealmInterface from './dbInterface/RealmInterface';
-import HttpInterface from './dbInterface/HttpInterface';
+import RealmInterface from "./dbInterface/RealmInterface";
+import HttpInterface from "./dbInterface/HttpInterface";
 
-import { getItem } from './LocalStorage';
-import { databaseInterface } from '../../../frontend_service/constants';
+import { getItem } from "./LocalStorage";
+import { databaseInterface } from "../../../frontend_service/constants";
 
 export default class Database {
   constructor() {
@@ -34,7 +34,7 @@ export default class Database {
    * @param { integer } params - options for the request the search query is in there
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model, page, params = { query: '' }) => {
+  getAll = async (model, page, params = { query: '', filter: null }) => {
     const dbInterface = await this._checkInterface();
     return this[dbInterface].getAll(model, page, params);
   };
@@ -70,11 +70,6 @@ export default class Database {
   push = async (model, id, field, value) => {
     const dbInterface = await this._checkInterface();
     return this[dbInterface].push(model, id, field, value);
-  };
-
-  search = async (query) => {
-    const dbInterface = await this._checkInterface();
-    return this[dbInterface].search(query);
   };
 
   /**
