@@ -41,8 +41,7 @@ export default class PatientList extends React.Component {
               <Icon active name="search" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}
-            />
+            <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} qrcode={false} />
           </View>
 
           <Button
