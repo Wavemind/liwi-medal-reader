@@ -63,4 +63,8 @@ export const styles = StyleSheet.create({
   flatList: { paddingBottom: 220 },
 
   picker: { borderRadius: 5, color: liwiColors.whiteDark },
+
+  flexDirection: { flexDirection: 'row' },
+
+  patientValues: { flex: 0.7, alignSelf: 'center', paddingLeft: 20 }
 });

@@ -3,12 +3,13 @@ import * as React from 'react';
 import { ListItem, Text, View } from 'native-base';
 import { FlatList } from 'react-native';
 
+import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
+import { updateModalFromRedux } from '../../../../frontend_service/actions/creators.actions';
 import { LiwiTitle2 } from '../../../template/layout';
 import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { medicalCaseStatus } from '../../../../frontend_service/constants';
 
 export default class PatientProfile extends React.Component {
   state = {
@@ -16,30 +17,21 @@ export default class PatientProfile extends React.Component {
       medicalCases: [],
     },
     firstRender: false,
-    algorithm: {},
     deviceInfo: null,
+    nodes: {},
+    columns: [],
   };
 
   async componentDidMount() {
     const deviceInfo = await getDeviceInformation();
-    const isConnected = await getItems('isConnected');
     const algorithm = await getItems('algorithm');
 
     const columns = algorithm.mobile_config.medical_case_list;
     const { nodes } = algorithm;
 
-    this.setState({ deviceInfo, isConnected, columns, nodes });
+    this.setState({ deviceInfo, columns, nodes });
     await this._getPatient();
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   const { focus } = this.props;
-  //
-  //   if (nextProps.focus === 'didFocus' && (focus === undefined || focus === null || focus === 'willBlur')) {
-  //     this._getPatient();
-  //   }
-  //   return true;
-  // }
 
   /**
    * Fetch patient data
@@ -61,33 +53,48 @@ export default class PatientProfile extends React.Component {
   }
 
   /**
-   * Patient rendering
-   * @param {object} item
+   * Medical case rendering
+   * @param {object} medicalCase
    * @returns {*}
    * @private
    */
-  _renderItem = (item) => {
-    const { navigation, itemNavigation, app: {t} } = this.props;
-    const { columns, nodes } = this.state;
+  _renderItem = (medicalCase) => {
+    const {
+      setMedicalCase,
+      navigation,
+      app: { t, database, user },
+    } = this.props;
+    const { columns, nodes, deviceInfo } = this.state;
     const size = 1 / columns.length + 1;
 
     return (
       <ListItem
         style={styles.item}
-        key={`${item.id}_list`}
-        onPress={() =>
-          navigation.navigate(itemNavigation, {
-            id: item.id,
-          })
-        }
+        key={`${medicalCase.id}_list`}
+        onPress={async () => {
+          const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+          const isConnected = await getItems('isConnected');
+
+          if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
+            updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
+          } else {
+            await setMedicalCase(newMedicalCase);
+            await database.lockMedicalCase(newMedicalCase.id);
+
+            navigation.navigate(routeDependingStatus(newMedicalCase), {
+              idPatient: newMedicalCase.patient_id,
+              newMedicalCase: false,
+            });
+          }
+        }}
       >
         {columns.map((nodeId) => (
-          <View style={{ flex: size }} key={`${item.id}_${nodeId}`}>
-            <Text size-auto>{item.getLabelFromPatientValue(nodeId, nodes)}</Text>
+          <View style={{ flex: size }} key={`${medicalCase.id}_${nodeId}`}>
+            <Text size-auto>{medicalCase.getLabelFromPatientValue(nodeId, nodes)}</Text>
           </View>
         ))}
         <View style={{ flex: size }}>
-          <Text size-auto>{t(`medical_case:${item.status}`)}</Text>
+          <Text size-auto>{t(`medical_case:${medicalCase.status}`)}</Text>
         </View>
       </ListItem>
     );
@@ -114,11 +121,11 @@ export default class PatientProfile extends React.Component {
           <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
 
           {patient.patientValues.map((patientValue) => (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.flexDirection}>
               <Text size-auto style={styles.identifierText}>
                 {nodes[patientValue.node_id].label}
               </Text>
-              <Text size-auto style={{ flex: 0.7, alignSelf: 'center', paddingLeft: 20 }}>
+              <Text size-auto style={styles.patientValues}>
                 {patient.getLabelFromPatientValue(patientValue.node_id, nodes)}
               </Text>
             </View>
