@@ -9,16 +9,15 @@ import MainScreen from '../../screens/main/Main.screen';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
-import Filter from '../../screens/filters';
 import Settings from '../../screens/settings';
 import i18n from '../../utils/i18n';
 
 import { liwiColors, screenWidth } from '../../utils/constants';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
 import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Triage from '../../screens/medicalCasesContainer/triage';
 import Consultation from '../../screens/medicalCasesContainer/consultation';
 import Emergency from '../../screens/emergency';
@@ -56,19 +55,6 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_list'),
-        };
-      },
-    },
-    Filter: {
-      screen: Filter,
-      path: 'Filter',
-      params: {
-        showSummary: false,
-      },
-      navigationOptions: () => {
-        return {
-          headerShown: false,
-          mode: 'modal',
         };
       },
     },
@@ -197,7 +183,7 @@ const Stack = createStackNavigator(
         showMiniDrawer: true,
         showSummary: true,
         dropDownMenu: 'Final_diagnostic',
-        medicalCaseStatus: medicalCaseStatus.final_diagnostic.name,
+        medicalCaseStatus: medicalCaseStatus.finalDiagnostic.name,
         nextStage: medicalCaseStatus.close.name,
       },
       navigationOptions: ({ navigation }) => {

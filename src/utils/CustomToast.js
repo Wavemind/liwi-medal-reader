@@ -8,6 +8,7 @@ import { liwiColors } from './constants';
  * @param {any} errors - Can be an hash, array or simple messages
  */
 export const handleHttpError = (errors: any) => {
+  console.log(errors);
   if (errors instanceof Error) {
     displayNotification(errors.toString(), liwiColors.redColor);
   } else if (isArray(errors)) {

@@ -71,7 +71,6 @@ export class MedicalCaseModel {
 
       this.json = JSON.stringify(this);
     } else {
-
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
       if (props !== undefined) {
         this.id = json.id;
@@ -107,24 +106,23 @@ export class MedicalCaseModel {
   isMaxStage = (stage) => {
     switch (this.status) {
       case 'in_creation':
-        return stage === "PatientUpsert"
+        return stage === 'PatientUpsert';
       case 'waiting_triage':
       case 'triage':
-        return stage === "Consultation"
+        return stage === 'Consultation';
       case 'waiting_consultation':
       case 'consultation':
-        return stage === "Tests"
+        return stage === 'Tests';
       case 'waiting_tests':
       case 'tests':
-        return stage === "DiagnosticsStrategy"
+        return stage === 'DiagnosticsStrategy';
       case 'waiting_diagnostic':
       case 'final_diagnostic':
-        return stage === "finish"
+        return stage === 'finish';
       case 'close':
       default:
         return false;
     }
-
   };
 
   /**
@@ -284,11 +282,14 @@ export class MedicalCaseModel {
       medical_case_id: this.id,
     });
   };
+
   /**
    * Defines if the case is locked
    */
   isLocked = (deviceInfo, user) => {
-    return this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address));
+    return (
+      this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address))
+    );
   };
 }
 
@@ -304,6 +305,6 @@ MedicalCaseModel.schema = {
     updated_at: 'date',
     status: 'string',
     patient_id: 'string',
-    fail_safe: { type: 'bool', default: false }
+    fail_safe: { type: 'bool', default: false },
   },
 };
