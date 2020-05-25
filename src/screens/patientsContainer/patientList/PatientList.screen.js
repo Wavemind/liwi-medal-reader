@@ -15,7 +15,6 @@ export default class PatientList extends React.Component {
     searchTerm: '',
     query: '',
     isGeneratingPatient: false,
-    typingTimeout: 0,
     searchByDelayed: _.debounce(() => {
       const { searchTerm } = this.state;
       this.setState({ query: searchTerm });
@@ -51,7 +50,7 @@ export default class PatientList extends React.Component {
                   searchByDelayed(searchTerm);
               }} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}  />
+            <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} qrcode={false} />
           </View>
 
           <Button

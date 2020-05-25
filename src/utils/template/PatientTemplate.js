@@ -12,6 +12,7 @@ export const patientTemplate = async () => {
     study_id: 'BigStudy',
     group_id: '5',
     medicalCases: [],
+    updated_at: faker.fake('{{date.past}}'),
     fail_safe: false,
   };
   const algorithm = await getItem('algorithm');

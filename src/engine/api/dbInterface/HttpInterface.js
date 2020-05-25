@@ -51,10 +51,12 @@ export default class HttpInterface {
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Pagination. if null, retrieved all information
+   * @param { object } filters - Array of filters defined by {key: .., value: ..}. if null, retrieved all information
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model, page) => {
-    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}`;
+  getAll = async (model, page, params) => {
+    const stringFilters = this._generateFiltersUrl(params.filters);
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}&${stringFilters}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
     if (data !== null) {
@@ -205,6 +207,23 @@ export default class HttpInterface {
   _setClinician = async () => {
     const user = await getItem('user');
     this.clinician = `${user?.first_name} ${user?.last_name}`;
+  };
+
+  /**
+   * Generate an URL with filters object
+   * @param {object} filters - Filter object with key and value
+   * @returns {string}
+   * @private
+   */
+  _generateFiltersUrl = (filters) => {
+    let stringFilters = '';
+    if (filters !== null) {
+      Object.keys(filters).forEach((key) => (
+        stringFilters += `${filters[key].key}=${filters[key].value}`
+      ));
+    }
+
+    return stringFilters;
   };
 
   /**

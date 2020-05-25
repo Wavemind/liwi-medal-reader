@@ -5,13 +5,13 @@ import moment from 'moment';
 import I18n from '../../../src/utils/i18n';
 import Database from '../../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
-import { getItem } from '../../../src/engine/api/LocalStorage';
 import { PatientValueModel } from './PatientValue.model';
+import { getItem } from '../../../src/engine/api/LocalStorage';
 import { displayFormats } from '../../constants';
 
 export class PatientModel {
   constructor(props = {}) {
-    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patient_values = null } = props;
+    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patientValues = null } = props;
     if (this.id === undefined || this.id === null) {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
@@ -22,10 +22,9 @@ export class PatientModel {
         this.other_study_id = null;
         this.other_group_id = null;
       }
-
+      this.updated_at = moment().toDate();
       this.main_data_patient_id = main_data_patient_id;
-      // TODO when local-data ready
-      // this.patientValues = patient_values?.map((patient_value => new PatientValueModel(patient_value)));
+      this.patientValues = patientValues?.map((patientValue => new PatientValueModel(patientValue)));
       this.uid = facility !== null ? facility?.uid?.toString() : null;
       this.study_id = facility !== null ? facility?.study_id?.toString() : null;
       this.group_id = facility !== null ? facility?.group_id?.toString() : null;
@@ -58,27 +57,27 @@ export class PatientModel {
     await medicalCaseClass.handleFailSafe();
     medicalCaseClass.activities = [activity];
     await database.push('Patient', this.id, 'medicalCases', medicalCaseClass);
-
+    await database.update('Patient', this.id, { updated_at: moment().toDate() });
     return true;
   };
 
   /**
-   *
+   * Get value of patient value
    * @param {array} nodeList - Node id to retrieved
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
-  getLabelFromPatientValue = (nodeList, nodes) => {
-    return nodeList.map((nodeId) => {
-      const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
-      if (currentPatientValue !== undefined) {
-        if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
-          return moment(currentPatientValue.value).format(I18n.t('application:date_format'));
-        }
-        return currentPatientValue.value;
+  getLabelFromPatientValue = (nodeId, nodes) => {
+    let displayedValue = '';
+    const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
+    if (currentPatientValue !== undefined) {
+      if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
+        displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+      } else {
+        displayedValue = currentPatientValue.value;
       }
-      return '';
-    });
+    }
+    return displayedValue;
   };
 
   /**
@@ -95,7 +94,12 @@ export class PatientModel {
 
     return database.insert('Patient', {
       ...this,
-      medicalCases: [{ ...medicalCase, patient_id: this.id, json: JSON.stringify(medicalCase), activities: [activity] }],
+      medicalCases: [{
+        ...medicalCase,
+        patient_id: this.id,
+        json: JSON.stringify(medicalCase),
+        activities: [activity]
+      }]
     });
   };
 
@@ -122,6 +126,6 @@ PatientModel.schema = {
     reason: 'string?',
     medicalCases: 'MedicalCase[]',
     patientValues: 'PatientValue[]',
-    fail_safe: { type: 'bool', default: false },
-  },
+    fail_safe: { type: 'bool', default: false }
+  }
 };

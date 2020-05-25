@@ -135,7 +135,7 @@ export const medicalCaseStatus = {
   waitingTests: { name: 'waiting_tests', index: 4, main: null },
   tests: { name: 'tests', index: 5, main: 3 },
   waitingDiagnostic: { name: 'waiting_diagnostic', index: 6, main: null },
-  final_diagnostic: { name: 'final_diagnostic', index: 7, main: 4 },
+  finalDiagnostic: { name: 'final_diagnostic', index: 7, main: 4 },
   close: { name: 'close', index: 8, main: 5 },
 };
 
@@ -158,7 +158,7 @@ export const routeDependingStatus = (medicalCase) => {
     case medicalCaseStatus.waitingTests.name:
       route = 'Tests';
       break;
-    case medicalCaseStatus.final_diagnostic.name:
+    case medicalCaseStatus.finalDiagnostic.name:
     case medicalCaseStatus.waitingDiagnostic.name:
       route = 'DiagnosticsStrategy';
       break;
