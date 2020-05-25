@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Button, Icon, Input, Item, Text, View } from 'native-base';
+import _ from 'lodash';
 
 import { styles } from './PatientList.style';
 import { SeparatorLine } from '../../../template/layout';
@@ -12,7 +13,13 @@ export default class PatientList extends React.Component {
   state = {
     propsToolTipVisible: false,
     searchTerm: '',
+    query: '',
     isGeneratingPatient: false,
+    typingTimeout: 0,
+    searchByDelayed: _.debounce(() => {
+      const { searchTerm } = this.state;
+      this.setState({ query: searchTerm });
+    }, 350),
   };
 
   /**
@@ -25,7 +32,7 @@ export default class PatientList extends React.Component {
   };
 
   render() {
-    const { searchTerm, isGeneratingPatient, propsToolTipVisible } = this.state;
+    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible, searchByDelayed } = this.state;
 
     const {
       app: { t },
@@ -39,10 +46,12 @@ export default class PatientList extends React.Component {
           <View style={styles.flexDirectionRow}>
             <Item style={styles.inputGroup}>
               <Icon active name="search" />
-              <Input value={searchTerm} onChangeText={this.searchBy} />
+              <Input value={searchTerm} onChangeText={(searchTerm) => {
+                this.setState({ searchTerm });
+                  searchByDelayed(searchTerm);
+              }} />
             </Item>
-            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}
-            />
+            <ConfirmationView callBackClose={this.callBackClose} propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null}  />
           </View>
 
           <Button
@@ -69,7 +78,7 @@ export default class PatientList extends React.Component {
           <SeparatorLine />
         </View>
 
-        <ListContent model="Patient" list="patient_list" itemNavigation="PatientProfile" />
+        <ListContent query={query} model="Patient" list="patient_list" itemNavigation="PatientProfile" />
       </>
     );
   }

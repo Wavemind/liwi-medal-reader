@@ -48,15 +48,18 @@ export default class RealmInterface {
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Used for pagination,tells what page to show
+   * @param { integer } params - options for the request the search query is in there
    * @returns { Collection } - A collection of all the data
    */
-  getAll = (model, page = null) => {
+  getAll = async (model, page = null, params) => {
     if (page === null) {
       return this._realm().objects(model);
     }
-    return this._realm()
-      .objects(model)
-      .slice((page - 1) * elementPerPage, elementPerPage * page);
+    let result = await this._realm().objects(model);
+
+    if (params.query !== '' && model === 'Patient') result = await result.filtered(`patientValues.value LIKE "*${params.query}*"`);
+
+    return result.slice((page - 1) * elementPerPage, page * elementPerPage);
   };
 
   /**
@@ -98,9 +101,8 @@ export default class RealmInterface {
     if (field === 'medicalCases') this._savePatientValue(model, object);
   };
 
-  search = async (query) => {
-    const dbInterface = await this._checkInterface();
-    return this[dbInterface].search(query);
+  search = async (query) =>{
+    return this._realm().objects('Patient').filtered(`patientValues.value LIKE "*${query}*"`);
   };
 
   /**

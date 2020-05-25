@@ -31,11 +31,12 @@ export default class Database {
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Pagination. if null, retrieved all information
+   * @param { integer } params - options for the request the search query is in there
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model, page) => {
+  getAll = async (model, page, params = { query: '' }) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].getAll(model, page);
+    return this[dbInterface].getAll(model, page, params);
   };
 
   /**
