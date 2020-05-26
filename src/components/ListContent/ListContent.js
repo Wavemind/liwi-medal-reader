@@ -52,7 +52,7 @@ export default class ListContent extends React.Component<Props, State> {
     this.setState({ loading: true });
 
     const data = await database.getAll(model, 1, status !== null ? [{ key: 'status', value: status }] : null);
-console.log(data);
+
     this.setState({
       data,
       currentPage: currentPage + 1,
