@@ -132,6 +132,7 @@ PatientModel.schema = {
     reason: 'string?',
     medicalCases: 'MedicalCase[]',
     patientValues: 'PatientValue[]',
-    fail_safe: { type: 'bool', default: false }
+    updated_at: 'date',
+    fail_safe: { type: 'bool', default: false },
   }
 };
