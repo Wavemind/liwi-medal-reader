@@ -16,18 +16,6 @@ export default class Database {
   }
 
   /**
-   * Returns all the entry on a specific model
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } page - Pagination. if null, retrieved all information
-   * @param { object } filters - Array of filters defined by {key: .., value: ..}. if null, retrieved all information
-   * @returns { Collection } - A collection of all the data
-   */
-  getAll = async (model, page = null, filters = null) => {
-    const dbInterface = await this._checkInterface();
-    return this[dbInterface].getAll(model, page, filters);
-  };
-
-  /**
    * Fetch single entry
    * @param { string } model - The model name of the data we want to retrieve
    * @param { string } value - The value of the object we want
@@ -37,6 +25,18 @@ export default class Database {
   findBy = async (model, value, field = 'id') => {
     const dbInterface = await this._checkInterface();
     return this[dbInterface].findBy(model, value, field);
+  };
+
+  /**
+   * Returns all the entry on a specific model
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } page - Pagination. if null, retrieved all information
+   * @param { integer } params - options for the request the search query and the filter is in there
+   * @returns { Collection } - A collection of all the data
+   */
+  getAll = async (model, page, params = { query: '', filter: null }) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].getAll(model, page, params);
   };
 
   /**
@@ -50,15 +50,13 @@ export default class Database {
   };
 
   /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @return { object } object - The value of the object
+   * Lock a medical case when device is in client server architecture
+   * @param {integer} id - Medical case id
+   * @returns {string}
    */
-  update = async (model, id, fields) => {
+  lockMedicalCase = async (id) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].update(model, id, fields);
+    return this[dbInterface].lockMedicalCase(id);
   };
 
   /**
@@ -85,13 +83,15 @@ export default class Database {
   };
 
   /**
-   * Lock a medical case when device is in client server architecture
-   * @param {integer} id - Medical case id
-   * @returns {string}
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @return { object } object - The value of the object
    */
-  lockMedicalCase = async (id) => {
+  update = async (model, id, fields) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].lockMedicalCase(id);
+    return this[dbInterface].update(model, id, fields);
   };
 
   /**

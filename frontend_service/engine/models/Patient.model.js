@@ -124,7 +124,6 @@ PatientModel.schema = {
     other_study_id: 'string?',
     other_group_id: 'string?',
     reason: 'string?',
-    updated_at: 'date',
     medicalCases: 'MedicalCase[]',
     patientValues: 'PatientValue[]',
     fail_safe: { type: 'bool', default: false }

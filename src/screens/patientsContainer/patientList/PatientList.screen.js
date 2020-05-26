@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Button, Icon, Input, Item, Text, View } from 'native-base';
+import _ from 'lodash';
 
 import { styles } from './PatientList.style';
 import { SeparatorLine } from '../../../template/layout';
@@ -12,7 +13,18 @@ export default class PatientList extends React.Component {
   state = {
     propsToolTipVisible: false,
     searchTerm: '',
+    query: '',
     isGeneratingPatient: false,
+    searchByDelayed: _.debounce(() => {
+      const { searchTerm } = this.state;
+      this.setState({ query: searchTerm });
+    }, 350),
+  };
+
+  searchBy = (searchTerm) => {
+    const { searchByDelayed } = this.state;
+    this.setState({ searchTerm });
+    searchByDelayed(searchTerm);
   };
 
   /**
@@ -25,7 +37,7 @@ export default class PatientList extends React.Component {
   };
 
   render() {
-    const { searchTerm, isGeneratingPatient, propsToolTipVisible } = this.state;
+    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible } = this.state;
 
     const {
       app: { t },
@@ -68,7 +80,7 @@ export default class PatientList extends React.Component {
           <SeparatorLine />
         </View>
 
-        <ListContent model="Patient" list="patient_list" itemNavigation="PatientProfile" />
+        <ListContent query={query} model="Patient" list="patient_list" itemNavigation="PatientProfile" />
       </>
     );
   }
