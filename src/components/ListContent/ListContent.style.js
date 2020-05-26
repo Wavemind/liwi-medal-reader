@@ -38,7 +38,8 @@ export const styles = StyleSheet.create({
 
   filterButton: {
     backgroundColor: liwiColors.redColor,
-    flex: 0.20,
+    width: 80,
+    marginLeft: 2,
     height: 45,
     borderRadius: 4,
     alignSelf: 'center',

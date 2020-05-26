@@ -172,8 +172,8 @@ export default class RealmInterface {
   _generateFilteredQuery = (filters) => {
     let query = '';
     if (filters !== null) {
-      Object.keys(filters).forEach((key) => {
-        query += `${filters[key].key} == ${filters[key].value}`;
+      filters.forEach((filter, key) => {
+        query += `${filter.key} == ${filter.value}`;
         if (key + 1 < filters.length) {
           query += ' OR ';
         }
