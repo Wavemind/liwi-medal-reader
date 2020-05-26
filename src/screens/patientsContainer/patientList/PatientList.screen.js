@@ -36,6 +36,18 @@ export default class PatientList extends React.Component {
     });
   };
 
+  /**
+   * Action call when element of flatlist is clicked
+   * @param {object} patient - Patient clicked
+   * @returns {Promise<void>}
+   */
+  itemNavigation = async (patient) => {
+    const { navigation } = this.props;
+    navigation.navigate('PatientProfile', {
+      id: patient.id,
+    });
+  };
+
   render() {
     const { searchTerm, query, isGeneratingPatient, propsToolTipVisible } = this.state;
 
@@ -80,7 +92,7 @@ export default class PatientList extends React.Component {
           <SeparatorLine />
         </View>
 
-        <ListContent query={query} model="Patient" list="patient_list" itemNavigation="PatientProfile" />
+        <ListContent query={query} model="Patient" list="patient_list" itemNavigation={this.itemNavigation} />
       </>
     );
   }
