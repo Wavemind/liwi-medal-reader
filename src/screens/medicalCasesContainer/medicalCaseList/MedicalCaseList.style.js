@@ -1,48 +1,19 @@
-import { StyleSheet } from "react-native";
-import { liwiColors } from "../../../utils/constants";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  input: {
+  flexDirectionRow: { flexDirection: 'row' },
+
+  inputGroup: {
     width: '100%',
-  },
-  filters: {
-    flex: 1,
-    flexDirection: 'row',
-    flexBasis: 1000,
-  },
-  filter: {
-    marginTop: 40,
-    paddingBottom: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  picker: {
-    backgroundColor: liwiColors.lightGreyColor,
-  },
-
-  textFilter: {
-    marginRight: 80,
-    marginLeft: 40,
-    paddingLeft: 40,
-    borderLeftWidth: 1,
-    borderLeftColor: liwiColors.redColor,
-    textTransform: 'uppercase',
-  },
-
-  lock: { color: liwiColors.redColor },
-  unlock: { color: liwiColors.greenColor },
-
-  sorted: {
-    marginTop: 30,
-    alignItems: 'flex-start',
-    flex: 1,
-    flexDirection: 'column',
-    marginBottom: 40,
-  },
-
-  textSorted: {
-    textTransform: 'uppercase',
-    marginRight: 40,
+    paddingLeft: 10,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    borderRadius: 4,
+    borderColor: 'transparent',
   },
 });

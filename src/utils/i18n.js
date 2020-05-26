@@ -430,7 +430,7 @@ i18n
           login: 'Connecter',
         },
         medical_case: {
-          in_creation: 'Demographic',
+          in_creation: 'In creation',
           managements: 'Managements',
           treatments: 'Treatments',
           final_diagnoses: 'Final diagnoses',
