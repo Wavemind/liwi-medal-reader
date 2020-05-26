@@ -212,6 +212,12 @@ i18n
           current_summary: 'Current summary',
           differential_diagnoses: 'Differential diagnoses',
         },
+        patient_profile: {
+          personal_information: 'Personal information',
+          medical_cases: 'Medical cases',
+          status: 'Status',
+          add_case: 'Add medical case'
+        },
         patient_upsert: {
           uid: 'UID',
           study_id: 'Study ID',
