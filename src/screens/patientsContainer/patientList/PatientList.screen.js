@@ -21,6 +21,10 @@ export default class PatientList extends React.Component {
     }, 350),
   };
 
+  /**
+   * Search by term in database
+   * @param {string} searchTerm - Term typed for search
+   */
   searchBy = (searchTerm) => {
     const { searchByDelayed } = this.state;
     this.setState({ searchTerm });

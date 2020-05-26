@@ -91,7 +91,7 @@ export default class PatientProfile extends React.Component {
       >
         {columns.map((nodeId) => (
           <View style={{ flex: size }} key={`${medicalCase.id}_${nodeId}`}>
-            <Text size-auto>{medicalCase.getLabelFromPatientValue(nodeId, nodes)}</Text>
+            <Text size-auto>{medicalCase.getLabelFromNode(nodeId, nodes)}</Text>
           </View>
         ))}
         <View style={{ flex: size }}>
@@ -128,7 +128,7 @@ export default class PatientProfile extends React.Component {
                 {nodes[patientValue.node_id].label}
               </Text>
               <Text size-auto style={styles.patientValues}>
-                {patient.getLabelFromPatientValue(patientValue.node_id, nodes)}
+                {patient.getLabelFromNode(patientValue.node_id, nodes)}
               </Text>
             </View>
           ))}
