@@ -4,22 +4,28 @@ import { liwiColors } from '../../utils/constants';
 export const styles = StyleSheet.create({
   item: {
     paddingLeft: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
+    elevation: 1,
     borderRadius: 4,
     height: 80,
-    marginRight: 5,
-    marginLeft: 5,
+    marginRight: 2,
+    marginLeft: 2,
     borderWidth: 0,
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: liwiColors.whiteDark
+  },
+
+  columnLabel: {
+    flex: 1,
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 2,
+    marginRight: 2,
+    backgroundColor: liwiColors.lightGreyColor,
+    borderColor: liwiColors.lighterGreyColor,
+    borderRadius: 4,
+    elevation: 1,
   },
 
   separator: {
@@ -34,7 +40,7 @@ export const styles = StyleSheet.create({
     backgroundColor: liwiColors.redColor,
     flex: 0.20,
     height: 45,
-    borderRadius: 5,
+    borderRadius: 4,
     alignSelf: 'center',
     justifyContent: 'center',
     shadowColor: '#f4f4f4',
@@ -49,9 +55,7 @@ export const styles = StyleSheet.create({
     paddingTop: 0
   },
 
-  sortButton: { borderRadius: 5 },
-
   flatList: { paddingBottom: 220 },
 
-  picker: { borderRadius: 5, color: liwiColors.whiteDark }
+  picker: { borderRadius: 4, color: liwiColors.whiteDark }
 });

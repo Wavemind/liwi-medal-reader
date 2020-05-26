@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Button, Picker, ListItem, Text, View } from 'native-base';
+import { Picker, ListItem, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
@@ -167,11 +167,13 @@ export default class ListContent extends React.Component<Props, State> {
     ) : data.length > 0 ? (
       <>
         <View padding-auto style={styles.filterContent}>
-          {columns.map((column) => (
-            <Button key={column} iconRight center light style={[{ flex: 1 / columns.length }, styles.sortButton]}>
-              <Text>{nodes[column].label}</Text>
-            </Button>
-          ))}
+            {columns.map((column) => (
+              <View style={styles.columnLabel}>
+                <Text size-auto>
+                  {nodes[column].label}
+                </Text>
+              </View>
+            ))}
           {model === 'MedicalCase' ? (
           <View style={styles.filterButton}>
             <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>

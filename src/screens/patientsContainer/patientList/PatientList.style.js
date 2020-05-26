@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  topSpace: { marginTop: 10 },
 
   flexDirectionRow: { flexDirection: 'row' },
 
