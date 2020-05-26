@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { ListItem, Text, View } from 'native-base';
+import { ListItem, Text, View, Button } from 'native-base';
 import { FlatList } from 'react-native';
 
 import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
@@ -78,6 +78,7 @@ export default class PatientProfile extends React.Component {
           if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
             updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
           } else {
+            // Set medical case in store and lock case
             await setMedicalCase(newMedicalCase);
             await database.lockMedicalCase(newMedicalCase.id);
 
@@ -111,6 +112,7 @@ export default class PatientProfile extends React.Component {
   render() {
     const {
       app: { t },
+      navigation,
     } = this.props;
     const { patient, firstRender, nodes, columns } = this.state;
     return !firstRender ? (
@@ -156,6 +158,20 @@ export default class PatientProfile extends React.Component {
             ItemSeparatorComponent={this._renderSeparator}
             keyExtractor={(item) => item.id}
           />
+        </View>
+
+        <View style={styles.footerButton}>
+          <Button
+            block
+            onPress={() => {
+              navigation.navigate('PatientUpsert', {
+                idPatient: patient.id,
+                newMedicalCase: true,
+              });
+            }}
+          >
+            <Text size-auto>{t('patient_profile:add_case')}</Text>
+          </Button>
         </View>
       </>
     );
