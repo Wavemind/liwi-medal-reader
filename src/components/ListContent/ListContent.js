@@ -58,6 +58,7 @@ export default class ListContent extends React.Component<Props, State> {
     const { currentPage, status } = this.state;
 
     this.setState({ loading: true });
+
     const options = {
       query,
       filters: status !== null ? [{ key: 'status', value: status }] : null,
