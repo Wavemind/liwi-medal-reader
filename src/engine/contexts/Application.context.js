@@ -305,6 +305,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     contentModal: 'initial',
     currentRoute: null,
     initialPosition: {},
+    listFilters: {},
     isModalVisible: false,
     isConnected: false,
     lang: 'fr',

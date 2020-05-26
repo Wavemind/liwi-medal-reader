@@ -8,6 +8,7 @@ import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
+import Filters from '../../screens/filters';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
 import i18n from '../../utils/i18n';
@@ -56,6 +57,19 @@ const Stack = createStackNavigator(
         return {
           title: i18n.t('navigation:patient_list'),
         };
+      },
+    },
+    Filters: {
+      screen: Filters,
+      path: 'Filters',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: () => {
+        return {
+          header: null,
+          mode: 'modal',
+      };
       },
     },
     PatientProfile: {
