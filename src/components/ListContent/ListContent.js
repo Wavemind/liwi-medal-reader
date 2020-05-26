@@ -38,6 +38,13 @@ export default class ListContent extends React.Component<Props, State> {
     this.setState({ columns, nodes, firstLoading: false });
   }
 
+  async componentDidUpdate(nextProp, nextState){
+    // Update the list whenever the search query is updated
+    if (nextProp.query !== this.props.query) {
+      await this._fetchList();
+    }
+  }
+
   /**
    * Fetch data
    * @returns {Promise<void>}
@@ -46,12 +53,16 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       app: { database },
       model,
+      query,
     } = this.props;
     const { currentPage, status } = this.state;
 
     this.setState({ loading: true });
-
-    const data = await database.getAll(model, 1, status !== null ? { key: 'status', value: status } : null);
+    const options = {
+      query,
+      filter: status !== null ? { key: 'status', value: status } : null,
+    };
+    const data = await database.getAll(model, 1, options);
 
     this.setState({
       data,
@@ -79,6 +90,7 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       app: { database },
       model,
+      query
     } = this.props;
     const { data, currentPage, status } = this.state;
 
@@ -87,7 +99,11 @@ export default class ListContent extends React.Component<Props, State> {
         loading: true,
       },
       async () => {
-        const newData = await database.getAll(model, currentPage, status !== null ? { key: 'status', value: status } : null);
+        const options = {
+          query,
+          filter: status !== null ? { key: 'status', value: status } : null,
+        };
+        const newData = await database.getAll(model, currentPage, options);
         const isLastBatch = newData.length === 0;
 
         this.setState({

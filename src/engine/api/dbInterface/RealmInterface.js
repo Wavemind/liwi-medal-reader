@@ -26,12 +26,6 @@ export default class RealmInterface {
     });
   };
 
-  delete = (object) => {
-    this._realm().write(() => {
-      realm.delete(object);
-    });
-  };
-
   /**
    * Finds a object based on a field and a value
    * @param { string } model - The model name of the data we want to retrieve
@@ -45,22 +39,33 @@ export default class RealmInterface {
   };
 
   /**
+   * Deletes a specific object from the DB
+   * @param { object } object - the object to delete
+   */
+  delete = (object) => {
+    this._realm().write(() => {
+      realm.delete(object);
+    });
+  };
+
+  /**
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Used for pagination,tells what page to show
-   * @param { object } filters - Array of filters defined by {key: .., value: ..}. if null, retrieved all information
+   * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  getAll = (model, page, filters) => {
+  getAll = async (model, page = null, params) => {
     if (page === null) {
       return this._realm().objects(model);
     }
+    let result = await this._realm().objects(model);
+    const filters = this._generateFilteredQuery(params.filter);
 
-    const query = this._generateFilteredQuery(filters);
+    if (params.query !== '' && model === 'Patient') result = await result.filtered(`patientValues.value LIKE "*${params.query}*"`);
 
-    return this._realm()
-      .objects(model)
-      .filtered(query)
+    return result
+      .filtered(filters)
       .sorted('updated_at', 'ASC')
       .slice((page - 1) * elementPerPage, elementPerPage * page);
   };
@@ -80,31 +85,6 @@ export default class RealmInterface {
 
     this._savePatientValue(model, object);
   };
-
-  /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @returns { Collection } - Updated object
-   */
-  update = async (model, id, fields) => {
-    const session = await getItem('session');
-    if (session.group.architecture === 'client_server') {
-      fields = { ...fields, fail_safe: true };
-    }
-
-    this._realm().write(() => {
-      this._realm().create(model, { id, ...fields }, 'modified');
-    });
-    const object = this.findBy(model, id);
-    if (['Patient', 'MedicalCase'].includes(model)) this._savePatientValue(model, object);
-  };
-
-  /**
-   * Blank method used in httpInterface
-   */
-  unlockMedicalCase = () => {};
 
   lockMedicalCase = () => {};
 
@@ -127,6 +107,31 @@ export default class RealmInterface {
       object[field].push(value);
     });
     if (field === 'medicalCases') this._savePatientValue(model, object);
+  };
+
+  /**
+   * Blank method used in httpInterface
+   */
+  unlockMedicalCase = () => {};
+
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @returns { Collection } - Updated object
+   */
+  update = async (model, id, fields) => {
+    const session = await getItem('session');
+    if (session.group.architecture === 'client_server') {
+      fields = { ...fields, fail_safe: true };
+    }
+
+    this._realm().write(() => {
+      this._realm().create(model, { id, ...fields }, 'modified');
+    });
+    const object = this.findBy(model, id);
+    if (['Patient', 'MedicalCase'].includes(model)) this._savePatientValue(model, object);
   };
 
   /**
