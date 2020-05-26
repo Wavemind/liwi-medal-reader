@@ -215,7 +215,8 @@ i18n
         patient_profile: {
           personal_information: 'Personal information',
           medical_cases: 'Medical cases',
-          status: 'Status'
+          status: 'Status',
+          add_case: 'Add medical case'
         },
         patient_upsert: {
           uid: 'UID',

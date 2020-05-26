@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor: liwiColors.whiteDark
+    backgroundColor: liwiColors.whiteDark,
   },
 
   separator: {
@@ -66,5 +66,7 @@ export const styles = StyleSheet.create({
 
   flexDirection: { flexDirection: 'row' },
 
-  patientValues: { flex: 0.7, alignSelf: 'center', paddingLeft: 20 }
+  patientValues: { flex: 0.7, alignSelf: 'center', paddingLeft: 20 },
+
+  footerButton: { position: 'absolute', left: 0, right: 0, bottom: 0 },
 });
