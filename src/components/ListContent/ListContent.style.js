@@ -36,27 +36,7 @@ export const styles = StyleSheet.create({
 
   filterContent: { flexDirection: 'row', paddingBottom: 5 },
 
-  filterButton: {
-    backgroundColor: liwiColors.redColor,
-    width: 80,
-    marginLeft: 2,
-    height: 45,
-    borderRadius: 4,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    shadowColor: '#f4f4f4',
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 1,
-    marginTop: 0,
-    paddingTop: 0
-  },
+  filterButton: { flex: 0.40, borderRadius: 5, alignSelf: 'flex-end', justifyContent: 'center' },
 
   flatList: { paddingBottom: 220 },
-
-  picker: { borderRadius: 4, color: liwiColors.whiteDark }
 });

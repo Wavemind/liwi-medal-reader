@@ -60,11 +60,11 @@ export default class RealmInterface {
       return this._realm().objects(model);
     }
     let result = await this._realm().objects(model);
-    const filters = this._generateFilteredQuery(params.filter);
-    console.log(filters);
+    // const filters = this._generateFilteredQuery(params.filter);
+    // console.log(filters);
 
     if (params.query !== '' && model === 'Patient') result = await result.filtered(`patientValues.value LIKE "*${params.query}*"`);
-    if (filters !== '') result = await result.filtered(filters);
+    // if (filters !== '') result = await result.filtered(filters);
 
       return result
       .sorted('updated_at', 'ASC')

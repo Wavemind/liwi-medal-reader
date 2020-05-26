@@ -2,13 +2,12 @@
 
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Picker, ListItem, Text, View } from 'native-base';
+import { Button, Icon, ListItem, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -178,6 +177,7 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       app: { t },
       model,
+      navigation,
     } = this.props;
     const { data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
 
@@ -187,25 +187,18 @@ export default class ListContent extends React.Component<Props, State> {
       <>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
-            <View style={styles.columnLabel}>
+            <View key={column} style={styles.columnLabel}>
               <Text size-auto>{nodes[column].label}</Text>
             </View>
           ))}
           {model === 'MedicalCase' ? (
-            <>
-              <View style={styles.columnLabel}>
-                <Text size-auto>{t('patient_profile:status')}</Text>
-              </View>
-              <View style={styles.filterButton}>
-                <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>
-                  <Picker.Item label={t('application:select')} value={null} />
-                  {Object.keys(medicalCaseStatus).map((key) => (
-                    <Picker.Item label={t(`medical_case:${medicalCaseStatus[key].name}`)} value={medicalCaseStatus[key].name} />
-                  ))}
-                </Picker>
-              </View>
-            </>
+            <View style={styles.columnLabel}>
+              <Text size-auto>{t('patient_profile:status')}</Text>
+            </View>
           ) : null}
+          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filters', { model })}>
+            <Icon type="FontAwesome" name="filter" />
+          </Button>
         </View>
         {data.length > 0 ? (
           <View padding-auto>
