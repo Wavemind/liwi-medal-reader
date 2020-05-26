@@ -59,10 +59,12 @@ export default class HttpInterface {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}&${stringFilters}`;
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
+
     if (data !== null) {
       const values = this._initClasses(data, model);
       return values;
     }
+
     return data;
   };
 
@@ -138,7 +140,8 @@ export default class HttpInterface {
       const result = await httpRequest.json();
       if (httpRequest.status === 200) {
         return result;
-      } else if (httpRequest.status > 404) {
+      }
+      if (httpRequest.status > 404) {
         handleHttpError(result.message);
       }
     }
@@ -163,7 +166,7 @@ export default class HttpInterface {
         route = 'medical_cases';
         break;
       default:
-        console.warn("route doesn't exist", model);
+        console.warn('route doesn\'t exist', model);
     }
 
     return route;
@@ -184,11 +187,11 @@ export default class HttpInterface {
     const header = {
       method,
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         'x-mac-address': this.macAddress,
-        'x-clinician': this.clinician,
-      },
+        'x-clinician': this.clinician
+      }
     };
 
     if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
@@ -217,10 +220,14 @@ export default class HttpInterface {
    */
   _generateFiltersUrl = (filters) => {
     let stringFilters = '';
+
     if (filters !== null) {
-      Object.keys(filters).forEach((key) => (
-        stringFilters += `${filters[key].key}=${filters[key].value}`
-      ));
+      filters.forEach((filter, key) => {
+        stringFilters += `${filter.key}=${filter.value}`;
+        if (key + 1 < filters.length) {
+          stringFilters += '&';
+        }
+      });
     }
 
     return stringFilters;

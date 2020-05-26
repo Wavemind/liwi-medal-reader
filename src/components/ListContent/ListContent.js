@@ -51,8 +51,8 @@ export default class ListContent extends React.Component<Props, State> {
 
     this.setState({ loading: true });
 
-    const data = await database.getAll(model, 1, status !== null ? { key: 'status', value: status } : null);
-
+    const data = await database.getAll(model, 1, status !== null ? [{ key: 'status', value: status }] : null);
+console.log(data);
     this.setState({
       data,
       currentPage: currentPage + 1,
@@ -66,8 +66,8 @@ export default class ListContent extends React.Component<Props, State> {
    * @param {string} value - Change status type
    * @private
    */
-  _changeStatus = (value) => {
-    this.setState({ status: value });
+  _changeStatus = async (value) => {
+    await this.setState({ status: value });
     this._fetchList();
   };
 
@@ -87,7 +87,7 @@ export default class ListContent extends React.Component<Props, State> {
         loading: true,
       },
       async () => {
-        const newData = await database.getAll(model, currentPage, status !== null ? { key: 'status', value: status } : null);
+        const newData = await database.getAll(model, currentPage, status !== null ? [{ key: 'status', value: status }] : null);
         const isLastBatch = newData.length === 0;
 
         this.setState({
@@ -107,7 +107,7 @@ export default class ListContent extends React.Component<Props, State> {
    * @private
    */
   _renderItem = (item) => {
-    const { navigation, itemNavigation } = this.props;
+    const { itemNavigation, model, app: {t} } = this.props;
     const { columns, nodes } = this.state;
     const size = 1 / columns.length;
 
@@ -115,17 +115,18 @@ export default class ListContent extends React.Component<Props, State> {
       <ListItem
         style={styles.item}
         key={`${item.id}_list`}
-        onPress={() =>
-          navigation.navigate(itemNavigation, {
-            id: item.id,
-          })
-        }
+        onPress={async () => itemNavigation(item)}
       >
         {columns.map((nodeId) => (
           <View style={{ flex: size }} key={`${item.id}_${nodeId}`}>
             <Text size-auto>{item.getLabelFromPatientValue(nodeId, nodes)}</Text>
           </View>
         ))}
+        {model === 'MedicalCase' ? (
+          <View style={{ flex: size }}>
+            <Text size-auto>{t(`medical_case:${item.status}`)}</Text>
+          </View>
+        ) : null}
       </ListItem>
     );
   };
@@ -159,30 +160,34 @@ export default class ListContent extends React.Component<Props, State> {
   render() {
     const {
       app: { t },
+      model,
     } = this.props;
-    const { model, data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
+    const { data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
     ) : data.length > 0 ? (
       <>
         <View padding-auto style={styles.filterContent}>
-            {columns.map((column) => (
-              <View style={styles.columnLabel}>
-                <Text size-auto>
-                  {nodes[column].label}
-                </Text>
-              </View>
-            ))}
+          {columns.map((column) => (
+            <View style={styles.columnLabel}>
+              <Text size-auto>{nodes[column].label}</Text>
+            </View>
+          ))}
           {model === 'MedicalCase' ? (
-          <View style={styles.filterButton}>
-            <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>
-              <Picker.Item label={t('application:select')} value={null} />
-              {Object.keys(medicalCaseStatus).map((key) => (
-                <Picker.Item label={t(`medical_case:${medicalCaseStatus[key].name}`)} value={medicalCaseStatus[key].name} />
-              ))}
-            </Picker>
-          </View>
+            <>
+              <View style={styles.columnLabel}>
+                <Text size-auto>{t('patient_profile:status')}</Text>
+              </View>
+              <View style={styles.filterButton}>
+                <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>
+                  <Picker.Item label={t('application:select')} value={null} />
+                  {Object.keys(medicalCaseStatus).map((key) => (
+                    <Picker.Item label={t(`medical_case:${medicalCaseStatus[key].name}`)} value={medicalCaseStatus[key].name} />
+                  ))}
+                </Picker>
+              </View>
+              </>
           ) : null}
         </View>
         <View padding-auto>
