@@ -137,7 +137,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const success = await database.httpInterface.synchronizePatients(patients);
 
     if (success === 'Synchronize success') {
-      // database.realmInterface.delete();
+      database.realmInterface.delete();
     }
   };
 

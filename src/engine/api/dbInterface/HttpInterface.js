@@ -51,7 +51,7 @@ export default class HttpInterface {
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Pagination. if null, retrieved all information
-   * @param { object } filters - Array of filters defined by {key: .., value: ..}. if null, retrieved all information
+   * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
   getAll = async (model, page, params) => {
