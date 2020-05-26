@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { liwiColors, responsiveUi } from "../../../utils/constants";
+import { StyleSheet } from 'react-native';
+import { liwiColors, responsiveUi } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   paddingAuto: {
@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     borderColor: liwiColors.lightGreyColor,
     borderRadius: 3,
     elevation: 1,
-    fontSize: 15,
   },
   columns: {
     flex: 1,

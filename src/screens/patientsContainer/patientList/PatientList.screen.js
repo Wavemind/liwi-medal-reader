@@ -47,7 +47,7 @@ export default class PatientList extends React.Component {
 
     return (
       <>
-        <View padding-auto style={styles.topSpace}>
+        <View padding-auto margin-top>
           <View style={styles.flexDirectionRow}>
             <Item style={styles.inputGroup}>
               <Icon active name="search" />

@@ -2,12 +2,13 @@
 
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import { medicalCaseStatus, nodeTypes, stages } from '../../constants';
+import { displayFormats, medicalCaseStatus, nodeTypes, stages } from '../../constants';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import Database from '../../../src/engine/api/Database';
 import { differenceNodes } from '../../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
 import { store } from '../../store';
+import I18n from '../../../src/utils/i18n';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -290,6 +291,26 @@ export class MedicalCaseModel {
     return (
       this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address))
     );
+  };
+
+  /**
+   * Get value of medical case value
+   * @param {integer} nodeId - Node id to retrieved
+   * @param {object} nodes - List of nodes in algorithm
+   * @returns {string|date} - value to display
+   */
+  getLabelFromPatientValue = (nodeId, nodes) => {
+    let displayedValue = '';
+    const currentNode = this.nodes[nodeId];
+
+    if (currentNode !== undefined) {
+      if (currentNode.display_format === displayFormats.date) {
+        displayedValue = moment(currentNode.value).format(I18n.t('application:date_format'));
+      } else {
+        displayedValue = currentNode.value;
+      }
+    }
+    return displayedValue;
   };
 }
 
