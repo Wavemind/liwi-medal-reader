@@ -6,14 +6,12 @@ import { Icon, Input, Item, View } from 'native-base';
 import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import { updateModalFromRedux } from '../../../../frontend_service/actions/creators.actions';
 import { getDeviceInformation } from '../../../engine/api/Device';
-import { SeparatorLine } from '../../../template/layout';
 import { getItems } from '../../../engine/api/LocalStorage';
-import { styles } from './MedicalCaseList.style';
 import ListContent from '../../../components/ListContent';
 
 export default class MedicalCaseList extends React.Component<Props, State> {
   state = {
-    searchTerm: '',
+    query: '',
   };
 
   async componentDidMount() {
@@ -61,21 +59,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   };
 
   render() {
-    const { searchTerm } = this.state;
-
-    return (
-      <>
-        <View padding-auto margin-top>
-          <View style={styles.flexDirectionRow}>
-            <Item style={styles.inputGroup}>
-              <Icon active name="search" />
-              <Input value={searchTerm} onChangeText={this.searchBy} />
-            </Item>
-          </View>
-        </View>
-
-        <ListContent model="MedicalCase" list="medical_case_list" itemNavigation={this.itemNavigation} />
-      </>
-    );
+    const { query } = this.state;
+    return <ListContent query={query} model="MedicalCase" list="medical_case_list" itemNavigation={this.itemNavigation} />;
   }
 }
