@@ -299,7 +299,7 @@ export class MedicalCaseModel {
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
-  getLabelFromPatientValue = (nodeId, nodes) => {
+  getLabelFromNode = (nodeId, nodes) => {
     let displayedValue = '';
     const currentNode = this.nodes[nodeId];
 
