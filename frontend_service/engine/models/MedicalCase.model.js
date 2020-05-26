@@ -258,6 +258,7 @@ export class MedicalCaseModel {
   };
 
   /**
+  /**
    * Will generate an activity for a medical case comparing the current value and the
    * one stored in the database
    * @param  {String} stage name of the current stage
@@ -305,7 +306,11 @@ export class MedicalCaseModel {
 
     if (currentNode !== undefined) {
       if (currentNode.display_format === displayFormats.date) {
+        // Date display
         displayedValue = moment(currentNode.value).format(I18n.t('application:date_format'));
+      } else if (currentNode.value === null) {
+        // Answer display
+        displayedValue = currentNode.answer;
       } else {
         displayedValue = currentNode.value;
       }
