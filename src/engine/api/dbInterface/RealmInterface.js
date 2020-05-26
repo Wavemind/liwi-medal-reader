@@ -38,6 +38,10 @@ export default class RealmInterface {
     return object === undefined ? null : object;
   };
 
+  /**
+   * Deletes a specific object from the DB
+   * @param { object } object - the object to delete
+   */
   delete = (object) => {
     this._realm().write(() => {
       realm.delete(object);
@@ -48,7 +52,7 @@ export default class RealmInterface {
    * Returns all the entry on a specific model
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } page - Used for pagination,tells what page to show
-   * @param { integer } params - options for the request the search query is in there
+   * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
   getAll = async (model, page = null, params) => {

@@ -39,7 +39,8 @@ export default class ListContent extends React.Component<Props, State> {
   }
 
   async componentDidUpdate(nextProp, nextState){
-    if(nextProp.query !== this.props.query) {
+    // Update the list whenever the search query is updated
+    if (nextProp.query !== this.props.query) {
       await this._fetchList();
     }
   }

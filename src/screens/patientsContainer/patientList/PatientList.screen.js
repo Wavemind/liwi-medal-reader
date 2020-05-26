@@ -21,6 +21,12 @@ export default class PatientList extends React.Component {
     }, 350),
   };
 
+  searchBy = (searchTerm) => {
+    const { searchByDelayed } = this.state;
+    this.setState({ searchTerm });
+    searchByDelayed(searchTerm);
+  };
+
   /**
    * Hide popup
    */
@@ -31,7 +37,7 @@ export default class PatientList extends React.Component {
   };
 
   render() {
-    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible, searchByDelayed } = this.state;
+    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible } = this.state;
 
     const {
       app: { t },
@@ -45,10 +51,7 @@ export default class PatientList extends React.Component {
           <View style={styles.flexDirectionRow}>
             <Item style={styles.inputGroup}>
               <Icon active name="search" />
-              <Input value={searchTerm} onChangeText={(searchTerm) => {
-                this.setState({ searchTerm });
-                  searchByDelayed(searchTerm);
-              }} />
+              <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
             <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} qrcode={false} />
           </View>
