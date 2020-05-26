@@ -43,6 +43,8 @@ export default {
 
     '.padding-auto': { paddingLeft: responsiveUi.padding(), paddingRight: responsiveUi.padding() },
 
+    '.margin-top': {marginTop: 10},
+
     '.flex-center': {
       flexDirection: 'column',
       justifyContent: 'space-around',
