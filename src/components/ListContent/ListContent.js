@@ -60,7 +60,7 @@ export default class ListContent extends React.Component<Props, State> {
     this.setState({ loading: true });
     const options = {
       query,
-      filter: status !== null ? { key: 'status', value: status } : null
+      filter: status !== null ? { key: 'status', value: status } : null,
     };
     const data = await database.getAll(model, 1, options);
 
@@ -101,7 +101,7 @@ export default class ListContent extends React.Component<Props, State> {
       async () => {
         const options = {
           query,
-          filter: status !== null ? { key: 'status', value: status } : null
+          filter: status !== null ? { key: 'status', value: status } : null,
         };
         const newData = await database.getAll(model, currentPage, options);
         const isLastBatch = newData.length === 0;
