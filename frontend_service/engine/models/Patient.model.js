@@ -67,9 +67,10 @@ export class PatientModel {
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
-  getLabelFromPatientValue = (nodeId, nodes) => {
+  getLabelFromNode = (nodeId, nodes) => {
     let displayedValue = '';
     const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
+
     if (currentPatientValue !== undefined) {
       if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
         displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
@@ -77,6 +78,7 @@ export class PatientModel {
         displayedValue = currentPatientValue.value;
       }
     }
+
     return displayedValue;
   };
 

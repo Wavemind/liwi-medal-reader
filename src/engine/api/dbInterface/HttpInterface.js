@@ -56,7 +56,8 @@ export default class HttpInterface {
    */
   getAll = async (model, page, params) => {
     const stringFilters = this._generateFiltersUrl(params.filters);
-    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}&${stringFilters}`;
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}${stringFilters}&query=${params.query}`;
+
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
 
@@ -138,6 +139,7 @@ export default class HttpInterface {
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();
+
       if (httpRequest.status === 200) {
         return result;
       }
@@ -222,11 +224,8 @@ export default class HttpInterface {
     let stringFilters = '';
 
     if (filters !== null) {
-      filters.forEach((filter, key) => {
-        stringFilters += `${filter.key}=${filter.value}`;
-        if (key + 1 < filters.length) {
-          stringFilters += '&';
-        }
+      filters.forEach((filter) => {
+        stringFilters += `&${filter.key}=${filter.value}`;
       });
     }
 
