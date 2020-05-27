@@ -73,7 +73,11 @@ export class PatientModel {
 
     if (currentPatientValue !== undefined) {
       if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
+        // Date display
         displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+      } else if (currentPatientValue.value === null) {
+        // Answer display
+        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
       } else {
         displayedValue = currentPatientValue.value;
       }
