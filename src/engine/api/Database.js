@@ -34,7 +34,7 @@ export default class Database {
    * @param { integer } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model, page, params = { query: '', filters: null }) => {
+  getAll = async (model, page, params = { query: '', filters: [] }) => {
     const dbInterface = await this._checkInterface();
     return this[dbInterface].getAll(model, page, params);
   };
