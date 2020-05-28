@@ -22,7 +22,7 @@ export default class ListContent extends React.Component<Props, State> {
     currentPage: 1,
     isLastBatch: false,
     firstLoading: true,
-    status: null,
+    filters: {}
   };
 
   async componentDidMount() {
@@ -31,15 +31,15 @@ export default class ListContent extends React.Component<Props, State> {
     await this._fetchList();
 
     const algorithm = await getItems('algorithm');
-
+    const filters = await getItems('filters');
+console.log(filters);
     const columns = algorithm.mobile_config[list];
     const { nodes } = algorithm;
-    this.setState({ columns, nodes, firstLoading: false });
+    this.setState({ columns, nodes, firstLoading: false, filters: filters === undefined ? {} : filters });
   }
 
-  async componentDidUpdate(nextProp, nextState) {
-    // Update the list whenever the search query is updated
-    if (nextProp.query !== this.props.query) {
+  async componentDidUpdate(nextProps) {
+    if (nextProps.query !== this.props.query) {
       await this._fetchList();
     }
   }
@@ -54,14 +54,11 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { currentPage, status } = this.state;
+    const { currentPage, filters } = this.state;
 
     this.setState({ loading: true });
 
-    const options = {
-      query,
-      filters: status !== null ? [{ key: 'status', value: status }] : null,
-    };
+    const options = { query, filters };
     const data = await database.getAll(model, 1, options);
 
     this.setState({
@@ -70,16 +67,6 @@ export default class ListContent extends React.Component<Props, State> {
       loading: false,
       isLastBatch: false,
     });
-  };
-
-  /**
-   * Filter by status
-   * @param {string} value - Change status type
-   * @private
-   */
-  _changeStatus = async (value) => {
-    await this.setState({ status: value });
-    this._fetchList();
   };
 
   /**
@@ -92,7 +79,7 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { data, currentPage, status } = this.state;
+    const { data, currentPage, filters } = this.state;
 
     this.setState(
       {
@@ -101,7 +88,7 @@ export default class ListContent extends React.Component<Props, State> {
       async () => {
         const options = {
           query,
-          filters: status !== null ? [{ key: 'status', value: status }] : null,
+          filters,
         };
         const newData = await database.getAll(model, currentPage, options);
         const isLastBatch = newData.length === 0;
@@ -179,7 +166,7 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       navigation,
     } = this.props;
-    const { data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
+    const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />

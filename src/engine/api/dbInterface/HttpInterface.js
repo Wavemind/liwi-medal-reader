@@ -192,8 +192,8 @@ export default class HttpInterface {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'x-mac-address': this.macAddress,
-        'x-clinician': this.clinician
-      }
+        'x-clinician': this.clinician,
+      },
     };
 
     if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
@@ -222,10 +222,10 @@ export default class HttpInterface {
    */
   _generateFiltersUrl = (filters) => {
     let stringFilters = '';
-
-    if (filters !== null) {
-      filters.forEach((filter) => {
-        stringFilters += `&${filter.key}=${filter.value}`;
+    console.log('httpInterface', filters);
+    if (filters.length !== 0) {
+      Object.keys(filters).forEach((key) => {
+        stringFilters += `&${filters[key].key}=${filters[key].value}`;
       });
     }
 
