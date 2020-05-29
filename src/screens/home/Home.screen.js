@@ -134,7 +134,7 @@ export default class Home extends React.Component<Props, State> {
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/case.png')} />
                 <Text size-auto center style={styles.textButton}>
-                  {t('navigation:case_in_progress')}
+                  {t('navigation:medical_case_list')}
                 </Text>
               </View>
             </TouchableHighlight>

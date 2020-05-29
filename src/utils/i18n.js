@@ -23,7 +23,7 @@ i18n
         application: {
           loading: 'Loading...',
           no_data: 'No data available',
-          date_format: 'Do MMMM YY',
+          date_format: 'DD/MM/YYYY',
           select: 'Select',
         },
         drug: {
@@ -328,14 +328,13 @@ i18n
           title: 'Home',
         },
         navigation: {
-          medical_case_list: 'Case in progress',
+          medical_case_list: 'Medical case list',
           home: 'Home',
           triage: 'Triage',
           patient_upsert: 'Patient',
           patient_list: 'Patient list',
           patient_search: 'Search a patient',
           patient_profile: 'Patient profile',
-          case_in_progress: 'Case in progress',
           synchronize: 'Synchronize',
           patient_add: 'New patient',
           patient_qr: 'Open patient by Qrcode',

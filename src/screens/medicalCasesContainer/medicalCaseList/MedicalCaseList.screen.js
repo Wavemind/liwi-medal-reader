@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { Icon, Input, Item, View } from 'native-base';
 
 import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import { updateModalFromRedux } from '../../../../frontend_service/actions/creators.actions';
