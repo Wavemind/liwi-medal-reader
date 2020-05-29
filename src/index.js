@@ -31,7 +31,7 @@ export default class Root extends React.Component {
             <Layout />
             <CustomModal />
             <TooltipModal />
-            {__DEV__ ? <WavemindTools /> : null}
+            <WavemindTools />
             <StatusIndicator />
           </ApplicationProvider>
         </PersistGate>
