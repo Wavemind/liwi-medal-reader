@@ -60,13 +60,12 @@ export default class RealmInterface {
       return this._realm().objects(model);
     }
     let result = await this._realm().objects(model);
-    const filters = this._generateFilteredQuery(params.filter);
-    console.log(filters);
+    const filters = this._generateFilteredQuery(params.filters);
 
     if (params.query !== '' && model === 'Patient') result = await result.filtered(`patientValues.value LIKE "*${params.query}*"`);
     if (filters !== '') result = await result.filtered(filters);
 
-      return result
+    return result
       .sorted('updated_at', 'ASC')
       .slice((page - 1) * elementPerPage, elementPerPage * page);
   };
@@ -84,10 +83,11 @@ export default class RealmInterface {
       this._realm().create(model, object);
     });
 
-    this._savePatientValue(model, object);
+   this._savePatientValue(model, object);
   };
 
-  lockMedicalCase = () => {};
+  lockMedicalCase = () => {
+  };
 
   /**
    * Push an object in a existing object based on model name and id
@@ -113,7 +113,8 @@ export default class RealmInterface {
   /**
    * Blank method used in httpInterface
    */
-  unlockMedicalCase = () => {};
+  unlockMedicalCase = () => {
+  };
 
   /**
    * Update or insert value in a existing row
@@ -205,7 +206,7 @@ export default class RealmInterface {
             id: uuid.v4(),
             value: node.value,
             node_id: parseInt(node.id),
-            answer_id: parseInt(node.answer),
+            answer_id: node.answer === null ? null : parseInt(node.answer),
             patient_id: medicalCase.patient_id,
           });
         } else {
