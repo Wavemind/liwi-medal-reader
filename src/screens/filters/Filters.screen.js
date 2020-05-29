@@ -22,26 +22,24 @@ export default class Filter extends React.Component<Props, State> {
 
     const model = navigation.getParam('model');
     const activeFilters = await navigation.getParam('filters');
-console.log('Filters', activeFilters);
     const algorithm = await getItems('algorithm');
 
     const availableFilters = _.filter(algorithm.nodes, { category: categories.demographic });
 
-    this.setState({ model, availableFilters, activeFilters: activeFilters === undefined ? {} : activeFilters });
+    this.setState({ model, availableFilters, activeFilters });
   }
 
   _handleFilters = async (node, answerKey) => {
     const { activeFilters } = this.state;
-    let newActiveFilters = activeFilters;
 
     if (_.includes(activeFilters[node.id], node.answers[answerKey].id)) {
-      newActiveFilters[node.id] = _.remove(activeFilters[node.id], (n) => n !== node.answers[answerKey].id);
-    } else if (newActiveFilters[node.id] !== undefined) {
-      newActiveFilters[node.id].push(node.answers[answerKey].id);
+      activeFilters[node.id] = _.remove(activeFilters[node.id], (n) => n !== node.answers[answerKey].id);
+    } else if (activeFilters[node.id] !== undefined) {
+      activeFilters[node.id].push(node.answers[answerKey].id);
     } else {
-      newActiveFilters[node.id] = [node.answers[answerKey].id];
+      activeFilters[node.id] = [node.answers[answerKey].id];
     }
-    this.setState({ activeFilters: newActiveFilters });
+    this.setState({ activeFilters });
   };
 
   render() {

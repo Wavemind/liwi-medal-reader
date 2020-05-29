@@ -22,23 +22,28 @@ export default class ListContent extends React.Component<Props, State> {
     currentPage: 1,
     isLastBatch: false,
     firstLoading: true,
-    filters: {}
+    filters: {},
   };
 
   async componentDidMount() {
-    const { list } = this.props;
+    const { list, navigation } = this.props;
 
+    const filters = navigation.getParam('filters');
     await this._fetchList();
 
     const algorithm = await getItems('algorithm');
-    const filters = await getItems('filters');
-console.log(filters);
-    const columns = algorithm.mobile_config[list];
-    const { nodes } = algorithm;
-    this.setState({ columns, nodes, firstLoading: false, filters: filters === undefined ? {} : filters });
+    const { nodes, mobile_config } = algorithm;
+    const columns = mobile_config[list];
+    this.setState({ columns, nodes, firstLoading: false, filters });
   }
 
-  async componentDidUpdate(nextProps) {
+  async componentDidUpdate(nextProps, nextState) {
+    // const filters = this.props.navigation.getParam('filters');
+    // console.log('old', this.state.filters)
+    // console.log('new', filters)
+    // console.log('new nextProps', nextProps.filters)
+    // console.log('new nextState', nextState.filters)
+    // console.log("##################################################")
     if (nextProps.query !== this.props.query) {
       await this._fetchList();
     }
@@ -166,7 +171,7 @@ console.log(filters);
       model,
       navigation,
     } = this.props;
-    const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
+    const { data, firstLoading, columns, nodes, loading, isLastBatch, filters } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
@@ -183,7 +188,7 @@ console.log(filters);
               <Text size-auto>{t('patient_profile:status')}</Text>
             </View>
           ) : null}
-          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filters', { model })}>
+          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filters', { model, filters })}>
             <Icon type="FontAwesome" name="filter" />
           </Button>
         </View>
