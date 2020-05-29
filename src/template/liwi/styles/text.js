@@ -49,6 +49,11 @@ export default {
       alignSelf: 'center',
       textAlignVertical: 'center',
     },
+    '.left': {
+      textAlign: 'left',
+      alignSelf: 'start',
+      textAlignVertical: 'start',
+    },
     '.not-available': {
       marginRight: 80,
       marginLeft: 40,
