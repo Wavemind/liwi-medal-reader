@@ -10,16 +10,21 @@ import ConfirmationView from '../../../components/ConfirmationView';
 import ListContent from '../../../components/ListContent';
 
 export default class PatientList extends React.Component {
-  state = {
-    propsToolTipVisible: false,
-    searchTerm: '',
-    query: '',
-    isGeneratingPatient: false,
-    searchByDelayed: _.debounce(() => {
-      const { searchTerm } = this.state;
-      this.setState({ query: searchTerm });
-    }, 350),
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      propsToolTipVisible: false,
+      searchTerm: '',
+      query: '',
+      isGeneratingPatient: false,
+      filters: props.navigation.getParam('filters'),
+      searchByDelayed: _.debounce(() => {
+        const { searchTerm } = this.state;
+        this.setState({ query: searchTerm });
+      }, 350),
+    };
+  }
 
   /**
    * Search by term in database
@@ -53,7 +58,7 @@ export default class PatientList extends React.Component {
   };
 
   render() {
-    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible } = this.state;
+    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible, filters } = this.state;
 
     const {
       app: { t },
@@ -96,7 +101,7 @@ export default class PatientList extends React.Component {
           <SeparatorLine />
         </View>
 
-        <ListContent query={query} model="Patient" list="patient_list" itemNavigation={this.itemNavigation} />
+        <ListContent query={query} filters={filters} model="Patient" list="patient_list" itemNavigation={this.itemNavigation} />
       </>
     );
   }

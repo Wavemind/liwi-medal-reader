@@ -1,10 +1,11 @@
 // @flow
 
-import React from "react";
-import { NavigationEvents } from "react-navigation";
-import { View } from "native-base";
-import Drawer from "../engine/navigation/drawer";
-import { screenWidth } from "./constants";
+import React from 'react';
+import { View } from 'native-base';
+import { NavigationEvents } from 'react-navigation';
+
+import Drawer from '../engine/navigation/drawer';
+import { screenWidth } from './constants';
 
 /**
  * @param Component
