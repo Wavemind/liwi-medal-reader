@@ -119,22 +119,37 @@ export default class PatientProfile extends React.Component {
       <LiwiLoader />
     ) : (
       <>
-        <View padding-auto margin-top>
-          <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
-
-          {patient.patientValues.map((patientValue) => (
-            <View style={styles.flexDirection}>
-              <Text size-auto style={styles.identifierText}>
-                {nodes[patientValue.node_id].label}
-              </Text>
-              <Text size-auto style={styles.patientValues}>
-                {patient.getLabelFromNode(patientValue.node_id, nodes)}
-              </Text>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+          <View padding-auto margin-top style={{ flex: 1 }}>
+            <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
+            <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+              {patient.patientValues.map((patientValue) => (
+                <View style={styles.wrapper}>
+                  <Text size-auto style={styles.identifierText}>
+                    {nodes[patientValue.node_id].label}
+                  </Text>
+                  <Text size-auto style={styles.patientValues}>
+                    {patient.getLabelFromNode(patientValue.node_id, nodes)}
+                  </Text>
+                </View>
+              ))}
             </View>
-          ))}
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              block
+              onPress={() => {
+                navigation.navigate('PatientEdit', {
+                  idPatient: patient.id,
+                });
+              }}
+            >
+              <Text size-auto>{t('patient_profile:edit_patient_value')}</Text>
+            </Button>
+          </View>
         </View>
 
-        <View padding-auto marginTop>
+        <View padding-auto>
           <LiwiTitle2 noBorder>{t('patient_profile:medical_cases')}</LiwiTitle2>
         </View>
 

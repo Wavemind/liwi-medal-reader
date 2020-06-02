@@ -2,13 +2,14 @@ import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
-import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
+import { getItems, storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
+import { QuestionModel } from '../../engine/models/Question.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -123,7 +124,8 @@ class MedicalCaseReducer extends ReducerClass {
               additionalDrugs: { ...newadditionnalDrugs },
             },
           };
-        } else if (actionDiagnoses === 'remove') {
+        }
+        if (actionDiagnoses === 'remove') {
           const { [diagnoses.id]: diagnose, ...without } = state.diagnoses[type];
           return {
             ...state,
@@ -147,7 +149,8 @@ class MedicalCaseReducer extends ReducerClass {
               additionalDrugs: { ...newadditionnalDrugs },
             },
           };
-        } else if (actionDiagnoses === 'remove') {
+        }
+        if (actionDiagnoses === 'remove') {
           const { [diagnoses.id]: diagnose, ...without } = state.diagnoses[type];
           return {
             ...state,
@@ -421,6 +424,42 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...state,
       nodes: new NodesModel(state.nodes),
+    };
+  }
+
+  @Action(actions.SET_PATIENT_VALUE)
+  setPatientValue(state, action) {
+    const { index, value } = action.payload;
+
+    const question = new QuestionModel(state.algorithm.nodes[index]);
+    question.updateAnswer(value);
+
+    const patientValues = state.patientValues.map((patientValue) => {
+      if (patientValue.node_id === index) {
+        patientValue.answer_id = question.answer;
+        patientValue.value = question.value;
+      }
+      return patientValue;
+    });
+
+    return {
+      ...state,
+      patientValues,
+    };
+  }
+
+  /**
+   * Set the Patient in state
+   *
+   * @payload Patient: the patient to store
+   */
+  @Action(actions.SET_PATIENT)
+  setPatient(state, action) {
+    const { patient, algorithm } = action.payload;
+
+    return {
+      ...patient,
+      algorithm,
     };
   }
 
