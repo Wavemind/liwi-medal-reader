@@ -14,7 +14,7 @@ import i18n from '../../utils/i18n';
 
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
-import MedicalCaseSummary from '../../screens/medicalCasesContainer/medicalCaseSummary';
+import Summary from '../../screens/medicalCasesContainer/summary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
 import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
@@ -230,7 +230,7 @@ const HomeWithModal = createStackNavigator(
   {
     Home: { screen: Stack },
     Summary: {
-      screen: MedicalCaseSummary,
+      screen: Summary,
       path: 'summary',
       params: {
         showSummary: false,

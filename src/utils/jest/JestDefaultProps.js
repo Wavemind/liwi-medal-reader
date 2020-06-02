@@ -30,7 +30,6 @@ export const jestApplicationContextProps = {
   isConnected: true,
   medicalCase: {},
   appState: 'active',
-  isModalVisible: false,
   contentModal: 'initial',
   initialPosition: {},
   t: () => {},

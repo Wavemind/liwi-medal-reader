@@ -307,8 +307,8 @@ i18n
         popup: {
           startSave: 'Saving in local data...',
           saveSuccess: 'Save with success on local data',
-          unlock: 'Force Unlock the case (at your own risk)',
-          close: 'Close the modal',
+          unlock: 'Force unlock',
+          close: 'Close',
           desc: 'Description',
           version_name: 'version',
           version: 'Update of version',
@@ -317,6 +317,7 @@ i18n
           ask_me_later: 'Ask me later',
           cancel: 'cancel',
           by: 'by',
+          summary: 'Summary',
           isLocked: 'Case is locked',
           at: 'at',
         },
