@@ -8,7 +8,6 @@ import { ApplicationProvider } from "./engine/contexts/Application.context";
 
 import WavemindTools from "./utils/WavemindTools";
 import { persistor, store } from "../frontend_service/store";
-import CustomModal from "./components/CustomModal";
 import { getItem } from "./engine/api/LocalStorage";
 
 import Layout from "./template/Layout.template";
@@ -29,7 +28,6 @@ export default class Root extends React.Component {
         <PersistGate loading={null} persistor={persistor}>
           <ApplicationProvider>
             <Layout />
-            <CustomModal />
             <TooltipModal />
             <WavemindTools />
             <StatusIndicator />

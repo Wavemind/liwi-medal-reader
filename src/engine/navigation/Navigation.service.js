@@ -1,10 +1,11 @@
-import { NavigationActions, StackActions } from "react-navigation";
-import _ from "lodash";
-import { store } from "../../../frontend_service/store";
-import { medicalCaseStatus, valueFormats } from "../../../frontend_service/constants";
-import { updateMedicalCaseProperty } from "../../../frontend_service/actions/creators.actions";
-import Database from "../api/Database";
-import moment from "moment";
+import { NavigationActions, StackActions } from 'react-navigation';
+import _ from 'lodash';
+import moment from 'moment';
+
+import { store } from '../../../frontend_service/store';
+import { medicalCaseStatus, valueFormats } from '../../../frontend_service/constants';
+import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import Database from '../api/Database';
 
 let _navigator;
 
@@ -113,7 +114,9 @@ function setParamsAge(name = '') {
     return node.value;
   };
 
-  const headerRight = `${showValue(nodes[mobile_config.first_top_right_question_id])} ${showValue(nodes[mobile_config.second_top_right_question_id])} ${showValue(nodes[mobile_config.left_top_question_id])}`;
+  const headerRight = `${showValue(nodes[mobile_config.first_top_right_question_id])} ${showValue(nodes[mobile_config.second_top_right_question_id])} ${showValue(
+    nodes[mobile_config.left_top_question_id]
+  )}`;
   const currentRoute = getCurrentRoute();
 
   const action = NavigationActions.setParams({
