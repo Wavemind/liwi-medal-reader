@@ -99,6 +99,22 @@ export const setAnswer = (index, value) => ({
   },
 });
 
+export const setPatient = (patient, algorithm) => ({
+  type: actions.SET_PATIENT,
+  payload: {
+    patient,
+    algorithm,
+  },
+});
+
+export const setPatientValue = (index, value) => ({
+  type: actions.SET_PATIENT_VALUE,
+  payload: {
+    index,
+    value,
+  },
+});
+
 export const setAnswerUnavailable = (index, value) => ({
   type: actions.SET_ANSWER_TO_UNAVAILABLE,
   payload: {

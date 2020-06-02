@@ -9,18 +9,13 @@ export const styles = StyleSheet.create({
   unlock: { color: liwiColors.greenColor },
 
   identifierText: {
-    flex: 0.3,
+    flex: 1,
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
     padding: 10,
     marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 2,
-    marginRight: 2,
-    backgroundColor: liwiColors.whiteDark,
-    borderColor: liwiColors.lightGreyColor,
-    borderRadius: 3,
+    fontWeight: 'bold',
     elevation: 1,
   },
 
@@ -64,9 +59,11 @@ export const styles = StyleSheet.create({
 
   picker: { borderRadius: 5, color: liwiColors.whiteDark },
 
-  flexDirection: { flexDirection: 'row' },
+  flexDirection: { flexDirection: 'row', flex: 1 , flexBasis: '47%' },
 
-  patientValues: { flex: 0.7, alignSelf: 'center', paddingLeft: 20 },
+  wrapper: { flexDirection: 'row', flex: 1, flexBasis: '47%'  },
+
+  patientValues: { flex: 1, alignSelf: 'center', paddingLeft: 20 },
 
   footerButton: { position: 'absolute', left: 0, right: 0, bottom: 0 },
 });

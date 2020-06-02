@@ -1,9 +1,9 @@
 // @flow
 
-import * as React from "react";
-import { Input, View } from "native-base";
-import type { NavigationScreenProps } from "react-navigation";
-import { liwiColors } from "../../../../utils/constants";
+import * as React from 'react';
+import { Input, View } from 'native-base';
+import type { NavigationScreenProps } from 'react-navigation';
+import { liwiColors } from '../../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -25,12 +25,21 @@ export default class String extends React.Component<Props, State> {
     });
 
   _onEndEditing = (value) => {
-    const { setAnswer, question } = this.props;
+    const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
 
-    if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
-      setAnswer(question.id, value.nativeEvent.text);
-    } else if (question.value !== null && value.nativeEvent.text === '') {
-      setAnswer(question.id, null);
+    if (patientValueEdit) {
+      console.log(patientValueEdit, setPatientValue);
+      if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
+        setPatientValue(question.id, value.nativeEvent.text);
+      } else if (question.value !== null && value.nativeEvent.text === '') {
+        setPatientValue(question.id, null);
+      }
+    } else {
+      if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
+        setAnswer(question.id, value.nativeEvent.text);
+      } else if (question.value !== null && value.nativeEvent.text === '') {
+        setAnswer(question.id, null);
+      }
     }
   };
 
@@ -40,7 +49,8 @@ export default class String extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input question defaultValue={question.value} style={style} onFocus={this._focus} onEndEditing={this._onEndEditing} />
+        <Input question defaultValue={question.value} style={style} onFocus={this._focus}
+               onEndEditing={this._onEndEditing} />
       </View>
     );
   }
