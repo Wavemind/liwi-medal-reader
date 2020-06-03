@@ -1,29 +1,23 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Col, Icon, Input, Item, Text, View } from 'native-base';
-import _ from 'lodash';
+import { ScrollView } from 'react-native';
+import { Button, Text, View } from 'native-base';
 
+import { differenceNodes } from '../../../utils/swissKnives';
+import { store } from '../../../../frontend_service/store';
 import { styles } from './PatientEdit.style';
 import { LiwiTitle2 } from '../../../template/layout';
-import { ScrollView } from 'react-native';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { getItems } from '../../../engine/api/LocalStorage';
+import { getItem, getItems } from '../../../engine/api/LocalStorage';
+import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
 
 export default class PatientEdit extends React.Component {
   state = {
     patient: null,
     loading: true,
    };
-
-  getQuestionFromPatient = async (patient) => {
-    const algorithm = await getItems('algorithm');
-
-    return patient.patientValues.map((patientValue) => {
-      return algorithm.nodes[patientValue.node_id];
-    });
-  };
 
   async componentDidMount() {
     const {
@@ -39,10 +33,36 @@ export default class PatientEdit extends React.Component {
     setPatient(patient, algorithm);
 
     this.setState({
+      patient,
       patientValues,
       loading: false,
     });
   }
+
+  getQuestionFromPatient = async (patient) => {
+    const algorithm = await getItems('algorithm');
+
+    return patient.patientValues.map((patientValue) => {
+      return algorithm.nodes[patientValue.node_id];
+    });
+  };
+
+  savePatientValues = async () => {
+    const { patient } = this.state;
+    const state = store.getState();
+    const user = await getItem('user');
+    const {
+      app: { database },
+    } = this.props;
+
+    const newPatientValue = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id');
+    const activities = await new ActivityModel({ nodes: newPatientValue,
+      stage: 'PatientEdit', user });
+
+    console.log({ patientValues: newPatientValue, activities });
+    console.log(newPatientValue);
+    database.update('Patient', patient.id, { patientValues: newPatientValue, activities });
+  };
 
   render() {
     const { loading, patientValues } = this.state;
@@ -57,8 +77,14 @@ export default class PatientEdit extends React.Component {
           <LiwiLoader />
         ) : (
           <>
-            <Text customSubTitle>{t('patient_upsert:questions')}</Text>
             <Questions questions={patientValues} patientValueEdit />
+            <View bottom-view>
+              <View columns>
+                <Button success split onPress={() => this.savePatientValues()}>
+                  <Text>{t('patient_upsert:save_and_case')}</Text>
+                </Button>
+              </View>
+            </View>
           </>
         )}
       </ScrollView>

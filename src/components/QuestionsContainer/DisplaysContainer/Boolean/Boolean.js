@@ -35,7 +35,7 @@ export default class Boolean extends React.Component<Props, State> {
   }
 
   _handleClick = (answer) => {
-    const { question, setAnswer } = this.props;
+    const { question, setAnswer, setPatientValue, patientValueEdit } = this.props;
     let newAnswer = Number(answer);
 
     // Break if complaintCategory
@@ -46,8 +46,11 @@ export default class Boolean extends React.Component<Props, State> {
     if (answer === question.answer) {
       newAnswer = null;
     }
-
-    setAnswer(question.id, newAnswer);
+    if (patientValueEdit) {
+      setPatientValue(question.id, newAnswer);
+    } else {
+      setAnswer(question.id, newAnswer);
+    }
   };
 
   render = () => {

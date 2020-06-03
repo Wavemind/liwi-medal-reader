@@ -26,9 +26,7 @@ export default class String extends React.Component<Props, State> {
 
   _onEndEditing = (value) => {
     const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
-
     if (patientValueEdit) {
-      console.log(patientValueEdit, setPatientValue);
       if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
         setPatientValue(question.id, value.nativeEvent.text);
       } else if (question.value !== null && value.nativeEvent.text === '') {

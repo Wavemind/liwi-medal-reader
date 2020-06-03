@@ -574,9 +574,10 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(REHYDRATE)
   rehydrate(state, action) {
-    if (action.payload === undefined || action.payload === null || action.payload.id === undefined || action.payload.id === null) {
+    if (action.payload === undefined || action.payload === null || action.payload.id === undefined || action.payload.id === null || action.payload.uid !== undefined) {
       return initialState;
     }
+    console.log(action,initialState);
 
     const modelsMedicalCase = this._instanceMedicalCase(action.payload);
 
