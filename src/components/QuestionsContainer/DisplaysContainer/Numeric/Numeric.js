@@ -32,12 +32,20 @@ export default class Numeric extends React.Component<Props, State> {
 
   _onEndEditing = (e) => {
     const value = e.nativeEvent.text;
-    const { setAnswer, question } = this.props;
+    const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
 
-    if (value !== question.value && value !== '') {
-      setAnswer(question.id, value);
-    } else if (question.value !== null && value === '') {
-      setAnswer(question.id, null);
+    if (patientValueEdit) {
+      if (value !== question.value && value !== '') {
+        setPatientValue(question.id, value);
+      } else if (question.value !== null && value === '') {
+        setPatientValue(question.id, null);
+      }
+    } else {
+      if (value !== question.value && value !== '') {
+        setAnswer(question.id, value);
+      } else if (question.value !== null && value === '') {
+        setAnswer(question.id, null);
+      }
     }
   };
 

@@ -316,22 +316,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 <Questions questions={extraQuestions} />
                 <View bottom-view>
                   {algorithmReady ? (
-                    !loading ? (
-                      <>
-                        {newMedicalCase || isNewCase ? (
-                          <View columns>
-                            <Button light split onPress={() => save('PatientList')}>
-                              <Text>{t('patient_upsert:save_and_wait')}</Text>
-                            </Button>
-                            <Button success split onPress={() => save('Triage')}>
-                              <Text>{t('patient_upsert:save_and_case')}</Text>
-                            </Button>
-                          </View>
-                        ) : null}
-                      </>
-                    ) : (
-                      <LiwiLoader />
-                    )
+                    <>
+                      {newMedicalCase || isNewCase ? (
+                        <View columns>
+                          <Button light split onPress={() => save('PatientList')}>
+                            <Text>{t('patient_upsert:save_and_wait')}</Text>
+                          </Button>
+                          <Button success split onPress={() => save('Triage')}>
+                            <Text>{t('patient_upsert:save_and_case')}</Text>
+                          </Button>
+                        </View>
+                      ) : null}
+                    </>
                   ) : (
                     <View columns>
                       <Text>{t('work_case:no_algorithm')}</Text>

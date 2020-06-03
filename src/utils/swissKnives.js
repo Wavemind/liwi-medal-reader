@@ -205,18 +205,18 @@ export function isFunction(functionToCheck) {
  * @param  {Object} oldNodes Old NodesObject to compare with
  * @return {Object}        Return a new array who represent the diff
  */
-export function differenceNodes(newNodes, oldNodes) {
+export function differenceNodes(newNodes, oldNodes, answer_key = 'answer', id_key = null) {
   const diff = [];
   Object.keys(newNodes).map((key) => {
     const log = {};
     const iterator = ['value', 'answer'];
 
     const isDifferent = iterator.some((index) => newNodes[key][index] !== oldNodes[key][index]);
-
+    console.log(key,newNodes);
     if (isDifferent) {
-      log.id = key;
+      log.id = id_key === null ? key : newNodes[key][id_key];
       log.value = newNodes[key].value;
-      log.answer = newNodes[key].answer;
+      log.answer = newNodes[key][answer_key];
       diff.push(log);
     }
   });
