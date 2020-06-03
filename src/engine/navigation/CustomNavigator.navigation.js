@@ -178,7 +178,7 @@ export const validatorNavigate = (navigateRoute) => {
   if (detailNavigateRoute.medicalCaseOrder !== undefined) {
     // Route depending status
     const routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
-console.log(routeToValidate);
+
     /** The route requested is the route to validate  * */
     if (routeToValidate?.key === detailNavigateRoute?.key) {
       validator.isActionValid = true;
