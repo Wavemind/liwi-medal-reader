@@ -1,10 +1,8 @@
 // @flow
 
 import * as React from 'react';
-import { Icon, Input, Item, View } from 'native-base';
 
-import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
-import { updateModalFromRedux } from '../../../../frontend_service/actions/creators.actions';
+import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
 import ListContent from '../../../components/ListContent';
@@ -37,6 +35,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
   itemNavigation = async (medicalCase) => {
     const {
       navigation,
+      updateModalFromRedux,
       app: { database, user },
     } = this.props;
     const { deviceInfo } = this.state;
@@ -46,6 +45,8 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
       updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
+    } else if (newMedicalCase.status === medicalCaseStatus.close) {
+      navigation.navigate('Summary', { medicalCase });
     } else {
       // Set medical case in store and lock case
       await this.selectMedicalCase({ ...medicalCase });

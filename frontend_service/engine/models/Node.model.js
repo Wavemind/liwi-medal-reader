@@ -1,14 +1,13 @@
 // @flow
-import findKey from 'lodash/findKey';
-import { categories, nodeTypes, valueFormats } from '../../constants';
-import { MedicalCaseModel } from './MedicalCase.model';
 import NavigationService from 'engine/navigation/Navigation.service';
 
-const { qs, d, fd, m, q, t } = nodeTypes;
+import findKey from 'lodash/findKey';
+import { categories, valueFormats } from '../../constants';
+import { MedicalCaseModel } from './MedicalCase.model';
 
 interface NodeInterface {
   id: number;
-  type: qs | d | fd | m | q | t;
+  type: string;
   reference: string;
   medicalCase: MedicalCaseModel;
 }
@@ -93,5 +92,9 @@ export class NodeModel implements NodeInterface {
     this.answer = answer;
     this.answer_stage = NavigationService.getCurrentRoute().routeName;
     this.value = value;
+  };
+
+  displayValue = () => {
+    return this.value;
   };
 }

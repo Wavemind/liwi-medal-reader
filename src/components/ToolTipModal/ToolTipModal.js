@@ -2,14 +2,13 @@ import * as React from 'react';
 
 import { ScrollView } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
-import { styles } from './ToolTipModal.style';
-import Tooltip from '../Tooltip/tooltip';
-import NavigationService from '../../engine/navigation/Navigation.service';
-import { SeparatorLine } from '../../template/layout';
-import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
-import LiwiLoader from '../../utils/LiwiLoader';
 
-// TODO implement scu
+import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
+import { SeparatorLine } from '../../template/layout';
+import { styles } from './ToolTipModal.style';
+import NavigationService from '../../engine/navigation/Navigation.service';
+import LiwiLoader from '../../utils/LiwiLoader';
+import Tooltip from '../Tooltip/tooltip';
 
 export default class TooltipModal extends React.Component<Props, State> {
   static defaultProps = {
@@ -22,10 +21,10 @@ export default class TooltipModal extends React.Component<Props, State> {
   };
 
   /**
-   * Render maximum 3 questions of the step not valid
-   *
+   * Render 3 questions per line
    * @param questions
-   * @return [array] : jsx text
+   * @returns {[]}
+   * @private
    */
   _renderQuestions = (questions) => {
     const {
@@ -33,25 +32,16 @@ export default class TooltipModal extends React.Component<Props, State> {
     } = this.props;
 
     const rowQuestions = [];
+    let i = 0;
 
-    let n = 0;
+    while (i < questions.length) {
+      rowQuestions.push(<Text>{questions[i].label}</Text>);
 
-    while (n < questions.length) {
-      rowQuestions.push(
-        <Text>
-          - {questions[n].id} - {questions[n].label}
-        </Text>
-      );
-
-      if (n === 2) {
-        rowQuestions.push(
-          <Text>
-            {questions.length - 3} {t('tooltip:more')}
-          </Text>
-        );
+      if (i === 2) {
+        rowQuestions.push(<Text>{t('tooltip:more')}</Text>);
         break;
       } else {
-        n++;
+        i += 1;
       }
     }
 
@@ -59,10 +49,11 @@ export default class TooltipModal extends React.Component<Props, State> {
   };
 
   /**
-   *  Render the content of the modal when the validator has block the action navigation
-   *
-   * @return {jsx}
+   * Render validation error in consultation
+   * @returns {*}
+   * @private
    */
+  // TODO: refactor
   _renderValidation = () => {
     const { modalRedux } = this.props;
     const { screenToBeFill, stepToBeFill, routeRequested } = modalRedux.params;
@@ -139,77 +130,76 @@ export default class TooltipModal extends React.Component<Props, State> {
    * @return {*}
    * @private
    */
-  _renderToolTipContent = () => {
-    const {
-      modalRedux,
-      children,
-      visible,
-      app: { t },
-    } = this.props;
+  // TODO: refactor
+  renderToolTipContent = () => {
+    const { modalRedux, children, visible } = this.props;
     const { toolTipVisible } = this.state;
 
     const isFromRedux = modalRedux.open;
     const isFromJsx = toolTipVisible || visible;
 
-    const showClose = modalRedux.params.showClose === undefined ? true : modalRedux.params.showClose;
-
     return (
-      <View>
-        <ScrollView>
-          <View onStartShouldSetResponder={() => true}>
-            {showClose && (
-              <Button onPress={this.closeModal} rounded style={styles.button}>
-                <Icon name="close" type="AntDesign" style={styles.icon} />
-              </Button>
-            )}
-            {isFromJsx && children}
-            {isFromRedux && this.renderTypeModal()}
-          </View>
-        </ScrollView>
-      </View>
+      <ScrollView>
+        <View onStartShouldSetResponder={() => true}>
+          <Button onPress={this.closeModal} rounded style={styles.button}>
+            <Icon name="close" type="AntDesign" style={styles.icon} />
+          </Button>
+          {isFromJsx && children}
+          {isFromRedux && this.renderTypeModal()}
+        </View>
+      </ScrollView>
     );
   };
 
+  /**
+   * Render new algorithm description
+   * @returns {*}
+   * @private
+   */
+  // TODO: refactor
   _renderAlgorithmVersion = () => {
     const {
       modalRedux,
-      children,
-      visible,
       app: { t },
     } = this.props;
 
+    const { description, author, title } = modalRedux.params;
+
     return (
       <View style={styles.content}>
-        <Text style={styles.warning}>{modalRedux.params.title}</Text>
+        <Text style={styles.warning}>{title}</Text>
         <Text style={styles.textBold}>{t('popup:version_name')}</Text>
         <Text>{modalRedux.content}</Text>
-        {modalRedux.params.description !== null && (
+        {description !== null && (
           <>
             <Text style={styles.textBold}>{t('popup:desc')}</Text>
-            <Text>{modalRedux.params.description}</Text>
+            <Text>{description}</Text>
           </>
         )}
         <Text style={styles.textBold}>{t('popup:by')}</Text>
-        <Text>{modalRedux.params.author}</Text>
+        <Text>{author}</Text>
       </View>
     );
   };
 
+  /**
+   * Unlock medical case and navigate to medical case
+   * @param {integer} id - medical case id
+   * @returns {Promise<void>}
+   */
   unlockMedicalCase = async (id) => {
     const {
       modalRedux,
-      app: { t, database },
+      app: { database },
       setMedicalCase,
     } = this.props;
 
     const { medicalCase } = modalRedux.params;
 
     await database.unlockMedicalCase(id);
-
     await setMedicalCase(medicalCase);
 
     const route = routeDependingStatus(medicalCase);
-
     await database.lockMedicalCase(medicalCase.id);
 
     if (route !== undefined) {
@@ -221,6 +211,12 @@ export default class TooltipModal extends React.Component<Props, State> {
     }
   };
 
+  /**
+   * Display lock message for medical case
+   * @returns {*}
+   * @private
+   */
+  // TODO: refactor
   _renderMedicalCaseLocked = () => {
     const {
       modalRedux,
@@ -250,17 +246,27 @@ export default class TooltipModal extends React.Component<Props, State> {
             success
             onPress={() => {
               this.closeModal();
+              NavigationService.navigate('Summary', { medicalCase });
             }}
           >
-            <Text>{t('popup:close')}</Text>
+            <Text>{t('popup:summary')}</Text>
           </Button>
         </View>
       </View>
     );
   };
 
+  /**
+   * Display loader
+   * @returns {*}
+   * @private
+   */
+  // TODO: refactor
   _renderLoading = () => {
-    const { t } = this.props.app;
+    const {
+      app: { t },
+    } = this.props;
+
     return (
       <View>
         <Text style={styles.content}>{t('popup:startSave')}</Text>
@@ -270,13 +276,11 @@ export default class TooltipModal extends React.Component<Props, State> {
   };
 
   /**
-   * Depending Type render specific JSX
+   * Factory for tooltip display
+   * @returns {*}
    */
   renderTypeModal = () => {
-    const {
-      modalRedux,
-      app: { t },
-    } = this.props;
+    const { modalRedux } = this.props;
 
     switch (modalRedux.type) {
       case toolTipType.medicalCaseLocked:
@@ -292,15 +296,13 @@ export default class TooltipModal extends React.Component<Props, State> {
         return this._renderLoading();
 
       default:
-        return <View></View>;
+        return <View />;
     }
   };
 
   /**
    * Close the tooltip when the click is outside the tooltip
-   *
    * Callback receive from the tooltip component when it ask for close itself
-   *
    * @param reactNative : reactNative.nativeEvent is the data from react native who
    *                      has all info about the screen size (in point) gives the position of the click
    * @param toolTip : data from the tooltip like origin on screen and size gives the position of the tooltip
@@ -323,9 +325,7 @@ export default class TooltipModal extends React.Component<Props, State> {
 
   /**
    * Close the modal depending the source
-   *
    * isFromRedux is call by the reducer triggered by en action
-   *
    * isFromJsx is call by render from JSX
    * EX :
    *      <ToolTipModal toolTipIcon>
@@ -377,7 +377,7 @@ export default class TooltipModal extends React.Component<Props, State> {
           </Button>
         ) : null}
 
-        <Tooltip isVisible={isVisible} closeOnChildInteraction={false} showChildInTooltip={false} content={this._renderToolTipContent()} placement="center" onClose={this.onCloseToolTip} />
+        <Tooltip isVisible={isVisible} closeOnChildInteraction={false} showChildInTooltip={false} content={this.renderToolTipContent()} placement="center" onClose={this.onCloseToolTip} />
       </View>
     );
   }
