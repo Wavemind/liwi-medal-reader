@@ -60,7 +60,13 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     if (newMedicalCase) {
       const generatedMedicalCase = await new MedicalCaseModel({}, algorithm);
-
+      // If the patient already exists we gonna retreive it's patient Value
+      if (patientId !== null) {
+        patient.patientValues.map((patientValue) => {
+          generatedMedicalCase.nodes[patientValue.node_id].value = patientValue.value;
+          generatedMedicalCase.nodes[patientValue.node_id].answer  = patientValue.answer_id;
+        });
+      }
       await setMedicalCase({
         ...generatedMedicalCase,
         patient: { ...patient, medicalCases: [] }, // Force

@@ -3,7 +3,8 @@ import { liwiColors } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   item: {
-    paddingLeft: 10,
+    paddingLeft: 0,
+    paddingRight: 0,
     elevation: 1,
     borderRadius: 4,
     height: 80,
@@ -12,8 +13,11 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor: liwiColors.whiteDark
+    backgroundColor: liwiColors.whiteDark,
   },
+
+  itemColumn: { flex: 1, marginLeft: 2, marginRight: 2, paddingLeft: 8 },
+  itemLock: { flex: 0.8, marginLeft: 2, marginRight: 2, paddingLeft: 8 },
 
   columnLabel: {
     flex: 1,
@@ -31,12 +35,34 @@ export const styles = StyleSheet.create({
   separator: {
     height: 3,
     width: '100%',
-    backgroundColor: liwiColors.lighterGreyColor
+    backgroundColor: liwiColors.lighterGreyColor,
   },
 
   filterContent: { flexDirection: 'row', paddingBottom: 5 },
 
-  filterButton: { flex: 0.40, borderRadius: 5, alignSelf: 'flex-end', justifyContent: 'center' },
+  filterButton: {
+    backgroundColor: liwiColors.redColor,
+    flex: 0.8,
+    marginLeft: 2,
+    height: 45,
+    borderRadius: 4,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    shadowColor: '#f4f4f4',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 1,
+    marginTop: 0,
+    paddingTop: 0,
+  },
 
   flatList: { paddingBottom: 220 },
+
+  picker: { borderRadius: 4, color: liwiColors.whiteDark },
+
+  lock: { color: liwiColors.redColor },
 });

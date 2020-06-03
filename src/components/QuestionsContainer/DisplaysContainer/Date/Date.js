@@ -43,7 +43,7 @@ export default class Date extends React.Component<Props, State> {
           textStyle={styles.textColor}
           placeHolderTextStyle={styles.placeholder}
           onDateChange={this._onEndEditing}
-          disabled={false}
+          disabled={this.props.isReadOnly}
         />
       </View>
     );

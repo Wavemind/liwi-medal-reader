@@ -38,7 +38,6 @@ export type StateApplicationContext = {
   medicalCase: Object,
   appState: string,
   setModal: () => Promise<any>,
-  isModalVisible: boolean,
   contentModal: string,
   t: (string) => Function<string>,
   ready: boolean,
@@ -210,18 +209,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  /**
-   * Display modal and set content
-   * @param {any} content - What will be displayed
-   * @returns {Promise<void>}
-   */
-  setModal = async (content) => {
-    this.setState({
-      isModalVisible: true,
-      contentModal: content,
-    });
-  };
-
   getGroup = async () => {
     const group = await getGroup();
     const session = await getItem('session');
@@ -302,11 +289,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   state = {
     appState: AppState.currentState,
-    contentModal: 'initial',
     currentRoute: null,
     initialPosition: {},
-    listFilters: {},
-    isModalVisible: false,
     isConnected: false,
     lang: 'fr',
     logged: false,
@@ -321,7 +305,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     newSession: this.newSession,
     set: this.setValState,
     subscribePingApplicationServer: this.subscribePingApplicationServer,
-    setModal: this.setModal,
     setUser: this.setUser,
     t: (translate) => i18n.t(translate),
   };

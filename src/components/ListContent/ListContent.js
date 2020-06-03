@@ -2,12 +2,14 @@
 
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Button, Icon, ListItem, Text, View } from 'native-base';
+import { Button, Picker, ListItem, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { getDeviceInformation } from '../../engine/api/Device';
 
 type Props = NavigationScreenProps & {};
 
@@ -22,6 +24,7 @@ export default class ListContent extends React.Component<Props, State> {
     currentPage: 1,
     isLastBatch: false,
     firstLoading: true,
+    status: null,
     filters: {},
   };
 
@@ -31,10 +34,14 @@ export default class ListContent extends React.Component<Props, State> {
     const filters = navigation.getParam('filters');
     await this._fetchList();
 
+    const isConnected = await getItems('isConnected');
+    const deviceInfo = await getDeviceInformation();
     const algorithm = await getItems('algorithm');
-    const { nodes, mobile_config } = algorithm;
-    const columns = mobile_config[list];
-    this.setState({ columns, nodes, firstLoading: false, filters });
+
+    const columns = algorithm.mobile_config[list];
+    const { nodes } = algorithm;
+
+    this.setState({ columns, nodes, firstLoading: false, isConnected, deviceInfo });
   }
 
   async componentDidUpdate(nextProps, nextState) {
@@ -118,22 +125,28 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       itemNavigation,
       model,
-      app: { t },
+      app: { t, user },
     } = this.props;
-    const { columns, nodes } = this.state;
-    const size = 1 / columns.length;
+    const { columns, nodes, isConnected, deviceInfo } = this.state;
 
     return (
       <ListItem style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         {columns.map((nodeId) => (
-          <View style={{ flex: size }} key={`${item.id}_${nodeId}`}>
+          <View style={styles.itemColumn} key={`${item.id}_${nodeId}`}>
             <Text size-auto>{item.getLabelFromNode(nodeId, nodes)}</Text>
           </View>
         ))}
         {model === 'MedicalCase' ? (
-          <View style={{ flex: size }}>
-            <Text size-auto>{t(`medical_case:${item.status}`)}</Text>
-          </View>
+          <>
+            <View style={styles.itemColumn}>
+              <Text size-auto>{t(`medical_case:${item.status}`)}</Text>
+            </View>
+            {isConnected ? (
+              <View style={styles.itemLock}>
+                <Text size-auto right>{item.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}</Text>
+              </View>
+            ) : null}
+          </>
         ) : null}
       </ListItem>
     );

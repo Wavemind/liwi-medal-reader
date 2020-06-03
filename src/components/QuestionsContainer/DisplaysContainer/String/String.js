@@ -40,7 +40,7 @@ export default class String extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input question defaultValue={question.value} style={style} onFocus={this._focus} onEndEditing={this._onEndEditing} />
+        <Input question defaultValue={question.value} style={style} onFocus={this._focus} onEndEditing={this._onEndEditing} disabled={this.props.isReadOnly} />
       </View>
     );
   }
