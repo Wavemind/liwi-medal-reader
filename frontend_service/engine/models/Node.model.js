@@ -95,7 +95,6 @@ export class NodeModel implements NodeInterface {
   };
 
   displayValue = () => {
-    console.log(this);
     return this.value;
   };
 }
