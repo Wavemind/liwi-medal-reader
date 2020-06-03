@@ -55,7 +55,7 @@ export const LiwiTitle3 = styled(LH3).attrs({
 export const LiwiTitle4 = styled(LText).attrs({
   color: liwiColors.redColor,
 })`
-  font-weight: bold;
+  font-size: 20px;
   color: ${() => liwiColors.redColor};
   border-bottom-color: ${() => liwiColors.greyColor};
 `;

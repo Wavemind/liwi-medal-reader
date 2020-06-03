@@ -39,6 +39,7 @@ i18n
           admin: 'Administration',
           ml: 'ml',
           of: 'of',
+          no_formulation: ' No formulation selected',
         },
         diagnoses: {
           which: 'Which formulation of medicine is available and appropriate for your patient?',
@@ -65,6 +66,13 @@ i18n
           titleadditional: 'Additional selected',
           additional: 'Do you want to add an additional diagnosis not proposed?',
           write: 'Write the medicine',
+        },
+        diagnoses_label: {
+          additional: 'Additional',
+          additionalDrugs: 'Additional drugs',
+          custom: 'Custom',
+          customDrugs: 'Custom drugs',
+          proposed: 'Proposed',
         },
         tooltip: {
           invalidQuestions: 'Question(s) to fill',
