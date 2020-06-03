@@ -42,8 +42,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
     const isConnected = await getItems('isConnected');
-console.log('params', medicalCase);
-console.log('new', newMedicalCase);
+
     if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
       updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
     } else if (newMedicalCase.status === medicalCaseStatus.close) {
