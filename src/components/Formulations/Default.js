@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'native-base';
 
 import i18n from '../../utils/i18n';
-import { LiwiTitle4 } from '../../template/layout';
+import { LiwiTitle5 } from '../../template/layout';
 
 export default function Default(drug, node, drugDose) {
   let every = '';
@@ -12,15 +12,15 @@ export default function Default(drug, node, drugDose) {
   }
   return (
     <>
-      <LiwiTitle4>{node.label}</LiwiTitle4>
-      <Text>
+      <LiwiTitle5>{node.label}</LiwiTitle5>
+      <Text size-auto>
         {i18n.t('drug:mode')} : {drug.formulationSelected === null ? i18n.t('drug:no_formulation') : drug.formulationSelected}
       </Text>
-      <Text>
+      <Text size-auto>
         {i18n.t('drug:d')} : {drug.duration}
       </Text>
       {drug.formulationSelected !== null && (
-        <Text>
+        <Text size-auto>
           {i18n.t('drug:admin')} : {drugDose.administration_route_name}
         </Text>
       )}
