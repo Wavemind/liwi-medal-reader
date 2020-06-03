@@ -99,24 +99,8 @@ function setParamsAge(name = '') {
   const state$ = store.getState();
   const { nodes, mobile_config } = state$;
 
-  const showValue = (node) => {
-    if (node === undefined) {
-      return '';
-    }
-    if (node.value_format === valueFormats.date && node.value !== null) {
-      return `| ${moment(node.value).format('L')}`;
-    }
-
-    if (node.value === null) {
-      return '';
-    }
-
-    return node.value;
-  };
-
-  const headerRight = `${showValue(nodes[mobile_config.first_top_right_question_id])} ${showValue(nodes[mobile_config.second_top_right_question_id])} ${showValue(
-    nodes[mobile_config.left_top_question_id]
-  )}`;
+  const headerRight = `${nodes[mobile_config.first_top_right_question_id].displayValue()} | ${nodes[mobile_config.second_top_right_question_id].displayValue()} ${
+    nodes[mobile_config.left_top_question_id].displayValue()}`;
   const currentRoute = getCurrentRoute();
 
   const action = NavigationActions.setParams({

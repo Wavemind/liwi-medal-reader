@@ -6,7 +6,7 @@ import { NavigationScreenProps } from 'react-navigation';
 
 import { styles } from './Summary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
-import { LiwiTabStyle, LiwiTitle2, LiwiTitle4, LiwiTitle5 } from '../../../template/layout';
+import { LiwiTabStyle, LiwiTitle2, LiwiTitle4 } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import { getDrugs } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import { medicationForms } from '../../../../frontend_service/constants';
@@ -115,7 +115,11 @@ export default class Summary extends React.Component<Props, State> {
                   const management = finalDiagnosticCategory[key].managements[managementKey];
                   const node = nodes[management.id];
                   if (calculateCondition(management) === true) {
-                    return <Text size-auto key={`${managementKey}-management`}>{node.label}</Text>;
+                    return (
+                      <Text size-auto key={`${managementKey}-management`}>
+                        {node.label}
+                      </Text>
+                    );
                   }
                   return null;
                 })}
@@ -138,6 +142,16 @@ export default class Summary extends React.Component<Props, State> {
     return (
       <View padding-auto flex>
         <BackButton />
+        <View style={styles.patientContainer}>
+          <View flex>
+            <Text size-auto>{nodes[medicalCase.mobile_config.left_top_question_id].displayValue()}</Text>
+          </View>
+          <View style={styles.alignRight}>
+            <Text size-auto>
+              {nodes[medicalCase.mobile_config.first_top_right_question_id].displayValue()} {nodes[medicalCase.mobile_config.second_top_right_question_id].displayValue()}
+            </Text>
+          </View>
+        </View>
         <Tabs tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>
           <Tab
             heading={t('summary:diagnoses')}
@@ -157,7 +171,7 @@ export default class Summary extends React.Component<Props, State> {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
           >
             <View>
-              <Questions questions={nodes} />
+              <Questions questions={nodes} isReadOnly />
             </View>
           </Tab>
         </Tabs>
