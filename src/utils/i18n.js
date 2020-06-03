@@ -110,8 +110,8 @@ i18n
           new_sticker_notification: 'You need to give another sticker to the patient',
         },
         summary: {
-          title: 'Current summary',
           diagnoses: 'Diagnoses',
+          questions: 'Questions',
         },
         assessment: {
           title: 'First look assessment',

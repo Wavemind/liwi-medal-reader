@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { StyleSheet, TouchableOpacity as RNTouchableOpacity, View as RNView } from "react-native";
-import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from "native-base";
-import { liwiColors } from "../utils/constants";
+import styled from 'styled-components';
+import { StyleSheet, TouchableOpacity as RNTouchableOpacity, View as RNView } from 'react-native';
+import { Col as LCol, H2 as LH2, H3 as LH3, Text as LText, View as LView } from 'native-base';
+import { liwiColors } from '../utils/constants';
 
 export const Text = styled(LText).attrs({})`
   color: #4e4e4e;
@@ -55,10 +55,21 @@ export const LiwiTitle3 = styled(LH3).attrs({
 export const LiwiTitle4 = styled(LText).attrs({
   color: liwiColors.redColor,
 })`
-  font-size: 20px;
+  font-size: 24px;
   color: ${() => liwiColors.redColor};
   border-bottom-color: ${() => liwiColors.greyColor};
+  marginBottom: 10px;
 `;
+
+export const LiwiTitle5 = styled(LText).attrs({
+  color: liwiColors.blackLightColor,
+})`
+  font-size: 22px;
+  color: ${() => liwiColors.blackLightColor};
+  border-bottom-color: ${() => liwiColors.blackLightColor};
+  font-weight: bold;
+`;
+
 
 export const RootView = styled(LView).attrs({
   flex: 1,
@@ -189,5 +200,9 @@ export const LiwiTabStyle = StyleSheet.create({
   activeTabStyle: {
     borderColor: liwiColors.darkGreyColor,
     borderWidth: 1,
+  },
+
+  style: {
+    backgroundColor: 'transparent',
   },
 });
