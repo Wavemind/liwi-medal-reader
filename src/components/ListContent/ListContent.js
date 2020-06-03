@@ -45,12 +45,6 @@ export default class ListContent extends React.Component<Props, State> {
   }
 
   async componentDidUpdate(nextProps, nextState) {
-    // const filters = this.props.navigation.getParam('filters');
-    // console.log('old', this.state.filters)
-    // console.log('new', filters)
-    // console.log('new nextProps', nextProps.filters)
-    // console.log('new nextState', nextState.filters)
-    // console.log("##################################################")
     if (nextProps.query !== this.props.query) {
       await this._fetchList();
     }
