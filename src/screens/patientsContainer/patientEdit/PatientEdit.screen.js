@@ -17,7 +17,7 @@ export default class PatientEdit extends React.Component {
   state = {
     patient: null,
     loading: true,
-   };
+  };
 
   async componentDidMount() {
     const {
@@ -56,11 +56,8 @@ export default class PatientEdit extends React.Component {
     } = this.props;
 
     const newPatientValue = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id');
-    const activities = await new ActivityModel({ nodes: newPatientValue,
-      stage: 'PatientEdit', user });
+    const activities = await new ActivityModel({ nodes: newPatientValue, stage: 'PatientEdit', user });
 
-    console.log({ patientValues: newPatientValue, activities });
-    console.log(newPatientValue);
     database.update('Patient', patient.id, { patientValues: newPatientValue, activities });
   };
 
