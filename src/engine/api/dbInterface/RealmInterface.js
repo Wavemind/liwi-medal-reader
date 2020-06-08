@@ -133,7 +133,9 @@ export default class RealmInterface {
       this._realm().create(model, { id, ...fields }, 'modified');
     });
     const object = this.findBy(model, id);
-    if (['Patient', 'MedicalCase'].includes(model)) this._savePatientValue(model, object);
+    if (!Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
+      this._savePatientValue(model, object);
+    }
   };
 
   /**
@@ -192,11 +194,11 @@ export default class RealmInterface {
    */
   _savePatientValue = (model, object) => {
     const medicalCase = this._getMedicalCaseFromModel(model, object);
-
     // Will update the patient values based on activities so we only take the edits
     const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
-
     const patient = this.findBy('Patient', medicalCase.patient_id);
+
+    console.log('realm', object,nodeActivities);
     nodeActivities.map((node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
         const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));

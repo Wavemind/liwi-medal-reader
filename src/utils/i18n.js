@@ -25,6 +25,7 @@ i18n
           no_data: 'No data available',
           date_format: 'Do MMMM YY',
           select: 'Select',
+          save: 'Save'
         },
         drug: {
           give: 'Give',

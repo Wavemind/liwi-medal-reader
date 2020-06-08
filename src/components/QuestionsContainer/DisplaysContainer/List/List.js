@@ -12,7 +12,7 @@ type State = {};
 export default class List extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Readonly<P>): boolean {
     const { question } = this.props;
-
+    console.log(nextProps.question.answer !== question.answer || nextProps.question.value !== question.value);
     return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
 

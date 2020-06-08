@@ -140,7 +140,7 @@ export default class PatientProfile extends React.Component {
               block
               onPress={() => {
                 navigation.navigate('PatientEdit', {
-                  idPatient: patient.id,
+                  patient: patient,
                 });
               }}
             >
