@@ -4,12 +4,14 @@ import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
 import { getItems, storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { nodeTypes } from '../../constants';
+import { categories, nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { QuestionModel } from '../../engine/models/Question.model';
+import { filter } from 'lodash';
+import { PatientValueModel } from '../../engine/models/PatientValue.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -34,7 +36,7 @@ class MedicalCaseReducer extends ReducerClass {
     Object.keys(state.diagnostics).forEach(
       (i) =>
         (state.diagnostics[i] = new DiagnosticModel({
-          ...state.diagnostics[i],
+          ...state.diagnostics[i]
         }))
     );
 
@@ -58,7 +60,7 @@ class MedicalCaseReducer extends ReducerClass {
     const { index, callerId, value, type } = action.payload;
     let caller;
     const newNode = {
-      ...state.nodes[index],
+      ...state.nodes[index]
     };
 
     switch (type) {
@@ -88,7 +90,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: new NodesModel(state.nodes)
     };
   }
 
@@ -97,8 +99,8 @@ class MedicalCaseReducer extends ReducerClass {
    *
    * @payload type: type of diagnoses ()
    *    proposed: [], // Retaind by algo
-        custom: [], // Add by the input
-        additional: [] // Add even though it's false
+   custom: [], // Add by the input
+   additional: [] // Add even though it's false
    * @payload diagnoses: Diagnoses
    * @payload actionDiagnoses: Specific action to avoid multiple different action
    */
@@ -121,8 +123,8 @@ class MedicalCaseReducer extends ReducerClass {
             diagnoses: {
               ...state.diagnoses,
               [type]: { ...newDiagnoses },
-              additionalDrugs: { ...newadditionnalDrugs },
-            },
+              additionalDrugs: { ...newadditionnalDrugs }
+            }
           };
         }
         if (actionDiagnoses === 'remove') {
@@ -131,8 +133,8 @@ class MedicalCaseReducer extends ReducerClass {
             ...state,
             diagnoses: {
               ...state.diagnoses,
-              [type]: { ...without },
-            },
+              [type]: { ...without }
+            }
           };
         }
         break;
@@ -146,8 +148,8 @@ class MedicalCaseReducer extends ReducerClass {
             diagnoses: {
               ...state.diagnoses,
               [type]: { ...newDiagnoses },
-              additionalDrugs: { ...newadditionnalDrugs },
-            },
+              additionalDrugs: { ...newadditionnalDrugs }
+            }
           };
         }
         if (actionDiagnoses === 'remove') {
@@ -156,8 +158,8 @@ class MedicalCaseReducer extends ReducerClass {
             ...state,
             diagnoses: {
               ...state.diagnoses,
-              [type]: { ...without },
-            },
+              [type]: { ...without }
+            }
           };
         }
         break;
@@ -177,8 +179,8 @@ class MedicalCaseReducer extends ReducerClass {
           ...state,
           diagnoses: {
             ...state.diagnoses,
-            [type]: [...newArray],
-          },
+            [type]: [...newArray]
+          }
         };
     }
     return { ...state };
@@ -196,7 +198,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     return {
       ...state,
-      [property]: newValue,
+      [property]: newValue
     };
   }
 
@@ -212,12 +214,12 @@ class MedicalCaseReducer extends ReducerClass {
     const newModal = {
       open: !state.modal.open,
       params,
-      type,
+      type
     };
 
     return {
       ...state,
-      modal: newModal,
+      modal: newModal
     };
   }
 
@@ -240,8 +242,8 @@ class MedicalCaseReducer extends ReducerClass {
         ...state.diagnoses[type],
         [drugId]: {
           ...state.diagnoses[type][drugId],
-          formulationSelected: formulation,
-        },
+          formulationSelected: formulation
+        }
       };
     } else {
       dataReturned = {
@@ -252,10 +254,10 @@ class MedicalCaseReducer extends ReducerClass {
             ...state.diagnoses[type][diagnoseId].drugs,
             [drugId]: {
               ...state.diagnoses[type][diagnoseId].drugs[drugId],
-              formulationSelected: formulation,
-            },
-          },
-        },
+              formulationSelected: formulation
+            }
+          }
+        }
       };
     }
 
@@ -263,8 +265,8 @@ class MedicalCaseReducer extends ReducerClass {
       ...state,
       diagnoses: {
         ...state.diagnoses,
-        [type]: { ...dataReturned },
-      },
+        [type]: { ...dataReturned }
+      }
     };
   }
 
@@ -289,8 +291,8 @@ class MedicalCaseReducer extends ReducerClass {
       ...state,
       diagnoses: {
         ...state.diagnoses,
-        custom: [...state.diagnoses.custom],
-      },
+        custom: [...state.diagnoses.custom]
+      }
     };
   }
 
@@ -326,12 +328,12 @@ class MedicalCaseReducer extends ReducerClass {
               ...state.diagnoses[type][diagnosesKey].drugs,
               [medecineId]: {
                 ...state.diagnoses[type][diagnosesKey].drugs[medecineId],
-                agreed: boolean,
-              },
-            },
-          },
-        },
-      },
+                agreed: boolean
+              }
+            }
+          }
+        }
+      }
     };
   }
 
@@ -352,9 +354,9 @@ class MedicalCaseReducer extends ReducerClass {
       diagnoses: {
         ...state.diagnoses,
         additionalDrugs: {
-          ...medecines,
-        },
-      },
+          ...medecines
+        }
+      }
     };
   }
 
@@ -376,10 +378,10 @@ class MedicalCaseReducer extends ReducerClass {
           ...state.diagnoses.additionalDrugs,
           [id]: {
             ...state.diagnoses.additionalDrugs[id],
-            duration,
-          },
-        },
-      },
+            duration
+          }
+        }
+      }
     };
   }
 
@@ -395,12 +397,12 @@ class MedicalCaseReducer extends ReducerClass {
 
     state.nodes[indexPs] = state.nodes.instantiateNode({
       ...state.nodes[indexPs],
-      answer,
+      answer
     });
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: new NodesModel(state.nodes)
     };
   }
 
@@ -423,7 +425,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: new NodesModel(state.nodes)
     };
   }
 
@@ -434,17 +436,22 @@ class MedicalCaseReducer extends ReducerClass {
     const question = new QuestionModel(state.algorithm.nodes[index]);
     question.updateAnswer(value);
 
-    const patientValues = state.patientValues.map((patientValue) => {
-      if (patientValue.node_id === index) {
-        patientValue.answer_id = question.answer;
-        patientValue.value = question.value;
+    let nodes = filter(state.algorithm.nodes, (node) => [categories.demographic, categories.basicDemographic].includes(node.category));
+
+    nodes = nodes.map((node) => {
+      const patientValue = state.patientValues.find((patientValue) => patientValue.node_id === node.id);
+      let newNode = patientValue !== undefined ? patientValue : { answer_id: null, node_id: node.id, value: null };
+
+      if (newNode.node_id === index) {
+        newNode.answer_id = question.answer;
+        newNode.value = question.value;
       }
-      return patientValue;
+      return newNode;
     });
 
     return {
       ...state,
-      patientValues,
+      patientValues: nodes,
     };
   }
 
@@ -459,7 +466,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     return {
       ...patient,
-      algorithm,
+      algorithm
     };
   }
 
@@ -480,12 +487,12 @@ class MedicalCaseReducer extends ReducerClass {
     state.nodes[index] = state.nodes.instantiateNode({
       ...state.nodes[index],
       answer: value,
-      value: null,
+      value: null
     });
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: new NodesModel(state.nodes)
     };
   }
 
@@ -506,9 +513,9 @@ class MedicalCaseReducer extends ReducerClass {
         ...state.metaData,
         [screen]: {
           ...state.metaData[screen],
-          [view]: value,
-        },
-      },
+          [view]: value
+        }
+      }
     };
   }
 
@@ -526,8 +533,8 @@ class MedicalCaseReducer extends ReducerClass {
       ...state,
       patient: {
         ...state.patient,
-        [index]: value,
-      },
+        [index]: value
+      }
     };
   }
 
@@ -541,7 +548,7 @@ class MedicalCaseReducer extends ReducerClass {
     storeMedicalCase(state);
 
     return {
-      ...initialState,
+      ...initialState
     };
   }
 
@@ -563,7 +570,7 @@ class MedicalCaseReducer extends ReducerClass {
     const modelsMedicalCase = this._instanceMedicalCase(medicalCase);
 
     return {
-      ...modelsMedicalCase,
+      ...modelsMedicalCase
     };
   }
 
@@ -577,14 +584,14 @@ class MedicalCaseReducer extends ReducerClass {
     if (action.payload === undefined || action.payload === null || action.payload.id === undefined || action.payload.id === null || action.payload.uid !== undefined) {
       return initialState;
     }
-    console.log(action,initialState);
+    console.log(action, initialState);
 
     const modelsMedicalCase = this._instanceMedicalCase(action.payload);
 
     modelsMedicalCase.modal.open = false;
 
     return {
-      ...modelsMedicalCase,
+      ...modelsMedicalCase
     };
   }
 }

@@ -110,7 +110,7 @@ const Stack = createStackNavigator(
       params: {},
       navigationOptions: () => {
         return {
-          title: i18n.t('navigation:patient_list'),
+          title: i18n.t('navigation:patient_edit'),
         };
       },
     },
