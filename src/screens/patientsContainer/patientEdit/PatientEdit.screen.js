@@ -66,7 +66,6 @@ export default class PatientEdit extends React.Component {
     const algorithm = await getItems('algorithm');
     const currentPatient = navigation.getParam('patient');
     const patient = convertToObject(currentPatient);
-    // const nodes = await this.getQuestionFromPatient(algorithm);
 
     setPatient(patient, algorithm);
 
