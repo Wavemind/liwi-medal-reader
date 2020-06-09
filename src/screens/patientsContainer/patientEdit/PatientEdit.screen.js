@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Text, View } from 'native-base';
-import { isString, isArrayLike, filter, find } from 'lodash';
+import { filter, find } from 'lodash';
 
 import { styles } from './PatientEdit.style';
 import { LiwiTitle2 } from '../../../template/layout';
@@ -13,52 +13,15 @@ import { getItem, getItems } from '../../../engine/api/LocalStorage';
 import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
 import { categories } from '../../../../frontend_service/constants';
 import { PatientValueModel } from '../../../../frontend_service/engine/models/PatientValue.model';
+import { convertToObject } from '../../../utils/swissKnives';
 
 import { store } from '../../../../frontend_service/store';
-
-const convertToObject = (realmObject, maxDepth = 3, depth = 0) => {
-  depth++;
-  if (depth > maxDepth) {
-    return realmObject;
-  }
-
-  if (typeof realmObject !== 'object') {
-    return realmObject;
-  }
-
-  if (realmObject === null) {
-    return null;
-  }
-
-  let keys = Object.getOwnPropertyDescriptors(realmObject);
-
-  if (typeof realmObject.objectSchema === 'function') {
-    keys = realmObject.objectSchema().properties;
-  }
-
-  const object = {};
-
-  for (const key in keys) {
-    if (realmObject.hasOwnProperty(key)) {
-      // We don't follow linkinh objects
-      if (keys[key].type === 'linkingObjects') {
-        object[key] = realmObject[key];
-      } else if (isString(realmObject[key])) {
-        object[key] = realmObject[key];
-      } else if (isArrayLike(realmObject[key]) && !isString(realmObject[key])) {
-        object[key] = realmObject[key].map((item) => convertToObject(item, maxDepth, depth, key));
-      } else {
-        object[key] = convertToObject(realmObject[key], maxDepth, depth, key);
-      }
-    }
-  }
-  return object;
-};
 
 export default class PatientEdit extends React.Component {
   state = {
     patient: null,
     loading: true,
+    disable: false,
   };
 
   async componentDidMount() {
@@ -91,49 +54,55 @@ export default class PatientEdit extends React.Component {
           value: patientValues === undefined ? null : patientValues.value,
         };
       });
-    } else {
-      return [];
     }
+    return [];
   };
 
+  /**
+   * Save Patient Values in database and redirects to Patient profile
+   * @returns null
+   */
   savePatientValues = async () => {
     const { patient } = this.state;
+
+    this.setState({ disable: true });
 
     const user = await getItem('user');
     const {
       app: { database },
+      navigation,
     } = this.props;
 
+    // Gets all the patient values that need to be stored in the database
+    // meaning remove empty ones
     const newPatientValues = PatientValueModel.generatePatientValue(patient);
     const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
 
     await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
+
+    navigation.navigate('PatientProfile', {
+      id: patient.id,
+    });
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, disable } = this.state;
     const {
       app: { t },
     } = this.props;
     const nodes = this.getQuestionFromPatient();
     return (
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
-        <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
-        {loading ? (
-          <LiwiLoader />
-        ) : (
-          <>
-            <Questions questions={nodes} patientValueEdit />
-            <View bottom-view>
-              <View columns>
-                <Button success split onPress={() => this.savePatientValues()}>
-                  <Text>{t('application:save')}</Text>
-                </Button>
-              </View>
-            </View>
-          </>
-        )}
-      </ScrollView>
+      <>
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
+          <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+          {loading ? <LiwiLoader /> : <Questions questions={nodes} patientValueEdit />}
+        </ScrollView>
+        <View bottom-view>
+          <Button block onPress={() => this.savePatientValues()} disabled={disable}>
+            <Text size-auto>{t('application:save')}</Text>
+          </Button>
+        </View>
+      </>
     );
   }
 }

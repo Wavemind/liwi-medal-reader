@@ -1,3 +1,5 @@
+import { isArrayLike, isString } from 'lodash';
+
 export const stringifyDeepRef = (item) => {
   let cache = [];
 
@@ -226,3 +228,49 @@ export function differenceNodes(newNodes, oldNodes, answerKey = 'answer', idKey 
 
   return diff;
 }
+
+/**
+ * Convert Realm object to javascript object
+ * @param { realmObject } realmObject - the realm Object
+ * @param { integer } maxDepth
+ * @param { integer } depth
+ * @returns { object }
+ */
+export const convertToObject = (realmObject, maxDepth = 3, depth = 0) => {
+  depth++;
+  if (depth > maxDepth) {
+    return realmObject;
+  }
+
+  if (typeof realmObject !== 'object') {
+    return realmObject;
+  }
+
+  if (realmObject === null) {
+    return null;
+  }
+
+  let keys = Object.getOwnPropertyDescriptors(realmObject);
+
+  if (typeof realmObject.objectSchema === 'function') {
+    keys = realmObject.objectSchema().properties;
+  }
+
+  const object = {};
+
+  for (const key in keys) {
+    if (realmObject.hasOwnProperty(key)) {
+      // We don't follow linkinh objects
+      if (keys[key].type === 'linkingObjects') {
+        object[key] = realmObject[key];
+      } else if (isString(realmObject[key])) {
+        object[key] = realmObject[key];
+      } else if (isArrayLike(realmObject[key]) && !isString(realmObject[key])) {
+        object[key] = realmObject[key].map((item) => convertToObject(item, maxDepth, depth, key));
+      } else {
+        object[key] = convertToObject(realmObject[key], maxDepth, depth, key);
+      }
+    }
+  }
+  return object;
+};
