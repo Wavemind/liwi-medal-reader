@@ -54,8 +54,9 @@ export default class PatientEdit extends React.Component {
           value: patientValues === undefined ? null : patientValues.value,
         };
       });
+    } else {
+      return [];
     }
-    return [];
   };
 
   /**
@@ -75,7 +76,7 @@ export default class PatientEdit extends React.Component {
 
     // Gets all the patient values that need to be stored in the database
     // meaning remove empty ones
-    const newPatientValues = PatientValueModel.generatePatientValue(patient);
+    const newPatientValues = PatientValueModel.getUpdatedPatientValue(patient);
     const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
 
     await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });

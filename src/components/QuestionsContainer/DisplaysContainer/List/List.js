@@ -15,12 +15,16 @@ export default class List extends React.Component<Props, State> {
     return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
 
+  /**
+   * Set value in store
+   * @param {String} value
+   */
   onValueChange = (value: string) => {
     const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
 
     if (patientValueEdit) {
       setPatientValue(question.id, value);
-    } else{
+    } else {
       setAnswer(question.id, value);
     }
   };
@@ -31,14 +35,12 @@ export default class List extends React.Component<Props, State> {
     const PickerItem = [];
 
     Object.keys(question.answers).map((id) =>
-      question.answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`}
-                                                                                    label={question.answers[id].label}
-                                                                                    value={String(id)} />) : null
+      question.answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={question.answers[id].label} value={String(id)} />) : null
     );
+
     return (
       <View answer>
-        <Picker mode="dropdown" iosHeader="Select " style={styles.picker} selectedValue={String(question.answer)}
-                onValueChange={this.onValueChange}>
+        <Picker mode="dropdown" iosHeader="Select " style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange}>
           <Picker.Item label="Select" value={null} />
           {PickerItem}
         </Picker>

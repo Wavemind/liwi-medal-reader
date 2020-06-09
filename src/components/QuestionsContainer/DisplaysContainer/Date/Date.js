@@ -16,6 +16,11 @@ export default class Date extends React.Component<Props, State> {
     return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
 
+  /**
+   * Set date in store
+   * @param {Date} value
+   * @private
+   */
   _onEndEditing = (value) => {
     const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
 
