@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import { liwiColors } from '../../utils/constants';
-import {screenHeight, screenWidth} from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   buttonNav: { flex: 0.5, flexDirection: 'row', flexGrow: 1, justifyContent: 'center', width: 100 },
