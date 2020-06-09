@@ -25,6 +25,7 @@ i18n
           no_data: 'No data available',
           date_format: 'DD/MM/YYYY',
           select: 'Select',
+          save: 'Save'
         },
         drug: {
           give: 'Give',
@@ -216,7 +217,8 @@ i18n
           personal_information: 'Personal information',
           medical_cases: 'Medical cases',
           status: 'Status',
-          add_case: 'Add medical case'
+          add_case: 'Add medical case',
+          edit_patient_value: 'Edit patient values',
         },
         patient_upsert: {
           uid: 'UID',
@@ -332,6 +334,7 @@ i18n
           home: 'Home',
           triage: 'Triage',
           patient_upsert: 'Patient',
+          patient_edit: 'Patient edit',
           patient_list: 'Patient list',
           patient_search: 'Search a patient',
           patient_profile: 'Patient profile',

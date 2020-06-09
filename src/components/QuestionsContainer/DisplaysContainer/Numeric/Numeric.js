@@ -10,6 +10,14 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Numeric extends React.Component<Props, State> {
+  state = {
+    value: null,
+    style: {
+      borderBottomColor: liwiColors.blackLightColor,
+      borderBottomWidth: 1,
+    },
+  };
+
   shouldComponentUpdate(nextProps: Readonly<P>, nextState): boolean {
     const { question } = this.props;
 
@@ -22,25 +30,33 @@ export default class Numeric extends React.Component<Props, State> {
     this.setState({ value: question.value });
   }
 
-  state = {
-    value: null,
-    style: {
-      borderBottomColor: liwiColors.blackLightColor,
-      borderBottomWidth: 1,
-    },
-  };
-
-  _onEndEditing = (e) => {
+  /**
+   * Save value in store
+   * @param {Event} e
+   */
+  onEndEditing = (e) => {
     const value = e.nativeEvent.text;
-    const { setAnswer, question } = this.props;
+    const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
 
-    if (value !== question.value && value !== '') {
-      setAnswer(question.id, value);
-    } else if (question.value !== null && value === '') {
-      setAnswer(question.id, null);
+    if (patientValueEdit) {
+      if (value !== question.value && value !== '') {
+        setPatientValue(question.id, value);
+      } else if (question.value !== null && value === '') {
+        setPatientValue(question.id, null);
+      }
+    } else {
+      if (value !== question.value && value !== '') {
+        setAnswer(question.id, value);
+      } else if (question.value !== null && value === '') {
+        setAnswer(question.id, null);
+      }
     }
   };
 
+  /**
+   * Check if there is no unpermitted char
+   * @param {Event} e
+   */
   onChange = (e) => {
     let value = e.nativeEvent.text;
 
@@ -90,7 +106,7 @@ export default class Numeric extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this._onEndEditing} placeholder={placeholder} l/>
+        <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this.onEndEditing} placeholder={placeholder} l/>
       </View>
     );
   }
