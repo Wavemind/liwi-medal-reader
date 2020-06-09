@@ -294,7 +294,8 @@ class Stepper extends React.Component<Props, State> {
     medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
 
     await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
-    await database.update('Patient', medicalCase.patient_id, { updated_at: moment().toDate() });
+    // TODO: update 'updated_at' value in realm when updating/creating an medical case
+    // await database.update('Patient', medicalCase.patient_id, { updated_at: moment().toDate() });
     displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
     if (endMedicalCase === true) {
       NavigationService.resetActionStack('Home');

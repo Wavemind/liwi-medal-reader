@@ -193,4 +193,11 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     }
     return value;
   }
+
+  displayValue = () => {
+    if (this.value_format === valueFormats.date && this.value !== null) {
+      return moment(this.value).format('L');
+    }
+    return this.value;
+  };
 }

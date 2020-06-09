@@ -47,12 +47,12 @@ export default class String extends React.Component<Props, State> {
   };
 
   render() {
-    const { question } = this.props;
+    const { question, isReadOnly } = this.props;
     const { style } = this.state;
 
     return (
       <View answer>
-        <Input question defaultValue={question.value} style={style} onFocus={this.focus} onEndEditing={this.onEndEditing} />
+        <Input question defaultValue={question.value} style={style} onFocus={this.focus} onEndEditing={this.onEndEditing} disabled={isReadOnly} />
       </View>
     );
   }
