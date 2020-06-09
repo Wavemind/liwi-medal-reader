@@ -104,7 +104,7 @@ export default class PatientEdit extends React.Component {
       app: { database },
     } = this.props;
 
-    const newPatientValues = PatientValueModel.generatePatientValue(patient);
+    const newPatientValues = PatientValueModel.getUpdatedPatientValue(patient);
     const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
 
     await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
