@@ -13,9 +13,8 @@ import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';
 import { getItem, setItem } from '../engine/api/LocalStorage';
-import { appInBackgroundStateKey, navigationRoute, navigationStateKey } from '../../frontend_service/constants';
-import CustomNavigator from '../engine/navigation/CustomNavigator.navigation';
-import { RootLoginNavigator } from '../engine/navigation/Root.navigation';
+import { navigationRoute, navigationStateKey } from '../../frontend_service/constants';
+import { RootMainNavigator } from '../engine/navigation/Root.navigation';
 
 type Props = {
   app: {
@@ -42,6 +41,17 @@ const persistNavigationState = async (navState) => {
 };
 
 class LayoutTemplate extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      prevRoute: null,
+      mustSetNavigation: false,
+      navigationState: null,
+      AppContainer: createAppContainer(RootMainNavigator),
+    };
+  }
+
   shouldComponentUpdate(nextProps: Props): boolean {
     return nextProps.app.appState !== 'background';
   }
@@ -95,29 +105,12 @@ class LayoutTemplate extends React.Component<Props> {
     await this.updatePrevRoute();
   }
 
-  state = {
-    prevRoute: null,
-    mustSetNavigation: false,
-    navigationState: null,
-  };
-
   render() {
     const {
-      app: { logged, ready, session },
+      app: { logged, ready },
     } = this.props;
-    const { navigationState, mustSetNavigation } = this.state;
 
-    let AppContainer;
-
-    if (logged) {
-      AppContainer = createAppContainer(CustomNavigator);
-    } else {
-      let routeName = '';
-      if (session !== null) {
-        routeName = 'UnlockSession';
-      }
-      AppContainer = createAppContainer(RootLoginNavigator(routeName));
-    }
+    const { AppContainer, navigationState, mustSetNavigation } = this.state;
 
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);

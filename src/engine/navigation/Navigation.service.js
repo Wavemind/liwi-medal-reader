@@ -1,9 +1,8 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 import _ from 'lodash';
-import moment from 'moment';
 
 import { store } from '../../../frontend_service/store';
-import { medicalCaseStatus, valueFormats } from '../../../frontend_service/constants';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import Database from '../api/Database';
 

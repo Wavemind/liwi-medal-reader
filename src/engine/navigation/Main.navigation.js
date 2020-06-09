@@ -134,7 +134,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           headerShown: false,
-      };
+        };
       },
     },
     PatientProfile: {

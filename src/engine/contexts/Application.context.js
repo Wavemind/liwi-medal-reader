@@ -8,13 +8,14 @@ import { AppState, PermissionsAndroid } from 'react-native';
 
 import i18n from '../../utils/i18n';
 import Database from '../api/Database';
-import { appInBackgroundStateKey, secondStatusLocalData, toolTipType } from '../../../frontend_service/constants';
+import { secondStatusLocalData, toolTipType } from '../../../frontend_service/constants';
 import { auth, getAlgorithm, getGroup, registerDevice } from '../../../frontend_service/api/Http';
 import { getItem, getItems, setItem } from '../api/LocalStorage';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 import { store } from '../../../frontend_service/store';
+import NavigationService from "../navigation/Navigation.service";
 
 const defaultValue = {};
 
@@ -61,7 +62,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       await this._handleApplicationServer(true);
       const user = await getItem('user');
       const { isConnected } = this.state;
-
       this.setState({
         session,
         user,
@@ -259,6 +259,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   setUser = async (user) => {
     await setItem('user', user);
     this.setState({ user, logged: true });
+    console.log("Connard !")
+    NavigationService.navigate('App');
   };
 
   /**
@@ -350,8 +352,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const { appState } = this.state;
     if (appState.match(/inactive|background/) && nextAppState === 'active') {
       console.warn('---> Liwi came back from background', nextAppState);
-      await setItem(appInBackgroundStateKey, true);
       this.setState({ appState: nextAppState, logged: false });
+      NavigationService.navigate('AuthLoading');
     }
 
     if (appState.match(/active/) && nextAppState.match(/inactive|background/)) {
