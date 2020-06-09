@@ -198,7 +198,6 @@ export default class RealmInterface {
     const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
     const patient = this.findBy('Patient', medicalCase.patient_id);
 
-    console.log('realm', object,nodeActivities);
     nodeActivities.map((node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
         const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));

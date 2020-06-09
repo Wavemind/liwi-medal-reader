@@ -21,12 +21,12 @@ export class PatientValueModel {
 
   static generatePatientValue = (patient) => {
     const state = store.getState();
-console.log(patient);
+
     const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id');
 
     const newPatientValues = state.patientValues.map((patientValue) => {
       const diffPatientValue = diffPatientValues.find((dpv) => dpv.node_id === patientValue.node_id);
-      if (diffPatientValue !== undefined){
+      if (diffPatientValue !== undefined) {
         const newPatientValue = patient.patientValues.find((pv) => pv.node_id === diffPatientValues.node_id);
         const id = newPatientValue === undefined ? uuid.v4() : newPatientValue.id;
         return {
