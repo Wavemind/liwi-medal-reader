@@ -11,12 +11,12 @@ export default class Loading extends React.Component {
   _bootstrapAsync = async () => {
     const {
       navigation,
-      app: { session, user},
+      app: { session, user },
     } = this.props;
     let routeName = 'NewSession';
 
-    if (session !== undefined) {
-      routeName = user !== null ? 'UnlockSession' : 'UserSelection';
+    if (session !== null) {
+      routeName = 'UnlockSession';
     }
 
     // This will switch to the App screen or Auth screen and this loading

@@ -358,6 +358,7 @@ i18n
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
           filter: 'Filters',
+          step_invalid: 'Step is not valid',
         },
         common: {
           back: 'Back',

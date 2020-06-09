@@ -259,7 +259,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   setUser = async (user) => {
     await setItem('user', user);
     this.setState({ user, logged: true });
-    console.log("Connard !")
     NavigationService.navigate('App');
   };
 
