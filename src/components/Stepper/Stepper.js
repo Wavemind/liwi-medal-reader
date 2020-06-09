@@ -12,6 +12,7 @@ import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes } fro
 import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import i18n from '../../utils/i18n';
 import _ from 'lodash';
 
 import { styles } from './styles';
@@ -19,13 +20,13 @@ import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
-import { databaseInterface, medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
+import { medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
-import { validatorNavigate } from '../../engine/navigation/CustomNavigator.navigation';
+import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/CustomNavigator.navigation';
 import { displayNotification } from '../../utils/CustomToast';
-import moment from "moment";
+
 
 type Props = {
   children: any,
@@ -171,18 +172,27 @@ class Stepper extends React.Component<Props, State> {
   handleBottomStepper = (position: number) => {
     const numberOfPages: number = this.props.children.length;
 
-    this.props.onPageSelected !== undefined ? this.props.onPageSelected(position) : null;
+    let route = NavigationService.getCurrentRoute();
+    route.params.initialPage = position;
 
-    this.setState(
-      {
-        showNext: position === numberOfPages - 1 ? false : true,
-        showBack: position === 0 ? false : true,
-        page: position,
-      },
-      () => {
-        Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null;
-      }
-    );
+    const validator = validatorStep(route, [], modelValidator);
+    if (!validator.isActionValid) {
+      this.handleBottomStepper(position - 1);
+      displayNotification(i18n.t('navigation:step_invalid'), liwiColors.redColor);
+    } else {
+      this.props.onPageSelected !== undefined ? this.props.onPageSelected(position) : null;
+
+      this.setState(
+        {
+          showNext: position === numberOfPages - 1 ? false : true,
+          showBack: position === 0 ? false : true,
+          page: position,
+        },
+        () => {
+          Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null;
+        }
+      );
+    }
   };
 
   /**
@@ -195,9 +205,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-          x: (this.state.page - 1) * this.state.width,
-          animated: true,
-        })
+        x: (this.state.page - 1) * this.state.width,
+        animated: true,
+      })
       : this.handleBottomStepper(this.state.page - 1);
   };
 
@@ -211,9 +221,9 @@ class Stepper extends React.Component<Props, State> {
 
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
-          x: (this.state.page + 1) * this.state.width,
-          animated: true,
-        })
+        x: (this.state.page + 1) * this.state.width,
+        animated: true,
+      })
       : this.handleBottomStepper(this.state.page + 1);
   };
 
@@ -256,7 +266,8 @@ class Stepper extends React.Component<Props, State> {
 
     return React.Children.map(children, (child: Object, index: number) => {
       return (
-        <View key={`child${index}`} style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
+        <View key={`child${index}`}
+              style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
           {child}
         </View>
       );
@@ -328,9 +339,11 @@ class Stepper extends React.Component<Props, State> {
               <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
                 {index < this.state.page && this.props.validate ? (
                   this.state.error ? (
-                    <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                    <MaterialIcon name="close" size={24}
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                    <MaterialIcon name="check" size={24}
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   )
                 ) : (
                   <Icon {...iconConfig} />
@@ -416,7 +429,12 @@ class Stepper extends React.Component<Props, State> {
     updateModalFromRedux({ showClose: false }, toolTipType.loading);
 
     // Validate current stage
-    const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: nextStage, params: paramsNextStage, key: nextStage });
+    const validator = validatorNavigate({
+      type: 'Navigation/NAVIGATE',
+      routeName: nextStage,
+      params: paramsNextStage,
+      key: nextStage
+    });
 
     // Can we update the next status ? All questions are valid ?
     if (validator.isActionValid === true) {
@@ -464,11 +482,18 @@ class Stepper extends React.Component<Props, State> {
     }
 
     return (
-      <View style={{ selfAlign: 'flex-end', justifyContent: 'flex-end', flex: 1, alignContent: 'flex-end', alignItems: 'flex-end' }}>
+      <View style={{
+        selfAlign: 'flex-end',
+        justifyContent: 'flex-end',
+        flex: 1,
+        alignContent: 'flex-end',
+        alignItems: 'flex-end'
+      }}>
         <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
           <View style={[styles.button]}>
             <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>Save</Text>
-            {bottomNavigationRightIconComponent || <Icon style={{ margin: 5, fontSize: 15 }} name="save" type={'Fontisto'} size={15} />}
+            {bottomNavigationRightIconComponent ||
+            <Icon style={{ margin: 5, fontSize: 15 }} name="save" type={'Fontisto'} size={15} />}
           </View>
         </PlatformTouchableNative>
       </View>
@@ -518,7 +543,9 @@ class Stepper extends React.Component<Props, State> {
             ]}
           >
             {showBack ? (
-              <PlatformTouchableNative onPress={this.onPressBack} background={PlatformTouchableNative.SelectableBackgroundBorderless()} style={{ zIndex: 1 }}>
+              <PlatformTouchableNative onPress={this.onPressBack}
+                                       background={PlatformTouchableNative.SelectableBackgroundBorderless()}
+                                       style={{ zIndex: 1 }}>
                 <View style={styles.button}>
                   {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>

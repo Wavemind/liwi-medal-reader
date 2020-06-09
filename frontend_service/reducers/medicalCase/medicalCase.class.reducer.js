@@ -590,7 +590,6 @@ class MedicalCaseReducer extends ReducerClass {
     if (action.payload === undefined || action.payload === null || action.payload.id === undefined || action.payload.id === null || action.payload.uid !== undefined) {
       return initialState;
     }
-    console.log(action, initialState);
 
     const modelsMedicalCase = this._instanceMedicalCase(action.payload);
 

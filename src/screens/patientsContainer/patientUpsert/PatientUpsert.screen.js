@@ -42,9 +42,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     let patient = {};
 
-    this.props.app.set("monCUl",'Sur la commode');
-
-
     const patientId = navigation.getParam('idPatient');
     const session = await getItem('session');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
