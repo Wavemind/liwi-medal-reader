@@ -34,6 +34,12 @@ export default class Boolean extends React.Component<Props, State> {
     return nextProps.question.answer !== question.answer || nextProps.widthView !== widthView;
   }
 
+  /**
+   * Set answer in store
+   * @param {boolean} answer - Value to save in store
+   * @returns {null}
+   * @private
+   */
   _handleClick = (answer) => {
     const { question, setAnswer, setPatientValue, patientValueEdit } = this.props;
     let newAnswer = Number(answer);
@@ -46,6 +52,7 @@ export default class Boolean extends React.Component<Props, State> {
     if (answer === question.answer) {
       newAnswer = null;
     }
+
     if (patientValueEdit) {
       setPatientValue(question.id, newAnswer);
     } else {
