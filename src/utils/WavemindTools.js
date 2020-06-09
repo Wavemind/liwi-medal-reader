@@ -4,7 +4,7 @@ import RNRestart from 'react-native-restart';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
 import Realm from 'realm';
 
-import { clearLocalStorage, clearPatients, getItems, setItem } from '../engine/api/LocalStorage';
+import { clearLocalStorage, clearPatients, getItems } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 import { persistor, store } from '../../frontend_service/store';
 import { memorySizeOf } from './swissKnives';
@@ -96,7 +96,6 @@ export default class WavemindTools extends Component {
                   const sessions = await getItems('sessions');
                   const session = await getItems('session');
                   const algorithm = await getItems('algorithm');
-                  const patients = await getItems('patients');
                   const state$ = store.getState();
                   let k = await FilesystemStorage.getItem('persist:medicalCase');
                   k = await JSON.parse(k);
@@ -108,8 +107,6 @@ export default class WavemindTools extends Component {
                     session,
                     algorithm,
                     size_algorithms: memorySizeOf(algorithm),
-                    patients,
-                    size_patients: memorySizeOf(patients),
                   });
                 }}
               >

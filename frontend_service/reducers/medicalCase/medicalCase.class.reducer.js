@@ -2,13 +2,16 @@ import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
-import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
+import { filter } from 'lodash';
+import { getItems, storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
-import { nodeTypes } from '../../constants';
+import { categories, nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
+import { QuestionModel } from '../../engine/models/Question.model';
+import { PatientValueModel } from '../../engine/models/PatientValue.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -96,8 +99,8 @@ class MedicalCaseReducer extends ReducerClass {
    *
    * @payload type: type of diagnoses ()
    *    proposed: [], // Retaind by algo
-        custom: [], // Add by the input
-        additional: [] // Add even though it's false
+   custom: [], // Add by the input
+   additional: [] // Add even though it's false
    * @payload diagnoses: Diagnoses
    * @payload actionDiagnoses: Specific action to avoid multiple different action
    */
@@ -123,7 +126,8 @@ class MedicalCaseReducer extends ReducerClass {
               additionalDrugs: { ...newadditionnalDrugs },
             },
           };
-        } else if (actionDiagnoses === 'remove') {
+        }
+        if (actionDiagnoses === 'remove') {
           const { [diagnoses.id]: diagnose, ...without } = state.diagnoses[type];
           return {
             ...state,
@@ -147,7 +151,8 @@ class MedicalCaseReducer extends ReducerClass {
               additionalDrugs: { ...newadditionnalDrugs },
             },
           };
-        } else if (actionDiagnoses === 'remove') {
+        }
+        if (actionDiagnoses === 'remove') {
           const { [diagnoses.id]: diagnose, ...without } = state.diagnoses[type];
           return {
             ...state,
@@ -383,7 +388,7 @@ class MedicalCaseReducer extends ReducerClass {
   /**
    * Set the answer for a specific PS
    *
-   * @payload indexPs: Index of a specific PredefinedSydrom
+   * @payload indexPs: Index of a specific PredefinedSydrome
    * @payload answer: New answer
    */
   @Action(actions.MC_PREDEFINED_SYNDROME_SET_ANSWER)
@@ -421,6 +426,53 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...state,
       nodes: new NodesModel(state.nodes),
+    };
+  }
+
+  /**
+   * Set patient value
+   * @param state
+   * @param action
+   * @returns {{patientValues}}
+   */
+  @Action(actions.SET_PATIENT_VALUE)
+  setPatientValue(state, action) {
+    const { index, value } = action.payload;
+
+    const question = new QuestionModel(state.algorithm.nodes[index]);
+    question.updateAnswer(value);
+
+    let nodes = filter(state.algorithm.nodes, (node) => [categories.demographic, categories.basicDemographic].includes(node.category));
+
+    nodes = nodes.map((node) => {
+      const patientValue = state.patientValues.find((pv) => pv.node_id === node.id);
+      const newNode = patientValue !== undefined ? patientValue : { answer_id: null, node_id: node.id, value: null };
+
+      // Set new value for patient value updated
+      if (newNode.node_id === index) {
+        newNode.answer_id = question.answer;
+        newNode.value = question.value;
+      }
+      return newNode;
+    });
+
+    return {
+      ...state,
+      patientValues: nodes,
+    };
+  }
+
+  /**
+   * Set the Patient in state
+   * @payload Patient: the patient to store
+   */
+  @Action(actions.SET_PATIENT)
+  setPatient(state, action) {
+    const { patient, algorithm } = action.payload;
+
+    return {
+      ...patient,
+      algorithm,
     };
   }
 
@@ -535,9 +587,10 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(REHYDRATE)
   rehydrate(state, action) {
-    if (action.payload === undefined || action.payload === null || action.payload.id === undefined || action.payload.id === null) {
+    if (action.payload === undefined || action.payload === null || action.payload.id === undefined || action.payload.id === null || action.payload.uid !== undefined) {
       return initialState;
     }
+    console.log(action, initialState);
 
     const modelsMedicalCase = this._instanceMedicalCase(action.payload);
 

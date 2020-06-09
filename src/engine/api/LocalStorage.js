@@ -118,6 +118,7 @@ export const getArray = async (item) => {
   return array;
 };
 
+// TODO Probably don't need this shit anymore
 // @params [Object] medicalCase
 // Set medical case in local storage
 export const storeMedicalCase = async (medicalCase) => {

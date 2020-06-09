@@ -33,7 +33,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     otherFacility: null,
   };
 
-  initializeComponent = async () => {
+  async componentDidMount() {
     const {
       navigation,
       setMedicalCase,
@@ -60,11 +60,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     if (newMedicalCase) {
       const generatedMedicalCase = await new MedicalCaseModel({}, algorithm);
-      // If the patient already exists we gonna retreive it's patient Value
+      // If the patient already exists we gonna retrieve it's patient Value
       if (patientId !== null) {
         patient.patientValues.map((patientValue) => {
           generatedMedicalCase.nodes[patientValue.node_id].value = patientValue.value;
-          generatedMedicalCase.nodes[patientValue.node_id].answer  = patientValue.answer_id;
+          generatedMedicalCase.nodes[patientValue.node_id].answer = patientValue.answer_id;
         });
       }
       await setMedicalCase({
@@ -81,16 +81,13 @@ export default class PatientUpsert extends React.Component<Props, State> {
       loading: false,
       newMedicalCase,
     });
-  };
-
-  async componentDidMount() {
-    await this.initializeComponent();
   }
 
   /**
    * Save patient and redirect to parameters
    * @params [String] route
    */
+
   save = async (newRoute) => {
     const {
       navigation,
@@ -184,19 +181,19 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.uid}
-                       change={updatePatientValue} index="uid" autoCapitalize="sentences"/>
+          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.uid} change={updatePatientValue} index="uid" autoCapitalize="sentences"
+          />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput placeholder={'...'} condensed style={styles.identifierText} init={patient.study_id}
-                       change={updatePatientValue} index="study_id" autoCapitalize="sentences"/>
+          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.study_id} change={updatePatientValue} index="study_id" autoCapitalize="sentences"
+          />
         </View>
 
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
           <CustomInput
-            placeholder={'...'}
+            placeholder="..."
             keyboardType="number-pad"
             condensed
             style={styles.identifierText}
@@ -259,7 +256,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         ],
         'OR',
         'array',
-        false,
+        false
       );
     }
 
@@ -267,7 +264,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       updateMetaData(
         'patientupsert',
         'custom',
-        extraQuestions.map(({ id }) => id),
+        extraQuestions.map(({ id }) => id)
       );
     }
 
@@ -292,11 +289,10 @@ export default class PatientUpsert extends React.Component<Props, State> {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always"
-                      testID="PatientUpsertScreen">
+          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
-              <LiwiLoader/>
+              <LiwiLoader />
             ) : (
               <>
                 <View>
@@ -317,25 +313,21 @@ export default class PatientUpsert extends React.Component<Props, State> {
                   </Col>
                 </View>
                 <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-                <Questions questions={extraQuestions}/>
+                <Questions questions={extraQuestions} />
                 <View bottom-view>
                   {algorithmReady ? (
-                    !loading ? (
-                      <>
-                        {newMedicalCase || isNewCase ? (
-                          <View columns>
-                            <Button light split onPress={() => save('PatientList')}>
-                              <Text>{t('patient_upsert:save_and_wait')}</Text>
-                            </Button>
-                            <Button success split onPress={() => save('Triage')}>
-                              <Text>{t('patient_upsert:save_and_case')}</Text>
-                            </Button>
-                          </View>
-                        ) : null}
-                      </>
-                    ) : (
-                      <LiwiLoader/>
-                    )
+                    <>
+                      {newMedicalCase || isNewCase ? (
+                        <View columns>
+                          <Button light split onPress={() => save('PatientList')}>
+                            <Text>{t('patient_upsert:save_and_wait')}</Text>
+                          </Button>
+                          <Button success split onPress={() => save('Triage')}>
+                            <Text>{t('patient_upsert:save_and_case')}</Text>
+                          </Button>
+                        </View>
+                      ) : null}
+                    </>
                   ) : (
                     <View columns>
                       <Text>{t('work_case:no_algorithm')}</Text>
