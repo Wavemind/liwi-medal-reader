@@ -148,7 +148,7 @@ export const validatorNavigate = (navigateRoute) => {
   // Break Ref JS
   const validator = JSON.parse(JSON.stringify(modelValidator));
 
-  /** Forced navigation * */
+  // Forced navigation
   if (navigateRoute?.params?.force !== undefined && navigateRoute?.params?.force === true) {
     validator.isActionValid = true;
     return validator;
@@ -159,7 +159,7 @@ export const validatorNavigate = (navigateRoute) => {
   // Get validation from constant
   const detailNavigateRoute = screens.find((s) => s.key === navigateRoute.routeName);
 
-  /** This route has no rule * */
+  // This route has no rule
   if (detailNavigateRoute === undefined || detailNavigateRoute === null) {
     validator.isActionValid = true;
     return validator;
@@ -167,7 +167,7 @@ export const validatorNavigate = (navigateRoute) => {
 
   /** * ----- Specific Validation -----  ** */
 
-  /** This route is patientUpSert * */
+  // This route is patientUpSert
   if (detailNavigateRoute.medicalCaseOrder === 0) {
     validator.isActionValid = true;
     return validator;
@@ -180,7 +180,7 @@ export const validatorNavigate = (navigateRoute) => {
     const routeToValidate = screens.find((s) => s.key === routeDependingStatus(state$));
 
     /** The route requested is the route to validate  * */
-    if (routeToValidate.key === detailNavigateRoute.key) {
+    if (routeToValidate?.key === detailNavigateRoute?.key) {
       validator.isActionValid = true;
       return validator;
     }

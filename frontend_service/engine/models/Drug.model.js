@@ -1,7 +1,7 @@
 // @flow
 
 import { HealthCaresModel } from './HealthCares.model';
-import { medicationForms, nodeTypes } from '../../constants';
+import { medicationForms } from '../../constants';
 import { store } from '../../store';
 import { roundSup } from '../../../src/utils/swissKnives';
 
@@ -40,7 +40,6 @@ export class DrugModel extends HealthCaresModel {
     this.is_antibiotic = is_antibiotic;
   }
 
-
   /**
    * Set the right dose calculation for the treatment.
    *
@@ -75,7 +74,7 @@ export class DrugModel extends HealthCaresModel {
           minDoseMg = roundSup((weightNode.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
           maxDoseMg = roundSup((weightNode.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
 
-          // Second calcule min and max dose (cap)
+          // Second calculate min and max dose (cap)
           const minDoseMl = roundSup((minDoseMg * formulation.dose_form) / formulation.liquid_concentration);
           const maxDoseMl = roundSup((maxDoseMg * formulation.dose_form) / formulation.liquid_concentration);
 
@@ -109,7 +108,7 @@ export class DrugModel extends HealthCaresModel {
 
         case medicationForms.capsule:
         case medicationForms.tablet:
-          // First calcule min and max dose (mg/Kg)
+          // First calculate min and max dose (mg/Kg)
           minDoseMg = roundSup((weightNode.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
           maxDoseMg = roundSup((weightNode.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
           pillSize = formulation.dose_form; // dose form
@@ -118,7 +117,7 @@ export class DrugModel extends HealthCaresModel {
             pillSize /= formulation.breakable;
           }
 
-          // Second calcule min and max dose (cap)
+          // Second calculate min and max dose (cap)
           const minDoseCap = roundSup((1 / pillSize) * minDoseMg);
           const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg);
 
@@ -132,7 +131,7 @@ export class DrugModel extends HealthCaresModel {
             // Other viable solution
             doseResult = Math.floor(doseResult);
           } else {
-            // Out of possiblity
+            // Out of possibility
             return {
               no_possibility: 'No compatible option for this weight',
               doseResult: null,
@@ -149,7 +148,7 @@ export class DrugModel extends HealthCaresModel {
             ...formulation,
           };
         default:
-          // Other use case will be here in futur
+          // Other use case will be here in future
           break;
       }
     }

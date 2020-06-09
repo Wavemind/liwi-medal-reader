@@ -40,7 +40,7 @@ export default class Date extends React.Component<Props, State> {
   };
 
   render() {
-    const { question } = this.props;
+    const { question, isReadOnly } = this.props;
 
     const value = question.value === null ? null : moment(question.value).toDate();
 
@@ -56,7 +56,7 @@ export default class Date extends React.Component<Props, State> {
           textStyle={styles.textColor}
           placeHolderTextStyle={styles.placeholder}
           onDateChange={this._onEndEditing}
-          disabled={false}
+          disabled={isReadOnly}
         />
       </View>
     );

@@ -1,10 +1,9 @@
 // @flow
 import * as React from 'react';
-import { ListItem, Text, View, Button } from 'native-base';
+import { ListItem, Text, View, Button, Icon } from 'native-base';
 import { FlatList } from 'react-native';
 
-import { routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
-import { updateModalFromRedux } from '../../../../frontend_service/actions/creators.actions';
+import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import { LiwiTitle2 } from '../../../template/layout';
 import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
@@ -25,11 +24,12 @@ export default class PatientProfile extends React.Component {
   async componentDidMount() {
     const deviceInfo = await getDeviceInformation();
     const algorithm = await getItems('algorithm');
+    const isConnected = await getItems('isConnected');
 
     const columns = algorithm.mobile_config.medical_case_list;
     const { nodes } = algorithm;
 
-    this.setState({ deviceInfo, columns, nodes });
+    this.setState({ deviceInfo, columns, nodes, isConnected });
     await this._getPatient();
   }
 
@@ -62,9 +62,10 @@ export default class PatientProfile extends React.Component {
     const {
       setMedicalCase,
       navigation,
+      updateModalFromRedux,
       app: { t, database, user },
     } = this.props;
-    const { columns, nodes, deviceInfo } = this.state;
+    const { columns, nodes, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
 
     return (
@@ -73,11 +74,14 @@ export default class PatientProfile extends React.Component {
         key={`${medicalCase.id}_list`}
         onPress={async () => {
           const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
-          const isConnected = await getItems('isConnected');
+          const currentConnectionStatus = await getItems('isConnected');
 
-          if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
+          if (newMedicalCase.isLocked(deviceInfo, user) && currentConnectionStatus) {
             updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
-          } else {
+          } else if (newMedicalCase.status === medicalCaseStatus.close) {
+            navigation.navigate('Summary', { medicalCase });
+          }
+           else {
             // Set medical case in store and lock case
             await setMedicalCase(newMedicalCase);
             await database.lockMedicalCase(newMedicalCase.id);
@@ -97,6 +101,11 @@ export default class PatientProfile extends React.Component {
         <View style={{ flex: size }}>
           <Text size-auto>{t(`medical_case:${medicalCase.status}`)}</Text>
         </View>
+        {isConnected ? (
+          <View style={styles.itemLock}>
+            <Text size-auto right>{medicalCase.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}</Text>
+          </View>
+        ) : null}
       </ListItem>
     );
   };
@@ -124,7 +133,7 @@ export default class PatientProfile extends React.Component {
             <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
             <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
               {patient.patientValues.map((patientValue) => (
-                <View style={styles.wrapper}>
+                <View key={patientValue.node_id} style={styles.wrapper}>
                   <Text size-auto style={styles.identifierText}>
                     {nodes[patientValue.node_id].label}
                   </Text>
@@ -140,7 +149,7 @@ export default class PatientProfile extends React.Component {
               block
               onPress={() => {
                 navigation.navigate('PatientEdit', {
-                  patient: patient,
+                  patient,
                 });
               }}
             >

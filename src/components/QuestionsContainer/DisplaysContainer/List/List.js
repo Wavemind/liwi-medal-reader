@@ -30,7 +30,7 @@ export default class List extends React.Component<Props, State> {
   };
 
   render() {
-    const { question } = this.props;
+    const { question, isReadOnly } = this.props;
 
     const PickerItem = [];
 
@@ -40,7 +40,7 @@ export default class List extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Picker mode="dropdown" iosHeader="Select " style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange}>
+        <Picker mode="dropdown" iosHeader="Select " style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange} enable={isReadOnly}>
           <Picker.Item label="Select" value={null} />
           {PickerItem}
         </Picker>

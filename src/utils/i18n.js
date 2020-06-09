@@ -40,6 +40,7 @@ i18n
           admin: 'Administration',
           ml: 'ml',
           of: 'of',
+          no_formulation: ' No formulation selected',
         },
         diagnoses: {
           which: 'Which formulation of medicine is available and appropriate for your patient?',
@@ -66,6 +67,13 @@ i18n
           titleadditional: 'Additional selected',
           additional: 'Do you want to add an additional diagnosis not proposed?',
           write: 'Write the medicine',
+        },
+        diagnoses_label: {
+          additional: 'Additional',
+          additionalDrugs: 'Additional drugs',
+          custom: 'Custom',
+          customDrugs: 'Custom drugs',
+          proposed: 'Proposed',
         },
         tooltip: {
           invalidQuestions: 'Question(s) to fill',
@@ -103,8 +111,8 @@ i18n
           new_sticker_notification: 'You need to give another sticker to the patient',
         },
         summary: {
-          title: 'Current summary',
           diagnoses: 'Diagnoses',
+          questions: 'Questions',
         },
         assessment: {
           title: 'First look assessment',
@@ -309,8 +317,8 @@ i18n
         popup: {
           startSave: 'Saving in local data...',
           saveSuccess: 'Save with success on local data',
-          unlock: 'Force Unlock the case (at your own risk)',
-          close: 'Close the modal',
+          unlock: 'Force unlock',
+          close: 'Close',
           desc: 'Description',
           version_name: 'version',
           version: 'Update of version',
@@ -319,6 +327,7 @@ i18n
           ask_me_later: 'Ask me later',
           cancel: 'cancel',
           by: 'by',
+          summary: 'Summary',
           isLocked: 'Case is locked',
           at: 'at',
         },

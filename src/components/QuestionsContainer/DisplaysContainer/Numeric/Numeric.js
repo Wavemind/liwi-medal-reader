@@ -1,9 +1,9 @@
 // @flow
 
-import * as React from "react";
-import { Input, View } from "native-base";
-import type { NavigationScreenProps } from "react-navigation";
-import { liwiColors } from "../../../../utils/constants";
+import * as React from 'react';
+import { Input, View } from 'native-base';
+import type { NavigationScreenProps } from 'react-navigation';
+import { liwiColors } from '../../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -44,12 +44,10 @@ export default class Numeric extends React.Component<Props, State> {
       } else if (question.value !== null && value === '') {
         setPatientValue(question.id, null);
       }
-    } else {
-      if (value !== question.value && value !== '') {
-        setAnswer(question.id, value);
-      } else if (question.value !== null && value === '') {
-        setAnswer(question.id, null);
-      }
+    } else if (value !== question.value && value !== '') {
+      setAnswer(question.id, value);
+    } else if (question.value !== null && value === '') {
+      setAnswer(question.id, null);
     }
   };
 
@@ -82,6 +80,7 @@ export default class Numeric extends React.Component<Props, State> {
     const {
       question,
       unavailableAnswer,
+      isReadOnly,
       app: { t },
     } = this.props;
     let { style, value } = this.state;
@@ -106,7 +105,17 @@ export default class Numeric extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this.onEndEditing} placeholder={placeholder} l/>
+        <Input
+          keyboardType={keyboardType}
+          question
+          numeric
+          value={value}
+          onChange={this.onChange}
+          style={style}
+          onEndEditing={this.onEndEditing}
+          placeholder={placeholder}
+          disabled={isReadOnly}
+        />
       </View>
     );
   }

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,8 +14,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   tooltip: {
-    width: Dimensions.get('window').width * 0.8,
+    width: Dimensions.get('window').width,
     paddingBottom: 24,
+    marginBottom: 50,
     backgroundColor: 'transparent',
     position: 'absolute',
     shadowColor: 'black',

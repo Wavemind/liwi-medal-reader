@@ -230,6 +230,8 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
               ...finalDiagnostic,
             });
             break;
+          default:
+            break;
         }
       }
     }

@@ -66,6 +66,7 @@ export default class Boolean extends React.Component<Props, State> {
       question: { answer, answers, label, category },
       widthView,
       index,
+      isReadOnly,
     } = this.props;
 
     // Define the id for the answer
@@ -156,13 +157,13 @@ export default class Boolean extends React.Component<Props, State> {
               </Text>
             </View>
             <View style={styles.bottomInput}>
-              <LeftButton active={answer === idYes} onPress={() => this._handleClick(idYes)}>
+              <LeftButton active={answer === idYes} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
                 <Text white={answer === idYes} center>
                   {t('question:yes')}
                 </Text>
               </LeftButton>
 
-              <RightButton onPress={() => this._handleClick(idNo)} active={answer === idNo}>
+              <RightButton onPress={() => this._handleClick(idNo)} active={answer === idNo} disabled={isReadOnly}>
                 <Text center white={answer === idNo}>
                   {t('question:no')}
                 </Text>
@@ -175,12 +176,12 @@ export default class Boolean extends React.Component<Props, State> {
       default:
         RenderJsx = () => (
           <View answer>
-            <LeftButton active={answer === idYes} onPress={() => this._handleClick(idYes)}>
+            <LeftButton active={answer === idYes} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
               <Text white={answer === idYes} center>
                 {t('question:yes')}
               </Text>
             </LeftButton>
-            <RightButton onPress={() => this._handleClick(idNo)} active={answer === idNo}>
+            <RightButton onPress={() => this._handleClick(idNo)} active={answer === idNo} disabled={isReadOnly}>
               <Text center white={answer === idNo}>
                 {t('question:no')}
               </Text>
