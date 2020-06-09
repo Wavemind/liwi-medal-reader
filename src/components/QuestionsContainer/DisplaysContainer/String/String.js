@@ -19,12 +19,19 @@ export default class String extends React.Component<Props, State> {
     style: null,
   };
 
-  _focus = () =>
+  /**
+   * Change color of input on focus
+   */
+  focus = () =>
     this.setState({
       style: { borderColor: liwiColors.greenColor },
     });
 
-  _onEndEditing = (value) => {
+  /**
+   * Save value in store
+   * @param {String} value
+   */
+  onEndEditing = (value) => {
     const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
     if (patientValueEdit) {
       if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
@@ -32,12 +39,10 @@ export default class String extends React.Component<Props, State> {
       } else if (question.value !== null && value.nativeEvent.text === '') {
         setPatientValue(question.id, null);
       }
-    } else {
-      if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
-        setAnswer(question.id, value.nativeEvent.text);
-      } else if (question.value !== null && value.nativeEvent.text === '') {
-        setAnswer(question.id, null);
-      }
+    } else if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
+      setAnswer(question.id, value.nativeEvent.text);
+    } else if (question.value !== null && value.nativeEvent.text === '') {
+      setAnswer(question.id, null);
     }
   };
 
@@ -47,8 +52,7 @@ export default class String extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input question defaultValue={question.value} style={style} onFocus={this._focus}
-               onEndEditing={this._onEndEditing} />
+        <Input question defaultValue={question.value} style={style} onFocus={this.focus} onEndEditing={this.onEndEditing} />
       </View>
     );
   }

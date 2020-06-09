@@ -1,7 +1,6 @@
 // @flow
 
 import uuid from 'react-native-uuid';
-import * as _ from 'lodash';
 
 import { differenceNodes } from '../../../src/utils/swissKnives';
 import { store } from '../../store';
@@ -19,7 +18,12 @@ export class PatientValueModel {
     }
   }
 
-  static generatePatientValue = (patient) => {
+  /**
+   * Compare store and patient value in patient
+   * @param {Object} patient
+   * @returns patient value updated
+   */
+  static getUpdatedPatientValue = (patient) => {
     const state = store.getState();
 
     const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id');
