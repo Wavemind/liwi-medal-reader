@@ -6,6 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
+import PatientEdit from '../../screens/patientsContainer/patientEdit';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import PatientList from '../../screens/patientsContainer/patientList';
@@ -25,11 +26,58 @@ import Emergency from '../../screens/emergency';
 // We need to use i18n directly because we cant be connect to context
 const Stack = createStackNavigator(
   {
+    Algorithms: {
+      screen: Algorithms,
+      path: 'algorithms',
+      params: {},
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:available_algorithms'),
+        };
+      },
+    },
+    Consultation: {
+      screen: Consultation,
+      path: 'consultation',
+      params: {
+        showMiniDrawer: true,
+        dropDownMenu: 'Consultation',
+        medicalCaseStatus: medicalCaseStatus.consultation.name,
+        nextStage: medicalCaseStatus.waitingTests.name,
+      },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    DiagnosticsStrategy: {
+      screen: DiagnosticsStrategy,
+      path: 'DiagnosticsStrategy',
+      params: {
+        showMiniDrawer: true,
+        dropDownMenu: 'Final_diagnostic',
+        medicalCaseStatus: medicalCaseStatus.finalDiagnostic.name,
+        nextStage: medicalCaseStatus.close.name,
+      },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    Emergency: {
+      screen: Emergency,
+      params: {},
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:emergency'),
+        };
+      },
+    },
     Home: {
       screen: MainScreen,
-      params: {
-        showSummary: false,
-      },
+      params: {},
       path: 'home',
 
       navigationOptions: ({ navigation }) => {
@@ -46,12 +94,30 @@ const Stack = createStackNavigator(
         };
       },
     },
+    MedicalCaseList: {
+      screen: MedicalCaseList,
+      path: 'medicalCaseList',
+      params: {},
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:medical_case_list'),
+        };
+      },
+    },
+    PatientEdit: {
+      screen: PatientEdit,
+      path: 'patientEdit',
+      params: {},
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:patient_edit'),
+        };
+      },
+    },
     PatientList: {
       screen: PatientList,
       path: 'patientList',
-      params: {
-        showSummary: false,
-      },
+      params: {},
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_list'),
@@ -71,7 +137,6 @@ const Stack = createStackNavigator(
       screen: PatientUpsert,
       path: 'patient/',
       params: {
-        showSummary: false,
         showMiniDrawer: true,
       },
       navigationOptions: () => {
@@ -80,83 +145,13 @@ const Stack = createStackNavigator(
         };
       },
     },
-    Algorithms: {
-      screen: Algorithms,
-      path: 'algorithms',
-      params: {
-        showSummary: false,
-      },
-      navigationOptions: () => {
-        return {
-          title: i18n.t('navigation:available_algorithms'),
-        };
-      },
-    },
-    MedicalCaseList: {
-      screen: MedicalCaseList,
-      path: 'medicalCaseList',
-      params: {
-        showSummary: false,
-      },
-      navigationOptions: () => {
-        return {
-          title: i18n.t('navigation:medical_case_list'),
-        };
-      },
-    },
     Settings: {
       screen: Settings,
       path: 'settings',
-      params: {
-        showSummary: false,
-      },
-      navigationOptions: () => {
-        return {
-          title: i18n.t('navigation:settings'),
-        };
-      },
-    },
-    Emergency: {
-      screen: Emergency,
       params: {},
       navigationOptions: () => {
         return {
-          title: i18n.t('navigation:emergency'),
-        };
-      },
-    },
-    Triage: {
-      screen: Triage,
-      path: 'triage',
-      params: {
-        showMiniDrawer: true,
-
-        title: '',
-        showSummary: true,
-        dropDownMenu: 'Triage',
-        medicalCaseStatus: medicalCaseStatus.triage.name,
-        nextStage: medicalCaseStatus.waitingConsultation.name,
-      },
-      navigationOptions: ({ navigation }) => {
-        return {
-          title: navigation.getParam('title'),
-        };
-      },
-    },
-    Consultation: {
-      screen: Consultation,
-      path: 'consultation',
-      params: {
-        showMiniDrawer: true,
-
-        showSummary: true,
-        dropDownMenu: 'Consultation',
-        medicalCaseStatus: medicalCaseStatus.consultation.name,
-        nextStage: medicalCaseStatus.waitingTests.name,
-      },
-      navigationOptions: ({ navigation }) => {
-        return {
-          title: navigation.getParam('title'),
+          title: i18n.t('navigation:settings'),
         };
       },
     },
@@ -164,7 +159,6 @@ const Stack = createStackNavigator(
       screen: Tests,
       path: 'tests',
       params: {
-        showSummary: true,
         showMiniDrawer: true,
         dropDownMenu: 'Tests',
         medicalCaseStatus: medicalCaseStatus.tests.name,
@@ -176,15 +170,16 @@ const Stack = createStackNavigator(
         };
       },
     },
-    DiagnosticsStrategy: {
-      screen: DiagnosticsStrategy,
-      path: 'DiagnosticsStrategy',
+    Triage: {
+      screen: Triage,
+      path: 'triage',
       params: {
         showMiniDrawer: true,
-        showSummary: true,
-        dropDownMenu: 'Final_diagnostic',
-        medicalCaseStatus: medicalCaseStatus.finalDiagnostic.name,
-        nextStage: medicalCaseStatus.close.name,
+
+        title: '',
+        dropDownMenu: 'Triage',
+        medicalCaseStatus: medicalCaseStatus.triage.name,
+        nextStage: medicalCaseStatus.waitingConsultation.name,
       },
       navigationOptions: ({ navigation }) => {
         return {
@@ -232,9 +227,7 @@ const HomeWithModal = createStackNavigator(
     Summary: {
       screen: MedicalCaseSummary,
       path: 'summary',
-      params: {
-        showSummary: false,
-      },
+      params: {},
     },
   },
   {
