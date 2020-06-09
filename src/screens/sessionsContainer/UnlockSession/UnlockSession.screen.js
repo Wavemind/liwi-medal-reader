@@ -83,6 +83,7 @@ export default class UnLockSession extends React.Component<Props, State> {
         app.set('logged', true);
       }
       this.setState({ status: 'success' });
+      NavigationService.navigate('App');
     } else {
       this.setState({ status: 'failure' });
     }

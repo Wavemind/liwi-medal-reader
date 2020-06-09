@@ -12,7 +12,6 @@ import ListContent from '../../../components/ListContent';
 export default class PatientList extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       propsToolTipVisible: false,
       searchTerm: '',

@@ -35,10 +35,8 @@ export default function HookSession() {
           <ScrollView>
             <Text bigTitle>{t('new_session:title')}</Text>
             <Form>
-              <CustomInput init={email} change={(index, value) => setEmail(value)} index="email" placeholder={t('email')} condensed keyboardType="email-address"
-              />
-              <CustomInput init={password} change={(index, value) => setPassword(value)} index="password" placeholder={t('password')} secureTextEntry condensed
-              />
+              <CustomInput init={email} change={(index, value) => setEmail(value)} index="email" placeholder={t('email')} condensed keyboardType="email-address" />
+              <CustomInput init={password} change={(index, value) => setPassword(value)} index="password" placeholder={t('password')} secureTextEntry condensed />
               <Button testID="connect_main" full style={styles.marginTop} onPress={() => signIn()} disabled={loading || success || !isConnected}>
                 <Text> {t('new_session:connect')} </Text>
               </Button>
