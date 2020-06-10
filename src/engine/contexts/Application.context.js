@@ -15,7 +15,7 @@ import { updateModalFromRedux } from '../../../frontend_service/actions/creators
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 import { store } from '../../../frontend_service/store';
-import NavigationService from "../navigation/Navigation.service";
+import NavigationService from '../navigation/Navigation.service';
 
 const defaultValue = {};
 
@@ -170,7 +170,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       {
         enableHighAccuracy,
         timeout: 5000,
-      },
+      }
     );
   };
 
@@ -230,7 +230,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         newAlgorithm.selected = true;
         const currentAlgorithm = await getItems('algorithm');
 
-        this.setState({filtersPatient: {}, filtersMedicalCase: {}});
+        this.setState({ filtersPatient: {}, filtersMedicalCase: {} });
 
         // Update popup only if version has changed
         if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
@@ -242,8 +242,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
                 author: newAlgorithm.author,
                 description: newAlgorithm.description,
               },
-              toolTipType.algorithmVersion,
-            ),
+              toolTipType.algorithmVersion
+            )
           );
         }
         await setItem('algorithm', newAlgorithm);
@@ -371,5 +371,4 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 }
 
-export const withApplication = (Component: React.ComponentType<any>) => (props: any) =>
-  <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
+export const withApplication = (Component: React.ComponentType<any>) => (props: any) => <ApplicationContext.Consumer>{(store) => <Component app={store} {...props} />}</ApplicationContext.Consumer>;
