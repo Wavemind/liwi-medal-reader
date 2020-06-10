@@ -302,9 +302,9 @@ i18n
         },
         unlock_session: {
           who: 'Who are you?',
-          fill: 'Fill the missing informations as Guest',
+          fill: 'Fill the missing information as guest',
           pin: 'Enter the PIN to unlock the tablet',
-          already: 'Already Logged as',
+          already: 'Already logged as',
           email: 'Email',
           assign: 'An administrator will assign you to a group',
           code: 'Code',

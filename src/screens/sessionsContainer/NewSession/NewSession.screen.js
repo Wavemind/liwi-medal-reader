@@ -12,7 +12,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 
 export default function HookSession() {
   const [loading, setLoading] = React.useState(false);
-  const [email, setEmail] = React.useState(__DEV__ ? 'mickael.lacombe@wavemind.ch' : '');
+  const [email, setEmail] = React.useState(__DEV__ ? 'alain.fresco@wavemind.ch' : '');
   const [password, setPassword] = React.useState(__DEV__ ? '123456' : '');
   const [success, setSuccess] = React.useState(false);
   const app = React.useContext(ApplicationContext);
@@ -53,7 +53,7 @@ export default function HookSession() {
               loop={false}
               style={styles.height}
               onAnimationFinish={() => {
-                NavigationService.navigate('UnlockSession');
+                NavigationService.navigate('Synchronise');
               }}
             />
           ) : null}
