@@ -316,7 +316,7 @@ i18n
         },
         popup: {
           startSave: 'Saving in local data...',
-          saveSuccess: 'Save with success on local data',
+          saveSuccess: 'Successfully saved',
           unlock: 'Force unlock',
           close: 'Close',
           desc: 'Description',
