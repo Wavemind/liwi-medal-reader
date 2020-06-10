@@ -230,6 +230,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         newAlgorithm.selected = true;
         const currentAlgorithm = await getItems('algorithm');
 
+        this.setState({filtersPatient: {}, filtersMedicalCase: {}});
+
         // Update popup only if version has changed
         if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
           store.dispatch(
@@ -293,6 +295,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     currentRoute: null,
     initialPosition: {},
     isConnected: false,
+    filtersPatient: {},
+    filtersMedicalCase: {},
     lang: 'fr',
     logged: false,
     name: 'App',

@@ -366,6 +366,11 @@ i18n
           consultation: 'Consultation',
           patient_data: 'Patient',
         },
+        filters: {
+          title: 'Filters',
+          clear: 'Clear all',
+          apply: 'Apply',
+        },
         notifications: {
           empty_code: 'Your code is empty, please write it',
           invalid_code: ' Your local code is invalid, please try again',

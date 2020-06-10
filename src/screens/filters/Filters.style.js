@@ -15,5 +15,24 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
 
+  container: {
+    flex: 1,
+    marginTop: 50,
+  },
+
+  bottomButton: { bottom: 0, left: 0, right: 0, height: 100, position: 'absolute' },
+
+  clearAll: {
+    left: 0,
+    paddingLeft: 0,
+    marginLeft: 0,
+    width: '95%',
+    height: '100%',
+    borderRightWidth: 5,
+    borderRightColor: liwiColors.darkerGreyColor,
+  },
+
+  apply: { width: '100%', height: '100%', marginLeft: 0 },
+
   listItem: { paddingLeft: 0, marginLeft: 0 },
 });

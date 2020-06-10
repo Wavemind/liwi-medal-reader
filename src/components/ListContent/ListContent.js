@@ -2,13 +2,12 @@
 
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Button, Picker, ListItem, Text, View, Icon } from 'native-base';
+import { Button, ListItem, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { getDeviceInformation } from '../../engine/api/Device';
 
 type Props = NavigationScreenProps & {};
@@ -24,14 +23,11 @@ export default class ListContent extends React.Component<Props, State> {
     currentPage: 1,
     isLastBatch: false,
     firstLoading: true,
-    status: null,
-    filters: {},
   };
 
   async componentDidMount() {
-    const { list, navigation } = this.props;
+    const { list } = this.props;
 
-    const filters = navigation.getParam('filters');
     await this._fetchList();
 
     const isConnected = await getItems('isConnected');
@@ -44,8 +40,10 @@ export default class ListContent extends React.Component<Props, State> {
     this.setState({ columns, nodes, firstLoading: false, isConnected, deviceInfo });
   }
 
-  async componentDidUpdate(nextProps, nextState) {
-    if (nextProps.query !== this.props.query) {
+  async componentDidUpdate(nextProps) {
+    const { model, query } = this.props;
+
+    if (nextProps.query !== query || nextProps.app[`filters${model}`] !== this.props.app[`filters${model}`]) {
       await this._fetchList();
     }
   }
@@ -60,10 +58,11 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { currentPage, filters } = this.state;
+    const { currentPage } = this.state;
+
+    const filters = this.props.app[`filters${model}`];
 
     this.setState({ loading: true });
-
     const options = { query, filters };
     const data = await database.getAll(model, 1, options);
 
@@ -85,7 +84,9 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { data, currentPage, filters } = this.state;
+    const { data, currentPage } = this.state;
+
+    const filters = this.props.app[`filters${model}`];
 
     this.setState(
       {
@@ -137,7 +138,9 @@ export default class ListContent extends React.Component<Props, State> {
             </View>
             {isConnected ? (
               <View style={styles.itemLock}>
-                <Text size-auto right>{item.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}</Text>
+                <Text size-auto right>
+                  {item.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
+                </Text>
               </View>
             ) : null}
           </>
@@ -178,7 +181,7 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       navigation,
     } = this.props;
-    const { data, firstLoading, columns, nodes, loading, isLastBatch, filters } = this.state;
+    const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
@@ -195,7 +198,7 @@ export default class ListContent extends React.Component<Props, State> {
               <Text size-auto>{t('patient_profile:status')}</Text>
             </View>
           ) : null}
-          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filters', { model, filters })}>
+          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filters', { model })}>
             <Icon type="FontAwesome" name="filter" />
           </Button>
         </View>
