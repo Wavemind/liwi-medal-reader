@@ -370,6 +370,7 @@ i18n
           title: 'Filters',
           clear: 'Clear all',
           apply: 'Apply',
+          status: 'Status',
         },
         notifications: {
           empty_code: 'Your code is empty, please write it',
