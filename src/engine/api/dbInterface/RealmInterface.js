@@ -1,4 +1,5 @@
 import uuid from 'react-native-uuid';
+import * as _ from 'lodash';
 
 import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
 import { PatientValueModel } from '../../../../frontend_service/engine/models/PatientValue.model';
@@ -65,9 +66,7 @@ export default class RealmInterface {
     if (params.query !== '' && model === 'Patient') result = await result.filtered(`patientValues.value LIKE "*${params.query}*"`);
     if (filters !== '') result = await result.filtered(filters);
 
-    return result
-      .sorted('updated_at', 'ASC')
-      .slice((page - 1) * elementPerPage, elementPerPage * page);
+    return result.sorted('updated_at', 'ASC').slice((page - 1) * elementPerPage, elementPerPage * page);
   };
 
   /**
@@ -83,11 +82,10 @@ export default class RealmInterface {
       this._realm().create(model, object);
     });
 
-   this._savePatientValue(model, object);
+    this._savePatientValue(model, object);
   };
 
-  lockMedicalCase = () => {
-  };
+  lockMedicalCase = () => {};
 
   /**
    * Push an object in a existing object based on model name and id
@@ -113,8 +111,7 @@ export default class RealmInterface {
   /**
    * Blank method used in httpInterface
    */
-  unlockMedicalCase = () => {
-  };
+  unlockMedicalCase = () => {};
 
   /**
    * Update or insert value in a existing row
@@ -175,14 +172,21 @@ export default class RealmInterface {
    */
   _generateFilteredQuery = (filters) => {
     let query = '';
-    if (filters !== null) {
-      filters.forEach((filter, key) => {
-        query += `${filter.key} == ${filter.value}`;
-        if (key + 1 < filters.length) {
-          query += ' OR ';
+
+    if (!_.isEmpty(filters)) {
+      Object.keys(filters).forEach((nodeId, key) => {
+        filters[nodeId].map((filter, filterKey) => {
+          query += `(patientValues.node_id == ${nodeId} AND patientValues.answer_id == ${filter})`;
+          if (filterKey + 1 < filters[nodeId].length) {
+            query += ' OR ';
+          }
+        });
+        if (key + 1 < Object.keys(filters).length) {
+          query += ' AND ';
         }
       });
     }
+
     return query;
   };
 

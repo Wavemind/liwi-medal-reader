@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Text, View, Button, ListItem, CheckBox, Body } from 'native-base';
+import { Text, View, Button } from 'native-base';
 import * as _ from 'lodash';
 
-import { Collapse, CollapseBody, CollapseHeader } from 'accordion-collapse-react-native';
 import { LiwiTitle2 } from '../../template/layout';
-import { liwiColors } from '../../utils/constants';
 import { styles } from './Filters.style';
 import FilterAccordion from '../../components/FilterAccordion';
 import { getItems } from '../../engine/api/LocalStorage';
@@ -21,19 +19,32 @@ export default class Filter extends React.Component<Props, State> {
     const { navigation } = this.props;
 
     const model = navigation.getParam('model');
-    const activeFilters = await navigation.getParam('filters');
-    const algorithm = await getItems('algorithm');
+    // TODO: Find better solutions
+    const filters = this.props.app[`filters${model}`];
+    const activeFilters = JSON.parse(JSON.stringify(filters));
 
+    const algorithm = await getItems('algorithm');
     const availableFilters = _.filter(algorithm.nodes, { category: categories.demographic });
 
     this.setState({ model, availableFilters, activeFilters });
   }
 
-  _handleFilters = async (node, answerKey) => {
+  /**
+   * Add or remove filters and set value in activeFilter
+   * @param {Object} node - Node list
+   * @param {Integer} answerKey - Answer keys
+   * @returns {Promise<void>}
+   * @private
+   */
+  handleFilters = async (node, answerKey) => {
     const { activeFilters } = this.state;
 
     if (_.includes(activeFilters[node.id], node.answers[answerKey].id)) {
       activeFilters[node.id] = _.remove(activeFilters[node.id], (n) => n !== node.answers[answerKey].id);
+      // Remove filter key if there is no value set
+      if (activeFilters[node.id].length === 0) {
+        delete activeFilters[node.id];
+      }
     } else if (activeFilters[node.id] !== undefined) {
       activeFilters[node.id].push(node.answers[answerKey].id);
     } else {
@@ -42,67 +53,68 @@ export default class Filter extends React.Component<Props, State> {
     this.setState({ activeFilters });
   };
 
+  /**
+   * Save filter in context and redirect to patient or medical case list
+   * @returns {Promise<void>}
+   * @private
+   */
+  _saveFilters = async () => {
+    const {
+      navigation,
+      app: { set },
+    } = this.props;
+    const { activeFilters, model } = this.state;
+
+    await set(`filters${model}`, activeFilters);
+    navigation.navigate(model === 'MedicalCase' ? 'MedicalCaseList' : 'PatientList');
+  };
+
+  /**
+   * Clear filter in context and redirect to patient or medical case list
+   * @returns {Promise<void>}
+   * @private
+   */
+  _clearFilter = async () => {
+    const {
+      navigation,
+      app: { set },
+    } = this.props;
+    const { model } = this.state;
+
+    await set(`filters${model}`, {});
+    navigation.navigate(model === 'MedicalCase' ? 'MedicalCaseList' : 'PatientList');
+  };
+
   render() {
-    const { navigation } = this.props;
+    const {
+      app: { t },
+    } = this.props;
     const { model, availableFilters, activeFilters } = this.state;
 
     return (
-      <View padding-auto style={{ flex: 1, marginTop: 50 }}>
+      <View padding-auto style={styles.container}>
         <ScrollView>
-          <LiwiTitle2 noBorder>Filters</LiwiTitle2>
+          <LiwiTitle2 noBorder>{t('filters:title')}</LiwiTitle2>
 
           {model === 'MedicalCase' ? (
             <FilterAccordion title="Status" />
           ) : (
-            availableFilters.map((node) => (
-              <Collapse key={node.id}>
-                <CollapseHeader style={styles.filterButton}>
-                  <Text white>{node.label}</Text>
-                </CollapseHeader>
-                <CollapseBody style={styles.content}>
-                  {Object.keys(node.answers).map((key) => (
-                    <ListItem key={key} style={styles.listItem}>
-                      <CheckBox onPress={() => this._handleFilters(node, key)} color={liwiColors.redColor} checked={_.includes(activeFilters[node.id], node.answers[key].id)} />
-                      <Body>
-                        <Text size-auto>{node.answers[key].label}</Text>
-                      </Body>
-                    </ListItem>
-                  ))}
-                </CollapseBody>
-              </Collapse>
-            ))
+            availableFilters.map((node) => <FilterAccordion key={`accordion-${node.id}`} node={node} activeFilters={activeFilters} handleFilters={this.handleFilters} />)
           )}
         </ScrollView>
 
-        <View flex-container-row style={{ bottom: 0, left: 0, right: 0, height: 100, position: 'absolute' }}>
+        <View flex-container-row style={styles.bottomButton}>
           <View w50>
-            <Button
-              style={{
-                left: 0,
-                paddingLeft: 0,
-                marginLeft: 0,
-                width: '95%',
-                height: '100%',
-                borderRight: 5,
-                borderRightColor: liwiColors.darkerGreyColor,
-              }}
-            >
+            <Button style={styles.clearAll} onPress={() => this._clearFilter()}>
               <Text size-auto center>
-                Clear all
+                {t('filters:clear')}
               </Text>
             </Button>
           </View>
           <View w50>
-            <Button
-              style={{ width: '100%', height: '100%', marginLeft: 0 }}
-              onPress={() =>
-                navigation.navigate(model === 'MedicalCase' ? 'MedicalCaseList' : 'PatientList', {
-                  filters: activeFilters,
-                })
-              }
-            >
+            <Button style={styles.apply} onPress={() => this._saveFilters()}>
               <Text size-auto center>
-                Apply
+                {t('filters:apply')}
               </Text>
             </Button>
           </View>

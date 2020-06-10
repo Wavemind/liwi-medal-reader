@@ -17,7 +17,6 @@ export default class PatientList extends React.Component {
       searchTerm: '',
       query: '',
       isGeneratingPatient: false,
-      filters: props.navigation.getParam('filters'),
       searchByDelayed: _.debounce(() => {
         const { searchTerm } = this.state;
         this.setState({ query: searchTerm });
@@ -57,7 +56,7 @@ export default class PatientList extends React.Component {
   };
 
   render() {
-    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible, filters } = this.state;
+    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible } = this.state;
 
     const {
       app: { t },
@@ -100,7 +99,7 @@ export default class PatientList extends React.Component {
           <SeparatorLine />
         </View>
 
-        <ListContent query={query} filters={filters} model="Patient" list="patient_list" itemNavigation={this.itemNavigation} />
+        <ListContent query={query} model="Patient" list="patient_list" itemNavigation={this.itemNavigation} />
       </>
     );
   }

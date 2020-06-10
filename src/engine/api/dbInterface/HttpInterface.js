@@ -222,7 +222,6 @@ export default class HttpInterface {
    */
   _generateFiltersUrl = (filters) => {
     let stringFilters = '';
-    console.log('httpInterface', filters);
     if (filters.length !== 0) {
       Object.keys(filters).forEach((key) => {
         stringFilters += `&${filters[key].key}=${filters[key].value}`;
