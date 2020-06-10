@@ -24,7 +24,7 @@ import { medicalCaseStatus, toolTipType } from '../../../frontend_service/consta
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
-import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/Navigation.service';
+import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
 import { displayNotification } from '../../utils/CustomToast';
 
 
