@@ -11,6 +11,7 @@ import Liquid from '../../../../components/Formulations/Liquid';
 import Breakable from '../../../../components/Formulations/Breakable';
 import Capsule from '../../../../components/Formulations/Capsule';
 import Default from '../../../../components/Formulations/Default';
+import FinalDiagnosticCards from '../../../../components/FinalDiagnosticCards';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -93,24 +94,13 @@ export default class HealthCares extends Component<Props, State> {
 
   render() {
     const {
-      medicalCase: { nodes },
+      medicalCase,
       app: { t },
     } = this.props;
 
-    const weight = find(nodes, { reference: 1, category: categories.basicMeasurement });
-
     return (
       <Content>
-        <Text customTitle> {t('diagnoses:sum')}</Text>
-        <Text>
-          {t('diagnoses:weight')} : {weight.value}kg
-        </Text>
-        {this._renderDiagnoses()}
-        <Text customTitle>{t('diagnoses:medicine')}</Text>
-        {this._renderDrugDose()}
-        {titleManagementCounseling() && <Text customTitle>{t('diagnoses:man')}</Text>}
-        {this._renderManagement('proposed')}
-        {this._renderManagement('additional')}
+        <FinalDiagnosticCards medicalCase={medicalCase} />
       </Content>
     );
   }
