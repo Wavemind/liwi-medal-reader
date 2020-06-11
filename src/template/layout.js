@@ -140,7 +140,7 @@ export const PaddedView = styled(LView).attrs({})``;
 export const LeftButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
   border-width: 0.5px;
-  padding: 13px;
+  padding: 10px;
   background-color: ${({ active }) => {
     if (active) {
       return liwiColors.greenColor;
@@ -167,7 +167,7 @@ export const RightButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
   border-width: 0.5px;
   border-left-width: 0;
-  padding: 13px;
+  padding: 10px;
   border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
     if (active) {
