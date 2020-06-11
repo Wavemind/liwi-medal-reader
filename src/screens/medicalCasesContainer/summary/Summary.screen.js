@@ -110,7 +110,7 @@ export default class Summary extends React.Component<Props, State> {
             </CardItem>
             <CardItem bordered>
               <Body>
-                <LiwiTitle4>{t('diagnoses:man')}</LiwiTitle4>
+                <LiwiTitle4>{t('diagnoses:management')}</LiwiTitle4>
                 {Object.keys(finalDiagnosticCategory[key].managements).map((managementKey) => {
                   const management = finalDiagnosticCategory[key].managements[managementKey];
                   const node = nodes[management.id];

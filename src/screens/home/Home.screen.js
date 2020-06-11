@@ -121,7 +121,7 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList', { filters: {} })}>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/patients.png')} />
                 <Text size-auto center style={styles.textButton}>
@@ -130,7 +130,7 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableHighlight>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList', { filters: {} })}>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/case.png')} />
                 <Text size-auto center style={styles.textButton}>

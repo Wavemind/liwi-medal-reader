@@ -57,7 +57,7 @@ i18n
           sum: 'Summary Treatment',
           proposed: 'Diagnoses proposed by',
           agree: 'Agree',
-          man: 'Management & Counseling',
+          management: 'Management & Counseling',
           medicine: 'Medicine',
           close: 'Close',
           select: '  Please select...', // Keep the space at the begin of string
