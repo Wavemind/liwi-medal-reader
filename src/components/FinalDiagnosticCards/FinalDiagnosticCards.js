@@ -19,20 +19,6 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class FinalDiagnosticCards extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    const { medicalCase } = props;
-    const { nodes } = medicalCase;
-
-    const drugsAvailable = getDrugs(medicalCase.diagnoses);
-
-    this.state = {
-      medicalCase,
-      nodes,
-      drugsAvailable,
-    };
-  }
-
   /**
    * Display drug formulation based on medication form selected
    * @param {Object} drug - Drug in final diagnostic model
@@ -40,7 +26,9 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
    * @private
    */
   _renderSwitchFormulation = (drug) => {
-    const { nodes } = this.state;
+    const {
+      medicalCase: { nodes },
+    } = this.props;
 
     const node = nodes[drug.id];
     const drugDose = node.getDrugDoses(drug.formulationSelected);
@@ -68,8 +56,10 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
   _renderFinalDiagnosticCards = (finalDiagnosticCategory, title) => {
     const {
       app: { t },
+      medicalCase,
+      medicalCase: { nodes },
     } = this.props;
-    const { drugsAvailable, nodes } = this.state;
+    const drugsAvailable = getDrugs(medicalCase.diagnoses);
 
     return Object.keys(finalDiagnosticCategory).map((key) => {
       if (finalDiagnosticCategory[key].agreed || title === 'additional') {
@@ -122,9 +112,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
   };
 
   render() {
-    const { medicalCase } = this.state;
-console.log('props', this.props)
-console.log('state', this.state)
+    const { medicalCase } = this.props;
     return Object.keys(medicalCase.diagnoses).map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key));
   }
 }
