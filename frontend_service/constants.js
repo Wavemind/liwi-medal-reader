@@ -7,7 +7,6 @@ export const secondStatusLocalData = 5000;
 
 export const navigationStateKey = 'navigationState';
 export const navigationRoute = 'navigationRoute';
-export const appInBackgroundStateKey = 'appBackground';
 
 export const databaseInterface = {
   realmInterface: 'realmInterface',

@@ -83,6 +83,7 @@ export default class PatientEdit extends React.Component {
 
     navigation.navigate('PatientProfile', {
       id: patient.id,
+      refresh: true,
     });
   };
 

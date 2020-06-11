@@ -13,9 +13,8 @@ import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';
 import { getItem, setItem } from '../engine/api/LocalStorage';
-import { appInBackgroundStateKey, navigationRoute, navigationStateKey } from '../../frontend_service/constants';
-import CustomNavigator from '../engine/navigation/CustomNavigator.navigation';
-import { RootLoginNavigator } from '../engine/navigation/Root.navigation';
+import { navigationRoute, navigationStateKey } from '../../frontend_service/constants';
+import { RootMainNavigator } from '../engine/navigation/Root.navigation';
 
 type Props = {
   app: {
@@ -42,37 +41,20 @@ const persistNavigationState = async (navState) => {
 };
 
 class LayoutTemplate extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      prevRoute: null,
+      mustSetNavigation: false,
+      navigationState: null,
+      AppContainer: createAppContainer(RootMainNavigator),
+    };
+  }
+
   shouldComponentUpdate(nextProps: Props): boolean {
     return nextProps.app.appState !== 'background';
   }
-
-  // loadNavigationState = async () => {
-  //   const state = await getItem(navigationStateKey);
-  //   const fromBackground = await getItem(appInBackgroundStateKey);
-  //   const {
-  //     app: { appState },
-  //   } = this.props;
-  //
-  //   let routes = null;
-  //
-  //   // If the app come not from the background the item is set in app.context
-  //   if (fromBackground === null && appState === 'active') {
-  //     // first render of the app
-  //     return null;
-  //   }
-  //   if (fromBackground && appState === 'active') {
-  //     routes = state;
-  //     const { app } = this.props;
-  //
-  //     // This fix a bug when we reload the app in the userselection screen
-  //     if (routes !== null && routes.routes[routes.index].key.match(/UserSelection|SetCodeSession/) && app.logged === true) {
-  //       routes = null;
-  //     }
-  //     // Set the flag background
-  //     await setItem(appInBackgroundStateKey, null);
-  //     return routes;
-  //   }
-  // };
 
   updatePrevRoute = async () => {
     const { prevRoute } = this.state;
@@ -95,29 +77,12 @@ class LayoutTemplate extends React.Component<Props> {
     await this.updatePrevRoute();
   }
 
-  state = {
-    prevRoute: null,
-    mustSetNavigation: false,
-    navigationState: null,
-  };
-
   render() {
     const {
-      app: { logged, ready, session },
+      app: { logged, ready },
     } = this.props;
-    const { navigationState, mustSetNavigation } = this.state;
 
-    let AppContainer;
-
-    if (logged) {
-      AppContainer = createAppContainer(CustomNavigator);
-    } else {
-      let routeName = '';
-      if (session !== null) {
-        routeName = 'UnlockSession';
-      }
-      AppContainer = createAppContainer(RootLoginNavigator(routeName));
-    }
+    const { AppContainer, navigationState, mustSetNavigation } = this.state;
 
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
@@ -135,17 +100,6 @@ class LayoutTemplate extends React.Component<Props> {
                   navigationState={navigationState}
                   logged={logged}
                   persistNavigationState={persistNavigationState}
-                  // loadNavigationState={
-                  //   // Trick because react-naviation is buggy on first load
-                  //   logged
-                  //     ? () => {
-                  //         if (logged) {
-                  //           return navigationState;
-                  //         }
-                  //         return null;
-                  //       }
-                  //     : false
-                  // }
                   renderLoadingExperimental={() => <LiwiLoader />}
                   ref={(navigatorRef) => {
                     NavigationService.setTopLevelNavigator(navigatorRef);

@@ -1,11 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
-import { RootMainNavigator } from './Root.navigation';
-import { medicalCaseStatus, navigationActionConstant, routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
-import NavigationService from './Navigation.service';
+import { medicalCaseStatus, routeDependingStatus } from '../../../frontend_service/constants';
 import { store } from '../../../frontend_service/store';
-import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
-import { displayNotification } from '../../utils/CustomToast';
+
 import {
   questionsBasicMeasurements,
   questionsComplaintCategory,
@@ -14,7 +11,6 @@ import {
   questionsPhysicalExam,
   questionsTests,
 } from '../../../frontend_service/algorithm/questionsStage.algo';
-import { liwiColors } from '../../utils/constants';
 
 const screens = [
   { key: 'Home' },
@@ -45,7 +41,7 @@ const screens = [
   { key: 'DiagnosticsStrategy', medicalCaseOrder: 4, validations: {} },
 ];
 
-const modelValidator = {
+export const modelValidator = {
   isActionValid: true,
   routeRequested: null,
   stepToBeFill: [],
@@ -62,9 +58,8 @@ const modelValidator = {
  * @param validator : object contain all validation
  * @return validator : may be updated in the function
  */
-const validatorStep = (route, lastState, validator) => {
+export const validatorStep = (route, lastState, validator) => {
   const state$ = store.getState();
-
   if (route?.params?.initialPage && route.params.initialPage > 0) {
     const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
     const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
@@ -126,7 +121,6 @@ function oneValidation(criteria, questions, stepName) {
           });
         }
         break;
-      // eslint-disable-next-line no-fallthrough
       default:
         break;
     }
@@ -167,7 +161,7 @@ export const validatorNavigate = (navigateRoute) => {
 
   /** * ----- Specific Validation -----  ** */
 
-  // This route is patientUpSert
+  // This route is patientUpsert
   if (detailNavigateRoute.medicalCaseOrder === 0) {
     validator.isActionValid = true;
     return validator;
@@ -212,7 +206,7 @@ export const validatorNavigate = (navigateRoute) => {
         return oneValidation(criteria, questions, validation);
       });
 
-      // All step has to be valide
+      // All step has to be valid
       validator.isActionValid = screenResults.every((c) => c.isActionValid === true);
       validator.stepToBeFill = screenResults;
 
@@ -236,17 +230,17 @@ export const validatorNavigate = (navigateRoute) => {
         state$ = store.getState();
 
         // Get the id to validated
-        const prevRoutequestionsToValidate = state$.metaData[prevRoute.key.toLowerCase()];
+        const prevRouteQuestionsToValidate = state$.metaData[prevRoute.key.toLowerCase()];
 
         // Check route to validate screen if valid
         screenResults = Object.keys(prevRoute.validations).map((validation) => {
-          const questions = prevRoutequestionsToValidate[validation];
+          const questions = prevRouteQuestionsToValidate[validation];
           const criteria = prevRoute.validations[validation];
           // Validation on each Step
           return oneValidation(criteria, questions, validation);
         });
 
-        // All step has to be valide
+        // All step has to be valid
         validator.isActionValid = screenResults.every((c) => c.isActionValid === true);
         validator.stepToBeFill = screenResults;
 
@@ -261,68 +255,3 @@ export const validatorNavigate = (navigateRoute) => {
   }
   return validator;
 };
-
-class CustomNavigator extends React.Component {
-  static state = {};
-
-  static router = {
-    ...RootMainNavigator.router,
-    getStateForAction: (action, lastState) => {
-      // https://reactnavigation.org/docs/en/custom-routers.html#getstateforactionaction-state
-      // check for custom actions and return a different navigation state.
-      let validation = {
-        isActionValid: true,
-      };
-
-      let route;
-      let currentRoute;
-      let detailSetParamsRoute;
-      let detailValidation;
-
-      switch (action.type) {
-        case navigationActionConstant.navigate:
-        case navigationActionConstant.replace:
-          // eslint-disable-next-line no-case-declarations
-          validation = validatorNavigate(action);
-          break;
-
-        case navigationActionConstant.setParams:
-          route = NavigationService.getActiveRouteByKey(action, lastState);
-          currentRoute = NavigationService.getCurrentRoute();
-          validation = validatorStep(route, lastState, modelValidator);
-
-          detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
-          detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
-          /** Change route params and dont block action * */
-          if (validation.isActionValid === false && detailSetParamsRoute.validations[detailValidation]?.required === true) {
-            action.params.initialPage = detailSetParamsRoute.validations[detailValidation].initialPage;
-            displayNotification(`${detailValidation} are invalid`, liwiColors.redColor);
-            return RootMainNavigator.router.getStateForAction(action, lastState);
-          }
-          if (route.routeName === currentRoute.routeName) {
-            // If the set params is on the same route and has no required
-            validation.isActionValid = true;
-          }
-
-          break;
-      }
-
-      if (validation.isActionValid) {
-        return RootMainNavigator.router.getStateForAction(action, lastState);
-      }
-      store.dispatch(updateModalFromRedux({ ...validation }, toolTipType.validation));
-
-      return null;
-    },
-  };
-
-  state = {};
-
-  render() {
-    const { navigation } = this.props;
-
-    return <RootMainNavigator navigation={navigation} />;
-  }
-}
-
-export default CustomNavigator;
