@@ -66,6 +66,7 @@ export class MedicalCaseModel {
         additionalDrugs: {},
         customDrugs: [],
       };
+
       this.fail_safe = false;
 
       this.generateExcludedId();
@@ -89,6 +90,7 @@ export class MedicalCaseModel {
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
       this.diagnostics = json.diagnostics;
+      this.fail_safe = json.fail_safe;
       this.nodes = json.nodes;
       this.triage = json.triage;
       this.complaintCategories = json.complaintCategories;
