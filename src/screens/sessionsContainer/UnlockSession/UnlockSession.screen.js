@@ -89,7 +89,7 @@ export default class UnLockSession extends React.Component<Props, State> {
             {app.user !== null && (
               <View style={styles.appContent}>
                 <Text style={styles.align} bigTitle={screenWidth > screensScale.s}>
-                  {app.t('unlock_session:already')}
+                  {app.t('unlock_session:current_user')}
                   {'\n '}
                   <Text style={styles.textRole} bigTitle={screenWidth > screensScale.s}>
                     {app.user.first_name} {app.user.last_name}{' '}

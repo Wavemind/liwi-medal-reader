@@ -1,17 +1,17 @@
 // @flow
-import React, { Component } from "react";
-import { Icon, Text, View } from "native-base";
-import { TextInput } from "react-native";
+import React, { Component } from 'react';
+import { Icon, Text, View } from 'native-base';
+import { TextInput } from 'react-native';
 
-import { NavigationScreenProps } from "react-navigation";
-import MultiSelect from "react-native-multiple-select";
-import _ from "lodash";
-import { liwiColors } from "../../../../utils/constants";
-import Medecine from "../../../../components/Medicine";
-import { categories } from "../../../../../frontend_service/constants";
-import CustomMedecine from "../../../../components/CustomMedicine";
-import { calculateCondition } from "../../../../../frontend_service/algorithm/conditionsHelpers.algo";
-import { styles } from "./Medicines.style";
+import { NavigationScreenProps } from 'react-navigation';
+import MultiSelect from 'react-native-multiple-select';
+import _ from 'lodash';
+import { liwiColors } from '../../../../utils/constants';
+import Medecine from '../../../../components/Medicine';
+import { categories } from '../../../../../frontend_service/constants';
+import CustomMedecine from '../../../../components/CustomMedicine';
+import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
+import { styles } from './Medicines.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -58,7 +58,7 @@ export default class Medicines extends Component<Props, State> {
   };
 
   _changeCustomDuration = (value, id) => {
-    var reg = new RegExp(/^\d+$/);
+    const reg = new RegExp(/^\d+$/);
 
     const { setAdditionalMedicineDuration } = this.props;
     if (reg.test(value) || value === '') {
@@ -103,18 +103,6 @@ export default class Medicines extends Component<Props, State> {
       });
     });
 
-    let isProposed = false;
-    const isManually = Object.keys(diagnoses.additional).length > 0;
-
-    // can be proposed
-    Object.keys(diagnoses.proposed).map((q) => {
-      Object.keys(diagnoses.proposed[q].drugs).map((treatmentId) => {
-        if (diagnoses.proposed[q].agreed === true && calculateCondition(diagnoses.proposed[q].drugs[treatmentId]) === true) {
-          isProposed = true;
-        }
-      });
-    });
-
     const renderMedicinesProposed = (
       <>
         {Object.keys(diagnoses.proposed).map((key) => {
@@ -130,14 +118,19 @@ export default class Medicines extends Component<Props, State> {
             if (isPossible) {
               return (
                 <>
-                  <Text key={`${key}diagnoses`} size-auto style={styles.label}>
+                  <Text key={`${key}diagnoses`} size-auto customTitle>
                     {diagnoses.proposed[key].label}
                   </Text>
                   {Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
                     if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
-                      return <Medecine type={'proposed'} key={`${treatmentId}_medecine`} medecine={diagnoses.proposed[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+                      return <Medecine type="proposed" key={`${treatmentId}_medecine`} medecine={diagnoses.proposed[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
                     }
-                    return null;
+
+                    return (
+                      <Text key={`${key}diagnoses`} size-auto>
+                        No Drugs
+                      </Text>
+                    );
                   })}
                 </>
               );
@@ -153,12 +146,19 @@ export default class Medicines extends Component<Props, State> {
         {Object.keys(diagnoses.additional).map((key) => {
           return (
             <>
-              <Text key={`${key}diagnoses`} size-auto style={styles.additionalText}>
-                {diagnoses.additional[key].label}
+              <Text key={`${key}diagnoses`} size-auto customTitle>
+                {diagnoses.additional[key].label} <Text>- Additional</Text>
               </Text>
-              {Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
-                return <Medecine type={'additional'} key={`${treatmentId}_medecine`} medecine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-              })}
+
+              {Object.keys(diagnoses.additional[key].drugs).length > 0 ? (
+                Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
+                  return <Medecine type="additional" key={`${treatmentId}_medecine`} medecine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+                })
+              ) : (
+                <Text key={`${key}diagnoses`} size-auto>
+                  No Drugs
+                </Text>
+              )}
             </>
           );
         })}
@@ -171,7 +171,7 @@ export default class Medicines extends Component<Props, State> {
             <View style={styles.flex50}>
               <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
               <Text italic>
-                {t('diagnoses:duration')} : {diagnoses.additionalDrugs[s].duration} {t('drug:days')}
+                {t('diagnoses:duration')}: {diagnoses.additionalDrugs[s].duration} {t('drug:days')}
               </Text>
             </View>
             <View style={styles.flex50}>
@@ -194,17 +194,14 @@ export default class Medicines extends Component<Props, State> {
     );
     return (
       <View>
-        {isProposed && (
-          <Text customTitle>
-            {t('diagnoses:proposed_medicine')} "{algorithm_name}"
-          </Text>
-        )}
+        <Text style={styles.label}>{t('diagnoses:medicine')}</Text>
         {renderMedicinesProposed}
-
-        {isManually && <Text customTitle>{t('diagnoses:manually_medicine')}</Text>}
         {renderMedicineAdditional}
+        {Object.keys(diagnoses.custom).map((w, i) => (
+          <CustomMedecine diagnose={diagnoses.custom[w]} diagnoseKey={i} />
+        ))}
 
-        {filteredAllDrugs.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
+        {filteredAllDrugs.length > 0 && <Text style={styles.label}>{t('diagnoses:add_medicine')}</Text>}
         {renderAdditionalDrugs}
 
         {filteredAllDrugs.length > 0 && (
@@ -229,10 +226,6 @@ export default class Medicines extends Component<Props, State> {
             submitButtonText={t('diagnoses:close')}
           />
         )}
-        {Object.keys(diagnoses.custom).length > 0 && <Text customTitle>{t('diagnoses:another')}</Text>}
-        {Object.keys(diagnoses.custom).map((w, i) => (
-          <CustomMedecine diagnose={diagnoses.custom[w]} diagnoseKey={i} />
-        ))}
       </View>
     );
   }
