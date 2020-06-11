@@ -36,7 +36,7 @@ export default class CustomMedicine extends Component<{}> {
       <View style={styles.container}>
         <Text customTitle>
           {diagnose.label}
-          <Text> - Manually</Text>
+          <Text> - {t('diagnoses_label:custom')}</Text>
         </Text>
         <View style={styles.item}>
           <Input style={styles.input} common value={customDrug} onChange={this._handleCustomInput} placeholder={t('diagnoses:write')} />

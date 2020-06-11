@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import { NativeModules } from 'react-native';
+import { Text } from "native-base";
 
 const languageDetector = {
   type: 'languageDetector',
@@ -27,6 +28,32 @@ i18n
           select: 'Select',
           save: 'Save'
         },
+        diagnoses: {
+          add: 'Create',
+          add_medicine: 'Additional Medicines',
+          additional: 'Do you want to add an additional diagnosis not proposed?',
+          agree: 'Agree',
+          another: 'Another diagnoses not proposed',
+          close: 'Close',
+          custom: 'Do you want to manually add another diagnosis not proposed?',
+          custom_duration: 'Custom duration',
+          disagree: 'Disagree',
+          duration: 'duration',
+          list: 'List of diagnoses',
+          manually_medicine: 'Medicines for the Additional Diagnoses',
+          man: 'Management & Counseling',
+          medicine: 'Medicine',
+          no_drugs: 'No Drugs',
+          none: 'none',
+          proposed: 'Diagnoses proposed by',
+          search: 'Search by name',
+          select: '  Please select...', // Keep the space at the begin of string
+          sum: 'Summary Treatment',
+          titleadditional: 'Additional selected',
+          weight: 'weight',
+          which: 'Which formulation of medicine is available and appropriate for your patient?',
+          write: 'Write the medicine',
+        },
         drug: {
           give: 'Give',
           mg: 'mg',
@@ -41,31 +68,6 @@ i18n
           ml: 'ml',
           of: 'of',
           no_formulation: ' No formulation selected',
-        },
-        diagnoses: {
-          which: 'Which formulation of medicine is available and appropriate for your patient?',
-          none: 'none',
-          custom_duration: 'Custom duration',
-          duration: 'duration',
-          add_medicine: 'Additional Medicines',
-          another: 'Another diagnoses not proposed',
-          manually_medicine: 'Medicines for the Additional Diagnoses',
-          list: 'List of diagnoses',
-          add: 'Create',
-          weight: 'weight',
-          sum: 'Summary Treatment',
-          proposed: 'Diagnoses proposed by',
-          agree: 'Agree',
-          man: 'Management & Counseling',
-          medicine: 'Medicine',
-          close: 'Close',
-          select: '  Please select...', // Keep the space at the begin of string
-          search: 'Search by name',
-          disagree: 'Disagree',
-          custom: 'Do you want to manually add another diagnosis not proposed?',
-          titleadditional: 'Additional selected',
-          additional: 'Do you want to add an additional diagnosis not proposed?',
-          write: 'Write the medicine',
         },
         diagnoses_label: {
           additional: 'Additional',

@@ -128,7 +128,7 @@ export default class Medicines extends Component<Props, State> {
 
                     return (
                       <Text key={`${key}diagnoses`} size-auto>
-                        No Drugs
+                        {t('diagnoses:no_drugs')}
                       </Text>
                     );
                   })}
@@ -142,12 +142,12 @@ export default class Medicines extends Component<Props, State> {
       </>
     );
     const renderMedicineAdditional = (
-      <>
+      <View style={styles.viewBox}>
         {Object.keys(diagnoses.additional).map((key) => {
           return (
             <>
               <Text key={`${key}diagnoses`} size-auto customTitle>
-                {diagnoses.additional[key].label} <Text>- Additional</Text>
+                {diagnoses.additional[key].label} <Text>- {t('diagnoses_label:additional')}</Text>
               </Text>
 
               {Object.keys(diagnoses.additional[key].drugs).length > 0 ? (
@@ -156,13 +156,13 @@ export default class Medicines extends Component<Props, State> {
                 })
               ) : (
                 <Text key={`${key}diagnoses`} size-auto>
-                  No Drugs
+                  {t('diagnoses:no_drugs')}
                 </Text>
               )}
             </>
           );
         })}
-      </>
+      </View>
     );
     const renderAdditionalDrugs = (
       <View style={styles.viewBox}>
