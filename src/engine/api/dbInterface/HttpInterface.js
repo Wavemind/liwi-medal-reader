@@ -136,6 +136,7 @@ export default class HttpInterface {
     const httpRequest = await fetch(url, header).catch((error) => {
       handleHttpError(error);
     });
+
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();
