@@ -22,11 +22,11 @@ const styles: Object = StyleSheet.create({
   },
   activeStepTitleStyle: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   inactiveStepTitleStyle: {
     fontWeight: 'normal',
-    fontSize: 16,
+    fontSize: 14,
   },
   activeStepNumberStyle: {
     color: 'white',

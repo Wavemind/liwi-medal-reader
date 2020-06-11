@@ -69,11 +69,9 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
       setDiagnoses,
       medicalCase: { diagnoses },
       medicalCase,
-
       app: { t },
     } = this.props;
     const { finalDiagnostics, customDiagnoses } = this.state;
-
     const selected = Object.keys(diagnoses.additional).map((s) => diagnoses.additional[s].id);
 
     return (

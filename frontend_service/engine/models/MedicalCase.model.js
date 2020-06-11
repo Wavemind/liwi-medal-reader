@@ -90,6 +90,7 @@ export class MedicalCaseModel {
       this.mobile_config = json.mobile_config ?? null;
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
+      this.algorithm_name = json.algorithm_name;
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
       this.triage = json.triage;

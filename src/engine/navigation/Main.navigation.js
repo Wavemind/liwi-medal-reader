@@ -212,8 +212,8 @@ const Stack = createStackNavigator(
         headerRight: () => (
           <Text
             style={{
-              marginRight: 50,
-              fontSize: 20,
+              marginRight: 60,
+              fontSize: 16,
               fontWeight: '500',
               color: liwiColors.blackLightColor,
             }}
@@ -226,7 +226,8 @@ const Stack = createStackNavigator(
         },
         headerTitleStyle: { color: liwiColors.blackColor },
         headerTitleContainerStyle: {
-          marginLeft: 50,
+          marginLeft: 15,
+          fontSize: 18,
         },
       };
     },

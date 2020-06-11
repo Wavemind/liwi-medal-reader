@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { liwiColors } from "../../../../utils/constants";
 
 export const styles = StyleSheet.create({
-  label: { backgroundColor: liwiColors.redColor, color: liwiColors.whiteColor, padding: 4, borderRadius: 2, paddingLeft: 20, marginBottom: 20 },
+  label: { backgroundColor: liwiColors.redColor, color: liwiColors.whiteColor, fontSize: 20, padding: 4, borderRadius: 2, paddingLeft: 10, marginBottom: 10 },
   viewBox: { marginBottom: 20 },
   viewitem: { flex: 1, flexDirection: 'row', marginBottom: 5 },
   flex50: { flex: 0.5 },
