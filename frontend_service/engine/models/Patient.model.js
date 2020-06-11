@@ -56,6 +56,7 @@ export class PatientModel {
     medicalCaseClass.json = JSON.stringify(medicalCaseClass);
     await medicalCaseClass.handleFailSafe();
     medicalCaseClass.activities = [activity];
+
     await database.push('Patient', this.id, 'medicalCases', medicalCaseClass);
     await database.update('Patient', this.id, { updated_at: moment().toDate() });
     return true;

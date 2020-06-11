@@ -1,16 +1,16 @@
 // @flow
 
-import * as React from "react";
-import { Image, TouchableHighlight } from "react-native";
-import { NavigationScreenProps } from "react-navigation";
-import { Text, View } from "native-base";
-import { styles } from "./Home.style";
-import { getItems } from "../../engine/api/LocalStorage";
-import { displayNotification } from "../../utils/CustomToast";
-import ConfirmationView from "../../components/ConfirmationView";
-import { liwiColors } from "../../utils/constants";
-import ToolTipModal from "../../components/ToolTipModal";
-import QrCodePatient from "../../components/QrCodePatient";
+import * as React from 'react';
+import { Image, TouchableHighlight } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { Text, View } from 'native-base';
+import { styles } from './Home.style';
+import { getItems } from '../../engine/api/LocalStorage';
+import { displayNotification } from '../../utils/CustomToast';
+import ConfirmationView from '../../components/ConfirmationView';
+import { liwiColors } from '../../utils/constants';
+import ToolTipModal from '../../components/ToolTipModal';
+import QrCodePatient from '../../components/QrCodePatient';
 
 type Props = NavigationScreenProps & {};
 type State = {};
