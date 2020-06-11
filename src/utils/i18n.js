@@ -41,7 +41,7 @@ i18n
           duration: 'duration',
           list: 'List of diagnoses',
           manually_medicine: 'Medicines for the Additional Diagnoses',
-          man: 'Management & Counseling',
+          management: 'Management & Counseling',
           medicine: 'Medicine',
           no_drugs: 'No Drugs',
           none: 'none',
