@@ -87,11 +87,11 @@ export default class Summary extends React.Component<Props, State> {
         return (
           <Card key={key}>
             <CardItem>
-              <Body style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
+              <Body style={styles.body}>
+                <View style={styles.flex}>
                   <LiwiTitle2 noBorder>{finalDiagnosticCategory[key].label}</LiwiTitle2>
                 </View>
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <View style={styles.alignRight}>
                   <LiwiTitle2 noBorder>
                     <Text note>{t(`diagnoses_label:${title}`)}</Text>
                   </LiwiTitle2>
@@ -100,7 +100,7 @@ export default class Summary extends React.Component<Props, State> {
             </CardItem>
             <CardItem bordered>
               <Body>
-                <LiwiTitle4>Medication</LiwiTitle4>
+                <LiwiTitle4>{t('diagnoses:medecines')}</LiwiTitle4>
                 {Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
                   if (drugsAvailable[drugKey] !== undefined) {
                     return this._renderSwitchFormulation(drugsAvailable[drugKey]);
@@ -110,7 +110,7 @@ export default class Summary extends React.Component<Props, State> {
             </CardItem>
             <CardItem bordered>
               <Body>
-                <LiwiTitle4>Managements</LiwiTitle4>
+                <LiwiTitle4>{t('diagnoses:management')}</LiwiTitle4>
                 {Object.keys(finalDiagnosticCategory[key].managements).map((managementKey) => {
                   const management = finalDiagnosticCategory[key].managements[managementKey];
                   const node = nodes[management.id];

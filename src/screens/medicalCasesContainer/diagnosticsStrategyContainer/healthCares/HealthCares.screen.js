@@ -108,7 +108,7 @@ export default class HealthCares extends Component<Props, State> {
         {this._renderDiagnoses()}
         <Text customTitle>{t('diagnoses:medicine')}</Text>
         {this._renderDrugDose()}
-        {titleManagementCounseling() && <Text customTitle>{t('diagnoses:man')}</Text>}
+        {titleManagementCounseling() && <Text customTitle>{t('diagnoses:management')}</Text>}
         {this._renderManagement('proposed')}
         {this._renderManagement('additional')}
       </Content>

@@ -2,13 +2,12 @@
 
 import * as React from 'react';
 import { FlatList } from 'react-native';
-import { Picker, ListItem, Text, View, Icon } from 'native-base';
+import { Button, ListItem, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { getDeviceInformation } from '../../engine/api/Device';
 
 type Props = NavigationScreenProps & {};
@@ -24,7 +23,6 @@ export default class ListContent extends React.Component<Props, State> {
     currentPage: 1,
     isLastBatch: false,
     firstLoading: true,
-    status: null,
   };
 
   async componentDidMount() {
@@ -42,9 +40,10 @@ export default class ListContent extends React.Component<Props, State> {
     this.setState({ columns, nodes, firstLoading: false, isConnected, deviceInfo });
   }
 
-  async componentDidUpdate(nextProp, nextState) {
-    // Update the list whenever the search query is updated
-    if (nextProp.query !== this.props.query) {
+  async componentDidUpdate(nextProps) {
+    const { model, query } = this.props;
+
+    if (nextProps.query !== query || nextProps.app[`filters${model}`] !== this.props.app[`filters${model}`]) {
       await this._fetchList();
     }
   }
@@ -59,14 +58,12 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { currentPage, status } = this.state;
+    const { currentPage } = this.state;
+
+    const filters = this.props.app[`filters${model}`];
 
     this.setState({ loading: true });
-
-    const options = {
-      query,
-      filters: status !== null ? [{ key: 'status', value: status }] : null,
-    };
+    const options = { query, filters };
     const data = await database.getAll(model, 1, options);
 
     this.setState({
@@ -75,16 +72,6 @@ export default class ListContent extends React.Component<Props, State> {
       loading: false,
       isLastBatch: false,
     });
-  };
-
-  /**
-   * Filter by status
-   * @param {string} value - Change status type
-   * @private
-   */
-  _changeStatus = async (value) => {
-    await this.setState({ status: value });
-    this._fetchList();
   };
 
   /**
@@ -97,7 +84,9 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { data, currentPage, status } = this.state;
+    const { data, currentPage } = this.state;
+
+    const filters = this.props.app[`filters${model}`];
 
     this.setState(
       {
@@ -106,7 +95,7 @@ export default class ListContent extends React.Component<Props, State> {
       async () => {
         const options = {
           query,
-          filters: status !== null ? [{ key: 'status', value: status }] : null,
+          filters,
         };
         const newData = await database.getAll(model, currentPage, options);
         const isLastBatch = newData.length === 0;
@@ -149,7 +138,9 @@ export default class ListContent extends React.Component<Props, State> {
             </View>
             {isConnected ? (
               <View style={styles.itemLock}>
-                <Text size-auto right>{item.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}</Text>
+                <Text size-auto right>
+                  {item.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
+                </Text>
               </View>
             ) : null}
           </>
@@ -188,8 +179,9 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       app: { t },
       model,
+      navigation,
     } = this.props;
-    const { data, firstLoading, columns, nodes, loading, isLastBatch, status } = this.state;
+    const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
@@ -197,25 +189,18 @@ export default class ListContent extends React.Component<Props, State> {
       <>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
-            <View style={styles.columnLabel}>
+            <View key={column} style={styles.columnLabel}>
               <Text size-auto>{nodes[column].label}</Text>
             </View>
           ))}
           {model === 'MedicalCase' ? (
-            <>
-              <View style={styles.columnLabel}>
-                <Text size-auto>{t('patient_profile:status')}</Text>
-              </View>
-              <View style={styles.filterButton}>
-                <Picker mode="dropdown" note={false} style={styles.picker} selectedValue={status} onValueChange={(value) => this._changeStatus(value)}>
-                  <Picker.Item label={t('application:select')} value={null} />
-                  {Object.keys(medicalCaseStatus).map((key) => (
-                    <Picker.Item label={t(`medical_case:${medicalCaseStatus[key].name}`)} value={medicalCaseStatus[key].name} />
-                  ))}
-                </Picker>
-              </View>
-            </>
+            <View style={styles.columnLabel}>
+              <Text size-auto>{t('patient_profile:status')}</Text>
+            </View>
           ) : null}
+          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filters', { model })}>
+            <Icon type="FontAwesome" name="filter" />
+          </Button>
         </View>
         {data.length > 0 ? (
           <View padding-auto>

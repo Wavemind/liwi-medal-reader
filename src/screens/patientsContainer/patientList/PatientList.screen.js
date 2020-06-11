@@ -10,16 +10,19 @@ import ConfirmationView from '../../../components/ConfirmationView';
 import ListContent from '../../../components/ListContent';
 
 export default class PatientList extends React.Component {
-  state = {
-    propsToolTipVisible: false,
-    searchTerm: '',
-    query: '',
-    isGeneratingPatient: false,
-    searchByDelayed: _.debounce(() => {
-      const { searchTerm } = this.state;
-      this.setState({ query: searchTerm });
-    }, 350),
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      propsToolTipVisible: false,
+      searchTerm: '',
+      query: '',
+      isGeneratingPatient: false,
+      searchByDelayed: _.debounce(() => {
+        const { searchTerm } = this.state;
+        this.setState({ query: searchTerm });
+      }, 350),
+    };
+  }
 
   /**
    * Search by term in database

@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     marginLeft: 2,
     height: 45,
     borderRadius: 4,
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     justifyContent: 'center',
     shadowColor: '#f4f4f4',
     shadowOffset: {

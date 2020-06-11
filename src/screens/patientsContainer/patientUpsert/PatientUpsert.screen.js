@@ -18,7 +18,7 @@ import { stages, toolTipType } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
-import { validatorNavigate } from '../../../engine/navigation/CustomNavigator.navigation';
+import { validatorNavigate } from '../../../engine/navigation/NavigationValidator.service';
 
 type Props = NavigationScreenProps & {};
 type State = {};

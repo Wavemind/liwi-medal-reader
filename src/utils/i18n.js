@@ -57,7 +57,7 @@ i18n
           sum: 'Summary Treatment',
           proposed: 'Diagnoses proposed by',
           agree: 'Agree',
-          man: 'Management & Counseling',
+          management: 'Management & Counseling',
           medicine: 'Medicine',
           close: 'Close',
           select: '  Please select...', // Keep the space at the begin of string
@@ -302,9 +302,9 @@ i18n
         },
         unlock_session: {
           who: 'Who are you?',
-          fill: 'Fill the missing informations as Guest',
+          fill: 'Fill the missing information as guest',
           pin: 'Enter the PIN to unlock the tablet',
-          already: 'Already Logged as',
+          already: 'Already logged as',
           email: 'Email',
           assign: 'An administrator will assign you to a group',
           code: 'Code',
@@ -316,7 +316,7 @@ i18n
         },
         popup: {
           startSave: 'Saving in local data...',
-          saveSuccess: 'Save with success on local data',
+          saveSuccess: 'Successfully saved',
           unlock: 'Force unlock',
           close: 'Close',
           desc: 'Description',
@@ -358,12 +358,19 @@ i18n
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
           filter: 'Filters',
+          step_invalid: 'Step is not valid',
         },
         common: {
           back: 'Back',
           disconnect: 'Disconnect',
           consultation: 'Consultation',
           patient_data: 'Patient',
+        },
+        filters: {
+          title: 'Filters',
+          clear: 'Clear all',
+          apply: 'Apply',
+          status: 'Status',
         },
         notifications: {
           empty_code: 'Your code is empty, please write it',
