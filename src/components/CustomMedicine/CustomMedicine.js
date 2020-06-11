@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { Button, Icon, Input, Text, View } from "native-base";
-import { styles } from "./CustomMedicine.style";
+import { Button, Icon, Input, Text, View } from 'native-base';
+import { styles } from './CustomMedicine.style';
 
 export default class CustomMedicine extends Component<{}> {
   state = {
@@ -34,8 +34,9 @@ export default class CustomMedicine extends Component<{}> {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title} size-auto>
+        <Text customTitle>
           {diagnose.label}
+          <Text> - Manually</Text>
         </Text>
         <View style={styles.item}>
           <Input style={styles.input} common value={customDrug} onChange={this._handleCustomInput} placeholder={t('diagnoses:write')} />

@@ -5,6 +5,7 @@ import { DatePicker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { styles } from './Date.style';
+import I18n from '../../../../utils/i18n';
 
 type Props = NavigationScreenProps & {};
 
@@ -49,6 +50,7 @@ export default class Date extends React.Component<Props, State> {
         <DatePicker
           defaultDate={value}
           locale="fr"
+          formatChosenDate={date => {return moment(date).format(I18n.t('application:date_format'));}}
           timeZoneOffsetInMinutes={undefined}
           modalTransparent={false}
           animationType="fade"
