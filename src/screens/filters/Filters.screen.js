@@ -20,8 +20,8 @@ export default class Filter extends React.Component<Props, State> {
     const { navigation } = this.props;
 
     const model = navigation.getParam('model');
-    // TODO: Find better solutions
     const filters = this.props.app[`filters${model}`];
+    // TODO: Find better solutions
     const activeFilters = JSON.parse(JSON.stringify(filters));
 
     const algorithm = await getItems('algorithm');
