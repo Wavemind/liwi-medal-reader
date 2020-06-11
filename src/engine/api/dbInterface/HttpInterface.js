@@ -56,7 +56,7 @@ export default class HttpInterface {
    */
   getAll = async (model, page, params) => {
     const stringFilters = this._generateFiltersUrl(params.filters);
-    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}${stringFilters}&query=${params.query}`;
+    const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}&query=${params.query}${stringFilters !== '' ? `&filter=${stringFilters}` : ''}`;
 
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
@@ -136,6 +136,7 @@ export default class HttpInterface {
     const httpRequest = await fetch(url, header).catch((error) => {
       handleHttpError(error);
     });
+
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();
@@ -222,9 +223,19 @@ export default class HttpInterface {
    */
   _generateFiltersUrl = (filters) => {
     let stringFilters = '';
+
     if (filters.length !== 0) {
-      Object.keys(filters).forEach((key) => {
-        stringFilters += `&${filters[key].key}=${filters[key].value}`;
+      Object.keys(filters).forEach((nodeId, key) => {
+        stringFilters += `${nodeId}:`;
+        filters[nodeId].map((filter, filterKey) => {
+          stringFilters += filter;
+          if (filterKey + 1 < filters[nodeId].length) {
+            stringFilters += ',';
+          }
+        });
+        if (key + 1 < Object.keys(filters).length) {
+          stringFilters += '|';
+        }
       });
     }
 

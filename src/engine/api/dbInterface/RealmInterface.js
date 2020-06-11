@@ -61,7 +61,7 @@ export default class RealmInterface {
       return this._realm().objects(model);
     }
     let result = await this._realm().objects(model);
-    const filters = this._generateFilteredQuery(params.filters);
+    const filters = this._generateFilteredQuery(model, params.filters);
 
     if (params.query !== '' && model === 'Patient') result = await result.filtered(`patientValues.value LIKE "*${params.query}*"`);
     if (filters !== '') result = await result.filtered(filters);
@@ -170,13 +170,13 @@ export default class RealmInterface {
    * @returns {string}
    * @private
    */
-  _generateFilteredQuery = (filters) => {
+  _generateFilteredQuery = (model, filters) => {
     let query = '';
 
     if (!_.isEmpty(filters)) {
       Object.keys(filters).forEach((nodeId, key) => {
         filters[nodeId].map((filter, filterKey) => {
-          query += `(patientValues.node_id == ${nodeId} AND patientValues.answer_id == ${filter})`;
+          query += model === 'MedicalCase' ? `status == "${filter}"` : `(patientValues.node_id == ${nodeId} AND patientValues.answer_id == ${filter})`;
           if (filterKey + 1 < filters[nodeId].length) {
             query += ' OR ';
           }
