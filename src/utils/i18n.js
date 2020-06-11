@@ -47,6 +47,7 @@ i18n
           none: 'none',
           custom_duration: 'Custom duration',
           duration: 'duration',
+          medicines: 'Medicines',
           add_medicine: 'Additionnal Medicines',
           proposed_medicine: 'Medicines proposed by',
           another: 'Another diagnoses not proposed',
