@@ -1,9 +1,8 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 import _ from 'lodash';
-import moment from 'moment';
 
 import { store } from '../../../frontend_service/store';
-import { medicalCaseStatus, valueFormats } from '../../../frontend_service/constants';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import Database from '../api/Database';
 
@@ -31,43 +30,6 @@ function navigate(routeName, params = {}) {
       params,
     })
   );
-}
-
-/**
- * Get the route by the given key
- *
- * @return key : string : the current route key
- * @param state: Navigation : The state of react-navigation
- */
-function getActiveRouteByKey(key, state) {
-  const { routes } = state;
-
-  for (const route of routes) {
-    if (route.key === key.key) {
-      return route;
-    }
-    if (route.routes !== undefined) {
-      return getActiveRouteByKey(key, route);
-    }
-  }
-}
-
-/**
- * Get the route by the given name
- *
- * @return name : string : the current route name
- * @param state: Navigation : The state of react-navigation
- */
-function getActiveRouteByName(name, state) {
-  const { routes } = state;
-  for (const route of routes) {
-    if (route.routeName === name) {
-      return route;
-    }
-    if (route.routes !== undefined) {
-      return getActiveRouteByName(name, route);
-    }
-  }
 }
 
 /**
@@ -99,8 +61,9 @@ function setParamsAge(name = '') {
   const state$ = store.getState();
   const { nodes, mobile_config } = state$;
 
-  const headerRight = `${nodes[mobile_config.first_top_right_question_id].displayValue()} | ${nodes[mobile_config.second_top_right_question_id].displayValue()} ${
-    nodes[mobile_config.left_top_question_id].displayValue()}`;
+  const headerRight = `${nodes[mobile_config.first_top_right_question_id].displayValue()} | ${nodes[mobile_config.second_top_right_question_id].displayValue()} ${nodes[
+    mobile_config.left_top_question_id
+  ].displayValue()}`;
   const currentRoute = getCurrentRoute();
 
   const action = NavigationActions.setParams({
@@ -133,14 +96,6 @@ function getCurrentRoute() {
   return route;
 }
 
-function getRouter(routerName) {
-  let route = _navigator.state.nav;
-  while (route.routeName !== routerName) {
-    route = route.routes[route.index];
-  }
-  return route;
-}
-
 // Try to build reset action stack
 function resetActionStack(routeName, params) {
   const resetAction = StackActions.reset({
@@ -151,7 +106,6 @@ function resetActionStack(routeName, params) {
   _navigator.dispatch(resetAction);
 }
 
-// eslint-disable-next-line no-unused-vars
 /**
  * Change the status of the medicalCase depending his status
  *
@@ -185,7 +139,6 @@ async function onNavigationStateChange(prevState, currentState) {
 }
 
 export default {
-  getActiveRouteByKey,
   setParamsAge,
   onNavigationStateChange,
   resetActionStack,

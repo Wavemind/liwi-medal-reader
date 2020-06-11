@@ -63,7 +63,13 @@ export default {
     },
     '.customTitle': {
       color: liwiColors.redColor,
-      fontSize: 26,
+      fontSize: 20,
+      margin: 10,
+      marginLeft: 0,
+    },
+    '.customTitle2': {
+      color: liwiColors.redColor,
+      fontSize: 16,
       padding: 10,
       margin: 10,
       marginLeft: 0,

@@ -9,12 +9,9 @@ import MainScreen from '../../screens/main/Main.screen';
 import PatientEdit from '../../screens/patientsContainer/patientEdit';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
+import Filters from '../../screens/filters';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
-import i18n from '../../utils/i18n';
-
-import { liwiColors, screenWidth } from '../../utils/constants';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
 import Summary from '../../screens/medicalCasesContainer/summary';
 import MedicalCaseList from '../../screens/medicalCasesContainer/medicalCaseList';
 import Tests from '../../screens/medicalCasesContainer/tests';
@@ -23,7 +20,10 @@ import Triage from '../../screens/medicalCasesContainer/triage';
 import Consultation from '../../screens/medicalCasesContainer/consultation';
 import Emergency from '../../screens/emergency';
 
-// We need to use i18n directly because we cant be connect to context
+import i18n from '../../utils/i18n';
+import { liwiColors, screenWidth } from '../../utils/constants';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
+
 const Stack = createStackNavigator(
   {
     Algorithms: {
@@ -124,6 +124,18 @@ const Stack = createStackNavigator(
         };
       },
     },
+    Filters: {
+      screen: Filters,
+      path: 'Filters',
+      params: {
+        showSummary: false,
+      },
+      navigationOptions: () => {
+        return {
+          headerShown: false,
+        };
+      },
+    },
     PatientProfile: {
       screen: PatientProfile,
       path: 'patientProfile',
@@ -200,8 +212,8 @@ const Stack = createStackNavigator(
         headerRight: () => (
           <Text
             style={{
-              marginRight: 50,
-              fontSize: 20,
+              marginRight: 60,
+              fontSize: 16,
               fontWeight: '500',
               color: liwiColors.blackLightColor,
             }}
@@ -214,7 +226,8 @@ const Stack = createStackNavigator(
         },
         headerTitleStyle: { color: liwiColors.blackColor },
         headerTitleContainerStyle: {
-          marginLeft: 50,
+          marginLeft: 15,
+          fontSize: 18,
         },
       };
     },

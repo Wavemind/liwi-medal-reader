@@ -33,6 +33,14 @@ export default class PatientProfile extends React.Component {
     await this._getPatient();
   }
 
+  async componentDidUpdate() {
+    const { navigation } = this.props;
+
+    if (navigation.getParam('refresh')) {
+      await this._getPatient();
+    }
+  }
+
   /**
    * Fetch patient data
    * @returns {Promise<void>}
@@ -80,8 +88,7 @@ export default class PatientProfile extends React.Component {
             updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
           } else if (newMedicalCase.status === medicalCaseStatus.close) {
             navigation.navigate('Summary', { medicalCase });
-          }
-           else {
+          } else {
             // Set medical case in store and lock case
             await setMedicalCase(newMedicalCase);
             await database.lockMedicalCase(newMedicalCase.id);
@@ -103,7 +110,9 @@ export default class PatientProfile extends React.Component {
         </View>
         {isConnected ? (
           <View style={styles.itemLock}>
-            <Text size-auto right>{medicalCase.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}</Text>
+            <Text size-auto right>
+              {medicalCase.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
+            </Text>
           </View>
         ) : null}
       </ListItem>

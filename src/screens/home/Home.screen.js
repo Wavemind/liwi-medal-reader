@@ -1,16 +1,16 @@
 // @flow
 
-import * as React from "react";
-import { Image, TouchableHighlight } from "react-native";
-import { NavigationScreenProps } from "react-navigation";
-import { Text, View } from "native-base";
-import { styles } from "./Home.style";
-import { getItems } from "../../engine/api/LocalStorage";
-import { displayNotification } from "../../utils/CustomToast";
-import ConfirmationView from "../../components/ConfirmationView";
-import { liwiColors } from "../../utils/constants";
-import ToolTipModal from "../../components/ToolTipModal";
-import QrCodePatient from "../../components/QrCodePatient";
+import * as React from 'react';
+import { Image, TouchableHighlight } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { Text, View } from 'native-base';
+import { styles } from './Home.style';
+import { getItems } from '../../engine/api/LocalStorage';
+import { displayNotification } from '../../utils/CustomToast';
+import ConfirmationView from '../../components/ConfirmationView';
+import { liwiColors } from '../../utils/constants';
+import ToolTipModal from '../../components/ToolTipModal';
+import QrCodePatient from '../../components/QrCodePatient';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -121,7 +121,7 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList')}>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList', { filters: {} })}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/patients.png')} />
                 <Text size-auto center style={styles.textButton}>
@@ -130,7 +130,7 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableHighlight>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList')}>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList', { filters: {} })}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/case.png')} />
                 <Text size-auto center style={styles.textButton}>

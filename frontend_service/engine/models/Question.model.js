@@ -4,6 +4,7 @@ import moment from 'moment';
 import { NodeModel } from './Node.model';
 import { valueFormats, displayFormats } from '../../constants';
 import { store } from '../../store';
+import I18n from '../../../src/utils/i18n';
 
 const references = {
   z_score_male_table: require('../../api/z_score_male_table.json'),
@@ -196,8 +197,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
 
   displayValue = () => {
     if (this.value_format === valueFormats.date && this.value !== null) {
-      return moment(this.value).format('L');
+      return moment(this.value).format(I18n.t('application:date_format'));
     }
-    return this.value;
+    return this.value === null ? '' : this.value;
   };
 }
