@@ -316,7 +316,7 @@ i18n
         },
         popup: {
           startSave: 'Saving in local data...',
-          saveSuccess: 'Case successfully saved',
+          saveSuccess: 'Successfully saved',
           unlock: 'Force unlock',
           close: 'Close',
           desc: 'Description',
@@ -370,6 +370,7 @@ i18n
           title: 'Filters',
           clear: 'Clear all',
           apply: 'Apply',
+          status: 'Status',
         },
         notifications: {
           empty_code: 'Your code is empty, please write it',

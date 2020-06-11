@@ -4,4 +4,10 @@ export const styles = StyleSheet.create({
   patientContainer: { flexDirection: 'row', marginTop: 20, marginBottom: 20 },
 
   alignRight: { flex: 1, alignItems: 'flex-end' },
+
+  body: { flexDirection: 'row' },
+
+  flex: { flex: 1 },
+
+  alignRight: { flex: 1, alignItems: 'flex-end' }
 });

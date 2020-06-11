@@ -7,7 +7,8 @@ import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Filters.style';
 import FilterAccordion from '../../components/FilterAccordion';
 import { getItems } from '../../engine/api/LocalStorage';
-import { categories } from '../../../frontend_service/constants';
+import { categories, medicalCaseStatus } from '../../../frontend_service/constants';
+import FilterAccordionStatus from '../../components/FilterAccordionStatus';
 
 export default class Filter extends React.Component<Props, State> {
   state = {
@@ -19,8 +20,8 @@ export default class Filter extends React.Component<Props, State> {
     const { navigation } = this.props;
 
     const model = navigation.getParam('model');
-    // TODO: Find better solutions
     const filters = this.props.app[`filters${model}`];
+    // TODO: Find better solutions
     const activeFilters = JSON.parse(JSON.stringify(filters));
 
     const algorithm = await getItems('algorithm');
@@ -49,6 +50,28 @@ export default class Filter extends React.Component<Props, State> {
       activeFilters[node.id].push(node.answers[answerKey].id);
     } else {
       activeFilters[node.id] = [node.answers[answerKey].id];
+    }
+    this.setState({ activeFilters });
+  };
+
+  /**
+   * Add or remove status filters for medicalCase in activeFilter
+   * @param {String} statusKey - Key of medicalCaseStatus constant
+   * @returns {Promise<void>}
+   */
+  handleStatusFilters = async (statusKey) => {
+    const { activeFilters } = this.state;
+
+    if (_.includes(activeFilters.status, medicalCaseStatus[statusKey].name)) {
+      activeFilters.status = _.remove(activeFilters.status, (n) => n !== medicalCaseStatus[statusKey].name);
+      // Remove filter key if there is no value set
+      if (activeFilters.status.length === 0) {
+        delete activeFilters.status;
+      }
+    } else if (activeFilters.status !== undefined) {
+      activeFilters.status.push(medicalCaseStatus[statusKey].name);
+    } else {
+      activeFilters.status = [medicalCaseStatus[statusKey].name];
     }
     this.setState({ activeFilters });
   };
@@ -97,7 +120,7 @@ export default class Filter extends React.Component<Props, State> {
           <LiwiTitle2 noBorder>{t('filters:title')}</LiwiTitle2>
 
           {model === 'MedicalCase' ? (
-            <FilterAccordion title="Status" />
+            <FilterAccordionStatus key="accordion-medicalCase" activeFilters={activeFilters} handleFilters={this.handleStatusFilters} />
           ) : (
             availableFilters.map((node) => <FilterAccordion key={`accordion-${node.id}`} node={node} activeFilters={activeFilters} handleFilters={this.handleFilters} />)
           )}
