@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import { NativeModules } from 'react-native';
-import { Text } from "native-base";
 
 const languageDetector = {
   type: 'languageDetector',
@@ -43,6 +42,7 @@ i18n
           manually_medicine: 'Medicines for the Additional Diagnoses',
           management: 'Management & Counseling',
           medicine: 'Medicine',
+          medicines: 'Medicines',
           no_drugs: 'No Drugs',
           none: 'none',
           proposed: 'Diagnoses proposed by',

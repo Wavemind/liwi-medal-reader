@@ -84,6 +84,7 @@ export class MedicalCaseModel {
         this.activities = props.activities;
         this.clinician = props.clinician;
         this.mac_address = props.mac_address;
+        this.fail_safe = props.fail_safe;
       }
 
       this.mobile_config = json.mobile_config ?? null;
@@ -91,7 +92,6 @@ export class MedicalCaseModel {
       this.algorithm_id = json.algorithm_id;
       this.algorithm_name = json.algorithm_name;
       this.diagnostics = json.diagnostics;
-      this.fail_safe = json.fail_safe;
       this.nodes = json.nodes;
       this.triage = json.triage;
       this.complaintCategories = json.complaintCategories;

@@ -7,5 +7,5 @@ export const styles = StyleSheet.create({
 
   flex: { flex: 1 },
 
-  alignRight: { flex: 1, alignItems: 'flex-end' },
+  alignRight: { flex: 1, alignItems: 'flex-end' }
 });
