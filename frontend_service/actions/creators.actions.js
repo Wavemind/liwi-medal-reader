@@ -34,29 +34,29 @@ export const setAdditionalMedicineDuration = (id, duration) => ({
   },
 });
 
-export const setMedicine = (type, diagnosesKey, medecineId, boolean) => ({
-  type: actions.SET_MEDECINE,
+export const setMedicine = (type, diagnosesKey, medicineId, boolean) => ({
+  type: actions.SET_MEDICINE,
   payload: {
     type,
     diagnosesKey,
-    medecineId,
+    medicineId,
     boolean,
   },
 });
 
-export const setCustomMedecine = (diagnosesKey, medecine, type) => ({
-  type: actions.SET_CUSTOM_MEDECINE,
+export const setCustomMedicine = (diagnosesKey, medicine, type) => ({
+  type: actions.SET_CUSTOM_MEDICINE,
   payload: {
     diagnosesKey,
-    medecine,
+    medicine,
     type,
   },
 });
 
-export const setAdditionalMedicine = (medecines) => ({
-  type: actions.SET_ADDITIONAL_MEDECINE,
+export const setAdditionalMedicine = (medicines) => ({
+  type: actions.SET_ADDITIONAL_MEDICINE,
   payload: {
-    medecines,
+    medicines,
   },
 });
 

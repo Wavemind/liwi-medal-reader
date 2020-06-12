@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
   customItem: { flex: 1, flexDirection: 'row', marginBottom: 5 },
   iconSize: { fontSize: 18 },
   noMarginTop: { marginTop: 0 },
-  italic: { fontStyle: 'italic' },
   additionalText: { backgroundColor: liwiColors.whiteColor, padding: 15, marginBottom: 5 },
   marginTop30: { marginTop: 30 },
   rowStyle: { marginTop: 10, marginBottom: 10 },
