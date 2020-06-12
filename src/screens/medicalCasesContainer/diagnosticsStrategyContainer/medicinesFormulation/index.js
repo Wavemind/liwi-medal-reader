@@ -1,8 +1,8 @@
-import { connect } from "react-redux";
-import MedecinesFormulations from "./MedicinesFormulation.screen";
-import { withApplication } from "../../../../engine/contexts/Application.context";
-import { WrapperNavigation } from "../../../../utils/WrapperNavigation";
-import { setFormulation } from "../../../../../frontend_service/actions/creators.actions";
+import { connect } from 'react-redux';
+import MedicinesFormulations from './MedicinesFormulation.screen';
+import { withApplication } from '../../../../engine/contexts/Application.context';
+import { WrapperNavigation } from '../../../../utils/WrapperNavigation';
+import { setFormulation } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return {
@@ -16,7 +16,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withApplication(WrapperNavigation(MedecinesFormulations)));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(WrapperNavigation(MedicinesFormulations)));

@@ -1,26 +1,41 @@
 import React, { Component } from 'react';
 
-import { Button, Icon, Input, Text, View } from 'native-base';
+import { Button, Icon, Input, Text, View, Card, CardItem, Body } from 'native-base';
 import { styles } from './CustomMedicine.style';
+import { LiwiTitle2 } from '../../template/layout';
 
 export default class CustomMedicine extends Component<{}> {
   state = {
     customDrug: '',
   };
 
+  /**
+   * Save drug name in state
+   * @param {String} value
+   * @private
+   */
   _handleCustomInput = (value) => {
     this.setState({ customDrug: value.nativeEvent.text });
   };
 
-  _removeCustom = (medecine) => {
-    const { setCustomMedecine, diagnoseKey } = this.props;
-    setCustomMedecine(diagnoseKey, medecine, 'remove');
+  /**
+   * Remove drug from redux store
+   * @param {Object} medicine
+   * @private
+   */
+  _removeCustom = (medicine) => {
+    const { setCustomMedicine, diagnoseKey } = this.props;
+    setCustomMedicine(diagnoseKey, medicine, 'remove');
   };
 
+  /**
+   * Add drug in redux store
+   * @private
+   */
   _addCustom = () => {
-    const { setCustomMedecine, diagnoseKey } = this.props;
+    const { setCustomMedicine, diagnoseKey } = this.props;
     const { customDrug } = this.state;
-    setCustomMedecine(diagnoseKey, customDrug, 'add');
+    setCustomMedicine(diagnoseKey, customDrug, 'add');
     this.setState({ customDrug: '' });
   };
 
@@ -33,27 +48,39 @@ export default class CustomMedicine extends Component<{}> {
     const { customDrug } = this.state;
 
     return (
-      <View style={styles.container}>
-        <Text customTitle>
-          {diagnose.label}
-          <Text> - {t('diagnoses_label:custom')}</Text>
-        </Text>
-        <View style={styles.item}>
-          <Input style={styles.input} common value={customDrug} onChange={this._handleCustomInput} placeholder={t('diagnoses:write')} />
-          <Button style={styles.button} onPress={this._addCustom}>
-            <Icon style={styles.icon} active name="create-new-folder" type="MaterialIcons" />
-          </Button>
-        </View>
+      <Card>
+        <CardItem style={styles.cardItemCondensed}>
+          <View style={styles.cardItemTitleContent}>
+            <Text customSubTitle style={styles.cardItemTitle}>
+              {diagnose.label}
+            </Text>
+            <LiwiTitle2 noBorder style={styles.noRightMargin}>
+              <Text note>{t('diagnoses_label:custom')}</Text>
+            </LiwiTitle2>
+          </View>
+        </CardItem>
+        <CardItem bordered style={styles.cardItemCondensed}>
+          <Body>
+            {diagnose.drugs.map((drug) => (
+              <View key={`${diagnose.label}-${drug}`} style={styles.drugContainer}>
+                <Text style={styles.input}>{drug}</Text>
+                <Button style={styles.button} onPress={() => this._removeCustom(drug)}>
+                  <Icon active name="delete" type="MaterialIcons" style={styles.icon} />
+                </Button>
+              </View>
+            ))}
 
-        {diagnose.drugs.map((c) => (
-          <View style={styles.drugContainer}>
-            <Text style={styles.input}>{c}</Text>
-            <Button style={styles.button} onPress={() => this._removeCustom(c)}>
-              <Icon active name="delete" type="AntDesign" style={styles.icon} />
+          </Body>
+        </CardItem>
+        <CardItem style={styles.cardItemCondensed}>
+          <View style={styles.item}>
+            <Input style={styles.input} question value={customDrug} onChange={this._handleCustomInput} placeholder={t('diagnoses:write')} />
+            <Button style={styles.button} onPress={this._addCustom}>
+              <Icon style={styles.icon} active name="add" type="MaterialIcons" />
             </Button>
           </View>
-        ))}
-      </View>
+        </CardItem>
+      </Card>
     );
   }
 }
