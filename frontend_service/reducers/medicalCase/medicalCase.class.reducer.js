@@ -271,20 +271,20 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
-   * Update custom medecine
+   * Update custom medicine
    *
    * @payload diagnosesKey: the diagnosey identifiant
-   * @payload medecine: the medecine
+   * @payload medicine: the medicine
    * @payload type: add or remove (less action)
    */
-  @Action(actions.SET_CUSTOM_MEDECINE)
-  setCustomMedecine(state, action) {
-    const { diagnosesKey, medecine, type } = action.payload;
+  @Action(actions.SET_CUSTOM_MEDICINE)
+  setCustomMedicine(state, action) {
+    const { diagnosesKey, medicine, type } = action.payload;
 
     if (type === 'add') {
-      state.diagnoses.custom[diagnosesKey].drugs.push(medecine);
+      state.diagnoses.custom[diagnosesKey].drugs.push(medicine);
     } else if (type === 'remove') {
-      state.diagnoses.custom[diagnosesKey].drugs = state.diagnoses.custom[diagnosesKey].drugs.filter((e) => e !== medecine);
+      state.diagnoses.custom[diagnosesKey].drugs = state.diagnoses.custom[diagnosesKey].drugs.filter((e) => e !== medicine);
     }
 
     return {
@@ -297,21 +297,21 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
-   * Update medecine
+   * Update medicine
    *
    * @payload type: additional or proposed
    * @payload diagnosesKey: the diagnosey identifiant
-   * @payload medecineId: the medecin identifiant
+   * @payload medicineId: the medecin identifiant
    * @payload boolean: the agreed / unagree value
    */
-  @Action(actions.SET_MEDECINE)
-  setMedecine(state, action) {
-    const { type, diagnosesKey, medecineId, boolean } = action.payload;
+  @Action(actions.SET_MEDICINE)
+  setMedicine(state, action) {
+    const { type, diagnosesKey, medicineId, boolean } = action.payload;
 
     let newAdditionalDrugs = state.diagnoses.additionalDrugs;
-    if (state.diagnoses.additionalDrugs[medecineId] !== undefined) {
+    if (state.diagnoses.additionalDrugs[medicineId] !== undefined) {
       // Remove from additionnal
-      const { [medecineId]: dontwant, ...other } = state.diagnoses.additionalDrugs;
+      const { [medicineId]: dontwant, ...other } = state.diagnoses.additionalDrugs;
       newAdditionalDrugs = other;
     }
 
@@ -326,8 +326,8 @@ class MedicalCaseReducer extends ReducerClass {
             ...state.diagnoses[type][diagnosesKey],
             drugs: {
               ...state.diagnoses[type][diagnosesKey].drugs,
-              [medecineId]: {
-                ...state.diagnoses[type][diagnosesKey].drugs[medecineId],
+              [medicineId]: {
+                ...state.diagnoses[type][diagnosesKey].drugs[medicineId],
                 agreed: boolean,
               },
             },
@@ -338,23 +338,23 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
-   * Update medecine
+   * Update medicine
    *
    * @payload type: Text that will be shown in modal
    * @payload diagnosesKey: the diagnosey identifiant
-   * @payload medecineId: the medecin identifiant
+   * @payload medicineId: the medecin identifiant
    * @payload boolean: the agreed / unagree value
    */
-  @Action(actions.SET_ADDITIONAL_MEDECINE)
+  @Action(actions.SET_ADDITIONAL_MEDICINE)
   setAdditionalMedicine(state, action) {
-    const { medecines } = action.payload;
+    const { medicines } = action.payload;
 
     return {
       ...state,
       diagnoses: {
         ...state.diagnoses,
         additionalDrugs: {
-          ...medecines,
+          ...medicines,
         },
       },
     };
