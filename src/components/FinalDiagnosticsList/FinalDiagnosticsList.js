@@ -93,16 +93,16 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
 
     return (
       <React.Fragment>
-        <Text customTitle size-auto style={styles.noMarginTop}>
+        <Text customTitle style={styles.noMarginTop}>
           {t('diagnoses:proposed')} {medicalCase.algorithm_name}
         </Text>
         {finalDiagnostics.included.length > 0 ? (
           finalDiagnostics.included.map((finalDiagnostic) => <FinalDiagnostic {...finalDiagnostic} key={finalDiagnostic.id} setDiagnoses={setDiagnoses} />)
         ) : (
-          <Text style={styles.italic}>{t('diagnoses:no_proposed')}</Text>
+          <Text italic>{t('diagnoses:no_proposed')}</Text>
         )}
 
-        <Text customTitle size-auto style={styles.marginTop30}>
+        <Text customTitle style={styles.marginTop30}>
           {t('diagnoses:title_additional')}
         </Text>
 
@@ -113,10 +113,10 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
             </Text>
           ))
         ) : (
-          <Text style={styles.italic}>{t('diagnoses:no_additional')}</Text>
+          <Text italic>{t('diagnoses:no_additional')}</Text>
         )}
 
-        <Text customTitle size-auto style={styles.marginTop30}>
+        <Text customTitle style={styles.marginTop30}>
           {t('diagnoses:additional')}
         </Text>
 
@@ -143,7 +143,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
           submitButtonText={t('diagnoses:close')}
         />
 
-        <Text customTitle size-auto style={styles.marginTop30}>
+        <Text customTitle style={styles.marginTop30}>
           {t('diagnoses:custom')}
         </Text>
         <View style={styles.customContent}>

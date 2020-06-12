@@ -15,7 +15,7 @@ export default {
       margin: 0,
       color: liwiColors.darkerGreyColor,
     },
-    '.italic': { fontStyle: 'italic', color: liwiColors.darkerGreyColor },
+    '.italic': { fontStyle: 'italic' },
     '.light': {
       color: '#6a6a6a',
       borderRadius: 35,
@@ -86,7 +86,6 @@ export default {
       paddingBottom: 5,
       paddingTop: 5,
       fontFamily: 'Roboto-Bold',
-      marginLeft: 5,
     },
     '.smallTitle': {
       color: liwiColors.redColor,

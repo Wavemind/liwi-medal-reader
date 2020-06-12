@@ -1,21 +1,22 @@
 // @flow
 import React, { Component } from 'react';
-import { Icon, Text, View } from 'native-base';
+import { Icon, Text, View, Card, CardItem, Body } from 'native-base';
 import { TextInput } from 'react-native';
 
 import { NavigationScreenProps } from 'react-navigation';
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 import { liwiColors } from '../../../../utils/constants';
-import Medecine from '../../../../components/Medicine';
+import Medicine from '../../../../components/Medicine';
 import { categories } from '../../../../../frontend_service/constants';
-import CustomMedecine from '../../../../components/CustomMedicine';
+import CustomMedicine from '../../../../components/CustomMedicine';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { styles } from './Medicines.style';
+import { LiwiTitle2 } from '../../../../template/layout';
 
 type Props = NavigationScreenProps & {};
 type State = {};
-// eslint-disable-next-line react/prefer-stateless-function
+
 export default class Medicines extends Component<Props, State> {
   state = {};
 
@@ -29,6 +30,10 @@ export default class Medicines extends Component<Props, State> {
     return true;
   }
 
+  /**
+   * Set additional medicine in medical case
+   * @param {Array} selectedItems - List of all additional item selected
+   */
   onSelectedItemsChange = (selectedItems) => {
     const {
       setAdditionalMedicine,
@@ -37,14 +42,14 @@ export default class Medicines extends Component<Props, State> {
 
     const objMedicine = {};
 
-    selectedItems.map((i) => {
+    selectedItems.forEach((i) => {
       let duration = 0;
 
       // Get max duration from final_diagnostics
-      Object.keys(diagnostics).map((id) => {
-        Object.keys(diagnostics[id].final_diagnostics).map((id_final) => {
-          if (diagnostics[id].final_diagnostics[id_final].drugs[i]?.duration > duration) {
-            duration = diagnostics[id].final_diagnostics[id_final].drugs[i].duration;
+      Object.keys(diagnostics).forEach((id) => {
+        Object.keys(diagnostics[id].final_diagnostics).forEach((finalDiagnosticId) => {
+          if (diagnostics[id].final_diagnostics[finalDiagnosticId].drugs[i]?.duration > duration) {
+            duration = diagnostics[id].final_diagnostics[finalDiagnosticId].drugs[i].duration;
           }
         });
       });
@@ -57,6 +62,12 @@ export default class Medicines extends Component<Props, State> {
     setAdditionalMedicine(objMedicine);
   };
 
+  /**
+   * Set duration value for custom medicine
+   * @param {Integer} value
+   * @param {Integer} id
+   * @private
+   */
   _changeCustomDuration = (value, id) => {
     const reg = new RegExp(/^\d+$/);
 
@@ -77,10 +88,10 @@ export default class Medicines extends Component<Props, State> {
     let filteredAllDrugs = allDrugs;
     const selected = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
 
-    // filter drugs
-    Object.keys(diagnoses.proposed).map((key) => {
+    // Filter drugs
+    Object.keys(diagnoses.proposed).forEach((key) => {
       if (diagnoses.proposed[key].agreed === true) {
-        Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
+        Object.keys(diagnoses.proposed[key].drugs).forEach((treatmentId) => {
           filteredAllDrugs = _.filter(filteredAllDrugs, (item) => {
             if (diagnoses.proposed[key].drugs[treatmentId].agreed === true) {
               return item.id !== Number(treatmentId);
@@ -92,8 +103,8 @@ export default class Medicines extends Component<Props, State> {
     });
 
     // filter drugs
-    Object.keys(diagnoses.additional).map((key) => {
-      Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
+    Object.keys(diagnoses.additional).forEach((key) => {
+      Object.keys(diagnoses.additional[key].drugs).forEach((treatmentId) => {
         filteredAllDrugs = _.filter(filteredAllDrugs, (item) => {
           if (diagnoses.additional[key].drugs[treatmentId].agreed === true) {
             return item.id !== Number(treatmentId);
@@ -117,22 +128,32 @@ export default class Medicines extends Component<Props, State> {
 
             if (isPossible) {
               return (
-                <>
-                  <Text key={`${key}diagnoses`} size-auto customTitle>
-                    {diagnoses.proposed[key].label}
-                  </Text>
-                  {Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
-                    if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
-                      return <Medecine type="proposed" key={`${treatmentId}_medecine`} medecine={diagnoses.proposed[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-                    }
-
-                    return (
-                      <Text key={`${key}diagnoses`} size-auto>
-                        {t('diagnoses:no_drugs')}
+                <Card>
+                  <CardItem style={styles.cardItemCondensed}>
+                    <View style={styles.cardTitleContent}>
+                      <Text customSubTitle style={styles.cardTitle}>
+                        {diagnoses.proposed[key].label}
                       </Text>
-                    );
-                  })}
-                </>
+                      <LiwiTitle2 noBorder style={styles.noRightMargin}>
+                        <Text note>{t('diagnoses_label:proposed')}</Text>
+                      </LiwiTitle2>
+                    </View>
+                  </CardItem>
+                  <CardItem style={styles.cardItemCondensed}>
+                    <Body>
+                      {Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
+                        if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
+                          return <Medicine type="proposed" key={`${treatmentId}_medicine`} medicine={diagnoses.proposed[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+                        }
+                        return (
+                          <Text key={`${key}diagnoses`} italic>
+                            {t('diagnoses:no_drugs')}
+                          </Text>
+                        );
+                      })}
+                    </Body>
+                  </CardItem>
+                </Card>
               );
             }
           } else {
@@ -141,33 +162,41 @@ export default class Medicines extends Component<Props, State> {
         })}
       </>
     );
-    const renderMedicineAdditional = (
-      <View style={styles.viewBox}>
-        {Object.keys(diagnoses.additional).map((key) => {
-          return (
-            <>
-              <Text key={`${key}diagnoses`} size-auto customTitle>
-                {diagnoses.additional[key].label} <Text>- {t('diagnoses_label:additional')}</Text>
-              </Text>
 
+    const renderMedicineAdditional = Object.keys(diagnoses.additional).map((key) => {
+      return (
+        <Card key={`additional-${key}`}>
+          <CardItem style={styles.cardItemCondensed}>
+            <View style={styles.cardTitleContent}>
+              <Text customSubTitle style={styles.cardTitle}>
+                {diagnoses.additional[key].label}
+              </Text>
+              <LiwiTitle2 noBorder style={styles.noRightMargin}>
+                <Text note>{t('diagnoses_label:additional')}</Text>
+              </LiwiTitle2>
+            </View>
+          </CardItem>
+          <CardItem style={styles.cardItemCondensed}>
+            <Body>
               {Object.keys(diagnoses.additional[key].drugs).length > 0 ? (
                 Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
-                  return <Medecine type="additional" key={`${treatmentId}_medecine`} medecine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+                  return <Medicine type="additional" key={`${treatmentId}_medicine`} medicine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
                 })
               ) : (
-                <Text key={`${key}diagnoses`} size-auto>
+                <Text key={`${key}diagnoses`} italic>
                   {t('diagnoses:no_drugs')}
                 </Text>
               )}
-            </>
-          );
-        })}
-      </View>
-    );
+            </Body>
+          </CardItem>
+        </Card>
+      );
+    });
+
     const renderAdditionalDrugs = (
       <View style={styles.viewBox}>
         {Object.keys(diagnoses.additionalDrugs).map((s) => (
-          <View style={styles.viewitem}>
+          <View style={styles.viewItem}>
             <View style={styles.flex50}>
               <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
               <Text italic>
@@ -192,16 +221,19 @@ export default class Medicines extends Component<Props, State> {
         ))}
       </View>
     );
+
     return (
       <View>
-        <Text style={styles.label}>{t('diagnoses:medicine')}</Text>
+        <Text customTitle style={styles.noTopMargin}>
+          {t('diagnoses:medicines')}
+        </Text>
         {renderMedicinesProposed}
-        {renderMedicineAdditional}
+        {Object.keys(diagnoses.additional).length > 0 ? renderMedicineAdditional : null}
         {Object.keys(diagnoses.custom).map((w, i) => (
-          <CustomMedecine diagnose={diagnoses.custom[w]} diagnoseKey={i} />
+          <CustomMedicine key={i} diagnose={diagnoses.custom[w]} diagnoseKey={i} />
         ))}
 
-        {filteredAllDrugs.length > 0 && <Text style={styles.label}>{t('diagnoses:add_medicine')}</Text>}
+        {filteredAllDrugs.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
         {renderAdditionalDrugs}
 
         {filteredAllDrugs.length > 0 && (
@@ -220,6 +252,8 @@ export default class Medicines extends Component<Props, State> {
             selectedItemTextColor="#CCC"
             selectedItemIconColor={liwiColors.redColor}
             itemTextColor="#000"
+            itemFontSize={15}
+            styleRowList={styles.rowStyle}
             displayKey="label"
             searchInputStyle={styles.searchInputStyle}
             submitButtonColor={liwiColors.redColor}
