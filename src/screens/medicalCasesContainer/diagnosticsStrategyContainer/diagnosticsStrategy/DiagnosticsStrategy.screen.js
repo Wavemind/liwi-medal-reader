@@ -1,16 +1,18 @@
 // @flow
 
-import { NavigationScreenProps } from "react-navigation";
-import React, { Component } from "react";
-import { ScrollView, View } from "react-native";
-import HealthCaresQuestions from "../healthCaresQuestions";
-import HealthCares from "../healthCares";
-import { styles } from "./DiagnosticsStrategy.style";
-import Stepper from "../../../../components/Stepper";
-import FinalDiagnosticsList from "../../../../components/FinalDiagnosticsList";
-import NavigationService from "../../../../engine/navigation/Navigation.service";
-import Medicines from "../medicines";
-import MedicinesFormulations from "../medicinesFormulation";
+import { NavigationScreenProps } from 'react-navigation';
+import React, { Component } from 'react';
+import { ScrollView, View } from 'react-native';
+import {Text} from 'native-base';
+
+import HealthCaresQuestions from '../healthCaresQuestions';
+import HealthCares from '../healthCares';
+import { styles } from './DiagnosticsStrategy.style';
+import Stepper from '../../../../components/Stepper';
+import FinalDiagnosticsList from '../../../../components/FinalDiagnosticsList';
+import NavigationService from '../../../../engine/navigation/Navigation.service';
+import Medicines from '../medicines';
+import MedicinesFormulations from '../medicinesFormulation';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -62,7 +64,7 @@ export default class DiagnosesStrategy extends Component<Props, State> {
           { type: 'FontAwesome', name: 'balance-scale' },
           { name: 'healing', type: 'MaterialIcons' },
         ]}
-        steps={[t('medical_case:final_diagnoses'), t('medical_case:conditions'), t('medical_case:medecines'), t('medical_case:medecines_formulation'), t('medical_case:healthcares')]}
+        steps={[t('medical_case:final_diagnoses'), t('medical_case:conditions'), t('medical_case:medicines'), t('medical_case:medicines_formulation'), t('medical_case:healthcares')]}
         backButtonTitle={t('medical_case:back')}
         nextButtonTitle={t('medical_case:next')}
         nextStage="finish"

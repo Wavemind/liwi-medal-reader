@@ -1,14 +1,14 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { Button, Icon, Input, Text, View } from "native-base";
-import MultiSelect from "react-native-multiple-select";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { Button, Icon, Input, Text, View } from 'native-base';
+import MultiSelect from 'react-native-multiple-select';
 
-import { styles } from "./FinalDiagnosticsList.style";
-import { FinalDiagnosticModel } from "../../../frontend_service/engine/models/FinalDiagnostic.model";
-import FinalDiagnostic from "../FinalDiagnostic";
-import { liwiColors } from "../../utils/constants";
+import { styles } from './FinalDiagnosticsList.style';
+import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
+import FinalDiagnostic from '../FinalDiagnostic';
+import { liwiColors } from '../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -20,8 +20,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     customDiagnoses: '',
   };
 
-  // When we clear the store redux
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps: Props) {
     const { pageIndex } = this.props;
 
     if (nextProps.medicalCase.id === undefined) {
@@ -35,28 +34,46 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     return true;
   }
 
+  /**
+   * Set value of custom diagnoses
+   * @param {String} value
+   * @private
+   */
   _handleCustomInput = (value) => {
     this.setState({ customDiagnoses: value.nativeEvent.text });
   };
 
+  /**
+   * Remove custom diagnosis
+   * @param {String} diagnosis
+   * @private
+   */
   _removeCustom = (diagnosis) => {
     const { setDiagnoses } = this.props;
     setDiagnoses('custom', diagnosis, 'remove');
   };
 
+  /**
+   * Set value of additional diagnoses
+   * @param {String} selectedItems
+   */
   onSelectedItemsChange = (selectedItems) => {
     const {
       setDiagnoses,
       medicalCase: { nodes },
     } = this.props;
     const obj = {};
-    selectedItems.map((i) => {
+    selectedItems.forEach((i) => {
       obj[i] = nodes[i];
     });
 
     setDiagnoses('additional', obj);
   };
 
+  /**
+   * Save custom diagnoses in context
+   * @private
+   */
   _addCustom = () => {
     const { setDiagnoses } = this.props;
     const { customDiagnoses } = this.state;
@@ -72,24 +89,36 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
       app: { t },
     } = this.props;
     const { finalDiagnostics, customDiagnoses } = this.state;
-    const selected = Object.keys(diagnoses.additional).map((s) => diagnoses.additional[s].id);
+    const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
 
     return (
       <React.Fragment>
-        <Text customTitle>
+        <Text customTitle size-auto style={styles.noMarginTop}>
           {t('diagnoses:proposed')} {medicalCase.algorithm_name}
         </Text>
-        {finalDiagnostics.included.map((f) => (
-          <FinalDiagnostic {...f} type="AntDesign" name="checkcircle" key={f.id} style={styles.greenIcon} setDiagnoses={setDiagnoses} />
-        ))}
+        {finalDiagnostics.included.length > 0 ? (
+          finalDiagnostics.included.map((finalDiagnostic) => <FinalDiagnostic {...finalDiagnostic} key={finalDiagnostic.id} setDiagnoses={setDiagnoses} />)
+        ) : (
+          <Text style={styles.italic}>{t('diagnoses:no_proposed')}</Text>
+        )}
 
-        {Object.keys(diagnoses.additional).length > 0 && <Text customTitle>{t('diagnoses:titleadditional')}</Text>}
+        <Text customTitle size-auto style={styles.marginTop30}>
+          {t('diagnoses:title_additional')}
+        </Text>
 
-        {Object.keys(diagnoses.additional).map((s) => (
-          <Text size-auto>- {diagnoses.additional[s].label}</Text>
-        ))}
+        {Object.keys(diagnoses.additional).length > 0 ? (
+          Object.keys(diagnoses.additional).map((additionalKey) => (
+            <Text key={`additional-${additionalKey}`} style={styles.additionalText}>
+              {diagnoses.additional[additionalKey].label}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.italic}>{t('diagnoses:no_additional')}</Text>
+        )}
 
-        <Text customTitle>{t('diagnoses:additional')}</Text>
+        <Text customTitle size-auto style={styles.marginTop30}>
+          {t('diagnoses:additional')}
+        </Text>
 
         <MultiSelect
           hideTags
@@ -106,26 +135,32 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
           selectedItemTextColor="#CCC"
           selectedItemIconColor={liwiColors.redColor}
           itemTextColor="#000"
+          itemFontSize={15}
+          styleRowList={styles.rowStyle}
           displayKey="label"
           searchInputStyle={styles.selectColor}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
         />
 
-        <Text customTitle>{t('diagnoses:custom')}</Text>
+        <Text customTitle size-auto style={styles.marginTop30}>
+          {t('diagnoses:custom')}
+        </Text>
         <View style={styles.customContent}>
-          <Input style={styles.flex} common value={customDiagnoses} onChange={this._handleCustomInput} />
+          <Input question style={styles.flex} value={customDiagnoses} onChange={this._handleCustomInput} />
           <Button style={styles.width50} onPress={this._addCustom}>
-            <Icon active name="create-new-folder" type="MaterialIcons" style={styles.iconSize} />
+            <Icon active name="add" type="MaterialIcons" style={styles.iconSize} />
           </Button>
         </View>
-        {diagnoses.custom.map((d) => (
-          <View style={styles.customItem}>
-            <Text style={styles.flex} size-auto>
-              {d.label}
-            </Text>
-            <Button style={styles.width50} onPress={() => this._removeCustom(d)}>
-              <Icon active name="delete" type="AntDesign" style={styles.iconSize} />
+        {diagnoses.custom.map((diagnose) => (
+          <View key={diagnose.label} style={styles.customContainer}>
+            <View style={styles.customText}>
+              <Text style={styles.flex} size-auto>
+                {diagnose.label}
+              </Text>
+            </View>
+            <Button style={styles.width50} onPress={() => this._removeCustom(diagnose)}>
+              <Icon active name="delete" type="MaterialIcons" style={styles.iconSize} />
             </Button>
           </View>
         ))}

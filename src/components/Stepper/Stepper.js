@@ -493,7 +493,7 @@ class Stepper extends React.Component<Props, State> {
           <View style={[styles.button]}>
             <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>Save</Text>
             {bottomNavigationRightIconComponent ||
-            <Icon style={{ margin: 5, fontSize: 15 }} name="save" type={'Fontisto'} size={15} />}
+            <Icon style={{ margin: 5, fontSize: 15 }} name="save" type="FontAwesome" size={15} />}
           </View>
         </PlatformTouchableNative>
       </View>

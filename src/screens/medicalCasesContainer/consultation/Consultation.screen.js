@@ -1,17 +1,14 @@
 // @flow
 
-import React, { Suspense } from "react";
-import { View } from "native-base";
+import React, { Suspense } from 'react';
+import { View } from 'native-base';
 
-import { NavigationScreenProps } from "react-navigation";
-import { styles } from "../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style";
+import { NavigationScreenProps } from 'react-navigation';
+import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
-import LiwiLoader from "../../../utils/LiwiLoader";
-import NavigationService from "../../../engine/navigation/Navigation.service";
-import {
-  questionsMedicalHistory,
-  questionsPhysicalExam
-} from "../../../../frontend_service/algorithm/questionsStage.algo";
+import LiwiLoader from '../../../utils/LiwiLoader';
+import NavigationService from '../../../engine/navigation/Navigation.service';
+import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -22,8 +19,6 @@ type State = {};
 
 export default class Consultation extends React.Component<Props, State> {
   componentDidMount() {
-    const { navigation } = this.props;
-
     NavigationService.setParamsAge('Consultation');
   }
 
