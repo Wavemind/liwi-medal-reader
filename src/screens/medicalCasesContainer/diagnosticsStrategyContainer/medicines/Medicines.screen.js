@@ -21,7 +21,7 @@ export default class Medicines extends Component<Props, State> {
 
   static defaultProps = {};
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     const { pageIndex } = this.props;
     if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
       return nextProps.selectedPage === pageIndex;
@@ -68,7 +68,7 @@ export default class Medicines extends Component<Props, State> {
 
   render() {
     const {
-      medicalCase: { diagnoses, algorithm_name, nodes },
+      medicalCase: { diagnoses, nodes },
       app: { t },
     } = this.props;
 

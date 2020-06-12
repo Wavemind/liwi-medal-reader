@@ -25,7 +25,7 @@ i18n
           no_data: 'No data available',
           date_format: 'DD/MM/YYYY',
           select: 'Select',
-          save: 'Save'
+          save: 'Save',
         },
         diagnoses: {
           add: 'Create',
@@ -46,10 +46,12 @@ i18n
           no_drugs: 'No Drugs',
           none: 'none',
           proposed: 'Diagnoses proposed by',
+          no_proposed: 'No diagnoses proposed',
           search: 'Search by name',
           select: '  Please select...', // Keep the space at the begin of string
           sum: 'Summary Treatment',
-          titleadditional: 'Additional selected',
+          title_additional: 'Additional selected',
+          no_additional: 'No additional diagnoses',
           weight: 'weight',
           which: 'Which formulation of medicine is available and appropriate for your patient?',
           write: 'Write the medicine',
@@ -164,8 +166,8 @@ i18n
         medical_case: {
           in_creation: 'Demographic',
           conditions: 'Conditions',
-          medecines: 'Medicines',
-          medecines_formulation: 'Medicine Formulations',
+          medicines: 'Medicines',
+          medicines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',
           healthcares_questions: 'Management questions',
           healthcares: 'Treatments & Management',

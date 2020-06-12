@@ -1,14 +1,12 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { Icon, Text, View } from "native-base";
-import { LeftButton, RightButton } from "../../template/layout";
-import { styles } from "./FinalDiagnostic.style";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { Text, View } from 'native-base';
+import { LeftButton, RightButton } from '../../template/layout';
+import { styles } from './FinalDiagnostic.style';
 
 type Props = NavigationScreenProps & {};
-
-type State = {};
 
 export default class FinalDiagnostic extends React.Component<{}> {
   static defaultProps = {
@@ -39,9 +37,6 @@ export default class FinalDiagnostic extends React.Component<{}> {
 
   render() {
     const {
-      type,
-      name,
-      style,
       app: { t },
       label,
       id,
@@ -49,14 +44,13 @@ export default class FinalDiagnostic extends React.Component<{}> {
     } = this.props;
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.flex} size-auto>
-          <Icon type={type} name={name} style={style} /> {__DEV__ ? `${id} - ` : null}
-          {label}
-        </Text>
+      <View style={styles.content}>
+        <View style={styles.container}>
+          <Text style={styles.flex}>{label}</Text>
+        </View>
         <View style={styles.bloc}>
           <LeftButton active={diagnoses.proposed[id]?.agreed === true} onPress={() => this._handleClick(true)}>
-            <Text white={diagnoses.proposed[id]?.agreed === true} center>
+            <Text center white={diagnoses.proposed[id]?.agreed === true}>
               {t('diagnoses:agree')}
             </Text>
           </LeftButton>

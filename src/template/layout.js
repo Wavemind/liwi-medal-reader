@@ -40,16 +40,13 @@ export const LiwiTitle2 = styled(LH2)`
   }};
 `;
 
-export const LiwiTitle3 = styled(LH3).attrs({
-  color: liwiColors.whiteColor,
-})`
-  margin: 20px 20px 10px 20px;
-  padding: 8px;
-  border-radius: 4px;
-  border-bottom-width: 1px;
-  color: ${() => liwiColors.whiteColor};
-  border-bottom-color: ${() => liwiColors.greyColor};
+export const LiwiTitle3 = styled(LH3).attrs({})`
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 2px;
+  margin-bottom: 10px;
   background-color: ${() => liwiColors.redColor};
+  color: ${() => liwiColors.whiteColor};
 `;
 
 export const LiwiTitle4 = styled(LText).attrs({
@@ -58,7 +55,7 @@ export const LiwiTitle4 = styled(LText).attrs({
   font-size: 24px;
   color: ${() => liwiColors.redColor};
   border-bottom-color: ${() => liwiColors.greyColor};
-  marginBottom: 10px;
+  margin-bottom: 10px;
 `;
 
 export const LiwiTitle5 = styled(LText).attrs({
@@ -69,7 +66,6 @@ export const LiwiTitle5 = styled(LText).attrs({
   border-bottom-color: ${() => liwiColors.blackLightColor};
   font-weight: bold;
 `;
-
 
 export const RootView = styled(LView).attrs({
   flex: 1,
@@ -134,8 +130,6 @@ export const SeparatorLine = styled(RNView).attrs({
     return 5;
   },
 })``;
-
-export const PaddedView = styled(LView).attrs({})``;
 
 export const LeftButton = styled(RNTouchableOpacity).attrs({})`
   flex: 1;
