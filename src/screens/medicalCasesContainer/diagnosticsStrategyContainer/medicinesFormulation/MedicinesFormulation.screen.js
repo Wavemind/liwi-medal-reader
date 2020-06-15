@@ -39,6 +39,8 @@ export default class MedicinesFormulations extends Component<Props, State> {
     switch (type) {
       case medicationForms.syrup:
       case medicationForms.suspension:
+      case medicationForms.powder_for_injection:
+      case medicationForms.solution:
         return 'ml';
       case medicationForms.tablet:
       case medicationForms.capsule:

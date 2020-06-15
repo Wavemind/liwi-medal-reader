@@ -46,6 +46,7 @@ export const medicationForms = {
   gel: 'gel',
   spray: 'spray',
   inhaler: 'inhaler',
+  powder_for_injection: 'inhaler',
 };
 
 // Value of answer accepted
