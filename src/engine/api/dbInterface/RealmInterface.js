@@ -1,5 +1,6 @@
 import uuid from 'react-native-uuid';
 import * as _ from 'lodash';
+import moment from 'moment';
 
 import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
 import { PatientValueModel } from '../../../../frontend_service/engine/models/PatientValue.model';
@@ -129,7 +130,16 @@ export default class RealmInterface {
     this._realm().write(() => {
       this._realm().create(model, { id, ...fields }, 'modified');
     });
+
     const object = this.findBy(model, id);
+
+    // Update patient updated_at value
+    if (model === 'MedicalCase') {
+      this._realm().write(() => {
+        this._realm().create('Patient', { id: object.patient_id, updated_at: moment().toDate() }, 'modified');
+      });
+    }
+
     if (!Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
       this._savePatientValue(model, object);
     }
