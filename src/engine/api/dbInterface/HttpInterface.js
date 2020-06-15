@@ -5,6 +5,7 @@ import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { convertToObject } from '../../../utils/swissKnives';
 
 export default class HttpInterface {
   constructor() {
