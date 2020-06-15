@@ -77,6 +77,42 @@ export default class Medicines extends Component<Props, State> {
     }
   };
 
+  _medicineCards = (title, medicine, key) => {
+    const {
+      app: { t },
+      medicalCase: { nodes },
+    } = this.props;
+
+    return (
+      <Card>
+        <CardItem style={styles.cardItemCondensed}>
+          <View style={styles.cardTitleContent}>
+            <Text customSubTitle style={styles.cardTitle}>
+              {medicine.label}
+            </Text>
+            <LiwiTitle2 noBorder style={styles.noRightMargin}>
+              <Text note>{title}</Text>
+            </LiwiTitle2>
+          </View>
+        </CardItem>
+        <CardItem style={styles.cardItemCondensed}>
+          <Body>
+            {Object.keys(medicine.drugs).map((treatmentId) => {
+              if (calculateCondition(medicine.drugs[treatmentId]) === true) {
+                return <Medicine type="proposed" key={`${treatmentId}_medicine`} medicine={medicine.drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+              }
+              return (
+                <Text key={`${key}diagnoses`} italic>
+                  {t('diagnoses:no_drugs')}
+                </Text>
+              );
+            })}
+          </Body>
+        </CardItem>
+      </Card>
+    );
+  };
+
   render() {
     const {
       medicalCase: { diagnoses, nodes },
@@ -127,34 +163,7 @@ export default class Medicines extends Component<Props, State> {
             });
 
             if (isPossible) {
-              return (
-                <Card>
-                  <CardItem style={styles.cardItemCondensed}>
-                    <View style={styles.cardTitleContent}>
-                      <Text customSubTitle style={styles.cardTitle}>
-                        {diagnoses.proposed[key].label}
-                      </Text>
-                      <LiwiTitle2 noBorder style={styles.noRightMargin}>
-                        <Text note>{t('diagnoses_label:proposed')}</Text>
-                      </LiwiTitle2>
-                    </View>
-                  </CardItem>
-                  <CardItem style={styles.cardItemCondensed}>
-                    <Body>
-                      {Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
-                        if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
-                          return <Medicine type="proposed" key={`${treatmentId}_medicine`} medicine={diagnoses.proposed[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-                        }
-                        return (
-                          <Text key={`${key}diagnoses`} italic>
-                            {t('diagnoses:no_drugs')}
-                          </Text>
-                        );
-                      })}
-                    </Body>
-                  </CardItem>
-                </Card>
-              );
+              return this._medicineCards(t('diagnoses_label:proposed'), diagnoses.proposed[key], key);
             }
           } else {
             return null;
@@ -164,33 +173,7 @@ export default class Medicines extends Component<Props, State> {
     );
 
     const renderMedicineAdditional = Object.keys(diagnoses.additional).map((key) => {
-      return (
-        <Card key={`additional-${key}`}>
-          <CardItem style={styles.cardItemCondensed}>
-            <View style={styles.cardTitleContent}>
-              <Text customSubTitle style={styles.cardTitle}>
-                {diagnoses.additional[key].label}
-              </Text>
-              <LiwiTitle2 noBorder style={styles.noRightMargin}>
-                <Text note>{t('diagnoses_label:additional')}</Text>
-              </LiwiTitle2>
-            </View>
-          </CardItem>
-          <CardItem style={styles.cardItemCondensed}>
-            <Body>
-              {Object.keys(diagnoses.additional[key].drugs).length > 0 ? (
-                Object.keys(diagnoses.additional[key].drugs).map((treatmentId) => {
-                  return <Medicine type="additional" key={`${treatmentId}_medicine`} medicine={diagnoses.additional[key].drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-                })
-              ) : (
-                <Text key={`${key}diagnoses`} italic>
-                  {t('diagnoses:no_drugs')}
-                </Text>
-              )}
-            </Body>
-          </CardItem>
-        </Card>
-      );
+      return this._medicineCards(t('diagnoses_label:additional'), diagnoses.additional[key], key);
     });
 
     const renderAdditionalDrugs = (
@@ -227,8 +210,9 @@ export default class Medicines extends Component<Props, State> {
         <Text customTitle style={styles.noTopMargin}>
           {t('diagnoses:medicines')}
         </Text>
-        {renderMedicinesProposed}
+        {Object.keys(diagnoses.proposed).length > 0 ? renderMedicinesProposed : null}
         {Object.keys(diagnoses.additional).length > 0 ? renderMedicineAdditional : null}
+        {Object.keys(diagnoses.proposed).length === 0 && Object.keys(diagnoses.additional).length === 0 ? <Text italic>{t('diagnoses:no_medicines')}</Text> : null}
         {Object.keys(diagnoses.custom).map((w, i) => (
           <CustomMedicine key={i} diagnose={diagnoses.custom[w]} diagnoseKey={i} />
         ))}
