@@ -97,16 +97,17 @@ export default class Medicines extends Component<Props, State> {
         </CardItem>
         <CardItem style={styles.cardItemCondensed}>
           <Body>
-            {Object.keys(medicine.drugs).map((treatmentId) => {
-              if (calculateCondition(medicine.drugs[treatmentId]) === true) {
-                return <Medicine type="proposed" key={`${treatmentId}_medicine`} medicine={medicine.drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-              }
-              return (
-                <Text key={`${key}diagnoses`} italic>
-                  {t('diagnoses:no_drugs')}
-                </Text>
-              );
-            })}
+            {Object.keys(medicine.drugs).length > 0 ? (
+              Object.keys(medicine.drugs).map((treatmentId) => {
+                if (calculateCondition(medicine.drugs[treatmentId]) === true) {
+                  return <Medicine type="proposed" key={`${treatmentId}_medicine`} medicine={medicine.drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+                }
+              })
+            ) : (
+              <Text key={`${key}diagnoses`} italic>
+                {t('diagnoses:no_drugs')}
+              </Text>
+            )}
           </Body>
         </CardItem>
       </Card>

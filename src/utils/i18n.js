@@ -53,6 +53,7 @@ i18n
           title_additional: 'Additional selected',
           no_additional: 'No additional diagnoses',
           no_medicines: 'No medicines available',
+          no_managements: 'No managements available',
           weight: 'weight',
           which: 'Which formulation of medicine is available and appropriate for your patient?',
           write: 'Write the medicine',
