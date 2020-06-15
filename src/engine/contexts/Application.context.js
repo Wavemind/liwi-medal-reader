@@ -109,6 +109,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
       if (session.group.architecture === 'client_server' && !firstTime) {
+        console.log("Je récupère et je lance le _sendFailSafeData")
         await this._sendFailSafeData();
       }
     }
@@ -136,7 +137,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const success = await database.httpInterface.synchronizePatients(patients);
 
     if (success === 'Synchronize success') {
-      database.realmInterface.delete();
+      database.realmInterface.delete(patients);
     }
   };
 

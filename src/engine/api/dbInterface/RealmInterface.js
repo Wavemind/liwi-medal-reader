@@ -46,7 +46,7 @@ export default class RealmInterface {
    */
   delete = (object) => {
     this._realm().write(() => {
-      realm.delete(object);
+      this._realm().delete(object);
     });
   };
 
