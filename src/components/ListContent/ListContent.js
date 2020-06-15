@@ -222,7 +222,11 @@ export default class ListContent extends React.Component<Props, State> {
               ListFooterComponent={this._renderFooter}
             />
           </View>
-        ) : null}
+        ) : (
+          <View padding-auto margin-auto>
+            <Text not-available>{t('application:no_data')}</Text>
+          </View>
+        )}
       </>
     );
   }
