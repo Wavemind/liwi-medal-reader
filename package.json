@@ -24,6 +24,7 @@
     "accordion-collapse-react-native": "^0.2.10",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-react-native": "^5.0.2",
+    "bugsnag-react-native": "^2.23.9",
     "color": "^3.1.2",
     "core-js": "^3.6.4",
     "deepmerge": "^3.2.0",
