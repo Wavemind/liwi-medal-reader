@@ -76,33 +76,37 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
             </CardItem>
             <CardItem style={styles.cardItemCondensed}>
               <Body>
-                <LiwiTitle2 noBorder style={styles.cardTitle}>{t('diagnoses:medicines')}</LiwiTitle2>
-                {finalDiagnosticCategory[key].drugs !== undefined
-                  ? Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
-                      if (drugsAvailable[drugKey] !== undefined) {
-                        return this._renderSwitchFormulation(drugsAvailable[drugKey]);
-                      }
-                    })
-                  : null}
+                <LiwiTitle2 noBorder style={styles.cardTitle}>
+                  {t('diagnoses:medicines')}
+                </LiwiTitle2>
+                {finalDiagnosticCategory[key].drugs !== undefined && Object.keys(finalDiagnosticCategory[key].drugs).length > 0 ? (
+                  Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
+                    if (drugsAvailable[drugKey] !== undefined) {
+                      return this._renderSwitchFormulation(drugsAvailable[drugKey]);
+                    }
+                  })
+                ) : (
+                  <Text italic>{t('diagnoses:no_medicines')}</Text>
+                )}
               </Body>
             </CardItem>
             <CardItem style={styles.cardItemCondensed}>
               <Body>
-                <LiwiTitle2 noBorder style={styles.cardTitle}>{t('diagnoses:management')}</LiwiTitle2>
-                {finalDiagnosticCategory[key].drugs !== undefined
-                  ? Object.keys(finalDiagnosticCategory[key].managements).map((managementKey) => {
-                      const management = finalDiagnosticCategory[key].managements[managementKey];
-                      const node = nodes[management.id];
-                      if (calculateCondition(management) === true) {
-                        return (
-                          <Text key={`${managementKey}-management`}>
-                            {node.label}
-                          </Text>
-                        );
-                      }
-                      return null;
-                    })
-                  : null}
+                <LiwiTitle2 noBorder style={styles.cardTitle}>
+                  {t('diagnoses:management')}
+                </LiwiTitle2>
+                {finalDiagnosticCategory[key].managements !== undefined && Object.keys(finalDiagnosticCategory[key].managements).length > 0 ? (
+                  Object.keys(finalDiagnosticCategory[key].managements).map((managementKey) => {
+                    const management = finalDiagnosticCategory[key].managements[managementKey];
+                    const node = nodes[management.id];
+                    if (calculateCondition(management) === true) {
+                      return <Text key={`${managementKey}-management`}>{node.label}</Text>;
+                    }
+                    return null;
+                  })
+                ) : (
+                  <Text italic>{t('diagnoses:no_managements')}</Text>
+                )}
               </Body>
             </CardItem>
           </Card>
