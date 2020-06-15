@@ -36,6 +36,8 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
     switch (drug.formulationSelected) {
       case medicationForms.syrup:
       case medicationForms.suspension:
+      case medicationForms.powder_for_injection:
+      case medicationForms.solution:
         return Liquid(drug, node, drugDose);
       case medicationForms.tablet:
         return Breakable(drug, node, drugDose);

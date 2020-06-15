@@ -71,6 +71,8 @@ export class DrugModel extends HealthCaresModel {
       switch (formulation.medication_form) {
         case medicationForms.syrup:
         case medicationForms.suspension:
+        case medicationForms.powder_for_injection:
+        case medicationForms.solution:
           minDoseMg = roundSup((weightNode.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
           maxDoseMg = roundSup((weightNode.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
 
