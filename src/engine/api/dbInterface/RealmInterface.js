@@ -140,7 +140,6 @@ export default class RealmInterface {
       });
     }
 
-
     if (!Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
       this._savePatientValue(model, object);
     }
