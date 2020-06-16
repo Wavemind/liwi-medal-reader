@@ -181,13 +181,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.uid} change={updatePatientValue} index="uid" autoCapitalize="sentences"
-          />
+          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.uid} change={updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.study_id} change={updatePatientValue} index="study_id" autoCapitalize="sentences"
-          />
+          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.study_id} change={updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
@@ -280,7 +278,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           });
         }}
         initialPage={0}
-        showBottomStepper={!newMedicalCase || !isNewCase}
+        showBottomStepper
         icons={[{ name: 'test-tube', type: 'MaterialCommunityIcons' }]}
         steps={[t('medical_case:triage')]}
         backButtonTitle={t('medical_case:back')}
@@ -314,26 +312,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 </View>
                 <Text customSubTitle>{t('patient_upsert:questions')}</Text>
                 <Questions questions={extraQuestions} />
-                <View bottom-view>
-                  {algorithmReady ? (
-                    <>
-                      {newMedicalCase || isNewCase ? (
-                        <View columns>
-                          <Button light split onPress={() => save('PatientList')}>
-                            <Text>{t('patient_upsert:save_and_wait')}</Text>
-                          </Button>
-                          <Button success split onPress={() => save('Triage')}>
-                            <Text>{t('patient_upsert:save_and_case')}</Text>
-                          </Button>
-                        </View>
-                      ) : null}
-                    </>
-                  ) : (
-                    <View columns>
-                      <Text>{t('work_case:no_algorithm')}</Text>
-                    </View>
-                  )}
-                </View>
               </>
             )}
           </ScrollView>,
