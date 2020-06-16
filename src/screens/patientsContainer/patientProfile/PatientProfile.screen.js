@@ -137,10 +137,10 @@ export default class PatientProfile extends React.Component {
       <LiwiLoader />
     ) : (
       <>
-        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
-          <View padding-auto margin-top style={{ flex: 1 }}>
+        <View style={styles.patientValuesContainer}>
+          <View padding-auto margin-top style={styles.flex}>
             <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
-            <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+            <View style={styles.patientValuesContent}>
               {patient.patientValues.map((patientValue) => (
                 <View key={patientValue.node_id} style={styles.wrapper}>
                   <Text size-auto style={styles.identifierText}>
@@ -153,7 +153,7 @@ export default class PatientProfile extends React.Component {
               ))}
             </View>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={styles.flex}>
             <Button
               block
               onPress={() => {
