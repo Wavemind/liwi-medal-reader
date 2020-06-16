@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { liwiColors, screenHeight, screensScale, screenWidth } from "../../../utils/constants";
+import { StyleSheet } from 'react-native';
+import { liwiColors, screenHeight, screensScale, screenWidth } from '../../../utils/constants';
 
 let divider = 10;
 let extraStyle = { width: 80, height: 80 };
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: screenHeight,
+    height: screenHeight - 50,
   },
 
   appContent: {
@@ -83,8 +83,10 @@ export const styles = StyleSheet.create({
   },
 
   stylePinCodeColumnButtons: {
-    justifyContent: 'center', alignItems: 'center', width: 'auto'
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 'auto',
   },
 
-  stylePinCodeMainContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+  stylePinCodeMainContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
