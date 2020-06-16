@@ -47,7 +47,7 @@ export const auth = async (email, password) => {
     };
   }
 
-  handleHttpError(result.error);
+  handleHttpError(result.errors);
   return result;
 };
 
