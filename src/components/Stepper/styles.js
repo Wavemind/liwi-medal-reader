@@ -131,6 +131,12 @@ const styles: Object = StyleSheet.create({
       },
     }),
   },
+  saveButton: {
+    justifyContent: 'flex-end',
+    flex: 1,
+    alignContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
 });
 
 export { styles };

@@ -8,7 +8,7 @@ import moment from "moment";
 import { getItem, getItems, setItem, storeMedicalCase } from "../../../engine/api/LocalStorage";
 import { fetchAlgorithms, syncMedicalCases } from "../../../../frontend_service/api/Http";
 import { styles } from "./Algorithms.style";
-import { CardView, LiwiTitle4, RightView } from "../../../template/layout";
+import { CardView, LiwiTitle2, LiwiTitle4, RightView } from '../../../template/layout';
 import LiwiLoader from "../../../utils/LiwiLoader";
 
 type Props = NavigationScreenProps & {};
@@ -225,7 +225,7 @@ export default class Algorithms extends React.Component<Props, State> {
           {!ready && focus === 'didFocus' ? (
             <LiwiLoader />
           ) : (
-            <Text>Coucou</Text>
+            <LiwiTitle2 noBorder>Algorithm</LiwiTitle2>
           )}
         </View>
       </View>
