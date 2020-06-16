@@ -51,6 +51,10 @@ export const auth = async (email, password) => {
   return result;
 };
 
+/**
+ * Register device in Medal C
+ * @returns {Promise<boolean>}
+ */
 export const registerDevice = async () => {
   const deviceInfo = await getDeviceInformation();
   const url = `${host}devices`;
