@@ -321,7 +321,7 @@ i18n
           logout: 'logout',
         },
         popup: {
-          startSave: 'Saving in local data...',
+          startSave: 'Save medical case',
           saveSuccess: 'Successfully saved',
           unlock: 'Force unlock',
           close: 'Close',
