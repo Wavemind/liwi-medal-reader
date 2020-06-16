@@ -126,6 +126,7 @@ class Stepper extends React.Component<Props, State> {
       error: false,
       status: '',
     };
+    console.log(props.children);
   }
 
   async componentDidMount(): * {
@@ -275,44 +276,47 @@ class Stepper extends React.Component<Props, State> {
   };
 
   nextStage = async () => {
-    const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
+    const { navigation, nextStage, endMedicalCase, paramsNextStage, app, updateModalFromRedux } = this.props;
     const medicalCaseObject = store.getState();
     const database = await new Database();
 
-    // TODO medicalCase / medicalCaseObject confusing, need refractor this shit !
-    const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+    // Can we update the next status ? All questions are valid ?
+    if (this._validateStage()) {
+      // TODO medicalCase / medicalCaseObject confusing, need refractor this shit !
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
-    await medicalCase.handleFailSafe();
+      await medicalCase.handleFailSafe();
 
-    let newActivities = [];
+      let newActivities = [];
 
-    if (endMedicalCase === true) {
-      medicalCaseObject.status = medicalCaseStatus.close.name;
-      store.dispatch(clearMedicalCase());
-    }
+      if (endMedicalCase === true) {
+        medicalCaseObject.status = medicalCaseStatus.close.name;
+        store.dispatch(clearMedicalCase());
+      }
 
-    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user, medicalCaseObject.nodes);
+      const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user, medicalCaseObject.nodes);
 
-    // You are probably wondering why I do this shit...
-    // well it's because of Realm I cannot edit an existing object,
-    // so I cannot add the activity with a simple push... I am sorry
-    if (medicalCaseObject.activities?.length > 0) {
-      newActivities = medicalCaseObject.activities.map((activity) => activity);
-    }
+      // You are probably wondering why I do this shit...
+      // well it's because of Realm I cannot edit an existing object,
+      // so I cannot add the activity with a simple push... I am sorry
+      if (medicalCaseObject.activities?.length > 0) {
+        newActivities = medicalCaseObject.activities.map((activity) => activity);
+      }
 
-    newActivities.push(activity);
+      newActivities.push(activity);
 
-    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
+      medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
 
-    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
-    displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
-    if (endMedicalCase === true) {
-      NavigationService.resetActionStack('Home');
-    } else {
-      navigation.navigate({
-        routeName: nextStage,
-        params: paramsNextStage,
-      });
+      await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+      displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
+      if (endMedicalCase === true) {
+        NavigationService.resetActionStack('Home');
+      } else {
+        navigation.navigate({
+          routeName: nextStage,
+          params: paramsNextStage,
+        });
+      }
     }
   };
 
@@ -498,6 +502,27 @@ class Stepper extends React.Component<Props, State> {
     );
   };
 
+  _validateStage = () => {
+    const { nextStage, paramsNextStage, updateModalFromRedux } = this.props;
+
+
+    // Validate current stage
+    const validator = validatorNavigate({
+      type: 'Navigation/NAVIGATE',
+      routeName: nextStage,
+      params: paramsNextStage,
+      key: nextStage
+    });
+
+    // Can we update the next status ? All questions are valid ?
+    if (validator.isActionValid === true) {
+      return true;
+    }else {
+      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
+      return false;
+    }
+  }
+
   render() {
     const {
       showTopStepper,
@@ -511,6 +536,7 @@ class Stepper extends React.Component<Props, State> {
       steps,
       app,
     } = this.props;
+    console.log(showBottomStepper);
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
 
