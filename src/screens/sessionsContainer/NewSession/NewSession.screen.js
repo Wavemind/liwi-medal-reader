@@ -19,7 +19,7 @@ export default function HookSession() {
   const { isConnected, t } = app;
 
   const signIn = async () => {
-    if (email.length < 8 || password.length < 3) {
+    if (email.length < 5 || password.length < 3) {
       return null;
     }
 

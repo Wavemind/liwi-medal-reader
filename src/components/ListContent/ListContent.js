@@ -43,7 +43,7 @@ export default class ListContent extends React.Component<Props, State> {
   async componentDidUpdate(nextProps) {
     const { model, query } = this.props;
 
-    if (nextProps.query !== query || nextProps.app[`filters${model}`] !== this.props.app[`filters${model}`]) {
+    if (nextProps.query !== query || nextProps.app[`filters${model}`] !== this.props.app[`filters${model}`] || this.props.app.isConnected !== nextProps.app.isConnected) {
       await this._fetchList();
     }
   }

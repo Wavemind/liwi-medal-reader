@@ -3,7 +3,7 @@
 
 /**
  * Plugin imported from react-native-js-stepper
- * Modified for show Icon in the top of screen, modificationn are on : this.renderSteps()
+ * Modified for show Icon in the top of screen, update are on : this.renderSteps()
  */
 
 import React from 'react';
@@ -12,21 +12,21 @@ import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes } fro
 import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import i18n from '../../utils/i18n';
 import _ from 'lodash';
 
+import i18n from '../../utils/i18n';
 import { styles } from './styles';
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
+import { medicalCaseStatus } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
 import { displayNotification } from '../../utils/CustomToast';
-
+import LiwiProgressBar from '../../utils/LiwiProgressBar';
 
 type Props = {
   children: any,
@@ -67,9 +67,6 @@ type State = {
 };
 
 class Stepper extends React.Component<Props, State> {
-  viewPager: ViewPager;
-  scrollView: ScrollView;
-
   static propTypes = {
     ...ViewPager.propTypes,
     ...ScrollView.propTypes,
@@ -100,9 +97,8 @@ class Stepper extends React.Component<Props, State> {
     bottomNavigationRightIconComponent: PropTypes.element,
     nextStage: PropTypes.string,
     nextStageString: PropTypes.string,
-    endMedicalCase: PropTypes.bool,
+    endMedicalCase: PropTypes.bool
   };
-
   static defaultProps = {
     initialPage: 0,
     nextStage: null,
@@ -110,10 +106,12 @@ class Stepper extends React.Component<Props, State> {
     inactiveStepColor: 'grey',
     paramsNextStage: { initialPage: 0 },
     stepNumberStyle: {
-      color: 'white',
+      color: 'white'
     },
-    validate: false,
+    validate: false
   };
+  viewPager: ViewPager;
+  scrollView: ScrollView;
 
   constructor(props: Props) {
     super(props);
@@ -125,8 +123,8 @@ class Stepper extends React.Component<Props, State> {
       height: 0,
       error: false,
       status: '',
+      isLoading: false
     };
-    console.log(props.children);
   }
 
   async componentDidMount(): * {
@@ -187,7 +185,7 @@ class Stepper extends React.Component<Props, State> {
         {
           showNext: position === numberOfPages - 1 ? false : true,
           showBack: position === 0 ? false : true,
-          page: position,
+          page: position
         },
         () => {
           Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null;
@@ -207,7 +205,7 @@ class Stepper extends React.Component<Props, State> {
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
         x: (this.state.page - 1) * this.state.width,
-        animated: true,
+        animated: true
       })
       : this.handleBottomStepper(this.state.page - 1);
   };
@@ -223,26 +221,22 @@ class Stepper extends React.Component<Props, State> {
     Platform.OS === 'ios'
       ? this.scrollView.scrollTo({
         x: (this.state.page + 1) * this.state.width,
-        animated: true,
+        animated: true
       })
       : this.handleBottomStepper(this.state.page + 1);
   };
 
-  checkValue = (value: Object) => {
-    if (value) {
-      this.setState({ error: false });
-    } else {
-      this.setState({ error: true });
-    }
-  };
-
+  /**
+   * Display dots navigation
+   * @returns {*}
+   */
   renderDots = () => {
     let dots = [];
     const { activeDotStyle, inactiveDotStyle } = styles;
 
     for (let index = 0; index < this.props.children.length; index++) {
       const isSelected: boolean = this.state.page === index;
-      dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index} />);
+      dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index}/>);
     }
     return <View style={styles.dotsContainer}>{dots}</View>;
   };
@@ -254,7 +248,7 @@ class Stepper extends React.Component<Props, State> {
   setDimensions = (e: Object) => {
     this.setState({
       width: e.nativeEvent.layout.width,
-      height: e.nativeEvent.layout.height,
+      height: e.nativeEvent.layout.height
     });
   };
 
@@ -267,7 +261,7 @@ class Stepper extends React.Component<Props, State> {
 
     return React.Children.map(children, (child: Object, index: number) => {
       return (
-        <View key={`child${index}`}
+        <View key={`child-${index}`}
               style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
           {child}
         </View>
@@ -275,8 +269,13 @@ class Stepper extends React.Component<Props, State> {
     });
   };
 
+  /**
+   * Navigate to next stage
+   * @returns {Promise<void>}
+   */
   nextStage = async () => {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app, updateModalFromRedux } = this.props;
+    this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
     const database = await new Database();
 
@@ -308,6 +307,7 @@ class Stepper extends React.Component<Props, State> {
       medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
 
       await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+      this.setState({ isLoading: false });
       displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
       if (endMedicalCase === true) {
         NavigationService.resetActionStack('Home');
@@ -320,32 +320,37 @@ class Stepper extends React.Component<Props, State> {
     }
   };
 
+  /**
+   * Display button step
+   * @returns {null|Array<*>}
+   */
   renderSteps = () => {
-    const { steps } = this.props;
+    const { steps, icons, validate } = this.props;
+    const { page, error } = this.state;
 
     const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;
 
     if (steps) {
       return steps.map((step: string, index: number) => {
-        const isSelected: boolean = this.state.page === index;
+        const isSelected: boolean = page === index;
         const iconConfig = {
-          name: this.props.icons[index]?.name,
+          name: icons[index]?.name,
           style: { color: isSelected ? '#ffffff' : liwiColors.redColor },
           size: 30,
-          type: this.props.icons[index]?.type,
+          type: icons[index]?.type
         };
 
         return (
           <TouchableOpacity onPress={() => this.handleBottomStepper(index)} key={`TouchableOpacity${index}`}>
             <View key={`step${index}`} style={[styles.stepContainer, { width: screenWidth / steps.length - 20 }]}>
               <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
-                {index < this.state.page && this.props.validate ? (
-                  this.state.error ? (
+                {index < page && validate ? (
+                  error ? (
                     <MaterialIcon name="close" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle}/>
                   ) : (
                     <MaterialIcon name="check" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle}/>
                   )
                 ) : (
                   <Icon {...iconConfig} />
@@ -386,7 +391,7 @@ class Stepper extends React.Component<Props, State> {
           onLayout={this.setDimensions}
           contentOffset={{
             x: this.state.width * this.props.initialPage,
-            y: 0,
+            y: 0
           }}
         >
           {this.renderChildren()}
@@ -406,6 +411,7 @@ class Stepper extends React.Component<Props, State> {
       </ViewPager>
     );
   };
+
   /**
    *  On save case
    *  Update status and unlock case
@@ -417,18 +423,15 @@ class Stepper extends React.Component<Props, State> {
       app: { database, t, user },
       paramsNextStage,
       nextStage,
-      updateModalFromRedux,
     } = this.props;
 
+    this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
 
     let newActivities = [];
-
     let medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
     await medicalCase.handleFailSafe();
-
-    updateModalFromRedux({ showClose: false }, toolTipType.loading);
 
     // Validate current stage
     const validator = validatorNavigate({
@@ -462,40 +465,33 @@ class Stepper extends React.Component<Props, State> {
 
     // parse json to send localdata
     medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: null });
-
     await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
-
     await database.unlockMedicalCase(medicalCase.id);
-    // Close loader
-    updateModalFromRedux({ showClose: false }, toolTipType.loading);
-    // Show success message
+
+    this.setState({ isLoading: false });
+
     displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
-    // store.dispatch(clearMedicalCase());
     navigation.navigate('Home');
   };
 
+  /**
+   * Display save button at the end of a stage
+   * @returns save button
+   * @private
+   */
   _renderSaveButton = () => {
-    const { bottomNavigationRightIconComponent } = this.props;
-    const { status, showNext } = this.state;
+    const { app: { t } } = this.props;
+    const { showNext } = this.state;
 
-    // Not at the end of this stepper
     if (showNext) {
       return null;
     }
 
     return (
-      <View style={{
-        selfAlign: 'flex-end',
-        justifyContent: 'flex-end',
-        flex: 1,
-        alignContent: 'flex-end',
-        alignItems: 'flex-end'
-      }}>
+      <View style={styles.saveButton}>
         <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
           <View style={[styles.button]}>
-            <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>Save</Text>
-            {bottomNavigationRightIconComponent ||
-            <Icon style={{ margin: 5, fontSize: 15 }} name="save" type="FontAwesome" size={15} />}
+            <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>{t('application:save')}</Text>
           </View>
         </PlatformTouchableNative>
       </View>
@@ -504,7 +500,6 @@ class Stepper extends React.Component<Props, State> {
 
   _validateStage = () => {
     const { nextStage, paramsNextStage, updateModalFromRedux } = this.props;
-
 
     // Validate current stage
     const validator = validatorNavigate({
@@ -533,14 +528,13 @@ class Stepper extends React.Component<Props, State> {
       bottomNavigationRightIconComponent,
       nextStage,
       nextStageString,
-      steps,
-      app,
+      steps
     } = this.props;
     console.log(showBottomStepper);
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
 
-    const { showBack, showNext } = this.state;
+    const { showBack, showNext, isLoading } = this.state;
 
     return (
       <View style={styles.container}>
@@ -558,44 +552,43 @@ class Stepper extends React.Component<Props, State> {
         {this.renderViewPager()}
         {showBottomStepper ? (
           <View
-            style={[
-              styles.bottomStepper,
-              {
-                justifyContent: showBack ? 'space-between' : 'flex-end',
-              },
-              bottomStepperStyle,
-            ]}
-          >
-            {showBack ? (
-              <PlatformTouchableNative onPress={this.onPressBack}
-                                       background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                                       style={{ zIndex: 1 }}>
+            style={[styles.bottomStepper, { justifyContent: showBack ? 'space-between' : 'flex-end' }, bottomStepperStyle ]} >
+            {isLoading ? <LiwiProgressBar /> : (
+              <>
+              {showBack ? (
+              <PlatformTouchableNative
+                onPress={this.onPressBack}
+                background={PlatformTouchableNative.SelectableBackgroundBorderless()}
+                style={{ zIndex: 1 }}>
                 <View style={styles.button}>
-                  {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
+                  {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24}/>}
                   <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
                 </View>
               </PlatformTouchableNative>
             ) : null}
-            {this.renderDots()}
-            {this._renderSaveButton()}
 
-            {showNext ? (
-              <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>
-                <View style={styles.button}>
-                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
-                  {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
-                </View>
-              </PlatformTouchableNative>
-            ) : (
-              nextStage !== null && (
-                <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
-                  <View style={[styles.button]}>
-                    <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                    {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
-                  </View>
-                </PlatformTouchableNative>
-              )
-            )}
+              {this.renderDots()}
+              {this._renderSaveButton()}
+
+              {showNext ? (
+                  <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>
+                    <View style={styles.button}>
+                      <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
+                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24}/>}
+                    </View>
+                  </PlatformTouchableNative>
+                ) : (
+                  nextStage !== null && (
+                    <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
+                      <View style={[styles.button]}>
+                        <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
+                        {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24}/>}
+                      </View>
+                    </PlatformTouchableNative>
+                  ))
+              }
+              </>
+              )}
           </View>
         ) : null}
       </View>
