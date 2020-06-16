@@ -1,17 +1,15 @@
 // @flow
 
 import React, { Suspense } from 'react';
-import { View } from 'native-base';
-
 import { NavigationScreenProps } from 'react-navigation';
-import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
+import { View } from 'native-base';
 
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
-
 const QuestionsPerSystem = React.lazy(() => import('../../../components/Consultation/QuestionsPerSystem'));
 
 type Props = NavigationScreenProps & {};
@@ -32,7 +30,7 @@ export default class Consultation extends React.Component<Props, State> {
     const selectedPage = navigation.getParam('initialPage');
 
     return (
-      <Suspense fallback={null}>
+      <Suspense fallback={<LiwiLoader />}>
         <Stepper
           ref={(ref: any) => {
             this.stepper = ref;
@@ -58,7 +56,7 @@ export default class Consultation extends React.Component<Props, State> {
         >
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<LiwiLoader />}>
                 <QuestionsPerSystem questions={questionsMedicalHistory()} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
@@ -67,7 +65,7 @@ export default class Consultation extends React.Component<Props, State> {
           </View>
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<LiwiLoader />}>
                 <QuestionsPerSystem questions={questionsPhysicalExam()} selectedPage={selectedPage} pageIndex={1} />
               </Suspense>
             ) : (
