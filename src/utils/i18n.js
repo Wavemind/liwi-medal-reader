@@ -93,7 +93,7 @@ i18n
           never: 'Never synchronized data',
           last: 'Last synchronization attempt',
           success: 'The synchronization did work.',
-          nosuccess: "The synchronization didn't work. ",
+          nosuccess: 'The synchronization didn\'t work. ',
           titlesync: 'Status synchronization of medical cases',
           synchronize: 'Synchronize cases',
           no: 'Never synchronized',

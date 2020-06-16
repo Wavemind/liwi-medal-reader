@@ -1,18 +1,14 @@
 // @flow
 
-import React, { Suspense } from "react";
-import { Content, View } from "native-base";
+import React, { Suspense } from 'react';
+import { Content, View } from 'native-base';
 
-import { NavigationScreenProps } from "react-navigation";
-import { styles } from "../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style";
-import LiwiLoader from "../../../utils/LiwiLoader";
-import type { StateApplicationContext } from "../../../engine/contexts/Application.context";
-import NavigationService from "../../../engine/navigation/Navigation.service";
-import {
-  questionsBasicMeasurements,
-  questionsComplaintCategory,
-  questionsFirstLookAssessement
-} from "../../../../frontend_service/algorithm/questionsStage.algo";
+import { NavigationScreenProps } from 'react-navigation';
+import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
+import LiwiLoader from '../../../utils/LiwiLoader';
+import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
+import NavigationService from '../../../engine/navigation/Navigation.service';
+import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessement } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 const Boolean = React.lazy(() => import('../../../components/QuestionsContainer/DisplaysContainer/Boolean'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
@@ -23,19 +19,13 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 export default class Triage extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    const { navigation } = this.props;
-
-    NavigationService.setParamsAge('Triage');
-  }
-
   state = {
     widthView: 0,
   };
+
+  componentDidMount() {
+    NavigationService.setParamsAge('Triage');
+  }
 
   render() {
     const {
@@ -46,13 +36,11 @@ export default class Triage extends React.Component<Props, State> {
 
     const { widthView } = this.state;
 
-    const complaintCategory = questionsComplaintCategory();
-    const complaintCategoryReady = complaintCategory.every((cc) => cc.answer !== null);
-    // Denied access to Basic measurement step if all chief complaints are not answered
+    const complaintCategories = questionsComplaintCategory();
     const selectedPage = navigation.getParam('initialPage');
 
     return (
-      <Suspense fallback={null}>
+      <Suspense fallback={<LiwiLoader />}>
         <Stepper
           params={{ initialPage: 0 }}
           t={t}
@@ -60,7 +48,6 @@ export default class Triage extends React.Component<Props, State> {
             this.stepper = ref;
           }}
           validation={false}
-          complaintCategoryReady={complaintCategoryReady}
           showTopStepper
           initial
           onPageSelected={(e) => {
@@ -83,7 +70,7 @@ export default class Triage extends React.Component<Props, State> {
         >
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<LiwiLoader />}>
                 <Questions questions={questionsFirstLookAssessement()} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
@@ -92,7 +79,7 @@ export default class Triage extends React.Component<Props, State> {
           </View>
           <View style={styles.flex}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<LiwiLoader />}>
                 <Content>
                   <View
                     flex-container-fluid
@@ -101,7 +88,7 @@ export default class Triage extends React.Component<Props, State> {
                       this.setState({ widthView: w.layout.width });
                     }}
                   >
-                    {complaintCategory.map((question, i) => (
+                    {complaintCategories.map((question, i) => (
                       <Boolean key={`${question.id}chief_boolean`} widthView={widthView} question={question} index={i} selectedPage={selectedPage} pageIndex={1} />
                     ))}
                   </View>
@@ -113,7 +100,7 @@ export default class Triage extends React.Component<Props, State> {
           </View>
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<LiwiLoader />}>
                 <Questions questions={questionsBasicMeasurements()} selectedPage={selectedPage} pageIndex={2} />
               </Suspense>
             ) : (
