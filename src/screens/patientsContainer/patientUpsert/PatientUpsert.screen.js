@@ -14,29 +14,26 @@ import Stepper from '../../../components/Stepper';
 
 import { getItem, getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
-import { stages, toolTipType } from '../../../../frontend_service/constants';
+import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
-import { validatorNavigate } from '../../../engine/navigation/NavigationValidator.service';
 
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class PatientUpsert extends React.Component<Props, State> {
   state = {
-    newMedicalCase: true,
     errors: {},
     patient: null,
     loading: true,
-    algorithmReady: false,
-    otherFacility: null,
   };
 
   async componentDidMount() {
     const {
       navigation,
       setMedicalCase,
+      updateMedicalCaseProperty,
       app: { database },
     } = this.props;
 
@@ -74,101 +71,25 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     NavigationService.setParamsAge('Patient');
-
+    updateMedicalCaseProperty('patient', patient);
     this.setState({
       patient,
-      algorithmReady: true,
       loading: false,
-      newMedicalCase,
     });
   }
-
-  /**
-   * Save patient and redirect to parameters
-   * @params [String] route
-   */
-
-  save = async (newRoute) => {
-    const {
-      navigation,
-      medicalCase,
-      updateMedicalCaseProperty,
-      updateModalFromRedux,
-      app: { database },
-    } = this.props;
-    const patientId = navigation.getParam('idPatient');
-    let isSaved = false;
-
-    await this.setState({ loading: true });
-
-    const validator = validatorNavigate({ type: 'Navigation/NAVIGATE', routeName: 'Triage', params: { initialPage: 0 }, key: 'Triage' });
-
-    if (validator.stepToBeFill[0].isActionValid === false) {
-      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
-    } else {
-      updateMedicalCaseProperty('isNewCase', false); // Workaround because redux persist is buggy with boolean
-      if (patientId !== null || patientId === undefined) {
-        const patient = await database.findBy('Patient', patientId);
-        isSaved = await patient.addMedicalCase(medicalCase);
-        updateMedicalCaseProperty('patient_id', patient.id);
-      } else {
-        isSaved = await this.savePatient();
-      }
-
-      if (isSaved) {
-        await database.lockMedicalCase(medicalCase.id);
-        const currentRoute = NavigationService.getCurrentRoute();
-        // Replace the nextRoute navigation at the current index
-        navigation.dispatch(
-          StackActions.replace({
-            index: currentRoute.index,
-            newKey: newRoute,
-            routeName: newRoute,
-            params: {
-              initialPage: 0,
-            },
-            actions: [
-              NavigationActions.navigate({
-                routeName: newRoute,
-              }),
-            ],
-          })
-        );
-      }
-    }
-    await this.setState({ loading: false });
-  };
 
   /**
    * Update state value of patient
    * @params [String] key [String] value
    */
   updatePatientValue = async (key, value) => {
-    const { patient } = this.state;
     const { updatePatient } = this.props;
     updatePatient(key, value);
-    patient[key] = value;
-    await this.setState({ patient });
-  };
-
-  /**
-   * Set patient and medical case in localStorage
-   */
-  savePatient = async () => {
-    const { patient } = this.state;
-    const { medicalCase, updateMedicalCaseProperty } = this.props;
-
-    // Create patient if there are no errors
-    await patient.medicalCases.push(medicalCase);
-    await patient.save();
-    updateMedicalCaseProperty('patient_id', patient.id);
-    return true;
   };
 
   renderIdentifierData = () => {
     const { patient } = this.state;
     const { t } = this.props.app;
-    const { updatePatientValue } = this;
 
     if (patient === null) {
       return null;
@@ -181,13 +102,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.uid} change={updatePatientValue} index="uid" autoCapitalize="sentences"
-          />
+          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.study_id} change={updatePatientValue} index="study_id" autoCapitalize="sentences"
-          />
+          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
@@ -198,7 +117,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
             condensed
             style={styles.identifierText}
             init={patient.group_id}
-            change={updatePatientValue}
+            change={this.updatePatientValue}
             index="group_id"
             autoCapitalize="sentences"
           />
@@ -231,8 +150,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   };
 
   render() {
-    const { updatePatientValue, save } = this;
-    const { patient, errors, loading, algorithmReady, newMedicalCase } = this.state;
+    const { patient, errors, loading } = this.state;
     const { navigation } = this.props;
 
     const {
@@ -240,8 +158,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       medicalCase,
       updateMetaData,
     } = this.props;
-
-    const { isNewCase } = medicalCase;
 
     let extraQuestions = [];
     if (medicalCase.nodes !== undefined) {
@@ -280,7 +196,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
           });
         }}
         initialPage={0}
-        showBottomStepper={!newMedicalCase || !isNewCase}
+        showBottomStepper
         icons={[{ name: 'test-tube', type: 'MaterialCommunityIcons' }]}
         steps={[t('medical_case:triage')]}
         backButtonTitle={t('medical_case:back')}
@@ -302,7 +218,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                       <CustomInput
                         init={patient.reason}
                         label={t('patient:reason')}
-                        change={updatePatientValue}
+                        change={this.updatePatientValue}
                         index="reason"
                         iconName="sign-out"
                         iconType="FontAwesome"
@@ -314,26 +230,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
                 </View>
                 <Text customSubTitle>{t('patient_upsert:questions')}</Text>
                 <Questions questions={extraQuestions} />
-                <View bottom-view>
-                  {algorithmReady ? (
-                    <>
-                      {newMedicalCase || isNewCase ? (
-                        <View columns>
-                          <Button light split onPress={() => save('PatientList')}>
-                            <Text>{t('patient_upsert:save_and_wait')}</Text>
-                          </Button>
-                          <Button success split onPress={() => save('Triage')}>
-                            <Text>{t('patient_upsert:save_and_case')}</Text>
-                          </Button>
-                        </View>
-                      ) : null}
-                    </>
-                  ) : (
-                    <View columns>
-                      <Text>{t('work_case:no_algorithm')}</Text>
-                    </View>
-                  )}
-                </View>
               </>
             )}
           </ScrollView>,

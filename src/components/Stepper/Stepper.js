@@ -19,14 +19,15 @@ import { styles } from './styles';
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
-import { clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus } from '../../../frontend_service/constants';
+import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import { medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import Database from '../../engine/api/Database';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
 import { displayNotification } from '../../utils/CustomToast';
 import LiwiProgressBar from '../../utils/LiwiProgressBar';
+import { PatientModel } from '../../../frontend_service/engine/models/Patient.model';
 
 type Props = {
   children: any,
@@ -236,7 +237,7 @@ class Stepper extends React.Component<Props, State> {
 
     for (let index = 0; index < this.props.children.length; index++) {
       const isSelected: boolean = this.state.page === index;
-      dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index}/>);
+      dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index} />);
     }
     return <View style={styles.dotsContainer}>{dots}</View>;
   };
@@ -274,45 +275,41 @@ class Stepper extends React.Component<Props, State> {
    * @returns {Promise<void>}
    */
   nextStage = async () => {
-    const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
+    const { navigation, nextStage, endMedicalCase, paramsNextStage, app: {database, t} } = this.props;
     this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
-    const database = await new Database();
 
-    // TODO medicalCase / medicalCaseObject confusing, need refactor this shit !
-    const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+    // Can we update the next status ? All questions are valid ?
+    if (this._validateStage()) {
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+      if (medicalCase.isNewCase) {
+        await this._createNewMedicalCase(medicalCase);
+      } else {
+        await medicalCase.handleFailSafe();
 
-    await medicalCase.handleFailSafe();
-    let newActivities = [];
+        if (endMedicalCase === true) {
+          medicalCaseObject.status = medicalCaseStatus.close.name;
+          store.dispatch(clearMedicalCase());
+        }
 
-    if (endMedicalCase === true) {
-      medicalCaseObject.status = medicalCaseStatus.close.name;
-      store.dispatch(clearMedicalCase());
-    }
+        const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
 
-    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user, medicalCaseObject.nodes);
+        medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+      }
 
-    // You are probably wondering why I do this shit...
-    // well it's because of Realm I cannot edit an existing object,
-    // so I cannot add the activity with a simple push... I am sorry
-    if (medicalCaseObject.activities?.length > 0) {
-      newActivities = medicalCaseObject.activities.map((activity) => activity);
-    }
-
-    newActivities.push(activity);
-    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
-    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
-    this.setState({ isLoading: false });
-
-    displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
-
-    if (endMedicalCase === true) {
-      NavigationService.resetActionStack('Home');
+      this.setState({ isLoading: false });
+      displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
+      if (endMedicalCase === true) {
+        NavigationService.resetActionStack('Home');
+      } else {
+        navigation.navigate({
+          routeName: nextStage,
+          params: paramsNextStage,
+        });
+      }
     } else {
-      navigation.navigate({
-        routeName: nextStage,
-        params: paramsNextStage
-      });
+      this.setState({ isLoading: false });
     }
   };
 
@@ -343,10 +340,10 @@ class Stepper extends React.Component<Props, State> {
                 {index < page && validate ? (
                   error ? (
                     <MaterialIcon name="close" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle}/>
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
                     <MaterialIcon name="check" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle}/>
+                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   )
                 ) : (
                   <Icon {...iconConfig} />
@@ -409,6 +406,31 @@ class Stepper extends React.Component<Props, State> {
   };
 
   /**
+   * Generate activity based on current route and updated/created value
+   * @param {Object} medicalCase - Simple object
+   * @param {Object} medicalCaseObject - MedicalCase class
+   * @returns {Promise<number>}
+   * @private
+   */
+  _generateActivity = async (medicalCase, medicalCaseObject) => {
+    const {app: {user}} = this.props;
+
+    // Create activity
+    let newActivities = [];
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
+
+    // You are probably wondering why I do this shit...
+    // well it's because of Realm I cannot edit an existing object,
+    // so I cannot add the activity with a simple push... I am sorry
+    if (medicalCaseObject.activities?.length > 0) {
+      newActivities = medicalCaseObject.activities.map((activity) => activity);
+    }
+
+    newActivities.push(activity);
+    return newActivities;
+  }
+
+  /**
    *  On save case
    *  Update status and unlock case
    *  Redirect to home
@@ -416,58 +438,43 @@ class Stepper extends React.Component<Props, State> {
   onSaveCase = async () => {
     const {
       navigation,
-      app: { database, t, user },
-      paramsNextStage,
+      app: { database, t },
       nextStage,
     } = this.props;
-
     this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
 
-    let newActivities = [];
-    let medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
-
-    await medicalCase.handleFailSafe();
-
-    // Validate current stage
-    const validator = validatorNavigate({
-      type: 'Navigation/NAVIGATE',
-      routeName: nextStage,
-      params: paramsNextStage,
-      key: nextStage
-    });
-
     // Can we update the next status ? All questions are valid ?
-    if (validator.isActionValid === true) {
-      let currentStatus = medicalCaseStatus[medicalCase.status];
-      let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
-      // Find next status
+    if (this._validateStage()) {
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
-      if (medicalCase.isMaxStage(nextStage) && (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name)) {
-        medicalCaseObject.status = nextStatus.name;
+      if (medicalCase.isNewCase) {
+        await this._createNewMedicalCase(medicalCase);
+      } else {
+        await medicalCase.handleFailSafe();
+
+        // Find next status
+        let currentStatus = _.find(medicalCaseStatus,status => status.name === medicalCase.status);
+        let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
+        if (medicalCase.isMaxStage(nextStage) && (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name)) {
+          medicalCaseObject.status = nextStatus.name;
+        }
+
+        // Create activity
+        const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
+
+        // Save value
+        medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+        await database.unlockMedicalCase(medicalCase.id);
       }
+
+      this.setState({ isLoading: false });
+      displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
+      navigation.navigate('Home');
+    } else {
+      this.setState({ isLoading: false });
     }
-
-    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
-
-    // You are probably wondering why I do this shit...
-    // well it's because of Realm I cannot edit an existing object,
-    // so I cannot add the activity with a simple push... I am sorry
-    if (medicalCase.activities?.length > 0) {
-      newActivities = medicalCase.activities.map((activity) => activity);
-    }
-
-    newActivities.push(activity);
-
-    // parse json to send localdata
-    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: null });
-    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
-    await database.unlockMedicalCase(medicalCase.id);
-
-    this.setState({ isLoading: false });
-
-    displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
-    navigation.navigate('Home');
   };
 
   /**
@@ -493,6 +500,63 @@ class Stepper extends React.Component<Props, State> {
       </View>
     );
   };
+
+  /**
+   * Check if all questions in current stage is answered
+   * @returns {boolean}
+   * @private
+   */
+  _validateStage = () => {
+    const { nextStage, paramsNextStage, updateModalFromRedux } = this.props;
+
+    // Validate current stage
+    const validator = validatorNavigate({
+      type: 'Navigation/NAVIGATE',
+      routeName: nextStage,
+      params: paramsNextStage,
+      key: nextStage
+    });
+
+    // Can we update the next status ? All questions are valid ?
+    if (validator.isActionValid === true) {
+      return true;
+    } else {
+      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
+      return false;
+    }
+  };
+
+  /**
+   * Create medical case and push/create in a patient
+   * @param {Object} medicalCase - current medicalCase
+   * @returns {Promise<void>}
+   * @private
+   */
+  _createNewMedicalCase = async (medicalCase) => {
+    const { navigation, app: {database} } = this.props;
+    const patientId = navigation.getParam('idPatient');
+    const medicalCaseObject = store.getState();
+    let patient = null;
+
+    // If patient already exists
+    if (patientId !== null) {
+      patient = await database.findBy('Patient', patientId);
+      await patient.addMedicalCase(medicalCase);
+      await database.lockMedicalCase(medicalCase.id);
+    } else {
+      // Had to do this shit cause the constructor needs a facility + otherFacility
+      const patientObject = medicalCaseObject.patient;
+      const facility = { uid: patientObject.uid, study_id: patientObject.study_id, group_id: patientObject.group_id };
+      const otherFacility = { other_uid: patientObject.other_uid, other_study_id: patientObject.other_study_id, other_group_id: patientObject.other_group_id };
+      patient = new PatientModel({...patientObject, facility, otherFacility});
+
+      // Create patient if there are no errors
+      await patient.medicalCases.push(medicalCaseObject);
+      await patient.save();
+    }
+    store.dispatch(updateMedicalCaseProperty('isNewCase', false));
+    store.dispatch(updateMedicalCaseProperty('patient_id', patient.id));
+  }
 
   render() {
     const {
@@ -527,29 +591,29 @@ class Stepper extends React.Component<Props, State> {
         {this.renderViewPager()}
         {showBottomStepper ? (
           <View
-            style={[styles.bottomStepper, { justifyContent: showBack ? 'space-between' : 'flex-end' }, bottomStepperStyle ]} >
+            style={[styles.bottomStepper, { justifyContent: showBack ? 'space-between' : 'flex-end' }, bottomStepperStyle]}>
             {isLoading ? <LiwiProgressBar /> : (
               <>
-              {showBack ? (
-              <PlatformTouchableNative
-                onPress={this.onPressBack}
-                background={PlatformTouchableNative.SelectableBackgroundBorderless()}
-                style={{ zIndex: 1 }}>
-                <View style={styles.button}>
-                  {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24}/>}
-                  <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
-                </View>
-              </PlatformTouchableNative>
-            ) : null}
+                {showBack ? (
+                  <PlatformTouchableNative
+                    onPress={this.onPressBack}
+                    background={PlatformTouchableNative.SelectableBackgroundBorderless()}
+                    style={{ zIndex: 1 }}>
+                    <View style={styles.button}>
+                      {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
+                      <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
+                    </View>
+                  </PlatformTouchableNative>
+                ) : null}
 
-              {this.renderDots()}
-              {this._renderSaveButton()}
+                {this.renderDots()}
+                {this._renderSaveButton()}
 
-              {showNext ? (
+                {showNext ? (
                   <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
-                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24}/>}
+                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                     </View>
                   </PlatformTouchableNative>
                 ) : (
@@ -557,13 +621,13 @@ class Stepper extends React.Component<Props, State> {
                     <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
                       <View style={[styles.button]}>
                         <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                        {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24}/>}
+                        {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                       </View>
                     </PlatformTouchableNative>
                   ))
-              }
+                }
               </>
-              )}
+            )}
           </View>
         ) : null}
       </View>

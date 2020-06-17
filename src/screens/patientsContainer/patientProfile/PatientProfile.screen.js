@@ -36,7 +36,9 @@ export default class PatientProfile extends React.Component {
   async componentDidUpdate() {
     const { navigation } = this.props;
 
+    // TODO: Do it better
     if (navigation.getParam('refresh')) {
+      navigation.setParams({ refresh: false });
       await this._getPatient();
     }
   }
@@ -51,9 +53,10 @@ export default class PatientProfile extends React.Component {
       navigation,
       app: { database },
     } = this.props;
-    const id = navigation.getParam('id');
 
+    const id = navigation.getParam('id');
     const patient = await database.findBy('Patient', id);
+
     this.setState({
       patient,
       firstRender: true,
