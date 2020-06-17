@@ -275,44 +275,31 @@ class Stepper extends React.Component<Props, State> {
    * @returns {Promise<void>}
    */
   nextStage = async () => {
-    const { navigation, nextStage, endMedicalCase, paramsNextStage, app } = this.props;
+    const { navigation, nextStage, endMedicalCase, paramsNextStage, app: {database, t} } = this.props;
     this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
-    const database = await new Database();
 
     // Can we update the next status ? All questions are valid ?
     if (this._validateStage()) {
       const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
-
       if (medicalCase.isNewCase) {
         await this._createNewMedicalCase(medicalCase);
       } else {
         await medicalCase.handleFailSafe();
-
-        let newActivities = [];
 
         if (endMedicalCase === true) {
           medicalCaseObject.status = medicalCaseStatus.close.name;
           store.dispatch(clearMedicalCase());
         }
 
-        const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, app.user, medicalCaseObject.nodes);
-
-        // You are probably wondering why I do this shit...
-        // well it's because of Realm I cannot edit an existing object,
-        // so I cannot add the activity with a simple push... I am sorry
-        if (medicalCaseObject.activities?.length > 0) {
-          newActivities = medicalCaseObject.activities.map((activity) => activity);
-        }
-
-        newActivities.push(activity);
+        const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
 
         medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
-
         await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
       }
 
-      displayNotification(app.t('popup:saveSuccess'), liwiColors.greenColor);
+      this.setState({ isLoading: false });
+      displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
       if (endMedicalCase === true) {
         NavigationService.resetActionStack('Home');
       } else {
@@ -419,6 +406,31 @@ class Stepper extends React.Component<Props, State> {
   };
 
   /**
+   * Generate activity based on current route and updated/created value
+   * @param {Object} medicalCase - Simple object
+   * @param {Object} medicalCaseObject - MedicalCase class
+   * @returns {Promise<number>}
+   * @private
+   */
+  _generateActivity = async (medicalCase, medicalCaseObject) => {
+    const {app: {user}} = this.props;
+
+    // Create activity
+    let newActivities = [];
+    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
+
+    // You are probably wondering why I do this shit...
+    // well it's because of Realm I cannot edit an existing object,
+    // so I cannot add the activity with a simple push... I am sorry
+    if (medicalCaseObject.activities?.length > 0) {
+      newActivities = medicalCaseObject.activities.map((activity) => activity);
+    }
+
+    newActivities.push(activity);
+    return newActivities;
+  }
+
+  /**
    *  On save case
    *  Update status and unlock case
    *  Redirect to home
@@ -426,58 +438,43 @@ class Stepper extends React.Component<Props, State> {
   onSaveCase = async () => {
     const {
       navigation,
-      app: { database, t, user },
-      paramsNextStage,
+      app: { database, t },
       nextStage,
     } = this.props;
-
     this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
 
-    let newActivities = [];
-    let medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
-
-    await medicalCase.handleFailSafe();
-
-    // Validate current stage
-    const validator = validatorNavigate({
-      type: 'Navigation/NAVIGATE',
-      routeName: nextStage,
-      params: paramsNextStage,
-      key: nextStage
-    });
-
     // Can we update the next status ? All questions are valid ?
-    if (validator.isActionValid === true) {
-      let currentStatus = medicalCaseStatus[medicalCase.status];
-      let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
-      // Find next status
+    if (this._validateStage()) {
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
 
-      if (medicalCase.isMaxStage(nextStage) && (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name)) {
-        medicalCaseObject.status = nextStatus.name;
+      if (medicalCase.isNewCase) {
+        await this._createNewMedicalCase(medicalCase);
+      } else {
+        await medicalCase.handleFailSafe();
+
+        // Find next status
+        let currentStatus = _.find(medicalCaseStatus,status => status.name === medicalCase.status);
+        let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
+        if (medicalCase.isMaxStage(nextStage) && (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name)) {
+          medicalCaseObject.status = nextStatus.name;
+        }
+
+        // Create activity
+        const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
+
+        // Save value
+        medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+        await database.unlockMedicalCase(medicalCase.id);
       }
+
+      this.setState({ isLoading: false });
+      displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
+      navigation.navigate('Home');
+    } else {
+      this.setState({ isLoading: false });
     }
-
-    const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
-
-    // You are probably wondering why I do this shit...
-    // well it's because of Realm I cannot edit an existing object,
-    // so I cannot add the activity with a simple push... I am sorry
-    if (medicalCase.activities?.length > 0) {
-      newActivities = medicalCase.activities.map((activity) => activity);
-    }
-
-    newActivities.push(activity);
-
-    // parse json to send localdata
-    medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: null });
-    await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
-    await database.unlockMedicalCase(medicalCase.id);
-
-    this.setState({ isLoading: false });
-
-    displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
-    navigation.navigate('Home');
   };
 
   /**
@@ -504,6 +501,11 @@ class Stepper extends React.Component<Props, State> {
     );
   };
 
+  /**
+   * Check if all questions in current stage is answered
+   * @returns {boolean}
+   * @private
+   */
   _validateStage = () => {
     const { nextStage, paramsNextStage, updateModalFromRedux } = this.props;
 
@@ -524,6 +526,12 @@ class Stepper extends React.Component<Props, State> {
     }
   };
 
+  /**
+   * Create medical case and push/create in a patient
+   * @param {Object} medicalCase - current medicalCase
+   * @returns {Promise<void>}
+   * @private
+   */
   _createNewMedicalCase = async (medicalCase) => {
     const { navigation } = this.props;
     const patientId = navigation.getParam('idPatient');
@@ -534,7 +542,6 @@ class Stepper extends React.Component<Props, State> {
     // If patient already exists
     if (patientId !== null) {
       patient = await database.findBy('Patient', patientId);
-      store.dispatch(updateMedicalCaseProperty('patient_id', patient.id));
       await patient.addMedicalCase(medicalCase);
       await database.lockMedicalCase(medicalCase.id);
     } else {
@@ -548,6 +555,7 @@ class Stepper extends React.Component<Props, State> {
       await patient.medicalCases.push(medicalCaseObject);
       await patient.save();
     }
+    store.dispatch(updateMedicalCaseProperty('isNewCase', false));
     store.dispatch(updateMedicalCaseProperty('patient_id', patient.id));
   }
 
