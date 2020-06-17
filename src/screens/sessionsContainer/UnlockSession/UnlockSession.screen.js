@@ -107,8 +107,12 @@ export default class UnLockSession extends React.Component<Props, State> {
               disableLockScreen
               status="enter"
               pinStatus={status}
-              titleComponent={() => <Text size-auto style={styles.textCustom}>{app.t('unlock_session:pin')} </Text>}
-              subtitleComponent={() => loading ? <LiwiLoader style={{width: 50}} /> : null}
+              titleComponent={() => (
+                <Text size-auto style={styles.textCustom}>
+                  {app.t('unlock_session:pin')}{' '}
+                </Text>
+              )}
+              subtitleComponent={() => (loading ? <LiwiLoader style={{ width: 50 }} /> : null)}
               storedPin={session?.group.pin_code}
               colorCircleButtons={liwiColors.darkerGreyColor}
               colorPassword={liwiColors.redColor}

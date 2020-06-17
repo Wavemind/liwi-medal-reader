@@ -26,6 +26,7 @@ i18n
           date_format: 'DD/MM/YYYY',
           select: 'Select',
           save: 'Save',
+          resource_not_available: 'No connection, resource not available',
         },
         diagnoses: {
           add: 'Create',

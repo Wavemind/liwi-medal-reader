@@ -59,11 +59,17 @@ export const styles = StyleSheet.create({
 
   picker: { borderRadius: 5, color: liwiColors.whiteDark },
 
-  flexDirection: { flexDirection: 'row', flex: 1 , flexBasis: '47%' },
+  flexDirection: { flexDirection: 'row', flex: 1, flexBasis: '47%' },
 
-  wrapper: { flexDirection: 'row', flex: 1, flexBasis: '47%'  },
+  wrapper: { flexDirection: 'row', flex: 1, flexBasis: '47%' },
 
   patientValues: { flex: 1, alignSelf: 'center', paddingLeft: 20 },
 
   footerButton: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+
+  patientValuesContainer: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
+
+  patientValuesContent: { flex: 1, flexDirection: 'row', flexWrap: 'wrap' },
+
+  flex: { flex: 1 },
 });

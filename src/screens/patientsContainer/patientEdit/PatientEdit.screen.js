@@ -16,6 +16,8 @@ import { PatientValueModel } from '../../../../frontend_service/engine/models/Pa
 import { convertToObject } from '../../../utils/swissKnives';
 
 import { store } from '../../../../frontend_service/store';
+import { displayNotification } from '../../../utils/CustomToast';
+import { liwiColors } from '../../../utils/constants';
 
 export default class PatientEdit extends React.Component {
   state = {
@@ -54,9 +56,8 @@ export default class PatientEdit extends React.Component {
           value: patientValues === undefined ? null : patientValues.value,
         };
       });
-    } else {
-      return [];
     }
+    return [];
   };
 
   /**
@@ -65,26 +66,30 @@ export default class PatientEdit extends React.Component {
    */
   savePatientValues = async () => {
     const { patient } = this.state;
-
-    this.setState({ disable: true });
-
-    const user = await getItem('user');
     const {
-      app: { database },
       navigation,
+      app: { isActionAvailable, t, database },
     } = this.props;
 
-    // Gets all the patient values that need to be stored in the database
-    // meaning remove empty ones
-    const newPatientValues = PatientValueModel.getUpdatedPatientValue(patient);
-    const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
+    if (isActionAvailable()) {
+      this.setState({ disable: true });
+      const user = await getItem('user');
 
-    await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
+      // Gets all the patient values that need to be stored in the database
+      // meaning remove empty ones
+      const newPatientValues = PatientValueModel.getUpdatedPatientValue(patient);
+      const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
 
-    navigation.navigate('PatientProfile', {
-      id: patient.id,
-      refresh: true,
-    });
+      await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
+
+      navigation.navigate('PatientProfile', {
+        id: patient.id,
+        refresh: true,
+      });
+    } else {
+      displayNotification(t('application:resource_not_available'), liwiColors.redColor);
+      navigation.navigate('Home');
+    }
   };
 
   render() {
