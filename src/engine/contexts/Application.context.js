@@ -109,7 +109,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
       if (session.group.architecture === 'client_server' && !firstTime) {
-        console.log("Je récupère et je lance le _sendFailSafeData")
         await this._sendFailSafeData();
       }
     }
@@ -291,6 +290,20 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     return false;
   };
 
+  /**
+   * Check if action is available depending on architecture and connection status
+   * @returns {boolean}
+   */
+  isActionAvailable = () => {
+    const { isConnected, session } = this.state;
+
+    if (session.group.architecture === 'client_server') {
+      return isConnected;
+    }
+
+    return true;
+  };
+
   state = {
     appState: AppState.currentState,
     currentRoute: null,
@@ -306,6 +319,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     ready: false,
     user: null,
     setInitialData: this.setInitialData,
+    isActionAvailable: this.isActionAvailable,
     logout: this.logout,
     lockSession: this.lockSession,
     newSession: this.newSession,
