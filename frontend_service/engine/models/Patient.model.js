@@ -24,7 +24,7 @@ export class PatientModel {
       }
       this.updated_at = moment().toDate();
       this.main_data_patient_id = main_data_patient_id;
-      this.patientValues = patientValues?.map((patientValue => new PatientValueModel(patientValue)));
+      this.patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
       this.uid = facility !== null ? facility?.uid?.toString() : null;
       this.study_id = facility !== null ? facility?.study_id?.toString() : null;
       this.group_id = facility !== null ? facility?.group_id?.toString() : null;
@@ -101,12 +101,14 @@ export class PatientModel {
 
     return database.insert('Patient', {
       ...this,
-      medicalCases: [{
-        ...medicalCase,
-        patient_id: this.id,
-        json: JSON.stringify(medicalCase),
-        activities: [activity]
-      }]
+      medicalCases: [
+        {
+          ...medicalCase,
+          patient_id: this.id,
+          json: JSON.stringify(medicalCase),
+          activities: [activity],
+        },
+      ],
     });
   };
 
@@ -135,5 +137,5 @@ PatientModel.schema = {
     patientValues: 'PatientValue[]',
     updated_at: 'date',
     fail_safe: { type: 'bool', default: false },
-  }
+  },
 };
