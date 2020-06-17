@@ -74,18 +74,6 @@ export class MedicalCaseModel {
       this.json = JSON.stringify(this);
     } else {
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
-      if (props !== undefined) {
-        this.id = json.id;
-        this.json = props.json;
-        this.created_at = props.created_at;
-        this.updated_at = props.updated_at;
-        this.status = props.status;
-        this.patient_id = props.patient_id;
-        this.activities = props.activities;
-        this.clinician = props.clinician;
-        this.mac_address = props.mac_address;
-        this.fail_safe = props.fail_safe;
-      }
 
       this.mobile_config = json.mobile_config ?? null;
       this.version_id = json.version_id;
@@ -103,6 +91,19 @@ export class MedicalCaseModel {
       };
       this.metaData = json.metaData;
       this.diagnoses = json.diagnoses;
+      if (props !== undefined) {
+        this.id = json.id;
+        this.json = props.json;
+        this.created_at = props.created_at;
+        this.updated_at = props.updated_at;
+        this.status = props.status;
+        this.patient_id = props.patient_id;
+        this.activities = props.activities;
+        this.clinician = props.clinician;
+        this.mac_address = props.mac_address;
+        this.fail_safe = props.fail_safe;
+        this.isNewCase = props.isNewCase;
+      }
     }
     return this;
   }
