@@ -533,10 +533,9 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _createNewMedicalCase = async (medicalCase) => {
-    const { navigation } = this.props;
+    const { navigation, app: {database} } = this.props;
     const patientId = navigation.getParam('idPatient');
     const medicalCaseObject = store.getState();
-    const database = await new Database();
     let patient = null;
 
     // If patient already exists

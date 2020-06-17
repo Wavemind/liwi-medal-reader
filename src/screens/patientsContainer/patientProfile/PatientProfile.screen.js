@@ -36,6 +36,7 @@ export default class PatientProfile extends React.Component {
   async componentDidUpdate() {
     const { navigation } = this.props;
 
+    // TODO: Do it better
     if (navigation.getParam('refresh')) {
       navigation.setParams({ refresh: false });
       await this._getPatient();
