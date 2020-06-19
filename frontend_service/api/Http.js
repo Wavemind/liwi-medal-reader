@@ -100,7 +100,7 @@ const _fetch = async (url, header) => {
   if (httpRequest.status === 200) {
     return result;
   }
-  handleHttpError(result.error);
+  handleHttpError(result.errors);
   return null;
 };
 
