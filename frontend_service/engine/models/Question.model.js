@@ -18,7 +18,6 @@ const references = {
 interface QuestionInterface {
   answer: string;
   answers: Object;
-  answer_stage: string;
   description: string;
   label: string;
   category: string;
@@ -37,7 +36,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     const {
       answer = null,
       answers = {},
-      answer_stage = '',
       description = '',
       label = '',
       category = '',
@@ -59,6 +57,14 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       system = '',
       is_identifiable = false,
       is_triage = false,
+      min_value_warning = '',
+      max_value_warning = '',
+      min_value_error = '',
+      max_value_error = '',
+      min_message_warning = '',
+      max_message_warning = '',
+      min_message_error = '',
+      max_message_error = '',
     } = props;
 
     this.description = description;
@@ -84,6 +90,16 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.system = system;
     this.is_identifiable = is_identifiable;
     this.is_triage = is_triage;
+    this.min_value_warning = min_value_warning;
+    this.max_value_warning = max_value_warning;
+    this.min_value_error = min_value_error;
+    this.max_value_error = max_value_error;
+    this.min_message_warning = min_message_warning;
+    this.max_message_warning = max_message_warning;
+    this.min_message_error = min_message_error;
+    this.max_message_error = max_message_error;
+    this.validationMessage = null;
+    this.validationType = null;
   }
 
   /**

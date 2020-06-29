@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { medicalCaseStatus, routeDependingStatus } from '../../../frontend_service/constants';
+import { medicalCaseStatus, routeDependingStatus, valueFormats } from '../../../frontend_service/constants';
 import { store } from '../../../frontend_service/store';
 
 import {
@@ -66,10 +66,8 @@ export const validatorStep = (route, lastState, validator) => {
 
     if (detailValidation !== undefined) {
       const questionsToValidate = state$.metaData[route.routeName.toLowerCase()];
-
       const questions = questionsToValidate[detailValidation];
       const criteria = detailSetParamsRoute.validations[detailValidation];
-
       validator = oneValidation(criteria, questions, detailValidation);
     }
   }
@@ -103,6 +101,14 @@ function oneValidation(criteria, questions, stepName) {
             result = state$.nodes[questionId].answer !== null || state$.nodes[questionId].value !== null;
 
             if (!result) {
+              isValid = false;
+              staticValidator.questionsToBeFill.push(state$.nodes[questionId]);
+            }
+          }
+
+          // Test integer or float question if there'is validation
+          if (q.value_format === valueFormats.int || q.value_format === valueFormats.float) {
+            if ((q.value < q.min_value_error || q.value > q.max_value_error) && q.value !== null) {
               isValid = false;
               staticValidator.questionsToBeFill.push(state$.nodes[questionId]);
             }

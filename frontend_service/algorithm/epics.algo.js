@@ -253,12 +253,9 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);
       const currentConditionValue = find(nodes[currentInstance.id].dd, (d) => d.id === diagnosticId);
 
-      console.log("ICI",currentConditionValue);
-
       // If the complaint category linked to the diagnistic is not selected we set the condition value to false
       if (diagnostic.isExcludedByComplaintCategory(nodes)) {
         if (currentConditionValue.conditionValue !== false) {
-          console.log("ICI",currentConditionValue);
           actions.push(updateConditionValue(nodeId, diagnosticId, false, diagnostic.type));
         }
       } else {
@@ -272,7 +269,6 @@ export const epicCatchDispatchCondition = (action$, state$) =>
 
         // Get node condition value
         const conditionValue = currentInstance.calculateCondition(state$);
-        console.log('IS THIS WORTH SOMETING ? ', currentInstance, conditionValue);
 
         // If the condition of this node is not null
         if (parentConditionValue === false) {
