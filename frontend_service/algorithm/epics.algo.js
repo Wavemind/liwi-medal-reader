@@ -57,7 +57,11 @@ export const epicCatchAnswer = (action$, state$) =>
 
       relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
 
-      if (index === state$.value.mobile_config.left_top_question_id || index === state$.value.mobile_config.first_top_right_question_id || index === state$.value.mobile_config.second_top_right_question_id) {
+      if (
+        index === state$.value.mobile_config.left_top_question_id ||
+        index === state$.value.mobile_config.first_top_right_question_id ||
+        index === state$.value.mobile_config.second_top_right_question_id
+      ) {
         NavigationService.setParamsAge();
       }
 
@@ -111,7 +115,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, "doesn't exist");
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
           return [];
       }
     })
@@ -149,9 +153,6 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
         // questionsSequenceCondition === false -> can't find a condition to true
         answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).second()].id;
       }
-
-      // eslint-disable-next-line no-console
-      console.log(currentQuestionsSequence, ' -> ce PS a comme réponse : ', answerId, 'condition result : ', questionsSequenceCondition, ' and is ', statusQs, ' to calculate');
 
       // If the new answer of this QS is different from the older, we change it
       if (answerId !== currentQuestionsSequence.answer) {
@@ -205,18 +206,6 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
         case null:
       }
 
-      // eslint-disable-next-line no-console
-      console.log(
-        '%c --- epicCatchFinalDiagnosticAction --- ',
-        'background: #eee; color: #000; padding: 5px',
-        'Diagnostic id :',
-        diagnosticId,
-        '-> conditon of this final node',
-        condition,
-        'for ->',
-        finalDiagnosticId
-      );
-
       // Check the condition of the children
       return of(...actions);
     })
@@ -257,50 +246,51 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       const actions = [];
 
       const { diagnosticId, nodeId } = action.payload;
-
-      const currentNode = state$.value.diagnostics[diagnosticId]?.instances[nodeId];
-
-      // INFO for debug if algo JSON is broken
-      if (currentNode === undefined) {
-        // eslint-disable-next-line no-console
-        console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', ' The node', nodeId, 'do not exist in diagnoses', diagnosticId);
-        return of();
-      }
-
-      if (state$.value.nodes[nodeId].display_format === displayFormats.formula) {
-        state$.value.nodes[nodeId].calculateFormula();
-      }
-
+      const diagnostic = state$.value.diagnostics[diagnosticId];
+      const { nodes } = state$.value;
+      const currentInstance = diagnostic.instances[nodeId];
+      const currentNode = nodes[nodeId];
       const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);
+      const currentConditionValue = find(nodes[currentInstance.id].dd, (d) => d.id === diagnosticId);
 
-      // some() – returns true if the function returns true for at least one of the items
-      // If one parentsNodes has to be show and answered
-      const parentConditionValue = parentsNodes.some((i) => {
-        const parentNode = state$.value.nodes[i];
-        const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
-        return parentNode.answer !== null && diagnostic.conditionValue === true;
-      });
+      console.log("ICI",currentConditionValue);
 
-      // Get node condition value
-      const conditionValue = currentNode.calculateCondition(state$);
-      const currentConditionValue = find(state$.value.nodes[currentNode.id].dd, (d) => d.id === diagnosticId);
-
-      // If the condition of this node is not null
-      if (parentConditionValue === false) {
-        // Stop infinite loop, change only whene conditionValue is different
+      // If the complaint category linked to the diagnistic is not selected we set the condition value to false
+      if (diagnostic.isExcludedByComplaintCategory(nodes)) {
         if (currentConditionValue.conditionValue !== false) {
-          // Set parent to false if their condition's isn't correct. Used to stop the algorithm
-          actions.push(updateConditionValue(nodeId, diagnosticId, false, state$.value.diagnostics[diagnosticId].type));
+          console.log("ICI",currentConditionValue);
+          actions.push(updateConditionValue(nodeId, diagnosticId, false, diagnostic.type));
         }
-      } else if (conditionValue !== null) {
-        // Stop infinite loop, change only whene conditionValue is different
-        if (currentConditionValue.conditionValue !== conditionValue) {
-          actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, state$.value.diagnostics[diagnosticId].type));
-        }
+      } else {
+        // some() – returns true if the function returns true for at least one of the items
+        // If one parentsNodes has to be show and answered
+        const parentConditionValue = parentsNodes.some((i) => {
+          const parentNode = nodes[i];
+          const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
+          return parentNode.answer !== null && diagnostic.conditionValue === true;
+        });
 
-        // If the node is answered go his children
-        if (state$.value.nodes[nodeId].answer !== null) {
-          actions.push(dispatchNodeAction(nodeId, diagnosticId, nodeTypes.diagnostic));
+        // Get node condition value
+        const conditionValue = currentInstance.calculateCondition(state$);
+        console.log('IS THIS WORTH SOMETING ? ', currentInstance, conditionValue);
+
+        // If the condition of this node is not null
+        if (parentConditionValue === false) {
+          // Stop infinite loop, change only when conditionValue is different
+          if (currentConditionValue.conditionValue !== false) {
+            // Set parent to false if their condition's isn't correct. Used to stop the algorithm
+            actions.push(updateConditionValue(nodeId, diagnosticId, false, diagnostic.type));
+          }
+        } else if (conditionValue !== null) {
+          // Stop infinite loop, change only whene conditionValue is different
+          if (currentConditionValue.conditionValue !== conditionValue) {
+            actions.push(updateConditionValue(nodeId, diagnosticId, conditionValue, diagnostic.type));
+          }
+
+          // If the node is answered go his children
+          if (currentNode.answer !== null) {
+            actions.push(dispatchNodeAction(nodeId, diagnosticId, nodeTypes.diagnostic));
+          }
         }
       }
 

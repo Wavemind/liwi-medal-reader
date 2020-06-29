@@ -219,14 +219,14 @@ export default class RealmInterface {
         if (patientValue === undefined) {
           this.push('Patient', medicalCase.patient_id, 'patientValues', {
             id: uuid.v4(),
-            value: node.value,
+            value: String(node.value),
             node_id: parseInt(node.id),
             answer_id: node.answer === null ? null : parseInt(node.answer),
             patient_id: medicalCase.patient_id,
           });
         } else {
           this._realm().write(() => {
-            this.update('PatientValue', patientValue.id, { value: node.value, answer_id: parseInt(node.answer) });
+            this.update('PatientValue', patientValue.id, { value: String(node.value), answer_id:node.answer === null ? null : parseInt(node.answer) });
           });
         }
       }

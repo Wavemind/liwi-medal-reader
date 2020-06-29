@@ -95,8 +95,8 @@ export const syncMedicalCases = async (body, userId = null) => {
  */
 const _fetch = async (url, header) => {
   const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
-  const result = await httpRequest.json();
 
+  const result = await httpRequest.json();
   if (httpRequest.status === 200) {
     return result;
   }

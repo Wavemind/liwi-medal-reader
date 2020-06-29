@@ -6,7 +6,6 @@ import { ManagementModel } from './Management.model';
 import { DrugModel } from './Drug.model';
 import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
-import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 import { QuestionsSequenceModel } from './QuestionsSequenceModel';
 import { QuestionModel } from './Question.model';
 
@@ -26,18 +25,6 @@ export class NodesModel implements NodeInterface {
   }
 
   /**
-   * Verify if all nodes in params is answered
-   * @params nodes: array
-   * @return allAnswered: boolean
-   * return true if all nodes is answered
-   */
-  isAllAnswered(nodes) {
-    return !nodes.some((a) => {
-      return a.answer === null;
-    });
-  }
-
-  /**
    * Return filtered nodes on multiple params
    * @params filter : array
    * [{ by: 'category', operator: 'equal', value: categories.symptom },
@@ -52,8 +39,8 @@ export class NodesModel implements NodeInterface {
    *  - array
    *  - object
    */
-  filterBy(filters, operator = 'OR', formatReturn = 'array', counter = true) {
-    this.filterByConditionValue();
+  filterBy(filters, diagnostics, operator = 'OR', formatReturn = 'array', counter = true) {
+    this.filterByConditionValue(diagnostics);
 
     // return the boolean for one filter
     const switchTest = (filter, node) => {
@@ -102,64 +89,26 @@ export class NodesModel implements NodeInterface {
     });
   }
 
-  filterByStage(stage) {
-    this.filterByConditionValue();
-    return _.filter(this, (n) => n.stage === stage);
-  }
-
-  filterByConditionValue() {
+  filterByConditionValue(diagnostics) {
     try {
       Object.keys(this).map((nodeId) => {
         if (this[nodeId].type === 'Question') {
           this[nodeId].counter = 0;
-
+          console.log("dasdas",this, nodeId);
           this[nodeId].dd.map((dd) => {
-            dd.conditionValue ? this[nodeId].counter++ : null;
+            console.log(nodeId,dd.id,diagnostics[dd.id].isExcludedByComplaintCategory(this));
+            (!diagnostics[dd.id].isExcludedByComplaintCategory(this)) && dd.conditionValue ? this[nodeId].counter++ : null;
           });
           // Map trough PS if it is in an another PS itself
           this[nodeId].qs.map((qs) => {
-            qs.conditionValue ? this[nodeId].counter++ : null;
+            const relatedDiagnostics = this[qs.id].dd.some((diagnostic) => !diagnostics[diagnostic.id].isExcludedByComplaintCategory(this));
+            relatedDiagnostics && qs.conditionValue ? this[nodeId].counter++ : null;
           });
         }
       });
     } catch (e) {
       console.warn(e);
     }
-  }
-
-  /**
-   * For each final diagnostics we return the management and treatment associate
-   *  We return all a list of management and a list of treatment are condition true. Not filtered by Final Diagnostics
-   *
-   * @return
-   * Object healthCares : {
-   *   managements: {},
-   *   drugs: {},
-   * }
-   *
-   */
-  getHealthCares() {
-    const healthCares = { managements: {}, drugs: {} };
-
-    // Filter by final diagnostic
-    const finalDiagnostics = FinalDiagnosticModel.all();
-
-    finalDiagnostics.included.forEach((finalDiagnostic) => {
-      Object.keys(finalDiagnostic.managements).forEach((key) => {
-        if (calculateCondition(finalDiagnostic.managements[key])) {
-          healthCares.managements[key] = this[key];
-          healthCares.managements[key].drugDoses = healthCares.managements[key].getDrugDoses();
-        }
-      });
-
-      Object.keys(finalDiagnostic.drugs).forEach((key) => {
-        if (calculateCondition(finalDiagnostic.drugs[key])) {
-          healthCares.drugs[key] = this[key];
-          healthCares.drugs[key].drugDoses = healthCares.drugs[key].getDrugDoses();
-        }
-      });
-    });
-    return healthCares;
   }
 
   /**
@@ -248,7 +197,6 @@ export class NodesModel implements NodeInterface {
             break;
         }
         break;
-
       case nodeTypes.question:
         instantiatedNode = new QuestionModel({
           ...node,
