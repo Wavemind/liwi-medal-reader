@@ -70,6 +70,8 @@ export class NodeModel implements NodeInterface {
           break;
         case valueFormats.bool:
         case valueFormats.array:
+        case valueFormats.present:
+        case valueFormats.positive:
           // Set Number only if this is a number
           if (value !== null) {
             answer = Number(value);

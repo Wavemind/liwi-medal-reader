@@ -77,7 +77,7 @@ export default class Medicines extends Component<Props, State> {
     }
   };
 
-  _medicineCards = (title, medicine, key) => {
+  _medicineCards = (title, medicine, key, type) => {
     const {
       app: { t },
       medicalCase: { nodes },
@@ -100,7 +100,7 @@ export default class Medicines extends Component<Props, State> {
             {Object.keys(medicine.drugs).length > 0 ? (
               Object.keys(medicine.drugs).map((treatmentId) => {
                 if (calculateCondition(medicine.drugs[treatmentId]) === true) {
-                  return <Medicine type="proposed" key={`${treatmentId}_medicine`} medicine={medicine.drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
+                  return <Medicine type={type} key={`${treatmentId}_medicine`} medicine={medicine.drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
                 }
               })
             ) : (
@@ -164,7 +164,7 @@ export default class Medicines extends Component<Props, State> {
             });
 
             if (isPossible) {
-              return this._medicineCards(t('diagnoses_label:proposed'), diagnoses.proposed[key], key);
+              return this._medicineCards(t('diagnoses_label:proposed'), diagnoses.proposed[key], key, 'proposed');
             }
           } else {
             return null;
@@ -174,7 +174,7 @@ export default class Medicines extends Component<Props, State> {
     );
 
     const renderMedicineAdditional = Object.keys(diagnoses.additional).map((key) => {
-      return this._medicineCards(t('diagnoses_label:additional'), diagnoses.additional[key], key);
+      return this._medicineCards(t('diagnoses_label:additional'), diagnoses.additional[key], key, 'additional');
     });
 
     const renderAdditionalDrugs = (

@@ -13,6 +13,7 @@ import { calculateCondition } from './conditionsHelpers.algo';
  */
 export const questionsMedicalHistory = () => {
   const state$ = store.getState();
+  const { diagnostics } = state$;
   const questions = state$.nodes.filterBy(
     [
       {
@@ -28,12 +29,23 @@ export const questionsMedicalHistory = () => {
       {
         by: 'category',
         operator: 'equal',
-        value: categories.basicMeasurement,
+        value: categories.chronicCondition,
+      },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.observedPhysicalSign,
+      },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.vaccine,
       },
     ],
+    diagnostics,
     'OR',
     'array',
-    false
+    true
   );
   if (state$.metaData.consultation.medicalHistory.length === 0 && questions.length !== 0) {
     store.dispatch(
@@ -53,6 +65,7 @@ export const questionsMedicalHistory = () => {
  */
 export const questionsPhysicalExam = () => {
   const state$ = store.getState();
+  const { diagnostics } = state$;
   const questions = state$.nodes.filterBy(
     [
       {
@@ -61,9 +74,10 @@ export const questionsPhysicalExam = () => {
         value: categories.physicalExam,
       },
     ],
+    diagnostics,
     'OR',
     'array',
-    false
+    true
   );
 
   if (state$.metaData.consultation.physicalExam.length === 0 && questions.length !== 0) {
@@ -173,8 +187,13 @@ export const questionsBasicMeasurements = () => {
  */
 export const questionsTests = () => {
   const state$ = store.getState();
+  const { diagnostics } = state$;
   let assessmentTest = [];
-  assessmentTest = state$.nodes.filterBy([{ by: 'category', operator: 'equal', value: categories.assessment }]);
+  assessmentTest = state$.nodes.filterBy([{
+    by: 'category',
+    operator: 'equal',
+    value: categories.assessment
+  }], diagnostics);
 
   if (state$.metaData.tests.tests.length === 0 && assessmentTest.length !== 0) {
     store.dispatch(

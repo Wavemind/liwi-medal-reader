@@ -167,7 +167,10 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     y = y.display_format === displayFormats.date ? moment().diff(moment(y.value).toDate(), dateFormat) : y.value;
 
     // Get reference table for male or female
-    const reference = state$.patient.gender === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
+    // TODO: VERY IMPORTANT WHEN MEDAL-C DEFINES GENDER FOR A ALGORITHM NEED TO FIX THIS
+    // TODO: DOING A SECOND LINE OF COMMENT SO THE TODO IS VISIBLE
+    // TODO: const reference = state$.patient.gender === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
+    const reference = 'male' === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
     let value = null;
     let previousKey = null;
 

@@ -170,6 +170,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
             value: stages.registration,
           },
         ],
+        medicalCase.diagnostics,
         'OR',
         'array',
         false

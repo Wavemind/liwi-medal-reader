@@ -15,10 +15,11 @@ interface DiagnosticInterface {
 
 export class DiagnosticModel implements DiagnosticInterface {
   constructor(props) {
-    const { id, final_diagnostics, label, differential, reference, instances } = props;
+    const { id, final_diagnostics, label, differential, reference, instances, complaint_category } = props;
 
     this.id = id;
     this.final_diagnostics = final_diagnostics;
+    this.complaint_category = complaint_category;
     this.label = label;
     this.differential = differential;
     this.reference = reference;
@@ -36,6 +37,10 @@ export class DiagnosticModel implements DiagnosticInterface {
     Object.keys(this.instances).map((id) => {
       this.instances[id] = new InstanceModel({ ...this.instances[id] });
     });
+  }
+
+  isExcludedByComplaintCategory(nodes) {
+    return nodes[this.complaint_category].answer === Number(Object.keys(nodes[this.complaint_category].answers)[1]);
   }
 
   /**

@@ -115,6 +115,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    */
   getStatusOfDD = (state$, dd) => {
     const topLevelNodes = [];
+
     const instancesOfDiagnosticByDd = state$.diagnostics[dd.diagnostic_id].instances;
     // Set top Level Nodes
     Object.keys(instancesOfDiagnosticByDd).map((instanceId) => {
@@ -206,6 +207,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
 
         const condition = finalDiagnostic.calculateCondition();
 
+        // If complaintCategory is not selected, I know it's ugly but what can I do ?
         if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers)[1])) {
           finalDiagnosticsFalse.push({
             ...finalDiagnostic,
