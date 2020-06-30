@@ -94,9 +94,7 @@ export class NodesModel implements NodeInterface {
       Object.keys(this).map((nodeId) => {
         if (this[nodeId].type === 'Question') {
           this[nodeId].counter = 0;
-          console.log("dasdas",this, nodeId);
           this[nodeId].dd.map((dd) => {
-            console.log(nodeId,dd.id,diagnostics[dd.id].isExcludedByComplaintCategory(this));
             (!diagnostics[dd.id].isExcludedByComplaintCategory(this)) && dd.conditionValue ? this[nodeId].counter++ : null;
           });
           // Map trough PS if it is in an another PS itself

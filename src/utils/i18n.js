@@ -146,6 +146,8 @@ i18n
         question: {
           yes: 'Yes',
           no: 'No',
+          measured: 'Measured',
+          estimated: 'Estimated',
           unavailable: 'Unavailable',
         },
         menu: {

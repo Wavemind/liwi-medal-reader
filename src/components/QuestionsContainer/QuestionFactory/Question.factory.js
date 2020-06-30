@@ -1,21 +1,21 @@
 // @flow
-import * as React from "react";
-import type { NavigationScreenProps } from "react-navigation";
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import { Button, Icon, ListItem, Text } from "native-base";
-import _ from "lodash";
-import { displayFormats, nodeTypes, valueFormats } from "../../../../frontend_service/constants";
-import { liwiColors, screensScale, screenWidth } from "../../../utils/constants";
-import { styles } from "./Question.factory.style";
-import Boolean from "../DisplaysContainer/Boolean";
-import Numeric from "../DisplaysContainer/Numeric";
-import String from "../DisplaysContainer/String";
-import { ViewQuestion } from "../../../template/layout";
-import List from "../DisplaysContainer/List";
-import Date from "../DisplaysContainer/Date";
-import Tooltip from "../../Tooltip/tooltip";
-import Unavailable from "../../InputContainer/Unavailable";
-import Formula from "../DisplaysContainer/Formula";
+import * as React from 'react';
+import type { NavigationScreenProps } from 'react-navigation';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { Button, Icon, ListItem, Text } from 'native-base';
+import _ from 'lodash';
+import { displayFormats, nodeTypes, valueFormats } from '../../../../frontend_service/constants';
+import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
+import { styles } from './Question.factory.style';
+import Boolean from '../DisplaysContainer/Boolean';
+import Numeric from '../DisplaysContainer/Numeric';
+import String from '../DisplaysContainer/String';
+import { ViewQuestion } from '../../../template/layout';
+import List from '../DisplaysContainer/List';
+import Date from '../DisplaysContainer/Date';
+import Tooltip from '../../Tooltip/tooltip';
+import Unavailable from '../../InputContainer/Unavailable';
+import Formula from '../DisplaysContainer/Formula';
 
 type Props = NavigationScreenProps & {};
 

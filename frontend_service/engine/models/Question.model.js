@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import { NodeModel } from './Node.model';
-import { valueFormats, displayFormats } from '../../constants';
+import { valueFormats, displayFormats, categories } from '../../constants';
 import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
 
@@ -18,7 +18,6 @@ const references = {
 interface QuestionInterface {
   answer: string;
   answers: Object;
-  answer_stage: string;
   description: string;
   label: string;
   category: string;
@@ -37,7 +36,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     const {
       answer = null,
       answers = {},
-      answer_stage = '',
       description = '',
       label = '',
       category = '',
@@ -59,6 +57,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       system = '',
       is_identifiable = false,
       is_triage = false,
+      estimable = false,
+      estimableValue = 'measured',
     } = props;
 
     this.description = description;
@@ -84,6 +84,16 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.system = system;
     this.is_identifiable = is_identifiable;
     this.is_triage = is_triage;
+    this.validationMessage = null;
+    this.validationType = null;
+    this.estimable = estimable;
+
+    // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
+    // if (estimable) {
+    if (estimable) {
+      // Type available [measured, estimated]
+      this.estimableValue = estimableValue;
+    }
   }
 
   /**
