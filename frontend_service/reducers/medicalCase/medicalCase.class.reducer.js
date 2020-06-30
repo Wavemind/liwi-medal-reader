@@ -430,6 +430,26 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
+   * Set estimable value for basic measurement question
+   * @param state
+   * @param action
+   * @returns {{nodes: NodesModel}}
+   */
+  @Action(actions.SET_ESTIMABLE)
+  setEstimable(state, action) {
+    const { index, value } = action.payload;
+
+    // Instantiate new object with answered question with new answer value
+    state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
+    state.nodes[index].estimableValue = value;
+
+    return {
+      ...state,
+      nodes: new NodesModel(state.nodes),
+    };
+  }
+
+  /**
    * Set patient value
    * @param state
    * @param action
