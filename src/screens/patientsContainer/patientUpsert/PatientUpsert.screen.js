@@ -6,6 +6,7 @@ import { Button, Col, Text, View } from 'native-base';
 import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
 
 import uuid from 'react-native-uuid';
+import moment from 'moment';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
@@ -18,6 +19,8 @@ import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
+import { store } from '../../../../frontend_service/store';
+import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -27,6 +30,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     errors: {},
     patient: null,
     loading: true,
+    isEligibility: false,
   };
 
   async componentDidMount() {
@@ -34,7 +38,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       navigation,
       setMedicalCase,
       updateMedicalCaseProperty,
-      app: { database },
+      app: { database, algorithm },
     } = this.props;
 
     let patient = {};
@@ -44,7 +48,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
     let facility = navigation.getParam('facility'); // Object
-    const algorithm = await getItems('algorithm');
 
     if (patientId === null) {
       if (facility === undefined) {
@@ -72,11 +75,27 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     NavigationService.setParamsAge('Patient');
     updateMedicalCaseProperty('patient', patient);
+
     this.setState({
       patient,
       loading: false,
     });
   }
+
+  /**
+   * Calculate age in year of the patient
+   */
+  renderEligibilityMessage = () => {
+    const { medicalCase } = this.props;
+
+    if (!medicalCase.isEligibility) {
+      return (
+        <View style={styles.warning}>
+          <Text size-auto>{medicalCase.config.age_limit_message}</Text>
+        </View>
+      );
+    }
+  };
 
   /**
    * Update state value of patient
@@ -207,11 +226,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
       >
         {[
           <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
-            <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
               <LiwiLoader />
             ) : (
               <>
+                <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+                {this.renderEligibilityMessage()}
                 <View>
                   <Col>
                     {this.renderIdentifierData()}
