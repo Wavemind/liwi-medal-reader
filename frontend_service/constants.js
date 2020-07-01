@@ -1,6 +1,6 @@
 // Server address
-// export const host = 'https://liwi.wavelab.top/api/v1/';
-export const host = 'https://medalc.unisante.ch/api/v1/';
+export const host = 'https://liwi.wavelab.top/api/v1/';
+// export const host = 'https://medalc.unisante.ch/api/v1/';
 export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
 export const secondStatusLocalData = 5000;
