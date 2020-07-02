@@ -5,6 +5,7 @@ import { Input, Text, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
 import { LeftButton, RightButton } from '../../../../template/layout';
+import styles from './Numeric.style';
 
 type Props = NavigationScreenProps & {};
 
@@ -31,7 +32,7 @@ export default class Numeric extends React.Component<Props, State> {
 
     this.setState({
       value: question.value,
-      estimableValue: question.estimable ? question.estimableValue : false,
+      estimableValue: question.estimableValue,
     });
   }
 
@@ -110,15 +111,15 @@ export default class Numeric extends React.Component<Props, State> {
           <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
         </View>
         {question.estimable ? (
-          <View answer style={{ marginTop: 10 }}>
+          <View answer style={styles.marginTop}>
             <LeftButton active={estimableValue === 'measured'} onPress={() => this._handleEstimable('measured')} disabled={isReadOnly}>
-              <Text center white={estimableValue === 'measured'} style={{ fontSize: 11 }}>
+              <Text center white={estimableValue === 'measured'} style={styles.estimableFontSize}>
                 {t('question:measured')}
               </Text>
             </LeftButton>
 
             <RightButton active={estimableValue === 'estimated'} onPress={() => this._handleEstimable('estimated')} disabled={isReadOnly}>
-              <Text center white={estimableValue === 'estimated'} style={{ fontSize: 11 }}>
+              <Text center white={estimableValue === 'estimated'} style={styles.estimableFontSize}>
                 {t('question:estimated')}
               </Text>
             </RightButton>
