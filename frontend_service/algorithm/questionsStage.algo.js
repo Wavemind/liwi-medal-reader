@@ -51,6 +51,8 @@ export const questionsMedicalHistory = () => {
   );
 
   const newQuestions = questions.map(({ id }) => id);
+
+  // Update state$ medical history questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.consultation.medicalHistory, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
   }
@@ -80,6 +82,8 @@ export const questionsPhysicalExam = () => {
   );
 
   const newQuestions = questions.map(({ id }) => id);
+
+  // Update state$ physical exam questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.consultation.physicalExam, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
   }
@@ -104,6 +108,8 @@ export const questionsFirstLookAssessement = () => {
   }
 
   const newQuestions = firstLookAssessement.map(({ id }) => id);
+
+  // Update state$ first look assessment questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.triage.firstLookAssessments, newQuestions)) {
     store.dispatch(updateMetaData('triage', 'firstLookAssessments', newQuestions));
   }
@@ -125,6 +131,8 @@ export const questionsComplaintCategory = () => {
   });
 
   const newQuestions = complaintCategories.map(({ id }) => id);
+
+  // Update state$ complaint categories questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.triage.complaintCategories, newQuestions)) {
     store.dispatch(updateMetaData('triage', 'complaintCategories', newQuestions));
   }
@@ -152,6 +160,8 @@ export const questionsBasicMeasurements = () => {
   }
 
   const newQuestions = basicMeasurements.map(({ id }) => id);
+
+  // Update state$ basic measurements questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.triage.basicMeasurements, newQuestions)) {
     store.dispatch(updateMetaData('triage', 'basicMeasurements', newQuestions));
   }
@@ -179,6 +189,8 @@ export const questionsTests = () => {
   );
 
   const newQuestions = assessmentTest.map(({ id }) => id);
+
+  // Update state$ tests questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.tests.tests, newQuestions)) {
     store.dispatch(updateMetaData('tests', 'tests', newQuestions));
   }
