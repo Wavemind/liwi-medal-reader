@@ -2,8 +2,12 @@
 import NavigationService from 'engine/navigation/Navigation.service';
 
 import findKey from 'lodash/findKey';
+import { View } from 'react-native';
+import { Text } from 'native-base';
+import React from 'react';
 import { categories, valueFormats } from '../../constants';
 import { MedicalCaseModel } from './MedicalCase.model';
+import { styles } from '../../../src/components/QuestionsContainer/QuestionFactory/Question.factory.style';
 
 interface NodeInterface {
   id: number;
@@ -90,6 +94,38 @@ export class NodeModel implements NodeInterface {
     } else {
       answer = null;
     }
+
+    // Validation for integer and float type based on Medal-C config
+    if (this.value_format === valueFormats.int || this.value_format === valueFormats.float) {
+      if (value !== null && (value < this.min_value_warning || value > this.max_value_warning)) {
+        // Warning
+        if (value < this.min_value_warning && this.min_value_warning !== null) {
+          this.validationMessage = this.min_message_warning;
+        }
+
+        if (value > this.max_value_warning && this.max_value_warning !== null) {
+          this.validationMessage = this.max_message_warning;
+        }
+
+        this.validationType = 'warning';
+
+        // Error
+        if (value < this.min_value_error || value > this.max_value_error) {
+          if (value < this.min_value_error && this.min_value_error !== null) {
+            this.validationMessage = this.min_message_error;
+          }
+
+          if (value > this.max_value_error && this.max_value_error !== null) {
+            this.validationMessage = this.max_message_error;
+          }
+          this.validationType = 'error';
+        }
+      } else {
+        this.validationMessage = null;
+        this.validationType = null;
+      }
+    }
+
     // Assign final value
     this.answer = answer;
     this.answer_stage = NavigationService.getCurrentRoute().routeName;

@@ -1,21 +1,22 @@
 // @flow
-import * as React from "react";
-import type { NavigationScreenProps } from "react-navigation";
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import { Button, Icon, ListItem, Text } from "native-base";
-import _ from "lodash";
-import { displayFormats, nodeTypes, valueFormats } from "../../../../frontend_service/constants";
-import { liwiColors, screensScale, screenWidth } from "../../../utils/constants";
-import { styles } from "./Question.factory.style";
-import Boolean from "../DisplaysContainer/Boolean";
-import Numeric from "../DisplaysContainer/Numeric";
-import String from "../DisplaysContainer/String";
-import { ViewQuestion } from "../../../template/layout";
-import List from "../DisplaysContainer/List";
-import Date from "../DisplaysContainer/Date";
-import Tooltip from "../../Tooltip/tooltip";
-import Unavailable from "../../InputContainer/Unavailable";
-import Formula from "../DisplaysContainer/Formula";
+import * as React from 'react';
+import type { NavigationScreenProps } from 'react-navigation';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { Button, Icon, ListItem, Text } from 'native-base';
+import _ from 'lodash';
+
+import { displayFormats, nodeTypes, valueFormats } from '../../../../frontend_service/constants';
+import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
+import { styles } from './Question.factory.style';
+import Boolean from '../DisplaysContainer/Boolean';
+import Numeric from '../DisplaysContainer/Numeric';
+import String from '../DisplaysContainer/String';
+import { ViewQuestion } from '../../../template/layout';
+import List from '../DisplaysContainer/List';
+import Date from '../DisplaysContainer/Date';
+import Tooltip from '../../Tooltip/tooltip';
+import Unavailable from '../../InputContainer/Unavailable';
+import Formula from '../DisplaysContainer/Formula';
 
 type Props = NavigationScreenProps & {};
 
@@ -155,17 +156,65 @@ class WrapperQuestion extends React.Component<Props, State> {
 }
 
 export default class Question extends React.Component<Props, State> {
+  state: {
+    flexLabel: 0.6,
+    flexQuestion: 0.3,
+    flexToolTip: 0.1,
+  };
+
+  constructor(props) {
+    super(props);
+
+    let flexLabel = 0.6;
+    let flexQuestion = 0.3;
+    let flexToolTip = 0.1;
+
+    // Change flex for small screen
+    if (screenWidth < screensScale.s) {
+      flexLabel = 0.5;
+      flexQuestion = 0.4;
+      flexToolTip = 0.1;
+    }
+
+    this.state = {
+      flexLabel,
+      flexQuestion,
+      flexToolTip,
+    };
+  }
+
   shouldComponentUpdate(nextProps: Props): boolean {
     const { question } = this.props;
 
     return question.counter !== nextProps.question.counter || question.answer !== nextProps.question.answer || question.value !== nextProps.question.value || question.id !== nextProps.question.id;
   }
 
+  /**
+   * Display validation for integer and float type. Based on Medal-C info
+   * @returns {null|*}
+   * @private
+   */
+  _displayValidation = () => {
+    const { question } = this.props;
+
+    if (question.validationType !== null && question.validationMessage !== null) {
+      return (
+        <View style={question.validationType === 'error' ? styles.errorRow : styles.warningRow}>
+          <Text white>{question.validationMessage}</Text>
+        </View>
+      );
+    }
+
+    // Nothing
+    return null;
+  };
+
   render() {
     const {
       question,
       app: { t },
     } = this.props;
+    const { flexLabel, flexQuestion, flexToolTip } = this.state;
     let WrapperUnavailable = () => null;
     let unavailableAnswer = null;
 
@@ -187,17 +236,6 @@ export default class Question extends React.Component<Props, State> {
       return null;
     }
 
-    let flexLabel = 0.6;
-    let flexQuestion = 0.3;
-    let flexToolTip = 0.1;
-
-    // Change flex for small screen
-    if (screenWidth < screensScale.s) {
-      flexLabel = 0.5;
-      flexQuestion = 0.4;
-      flexToolTip = 0.1;
-    }
-
     // Construct generic Component for the question
     return (
       <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
@@ -206,6 +244,7 @@ export default class Question extends React.Component<Props, State> {
           <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
           <TooltipButton question={question} flex={flexToolTip} />
         </View>
+        {this._displayValidation()}
         <View style={styles.unavailable}>
           <WrapperUnavailable />
         </View>
