@@ -362,7 +362,7 @@ i18n
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
-          available_algorithms: 'Available algorithms',
+          synchronization: 'Synchronization',
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',

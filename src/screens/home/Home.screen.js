@@ -141,7 +141,7 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Algorithms')}>
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
                 <Text size-auto center style={styles.textButton}>
