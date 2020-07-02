@@ -3,7 +3,9 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Col, Text, View } from 'native-base';
-import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
+import { NavigationScreenProps } from 'react-navigation';
+import ScanbotSDK from 'react-native-scanbot-sdk';
+import RNFS from 'react-native-fs';
 
 import uuid from 'react-native-uuid';
 import NavigationService from '../../../engine/navigation/Navigation.service';
@@ -18,6 +20,8 @@ import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
+import { displayNotification } from '../../../utils/CustomToast';
+import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -78,6 +82,45 @@ export default class PatientUpsert extends React.Component<Props, State> {
     });
   }
 
+  checkLicense = async () => {
+    if (await ScanbotSDK.isLicenseValid()) {
+      // OK - we have a trial session, a valid trial license or valid production license.
+      return true;
+    }
+    displayNotification('Scanbot SDK trial period or license has expired!', liwiColors.redColor);
+    return false;
+  };
+
+  startDocumentScannerButtonTapped = async () => {
+    const { app, addConsent } = this.props;
+
+    if (!(await this.checkLicense())) {
+      return;
+    }
+    await app.set('showPinOnUnlock', false);
+    const result = await ScanbotSDK.UI.startDocumentScanner({
+      // Customize colors, text resources, etc..
+      polygonColor: '#ff407d',
+      cameraPreviewMode: 'FIT_IN',
+      orientationLockMode: 'PORTRAIT',
+      multiPageEnabled: false,
+      multiPageButtonHidden: true,
+      ignoreBadAspectRatio: true,
+      shutterButtonHidden: true,
+      maxNumberOfPages: 1,
+      documentImageSizeLimit: {
+        height: 1500,
+        width: 750,
+      },
+    });
+
+    if (result.status === 'OK') {
+      const regexp = /([^?]+).*/;
+      ScanbotSDK.applyImageFilterOnPage(result.pages[0], 'COLOR_DOCUMENT');
+      addConsent(await RNFS.readFile(`${result.pages[0].documentImageFileUri.match(regexp)[1]}?${Date.now()}`, 'base64'));
+    }
+  };
+
   /**
    * Update state value of patient
    * @params [String] key [String] value
@@ -102,11 +145,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
+          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
+          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
@@ -227,6 +270,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
                         autoCapitalize="sentences"
                       />
                     )}
+                    <Button onPress={this.startDocumentScannerButtonTapped}>
+                      <Text>Scan</Text>
+                    </Button>
+                    <Button onPress={() => navigation.navigate('ConsentPreview')}>
+                      <Text>Ici</Text>
+                    </Button>
                   </Col>
                 </View>
                 <Text customSubTitle>{t('patient_upsert:questions')}</Text>

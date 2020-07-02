@@ -45,6 +45,9 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url "https://maven.google.com" }
 
+        // Scanbot SDK Maven repositories:
+        maven { url 'https://nexus.scanbot.io/nexus/content/repositories/releases/' }
+        maven { url 'https://nexus.scanbot.io/nexus/content/repositories/snapshots/' }
 
     }
 }

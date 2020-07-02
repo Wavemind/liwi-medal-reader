@@ -3,15 +3,15 @@ import { Action, ReducerClass } from 'reducer-class';
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
 import { filter } from 'lodash';
-import { getItems, storeMedicalCase } from '../../../src/engine/api/LocalStorage';
+import 'reflect-metadata';
+
+import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { categories, nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
-import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { QuestionModel } from '../../engine/models/Question.model';
-import { PatientValueModel } from '../../engine/models/PatientValue.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -45,6 +45,27 @@ class MedicalCaseReducer extends ReducerClass {
 
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
+  /**
+   * Update condition value of diagnostic or questions sequence for a question or a questions sequence
+   *
+   * @trigger When a condition value must be change
+   * @payload nodeId: Question or QuestionsSequence
+   * @payload callerId: Diagnostic or QuestionsSequence
+   * @payload value: new condition value
+   * @payload type: define if it's a diagnostic or a question sequence
+   */
+  @Action(actions.ADD_CONSENT)
+  addConsent(state, action) {
+    const { page } = action.payload;
+
+    return {
+      ...state,
+      patient: {
+        ...state.patient,
+        consent: page,
+      },
+    };
+  }
 
   /**
    * Update condition value of diagnostic or questions sequence for a question or a questions sequence
