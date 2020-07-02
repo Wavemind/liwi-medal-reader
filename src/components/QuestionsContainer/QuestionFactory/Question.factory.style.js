@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   flexRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   flexColumn: {
     flex: 1,
@@ -55,5 +55,21 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'flex-end',
     flexDirection: 'row',
+  },
+
+  warningRow: {
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+    padding: 10,
+    backgroundColor: liwiColors.orangeColor,
+  },
+
+  errorRow: {
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+    padding: 10,
+    backgroundColor: liwiColors.redColor,
   },
 });
