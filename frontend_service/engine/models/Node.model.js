@@ -97,7 +97,7 @@ export class NodeModel implements NodeInterface {
 
     // Validation for integer and float type based on Medal-C config
     if (this.value_format === valueFormats.int || this.value_format === valueFormats.float) {
-      if ((value < this.min_value_warning || value > this.max_value_warning) && value !== null) {
+      if (value !== null && (value < this.min_value_warning || value > this.max_value_warning)) {
         // Warning
         if (value < this.min_value_warning && this.min_value_warning !== null) {
           this.validationMessage = this.min_message_warning;
