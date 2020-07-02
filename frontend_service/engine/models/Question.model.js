@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import { NodeModel } from './Node.model';
-import { valueFormats, displayFormats } from '../../constants';
+import { valueFormats, displayFormats, categories } from '../../constants';
 import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
 
@@ -57,6 +57,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       system = '',
       is_identifiable = false,
       is_triage = false,
+      estimable = false,
+      estimableValue = 'measured',
       min_value_warning = '',
       max_value_warning = '',
       min_value_error = '',
@@ -100,6 +102,14 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.max_message_error = max_message_error;
     this.validationMessage = null;
     this.validationType = null;
+    this.estimable = estimable;
+
+    // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
+    // if (estimable) {
+    if (estimable) {
+      // Type available [measured, estimated]
+      this.estimableValue = estimableValue;
+    }
   }
 
   /**
