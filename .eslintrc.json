@@ -49,6 +49,7 @@
     "template-curly-spacing": "off",
     "indent": "off",
     "no-underscore-dangle": "off",
+    "camelcase": "off",
     "max-len": "off",
     "no-use-before-define": "off",
     "arrow-parens": "off",

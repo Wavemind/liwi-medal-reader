@@ -42,6 +42,7 @@ export type StateApplicationContext = {
   contentModal: string,
   t: (string) => Function<string>,
   ready: boolean,
+  showPinOnUnlock: boolean,
 };
 
 export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
@@ -326,6 +327,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     set: this.setValState,
     subscribePingApplicationServer: this.subscribePingApplicationServer,
     setUser: this.setUser,
+    showPinOnUnlock: true,
     t: (translate) => i18n.t(translate),
   };
 
@@ -367,11 +369,16 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @private
    */
   _handleAppStateChange = async (nextAppState) => {
-    const { appState } = this.state;
+    const { appState, showPinOnUnlock } = this.state;
+
     if (appState.match(/inactive|background/) && nextAppState === 'active') {
       console.warn('---> Liwi came back from background', nextAppState);
-      this.setState({ appState: nextAppState, logged: false });
-      NavigationService.navigate('AuthLoading');
+      if (showPinOnUnlock) {
+        this.setState({ appState: nextAppState, logged: false });
+        NavigationService.navigate('AuthLoading');
+      } else {
+        this.setState({ showPinOnUnlock: true });
+      }
     }
 
     if (appState.match(/active/) && nextAppState.match(/inactive|background/)) {

@@ -136,6 +136,7 @@ PatientModel.schema = {
     medicalCases: 'MedicalCase[]',
     patientValues: 'PatientValue[]',
     updated_at: 'date',
+    consent: 'data?',
     fail_safe: { type: 'bool', default: false },
   },
 };
