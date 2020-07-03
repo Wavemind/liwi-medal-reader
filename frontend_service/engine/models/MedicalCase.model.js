@@ -112,6 +112,11 @@ export class MedicalCaseModel {
     return this;
   }
 
+  /**
+   * Define vue based on medical case status
+   * @param {String} stage - Current page
+   * @returns {boolean}
+   */
   isMaxStage = (stage) => {
     switch (this.status) {
       case 'in_creation':
@@ -324,6 +329,15 @@ export class MedicalCaseModel {
       }
     }
     return displayedValue;
+  };
+
+  /**
+   * Check if case can be synchronized with main data
+   * @returns {boolean}
+   */
+  canBeSynchronized = () => {
+    // TODO: Add consent test
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligibility;
   };
 }
 
