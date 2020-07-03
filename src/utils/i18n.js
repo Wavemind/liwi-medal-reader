@@ -392,6 +392,10 @@ i18n
           get_group: 'Receiving group data and medical staff',
           device_registered: 'Device registered',
         },
+        synchronize: {
+          title: 'Medical cases to synchronize',
+          synchronize: 'Synchronize',
+        },
       },
       fr: {
         summary: {

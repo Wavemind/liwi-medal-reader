@@ -23,7 +23,7 @@ export default class Home extends React.Component<Props, State> {
   state = {
     qrcode: false,
     modalQrCode: false,
-    algorithm: null,
+    session: null,
     propsToolTipVisible: false,
   };
 
@@ -34,8 +34,8 @@ export default class Home extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const algorithm = await getItems('algorithm');
-    this.setState({ algorithm });
+    const session = await getItems('session');
+    this.setState({ session });
   }
 
   callBackClose = (canContinue) => {
@@ -57,9 +57,10 @@ export default class Home extends React.Component<Props, State> {
       navigation,
       app: { t, user, logout },
       medicalCase,
+      algorithm,
     } = this.props;
 
-    const { algorithm, propsToolTipVisible, qrcode, modalQrCode } = this.state;
+    const { propsToolTipVisible, qrcode, modalQrCode, session } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen" style={styles.back}>
@@ -141,14 +142,16 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
-              <View style={styles.blocContainer}>
-                <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
-                <Text size-auto center style={styles.textButton}>
-                  {t('navigation:synchronize')}
-                </Text>
-              </View>
-            </TouchableHighlight>
+            {session?.group.architecture === 'standalone' ? (
+              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
+                <View style={styles.blocContainer}>
+                  <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
+                  <Text size-auto center style={styles.textButton}>
+                    {t('navigation:synchronize')}
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            ) : null}
             <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/settings.png')} />
