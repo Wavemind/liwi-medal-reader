@@ -30,4 +30,5 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  warning: { padding: 10, backgroundColor: liwiColors.orangeColor, borderRadius: 4, elevation: 1, marginTop: 10, marginBottom: 10 },
 });
