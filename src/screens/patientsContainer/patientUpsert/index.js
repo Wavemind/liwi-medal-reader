@@ -1,14 +1,7 @@
 import { connect } from 'react-redux';
 import PatientUpsert from './PatientUpsert.screen';
 import { withApplication } from '../../../engine/contexts/Application.context';
-import {
-  setMedicalCase,
-  updateMedicalCaseProperty,
-  updateMetaData,
-  updateModalFromRedux,
-  updatePatient,
-  addConsent
-} from '../../../../frontend_service/actions/creators.actions';
+import { setMedicalCase, updateMedicalCaseProperty, updateMetaData, updateModalFromRedux, updatePatient, addConsent } from '../../../../frontend_service/actions/creators.actions';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 
 const mapStateToProps = (medicalCase) => {

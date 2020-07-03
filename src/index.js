@@ -74,7 +74,7 @@ export default class Root extends React.Component {
       licenseKey,
       loggingEnabled: true, // Consider switching logging OFF in production builds for security and performance reasons!
       storageImageFormat: 'JPG',
-      storageImageQuality: 3,
+      storageImageQuality: 50,
       storageBaseDirectory: this.getCustomStoragePath(), // Optional storage path. See comments below!
     };
     try {

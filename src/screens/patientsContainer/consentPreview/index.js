@@ -3,9 +3,9 @@ import ConsentPreview from './ConsentPreview.screen';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 
-const mapStateToProps = (medicalCase) => {
+const mapStateToProps = (state) => {
   return {
-    medicalCase,
+    state,
   };
 };
 
