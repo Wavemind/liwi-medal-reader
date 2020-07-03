@@ -11,12 +11,16 @@ export default class ConsentPreview extends React.Component {
   state = {};
 
   render() {
-    const { medicalCase } = this.props;
+    const { state } = this.props;
+
+    // State can either be a patient or a medical case
+    const consent = state.consent !== undefined ? state.consent : state.patient.consent;
+
     const { width, height } = Dimensions.get('window');
     return (
       <View style={{ backgroundColor: liwiColors.blackColor, margin: 0, padding: 0 }}>
         <ImageZoom minScale={1} cropWidth={width} cropHeight={height} imageWidth={width - 20} imageHeight={height} enableCenterFocus={false}>
-          <Image source={{ uri: `data:image/png;base64,${medicalCase.patient.consent}` }} style={styles.documentImage} />
+          <Image source={{ uri: `data:image/png;base64,${consent}` }} style={styles.documentImage} />
         </ImageZoom>
       </View>
     );

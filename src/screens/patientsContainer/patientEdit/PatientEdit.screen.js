@@ -18,6 +18,7 @@ import { convertToObject } from '../../../utils/swissKnives';
 import { store } from '../../../../frontend_service/store';
 import { displayNotification } from '../../../utils/CustomToast';
 import { liwiColors } from '../../../utils/constants';
+import NavigationService from '../../../engine/navigation/Navigation.service';
 
 export default class PatientEdit extends React.Component {
   state = {
@@ -97,6 +98,7 @@ export default class PatientEdit extends React.Component {
     const {
       app: { t },
     } = this.props;
+
     const nodes = this.getQuestionFromPatient();
     return (
       <>
@@ -104,6 +106,11 @@ export default class PatientEdit extends React.Component {
           <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
           {loading ? <LiwiLoader /> : <Questions questions={nodes} patientValueEdit />}
         </ScrollView>
+        <View style={styles.flexRow}>
+          <Button block onPress={() => NavigationService.navigate('ConsentPreview')}>
+            <Text style={{ flex: 1, textAlign: 'center' }}>Show consent</Text>
+          </Button>
+        </View>
         <View bottom-view>
           <Button block onPress={() => this.savePatientValues()} disabled={disable}>
             <Text size-auto>{t('application:save')}</Text>

@@ -2,10 +2,8 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Col, Text, View } from 'native-base';
+import { Col, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import ScanbotSDK from 'react-native-scanbot-sdk';
-import RNFS from 'react-native-fs';
 
 import uuid from 'react-native-uuid';
 import NavigationService from '../../../engine/navigation/Navigation.service';
@@ -20,8 +18,7 @@ import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
-import { displayNotification } from '../../../utils/CustomToast';
-import { liwiColors } from '../../../utils/constants';
+import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -81,45 +78,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
       loading: false,
     });
   }
-
-  checkLicense = async () => {
-    if (await ScanbotSDK.isLicenseValid()) {
-      // OK - we have a trial session, a valid trial license or valid production license.
-      return true;
-    }
-    displayNotification('Scanbot SDK trial period or license has expired!', liwiColors.redColor);
-    return false;
-  };
-
-  startDocumentScannerButtonTapped = async () => {
-    const { app, addConsent } = this.props;
-
-    if (!(await this.checkLicense())) {
-      return;
-    }
-    await app.set('showPinOnUnlock', false);
-    const result = await ScanbotSDK.UI.startDocumentScanner({
-      // Customize colors, text resources, etc..
-      polygonColor: '#ff407d',
-      cameraPreviewMode: 'FIT_IN',
-      orientationLockMode: 'PORTRAIT',
-      multiPageEnabled: false,
-      multiPageButtonHidden: true,
-      ignoreBadAspectRatio: true,
-      shutterButtonHidden: true,
-      maxNumberOfPages: 1,
-      documentImageSizeLimit: {
-        height: 1500,
-        width: 750,
-      },
-    });
-
-    if (result.status === 'OK') {
-      const regexp = /([^?]+).*/;
-      ScanbotSDK.applyImageFilterOnPage(result.pages[0], 'COLOR_DOCUMENT');
-      addConsent(await RNFS.readFile(`${result.pages[0].documentImageFileUri.match(regexp)[1]}?${Date.now()}`, 'base64'));
-    }
-  };
 
   /**
    * Update state value of patient
@@ -270,14 +228,9 @@ export default class PatientUpsert extends React.Component<Props, State> {
                         autoCapitalize="sentences"
                       />
                     )}
-                    <Button onPress={this.startDocumentScannerButtonTapped}>
-                      <Text>Scan</Text>
-                    </Button>
-                    <Button onPress={() => navigation.navigate('ConsentPreview')}>
-                      <Text>Ici</Text>
-                    </Button>
                   </Col>
                 </View>
+                <ConsentImage />
                 <Text customSubTitle>{t('patient_upsert:questions')}</Text>
                 <Questions questions={extraQuestions} />
               </>
