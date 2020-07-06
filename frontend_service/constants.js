@@ -1,5 +1,6 @@
 // Server address
-export const host = 'https://liwi.wavelab.top/api/v1/';
+// export const host = 'https://liwi.wavelab.top/api/v1/';
+export const host = 'http://192.168.31.214:3000/api/v1/';
 // export const host = 'https://medalc.unisante.ch/api/v1/';
 export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
@@ -168,6 +169,21 @@ export const routeDependingStatus = (medicalCase) => {
   }
 
   return route;
+};
+
+export const references = {
+  z_score_male_table: require('./api/z_score_male_table.json'),
+  z_score_female_table: require('./api/z_score_female_table.json'),
+  heart_rate_table: require('./api/heart_rate_table.json'),
+  respiratory_rate_table: require('./api/respiratory_rate_table.json'),
+  muac_z_score_female_table: require('./api/muac_z_score_female.json'),
+  muac_z_score_male_table: require('./api/muac_z_score_male.json'),
+  bmi_for_age_female_table: require('./api/bmi_for_age_female.json'),
+  bmi_for_age_male_table: require('./api/bmi_for_age_male.json'),
+  weight_for_height_female_table: require('./api/weight_for_height_female.json'),
+  weight_for_height_male_table: require('./api/weight_for_height_male.json'),
+  weight_for_length_female_table: require('./api/weight_for_length_female.json'),
+  weight_for_length_male_table: require('./api/weight_for_length_male.json'),
 };
 
 export const navigationActionConstant = {

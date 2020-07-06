@@ -2,18 +2,9 @@
 
 import moment from 'moment';
 import { NodeModel } from './Node.model';
-import { valueFormats, displayFormats, categories } from '../../constants';
+import { valueFormats, references } from '../../constants';
 import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
-
-const references = {
-  z_score_male_table: require('../../api/z_score_male_table.json'),
-  z_score_female_table: require('../../api/z_score_female_table.json'),
-  heart_rate_table: require('../../api/heart_rate_table.json'),
-  respiratory_rate_table: require('../../api/respiratory_rate_table.json'),
-  muac_z_score_female_table: require('../../api/muac_z_score_female.json'),
-  muac_z_score_male_table: require('../../api/muac_z_score_male.json'),
-};
 
 interface QuestionInterface {
   answer: string;
@@ -52,6 +43,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       cc = [],
       reference_table_x_id = 0,
       reference_table_y_id = 0,
+      reference_table_z_id = null,
       reference_table_male = '',
       reference_table_female = '',
       system = '',
@@ -87,6 +79,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.cc = cc;
     this.reference_table_y_id = reference_table_y_id;
     this.reference_table_x_id = reference_table_x_id;
+    this.reference_table_z_id = reference_table_z_id;
     this.reference_table_male = reference_table_male;
     this.reference_table_female = reference_table_female;
     this.system = system;
@@ -169,6 +162,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     // Replace every bracket in the formula with it's value
     const formula = this.formula.replace(findBracketId, replaceBracketToValue);
     if (ready) {
+      console.log('########################################################');
+      console.log(formula);
       return eval(formula);
     }
     return null;
@@ -180,47 +175,89 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    */
   calculateReference() {
     const state$ = store.getState();
-
+    console.log(this);
     // Get X and Y
-    let x = state$.nodes[this.reference_table_x_id];
-    let y = state$.nodes[this.reference_table_y_id];
+    const questionX = state$.nodes[this.reference_table_x_id];
+    const questionY = state$.nodes[this.reference_table_y_id];
+    let questionZ = null;
+
+    if (this.reference_table_z_id !== null) {
+      questionZ = state$.nodes[this.reference_table_z_id];
+    }
 
     // TODO: Remove when decision about date format is taken
     // TODO: If it's zscore question take format of date in days otherwise in months
     // TODO: Get days or months between today and X/Y value
-    const dateFormat = this.label === 'Weight for age (z-score)' ? 'days' : 'months';
-    x = x.display_format === displayFormats.date ? moment().diff(moment(x.value).toDate(), dateFormat) : x.value;
-    y = y.display_format === displayFormats.date ? moment().diff(moment(y.value).toDate(), dateFormat) : y.value;
+    // const dateFormat = this.label === 'Weight for age (z-score)' ? 'days' : 'months';
+    // x = x.display_format === displayFormats.date ? moment().diff(moment(x.value).toDate(), dateFormat) : x.value;
+    // y = y.display_format === displayFormats.date ? moment().diff(moment(y.value).toDate(), dateFormat) : y.value;
 
-    // Get reference table for male or female
-    // TODO: VERY IMPORTANT WHEN MEDAL-C DEFINES GENDER FOR A ALGORITHM NEED TO FIX THIS
-    // TODO: DOING A SECOND LINE OF COMMENT SO THE TODO IS VISIBLE
-    // TODO: const reference = state$.patient.gender === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
-    const reference = 'male' === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
+    const x = questionX.value;
+    const y = questionY.value;
+    const z = questionZ?.value;
+    const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
+    const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
+
+    let reference = null;
     let value = null;
     let previousKey = null;
 
-    // If X and Y means question is not answered + check if answer is in the scope of the reference table
-    if (x !== null && y !== null && x in reference) {
-      // Order the keys
-      const arr = Object.keys(reference[x]).sortByNumber();
-
-      // if value smaller than smallest element return the smaller value
-      if (reference[x][arr.first()] > y) {
-        return arr.first();
-      }
-      if (reference[x][arr.last()] < y) {
-        return arr.last();
-      }
-
-      arr.map((key) => {
-        if (reference[x][key] > y) {
-          value = Number(previousKey);
-          return true;
-        }
-        previousKey = key;
-      });
+    // Get reference table for male or female
+    if (gender === 'male') {
+      reference = references[this.reference_table_male];
+    } else if (gender === 'female') {
+      reference = references[this.reference_table_female];
     }
+
+    console.log('x :', x, 'y :', y, 'z :', z);
+    console.log('gender', gender);
+    console.log('reference', reference);
+
+    //TODO: IMPROVE THIS SHIT
+
+    // If X and Y means question is not answered + check if answer is in the scope of the reference table
+    if (reference !== null && x !== null && y !== null && x in reference) {
+      if (z === null) {
+        // Order the keys
+        const arr = Object.keys(reference[x]).sortByNumber();
+
+        // if value smaller than smallest element return the smaller value
+        if (reference[x][arr.first()] > y) {
+          return arr.first();
+        }
+        if (reference[x][arr.last()] < y) {
+          return arr.last();
+        }
+
+        arr.map((key) => {
+          if (reference[x][key] > y) {
+            value = Number(previousKey);
+            return true;
+          }
+          previousKey = key;
+        });
+      } else if (String(y) in reference[x]) {
+        // Order the keys
+        const zArray = Object.keys(reference[x][y]).sortByNumber();
+
+        // if value smaller than smallest element return the smaller value
+        if (reference[x][y][zArray.first()] > z) {
+          return zArray.first();
+        }
+        if (reference[x][y][zArray.last()] < z) {
+          return zArray.last();
+        }
+
+        zArray.map((key) => {
+          if (reference[x][y][key] > z) {
+            value = Number(previousKey);
+            return true;
+          }
+          previousKey = key;
+        });
+      }
+    }
+
     return value;
   }
 
