@@ -159,13 +159,13 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
           return nodeInBracket.value;
       }
     };
+
     // Replace every bracket in the formula with it's value
     const formula = this.formula.replace(findBracketId, replaceBracketToValue);
     if (ready) {
-      console.log('########################################################');
-      console.log(formula);
       return eval(formula);
     }
+
     return null;
   };
 
@@ -175,32 +175,26 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    */
   calculateReference() {
     const state$ = store.getState();
-    console.log(this);
+
+    let reference = null;
+    let value = null;
+
     // Get X and Y
     const questionX = state$.nodes[this.reference_table_x_id];
     const questionY = state$.nodes[this.reference_table_y_id];
-    let questionZ = null;
 
+    // Get Z
+    let questionZ = null;
     if (this.reference_table_z_id !== null) {
       questionZ = state$.nodes[this.reference_table_z_id];
     }
 
-    // TODO: Remove when decision about date format is taken
-    // TODO: If it's zscore question take format of date in days otherwise in months
-    // TODO: Get days or months between today and X/Y value
-    // const dateFormat = this.label === 'Weight for age (z-score)' ? 'days' : 'months';
-    // x = x.display_format === displayFormats.date ? moment().diff(moment(x.value).toDate(), dateFormat) : x.value;
-    // y = y.display_format === displayFormats.date ? moment().diff(moment(y.value).toDate(), dateFormat) : y.value;
-
     const x = questionX.value;
     const y = questionY.value;
     const z = questionZ?.value;
+
     const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
     const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
-
-    let reference = null;
-    let value = null;
-    let previousKey = null;
 
     // Get reference table for male or female
     if (gender === 'male') {
@@ -209,58 +203,54 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       reference = references[this.reference_table_female];
     }
 
-    console.log('x :', x, 'y :', y, 'z :', z);
-    console.log('gender', gender);
-    console.log('reference', reference);
-
-    //TODO: IMPROVE THIS SHIT
-
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
     if (reference !== null && x !== null && y !== null && x in reference) {
       if (z === null) {
-        // Order the keys
-        const arr = Object.keys(reference[x]).sortByNumber();
-
-        // if value smaller than smallest element return the smaller value
-        if (reference[x][arr.first()] > y) {
-          return arr.first();
-        }
-        if (reference[x][arr.last()] < y) {
-          return arr.last();
-        }
-
-        arr.map((key) => {
-          if (reference[x][key] > y) {
-            value = Number(previousKey);
-            return true;
-          }
-          previousKey = key;
-        });
+        value = this.findValueInReferenceTable(reference[x], y);
       } else if (String(y) in reference[x]) {
-        // Order the keys
-        const zArray = Object.keys(reference[x][y]).sortByNumber();
-
-        // if value smaller than smallest element return the smaller value
-        if (reference[x][y][zArray.first()] > z) {
-          return zArray.first();
-        }
-        if (reference[x][y][zArray.last()] < z) {
-          return zArray.last();
-        }
-
-        zArray.map((key) => {
-          if (reference[x][y][key] > z) {
-            value = Number(previousKey);
-            return true;
-          }
-          previousKey = key;
-        });
+        value = this.findValueInReferenceTable(reference[x][y], z);
       }
     }
 
     return value;
   }
 
+  /**
+   *
+   * @param {JSON} referenceTable - Reference table available in frontend_service/api/...
+   * @param {Integer} maxRange - Y or Z value to not exceed
+   * @returns {null|Integer} - Value find
+   */
+  findValueInReferenceTable(referenceTable, maxRange) {
+    let previousKey = null;
+    let value = null;
+
+    // Order the keys
+    const scopedRange = Object.keys(referenceTable).sortByNumber();
+
+    // if value smaller than smallest element return the smaller value
+    if (referenceTable[scopedRange.first()] > maxRange) {
+      return scopedRange.first();
+    }
+    if (referenceTable[scopedRange.last()] < maxRange) {
+      return scopedRange.last();
+    }
+
+    scopedRange.map((key) => {
+      if (referenceTable[key] > maxRange) {
+        value = Number(previousKey);
+        return true;
+      }
+      previousKey = key;
+    });
+
+    return value;
+  }
+
+  /**
+   * Return a humanized value who depend on value_format
+   * @returns {string|*}
+   */
   displayValue = () => {
     if (this.value_format === valueFormats.date && this.value !== null) {
       return moment(this.value).format(I18n.t('application:date_format'));
