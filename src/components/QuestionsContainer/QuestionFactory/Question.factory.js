@@ -240,9 +240,9 @@ export default class Question extends React.Component<Props, State> {
     return (
       <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
         <View style={styles.flexRow}>
+          <TooltipButton question={question} flex={flexToolTip} />
           <LabelQuestion key={`${question.id}_label`} label={(__DEV__ ? `${question.counter}x - ` : '') + question.label} flex={flexLabel} marginLeft={0} marginRight={10} />
           <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
-          <TooltipButton question={question} flex={flexToolTip} />
         </View>
         {this._displayValidation()}
         <View style={styles.unavailable}>
