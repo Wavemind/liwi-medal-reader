@@ -8,4 +8,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
+  flexCenter: {
+    flex: 1,
+    textAlign: 'center',
+  },
 });

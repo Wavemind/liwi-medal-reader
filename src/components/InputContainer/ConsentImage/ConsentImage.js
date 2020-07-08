@@ -17,6 +17,10 @@ type Props = NavigationScreenProps & { autoCapitalize: string };
 type State = {};
 
 export default class ConsentImage extends React.Component<Props, State> {
+  /**
+   * Displays an error if the Scanbot license is not working
+   * @returns {Boolean} - true if license is working, false otherwise
+   */
   checkLicense = async () => {
     if (await ScanbotSDK.isLicenseValid()) {
       // OK - we have a trial session, a valid trial license or valid production license.
@@ -26,13 +30,19 @@ export default class ConsentImage extends React.Component<Props, State> {
     return false;
   };
 
+  /**
+   * Lauches the scanner and processes the image when scanning is successfull
+   */
   startDocumentScannerButtonTapped = async () => {
     const { app, addConsentFile } = this.props;
 
     if (!(await this.checkLicense())) {
       return;
     }
+
+    // Disables the pin screen after the scanning
     await app.set('showPinOnUnlock', false);
+
     const result = await ScanbotSDK.UI.startDocumentScanner({
       // Customize colors, text resources, etc..
       polygonColor: '#ff407d',

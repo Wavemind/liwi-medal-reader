@@ -46,13 +46,9 @@ class MedicalCaseReducer extends ReducerClass {
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
   /**
-   * Update condition value of diagnostic or questions sequence for a question or a questions sequence
-   *
-   * @trigger When a condition value must be change
-   * @payload nodeId: Question or QuestionsSequence
-   * @payload callerId: Diagnostic or QuestionsSequence
-   * @payload value: new condition value
-   * @payload type: define if it's a diagnostic or a question sequence
+   * Sets the consent file in the patient after scanning it, the consent in the
+   * medical case is automaticaly set to true
+   * @payload page : the scanned file in a base64 format
    */
   @Action(actions.ADD_CONSENT_FILE)
   addConsentFile(state, action) {
