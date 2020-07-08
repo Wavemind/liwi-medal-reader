@@ -7,27 +7,27 @@ import _ from 'lodash';
 
 import { displayFormats, nodeTypes, valueFormats } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
+import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
+import Unavailable from '../../InputContainer/Unavailable';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
+import Formula from '../DisplaysContainer/Formula';
 import String from '../DisplaysContainer/String';
-import { ViewQuestion } from '../../../template/layout';
 import List from '../DisplaysContainer/List';
 import Date from '../DisplaysContainer/Date';
 import Tooltip from '../../Tooltip/tooltip';
-import Unavailable from '../../InputContainer/Unavailable';
-import Formula from '../DisplaysContainer/Formula';
 
 type Props = NavigationScreenProps & {};
 
 type State = {};
 
 function LabelQuestion(props: { label: String, flex: String, marginRight: Numeric, marginLeft: Numeric }) {
-  const { label, flex, marginRight, marginLeft } = props;
+  const { label, flex, marginRight, marginLeft, is_mandatory } = props;
   return (
     <ViewQuestion flex={flex} marginRight={marginRight} marginLeft={marginLeft}>
       <Text style={{ color: liwiColors.blackColor }} size-auto>
-        {label}
+        {label} {is_mandatory ? '*' : null}
       </Text>
     </ViewQuestion>
   );
@@ -54,12 +54,7 @@ class TooltipButton extends React.Component<Props, State> {
               <Icon name="close" type="AntDesign" style={styles.icon} />
             </Button>
             <Text subTitle>{question.label}</Text>
-            <Text>Description: {question.description}</Text>
-            <Text>Id: {question.id}</Text>
-            <Text>Reference : {question.reference}</Text>
-            <Text>Counter : {question.counter}</Text>
-            <Text>Answer: {question.answer}</Text>
-            <Text>Category: {question.category}</Text>
+            <Text left>{question.description}</Text>
           </View>
         </ScrollView>
       </View>
@@ -240,9 +235,9 @@ export default class Question extends React.Component<Props, State> {
     return (
       <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
         <View style={styles.flexRow}>
-          <LabelQuestion key={`${question.id}_label`} label={(__DEV__ ? `${question.counter}x - ` : '') + question.label} flex={flexLabel} marginLeft={0} marginRight={10} />
-          <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
           <TooltipButton question={question} flex={flexToolTip} />
+          <LabelQuestion key={`${question.id}_label`} label={(__DEV__ ? `${question.counter}x - ` : '') + question.label} flex={flexLabel} marginLeft={0} marginRight={10} is_mandatory={question.is_mandatory} />
+          <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
         </View>
         {this._displayValidation()}
         <View style={styles.unavailable}>
