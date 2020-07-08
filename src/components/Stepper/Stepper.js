@@ -536,7 +536,7 @@ class Stepper extends React.Component<Props, State> {
     const { navigation, app: {database} } = this.props;
     const patientId = navigation.getParam('idPatient');
     const medicalCaseObject = store.getState();
-    let patient = null;
+    let patient;
 
     // If patient already exists
     if (patientId !== null) {

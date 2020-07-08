@@ -230,7 +230,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                     )}
                   </Col>
                 </View>
-                <ConsentImage />
+                <ConsentImage newPatient={patient.id === null} />
                 <Text customSubTitle>{t('patient_upsert:questions')}</Text>
                 <Questions questions={extraQuestions} />
               </>

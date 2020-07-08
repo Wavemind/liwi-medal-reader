@@ -45,10 +45,10 @@ export default class Root extends React.Component {
     // tslint:enable:max-line-length
 
     if (Platform.OS === 'ios') {
-      return `${DocumentDirectoryPath}/consent`;
+      return `${DocumentDirectoryPath}/consentFile`;
     }
     if (Platform.OS === 'android') {
-      return `${ExternalDirectoryPath}/consent`;
+      return `${ExternalDirectoryPath}/consentFile`;
     }
     return null;
   }

@@ -47,6 +47,7 @@ export const modelValidator = {
   stepToBeFill: [],
   screenToBeFill: [],
   questionsToBeFill: [],
+  customErrors: [],
   mustFinishStage: false,
 };
 
@@ -177,6 +178,14 @@ export const validatorNavigate = (navigateRoute) => {
     if (routeToValidate?.key === detailNavigateRoute?.key) {
       validator.isActionValid = true;
       return validator;
+    }
+
+    // TODO Clean validation of custom fields it's very gross !
+    if (navigateRoute.routeName === 'Triage') {
+      if (state$.consent === null) {
+        validator.isActionValid = false;
+        validator.customErrors.push("The data processing consent can't be blank");
+      }
     }
 
     // Route to validate is not null and can be validated

@@ -2,8 +2,8 @@ import { actions } from './types.actions';
 
 
 
-export const addConsent = (page) => ({
-  type: actions.ADD_CONSENT,
+export const addConsentFile = (page) => ({
+  type: actions.ADD_CONSENT_FILE,
   payload: { page },
 });
 

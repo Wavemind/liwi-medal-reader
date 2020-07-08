@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addConsent } from '../../../../frontend_service/actions/creators.actions';
+import { addConsentFile, updateMedicalCaseProperty } from '../../../../frontend_service/actions/creators.actions';
 import { withApplication } from '../../../engine/contexts/Application.context';
 import ConsentImage from './ConsentImage';
 
@@ -11,7 +11,8 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addConsent: (page) => dispatch(addConsent(page)),
+    addConsentFile: (page) => dispatch(addConsentFile(page)),
+    updateMedicalCaseProperty: (property, newValue) => dispatch(updateMedicalCaseProperty(property, newValue)),
   };
 };
 

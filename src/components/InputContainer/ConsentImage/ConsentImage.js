@@ -11,17 +11,12 @@ import NavigationService from '../../../engine/navigation/Navigation.service';
 import { styles } from './ConsentImage.style';
 import { liwiColors } from '../../../utils/constants';
 import { displayNotification } from '../../../utils/CustomToast';
+import { LeftButton, RightButton } from '../../../template/layout';
 
 type Props = NavigationScreenProps & { autoCapitalize: string };
 type State = {};
 
 export default class ConsentImage extends React.Component<Props, State> {
-  state = { value: '' };
-
-  static defaultProps = {};
-
-  componentDidMount(): void {}
-
   checkLicense = async () => {
     if (await ScanbotSDK.isLicenseValid()) {
       // OK - we have a trial session, a valid trial license or valid production license.
@@ -32,7 +27,7 @@ export default class ConsentImage extends React.Component<Props, State> {
   };
 
   startDocumentScannerButtonTapped = async () => {
-    const { app, addConsent } = this.props;
+    const { app, addConsentFile } = this.props;
 
     if (!(await this.checkLicense())) {
       return;
@@ -55,25 +50,57 @@ export default class ConsentImage extends React.Component<Props, State> {
     });
 
     if (result.status === 'OK') {
-      const regexp = /([^?]+).*/;
-      ScanbotSDK.applyImageFilterOnPage(result.pages[0], 'COLOR_DOCUMENT');
-      addConsent(await RNFS.readFile(`${result.pages[0].documentImageFileUri.match(regexp)[1]}?${Date.now()}`, 'base64'));
+      const regexp = /([^?]+).*/; // Used to remove unwanted params at the end of url
+      await ScanbotSDK.applyImageFilterOnPage(result.pages[0], 'COLOR_DOCUMENT');
+      addConsentFile(await RNFS.readFile(`${result.pages[0].documentImageFileUri.match(regexp)[1]}?${Date.now()}`, 'base64'));
     }
   };
 
-  render() {
-    const { medicalCase } = this.props;
-    const disabled = medicalCase.patient.consent === null;
+  renderRenewConsent = () => {
+    const {
+      app: { t },
+      medicalCase,
+      updateMedicalCaseProperty,
+    } = this.props;
 
     return (
-      <View>
-        <Text customSubTitle>Consent</Text>
+      <>
+        <Text>Consent to data processing for this visit. NO if revoked</Text>
         <View style={styles.flexRow}>
-          <Button style={{ flex: 1 }} onPress={this.startDocumentScannerButtonTapped}>
-            <Text style={{ flex: 1, textAlign: 'center' }}>Scan</Text>
-          </Button>
-          <Button style={{ flex: 1 }} disabled={disabled} onPress={() => NavigationService.navigate('ConsentPreview')}>
-            <Text style={{ flex: 1, textAlign: 'center' }}>Show</Text>
+          <LeftButton active={medicalCase.consent === true} onPress={() => updateMedicalCaseProperty('consent', true)}>
+            <Text white={medicalCase.consent === true} center>
+              {t('question:yes')}
+            </Text>
+          </LeftButton>
+          <RightButton active={medicalCase.consent === false} onPress={() => updateMedicalCaseProperty('consent', false)}>
+            <Text center white={medicalCase.consent === false}>
+              {t('question:no')}
+            </Text>
+          </RightButton>
+        </View>
+      </>
+    );
+  };
+
+  render() {
+    const {
+      app: { t },
+      medicalCase,
+      newPatient,
+    } = this.props;
+    const disabled = medicalCase.patient.consent_file === null;
+    return (
+      <View>
+        <Text customSubTitle>{t('consent_image:title')}</Text>
+        {newPatient && medicalCase.consent === null ? null : this.renderRenewConsent()}
+        <View style={styles.flexRow}>
+          {newPatient ? (
+            <Button style={styles.flex} onPress={this.startDocumentScannerButtonTapped}>
+              <Text style={styles.flexCenter}>{t('consent_image:scan')}</Text>
+            </Button>
+          ) : null}
+          <Button style={styles.flex} disabled={disabled} onPress={() => NavigationService.navigate('ConsentPreview')}>
+            <Text style={styles.flexCenter}>{t('consent_image:show')}</Text>
           </Button>
         </View>
       </View>

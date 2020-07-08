@@ -35,10 +35,10 @@ export default class TooltipModal extends React.Component<Props, State> {
     let i = 0;
 
     while (i < questions.length) {
-      rowQuestions.push(<Text>{questions[i].label}</Text>);
+      rowQuestions.push(<Text> - {questions[i].label} is required</Text>);
 
       if (i === 2) {
-        rowQuestions.push(<Text>{t('tooltip:more')}</Text>);
+        rowQuestions.push(<Text italic>{t('tooltip:more')}</Text>);
         break;
       } else {
         i += 1;
@@ -56,51 +56,31 @@ export default class TooltipModal extends React.Component<Props, State> {
   // TODO: refactor
   _renderValidation = () => {
     const { modalRedux } = this.props;
-    const { screenToBeFill, stepToBeFill, routeRequested } = modalRedux.params;
+    const { screenToBeFill, stepToBeFill, customErrors } = modalRedux.params;
     const {
       app: { t },
       patientId,
     } = this.props;
-
     return (
       <View style={styles.validation}>
         <Text style={styles.warning}>{t('tooltip:uncompleted')}</Text>
-        <Text style={styles.blocScreen}>
-          <Text style={styles.screen}>{screenToBeFill !== 'PatientUpsert' ? screenToBeFill : t('tooltip:patientnotcomplete')}</Text> {t('tooltip:notcomplete')}
-        </Text>
-        <SeparatorLine marginBottom={15} marginTop={15} />
         <View style={styles.stepContainer}>
           {stepToBeFill.map((step) => (
             <View key={`step-name${step.stepName}`}>
               <View style={styles.stepHeaderName}>
-                <Icon type="Ionicons" name="ios-arrow-round-forward" />
-                <Text style={styles.stepName}>{stepToBeFill.length > 1 ? step.stepName : t('tooltip:invalidQuestions')}</Text>
-                {step.isActionValid ? <Icon name="ios-checkmark" type="Ionicons" style={styles.iconValid} /> : <Icon name="cross" type="Entypo" style={styles.iconInValid} />}
+                <Text style={styles.stepName}>{stepToBeFill.length > 1 ? step.stepName : null}</Text>
               </View>
-              <View style={styles.questions}>{this._renderQuestions(step.questionsToBeFill)}</View>
+              <View style={styles.questions}>
+                {customErrors.map((error) => (
+                  <Text> - {error}</Text>
+                ))}
+                {this._renderQuestions(step.questionsToBeFill)}
+              </View>
             </View>
           ))}
-          <SeparatorLine marginBottom={15} marginTop={15} />
           <View style={{ flexDirection: 'row' }}>
-            {__DEV__ && (
-              <Button
-                style={styles.buttonNav}
-                light
-                onPress={() => {
-                  this.closeModal();
-                  const params = { force: true };
-                  NavigationService.navigate(routeRequested, params);
-                }}
-              >
-                <Text>
-                  {t('tooltip:forcegoto')} {routeRequested}
-                </Text>
-              </Button>
-            )}
-
             <Button
               style={styles.buttonNav}
-              success
               onPress={() => {
                 this.closeModal();
                 const params = {};
@@ -113,7 +93,7 @@ export default class TooltipModal extends React.Component<Props, State> {
                 NavigationService.navigate(screenToBeFill, params);
               }}
             >
-              <Text>{t('tooltip:goto')}</Text>
+              <Text>{t('tooltip:close')}</Text>
             </Button>
           </View>
         </View>
