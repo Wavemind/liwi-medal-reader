@@ -2,6 +2,7 @@ import { host, hostDataServer } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
 import { handleHttpError } from '../../src/utils/CustomToast';
 import { getItem } from '../../src/engine/api/LocalStorage';
+import fetch from '../../src/utils/fetchWithTimeout';
 
 /**
  * Get group configuration by device mac address
@@ -63,27 +64,15 @@ export const registerDevice = async () => {
   return response !== null;
 };
 
-// TODO: normaly doesn't work
-export const syncMedicalCases = async (body, userId = null) => {
-  const url = `${hostDataServer}${'sync_medical_cases'}`;
-  const header = await _setHeaders('POST', body, userId);
-  const request = await fetch(url, header).catch((error) => handleHttpError(error));
-
-  const http = await request;
-  const response = await http.text();
-  let json = false;
-
-  try {
-    json = JSON.parse(response);
-  } catch (err) {
-    console.warn(err);
-    // handle the error according to your needs
-  }
-
-  if (http.status === 200) {
-    return json;
-  }
-  return false;
+/**
+ * Send medical cases to main data
+ * @param {Array} medicalCases - All medical cases must be synchronize
+ * @returns {Promise<string|Array>}
+ */
+export const synchronizeMedicalCases = async (medicalCases) => {
+  const url = `${hostDataServer}sync_medical_cases`;
+  const header = await _setHeaders('POST', medicalCases);
+  return _fetch(url, header);
 };
 
 /**
@@ -94,13 +83,22 @@ export const syncMedicalCases = async (body, userId = null) => {
  * @private
  */
 const _fetch = async (url, header) => {
-  const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
+  const httpRequest = await fetch(url, header).catch((error) => {
+    handleHttpError(error);
+  });
 
-  const result = await httpRequest.json();
-  if (httpRequest.status === 200) {
-    return result;
+  // In case of fetch timeout
+  if (httpRequest !== undefined) {
+    const result = await httpRequest.json();
+
+    if (httpRequest.status === 200) {
+      return result;
+    }
+    if (httpRequest.status > 404) {
+      handleHttpError(result.message);
+    }
   }
-  handleHttpError(result.errors);
+
   return null;
 };
 
