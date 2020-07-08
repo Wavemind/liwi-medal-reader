@@ -239,6 +239,9 @@ i18n
           add_case: 'Add medical case',
           edit_patient_value: 'Edit patient values',
         },
+        patient_edit: {
+          show_consent: 'Show consent file',
+        },
         patient_upsert: {
           uid: 'UID',
           study_id: 'Study ID',
