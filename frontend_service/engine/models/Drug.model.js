@@ -11,7 +11,6 @@ export class DrugModel extends HealthCaresModel {
 
     const {
       category,
-      weight_question_id = null,
       minimal_dose_per_kg = '',
       maximal_dose_per_kg = '',
       maximal_dose = '',
@@ -26,7 +25,6 @@ export class DrugModel extends HealthCaresModel {
     } = props;
 
     this.category = category;
-    this.weight_question_id = weight_question_id;
     this.minimalDosePerKg = minimal_dose_per_kg;
     this.maximalDosePerKg = maximal_dose_per_kg;
     this.maximalDose = maximal_dose;
@@ -48,7 +46,7 @@ export class DrugModel extends HealthCaresModel {
   getDrugDoses = (formulationSelected) => {
     const state$ = store.getState();
 
-    const weightNode = state$.nodes[this.weight_question_id];
+    const weightNode = state$.nodes[state$.config.basic_questions.weight_question_id];
 
     let minDoseMg;
     let maxDoseMg;

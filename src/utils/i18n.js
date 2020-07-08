@@ -362,7 +362,7 @@ i18n
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
-          available_algorithms: 'Available algorithms',
+          synchronization: 'Synchronization',
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
@@ -391,6 +391,10 @@ i18n
           algorithm_updated: 'Your algorithm has been updated',
           get_group: 'Receiving group data and medical staff',
           device_registered: 'Device registered',
+        },
+        synchronize: {
+          title: 'Medical cases to synchronize',
+          synchronize: 'Synchronize',
         },
       },
       fr: {

@@ -20,7 +20,7 @@ export class MedicalCaseModel {
       this.algorithm_name = currentAlgorithm.algorithm_name;
       this.version_name = currentAlgorithm.version_name;
       this.version = currentAlgorithm.version;
-      this.version_id = currentAlgorithm.version_id !== undefined ? currentAlgorithm.version_id : null;
+      this.version_id = currentAlgorithm.version_id;
       this.algorithm_id = currentAlgorithm.algorithm_id;
       this.diagnostics = currentAlgorithm.diagnostics;
       this.nodes = { ...currentAlgorithm.nodes };
@@ -29,10 +29,12 @@ export class MedicalCaseModel {
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
-      this.mobile_config = currentAlgorithm.mobile_config ?? null;
+      this.mobile_config = currentAlgorithm.mobile_config;
+      this.config = currentAlgorithm.config;
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
       this.isNewCase = true;
+      this.isEligibility = true;
       this.modal = {
         open: false,
         content: '',
@@ -75,13 +77,15 @@ export class MedicalCaseModel {
     } else {
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
 
-      this.mobile_config = json.mobile_config ?? null;
+      this.mobile_config = json.mobile_config;
+      this.config = json.config;
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
       this.algorithm_name = json.algorithm_name;
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
       this.triage = json.triage;
+      this.isEligibility = json.isEligibility;
       this.complaintCategories = json.complaintCategories;
       this.isNewCase = false;
       this.modal = {
@@ -108,6 +112,11 @@ export class MedicalCaseModel {
     return this;
   }
 
+  /**
+   * Define vue based on medical case status
+   * @param {String} stage - Current page
+   * @returns {boolean}
+   */
   isMaxStage = (stage) => {
     switch (this.status) {
       case 'in_creation':
@@ -320,6 +329,15 @@ export class MedicalCaseModel {
       }
     }
     return displayedValue;
+  };
+
+  /**
+   * Check if case can be synchronized with main data
+   * @returns {boolean}
+   */
+  canBeSynchronized = () => {
+    // TODO: Add consent test
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligibility;
   };
 }
 
