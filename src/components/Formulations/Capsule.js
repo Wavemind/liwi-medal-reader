@@ -8,7 +8,7 @@ export default function Capsule(drug, node, drugDose) {
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
-      <Text size-auto>Mode : {drug.formulationSelected}</Text>
+      <Text size-auto>{i18n.t('drug:mode')} : {drug.formulationSelected}</Text>
       {drugDose.doseResult === null ? (
         <Text>{drugDose.no_possibility}</Text>
       ) : (
@@ -18,7 +18,7 @@ export default function Capsule(drug, node, drugDose) {
             {i18n.t('drug:mg')} {drugDose.administration_route_name}
           </Text>
           <Text size-auto>
-            {i18n.t('drug:every')} {drugDose.recurrence} {i18n.t('drug:h')} {drug.duration} {i18n.t('drug:days')}
+            {`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}
           </Text>
         </>
       )}
