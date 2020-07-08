@@ -54,7 +54,7 @@ class TooltipButton extends React.Component<Props, State> {
               <Icon name="close" type="AntDesign" style={styles.icon} />
             </Button>
             <Text subTitle>{question.label}</Text>
-            <Text>Description: {question.description}</Text>
+            <Text left>{question.description}</Text>
           </View>
         </ScrollView>
       </View>
