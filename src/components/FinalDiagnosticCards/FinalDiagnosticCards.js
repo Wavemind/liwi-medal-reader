@@ -88,7 +88,6 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                 {finalDiagnosticCategory[key].drugs !== undefined && Object.keys(finalDiagnosticCategory[key].drugs).length > 0 ? (
                     Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
                     if (drugsAvailable[drugKey] !== undefined) {
-                      console.log(drugsAvailable[drugKey])
                       return (
                         <View style={styles.drugContainer}>
                           <View flex>
