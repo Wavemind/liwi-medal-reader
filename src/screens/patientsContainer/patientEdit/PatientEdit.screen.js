@@ -108,7 +108,7 @@ export default class PatientEdit extends React.Component {
         </ScrollView>
         <View style={styles.flexRow}>
           <Button block onPress={() => NavigationService.navigate('ConsentPreview')}>
-            <Text style={{ flex: 1, textAlign: 'center' }}>Show consent</Text>
+            <Text style={{ flex: 1, textAlign: 'center' }}>Show consent file</Text>
           </Button>
         </View>
         <View bottom-view>

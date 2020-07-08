@@ -28,6 +28,11 @@ i18n
           save: 'Save',
           resource_not_available: 'No connection, resource not available',
         },
+        consent_image: {
+          scan: 'Scan file',
+          show: 'Show consent',
+          title: 'Consent',
+        },
         diagnoses: {
           add: 'Create',
           add_medicine: 'Additional Medicines',
@@ -83,11 +88,10 @@ i18n
         },
         tooltip: {
           invalidQuestions: 'Question(s) to fill',
-          forcegoto: 'Allow in DEV ',
-          goto: 'Back to the form',
+          close: 'Close',
           notcomplete: 'Is not complete !',
-          more: 'more questions...',
-          uncompleted: 'Stage uncompleted',
+          more: '...',
+          uncompleted: 'Stage is not valid',
           patientnotcomplete: 'The creation of the patient',
         },
         algorithms: {

@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { liwiColors } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
-  buttonNav: { flex: 0.5, flexDirection: 'row', flexGrow: 1, justifyContent: 'center', width: 100 },
+  buttonNav: { flex: 0.5, flexDirection: 'row', flexGrow: 1, justifyContent: 'center', width: 100, marginTop: 20 },
 
   blocScreen: { fontSize: 20 },
 
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
 
   warning: { alignSelf: 'center', color: liwiColors.redColor, fontSize: 25 },
 
-  questions: { marginLeft: 40 },
+  questions: { marginLeft: 15 },
 
   stepContainer: { flex: 1 },
 

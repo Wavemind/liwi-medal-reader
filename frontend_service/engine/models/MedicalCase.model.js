@@ -33,6 +33,7 @@ export class MedicalCaseModel {
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
       this.isNewCase = true;
+      this.consent = null;
       this.modal = {
         open: false,
         content: '',
@@ -74,7 +75,6 @@ export class MedicalCaseModel {
       this.json = JSON.stringify(this);
     } else {
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
-
       this.mobile_config = json.mobile_config ?? null;
       this.version_id = json.version_id;
       this.algorithm_id = json.algorithm_id;
@@ -82,6 +82,7 @@ export class MedicalCaseModel {
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
       this.triage = json.triage;
+      this.consent = json.consent;
       this.complaintCategories = json.complaintCategories;
       this.isNewCase = false;
       this.modal = {

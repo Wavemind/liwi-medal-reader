@@ -54,15 +54,16 @@ class MedicalCaseReducer extends ReducerClass {
    * @payload value: new condition value
    * @payload type: define if it's a diagnostic or a question sequence
    */
-  @Action(actions.ADD_CONSENT)
-  addConsent(state, action) {
+  @Action(actions.ADD_CONSENT_FILE)
+  addConsentFile(state, action) {
     const { page } = action.payload;
 
     return {
       ...state,
+      consent: true,
       patient: {
         ...state.patient,
-        consent: page,
+        consent_file: page,
       },
     };
   }

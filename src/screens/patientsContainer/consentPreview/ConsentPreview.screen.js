@@ -14,7 +14,7 @@ export default class ConsentPreview extends React.Component {
     const { state } = this.props;
 
     // State can either be a patient or a medical case
-    const consent = state.consent !== undefined ? state.consent : state.patient.consent;
+    const consent = state.consent_file !== undefined ? state.consent_file : state.patient.consent_file;
 
     const { width, height } = Dimensions.get('window');
     return (
