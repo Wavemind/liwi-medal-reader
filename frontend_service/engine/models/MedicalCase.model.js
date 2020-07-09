@@ -77,7 +77,6 @@ export class MedicalCaseModel {
       this.json = JSON.stringify(this);
     } else {
       const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
-
       this.mobile_config = json.mobile_config;
       this.config = json.config;
       this.version_id = json.version_id;
