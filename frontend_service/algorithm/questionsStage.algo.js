@@ -16,7 +16,7 @@ import { calculateCondition } from './conditionsHelpers.algo';
 export const questionsMedicalHistory = () => {
   const state$ = store.getState();
   const { diagnostics } = state$;
-  const questions = state$.nodes.filterBy(
+  const medicalHistoryQuestions = state$.nodes.filterBy(
     [
       {
         by: 'category',
@@ -43,6 +43,11 @@ export const questionsMedicalHistory = () => {
         operator: 'equal',
         value: categories.vaccine,
       },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.vitalSignAnthropometric,
+      },
     ],
     diagnostics,
     'OR',
@@ -50,6 +55,21 @@ export const questionsMedicalHistory = () => {
     true
   );
 
+  const vitalSignsQuestions = state$.nodes.filterBy(
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.vitalSignAnthropometric,
+      },
+    ],
+    diagnostics,
+    'OR',
+    'array',
+    false
+  );
+
+  const questions = medicalHistoryQuestions.concat(vitalSignsQuestions);
   const newQuestions = questions.map(({ id }) => id);
 
   // Update state$ medical history questions if it's different from new questions list
