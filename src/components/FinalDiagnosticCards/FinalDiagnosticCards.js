@@ -14,6 +14,7 @@ import Breakable from '../Formulations/Breakable';
 import Capsule from '../Formulations/Capsule';
 import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
+import TooltipButton from '../TooltipButton/TooltipButton';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -61,7 +62,9 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
       medicalCase,
       medicalCase: { nodes },
     } = this.props;
+
     const drugsAvailable = getDrugs(medicalCase.diagnoses);
+
     return Object.keys(finalDiagnosticCategory).map((key) => {
       if (finalDiagnosticCategory[key].agreed || title === 'additional') {
         return (
@@ -81,10 +84,20 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                 <LiwiTitle2 noBorder style={styles.cardTitle}>
                   {t('diagnoses:medicines')}
                 </LiwiTitle2>
+
                 {finalDiagnosticCategory[key].drugs !== undefined && Object.keys(finalDiagnosticCategory[key].drugs).length > 0 ? (
-                  Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
+                    Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
                     if (drugsAvailable[drugKey] !== undefined) {
-                      return this._renderSwitchFormulation(drugsAvailable[drugKey]);
+                      return (
+                        <View style={styles.drugContainer}>
+                          <View flex>
+                            {this._renderSwitchFormulation(drugsAvailable[drugKey])}
+                          </View>
+                          <View style={styles.tooltipButton}>
+                            <TooltipButton node={drugsAvailable[drugKey]} title={nodes[drugsAvailable[drugKey].id].label} flex={1} />
+                          </View>
+                        </View>
+                      );
                     }
                   })
                 ) : (
