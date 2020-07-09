@@ -1,8 +1,8 @@
 // @flow
 
-import * as React from "react";
-import { Input, View } from "native-base";
-import { liwiColors } from "../../../../utils/constants";
+import * as React from 'react';
+import { Input, View } from 'native-base';
+import { liwiColors } from '../../../../utils/constants';
 
 type Props = {
   question: {

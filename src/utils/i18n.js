@@ -335,6 +335,7 @@ i18n
           message: 'Location sharing is mandatory in order to use the medical service',
           ask_me_later: 'Ask me later',
           cancel: 'cancel',
+          ok: 'Ok',
           by: 'by',
           summary: 'Summary',
           isLocked: 'Case is locked',

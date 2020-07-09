@@ -1,11 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import { View, Text, Card, CardItem, Body } from 'native-base';
+import { Text, Card, CardItem, Body } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { styles } from './FinalDiagnosticCards.style';
-import { LiwiTitle2, LiwiTitle4 } from '../../template/layout';
+import { LiwiTitle2 } from '../../template/layout';
 import { getDrugs } from '../../../frontend_service/algorithm/questionsStage.algo';
 import { medicationForms } from '../../../frontend_service/constants';
 

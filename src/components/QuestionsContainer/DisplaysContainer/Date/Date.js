@@ -31,12 +31,10 @@ export default class Date extends React.Component<Props, State> {
       } else if (question.value !== null && value === '') {
         setPatientValue(question.id, null);
       }
-    } else {
-      if (value !== question.value && value !== '') {
-        setAnswer(question.id, moment(value).format());
-      } else if (question.value !== null && value === '') {
-        setAnswer(question.id, null);
-      }
+    } else if (value !== question.value && value !== '') {
+      setAnswer(question.id, moment(value).format());
+    } else if (question.value !== null && value === '') {
+      setAnswer(question.id, null);
     }
   };
 
@@ -50,7 +48,9 @@ export default class Date extends React.Component<Props, State> {
         <DatePicker
           defaultDate={value}
           locale="fr"
-          formatChosenDate={date => {return moment(date).format(I18n.t('application:date_format'));}}
+          formatChosenDate={(date) => {
+            return moment(date).format(I18n.t('application:date_format'));
+          }}
           timeZoneOffsetInMinutes={undefined}
           modalTransparent={false}
           animationType="fade"

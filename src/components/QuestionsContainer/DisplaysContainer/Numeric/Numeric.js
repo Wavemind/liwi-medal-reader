@@ -82,10 +82,15 @@ export default class Numeric extends React.Component<Props, State> {
     this.setState({ value });
   };
 
+  /**
+   * Set if value is estimated or measured
+   * @param {String} value - estimed | measured
+   * @private
+   */
   _handleEstimable = (value) => {
     const { setEstimable, question } = this.props;
     setEstimable(question.id, value);
-    this.setState({estimableValue: value});
+    this.setState({ estimableValue: value });
   };
 
   render() {
@@ -97,18 +102,17 @@ export default class Numeric extends React.Component<Props, State> {
     } = this.props;
     let { style, value, estimableValue } = this.state;
 
-    const keyboardType = 'number-pad';
+    value = value !== null ? String(value) : null;
     let placeholder = '';
 
     if (unavailableAnswer !== undefined && question.answer === unavailableAnswer.id) {
       placeholder = t('question:unavailable');
     }
 
-    value = value !== null ? String(value) : null;
     return (
       <>
         <View answer>
-          <Input keyboardType={keyboardType} question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
+          <Input keyboardType="number-pad" question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
         </View>
         {question.estimable ? (
           <View answer style={styles.marginTop}>

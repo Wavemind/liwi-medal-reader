@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { liwiColors, responsiveUi } from "../../../utils/constants";
+import { StyleSheet } from 'react-native';
+import { liwiColors, responsiveUi } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   tools: {
@@ -22,12 +22,6 @@ export const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
   },
-  drawerMinifySmallify: {
-    // alignSelf: 'flex-end', flex: 1, backgroundColor: '#17881d'
-  },
-  drawerMinifyView: {
-    // flex: 1, flexDirection: 'column', alignItems: 'flex-end'
-  },
   drawerMinifyButton: {
     height: 30,
     padding: 0,
@@ -41,8 +35,6 @@ export const styles = StyleSheet.create({
   },
   textBottom: { color: liwiColors.whiteColor, fontSize: 19, textAlign: 'left', margin: 0, padding: 0, flexShrink: 1 },
   bottomStyle: {
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
     textAlign: 'center',
     backgroundColor: liwiColors.darkerGreyColor,
     shadowOffset: { height: 0, width: 0 },

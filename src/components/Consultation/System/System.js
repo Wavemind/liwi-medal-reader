@@ -1,11 +1,11 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { Text, View } from "native-base";
-import { styles } from "./System.style";
-import Questions from "../../QuestionsContainer/Questions";
-import { systems } from "../../../../frontend_service/constants";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { Text, View } from 'native-base';
+import { styles } from './System.style';
+import Questions from '../../QuestionsContainer/Questions';
+import { systems } from '../../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 
@@ -34,7 +34,6 @@ export default class System extends React.Component<Props, State> {
   };
 
   shouldComponentUpdate(nextProps: Props): boolean {
-    // First fast comparaison if the number of questions is different
     const { questions } = this.props;
     if (nextProps.questions.length !== questions.length) {
       return true;
