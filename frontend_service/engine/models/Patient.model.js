@@ -53,6 +53,7 @@ export class PatientModel {
     const medicalCaseClass = new MedicalCaseModel(medicalCase);
     const database = await new Database();
     const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
+    console.log(medicalCase,medicalCaseClass);
     medicalCaseClass.patient_id = this.id;
     medicalCaseClass.json = JSON.stringify(medicalCaseClass);
     await medicalCaseClass.handleFailSafe();
@@ -77,6 +78,9 @@ export class PatientModel {
       if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
         // Date display
         displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+      } else if (nodes[currentPatientValue.node_id].display_format === displayFormats.dropDownList) {
+        // Date display
+        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
       } else if (currentPatientValue.value === null) {
         // Answer display
         displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;

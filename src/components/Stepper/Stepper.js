@@ -294,6 +294,7 @@ class Stepper extends React.Component<Props, State> {
         const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
 
         medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
+        console.log(medicalCaseObject)
         await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
       }
 
@@ -536,11 +537,12 @@ class Stepper extends React.Component<Props, State> {
     const patientId = navigation.getParam('idPatient');
     const medicalCaseObject = store.getState();
     let patient;
+    console.log(patientId,medicalCaseObject);
 
     // If patient already exists
     if (patientId !== null) {
       patient = await database.findBy('Patient', patientId);
-      await patient.addMedicalCase(medicalCase);
+      await patient.addMedicalCase(medicalCaseObject);
       await database.lockMedicalCase(medicalCase.id);
     } else {
       // Had to do this shit cause the constructor needs a facility + otherFacility
