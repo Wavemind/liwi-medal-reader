@@ -22,16 +22,20 @@ export default class ConsentImage extends React.Component<Props, State> {
    * @returns {Boolean} - true if license is working, false otherwise
    */
   checkLicense = async () => {
+    const {
+      app: { t },
+    } = this.props;
+
     if (await ScanbotSDK.isLicenseValid()) {
       // OK - we have a trial session, a valid trial license or valid production license.
       return true;
     }
-    displayNotification('Scanbot SDK trial period or license has expired!', liwiColors.redColor);
+    displayNotification(t('consent_image:scanbot_license'), liwiColors.redColor);
     return false;
   };
 
   /**
-   * Lauches the scanner and processes the image when scanning is successfull
+   * Launches the scanner and processes the image when scanning is successfull
    */
   startDocumentScannerButtonTapped = async () => {
     const { app, addConsentFile } = this.props;
@@ -45,7 +49,7 @@ export default class ConsentImage extends React.Component<Props, State> {
 
     const result = await ScanbotSDK.UI.startDocumentScanner({
       // Customize colors, text resources, etc..
-      polygonColor: '#ff407d',
+      polygonColor: liwiColors.greyColor,
       cameraPreviewMode: 'FIT_IN',
       orientationLockMode: 'PORTRAIT',
       multiPageEnabled: false,
@@ -66,6 +70,10 @@ export default class ConsentImage extends React.Component<Props, State> {
     }
   };
 
+  /**
+   * Displays the consent management form
+   * @returns {*}
+   */
   renderRenewConsent = () => {
     const {
       app: { t },
@@ -75,7 +83,7 @@ export default class ConsentImage extends React.Component<Props, State> {
 
     return (
       <>
-        <Text>Consent to data processing for this visit. NO if revoked</Text>
+        <Text>{t('consent_image:label')}</Text>
         <View style={styles.flexRow}>
           <LeftButton active={medicalCase.consent === true} onPress={() => updateMedicalCaseProperty('consent', true)}>
             <Text white={medicalCase.consent === true} center>
@@ -99,6 +107,7 @@ export default class ConsentImage extends React.Component<Props, State> {
       newPatient,
     } = this.props;
     const disabled = medicalCase.patient.consent_file === null;
+
     return (
       <View>
         <Text customSubTitle>{t('consent_image:title')}</Text>

@@ -32,6 +32,9 @@ i18n
           scan: 'Scan file',
           show: 'Show consent',
           title: 'Consent',
+          scanbot_license: 'Scanbot SDK trial period or license has expired!',
+          label: 'Consent to data processing for this visit. NO if revoked',
+          required: "The data processing consent can't be blank",
         },
         diagnoses: {
           add: 'Create',
@@ -93,6 +96,7 @@ i18n
           more: '...',
           uncompleted: 'Stage is not valid',
           patientnotcomplete: 'The creation of the patient',
+          is_required: 'is required'
         },
         algorithms: {
           never: 'Never synchronized data',

@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { medicalCaseStatus, routeDependingStatus, valueFormats } from '../../../frontend_service/constants';
 import { store } from '../../../frontend_service/store';
+import i18n from '../../utils/i18n';
 
 import {
   questionsBasicMeasurements,
@@ -190,7 +191,7 @@ export const validatorNavigate = (navigateRoute) => {
     if (navigateRoute.routeName === 'Triage') {
       if (state$.consent === null) {
         validator.isActionValid = false;
-        validator.customErrors.push("The data processing consent can't be blank");
+        validator.customErrors.push(i18n.t('consent_image:required'));
       }
     }
 

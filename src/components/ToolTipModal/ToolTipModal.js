@@ -35,7 +35,7 @@ export default class TooltipModal extends React.Component<Props, State> {
     let i = 0;
 
     while (i < questions.length) {
-      rowQuestions.push(<Text> - {questions[i].label} is required</Text>);
+      rowQuestions.push(<Text> - {questions[i].label} {t('tooltip:is_required')}</Text>);
 
       if (i === 2) {
         rowQuestions.push(<Text italic>{t('tooltip:more')}</Text>);

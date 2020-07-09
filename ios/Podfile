@@ -33,6 +33,7 @@ target 'liwi_native' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'BugsnagReactNative', :path => '../node_modules/bugsnag-react-native'
 
 
   target 'liwi_nativeTests' do
