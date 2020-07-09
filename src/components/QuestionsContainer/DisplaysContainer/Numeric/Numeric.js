@@ -1,9 +1,11 @@
 // @flow
 
 import * as React from 'react';
-import { Input, View } from 'native-base';
+import { Input, Text, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
+import { LeftButton, RightButton } from '../../../../template/layout';
+import { styles } from './Numeric.style';
 
 type Props = NavigationScreenProps & {};
 
@@ -19,15 +21,19 @@ export default class Numeric extends React.Component<Props, State> {
   };
 
   shouldComponentUpdate(nextProps: Readonly<P>, nextState): boolean {
+    const { value, estimableValue } = this.state;
     const { question } = this.props;
 
-    const { value } = this.state;
-    return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value || nextState.value !== value;
+    return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value || nextState.value !== value || nextState.estimableValue !== estimableValue;
   }
 
   componentDidMount() {
     const { question } = this.props;
-    this.setState({ value: question.value });
+
+    this.setState({
+      value: question.value,
+      estimableValue: question.estimableValue,
+    });
   }
 
   /**
@@ -76,6 +82,17 @@ export default class Numeric extends React.Component<Props, State> {
     this.setState({ value });
   };
 
+  /**
+   * Set if value is estimated or measured
+   * @param {String} value - estimed | measured
+   * @private
+   */
+  _handleEstimable = (value) => {
+    const { setEstimable, question } = this.props;
+    setEstimable(question.id, value);
+    this.setState({ estimableValue: value });
+  };
+
   render() {
     const {
       question,
@@ -83,40 +100,36 @@ export default class Numeric extends React.Component<Props, State> {
       isReadOnly,
       app: { t },
     } = this.props;
-    let { style, value } = this.state;
+    let { style, value, estimableValue } = this.state;
 
-    let keyboardType;
+    value = value !== null ? String(value) : null;
     let placeholder = '';
-    switch (question.value_format) {
-      case 'Integer':
-        keyboardType = 'number-pad';
-        break;
-
-      case 'Float':
-        keyboardType = 'number-pad';
-        break;
-    }
 
     if (unavailableAnswer !== undefined && question.answer === unavailableAnswer.id) {
       placeholder = t('question:unavailable');
     }
 
-    value = value !== null ? String(value) : null;
-
     return (
-      <View answer>
-        <Input
-          keyboardType={keyboardType}
-          question
-          numeric
-          value={value}
-          onChange={this.onChange}
-          style={style}
-          onEndEditing={this.onEndEditing}
-          placeholder={placeholder}
-          disabled={isReadOnly}
-        />
-      </View>
+      <>
+        <View answer>
+          <Input keyboardType="number-pad" question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
+        </View>
+        {question.estimable ? (
+          <View answer style={styles.marginTop}>
+            <LeftButton active={estimableValue === 'measured'} onPress={() => this._handleEstimable('measured')} disabled={isReadOnly}>
+              <Text center white={estimableValue === 'measured'} style={styles.estimableFontSize}>
+                {t('question:measured')}
+              </Text>
+            </LeftButton>
+
+            <RightButton active={estimableValue === 'estimated'} onPress={() => this._handleEstimable('estimated')} disabled={isReadOnly}>
+              <Text center white={estimableValue === 'estimated'} style={styles.estimableFontSize}>
+                {t('question:estimated')}
+              </Text>
+            </RightButton>
+          </View>
+        ) : null}
+      </>
     );
   }
 }

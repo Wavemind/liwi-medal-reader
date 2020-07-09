@@ -150,6 +150,8 @@ i18n
         question: {
           yes: 'Yes',
           no: 'No',
+          measured: 'Measured',
+          estimated: 'Estimated',
           unavailable: 'Unavailable',
         },
         menu: {
@@ -340,6 +342,7 @@ i18n
           message: 'Location sharing is mandatory in order to use the medical service',
           ask_me_later: 'Ask me later',
           cancel: 'cancel',
+          ok: 'Ok',
           by: 'by',
           summary: 'Summary',
           isLocked: 'Case is locked',
@@ -367,7 +370,7 @@ i18n
           settings: 'Settings',
           my_profile: 'My profile',
           logout: 'Logout',
-          available_algorithms: 'Available algorithms',
+          synchronization: 'Synchronization',
           emergency: 'Emergency',
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
@@ -396,6 +399,10 @@ i18n
           algorithm_updated: 'Your algorithm has been updated',
           get_group: 'Receiving group data and medical staff',
           device_registered: 'Device registered',
+        },
+        synchronize: {
+          title: 'Medical cases to synchronize',
+          synchronize: 'Synchronize',
         },
       },
       fr: {

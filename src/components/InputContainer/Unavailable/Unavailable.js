@@ -1,10 +1,10 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { CheckBox } from "native-base";
-import { liwiColors } from "../../../utils/constants";
-import { styles } from "./Unavailable.style";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { CheckBox } from 'native-base';
+import { liwiColors } from '../../../utils/constants';
+import { styles } from './Unavailable.style';
 
 type Props = NavigationScreenProps & {};
 

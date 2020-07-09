@@ -153,7 +153,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       message: t('popup:message'),
       buttonNeutral: t('popup:ask_me_later'),
       buttonNegative: t('popup:cancel'),
-      buttonPositive: 'Ok !',
+      buttonPositive: t('popup:ok'),
     });
   };
 
@@ -231,8 +231,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
         newAlgorithm.selected = true;
         const currentAlgorithm = await getItems('algorithm');
 
-        this.setState({ filtersPatient: {}, filtersMedicalCase: {} });
-
         // Update popup only if version has changed
         if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
           store.dispatch(
@@ -248,6 +246,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
           );
         }
         await setItem('algorithm', newAlgorithm);
+        this.setState({ filtersPatient: {}, filtersMedicalCase: {}, algorithm: newAlgorithm });
       }
     }
 

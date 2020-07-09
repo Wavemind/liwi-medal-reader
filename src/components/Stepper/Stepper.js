@@ -22,7 +22,6 @@ import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
-import Database from '../../engine/api/Database';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
 import { displayNotification } from '../../utils/CustomToast';

@@ -3,7 +3,6 @@ import { Button, Icon, Text } from 'native-base';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Algorithms from '../../screens/algorithmsContainer/Algorithms';
 import ConsentPreview from '../../screens/patientsContainer/consentPreview';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
@@ -11,6 +10,7 @@ import PatientEdit from '../../screens/patientsContainer/patientEdit';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import Filters from '../../screens/filters';
+import Synchronization from '../../screens/synchronization';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
 import Summary from '../../screens/medicalCasesContainer/summary';
@@ -27,16 +27,6 @@ import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 const Stack = createStackNavigator(
   {
-    Algorithms: {
-      screen: Algorithms,
-      path: 'algorithms',
-      params: {},
-      navigationOptions: () => {
-        return {
-          title: i18n.t('navigation:available_algorithms'),
-        };
-      },
-    },
     Consultation: {
       screen: Consultation,
       path: 'consultation',
@@ -175,6 +165,16 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:settings'),
+        };
+      },
+    },
+    Synchronization: {
+      screen: Synchronization,
+      path: 'synchronization',
+      params: {},
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:synchronization'),
         };
       },
     },

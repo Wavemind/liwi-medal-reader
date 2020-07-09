@@ -180,7 +180,7 @@ export default class Medicines extends Component<Props, State> {
     const renderAdditionalDrugs = (
       <View style={styles.viewBox}>
         {Object.keys(diagnoses.additionalDrugs).map((s) => (
-          <View style={styles.viewItem}>
+          <View style={styles.viewItem} key={s}>
             <View style={styles.flex50}>
               <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
               <Text italic>
@@ -197,7 +197,7 @@ export default class Medicines extends Component<Props, State> {
                   value={diagnoses.additionalDrugs[s].duration}
                   onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, s)}
                   maxLength={2}
-                  placeholder="Write here"
+                  placeholder="..."
                 />
               </View>
             </View>

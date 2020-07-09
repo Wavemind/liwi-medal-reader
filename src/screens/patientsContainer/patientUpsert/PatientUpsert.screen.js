@@ -12,7 +12,7 @@ import { MedicalCaseModel } from '../../../../frontend_service/engine/models/Med
 import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
-import { getItem, getItems } from '../../../engine/api/LocalStorage';
+import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
 import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -35,7 +35,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
       navigation,
       setMedicalCase,
       updateMedicalCaseProperty,
-      app: { database },
+      app: { database, algorithm },
     } = this.props;
 
     let patient = {};
@@ -45,7 +45,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
     let facility = navigation.getParam('facility'); // Object
-    const algorithm = await getItems('algorithm');
 
     if (patientId === null) {
       if (facility === undefined) {
@@ -73,11 +72,27 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     NavigationService.setParamsAge('Patient');
     updateMedicalCaseProperty('patient', patient);
+
     this.setState({
       patient,
       loading: false,
     });
   }
+
+  /**
+   * Calculate age in year of the patient
+   */
+  renderEligibilityMessage = () => {
+    const { medicalCase } = this.props;
+
+    if (!medicalCase.isEligibility) {
+      return (
+        <View style={styles.warning}>
+          <Text size-auto>{medicalCase.config.age_limit_message}</Text>
+        </View>
+      );
+    }
+  };
 
   /**
    * Update state value of patient
@@ -208,11 +223,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
       >
         {[
           <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
-            <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {loading ? (
               <LiwiLoader />
             ) : (
               <>
+                <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+                {this.renderEligibilityMessage()}
                 <View>
                   <Col>
                     {this.renderIdentifierData()}

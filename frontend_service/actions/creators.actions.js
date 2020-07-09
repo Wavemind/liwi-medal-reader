@@ -120,6 +120,14 @@ export const setPatientValue = (index, value) => ({
   },
 });
 
+export const setEstimable = (index, value) => ({
+  type: actions.SET_ESTIMABLE,
+  payload: {
+    index,
+    value,
+  },
+});
+
 export const setAnswerUnavailable = (index, value) => ({
   type: actions.SET_ANSWER_TO_UNAVAILABLE,
   payload: {

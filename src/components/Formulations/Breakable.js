@@ -45,9 +45,7 @@ export default function Breakable(drug, node, drugDose) {
             {i18n.t('drug:mg')} {drugDose.administration_route_name}
           </Text>
           <Text size-auto>
-            {i18n.t('drug:every')}
-            {drugDose.recurrence} {i18n.t('drug:h')}
-            {drug.duration} {i18n.t('drug:days')}
+            {`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}
           </Text>
         </>
       )}
