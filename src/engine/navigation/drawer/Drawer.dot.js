@@ -1,8 +1,9 @@
 /**
- * The extertnal dependencies
+ * The external dependencies
  */
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import { liwiColors } from '../../../utils/constants';
 
 const ListItemDot = styled.TouchableOpacity`
   position: relative;
@@ -33,8 +34,8 @@ const DrawerDot = ({ type, onPress, isDrawer }) => {
   let borderColor = '#d8d8d8';
 
   if (type && type === 'active') {
-    dotColor = '#db473e';
-    borderColor = '#db473e';
+    dotColor = liwiColors.redColor;
+    borderColor = liwiColors.redColor;
   }
 
   if (type && type === 'passed') {

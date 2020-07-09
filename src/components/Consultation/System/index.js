@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
-import { withNavigation } from "react-navigation";
-import System from "./System";
-import { withApplication } from "../../../engine/contexts/Application.context";
+import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
+import System from './System';
+import { withApplication } from '../../../engine/contexts/Application.context';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };

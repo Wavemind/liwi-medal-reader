@@ -1,6 +1,6 @@
-import { connect } from "react-redux";
-import String from "./String";
-import { manageSetAnswer } from "../../../../../frontend_service/engine/utilsDispatcher";
+import { connect } from 'react-redux';
+import String from './String';
+import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
 import { setPatientValue } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {

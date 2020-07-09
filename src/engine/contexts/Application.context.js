@@ -152,7 +152,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       message: t('popup:message'),
       buttonNeutral: t('popup:ask_me_later'),
       buttonNegative: t('popup:cancel'),
-      buttonPositive: 'Ok !',
+      buttonPositive: t('popup:ok'),
     });
   };
 

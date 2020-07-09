@@ -1,3 +1,3 @@
-import CustomDatePicker from "./CustomDatePicker";
+import CustomDatePicker from './CustomDatePicker';
 
 export default CustomDatePicker;

@@ -1,25 +1,22 @@
 // @flow
-import React, { Component } from "react";
-import { ScrollView, View } from "react-native";
-import { NavigationScreenProps } from "react-navigation";
-import { styles } from "./Drawer.style";
-import type { StateApplicationContext } from "../../contexts/Application.context";
-import NavigationService from "../Navigation.service";
-import {
-  BottomButtonsDrawer,
-  CategorieButton,
-  HeaderButtonsDrawer,
-  ItemButton,
-  PathBar
-} from "./Drawer.item.navigation";
-import { displayNotification } from "../../../utils/CustomToast";
-import { renderingDrawerItems } from "./Drawer.constants";
-import { liwiColors } from "../../../utils/constants";
-// eslint-disable-next-line no-unused-vars
+import React, { Component } from 'react';
+import { ScrollView, View } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { styles } from './Drawer.style';
+import type { StateApplicationContext } from '../../contexts/Application.context';
+import NavigationService from '../Navigation.service';
+import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
+import { displayNotification } from '../../../utils/CustomToast';
+import { renderingDrawerItems } from './Drawer.constants';
+import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
-
 type State = StateApplicationContext & {};
+
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
 
 export default class Drawer extends Component<Props, State> {
   static defaultProps = {
@@ -31,7 +28,7 @@ export default class Drawer extends Component<Props, State> {
   };
 
   _setScrollPosition = (y) => {
-    this.scrollView.scrollTo({ y: y, animated: false });
+    this.scrollView.scrollTo({ y, animated: false });
   };
 
   logout = async () => {
