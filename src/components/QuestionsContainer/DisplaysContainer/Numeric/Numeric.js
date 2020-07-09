@@ -5,7 +5,7 @@ import { Input, Text, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import { liwiColors } from '../../../../utils/constants';
 import { LeftButton, RightButton } from '../../../../template/layout';
-import styles from './Numeric.style';
+import { styles } from './Numeric.style';
 
 type Props = NavigationScreenProps & {};
 
