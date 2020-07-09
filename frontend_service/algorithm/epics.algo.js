@@ -3,6 +3,7 @@ import find from 'lodash/find';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import moment from 'moment';
+import { Text, View } from 'native-base';
 import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import {
@@ -18,6 +19,8 @@ import {
 } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 import NavigationService from '../../src/engine/navigation/Navigation.service';
+import { store } from '../store';
+import { styles } from '../../src/screens/patientsContainer/patientUpsert/PatientUpsert.style';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated. */
 
@@ -47,6 +50,13 @@ export const epicCatchAnswer = (action$, state$) =>
 
       // Inject update
       arrayActions.push(updateMedicalCaseProperty('updated_at', moment().format()));
+
+      // If it's birth date node, check eligibility age and update it in medical case
+      if (index === state$.value.config.basic_questions.birth_date_question_id) {
+        const birthDate = state$.value.nodes[state$.value.config.basic_questions.birth_date_question_id].value;
+        const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
+        arrayActions.push(updateMedicalCaseProperty('isEligibility', years < state$.value.config.age_limit));
+      }
 
       relatedDiagnostics.map((diagnostic) => arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodeTypes.diagnostic)));
 
