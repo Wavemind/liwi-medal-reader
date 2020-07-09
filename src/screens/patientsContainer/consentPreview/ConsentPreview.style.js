@@ -1,11 +1,11 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import { liwiColors } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
   content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
+    backgroundColor: liwiColors.blackColor,
+    margin: 0,
+    padding: 0,
   },
   documentImage: {
     flex: 1,
