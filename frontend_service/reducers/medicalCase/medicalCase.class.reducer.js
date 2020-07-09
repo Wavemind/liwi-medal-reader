@@ -3,15 +3,15 @@ import { Action, ReducerClass } from 'reducer-class';
 import { REHYDRATE } from 'redux-persist';
 import find from 'lodash/find';
 import { filter } from 'lodash';
-import { getItems, storeMedicalCase } from '../../../src/engine/api/LocalStorage';
+import 'reflect-metadata';
+
+import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { categories, nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
-import 'reflect-metadata';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { QuestionModel } from '../../engine/models/Question.model';
-import { PatientValueModel } from '../../engine/models/PatientValue.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -45,6 +45,24 @@ class MedicalCaseReducer extends ReducerClass {
 
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
+  /**
+   * Sets the consent file in the patient after scanning it, the consent in the
+   * medical case is automaticaly set to true
+   * @payload page : the scanned file in a base64 format
+   */
+  @Action(actions.ADD_CONSENT_FILE)
+  addConsentFile(state, action) {
+    const { page } = action.payload;
+
+    return {
+      ...state,
+      consent: true,
+      patient: {
+        ...state.patient,
+        consent_file: page,
+      },
+    };
+  }
 
   /**
    * Update condition value of diagnostic or questions sequence for a question or a questions sequence

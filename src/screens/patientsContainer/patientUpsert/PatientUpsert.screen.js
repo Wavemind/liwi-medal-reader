@@ -2,25 +2,23 @@
 
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Button, Col, Text, View } from 'native-base';
-import { NavigationActions, NavigationScreenProps, StackActions } from 'react-navigation';
+import { Col, Text, View } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
 
 import uuid from 'react-native-uuid';
-import moment from 'moment';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
-import { getItem, getItems } from '../../../engine/api/LocalStorage';
+import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
 import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
-import { store } from '../../../../frontend_service/store';
-import { liwiColors } from '../../../utils/constants';
+import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -30,7 +28,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     errors: {},
     patient: null,
     loading: true,
-    isEligibility: false,
   };
 
   async componentDidMount() {
@@ -121,11 +118,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
+          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput placeholder="..." condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
+          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
@@ -249,6 +246,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
                     )}
                   </Col>
                 </View>
+                <ConsentImage newPatient={patient.id === null} />
                 <Text customSubTitle>{t('patient_upsert:questions')}</Text>
                 <Questions questions={extraQuestions} />
               </>

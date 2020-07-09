@@ -11,7 +11,7 @@ import { displayFormats } from '../../constants';
 
 export class PatientModel {
   constructor(props = {}) {
-    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patientValues = null } = props;
+    const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, facility = null, reason = '', patientValues = null, consent_file = null } = props;
     if (this.id === undefined || this.id === null) {
       if (otherFacility !== null) {
         this.other_uid = otherFacility?.uid?.toString();
@@ -29,6 +29,7 @@ export class PatientModel {
       this.study_id = facility !== null ? facility?.study_id?.toString() : null;
       this.group_id = facility !== null ? facility?.group_id?.toString() : null;
       this.reason = reason;
+      this.consent_file = consent_file;
 
       this.medicalCases = medicalCases;
       this.fail_safe = false;
@@ -136,6 +137,7 @@ PatientModel.schema = {
     medicalCases: 'MedicalCase[]',
     patientValues: 'PatientValue[]',
     updated_at: 'date',
+    consent_file: 'string?',
     fail_safe: { type: 'bool', default: false },
   },
 };

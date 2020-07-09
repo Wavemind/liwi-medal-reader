@@ -3,6 +3,7 @@ import { Button, Icon, Text } from 'native-base';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 
+import ConsentPreview from '../../screens/patientsContainer/consentPreview';
 import Drawer from './drawer';
 import MainScreen from '../../screens/main/Main.screen';
 import PatientEdit from '../../screens/patientsContainer/patientEdit';
@@ -35,6 +36,16 @@ const Stack = createStackNavigator(
         medicalCaseStatus: medicalCaseStatus.consultation.name,
         nextStage: medicalCaseStatus.waitingTests.name,
       },
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    ConsentPreview: {
+      screen: ConsentPreview,
+      path: 'consent_preview',
+      params: {},
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),

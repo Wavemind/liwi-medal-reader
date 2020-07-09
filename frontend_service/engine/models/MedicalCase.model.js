@@ -35,6 +35,7 @@ export class MedicalCaseModel {
       this.complaintCategories = [];
       this.isNewCase = true;
       this.isEligibility = true;
+      this.consent = null;
       this.modal = {
         open: false,
         content: '',
@@ -85,6 +86,7 @@ export class MedicalCaseModel {
       this.diagnostics = json.diagnostics;
       this.nodes = json.nodes;
       this.triage = json.triage;
+      this.consent = json.consent;
       this.isEligibility = json.isEligibility;
       this.complaintCategories = json.complaintCategories;
       this.isNewCase = false;

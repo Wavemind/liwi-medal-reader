@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { medicalCaseStatus, routeDependingStatus, valueFormats } from '../../../frontend_service/constants';
 import { store } from '../../../frontend_service/store';
+import i18n from '../../utils/i18n';
 
 import {
   questionsBasicMeasurements,
@@ -47,6 +48,7 @@ export const modelValidator = {
   stepToBeFill: [],
   screenToBeFill: [],
   questionsToBeFill: [],
+  customErrors: [],
   mustFinishStage: false,
 };
 
@@ -183,6 +185,14 @@ export const validatorNavigate = (navigateRoute) => {
     if (routeToValidate?.key === detailNavigateRoute?.key) {
       validator.isActionValid = true;
       return validator;
+    }
+
+    // TODO Clean validation of custom fields it's very gross !
+    if (navigateRoute.routeName === 'Triage') {
+      if (state$.consent === null) {
+        validator.isActionValid = false;
+        validator.customErrors.push(i18n.t('consent_image:required'));
+      }
     }
 
     // Route to validate is not null and can be validated
