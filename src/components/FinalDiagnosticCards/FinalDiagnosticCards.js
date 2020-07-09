@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Text, Card, CardItem, Body } from 'native-base';
+import { Text, Card, CardItem, Body, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { styles } from './FinalDiagnosticCards.style';
