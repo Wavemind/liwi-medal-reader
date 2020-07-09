@@ -156,6 +156,10 @@ export default class RealmInterface {
     return this._realm().objects(model).filtered(`${field} = $0`, value);
   };
 
+  closedAndNotSynchronized = async () => {
+    return this._realm().objects('MedicalCase').filtered("status == 'close' && synchronized_at == null");
+  };
+
   /**
    * Returns the medical case
    * @param { string } model - The model name of the data we want to retrieve

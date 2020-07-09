@@ -108,7 +108,7 @@ function oneValidation(criteria, questions, stepName) {
 
           // Test integer or float question if there'is validation
           if (q.value_format === valueFormats.int || q.value_format === valueFormats.float) {
-            if ((q.value < q.min_value_error || q.value > q.max_value_error) && q.value !== null) {
+            if (q.value !== null && (q.min_value_error !== null || q.max_value_error) && (q.value < q.min_value_error || q.value > q.max_value_error)) {
               isValid = false;
               staticValidator.questionsToBeFill.push(state$.nodes[questionId]);
             }

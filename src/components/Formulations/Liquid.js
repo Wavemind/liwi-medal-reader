@@ -20,7 +20,7 @@ export default function Liquid(drug, node, drugDose) {
         {i18n.t('drug:ml')}
       </Text>
       <Text>
-        {i18n.t('drug:every')} {drugDose.recurrence} {i18n.t('drug:h')} {drug.duration} {i18n.t('drug:days')}
+        {`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}
       </Text>
     </>
   );
