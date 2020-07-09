@@ -28,6 +28,14 @@ i18n
           save: 'Save',
           resource_not_available: 'No connection, resource not available',
         },
+        consent_image: {
+          scan: 'Scan file',
+          show: 'Show consent',
+          title: 'Consent',
+          scanbot_license: 'Scanbot SDK trial period or license has expired!',
+          label: 'Consent to data processing for this visit. NO if revoked',
+          required: "The data processing consent can't be blank",
+        },
         diagnoses: {
           add: 'Create',
           add_medicine: 'Additional Medicines',
@@ -83,12 +91,12 @@ i18n
         },
         tooltip: {
           invalidQuestions: 'Question(s) to fill',
-          forcegoto: 'Allow in DEV ',
-          goto: 'Back to the form',
+          close: 'Close',
           notcomplete: 'Is not complete !',
-          more: 'more questions...',
-          uncompleted: 'Stage uncompleted',
+          more: '...',
+          uncompleted: 'Stage is not valid',
           patientnotcomplete: 'The creation of the patient',
+          is_required: 'is required'
         },
         algorithms: {
           never: 'Never synchronized data',
@@ -236,6 +244,9 @@ i18n
           status: 'Status',
           add_case: 'Add medical case',
           edit_patient_value: 'Edit patient values',
+        },
+        patient_edit: {
+          show_consent: 'Show consent file',
         },
         patient_upsert: {
           uid: 'UID',

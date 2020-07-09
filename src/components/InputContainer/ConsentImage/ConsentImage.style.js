@@ -1,12 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { responsiveUi } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    padding: responsiveUi.padding(),
-    flexDirection: 'column',
+  flexRow: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 15,
+  },
+  flex: {
+    flex: 1,
   },
   flexCenter: {
     flex: 1,

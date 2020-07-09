@@ -1,5 +1,10 @@
 import { actions } from './types.actions';
 
+export const addConsentFile = (page) => ({
+  type: actions.ADD_CONSENT_FILE,
+  payload: { page },
+});
+
 export const updateConditionValue = (index, callerId, value, type) => ({
   type: actions.UPDATE_CONDITION_VALUE,
   payload: { index, callerId, value, type },
