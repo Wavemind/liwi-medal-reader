@@ -1,12 +1,12 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { ScrollView } from "react-native";
-import { Text, View } from "native-base";
-import QuestionFactory from "../QuestionFactory";
-import { displayFormats } from "../../../../frontend_service/constants";
-import QuestionReference from "../QuestionReference";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { ScrollView } from 'react-native';
+import { Text, View } from 'native-base';
+import QuestionFactory from '../QuestionFactory';
+import { displayFormats } from '../../../../frontend_service/constants';
+import QuestionReference from '../QuestionReference';
 
 type Props = NavigationScreenProps & {};
 

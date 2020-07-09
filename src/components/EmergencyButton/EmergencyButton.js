@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Fab, Icon, View } from "native-base";
-import NavigationService from "../../engine/navigation/Navigation.service";
-import { styles } from "./EmergencyButton.style";
+import React, { Component } from 'react';
+import { Fab, Icon, View } from 'native-base';
+import NavigationService from '../../engine/navigation/Navigation.service';
+import { styles } from './EmergencyButton.style';
 
 export default class EmergencyButton extends Component {
   state = {

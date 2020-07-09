@@ -1,13 +1,14 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { View } from "react-native";
-import { DatePicker, Form, Icon, Text } from "native-base";
-import moment from "moment";
-import { styles } from "./CustomDatePicker.style";
-import { ViewBlocColor } from "../../../template/layout";
-import { liwiColors } from "../../../utils/constants";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { View } from 'react-native';
+import { DatePicker, Form, Icon, Text } from 'native-base';
+import moment from 'moment';
+import { styles } from './CustomDatePicker.style';
+import { ViewBlocColor } from '../../../template/layout';
+import { liwiColors } from '../../../utils/constants';
+import i18n from '../../../utils/i18n';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -39,7 +40,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
     const { change, index } = this.props;
 
     this.setState({ value: new Date(value).toString() });
-    change(index, moment(value).format('DD/MM/YYYY'));
+    change(index, moment(value).format(i18n.t('application:date_format')));
   };
 
   render() {

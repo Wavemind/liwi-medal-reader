@@ -1,3 +1,3 @@
-import Formula from "./Formula";
+import Formula from './Formula';
 
 export default Formula;

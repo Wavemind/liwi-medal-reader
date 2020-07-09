@@ -2,23 +2,13 @@
 
 import moment from 'moment';
 import { NodeModel } from './Node.model';
-import { valueFormats, displayFormats } from '../../constants';
+import { valueFormats, references } from '../../constants';
 import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
-
-const references = {
-  z_score_male_table: require('../../api/z_score_male_table.json'),
-  z_score_female_table: require('../../api/z_score_female_table.json'),
-  heart_rate_table: require('../../api/heart_rate_table.json'),
-  respiratory_rate_table: require('../../api/respiratory_rate_table.json'),
-  muac_z_score_female_table: require('../../api/muac_z_score_female.json'),
-  muac_z_score_male_table: require('../../api/muac_z_score_male.json'),
-};
 
 interface QuestionInterface {
   answer: string;
   answers: Object;
-  answer_stage: string;
   description: string;
   label: string;
   category: string;
@@ -37,7 +27,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     const {
       answer = null,
       answers = {},
-      answer_stage = '',
       description = '',
       label = '',
       category = '',
@@ -54,11 +43,22 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       cc = [],
       reference_table_x_id = 0,
       reference_table_y_id = 0,
+      reference_table_z_id = null,
       reference_table_male = '',
       reference_table_female = '',
       system = '',
       is_identifiable = false,
       is_triage = false,
+      estimable = false,
+      estimableValue = 'measured',
+      min_value_warning = '',
+      max_value_warning = '',
+      min_value_error = '',
+      max_value_error = '',
+      min_message_warning = '',
+      max_message_warning = '',
+      min_message_error = '',
+      max_message_error = '',
     } = props;
 
     this.description = description;
@@ -79,11 +79,30 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.cc = cc;
     this.reference_table_y_id = reference_table_y_id;
     this.reference_table_x_id = reference_table_x_id;
+    this.reference_table_z_id = reference_table_z_id;
     this.reference_table_male = reference_table_male;
     this.reference_table_female = reference_table_female;
     this.system = system;
     this.is_identifiable = is_identifiable;
     this.is_triage = is_triage;
+    this.min_value_warning = min_value_warning;
+    this.max_value_warning = max_value_warning;
+    this.min_value_error = min_value_error;
+    this.max_value_error = max_value_error;
+    this.min_message_warning = min_message_warning;
+    this.max_message_warning = max_message_warning;
+    this.min_message_error = min_message_error;
+    this.max_message_error = max_message_error;
+    this.validationMessage = null;
+    this.validationType = null;
+    this.estimable = estimable;
+
+    // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
+    // if (estimable) {
+    if (estimable) {
+      // Type available [measured, estimated]
+      this.estimableValue = estimableValue;
+    }
   }
 
   /**
@@ -140,11 +159,13 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
           return nodeInBracket.value;
       }
     };
+
     // Replace every bracket in the formula with it's value
     const formula = this.formula.replace(findBracketId, replaceBracketToValue);
     if (ready) {
       return eval(formula);
     }
+
     return null;
   };
 
@@ -155,49 +176,81 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
   calculateReference() {
     const state$ = store.getState();
 
-    // Get X and Y
-    let x = state$.nodes[this.reference_table_x_id];
-    let y = state$.nodes[this.reference_table_y_id];
+    let reference = null;
+    let value = null;
 
-    // TODO: Remove when decision about date format is taken
-    // TODO: If it's zscore question take format of date in days otherwise in months
-    // TODO: Get days or months between today and X/Y value
-    const dateFormat = this.label === 'Weight for age (z-score)' ? 'days' : 'months';
-    x = x.display_format === displayFormats.date ? moment().diff(moment(x.value).toDate(), dateFormat) : x.value;
-    y = y.display_format === displayFormats.date ? moment().diff(moment(y.value).toDate(), dateFormat) : y.value;
+    // Get X and Y
+    const questionX = state$.nodes[this.reference_table_x_id];
+    const questionY = state$.nodes[this.reference_table_y_id];
+
+    // Get Z
+    let questionZ = null;
+    if (this.reference_table_z_id !== null) {
+      questionZ = state$.nodes[this.reference_table_z_id];
+    }
+
+    const x = questionX.value;
+    const y = questionY.value;
+    const z = questionZ?.value;
+
+    const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
+    const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
 
     // Get reference table for male or female
-    // TODO: VERY IMPORTANT WHEN MEDAL-C DEFINES GENDER FOR A ALGORITHM NEED TO FIX THIS
-    // TODO: DOING A SECOND LINE OF COMMENT SO THE TODO IS VISIBLE
-    // TODO: const reference = state$.patient.gender === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
-    const reference = 'male' === 'male' ? references[this.reference_table_male] : references[this.reference_table_female];
-    let value = null;
-    let previousKey = null;
+    if (gender === 'male') {
+      reference = references[this.reference_table_male];
+    } else if (gender === 'female') {
+      reference = references[this.reference_table_female];
+    }
 
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
-    if (x !== null && y !== null && x in reference) {
-      // Order the keys
-      const arr = Object.keys(reference[x]).sortByNumber();
-
-      // if value smaller than smallest element return the smaller value
-      if (reference[x][arr.first()] > y) {
-        return arr.first();
+    if (reference !== null && x !== null && y !== null && x in reference) {
+      if (z === null) {
+        value = this.findValueInReferenceTable(reference[x], y);
+      } else if (String(y) in reference[x]) {
+        value = this.findValueInReferenceTable(reference[x][y], z);
       }
-      if (reference[x][arr.last()] < y) {
-        return arr.last();
-      }
-
-      arr.map((key) => {
-        if (reference[x][key] > y) {
-          value = Number(previousKey);
-          return true;
-        }
-        previousKey = key;
-      });
     }
+
     return value;
   }
 
+  /**
+   *
+   * @param {JSON} referenceTable - Reference table available in frontend_service/api/...
+   * @param {Integer} maxRange - Y or Z value to not exceed
+   * @returns {null|Integer} - Value find
+   */
+  findValueInReferenceTable(referenceTable, maxRange) {
+    let previousKey = null;
+    let value = null;
+
+    // Order the keys
+    const scopedRange = Object.keys(referenceTable).sortByNumber();
+
+    // if value smaller than smallest element return the smaller value
+    if (referenceTable[scopedRange.first()] > maxRange) {
+      return scopedRange.first();
+    }
+    if (referenceTable[scopedRange.last()] < maxRange) {
+      return scopedRange.last();
+    }
+
+    scopedRange.map((key) => {
+      if (referenceTable[key] > maxRange) {
+        value = Number(previousKey);
+        return true;
+      }
+      previousKey = key;
+    });
+
+    return value;
+  }
+
+  /**
+   * Return a humanized value who depend on value_format
+   * @returns {string|*}
+   */
   displayValue = () => {
     if (this.value_format === valueFormats.date && this.value !== null) {
       return moment(this.value).format(I18n.t('application:date_format'));

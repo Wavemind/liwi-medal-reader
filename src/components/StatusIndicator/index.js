@@ -1,6 +1,6 @@
-import { connect } from "react-redux";
-import StatusIndicator from "./StatusIndicator";
-import { withApplication } from "../../engine/contexts/Application.context";
+import { connect } from 'react-redux';
+import StatusIndicator from './StatusIndicator';
+import { withApplication } from '../../engine/contexts/Application.context';
 
 const mapStateToProps = (medicalCase) => {
   return {

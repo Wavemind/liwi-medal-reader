@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData } from '../actions/creators.actions';
@@ -14,7 +16,7 @@ import { calculateCondition } from './conditionsHelpers.algo';
 export const questionsMedicalHistory = () => {
   const state$ = store.getState();
   const { diagnostics } = state$;
-  const questions = state$.nodes.filterBy(
+  const medicalHistoryQuestions = state$.nodes.filterBy(
     [
       {
         by: 'category',
@@ -41,21 +43,40 @@ export const questionsMedicalHistory = () => {
         operator: 'equal',
         value: categories.vaccine,
       },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.vitalSignAnthropometric,
+      },
     ],
     diagnostics,
     'OR',
     'array',
     true
   );
-  if (state$.metaData.consultation.medicalHistory.length === 0 && questions.length !== 0) {
-    store.dispatch(
-      updateMetaData(
-        'consultation',
-        'medicalHistory',
-        questions.map(({ id }) => id)
-      )
-    );
+
+  const vitalSignsQuestions = state$.nodes.filterBy(
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.vitalSignAnthropometric,
+      },
+    ],
+    diagnostics,
+    'OR',
+    'array',
+    false
+  );
+
+  const questions = medicalHistoryQuestions.concat(vitalSignsQuestions);
+  const newQuestions = questions.map(({ id }) => id);
+
+  // Update state$ medical history questions if it's different from new questions list
+  if (!_.isEqual(state$.metaData.consultation.medicalHistory, newQuestions)) {
+    store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
   }
+
   return questions;
 };
 
@@ -80,14 +101,11 @@ export const questionsPhysicalExam = () => {
     true
   );
 
-  if (state$.metaData.consultation.physicalExam.length === 0 && questions.length !== 0) {
-    store.dispatch(
-      updateMetaData(
-        'consultation',
-        'physicalExam',
-        questions.map(({ id }) => id)
-      )
-    );
+  const newQuestions = questions.map(({ id }) => id);
+
+  // Update state$ physical exam questions if it's different from new questions list
+  if (!_.isEqual(state$.metaData.consultation.physicalExam, newQuestions)) {
+    store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
   }
 
   return questions;
@@ -109,43 +127,37 @@ export const questionsFirstLookAssessement = () => {
     });
   }
 
-  if (state$.metaData.triage.firstLookAssessments.length === 0 && firstLookAssessement.length !== 0) {
-    store.dispatch(
-      updateMetaData(
-        'triage',
-        'firstLookAssessments',
-        firstLookAssessement.map(({ id }) => id)
-      )
-    );
+  const newQuestions = firstLookAssessement.map(({ id }) => id);
+
+  // Update state$ first look assessment questions if it's different from new questions list
+  if (!_.isEqual(state$.metaData.triage.firstLookAssessments, newQuestions)) {
+    store.dispatch(updateMetaData('triage', 'firstLookAssessments', newQuestions));
   }
 
   return firstLookAssessement;
 };
 
 /**
- * Get ComplaintCategory for triage
+ * Get ComplaintCategories for triage
  * Update metadata
  */
 export const questionsComplaintCategory = () => {
   const state$ = store.getState();
-  const complaintCategory = [];
+  const complaintCategories = [];
   const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
 
   orders.map((order) => {
-    complaintCategory.push(state$.nodes[order]);
+    complaintCategories.push(state$.nodes[order]);
   });
 
-  if (state$.metaData.triage.complaintCategories.length === 0 && complaintCategory.length !== 0) {
-    store.dispatch(
-      updateMetaData(
-        'triage',
-        'complaintCategories',
-        complaintCategory.map(({ id }) => id)
-      )
-    );
+  const newQuestions = complaintCategories.map(({ id }) => id);
+
+  // Update state$ complaint categories questions if it's different from new questions list
+  if (!_.isEqual(state$.metaData.triage.complaintCategories, newQuestions)) {
+    store.dispatch(updateMetaData('triage', 'complaintCategories', newQuestions));
   }
 
-  return complaintCategory;
+  return complaintCategories;
 };
 
 /**
@@ -167,15 +179,11 @@ export const questionsBasicMeasurements = () => {
     });
   }
 
-  // Set Questions in State for validation
-  if (state$.metaData.triage.basicMeasurements.length === 0 && basicMeasurements.length !== 0) {
-    store.dispatch(
-      updateMetaData(
-        'triage',
-        'basicMeasurements',
-        basicMeasurements.map(({ id }) => id)
-      )
-    );
+  const newQuestions = basicMeasurements.map(({ id }) => id);
+
+  // Update state$ basic measurements questions if it's different from new questions list
+  if (!_.isEqual(state$.metaData.triage.basicMeasurements, newQuestions)) {
+    store.dispatch(updateMetaData('triage', 'basicMeasurements', newQuestions));
   }
 
   return basicMeasurements;
@@ -189,20 +197,22 @@ export const questionsTests = () => {
   const state$ = store.getState();
   const { diagnostics } = state$;
   let assessmentTest = [];
-  assessmentTest = state$.nodes.filterBy([{
-    by: 'category',
-    operator: 'equal',
-    value: categories.assessment
-  }], diagnostics);
+  assessmentTest = state$.nodes.filterBy(
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.assessment,
+      },
+    ],
+    diagnostics
+  );
 
-  if (state$.metaData.tests.tests.length === 0 && assessmentTest.length !== 0) {
-    store.dispatch(
-      updateMetaData(
-        'tests',
-        'tests',
-        assessmentTest.map(({ id }) => id)
-      )
-    );
+  const newQuestions = assessmentTest.map(({ id }) => id);
+
+  // Update state$ tests questions if it's different from new questions list
+  if (!_.isEqual(state$.metaData.tests.tests, newQuestions)) {
+    store.dispatch(updateMetaData('tests', 'tests', newQuestions));
   }
 
   return assessmentTest;

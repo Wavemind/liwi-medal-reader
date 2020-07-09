@@ -16,4 +16,6 @@ export const styles = StyleSheet.create({
   cardTitleContent: { flexDirection: 'row', flex: 1, justifyContent: 'center' },
   cardTitle: { flex: 1, fontSize: 18 },
   noRightMargin: { marginRight: 0 },
+  drugContainer: { flex: 1, flexDirection: 'row' },
+  tooltipButton: { flex: 1, alignSelf: 'center', alignItems: 'flex-end' },
 });
