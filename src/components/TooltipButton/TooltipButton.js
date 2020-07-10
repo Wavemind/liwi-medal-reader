@@ -31,6 +31,7 @@ export default class TooltipButton extends React.Component<Props, State> {
           </Button>
           <LiwiTitle5>{title}</LiwiTitle5>
           <Text style={styles.description}>{node.description}</Text>
+          {__DEV__ ? <Text>id: {node.id}</Text> : null}
         </View>
       </ScrollView>
     );
