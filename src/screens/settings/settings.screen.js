@@ -1,10 +1,11 @@
 // @flow
 
-import * as React from "react";
-import { NavigationScreenProps } from "react-navigation";
-import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Text } from "native-base";
-import { ScrollView } from "react-native";
-import { getItem, setItem } from "../../engine/api/LocalStorage";
+import * as React from 'react';
+import { NavigationScreenProps } from 'react-navigation';
+import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Picker, Text } from 'native-base';
+import { ScrollView } from 'react-native';
+import { getItem, setItem } from '../../engine/api/LocalStorage';
+import RNRestart from 'react-native-restart';
 
 type Props = NavigationScreenProps & {};
 
@@ -13,6 +14,7 @@ type State = {};
 export default class Settings extends React.Component<Props, State> {
   // default settings
   state = {
+    environment: null,
     settings: {
       tests: {
         mRDT: false,
@@ -42,14 +44,14 @@ export default class Settings extends React.Component<Props, State> {
   async componentDidMount() {
     const { settings } = this.state;
     const localStorageSettings = await getItem('settings');
-    if (localStorageSettings !== null) {
-      this.setState({
-        settings: {
-          ...settings,
-          ...localStorageSettings,
-        },
-      });
-    }
+    const environment = await getItem('environment');
+    this.setState({
+      environment,
+      settings: {
+        ...settings,
+        ...localStorageSettings,
+      },
+    });
   }
 
   changeSettings = (setting, item) => {
@@ -68,11 +70,12 @@ export default class Settings extends React.Component<Props, State> {
   };
 
   render() {
-    const { settings } = this.state;
+    const { settings, environment } = this.state;
     const {
       navigation,
       app: { t },
     } = this.props;
+    console.log(environment);
 
     return (
       <ScrollView>
@@ -123,6 +126,26 @@ export default class Settings extends React.Component<Props, State> {
             </Body>
             <Right>
               <Switch value={settings.app.awake} onValueChange={() => this.changeSettings('app', 'awake')} />
+            </Right>
+          </ListItem>
+          <ListItem>
+            <Left>
+              <Text>Environment</Text>
+            </Left>
+            <Right>
+              <Picker
+                mode="dropdown"
+                style={{ width: 220 }}
+                selectedValue={environment}
+                onValueChange={async (value) => {
+                  await setItem('environment', value);
+                  await RNRestart.Restart();
+                }}
+              >
+                <Picker.Item label="Production" value="production" />
+                <Picker.Item label="Test" value="test" />
+                <Picker.Item label="Staging" value="staging" />
+              </Picker>
             </Right>
           </ListItem>
           <ListItem>

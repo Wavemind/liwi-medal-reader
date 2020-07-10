@@ -311,6 +311,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     isConnected: false,
     filtersPatient: {},
     filtersMedicalCase: {},
+    environment: 'production',
     lang: 'fr',
     logged: false,
     name: 'App',
