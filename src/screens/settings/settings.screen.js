@@ -6,6 +6,7 @@ import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Picker, Text }
 import { ScrollView } from 'react-native';
 import { getItem, setItem } from '../../engine/api/LocalStorage';
 import RNRestart from 'react-native-restart';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type Props = NavigationScreenProps & {};
 
@@ -75,7 +76,6 @@ export default class Settings extends React.Component<Props, State> {
       navigation,
       app: { t },
     } = this.props;
-    console.log(environment);
 
     return (
       <ScrollView>
@@ -139,6 +139,9 @@ export default class Settings extends React.Component<Props, State> {
                 selectedValue={environment}
                 onValueChange={async (value) => {
                   await setItem('environment', value);
+                  await AsyncStorage.removeItem('session');
+                  await AsyncStorage.removeItem('user');
+                  navigation.navigate('NewSession');
                   await RNRestart.Restart();
                 }}
               >

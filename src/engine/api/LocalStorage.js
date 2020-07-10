@@ -180,7 +180,7 @@ export const updateSession = async (id, newSession) => {
 
 // Clear sessions from local storage
 export const clearSessions = async () => {
-  await AsyncStorage.removeItem('sessions');
+  await AsyncStorage.removeItem('session');
 };
 
 // Clear patients in local storage
@@ -193,55 +193,9 @@ export const clearLocalStorage = async () => {
   await AsyncStorage.removeItem('medicalCases');
   await AsyncStorage.removeItem('algorithms');
   await AsyncStorage.removeItem('patients');
-  await AsyncStorage.removeItem('sessions');
+  await AsyncStorage.removeItem('session');
   await AsyncStorage.removeItem('lastLogin');
   await AsyncStorage.clear();
-};
-
-// @params [Object] session
-// Set session credentials in local storage
-export const setSessions = async (session) => {
-  await AsyncStorage.setItem('sessions', stringifyDeepRef(session));
-};
-
-// @params [Integer] id
-// Set current session
-export const setActiveSession = async (id = null) => {
-  const sessions = await getItems('sessions');
-  await sessions.map((session) => {
-    if (session.active === undefined || session.active === true) {
-      session.active = false;
-      session.active_since = false;
-    }
-
-    if (session.data.id === id) {
-      session.active = true;
-      session.active_since = moment().format();
-    }
-  });
-
-  await setSessions(sessions);
-};
-
-// @params [Integer] id
-// @return [Object] session
-// Get session from local storage
-export const getSession = async (id) => {
-  let sessions = await AsyncStorage.getItem('sessions');
-  sessions = JSON.parse(sessions);
-
-  if (Array.isArray(sessions)) {
-    const findSession = sessions.find((session) => {
-      return session.data.id === id;
-    });
-
-    if (findSession === undefined) {
-      return { access_token: 'unsecure' };
-    }
-
-    return findSession;
-  }
-  return {};
 };
 
 // @params [Integer] id
