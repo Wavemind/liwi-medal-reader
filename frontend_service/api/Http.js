@@ -10,7 +10,8 @@ import fetch from '../../src/utils/fetchWithTimeout';
  */
 export const getGroup = async () => {
   const deviceInfo = await getDeviceInformation();
-  const url = `${host}devices/${deviceInfo.mac_address}`;
+  const hostname = await host();
+  const url = `${hostname}devices/${deviceInfo.mac_address}`;
   const header = await _setHeaders();
   return _fetch(url, header);
 };
@@ -21,7 +22,8 @@ export const getGroup = async () => {
  */
 export const getAlgorithm = async () => {
   const deviceInfo = await getDeviceInformation();
-  const url = `${host}versions?mac_address=${deviceInfo.mac_address}`;
+  const hostname = await host();
+  const url = `${hostname}versions?mac_address=${deviceInfo.mac_address}`;
   const header = await _setHeaders();
   return _fetch(url, header);
 };
@@ -33,7 +35,8 @@ export const getAlgorithm = async () => {
  * @returns {Promise<{access_token: any, uid: any, client: any, expiry: any}|null>}
  */
 export const auth = async (email, password) => {
-  const url = `${host}auth/sign_in`;
+  const hostname = await host();
+  const url = `${hostname}auth/sign_in`;
   const header = await _setHeaders('POST', { email, password });
   const httpRequest = await fetch(url, header).catch((error) => handleHttpError(error));
   const result = await httpRequest.json();
@@ -58,7 +61,8 @@ export const auth = async (email, password) => {
  */
 export const registerDevice = async () => {
   const deviceInfo = await getDeviceInformation();
-  const url = `${host}devices`;
+  const hostname = await host();
+  const url = `${hostname}devices`;
   const header = await _setHeaders('POST', { device: { ...deviceInfo } });
   const response = await _fetch(url, header);
   return response !== null;

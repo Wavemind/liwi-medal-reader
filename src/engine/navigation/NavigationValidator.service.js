@@ -187,6 +187,13 @@ export const validatorNavigate = (navigateRoute) => {
       return validator;
     }
 
+    // TODO Clean validation of custom fields it's very gross !
+    if (navigateRoute.routeName === 'Triage') {
+      if (state$.consent === null) {
+        validator.isActionValid = false;
+        validator.customErrors.push(i18n.t('consent_image:required'));
+      }
+    }
 
     // Route to validate is not null and can be validated
     if (routeToValidate !== undefined) {

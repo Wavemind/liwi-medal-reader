@@ -35,7 +35,7 @@ export class MedicalCaseModel {
       this.complaintCategories = [];
       this.isNewCase = true;
       this.isEligibility = true;
-      this.consent = null;
+      this.consent = __DEV__ ? true : null;
       this.modal = {
         open: false,
         content: '',
@@ -337,8 +337,7 @@ export class MedicalCaseModel {
    * @returns {boolean}
    */
   canBeSynchronized = () => {
-    // TODO: Add consent test
-    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligibility;
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligibility && this.consent;
   };
 }
 

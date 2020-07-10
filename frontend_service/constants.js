@@ -1,8 +1,19 @@
+import { getItem } from '../src/engine/api/LocalStorage';
+
 // Server address
-export const host = 'https://liwi.wavelab.top/api/v1/';
-// export const host = 'http://192.168.31.214:3000/api/v1/';
-// export const host = 'https://medalc.unisante.ch/api/v1/';
-// export const host = 'https://liwi-test.herokuapp.com/api/v1/';
+export const host = async () => {
+  const environment = await getItem('environment');
+  switch (environment) {
+    case 'production':
+      return 'https://medalc.unisante.ch/api/v1/';
+    case 'test':
+      return 'https://liwi-test.herokuapp.com/api/v1/';
+    case 'staging':
+    default:
+      return 'https://liwi.wavelab.top/api/v1/';
+  }
+};
+
 export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
 
 export const secondStatusLocalData = 5000;
