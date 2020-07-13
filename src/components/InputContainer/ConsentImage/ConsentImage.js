@@ -106,7 +106,7 @@ export default class ConsentImage extends React.Component<Props, State> {
       medicalCase,
       newPatient,
     } = this.props;
-    const disabled = medicalCase.patient.consent_file === null;
+    const disabled = medicalCase.patient?.consent_file === null;
 
     return (
       <View>
