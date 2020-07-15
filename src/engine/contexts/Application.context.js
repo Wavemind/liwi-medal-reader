@@ -224,15 +224,16 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   setInitialData = async () => {
     const group = await this.getGroup();
+    const algorithm = await getItems('algorithm');
+    let newAlgorithm;
 
     if (group !== null) {
-      const newAlgorithm = await getAlgorithm();
+      newAlgorithm = await getAlgorithm(algorithm?.json_version);
       if (newAlgorithm !== null) {
         newAlgorithm.selected = true;
-        const currentAlgorithm = await getItems('algorithm');
 
         // Update popup only if version has changed
-        if (newAlgorithm.version_id !== currentAlgorithm.version_id) {
+        if (newAlgorithm.version_id !== algorithm.version_id) {
           store.dispatch(
             updateModalFromRedux(
               {
@@ -246,8 +247,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
           );
         }
         await setItem('algorithm', newAlgorithm);
-        this.setState({ filtersPatient: {}, filtersMedicalCase: {}, algorithm: newAlgorithm });
+      } else {
+        newAlgorithm = algorithm;
       }
+      this.setState({ filtersPatient: {}, filtersMedicalCase: {}, algorithm: newAlgorithm });
     }
 
     return group;
