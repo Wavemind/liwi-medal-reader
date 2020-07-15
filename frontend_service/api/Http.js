@@ -99,6 +99,7 @@ const _fetch = async (url, header) => {
     if (httpRequest.status === 200) {
       return result;
     }
+
     // In case of fetch timeout
     if (httpRequest.status > 404) {
       handleHttpError(result.message);

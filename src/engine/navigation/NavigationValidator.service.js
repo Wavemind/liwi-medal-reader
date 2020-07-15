@@ -192,6 +192,7 @@ export const validatorNavigate = (navigateRoute) => {
       if (state$.consent === null) {
         validator.isActionValid = false;
         validator.customErrors.push(i18n.t('consent_image:required'));
+        return validator;
       }
     }
 
