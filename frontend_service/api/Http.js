@@ -20,10 +20,10 @@ export const getGroup = async () => {
  * Get an algorithm attached to the group
  * @returns {Promise<string|Array>}
  */
-export const getAlgorithm = async () => {
+export const getAlgorithm = async (json_version) => {
   const deviceInfo = await getDeviceInformation();
   const hostname = await host();
-  const url = `${hostname}versions?mac_address=${deviceInfo.mac_address}`;
+  const url = `${hostname}versions?mac_address=${deviceInfo.mac_address}&json_version=${json_version}`;
   const header = await _setHeaders();
   return _fetch(url, header);
 };
@@ -90,14 +90,17 @@ const _fetch = async (url, header) => {
   const httpRequest = await fetch(url, header).catch((error) => {
     handleHttpError(error);
   });
-
-  // In case of fetch timeout
   if (httpRequest !== undefined) {
+    if (httpRequest.status === 204) {
+      return null;
+    }
     const result = await httpRequest.json();
 
     if (httpRequest.status === 200) {
       return result;
     }
+
+    // In case of fetch timeout
     if (httpRequest.status > 404) {
       handleHttpError(result.message);
     }
