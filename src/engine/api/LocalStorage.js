@@ -1,13 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import moment from 'moment';
-import findIndex from 'lodash/findIndex';
-import _ from 'lodash';
-import maxBy from 'lodash/maxBy';
-import { stringifyDeepRef } from '../../utils/swissKnives';
 
-// TODO: REFACTOR THIS SHIT
-// TODO: REFACTOR THIS SHIT
-// TODO: REFACTOR THIS SHIT
+import { stringifyDeepRef } from '../../utils/swissKnives';
 
 // @params [String] key, [Object] item
 // @return [Object] saved object
@@ -24,7 +17,7 @@ export const setItem = async (key, item) => {
   }
   const controller = stringifyDeepRef(item);
 
-  return await AsyncStorage.setItem(key, controller);
+  return AsyncStorage.setItem(key, controller);
 };
 
 // @params [String] key
@@ -45,46 +38,6 @@ export const getItems = async (key) => {
   return itemsArray;
 };
 
-// @params [String] key [Integer] index, [Integer] id
-// @return [Object]
-// Get value from an array in local storage
-export const getItemFromArray = async (key, index, id) => {
-  const items = await getItems(key);
-
-  if (Array.isArray(items)) {
-    return items.find((item) => {
-      return item[index] === id;
-    });
-  }
-
-  return {};
-};
-
-// Helper to update an item in an array
-// @params [String] key [Object] newItem, [Integer] id
-// key = key of array in localstorage
-// newItem = Object of new item
-// id = id of the item we want to update
-export const setItemFromArray = async (key, newItem, id) => {
-  const items = await getArray(key);
-
-  if (Array.isArray(items)) {
-    const index = findIndex(items, (item) => {
-      return item.id === id;
-    });
-
-    if (index === -1) {
-      items.push(newItem);
-    } else {
-      items[index] = newItem;
-    }
-
-    await setItem(key, items);
-  }
-
-  return {};
-};
-
 // @params key used to store in local storage
 // Get item in local storage
 export const getItem = async (key) => {
@@ -101,17 +54,6 @@ export const getItem = async (key) => {
 };
 
 // @return [Array]
-// Get session from local storage
-export const getSessions = async () => {
-  const sessions = await AsyncStorage.getItem('sessions');
-  const sessionsArray = JSON.parse(sessions);
-  if (sessionsArray === null) {
-    return [];
-  }
-  return sessionsArray;
-};
-
-// @return [Array]
 // Get array from local storage
 export const getArray = async (item) => {
   const array = await getItem(item);
@@ -122,93 +64,11 @@ export const getArray = async (item) => {
   return array;
 };
 
-// TODO Probably don't need this shit anymore
-// @params [Object] medicalCase
-// Set medical case in local storage
-export const storeMedicalCase = async (medicalCase) => {
-  const patients = await getItems('patients');
-
-  if (Array.isArray(patients)) {
-    patients.map((patient, patientID) => {
-      const idMedicalCase = findIndex(patient.medicalCases, (item) => {
-        return item.id === medicalCase.id;
-      });
-      patients[patientID].medicalCases[idMedicalCase] = medicalCase;
-    });
-
-    await setItem('patients', patients);
-  }
-};
-
-// @params [Integer] newMedicalCase
-// @return [Object] medicalCase
-// Generate a new medical case
-export const createMedicalCase = async (newMedicalCase) => {
-  try {
-    const medicalCases = await getItems('medicalCases');
-    let maxId = maxBy(medicalCases, 'id');
-
-    if (medicalCases.length === 0) {
-      maxId = { id: 0 };
-    }
-
-    newMedicalCase.id = maxId.id + 1;
-
-    medicalCases.push(newMedicalCase);
-
-    return await setItem('medicalCases', medicalCases);
-  } catch (e) {
-    return e;
-  }
-};
-
-// @params [Integer] id, [Object] newSession
-// @return [Object] medicalCase
-export const updateSession = async (id, newSession) => {
-  let sessions = await AsyncStorage.getItem('sessions');
-  sessions = JSON.parse(sessions);
-
-  if (Array.isArray(sessions)) {
-    const index = findIndex(sessions, (session) => {
-      return session.data.id === id;
-    });
-
-    sessions.splice(index, 1, newSession);
-  }
-  await setSessions(sessions);
-};
-
-// Clear sessions from local storage
-export const clearSessions = async () => {
-  await AsyncStorage.removeItem('session');
-};
-
-// Clear patients in local storage
-export const clearPatients = async () => {
-  await AsyncStorage.removeItem('patients');
-};
-
 // Clear local storage
 export const clearLocalStorage = async () => {
   await AsyncStorage.removeItem('medicalCases');
   await AsyncStorage.removeItem('algorithms');
-  await AsyncStorage.removeItem('patients');
   await AsyncStorage.removeItem('session');
   await AsyncStorage.removeItem('lastLogin');
   await AsyncStorage.clear();
-};
-
-// @params [Integer] id
-// Return patient medical cases
-export const getMedicalCase = async (id) => {
-  const patients = await getItems('patients');
-  let item = null;
-
-  patients.map((patient) => {
-    const f = _.find(patient.medicalCases, (m) => m.id === id);
-    if (f !== undefined) {
-      item = f;
-    }
-  });
-  return item;
 };

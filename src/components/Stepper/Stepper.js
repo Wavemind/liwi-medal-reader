@@ -288,7 +288,6 @@ class Stepper extends React.Component<Props, State> {
 
         if (endMedicalCase === true) {
           medicalCaseObject.status = medicalCaseStatus.close.name;
-          store.dispatch(clearMedicalCase());
         }
 
         const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
@@ -297,19 +296,18 @@ class Stepper extends React.Component<Props, State> {
         await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
       }
 
-      this.setState({ isLoading: false });
       displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
       if (endMedicalCase === true) {
         NavigationService.resetActionStack('Home');
+        store.dispatch(clearMedicalCase());
       } else {
         navigation.navigate({
           routeName: nextStage,
           params: paramsNextStage,
         });
       }
-    } else {
-      this.setState({ isLoading: false });
     }
+    this.setState({ isLoading: false });
   };
 
   /**
