@@ -55,7 +55,7 @@ export const epicCatchAnswer = (action$, state$) =>
       if (index === state$.value.config.basic_questions.birth_date_question_id) {
         const birthDate = state$.value.nodes[state$.value.config.basic_questions.birth_date_question_id].value;
         const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
-        arrayActions.push(updateMedicalCaseProperty('isEligibility', years < state$.value.config.age_limit));
+        arrayActions.push(updateMedicalCaseProperty('isEligible', years < state$.value.config.age_limit));
       }
 
       relatedDiagnostics.map((diagnostic) => arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodeTypes.diagnostic)));

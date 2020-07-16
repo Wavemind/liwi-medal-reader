@@ -119,9 +119,10 @@ export default class RealmInterface {
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
    * @param { string } fields - The field to update
+   * @param { boolean } updatePatientValue - Flag that tells us if we need to update the patient values
    * @returns { Collection } - Updated object
    */
-  update = async (model, id, fields) => {
+  update = async (model, id, fields, updatePatientValue) => {
     const session = await getItem('session');
     if (session.group.architecture === 'client_server') {
       fields = { ...fields, fail_safe: true };
@@ -140,7 +141,7 @@ export default class RealmInterface {
       });
     }
 
-    if (!Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
+    if (updatePatientValue && !Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
       this._savePatientValue(model, object);
     }
   };

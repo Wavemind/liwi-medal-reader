@@ -71,7 +71,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     NavigationService.setParamsAge('Patient');
-    updateMedicalCaseProperty('patient', patient);
+    updateMedicalCaseProperty('patient', { ...patient, medicalCases: [] });
 
     this.setState({
       patient,
@@ -85,7 +85,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
   renderEligibilityMessage = () => {
     const { medicalCase } = this.props;
 
-    if (!medicalCase.isEligibility) {
+    if (!medicalCase.isEligible) {
       return (
         <View style={styles.warning}>
           <Text size-auto>{medicalCase.config.age_limit_message}</Text>

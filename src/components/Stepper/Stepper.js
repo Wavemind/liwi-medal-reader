@@ -293,7 +293,7 @@ class Stepper extends React.Component<Props, State> {
         const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
 
         medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
-        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities }, true);
       }
 
       displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
@@ -462,7 +462,7 @@ class Stepper extends React.Component<Props, State> {
 
         // Save value
         medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
-        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities });
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities }, true);
         await database.unlockMedicalCase(medicalCase.id);
       }
 
