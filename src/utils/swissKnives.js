@@ -192,16 +192,6 @@ export const diff = function (obj1, obj2) {
 export const roundSup = (n) => Math.round(n * 10) / 10;
 
 /**
- * Return is variable is function or not
- *
- * @param functionToCheck
- * @return {*|boolean}
- */
-export function isFunction(functionToCheck) {
-  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
-}
-
-/**
  * Diff nodes
  * @param  {Object} newNodes Nodes Object compared
  * @param  {Object} oldNodes Old NodesObject to compare with

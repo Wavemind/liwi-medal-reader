@@ -15,11 +15,9 @@ export class MedicalCaseModel {
     if ((this.id === undefined || this.id === null) && props?.id === undefined) {
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
-      this.name = currentAlgorithm.name;
       this.activities = [];
       this.algorithm_name = currentAlgorithm.algorithm_name;
       this.version_name = currentAlgorithm.version_name;
-      this.version = currentAlgorithm.version;
       this.version_id = currentAlgorithm.version_id;
       this.algorithm_id = currentAlgorithm.algorithm_id;
       this.diagnostics = currentAlgorithm.diagnostics;
@@ -34,7 +32,7 @@ export class MedicalCaseModel {
       this.main_data_medical_case_id = null;
       this.complaintCategories = [];
       this.isNewCase = true;
-      this.isEligibility = true;
+      this.isEligible = true;
       this.consent = __DEV__ ? true : null;
       this.modal = {
         open: false,
@@ -73,32 +71,12 @@ export class MedicalCaseModel {
       this.fail_safe = false;
 
       this.generateExcludedId();
-
-      this.json = JSON.stringify(this);
     } else {
-      const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
-      this.mobile_config = json.mobile_config;
-      this.config = json.config;
-      this.version_id = json.version_id;
-      this.algorithm_id = json.algorithm_id;
-      this.algorithm_name = json.algorithm_name;
-      this.diagnostics = json.diagnostics;
-      this.nodes = json.nodes;
-      this.triage = json.triage;
-      this.consent = json.consent;
-      this.isEligibility = json.isEligibility;
-      this.complaintCategories = json.complaintCategories;
-      this.isNewCase = false;
-      this.modal = {
-        open: false,
-        params: { showClose: true },
-        type: '',
-      };
-      this.metaData = json.metaData;
-      this.diagnoses = json.diagnoses;
-      if (props !== undefined) {
-        this.id = json.id;
-        this.json = props.json;
+      // If json is undefined it means it comes from the state
+      if (props !== undefined && props.json === undefined) {
+        this._assignValues(props);
+        this.id = props.id;
+        this.isNewCase = props.isNewCase;
         this.created_at = props.created_at;
         this.updated_at = props.updated_at;
         this.status = props.status;
@@ -107,10 +85,52 @@ export class MedicalCaseModel {
         this.clinician = props.clinician;
         this.mac_address = props.mac_address;
         this.fail_safe = props.fail_safe;
-        this.isNewCase = props.isNewCase;
+      } else {
+        const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
+        this._assignValues(json);
+        this.isNewCase = false;
+        if (props !== undefined) {
+          this.id = props.id;
+          this.created_at = props.created_at;
+          this.updated_at = props.updated_at;
+          this.status = props.status;
+          this.patient_id = props.patient_id;
+          this.activities = props.activities;
+          this.clinician = props.clinician;
+          this.mac_address = props.mac_address;
+          this.fail_safe = props.fail_safe;
+        }
       }
+
+      this.modal = {
+        open: false,
+        params: { showClose: true },
+        type: '',
+      };
     }
+
     return this;
+  }
+
+  /**
+   * Assign common values when case already exist (id already set)
+   * @param data
+   * @private
+   */
+  _assignValues(data) {
+    this.mobile_config = data.mobile_config;
+    this.config = data.config;
+    this.version_id = data.version_id;
+    this.algorithm_id = data.algorithm_id;
+    this.algorithm_name = data.algorithm_name;
+    this.diagnostics = data.diagnostics;
+    this.nodes = data.nodes;
+    this.triage = data.triage;
+    this.consent = data.consent;
+    this.isEligible = data.isEligible;
+    this.complaintCategories = data.complaintCategories;
+    this.metaData = data.metaData;
+    this.diagnoses = data.diagnoses;
   }
 
   /**
@@ -263,11 +283,6 @@ export class MedicalCaseModel {
    */
   getPatient = async () => {
     const database = await new Database();
-    const storeMedicalCase = store.getState();
-
-    if (storeMedicalCase.id === this.id) {
-      return storeMedicalCase.patient;
-    }
     return database.findBy('Patient', this.patient_id);
   };
 
@@ -337,7 +352,7 @@ export class MedicalCaseModel {
    * @returns {boolean}
    */
   canBeSynchronized = () => {
-    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligibility && this.consent;
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.consent;
   };
 }
 

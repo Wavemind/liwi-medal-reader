@@ -96,12 +96,22 @@ export default class WavemindTools extends Component {
                     const algorithm = await getItems('algorithm');
                     const state$ = store.getState();
                     let k = await FilesystemStorage.getItem('persist:medicalCase');
+                    const sizes = {};
+
+                    Object.keys(state$).map((key) => {
+                      sizes[key] = memorySizeOf(state$[key]);
+                    });
+
                     k = await JSON.parse(k);
                     // eslint-disable-next-line no-console
                     console.log({
                       persist: k,
                       state$,
                       size_state$: memorySizeOf(state$),
+                      size_nodes: memorySizeOf(state$.nodes),
+                      size_diagnostics: memorySizeOf(state$.diagnostics),
+                      size_activities: memorySizeOf(state$.activities),
+                      sizes,
                       session,
                       algorithm,
                       size_algorithms: memorySizeOf(algorithm),
