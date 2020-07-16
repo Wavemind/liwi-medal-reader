@@ -136,7 +136,7 @@ export default class Settings extends React.Component<Props, State> {
               <Picker
                 mode="dropdown"
                 style={{ width: 220 }}
-                selectedValue={environment}
+                selectedValue={environment === null ? 'test' : environment}
                 onValueChange={async (value) => {
                   await setItem('environment', value);
                   await AsyncStorage.removeItem('session');
