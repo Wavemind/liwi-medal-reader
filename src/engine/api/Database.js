@@ -87,11 +87,12 @@ export default class Database {
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
    * @param { string } fields - The field to update
+   * @param { boolean } updatePatientValue - Flag that tells us if we need to update the patient values
    * @return { object } object - The value of the object
    */
-  update = async (model, id, fields) => {
+  update = async (model, id, fields, updatePatientValue = false) => {
     const dbInterface = await this._checkInterface();
-    return this[dbInterface].update(model, id, fields);
+    return this[dbInterface].update(model, id, fields, updatePatientValue);
   };
 
   /**

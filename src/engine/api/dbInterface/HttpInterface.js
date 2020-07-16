@@ -75,9 +75,10 @@ export default class HttpInterface {
    * @param { string } model - The model name of the data we want to retrieve
    * @param { integer } id - The row to update
    * @param { string } fields - The field to update
+   * @param { boolean } updatePatientValue - Used only in RealmInterface
    * @returns { Collection } - Updated object
    */
-  update = async (model, id, fields) => {
+  update = async (model, id, fields, updatePatientValue) => {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}/${id}`;
     const header = await this._setHeaders('PUT', fields);
 
