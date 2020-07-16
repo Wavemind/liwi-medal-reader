@@ -71,13 +71,9 @@ export class MedicalCaseModel {
       this.fail_safe = false;
 
       this.generateExcludedId();
-
-      // this.json = JSON.stringify(this);
     } else {
-      console.log(this, props)
       // If json is undefined it means it comes from the state
       if (props !== undefined && props.json === undefined) {
-        console.log("J'ai pas un")
         this.id = props.id;
         this.mobile_config = props.mobile_config;
         this.config = props.config;
@@ -102,7 +98,6 @@ export class MedicalCaseModel {
         this.fail_safe = props.fail_safe;
         this.isNewCase = props.isNewCase;
       } else {
-        console.log("J'ai un json")
         const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
         this.mobile_config = json.mobile_config;
         this.config = json.config;
@@ -138,7 +133,6 @@ export class MedicalCaseModel {
       };
     }
 
-    console.log("j'ai fini", this);
     return this;
   }
 
