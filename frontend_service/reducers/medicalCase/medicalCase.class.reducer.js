@@ -5,7 +5,6 @@ import find from 'lodash/find';
 import { filter } from 'lodash';
 import 'reflect-metadata';
 
-import { storeMedicalCase } from '../../../src/engine/api/LocalStorage';
 import { actions } from '../../actions/types.actions';
 import { categories, nodeTypes } from '../../constants';
 import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
@@ -588,9 +587,7 @@ class MedicalCaseReducer extends ReducerClass {
    *
    */
   @Action(actions.MC_CLEAR)
-  medicalCaseClear(state) {
-    storeMedicalCase(state);
-
+  medicalCaseClear() {
     return {
       ...initialState,
     };
@@ -606,10 +603,6 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.MC_SET)
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
-
-    if (state !== {} && medicalCase?.id !== state?.id) {
-      storeMedicalCase(state);
-    }
 
     const modelsMedicalCase = this._instanceMedicalCase(medicalCase);
 

@@ -27,6 +27,25 @@ import { medicalCaseStatus } from '../../../frontend_service/constants';
 
 const Stack = createStackNavigator(
   {
+    // PLEASE FOR THE SAKE OF GOD KEEP HOME AT THE TOP OF THE STACK :-*
+    Home: {
+      screen: MainScreen,
+      params: {},
+      path: 'home',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: i18n.t('navigation:home'),
+          headerLeft: () => (
+            <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
+              <Icon type="Entypo" name="menu" large />
+            </Button>
+          ),
+          headerTitleContainerStyle: {
+            marginLeft: 15,
+          },
+        };
+      },
+    },
     Consultation: {
       screen: Consultation,
       path: 'consultation',
@@ -73,25 +92,6 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:emergency'),
-        };
-      },
-    },
-    Home: {
-      screen: MainScreen,
-      params: {},
-      path: 'home',
-
-      navigationOptions: ({ navigation }) => {
-        return {
-          title: i18n.t('navigation:home'),
-          headerLeft: () => (
-            <Button iconMenu iconLeft onPress={() => navigation.openDrawer()}>
-              <Icon type="Entypo" name="menu" large />
-            </Button>
-          ),
-          headerTitleContainerStyle: {
-            marginLeft: 15,
-          },
         };
       },
     },
