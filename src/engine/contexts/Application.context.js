@@ -136,6 +136,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const patients = await database.realmInterface.getAll('Patient');
     const success = await database.httpInterface.synchronizePatients(patients);
 
+    // TODO: It's not me and improve this shit
     if (success === 'Synchronize success') {
       database.realmInterface.delete(patients);
     }
