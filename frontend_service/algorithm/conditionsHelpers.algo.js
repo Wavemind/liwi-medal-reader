@@ -9,15 +9,27 @@ import { store } from '../store';
  *
  */
 export const calculateCondition = (node) => {
+  const state$ = store.getState();
+  const { nodes } = state$;
+
+  let isExcludedByComplaintCategory = false;
+
+  // We check that all the complaint categories linked to the node are set to true
+  if (node.cc !== undefined) {
+    isExcludedByComplaintCategory = node.cc.some((complaintCategory) => {
+      return nodes[complaintCategory].booleanValue() === false;
+    });
+  }
+
   // If this is a top parent node
-  if (node.top_conditions.length === 0) {
+  if (node.top_conditions.length === 0 && !isExcludedByComplaintCategory) {
     return true;
   }
 
   // Loop for top_conditions
   const conditionsArrayBoolean = returnConditionsArray(node);
 
-  return reduceConditionArrayBoolean(conditionsArrayBoolean);
+  return reduceConditionArrayBoolean(conditionsArrayBoolean) && !isExcludedByComplaintCategory;
 };
 
 /**
@@ -110,7 +122,7 @@ export const comparingTopConditions = (child, condition) => {
 
 /**
  * Return value from both booleans
-        | True | False | Null
+ | True | False | Null
  ____________________________
  True  | True | True  | True
  ____________________________
