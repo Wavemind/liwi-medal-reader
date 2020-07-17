@@ -3,7 +3,6 @@ import find from 'lodash/find';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import moment from 'moment';
-import { Text, View } from 'native-base';
 import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import {
@@ -19,8 +18,6 @@ import {
 } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 import NavigationService from '../../src/engine/navigation/Navigation.service';
-import { store } from '../store';
-import { styles } from '../../src/screens/patientsContainer/patientUpsert/PatientUpsert.style';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated. */
 
@@ -44,6 +41,7 @@ export const epicCatchAnswer = (action$, state$) =>
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
       const relatedQuestionsSequence = currentNode.qs;
+      const relatedDiagnosticsForCC = currentNode.diagnostics_related_to_cc;
       const relatedNodes = currentNode.referenced_in;
 
       const arrayActions = [];
@@ -58,14 +56,34 @@ export const epicCatchAnswer = (action$, state$) =>
         arrayActions.push(updateMedicalCaseProperty('isEligible', years < state$.value.config.age_limit));
       }
 
+      // For each related diagnoses we gonna check if we need to update their status
       relatedDiagnostics.map((diagnostic) => arrayActions.push(dispatchNodeAction(index, diagnostic.id, nodeTypes.diagnostic)));
+
+      // For each related questionSequence we gonna check if we need to update their status
+      relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
+
+      // If the node is a QuestionSequence we gonna update the status of all the instances of the questions sequence
+      if (currentNode.type === nodeTypes.questionsSequence){
+        Object.keys(currentNode.instances).map((nodeId) => {
+          arrayActions.push(dispatchQuestionsSequenceAction(currentNode.id, nodeId));
+        });
+      }
+
+      if (relatedDiagnosticsForCC !== undefined) {
+        relatedDiagnosticsForCC.map((diagnosticId) => {
+          const { instances } = state$.value.diagnostics[diagnosticId];
+          Object.keys(instances).map((nodeId) => {
+            if (instances[nodeId].top_conditions.length === 0) {
+              arrayActions.push(dispatchCondition(diagnosticId, nodeId));
+            }
+          });
+        });
+      }
 
       // We tell the related nodes to update themself
       if (currentNode.type === nodeTypes.question) {
         relatedNodes.map((relatedNodeId) => arrayActions.push(dispatchRelatedNodeAction(relatedNodeId)));
       }
-
-      relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
 
       if (
         index === state$.value.mobile_config.left_top_question_id ||
@@ -92,8 +110,6 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       const arrayActions = [];
       let caller;
 
-      // TODO make a giant test about perf between ref id and object pass into action
-      // TODO Test get node in state and comare with object in action, are there somes differences ?
       const { nodeId, callerId, callerType } = action.payload;
 
       if (callerType === nodeTypes.diagnostic) caller = state$.value.diagnostics[callerId];
@@ -104,6 +120,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       // What do we do with this child -> switch according to type
       switch (caller.type) {
         case nodeTypes.question:
+        case nodeTypes.questionsSequence:
           return of(dispatchCondition(nodeId, caller.id));
         case nodeTypes.finalDiagnostic:
           return of(dispatchFinalDiagnosticAction(nodeId, caller.id));
@@ -119,10 +136,6 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           });
 
           return of(...arrayActions);
-        case nodeTypes.questionsSequence:
-          // TODO : Handle QS
-          // HERE calcule condition of node type PS
-          return of(dispatchCondition(nodeId, caller.id));
         default:
           // eslint-disable-next-line no-console
           console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
@@ -151,6 +164,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
        *  false = can't access the end anymore
        */
       statusQs = getQuestionsSequenceStatus(state$, currentQuestionsSequence, actions);
+
       // If ready we calculate condition of the QS
       if (statusQs) {
         questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
@@ -246,9 +260,12 @@ export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
     })
   );
 
-// @params [Object] action$, [Object] state$
-// @return [Array][Object] arrayActions
-// Dispatch condition action on condition result
+/**
+ * Dispatch condition action on condition result
+ * @param action$
+ * @param state$
+ * @returns {*} [Array][Object] arrayActions
+ */
 export const epicCatchDispatchCondition = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_CONDITION),
@@ -263,7 +280,7 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       const parentsNodes = getParentsNodes(state$, diagnosticId, nodeId);
       const currentConditionValue = find(nodes[currentInstance.id].dd, (d) => d.id === diagnosticId);
 
-      // If the complaint category linked to the diagnistic is not selected we set the condition value to false
+      // If the complaint category linked to the diagnostic is not selected we set the condition value to false
       if (diagnostic.isExcludedByComplaintCategory(nodes)) {
         if (currentConditionValue.conditionValue !== false) {
           actions.push(updateConditionValue(nodeId, diagnosticId, false, diagnostic.type));
@@ -271,15 +288,17 @@ export const epicCatchDispatchCondition = (action$, state$) =>
       } else {
         // some() – returns true if the function returns true for at least one of the items
         // If one parentsNodes has to be show and answered
-        const parentConditionValue = parentsNodes.some((i) => {
-          const parentNode = nodes[i];
-          const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
-          return parentNode.answer !== null && diagnostic.conditionValue === true;
-        });
+        let parentConditionValue = true;
+        if (parentsNodes.length > 0) {
+          parentConditionValue = parentsNodes.some((i) => {
+            const parentNode = nodes[i];
+            const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
+            return parentNode.answer !== null && diagnostic.conditionValue === true;
+          });
+        }
 
         // Get node condition value
         const conditionValue = currentInstance.calculateCondition(state$);
-
         // If the condition of this node is not null
         if (parentConditionValue === false) {
           // Stop infinite loop, change only when conditionValue is different

@@ -139,12 +139,12 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    */
   calculateCondition = () => {
     const state$ = store.getState();
-    const conditioNValueTrue = [];
+    const conditionValueTrue = [];
     // Generate only the top_condition with conditionValue to true => they are not disabled
     this.top_conditions.map((condition) => {
       const findDDinNode = state$.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
       if (findDDinNode.conditionValue === true) {
-        conditioNValueTrue.push(condition);
+        conditionValueTrue.push(condition);
       }
     });
 
@@ -174,7 +174,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return null;
     }
     if (statusOfDD === true) {
-      const tempDd = { ...this, top_conditions: conditioNValueTrue };
+      const tempDd = { ...this, top_conditions: conditionValueTrue };
       return calculateCondition(tempDd);
     }
   };

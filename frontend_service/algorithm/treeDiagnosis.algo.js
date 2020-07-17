@@ -149,10 +149,14 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
   const currentNode = state$.value.nodes[instance.id];
   const instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
 
+  // If all the conditionValues of the QS are false we set the conditionValues of th node to false
+  const qsInstances = qs.dd.concat(qs.qs);
+  const qsConditionValue = qsInstances.some((instance) => instance.conditionValue);
+
   /**
    * Get the condition of the instance link
    */
-  let instanceCondition = calculateCondition(instance);
+  let instanceCondition = calculateCondition(instance) && qsConditionValue;
   if (instanceCondition === null) instanceCondition = false;
 
   /**
@@ -226,7 +230,6 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
 
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
-
 
 /**
  * @params diagnoses: New diagnoses will be placed into state
