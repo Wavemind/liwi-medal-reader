@@ -28,7 +28,7 @@ export const calculateCondition = (node) => {
   // Loop for top_conditions
   const conditionsArrayBoolean = returnConditionsArray(node);
 
-  return reduceConditionArrayBoolean(conditionsArrayBoolean);
+  return reduceConditionArrayBoolean(conditionsArrayBoolean) && !isExcludedByComplaintCategory;
 };
 
 /**
