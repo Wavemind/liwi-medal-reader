@@ -605,6 +605,7 @@ class MedicalCaseReducer extends ReducerClass {
     const { medicalCase } = action.payload;
 
     const modelsMedicalCase = this._instanceMedicalCase(medicalCase);
+    delete modelsMedicalCase.json;
 
     return {
       ...modelsMedicalCase,
@@ -623,6 +624,7 @@ class MedicalCaseReducer extends ReducerClass {
     }
 
     const modelsMedicalCase = this._instanceMedicalCase(action.payload);
+    delete modelsMedicalCase.json;
 
     modelsMedicalCase.modal.open = false;
 
