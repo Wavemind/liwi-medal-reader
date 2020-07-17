@@ -15,10 +15,15 @@ export const calculateCondition = (node) => {
   let isExcludedByComplaintCategory = false;
 
   // We check that all the complaint categories linked to the node are set to true
-  if (node.cc !== undefined) {
-    isExcludedByComplaintCategory = node.cc.some((complaintCategory) => {
-      return nodes[complaintCategory].booleanValue() === false;
-    });
+  switch (typeof(node.cc)) {
+    case 'number':
+      isExcludedByComplaintCategory = nodes[node.cc].booleanValue() === false;
+      break;
+    case 'object':
+      isExcludedByComplaintCategory = node.cc.some((complaintCategory) => {
+        return nodes[complaintCategory].booleanValue() === false;
+      });
+      break;
   }
 
   // If this is a top parent node
