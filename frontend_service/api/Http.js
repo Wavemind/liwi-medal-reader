@@ -90,10 +90,12 @@ const _fetch = async (url, header) => {
   const httpRequest = await fetch(url, header).catch((error) => {
     handleHttpError(error);
   });
+
   if (httpRequest !== undefined) {
     if (httpRequest.status === 204) {
       return null;
     }
+
     const result = await httpRequest.json();
 
     if (httpRequest.status === 200) {
@@ -102,7 +104,7 @@ const _fetch = async (url, header) => {
 
     // In case of fetch timeout
     if (httpRequest.status > 404) {
-      handleHttpError(result.message);
+      handleHttpError(result.errors);
     }
   }
 
