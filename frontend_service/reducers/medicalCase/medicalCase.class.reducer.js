@@ -605,7 +605,8 @@ class MedicalCaseReducer extends ReducerClass {
     const { medicalCase } = action.payload;
 
     const modelsMedicalCase = this._instanceMedicalCase(medicalCase);
-
+    delete modelsMedicalCase.json;
+    
     return {
       ...modelsMedicalCase,
     };

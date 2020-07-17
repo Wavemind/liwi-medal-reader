@@ -31,6 +31,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       label = '',
       category = '',
       counter = 0,
+      diagnostics_related_to_cc = [],
       dd = [],
       display_format = '',
       is_mandatory = '',
@@ -67,6 +68,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.answers = answers;
     this.category = category;
     this.counter = counter;
+    this.diagnostics_related_to_cc = diagnostics_related_to_cc;
     this.dd = dd;
     this.display_format = display_format;
     this.is_mandatory = is_mandatory;
@@ -256,5 +258,12 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       return moment(this.value).format(I18n.t('application:date_format'));
     }
     return this.value === null ? '' : this.value;
+  };
+
+  /**
+   * Returns the value for a boolean question  or a complaint category
+   */
+  booleanValue = () => {
+    return this.answer === Number(Object.keys(this.answers)[0]);
   };
 }
