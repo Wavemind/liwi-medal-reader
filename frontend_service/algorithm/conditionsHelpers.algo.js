@@ -14,6 +14,7 @@ export const calculateCondition = (node) => {
 
   let isExcludedByComplaintCategory = false;
 
+  // We check that all the complaint categories linked to the node are set to true
   if (node.cc !== undefined) {
     isExcludedByComplaintCategory = node.cc.some((complaintCategory) => {
       return nodes[complaintCategory].booleanValue() === false;
