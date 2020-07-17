@@ -53,7 +53,6 @@ export class PatientModel {
     const medicalCaseClass = new MedicalCaseModel(medicalCase);
     const database = await new Database();
     const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
-    console.log(medicalCase, medicalCaseClass);
     medicalCaseClass.patient_id = this.id;
     medicalCaseClass.json = JSON.stringify(medicalCaseClass);
     await medicalCaseClass.handleFailSafe();
