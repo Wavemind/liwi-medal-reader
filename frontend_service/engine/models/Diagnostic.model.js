@@ -39,8 +39,13 @@ export class DiagnosticModel implements DiagnosticInterface {
     });
   }
 
+  /**
+   * Tests if diagnostic is excluded by the complaint category
+   * @param nodes - All nodes, it's passed because I don't have access to state in the model
+   * @returns {boolean}
+   */
   isExcludedByComplaintCategory(nodes) {
-    return nodes[this.complaint_category].answer === Number(Object.keys(nodes[this.complaint_category].answers)[1]);
+    return nodes[this.complaint_category].booleanValue() === false;
   }
 
   /**
