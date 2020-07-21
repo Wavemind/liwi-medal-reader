@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { displayFormats, valueFormats } from '../../../../frontend_service/constants';
+import { displayFormats } from '../../../../frontend_service/constants';
 import Boolean from '../DisplaysContainer/Boolean';
 import Numeric from '../DisplaysContainer/Numeric';
 import String from '../DisplaysContainer/String';
@@ -26,9 +26,7 @@ export default class WrapperQuestion extends React.Component<Props, State> {
     // Boolean | Numeric | String | Date | List
     switch (question.display_format) {
       case displayFormats.radioButton:
-        if (question.value_format === valueFormats.bool) {
-          WrapperAnswer = () => <Boolean question={question} {...this.props} />;
-        }
+        WrapperAnswer = () => <Boolean question={question} {...this.props} />;
         break;
       case displayFormats.input:
         WrapperAnswer = () => <Numeric question={question} {...this.props} />;
