@@ -78,9 +78,9 @@ export default class Home extends React.Component<Props, State> {
               underlayColor="transparent"
               style={styles.navigationButton}
               onPress={() => {
-                if (algorithm === null) {
+                if (algorithm === undefined) {
                   displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
-                } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
+                } else if (medicalCase.id === undefined || medicalCase.isNewCase === false) {
                   navigation.navigate('PatientUpsert', {
                     idPatient: null,
                     newMedicalCase: true,
