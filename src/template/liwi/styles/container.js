@@ -125,6 +125,7 @@ export default {
     '.answer': {
       flexDirection: 'row',
       flex: 0.3,
+      marginRight: 1,
     },
 
     '.w33': {
