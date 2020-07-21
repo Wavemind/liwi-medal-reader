@@ -55,9 +55,8 @@ export default class Home extends React.Component<Props, State> {
   render() {
     const {
       navigation,
-      app: { t, user, logout },
+      app: { t, user, logout, algorithm },
       medicalCase,
-      algorithm,
     } = this.props;
 
     const { propsToolTipVisible, qrcode, modalQrCode, session } = this.state;
