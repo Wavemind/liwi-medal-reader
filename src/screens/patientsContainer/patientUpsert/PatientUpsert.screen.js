@@ -48,7 +48,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     if (patientId === null) {
       if (facility === undefined) {
-        facility = { uid: uuid.v4(), group_id: session.group.id, study_id: 'Test' };
+        facility = { uid: uuid.v4(), group_id: session.facility.id, study_id: 'Test' };
       }
       patient = new PatientModel({ otherFacility, facility });
     } else {
