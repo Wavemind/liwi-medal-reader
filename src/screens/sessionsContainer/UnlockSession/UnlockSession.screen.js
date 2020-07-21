@@ -53,7 +53,7 @@ export default class UnLockSession extends React.Component<Props, State> {
     const { session } = this.state;
     const { app } = this.props;
 
-    if (session.group.pin_code === pinCode) {
+    if (session.facility.pin_code === pinCode) {
       const netInfoConnection = await NetInfo.fetch();
       const { isConnected } = netInfoConnection;
 
@@ -102,7 +102,7 @@ export default class UnLockSession extends React.Component<Props, State> {
               </View>
             )}
             <PINCode
-              passwordLength={session?.group.pin_code.length}
+              passwordLength={session?.facility.pin_code.length}
               endProcessFunction={this.openSession}
               disableLockScreen
               status="enter"
@@ -113,7 +113,7 @@ export default class UnLockSession extends React.Component<Props, State> {
                 </Text>
               )}
               subtitleComponent={() => (loading ? <LiwiLoader style={{ width: 50 }} /> : null)}
-              storedPin={session?.group.pin_code}
+              storedPin={session?.facility.pin_code}
               colorCircleButtons={liwiColors.darkerGreyColor}
               colorPassword={liwiColors.redColor}
               stylePinCodeButtonNumber={liwiColors.whiteColor}

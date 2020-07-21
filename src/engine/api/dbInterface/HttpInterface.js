@@ -5,15 +5,14 @@ import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { convertToObject } from '../../../utils/swissKnives';
 
 export default class HttpInterface {
   constructor() {
     return (async () => {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
-      this.localDataIp = session.group.local_data_ip;
-      this.mainDataIp = session.group.main_data_ip;
+      this.localDataIp = session.facility.local_data_ip;
+      this.mainDataIp = session.facility.main_data_ip;
       this.macAddress = deviceInfo.mac_address;
       await this._setClinician();
       return this;
@@ -146,7 +145,7 @@ export default class HttpInterface {
       if (httpRequest.status === 200) {
         return result;
       }
-      if (httpRequest.status > 404) {
+      if (httpRequest.status > 400) {
         handleHttpError(result.message);
       }
     }

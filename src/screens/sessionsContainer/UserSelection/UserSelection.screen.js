@@ -141,7 +141,7 @@ export default function UserSelection() {
       <View flex-container-column flex-center>
         <Text bigTitle>{t('unlock_session:who')}</Text>
         <View style={styles.blocParent}>
-          {session.group.medical_staffs.map((user) => renderClinician(user))}
+          {session.facility.medical_staffs.map((user) => renderClinician(user))}
           {renderClinician({ role: 'guest', last_name: '', first_name: '', id: false })}
         </View>
         {selectedUser !== null && selectedUser.last_name !== '' && selectedUser.first_name !== '' && selectedUser.role !== null && (

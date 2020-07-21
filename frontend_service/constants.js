@@ -3,6 +3,7 @@ import { getItem } from '../src/engine/api/LocalStorage';
 // Server address
 export const host = async () => {
   const environment = await getItem('environment');
+
   switch (environment) {
     case 'production':
       return 'https://medalc.unisante.ch/api/v1/';
