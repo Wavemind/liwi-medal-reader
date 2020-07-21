@@ -141,7 +141,7 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            {session?.group.architecture === 'standalone' ? (
+            {session?.facility.architecture === 'standalone' ? (
               <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
                 <View style={styles.blocContainer}>
                   <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
