@@ -120,7 +120,7 @@ export class DrugModel extends HealthCaresModel {
           // Second calculate min and max dose (cap)
           const minDoseCap = roundSup((1 / pillSize) * minDoseMg);
           const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg);
-          console.log(maxDoseCap,minDoseCap, pillSize, minDoseMg,maxDoseMg,formulation);
+
           // Define Dose Result
           doseResult = (minDoseCap + maxDoseCap) / 2;
 
