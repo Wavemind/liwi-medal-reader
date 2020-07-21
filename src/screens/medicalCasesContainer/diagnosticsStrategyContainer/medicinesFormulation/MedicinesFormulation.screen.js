@@ -1,11 +1,11 @@
 // @flow
-import React, { Component } from "react";
-import { Icon, Picker, Text, View } from "native-base";
-import { NavigationScreenProps } from "react-navigation";
-import { medicationForms } from "../../../../../frontend_service/constants";
-import { getDrugs } from "../../../../../frontend_service/algorithm/questionsStage.algo";
-import { calculateCondition } from "../../../../../frontend_service/algorithm/conditionsHelpers.algo";
-import { styles } from "./MedicinesFormulation.style";
+import React, { Component } from 'react';
+import { Icon, Picker, Text, View } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
+import { medicationForms } from '../../../../../frontend_service/constants';
+import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
+import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
+import { styles } from './MedicinesFormulation.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -66,12 +66,23 @@ export default class MedicinesFormulations extends Component<Props, State> {
           <Icon name="arrow-drop-down" type="MaterialIcons" style={styles.pickerIcon} />
           <Picker note mode="dropdown" style={styles.pickerContent} selectedValue={selected} onValueChange={onSelect}>
             <Picker.Item label="Please select" value={null} />
-            {nodes[instance.id]?.formulations.map((f) => {
-              const preCalculed = nodes[instance.id].getDrugDoses(f.medication_form);
+            {nodes[instance.id]?.formulations.map((f, index) => {
+              const preCalculed = nodes[instance.id].getDrugDoses(index);
               let string = '';
               let isPossible = true;
               if (preCalculed.doseResult !== null) {
-                string = preCalculed.doseResult;
+                switch (preCalculed.medication_form) {
+                  case medicationForms.syrup:
+                  case medicationForms.suspension:
+                  case medicationForms.powder_for_injection:
+                  case medicationForms.solution:
+                    string = preCalculed.doseResult;
+                    break;
+                  case medicationForms.capsule:
+                  case medicationForms.tablet:
+                    string = (preCalculed.doseResult * preCalculed.dose_form) / preCalculed.breakable;
+                    break;
+                }
               }
 
               if (preCalculed.unique_dose !== null) {
