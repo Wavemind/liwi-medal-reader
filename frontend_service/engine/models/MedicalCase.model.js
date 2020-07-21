@@ -269,7 +269,7 @@ export class MedicalCaseModel {
     const database = await new Database();
     const storeMedicalCase = store.getState();
 
-    if (session.group.architecture === 'client_server' && !isConnected) {
+    if (session.facility.architecture === 'client_server' && !isConnected) {
       // Find patient in Realm
       const patient = await database.findBy('Patient', this.patient_id);
       if (patient === null) {

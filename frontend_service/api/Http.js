@@ -5,10 +5,10 @@ import { getItem } from '../../src/engine/api/LocalStorage';
 import fetch from '../../src/utils/fetchWithTimeout';
 
 /**
- * Get group configuration by device mac address
+ * Get facility configuration by device mac address
  * @returns {Promise<string|Array>}
  */
-export const getGroup = async () => {
+export const getFacility = async () => {
   const deviceInfo = await getDeviceInformation();
   const hostname = await host();
   const url = `${hostname}devices/${deviceInfo.mac_address}`;
@@ -103,7 +103,7 @@ const _fetch = async (url, header) => {
     }
 
     // In case of fetch timeout
-    if (httpRequest.status > 404) {
+    if (httpRequest.status > 400) {
       handleHttpError(result.errors);
     }
   }
@@ -127,7 +127,7 @@ const _setHeaders = async (method = 'GET', body = false) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'access-token': credentials?.access_token,
-      'group-token': credentials?.group?.token,
+      'health-facility-token': credentials?.facility?.token,
       client: credentials?.client,
       uid: credentials?.uid,
       expiry: credentials?.expiry,

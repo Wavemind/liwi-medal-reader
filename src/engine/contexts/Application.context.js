@@ -9,7 +9,7 @@ import { AppState, PermissionsAndroid } from 'react-native';
 import i18n from '../../utils/i18n';
 import Database from '../api/Database';
 import { secondStatusLocalData, toolTipType } from '../../../frontend_service/constants';
-import { auth, getAlgorithm, getGroup, registerDevice } from '../../../frontend_service/api/Http';
+import { auth, getAlgorithm, getFacility, registerDevice } from '../../../frontend_service/api/Http';
 import { getItem, getItems, setItem } from '../api/LocalStorage';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 import { displayNotification } from '../../utils/CustomToast';
@@ -59,7 +59,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   _init = async () => {
     const session = await getItem('session');
     // Session already exist
-    if (session !== null && session?.group !== null) {
+    if (session !== null && session?.facility !== null) {
       await this._handleApplicationServer(true);
       const user = await getItem('user');
       const { isConnected } = this.state;
@@ -99,7 +99,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   _handleApplicationServer = async (firstTime = false) => {
     const { isConnected } = this.state;
     const session = await getItem('session');
-    const ip = session.group.architecture === 'standalone' ? session.group.main_data_ip : session.group.local_data_ip;
+    const ip = session.facility.architecture === 'standalone' ? session.facility.main_data_ip : session.facility.local_data_ip;
 
     const request = await fetch(ip, 'GET').catch(async (error) => {
       if (isConnected || firstTime) {
@@ -109,7 +109,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (request !== undefined && !isConnected) {
       await this._setAppStatus(true);
-      if (session.group.architecture === 'client_server' && !firstTime) {
+      if (session.facility.architecture === 'client_server' && !firstTime) {
         await this._sendFailSafeData();
       }
     }
@@ -211,12 +211,12 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  getGroup = async () => {
-    const group = await getGroup();
+  getFacility = async () => {
+    const facility = await getFacility();
     const session = await getItem('session');
-    await setItem('session', { ...session, group });
-    this.setState({ session: { ...session, group } });
-    return group;
+    await setItem('session', { ...session, facility });
+    this.setState({ session: { ...session, facility } });
+    return facility;
   };
 
   /**
@@ -224,11 +224,11 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @returns {Promise<boolean>}
    */
   setInitialData = async () => {
-    const group = await this.getGroup();
+    const facility = await this.getFacility();
     const algorithm = await getItems('algorithm');
     let newAlgorithm;
 
-    if (group !== null) {
+    if (facility !== null) {
       newAlgorithm = await getAlgorithm(algorithm?.json_version);
       if (newAlgorithm !== null) {
         newAlgorithm.selected = true;
@@ -254,7 +254,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       this.setState({ filtersPatient: {}, filtersMedicalCase: {}, algorithm: newAlgorithm });
     }
 
-    return group;
+    return facility;
   };
 
   /**
@@ -280,7 +280,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     // if no error set the tablet
     if (session?.success !== false) {
-      const concatSession = { group: null, ...session };
+      const concatSession = { facility: null, ...session };
       // Set item in localstorage
       await setItem('session', concatSession);
       const register = await registerDevice();
@@ -301,7 +301,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   isActionAvailable = () => {
     const { isConnected, session } = this.state;
 
-    if (session.group.architecture === 'client_server') {
+    if (session.facility.architecture === 'client_server') {
       return isConnected;
     }
 

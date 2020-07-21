@@ -77,7 +77,7 @@ export default class RealmInterface {
    */
   insert = async (model, object) => {
     const session = await getItem('session');
-    if (session.group.architecture === 'client_server') object = { ...object, fail_safe: true };
+    if (session.facility.architecture === 'client_server') object = { ...object, fail_safe: true };
 
     this._realm().write(() => {
       this._realm().create(model, object);
@@ -100,7 +100,7 @@ export default class RealmInterface {
     const session = await getItem('session');
     const object = await this.findBy(model, id);
 
-    if (session.group.architecture === 'client_server') {
+    if (session.facility.architecture === 'client_server') {
       value = { ...value, fail_safe: true };
     }
     this._realm().write(() => {
@@ -124,7 +124,7 @@ export default class RealmInterface {
    */
   update = async (model, id, fields, updatePatientValue) => {
     const session = await getItem('session');
-    if (session.group.architecture === 'client_server') {
+    if (session.facility.architecture === 'client_server') {
       fields = { ...fields, fail_safe: true };
     }
 

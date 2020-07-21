@@ -8,7 +8,7 @@ export default class Database {
   constructor() {
     return (async () => {
       const session = await getItem('session');
-      this.architecture = session.group.architecture;
+      this.architecture = session.facility.architecture;
       this.realmInterface = new RealmInterface();
       this.httpInterface = await new HttpInterface();
       return this;
