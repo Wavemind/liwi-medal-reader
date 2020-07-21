@@ -43,7 +43,7 @@ export class DrugModel extends HealthCaresModel {
    *
    * @return [object] : doses for the treatment, it depend by healthcare type (liquid, tab, pill, etc...)
    */
-  getDrugDoses = (formulationSelected) => {
+  getDrugDoses = (formulationIndex) => {
     const state$ = store.getState();
 
     const weightNode = state$.nodes[state$.config.basic_questions.weight_question_id];
@@ -56,7 +56,7 @@ export class DrugModel extends HealthCaresModel {
     let pillSize;
 
     // select formulation
-    const formulation = this.formulations.find((e) => e.medication_form === formulationSelected);
+    const formulation = this.formulations[formulationIndex];
 
     if (formulation === undefined) {
       return { doseResult: null };
