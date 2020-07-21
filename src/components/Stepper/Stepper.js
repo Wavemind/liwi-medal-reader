@@ -280,7 +280,7 @@ class Stepper extends React.Component<Props, State> {
 
     // Can we update the next status ? All questions are valid ?
     if (this._validateStage()) {
-      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject, json: JSON.stringify(medicalCaseObject) });
       if (medicalCase.isNewCase) {
         await this._createNewMedicalCase(medicalCase);
       } else {
@@ -443,7 +443,7 @@ class Stepper extends React.Component<Props, State> {
 
     // Can we update the next status ? All questions are valid ?
     if (this._validateStage()) {
-      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject });
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject, json: JSON.stringify(medicalCaseObject)  });
 
       if (medicalCase.isNewCase) {
         await this._createNewMedicalCase(medicalCase);
@@ -534,6 +534,7 @@ class Stepper extends React.Component<Props, State> {
     const patientId = navigation.getParam('idPatient');
     const medicalCaseObject = store.getState();
     let patient;
+    medicalCaseObject.isNewCase = false;
 
     // If patient already exists
     if (patientId !== null) {
