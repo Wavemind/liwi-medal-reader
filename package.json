@@ -10,7 +10,9 @@
     "detox-android": "detox test -c android.emu.debug",
     "detox-ios": "detox test -c ios.sim.debug",
     "postinstall": "npx jetify -r && node ./scripts/silent.js ",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "./get_commit.sh && cd android && ./gradlew assembleRelease",
+    "w-build": " bash get_commit.sh && cd android && ./gradlew.bat assembleRelease"
   },
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.2.0",
@@ -22,6 +24,7 @@
     "@react-native-community/netinfo": "5.7.1",
     "@react-native-community/viewpager": "^1.1.7",
     "accordion-collapse-react-native": "^0.2.10",
+    "babel-plugin-dotenv-import": "^2.1.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-react-native": "^5.0.2",
     "bugsnag-react-native": "^2.23.9",
@@ -49,6 +52,7 @@
     "react-native-camera": "^3.23.1",
     "react-native-custom-picker": "^0.4.0",
     "react-native-device-info": "^4.0.1",
+    "react-native-dotenv": "^2.2.0",
     "react-native-easy-grid": "^0.2.0",
     "react-native-exception-handler": "^2.10.8",
     "react-native-fs": "^2.16.6",
