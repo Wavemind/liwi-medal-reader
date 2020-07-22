@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from './Drawer.style';
 import type { StateApplicationContext } from '../../contexts/Application.context';
@@ -9,7 +9,7 @@ import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, 
 import { displayNotification } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
 import { liwiColors } from '../../../utils/constants';
-
+import { COMMIT } from '@env';
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
@@ -42,10 +42,6 @@ export default class Drawer extends Component<Props, State> {
     const { navigation } = this.props;
     navigation.navigate(path);
   };
-
-  setRef(scrollView) {
-    this.scrollView = scrollView;
-  }
 
   render() {
     const {
@@ -122,6 +118,7 @@ export default class Drawer extends Component<Props, State> {
         >
           {isDrawer && <HeaderButtonsDrawer r={r} />}
           {renderDrawerButtons}
+          <Text>Version:{COMMIT}</Text>
           <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
         </View>
       </ScrollView>
