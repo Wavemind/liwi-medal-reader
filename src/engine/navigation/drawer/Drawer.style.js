@@ -101,4 +101,9 @@ export const styles = StyleSheet.create({
   margin0: {
     marginLeft: 0,
   },
+  version: {
+    fontSize: 16,
+    marginLeft: 10,
+    marginTop: 10,
+  }
 });
