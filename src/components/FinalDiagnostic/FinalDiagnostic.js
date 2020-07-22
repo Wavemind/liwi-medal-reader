@@ -46,7 +46,7 @@ export default class FinalDiagnostic extends React.Component<{}> {
     return (
       <View style={styles.content}>
         <View style={styles.container}>
-          <Text style={styles.flex}>{label}</Text>
+          <Text>{label}</Text>
         </View>
         <View style={styles.bloc}>
           <LeftButton active={diagnoses.proposed[id]?.agreed === true} onPress={() => this._handleClick(true)}>
