@@ -64,7 +64,6 @@ const styles: Object = StyleSheet.create({
       },
       android: {
         height: 100,
-        marginBottom: 40,
       },
     }),
     backgroundColor: 'white',
