@@ -9,7 +9,7 @@ import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, 
 import { displayNotification } from '../../../utils/CustomToast';
 import { renderingDrawerItems } from './Drawer.constants';
 import { liwiColors } from '../../../utils/constants';
-import { COMMIT } from '@env';
+
 type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
@@ -118,7 +118,6 @@ export default class Drawer extends Component<Props, State> {
         >
           {isDrawer && <HeaderButtonsDrawer r={r} />}
           {renderDrawerButtons}
-          <Text style={styles.version}> Version: {COMMIT}</Text>
           <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
         </View>
       </ScrollView>
