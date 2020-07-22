@@ -27,7 +27,7 @@ export default class Medicine extends Component<{}> {
 
     return (
       <>
-        <View style={styles.main}>
+        <View style={styles.main} margin-top>
           <View style={styles.flex}>
             <Text size-auto>{node?.label}</Text>
             <Text italic>{t('drug:d')} : {medicine.duration} {t('drug:days')}</Text>

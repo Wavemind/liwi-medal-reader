@@ -63,6 +63,12 @@ export const medicationForms = {
   powder_for_injection: 'inhaler',
 };
 
+export const administrationRouteCategories = {
+  enteral: 'Enteral',
+  parenteral_injectable: 'Parenteral injectable',
+  mucocutaneous: 'Mucocutaneous',
+};
+
 // Value of answer accepted
 export const valueFormats = {
   array: 'Array',
