@@ -1,4 +1,4 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   const presets = ['@babel/preset-react', 'module:metro-react-native-babel-preset'];
   const plugins = [
@@ -6,6 +6,17 @@ module.exports = function(api) {
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     '@babel/plugin-transform-runtime',
+    [
+      'dotenv-import',
+      {
+        moduleName: '@env',
+        path: '.env',
+        blacklist: null,
+        whitelist: null,
+        safe: false,
+        allowUndefined: false,
+      },
+    ],
     [
       'module-resolver',
       {
