@@ -2682,6 +2682,13 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
+babel-plugin-dotenv-import@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-dotenv-import/-/babel-plugin-dotenv-import-2.1.0.tgz#5919df1a0d908e91b6a98d82ad12dc9d3a37ddec"
+  integrity sha512-ZzCqXbp8uFnhu1lO3nBaWt+rOYpVIXSrY8DEC/oaalL6DHtYP26Ye4TpGcXxNlBD1vzOHTPHo7eNHUIseCoiwA==
+  dependencies:
+    dotenv "^8.0.0"
+
 babel-plugin-dynamic-import-node@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-dynamic-import-node/-/babel-plugin-dynamic-import-node-2.3.0.tgz#f00f507bdaa3c3e3ff6e7e5e98d90a7acab96f7f"
@@ -4595,6 +4602,11 @@ dot-prop@^5.2.0:
   resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-5.2.0.tgz#c34ecc29556dc45f1f4c22697b6f4904e0cc4fcb"
   dependencies:
     is-obj "^2.0.0"
+
+dotenv@^8.0.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 download@^6.2.2:
   version "6.2.5"
@@ -10414,6 +10426,13 @@ react-native-debugger-open@^0.3.17:
 react-native-device-info@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-4.0.1.tgz#bade972e7a995ac187a82745a458cba98b72dea0"
+
+react-native-dotenv@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.2.0.tgz#d64289483c7956b97424b34164e56995e9919976"
+  integrity sha512-awcQNP7XBOJYR0RGAAgF/ia9yQeJgE023xUii/DiaTo/jDcnJEOXCPepnTmYsgk8Wtj6argVDBFAeAi3nUOfAw==
+  dependencies:
+    dotenv "^8.0.0"
 
 react-native-drawer@2.5.1:
   version "2.5.1"
