@@ -2496,7 +2496,6 @@ async-limiter@~1.0.0:
 async@*:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.0.tgz#b3a2685c5ebb641d3de02d161002c60fc9f85720"
-  integrity sha512-TR2mEZFVOj2pLStYxLht7TyfuRzaydfpxr3k9RpHIzMgw7A64dzsdqCxH1WJyQdoe8T10nDXd9wnEigmiuHIZw==
 
 async@^2.1.4, async@^2.4.0, async@^2.6.2:
   version "2.6.3"
@@ -2685,7 +2684,6 @@ babel-messages@^6.23.0:
 babel-plugin-dotenv-import@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-dotenv-import/-/babel-plugin-dotenv-import-2.1.0.tgz#5919df1a0d908e91b6a98d82ad12dc9d3a37ddec"
-  integrity sha512-ZzCqXbp8uFnhu1lO3nBaWt+rOYpVIXSrY8DEC/oaalL6DHtYP26Ye4TpGcXxNlBD1vzOHTPHo7eNHUIseCoiwA==
   dependencies:
     dotenv "^8.0.0"
 
@@ -4606,7 +4604,6 @@ dot-prop@^5.2.0:
 dotenv@^8.0.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
-  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 download@^6.2.2:
   version "6.2.5"
@@ -8156,16 +8153,16 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lottie-ios@^3.1.3:
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/lottie-ios/-/lottie-ios-3.1.6.tgz#e70481f161666caf9f7ed9dba5ac715bc7ad8908"
+lottie-ios@^3.1.8:
+  version "3.1.8"
+  resolved "https://registry.yarnpkg.com/lottie-ios/-/lottie-ios-3.1.8.tgz#2e9b1f4eae0dfc10bf4c0b3ab6b402c1d590d0fa"
 
-lottie-react-native@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-3.3.2.tgz#de832d4d3207e4e5c92a55ec4cf0ce0fd03e02f3"
+lottie-react-native@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-3.5.0.tgz#749fed964bdc9fabfae24ef81696f90f4d758f59"
   dependencies:
     invariant "^2.2.2"
-    lottie-ios "^3.1.3"
+    lottie-ios "^3.1.8"
     prop-types "^15.5.10"
     react-native-safe-modules "^1.0.0"
 
@@ -10430,7 +10427,6 @@ react-native-device-info@^4.0.1:
 react-native-dotenv@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.2.0.tgz#d64289483c7956b97424b34164e56995e9919976"
-  integrity sha512-awcQNP7XBOJYR0RGAAgF/ia9yQeJgE023xUii/DiaTo/jDcnJEOXCPepnTmYsgk8Wtj6argVDBFAeAi3nUOfAw==
   dependencies:
     dotenv "^8.0.0"
 
@@ -10454,7 +10450,6 @@ react-native-exception-handler@^2.10.8:
 react-native-fs@^2.16.6:
   version "2.16.6"
   resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.16.6.tgz#2901789a43210a35a0ef0a098019bbef3af395fd"
-  integrity sha512-ZWOooD1AuFoAGY3HS2GY7Qx2LZo4oIg6AK0wbC68detxwvX75R/q9lRqThXNKP6vIo2VHWa0fYUo/SrLw80E8w==
   dependencies:
     base-64 "^0.1.0"
     utf8 "^3.0.0"
@@ -10471,7 +10466,6 @@ react-native-gesture-handler@^1.5.6:
 react-native-image-pan-zoom@^2.1.12:
   version "2.1.12"
   resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.12.tgz#eb98bf56fb5610379bdbfdb63219cc1baca98fd2"
-  integrity sha512-BF66XeP6dzuANsPmmFsJshM2Jyh/Mo1t8FsGc1L9Q9/sVP8MJULDabB1hms+eAoqgtyhMr5BuXV3E1hJ5U5H6Q==
 
 react-native-iphone-x-helper@1.2.1, react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
@@ -10560,7 +10554,6 @@ react-native-safe-modules@^1.0.0:
 react-native-scanbot-sdk@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-native-scanbot-sdk/-/react-native-scanbot-sdk-4.0.1.tgz#b299362f1dc07c6b9849cda00039ad4c0e5f8fc1"
-  integrity sha512-OOxIpsV030BtUoxy98QcVIrzN4yVN9EXrppESGVjzqNvemT15yeVLRkjqT3982balzLIOFbVoBLWBjDgdZAbKg==
 
 react-native-screens@^2.0.0-beta.2:
   version "2.4.0"
@@ -10819,7 +10812,6 @@ readdirp@^2.0.0, readdirp@^2.2.1:
 reader@^0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/reader/-/reader-0.0.8.tgz#631c3769fad452c9cf854298d304f39dbce5338b"
-  integrity sha1-Yxw3afrUUsnPhUKY0wTznbzlM4s=
   dependencies:
     async "*"
     cheerio "*"
@@ -12720,7 +12712,6 @@ utf8-byte-length@^1.0.1:
 utf8@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
-  integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
 
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
