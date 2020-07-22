@@ -118,7 +118,7 @@ export default class Drawer extends Component<Props, State> {
         >
           {isDrawer && <HeaderButtonsDrawer r={r} />}
           {renderDrawerButtons}
-          <Text>Version:{COMMIT}</Text>
+          <Text style={styles.version}> Version: {COMMIT}</Text>
           <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
         </View>
       </ScrollView>
