@@ -4,9 +4,11 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Picker, Text } from 'native-base';
 import { ScrollView } from 'react-native';
-import { getItem, setItem } from '../../engine/api/LocalStorage';
 import RNRestart from 'react-native-restart';
 import AsyncStorage from '@react-native-community/async-storage';
+import { COMMIT } from '@env';
+
+import { getItem, setItem } from '../../engine/api/LocalStorage';
 
 type Props = NavigationScreenProps & {};
 
@@ -152,7 +154,10 @@ export default class Settings extends React.Component<Props, State> {
             </Right>
           </ListItem>
           <ListItem>
-            <Text>Autre</Text>
+            <Left>
+              <Text>Version</Text>
+            </Left>
+            <Right><Text>{COMMIT}</Text></Right>
           </ListItem>
         </List>
         <Button onPress={() => navigation.goBack()}>
