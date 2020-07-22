@@ -12,7 +12,7 @@
     "postinstall": "npx jetify -r && node ./scripts/silent.js ",
     "lint": "eslint .",
     "build": "./get_commit.sh && cd android && ./gradlew assembleRelease",
-    "w-build": " bash get_commit.sh && cd android && ./gradelw.bat assembleRelease"
+    "w-build": " bash get_commit.sh && cd android && ./gradlew.bat assembleRelease"
   },
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.2.0",
