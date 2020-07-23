@@ -4,7 +4,6 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Button, Text } from 'native-base';
 import { View } from 'react-native';
-import ScanbotSDK from 'react-native-scanbot-sdk';
 import RNFS from 'react-native-fs';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
@@ -17,22 +16,7 @@ type Props = NavigationScreenProps & { autoCapitalize: string };
 type State = {};
 
 export default class ConsentImage extends React.Component<Props, State> {
-  /**
-   * Displays an error if the Scanbot license is not working
-   * @returns {Boolean} - true if license is working, false otherwise
-   */
-  checkLicense = async () => {
-    const {
-      app: { t },
-    } = this.props;
 
-    if (await ScanbotSDK.isLicenseValid()) {
-      // OK - we have a trial session, a valid trial license or valid production license.
-      return true;
-    }
-    displayNotification(t('consent_image:scanbot_license'), liwiColors.redColor);
-    return false;
-  };
 
   /**
    * Launches the scanner and processes the image when scanning is successfull
@@ -114,7 +98,7 @@ export default class ConsentImage extends React.Component<Props, State> {
         {newPatient && medicalCase.consent === null ? null : this.renderRenewConsent()}
         <View style={styles.flexRow}>
           {newPatient ? (
-            <Button style={styles.flex} onPress={this.startDocumentScannerButtonTapped}>
+            <Button style={styles.flex} onPress={() => NavigationService.navigate('ConsentCapture')}>
               <Text style={styles.flexCenter}>{t('consent_image:scan')}</Text>
             </Button>
           ) : null}
