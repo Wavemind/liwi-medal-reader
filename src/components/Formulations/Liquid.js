@@ -6,11 +6,12 @@ import { LiwiTitle5 } from '../../template/layout';
 
 export default function Liquid(drug, node, drugDose) {
   const ratio = drugDose.liquid_concentration / drugDose.dose_form;
+
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
       <Text>
-        {i18n.t('drug:mode')} : {drug.formulationSelected}
+        {i18n.t('drug:mode')} : {i18n.t(`medication_form:${node.formulations[drug.formulationSelected].medication_form}`)}
       </Text>
       <Text>
         {i18n.t('drug:give')} {ratio * drugDose.doseResult}

@@ -233,9 +233,9 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
 
 /**
  * @params diagnoses: New diagnoses will be placed into state
- * @params drugs: all the drugs selected mannually
+ * @params drugs: all the drugs selected manually
  *
- * Remove drugs from mannualy if new  diagnoses contain this drug (no duplicate !)
+ * Remove drugs from manually if new diagnoses contain this drug (no duplicate !)
  */
 export const newDrugsFilter = (diagnoses, drugs) => {
   const newDrugs = { ...drugs };

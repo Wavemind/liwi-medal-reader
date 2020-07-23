@@ -8,7 +8,7 @@ export default function Capsule(drug, node, drugDose) {
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
-      <Text size-auto>{i18n.t('drug:mode')} : {drug.formulationSelected}</Text>
+      <Text size-auto>{i18n.t('drug:mode')} : {i18n.t(`medication_form:${node.formulations[drug.formulationSelected].medication_form}`)}</Text>
       {drugDose.doseResult === null ? (
         <Text>{drugDose.no_possibility}</Text>
       ) : (

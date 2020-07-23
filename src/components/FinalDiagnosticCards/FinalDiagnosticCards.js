@@ -34,7 +34,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
     const node = nodes[drug.id];
     const drugDose = node.getDrugDoses(drug.formulationSelected);
 
-    switch (drug.formulationSelected) {
+    switch (node.formulations[drug.formulationSelected].medication_form) {
       case medicationForms.syrup:
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
