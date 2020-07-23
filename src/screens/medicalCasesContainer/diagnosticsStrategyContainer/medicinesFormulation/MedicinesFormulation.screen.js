@@ -2,14 +2,15 @@
 import React, { Component } from 'react';
 import { Icon, Picker, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
-import { medicationForms } from '../../../../../frontend_service/constants';
+import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
 import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { styles } from './MedicinesFormulation.style';
 
 type Props = NavigationScreenProps & {};
 type State = {};
-// eslint-disable-next-line react/prefer-stateless-function
+
+
 export default class MedicinesFormulations extends Component<Props, State> {
   onValueChange = (value, node, drugId) => {
     const { setFormulation } = this.props;
@@ -50,7 +51,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
     }
   };
 
-  _renderDrug = (instance, selected, onSelect) => {
+  _renderFormulation = (instance, selected, onSelect) => {
     const {
       medicalCase: { nodes },
       app: { t },
@@ -65,7 +66,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
         <View style={styles.select}>
           <Icon name="arrow-drop-down" type="MaterialIcons" style={styles.pickerIcon} />
           <Picker note mode="dropdown" style={styles.pickerContent} selectedValue={selected} onValueChange={onSelect}>
-            <Picker.Item label="Please select" value={null} />
+            <Picker.Item label={t('application:select')} value={null} />
             {nodes[instance.id]?.formulations.map((f, index) => {
               const preCalculed = nodes[instance.id].getDrugDoses(index);
               let string = '';
@@ -96,10 +97,10 @@ export default class MedicinesFormulations extends Component<Props, State> {
 
               // Only one option so pre-select it if possible
               if (nodes[instance.id]?.formulations.length === 1 && isPossible && f.medication_form !== selected) {
-                onSelect(f.medication_form);
+                onSelect(index);
               }
 
-              return <Picker.Item key={f} label={`${f.medication_form}: ${string} ${isPossible ? this.showSize(f.medication_form) : ''}`} value={isPossible ? f.medication_form : false} />;
+              return <Picker.Item key={f} label={`${t(`medication_form:${f.medication_form}`)}: ${string} ${isPossible ? this.showSize(f.medication_form) : ''}`} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
@@ -111,15 +112,16 @@ export default class MedicinesFormulations extends Component<Props, State> {
     const {
       medicalCase: {
         diagnoses: { proposed },
+        nodes,
       },
       app: { t },
     } = this.props;
 
     let isProposed = false;
 
-    Object.keys(proposed).forEach((q) => {
-      Object.keys(proposed[q].drugs).forEach((f) => {
-        if (proposed[q].drugs[f].agreed === true && calculateCondition(proposed[q].drugs[f]) === true) {
+    Object.keys(proposed).forEach((finalDiagnosticIndex) => {
+      Object.keys(proposed[finalDiagnosticIndex].drugs).forEach((drugIndex) => {
+        if (proposed[finalDiagnosticIndex].drugs[drugIndex].agreed === true && calculateCondition(proposed[finalDiagnosticIndex].drugs[drugIndex]) === true) {
           isProposed = true;
         }
       });
@@ -128,10 +130,19 @@ export default class MedicinesFormulations extends Component<Props, State> {
     const formulations = getDrugs();
 
     const generateFormulation = () =>
-      Object.keys(formulations).map((fm) => {
-        const selected = formulations[fm].formulationSelected === undefined ? null : formulations[fm].formulationSelected;
-        const onSelect = (value) => this.onValueChange(value, formulations[fm], fm);
-        return this._renderDrug(formulations[fm], selected, onSelect);
+      Object.keys(formulations).map((formulation) => {
+        const { formulationSelected } = formulations[formulation];
+        const selected = formulationSelected === undefined ? null : formulationSelected;
+        const onSelect = (value) => this.onValueChange(value, formulations[formulation], formulation);
+
+        return (
+          <>
+            {this._renderFormulation(formulations[formulation], selected, onSelect)}
+            {formulationSelected !== null && administrationRouteCategories.includes(nodes[formulation].formulations[formulationSelected].administration_route_category) ? (
+              <Text>{nodes[formulation].formulations[formulationSelected].injection_instructions}</Text>
+            ) : null}
+          </>
+        );
       });
 
     return (

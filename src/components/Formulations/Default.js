@@ -14,7 +14,7 @@ export default function Default(drug, node, drugDose) {
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
       <Text size-auto>
-        {i18n.t('drug:mode')} : {drug.formulationSelected === null ? i18n.t('drug:no_formulation') : drug.formulationSelected}
+        {i18n.t('drug:mode')} : {drug.formulationSelected === null ? i18n.t('drug:no_formulation') : i18n.t(`medication_form:${node.formulations[drug.formulationSelected].medication_form}`)}
       </Text>
       <Text size-auto>
         {i18n.t('drug:d')} : {drug.duration}

@@ -33,7 +33,8 @@ export class MedicalCaseModel {
       this.complaintCategories = [];
       this.isNewCase = true;
       this.isEligible = true;
-      this.consent = __DEV__ ? true : null;
+      // TODO: when production set to null -> It's ALAIN NOT ME
+      this.consent = true;
       this.modal = {
         open: false,
         content: '',

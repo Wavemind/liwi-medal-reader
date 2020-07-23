@@ -14,6 +14,7 @@ export class DrugModel extends HealthCaresModel {
       minimal_dose_per_kg = '',
       maximal_dose_per_kg = '',
       maximal_dose = '',
+      injection_instructions = '',
       doses_per_day = '',
       treatment_type = '',
       pill_size = '',
@@ -28,6 +29,7 @@ export class DrugModel extends HealthCaresModel {
     this.minimalDosePerKg = minimal_dose_per_kg;
     this.maximalDosePerKg = maximal_dose_per_kg;
     this.maximalDose = maximal_dose;
+    this.injection_instructions = injection_instructions;
     this.dosesPerDay = doses_per_day;
     this.treatmentType = treatment_type;
     this.pillSize = pill_size;

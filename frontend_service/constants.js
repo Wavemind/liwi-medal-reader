@@ -49,19 +49,21 @@ export const displayFormats = {
 export const medicationForms = {
   tablet: 'tablet',
   capsule: 'capsule',
-  suspension: 'suspension',
   syrup: 'syrup',
+  suspension: 'suspension',
   suppository: 'suppository',
   drops: 'drops',
   solution: 'solution',
+  powder_for_injection: 'powder_for_injection',
   patch: 'patch',
   cream: 'cream',
   ointment: 'ointment',
   gel: 'gel',
   spray: 'spray',
   inhaler: 'inhaler',
-  powder_for_injection: 'inhaler',
 };
+
+export const administrationRouteCategories = ['Enteral', 'Parenteral injectable', 'Mucocutaneous'];
 
 // Value of answer accepted
 export const valueFormats = {
