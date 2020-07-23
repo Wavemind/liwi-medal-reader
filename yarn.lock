@@ -10130,7 +10130,7 @@ prop-types-exact@^1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@latest:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@latest:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -10424,13 +10424,6 @@ react-native-device-info@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-4.0.1.tgz#bade972e7a995ac187a82745a458cba98b72dea0"
 
-react-native-document-scanner@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-document-scanner/-/react-native-document-scanner-1.4.2.tgz#64ac74f2045882e6f98fe4fa2d59858ed27d8764"
-  integrity sha512-gh4WnZRBWk4CJApp2iaV8SW6SvV4wi2hA9ikwpNbDvpAFles8bWGSnjmOeOoy15KZgbIVaRjvCRRfFxaLVgJhg==
-  dependencies:
-    react "16.0.0-beta.5"
-
 react-native-dotenv@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.2.0.tgz#d64289483c7956b97424b34164e56995e9919976"
@@ -10534,7 +10527,6 @@ react-native-reanimated@^1.7.0:
 react-native-rectangle-scanner@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/react-native-rectangle-scanner/-/react-native-rectangle-scanner-1.0.10.tgz#eddf201013030c12e9c74c893c3a7d7e229780fc"
-  integrity sha512-E9YdHMaRBYXen9wQHOrNa//nZyf2AUqpV+f7v1D3SNJJjuFmqEtxB1gx9qlJCE7ut/Osh7WRCYJL+wVoXQ7S/g==
 
 react-native-restart@0.0.12:
   version "0.0.12"
@@ -10563,10 +10555,6 @@ react-native-safe-modules@^1.0.0:
   dependencies:
     dedent "^0.6.0"
 
-react-native-scanbot-sdk@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-scanbot-sdk/-/react-native-scanbot-sdk-4.0.1.tgz#b299362f1dc07c6b9849cda00039ad4c0e5f8fc1"
-
 react-native-screens@^2.0.0-beta.2:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.4.0.tgz#7706f24d942dee387626014ee4d96094a3d1b9ce"
@@ -10580,7 +10568,6 @@ react-native-splash-screen@^3.1.1:
 react-native-svg@^12.1.0:
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.0.tgz#acfe48c35cd5fca3d5fd767abae0560c36cfc03d"
-  integrity sha512-1g9qBRci7man8QsHoXn6tP3DhCDiypGgc6+AOWq+Sy+PmP6yiyf8VmvKuoqrPam/tf5x+ZaBT2KI0gl7bptZ7w==
   dependencies:
     css-select "^2.1.0"
     css-tree "^1.0.0-alpha.39"
@@ -10735,16 +10722,6 @@ react-tween-state@^0.1.5:
   dependencies:
     raf "^3.1.0"
     tween-functions "^1.0.1"
-
-react@16.0.0-beta.5:
-  version "16.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0-beta.5.tgz#b4abba9bce7db72c30633db54a148614b6574e79"
-  integrity sha512-FZSIxm5aO24tzl+11WWZSlYY9QCM3qm32f0+VEmAimm5ZFAiXdcHPdsWnCW00zkHIXszh9AWeOXu0OEqq30FSQ==
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.6"
 
 react@16.9.0:
   version "16.9.0"

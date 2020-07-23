@@ -193,7 +193,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-document-scanner')
     implementation project(':react-native-rectangle-scanner')
     implementation project(':bugsnag-react-native')
     implementation fileTree(dir: "libs", include: ["*.jar"])
