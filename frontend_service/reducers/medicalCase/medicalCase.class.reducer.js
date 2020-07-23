@@ -609,6 +609,10 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...modelsMedicalCase,
       json: null,
+      patient: {
+        ...modelsMedicalCase.patient,
+        medicalCases: [],
+      },
     };
   }
 
@@ -630,6 +634,10 @@ class MedicalCaseReducer extends ReducerClass {
     return {
       ...modelsMedicalCase,
       json: null,
+      patient: {
+        ...modelsMedicalCase.patient,
+        medicalCases: [],
+      },
     };
   }
 }
