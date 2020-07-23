@@ -17,6 +17,11 @@ export default class ConsentCapture extends React.Component {
     this.camera = React.createRef();
   }
 
+  /**
+   * Stores the cropped image in the patient when the picture is processed
+   * @param croppedImage
+   * @returns {Promise<void>}
+   */
   handleOnPictureProcessed = async ({ croppedImage }) => {
     const { addConsentFile, navigation } = this.props;
     this.setState({ loading: true });
@@ -24,7 +29,10 @@ export default class ConsentCapture extends React.Component {
     addConsentFile(await RNFS.readFile(croppedImage, 'base64'));
     navigation.goBack();
   };
-
+  /**
+   * When the scanner detects a rectangle he triggers the capture of the picture
+   * @param data
+   */
   handleRectangleDetected = (data) => {
     if (data.detectedRectangle !== false) {
       this.camera.current.capture();

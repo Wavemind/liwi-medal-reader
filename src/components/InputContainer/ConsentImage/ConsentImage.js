@@ -17,43 +17,6 @@ type State = {};
 
 export default class ConsentImage extends React.Component<Props, State> {
 
-
-  /**
-   * Launches the scanner and processes the image when scanning is successfull
-   */
-  startDocumentScannerButtonTapped = async () => {
-    const { app, addConsentFile } = this.props;
-
-    if (!(await this.checkLicense())) {
-      return;
-    }
-
-    // Disables the pin screen after the scanning
-    await app.set('showPinOnUnlock', false);
-
-    const result = await ScanbotSDK.UI.startDocumentScanner({
-      // Customize colors, text resources, etc..
-      polygonColor: liwiColors.greyColor,
-      cameraPreviewMode: 'FIT_IN',
-      orientationLockMode: 'PORTRAIT',
-      multiPageEnabled: false,
-      multiPageButtonHidden: true,
-      ignoreBadAspectRatio: true,
-      shutterButtonHidden: true,
-      maxNumberOfPages: 1,
-      documentImageSizeLimit: {
-        height: 1500,
-        width: 750,
-      },
-    });
-
-    if (result.status === 'OK') {
-      const regexp = /([^?]+).*/; // Used to remove unwanted params at the end of url
-      await ScanbotSDK.applyImageFilterOnPage(result.pages[0], 'COLOR_DOCUMENT');
-      addConsentFile(await RNFS.readFile(`${result.pages[0].documentImageFileUri.match(regexp)[1]}?${Date.now()}`, 'base64'));
-    }
-  };
-
   /**
    * Displays the consent management form
    * @returns {*}
