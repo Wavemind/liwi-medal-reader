@@ -38,6 +38,7 @@ target 'liwi_native' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'RNRectangleScanner', :path => '../node_modules/react-native-rectangle-scanner'
   target 'liwi_nativeTests' do
     inherit! :search_paths
     # Pods for testing
