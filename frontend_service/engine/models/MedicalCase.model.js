@@ -75,7 +75,7 @@ export class MedicalCaseModel {
     } else {
       // If json is undefined it means it comes from the state
       if (props !== undefined && props.json === undefined) {
-        this._assignValues(props);
+
         this.id = props.id;
         this.isNewCase = props.isNewCase;
         this.created_at = props.created_at;
