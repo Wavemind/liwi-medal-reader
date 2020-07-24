@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { ListItem, Text, View, Button, Icon } from 'native-base';
-import { FlatList } from 'react-native';
+import { FlatList, ScrollView } from 'react-native';
 
 import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
 import { LiwiTitle2 } from '../../../template/layout';
@@ -139,77 +139,80 @@ export default class PatientProfile extends React.Component {
     return !firstRender ? (
       <LiwiLoader />
     ) : (
-      <>
+      <View style={styles.container}>
         <View style={styles.patientValuesContainer}>
           <View padding-auto margin-top style={styles.flex}>
             <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
-            <View style={styles.patientValuesContent}>
-              {patient.patientValues.map((patientValue) => (
-                <View key={patientValue.node_id} style={styles.wrapper}>
-                  <Text size-auto style={styles.identifierText}>
-                    {nodes[patientValue.node_id].label}
-                  </Text>
-                  <Text size-auto style={styles.patientValues}>
-                    {patient.getLabelFromNode(patientValue.node_id, nodes)}
-                  </Text>
-                </View>
-              ))}
-            </View>
+            <ScrollView>
+              <View style={styles.patientValuesContent}>
+                {patient.patientValues.map((patientValue) => (
+                  <View key={patientValue.node_id} style={styles.wrapper}>
+                    <Text size-auto style={styles.identifierText}>
+                      {nodes[patientValue.node_id].label}
+                    </Text>
+                    <Text size-auto style={styles.patientValues}>
+                      {patient.getLabelFromNode(patientValue.node_id, nodes)}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
           </View>
-          <View style={styles.flex}>
-            <Button
-              block
-              onPress={() => {
-                navigation.navigate('PatientEdit', {
-                  patient,
-                });
-              }}
-            >
-              <Text size-auto>{t('patient_profile:edit_patient_value')}</Text>
-            </Button>
-          </View>
-        </View>
-
-        <View padding-auto>
-          <LiwiTitle2 noBorder>{t('patient_profile:medical_cases')}</LiwiTitle2>
-        </View>
-
-        <View padding-auto style={styles.filterContent}>
-          {columns.map((column) => (
-            <View key={column} style={styles.columnLabel}>
-              <Text size-auto>{nodes[column].label}</Text>
-            </View>
-          ))}
-          <View style={styles.columnLabel}>
-            <Text size-auto>{t('patient_profile:status')}</Text>
-          </View>
-        </View>
-
-        <View padding-auto>
-          <FlatList
-            key="dataList"
-            data={patient.medicalCases}
-            contentContainerStyle={styles.flatList}
-            renderItem={(value) => this._renderItem(value.item)}
-            ItemSeparatorComponent={this._renderSeparator}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
-
-        <View style={styles.footerButton}>
           <Button
             block
+            style={styles.marginBottom}
             onPress={() => {
-              navigation.navigate('PatientUpsert', {
-                idPatient: patient.id,
-                newMedicalCase: true,
+              navigation.navigate('PatientEdit', {
+                patient,
               });
             }}
           >
-            <Text size-auto>{t('patient_profile:add_case')}</Text>
+            <Text size-auto>{t('patient_profile:edit_patient_value')}</Text>
           </Button>
         </View>
-      </>
+
+        <View style={styles.flex06}>
+          <View padding-auto>
+            <LiwiTitle2 noBorder>{t('patient_profile:medical_cases')}</LiwiTitle2>
+          </View>
+
+          <View padding-auto style={styles.filterContent}>
+            {columns.map((column) => (
+              <View key={column} style={styles.columnLabel}>
+                <Text size-auto>{nodes[column].label}</Text>
+              </View>
+            ))}
+            <View style={styles.columnLabel}>
+              <Text size-auto>{t('patient_profile:status')}</Text>
+            </View>
+          </View>
+
+          <View padding-auto>
+            <FlatList
+              key="dataList"
+              data={patient.medicalCases}
+              contentContainerStyle={styles.flatList}
+              renderItem={(value) => this._renderItem(value.item)}
+              ItemSeparatorComponent={this._renderSeparator}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+
+          <View style={styles.footerButton}>
+            <Button
+              block
+              onPress={() => {
+                navigation.navigate('PatientUpsert', {
+                  idPatient: patient.id,
+                  newMedicalCase: true,
+                });
+              }}
+            >
+              <Text size-auto>{t('patient_profile:add_case')}</Text>
+            </Button>
+          </View>
+        </View>
+      </View>
     );
   }
 }

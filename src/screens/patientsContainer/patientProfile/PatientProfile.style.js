@@ -67,9 +67,15 @@ export const styles = StyleSheet.create({
 
   footerButton: { position: 'absolute', left: 0, right: 0, bottom: 0 },
 
-  patientValuesContainer: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
+  patientValuesContainer: { flex: 0.4, flexDirection: 'column', justifyContent: 'space-between' },
 
   patientValuesContent: { flex: 1, flexDirection: 'row', flexWrap: 'wrap' },
 
   flex: { flex: 1 },
+
+  container: {flex: 1, flexDirection: 'column'},
+
+  marginBottom: {marginBottom: 20},
+
+  flex06: {flex: 0.6}
 });
