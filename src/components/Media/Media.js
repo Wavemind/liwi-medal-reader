@@ -32,19 +32,21 @@ export default class Media extends React.Component<Props, State> {
     });
   }
 
+  /**
+   * Display right component according to file extension
+   * @param {String} url - File url
+   * @returns {*}
+   */
   mediaType(url) {
-    const extension = url.split('.').pop().toLowerCase();
+    const extension = url.split('.').pop();
 
     if (MOVIES_EXTENSION.includes(extension)) {
-      console.log("movie")
-      // return <Movie url={url} />;
+      return <Movie url={url} />;
     }
     if (AUDIOS_EXTENSION.includes(extension)) {
-      console.log("audios")
-      // return <Audio url={url} />;
+      return <Audio url={url} />;
     }
     if (PICTURES_EXTENSION.includes(extension)) {
-      console.log("photos", url)
       return <Picture url={url} />;
     }
     return <Text>{i18n.t('media:file_not_supported')}</Text>;

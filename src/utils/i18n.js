@@ -99,6 +99,7 @@ i18n
         },
         media: {
           file_not_supported: 'File not supported',
+          audio_error: 'An error occured with the audio file',
         },
         diagnoses_label: {
           additional: 'Additional',

@@ -4,6 +4,7 @@ import DeviceInfo from 'react-native-device-info';
 /** * COLORS **** */
 export const liwiColors = {
   redColor: '#db473e',
+  redLightColor: '#f3a39a',
   blackColor: '#232323',
   blackLightColor: '#3f3f3f',
   whiteColor: '#fff',

@@ -6,15 +6,18 @@ import { Image } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import Lightbox from 'react-native-lightbox';
 
+import {styles} from './Picture.style';
+
 type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Picture extends React.Component<Props, State> {
+
   render() {
     const { url } = this.props;
 
     return (
-      <View style={{padding: 15}}>
+      <View style={styles.container}>
         <Lightbox>
           <Image
             style={{ height: 300 }}

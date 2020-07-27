@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.zmxv.RNSound.RNSoundPackage;
 import com.rectanglescanner.RectangleScannerPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.facebook.react.ReactNativeHost;
