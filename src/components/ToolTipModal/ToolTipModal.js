@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
 
 import { routeDependingStatus, toolTipType } from '../../../frontend_service/constants';
-import { SeparatorLine } from '../../template/layout';
+
 import { styles } from './ToolTipModal.style';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import LiwiLoader from '../../utils/LiwiLoader';

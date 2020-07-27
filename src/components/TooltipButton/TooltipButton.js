@@ -5,6 +5,7 @@ import { Button, Icon, Text } from 'native-base';
 import { styles } from './TooltipButton.style';
 import { LiwiTitle5 } from '../../template/layout';
 import Tooltip from '../Tooltip/tooltip';
+import Media from '../Media/Media';
 
 export default class TooltipButton extends React.Component<Props, State> {
   state = {
@@ -23,6 +24,7 @@ export default class TooltipButton extends React.Component<Props, State> {
    */
   _renderToolTipContent = () => {
     const { node, title } = this.props;
+
     return (
       <ScrollView>
         <View onStartShouldSetResponder={() => true}>
@@ -31,6 +33,11 @@ export default class TooltipButton extends React.Component<Props, State> {
           </Button>
           <LiwiTitle5>{title}</LiwiTitle5>
           <Text style={styles.description}>{node.description}</Text>
+          {['https://image.migros.ch/2017-large/a1e9592145840805c4a21d7e27353d226525e940/m-classic-cottage-cheese-nature.jpg', 'https://media0.giphy.com/media/5wWf7HapUvpOumiXZRK/giphy.gif', 'https://upload.wikimedia.org/wikipedia/commons/4/47/Wheeze2O.ogg'].map(
+            (url) => {
+              return (<Media key={url} url={url}/>)
+            }
+          )}
           {__DEV__ ? <Text>id: {node.id}</Text> : null}
         </View>
       </ScrollView>

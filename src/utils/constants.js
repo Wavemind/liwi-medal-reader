@@ -34,6 +34,10 @@ export const screensScale = {
   xl: 800,
 };
 
+export const MOVIES_EXTENSION = ['mp4', 'mov', 'avi'];
+export const AUDIOS_EXTENSION = ['mp3', 'ogg'];
+export const PICTURES_EXTENSION = ['jpg', 'jpeg', 'gif', 'png', 'tiff'];
+
 export const responsiveUi = {
   textFontSize: () => {
     switch (true) {

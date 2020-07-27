@@ -10494,6 +10494,12 @@ react-native-keychain@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-5.0.1.tgz#2751de436f017c87b8aabb32533bee88657d643e"
 
+react-native-lightbox@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/react-native-lightbox/-/react-native-lightbox-0.8.1.tgz#4e561ec46e61617a0f3f12c88ec2695360998878"
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-multiple-select@^0.5.5:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/react-native-multiple-select/-/react-native-multiple-select-0.5.5.tgz#5bafdd3e66a42dbb600da7ebf0bd8a46a0437012"
