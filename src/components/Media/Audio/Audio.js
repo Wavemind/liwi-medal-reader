@@ -145,12 +145,12 @@ export default class Audio extends React.Component {
       <View style={styles.audioInnerContainer}>
         {this.state.playState === 'paused' && (
           <TouchableOpacity onPress={() => this.play(url)}>
-            <Icon name="play" />
+            <Icon name="play" type="Feather" />
           </TouchableOpacity>
         )}
         {this.state.playState === 'playing' && (
           <TouchableOpacity onPress={() => this.pause()}>
-            <Icon name="pause" />
+            <Icon name="pause" type="Feather" />
           </TouchableOpacity>
         )}
         <View style={styles.audioContainer}>
@@ -163,7 +163,7 @@ export default class Audio extends React.Component {
             maximumValue={this.state.duration}
             trackStyle={styles.track}
             thumbStyle={styles.thumb}
-            minimumTrackTintColor={liwiColors.redLightColor}
+            minimumTrackTintColor={liwiColors.redColor}
           />
           <Text style={styles.time}>{durationString}</Text>
         </View>

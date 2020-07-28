@@ -1,14 +1,15 @@
 // @flow
 
 import * as React from 'react';
-import { Text } from 'native-base';
+import { Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import * as NetInfo from '@react-native-community/netinfo';
+import { AUDIOS_EXTENSION, MOVIES_EXTENSION, PICTURES_EXTENSION } from '../../utils/constants';
+import i18n from '../../utils/i18n';
+import { styles } from './Media.styles';
 import Movie from './Movie';
 import Audio from './Audio';
 import Picture from './Picture';
-import { AUDIOS_EXTENSION, MOVIES_EXTENSION, PICTURES_EXTENSION } from '../../utils/constants';
-import i18n from '../../utils/i18n';
 
 type Props = NavigationScreenProps & {};
 
@@ -54,6 +55,6 @@ export default class Media extends React.Component<Props, State> {
 
   render() {
     const { isConnected, url } = this.state;
-    return isConnected ? this.mediaType(url) : null;
+    return isConnected ? <View style={styles.container}>{this.mediaType(url)}</View> : null;
   }
 }

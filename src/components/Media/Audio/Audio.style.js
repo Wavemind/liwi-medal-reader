@@ -13,12 +13,6 @@ export const styles = StyleSheet.create({
   audioInnerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 30,
-    paddingBottom: 30,
-    paddingLeft: 50,
-    paddingRight: 50,
-    borderTopWidth: 2,
-    borderTopColor: liwiColors.lighterGreyColor,
     position: 'relative',
   },
 
@@ -31,13 +25,10 @@ export const styles = StyleSheet.create({
   },
 
   thumb: {
-    width: 7,
-    height: 30,
     backgroundColor: liwiColors.redColor,
   },
 
   track: {
-    height: 18,
     backgroundColor: liwiColors.lighterGreyColor,
   },
 });
