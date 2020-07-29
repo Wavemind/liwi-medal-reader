@@ -56,7 +56,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
       medicalCase: { nodes },
       app: { t },
     } = this.props;
-
+console.log(nodes[instance.id]?.formulations)
     return (
       <View style={styles.blocDrug}>
         <View style={styles.flex}>
@@ -96,7 +96,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
               }
 
               // Only one option so pre-select it if possible
-              if (nodes[instance.id]?.formulations.length === 1 && isPossible && f.medication_form !== selected) {
+              if (nodes[instance.id]?.formulations.length === 1 && isPossible && index !== selected) {
                 onSelect(index);
               }
 
