@@ -22,8 +22,12 @@ export default class MedicalCaseList extends React.Component<Props, State> {
    * @param {object} medicalCase
    * @returns {Promise<void>}
    */
-  selectMedicalCase = async (medicalCase) => {
-    const { setMedicalCase } = this.props;
+  selectMedicalCase = async (medicalCaseLight) => {
+    const {
+      setMedicalCase,
+      app: { database },
+    } = this.props;
+    const medicalCase = await database.findBy('MedicalCase', medicalCaseLight.id);
     await setMedicalCase({ ...medicalCase, patient: await medicalCase.getPatient() });
   };
 
@@ -32,7 +36,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
    * @param {object} medicalCase - Medical case clicked
    * @returns {Promise<void>}
    */
-  itemNavigation = async (medicalCase) => {
+  itemNavigation = async (medicalCaseLight) => {
     const {
       navigation,
       updateModalFromRedux,
@@ -40,16 +44,16 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     } = this.props;
     const { deviceInfo } = this.state;
 
-    const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+    const newMedicalCase = await database.findBy('MedicalCase', medicalCaseLight.id);
     const isConnected = await getItems('isConnected');
 
     if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
       updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
     } else if (newMedicalCase.status === medicalCaseStatus.close) {
-      navigation.navigate('Summary', { medicalCase });
+      navigation.navigate('Summary', { medicalCaseLight });
     } else {
       // Set medical case in store and lock case
-      await this.selectMedicalCase({ ...medicalCase });
+      await this.selectMedicalCase(medicalCaseLight);
       await database.lockMedicalCase(newMedicalCase.id);
 
       navigation.navigate(routeDependingStatus(newMedicalCase), {

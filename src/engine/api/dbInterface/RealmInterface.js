@@ -6,7 +6,7 @@ import { ActivityModel } from '../../../../frontend_service/engine/models/Activi
 import { PatientValueModel } from '../../../../frontend_service/engine/models/PatientValue.model';
 import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { getItem } from '../LocalStorage';
+import { getItem, getItems } from '../LocalStorage';
 import { elementPerPage } from '../../../utils/constants';
 import { categories } from '../../../../frontend_service/constants';
 
@@ -67,7 +67,8 @@ export default class RealmInterface {
     if (params.query !== '' && model === 'Patient') result = await result.filtered('patientValues.value CONTAINS[c] $0', params.query);
     if (filters !== '') result = await result.filtered(filters);
 
-    return result.sorted('updated_at', 'ASC').slice((page - 1) * elementPerPage, elementPerPage * page);
+    result = result.sorted('updated_at', 'ASC').slice((page - 1) * elementPerPage, elementPerPage * page);
+    return this._generateList(result, model);
   };
 
   /**
@@ -179,6 +180,28 @@ export default class RealmInterface {
     }
   };
 
+  _generateList = async (data, model) => {
+    const algorithm = await getItems('algorithm');
+    const { nodes } = algorithm;
+    const columns = algorithm.mobile_config.patient_list;
+    return data.map((entry) => {
+      if (model === 'Patient') {
+        return {
+          id: entry.id,
+          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+        };
+      } else {
+        return {
+          id: entry.id,
+          status: entry.status,
+          clinician: entry.clinician,
+          mac_address: entry.mac_address,
+          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+        };
+      }
+    });
+  };
+
   /**
    * Generate query with filters
    * @param {object} filters - Filter object with key and value
@@ -231,7 +254,7 @@ export default class RealmInterface {
           });
         } else {
           this._realm().write(() => {
-            this.update('PatientValue', patientValue.id, { value: String(node.value), answer_id:node.answer === null ? null : parseInt(node.answer) });
+            this.update('PatientValue', patientValue.id, { value: String(node.value), answer_id: node.answer === null ? null : parseInt(node.answer) });
           });
         }
       }

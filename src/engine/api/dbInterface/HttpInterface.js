@@ -61,11 +61,6 @@ export default class HttpInterface {
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
 
-    if (data !== null) {
-      const values = this._initClasses(data, model);
-      return values;
-    }
-
     return data;
   };
 
