@@ -97,6 +97,10 @@ i18n
           spray: 'Spray',
           inhaler: 'Inhaler',
         },
+        media: {
+          file_not_supported: 'File not supported',
+          audio_error: 'An error occured with the audio file',
+        },
         diagnoses_label: {
           additional: 'Additional',
           additionalDrugs: 'Additional drugs',

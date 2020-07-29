@@ -4,6 +4,7 @@ import DeviceInfo from 'react-native-device-info';
 /** * COLORS **** */
 export const liwiColors = {
   redColor: '#db473e',
+  redLightColor: '#f3a39a',
   blackColor: '#232323',
   blackLightColor: '#3f3f3f',
   whiteColor: '#fff',
@@ -33,6 +34,10 @@ export const screensScale = {
   l: 600,
   xl: 800,
 };
+
+export const MOVIES_EXTENSION = ['mp4', 'mov', 'avi'];
+export const AUDIOS_EXTENSION = ['mp3', 'ogg'];
+export const PICTURES_EXTENSION = ['jpg', 'jpeg', 'gif', 'png', 'tiff'];
 
 export const responsiveUi = {
   textFontSize: () => {
