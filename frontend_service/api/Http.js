@@ -103,7 +103,7 @@ const _fetch = async (url, header) => {
     }
 
     // In case of fetch timeout
-    if (httpRequest.status > 400) {
+    if (httpRequest.status > 404) {
       handleHttpError(result.errors);
     }
   }

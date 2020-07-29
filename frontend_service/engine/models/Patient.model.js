@@ -38,7 +38,7 @@ export class PatientModel {
 
       if (id !== undefined) {
         this.id = id;
-        this.medicalCases = medicalCases.map((medicalCase) => new MedicalCaseModel(medicalCase));
+        this.medicalCases = medicalCases;
       } else {
         this.id = null;
       }
