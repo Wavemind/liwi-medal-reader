@@ -126,6 +126,11 @@ export class PatientModel {
     return this.other_uid !== null && this.other_uid !== undefined;
   };
 
+  /**
+   * Returns an arraay of MedicalCaseLight used to display in a list of medicalCase
+   * @param algorithm - the algorithm that contains the list of field to display
+   * @returns {Array<{clinician: (string|string), mac_address: string, values: *, id: *, status: *}>}
+   */
   medicalCasesLight = (algorithm) => {
     const columns = algorithm.mobile_config.medical_case_list;
     return this.medicalCases.map((medicalCase) => {

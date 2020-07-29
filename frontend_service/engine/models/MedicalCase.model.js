@@ -369,6 +369,11 @@ export class MedicalCaseModel {
     return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.consent;
   };
 
+  /**
+   * Generates a clean Json of the medical case
+   * @param medicalCase - the medical case that need to be stringified
+   * @returns {*|string}
+   */
   static generateJSON = (medicalCase) => {
     return JSON.stringify({ ...medicalCase, patient: null, json: '{}' });
   };
