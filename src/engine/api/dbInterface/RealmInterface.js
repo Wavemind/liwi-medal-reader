@@ -180,6 +180,13 @@ export default class RealmInterface {
     }
   };
 
+  /**
+   * Generate an object than contains all the data needed to display a model in a list
+   * @param data : an array of of the model we want to display
+   * @param model : name of the model we wanna display
+   * @returns { Array[Object] } : The array used to display values in the list
+   * @private
+   */
   _generateList = async (data, model) => {
     const algorithm = await getItems('algorithm');
     const { nodes } = algorithm;
