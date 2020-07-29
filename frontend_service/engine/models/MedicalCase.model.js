@@ -368,6 +368,10 @@ export class MedicalCaseModel {
   canBeSynchronized = () => {
     return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.consent;
   };
+
+  static generateJSON = (medicalCase) => {
+    return JSON.stringify({ ...medicalCase, patient: null, json: '{}' });
+  };
 }
 
 MedicalCaseModel.schema = {

@@ -52,11 +52,11 @@ export class PatientModel {
    */
   addMedicalCase = async (medicalCase) => {
     const user = await getItem('user');
-    const medicalCaseClass = new MedicalCaseModel({ ...medicalCase, json: JSON.stringify(medicalCase) });
+    const medicalCaseClass = new MedicalCaseModel({ ...medicalCase, json: MedicalCaseModel.generateJSON(medicalCase) });
     const database = await new Database();
     const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
     medicalCaseClass.patient_id = this.id;
-    medicalCaseClass.json = JSON.stringify(medicalCaseClass);
+    medicalCaseClass.json = MedicalCaseModel.generateJSON(medicalCaseClass);
     await medicalCaseClass.handleFailSafe();
     medicalCaseClass.activities = [activity];
 
@@ -104,14 +104,14 @@ export class PatientModel {
     this.id = uuid.v4();
 
     const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
-
     return database.insert('Patient', {
       ...this,
       medicalCases: [
         {
           ...medicalCase,
           patient_id: this.id,
-          json: JSON.stringify(medicalCase),
+          patient: null,
+          json: MedicalCaseModel.generateJSON(medicalCase),
           activities: [activity],
         },
       ],
@@ -124,6 +124,19 @@ export class PatientModel {
    */
   wasInOtherFacility = () => {
     return this.other_uid !== null && this.other_uid !== undefined;
+  };
+
+  medicalCasesLight = (algorithm) => {
+    const columns = algorithm.mobile_config.medical_case_list;
+    return this.medicalCases.map((medicalCase) => {
+      return {
+        id: medicalCase.id,
+        status: medicalCase.status,
+        clinician: medicalCase.clinician,
+        mac_address: medicalCase.mac_address,
+        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, medicalCase.nodese)),
+      };
+    });
   };
 }
 

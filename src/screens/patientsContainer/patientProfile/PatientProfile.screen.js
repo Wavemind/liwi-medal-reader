@@ -79,7 +79,6 @@ export default class PatientProfile extends React.Component {
     } = this.props;
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
-
     return (
       <ListItem
         style={styles.item}
@@ -133,7 +132,7 @@ export default class PatientProfile extends React.Component {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithm },
       navigation,
     } = this.props;
     const { patient, firstRender, nodes, columns } = this.state;
@@ -191,7 +190,7 @@ export default class PatientProfile extends React.Component {
           <View padding-auto>
             <FlatList
               key="dataList"
-              data={patient.medicalCases}
+              data={patient.medicalCasesLight(algorithm)}
               contentContainerStyle={styles.flatList}
               renderItem={(value) => this._renderItem(value.item)}
               ItemSeparatorComponent={this._renderSeparator}

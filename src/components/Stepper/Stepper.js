@@ -280,7 +280,7 @@ class Stepper extends React.Component<Props, State> {
 
     // Can we update the next status ? All questions are valid ?
     if (this._validateStage()) {
-      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject, json: JSON.stringify(medicalCaseObject) });
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject, json: MedicalCaseModel.generateJSON(medicalCaseObject) });
       if (medicalCase.isNewCase) {
         await this._createNewMedicalCase(medicalCase);
       } else {
@@ -292,8 +292,8 @@ class Stepper extends React.Component<Props, State> {
 
         const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
 
-        medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
-        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities }, true);
+        medicalCaseObject.json = MedicalCaseModel.generateJSON(medicalCaseObject);
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities, patient: {} }, true);
       }
 
       displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
@@ -443,7 +443,7 @@ class Stepper extends React.Component<Props, State> {
 
     // Can we update the next status ? All questions are valid ?
     if (this._validateStage()) {
-      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject, json: JSON.stringify(medicalCaseObject)  });
+      const medicalCase = new MedicalCaseModel({ ...medicalCaseObject, json: MedicalCaseModel.generateJSON(medicalCaseObject)  });
 
       if (medicalCase.isNewCase) {
         await this._createNewMedicalCase(medicalCase);
@@ -461,8 +461,8 @@ class Stepper extends React.Component<Props, State> {
         const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
 
         // Save value
-        medicalCaseObject.json = await JSON.stringify({ ...medicalCaseObject, json: '{}' });
-        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities }, true);
+        medicalCaseObject.json = MedicalCaseModel.generateJSON(medicalCaseObject);
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities, patient: {} }, true);
         await database.unlockMedicalCase(medicalCase.id);
       }
 
