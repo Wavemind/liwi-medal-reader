@@ -9,6 +9,7 @@ import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
 
 export default class PatientProfile extends React.Component {
   state = {
@@ -76,7 +77,7 @@ export default class PatientProfile extends React.Component {
       updateModalFromRedux,
       app: { t, database, user },
     } = this.props;
-    const { columns, nodes, deviceInfo, isConnected } = this.state;
+    const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
 
     return (
@@ -103,9 +104,9 @@ export default class PatientProfile extends React.Component {
           }
         }}
       >
-        {columns.map((nodeId) => (
-          <View style={{ flex: size }} key={`${medicalCase.id}_${nodeId}`}>
-            <Text size-auto>{medicalCase.getLabelFromNode(nodeId, nodes)}</Text>
+        {medicalCase.values.map((value) => (
+          <View style={{ flex: size }} key={`${medicalCase.id}`}>
+            <Text size-auto>{value}</Text>
           </View>
         ))}
         <View style={{ flex: size }}>
@@ -114,7 +115,7 @@ export default class PatientProfile extends React.Component {
         {isConnected ? (
           <View style={styles.itemLock}>
             <Text size-auto right>
-              {medicalCase.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
+              {MedicalCaseModel.isLocked(medicalCase, deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
             </Text>
           </View>
         ) : null}

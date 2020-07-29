@@ -318,6 +318,19 @@ export class MedicalCaseModel {
   /**
    * Defines if the case is locked
    */
+  static isLocked = (medicalCaseLight, deviceInfo, user) => {
+    return (
+      medicalCaseLight.status !== 'close' &&
+      !(
+        (medicalCaseLight.clinician === null && medicalCaseLight.mac_address === null) ||
+        (medicalCaseLight.clinician === `${user.first_name} ${user.last_name}` && medicalCaseLight.mac_address === deviceInfo.mac_address)
+      )
+    );
+  };
+
+  /**
+   * Defines if the case is locked
+   */
   isLocked = (deviceInfo, user) => {
     return (
       this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address))

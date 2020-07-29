@@ -9,6 +9,7 @@ import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { getDeviceInformation } from '../../engine/api/Device';
+import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 
 type Props = NavigationScreenProps & {};
 
@@ -65,7 +66,6 @@ export default class ListContent extends React.Component<Props, State> {
     this.setState({ loading: true });
     const options = { query, filters };
     const data = await database.getAll(model, 1, options);
-
     this.setState({
       data,
       currentPage: currentPage + 1,
@@ -122,13 +122,13 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       app: { t, user },
     } = this.props;
-    const { columns, nodes, isConnected, deviceInfo } = this.state;
+    const { isConnected, deviceInfo } = this.state;
 
     return (
       <ListItem style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
-        {columns.map((nodeId) => (
-          <View style={styles.itemColumn} key={`${item.id}_${nodeId}`}>
-            <Text size-auto>{item.getLabelFromNode(nodeId, nodes)}</Text>
+        {item.values.map((value, key) => (
+          <View style={styles.itemColumn} key={`${item.id}_${key}`}>
+            <Text size-auto>{value}</Text>
           </View>
         ))}
         {model === 'MedicalCase' ? (
@@ -139,7 +139,7 @@ export default class ListContent extends React.Component<Props, State> {
             {isConnected ? (
               <View style={styles.itemLock}>
                 <Text size-auto right>
-                  {item.isLocked(deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
+                  {MedicalCaseModel.isLocked(item, deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
                 </Text>
               </View>
             ) : null}
