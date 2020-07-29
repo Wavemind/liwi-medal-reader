@@ -88,7 +88,6 @@ export class MedicalCaseModel {
         this.fail_safe = props.fail_safe;
       } else {
         const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
-        console.trace();
         this._assignValues(json);
         if (props !== undefined) {
           this.id = props.id;
@@ -314,6 +313,19 @@ export class MedicalCaseModel {
       user,
       medical_case_id: this.id,
     });
+  };
+
+  /**
+   * Defines if the case is locked
+   */
+  static isLocked = (medicalCaseLight, deviceInfo, user) => {
+    return (
+      medicalCaseLight.status !== 'close' &&
+      !(
+        (medicalCaseLight.clinician === null && medicalCaseLight.mac_address === null) ||
+        (medicalCaseLight.clinician === `${user.first_name} ${user.last_name}` && medicalCaseLight.mac_address === deviceInfo.mac_address)
+      )
+    );
   };
 
   /**

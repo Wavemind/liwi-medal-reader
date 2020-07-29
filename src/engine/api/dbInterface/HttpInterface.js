@@ -61,11 +61,6 @@ export default class HttpInterface {
     const header = await this._setHeaders();
     const data = await this._fetch(url, header);
 
-    if (data !== null) {
-      const values = this._initClasses(data, model);
-      return values;
-    }
-
     return data;
   };
 
@@ -137,15 +132,13 @@ export default class HttpInterface {
     const httpRequest = await fetch(url, header).catch((error) => {
       handleHttpError(error);
     });
-
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();
-
       if (httpRequest.status === 200) {
         return result;
       }
-      if (httpRequest.status > 400) {
+      if (httpRequest.status > 404) {
         handleHttpError(result.message);
       }
     }
