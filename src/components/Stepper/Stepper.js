@@ -462,7 +462,7 @@ class Stepper extends React.Component<Props, State> {
 
         // Save value
         medicalCaseObject.json = MedicalCaseModel.generateJSON(medicalCaseObject);
-        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities, patient: {} }, true);
+        await database.update('MedicalCase', medicalCase.id, { ...medicalCaseObject, activities: newActivities, patient: {}  }, true);
         await database.unlockMedicalCase(medicalCase.id);
       }
 

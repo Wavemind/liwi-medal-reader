@@ -29,8 +29,7 @@ export default class Home extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
     const { propsToolTipVisible, modalQrCode } = this.state;
-    const { medicalCase } = this.props;
-    return propsToolTipVisible !== nextState.propsToolTipVisible || Object.compare(medicalCase, nextProps.medicalCase) || modalQrCode !== nextProps.modalQrCode;
+    return propsToolTipVisible !== nextState.propsToolTipVisible || modalQrCode !== nextProps.modalQrCode;
   }
 
   async componentDidMount() {
