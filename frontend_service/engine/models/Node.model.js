@@ -87,7 +87,9 @@ export class NodeModel implements NodeInterface {
           break;
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${this.display_format}`, this);
+          if (__DEV__) {
+            console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${this.display_format}`, this);
+          }
           answer = value;
           break;
       }

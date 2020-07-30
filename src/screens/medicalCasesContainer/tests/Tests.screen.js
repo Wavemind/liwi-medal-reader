@@ -30,9 +30,6 @@ export default class Tests extends React.Component<Props, State> {
     return (
       <React.Suspense fallback={<LiwiLoader />}>
         <Stepper
-          ref={(ref: any) => {
-            this.stepper = ref;
-          }}
           validation={false}
           showTopStepper
           onPageSelected={(e) => {
@@ -42,7 +39,7 @@ export default class Tests extends React.Component<Props, State> {
           }}
           initialPage={0}
           showBottomStepper
-          icons={[{ name: 'test-tube', type: 'MaterialCommunityIcons' }]}
+          icons={[{ name: 'vial', type: 'FontAwesome5' }]}
           steps={[t('medical_case:test')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}

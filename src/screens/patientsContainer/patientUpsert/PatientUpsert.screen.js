@@ -203,9 +203,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
     return (
       <Stepper
-        ref={(ref: any) => {
-          this.stepper = ref;
-        }}
         validation={false}
         onPageSelected={(e) => {
           navigation.setParams({

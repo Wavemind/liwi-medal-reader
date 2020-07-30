@@ -32,9 +32,6 @@ export default class Consultation extends React.Component<Props, State> {
     return (
       <Suspense fallback={<LiwiLoader />}>
         <Stepper
-          ref={(ref: any) => {
-            this.stepper = ref;
-          }}
           initialPage={selectedPage}
           validation={false}
           showTopStepper
@@ -46,7 +43,7 @@ export default class Consultation extends React.Component<Props, State> {
           }}
           icons={[
             { name: 'comment-medical', type: 'FontAwesome5' },
-            { name: 'ios-body', type: 'Ionicons' },
+            { name: 'male', type: 'FontAwesome5' },
           ]}
           steps={[t('consultation:medical_history'), t('consultation:physical_exam')]}
           backButtonTitle={t('medical_case:back')}

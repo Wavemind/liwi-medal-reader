@@ -10,7 +10,6 @@ import { styles } from './MedicinesFormulation.style';
 type Props = NavigationScreenProps & {};
 type State = {};
 
-
 export default class MedicinesFormulations extends Component<Props, State> {
   onValueChange = (value, node, drugId) => {
     const { setFormulation } = this.props;
@@ -56,7 +55,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
       medicalCase: { nodes },
       app: { t },
     } = this.props;
-console.log(nodes[instance.id]?.formulations)
+
     return (
       <View style={styles.blocDrug}>
         <View style={styles.flex}>
@@ -138,7 +137,7 @@ console.log(nodes[instance.id]?.formulations)
         return (
           <>
             {this._renderFormulation(formulations[formulation], selected, onSelect)}
-            {formulationSelected !== null && administrationRouteCategories.includes(nodes[formulation].formulations[formulationSelected].administration_route_category) ? (
+            {selected !== null && administrationRouteCategories.includes(nodes[formulation].formulations[selected].administration_route_category) ? (
               <Text>{nodes[formulation].formulations[formulationSelected].injection_instructions}</Text>
             ) : null}
           </>

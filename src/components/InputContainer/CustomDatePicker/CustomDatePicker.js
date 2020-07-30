@@ -23,7 +23,7 @@ export default class CustomDatePicker extends React.Component<Props, State> {
     this.setState({ value: init });
   }
 
-  componentWillReceiveProps(nextProps: Readonly<P>): void {
+  UNSAFE_componentWillReceiveProps(nextProps: Readonly<P>): void {
     const { id } = this.props;
     if (nextProps.id !== id) {
       this.setState({ value: nextProps.init });

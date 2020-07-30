@@ -80,6 +80,7 @@ i18n
           ml: 'ml',
           of: 'of',
           no_formulation: ' No formulation selected',
+          missing_medicine_formulation: 'Please select a medicine formulation',
         },
         medication_form: {
           tablet: 'Tablet',

@@ -30,5 +30,4 @@ export const store = createStore(persistedReducer, middleware);
 epicMiddleware.run(rootEpic);
 
 export const persistor = persistStore(store, {}, async () => {
-  // console.log('Rehydrate finish, here reducer returned', store.getState());
 });

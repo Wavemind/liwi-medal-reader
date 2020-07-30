@@ -107,7 +107,7 @@ export default class WavemindTools extends Component {
                     console.log({
                       persist: k,
                       state$,
-                      size_state$: memorySizeOf(state$),
+                      size_state$: memorySizeOf({ ...state$, patient: null }),
                       size_nodes: memorySizeOf(state$.nodes),
                       size_diagnostics: memorySizeOf(state$.diagnostics),
                       size_activities: memorySizeOf(state$.activities),

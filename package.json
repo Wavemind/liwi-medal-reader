@@ -17,7 +17,7 @@
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/runtime-corejs2": "^7.4.5",
-    "@haskkor/react-native-pincode": "^1.22.2",
+    "@haskkor/react-native-pincode": "^1.22.3",
     "@react-native-community/async-storage": "^1.5.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.6",
@@ -43,7 +43,7 @@
     "lodash": "^4.17.11",
     "lottie-react-native": "^3.5.0",
     "moment": "^2.24.0",
-    "native-base": "^2.12.1",
+    "native-base": "^2.13.13",
     "prop-types": "^15.7.2",
     "react": "16.9.0",
     "react-fast-compare": "^2.0.4",

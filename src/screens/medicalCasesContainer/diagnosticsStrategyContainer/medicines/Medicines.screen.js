@@ -225,7 +225,7 @@ export default class Medicines extends Component<Props, State> {
           <MultiSelect
             hideTags
             items={filteredAllDrugs}
-            uniqueKey="id"
+            uniqueKey="label"
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={selected}
             selectText={t('diagnoses:select')}

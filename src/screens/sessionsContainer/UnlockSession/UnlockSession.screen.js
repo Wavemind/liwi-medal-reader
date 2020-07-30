@@ -14,8 +14,6 @@ import Database from '../../../engine/api/Database';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
 export default class UnLockSession extends React.Component<Props, State> {
-  _isMounted = false;
-
   state = {
     session: null,
     status: 'initial',
@@ -33,10 +31,6 @@ export default class UnLockSession extends React.Component<Props, State> {
       session,
     });
   };
-
-  componentDidMount() {
-    this._isMounted = true;
-  }
 
   componentWillUnmount() {
     this._isMounted = false;

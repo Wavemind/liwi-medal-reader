@@ -35,7 +35,12 @@ export default class TooltipModal extends React.Component<Props, State> {
     let i = 0;
 
     while (i < questions.length) {
-      rowQuestions.push(<Text> - {questions[i].label} {t('tooltip:is_required')}</Text>);
+      rowQuestions.push(
+        <Text key={i}>
+          {' '}
+          - {questions[i].label} {t('tooltip:is_required')}
+        </Text>
+      );
 
       if (i === 2) {
         rowQuestions.push(<Text italic>{t('tooltip:more')}</Text>);
@@ -72,7 +77,7 @@ export default class TooltipModal extends React.Component<Props, State> {
               </View>
               <View style={styles.questions}>
                 {customErrors.map((error) => (
-                  <Text> - {error}</Text>
+                  <Text key={error}> - {error}</Text>
                 ))}
                 {this._renderQuestions(step.questionsToBeFill)}
               </View>

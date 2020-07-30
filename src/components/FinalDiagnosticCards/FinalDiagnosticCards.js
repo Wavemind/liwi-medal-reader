@@ -28,24 +28,29 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
    */
   _renderSwitchFormulation = (drug) => {
     const {
+      app: { t },
       medicalCase: { nodes },
     } = this.props;
 
     const node = nodes[drug.id];
     const drugDose = node.getDrugDoses(drug.formulationSelected);
 
-    switch (node.formulations[drug.formulationSelected].medication_form) {
-      case medicationForms.syrup:
-      case medicationForms.suspension:
-      case medicationForms.powder_for_injection:
-      case medicationForms.solution:
-        return Liquid(drug, node, drugDose);
-      case medicationForms.tablet:
-        return Breakable(drug, node, drugDose);
-      case medicationForms.capsule:
-        return Capsule(drug, node, drugDose);
-      default:
-        return Default(drug, node, drugDose);
+    if (node.formulations[drug.formulationSelected] !== undefined) {
+      switch (node.formulations[drug.formulationSelected].medication_form) {
+        case medicationForms.syrup:
+        case medicationForms.suspension:
+        case medicationForms.powder_for_injection:
+        case medicationForms.solution:
+          return Liquid(drug, node, drugDose);
+        case medicationForms.tablet:
+          return Breakable(drug, node, drugDose);
+        case medicationForms.capsule:
+          return Capsule(drug, node, drugDose);
+        default:
+          return Default(drug, node, drugDose);
+      }
+    } else {
+      return <Text italic>{t('drug:missing_medicine_formulation')}</Text>;
     }
   };
 
@@ -86,13 +91,11 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                 </LiwiTitle2>
 
                 {finalDiagnosticCategory[key].drugs !== undefined && Object.keys(finalDiagnosticCategory[key].drugs).length > 0 ? (
-                    Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
+                  Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
                     if (drugsAvailable[drugKey] !== undefined) {
                       return (
                         <View style={styles.drugContainer}>
-                          <View flex>
-                            {this._renderSwitchFormulation(drugsAvailable[drugKey])}
-                          </View>
+                          <View flex>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
                           <View style={styles.tooltipButton}>
                             <TooltipButton node={drugsAvailable[drugKey]} title={nodes[drugsAvailable[drugKey].id].label} flex={1} />
                           </View>

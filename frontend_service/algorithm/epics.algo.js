@@ -35,8 +35,9 @@ export const epicCatchAnswer = (action$, state$) =>
       // Index is the id of the node that has just been answered
       const { index } = action.payload;
 
-      // eslint-disable-next-line no-console
-      console.log('%c ########################  epicCatchAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
+      if (__DEV__) {
+        console.log('%c ########################  epicCatchAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
+      }
 
       const currentNode = state$.value.nodes[index];
       const relatedDiagnostics = currentNode.dd;
@@ -138,7 +139,9 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
           return of(...arrayActions);
         default:
           // eslint-disable-next-line no-console
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
+          if (__DEV__) {
+            console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
+          }
           return [];
       }
     })

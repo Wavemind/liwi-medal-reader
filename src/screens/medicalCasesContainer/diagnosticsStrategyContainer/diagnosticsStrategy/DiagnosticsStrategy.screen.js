@@ -45,9 +45,6 @@ export default class DiagnosesStrategy extends Component<Props, State> {
         <Stepper
           params={{ initialPage: 0 }}
           t={t}
-          ref={(ref: any) => {
-            this.stepper = ref;
-          }}
           validation={false}
           showTopStepper
           onPageSelected={(e) => {
@@ -58,11 +55,11 @@ export default class DiagnosesStrategy extends Component<Props, State> {
           initialPage={selectedPage}
           showBottomStepper
           icons={[
-            { name: 'add-alert', type: 'MaterialIcons' },
-            { name: 'question-answer', type: 'MaterialIcons' },
-            { type: 'FontAwesome5', name: 'pills' },
-            { type: 'FontAwesome', name: 'balance-scale' },
-            { name: 'healing', type: 'MaterialIcons' },
+            { name: 'diagnoses', type: 'FontAwesome5' },
+            { name: 'comment-medical', type: 'FontAwesome5' },
+            { name: 'pills', type: 'FontAwesome5' },
+            { name: 'balance-scale', type: 'FontAwesome5' },
+            { name: 'notes-medical', type: 'FontAwesome5' },
           ]}
           steps={[t('medical_case:final_diagnoses'), t('medical_case:conditions'), t('medical_case:medicines'), t('medical_case:medicines_formulation'), t('medical_case:healthcares')]}
           backButtonTitle={t('medical_case:back')}

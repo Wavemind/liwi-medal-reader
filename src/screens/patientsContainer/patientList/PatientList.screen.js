@@ -69,7 +69,7 @@ export default class PatientList extends React.Component {
         <View padding-auto margin-top>
           <View style={styles.flexDirectionRow}>
             <Item style={styles.inputGroup}>
-              <Icon active name="search" />
+              <Icon active name="search" type="FontAwesome5" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
             <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} qrcode={false} />

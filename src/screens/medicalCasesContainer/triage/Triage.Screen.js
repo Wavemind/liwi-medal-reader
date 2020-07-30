@@ -2,8 +2,8 @@
 
 import React, { Suspense } from 'react';
 import { Content, View } from 'native-base';
-
 import { NavigationScreenProps } from 'react-navigation';
+
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
@@ -15,7 +15,6 @@ const Questions = React.lazy(() => import('../../../components/QuestionsContaine
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
 type Props = NavigationScreenProps & {};
-
 type State = StateApplicationContext & {};
 
 export default class Triage extends React.Component<Props, State> {
@@ -44,9 +43,6 @@ export default class Triage extends React.Component<Props, State> {
         <Stepper
           params={{ initialPage: 0 }}
           t={t}
-          ref={(ref: any) => {
-            this.stepper = ref;
-          }}
           validation={false}
           showTopStepper
           initial
@@ -58,9 +54,9 @@ export default class Triage extends React.Component<Props, State> {
           initialPage={selectedPage}
           showBottomStepper
           icons={[
-            { name: 'eye-plus', type: 'MaterialCommunityIcons' },
-            { name: 'view-module', type: 'MaterialIcons' },
-            { name: 'healing', type: 'MaterialIcons' },
+            { name: 'heartbeat', type: 'FontAwesome5' },
+            { name: 'stethoscope', type: 'FontAwesome5' },
+            { name: 'thermometer', type: 'FontAwesome5' },
           ]}
           steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:basic_measurement')]}
           backButtonTitle={t('medical_case:back')}

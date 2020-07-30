@@ -64,7 +64,6 @@ export default class Boolean extends React.Component<Props, State> {
   render = () => {
     const {
       app: { t },
-      question,
       question: { answer, answers, label, category },
       widthView,
       index,
@@ -165,7 +164,7 @@ export default class Boolean extends React.Component<Props, State> {
                 </Text>
               </LeftButton>
 
-              <RightButton onPress={() => this._handleClick(idNo)} active={answer === idNo} disabled={isReadOnly}>
+              <RightButton active={answer === idNo} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
                 <Text center white={answer === idNo}>
                   {t('question:no')}
                 </Text>
