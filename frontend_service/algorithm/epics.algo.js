@@ -1,7 +1,7 @@
 import { combineEpics, ofType } from 'redux-observable';
 import find from 'lodash/find';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { of, asyncScheduler } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import moment from 'moment';
 import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
@@ -31,7 +31,7 @@ import NavigationService from '../../src/engine/navigation/Navigation.service';
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE, actions.UPDATE_CONDITION_VALUE),
-    switchMap((action) => {
+    mergeMap((action) => {
       // Index is the id of the node that has just been answered
       const { index } = action.payload;
 
@@ -64,7 +64,7 @@ export const epicCatchAnswer = (action$, state$) =>
       relatedQuestionsSequence.map((questionsSequence) => arrayActions.push(dispatchQuestionsSequenceAction(questionsSequence.id, index)));
 
       // If the node is a QuestionSequence we gonna update the status of all the instances of the questions sequence
-      if (currentNode.type === nodeTypes.questionsSequence){
+      if (currentNode.type === nodeTypes.questionsSequence) {
         Object.keys(currentNode.instances).map((nodeId) => {
           arrayActions.push(dispatchQuestionsSequenceAction(currentNode.id, nodeId));
         });
@@ -94,7 +94,7 @@ export const epicCatchAnswer = (action$, state$) =>
         NavigationService.setParamsAge();
       }
 
-      return of(...arrayActions);
+      return of(...arrayActions, asyncScheduler);
     })
   );
 
@@ -107,7 +107,7 @@ export const epicCatchAnswer = (action$, state$) =>
 export const epicCatchDispatchNodeAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.HANDLE_NODE_CHANGED),
-    switchMap((action) => {
+    mergeMap((action) => {
       const arrayActions = [];
       let caller;
 
@@ -122,9 +122,9 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
       switch (caller.type) {
         case nodeTypes.question:
         case nodeTypes.questionsSequence:
-          return of(dispatchCondition(nodeId, caller.id));
+          return of(dispatchCondition(nodeId, caller.id),asyncScheduler);
         case nodeTypes.finalDiagnostic:
-          return of(dispatchFinalDiagnosticAction(nodeId, caller.id));
+          return of(dispatchFinalDiagnosticAction(nodeId, caller.id),asyncScheduler);
         case nodeTypes.healthCare:
           // TODO: to implement
           return [];
@@ -136,7 +136,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
             arrayActions.push(dispatchNodeAction(caller.id, childId, state$.value.nodes[childId].type));
           });
 
-          return of(...arrayActions);
+          return of(...arrayActions, asyncScheduler);
         default:
           // eslint-disable-next-line no-console
           if (__DEV__) {
@@ -153,7 +153,7 @@ export const epicCatchDispatchNodeAction = (action$, state$) =>
 export const epicCatchQuestionsSequenceAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION),
-    switchMap((action) => {
+    mergeMap((action) => {
       const { questionsSequenceId } = action.payload;
       const currentQuestionsSequence = state$.value.nodes[questionsSequenceId];
       let answerId = null;
@@ -195,7 +195,7 @@ export const epicCatchQuestionsSequenceAction = (action$, state$) =>
 export const epicCatchFinalDiagnosticAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_FINAL_DIAGNOSTIC_ACTION),
-    switchMap((action) => {
+    mergeMap((action) => {
       const actions = [];
       const { diagnosticId, finalDiagnosticId } = action.payload;
       const finalDiagnostic = state$.value.nodes[finalDiagnosticId];
@@ -241,7 +241,7 @@ export const epicCatchFinalDiagnosticAction = (action$, state$) =>
 export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_RELATED_NODE_ACTION),
-    switchMap((action) => {
+    mergeMap((action) => {
       const { nodeId } = action.payload;
       const currentNode = state$.value.nodes[nodeId];
       const actions = [];
@@ -272,7 +272,7 @@ export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
 export const epicCatchDispatchCondition = (action$, state$) =>
   action$.pipe(
     ofType(actions.DISPATCH_CONDITION),
-    switchMap((action) => {
+    mergeMap((action) => {
       const actions = [];
 
       const { diagnosticId, nodeId } = action.payload;
