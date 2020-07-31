@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     elevation: 1,
   },
+  patientValues: { flex: 1, alignSelf: 'center', padding: 10, textAlign: 'right', paddingLeft: 20 },
 
   columnLabel: {
     flex: 1,
@@ -61,9 +62,7 @@ export const styles = StyleSheet.create({
 
   flexDirection: { flexDirection: 'row', flex: 1, flexBasis: '47%' },
 
-  wrapper: { flexDirection: 'row', flex: 1, flexBasis: '47%' },
-
-  patientValues: { flex: 1, alignSelf: 'center', paddingLeft: 20 },
+  wrapper: { flexDirection: 'row', flexBasis: '50%' },
 
   footerButton: { position: 'absolute', left: 0, right: 0, bottom: 0 },
 
@@ -73,9 +72,9 @@ export const styles = StyleSheet.create({
 
   flex: { flex: 1 },
 
-  container: {flex: 1, flexDirection: 'column'},
+  container: { flex: 1, flexDirection: 'column' },
 
-  marginBottom: {marginBottom: 20},
+  marginBottom: { marginBottom: 20 },
 
-  flex06: {flex: 0.6}
+  flex06: { flex: 0.6 },
 });

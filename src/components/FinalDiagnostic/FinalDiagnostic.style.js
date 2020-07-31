@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   greenIcon: {
     color: liwiColors.greenColor,
   },
-  bloc: { flexDirection: 'row', flex: 1, height: 50, paddingLeft: 5 },
+  bloc: { flexDirection: 'row', flex: 1, height: 50, paddingLeft: 5, fontSize: 11 },
   grayIcon: {
     color: liwiColors.darkerGreyColor,
   },

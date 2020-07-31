@@ -178,12 +178,12 @@ export default class Boolean extends React.Component<Props, State> {
         RenderJsx = () => (
           <View answer>
             <LeftButton active={answer === Object.values(answers)[0].id} onPress={() => this._handleClick(Object.values(answers)[0].id)} disabled={isReadOnly}>
-              <Text white={answer === Object.values(answers)[0].id} center style={{ fontSize: Object.values(answers)[0].label.length > 3 ? 13 : 16}}>
+              <Text white={answer === Object.values(answers)[0].id} center style={{ fontSize: Object.values(answers)[0].label.length > 3 ? 11 : 16}}>
                 {Object.values(answers)[0].label}
               </Text>
             </LeftButton>
             <RightButton active={answer === Object.values(answers)[1].id} onPress={() => this._handleClick(Object.values(answers)[1].id)} disabled={isReadOnly}>
-              <Text center white={answer === Object.values(answers)[1].id} style={{ fontSize: Object.values(answers)[1].label.length > 3 ? 13 : 16}}>
+              <Text center white={answer === Object.values(answers)[1].id} style={{ fontSize: Object.values(answers)[1].label.length > 3 ? 11 : 16}}>
                 {Object.values(answers)[1].label}
               </Text>
             </RightButton>

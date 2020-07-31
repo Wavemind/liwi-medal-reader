@@ -5,9 +5,14 @@ export const styles = StyleSheet.create({
   touchable: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
   },
-  iconInfo: { color: liwiColors.redColor },
+  iconInfo: {
+    color: liwiColors.redColor,
+    marginTop: 10,
+    alignSelf: 'flex-start',
+  },
   icon: {
     fontSize: 18,
     color: liwiColors.whiteColor,

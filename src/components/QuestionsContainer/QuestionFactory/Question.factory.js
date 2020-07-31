@@ -76,7 +76,7 @@ export default class Question extends React.Component<Props, State> {
     const { flexLabel } = this.state;
     return (
       <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
-        <Text style={{ color: liwiColors.blackColor }} size-auto>
+        <Text style={{ color: liwiColors.blackColor, marginTop: 5, alignSelf: 'flex-start' }} size-auto>
           {question.label} {question.is_mandatory ? '*' : null}
         </Text>
       </ViewQuestion>

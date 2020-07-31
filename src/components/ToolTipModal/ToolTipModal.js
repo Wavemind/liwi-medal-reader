@@ -72,9 +72,6 @@ export default class TooltipModal extends React.Component<Props, State> {
         <View style={styles.stepContainer}>
           {stepToBeFill.map((step) => (
             <View key={`step-name${step.stepName}`}>
-              <View style={styles.stepHeaderName}>
-                <Text style={styles.stepName}>{stepToBeFill.length > 1 ? step.stepName : null}</Text>
-              </View>
               <View style={styles.questions}>
                 {customErrors.map((error) => (
                   <Text key={error}> - {error}</Text>
@@ -353,6 +350,7 @@ export default class TooltipModal extends React.Component<Props, State> {
     if (isFromJsx === false && isFromRedux === false) {
       return null;
     }
+    console.log(modalRedux, this.state)
 
     return (
       <View flex={flex}>

@@ -16,10 +16,6 @@ export const styles = StyleSheet.create({
 
   screen: { color: liwiColors.redColor, fontWeight: 'bold', fontSize: 25 },
 
-  stepName: { marginTop: 2, marginLeft: 10, marginRight: 10, fontWeight: 'bold' },
-
-  stepHeaderName: { flex: 1, flexDirection: 'row', marginLeft: 20 },
-
   button: {
     backgroundColor: liwiColors.redColor,
     borderColor: liwiColors.redColor,
