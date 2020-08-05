@@ -40,7 +40,6 @@ i18n
           add_medicine: 'Additional Medicines',
           additional: 'Do you want to add an additional diagnosis not proposed?',
           agree: 'Agree',
-          another: 'Another diagnoses not proposed',
           close: 'Close',
           custom: 'Do you want to manually add another diagnosis not proposed?',
           custom_duration: 'Custom duration',

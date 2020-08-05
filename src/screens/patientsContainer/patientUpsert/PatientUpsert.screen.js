@@ -219,7 +219,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" testID="PatientUpsertScreen">
+          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen">
             {loading ? (
               <LiwiLoader />
             ) : (

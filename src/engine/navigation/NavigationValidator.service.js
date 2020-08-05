@@ -223,7 +223,7 @@ export const validatorNavigate = (navigateRoute) => {
         return oneValidation(criteria, questions, validation);
       });
 
-      // All step has to be valid
+      // All step need to be valid
       validator.isActionValid = screenResults.every((c) => c.isActionValid === true);
       validator.stepToBeFill = screenResults;
 

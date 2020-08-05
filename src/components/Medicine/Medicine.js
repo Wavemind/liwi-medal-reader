@@ -35,12 +35,12 @@ export default class Medicine extends Component<{}> {
 
           <View style={styles.content}>
             <LeftButton active={medicine.agreed === true} onPress={() => this._handleClick(true)}>
-              <Text white={medicine.agreed === true} center>
+              <Text white={medicine.agreed === true} center style={styles.label}>
                 {t('diagnoses:agree')}
               </Text>
             </LeftButton>
             <RightButton onPress={() => this._handleClick(false)} active={medicine.agreed === false}>
-              <Text center white={medicine.agreed === false}>
+              <Text center white={medicine.agreed === false} style={styles.label}>
                 {t('diagnoses:disagree')}
               </Text>
             </RightButton>

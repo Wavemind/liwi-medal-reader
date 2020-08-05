@@ -29,6 +29,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
     } = this.props;
     const { otherQR } = this.state;
     const json = await JSON.parse(e.data);
+    console.log(json);
 
     if (_.isEqual(otherQR, json)) {
       return;
@@ -38,7 +39,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
     if ('uid' in json && 'study_id' in json && 'group_id' in json) {
       const session = await getItem('session');
 
-      const sameFacility = session?.group?.id === json.group_id;
+      const sameFacility = session?.facility?.id === json.group_id;
 
       const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'other_uid');
 

@@ -9,4 +9,5 @@ export const styles = StyleSheet.create({
   flex: { flex: 0.5 },
   smallFlex: { flex: 0.11, height: '100%', marginTop: 0 },
   content: { flexDirection: 'row', flex: 0.4, height: 50 },
+  label: { fontSize: 13 },
 });

@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import String from './String';
 import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
 import { setPatientValue } from '../../../../../frontend_service/actions/creators.actions';
+import { withApplication } from '../../../../engine/contexts/Application.context';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };

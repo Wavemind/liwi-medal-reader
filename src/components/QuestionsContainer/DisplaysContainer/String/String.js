@@ -41,8 +41,10 @@ export default class String extends React.Component<Props, State> {
       }
     } else if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
       setAnswer(question.id, value.nativeEvent.text);
+      setNodeValue(question.id, value.nativeEvent.text);
     } else if (question.value !== null && value.nativeEvent.text === '') {
       setAnswer(question.id, null);
+      setNodeValue(question.id, null);
     }
   };
 
@@ -52,7 +54,7 @@ export default class String extends React.Component<Props, State> {
 
     return (
       <View answer>
-        <Input question defaultValue={question.value} style={style} onFocus={this.focus} onEndEditing={this.onEndEditing} disabled={isReadOnly} />
+        <Input question defaultValue={question.value} style={style} onFocus={this.focus} onChange={this.onEndEditing} disabled={isReadOnly} />
       </View>
     );
   }

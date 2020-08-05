@@ -8,5 +8,5 @@ export const styles = StyleSheet.create({
 
   marginTop: { marginTop: 10 },
 
-  estimableFontSize: { fontSize: 9 },
+  estimableFontSize: { fontSize: 8.5 },
 });
