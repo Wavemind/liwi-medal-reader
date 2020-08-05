@@ -8,7 +8,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes } from 'react-native';
+import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes, Keyboard} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -275,6 +275,11 @@ class Stepper extends React.Component<Props, State> {
    */
   nextStage = async () => {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app: {database, t} } = this.props;
+
+    // The next 2 lines are to give the time to the reducer to store the last input so we don't have validation errors
+    Keyboard.dismiss()
+    await new Promise(resolve => setTimeout(resolve, 200));
+
     this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
 
