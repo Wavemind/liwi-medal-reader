@@ -1,14 +1,8 @@
-import { connect } from "react-redux";
-import patientList from "./PatientList.screen";
-import { withApplication } from "../../../engine/contexts/Application.context";
-import { updatePatient } from "../../../../frontend_service/actions/creators.actions";
-import { WrapperNavigation } from "../../../utils/WrapperNavigation";
-
-const mapStateToProps = (medicalCase) => {
-  return {
-    medicalCase,
-  };
-};
+import { connect } from 'react-redux';
+import patientList from './PatientList.screen';
+import { withApplication } from '../../../engine/contexts/Application.context';
+import { updatePatient } from '../../../../frontend_service/actions/creators.actions';
+import { WrapperNavigation } from '../../../utils/WrapperNavigation';
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -16,4 +10,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withApplication(WrapperNavigation(patientList)));
+export default connect(mapDispatchToProps)(withApplication(WrapperNavigation(patientList)));

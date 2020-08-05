@@ -7,10 +7,7 @@ import { Text, View } from 'native-base';
 import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
-import ConfirmationView from '../../components/ConfirmationView';
 import { liwiColors } from '../../utils/constants';
-import ToolTipModal from '../../components/ToolTipModal';
-import QrCodePatient from '../../components/QrCodePatient';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -21,44 +18,21 @@ export default class Home extends React.Component<Props, State> {
   };
 
   state = {
-    qrcode: false,
-    modalQrCode: false,
     session: null,
-    propsToolTipVisible: false,
   };
-
-  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
-    const { propsToolTipVisible, modalQrCode } = this.state;
-    return propsToolTipVisible !== nextState.propsToolTipVisible || modalQrCode !== nextProps.modalQrCode;
-  }
 
   async componentDidMount() {
     const session = await getItems('session');
     this.setState({ session });
   }
 
-  callBackClose = (canContinue) => {
-    const { qrcode } = this.state;
-    if (qrcode && !canContinue) {
-      this.setState({
-        propsToolTipVisible: false,
-        modalQrCode: true,
-      });
-    } else {
-      this.setState({
-        propsToolTipVisible: false,
-      });
-    }
-  };
-
   render() {
     const {
       navigation,
       app: { t, user, logout, algorithm },
-      medicalCase,
     } = this.props;
 
-    const { propsToolTipVisible, qrcode, modalQrCode, session } = this.state;
+    const { session } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen" style={styles.back}>
@@ -66,10 +40,6 @@ export default class Home extends React.Component<Props, State> {
           <Text bigTitle style={{ textAlign: 'center' }}>
             Welcome {user.preFix} {user.first_name} {user.last_name}
           </Text>
-          <ToolTipModal visible={modalQrCode} closeModal={() => this.setState({ modalQrCode: false })}>
-            <QrCodePatient closeModal={() => this.setState({ modalQrCode: false })} />
-          </ToolTipModal>
-          <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} qrcode={qrcode} />
           <View w50>
             <TouchableHighlight
               testID="GoToPatientUpsert"
@@ -78,13 +48,11 @@ export default class Home extends React.Component<Props, State> {
               onPress={() => {
                 if (algorithm === undefined) {
                   displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
-                } else if (medicalCase.id === undefined || medicalCase.isNewCase === false) {
+                } else {
                   navigation.navigate('PatientUpsert', {
                     idPatient: null,
                     newMedicalCase: true,
                   });
-                } else {
-                  this.setState({ propsToolTipVisible: true, qrcode: false });
                 }
               }}
             >
@@ -96,20 +64,7 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableHighlight>
 
-            <TouchableHighlight
-              testID="GoToPatientUpsert"
-              underlayColor="transparent"
-              style={styles.navigationButton}
-              onPress={() => {
-                if (algorithm === null) {
-                  displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
-                } else if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                  this.setState({ modalQrCode: true });
-                } else {
-                  this.setState({ propsToolTipVisible: true, qrcode: true });
-                }
-              }}
-            >
+            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('QrCodePatient')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/qr_code.png')} />
                 <Text size-auto center style={styles.textButton}>

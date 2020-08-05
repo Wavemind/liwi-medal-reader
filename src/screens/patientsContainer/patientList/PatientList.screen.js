@@ -6,14 +6,12 @@ import _ from 'lodash';
 
 import { styles } from './PatientList.style';
 import { SeparatorLine } from '../../../template/layout';
-import ConfirmationView from '../../../components/ConfirmationView';
 import ListContent from '../../../components/ListContent';
 
 export default class PatientList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      propsToolTipVisible: false,
       searchTerm: '',
       query: '',
       isGeneratingPatient: false,
@@ -35,15 +33,6 @@ export default class PatientList extends React.Component {
   };
 
   /**
-   * Hide popup
-   */
-  callBackClose = () => {
-    this.setState({
-      propsToolTipVisible: false,
-    });
-  };
-
-  /**
    * Action call when element of flatlist is clicked
    * @param {object} patient - Patient clicked
    * @returns {Promise<void>}
@@ -56,12 +45,11 @@ export default class PatientList extends React.Component {
   };
 
   render() {
-    const { searchTerm, query, isGeneratingPatient, propsToolTipVisible } = this.state;
+    const { searchTerm, query, isGeneratingPatient } = this.state;
 
     const {
       app: { t },
       navigation,
-      medicalCase,
     } = this.props;
 
     return (
@@ -72,7 +60,6 @@ export default class PatientList extends React.Component {
               <Icon active name="search" type="FontAwesome5" />
               <Input value={searchTerm} onChangeText={this.searchBy} />
             </Item>
-            <ConfirmationView propsToolTipVisible={propsToolTipVisible} nextRoute="PatientUpsert" idPatient={null} callBackClose={this.callBackClose} qrcode={false} />
           </View>
 
           <Button
@@ -80,14 +67,10 @@ export default class PatientList extends React.Component {
             full
             red
             onPress={() => {
-              if (medicalCase.id === undefined || medicalCase.isNewCase === 'false') {
-                navigation.navigate('PatientUpsert', {
-                  idPatient: null,
-                  newMedicalCase: true,
-                });
-              } else {
-                this.setState({ propsToolTipVisible: true });
-              }
+              navigation.navigate('PatientUpsert', {
+                idPatient: null,
+                newMedicalCase: true,
+              });
             }}
             disabled={isGeneratingPatient}
           >

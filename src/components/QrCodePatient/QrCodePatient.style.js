@@ -1,12 +1,12 @@
-import { StyleSheet } from "react-native";
-import { liwiColors, screenWidth } from "../../utils/constants";
+import { StyleSheet } from 'react-native';
+import { liwiColors, screenWidth } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   centerText: {
-    flex: 1,
     color: liwiColors.blackLightColor,
+    margin: 20,
   },
-  content: { flex: 1, flexDirection: 'column' },
+  content: { flex: 1, flexDirection: 'column', backgroundColor: '#000' },
   camera: { height: 100, width: 'auto', flex: 1 },
   marker: {
     width: screenWidth / 2,

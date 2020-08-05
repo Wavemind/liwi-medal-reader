@@ -24,12 +24,10 @@ export default class QrCodePatient extends React.Component<Props, State> {
   onSuccess = async (e) => {
     const {
       navigation,
-      closeModal,
       app: { database, t },
     } = this.props;
-    const { otherQR } = this.state;
+    const { otherQR, generateNewQR } = this.state;
     const json = await JSON.parse(e.data);
-    console.log(json);
 
     if (_.isEqual(otherQR, json)) {
       return;
@@ -48,7 +46,6 @@ export default class QrCodePatient extends React.Component<Props, State> {
           id: patient.id,
         });
         displayNotification(t('qrcode:open'), liwiColors.greenColor);
-        closeModal();
       }
       // Correct facility but patient does not exist
       else if (sameFacility) {
@@ -62,12 +59,14 @@ export default class QrCodePatient extends React.Component<Props, State> {
         });
         // TODO remove duplication
         displayNotification(t('qrcode:open'), liwiColors.greenColor);
-        closeModal();
+      } else if (generateNewQR === true) {
+        displayNotification(t('qrcode:new_sticker_wrong_facility'), liwiColors.orangeColor);
       }
       // Another medical center
       else {
         // We give him another QR sticker
         await this.setState({ generateNewQR: true, otherQR: json });
+        displayNotification(t('qrcode:new_sticker_notification'), liwiColors.orangeColor);
       }
     }
   };
@@ -79,13 +78,14 @@ export default class QrCodePatient extends React.Component<Props, State> {
 
     const { generateNewQR } = this.state;
     return (
-      <View style={styles.content}>
+      <>
         <Text style={styles.centerText} customSubTitle>
           {generateNewQR ? t('qrcode:new') : t('qrcode:scan')}
         </Text>
-
-        <QRCodeScanner onRead={this.onSuccess} showMarker reactivate reactivateTimeout={2000} cameraStyle={styles.camera} containerStyle={styles.content} markerStyle={styles.marker} />
-      </View>
+        <View style={styles.content}>
+          <QRCodeScanner onRead={this.onSuccess} showMarker reactivate reactivateTimeout={2000} cameraStyle={styles.camera} containerStyle={styles.content} markerStyle={styles.marker} />
+        </View>
+      </>
     );
   }
 }
