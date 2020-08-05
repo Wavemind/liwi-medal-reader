@@ -276,11 +276,11 @@ class Stepper extends React.Component<Props, State> {
   nextStage = async () => {
     const { navigation, nextStage, endMedicalCase, paramsNextStage, app: {database, t} } = this.props;
 
+    this.setState({ isLoading: true });
+
     // The next 2 lines are to give the time to the reducer to store the last input so we don't have validation errors
     Keyboard.dismiss()
     await new Promise(resolve => setTimeout(resolve, 200));
-
-    this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
 
     // Can we update the next status ? All questions are valid ?
@@ -445,6 +445,10 @@ class Stepper extends React.Component<Props, State> {
     } = this.props;
     this.setState({ isLoading: true });
     const medicalCaseObject = store.getState();
+
+    // The next 2 lines are to give the time to the reducer to store the last input so we don't have validation errors
+    Keyboard.dismiss()
+    await new Promise(resolve => setTimeout(resolve, 200));
 
     // Can we update the next status ? All questions are valid ?
     if (this._validateStage()) {
