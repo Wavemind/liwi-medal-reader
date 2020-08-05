@@ -215,7 +215,7 @@ i18n
           waiting_diagnostic: 'Waiting for diagnostic',
           waiting_final_diagnostic: 'Wait for diagnosis',
           final_diagnostic: 'Diagnosis',
-          close: 'Close',
+          close: 'Closed',
           finish: 'FINISH & CLOSE',
           next: 'NEXT',
           back: 'BACK',

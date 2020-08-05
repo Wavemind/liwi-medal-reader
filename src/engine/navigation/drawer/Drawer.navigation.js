@@ -55,10 +55,10 @@ export default class Drawer extends Component<Props, State> {
     const r = NavigationService.getCurrentRoute();
 
     // Is redux ready, for disabled buttons
-    const areMedicalCaseInredux = medicalCase.id !== undefined;
+    const isMedicalCaseLoaded = medicalCase.id !== undefined && !medicalCase?.isNewCase;
 
     const navigate = (name, initialPage) => {
-      if (areMedicalCaseInredux) {
+      if (isMedicalCaseLoaded) {
         if (name === 'PatientUpsert') {
           navigation.navigate({
             routeName: name,
@@ -87,15 +87,15 @@ export default class Drawer extends Component<Props, State> {
 
       return {
         categorie: (
-          <CategorieButton _setScrollPosition={this._setScrollPosition} key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />
+          <CategorieButton _setScrollPosition={this._setScrollPosition} key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />
         ),
-        item: <ItemButton key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
-        path: <PathBar key={`${key + i}-enum`} areMedicalCaseInredux={areMedicalCaseInredux} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        item: <ItemButton key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        path: <PathBar key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
       }[key];
     };
 
     // Render items
-    const renderDrawerButtons = <View style={[styles.top, { opacity: areMedicalCaseInredux ? 1 : 0.3 }]}>{renderingDrawerItems.map((item, i) => enumRender(item, i))}</View>;
+    const renderDrawerButtons = <View style={[styles.top, { opacity: isMedicalCaseLoaded ? 1 : 0.3 }]}>{renderingDrawerItems.map((item, i) => enumRender(item, i))}</View>;
 
     return (
       <ScrollView

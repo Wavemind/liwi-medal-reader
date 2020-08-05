@@ -42,13 +42,13 @@ const SmallText = styled.Text`
 export class CategorieButton extends Component<{ t: any, r: any }> {
   // Update the component only when needed
   shouldComponentUpdate(nextProps) {
-    const { r, areMedicalCaseInredux, routeName, isDrawer } = this.props;
+    const { r, isMedicalCaseLoaded, routeName, isDrawer } = this.props;
 
     if (isDrawer !== nextProps.isDrawer) {
       return true;
     }
 
-    if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+    if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
       return true;
     }
 
@@ -97,13 +97,13 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
 export class ItemButton extends Component<{ t: any, r: any }> {
   // Update the component only when needed
   shouldComponentUpdate(nextProps) {
-    const { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
+    const { r, routeName, isMedicalCaseLoaded, isDrawer } = this.props;
 
     if (isDrawer !== nextProps.isDrawer) {
       return true;
     }
 
-    if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+    if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
       return true;
     }
 
@@ -150,9 +150,9 @@ export const HeaderButtonsDrawer = withNavigation(
   class Header extends React.Component {
     // Update the component only when needed
     shouldComponentUpdate(nextProps) {
-      const { areMedicalCaseInredux } = this.props;
+      const { isMedicalCaseLoaded } = this.props;
 
-      if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+      if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
         return true;
       }
 
@@ -211,13 +211,13 @@ export const BottomButtonsDrawer = withNavigation(
   class BottomButtonsDrawerClasse extends React.Component {
     // Update the component only when needed
     shouldComponentUpdate(nextProps) {
-      const { areMedicalCaseInredux, isDrawer } = this.props;
+      const { isMedicalCaseLoaded, isDrawer } = this.props;
 
       if (isDrawer !== nextProps.isDrawer) {
         return true;
       }
 
-      if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+      if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
         return true;
       }
       return nextProps?.medicalCase?.patient?.id !== this.props?.medicalCase?.patient?.id;
@@ -248,9 +248,9 @@ export const BottomButtonsDrawer = withNavigation(
 
 export class PathBar extends Component<{ routeName: string, initialPage: string }> {
   shouldComponentUpdate(nextProps) {
-    const { r, routeName, areMedicalCaseInredux, isDrawer } = this.props;
+    const { r, routeName, isMedicalCaseLoaded, isDrawer } = this.props;
 
-    if (areMedicalCaseInredux !== nextProps.areMedicalCaseInredux) {
+    if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
       return true;
     }
 
