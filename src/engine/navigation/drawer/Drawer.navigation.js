@@ -31,13 +31,6 @@ export default class Drawer extends Component<Props, State> {
     this.scrollView.scrollTo({ y, animated: false });
   };
 
-  logout = async () => {
-    const {
-      app: { lockSession },
-    } = this.props;
-    await lockSession();
-  };
-
   onPress = (path) => {
     const { navigation } = this.props;
     navigation.navigate(path);

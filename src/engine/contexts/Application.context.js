@@ -192,6 +192,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @returns {Promise<void>}
    */
   logout = async () => {
+    NavigationService.navigate('UnlockSession',{});
     await setItem('user', null);
     this.setState({
       user: null,
@@ -386,7 +387,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     }
 
     if (appState.match(/active/) && nextAppState.match(/inactive|background/)) {
-      console.warn('---> Liwi is hidding');
+      console.warn('---> Liwi is hiding');
       this.setState({ appState: nextAppState });
     }
   };

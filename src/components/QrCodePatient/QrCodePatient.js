@@ -33,7 +33,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
       return;
     }
 
-    // QRcode valid ?
+    // QR code valid ?
     if ('uid' in json && 'study_id' in json && 'group_id' in json) {
       const session = await getItem('session');
 

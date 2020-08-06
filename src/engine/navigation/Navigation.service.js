@@ -61,9 +61,11 @@ function setParamsAge(name = '') {
   const state$ = store.getState();
   const { nodes, mobile_config } = state$;
 
-  const headerRight = `${nodes[mobile_config.first_top_right_question_id].displayValue()} | ${nodes[mobile_config.second_top_right_question_id].displayValue()} ${nodes[
-    mobile_config.left_top_question_id
-  ].displayValue()}`;
+  const left = mobile_config.left_top_question_id !== null ? nodes[mobile_config.left_top_question_id]?.displayValue() : '';
+  const first_right = mobile_config.first_top_right_question_id !== null ? nodes[mobile_config.first_top_right_question_id]?.displayValue() : '';
+  const second_right = mobile_config.second_top_right_question_id !== null ? nodes[mobile_config.second_top_right_question_id]?.displayValue() : '';
+
+  const headerRight = `${left} | ${first_right} ${second_right}`;
   const currentRoute = getCurrentRoute();
 
   const action = NavigationActions.setParams({

@@ -225,11 +225,13 @@ export const BottomButtonsDrawer = withNavigation(
 
     render() {
       const { navigation, medicalCase, isDrawer } = this.props;
+      const isMedicalCaseLoaded = medicalCase.id !== undefined && !medicalCase?.isNewCase;
       return (
         <View style={styles.bottom}>
           <Button
             marginIcon
-            style={styles.bottomStyle}
+            style={[styles.bottomStyle, { opacity: isMedicalCaseLoaded ? 1 : 0.3 }]}
+            disabled={!isMedicalCaseLoaded}
             onPress={() =>
               navigation.navigate('Summary', {
                 id: medicalCase.patient.id,
