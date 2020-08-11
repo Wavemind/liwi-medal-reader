@@ -7,10 +7,11 @@ import 'reflect-metadata';
 
 import { actions } from '../../actions/types.actions';
 import { categories, nodeTypes } from '../../constants';
-import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
+import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { QuestionModel } from '../../engine/models/Question.model';
+import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -604,8 +605,7 @@ class MedicalCaseReducer extends ReducerClass {
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
-    const modelsMedicalCase = this._instanceMedicalCase(medicalCase);
-
+    const modelsMedicalCase = MedicalCaseModel.copyMedicalCase(medicalCase);
     return {
       ...modelsMedicalCase,
       json: null,
@@ -630,7 +630,6 @@ class MedicalCaseReducer extends ReducerClass {
     const modelsMedicalCase = this._instanceMedicalCase(action.payload);
 
     modelsMedicalCase.modal.open = false;
-
     return {
       ...modelsMedicalCase,
       json: null,

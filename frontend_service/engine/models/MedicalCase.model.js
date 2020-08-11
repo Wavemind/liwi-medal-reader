@@ -9,6 +9,8 @@ import { differenceNodes } from '../../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
 import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
+import { NodesModel } from './Nodes.model';
+import { DiagnosticModel } from './Diagnostic.model';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -376,6 +378,18 @@ export class MedicalCaseModel {
    */
   static generateJSON = (medicalCase) => {
     return JSON.stringify({ ...medicalCase, patient: null, json: '{}' });
+  };
+
+  static copyMedicalCase = (medicalCase) => {
+    const diagnostics = {};
+    Object.keys(medicalCase.diagnostics).forEach((i) => {
+      diagnostics[i] = new DiagnosticModel({ ...medicalCase.diagnostics[i] });
+    });
+    return {
+      ...medicalCase,
+      nodes: new NodesModel(JSON.parse(JSON.stringify(medicalCase.nodes))),
+      diagnostics,
+    };
   };
 }
 

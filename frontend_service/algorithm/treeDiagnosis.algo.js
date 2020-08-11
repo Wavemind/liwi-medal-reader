@@ -1,7 +1,7 @@
 import find from 'lodash/find';
 import * as _ from 'lodash';
 import { nodeTypes } from '../constants';
-import { updateConditionValue } from '../actions/creators.actions';
+import { updateConditionValue } from '../algorithm/epics.algo';
 import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './conditionsHelpers.algo';
 
 /**
@@ -13,10 +13,10 @@ import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean
  * @param nodeId {Number}
  * @return {Array}
  */
-export const getParentsNodes = (state$, diagnosticId, nodeId) => {
-  const parentsNodes = [];
+export const getParentsNodes = (medicalCase, diagnosticId, nodeId) => {
+  const { top_conditions } = medicalCase.diagnostics[diagnosticId].instances[nodeId];
 
-  const { top_conditions } = state$.value.diagnostics[diagnosticId].instances[nodeId];
+  const parentsNodes = [];
 
   top_conditions.map((top) => {
     parentsNodes.push(top.first_node_id);
@@ -69,19 +69,19 @@ export const nextChildFinalQs = (instance, finalQs) => {
  * @param actions  {Object}: Array redux
  * @return {null|false|true}
  */
-export const nextChildOtherQs = (state$, child, childConditionValue, qs, actions) => {
+export const nextChildOtherQs = (medicalCase, child, childConditionValue, qs, actions) => {
   /**
    *  If the sub QS has not a defined value yet, we update the sub Qs
    */
   if (child.answer === null) {
-    getQuestionsSequenceStatus(state$, state$.value.nodes[child.id], actions);
+    getQuestionsSequenceStatus(medicalCase, medicalCase.nodes[child.id], actions);
   }
 
   /**
    * Continue the algo
    * The recursiveNodeQs function will do all the sub action like change condition value
    */
-  return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+  return recursiveNodeQs(medicalCase, qs.instances[child.id], qs, actions);
 };
 
 /**
@@ -98,9 +98,9 @@ export const nextChildOtherQs = (state$, child, childConditionValue, qs, actions
  *
  *  @return boolean : the status of children
  */
-const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
+const InstanceChildrenOnQs = (medicalCase, instance, qs, actions, currentNode) => {
   return instance.children.map((childId) => {
-    const child = state$.value.nodes[childId];
+    const child = medicalCase.nodes[childId];
 
     let childConditionValue;
 
@@ -111,7 +111,7 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
       // Reset the child condition value
       if (currentNode.answer === null && childConditionValue === true) {
         // Can be an question or other QS
-        actions.push(updateConditionValue(child.id, qs.id, false, qs.type));
+        updateConditionValue(medicalCase, child.id, qs.id, false, qs.type);
       }
     }
 
@@ -123,10 +123,10 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
       return nextChildFinalQs(instance, child, qs);
     }
     if (child.type === nodeTypes.questionsSequence) {
-      return nextChildOtherQs(state$, child, childConditionValue, qs, actions);
+      return nextChildOtherQs(medicalCase, child, childConditionValue, qs, actions);
     }
     if (child.type === nodeTypes.question) {
-      return recursiveNodeQs(state$, qs.instances[child.id], qs, actions);
+      return recursiveNodeQs(medicalCase, qs.instances[child.id], qs, actions);
     }
     console.warn('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'This QS', qs, 'You do not have to be here !! child in QS is wrong for : ', child);
   });
@@ -141,12 +141,12 @@ const InstanceChildrenOnQs = (state$, instance, qs, actions, currentNode) => {
  * @payload value: new condition value
  * @payload type: define if it's a diagnostic or a question sequence
  */
-const recursiveNodeQs = (state$, instance, qs, actions) => {
+const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
   let isReset = false;
   /**
    * Initial Var
    */
-  const currentNode = state$.value.nodes[instance.id];
+  const currentNode = medicalCase.nodes[instance.id];
   const instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
 
   // If all the conditionValues of the QS are false we set the conditionValues of th node to false
@@ -163,7 +163,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    * Update condition Value if the instance has to be shown
    */
   if (instanceConditionValue === false && instanceCondition === true) {
-    actions.push(updateConditionValue(instance.id, qs.id, true, qs.type));
+    updateConditionValue(medicalCase, instance.id, qs.id, true, qs.type);
   }
 
   /**
@@ -172,7 +172,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
    */
   if (instanceConditionValue === true && instanceCondition === false) {
     isReset = true;
-    actions.push(updateConditionValue(instance.id, qs.id, false, qs.type));
+    updateConditionValue(medicalCase, instance.id, qs.id, false, qs.type);
   }
 
   /**
@@ -190,7 +190,7 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
      * From this point we can process all children and go deeper in the tree
      * ProcessChildren return the boolean array of each branch
      */
-    const processChildren = InstanceChildrenOnQs(state$, instance, qs, actions, currentNode);
+    const processChildren = InstanceChildrenOnQs(medicalCase, instance, qs, actions, currentNode);
 
     return reduceConditionArrayBoolean(processChildren);
 
@@ -216,9 +216,8 @@ const recursiveNodeQs = (state$, instance, qs, actions) => {
  *      null = Still possible but not yet
  *      false = can't access the end anymore
  */
-export const getQuestionsSequenceStatus = (state$, qs, actions) => {
+export const getQuestionsSequenceStatus = (medicalCase, qs, actions) => {
   const topLevelNodes = [];
-
   // Set top Level Nodes
   Object.keys(qs.instances).map((nodeId) => {
     if (qs.instances[nodeId].top_conditions.length === 0) {
@@ -226,7 +225,7 @@ export const getQuestionsSequenceStatus = (state$, qs, actions) => {
     }
   });
 
-  const allNodesAnsweredInQs = topLevelNodes.map((topNode) => recursiveNodeQs(state$, topNode, qs, actions));
+  const allNodesAnsweredInQs = topLevelNodes.map((topNode) => recursiveNodeQs(medicalCase, topNode, qs, actions));
 
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };

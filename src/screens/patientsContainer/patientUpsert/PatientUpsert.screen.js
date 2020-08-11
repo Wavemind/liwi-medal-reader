@@ -54,7 +54,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
     } else {
       patient = await database.findBy('Patient', patientId);
     }
-
     if (newMedicalCase) {
       const generatedMedicalCase = await new MedicalCaseModel({}, algorithm);
       // If the patient already exists we gonna retrieve it's patient Value

@@ -47,7 +47,6 @@ export default class Question extends React.Component<Props, State> {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     const { question } = this.props;
-
     return question.counter !== nextProps.question.counter || question.answer !== nextProps.question.answer || question.value !== nextProps.question.value || question.id !== nextProps.question.id;
   }
 

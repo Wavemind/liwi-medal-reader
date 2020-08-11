@@ -20,7 +20,6 @@ export default class Formula extends React.Component<Props> {
 
   render() {
     const { question } = this.props;
-
     return (
       <View answer>
         <Input question defaultValue={question.value !== null ? String(question.value) : 'not defined'} disabled style={{ backgroundColor: liwiColors.greyColor, textAlign: 'center' }} />
