@@ -1,27 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { combineEpics, ofType } from 'redux-observable';
 import find from 'lodash/find';
-import {asyncScheduler, of} from 'rxjs';
+import { of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import moment from 'moment';
 import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
-import {
-  dispatchFinalDiagnosticAction,
-  dispatchCondition,
-  dispatchNodeAction,
-  dispatchQuestionsSequenceAction,
-  setAnswer,
-  dispatchRelatedNodeAction,
-  updateMedicalCaseProperty,
-  setDiagnoses,
-  setMedicalCase,
-} from '../actions/creators.actions';
+import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 import NavigationService from '../../src/engine/navigation/Navigation.service';
-import { DiagnosticModel } from '../engine/models/Diagnostic.model';
-import {MedicalCaseModel} from '../engine/models/MedicalCase.model';
-import {NodesModel} from '../engine/models/Nodes.model';
+import { NodesModel } from '../engine/models/Nodes.model';
 
 /* REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state is updated. */
 
@@ -54,15 +42,13 @@ export const updateConditionValue = (medicalCase, nodeId, callerId, value, type)
     return conditionValue;
   });
   catchAnswer(medicalCase, nodeId);
-  // TODO UPDATE CHILDREN
 };
 
-  const nodeAction = (medicalCase, nodeId, callerId, callerType) => {
+const nodeAction = (medicalCase, nodeId, callerId, callerType) => {
   let caller;
 
   if (callerType === nodeTypes.diagnostic) caller = medicalCase.diagnostics[callerId];
   else if (callerType !== nodeTypes.diagnostic) caller = medicalCase.nodes[callerId];
-
   // What do we do with this child -> switch according to type
   switch (caller.type) {
     case nodeTypes.question:
@@ -103,7 +89,7 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
 
   // If ready we calculate condition of the QS
   if (statusQs) {
-    questionsSequenceCondition = currentQuestionsSequence.calculateCondition();
+    questionsSequenceCondition = currentQuestionsSequence.calculateCondition(medicalCase);
   }
 
   if (questionsSequenceCondition === true) {
@@ -117,9 +103,7 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
   // If the new answer of this QS is different from the older, we change it
   if (answerId !== currentQuestionsSequence.answer) {
     medicalCase.nodes[currentQuestionsSequence.id].updateAnswer(answerId);
-    medicalCase.nodes = new NodesModel(medicalCase.nodes);
     catchAnswer(medicalCase, currentQuestionsSequence.id);
-    // TODO UPDATE CHILDREN
   }
 };
 
@@ -149,7 +133,7 @@ const condition = (medicalCase, diagnosticId, nodeId) => {
     }
 
     // Get node condition value
-    const conditionValue = currentInstance.calculateCondition();
+    const conditionValue = currentInstance.calculateCondition(medicalCase);
     // If the condition of this node is not null
     if (parentConditionValue === false) {
       // Stop infinite loop, change only when conditionValue is different
@@ -187,7 +171,6 @@ const updateRelatedNode = (medicalCase, nodeId) => {
   if (value !== currentNode.value) {
     medicalCase.nodes[currentNode.id].updateAnswer(value);
     catchAnswer(medicalCase, currentNode.id);
-    // TODO UPDATE CHILDREN
   }
 };
 
@@ -237,10 +220,6 @@ const catchAnswer = (medicalCase, index) => {
   if (currentNode.type === nodeTypes.question) {
     relatedNodes.forEach((relatedNodeId) => updateRelatedNode(medicalCase, relatedNodeId));
   }
-
-  if (index === medicalCase.mobile_config.left_top_question_id || index === medicalCase.mobile_config.first_top_right_question_id || index === medicalCase.mobile_config.second_top_right_question_id) {
-    NavigationService.setParamsAge();
-  }
 };
 
 /**
@@ -251,116 +230,27 @@ const catchAnswer = (medicalCase, index) => {
  * */
 export const epicCatchAnswer = (action$, state$) =>
   action$.pipe(
-    ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE, actions.UPDATE_CONDITION_VALUE),
+    ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
     mergeMap((action) => {
       // Index is the id of the node that has just been answered
       const { index } = action.payload;
 
-      const medicalCase = MedicalCaseModel.copyMedicalCase(state$.value);
-
+      const medicalCase = {
+        ...state$.value,
+        nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
+      };
       catchAnswer(medicalCase, index);
 
-      return of(setMedicalCase(medicalCase), asyncScheduler);
+      if (
+        index === medicalCase.mobile_config.left_top_question_id ||
+        index === medicalCase.mobile_config.first_top_right_question_id ||
+        index === medicalCase.mobile_config.second_top_right_question_id
+      ) {
+        NavigationService.setParamsAge();
+      }
+
+      return of(setMedicalCase(medicalCase));
     })
   );
 
-// /**
-//  * Process the impacted node according to his type
-//  *
-//  * @params [Object] action$, [Object] state$
-//  * @return [Array][Object] arrayActions
-//  * */
-// export const epicCatchDispatchNodeAction = (action$, state$) =>
-//   action$.pipe(
-//     ofType(actions.HANDLE_NODE_CHANGED),
-//     mergeMap((action) => {})
-//   );
-
-// /**
-//  * Trigger when there is a change in a QS
-//  */
-// export const epicCatchQuestionsSequenceAction = (action$, state$) =>
-//   action$.pipe(
-//     ofType(actions.DISPATCH_QUESTIONS_SEQUENCE_ACTION),
-//     mergeMap((action) => {
-//
-//     })
-//   );
-
-// @params [Object] action$, [Object] state$
-// @return [Array][Object] arrayActions
-// Process final diagnostic by checking his conditions then process its health cares
-// export const epicCatchFinalDiagnosticAction = (action$, state$) =>
-//   action$.pipe(
-//     ofType(actions.DISPATCH_FINAL_DIAGNOSTIC_ACTION),
-//     mergeMap((action) => {
-//       const actions = [];
-//       const { diagnosticId, finalDiagnosticId } = action.payload;
-//       const finalDiagnostic = state$.value.nodes[finalDiagnosticId];
-//
-//       // Get the conditions of the node
-//       const condition = finalDiagnostic.calculateCondition();
-//
-//       // Depending the result of the condition
-//       switch (condition) {
-//         case true:
-//           // If he was already in the additional section
-//           if (state$.value.diagnoses.proposed[finalDiagnosticId] === undefined) {
-//             // Add it on proposed
-//             actions.push(
-//               setDiagnoses('proposed', {
-//                 ...finalDiagnostic,
-//                 agreed: null,
-//               })
-//             );
-//           }
-//
-//           // Remove from additional if moved to proposed (no duplicata)
-//           if (state$.value.diagnoses.additional[finalDiagnosticId] !== undefined) {
-//             actions.push(setDiagnoses('additional', finalDiagnostic, 'remove'));
-//           }
-//
-//           break;
-//         case false:
-//           if (state$.value.diagnoses.proposed[finalDiagnosticId] !== undefined) {
-//             // Remove it from proposed
-//             actions.push(setDiagnoses('proposed', finalDiagnostic, 'remove'));
-//           }
-//
-//           break;
-//         case null:
-//       }
-//
-//       // Check the condition of the children
-//       return of(...actions);
-//     })
-//   );
-
-// export const epicCatchDispatchFormulaNodeAction = (action$, state$) =>
-//   action$.pipe(
-//     ofType(actions.DISPATCH_RELATED_NODE_ACTION),
-//     mergeMap((action) => {
-//
-//     })
-//   );
-
-// /**
-//  * Dispatch condition action on condition result
-//  * @param action$
-//  * @param state$
-//  * @returns {*} [Array][Object] arrayActions
-//  */
-// export const epicCatchDispatchCondition = (action$, state$) =>
-//   action$.pipe(
-//     ofType(actions.DISPATCH_CONDITION),
-//     mergeMap((action) => {})
-//   );
-
-export default combineEpics(
-  // epicCatchDispatchFormulaNodeAction,
-  // epicCatchQuestionsSequenceAction,
-  epicCatchAnswer
-  // epicCatchFinalDiagnosticAction,
-  // epicCatchDispatchNodeAction,
-  // epicCatchDispatchCondition
-);
+export default combineEpics(epicCatchAnswer);

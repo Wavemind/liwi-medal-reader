@@ -28,6 +28,5 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = createStore(persistedReducer, middleware);
 
 epicMiddleware.run(rootEpic);
-
 export const persistor = persistStore(store, {}, async () => {
 });
