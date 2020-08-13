@@ -113,14 +113,14 @@ export class NodesModel implements NodeInterface {
    * Return a list of question that need to be answered in order to define the health cares
    * @return Object {questions} list of question that need to be answered
    */
-  getHealthCaresQuestions() {
+  getHealthCaresQuestions(medicalCase) {
     let questions = {};
     const finalDiagnostics = this.filterByType(nodeTypes.finalDiagnostic);
 
     for (const index in finalDiagnostics) {
       if (finalDiagnostics.hasOwnProperty(index)) {
         const finalDiagnostic = finalDiagnostics[index];
-        const condition = finalDiagnostic.calculateCondition();
+        const condition = finalDiagnostic.calculateCondition(medicalCase);
         if (condition === true) {
           for (const indexManagement in finalDiagnostic.managements) {
             this[indexManagement].getQuestions(finalDiagnostic);

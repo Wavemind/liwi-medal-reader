@@ -64,9 +64,7 @@ export class QuestionsSequenceModel extends NodeModel implements QuestionsSequen
   /**
    * Calculate condition of question sequence and these children
    */
-  calculateCondition = () => {
-    const state$ = store.getState();
-
+  calculateCondition = (medicalCase) => {
     /**
      * Filter the top conditions
      *
@@ -77,7 +75,7 @@ export class QuestionsSequenceModel extends NodeModel implements QuestionsSequen
      *  4. Return new array of top_condition
      */
     const top_conditions_with_condition_value_true = filter(this.top_conditions, (top_condition) => {
-      const { conditionValue } = find(state$.nodes[top_condition.first_node_id].qs, (qs) => {
+      const { conditionValue } = find(medicalCase.nodes[top_condition.first_node_id].qs, (qs) => {
         return qs.id === this.id;
       });
       if (conditionValue === true) {
@@ -90,6 +88,6 @@ export class QuestionsSequenceModel extends NodeModel implements QuestionsSequen
       top_conditions: top_conditions_with_condition_value_true,
     };
 
-    return calculateCondition(tempNodeFiltered);
+    return calculateCondition(tempNodeFiltered, medicalCase);
   };
 }

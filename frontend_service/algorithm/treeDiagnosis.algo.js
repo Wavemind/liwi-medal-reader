@@ -37,11 +37,11 @@ export const getParentsNodes = (medicalCase, diagnosticId, nodeId) => {
  * @param finalQs {Object} : The child of the link, in this case this is the final Qs
  * @return {boolean|false|true|null}
  */
-export const nextChildFinalQs = (instance, finalQs) => {
+export const nextChildFinalQs = (instance, finalQs, medicalCase) => {
   const top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
   // We get the condition of the final link
   const arrayBoolean = top_conditions.map((condition) => {
-    return comparingTopConditions(finalQs, condition);
+    return comparingTopConditions(finalQs, condition, medicalCase);
   });
 
   return reduceConditionArrayBoolean(arrayBoolean);
@@ -120,7 +120,7 @@ const InstanceChildrenOnQs = (medicalCase, instance, qs, actions, currentNode) =
      */
     if (child.id === qs.id && child.type === nodeTypes.questionsSequence) {
       // The branch is open and we can set the answer of this QS
-      return nextChildFinalQs(instance, child, qs);
+      return nextChildFinalQs(instance, child, medicalCase);
     }
     if (child.type === nodeTypes.questionsSequence) {
       return nextChildOtherQs(medicalCase, child, childConditionValue, qs, actions);

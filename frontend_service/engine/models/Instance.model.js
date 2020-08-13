@@ -21,7 +21,7 @@ export class InstanceModel implements InstanceInterface {
   /**
    * Calculate condition to display a question
    */
-  calculateCondition = () => {
-    return calculateCondition(this);
+  calculateCondition = (medicalCase) => {
+    return calculateCondition(this, medicalCase);
   };
 }
