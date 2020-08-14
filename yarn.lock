@@ -10604,9 +10604,10 @@ react-devtools-core@^4.6.0:
     shell-quote "^1.6.1"
     ws "^7"
 
-react-devtools@^3.4.3:
+react-devtools@^3.6.3:
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/react-devtools/-/react-devtools-3.6.3.tgz#47fcedbd2306724909b6ec76cd51392e93493c3f"
+  integrity sha512-7JrGlKHvyamqDfDi7EEoIC8BHygKC1Mc8PmAAYm0aokwYuam/42bO1gnF5y2K7K1MbO+6f7J93s1N4VK0YdmEw==
   dependencies:
     cross-spawn "^5.0.1"
     electron "^1.8.7"
@@ -10737,6 +10738,11 @@ react-native-easy-grid@0.2.2, react-native-easy-grid@^0.2.0, react-native-easy-g
 react-native-exception-handler@^2.10.8:
   version "2.10.8"
   resolved "https://registry.yarnpkg.com/react-native-exception-handler/-/react-native-exception-handler-2.10.8.tgz#1a7f846592d888d23adaf797e31802585f1d9ff0"
+
+react-native-flipper@^0.52.1:
+  version "0.52.1"
+  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.52.1.tgz#068eb5cd1da4c896ea43923f570f1c74ce5b5ca8"
+  integrity sha512-+Rje0uRUuk/k32odEHsaAXC1CmQ/jKn8h3RBBZlVi3GFAWYpbIZpPspE/s7yFa9B7rcS6fHZbewrf9IfM7FiWA==
 
 react-native-fs@^2.16.6:
   version "2.16.6"
