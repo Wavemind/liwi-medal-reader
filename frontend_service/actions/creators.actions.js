@@ -93,10 +93,10 @@ export const clearMedicalCase = () => ({
   type: actions.MC_CLEAR,
 });
 
-export const setAnswer = (index, value) => ({
+export const setAnswer = (nodeId, value) => ({
   type: actions.SET_ANSWER,
   payload: {
-    index,
+    nodeId,
     value,
   },
 });

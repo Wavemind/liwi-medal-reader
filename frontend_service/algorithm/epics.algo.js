@@ -37,10 +37,10 @@ export const updateConditionValue = (medicalCase, nodeId, callerId, value, type)
     }
     currentConditionValue.conditionValue = value;
   }
-  caller = caller.map((conditionValue) => {
-    if (conditionValue.id === callerId) conditionValue.conditionValue = value;
-    return conditionValue;
-  });
+  // caller.map((conditionValue) => {
+  //   if (conditionValue.id === callerId) conditionValue.conditionValue = value;
+  //   return conditionValue;
+  // });
   catchAnswer(medicalCase, nodeId);
 };
 
@@ -155,7 +155,7 @@ const condition = (medicalCase, diagnosticId, nodeId) => {
   }
 };
 
-const updateRelatedNode = (medicalCase, nodeId) => {
+const updateReferencedNode = (medicalCase, nodeId) => {
   const currentNode = medicalCase.nodes[nodeId];
   let value = null;
 
@@ -174,12 +174,12 @@ const updateRelatedNode = (medicalCase, nodeId) => {
   }
 };
 
-const catchAnswer = (medicalCase, index) => {
-  const currentNode = medicalCase.nodes[index];
+const catchAnswer = (medicalCase, nodeId) => {
+  const currentNode = medicalCase.nodes[nodeId];
   const relatedDiagnostics = currentNode.dd;
   const relatedQuestionsSequence = currentNode.qs;
   const relatedDiagnosticsForCC = currentNode.diagnostics_related_to_cc;
-  const relatedNodes = currentNode.referenced_in;
+  const referencedNodes = currentNode.referenced_in;
 
   if (__DEV__) {
     console.log('%c ########################  epicCatchAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
@@ -189,11 +189,12 @@ const catchAnswer = (medicalCase, index) => {
   medicalCase.updated_at = moment().format();
 
   // If it's birth date node, check eligibility age and update it in medical case
-  if (index === medicalCase.config.basic_questions.birth_date_question_id) {
+  if (nodeId === medicalCase.config.basic_questions.birth_date_question_id) {
     const birthDate = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_question_id].value;
     const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
     medicalCase.isEligible = years < medicalCase.config.age_limit;
   }
+
   // For each related diagnoses we gonna check if we need to update their status
   relatedDiagnostics.forEach((diagnostic) => nodeAction(medicalCase, currentNode.id, diagnostic.id, nodeTypes.diagnostic));
 
@@ -205,6 +206,11 @@ const catchAnswer = (medicalCase, index) => {
     questionsSequenceAction(medicalCase, currentNode.id);
   }
 
+  // We tell the related nodes to update themself
+  if (currentNode.type === nodeTypes.question) {
+    referencedNodes.forEach((referencedNodeId) => updateReferencedNode(medicalCase, referencedNodeId));
+  }
+
   if (relatedDiagnosticsForCC !== undefined) {
     relatedDiagnosticsForCC.forEach((diagnosticId) => {
       const { instances } = medicalCase.diagnostics[diagnosticId];
@@ -214,11 +220,6 @@ const catchAnswer = (medicalCase, index) => {
         }
       });
     });
-  }
-
-  // We tell the related nodes to update themself
-  if (currentNode.type === nodeTypes.question) {
-    relatedNodes.forEach((relatedNodeId) => updateRelatedNode(medicalCase, relatedNodeId));
   }
 };
 
@@ -233,18 +234,18 @@ export const epicCatchAnswer = (action$, state$) =>
     ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
     mergeMap((action) => {
       // Index is the id of the node that has just been answered
-      const { index } = action.payload;
+      const { nodeId } = action.payload;
 
       const medicalCase = {
         ...state$.value,
         nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
       };
-      catchAnswer(medicalCase, index);
+      catchAnswer(medicalCase, nodeId);
 
       if (
-        index === medicalCase.mobile_config.left_top_question_id ||
-        index === medicalCase.mobile_config.first_top_right_question_id ||
-        index === medicalCase.mobile_config.second_top_right_question_id
+        nodeId === medicalCase.mobile_config.left_top_question_id ||
+        nodeId === medicalCase.mobile_config.first_top_right_question_id ||
+        nodeId === medicalCase.mobile_config.second_top_right_question_id
       ) {
         NavigationService.setParamsAge();
       }
