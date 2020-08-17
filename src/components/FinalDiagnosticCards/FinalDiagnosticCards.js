@@ -118,7 +118,14 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                     const management = finalDiagnosticCategory[key].managements[managementKey];
                     const node = nodes[management.id];
                     if (calculateCondition(management) === true) {
-                      return <Text key={`${managementKey}-management`}>{node.label}</Text>;
+                      return (
+                        <View style={styles.drugContainer}>
+                          <Text key={`${managementKey}-management`}>{node.label}</Text>
+                          <View style={styles.tooltipButton}>
+                            <TooltipButton node={node} title={node.label} flex={1} />
+                          </View>
+                        </View>
+                      );
                     }
                     return null;
                   })
