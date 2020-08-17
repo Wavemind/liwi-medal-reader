@@ -366,11 +366,11 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.SET_ANSWER)
   setAnswer(state, action) {
-    const { index, value } = action.payload;
+    const { nodeId, value } = action.payload;
 
     // Instantiate new object with answered question with new answer value
-    state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
-    state.nodes[index].updateAnswer(value);
+    state.nodes[nodeId] = state.nodes.instantiateNode({ ...state.nodes[nodeId] });
+    state.nodes[nodeId].updateAnswer(value);
 
     return {
       ...state,
