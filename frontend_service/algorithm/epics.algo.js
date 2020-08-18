@@ -37,10 +37,9 @@ export const updateConditionValue = (medicalCase, nodeId, callerId, value, type)
     }
     currentConditionValue.conditionValue = value;
   }
-  // caller.map((conditionValue) => {
-  //   if (conditionValue.id === callerId) conditionValue.conditionValue = value;
-  //   return conditionValue;
-  // });
+  caller.forEach((conditionValue) => {
+    if (conditionValue.id === callerId) conditionValue.conditionValue = value;
+  });
   catchAnswer(medicalCase, nodeId);
 };
 
