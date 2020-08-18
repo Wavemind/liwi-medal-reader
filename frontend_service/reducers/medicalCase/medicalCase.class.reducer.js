@@ -1,12 +1,11 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
-import find from 'lodash/find';
 import { filter } from 'lodash';
 import 'reflect-metadata';
 
 import { actions } from '../../actions/types.actions';
-import { categories, nodeTypes } from '../../constants';
+import { categories } from '../../constants';
 import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
@@ -158,7 +157,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update property of medicalCase
-   *
    * @payload property: Index in Object
    * @payload newValue: New value of this index
    */
@@ -174,7 +172,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update modal
-   *
    * @payload content: Text that will be shown in modal
    */
   @Action(actions.MC_UPDATE_MODAL)
@@ -195,7 +192,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Set formulation for a drug
-   *
    * @payload diagnoseId: the diagnosey identifiant
    * @payload drugId: the drugId
    * @payload type: key in diagnoses
@@ -309,7 +305,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update medicine
-   *
    * @payload type: Text that will be shown in modal
    * @payload diagnosesKey: the diagnosey identifiant
    * @payload medicineId: the medecin identifiant
@@ -332,7 +327,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update medicine duration
-   *
    * @payload id: id of the medicine
    * @payload duration: the new value to update
    */
