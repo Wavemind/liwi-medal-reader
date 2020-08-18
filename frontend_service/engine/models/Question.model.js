@@ -191,9 +191,11 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       questionZ = state$.nodes[this.reference_table_z_id];
     }
 
-    const x = questionX.value;
-    const y = questionY.value;
+    const x = parseInt(questionX.value);
+    const y = parseInt(questionY.value);
     const z = questionZ?.value;
+
+    console.log(this,x,y,z);
 
     const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
     const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
@@ -207,7 +209,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
 
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
     if (reference !== null && x !== null && y !== null && x in reference) {
-      if (z === null) {
+      if (z === undefined) {
         value = this.findValueInReferenceTable(reference[x], y);
       } else if (String(y) in reference[x]) {
         value = this.findValueInReferenceTable(reference[x][y], z);
@@ -230,6 +232,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     // Order the keys
     const scopedRange = Object.keys(referenceTable).sortByNumber();
 
+    console.log(referenceTable[scopedRange.first()], referenceTable[scopedRange.last()], maxRange);
     // if value smaller than smallest element return the smaller value
     if (referenceTable[scopedRange.first()] > maxRange) {
       return scopedRange.first();
