@@ -16,7 +16,7 @@ export default function Liquid(drug, node, drugDose) {
       <Text>
         {i18n.t('drug:give')} {ratio * drugDose.doseResult}
         {i18n.t('drug:mg')} : {drugDose.doseResult}
-        {i18n.t('drug:mg')} {i18n.t('drug:of')} {drugDose.liquid_concentration}
+        {i18n.t('drug:ml')} {i18n.t('drug:of')} {drugDose.liquid_concentration}
         {i18n.t('drug:mg')}/{drugDose.dose_form}
         {i18n.t('drug:ml')}
       </Text>
