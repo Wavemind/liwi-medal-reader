@@ -453,12 +453,12 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.SET_ANSWER_TO_UNAVAILABLE)
   setAnswerUnavailable(state, action) {
-    const { index, value } = action.payload;
+    const { nodeId, value } = action.payload;
 
     // Instantiate new object with id unavailable answer
     // reset value to default
-    state.nodes[index] = state.nodes.instantiateNode({
-      ...state.nodes[index],
+    state.nodes[nodeId] = state.nodes.instantiateNode({
+      ...state.nodes[nodeId],
       answer: value,
       value: null,
     });

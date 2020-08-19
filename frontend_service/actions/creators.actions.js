@@ -125,10 +125,10 @@ export const setEstimable = (index, value) => ({
   },
 });
 
-export const setAnswerUnavailable = (index, value) => ({
+export const setAnswerUnavailable = (nodeId, value) => ({
   type: actions.SET_ANSWER_TO_UNAVAILABLE,
   payload: {
-    index,
+    nodeId,
     value,
   },
 });

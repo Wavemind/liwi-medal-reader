@@ -16,29 +16,30 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class ListContent extends React.Component<Props, State> {
-  state = {
-    loading: false,
-    columns: {},
-    nodes: {},
-    data: [],
-    currentPage: 1,
-    isLastBatch: false,
-    firstLoading: true,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      columns: props.app.algorithm.mobile_config[props.list],
+      nodes: {},
+      data: [],
+      currentPage: 1,
+      isLastBatch: false,
+      firstLoading: true,
+    };
+  }
 
   async componentDidMount() {
-    const { list } = this.props;
+    const { app: {algorithm} } = this.props;
 
     await this._fetchList();
 
     const isConnected = await getItems('isConnected');
     const deviceInfo = await getDeviceInformation();
-    const algorithm = await getItems('algorithm');
 
-    const columns = algorithm.mobile_config[list];
     const { nodes } = algorithm;
-
-    this.setState({ columns, nodes, firstLoading: false, isConnected, deviceInfo });
+    this.setState({ nodes, firstLoading: false, isConnected, deviceInfo });
   }
 
   async componentDidUpdate(nextProps) {
@@ -59,13 +60,14 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { currentPage } = this.state;
+    const { currentPage, columns } = this.state;
 
     const filters = this.props.app[`filters${model}`];
 
     this.setState({ loading: true });
-    const options = { query, filters };
+    const options = { query, filters, columns };
     const data = await database.getAll(model, 1, options);
+
     this.setState({
       data,
       currentPage: currentPage + 1,
@@ -84,8 +86,7 @@ export default class ListContent extends React.Component<Props, State> {
       model,
       query,
     } = this.props;
-    const { data, currentPage } = this.state;
-
+    const { data, currentPage, columns } = this.state;
     const filters = this.props.app[`filters${model}`];
 
     this.setState(
@@ -96,6 +97,7 @@ export default class ListContent extends React.Component<Props, State> {
         const options = {
           query,
           filters,
+          columns,
         };
         const newData = await database.getAll(model, currentPage, options);
         const isLastBatch = newData.length === 0;
@@ -123,7 +125,6 @@ export default class ListContent extends React.Component<Props, State> {
       app: { t, user },
     } = this.props;
     const { isConnected, deviceInfo } = this.state;
-
     return (
       <ListItem style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         {item.values.map((value, key) => (

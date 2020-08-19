@@ -68,7 +68,7 @@ export default class RealmInterface {
     if (filters !== '') result = await result.filtered(filters);
 
     result = result.sorted('updated_at', 'ASC').slice((page - 1) * elementPerPage, elementPerPage * page);
-    return this._generateList(result, model);
+    return this._generateList(result, model, params.columns);
   };
 
   /**
@@ -184,13 +184,13 @@ export default class RealmInterface {
    * Generate an object than contains all the data needed to display a model in a list
    * @param data : an array of of the model we want to display
    * @param model : name of the model we wanna display
+   * @param columns : array of node id for getting value
    * @returns { Array[Object] } : The array used to display values in the list
    * @private
    */
-  _generateList = async (data, model) => {
+  _generateList = async (data, model, columns) => {
     const algorithm = await getItems('algorithm');
     const { nodes } = algorithm;
-    const columns = algorithm.mobile_config.patient_list;
     return data.map((entry) => {
       if (model === 'Patient') {
         return {
