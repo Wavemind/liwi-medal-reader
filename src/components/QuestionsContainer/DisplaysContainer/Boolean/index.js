@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 import Boolean from './Boolean';
 import { withApplication } from '../../../../engine/contexts/Application.context';
-import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
-import { setPatientValue } from '../../../../../frontend_service/actions/creators.actions';
+import { setPatientValue, setAnswer } from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
@@ -10,7 +9,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    setAnswer: (index, value) => manageSetAnswer(index, value, dispatch, props),
+    setAnswer: (index, value) => dispatch(setAnswer(index, value)),
     setPatientValue: (index, value) => dispatch(setPatientValue(index, value)),
   };
 };

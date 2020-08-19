@@ -116,8 +116,8 @@ class Stepper extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      showBack: props.initialPage > 0 ? true : false,
-      showNext: props.initialPage + 1 === props.children.length ? false : true,
+      showBack: props.initialPage > 0,
+      showNext: props.initialPage + 1 !== props.children.length,
       page: props.initialPage,
       width: 0,
       height: 0,
@@ -183,8 +183,8 @@ class Stepper extends React.Component<Props, State> {
 
       this.setState(
         {
-          showNext: position === numberOfPages - 1 ? false : true,
-          showBack: position === 0 ? false : true,
+          showNext: position !== numberOfPages - 1,
+          showBack: position !== 0,
           page: position
         },
         () => {
@@ -517,10 +517,9 @@ class Stepper extends React.Component<Props, State> {
 
     // Validate current stage
     const validator = validatorNavigate({
-      type: 'Navigation/NAVIGATE',
-      routeName: nextStage,
+      currentStage: this.props.navigation.state.routeName,
+      nextStage,
       params: paramsNextStage,
-      key: nextStage
     });
 
     // Can we update the next status ? All questions are valid ?

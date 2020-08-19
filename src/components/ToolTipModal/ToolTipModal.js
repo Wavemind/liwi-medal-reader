@@ -350,7 +350,6 @@ export default class TooltipModal extends React.Component<Props, State> {
     if (isFromJsx === false && isFromRedux === false) {
       return null;
     }
-    console.log(modalRedux, this.state)
 
     return (
       <View flex={flex}>

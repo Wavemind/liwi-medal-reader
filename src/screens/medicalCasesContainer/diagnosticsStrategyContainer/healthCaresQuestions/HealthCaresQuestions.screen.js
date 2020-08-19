@@ -25,7 +25,7 @@ export default class HealthCaresQuestions extends Component<Props, State> {
       app: { t },
     } = this.props;
 
-    const questions = medicalCase.nodes.getHealthCaresQuestions();
+    const questions = medicalCase.nodes.getHealthCaresQuestions(medicalCase);
 
     return (
       <View>

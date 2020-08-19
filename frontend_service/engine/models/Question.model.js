@@ -191,8 +191,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       questionZ = state$.nodes[this.reference_table_z_id];
     }
 
-    const x = questionX.value;
-    const y = questionY.value;
+    const x = parseInt(questionX.value);
+    const y = parseInt(questionY.value);
     const z = questionZ?.value;
 
     const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
@@ -207,7 +207,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
 
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
     if (reference !== null && x !== null && y !== null && x in reference) {
-      if (z === null) {
+      if (z === undefined) {
         value = this.findValueInReferenceTable(reference[x], y);
       } else if (String(y) in reference[x]) {
         value = this.findValueInReferenceTable(reference[x][y], z);

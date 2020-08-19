@@ -8,14 +8,12 @@ import { store } from '../store';
  * @return {boolean}
  *
  */
-export const calculateCondition = (node) => {
-  const state$ = store.getState();
-  const { nodes } = state$;
+export const calculateCondition = (node, medicalCase = store.getState()) => {
+  const { nodes } = medicalCase;
 
   let isExcludedByComplaintCategory = false;
-
   // We check that all the complaint categories linked to the node are set to true
-  switch (typeof(node.cc)) {
+  switch (typeof node.cc) {
     case 'number':
       isExcludedByComplaintCategory = nodes[node.cc].booleanValue() === false;
       break;
@@ -32,8 +30,7 @@ export const calculateCondition = (node) => {
   }
 
   // Loop for top_conditions
-  const conditionsArrayBoolean = returnConditionsArray(node);
-
+  const conditionsArrayBoolean = returnConditionsArray(node, medicalCase);
   return reduceConditionArrayBoolean(conditionsArrayBoolean) && !isExcludedByComplaintCategory;
 };
 
@@ -45,7 +42,7 @@ export const calculateCondition = (node) => {
  * @return {array}
  *
  */
-export const returnConditionsArray = (node) => node.top_conditions.map((conditions) => comparingTopConditions(node, conditions));
+export const returnConditionsArray = (node, medicalCase) => node.top_conditions.map((conditions) => comparingTopConditions(node, conditions, medicalCase));
 
 /**
  * Get a array of boolean and return the final boolean between null | true | false
@@ -74,24 +71,22 @@ export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
  * @returns {null|boolean}
  *
  */
-const checkOneCondition = (child, wantedId, nodeId) => {
-  const state$ = store.getState();
-
-  if (state$.nodes[nodeId].answer !== null) {
+const checkOneCondition = (child, wantedId, nodeId, medicalCase = store.getState()) => {
+  if (medicalCase.nodes[nodeId].answer !== null) {
     // Console.warn should only appear if there is a format error in ids
-    if (Number(state$.nodes[nodeId].answer) !== state$.nodes[nodeId].answer || Number(wantedId) !== wantedId) {
+    if (Number(medicalCase.nodes[nodeId].answer) !== medicalCase.nodes[nodeId].answer || Number(wantedId) !== wantedId) {
       console.warn(
         '%c --- DANGER STRING OR NUMBER PROBLEM TYPE --- ',
         'background: #FF0000; color: #F6F3ED; padding: 5px',
         child,
         wantedId,
         nodeId,
-        state$.nodes[nodeId].answer,
+        medicalCase.nodes[nodeId].answer,
         typeof nodeId,
-        typeof state$.nodes[nodeId].answer
+        typeof medicalCase.nodes[nodeId].answer
       );
     }
-    return Number(state$.nodes[nodeId].answer) === Number(wantedId);
+    return Number(medicalCase.nodes[nodeId].answer) === Number(wantedId);
   }
   return null;
 };
@@ -103,17 +98,15 @@ const checkOneCondition = (child, wantedId, nodeId) => {
  * @returns {null || false || true}
  *
  */
-export const comparingTopConditions = (child, condition) => {
-  const { first_id, first_node_id, first_type, operator, second_node_id, second_id, second_type } = condition;
-  let second_sub_condition;
-  let first_sub_condition;
+export const comparingTopConditions = (child, condition, medicalCase) => {
+  const { first_id, first_node_id, operator, second_node_id, second_id } = condition;
 
-  first_sub_condition = checkOneCondition(child, first_id, first_node_id, first_type);
+  const first_sub_condition = checkOneCondition(child, first_id, first_node_id, medicalCase);
 
   if (operator === null) {
     return first_sub_condition;
   }
-  second_sub_condition = checkOneCondition(child, second_id, second_node_id, second_type);
+  const second_sub_condition = checkOneCondition(child, second_id, second_node_id, medicalCase);
 
   if (operator === 'AND') {
     return first_sub_condition && second_sub_condition;

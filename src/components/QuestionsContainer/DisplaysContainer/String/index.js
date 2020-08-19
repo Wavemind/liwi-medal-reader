@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
 import String from './String';
-import { manageSetAnswer } from '../../../../../frontend_service/engine/utilsDispatcher';
-import { setPatientValue } from '../../../../../frontend_service/actions/creators.actions';
-import { withApplication } from '../../../../engine/contexts/Application.context';
+import { setAnswer, setPatientValue} from '../../../../../frontend_service/actions/creators.actions';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
@@ -11,7 +9,7 @@ const mapStateToProps = (medicalCase) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     setPatientValue: (index, value) => dispatch(setPatientValue(index, value)),
-    setAnswer: (index, value) => manageSetAnswer(index, value, dispatch, props),
+    setAnswer: (index, value) => dispatch(setAnswer(index, value)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(String);

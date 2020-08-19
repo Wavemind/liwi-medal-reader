@@ -19,8 +19,13 @@ export default class Boolean extends React.Component<Props, State> {
     widthView: 0,
   };
 
-  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-    const { question, widthView, pageIndex, selectedPage } = this.props;
+  state = {
+    value: null,
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { widthView, pageIndex, selectedPage } = this.props;
+    const { value } = this.state;
 
     if (pageIndex !== undefined && nextProps.selectedPage !== pageIndex) {
       return false;
@@ -31,7 +36,22 @@ export default class Boolean extends React.Component<Props, State> {
       return true;
     }
 
-    return nextProps.question.answer !== question.answer || nextProps.widthView !== widthView;
+    return nextState.value !== value || nextProps.widthView !== widthView;
+  }
+
+  componentDidMount() {
+    const {
+      question: { answer, answers },
+    } = this.props;
+
+    const idYes = Number(Object.keys(answers)[0]);
+    const idNo = Number(Object.keys(answers)[1]);
+
+    if (answer === idYes) {
+      this.setState({ value: true });
+    } else if (answer === idNo) {
+      this.setState({ value: false });
+    }
   }
 
   /**
@@ -40,9 +60,26 @@ export default class Boolean extends React.Component<Props, State> {
    * @returns {null}
    * @private
    */
-  _handleClick = (answer) => {
-    const { question, setAnswer, setPatientValue, patientValueEdit } = this.props;
+  _handleClick = async (answer) => {
+    const {
+      question,
+      question: { answers },
+      setAnswer,
+      setPatientValue,
+      patientValueEdit,
+    } = this.props;
+
+    const idYes = Number(Object.keys(answers)[0]);
+    const idNo = Number(Object.keys(answers)[1]);
     let newAnswer = Number(answer);
+
+    if (newAnswer === idYes) {
+      this.setState({ value: true });
+    } else if (newAnswer === idNo) {
+      this.setState({ value: false });
+    }
+    // Give the time to the component to render the view before updating the stateJ'a
+    await new Promise((resolve) => setTimeout(resolve, 25));
 
     // Break if complaintCategory
     if (question.category === categories.complaintCategory && answer === question.answer) {
@@ -64,11 +101,12 @@ export default class Boolean extends React.Component<Props, State> {
   render = () => {
     const {
       app: { t },
-      question: { answer, answers, label, category },
+      question: { answers, label, category },
       widthView,
       index,
       isReadOnly,
     } = this.props;
+    const { value } = this.state;
 
     // Define the id for the answer
     const idYes = Number(Object.keys(answers)[0]);
@@ -118,15 +156,15 @@ export default class Boolean extends React.Component<Props, State> {
           };
         }
 
-        if (answer === null) {
+        if (value === null) {
           activeStyle = { backgroundColor: 'transparent' };
           idOnPress = idYes;
-        } else if (answer === idYes) {
+        } else if (value === true) {
           activeStyle = {
             borderColor: liwiColors.greenColor,
           };
           idOnPress = idNo;
-        } else if (answer === idNo) {
+        } else if (value === false) {
           idOnPress = idYes;
           activeStyle = {
             borderColor: liwiColors.redColor,
@@ -158,14 +196,14 @@ export default class Boolean extends React.Component<Props, State> {
               </Text>
             </View>
             <View style={styles.bottomInput}>
-              <LeftButton active={answer === idYes} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
-                <Text white={answer === idYes} center>
+              <LeftButton active={value === true} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
+                <Text white={value === true} center>
                   {t('question:yes')}
                 </Text>
               </LeftButton>
 
-              <RightButton active={answer === idNo} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
-                <Text center white={answer === idNo}>
+              <RightButton active={value === false} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
+                <Text center white={value === false}>
                   {t('question:no')}
                 </Text>
               </RightButton>
@@ -175,16 +213,19 @@ export default class Boolean extends React.Component<Props, State> {
         break;
 
       default:
+        const leftLabel = Object.values(answers)[0].label;
+        const rightLabel = Object.values(answers)[1].label;
+
         RenderJsx = () => (
           <View answer>
-            <LeftButton active={answer === Object.values(answers)[0].id} onPress={() => this._handleClick(Object.values(answers)[0].id)} disabled={isReadOnly}>
-              <Text white={answer === Object.values(answers)[0].id} center style={{ fontSize: Object.values(answers)[0].label.length > 3 ? 10 : 16 }}>
-                {Object.values(answers)[0].label}
+            <LeftButton active={value === true} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
+              <Text white={value === true} center style={{ fontSize: leftLabel.length > 3 ? 10 : 16 }}>
+                {leftLabel}
               </Text>
             </LeftButton>
-            <RightButton active={answer === Object.values(answers)[1].id} onPress={() => this._handleClick(Object.values(answers)[1].id)} disabled={isReadOnly}>
-              <Text center white={answer === Object.values(answers)[1].id} style={{ fontSize: Object.values(answers)[1].label.length > 3 ? 10 : 16 }}>
-                {Object.values(answers)[1].label}
+            <RightButton active={value === false} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
+              <Text center white={value === false} style={{ fontSize: rightLabel.length > 3 ? 10 : 16 }}>
+                {rightLabel}
               </Text>
             </RightButton>
           </View>

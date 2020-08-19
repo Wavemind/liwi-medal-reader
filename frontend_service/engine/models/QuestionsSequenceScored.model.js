@@ -12,7 +12,7 @@ export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
    * Calculate condition by answer scored
    * Sum answer scored and comparing it to the questions sequence scored
    */
-  calculateCondition = () => {
+  calculateCondition = (medicalCase) => {
     // If this is a top parent node
     if (this.top_conditions.length === 0) {
       return true;
@@ -25,7 +25,7 @@ export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
 
     // Loop for top_conditions
     this.top_conditions.map((conditions) => {
-      const returnedBoolean = comparingTopConditions(this, conditions);
+      const returnedBoolean = comparingTopConditions(this, conditions, medicalCase);
 
       scoreTotalPossible += conditions.score;
       switch (returnedBoolean) {

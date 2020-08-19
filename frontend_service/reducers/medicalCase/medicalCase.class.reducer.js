@@ -1,16 +1,16 @@
 import { Action, ReducerClass } from 'reducer-class';
 
 import { REHYDRATE } from 'redux-persist';
-import find from 'lodash/find';
 import { filter } from 'lodash';
 import 'reflect-metadata';
 
 import { actions } from '../../actions/types.actions';
-import { categories, nodeTypes } from '../../constants';
-import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
+import { categories } from '../../constants';
+import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
 import { NodesModel } from '../../engine/models/Nodes.model';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { QuestionModel } from '../../engine/models/Question.model';
+import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -60,54 +60,6 @@ class MedicalCaseReducer extends ReducerClass {
         ...state.patient,
         consent_file: page,
       },
-    };
-  }
-
-  /**
-   * Update condition value of diagnostic or questions sequence for a question or a questions sequence
-   *
-   * @trigger When a condition value must be change
-   * @payload nodeId: Question or QuestionsSequence
-   * @payload callerId: Diagnostic or QuestionsSequence
-   * @payload value: new condition value
-   * @payload type: define if it's a diagnostic or a question sequence
-   */
-  @Action(actions.UPDATE_CONDITION_VALUE)
-  updateConditionValue(state, action) {
-    const { index, callerId, value, type } = action.payload;
-    let caller;
-    const newNode = {
-      ...state.nodes[index],
-    };
-
-    switch (type) {
-      case nodeTypes.diagnostic:
-        caller = newNode.dd;
-        break;
-      case nodeTypes.questionsSequence:
-        caller = newNode.qs;
-        break;
-    }
-
-    const changeConditionValue = find(caller, (d) => d.id === callerId);
-
-    // IF not the same condition update the node
-    if (changeConditionValue.conditionValue !== value) {
-      // Update counter condition Value
-      // Explicite comparaison boolean for understand the case of new condition value
-      if (value === true) {
-        newNode.counter += 1;
-      } else if (value === false) {
-        newNode.counter -= 1;
-      }
-      changeConditionValue.conditionValue = value;
-    }
-
-    state.nodes[index] = state.nodes.instantiateNode({ ...newNode });
-
-    return {
-      ...state,
-      nodes: new NodesModel(state.nodes),
     };
   }
 
@@ -205,7 +157,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update property of medicalCase
-   *
    * @payload property: Index in Object
    * @payload newValue: New value of this index
    */
@@ -221,7 +172,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update modal
-   *
    * @payload content: Text that will be shown in modal
    */
   @Action(actions.MC_UPDATE_MODAL)
@@ -242,7 +192,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Set formulation for a drug
-   *
    * @payload diagnoseId: the diagnosey identifiant
    * @payload drugId: the drugId
    * @payload type: key in diagnoses
@@ -356,7 +305,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update medicine
-   *
    * @payload type: Text that will be shown in modal
    * @payload diagnosesKey: the diagnosey identifiant
    * @payload medicineId: the medecin identifiant
@@ -379,7 +327,6 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Update medicine duration
-   *
    * @payload id: id of the medicine
    * @payload duration: the new value to update
    */
@@ -403,27 +350,6 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
-   * Set the answer for a specific PS
-   *
-   * @payload indexPs: Index of a specific PredefinedSydrome
-   * @payload answer: New answer
-   */
-  @Action(actions.MC_PREDEFINED_SYNDROME_SET_ANSWER)
-  psSetAnswer(state, action) {
-    const { indexPs, answer } = action.payload;
-
-    state.nodes[indexPs] = state.nodes.instantiateNode({
-      ...state.nodes[indexPs],
-      answer,
-    });
-
-    return {
-      ...state,
-      nodes: new NodesModel(state.nodes),
-    };
-  }
-
-  /**
    * Sets / calculate the answer in the state
    *
    * @trigger When a question is answered
@@ -434,11 +360,11 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.SET_ANSWER)
   setAnswer(state, action) {
-    const { index, value } = action.payload;
+    const { nodeId, value } = action.payload;
 
     // Instantiate new object with answered question with new answer value
-    state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
-    state.nodes[index].updateAnswer(value);
+    state.nodes[nodeId] = state.nodes.instantiateNode({ ...state.nodes[nodeId] });
+    state.nodes[nodeId].updateAnswer(value);
 
     return {
       ...state,
@@ -604,8 +530,7 @@ class MedicalCaseReducer extends ReducerClass {
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
-    const modelsMedicalCase = this._instanceMedicalCase(medicalCase);
-
+    const modelsMedicalCase = MedicalCaseModel.copyMedicalCase(medicalCase);
     return {
       ...modelsMedicalCase,
       json: null,
@@ -630,7 +555,6 @@ class MedicalCaseReducer extends ReducerClass {
     const modelsMedicalCase = this._instanceMedicalCase(action.payload);
 
     modelsMedicalCase.modal.open = false;
-
     return {
       ...modelsMedicalCase,
       json: null,

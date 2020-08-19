@@ -43,11 +43,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    *      null = Still possible but not yet
    *      false = can't access the end anymore
    */
-  recursiveNodeDd = (state$, instance, dd) => {
+  recursiveNodeDd = (medicalCase, instance, dd) => {
     /**
      * Initial Var
      */
-    const currentNode = state$.nodes[instance.id];
+    const currentNode = medicalCase.nodes[instance.id];
     const instanceConditionValue = find(currentNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
 
     /**
@@ -73,23 +73,23 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     }
     // Remove path other dd
     const childrenWithoutOtherDd = instance.children.filter((id) => {
-      if (state$.nodes[id].type === nodeTypes.finalDiagnostic && state$.nodes[id].id !== dd.id) {
+      if (medicalCase.nodes[id].type === nodeTypes.finalDiagnostic && medicalCase.nodes[id].id !== dd.id) {
         return false;
       }
       return true;
     });
 
     const recursif = childrenWithoutOtherDd.map((childId) => {
-      const child = state$.nodes[childId];
+      const child = medicalCase.nodes[childId];
       // If this is not the final DD we calculate the conditonValue of the child
       if (child.type === nodeTypes.question || child.type === nodeTypes.questionsSequence) {
-        return this.recursiveNodeDd(state$, state$.diagnostics[dd.diagnostic_id].instances[child.id], dd);
+        return this.recursiveNodeDd(medicalCase, medicalCase.diagnostics[dd.diagnostic_id].instances[child.id], dd);
       }
       if (child.id === dd.id && child.type === nodeTypes.finalDiagnostic) {
         const top_conditions = _.filter(dd.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
         // We get the condition of the final link
         const arrayBoolean = top_conditions.map((condition) => {
-          return comparingTopConditions(dd, condition);
+          return comparingTopConditions(dd, condition, medicalCase);
         });
         // calcule final path
         const r = reduceConditionArrayBoolean(arrayBoolean);
@@ -137,29 +137,28 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    * Calculate condition to display a final diagnostic
    * Verify if the final diagnostic excluded an another one
    */
-  calculateCondition = () => {
-    const state$ = store.getState();
+  calculateCondition = (medicalCase) => {
     const conditionValueTrue = [];
     // Generate only the top_condition with conditionValue to true => they are not disabled
     this.top_conditions.map((condition) => {
-      const findDDinNode = state$.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
+      const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
       if (findDDinNode.conditionValue === true) {
         conditionValueTrue.push(condition);
       }
     });
 
     // Return the status of this dd
-    const statusOfDD = this.getStatusOfDD(state$, this);
+    const statusOfDD = this.getStatusOfDD(medicalCase, this);
 
     // If this FD can be excluded by other high-priority FD
     if (this.excluded_by_final_diagnostics !== null) {
-      let excludingNode = state$.nodes[this.excluded_by_final_diagnostics];
+      let excludingNode = medicalCase.nodes[this.excluded_by_final_diagnostics];
       do {
         // If this other high-priority FD is true so this is always false
-        if (excludingNode.calculateCondition() === true) {
+        if (excludingNode.calculateCondition(medicalCase) === true) {
           return false;
         }
-        excludingNode = state$.nodes[excludingNode.excluded_by_final_diagnostics];
+        excludingNode = medicalCase.nodes[excludingNode.excluded_by_final_diagnostics];
       } while (excludingNode !== undefined);
     }
 
@@ -191,8 +190,8 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    *
    */
   static all() {
-    const state$ = store.getState();
-    const { nodes } = state$;
+    const medicalCase = store.getState();
+    const { nodes } = medicalCase;
 
     const finalDiagnostics = nodes.filterByType(nodeTypes.finalDiagnostic);
 
@@ -205,7 +204,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
         const finalDiagnostic = finalDiagnostics[index];
         const complaintCategory = nodes[finalDiagnostic.cc];
 
-        const condition = finalDiagnostic.calculateCondition();
+        const condition = finalDiagnostic.calculateCondition(medicalCase);
 
         // If complaintCategory is not selected, I know it's ugly but what can I do ?
         if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers)[1])) {
