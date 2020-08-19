@@ -1,7 +1,7 @@
 import find from 'lodash/find';
 import * as _ from 'lodash';
 import { nodeTypes } from '../constants';
-import { updateConditionValue } from '../algorithm/epics.algo';
+import { updateConditionValue } from './epics.algo';
 import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './conditionsHelpers.algo';
 
 /**
