@@ -95,7 +95,7 @@ export class NodesModel implements NodeInterface {
         if (this[nodeId].type === 'Question') {
           this[nodeId].counter = 0;
           this[nodeId].dd.map((dd) => {
-            (!diagnostics[dd.id].isExcludedByComplaintCategory(this)) && dd.conditionValue ? this[nodeId].counter++ : null;
+            !diagnostics[dd.id].isExcludedByComplaintCategory(this) && dd.conditionValue ? this[nodeId].counter++ : null;
           });
           // Map trough PS if it is in an another PS itself
           this[nodeId].qs.map((qs) => {
@@ -115,40 +115,35 @@ export class NodesModel implements NodeInterface {
    */
   getHealthCaresQuestions(medicalCase) {
     let questions = {};
-    const finalDiagnostics = this.filterByType(nodeTypes.finalDiagnostic);
-
-    for (const index in finalDiagnostics) {
-      if (finalDiagnostics.hasOwnProperty(index)) {
-        const finalDiagnostic = finalDiagnostics[index];
-        const condition = finalDiagnostic.calculateCondition(medicalCase);
-        if (condition === true) {
-          for (const indexManagement in finalDiagnostic.managements) {
-            this[indexManagement].getQuestions(finalDiagnostic);
-            if (finalDiagnostic.managements.hasOwnProperty(indexManagement)) {
-              const m = this[indexManagement];
-
-              const q = m.getQuestions(finalDiagnostic.managements[indexManagement]);
-              questions = {
-                ...questions,
-                ...q,
-              };
-            }
-          }
-
-          for (const indexTreatment in finalDiagnostic.drugs) {
-            if (finalDiagnostic.drugs.hasOwnProperty(indexTreatment)) {
-              const t = this[indexTreatment];
-
-              const q = t.getQuestions(finalDiagnostic.drugs[indexTreatment]);
-              questions = {
-                ...questions,
-                ...q,
-              };
-            }
-          }
-        }
+    let finalDiagnostics = Object.keys(medicalCase.diagnoses.proposed).map((diagnoseId) => {
+      const diagnose = medicalCase.diagnoses.proposed[diagnoseId];
+      if (diagnose.agreed) {
+        return diagnose.id;
       }
-    }
+    });
+
+    finalDiagnostics = finalDiagnostics.concat(Object.keys(medicalCase.diagnoses.additional).map((diagnosesId) => parseInt(diagnosesId)));
+
+    finalDiagnostics.map((finalDiagnosticId) => {
+      const finalDiagnostic = this[finalDiagnosticId];
+      Object.keys(finalDiagnostic.managements).map((managementId) => {
+        const management = this[managementId];
+        const question = management.getQuestions(finalDiagnostic.managements[managementId]);
+        questions = {
+          ...questions,
+          ...question,
+        };
+      });
+      Object.keys(finalDiagnostic.drugs).map((drugId) => {
+        const drug = this[drugId];
+        const question = drug.getQuestions(finalDiagnostic.drugs[drugId]);
+        questions = {
+          ...questions,
+          ...question,
+        };
+      });
+    });
+
     return questions;
   }
 
