@@ -163,10 +163,14 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.UPDATE_MEDICAL_CASE)
   updateMedicalCase(state, action) {
     const { property, newValue } = action.payload;
-
     return {
       ...state,
       [property]: newValue,
+      json: null,
+      patient: {
+        ...state.patient,
+        medicalCases: [],
+      },
     };
   }
 
