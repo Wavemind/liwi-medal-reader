@@ -195,8 +195,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     const y = parseInt(questionY.value);
     const z = questionZ?.value;
 
-    console.log(this,x,y,z);
-
     const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
     const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
 
@@ -232,7 +230,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     // Order the keys
     const scopedRange = Object.keys(referenceTable).sortByNumber();
 
-    console.log(referenceTable[scopedRange.first()], referenceTable[scopedRange.last()], maxRange);
     // if value smaller than smallest element return the smaller value
     if (referenceTable[scopedRange.first()] > maxRange) {
       return scopedRange.first();
