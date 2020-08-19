@@ -203,10 +203,6 @@ const referencedNodeAction = (medicalCase, nodeId) => {
  */
 const processUpdatedNode = (medicalCase, nodeId) => {
   const currentNode = medicalCase.nodes[nodeId];
-  console.trace();
-  console.log(medicalCase)
-  console.log(nodeId)
-  console.log(currentNode)
   const relatedDiagnostics = currentNode.dd;
   const relatedQuestionsSequence = currentNode.qs;
   const relatedDiagnosticsForCC = currentNode.diagnostics_related_to_cc;
