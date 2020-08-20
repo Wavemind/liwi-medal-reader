@@ -123,7 +123,7 @@ export default function UserSelection() {
             <View style={styles.items}>
               <View style={styles.textBloc}>
                 <Icon name="medical-bag" type="MaterialCommunityIcons" style={styles.textIcon} />
-                <Text style={styles.roleText}>Role</Text>
+                <Text style={styles.roleText}>{t('unlock_session:role')}</Text>
               </View>
               <Picker note mode="dropdown" style={styles.flex} selectedValue={selectedUser.role} onValueChange={(e) => setUser({ ...selectedUser, role: e })}>
                 <Picker.Item label={t('application:select')} value={null} />

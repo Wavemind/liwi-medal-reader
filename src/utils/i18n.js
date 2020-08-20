@@ -355,6 +355,7 @@ i18n
           new_session: 'Create new session',
           sync_group: 'Synchronize',
           logout: 'logout',
+          role: 'Role',
         },
         popup: {
           startSave: 'Save medical case',
