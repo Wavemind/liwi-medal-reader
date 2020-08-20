@@ -116,15 +116,17 @@ export default class Filter extends React.Component<Props, State> {
 
     return (
       <View padding-auto style={styles.container}>
-        <ScrollView>
-          <LiwiTitle2 noBorder>{t('filters:title')}</LiwiTitle2>
+        <View style={styles.filtersHeight}>
+          <ScrollView>
+            <LiwiTitle2 noBorder>{t('filters:title')}</LiwiTitle2>
 
-          {model === 'MedicalCase' ? (
-            <FilterAccordionStatus key="accordion-medicalCase" activeFilters={activeFilters} handleFilters={this.handleStatusFilters} />
-          ) : (
-            availableFilters.map((node) => <FilterAccordion key={`accordion-${node.id}`} node={node} activeFilters={activeFilters} handleFilters={this.handleFilters} />)
-          )}
-        </ScrollView>
+            {model === 'MedicalCase' ? (
+              <FilterAccordionStatus key="accordion-medicalCase" activeFilters={activeFilters} handleFilters={this.handleStatusFilters} />
+            ) : (
+              availableFilters.map((node) => <FilterAccordion key={`accordion-${node.id}`} node={node} activeFilters={activeFilters} handleFilters={this.handleFilters} />)
+            )}
+          </ScrollView>
+        </View>
 
         <View flex-container-row style={styles.bottomButton}>
           <View w50>

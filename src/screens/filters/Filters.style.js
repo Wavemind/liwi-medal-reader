@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     marginTop: 50,
   },
 
-  bottomButton: { bottom: 0, left: 0, right: 0, height: 100, position: 'absolute' },
+  bottomButton: { bottom: 0, left: 0, right: 0, height: '10%', position: 'absolute' },
 
   clearAll: {
     left: 0,
@@ -35,4 +35,6 @@ export const styles = StyleSheet.create({
   apply: { width: '100%', height: '100%', marginLeft: 0 },
 
   listItem: { paddingLeft: 0, marginLeft: 0 },
+
+  filtersHeight: { height: '90%' },
 });
