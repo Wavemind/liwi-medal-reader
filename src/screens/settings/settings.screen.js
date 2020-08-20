@@ -132,7 +132,7 @@ export default class Settings extends React.Component<Props, State> {
           </ListItem>
           <ListItem>
             <Left>
-              <Text>Environment</Text>
+              <Text>{t('settings:environment')}</Text>
             </Left>
             <Right>
               <Picker
@@ -155,7 +155,7 @@ export default class Settings extends React.Component<Props, State> {
           </ListItem>
           <ListItem>
             <Left>
-              <Text>Version</Text>
+              <Text>{t('settings:version')}</Text>
             </Left>
             <Right><Text>{COMMIT}</Text></Right>
           </ListItem>

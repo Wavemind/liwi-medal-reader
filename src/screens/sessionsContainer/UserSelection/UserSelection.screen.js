@@ -122,11 +122,11 @@ export default function UserSelection() {
 
             <View style={styles.items}>
               <View style={styles.textBloc}>
-                <Icon name={'medical-bag'} type="MaterialCommunityIcons" style={styles.textIcon} />
+                <Icon name="medical-bag" type="MaterialCommunityIcons" style={styles.textIcon} />
                 <Text style={styles.roleText}>Role</Text>
               </View>
               <Picker note mode="dropdown" style={styles.flex} selectedValue={selectedUser.role} onValueChange={(e) => setUser({ ...selectedUser, role: e })}>
-                <Picker.Item label="Select the role" value={null} />
+                <Picker.Item label={t('application:select')} value={null} />
                 {Object.keys(userRoles).map((e) => e !== 'guest' && <Picker.Item label={userRoles[e]} value={e} key={e} />)}
               </Picker>
             </View>

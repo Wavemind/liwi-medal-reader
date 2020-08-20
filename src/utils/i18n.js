@@ -226,6 +226,8 @@ i18n
           awake: 'Keep awake',
           production: 'Serveur de production',
           app: 'Application',
+          version: 'Version',
+          environment: 'Environment',
         },
         work_case: {
           create: 'New case',
