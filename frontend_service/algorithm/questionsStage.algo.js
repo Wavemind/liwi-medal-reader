@@ -4,6 +4,7 @@ import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData } from '../actions/creators.actions';
 import { calculateCondition } from './conditionsHelpers.algo';
+import moment from "moment";
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -146,10 +147,16 @@ export const questionsComplaintCategory = () => {
   const complaintCategories = [];
   const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
 
-  orders.map((order) => {
-    complaintCategories.push(state$.nodes[order]);
-  });
+  const birthDate = state$.nodes[state$.config.basic_questions.birth_date_question_id].value;
+  const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
 
+  orders.map((order) => {
+    if (days <= 60 && state$.nodes[order].is_neonat) {
+      complaintCategories.push(state$.nodes[order]);
+    } else if (days > 60 && !state$.nodes[order].is_neonat) {
+      complaintCategories.push(state$.nodes[order]);
+    }
+  });
   const newQuestions = complaintCategories.map(({ id }) => id);
 
   // Update state$ complaint categories questions if it's different from new questions list

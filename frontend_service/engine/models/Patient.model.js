@@ -139,7 +139,7 @@ export class PatientModel {
         status: medicalCase.status,
         clinician: medicalCase.clinician,
         mac_address: medicalCase.mac_address,
-        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, medicalCase.nodese)),
+        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, medicalCase.nodes)),
       };
     });
   };

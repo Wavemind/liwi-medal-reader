@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "detox-android": "detox test -c android.emu.debug",
+    "detox-android": "detox test -c android.att.debug",
     "detox-ios": "detox test -c ios.sim.debug",
     "postinstall": "npx jetify -r && node ./scripts/silent.js ",
     "lint": "eslint .",
@@ -188,9 +188,9 @@
         "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
         "type": "android.attached",
         "device": {
-          "adbName": "62210121HY806C6012V"
+          "adbName": "62210121HY806C60122"
         },
-        "name": "62210121HY806C6012V"
+        "name": "62210121HY806C60122"
       }
     },
     "test-runner": "jest"
