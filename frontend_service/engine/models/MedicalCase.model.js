@@ -171,9 +171,12 @@ export class MedicalCaseModel {
     const finalDiagnostics = _.filter(this.nodes, (n) => n.type === nodeTypes.finalDiagnostic);
     finalDiagnostics.forEach((finalDiagnostic) => {
       finalDiagnostic.excluding_final_diagnostics.map((finalDiagnosticExcluded) => {
-        this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics = finalDiagnostic.id;
-      })
-    })
+        if (this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics === undefined) {
+          this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics = [];
+        }
+        this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics.push(finalDiagnostic.id);
+      });
+    });
   };
 
   /**
