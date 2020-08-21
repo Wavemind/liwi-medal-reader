@@ -52,7 +52,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
 
     /**
      * Get the condition of the instance link
-     * Do not change to this.calculateCondtion -> infinite loop
+     * Do not change to this.calculateCondition -> infinite loop
      */
     const instanceCondition = calculateCondition(instance);
 
@@ -81,7 +81,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
 
     const recursif = childrenWithoutOtherDd.map((childId) => {
       const child = medicalCase.nodes[childId];
-      // If this is not the final DD we calculate the conditonValue of the child
+      // If this is not the final DD we calculate the conditionValue of the child
       if (child.type === nodeTypes.question || child.type === nodeTypes.questionsSequence) {
         return this.recursiveNodeDd(medicalCase, medicalCase.diagnostics[dd.diagnostic_id].instances[child.id], dd);
       }
@@ -151,8 +151,9 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const statusOfDD = this.getStatusOfDD(medicalCase, this);
 
     // If this FD can be excluded by other high-priority FD
-    if (this.excluded_by_final_diagnostics !== null) {
-      let excludingNode = medicalCase.nodes[this.excluded_by_final_diagnostics];
+    this.excluded_by_final_diagnostics.map((excludedByFinalDiagnostic) => {
+      let excludingNode = medicalCase.nodes[excludedByFinalDiagnostic];
+      // TODO: Est-ce qu'ont doit aller voir l'exclusion de l'exclusion ?
       do {
         // If this other high-priority FD is true so this is always false
         if (excludingNode.calculateCondition(medicalCase) === true) {
@@ -160,12 +161,8 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
         }
         excludingNode = medicalCase.nodes[excludingNode.excluded_by_final_diagnostics];
       } while (excludingNode !== undefined);
-    }
+    });
 
-    // TODO change the excluding final diagnostics (can have an impact on showed treatment and management... so useless for now)
-    // eslint-disable-next-line no-empty
-    if (this.excluding_final_diagnostics !== null) {
-    }
     if (statusOfDD === false) {
       return false;
     }
@@ -177,6 +174,8 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return calculateCondition(tempDd);
     }
   };
+
+
 
   /**
    * Returns all the FinalDiagnostics by their status (included | excluded | not_defined)
