@@ -74,7 +74,7 @@ export class MedicalCaseModel {
 
       this.fail_safe = false;
 
-      this.generateExcludedId();
+      // this.generateExcludedId();
     } else {
       // If json is undefined it means it comes from the state
       if (props !== undefined && props.json === undefined) {
@@ -170,11 +170,16 @@ export class MedicalCaseModel {
   generateExcludedId = () => {
     const finalDiagnostics = _.filter(this.nodes, (n) => n.type === nodeTypes.finalDiagnostic);
     finalDiagnostics.forEach((finalDiagnostic) => {
+      console.log(finalDiagnostic)
       finalDiagnostic.excluding_final_diagnostics.map((finalDiagnosticExcluded) => {
+        console.log(finalDiagnosticExcluded)
+        console.log(this.nodes[finalDiagnosticExcluded])
         if (this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics === undefined) {
           this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics = [];
         }
-        this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics.push(finalDiagnostic.id);
+        if (!this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics.includes(finalDiagnostic.id)) {
+          this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics.push(finalDiagnostic.id);
+        }
       });
     });
   };
