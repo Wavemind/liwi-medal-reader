@@ -11,6 +11,7 @@ import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
 import { NodesModel } from './Nodes.model';
 import { DiagnosticModel } from './Diagnostic.model';
+import _ from 'lodash';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -167,15 +168,12 @@ export class MedicalCaseModel {
    * For each medicalCase who exclude other diagnostic, we set the id in both side.
    * */
   generateExcludedId = () => {
-    for (const index in this.nodes) {
-      if (this.nodes.hasOwnProperty(index)) {
-        const item = this.nodes[index];
-
-        if (item.type === nodeTypes.finalDiagnostic && item.excluding_final_diagnostics !== null) {
-          this.nodes[item.excluding_final_diagnostics].excluded_by_final_diagnostics = item.id;
-        }
-      }
-    }
+    const finalDiagnostics = _.filter(this.nodes, (n) => n.type === nodeTypes.finalDiagnostic);
+    finalDiagnostics.forEach((finalDiagnostic) => {
+      finalDiagnostic.excluding_final_diagnostics.map((finalDiagnosticExcluded) => {
+        this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics = finalDiagnostic.id;
+      })
+    })
   };
 
   /**
