@@ -115,10 +115,11 @@ export class NodesModel implements NodeInterface {
    */
   getHealthCaresQuestions(medicalCase) {
     let questions = {};
-    let finalDiagnostics = Object.keys(medicalCase.diagnoses.proposed).map((diagnoseId) => {
+    let finalDiagnostics = [];
+    Object.keys(medicalCase.diagnoses.proposed).map((diagnoseId) => {
       const diagnose = medicalCase.diagnoses.proposed[diagnoseId];
       if (diagnose.agreed) {
-        return diagnose.id;
+        finalDiagnostics.push(diagnose.id);
       }
     });
 

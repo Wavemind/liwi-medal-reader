@@ -54,7 +54,7 @@ export default class FinalDiagnostic extends React.Component<{}> {
               {t('diagnoses:agree')}
             </Text>
           </LeftButton>
-          <RightButton onPress={() => this._handleClick(false)} active={diagnoses.proposed[id]?.agreed === false}>
+          <RightButton active={diagnoses.proposed[id]?.agreed === false} onPress={() => this._handleClick(false)}>
             <Text center white={diagnoses.proposed[id]?.agreed === false}>
               {t('diagnoses:disagree')}
             </Text>
