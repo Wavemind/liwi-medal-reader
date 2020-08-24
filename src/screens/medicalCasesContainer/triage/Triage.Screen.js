@@ -20,6 +20,7 @@ type State = StateApplicationContext & {};
 export default class Triage extends React.Component<Props, State> {
   state = {
     widthView: 0,
+    complaintCategories: questionsComplaintCategory()
   };
 
   componentDidMount() {
@@ -33,9 +34,8 @@ export default class Triage extends React.Component<Props, State> {
       navigation,
     } = this.props;
 
-    const { widthView } = this.state;
+    const { widthView, complaintCategories } = this.state;
 
-    const complaintCategories = questionsComplaintCategory();
     const selectedPage = navigation.getParam('initialPage');
 
     return (

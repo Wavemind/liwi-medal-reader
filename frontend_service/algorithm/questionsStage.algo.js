@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
 
+import moment from 'moment';
 import { store } from '../store';
 import { categories } from '../constants';
-import { updateMetaData } from '../actions/creators.actions';
+import { updateMetaData, setAnswer } from '../actions/creators.actions';
 import { calculateCondition } from './conditionsHelpers.algo';
-import moment from "moment";
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -146,32 +146,19 @@ export const questionsComplaintCategory = () => {
   const state$ = store.getState();
   const complaintCategories = [];
   const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
+  const general_cc_id = state$.config.basic_questions.general_cc_id
 
   const birthDate = state$.nodes[state$.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
 
+  store.dispatch(setAnswer(general_cc_id, Object.keys(state$.nodes[general_cc_id].answers)[0]));
   orders.map((order) => {
     if (state$.nodes[order].id !== state$.config.basic_questions.general_cc_id) {
-      if (days <= 60) {
-        if (state$.nodes[order].is_neonat) {
-          complaintCategories.push(state$.nodes[order]);
-        } else {
-          Object.keys(state$.nodes[order].answers).forEach((possibleAnswer) => {
-            if (state$.nodes[order].answers[possibleAnswer].label === 'No') {
-              state$.nodes[order].answer = parseInt(possibleAnswer);
-            }
-          });
-        }
+      // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
+      if ((days <= 60 && state$.nodes[order].is_neonat) || (days > 60 && !state$.nodes[order].is_neonat)) {
+        complaintCategories.push(state$.nodes[order]);
       } else {
-        if (!state$.nodes[order].is_neonat) {
-          complaintCategories.push(state$.nodes[order]);
-        } else {
-          Object.keys(state$.nodes[order].answers).forEach((possibleAnswer) => {
-            if (state$.nodes[order].answers[possibleAnswer].label === 'No') {
-              state$.nodes[order].answer = parseInt(possibleAnswer);
-            }
-          });
-        }
+        store.dispatch(setAnswer(order, Object.keys(state$.nodes[order].answers)[1]));
       }
     }
   });
