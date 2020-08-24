@@ -169,8 +169,14 @@ export class MedicalCaseModel {
    * */
   generateExcludedId = () => {
     const finalDiagnostics = _.filter(this.nodes, (n) => n.type === nodeTypes.finalDiagnostic);
+    console.log(finalDiagnostics);
     finalDiagnostics.forEach((finalDiagnostic) => {
+      console.log("########################################################")
+      console.log(finalDiagnostic);
       finalDiagnostic.excluding_final_diagnostics.map((finalDiagnosticExcluded) => {
+        console.log(finalDiagnosticExcluded);
+        console.log(this.nodes);
+        console.log(this.nodes[finalDiagnosticExcluded])
         if (this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics === undefined) {
           this.nodes[finalDiagnosticExcluded].excluded_by_final_diagnostics = [];
         }

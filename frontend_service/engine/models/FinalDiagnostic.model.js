@@ -152,15 +152,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
 
     // If this FD can be excluded by other high-priority FD
     this.excluded_by_final_diagnostics.map((excludedByFinalDiagnostic) => {
-      let excludingNode = medicalCase.nodes[excludedByFinalDiagnostic];
-      // TODO: Est-ce qu'ont doit aller voir l'exclusion de l'exclusion ?
-      do {
-        // If this other high-priority FD is true so this is always false
-        if (excludingNode.calculateCondition(medicalCase) === true) {
-          return false;
-        }
-        excludingNode = medicalCase.nodes[excludingNode.excluded_by_final_diagnostics];
-      } while (excludingNode !== undefined);
+      const excludingNode = medicalCase.nodes[excludedByFinalDiagnostic];
+      // If this other high-priority FD is true so this is always false
+      if (excludingNode.calculateCondition(medicalCase) === true) {
+        return false;
+      }
     });
 
     if (statusOfDD === false) {
@@ -174,7 +170,6 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return calculateCondition(tempDd);
     }
   };
-
 
 
   /**
