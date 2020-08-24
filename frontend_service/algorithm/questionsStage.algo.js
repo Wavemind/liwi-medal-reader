@@ -151,10 +151,28 @@ export const questionsComplaintCategory = () => {
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
 
   orders.map((order) => {
-    if (days <= 60 && state$.nodes[order].is_neonat) {
-      complaintCategories.push(state$.nodes[order]);
-    } else if (days > 60 && !state$.nodes[order].is_neonat) {
-      complaintCategories.push(state$.nodes[order]);
+    if (state$.nodes[order].id !== state$.config.basic_questions.general_cc_id) {
+      if (days <= 60) {
+        if (state$.nodes[order].is_neonat) {
+          complaintCategories.push(state$.nodes[order]);
+        } else {
+          Object.keys(state$.nodes[order].answers).forEach((possibleAnswer) => {
+            if (state$.nodes[order].answers[possibleAnswer].label === 'No') {
+              state$.nodes[order].answer = parseInt(possibleAnswer);
+            }
+          });
+        }
+      } else {
+        if (!state$.nodes[order].is_neonat) {
+          complaintCategories.push(state$.nodes[order]);
+        } else {
+          Object.keys(state$.nodes[order].answers).forEach((possibleAnswer) => {
+            if (state$.nodes[order].answers[possibleAnswer].label === 'No') {
+              state$.nodes[order].answer = parseInt(possibleAnswer);
+            }
+          });
+        }
+      }
     }
   });
   const newQuestions = complaintCategories.map(({ id }) => id);
