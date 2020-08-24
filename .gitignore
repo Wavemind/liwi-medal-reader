@@ -48,3 +48,7 @@ yarn-error.log
 resources/fonts/Pony.ttf
 docusaurus/
 frontend_service/.idea/
+
+# Lock files
+package-lock.json
+yarn.lock
