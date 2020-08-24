@@ -14,7 +14,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
   constructor(props) {
     super(props);
 
-    const { label, diagnostic_id, drugs, managements, conditions, top_conditions, excluding_final_diagnostics = [], excluded_by_final_diagnostics = [], cc, instances = [] } = props;
+    const { label, diagnostic_id, drugs, managements, conditions, top_conditions, excluding_final_diagnostics = [], excluded_final_diagnostics = [], cc, instances = [] } = props;
 
     this.label = label;
     this.diagnostic_id = diagnostic_id;
@@ -23,7 +23,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     this.conditions = conditions;
     this.top_conditions = top_conditions;
     this.excluding_final_diagnostics = excluding_final_diagnostics;
-    this.excluded_by_final_diagnostics = excluded_by_final_diagnostics;
+    this.excluded_final_diagnostics = excluded_final_diagnostics;
     this.instances = instances;
     this.cc = cc;
 
@@ -151,10 +151,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const statusOfDD = this.getStatusOfDD(medicalCase, this);
 
     // If this FD can be excluded by other high-priority FD
-    this.excluded_by_final_diagnostics.map((excludedByFinalDiagnostic) => {
+    this.excluded_final_diagnostics.forEach((excludedByFinalDiagnostic) => {
       const excludingNode = medicalCase.nodes[excludedByFinalDiagnostic];
       // If this other high-priority FD is true so this is always false
       if (excludingNode.calculateCondition(medicalCase) === true) {
+
         return false;
       }
     });

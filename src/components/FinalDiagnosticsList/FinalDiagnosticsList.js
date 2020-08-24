@@ -16,7 +16,6 @@ type State = {};
 
 export default class FinalDiagnosticsList extends React.Component<Props, State> {
   state = {
-    finalDiagnostics: FinalDiagnosticModel.all(),
     customDiagnoses: '',
   };
 
@@ -88,7 +87,10 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
       medicalCase,
       app: { t },
     } = this.props;
-    const { finalDiagnostics, customDiagnoses } = this.state;
+    const { customDiagnoses } = this.state;
+
+    const finalDiagnostics = FinalDiagnosticModel.all();
+
     const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
 
     return (
