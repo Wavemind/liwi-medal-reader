@@ -155,6 +155,7 @@ export const questionsComplaintCategory = () => {
   orders.map((order) => {
     if (state$.nodes[order].id !== state$.config.basic_questions.general_cc_id) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
+      // For all questions that do not appear, set the answer to "No"
       if ((days <= 60 && state$.nodes[order].is_neonat) || (days > 60 && !state$.nodes[order].is_neonat)) {
         complaintCategories.push(state$.nodes[order]);
       } else {
