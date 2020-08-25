@@ -72,7 +72,6 @@ export class MedicalCaseModel {
       };
 
       this.fail_safe = false;
-
     } else {
       // If json is undefined it means it comes from the state
       if (props !== undefined && props.json === undefined) {
