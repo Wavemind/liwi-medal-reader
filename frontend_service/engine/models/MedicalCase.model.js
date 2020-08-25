@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import { displayFormats, medicalCaseStatus, nodeTypes, stages } from '../../constants';
+import { displayFormats, medicalCaseStatus, stages } from '../../constants';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import Database from '../../../src/engine/api/Database';
 import { differenceNodes } from '../../../src/utils/swissKnives';
@@ -11,7 +11,6 @@ import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
 import { NodesModel } from './Nodes.model';
 import { DiagnosticModel } from './Diagnostic.model';
-import _ from 'lodash';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {

@@ -151,16 +151,13 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const statusOfDD = this.getStatusOfDD(medicalCase, this);
 
     // If this FD can be excluded by other high-priority FD
-    const isExcluded = this.excluded_final_diagnostics.some((excludedByFinalDiagnostic) => {
-      // Exclude diagnostic if other diagnoses is available and agreed
-      if (
+    const isExcluded = this.excluded_final_diagnostics.some(
+      (excludedByFinalDiagnostic) =>
+        // Exclude diagnostic if other diagnoses is available and agreed
         medicalCase.nodes[excludedByFinalDiagnostic].calculateCondition(medicalCase) === true &&
         medicalCase.diagnoses.proposed[excludedByFinalDiagnostic] !== undefined &&
         medicalCase.diagnoses.proposed[excludedByFinalDiagnostic].agreed === true
-      ) {
-        return true;
-      }
-    });
+    );
 
     if (statusOfDD === false || isExcluded) {
       return false;
