@@ -50,6 +50,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       system = '',
       is_identifiable = false,
       is_triage = false,
+      is_neonat = false,
       estimable = false,
       estimableValue = 'measured',
       min_value_warning = '',
@@ -87,6 +88,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.system = system;
     this.is_identifiable = is_identifiable;
     this.is_triage = is_triage;
+    this.is_neonat = is_neonat;
     this.min_value_warning = min_value_warning;
     this.max_value_warning = max_value_warning;
     this.min_value_error = min_value_error;

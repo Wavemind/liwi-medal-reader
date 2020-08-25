@@ -22,6 +22,7 @@
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/netinfo": "5.7.1",
+    "@react-native-community/toolbar-android": "0.1.0-rc.2",
     "@react-native-community/viewpager": "^1.1.7",
     "accordion-collapse-react-native": "^0.2.10",
     "babel-plugin-dotenv-import": "^2.1.0",
@@ -188,9 +189,9 @@
         "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
         "type": "android.attached",
         "device": {
-          "adbName": "62210121HY806C6012V"
+          "adbName": "62210121HY806C60122"
         },
-        "name": "62210121HY806C6012V"
+        "name": "62210121HY806C60122"
       }
     },
     "test-runner": "jest"
