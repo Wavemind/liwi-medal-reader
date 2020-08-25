@@ -7,11 +7,11 @@ export const host = async () => {
   switch (environment) {
     case 'production':
       return 'https://medalc.unisante.ch/api/v1/';
-    case 'test':
-      return 'https://liwi-test.wavelab.top/api/v1/';
     case 'staging':
-    default:
       return 'https://liwi.wavelab.top/api/v1/';
+    case 'test':
+    default:
+      return 'https://liwi-test.wavelab.top/api/v1/';
   }
 };
 
