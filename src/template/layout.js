@@ -1,0 +1,183 @@
+import styled from 'styled-components';
+import { StyleSheet, TouchableOpacity as RNTouchableOpacity, View as RNView } from 'react-native';
+import { Col as LCol, H2 as LH2, Text as LText, View as LView } from 'native-base';
+import { liwiColors } from '../utils/constants';
+
+export const Text = styled(LText)`
+  color: #4e4e4e;
+  font-family: roboto;
+  font-weight: bold;
+  margin: 10px;
+`;
+
+export const ColCenter = styled(LCol).attrs(props => ({
+  justifyContent: 'center',
+  alignItems: 'center',
+}))``;
+
+export const LiwiTitle2 = styled(LH2)`
+  color: ${() => liwiColors.redColor};
+  margin: 0 20px 10px 0;
+  text-transform: uppercase;
+  padding-bottom: ${({ noBorder }) => {
+    if (noBorder === true) {
+      return '0px';
+    }
+    return '20px';
+  }};
+  border-bottom-width: ${({ noBorder }) => {
+    if (noBorder === true) {
+      return '0px';
+    }
+    return '2px';
+  }};
+  border-bottom-color: ${() => liwiColors.greyColor};
+  margin-top: ${({ marginTop }) => {
+    if (marginTop === true) {
+      return '20px';
+    }
+    return '0px';
+  }};
+`;
+
+export const LiwiTitle4 = styled(LText).attrs(props => ({
+  color: liwiColors.redColor,
+}))`
+  font-size: 24px;
+  color: ${() => liwiColors.redColor};
+  border-bottom-color: ${() => liwiColors.greyColor};
+  margin-bottom: 10px;
+`;
+
+export const LiwiTitle5 = styled(LText).attrs(props => ({
+  color: liwiColors.blackLightColor,
+}))`
+  font-size: 18px;
+  color: ${() => liwiColors.blackLightColor};
+  border-bottom-color: ${() => liwiColors.blackLightColor};
+  font-weight: bold;
+`;
+
+export const RootView = styled(LView).attrs(props => ({
+  flex: 1,
+}))``;
+
+export const RightView = styled(LView).attrs(props => ({
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+}))``;
+
+export const ViewBlocColor = styled(LView).attrs(props => ({
+  backgroundColor: liwiColors.whiteColor,
+}))`
+  border-radius: 4px;
+  color: ${liwiColors.blackColor};
+`;
+
+export const CardView = styled(LView).attrs(props => ({
+  backgroundColor: '#eaeaea',
+  borderRadius: 2,
+  padding: 10,
+  marginTop: 10,
+  marginLeft: 10,
+  marginRight: 10,
+  shadowColor: '#7b7b7b',
+  shadowOffset: {
+    width: 0,
+    height: 3,
+  },
+
+  shadowRadius: 5,
+  shadowOpacity: 1.0,
+}))``;
+
+export const QuestionView = styled(LView).attrs(props => ({
+  flex: 1,
+  backgroundColor: '#eaeaea',
+  borderRadius: 2,
+  margin: 5,
+  shadowColor: '#7b7b7b',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowRadius: 3,
+  shadowOpacity: 1.0,
+}))``;
+
+export const SeparatorLine = styled(RNView).attrs(props => ({
+  backgroundColor: '#d6d6d6',
+  height: 1,
+  marginBottom: 5,
+  marginTop: 5,
+}))``;
+
+export const LeftButton = styled(RNTouchableOpacity)`
+  flex: 1;
+  border-width: 0.5px;
+  padding: 10px;
+  background-color: ${({ active }) => {
+    if (active) {
+      return liwiColors.greenColor;
+    }
+    return liwiColors.whiteColor;
+  }};
+`;
+
+export const ViewQuestion = styled(RNView)`
+  flex-direction: row;
+  padding: 10px;
+  margin-right: ${({ marginRight }) => {
+    return marginRight;
+  }};
+  margin-left: ${({ marginLeft }) => {
+    return marginLeft;
+  }};
+  flex: ${({ flex }) => {
+    return flex;
+  }};
+`;
+
+export const RightButton = styled(RNTouchableOpacity)`
+  flex: 1;
+  border-width: 0.5px;
+  border-left-width: 0;
+  padding: 10px;
+  border-color: ${liwiColors.blackColor};
+  background-color: ${({ active }) => {
+    if (active) {
+      return liwiColors.redColor;
+    }
+    return liwiColors.whiteColor;
+  }};
+`;
+
+export const LiwiTabStyle = StyleSheet.create({
+  tabStyle: {
+    borderColor: liwiColors.darkGreyColor,
+    borderWidth: 1,
+  },
+
+  activeTextStyle: {
+    color: liwiColors.blackColor,
+    fontSize: 20,
+  },
+
+  textStyle: {
+    color: liwiColors.blackColor,
+    fontSize: 20,
+  },
+
+  tabBarUnderlineStyle: {
+    backgroundColor: liwiColors.darkGreyColor,
+  },
+
+  activeTabStyle: {
+    borderColor: liwiColors.darkGreyColor,
+    borderWidth: 1,
+  },
+
+  style: {
+    backgroundColor: 'transparent',
+  },
+});

@@ -1,7 +1,7 @@
 Liwi React Native
 ======
 
-Medical Analysis Application 
+Medical Analysis Application
 
 Contributor
 ======
@@ -52,7 +52,7 @@ Exemple
 import React, { Component } from 'react'
 
 export default class ComponentName extends Component {
-  
+
   render() {
     return null
   }
