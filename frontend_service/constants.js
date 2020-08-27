@@ -90,7 +90,7 @@ export const systems = {
   respiratory_circulation: 'Respiratory and circulatory system',
   ear_nose_mouth_throat: 'Ear, nose, mouth and throat system',
   visual: 'Visual system',
-  integumentary: 'Integumentary system',
+  integumentary: 'Skin/Hair/Mucosae system',
   digestive: 'Digestive system',
   urinary_reproductive: 'Urinary and reproductive system',
   nervous: 'Nervous system',
