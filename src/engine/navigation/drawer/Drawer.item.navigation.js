@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, Icon, Text } from 'native-base';
 import { TouchableOpacity, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { styles } from './Drawer.style';
 import { liwiColors } from '../../../utils/constants';
 import DrawerDot from './Drawer.dot';

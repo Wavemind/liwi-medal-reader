@@ -1,6 +1,6 @@
 // jestenv.js:
 
-import mockAsyncStorage from "@react-native-community/async-storage/jest/async-storage-mock";
+import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
 
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
@@ -24,3 +24,17 @@ jest.mock('react-native-gesture-handler', () => {
     Direction: jest.fn(),
   };
 });
+
+jest.mock('react-native-reanimated', () => {
+  return {
+    Value: jest.fn(),
+    event: jest.fn(),
+    add: jest.fn(),
+    eq: jest.fn(),
+    set: jest.fn(),
+    cond: jest.fn(),
+    interpolate: jest.fn(),
+    Extrapolate: { CLAMP: jest.fn() },
+  };
+});
+

@@ -17,7 +17,9 @@ export class NodesModel implements NodeInterface {
   }
 
   filterByCategory(category) {
-    return _.filter(this, (n) => n.category === category);
+    return _.filter(this, (n) => {
+      return n.category === category
+    });
   }
 
   filterByType(type) {
