@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Button, Icon, Text } from 'native-base';
 import { TouchableOpacity, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import NavigationService from '../Navigation.service';
 import styled from 'styled-components/native';
 import { styles } from './Drawer.style';
 import { liwiColors } from '../../../utils/constants';
@@ -146,7 +146,7 @@ export class ItemButton extends Component<{ t: any, r: any }> {
     );
   }
 }
-export const HeaderButtonsDrawer = withNavigation(
+export const HeaderButtonsDrawer =
   class Header extends React.Component {
     // Update the component only when needed
     shouldComponentUpdate(nextProps) {
@@ -160,7 +160,7 @@ export const HeaderButtonsDrawer = withNavigation(
     }
 
     render() {
-      const { r, navigation } = this.props;
+      const { r } = this.props;
 
       return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }} onStartShouldSetResponder={() => true}>
@@ -172,9 +172,9 @@ export const HeaderButtonsDrawer = withNavigation(
             homeDrawer
             onPress={() => {
               if (r.routeName === 'Home') {
-                navigation.toggleDrawer();
+                NavigationService.toggleDrawer();
               }
-              navigation.navigate('Home');
+              NavigationService.navigate('Home');
             }}
           >
             <Icon style={styles.iconTop} dark type="FontAwesome" name="home" />
@@ -185,7 +185,7 @@ export const HeaderButtonsDrawer = withNavigation(
               alignSelf: 'flex-end',
             }}
             homeDrawer
-            onPress={() => navigation.navigate('Emergency')}
+            onPress={() => NavigationService.navigate('Emergency')}
           >
             <Icon style={styles.iconTop} dark type="FontAwesome5" name="plus-square" />
           </Button>
@@ -196,7 +196,7 @@ export const HeaderButtonsDrawer = withNavigation(
             }}
             homeDrawer
             onPress={() => {
-              navigation.toggleDrawer();
+              NavigationService.toggleDrawer();
             }}
           >
             <Icon style={styles.iconTop} dark type="AntDesign" name="close" />
@@ -204,10 +204,9 @@ export const HeaderButtonsDrawer = withNavigation(
         </View>
       );
     }
-  }
-);
+  };
 
-export const BottomButtonsDrawer = withNavigation(
+export const BottomButtonsDrawer =
   class BottomButtonsDrawerClasse extends React.Component {
     // Update the component only when needed
     shouldComponentUpdate(nextProps) {
@@ -224,7 +223,7 @@ export const BottomButtonsDrawer = withNavigation(
     }
 
     render() {
-      const { navigation, medicalCase, isDrawer } = this.props;
+      const { medicalCase, isDrawer } = this.props;
       const isMedicalCaseLoaded = medicalCase.id !== undefined && !medicalCase?.isNewCase;
       return (
         <View style={styles.bottom}>
@@ -233,7 +232,7 @@ export const BottomButtonsDrawer = withNavigation(
             style={[styles.bottomStyle, { opacity: isMedicalCaseLoaded ? 1 : 0.3 }]}
             disabled={!isMedicalCaseLoaded}
             onPress={() =>
-              navigation.navigate('Summary', {
+              NavigationService.navigate('Summary', {
                 id: medicalCase.patient.id,
                 defaultTab: 0,
               })
@@ -245,8 +244,7 @@ export const BottomButtonsDrawer = withNavigation(
         </View>
       );
     }
-  }
-);
+  };
 
 export class PathBar extends Component<{ routeName: string, initialPage: string }> {
   shouldComponentUpdate(nextProps) {
