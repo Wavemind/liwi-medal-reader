@@ -1,5 +1,4 @@
 // jestenv.js:
-
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
 
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
@@ -35,7 +34,8 @@ jest.mock('react-navigation', () => {
     createDrawerNavigator: jest.fn(),
     createMaterialTopTabNavigator: jest.fn(),
     createStackNavigator: jest.fn(),
-    withNavigation: jest.fn(),
+    createSwitchNavigator: jest.fn(),
+    withNavigation: (component) => component,
     StackActions: {
       push: jest.fn().mockImplementation((x) => ({ ...x, type: 'Navigation/PUSH' })),
       replace: jest.fn().mockImplementation((x) => ({ ...x, type: 'Navigation/REPLACE' })),
@@ -54,7 +54,10 @@ jest.mock('react-navigation-drawer', () => {
 });
 
 jest.mock('react-navigation-stack', () => {
-  return { Header: () => 'whatever' };
+  return {
+    createStackNavigator: jest.fn(),
+    Header: () => 'whatever',
+  };
 });
 
 jest.mock('react-native-fs', () => {
@@ -127,38 +130,35 @@ jest.mock('react-native', () => ({
       height: jest.fn(),
     }),
   },
+  StyleSheet: {
+    create: () => {},
+  },
+  View: jest.fn(),
 }));
 
-jest.mock('../i18n', () => {
+jest.mock('../i18n.js', () => {
   return {
     addResourceBundle: jest.fn(),
+    t: jest.fn(),
   };
 });
 
 jest.mock('react-native-tiny-toast', () => {});
-
-// jest.mock('rn-fetch-blob', () => {
-//   return {
-//     DocumentDir: () => {},
-//     ImageCache: {
-//       get: {
-//         clear: () => {},
-//       },
-//     },
-//     fs: {
-//       dirs: {
-//         MainBundleDir: () => {},
-//         CacheDir: () => {},
-//         DocumentDir: () => {},
-//       },
-//     },
-//     default: {
-//       fs: {
-//         exists: () => {},
-//       },
-//     },
-//   };
-// });
+jest.mock('react-native-safe-modules', () => {});
+jest.mock('lottie-react-native', () => {});
+jest.mock('native-base', () => {});
+jest.mock('@haskkor/react-native-pincode', () => {});
+jest.mock('react-native-rectangle-scanner', () => {});
+jest.mock('react-native-camera', () => {});
+jest.mock('react-native-qrcode-scanner', () => {});
+jest.mock('react-native-video', () => {});
+jest.mock('react-native-orientation-locker', () => {});
+jest.mock('react-native-slider', () => {});
+jest.mock('react-native-sound', () => {});
+jest.mock('react-native-lightbox', () => {});
+jest.mock('react-native-platform-touchable', () => {});
+jest.mock('react-native-vector-icons/MaterialIcons', () => {});
+jest.mock('react-native-vector-icons', () => {});
 
 jest.mock(
   'rn-fetch-blob',
@@ -168,27 +168,21 @@ jest.mock(
       default: {
         fs: {
           dirs: {
-            MainBundleDir: () => {
-            },
-            CacheDir: () => {
-            },
-            DocumentDir: () => {
-            },
+            MainBundleDir: () => {},
+            CacheDir: () => {},
+            DocumentDir: () => {},
           },
         },
       },
       fs: {
         dirs: {
-          MainBundleDir: () => {
-          },
-          CacheDir: () => {
-          },
-          DocumentDir: () => {
-          },
+          MainBundleDir: () => {},
+          CacheDir: () => {},
+          DocumentDir: () => {},
         },
       },
     };
     return mRNFetchBlob;
   },
-  { virtual: true },
+  { virtual: true }
 );

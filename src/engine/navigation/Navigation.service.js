@@ -83,7 +83,7 @@ function setParamsAge(name = '') {
  */
 function getCurrentRoute() {
   if (_navigator === undefined) {
-    return null;
+    return {routeName: 'poney'};
   }
   let route = _navigator?.state.nav;
 

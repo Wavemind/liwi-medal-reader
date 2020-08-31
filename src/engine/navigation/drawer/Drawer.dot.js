@@ -5,21 +5,21 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { liwiColors } from '../../../utils/constants';
 
-const ListItemDot = styled.TouchableOpacity`
+const ListItemDot = styled(props => TouchableOpacity`
   position: relative;
   margin-right: 10px;
   margin-left: ${({ isDrawer }) => (isDrawer ? '1px' : '6px')};
-`;
+`);
 
-const ListItemDotOuter = styled.View`
+const ListItemDotOuter = styled(props => View`
   width: 28px;
   height: 28px;
   border-radius: 50;
   border-width: 3px;
   border-color: ${({ color }) => color};
-`;
+`);
 
-const ListItemDotInner = styled.View`
+const ListItemDotInner = styled(props => View`
   width: 14px;
   height: 14px;
   position: absolute;
@@ -27,7 +27,7 @@ const ListItemDotInner = styled.View`
   left: 7px;
   background-color: ${({ color }) => color};
   border-radius: 50;
-`;
+`);
 
 const DrawerDot = ({ type, onPress, isDrawer }) => {
   let dotColor = '#d8d8d8';

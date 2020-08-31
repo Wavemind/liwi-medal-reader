@@ -13,7 +13,7 @@ import DrawerDot from './Drawer.dot';
 // TODO: REFACTOR THIS SHIT
 // TODO: REFACTOR THIS SHIT
 
-const WrapperMiniDrawerCategory = styled.TouchableOpacity`
+const WrapperMiniDrawerCategory = styled(props => TouchableOpacity`
   padding: ${({ isDrawer }) => (isDrawer ? '13px 0' : '6px 0')};
   height: ${({ isDrawer }) => (isDrawer ? 'auto' : '200px')};
   width: ${({ isDrawer }) => (isDrawer ? 'auto' : '30px')};
@@ -25,9 +25,9 @@ const WrapperMiniDrawerCategory = styled.TouchableOpacity`
   border-bottom-right-radius: 10px;
   background-color: ${({ active }) => (active ? '#db473e' : '#e1e1e1')};
   flex: 1;
-`;
+`);
 
-const SmallText = styled.Text`
+const SmallText = styled(props => Text`
   color: ${({ active }) => (active ? '#ffffff' : '#3f3f3f')};
   text-align: center;
   text-transform: uppercase;
@@ -37,7 +37,7 @@ const SmallText = styled.Text`
   transform: ${({ isDrawer }) => (isDrawer ? 'rotate(0deg)' : 'rotate(-90deg)')};
   width: ${({ isDrawer }) => (isDrawer ? 'auto' : '195px')};
   flex: 1;
-`;
+`);
 
 export class CategorieButton extends Component<{ t: any, r: any }> {
   // Update the component only when needed

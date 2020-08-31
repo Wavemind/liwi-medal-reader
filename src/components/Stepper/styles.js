@@ -7,13 +7,6 @@ import { liwiColors, responsiveUi } from '../../utils/constants';
 const X_WIDTH: number = 375;
 const X_HEIGHT: number = 812;
 
-function isIPhoneX(): boolean {
-  return (
-    Platform.OS === 'ios' &&
-    ((Dimensions.get('window').height === X_HEIGHT && Dimensions.get('window').width === X_WIDTH) || (Dimensions.get('window').height === X_WIDTH && Dimensions.get('window').width === X_HEIGHT))
-  );
-}
-
 const styles: Object = StyleSheet.create({
   activeDotStyle: {
     backgroundColor: liwiColors.redColor,
@@ -46,41 +39,17 @@ const styles: Object = StyleSheet.create({
   },
 
   topStepper: {
-    height: 65,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 10,
     paddingBottom: 5,
     elevation: 4,
-    ...Platform.select({
-      ios: {
-        marginVertical: 12,
-        shadowOpacity: 0.1,
-        shadowRadius: 0.54 * 3,
-        shadowOffset: {
-          height: 0.6 * 3,
-        },
-      },
-      android: {
-        height: 100,
-      },
-    }),
+    height: 100,
     backgroundColor: 'white',
   },
   bottomStepper: {
-    ...Platform.select({
-      ios: {
-        alignItems: 'center',
-        shadowOpacity: 1,
-        shadowRadius: 0.54 * 3,
-        shadowOffset: {
-          height: 0.6 * 3,
-        },
-        height: isIPhoneX ? 74 : 50,
-      },
-      android: { height: 50 },
-    }),
+    height: 50,
     flexDirection: 'row',
     backgroundColor: 'white',
     elevation: 12,
@@ -131,14 +100,7 @@ const styles: Object = StyleSheet.create({
   },
   bottomTextButtons: {
     textTransform: 'uppercase',
-    ...Platform.select({
-      ios: {
-        fontFamily: 'System',
-      },
-      android: {
-        fontFamily: 'Roboto-Light',
-      },
-    }),
+    fontFamily: 'Roboto-Light',
   },
   saveButton: {
     justifyContent: 'flex-end',

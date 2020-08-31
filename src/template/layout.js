@@ -3,19 +3,19 @@ import { StyleSheet, TouchableOpacity as RNTouchableOpacity, View as RNView } fr
 import { Col as LCol, H2 as LH2, Text as LText, View as LView } from 'native-base';
 import { liwiColors } from '../utils/constants';
 
-export const Text = styled(LText)`
+export const Text = styled(props => (LText)`
   color: #4e4e4e;
   font-family: roboto;
   font-weight: bold;
   margin: 10px;
-`;
+`);
 
-export const ColCenter = styled(LCol).attrs(props => ({
+export const ColCenter = styled(props => (LCol).attrs(props => ({
   justifyContent: 'center',
   alignItems: 'center',
-}))``;
+})))``;
 
-export const LiwiTitle2 = styled(LH2)`
+export const LiwiTitle2 = styled(props => (LH2)`
   color: ${() => liwiColors.redColor};
   margin: 0 20px 10px 0;
   text-transform: uppercase;
@@ -38,43 +38,43 @@ export const LiwiTitle2 = styled(LH2)`
     }
     return '0px';
   }};
-`;
+`);
 
-export const LiwiTitle4 = styled(LText).attrs(props => ({
+export const LiwiTitle4 = styled(props => (LText).attrs(props => ({
   color: liwiColors.redColor,
 }))`
   font-size: 24px;
   color: ${() => liwiColors.redColor};
   border-bottom-color: ${() => liwiColors.greyColor};
   margin-bottom: 10px;
-`;
+`);
 
-export const LiwiTitle5 = styled(LText).attrs(props => ({
+export const LiwiTitle5 = styled(props => (LText).attrs(props => ({
   color: liwiColors.blackLightColor,
 }))`
   font-size: 18px;
   color: ${() => liwiColors.blackLightColor};
   border-bottom-color: ${() => liwiColors.blackLightColor};
   font-weight: bold;
-`;
+`);
 
-export const RootView = styled(LView).attrs(props => ({
+export const RootView = styled(props => (LView).attrs(props => ({
   flex: 1,
-}))``;
+})))``;
 
-export const RightView = styled(LView).attrs(props => ({
+export const RightView = styled(props => (LView).attrs(props => ({
   flexDirection: 'row',
   justifyContent: 'flex-end',
-}))``;
+})))``;
 
-export const ViewBlocColor = styled(LView).attrs(props => ({
+export const ViewBlocColor = styled(props => (LView).attrs(props => ({
   backgroundColor: liwiColors.whiteColor,
-}))`
+})))`
   border-radius: 4px;
   color: ${liwiColors.blackColor};
 `;
 
-export const CardView = styled(LView).attrs(props => ({
+export const CardView = styled(props => (LView).attrs(props => ({
   backgroundColor: '#eaeaea',
   borderRadius: 2,
   padding: 10,
@@ -89,9 +89,9 @@ export const CardView = styled(LView).attrs(props => ({
 
   shadowRadius: 5,
   shadowOpacity: 1.0,
-}))``;
+})))``;
 
-export const QuestionView = styled(LView).attrs(props => ({
+export const QuestionView = styled(props => (LView).attrs(props => ({
   flex: 1,
   backgroundColor: '#eaeaea',
   borderRadius: 2,
@@ -103,16 +103,16 @@ export const QuestionView = styled(LView).attrs(props => ({
   },
   shadowRadius: 3,
   shadowOpacity: 1.0,
-}))``;
+})))``;
 
-export const SeparatorLine = styled(RNView).attrs(props => ({
+export const SeparatorLine = styled(props => (RNView).attrs(props => ({
   backgroundColor: '#d6d6d6',
   height: 1,
   marginBottom: 5,
   marginTop: 5,
-}))``;
+})))``;
 
-export const LeftButton = styled(RNTouchableOpacity)`
+export const LeftButton = styled(props => (RNTouchableOpacity)`
   flex: 1;
   border-width: 0.5px;
   padding: 10px;
@@ -122,9 +122,9 @@ export const LeftButton = styled(RNTouchableOpacity)`
     }
     return liwiColors.whiteColor;
   }};
-`;
+`);
 
-export const ViewQuestion = styled(RNView)`
+export const ViewQuestion = styled(props => (RNView)`
   flex-direction: row;
   padding: 10px;
   margin-right: ${({ marginRight }) => {
@@ -136,9 +136,9 @@ export const ViewQuestion = styled(RNView)`
   flex: ${({ flex }) => {
     return flex;
   }};
-`;
+`);
 
-export const RightButton = styled(RNTouchableOpacity)`
+export const RightButton = styled(props => (RNTouchableOpacity)`
   flex: 1;
   border-width: 0.5px;
   border-left-width: 0;
@@ -150,7 +150,7 @@ export const RightButton = styled(RNTouchableOpacity)`
     }
     return liwiColors.whiteColor;
   }};
-`;
+`);
 
 export const LiwiTabStyle = StyleSheet.create({
   tabStyle: {

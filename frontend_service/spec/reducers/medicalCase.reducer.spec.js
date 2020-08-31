@@ -54,8 +54,8 @@ describe('actions', () => {
   // });
 
   it('should be able to set an answer to a question', () => {
-    answer(47, 91);
-    expect(getAnswer(47)).toEqual(91);
+    answer(12, 20);
+    expect(getAnswer(12)).toEqual(45);
   });
 
   //
