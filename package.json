@@ -98,7 +98,6 @@
     "redux-thunk": "^2.3.0",
     "reflect-metadata": "^0.1.13",
     "reselect": "^4.0.0",
-    "rn-fetch-blob": "^0.12.0",
     "rn-viewpager": "^1.2.9",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.5.3",
@@ -199,7 +198,7 @@
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "/node_modules/(?!native-base)/"
+      "/node_modules/(?!native-base|react-navigation)/"
     ],
     "testEnvironment": "node",
     "setupFiles": [

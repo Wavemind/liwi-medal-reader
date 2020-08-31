@@ -3,15 +3,14 @@ import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { persistReducer, persistStore } from 'redux-persist';
-// import FilesystemStorage from 'redux-persist-filesystem-storage';
-import storage from 'redux-persist/lib/storage'
+import FilesystemStorage from 'redux-persist-filesystem-storage';
 import rootReducer from './reducers';
 import rootEpic from './algorithm/epics.algo';
 
 const persistConfig = {
   debug: __DEV__,
   key: 'medicalCase',
-  storage,
+  storage: FilesystemStorage,
   timeout: 10000,
   stateReconciler: hardSet, // see "Merge Process" section for details.
 };
