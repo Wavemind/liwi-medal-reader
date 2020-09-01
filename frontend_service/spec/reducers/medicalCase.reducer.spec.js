@@ -1,15 +1,17 @@
 import find from 'lodash/find';
+import moment from 'moment';
+import { createAppContainer } from 'react-navigation';
 import { setAnswer, setMedicalCase } from '../../actions/creators.actions';
 import { store } from '../../store';
 import 'reflect-metadata';
 import { valueFormats } from '../../constants';
-import { createAppContainer } from 'react-navigation';
 import { RootMainNavigator } from '../../../src/engine/navigation/Root.navigation';
+import { FinalDiagnosticModel } from '../../engine/models/FinalDiagnostic.model';
 
 const algorithm = require('../algorithm');
 
 export const cl = console.log;
-console.log = () => {};
+// console.log = () => {};
 console.error = () => {};
 console.warn = () => {};
 
@@ -17,13 +19,26 @@ console.warn = () => {};
 store.dispatch(setMedicalCase(algorithm));
 createAppContainer(RootMainNavigator);
 
-const answer = (nodeId, value) => {
+const jestSetAnswer = (nodeId, value) => {
   store.dispatch(setAnswer(nodeId, value));
 };
 const getAnswer = (nodeId) => {
   const state$ = store.getState();
   return state$.nodes[nodeId].answer;
 };
+
+const getValue = (nodeId) => {
+  const state$ = store.getState();
+  return state$.nodes[nodeId].value;
+};
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
 
 const booleanNodeAnswer = (id) => {
   const state$ = store.getState();
@@ -54,8 +69,20 @@ describe('actions', () => {
   // });
 
   it('should be able to set an answer to a question', () => {
-    answer(12, 20);
-    expect(getAnswer(12)).toEqual(45);
+    jestSetAnswer(1, moment('2020-05-20').format());
+    jestSetAnswer(13, 22); // Respiratory complaint -> yes
+    jestSetAnswer(25, 36); // History of fever -> yes
+    jestSetAnswer(40, 76); // Difficulty breathing -> yes
+    jestSetAnswer(34, 55); // Grunting -> no
+    jestSetAnswer(5, 1); // Respiratory rate -> 1
+    jestSetAnswer(33, 1000); // Blood oxygen saturation -> 1000
+    jestSetAnswer(62, 121); // Severe difficult breathing needing referral -> no
+    jestSetAnswer(1687, 753); // Significant hemoptysis (>1 episode) -> yes
+
+    const df = FinalDiagnosticModel.all();
+    console.log(df.included)
+
+    // expect(getAnswer(1666)).toEqual(734);
   });
 
   //

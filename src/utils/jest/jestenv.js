@@ -42,6 +42,7 @@ jest.mock('react-navigation', () => {
     },
     NavigationActions: {
       navigate: jest.fn().mockImplementation((x) => x),
+      setParams: jest.fn().mockImplementation((x) => x),
     },
     NavigationEvents: 'mockNavigationEvents',
   };
