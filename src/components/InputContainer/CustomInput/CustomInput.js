@@ -19,6 +19,7 @@ export default class CustomInput extends React.Component<Props, State> {
     keyboardType: 'default',
     secureTextEntry: false,
     condensed: false,
+    disabled: false,
     autoCapitalize: 'none',
   };
 
@@ -41,7 +42,7 @@ export default class CustomInput extends React.Component<Props, State> {
   };
 
   render() {
-    const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed, autoCapitalize, style } = this.props;
+    const { label, change, index, iconName, iconType, keyboardType, placeholder, secureTextEntry, error, condensed, autoCapitalize, style, disabled } = this.props;
 
     const { value } = this.state;
 
@@ -60,6 +61,7 @@ export default class CustomInput extends React.Component<Props, State> {
             style={style}
             autoCapitalize={autoCapitalize}
             common
+            disabled={disabled}
             keyboardType={keyboardType}
             value={value}
             onChange={this._handleChangeValue}

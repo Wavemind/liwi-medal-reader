@@ -117,7 +117,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
+          <CustomInput disabled placeholder="" condensed style={[styles.identifierText, styles.identifierTextDisabled ]} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
@@ -127,10 +127,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
           <CustomInput
+            disabled
             placeholder="..."
             keyboardType="number-pad"
             condensed
-            style={styles.identifierText}
+            style={[styles.identifierText, styles.identifierTextDisabled]}
             init={patient.group_id}
             change={this.updatePatientValue}
             index="group_id"
