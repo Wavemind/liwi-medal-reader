@@ -40,17 +40,17 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const booleanNodeAnswer = (id) => {
+const booleanAnswer = (nodeId) => {
   const state$ = store.getState();
-  const node = state$.nodes[id];
+  const node = state$.nodes[nodeId];
   if (node.value_format === valueFormats.bool) {
     if (node.answer === null) return null;
-    const idYes = Number(Object.keys(node.answers).first());
-    const idNo = Number(Object.keys(node.answers).second());
+    const idYes = Number(Object.keys(node.answers)[0]);
+    const idNo = Number(Object.keys(node.answers)[1]);
     if (node.answer === idYes) return true;
     if (node.answer === idNo) return false;
   } else {
-    cl('This node is not Boolean', id);
+    cl('This node is not Boolean', nodeId);
   }
 };
 
@@ -68,19 +68,22 @@ describe('actions', () => {
   //   expect(filterQuestions).not.toEqual([]);
   // });
 
-  it('should be able to set an answer to a question', () => {
+  it('Should return Significant hemoptysis for Pneumonia diagnosis', () => {
     jestSetAnswer(1, moment('2020-05-20').format());
-    jestSetAnswer(13, 22); // Respiratory complaint -> yes
-    jestSetAnswer(25, 36); // History of fever -> yes
-    jestSetAnswer(40, 76); // Difficulty breathing -> yes
-    jestSetAnswer(34, 55); // Grunting -> no
-    jestSetAnswer(5, 1); // Respiratory rate -> 1
-    jestSetAnswer(33, 1000); // Blood oxygen saturation -> 1000
-    jestSetAnswer(62, 121); // Severe difficult breathing needing referral -> no
-    jestSetAnswer(1687, 753); // Significant hemoptysis (>1 episode) -> yes
-
-    const df = FinalDiagnosticModel.all();
-    console.log(df.included)
+    jestSetAnswer(50, 39);
+    jestSetAnswer(13, 22); // CC - Respiratory complaint -> yes
+    // jestSetAnswer(25, 36); // History of fever -> yes
+    // jestSetAnswer(40, 76); // Difficulty breathing -> yes
+    // jestSetAnswer(34, 55); // Grunting -> no
+    jestSetAnswer(5, 20); // Respiratory rate -> 1
+    // jestSetAnswer(33, 1000); // Blood oxygen saturation -> 1000
+    // jestSetAnswer(62, 121); // Severe difficult breathing needing referral -> no
+    // jestSetAnswer(1687, 753); // Significant hemoptysis (>1 episode) -> yese
+    // expect(booleanAnswer(38)).toEqual(true);
+    expect(getAnswer(9)).toEqual(13);
+    // expect(booleanAnswer(58)).toEqual(false);
+    // const df = FinalDiagnosticModel.all();
+    // console.log(df.included)
 
     // expect(getAnswer(1666)).toEqual(734);
   });

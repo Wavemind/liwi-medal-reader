@@ -156,11 +156,11 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
   }
 
   if (questionsSequenceCondition === true) {
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).first()].id;
+    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[0]].id;
   } else if (questionsSequenceCondition === false || statusQs === false) {
     // statusQd === false -> can't access the end of the QS anymore
     // questionsSequenceCondition === false -> can't find a condition to true
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).second()].id;
+    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[1]].id;
   }
 
   // If the new answer of this QS is different from the older, we change it
@@ -188,7 +188,7 @@ const referencedNodeAction = (medicalCase, nodeId) => {
       value = currentNode.calculateReference();
       break;
   }
-
+  console.log("Je suis le node", nodeId, value)
   if (value !== currentNode.value) {
     medicalCase.nodes[currentNode.id].updateAnswer(value);
     processUpdatedNode(medicalCase, currentNode.id);
@@ -235,6 +235,8 @@ const processUpdatedNode = (medicalCase, nodeId) => {
 
   // We tell the related nodes to update themself
   if (currentNode.type === nodeTypes.question) {
+    console.log(currentNode.id)
+    console.log(referencedNodes)
     referencedNodes.forEach((referencedNodeId) => referencedNodeAction(medicalCase, referencedNodeId));
   }
 
