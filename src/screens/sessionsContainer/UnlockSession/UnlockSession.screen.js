@@ -53,6 +53,9 @@ export default class UnLockSession extends React.Component<Props, State> {
 
       if (isConnected) {
         await app.setInitialData();
+      } else {
+        const algorithm = await getItem('algorithm');
+        app.set('algorithm', algorithm);
       }
 
       const database = await new Database();
