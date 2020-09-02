@@ -95,7 +95,7 @@ export const systems = {
   urinary_reproductive: 'Urinary and reproductive system',
   nervous: 'Nervous system',
   muscular_skeletal: 'Muscular and skeletal system',
-  null: 'System is not defined', // TODO: must be remove when all diag is ok ! 22.04.2020
+  null: 'General', // TODO: must be remove when all diag is ok ! 22.04.2020
 };
 
 export const categories = {
