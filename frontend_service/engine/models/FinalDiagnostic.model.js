@@ -166,7 +166,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return null;
     }
     if (statusOfDD === true) {
+
       const tempDd = { ...this, top_conditions: conditionValueTrue };
+      if (this.id === 1688)
+        // console.log(conditionValueTrue)
+        console.log(calculateCondition(tempDd))
       return calculateCondition(tempDd);
     }
   };

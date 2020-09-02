@@ -182,13 +182,12 @@ const referencedNodeAction = (medicalCase, nodeId) => {
 
   switch (currentNode.display_format) {
     case displayFormats.formula:
-      value = currentNode.calculateFormula();
+      value = currentNode.calculateFormula(medicalCase);
       break;
     case displayFormats.reference:
-      value = currentNode.calculateReference();
+      value = currentNode.calculateReference(medicalCase);
       break;
   }
-  console.log("Je suis le node", nodeId, value)
   if (value !== currentNode.value) {
     medicalCase.nodes[currentNode.id].updateAnswer(value);
     processUpdatedNode(medicalCase, currentNode.id);
@@ -207,10 +206,6 @@ const processUpdatedNode = (medicalCase, nodeId) => {
   const relatedQuestionsSequence = currentNode.qs;
   const relatedDiagnosticsForCC = currentNode.diagnostics_related_to_cc;
   const referencedNodes = currentNode.referenced_in;
-
-  if (__DEV__) {
-    console.log('%c ########################  epicSetAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
-  }
 
   // Inject update
   medicalCase.updated_at = moment().format();
@@ -235,8 +230,6 @@ const processUpdatedNode = (medicalCase, nodeId) => {
 
   // We tell the related nodes to update themself
   if (currentNode.type === nodeTypes.question) {
-    console.log(currentNode.id)
-    console.log(referencedNodes)
     referencedNodes.forEach((referencedNodeId) => referencedNodeAction(medicalCase, referencedNodeId));
   }
 
