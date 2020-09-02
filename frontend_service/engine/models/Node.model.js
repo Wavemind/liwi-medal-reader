@@ -83,7 +83,6 @@ export class NodeModel implements NodeInterface {
             // Set the new answer to null for reset
             answer = value;
           }
-          value = null;
           break;
         default:
           // eslint-disable-next-line no-console

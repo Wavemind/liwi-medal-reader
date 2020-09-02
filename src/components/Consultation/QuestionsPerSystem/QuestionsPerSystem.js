@@ -14,11 +14,11 @@ type State = {};
 
 export default class QuestionsPerSystem extends React.Component<Props, State> {
   shouldComponentUpdate(nextProps: Props): boolean {
-    const { pageIndex } = this.props;
+    // TODO REFRESH ONLY IF CURRENT SCREEN IS SHOWED
     if (nextProps.medicalCase.id === undefined) {
       return false;
     }
-    return nextProps.selectedPage === pageIndex;
+    return true;
   }
 
   render() {

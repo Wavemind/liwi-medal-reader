@@ -34,6 +34,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     const {
       navigation,
       setMedicalCase,
+      setAnswer,
       updateMedicalCaseProperty,
       app: { database, algorithm },
     } = this.props;
@@ -57,16 +58,15 @@ export default class PatientUpsert extends React.Component<Props, State> {
     if (newMedicalCase) {
       const generatedMedicalCase = await new MedicalCaseModel({}, algorithm);
       // If the patient already exists we gonna retrieve it's patient Value
-      if (patientId !== null) {
-        patient.patientValues.map((patientValue) => {
-          generatedMedicalCase.nodes[patientValue.node_id].value = patientValue.value;
-          generatedMedicalCase.nodes[patientValue.node_id].answer = patientValue.answer_id;
-        });
-      }
       await setMedicalCase({
         ...generatedMedicalCase,
         patient: { ...patient, medicalCases: [] }, // Force
       });
+      if (patientId !== null) {
+        patient.patientValues.forEach((patientValue) => {
+          setAnswer(patientValue.node_id, patientValue.value);
+        });
+      }
     }
 
     NavigationService.setParamsAge('Patient');
@@ -117,7 +117,16 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <Text customSubTitle>{t('patient_upsert:facility')}</Text>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:uid')}</Text>
-          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.uid} change={this.updatePatientValue} index="uid" autoCapitalize="sentences" />
+          <CustomInput
+            disabled
+            placeholder=""
+            condensed
+            style={[styles.identifierText, styles.identifierTextDisabled]}
+            init={patient.uid}
+            change={this.updatePatientValue}
+            index="uid"
+            autoCapitalize="sentences"
+          />
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
@@ -127,10 +136,11 @@ export default class PatientUpsert extends React.Component<Props, State> {
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:group_id')}</Text>
           <CustomInput
+            disabled
             placeholder="..."
             keyboardType="number-pad"
             condensed
-            style={styles.identifierText}
+            style={[styles.identifierText, styles.identifierTextDisabled]}
             init={patient.group_id}
             change={this.updatePatientValue}
             index="group_id"

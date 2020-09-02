@@ -25,6 +25,9 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     elevation: 1,
   },
+  identifierTextDisabled: {
+    backgroundColor: liwiColors.greyColor,
+  },
   columns: {
     flex: 1,
     flexDirection: 'row',

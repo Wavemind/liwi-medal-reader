@@ -122,7 +122,7 @@ i18n
           last: 'Last synchronization attempt',
           success: 'Synchronization successful',
           nosuccess: 'The synchronization didn\'t work. ',
-          titlesync: 'Synchronization status of medical cases',
+          titlesync: 'Synchronization status of consultations',
           synchronize: 'Synchronize cases',
           no: 'Never synchronized',
           need: 'Must be re-synchronized',
@@ -194,7 +194,7 @@ i18n
           search: 'Search a patient',
           add: 'Add a patient',
           others: 'Others',
-          noredux: 'No medical case loaded',
+          noredux: 'No consultation loaded',
         },
         medical_case: {
           in_creation: 'Demographic',
@@ -231,9 +231,9 @@ i18n
         },
         work_case: {
           create: 'New case',
-          medical_case: 'Medical case',
-          medical_cases: 'Medical cases',
-          no_medical_cases: 'No medical cases',
+          medical_case: 'Consultation',
+          medical_cases: 'Consultations',
+          no_medical_cases: 'No consultations',
           no_algorithm: 'No algorithm loaded',
           no_questions: 'No question for this category',
         },
@@ -262,9 +262,9 @@ i18n
         },
         patient_profile: {
           personal_information: 'Personal information',
-          medical_cases: 'Medical cases',
+          medical_cases: 'Consultations',
           status: 'Status',
-          add_case: 'Add medical case',
+          add_case: 'Add consultation',
           edit_patient_value: 'Edit patient values',
         },
         patient_edit: {
@@ -292,7 +292,7 @@ i18n
           name: 'First name',
           surname: 'Last name',
           status: 'Status',
-          no_medical_cases: 'There is no medical case in progress',
+          no_medical_cases: 'There is no consultation in progress',
           not_found: 'No match found',
           waiting_triage: 'Triage',
           waiting_consultation: 'Consultation',
@@ -358,7 +358,7 @@ i18n
           role: 'Role',
         },
         popup: {
-          startSave: 'Save medical case',
+          startSave: 'Save consultation',
           saveSuccess: 'Successfully saved',
           unlock: 'Force unlock',
           close: 'Close',
@@ -383,7 +383,7 @@ i18n
           title: 'Home',
         },
         navigation: {
-          medical_case_list: 'Medical case list',
+          medical_case_list: 'Consultations',
           home: 'Home',
           triage: 'Triage',
           patient_upsert: 'Patient',
@@ -428,7 +428,7 @@ i18n
           device_registered: 'Device registered',
         },
         synchronize: {
-          title: 'Medical cases to synchronize',
+          title: 'Consultations to synchronize',
           synchronize: 'Synchronize',
         },
       },
