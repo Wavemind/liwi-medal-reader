@@ -42,7 +42,7 @@ const getNode = (nodeId) => {
 
 const getFinalDiagnostic = (nodeId) => {
   const finalDiagnostics = FinalDiagnosticModel.all();
-  finalDiagnostics
+  finalDiagnostics;
 }
 
 function sleep(milliseconds) {
@@ -67,24 +67,21 @@ const booleanAnswer = (nodeId) => {
   }
 };
 
+const finalDiagnosticRetained = (diagnosticId) => {
+  const dfs = FinalDiagnosticModel.all();
+  return dfs.included.map((df) => df.id).includes(diagnosticId);
+};
+
 const conditionValue = (id, elemId, elem = 'dd') => {
   const state$ = store.getState();
   return find(state$?.nodes[id][elem], (cv) => cv.id === elemId).conditionValue;
 };
 
 describe('actions', () => {
-  // it('should access to state as Class items', () => {
-  //   store.dispatch(setMedicalCase(algorithm));
-  //   const state$ = store.getState();
-  //   const filterQuestions = state$.nodes.filterByCategory(state$.nodes, 'symptom');
-  //
-  //   expect(filterQuestions).not.toEqual([]);
-  // });
-
   it('Should return Significant hemoptysis for Pneumonia diagnosis', () => {
     jestSetAnswer(1, moment('2020-05-20').format()); // Birth date -> 2020.05.20
     jestSetAnswer(214, 394); // Gender -> Male
-    jestSetAnswer(3, 5); // Weight -> 20
+    jestSetAnswer(3, 5); // Weight -> 5
     jestSetAnswer(13, 22); // CC - Respiratory complaint -> yes
     jestSetAnswer(461, 725); // CC - General -> yes
 
@@ -99,64 +96,14 @@ describe('actions', () => {
     jestSetAnswer(62, 121); // Severe difficult breathing needing referral -> no
     jestSetAnswer(1687, 753); // Significant hemoptysis (>1 episode) -> yes
 
-    // expect(booleanAnswer(62)).toEqual(false)
+    // expect(finalDiagnosticRetained(1688)).toEqual(true);
     // expect(getAnswer(59)).toEqual(119)
     // expect(booleanAnswer(58)).toEqual(false);
-    // expect(getAnswer(54)).toEqual(56)
     // expect(getAnswer(18)).toEqual(27)
     // expect(getValue(50)).toEqual(39);
     // expect(getAnswer(58)).toEqual(117);
     // console.log(getValue(58))
-    // expect(getAnswer(7)).toEqual(13);
-    const df = FinalDiagnosticModel.all();
-    console.log(df.included)
-    console.log(getNode(1688))
+    expect(finalDiagnosticRetained(1688)).toEqual(true)
     // expect(getAnswer(1666)).toEqual(734);
   });
-
-  //
-  // it('test clinical case 1', (done) => {
-  //   answer(66, true);
-  //   // expect(booleanNodeAnswer(181)).toEqual(true);
-  //   answer(66, 133);
-  //   // expect(conditionValue(182, 181, 'qs')).toEqual(true);
-  //   // expect(conditionValue(186, 181, 'qs')).toEqual(true);
-  //   answer(182, 269);
-  //   // expect(conditionValue(113, 181, 'qs')).toEqual(true);
-  //   answer(113, 253);
-  //   // expect(booleanNodeAnswer(181)).toEqual(null);
-  //   answer(104, 2);
-  //   expect(booleanNodeAnswer(186)).toEqual(true);
-  //   expect(booleanNodeAnswer(181)).toEqual(true);
-  //   answer(104, 7);
-  //   expect(booleanNodeAnswer(186)).toEqual(false);
-  //   expect(booleanNodeAnswer(181)).toEqual(false);
-  //
-  //   // final diagnostic
-  //   expect(booleanNodeAnswer(1175)).toEqual(false);
-  //   done();
-  // });
-  //
-  // it('should reset all the QS to the origine', (done) => {
-  //   answer(66, 133);
-  //   expect(conditionValue(182, 181, 'qs')).toEqual(true);
-  //   expect(conditionValue(186, 181, 'qs')).toEqual(true);
-  //
-  //   answer(182, null);
-  //   answer(104, null);
-  //   answer(113, null);
-  //   answer(66, null);
-  //
-  //   expect(booleanNodeAnswer(113)).toEqual(null);
-  //   expect(booleanNodeAnswer(182)).toEqual(null);
-  //   expect(booleanNodeAnswer(66)).toEqual(null);
-  //
-  //   expect(conditionValue(182, 181, 'qs')).toEqual(false);
-  //   expect(conditionValue(186, 181, 'qs')).toEqual(false);
-  //   expect(conditionValue(113, 181, 'qs')).toEqual(false);
-  //
-  //   expect(booleanNodeAnswer(186)).toEqual(null);
-  //   expect(booleanNodeAnswer(181)).toEqual(null);
-  //   done();
-  // });
 });

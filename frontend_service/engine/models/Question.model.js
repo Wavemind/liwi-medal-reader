@@ -161,9 +161,9 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
           return nodeInBracket.value;
       }
     };
-
     // Replace every bracket in the formula with it's value
     const formula = this.formula.replace(findBracketId, replaceBracketToValue);
+
     if (ready) {
       return eval(formula);
     }
@@ -176,7 +176,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @returns refer to reference tables
    */
   calculateReference(medicalCase) {
-
     let reference = null;
     let value = null;
 
@@ -193,7 +192,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     const x = parseInt(questionX.value);
     const y = parseInt(questionY.value);
     const z = questionZ?.value;
-
 
     const genderQuestion = medicalCase.nodes[medicalCase.config.basic_questions.gender_question_id];
     const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
