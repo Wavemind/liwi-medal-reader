@@ -52,7 +52,7 @@ export class NodeModel implements NodeInterface {
                 case 'less':
                   return value < Number(answerCondition.value);
                 case 'between':
-                  return value >= Number(answerCondition.value.split(',')[0]) && value < Number(answerCondition.value.split(',')[1]);
+                  return value >= Number(answerCondition.value.split(',').first()) && value < Number(answerCondition.value.split(',').second());
               }
             });
             if (answer !== undefined) {

@@ -40,11 +40,6 @@ const getNode = (nodeId) => {
   return state$.nodes[nodeId];
 };
 
-const getFinalDiagnostic = (nodeId) => {
-  const finalDiagnostics = FinalDiagnosticModel.all();
-  finalDiagnostics;
-}
-
 function sleep(milliseconds) {
   const date = Date.now();
   let currentDate = null;
