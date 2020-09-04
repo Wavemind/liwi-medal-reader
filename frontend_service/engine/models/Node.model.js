@@ -66,7 +66,7 @@ export class NodeModel implements NodeInterface {
           } else {
             answer = null;
           }
-          value = Number(value);
+          // value = Number(value);
           break;
         case valueFormats.string:
         case valueFormats.date:
