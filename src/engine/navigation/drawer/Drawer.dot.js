@@ -5,7 +5,6 @@ import { TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import { liwiColors } from '../../../utils/constants';
-import { Text as LText } from "native-base";
 
 const ListItemDot = styled(props => <TouchableOpacity {...props} />)`
   position: relative;
