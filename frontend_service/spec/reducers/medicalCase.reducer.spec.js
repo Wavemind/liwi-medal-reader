@@ -28,7 +28,7 @@ describe('actions', () => {
 
     validFinalDiagnostic(1688); // Valid significant hemoptysis
 
-    expect(managementRetained(1813, 'managements')).toEqual(true);
-    // expect(finalDiagnosticRetained(1688)).toEqual(true);
+    expect(managementRetained(1813)).toEqual(true);
+    expect(finalDiagnosticRetained(1688)).toEqual(true);
   });
 });
