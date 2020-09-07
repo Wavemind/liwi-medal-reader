@@ -8,7 +8,7 @@ import { AppState, PermissionsAndroid } from 'react-native';
 
 import i18n from '../../utils/i18n';
 import Database from '../api/Database';
-import { secondStatusLocalData, toolTipType } from '../../../frontend_service/constants';
+import { secondStatusLocalData, modalType } from '../../../frontend_service/constants';
 import { auth, getAlgorithm, getFacility, registerDevice } from '../../../frontend_service/api/Http';
 import { getItem, getItems, setItem } from '../api/LocalStorage';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
@@ -244,7 +244,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
                 author: newAlgorithm.author,
                 description: newAlgorithm.description,
               },
-              toolTipType.algorithmVersion
+              modalType.algorithmVersion
             )
           );
         }

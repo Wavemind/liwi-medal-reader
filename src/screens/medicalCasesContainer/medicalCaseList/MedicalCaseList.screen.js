@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
+import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
 import ListContent from '../../../components/ListContent';
@@ -48,7 +48,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
     const isConnected = await getItems('isConnected');
 
     if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
-      updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
+      updateModalFromRedux({ medicalCase: newMedicalCase }, modalType.medicalCaseLocked);
     } else if (newMedicalCase.status === medicalCaseStatus.close) {
       navigation.navigate('Summary', { medicalCaseLight });
     } else {
