@@ -3,14 +3,14 @@ import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { persistReducer, persistStore } from 'redux-persist';
-import FilesystemStorage from 'redux-persist-filesystem-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import rootReducer from './reducers';
 import rootEpic from './algorithm/epics.algo';
 
 const persistConfig = {
   debug: __DEV__,
   key: 'medicalCase',
-  storage: FilesystemStorage,
+  storage: AsyncStorage,
   timeout: 10000,
   stateReconciler: hardSet, // see "Merge Process" section for details.
 };
