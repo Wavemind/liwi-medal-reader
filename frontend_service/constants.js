@@ -125,10 +125,11 @@ export const categories = {
 };
 
 // Type of Tool Tip
-export const toolTipType = {
+export const modalType = {
   medicalCaseLocked: 'medicalCaseLocked',
   algorithmVersion: 'algorithmVersion',
   validation: 'validation',
+  description: 'description',
   loading: 'loading',
 };
 

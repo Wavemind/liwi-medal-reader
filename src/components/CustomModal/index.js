@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import ToolTipModal from './ToolTipModal';
+import CustomModal from './CustomModal';
 import { withApplication } from '../../engine/contexts/Application.context';
 import { setMedicalCase, updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 
@@ -25,4 +25,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withApplication(ToolTipModal));
+export default connect(mapStateToProps, mapDispatchToProps)(withApplication(CustomModal));

@@ -72,4 +72,6 @@ export const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: liwiColors.redColor,
   },
+
+  questionLabel: { color: liwiColors.blackColor, marginTop: 5, alignSelf: 'flex-start' }
 });

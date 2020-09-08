@@ -20,7 +20,7 @@ import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
+import { medicalCaseStatus, modalType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
@@ -525,7 +525,7 @@ class Stepper extends React.Component<Props, State> {
     if (validator.isActionValid === true) {
       return true;
     } else {
-      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
+      updateModalFromRedux({ ...validator, showClose: true }, modalType.validation);
       return false;
     }
   };

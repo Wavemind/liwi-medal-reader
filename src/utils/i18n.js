@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import { NativeModules } from 'react-native';
+import { LiwiTitle4 } from '../template/layout';
 
 const languageDetector = {
   type: 'languageDetector',
@@ -108,14 +109,15 @@ i18n
           customDrugs: 'Custom drugs',
           proposed: 'Proposed',
         },
-        tooltip: {
+        modal: {
           invalidQuestions: 'Question(s) to fill',
           close: 'Close',
           notcomplete: 'Is not complete!',
           more: '...',
           uncompleted: 'Stage not valid',
           patientnotcomplete: 'The creation of the patient',
-          is_required: 'is required'
+          is_required: 'is required',
+          medicalCaseAlreadyUsed: 'Medical case not available',
         },
         algorithms: {
           never: 'Never synchronized data',
