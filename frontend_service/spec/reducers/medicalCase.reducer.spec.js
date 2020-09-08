@@ -1,116 +1,34 @@
-import find from 'lodash/find';
-import { setAnswer, setMedicalCase } from '../../actions/creators.actions';
-import { store } from '../../store';
+import moment from 'moment';
 import 'reflect-metadata';
+import '../../../src/utils/Prototype.native';
+import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, managementRetained } from '../utils';
 
-/* Special import
- * This import is necessary for rewrite prototype function JS
- * */
-// eslint-disable-next-line no-unused-vars
-import Prototype from '../../../src/utils/Prototype.native';
-import { valueFormats } from '../../constants';
-
-// eslint-disable-next-line no-console
-export const cl = console.log;
-
-/**
- * Disabled all for a nice read
- */
-// eslint-disable-next-line no-console
-console.log = () => {};
+// console.log = () => {};
 console.error = () => {};
 console.warn = () => {};
 
-const algorithm = require('../algorithm');
-
-const answer = (id, value) => {
-  store.dispatch(setAnswer(id, value));
-};
-const getAnswer = (id) => {
-  const state$ = store.getState();
-  return state$.nodes[id].answer;
-};
-
-const booleanNodeAnswer = (id) => {
-  const state$ = store.getState();
-  const node = state$.nodes[id];
-  if (node.value_format === valueFormats.bool) {
-    if (node.answer === null) return null;
-    const idYes = Number(Object.keys(node.answers).first());
-    const idNo = Number(Object.keys(node.answers).second());
-    if (node.answer === idYes) return true;
-    if (node.answer === idNo) return false;
-  } else {
-    cl('This node is not Boolean', id);
-  }
-};
-
-const conditionValue = (id, elemId, elem = 'dd') => {
-  const state$ = store.getState();
-  return find(state$?.nodes[id][elem], (cv) => cv.id === elemId).conditionValue;
-};
-
 describe('actions', () => {
-  it('should access to state as Class items', () => {
-    store.dispatch(setMedicalCase(algorithm));
-    const state$ = store.getState();
-    const filterQuestions = state$.nodes.filterByCategory('symptom');
+  it('Should return Significant hemoptysis for Pneumonia diagnosis', () => {
+    jestSetAnswer(1, moment('2020-05-20').format()); // Birth date -> 2020.05.20
+    jestSetAnswer(214, 394); // Gender -> Male
+    jestSetAnswer(3, 5); // Weight -> 5
+    jestSetAnswer(13, 22); // CC - Respiratory complaint -> yes
+    jestSetAnswer(461, 725); // CC - General -> yes
 
-    expect(filterQuestions).not.toEqual([]);
-  });
+    jestSetAnswer(50, 39); // Axiliary temperature -> 39
 
-  it('should be able to set an answer to a question', () => {
-    answer(66, 132);
-    expect(getAnswer(66)).toEqual(132);
-  });
+    jestSetAnswer(25, 36); // History of fever -> yes
+    jestSetAnswer(40, 76); // Difficulty breathing -> yes
+    jestSetAnswer(34, 55); // Grunting -> absent
+    jestSetAnswer(18, 27); // Chest indrawing -> no
+    jestSetAnswer(5, 70); // Respiratory rate -> 1
+    jestSetAnswer(33, 1000); // Blood oxygen saturation -> 1000
+    jestSetAnswer(62, 121); // Severe difficult breathing needing referral -> no
+    jestSetAnswer(1687, 753); // Significant hemoptysis (>1 episode) -> yes
 
-  it('should set qs 181 to true with direct link', (done) => {
-    answer(66, 132);
-    expect(booleanNodeAnswer(181)).toEqual(true);
-    expect(conditionValue(182, 181, 'qs')).toEqual(false);
-    expect(conditionValue(186, 181, 'qs')).toEqual(false);
-    done();
-  });
+    validFinalDiagnostic(1688); // Valid significant hemoptysis
 
-  it('should reset qs 181 and set to true with other branch', (done) => {
-    answer(66, null);
-    expect(booleanNodeAnswer(181)).toEqual(null);
-    answer(66, 133);
-    expect(conditionValue(182, 181, 'qs')).toEqual(true);
-    expect(conditionValue(186, 181, 'qs')).toEqual(true);
-    answer(182, 269);
-    expect(conditionValue(113, 181, 'qs')).toEqual(true);
-    answer(113, 253);
-    expect(booleanNodeAnswer(181)).toEqual(null);
-    answer(104, 2);
-    expect(booleanNodeAnswer(186)).toEqual(true);
-    expect(booleanNodeAnswer(181)).toEqual(true);
-    answer(104, 7);
-    expect(booleanNodeAnswer(186)).toEqual(false);
-    expect(booleanNodeAnswer(181)).toEqual(false);
-    done();
-  });
-
-  it('should reset all the QS to the origine', (done) => {
-    answer(66, 133);
-    expect(conditionValue(182, 181, 'qs')).toEqual(true);
-    expect(conditionValue(186, 181, 'qs')).toEqual(true);
-
-    answer(182, null);
-    answer(104, null);
-    answer(113, null);
-    answer(66, null);
-
-    expect(booleanNodeAnswer(113)).toEqual(null);
-    expect(booleanNodeAnswer(182)).toEqual(null);
-    expect(booleanNodeAnswer(66)).toEqual(null);
-
-    expect(conditionValue(182, 181, 'qs')).toEqual(false);
-    expect(conditionValue(186, 181, 'qs')).toEqual(false);
-    expect(conditionValue(113, 181, 'qs')).toEqual(false);
-
-    expect(booleanNodeAnswer(186)).toEqual(null);
-    expect(booleanNodeAnswer(181)).toEqual(null);
-    done();
+    expect(managementRetained(1813)).toEqual(true);
+    expect(finalDiagnosticRetained(1688)).toEqual(true);
   });
 });

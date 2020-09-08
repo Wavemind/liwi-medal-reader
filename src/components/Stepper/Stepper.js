@@ -20,7 +20,7 @@ import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
+import { medicalCaseStatus, modalType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
@@ -67,38 +67,37 @@ type State = {
 };
 
 class Stepper extends React.Component<Props, State> {
-  static propTypes = {
-    ...ViewPager.propTypes,
-    ...ScrollView.propTypes,
-    initialPage: PropTypes.number,
-    onPressNext: PropTypes.func,
-    onPressBack: PropTypes.func,
-    textButtonsStyle: Text.propTypes.style,
-    backButtonTitle: PropTypes.string,
-    nextButtonTitle: PropTypes.string,
-    topStepperStyle: ViewPropTypes.style,
-    showTopStepper: PropTypes.bool,
-    activeDotStyle: ViewPropTypes.style,
-    inactiveDotStyle: ViewPropTypes.style,
-    childrenStyle: ViewPropTypes.style,
-    steps: PropTypes.arrayOf(PropTypes.string.isRequired),
-    stepsTitleStyle: ViewPropTypes.style,
-    showBottomStepper: PropTypes.bool,
-    bottomStepperStyle: ViewPropTypes.style,
-    activeStepNumberStyle: Text.propTypes.style,
-    inactiveStepNumberStyle: Text.propTypes.style,
-    activeStepStyle: ViewPropTypes.style,
-    inactiveStepStyle: ViewPropTypes.style,
-    activeStepTitleStyle: Text.propTypes.style,
-    inactiveStepTitleStyle: Text.propTypes.style,
-    onScrollPage: PropTypes.func,
-    validate: PropTypes.bool,
-    bottomNavigationLeftIconComponent: PropTypes.element,
-    bottomNavigationRightIconComponent: PropTypes.element,
-    nextStage: PropTypes.string,
-    nextStageString: PropTypes.string,
-    endMedicalCase: PropTypes.bool
-  };
+  // static propTypes = {
+  //   ...ViewPager.propTypes,
+  //   initialPage: PropTypes.number,
+  //   onPressNext: PropTypes.func,
+  //   onPressBack: PropTypes.func,
+  //   textButtonsStyle: Text.propTypes.style,
+  //   backButtonTitle: PropTypes.string,
+  //   nextButtonTitle: PropTypes.string,
+  //   topStepperStyle: ViewPropTypes.style,
+  //   showTopStepper: PropTypes.bool,
+  //   activeDotStyle: ViewPropTypes.style,
+  //   inactiveDotStyle: ViewPropTypes.style,
+  //   childrenStyle: ViewPropTypes.style,
+  //   steps: PropTypes.arrayOf(PropTypes.string.isRequired),
+  //   stepsTitleStyle: ViewPropTypes.style,
+  //   showBottomStepper: PropTypes.bool,
+  //   bottomStepperStyle: ViewPropTypes.style,
+  //   activeStepNumberStyle: Text.propTypes.style,
+  //   inactiveStepNumberStyle: Text.propTypes.style,
+  //   activeStepStyle: ViewPropTypes.style,
+  //   inactiveStepStyle: ViewPropTypes.style,
+  //   activeStepTitleStyle: Text.propTypes.style,
+  //   inactiveStepTitleStyle: Text.propTypes.style,
+  //   onScrollPage: PropTypes.func,
+  //   validate: PropTypes.bool,
+  //   bottomNavigationLeftIconComponent: PropTypes.element,
+  //   bottomNavigationRightIconComponent: PropTypes.element,
+  //   nextStage: PropTypes.string,
+  //   nextStageString: PropTypes.string,
+  //   endMedicalCase: PropTypes.bool
+  // };
   static defaultProps = {
     initialPage: 0,
     nextStage: null,
@@ -526,7 +525,7 @@ class Stepper extends React.Component<Props, State> {
     if (validator.isActionValid === true) {
       return true;
     } else {
-      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
+      updateModalFromRedux({ ...validator, showClose: true }, modalType.validation);
       return false;
     }
   };

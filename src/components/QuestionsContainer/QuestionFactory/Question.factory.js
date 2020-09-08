@@ -1,16 +1,15 @@
 // @flow
 import * as React from 'react';
 import type { NavigationScreenProps } from 'react-navigation';
-import { View } from 'react-native';
-import { ListItem, Text } from 'native-base';
+import { TouchableOpacity, View } from 'react-native';
+import { Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
 
-import { displayFormats, nodeTypes } from '../../../../frontend_service/constants';
-import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
+import { displayFormats, nodeTypes, modalType } from '../../../../frontend_service/constants';
+import { screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
 import Unavailable from '../../InputContainer/Unavailable';
-import TooltipButton from '../../TooltipButton/TooltipButton';
 import WrapperQuestion from '../WrapperQuestion/WrapperQuestion';
 
 type Props = NavigationScreenProps & {};
@@ -70,12 +69,25 @@ export default class Question extends React.Component<Props, State> {
     return null;
   };
 
+  /**
+   * Open redux modal
+   */
+  openModal = () => {
+    const { updateModalFromRedux, question } = this.props;
+    updateModalFromRedux({ node: question }, modalType.description);
+  };
+
+  /**
+   * Display question label
+   * @returns {JSX.Element}
+   * @private
+   */
   _labelQuestion() {
     const { question } = this.props;
     const { flexLabel } = this.state;
     return (
       <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
-        <Text style={{ color: liwiColors.blackColor, marginTop: 5, alignSelf: 'flex-start' }} size-auto>
+        <Text style={styles.questionLabel} size-auto>
           {question.label} {question.is_mandatory ? '*' : null}
         </Text>
       </ViewQuestion>
@@ -113,7 +125,11 @@ export default class Question extends React.Component<Props, State> {
     return (
       <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
         <View style={styles.flexRow}>
-          <TooltipButton node={question} title={question.label} flex={flexToolTip} />
+          <View flex={flexToolTip}>
+            <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal()}>
+              <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+            </TouchableOpacity>
+          </View>
           {this._labelQuestion()}
           <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
         </View>

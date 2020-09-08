@@ -1,17 +1,18 @@
 /**
  * The external dependencies
  */
+import { TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { liwiColors } from '../../../utils/constants';
 
-const ListItemDot = styled.TouchableOpacity`
+const ListItemDot = styled(props => <TouchableOpacity {...props} />)`
   position: relative;
   margin-right: 10px;
   margin-left: ${({ isDrawer }) => (isDrawer ? '1px' : '6px')};
 `;
 
-const ListItemDotOuter = styled.View`
+const ListItemDotOuter = styled( props => <View {...props} />)`
   width: 28px;
   height: 28px;
   border-radius: 50;
@@ -19,7 +20,7 @@ const ListItemDotOuter = styled.View`
   border-color: ${({ color }) => color};
 `;
 
-const ListItemDotInner = styled.View`
+const ListItemDotInner = styled(props => <View {...props} />)`
   width: 14px;
   height: 14px;
   position: absolute;
@@ -32,7 +33,6 @@ const ListItemDotInner = styled.View`
 const DrawerDot = ({ type, onPress, isDrawer }) => {
   let dotColor = '#d8d8d8';
   let borderColor = '#d8d8d8';
-
   if (type && type === 'active') {
     dotColor = liwiColors.redColor;
     borderColor = liwiColors.redColor;

@@ -10,7 +10,7 @@ import WavemindTools from './utils/WavemindTools';
 import { persistor, store } from '../frontend_service/store';
 
 import Layout from './template/Layout.template';
-import TooltipModal from './components/ToolTipModal';
+import CustomModal from './components/CustomModal';
 import StatusIndicator from './components/StatusIndicator';
 
 export default class Root extends React.Component {
@@ -24,7 +24,7 @@ export default class Root extends React.Component {
         <PersistGate loading={null} persistor={persistor}>
           <ApplicationProvider>
             <Layout />
-            <TooltipModal />
+            <CustomModal />
             {__DEV__ ? <WavemindTools /> : null}
             <StatusIndicator />
           </ApplicationProvider>
