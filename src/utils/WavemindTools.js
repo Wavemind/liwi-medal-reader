@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Fab, Icon, View } from 'native-base';
 import RNRestart from 'react-native-restart';
-import FilesystemStorage from 'redux-persist-filesystem-storage';
 import Realm from 'realm';
 
 import { clearLocalStorage, getItems } from '../engine/api/LocalStorage';
@@ -95,17 +94,14 @@ export default class WavemindTools extends Component {
                     const session = await getItems('session');
                     const algorithm = await getItems('algorithm');
                     const state$ = store.getState();
-                    let k = await FilesystemStorage.getItem('persist:medicalCase');
                     const sizes = {};
 
                     Object.keys(state$).map((key) => {
                       sizes[key] = memorySizeOf(state$[key]);
                     });
 
-                    k = await JSON.parse(k);
                     // eslint-disable-next-line no-console
                     console.log({
-                      persist: k,
                       state$,
                       size_state$: memorySizeOf({ ...state$, patient: null }),
                       size_nodes: memorySizeOf(state$.nodes),

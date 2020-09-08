@@ -156,11 +156,11 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
   }
 
   if (questionsSequenceCondition === true) {
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).first()].id;
+    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[0]].id;
   } else if (questionsSequenceCondition === false || statusQs === false) {
     // statusQd === false -> can't access the end of the QS anymore
     // questionsSequenceCondition === false -> can't find a condition to true
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).second()].id;
+    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[1]].id;
   }
 
   // If the new answer of this QS is different from the older, we change it
@@ -182,13 +182,12 @@ const referencedNodeAction = (medicalCase, nodeId) => {
 
   switch (currentNode.display_format) {
     case displayFormats.formula:
-      value = currentNode.calculateFormula();
+      value = currentNode.calculateFormula(medicalCase);
       break;
     case displayFormats.reference:
-      value = currentNode.calculateReference();
+      value = currentNode.calculateReference(medicalCase);
       break;
   }
-
   if (value !== currentNode.value) {
     medicalCase.nodes[currentNode.id].updateAnswer(value);
     processUpdatedNode(medicalCase, currentNode.id);
@@ -207,10 +206,6 @@ const processUpdatedNode = (medicalCase, nodeId) => {
   const relatedQuestionsSequence = currentNode.qs;
   const relatedDiagnosticsForCC = currentNode.diagnostics_related_to_cc;
   const referencedNodes = currentNode.referenced_in;
-
-  if (__DEV__) {
-    console.log('%c ########################  epicSetAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
-  }
 
   // Inject update
   medicalCase.updated_at = moment().format();
@@ -265,10 +260,11 @@ export const epicSetAnswer = (action$, state$) =>
 
       processUpdatedNode(medicalCase, nodeId);
 
+      // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
       if (
-        nodeId === medicalCase.mobile_config.left_top_question_id ||
+        (nodeId === medicalCase.mobile_config.left_top_question_id ||
         nodeId === medicalCase.mobile_config.first_top_right_question_id ||
-        nodeId === medicalCase.mobile_config.second_top_right_question_id
+        nodeId === medicalCase.mobile_config.second_top_right_question_id) && process.env.node_ENV !== 'test'
       ) {
         NavigationService.setParamsAge();
       }

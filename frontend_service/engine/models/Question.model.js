@@ -140,9 +140,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @returns {number}
    *
    */
-  calculateFormula = () => {
-    const state$ = store.getState();
-
+  calculateFormula = (medicalCase) => {
     // Regex to find the brackets [] in the formula
     const findBracketId = /\[(.*?)\]/gi;
     let ready = true;
@@ -153,7 +151,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       const id = item.match(/\d/g).join('');
 
       // Get value of this node
-      const nodeInBracket = state$.nodes[id];
+      const nodeInBracket = medicalCase.nodes[id];
       if (nodeInBracket.value === null || (nodeInBracket.value === 0 && nodeInBracket.answer === null)) {
         ready = false;
         return item;
@@ -165,9 +163,9 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
           return nodeInBracket.value;
       }
     };
-
     // Replace every bracket in the formula with it's value
     const formula = this.formula.replace(findBracketId, replaceBracketToValue);
+
     if (ready) {
       return eval(formula);
     }
@@ -179,27 +177,25 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * Calculate reference score.
    * @returns refer to reference tables
    */
-  calculateReference() {
-    const state$ = store.getState();
-
+  calculateReference(medicalCase) {
     let reference = null;
     let value = null;
 
     // Get X and Y
-    const questionX = state$.nodes[this.reference_table_x_id];
-    const questionY = state$.nodes[this.reference_table_y_id];
+    const questionX = medicalCase.nodes[this.reference_table_x_id];
+    const questionY = medicalCase.nodes[this.reference_table_y_id];
 
     // Get Z
     let questionZ = null;
     if (this.reference_table_z_id !== null) {
-      questionZ = state$.nodes[this.reference_table_z_id];
+      questionZ = medicalCase.nodes[this.reference_table_z_id];
     }
 
     const x = parseInt(questionX.value);
     const y = parseInt(questionY.value);
     const z = questionZ?.value;
 
-    const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
+    const genderQuestion = medicalCase.nodes[medicalCase.config.basic_questions.gender_question_id];
     const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
 
     // Get reference table for male or female
@@ -210,6 +206,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     }
 
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
+    // TODO: Fixe Z issue when it's null
     if (reference !== null && x !== null && y !== null && x in reference) {
       if (z === undefined) {
         value = this.findValueInReferenceTable(reference[x], y);
@@ -268,6 +265,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * Returns the value for a boolean question  or a complaint category
    */
   booleanValue = () => {
-    return this.answer === Number(Object.keys(this.answers)[0]);
+    return this.answer === Number(Object.keys(this.answers).first());
   };
 }

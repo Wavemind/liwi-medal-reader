@@ -2,12 +2,9 @@
 import NavigationService from 'engine/navigation/Navigation.service';
 
 import findKey from 'lodash/findKey';
-import { View } from 'react-native';
-import { Text } from 'native-base';
 import React from 'react';
 import { categories, valueFormats } from '../../constants';
 import { MedicalCaseModel } from './MedicalCase.model';
-import { styles } from '../../../src/components/QuestionsContainer/QuestionFactory/Question.factory.style';
 
 interface NodeInterface {
   id: number;
