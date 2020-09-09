@@ -50,6 +50,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       system = '',
       is_identifiable = false,
       is_triage = false,
+      is_danger_sign = false,
       is_neonat = false,
       estimable = false,
       estimableValue = 'measured',
@@ -88,6 +89,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.reference_table_male = reference_table_male;
     this.reference_table_female = reference_table_female;
     this.system = system;
+    this.is_danger_sign = is_danger_sign;
     this.is_identifiable = is_identifiable;
     this.is_triage = is_triage;
     this.is_neonat = is_neonat;

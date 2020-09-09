@@ -6,7 +6,7 @@ import { Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
 
 import { displayFormats, nodeTypes, modalType } from '../../../../frontend_service/constants';
-import { screensScale, screenWidth } from '../../../utils/constants';
+import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
 import Unavailable from '../../InputContainer/Unavailable';
@@ -123,7 +123,7 @@ export default class Question extends React.Component<Props, State> {
 
     // Construct generic Component for the question
     return (
-      <ListItem style={[styles.condensed, styles.flexColumn, { marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
+      <ListItem style={[styles.condensed, styles.flexColumn, { backgroundColor: question.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
         <View style={styles.flexRow}>
           <View flex={flexToolTip}>
             <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal()}>

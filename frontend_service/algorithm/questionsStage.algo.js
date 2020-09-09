@@ -78,7 +78,11 @@ export const questionsMedicalHistory = () => {
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
   }
 
-  return questions;
+  return questions.sort((a, b) => {
+    if (a.is_danger_sign === b.is_danger_sign) return 0;
+    if (a.is_danger_sign === true) return -1;
+    return 1;
+  });
 };
 
 /**
@@ -109,7 +113,11 @@ export const questionsPhysicalExam = () => {
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
   }
 
-  return questions;
+  return questions.sort((a, b) => {
+    if (a.is_danger_sign === b.is_danger_sign) return 0;
+    if (a.is_danger_sign === true) return 1;
+    return -1;
+  });
 };
 
 /**
@@ -146,7 +154,7 @@ export const questionsComplaintCategory = () => {
   const state$ = store.getState();
   const complaintCategories = [];
   const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
-  const general_cc_id = state$.config.basic_questions.general_cc_id
+  const { general_cc_id } = state$.config.basic_questions;
 
   const birthDate = state$.nodes[state$.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
