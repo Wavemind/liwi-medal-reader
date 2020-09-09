@@ -105,7 +105,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                         <View style={styles.drugContainer}>
                           <View flex>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
                           <View style={styles.tooltipButton}>
-                            <View flex="1">
+                            <View flex>
                               <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(drugsAvailable[drugKey])}>
                                 <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                               </TouchableOpacity>
@@ -134,7 +134,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                         <View style={styles.drugContainer}>
                           <Text key={`${managementKey}-management`}>{node.label}</Text>
                           <View style={styles.tooltipButton}>
-                            <View flex="1">
+                            <View flex>
                               <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(node)}>
                                 <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                               </TouchableOpacity>
