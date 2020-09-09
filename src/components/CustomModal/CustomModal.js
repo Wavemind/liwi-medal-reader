@@ -116,14 +116,13 @@ export default class CustomModal extends React.Component<Props, State> {
         params: { node },
       },
     } = this.props;
-
     return (
       <View>
         <LiwiTitle5>{node.label}</LiwiTitle5>
         <Text style={styles.description}>{node.description}</Text>
-        {node.urls !== undefined && node.urls.length > 0
-          ? [node.urls].map((url) => {
-              return <Media key={url} url={url} />;
+        {node.medias !== undefined && node.medias.length > 0
+          ? node.medias.map((media) => {
+              return <Media key={media.url} media={media} />;
             })
           : null}
         {__DEV__ ? <Text>id: {node.id}</Text> : null}

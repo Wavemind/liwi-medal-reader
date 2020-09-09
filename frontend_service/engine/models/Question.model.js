@@ -63,6 +63,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       max_message_error = '',
       validationMessage = null,
       validationType = null,
+      medias = [],
     } = props;
 
     this.description = description;
@@ -102,6 +103,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.validationMessage = validationMessage;
     this.validationType = validationType;
     this.estimable = estimable;
+    this.medias = medias;
 
     // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
     // if (estimable) {
