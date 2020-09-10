@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
-import { Button, ListItem, Text, View, Icon } from 'native-base';
+import { Button, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
