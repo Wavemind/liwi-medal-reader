@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
 
   content: { textAlign: 'center' },
 
-  modal: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 22, marginBottom: 22 },
+  modal: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 22, paddingBottom: 22, backgroundColor: 'rgba(0,0,0,0.6)' },
 
   modalContainer: {
     margin: 20,

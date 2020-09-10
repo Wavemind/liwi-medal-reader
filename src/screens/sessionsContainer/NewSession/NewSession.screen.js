@@ -53,7 +53,7 @@ export default function HookSession() {
               loop={false}
               style={styles.height}
               onAnimationFinish={() => {
-                NavigationService.navigate('Synchronise');
+                NavigationService.navigate('Synchronize');
               }}
             />
           ) : null}
