@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, ListItem, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
@@ -126,7 +126,7 @@ export default class ListContent extends React.Component<Props, State> {
     } = this.props;
     const { isConnected, deviceInfo } = this.state;
     return (
-      <ListItem style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
+      <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         {item.values.map((value, key) => (
           <View style={styles.itemColumn} key={`${item.id}_${key}`}>
             <Text size-auto>{value}</Text>
@@ -146,7 +146,7 @@ export default class ListContent extends React.Component<Props, State> {
             ) : null}
           </>
         ) : null}
-      </ListItem>
+      </TouchableOpacity>
     );
   };
 

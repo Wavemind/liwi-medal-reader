@@ -6,7 +6,9 @@ export const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 0,
     elevation: 1,
-    borderRadius: 4,
+    flex: 1,
+    flexDirection: 'row',
+    borderRadius: 10,
     height: 80,
     marginRight: 2,
     marginLeft: 2,
@@ -14,6 +16,14 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: liwiColors.whiteDark,
+    shadowColor: '#00000026',
+    alignContent: 'center',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 1.5,
   },
 
   itemColumn: { flex: 1, marginLeft: 2, marginRight: 2, paddingLeft: 8 },
@@ -33,7 +43,7 @@ export const styles = StyleSheet.create({
   },
 
   separator: {
-    height: 3,
+    height: 5,
     width: '100%',
     backgroundColor: liwiColors.lighterGreyColor,
   },
