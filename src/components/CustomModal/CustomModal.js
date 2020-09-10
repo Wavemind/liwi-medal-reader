@@ -106,7 +106,7 @@ export default class CustomModal extends React.Component<Props, State> {
   };
 
   /**
-   * Description
+   * Display node description with media
    * @returns {*}
    * @private
    */
@@ -126,6 +126,20 @@ export default class CustomModal extends React.Component<Props, State> {
             })
           : null}
         {__DEV__ ? <Text>id: {node.id}</Text> : null}
+      </View>
+    );
+  };
+
+  /**
+   * Display about app
+   * @returns {*}
+   * @private
+   */
+  _renderAbout = () => {
+    return (
+      <View>
+        <LiwiTitle5>About</LiwiTitle5>
+        <Text style={styles.description}>A text</Text>
       </View>
     );
   };
@@ -294,6 +308,8 @@ export default class CustomModal extends React.Component<Props, State> {
         return this._renderValidation();
       case modalType.description:
         return this._renderDescription();
+      case modalType.about:
+        return this._renderAbout();
       case modalType.loading:
         return this._renderLoading();
       default:
