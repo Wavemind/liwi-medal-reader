@@ -7,8 +7,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes, Keyboard} from 'react-native';
+import { Platform, ScrollView, Text, TouchableOpacity, View, Keyboard} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
