@@ -1,7 +1,6 @@
-import moment from 'moment';
 import 'reflect-metadata';
 import '../../../src/utils/Prototype.native';
-import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, managementRetained } from '../utils';
+import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, managementRetained, setBirthDate } from '../utils';
 
 // console.log = () => {};
 console.error = () => {};
@@ -9,7 +8,7 @@ console.warn = () => {};
 
 describe('actions', () => {
   it('Should return Significant hemoptysis for Pneumonia diagnosis', () => {
-    jestSetAnswer(1, moment('2020-05-20').format()); // Birth date -> 2020.05.20
+    setBirthDate(1, 80); // Birth date -> 2020.05.20
     jestSetAnswer(214, 394); // Gender -> Male
     jestSetAnswer(3, 5); // Weight -> 5
     jestSetAnswer(13, 22); // CC - Respiratory complaint -> yes
