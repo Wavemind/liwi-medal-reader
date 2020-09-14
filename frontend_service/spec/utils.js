@@ -116,7 +116,7 @@ export const validFinalDiagnostic = (finalDiagnosticId) => {
   const finalDiagnostic = state$.nodes[finalDiagnosticId];
   store.dispatch(
     setDiagnoses('proposed', {
-      id: finalDiagnostic,
+      id: finalDiagnosticId,
       label: finalDiagnostic.label,
       diagnostic_id: finalDiagnostic.diagnostic_id,
       agreed: true,
