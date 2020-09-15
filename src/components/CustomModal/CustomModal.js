@@ -8,7 +8,7 @@ import { routeDependingStatus, modalType } from '../../../frontend_service/const
 import { styles } from './CustomModal.style';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import LiwiLoader from '../../utils/LiwiLoader';
-import { LiwiTitle4, LiwiTitle5 } from '../../template/layout';
+import { LiwiTitle4, LiwiTitle5, LiwiTitle2 } from '../../template/layout';
 import Media from '../Media/Media';
 
 export default class CustomModal extends React.Component<Props, State> {
@@ -138,8 +138,71 @@ export default class CustomModal extends React.Component<Props, State> {
   _renderAbout = () => {
     return (
       <View>
-        <LiwiTitle5>About</LiwiTitle5>
-        <Text style={styles.description}>A text</Text>
+        <LiwiTitle2 noBorder style={styles.center}>ePOCT+: Tanzania</LiwiTitle2>
+        <LiwiTitle4>What</LiwiTitle4>
+        <Text style={styles.aboutDescription}>Electronic clinical decision support algorithm (CDSA) for the management of sick children aged 1 day up to and including 14 years old</Text>
+        <LiwiTitle4>Who</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          - Principal users: Assistant Medical Officers (AMO), and Clinical Officers (CO).{"\n"}
+          - Other users: Medical doctors (MD), and nurses.
+        </Text>
+        <LiwiTitle4>Where</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          Peripheral health facilities (Dispensaries and Health Centres) in Tanzania
+        </Text>
+        <LiwiTitle4>Context</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          Only to be used within the DYNAMIC Tanzania study
+        </Text>
+        <LiwiTitle4>Scope</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          ePOCT+ proposes the work-up, diagnoses, management and treatment for most frequent and severe childhood illnesses.
+        </Text>
+        <Text style={styles.aboutDescription}>
+          The clinical algorithms were developed based on the World Health Organization’s Integrated Management of Childhood Illnesses (IMCI) booklet, the Tanzanian Standard Treatment Guidelines, peer reviewed scientific articles, and validated by a Tanzanian expert group
+        </Text>
+        <Text style={styles.aboutDescription}>
+          Health care workers using ePOCT+ must use their clinical judgement for diagnoses, treatments and management proposed by ePOCT+ may not be applicable in all situations
+        </Text>
+
+        <LiwiTitle4>ePOCT+ development team</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          XXXX
+        </Text>
+
+        <LiwiTitle4>ePOCT+ Tanzanian clinical expert validation team</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          XXXX
+        </Text>
+
+        <LiwiTitle4>ePOCTn development team</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          XXXX
+        </Text>
+
+        <LiwiTitle4>ePOCTn Tanzanian clinical expert validation team</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          XXXX
+        </Text>
+
+        <LiwiTitle4>ePOCT+ and ePOCTn Version</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          XXXX
+        </Text>
+
+        <LiwiTitle4>MEDAL-R Version</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          XXXX
+        </Text>
+
+        <LiwiTitle4>Links</LiwiTitle4>
+        <Text style={styles.aboutDescription}>
+          Summary of diagnoses + references{"\n"}
+          Simplified algorithms{"\n"}
+          Detailed algorithms{"\n"}
+          Summary of evidence behind major algorithms
+
+        </Text>
       </View>
     );
   };

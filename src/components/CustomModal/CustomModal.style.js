@@ -83,9 +83,11 @@ export const styles = StyleSheet.create({
 
   modalContent: { paddingLeft: 30, paddingRight: 30, paddingBottom: 30 },
 
-  closeButton: { width: 50, marginLeft: 10, marginTop: 10, backgroundColor: liwiColors.redColor },
+  closeButton: { width: 50, marginLeft: 10, marginTop: 10, marginBottom: 10, backgroundColor: liwiColors.redColor },
 
   description: { marginTop: 20, textAlign: 'left', flex: 1 },
+
+  aboutDescription: { marginBottom: 15, textAlign: 'left', flex: 1 },
 
   center: { textAlign: 'center' },
 });
