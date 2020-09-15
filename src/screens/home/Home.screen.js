@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Image, TouchableHighlight } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { styles } from './Home.style';
@@ -41,7 +41,7 @@ export default class Home extends React.Component<Props, State> {
             Welcome {user.preFix} {user.first_name} {user.last_name}
           </Text>
           <View w50>
-            <TouchableHighlight
+            <TouchableOpacity
               testID="GoToPatientUpsert"
               underlayColor="transparent"
               style={styles.navigationButton}
@@ -62,61 +62,61 @@ export default class Home extends React.Component<Props, State> {
                   {t('navigation:patient_add')}
                 </Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('QrCodePatient')}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('QrCodePatient')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/qr_code.png')} />
                 <Text size-auto center style={styles.textButton}>
                   {t('navigation:patient_qr')}
                 </Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
 
           <View w50>
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList')}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('PatientList')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/patients.png')} />
                 <Text size-auto center style={styles.textButton}>
                   {t('navigation:patient_list')}
                 </Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList')}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('MedicalCaseList')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/case.png')} />
                 <Text size-auto center style={styles.textButton}>
                   {t('navigation:medical_case_list')}
                 </Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
 
           <View w50>
             {session?.facility.architecture === 'standalone' ? (
-              <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
+              <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
                 <View style={styles.blocContainer}>
                   <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
                   <Text size-auto center style={styles.textButton}>
                     {t('navigation:synchronize')}
                   </Text>
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             ) : null}
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/settings.png')} />
                 <Text size-auto center style={styles.textButton}>
                   {t('navigation:settings')}
                 </Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
 
           <View w50>
-            <TouchableHighlight
+            <TouchableOpacity
               underlayColor="transparent"
               style={styles.navigationButton}
               onPress={async () => {
@@ -129,16 +129,16 @@ export default class Home extends React.Component<Props, State> {
                   Crash app
                 </Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
 
-            <TouchableHighlight underlayColor="transparent" style={styles.navigationButton} onPress={() => logout()}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => logout()}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/logout.png')} />
                 <Text size-auto center style={styles.textButton}>
                   {t('navigation:logout')}
                 </Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

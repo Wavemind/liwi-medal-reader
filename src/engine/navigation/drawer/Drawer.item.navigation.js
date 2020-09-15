@@ -135,14 +135,14 @@ export class ItemButton extends Component<{ t: any, r: any }> {
     }
 
     return (
-      <Button onPress={() => navigate(name, initialPage)} drawerItemButton transparent>
+      <TouchableOpacity onPress={() => navigate(name, initialPage)} drawerItemButton transparent style={{padding: 5}}>
         <DrawerDot type={dotType} onPress={() => navigate(name, initialPage)} isDrawer={isDrawer} />
         {isDrawer ? (
           <Text drawerItemText style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}>
             {t}
           </Text>
         ) : null}
-      </Button>
+      </TouchableOpacity>
     );
   }
 }
@@ -163,10 +163,11 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
 
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }} onStartShouldSetResponder={() => true}>
-        <Button
+        <TouchableOpacity
           transparent
           style={{
             alignSelf: 'flex-start',
+            padding: 5,
           }}
           homeDrawer
           onPress={() => {
@@ -177,21 +178,23 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
           }}
         >
           <Icon style={styles.iconTop} dark type="FontAwesome" name="home" />
-        </Button>
-        <Button
+        </TouchableOpacity>
+        <TouchableOpacity
           transparent
           style={{
             alignSelf: 'flex-end',
+            padding: 5,
           }}
           homeDrawer
           onPress={() => NavigationService.navigate('Emergency')}
         >
           <Icon style={styles.iconTop} dark type="FontAwesome5" name="plus-square" />
-        </Button>
-        <Button
+        </TouchableOpacity>
+        <TouchableOpacity
           transparent
           style={{
             alignSelf: 'flex-end',
+            padding: 5,
           }}
           homeDrawer
           onPress={() => {
@@ -199,7 +202,7 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
           }}
         >
           <Icon style={styles.iconTop} dark type="AntDesign" name="close" />
-        </Button>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -287,6 +290,7 @@ export class PathBar extends Component<{ routeName: string, initialPage: string 
             borderLeftColor: active ? liwiColors.redColor : liwiColors.greyColor,
             marginLeft: isDrawer ? 19 : 24,
             height: isDrawer ? 'auto' : 20,
+            padding: 5
           }}
         />
       </TouchableOpacity>
