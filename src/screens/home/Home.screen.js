@@ -35,7 +35,7 @@ export default class Home extends React.Component<Props, State> {
     const { session } = this.state;
 
     return (
-      <View padding-auto testID="HomeScreen" style={styles.back}>
+      <View padding-auto testID="HomeScreen">
         <View flex-container-column>
           <Text bigTitle style={{ textAlign: 'center' }}>
             Welcome {user.preFix} {user.first_name} {user.last_name}

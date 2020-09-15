@@ -16,14 +16,12 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: liwiColors.whiteDark,
-    shadowColor: '#00000026',
+    borderColor: liwiColors.lightGreyColor,
     alignContent: 'center',
     shadowOffset: {
       width: 0,
       height: 0,
     },
-    shadowOpacity: 1,
-    shadowRadius: 1.5,
   },
 
   itemColumn: { flex: 1, marginLeft: 2, marginRight: 2, paddingLeft: 8 },

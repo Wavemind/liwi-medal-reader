@@ -187,7 +187,7 @@ export default class ListContent extends React.Component<Props, State> {
     return firstLoading ? (
       <LiwiLoader />
     ) : (
-      <>
+      <View>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
@@ -228,7 +228,7 @@ export default class ListContent extends React.Component<Props, State> {
             <Text not-available>{t('application:no_data')}</Text>
           </View>
         )}
-      </>
+      </View>
     );
   }
 }
