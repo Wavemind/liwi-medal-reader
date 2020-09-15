@@ -25,7 +25,7 @@ export class QuestionsSequenceScoredModel extends QuestionsSequenceModel {
 
     // Loop for top_conditions
     this.top_conditions.map((conditions) => {
-      const returnedBoolean = comparingTopConditions(this, conditions, medicalCase);
+      const returnedBoolean = comparingTopConditions(conditions, medicalCase);
 
       scoreTotalPossible += conditions.score;
       switch (returnedBoolean) {

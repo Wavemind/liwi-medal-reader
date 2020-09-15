@@ -1,5 +1,4 @@
 // @flow
-
 import { HealthCaresModel } from './HealthCares.model';
 import { medicationForms } from '../../constants';
 import { store } from '../../store';

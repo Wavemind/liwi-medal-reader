@@ -152,19 +152,20 @@ export default class Medicines extends Component<Props, State> {
     });
 
     const renderMedicinesProposed = (
+      // TODO DEG DEG DEG DEG DEG DEG DEG DEG DEG DEG DEG DEG
       <>
         {Object.keys(diagnoses.proposed).map((key) => {
-          if (diagnoses.proposed[key].agreed === true) {
+          const finalDiagnostic = diagnoses.proposed[key];
+          if (finalDiagnostic.agreed === true) {
             let isPossible = false;
 
-            Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
-              if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
-                isPossible = true;
-              }
+            finalDiagnostic.getDrugs()
+            Object.keys(finalDiagnostic.drugs).map((drugId) => {
+              isPossible = finalDiagnostic.getDrugs();
             });
 
             if (isPossible) {
-              return this._medicineCards(t('diagnoses_label:proposed'), diagnoses.proposed[key], key, 'proposed');
+              return this._medicineCards(t('diagnoses_label:proposed'), finalDiagnostic, key, 'proposed');
             }
           } else {
             return null;
