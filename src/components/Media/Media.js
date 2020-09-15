@@ -21,7 +21,7 @@ export default class Media extends React.Component<Props, State> {
 
     this.state = {
       isConnected: false,
-      url: props.url,
+      media: props.media,
     };
   }
 
@@ -35,26 +35,24 @@ export default class Media extends React.Component<Props, State> {
 
   /**
    * Display right component according to file extension
-   * @param {String} url - File url
+   * @param {Object} media
    * @returns {*}
    */
-  mediaType(url) {
-    const extension = url.split('.').pop();
-
-    if (MOVIES_EXTENSION.includes(extension)) {
-      return <Movie url={url} />;
+  mediaType(media) {
+    if (MOVIES_EXTENSION.includes(media.extension)) {
+      return <Movie url={media.url} />;
     }
-    if (AUDIOS_EXTENSION.includes(extension)) {
-      return <Audio url={url} />;
+    if (AUDIOS_EXTENSION.includes(media.extension)) {
+      return <Audio url={media.url} />;
     }
-    if (PICTURES_EXTENSION.includes(extension)) {
-      return <Picture url={url} />;
+    if (PICTURES_EXTENSION.includes(media.extension)) {
+      return <Picture url={media.url} />;
     }
     return <Text>{i18n.t('media:file_not_supported')}</Text>;
   }
 
   render() {
-    const { isConnected, url } = this.state;
-    return isConnected ? <View style={styles.container}>{this.mediaType(url)}</View> : null;
+    const { isConnected, media } = this.state;
+    return isConnected ? <View style={styles.container}>{this.mediaType(media)}</View> : null;
   }
 }

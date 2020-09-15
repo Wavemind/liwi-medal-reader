@@ -1,7 +1,7 @@
 // Save algorithm in store to use it in test
 import { createAppContainer } from 'react-navigation';
 import find from 'lodash/find';
-import { Text, View } from 'native-base';
+import moment from 'moment';
 import { MedicalCaseModel } from '../engine/models/MedicalCase.model';
 import { store } from '../store';
 import { setAnswer, setMedicalCase, setDiagnoses } from '../actions/creators.actions';
@@ -9,8 +9,6 @@ import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
 import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
-import { styles } from '../../src/components/FinalDiagnosticCards/FinalDiagnosticCards.style';
-import TooltipButton from '../../src/components/TooltipButton/TooltipButton';
 
 export const cl = console.log;
 const algorithm = require('./algorithm.json');
@@ -26,6 +24,16 @@ createAppContainer(RootMainNavigator);
  */
 export const jestSetAnswer = (nodeId, value) => {
   store.dispatch(setAnswer(nodeId, value));
+};
+
+/**
+ * Set birth date from age given in days
+ * @param nodeId
+ * @param ageInDays
+ */
+export const setBirthDate = (nodeId, ageInDays) => {
+  const birthDate = moment().subtract(ageInDays, 'days');
+  jestSetAnswer(nodeId, birthDate);
 };
 
 /**
@@ -108,7 +116,7 @@ export const validFinalDiagnostic = (finalDiagnosticId) => {
   const finalDiagnostic = state$.nodes[finalDiagnosticId];
   store.dispatch(
     setDiagnoses('proposed', {
-      id: finalDiagnostic,
+      id: finalDiagnosticId,
       label: finalDiagnostic.label,
       diagnostic_id: finalDiagnostic.diagnostic_id,
       agreed: true,
