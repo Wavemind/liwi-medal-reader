@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from 'react';
-import { FlatList } from 'react-native';
-import { Button, ListItem, Text, View, Icon } from 'native-base';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { Button, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
 import { getItems } from '../../engine/api/LocalStorage';
@@ -126,7 +126,7 @@ export default class ListContent extends React.Component<Props, State> {
     } = this.props;
     const { isConnected, deviceInfo } = this.state;
     return (
-      <ListItem style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
+      <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         {item.values.map((value, key) => (
           <View style={styles.itemColumn} key={`${item.id}_${key}`}>
             <Text size-auto>{value}</Text>
@@ -146,7 +146,7 @@ export default class ListContent extends React.Component<Props, State> {
             ) : null}
           </>
         ) : null}
-      </ListItem>
+      </TouchableOpacity>
     );
   };
 
@@ -187,7 +187,7 @@ export default class ListContent extends React.Component<Props, State> {
     return firstLoading ? (
       <LiwiLoader />
     ) : (
-      <>
+      <View>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
@@ -228,7 +228,7 @@ export default class ListContent extends React.Component<Props, State> {
             <Text not-available>{t('application:no_data')}</Text>
           </View>
         )}
-      </>
+      </View>
     );
   }
 }

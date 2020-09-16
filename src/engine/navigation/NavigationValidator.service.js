@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { medicalCaseStatus, navigationRoute, valueFormats } from '../../../frontend_service/constants';
+import { valueFormats } from '../../../frontend_service/constants';
 import { store } from '../../../frontend_service/store';
 import i18n from '../../utils/i18n';
 
@@ -38,6 +38,7 @@ const screens = [
     validations: {
       medicalHistory: { is_mandatory: true, initialPage: 0 },
       physicalExam: { is_mandatory: true, initialPage: 1 },
+      comment: { initialPage: 2 },
     },
     generateQuestions: [questionsPhysicalExam, questionsMedicalHistory],
   },

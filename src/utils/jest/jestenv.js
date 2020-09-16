@@ -157,7 +157,6 @@ jest.mock('react-native-orientation-locker', () => {});
 jest.mock('react-native-slider', () => {});
 jest.mock('react-native-sound', () => {});
 jest.mock('react-native-lightbox', () => {});
-jest.mock('react-native-platform-touchable', () => {});
 jest.mock('react-native-vector-icons/MaterialIcons', () => {});
 jest.mock('react-native-vector-icons', () => {});
 

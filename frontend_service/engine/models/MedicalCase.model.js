@@ -35,6 +35,7 @@ export class MedicalCaseModel {
       this.complaintCategories = [];
       this.isNewCase = true;
       this.isEligible = true;
+      this.comment = "";
       // TODO: when production set to null -> It's ALAIN NOT ME
       this.consent = true;
       this.modal = {
@@ -86,6 +87,7 @@ export class MedicalCaseModel {
         this.clinician = props.clinician;
         this.mac_address = props.mac_address;
         this.fail_safe = props.fail_safe;
+        this.comment = props.comment;
       } else {
         const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
         this._assignValues(json);
@@ -132,6 +134,7 @@ export class MedicalCaseModel {
     this.complaintCategories = data.complaintCategories;
     this.metaData = data.metaData;
     this.diagnoses = data.diagnoses;
+    this.comment = data.comment;
   }
 
   /**

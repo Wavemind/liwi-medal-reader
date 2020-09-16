@@ -105,5 +105,9 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 10,
     marginTop: 10,
-  }
+  },
+  flexPadding: {
+    alignSelf: 'flex-start',
+    padding: 5,
+  },
 });

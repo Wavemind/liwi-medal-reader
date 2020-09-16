@@ -7,10 +7,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes, Keyboard} from 'react-native';
+import { Platform, ScrollView, Text, TouchableOpacity, View, Keyboard} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
-import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 
@@ -497,11 +495,11 @@ class Stepper extends React.Component<Props, State> {
 
     return (
       <View style={styles.saveButton}>
-        <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
+        <TouchableOpacity onPress={this.onSaveCase} style={{ zIndex: 1 }}>
           <View style={[styles.button]}>
             <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>{t('application:save')}</Text>
           </View>
-        </PlatformTouchableNative>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -600,35 +598,34 @@ class Stepper extends React.Component<Props, State> {
             {isLoading ? <LiwiProgressBar /> : (
               <>
                 {showBack ? (
-                  <PlatformTouchableNative
+                  <TouchableOpacity
                     onPress={this.onPressBack}
-                    background={PlatformTouchableNative.SelectableBackgroundBorderless()}
                     style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
                     </View>
-                  </PlatformTouchableNative>
+                  </TouchableOpacity>
                 ) : null}
 
                 {this.renderDots()}
                 {this._renderSaveButton()}
 
                 {showNext ? (
-                  <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>
+                  <TouchableOpacity onPress={this.onPressNext} style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                       {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                     </View>
-                  </PlatformTouchableNative>
+                  </TouchableOpacity>
                 ) : (
                   nextStage !== null && (
-                    <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
+                    <TouchableOpacity onPress={this.nextStage} style={{ zIndex: 1 }}>
                       <View style={[styles.button]}>
                         <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
                         {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                       </View>
-                    </PlatformTouchableNative>
+                    </TouchableOpacity>
                   ))
                 }
               </>
