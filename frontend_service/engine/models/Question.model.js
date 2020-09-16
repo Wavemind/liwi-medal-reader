@@ -76,12 +76,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.counter = counter;
     this.diagnostics_related_to_cc = diagnostics_related_to_cc;
     this.dd = dd;
-    // TODO DON'T KEEP it this way just for testing
-    this.df = df.map((dfs) => {
-      if(dfs.id === undefined)
-        return { id: dfs, conditionValue: null};
-      return dfs;
-    });
+    this.df = df;
     this.display_format = display_format;
     this.is_mandatory = is_mandatory;
     this.qs = qs;
