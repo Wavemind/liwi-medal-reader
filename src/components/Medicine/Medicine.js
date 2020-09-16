@@ -5,10 +5,10 @@ import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './Medicine.style';
 
 export default class Medicine extends Component<{}> {
-  _handleClick = (boolean) => {
+  _handleClick = (value) => {
     const { medicine, diagnosesKey, setMedicine, type } = this.props;
-    if (boolean !== medicine.agreed) {
-      setMedicine(type, diagnosesKey, medicine.id, boolean);
+    if (value !== medicine.agreed) {
+      setMedicine(type, diagnosesKey, medicine.id, value);
     }
   };
 

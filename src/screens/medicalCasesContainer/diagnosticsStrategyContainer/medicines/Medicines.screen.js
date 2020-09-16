@@ -110,7 +110,7 @@ export default class Medicines extends Component<Props, State> {
             <CardItem style={styles.cardItemCondensed}>
               <Body>
                 {drugs.length > 0 ? (
-                  drugs.map((drug) => <Medicine type="proposed" key={`${drug.id}_medicine`} medicine={proposedFinalDiagnostic.drugs[drug.id]} diagnosesKey={key} node={drug} />)
+                  drugs.map((drug) => <Medicine type={diagnosesKey} key={`${drug.id}_medicine`} medicine={proposedFinalDiagnostic.drugs[drug.id]} diagnosesKey={key} node={drug} />)
                 ) : (
                   <Text key={`${key}diagnoses`} italic>
                     {t('diagnoses:no_drugs')}
