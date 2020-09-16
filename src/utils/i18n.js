@@ -411,6 +411,7 @@ i18n
           conditions: 'Treatment Conditions',
           filter: 'Filters',
           step_invalid: 'Step is not valid',
+          about: 'About'
         },
         common: {
           back: 'Back',
