@@ -12,6 +12,15 @@ import DrawerDot from './Drawer.dot';
 // TODO: REFACTOR THIS SHIT
 // TODO: REFACTOR THIS SHIT
 // TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
 
 const WrapperMiniDrawerCategory = styled(props => <TouchableOpacity {...props}/>)`
   padding: ${({ isDrawer }) => (isDrawer ? '13px 0' : '6px 0')};
@@ -165,10 +174,7 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }} onStartShouldSetResponder={() => true}>
         <TouchableOpacity
           transparent
-          style={{
-            alignSelf: 'flex-start',
-            padding: 5,
-          }}
+          style={styles.flexPadding}
           homeDrawer
           onPress={() => {
             if (r.routeName === 'Home') {
@@ -181,10 +187,7 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity
           transparent
-          style={{
-            alignSelf: 'flex-end',
-            padding: 5,
-          }}
+          style={styles.flexPadding}
           homeDrawer
           onPress={() => NavigationService.navigate('Emergency')}
         >
@@ -192,10 +195,7 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity
           transparent
-          style={{
-            alignSelf: 'flex-end',
-            padding: 5,
-          }}
+          style={styles.flexPadding}
           homeDrawer
           onPress={() => {
             NavigationService.toggleDrawer();

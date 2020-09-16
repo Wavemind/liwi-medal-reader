@@ -91,7 +91,7 @@ class LayoutTemplate extends React.Component<Props> {
       <Root>
         <StyleProvider style={theme}>
           {ready ? (
-            <Container style={{backgroundColor: '#fff'}}>
+            <Container>
               <RootView>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <AppContainer
