@@ -84,6 +84,18 @@ export const renderingDrawerItems = [
     t: i18n.t('menu:physical_exam'),
   },
   {
+    type: 'path',
+    initialPage: 2,
+    routeName: 'Consultation',
+  },
+  {
+    type: 'item',
+    initialPage: 2,
+    name: 'Consultation',
+    routeName: 'Consultation',
+    t: i18n.t('menu:comment'),
+  },
+  {
     type: 'categorie',
     initialPage: 0,
     name: 'Tests',

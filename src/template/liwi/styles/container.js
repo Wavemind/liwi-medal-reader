@@ -155,7 +155,7 @@ export default {
       marginTop: 100,
     },
     '.home': {
-      backgroundColor: liwiColors.lightGreyColor,
+      backgroundColor: liwiColors.whiteColor,
       border: 0,
     },
   },

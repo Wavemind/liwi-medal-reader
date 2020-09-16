@@ -50,6 +50,7 @@
     "react-fast-compare": "^2.0.4",
     "react-i18next": "9.0.2",
     "react-native": "0.61.5",
+    "react-native-background-color": "^0.0.8",
     "react-native-camera": "^3.23.1",
     "react-native-custom-picker": "^0.4.0",
     "react-native-device-info": "^4.0.1",
@@ -163,8 +164,8 @@
     "react-doc-generator": "^1.2.5",
     "react-native-debugger-open": "^0.3.17",
     "react-test-renderer": "16.9.0",
-    "rn-fetch-blob": "^0.12.0",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "rn-fetch-blob": "^0.12.0"
   },
   "detox": {
     "configurations": {
@@ -199,7 +200,9 @@
   },
   "jest": {
     "preset": "react-native",
-    "transformIgnorePatterns": ["node_modules/(?!react-native|native-base|react-navigation|react-native-fabric)"],
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|native-base|react-navigation|react-native-fabric)"
+    ],
     "testEnvironment": "node",
     "verbose": true,
     "setupFiles": [
