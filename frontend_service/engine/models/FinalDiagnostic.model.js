@@ -178,7 +178,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
 
   getDrugs = () => {
     const medicalCase = store.getState();
-
+    const drugsAvailable = [];
     const parents = (top_conditions) => {
       return top_conditions.map((top) => top.first_node_id);
     };
@@ -201,7 +201,13 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return true;
     };
 
-    return Object.keys(this.drugs).filter((drugId) => parentsConditionValue(this.drugs[drugId].top_conditions));
+    Object.keys(this.drugs).forEach((drugId) => {
+      if (parentsConditionValue(this.drugs[drugId].top_conditions)) {
+        drugsAvailable.push(medicalCase.nodes[drugId]);
+      }
+    });
+
+    return drugsAvailable;
   };
 
   /**

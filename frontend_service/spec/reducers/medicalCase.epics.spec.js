@@ -71,4 +71,15 @@ describe('actions', () => {
     const medicalCase = store.getState();
     expect(medicalCase.nodes[421].getDrugs()).toEqual(['1660', '1736']);
   });
+
+  it('should show the drugs only if the whole tree is valid', () => {
+    enableMalaria();
+
+    validFinalDiagnostic(421);
+
+    jestSetAnswer(2243, 1148);
+
+    const medicalCase = store.getState();
+    expect(medicalCase.nodes[421].getDrugs()).toEqual(['1660', '1736']);
+  });
 });

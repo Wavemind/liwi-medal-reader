@@ -18,7 +18,7 @@ export class NodesModel implements NodeInterface {
 
   filterByCategory(category) {
     return _.filter(this, (n) => {
-      return n.category === category
+      return n.category === category;
     });
   }
 
@@ -122,10 +122,10 @@ export class NodesModel implements NodeInterface {
     finalDiagnostics.forEach((finalDiagnosticId) => {
       const finalDiagnostic = this[finalDiagnosticId];
       Object.keys(finalDiagnostic.instances).forEach((instanceId) => {
-        if (this[instanceId].df.some((df) => df.conditionValue)){
+        if (this[instanceId].df.some((df) => df.conditionValue)) {
           questions = {
             ...questions,
-            [instanceId]:this[instanceId],
+            [instanceId]: this[instanceId],
           };
         }
       });

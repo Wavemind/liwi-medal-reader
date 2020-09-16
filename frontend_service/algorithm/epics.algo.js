@@ -1,15 +1,16 @@
 /* eslint-disable no-param-reassign */
-import {combineEpics, ofType} from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
 import find from 'lodash/find';
-import {of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+import { of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import moment from 'moment';
-import {actions} from '../actions/types.actions';
-import {displayFormats, nodeTypes} from '../constants';
-import {dispatchFinalDiagnosticAction, setMedicalCase} from '../actions/creators.actions';
-import {getParentsNodes, getQuestionsSequenceStatus} from './treeDiagnosis.algo';
-import {NodesModel} from '../engine/models/Nodes.model';
-import {FinalDiagnosticModel} from '../engine/models/FinalDiagnostic.model';
+import { actions } from '../actions/types.actions';
+import { displayFormats, nodeTypes } from '../constants';
+import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
+import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
+import { NodesModel } from '../engine/models/Nodes.model';
+import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
+import NavigationService from '../../src/engine/navigation/Navigation.service';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -233,7 +234,7 @@ const processUpdatedNode = (medicalCase, nodeId) => {
 
   if (relatedDiagnosticsForCC !== undefined) {
     relatedDiagnosticsForCC.forEach((diagnosticId) => {
-      const {instances} = medicalCase.diagnostics[diagnosticId];
+      const { instances } = medicalCase.diagnostics[diagnosticId];
       Object.keys(instances).forEach((nodeId) => {
         if (instances[nodeId].top_conditions.length === 0) {
           computeConditionValue(medicalCase, diagnosticId, nodeId);
@@ -250,7 +251,7 @@ export const epicSetAnswer = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
     mergeMap((action) => {
-      const {nodeId} = action.payload;
+      const { nodeId } = action.payload;
       const medicalCase = {
         ...state$.value,
         nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
