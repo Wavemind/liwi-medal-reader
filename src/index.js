@@ -4,6 +4,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import KeepAwake from 'react-native-keep-awake';
+import BackgroundColor from 'react-native-background-color';
 import { ApplicationProvider } from './engine/contexts/Application.context';
 
 import WavemindTools from './utils/WavemindTools';
@@ -16,6 +17,7 @@ import StatusIndicator from './components/StatusIndicator';
 export default class Root extends React.Component {
   async componentDidMount() {
     KeepAwake.activate();
+    BackgroundColor.setColor('#FFFFFF');
   }
 
   render() {

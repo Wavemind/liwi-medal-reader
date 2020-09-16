@@ -156,6 +156,7 @@ i18n
         consultation: {
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
+          comment: 'Comment',
         },
         triage: {
           first_look_assessment: 'First look assessments',
@@ -190,6 +191,7 @@ i18n
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
+          comment: 'Comment',
           poct: 'POCT',
           tests: 'Tests',
           strategy: 'Diagnoses',
@@ -197,6 +199,10 @@ i18n
           add: 'Add a patient',
           others: 'Others',
           noredux: 'No consultation loaded',
+        },
+        comment: {
+          save: 'Save comment',
+          edit: 'Edit comment',
         },
         medical_case: {
           in_creation: 'Demographic',
@@ -405,6 +411,7 @@ i18n
           conditions: 'Treatment Conditions',
           filter: 'Filters',
           step_invalid: 'Step is not valid',
+          about: 'About'
         },
         common: {
           back: 'Back',
