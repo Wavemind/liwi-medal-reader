@@ -176,6 +176,10 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     }
   };
 
+  /**
+   * Return all the drugs that must be shown for the current final diagnostic
+   * @returns {Array<DrugModel>>} - All the drugs that must be shown for the current final diagnostic
+   */
   getDrugs = () => {
     const medicalCase = store.getState();
     const drugsAvailable = [];
@@ -183,6 +187,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return top_conditions.map((top) => top.first_node_id);
     };
 
+    /**
+     * Recusive function that calculate the value of all your parents
+     * @param top_conditions - the condition of you 1st level parent
+     * @returns {boolean}
+     */
     const parentsConditionValue = (top_conditions) => {
       if (top_conditions.length > 0) {
         const topConditionResults = top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase));
@@ -276,6 +285,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     };
   }
 
+  /**
+   * Retrurns all the final diagnostics that are either manually added or agreed by the clinician
+   * @param medicalCase - The current state of the medical case
+   * @returns {Array<Integer>} - Returns an array with all the ids of the final diagnostics
+   */
   static getAgreed(medicalCase) {
     const finalDiagnostics = [];
     Object.keys(medicalCase.diagnoses.proposed).map((diagnoseId) => {
@@ -284,7 +298,6 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
         finalDiagnostics.push(diagnose.id);
       }
     });
-
     return finalDiagnostics.concat(Object.keys(medicalCase.diagnoses.additional).map((diagnosesId) => parseInt(diagnosesId)));
   }
 }
