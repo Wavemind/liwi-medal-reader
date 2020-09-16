@@ -3,14 +3,22 @@ import * as React from 'react';
 import { Button, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 
-import { styles } from './Synchronise.style';
+import { styles } from './Synchronize.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
+import { modalType } from '../../../../frontend_service/constants';
 
-export default class Synchronise extends React.Component<Props, State> {
+export default class Synchronize extends React.Component<Props, State> {
   state = {
     loading: false,
   };
+
+  constructor(props) {
+    super(props);
+
+    const { updateModalFromRedux } = props;
+    updateModalFromRedux({}, modalType.about);
+  }
 
   /**
    * Get group, algorithm and store it in local storage

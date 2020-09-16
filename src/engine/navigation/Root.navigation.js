@@ -3,7 +3,7 @@ import { createSwitchNavigator } from 'react-navigation';
 import NewSession from '../../screens/sessionsContainer/NewSession';
 import UnlockSession from '../../screens/sessionsContainer/UnlockSession';
 import UserSelection from '../../screens/sessionsContainer/UserSelection';
-import Synchronise from '../../screens/sessionsContainer/Synchronise';
+import Synchronize from '../../screens/sessionsContainer/Synchronize';
 
 import Loading from '../../screens/loading';
 import MainTabNavigator from './Main.navigation';
@@ -15,7 +15,7 @@ export const RootMainNavigator = createSwitchNavigator(
     NewSession: { screen: NewSession },
     UserSelection: { screen: UserSelection },
     UnlockSession: { screen: UnlockSession },
-    Synchronise: { screen: Synchronise },
+    Synchronize: { screen: Synchronize },
   },
   {
     initialRouteName: 'AuthLoading',

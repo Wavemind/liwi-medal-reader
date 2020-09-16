@@ -130,6 +130,7 @@ export const modalType = {
   algorithmVersion: 'algorithmVersion',
   validation: 'validation',
   description: 'description',
+  about: 'about',
   loading: 'loading',
 };
 

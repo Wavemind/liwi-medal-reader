@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
 
   content: { textAlign: 'center' },
 
-  modal: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 22, marginBottom: 22 },
+  modal: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 22, paddingBottom: 22, backgroundColor: 'rgba(0,0,0,0.6)' },
 
   modalContainer: {
     margin: 20,
@@ -83,9 +83,11 @@ export const styles = StyleSheet.create({
 
   modalContent: { paddingLeft: 30, paddingRight: 30, paddingBottom: 30 },
 
-  closeButton: { width: 50, marginLeft: 10, marginTop: 10, backgroundColor: liwiColors.redColor },
+  closeButton: { width: 50, marginLeft: 10, marginTop: 10, marginBottom: 10, backgroundColor: liwiColors.redColor },
 
   description: { marginTop: 20, textAlign: 'left', flex: 1 },
+
+  aboutDescription: { marginBottom: 15, textAlign: 'left', flex: 1 },
 
   center: { textAlign: 'center' },
 });
