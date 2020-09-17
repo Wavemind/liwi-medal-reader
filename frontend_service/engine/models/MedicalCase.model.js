@@ -358,6 +358,10 @@ export class MedicalCaseModel {
     return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.consent;
   };
 
+  /**
+   * Test if medicalCase is older than 7 days
+   * @returns {boolean}
+   */
   isOlderThan1Week = () => {
     return moment().diff(this.created_at) > 7;
   };
