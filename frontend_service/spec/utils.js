@@ -4,7 +4,7 @@ import find from 'lodash/find';
 import moment from 'moment';
 import { MedicalCaseModel } from '../engine/models/MedicalCase.model';
 import { store } from '../store';
-import { setAnswer, setMedicalCase, setDiagnoses } from '../actions/creators.actions';
+import { setAnswer, setMedicalCase, setDiagnoses, setMedicine } from '../actions/creators.actions';
 import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
 import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
@@ -109,21 +109,50 @@ export const conditionValue = (id, elemId, elem = 'dd') => {
 
 /**
  * Valid a final diagnostic proposed
+ * @param diagnosesKey
  * @param finalDiagnosticId
  */
-export const validFinalDiagnostic = (finalDiagnosticId) => {
+export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
   const state$ = store.getState();
   const finalDiagnostic = state$.nodes[finalDiagnosticId];
-  store.dispatch(
-    setDiagnoses('proposed', {
-      id: finalDiagnosticId,
-      label: finalDiagnostic.label,
-      diagnostic_id: finalDiagnostic.diagnostic_id,
-      agreed: true,
-      drugs: finalDiagnostic.drugs,
-      managements: finalDiagnostic.managements,
-    })
-  );
+
+  // Do not ask FFS
+  if (diagnosesKey === 'proposed') {
+    store.dispatch(
+      setDiagnoses(diagnosesKey, {
+        id: finalDiagnosticId,
+        label: finalDiagnostic.label,
+        diagnostic_id: finalDiagnostic.diagnostic_id,
+        agreed: true,
+        drugs: finalDiagnostic.drugs,
+        managements: finalDiagnostic.managements,
+      })
+    );
+  } else {
+    store.dispatch(
+      setDiagnoses(diagnosesKey, {
+        [finalDiagnosticId]: {
+          id: finalDiagnosticId,
+          label: finalDiagnostic.label,
+          diagnostic_id: finalDiagnostic.diagnostic_id,
+          agreed: true,
+          drugs: finalDiagnostic.drugs,
+          managements: finalDiagnostic.managements,
+        },
+      })
+    );
+  }
+};
+
+/**
+ * Valid a medicine
+ * @param type
+ * @param medicineId
+ * @param finalDiagnosticId
+ * @param value
+ */
+export const validMedicine = (type, medicineId, finalDiagnosticId, value) => {
+  store.dispatch(setMedicine(type, finalDiagnosticId, medicineId, value));
 };
 
 /**
@@ -133,21 +162,16 @@ export const validFinalDiagnostic = (finalDiagnosticId) => {
  */
 export const drugRetained = (drugId) => {
   const state$ = store.getState();
-  const finalDiagnostics = state$.diagnoses.proposed;
-  const drugs = [];
+  const finalDiagnostics = {
+    ...state$.diagnoses.proposed,
+    ...state$.diagnoses.additional,
+  };
+  let drugs = [];
 
   Object.keys(finalDiagnostics).forEach((key) => {
-    if (finalDiagnostics[key].drugs !== undefined && Object.keys(finalDiagnostics[key].drugs).length > 0) {
-      Object.keys(finalDiagnostics[key].drugs).map((drugKey) => {
-        const drug = finalDiagnostics[key].drugs[drugKey];
-        if (calculateCondition(drug) === true) {
-          drugs.push(drug);
-        }
-      });
-    }
+    drugs = drugs.concat(state$.nodes[key].getDrugs());
   });
-
-  return drugs.map((drug) => drug.id).includes(drugId);
+  return drugs.some((drug) => drug.id === drugId);
 };
 
 /**
@@ -157,7 +181,10 @@ export const drugRetained = (drugId) => {
  */
 export const managementRetained = (managementId) => {
   const state$ = store.getState();
-  const finalDiagnostics = state$.diagnoses.proposed;
+  const finalDiagnostics = {
+    ...state$.diagnoses.proposed,
+    ...state$.diagnoses.additional,
+  };
   const managements = [];
 
   Object.keys(finalDiagnostics).forEach((key) => {

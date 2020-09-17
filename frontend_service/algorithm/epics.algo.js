@@ -8,8 +8,9 @@ import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
-import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { NodesModel } from '../engine/models/Nodes.model';
+import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
+import NavigationService from '../../src/engine/navigation/Navigation.service';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -43,11 +44,9 @@ const computeConditionValue = (medicalCase, diagnosticId, nodeId) => {
     const conditionValue = currentInstance.calculateCondition(medicalCase);
     // If the condition of this node is not null
     if (parentConditionValue === false) {
-      // Stop infinite loop, change only when conditionValue is different
       // Set parent to false if their condition's isn't correct. Used to stop the algorithm
       updateConditionValue(medicalCase, nodeId, diagnosticId, false, diagnostic.type);
     } else if (conditionValue !== null) {
-      // Stop infinite loop, change only when conditionValue is different
       updateConditionValue(medicalCase, nodeId, diagnosticId, conditionValue, diagnostic.type);
 
       // If the node is answered go his children
@@ -263,8 +262,9 @@ export const epicSetAnswer = (action$, state$) =>
       // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
       if (
         (nodeId === medicalCase.mobile_config.left_top_question_id ||
-        nodeId === medicalCase.mobile_config.first_top_right_question_id ||
-        nodeId === medicalCase.mobile_config.second_top_right_question_id) && process.env.node_ENV !== 'test'
+          nodeId === medicalCase.mobile_config.first_top_right_question_id ||
+          nodeId === medicalCase.mobile_config.second_top_right_question_id) &&
+        process.env.node_ENV !== 'test'
       ) {
         NavigationService.setParamsAge();
       }
@@ -273,4 +273,27 @@ export const epicSetAnswer = (action$, state$) =>
     })
   );
 
-export default combineEpics(epicSetAnswer);
+export const epicSetDiagnoses = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.SET_DIAGNOSES, actions.SET_ANSWER),
+    mergeMap((action) => {
+      const medicalCase = {
+        ...state$.value,
+        nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
+      };
+      const finalDiagnostics = FinalDiagnosticModel.getAgreed(medicalCase);
+
+      finalDiagnostics.forEach((finalDiagnosticId) => {
+        const finalDiagnostic = medicalCase.nodes[finalDiagnosticId];
+        Object.keys(finalDiagnostic.instances).forEach((healthCaresQuestionId) => {
+          const healthCaresQuestion = finalDiagnostic.instances[healthCaresQuestionId];
+          const dfInstance = medicalCase.nodes[healthCaresQuestion.id].df.find((df) => df.id === finalDiagnosticId);
+          dfInstance.conditionValue = healthCaresQuestion.calculateCondition();
+        });
+      });
+
+      return of(setMedicalCase(medicalCase));
+    })
+  );
+
+export default combineEpics(epicSetAnswer, epicSetDiagnoses);

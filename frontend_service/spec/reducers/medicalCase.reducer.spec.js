@@ -95,7 +95,7 @@ describe('actions', () => {
     // < 60 g/L:199
     // >= 120 g/L:739
 
-    validFinalDiagnostic(60);
+    validFinalDiagnostic('proposed', 60);
 
     expect(finalDiagnosticRetained(60)).toEqual(true); // Check if Final diagnosis 60 ("Respiratory Distress") is retained
     expect(finalDiagnosticRetained(128)).toEqual(false); // Check if Common cold not retained (Respiratory Distress should exclude common cold)

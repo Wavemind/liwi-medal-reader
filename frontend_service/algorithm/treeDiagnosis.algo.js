@@ -41,7 +41,7 @@ export const nextChildFinalQs = (instance, finalQs, medicalCase) => {
   const top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
   // We get the condition of the final link
   const arrayBoolean = top_conditions.map((condition) => {
-    return comparingTopConditions(finalQs, condition, medicalCase);
+    return comparingTopConditions(condition, medicalCase);
   });
 
   return reduceConditionArrayBoolean(arrayBoolean);

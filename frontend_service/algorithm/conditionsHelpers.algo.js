@@ -42,7 +42,7 @@ export const calculateCondition = (node, medicalCase = store.getState()) => {
  * @return {array}
  *
  */
-export const returnConditionsArray = (node, medicalCase) => node.top_conditions.map((conditions) => comparingTopConditions(node, conditions, medicalCase));
+export const returnConditionsArray = (node, medicalCase) => node.top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase));
 
 /**
  * Get a array of boolean and return the final boolean between null | true | false
@@ -71,21 +71,8 @@ export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
  * @returns {null|boolean}
  *
  */
-const checkOneCondition = (child, wantedId, nodeId, medicalCase = store.getState()) => {
+const checkOneCondition = (wantedId, nodeId, medicalCase = store.getState()) => {
   if (medicalCase.nodes[nodeId].answer !== null) {
-    // Console.warn should only appear if there is a format error in ids
-    if (Number(medicalCase.nodes[nodeId].answer) !== medicalCase.nodes[nodeId].answer || Number(wantedId) !== wantedId) {
-      console.warn(
-        '%c --- DANGER STRING OR NUMBER PROBLEM TYPE --- ',
-        'background: #FF0000; color: #F6F3ED; padding: 5px',
-        child,
-        wantedId,
-        nodeId,
-        medicalCase.nodes[nodeId].answer,
-        typeof nodeId,
-        typeof medicalCase.nodes[nodeId].answer
-      );
-    }
     return Number(medicalCase.nodes[nodeId].answer) === Number(wantedId);
   }
   return null;
@@ -98,22 +85,24 @@ const checkOneCondition = (child, wantedId, nodeId, medicalCase = store.getState
  * @returns {null || false || true}
  *
  */
-export const comparingTopConditions = (child, condition, medicalCase) => {
+export const comparingTopConditions = (condition, medicalCase) => {
   const { first_id, first_node_id, operator, second_node_id, second_id } = condition;
 
-  const first_sub_condition = checkOneCondition(child, first_id, first_node_id, medicalCase);
+  const first_sub_condition = checkOneCondition(first_id, first_node_id, medicalCase);
 
   if (operator === null) {
     return first_sub_condition;
   }
-  const second_sub_condition = checkOneCondition(child, second_id, second_node_id, medicalCase);
 
-  if (operator === 'AND') {
-    return first_sub_condition && second_sub_condition;
-  }
-  if (operator === 'OR') {
-    return comparingBooleanOr(first_sub_condition, second_sub_condition);
-  }
+  // Not used so far
+  // const second_sub_condition = checkOneCondition(child, second_id, second_node_id, medicalCase);
+  //
+  // if (operator === 'AND') {
+  //   return first_sub_condition && second_sub_condition;
+  // }
+  // if (operator === 'OR') {
+  //   return comparingBooleanOr(first_sub_condition, second_sub_condition);
+  // }
 
   return null;
 };
@@ -132,7 +121,7 @@ export const comparingTopConditions = (child, condition, medicalCase) => {
  * @return [Boolean]
  *
  */
-const comparingBooleanOr = (firstBoolean, secondBoolean) => {
+export const comparingBooleanOr = (firstBoolean, secondBoolean) => {
   if (firstBoolean === true || secondBoolean === true) {
     return true;
   }

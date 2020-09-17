@@ -1,9 +1,9 @@
 // @flow
 
-import React, { Component } from "react";
-import { Text, View } from "native-base";
-import { NavigationScreenProps } from "react-navigation";
-import Questions from "../../../../components/QuestionsContainer/Questions";
+import React, { Component } from 'react';
+import { Text, View } from 'native-base';
+import { NavigationScreenProps } from 'react-navigation';
+import Questions from '../../../../components/QuestionsContainer/Questions';
 
 type Props = NavigationScreenProps & {};
 type State = {};

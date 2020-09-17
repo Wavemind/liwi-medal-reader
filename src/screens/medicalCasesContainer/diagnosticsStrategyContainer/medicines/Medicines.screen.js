@@ -77,41 +77,51 @@ export default class Medicines extends Component<Props, State> {
     }
   };
 
-  _medicineCards = (title, medicine, key, type) => {
+  /**
+   * Display available drugs for diagnoses agreed
+   * @param diagnosesKey
+   * @returns {unknown[]}
+   */
+  renderFinalDiagnosticDrugs = (diagnosesKey) => {
     const {
+      medicalCase,
+      medicalCase: { diagnoses },
       app: { t },
-      medicalCase: { nodes },
     } = this.props;
 
-    return (
-      <Card>
-        <CardItem style={styles.cardItemCondensed}>
-          <View style={styles.cardTitleContent}>
-            <Text customSubTitle style={styles.cardTitle}>
-              {medicine.label}
-            </Text>
-            <LiwiTitle2 noBorder style={styles.noRightMargin}>
-              <Text note>{title}</Text>
-            </LiwiTitle2>
-          </View>
-        </CardItem>
-        <CardItem style={styles.cardItemCondensed}>
-          <Body>
-            {Object.keys(medicine.drugs).length > 0 ? (
-              Object.keys(medicine.drugs).map((treatmentId) => {
-                if (calculateCondition(medicine.drugs[treatmentId]) === true) {
-                  return <Medicine type={type} key={`${treatmentId}_medicine`} medicine={medicine.drugs[treatmentId]} diagnosesKey={key} node={nodes[treatmentId]} />;
-                }
-              })
-            ) : (
-              <Text key={`${key}diagnoses`} italic>
-                {t('diagnoses:no_drugs')}
-              </Text>
-            )}
-          </Body>
-        </CardItem>
-      </Card>
-    );
+    return Object.keys(diagnoses[diagnosesKey]).map((key) => {
+      const proposedFinalDiagnostic = diagnoses[diagnosesKey][key];
+      if (proposedFinalDiagnostic.agreed === true || diagnosesKey === 'additional') {
+        const finalDiagnostic = medicalCase.nodes[key];
+        const drugs = finalDiagnostic.getDrugs();
+
+        return (
+          <Card>
+            <CardItem style={styles.cardItemCondensed}>
+              <View style={styles.cardTitleContent}>
+                <Text customSubTitle style={styles.cardTitle}>
+                  {finalDiagnostic.label}
+                </Text>
+                <LiwiTitle2 noBorder style={styles.noRightMargin}>
+                  <Text note>{t(`diagnoses_label:${diagnosesKey}`)}</Text>
+                </LiwiTitle2>
+              </View>
+            </CardItem>
+            <CardItem style={styles.cardItemCondensed}>
+              <Body>
+                {drugs.length > 0 ? (
+                  drugs.map((drug) => <Medicine type={diagnosesKey} key={`${drug.id}_medicine`} medicine={proposedFinalDiagnostic.drugs[drug.id]} diagnosesKey={key} node={drug} />)
+                ) : (
+                  <Text key={`${key}diagnoses`} italic>
+                    {t('diagnoses:no_drugs')}
+                  </Text>
+                )}
+              </Body>
+            </CardItem>
+          </Card>
+        );
+      }
+    });
   };
 
   render() {
@@ -151,75 +161,45 @@ export default class Medicines extends Component<Props, State> {
       });
     });
 
-    const renderMedicinesProposed = (
-      <>
-        {Object.keys(diagnoses.proposed).map((key) => {
-          if (diagnoses.proposed[key].agreed === true) {
-            let isPossible = false;
-
-            Object.keys(diagnoses.proposed[key].drugs).map((treatmentId) => {
-              if (calculateCondition(diagnoses.proposed[key].drugs[treatmentId]) === true) {
-                isPossible = true;
-              }
-            });
-
-            if (isPossible) {
-              return this._medicineCards(t('diagnoses_label:proposed'), diagnoses.proposed[key], key, 'proposed');
-            }
-          } else {
-            return null;
-          }
-        })}
-      </>
-    );
-
-    const renderMedicineAdditional = Object.keys(diagnoses.additional).map((key) => {
-      return this._medicineCards(t('diagnoses_label:additional'), diagnoses.additional[key], key, 'additional');
-    });
-
-    const renderAdditionalDrugs = (
-      <View style={styles.viewBox}>
-        {Object.keys(diagnoses.additionalDrugs).map((s) => (
-          <View style={styles.viewItem} key={s}>
-            <View style={styles.flex50}>
-              <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
-              <Text italic>
-                {t('diagnoses:duration')}: {diagnoses.additionalDrugs[s].duration} {t('drug:days')}
-              </Text>
-            </View>
-            <View style={styles.flex50}>
-              <Text> {t('diagnoses:custom_duration')}:</Text>
-              <View style={styles.box}>
-                <Icon style={styles.icon} type="Feather" name="clock" size={18} color="#000" />
-                <TextInput
-                  style={styles.text}
-                  keyboardType="numeric"
-                  value={diagnoses.additionalDrugs[s].duration}
-                  onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, s)}
-                  maxLength={2}
-                  placeholder="..."
-                />
-              </View>
-            </View>
-          </View>
-        ))}
-      </View>
-    );
-
     return (
       <View>
         <Text customTitle style={styles.noTopMargin}>
           {t('diagnoses:medicines')}
         </Text>
-        {Object.keys(diagnoses.proposed).length > 0 ? renderMedicinesProposed : null}
-        {Object.keys(diagnoses.additional).length > 0 ? renderMedicineAdditional : null}
+        {this.renderFinalDiagnosticDrugs('proposed')}
+        {this.renderFinalDiagnosticDrugs('additional')}
         {Object.keys(diagnoses.proposed).length === 0 && Object.keys(diagnoses.additional).length === 0 ? <Text italic>{t('diagnoses:no_medicines')}</Text> : null}
         {Object.keys(diagnoses.custom).map((w, i) => (
           <CustomMedicine key={i} diagnose={diagnoses.custom[w]} diagnoseKey={i} />
         ))}
 
         {filteredAllDrugs.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
-        {renderAdditionalDrugs}
+        <View style={styles.viewBox}>
+          {Object.keys(diagnoses.additionalDrugs).map((s) => (
+            <View style={styles.viewItem} key={s}>
+              <View style={styles.flex50}>
+                <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
+                <Text italic>
+                  {t('diagnoses:duration')}: {diagnoses.additionalDrugs[s].duration} {t('drug:days')}
+                </Text>
+              </View>
+              <View style={styles.flex50}>
+                <Text> {t('diagnoses:custom_duration')}:</Text>
+                <View style={styles.box}>
+                  <Icon style={styles.icon} type="Feather" name="clock" size={18} color="#000" />
+                  <TextInput
+                    style={styles.text}
+                    keyboardType="numeric"
+                    value={diagnoses.additionalDrugs[s].duration}
+                    onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, s)}
+                    maxLength={2}
+                    placeholder="..."
+                  />
+                </View>
+              </View>
+            </View>
+          ))}
+        </View>
 
         {filteredAllDrugs.length > 0 && (
           <MultiSelect
