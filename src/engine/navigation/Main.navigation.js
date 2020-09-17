@@ -22,6 +22,7 @@ import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnostics
 import Triage from '../../screens/medicalCasesContainer/triage';
 import Consultation from '../../screens/medicalCasesContainer/consultation';
 import Emergency from '../../screens/emergency';
+import ConsentList from '../../screens/consentList';
 
 import i18n from '../../utils/i18n';
 import { liwiColors, screenWidth } from '../../utils/constants';
@@ -76,6 +77,16 @@ const Stack = createStackNavigator(
     ConsentCapture: {
       screen: ConsentCapture,
       path: 'consent_capture',
+      params: {},
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: navigation.getParam('title'),
+        };
+      },
+    },
+    ConsentList: {
+      screen: ConsentList,
+      path: 'consent_list',
       params: {},
       navigationOptions: ({ navigation }) => {
         return {
