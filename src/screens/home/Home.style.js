@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { liwiColors } from "../../utils/constants";
+import { StyleSheet } from 'react-native';
+import { liwiColors } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   navigationButton: {
@@ -20,6 +20,5 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
-  back: { backgroundColor: '#fff' },
   textButton: { color: liwiColors.blackLightColor },
 });

@@ -78,7 +78,20 @@ export const questionsMedicalHistory = () => {
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
   }
 
-  return questions;
+  return sortQuestions(questions);
+};
+
+/**
+ * Sorts the array of question
+ * @param questions - Array to sort
+ * @returns {Array<QuestionModel>} - Sorted array
+ */
+const sortQuestions = (questions) => {
+  return questions.sort((a, b) => {
+    if (a.is_danger_sign === b.is_danger_sign) return 0;
+    if (a.is_danger_sign === true) return -1;
+    return 1;
+  });
 };
 
 /**
@@ -109,7 +122,7 @@ export const questionsPhysicalExam = () => {
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
   }
 
-  return questions;
+  return sortQuestions(questions);
 };
 
 /**
@@ -123,7 +136,7 @@ export const questionsFirstLookAssessement = () => {
   const ordersFirstLookAssessment = state$.mobile_config.questions_orders[categories.emergencySign];
 
   if (ordersFirstLookAssessment !== undefined) {
-    ordersFirstLookAssessment.map((order) => {
+    ordersFirstLookAssessment.forEach((order) => {
       firstLookAssessement.push(state$.nodes[order]);
     });
   }
@@ -146,13 +159,13 @@ export const questionsComplaintCategory = () => {
   const state$ = store.getState();
   const complaintCategories = [];
   const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
-  const general_cc_id = state$.config.basic_questions.general_cc_id
+  const { general_cc_id } = state$.config.basic_questions;
 
   const birthDate = state$.nodes[state$.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
 
   store.dispatch(setAnswer(general_cc_id, Object.keys(state$.nodes[general_cc_id].answers)[0]));
-  orders.map((order) => {
+  orders.forEach((order) => {
     if (state$.nodes[order].id !== state$.config.basic_questions.general_cc_id) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
       // For all questions that do not appear, set the answer to "No"
@@ -184,7 +197,7 @@ export const questionsBasicMeasurements = () => {
   const orderedQuestions = state$.mobile_config.questions_orders[categories.basicMeasurement];
 
   if (orderedQuestions !== undefined) {
-    orderedQuestions.map((orderedQuestion) => {
+    orderedQuestions.forEach((orderedQuestion) => {
       const question = state$.nodes[orderedQuestion];
       if (question.isDisplayedInTriage(state$)) {
         basicMeasurements.push(question);
@@ -247,16 +260,16 @@ export const titleManagementCounseling = () => {
   }
 
   let isPossible = false;
-  Object.keys(diagnoses.additional).map((id) => {
-    Object.keys(diagnoses.additional[id].managements).map((m) => {
+  Object.keys(diagnoses.additional).forEach((id) => {
+    Object.keys(diagnoses.additional[id].managements).forEach((m) => {
       if (calculateCondition(diagnoses.additional[id].managements[m]) === true) {
         isPossible = true;
       }
     });
   });
 
-  Object.keys(diagnoses.proposed).map((id) => {
-    Object.keys(diagnoses.proposed[id].managements).map((m) => {
+  Object.keys(diagnoses.proposed).forEach((id) => {
+    Object.keys(diagnoses.proposed[id].managements).forEach((m) => {
       if (calculateCondition(diagnoses.proposed[id].managements[m]) === true) {
         isPossible = true;
       }
@@ -293,12 +306,12 @@ export const getDrugs = (diagnoses = null) => {
 
   const doubleString = ['proposed', 'additional'];
 
-  doubleString.map((iteration) => {
-    Object.keys(currentDiagnoses[iteration]).map((diagnoseId) => {
+  doubleString.forEach((iteration) => {
+    Object.keys(currentDiagnoses[iteration]).forEach((diagnoseId) => {
       // If diagnoses selected or additional (auto selected)
       if (currentDiagnoses[iteration][diagnoseId].agreed === true || iteration === 'additional') {
         // Iterate over drugs
-        Object.keys(currentDiagnoses[iteration][diagnoseId].drugs).map((drugId) => {
+        Object.keys(currentDiagnoses[iteration][diagnoseId].drugs).forEach((drugId) => {
           if (currentDiagnoses[iteration][diagnoseId].drugs[drugId].agreed === true && calculateCondition(currentDiagnoses[iteration][diagnoseId].drugs[drugId]) === true) {
             if (drugs[drugId] === undefined) {
               // New one so add it
@@ -318,7 +331,7 @@ export const getDrugs = (diagnoses = null) => {
   });
 
   // Iterate over manually added drugs
-  Object.keys(currentAdditionalDrugs).map((ky) => {
+  Object.keys(currentAdditionalDrugs).forEach((ky) => {
     if (drugs[ky] === undefined) {
       // New one so add it
       drugs[ky] = currentAdditionalDrugs[ky];

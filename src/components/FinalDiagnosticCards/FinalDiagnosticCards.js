@@ -1,20 +1,20 @@
 // @flow
 
 import * as React from 'react';
-import { Text, Card, CardItem, Body, View } from 'native-base';
+import { Text, Card, CardItem, Body, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 
+import { TouchableOpacity } from 'react-native';
 import { styles } from './FinalDiagnosticCards.style';
 import { LiwiTitle2 } from '../../template/layout';
 import { getDrugs } from '../../../frontend_service/algorithm/questionsStage.algo';
-import { medicationForms } from '../../../frontend_service/constants';
+import { medicationForms, modalType } from '../../../frontend_service/constants';
 
 import Liquid from '../Formulations/Liquid';
 import Breakable from '../Formulations/Breakable';
 import Capsule from '../Formulations/Capsule';
 import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
-import TooltipButton from '../TooltipButton/TooltipButton';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -52,6 +52,14 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
     } else {
       return <Text italic>{t('drug:missing_medicine_formulation')}</Text>;
     }
+  };
+
+  /**
+   * Open redux modal
+   */
+  openModal = (node) => {
+    const { updateModalFromRedux } = this.props;
+    updateModalFromRedux({ node }, modalType.description);
   };
 
   /**
@@ -97,7 +105,11 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                         <View style={styles.drugContainer}>
                           <View flex>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
                           <View style={styles.tooltipButton}>
-                            <TooltipButton node={drugsAvailable[drugKey]} title={nodes[drugsAvailable[drugKey].id].label} flex={1} />
+                            <View flex>
+                              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(drugsAvailable[drugKey])}>
+                                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                              </TouchableOpacity>
+                            </View>
                           </View>
                         </View>
                       );
@@ -122,7 +134,11 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                         <View style={styles.drugContainer}>
                           <Text key={`${managementKey}-management`}>{node.label}</Text>
                           <View style={styles.tooltipButton}>
-                            <TooltipButton node={node} title={node.label} flex={1} />
+                            <View flex>
+                              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(node)}>
+                                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                              </TouchableOpacity>
+                            </View>
                           </View>
                         </View>
                       );

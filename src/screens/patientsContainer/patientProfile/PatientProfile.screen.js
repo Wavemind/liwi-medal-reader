@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ListItem, Text, View, Button, Icon } from 'native-base';
 import { FlatList, ScrollView } from 'react-native';
 
-import { medicalCaseStatus, routeDependingStatus, toolTipType } from '../../../../frontend_service/constants';
+import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { LiwiTitle2 } from '../../../template/layout';
 import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
@@ -88,7 +88,7 @@ export default class PatientProfile extends React.Component {
           const currentConnectionStatus = await getItems('isConnected');
 
           if (newMedicalCase.isLocked(deviceInfo, user) && currentConnectionStatus) {
-            updateModalFromRedux({ medicalCase: newMedicalCase }, toolTipType.medicalCaseLocked);
+            updateModalFromRedux({ medicalCase: newMedicalCase }, modalType.medicalCaseLocked);
           } else if (newMedicalCase.status === medicalCaseStatus.close) {
             navigation.navigate('Summary', { medicalCase });
           } else {

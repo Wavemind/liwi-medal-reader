@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --watch --verbose false",
     "detox-android": "detox test -c android.emu.debug",
     "detox-ios": "detox test -c ios.sim.debug",
     "postinstall": "npx jetify -r && node ./scripts/silent.js ",
@@ -18,7 +18,7 @@
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/runtime-corejs2": "^7.4.5",
     "@haskkor/react-native-pincode": "^1.22.3",
-    "@react-native-community/async-storage": "^1.5.0",
+    "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/netinfo": "5.7.1",
@@ -50,6 +50,7 @@
     "react-fast-compare": "^2.0.4",
     "react-i18next": "9.0.2",
     "react-native": "0.61.5",
+    "react-native-background-color": "^0.0.8",
     "react-native-camera": "^3.23.1",
     "react-native-custom-picker": "^0.4.0",
     "react-native-device-info": "^4.0.1",
@@ -91,14 +92,14 @@
     "realm": "^3.6.5",
     "reducer-class": "^1.4.0",
     "redux": "^4.0.1",
+    "redux-mock-store": "^1.5.4",
     "redux-observable": "^1.0.0",
     "redux-persist": "^5.10.0",
-    "redux-persist-filesystem-storage": "1",
+    "redux-persist-filesystem-storage": "^2.2.0",
     "redux-throttle": "^0.1.1",
     "redux-thunk": "^2.3.0",
     "reflect-metadata": "^0.1.13",
     "reselect": "^4.0.0",
-    "rn-fetch-blob": "^0.12.0",
     "rn-viewpager": "^1.2.9",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.5.3",
@@ -163,7 +164,8 @@
     "react-doc-generator": "^1.2.5",
     "react-native-debugger-open": "^0.3.17",
     "react-test-renderer": "16.9.0",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "rn-fetch-blob": "^0.12.0"
   },
   "detox": {
     "configurations": {
@@ -199,9 +201,10 @@
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "/node_modules/(?!native-base)/"
+      "node_modules/(?!react-native|native-base|react-navigation|react-native-fabric)"
     ],
     "testEnvironment": "node",
+    "verbose": true,
     "setupFiles": [
       "./src/utils/jest/jestenv.js"
     ]

@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { Button, Icon, Text } from 'native-base';
 import { TouchableOpacity, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
+import NavigationService from '../Navigation.service';
 import { styles } from './Drawer.style';
 import { liwiColors } from '../../../utils/constants';
 import DrawerDot from './Drawer.dot';
@@ -12,8 +12,17 @@ import DrawerDot from './Drawer.dot';
 // TODO: REFACTOR THIS SHIT
 // TODO: REFACTOR THIS SHIT
 // TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
+// TODO: REFACTOR THIS SHIT
 
-const WrapperMiniDrawerCategory = styled.TouchableOpacity`
+const WrapperMiniDrawerCategory = styled(props => <TouchableOpacity {...props}/>)`
   padding: ${({ isDrawer }) => (isDrawer ? '13px 0' : '6px 0')};
   height: ${({ isDrawer }) => (isDrawer ? 'auto' : '200px')};
   width: ${({ isDrawer }) => (isDrawer ? 'auto' : '30px')};
@@ -27,7 +36,7 @@ const WrapperMiniDrawerCategory = styled.TouchableOpacity`
   flex: 1;
 `;
 
-const SmallText = styled.Text`
+const SmallText = styled(props => <Text {...props} />)`
   color: ${({ active }) => (active ? '#ffffff' : '#3f3f3f')};
   text-align: center;
   text-transform: uppercase;
@@ -135,118 +144,108 @@ export class ItemButton extends Component<{ t: any, r: any }> {
     }
 
     return (
-      <Button onPress={() => navigate(name, initialPage)} drawerItemButton transparent>
+      <TouchableOpacity onPress={() => navigate(name, initialPage)} drawerItemButton transparent style={{padding: 5}}>
         <DrawerDot type={dotType} onPress={() => navigate(name, initialPage)} isDrawer={isDrawer} />
         {isDrawer ? (
           <Text drawerItemText style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}>
             {t}
           </Text>
         ) : null}
-      </Button>
+      </TouchableOpacity>
     );
   }
 }
-export const HeaderButtonsDrawer = withNavigation(
-  class Header extends React.Component {
-    // Update the component only when needed
-    shouldComponentUpdate(nextProps) {
-      const { isMedicalCaseLoaded } = this.props;
+export const HeaderButtonsDrawer = class Header extends React.Component {
+  // Update the component only when needed
+  shouldComponentUpdate(nextProps) {
+    const { isMedicalCaseLoaded } = this.props;
 
-      if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
-        return true;
-      }
-
-      return this.props?.r?.routeName !== nextProps.r?.routeName;
+    if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
+      return true;
     }
 
-    render() {
-      const { r, navigation } = this.props;
-
-      return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }} onStartShouldSetResponder={() => true}>
-          <Button
-            transparent
-            style={{
-              alignSelf: 'flex-start',
-            }}
-            homeDrawer
-            onPress={() => {
-              if (r.routeName === 'Home') {
-                navigation.toggleDrawer();
-              }
-              navigation.navigate('Home');
-            }}
-          >
-            <Icon style={styles.iconTop} dark type="FontAwesome" name="home" />
-          </Button>
-          <Button
-            transparent
-            style={{
-              alignSelf: 'flex-end',
-            }}
-            homeDrawer
-            onPress={() => navigation.navigate('Emergency')}
-          >
-            <Icon style={styles.iconTop} dark type="FontAwesome5" name="plus-square" />
-          </Button>
-          <Button
-            transparent
-            style={{
-              alignSelf: 'flex-end',
-            }}
-            homeDrawer
-            onPress={() => {
-              navigation.toggleDrawer();
-            }}
-          >
-            <Icon style={styles.iconTop} dark type="AntDesign" name="close" />
-          </Button>
-        </View>
-      );
-    }
+    return this.props?.r?.routeName !== nextProps.r?.routeName;
   }
-);
 
-export const BottomButtonsDrawer = withNavigation(
-  class BottomButtonsDrawerClasse extends React.Component {
-    // Update the component only when needed
-    shouldComponentUpdate(nextProps) {
-      const { isMedicalCaseLoaded, isDrawer } = this.props;
+  render() {
+    const { r } = this.props;
 
-      if (isDrawer !== nextProps.isDrawer) {
-        return true;
-      }
-
-      if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
-        return true;
-      }
-      return nextProps?.medicalCase?.patient?.id !== this.props?.medicalCase?.patient?.id;
-    }
-
-    render() {
-      const { navigation, medicalCase, isDrawer } = this.props;
-      const isMedicalCaseLoaded = medicalCase.id !== undefined && !medicalCase?.isNewCase;
-      return (
-        <View style={styles.bottom}>
-          <Button
-            marginIcon
-            style={[styles.bottomStyle, { opacity: isMedicalCaseLoaded ? 1 : 0.3 }]}
-            disabled={!isMedicalCaseLoaded}
-            onPress={() =>
-              navigation.navigate('Summary', {
-                id: medicalCase.patient.id,
-                defaultTab: 0,
-              })
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: liwiColors.redColor }} onStartShouldSetResponder={() => true}>
+        <TouchableOpacity
+          transparent
+          style={styles.flexPadding}
+          homeDrawer
+          onPress={() => {
+            if (r.routeName === 'Home') {
+              NavigationService.toggleDrawer();
             }
-          >
-            <Icon style={{ fontSize: 40 }} drawerBottomIcon type="FontAwesome5" name="file-medical" />
-            {isDrawer && <Text style={styles.textBottom}>Current Summary</Text>}
-          </Button>
-        </View>
-      );
-    }
+            NavigationService.navigate('Home');
+          }}
+        >
+          <Icon style={styles.iconTop} dark type="FontAwesome" name="home" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          transparent
+          style={styles.flexPadding}
+          homeDrawer
+          onPress={() => NavigationService.navigate('Emergency')}
+        >
+          <Icon style={styles.iconTop} dark type="FontAwesome5" name="plus-square" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          transparent
+          style={styles.flexPadding}
+          homeDrawer
+          onPress={() => {
+            NavigationService.toggleDrawer();
+          }}
+        >
+          <Icon style={styles.iconTop} dark type="AntDesign" name="close" />
+        </TouchableOpacity>
+      </View>
+    );
   }
-);
+};
+
+export const BottomButtonsDrawer = class BottomButtonsDrawerClasse extends React.Component {
+  // Update the component only when needed
+  shouldComponentUpdate(nextProps) {
+    const { isMedicalCaseLoaded, isDrawer } = this.props;
+
+    if (isDrawer !== nextProps.isDrawer) {
+      return true;
+    }
+
+    if (isMedicalCaseLoaded !== nextProps.isMedicalCaseLoaded) {
+      return true;
+    }
+    return nextProps?.medicalCase?.patient?.id !== this.props?.medicalCase?.patient?.id;
+  }
+
+  render() {
+    const { medicalCase, isDrawer } = this.props;
+    const isMedicalCaseLoaded = medicalCase.id !== undefined && !medicalCase?.isNewCase;
+    return (
+      <View style={styles.bottom}>
+        <Button
+          marginIcon
+          style={[styles.bottomStyle, { opacity: isMedicalCaseLoaded ? 1 : 0.3 }]}
+          disabled={!isMedicalCaseLoaded}
+          onPress={() =>
+            NavigationService.navigate('Summary', {
+              id: medicalCase.patient.id,
+              defaultTab: 0,
+            })
+          }
+        >
+          <Icon style={{ fontSize: 40 }} drawerBottomIcon type="FontAwesome5" name="file-medical" />
+          {isDrawer && <Text style={styles.textBottom}>Current Summary</Text>}
+        </Button>
+      </View>
+    );
+  }
+};
 
 export class PathBar extends Component<{ routeName: string, initialPage: string }> {
   shouldComponentUpdate(nextProps) {
@@ -291,6 +290,7 @@ export class PathBar extends Component<{ routeName: string, initialPage: string 
             borderLeftColor: active ? liwiColors.redColor : liwiColors.greyColor,
             marginLeft: isDrawer ? 19 : 24,
             height: isDrawer ? 'auto' : 20,
+            padding: 5
           }}
         />
       </TouchableOpacity>

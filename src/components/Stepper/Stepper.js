@@ -7,10 +7,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Platform, ScrollView, Text, TouchableOpacity, View, ViewPropTypes, Keyboard} from 'react-native';
+import { Platform, ScrollView, Text, TouchableOpacity, View, Keyboard} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
-import PlatformTouchableNative from 'react-native-platform-touchable';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 
@@ -20,7 +18,7 @@ import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus, toolTipType } from '../../../frontend_service/constants';
+import { medicalCaseStatus, modalType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
@@ -67,38 +65,37 @@ type State = {
 };
 
 class Stepper extends React.Component<Props, State> {
-  static propTypes = {
-    ...ViewPager.propTypes,
-    ...ScrollView.propTypes,
-    initialPage: PropTypes.number,
-    onPressNext: PropTypes.func,
-    onPressBack: PropTypes.func,
-    textButtonsStyle: Text.propTypes.style,
-    backButtonTitle: PropTypes.string,
-    nextButtonTitle: PropTypes.string,
-    topStepperStyle: ViewPropTypes.style,
-    showTopStepper: PropTypes.bool,
-    activeDotStyle: ViewPropTypes.style,
-    inactiveDotStyle: ViewPropTypes.style,
-    childrenStyle: ViewPropTypes.style,
-    steps: PropTypes.arrayOf(PropTypes.string.isRequired),
-    stepsTitleStyle: ViewPropTypes.style,
-    showBottomStepper: PropTypes.bool,
-    bottomStepperStyle: ViewPropTypes.style,
-    activeStepNumberStyle: Text.propTypes.style,
-    inactiveStepNumberStyle: Text.propTypes.style,
-    activeStepStyle: ViewPropTypes.style,
-    inactiveStepStyle: ViewPropTypes.style,
-    activeStepTitleStyle: Text.propTypes.style,
-    inactiveStepTitleStyle: Text.propTypes.style,
-    onScrollPage: PropTypes.func,
-    validate: PropTypes.bool,
-    bottomNavigationLeftIconComponent: PropTypes.element,
-    bottomNavigationRightIconComponent: PropTypes.element,
-    nextStage: PropTypes.string,
-    nextStageString: PropTypes.string,
-    endMedicalCase: PropTypes.bool
-  };
+  // static propTypes = {
+  //   ...ViewPager.propTypes,
+  //   initialPage: PropTypes.number,
+  //   onPressNext: PropTypes.func,
+  //   onPressBack: PropTypes.func,
+  //   textButtonsStyle: Text.propTypes.style,
+  //   backButtonTitle: PropTypes.string,
+  //   nextButtonTitle: PropTypes.string,
+  //   topStepperStyle: ViewPropTypes.style,
+  //   showTopStepper: PropTypes.bool,
+  //   activeDotStyle: ViewPropTypes.style,
+  //   inactiveDotStyle: ViewPropTypes.style,
+  //   childrenStyle: ViewPropTypes.style,
+  //   steps: PropTypes.arrayOf(PropTypes.string.isRequired),
+  //   stepsTitleStyle: ViewPropTypes.style,
+  //   showBottomStepper: PropTypes.bool,
+  //   bottomStepperStyle: ViewPropTypes.style,
+  //   activeStepNumberStyle: Text.propTypes.style,
+  //   inactiveStepNumberStyle: Text.propTypes.style,
+  //   activeStepStyle: ViewPropTypes.style,
+  //   inactiveStepStyle: ViewPropTypes.style,
+  //   activeStepTitleStyle: Text.propTypes.style,
+  //   inactiveStepTitleStyle: Text.propTypes.style,
+  //   onScrollPage: PropTypes.func,
+  //   validate: PropTypes.bool,
+  //   bottomNavigationLeftIconComponent: PropTypes.element,
+  //   bottomNavigationRightIconComponent: PropTypes.element,
+  //   nextStage: PropTypes.string,
+  //   nextStageString: PropTypes.string,
+  //   endMedicalCase: PropTypes.bool
+  // };
   static defaultProps = {
     initialPage: 0,
     nextStage: null,
@@ -498,11 +495,11 @@ class Stepper extends React.Component<Props, State> {
 
     return (
       <View style={styles.saveButton}>
-        <PlatformTouchableNative onPress={this.onSaveCase} style={{ zIndex: 1 }}>
+        <TouchableOpacity onPress={this.onSaveCase} style={{ zIndex: 1 }}>
           <View style={[styles.button]}>
             <Text style={[styles.bottomTextButtons, styles.textButtonsStyle]}>{t('application:save')}</Text>
           </View>
-        </PlatformTouchableNative>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -526,7 +523,7 @@ class Stepper extends React.Component<Props, State> {
     if (validator.isActionValid === true) {
       return true;
     } else {
-      updateModalFromRedux({ ...validator, showClose: true }, toolTipType.validation);
+      updateModalFromRedux({ ...validator, showClose: true }, modalType.validation);
       return false;
     }
   };
@@ -601,35 +598,34 @@ class Stepper extends React.Component<Props, State> {
             {isLoading ? <LiwiProgressBar /> : (
               <>
                 {showBack ? (
-                  <PlatformTouchableNative
+                  <TouchableOpacity
                     onPress={this.onPressBack}
-                    background={PlatformTouchableNative.SelectableBackgroundBorderless()}
                     style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
                     </View>
-                  </PlatformTouchableNative>
+                  </TouchableOpacity>
                 ) : null}
 
                 {this.renderDots()}
                 {this._renderSaveButton()}
 
                 {showNext ? (
-                  <PlatformTouchableNative onPress={this.onPressNext} style={{ zIndex: 1 }}>
+                  <TouchableOpacity onPress={this.onPressNext} style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                       {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                     </View>
-                  </PlatformTouchableNative>
+                  </TouchableOpacity>
                 ) : (
                   nextStage !== null && (
-                    <PlatformTouchableNative onPress={this.nextStage} style={{ zIndex: 1 }}>
+                    <TouchableOpacity onPress={this.nextStage} style={{ zIndex: 1 }}>
                       <View style={[styles.button]}>
                         <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
                         {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                       </View>
-                    </PlatformTouchableNative>
+                    </TouchableOpacity>
                   ))
                 }
               </>

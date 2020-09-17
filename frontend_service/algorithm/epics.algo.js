@@ -8,8 +8,9 @@ import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
-import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { NodesModel } from '../engine/models/Nodes.model';
+import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
+import NavigationService from '../../src/engine/navigation/Navigation.service';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -43,11 +44,9 @@ const computeConditionValue = (medicalCase, diagnosticId, nodeId) => {
     const conditionValue = currentInstance.calculateCondition(medicalCase);
     // If the condition of this node is not null
     if (parentConditionValue === false) {
-      // Stop infinite loop, change only when conditionValue is different
       // Set parent to false if their condition's isn't correct. Used to stop the algorithm
       updateConditionValue(medicalCase, nodeId, diagnosticId, false, diagnostic.type);
     } else if (conditionValue !== null) {
-      // Stop infinite loop, change only when conditionValue is different
       updateConditionValue(medicalCase, nodeId, diagnosticId, conditionValue, diagnostic.type);
 
       // If the node is answered go his children
@@ -156,11 +155,11 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
   }
 
   if (questionsSequenceCondition === true) {
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).first()].id;
+    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[0]].id;
   } else if (questionsSequenceCondition === false || statusQs === false) {
     // statusQd === false -> can't access the end of the QS anymore
     // questionsSequenceCondition === false -> can't find a condition to true
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers).second()].id;
+    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[1]].id;
   }
 
   // If the new answer of this QS is different from the older, we change it
@@ -182,13 +181,12 @@ const referencedNodeAction = (medicalCase, nodeId) => {
 
   switch (currentNode.display_format) {
     case displayFormats.formula:
-      value = currentNode.calculateFormula();
+      value = currentNode.calculateFormula(medicalCase);
       break;
     case displayFormats.reference:
-      value = currentNode.calculateReference();
+      value = currentNode.calculateReference(medicalCase);
       break;
   }
-
   if (value !== currentNode.value) {
     medicalCase.nodes[currentNode.id].updateAnswer(value);
     processUpdatedNode(medicalCase, currentNode.id);
@@ -207,10 +205,6 @@ const processUpdatedNode = (medicalCase, nodeId) => {
   const relatedQuestionsSequence = currentNode.qs;
   const relatedDiagnosticsForCC = currentNode.diagnostics_related_to_cc;
   const referencedNodes = currentNode.referenced_in;
-
-  if (__DEV__) {
-    console.log('%c ########################  epicSetAnswer ########################', 'background: #F6F3EE; color: #b84c4c; padding: 5px');
-  }
 
   // Inject update
   medicalCase.updated_at = moment().format();
@@ -265,10 +259,12 @@ export const epicSetAnswer = (action$, state$) =>
 
       processUpdatedNode(medicalCase, nodeId);
 
+      // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
       if (
-        nodeId === medicalCase.mobile_config.left_top_question_id ||
-        nodeId === medicalCase.mobile_config.first_top_right_question_id ||
-        nodeId === medicalCase.mobile_config.second_top_right_question_id
+        (nodeId === medicalCase.mobile_config.left_top_question_id ||
+          nodeId === medicalCase.mobile_config.first_top_right_question_id ||
+          nodeId === medicalCase.mobile_config.second_top_right_question_id) &&
+        process.env.node_ENV !== 'test'
       ) {
         NavigationService.setParamsAge();
       }
@@ -277,4 +273,27 @@ export const epicSetAnswer = (action$, state$) =>
     })
   );
 
-export default combineEpics(epicSetAnswer);
+export const epicSetDiagnoses = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.SET_DIAGNOSES, actions.SET_ANSWER),
+    mergeMap((action) => {
+      const medicalCase = {
+        ...state$.value,
+        nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
+      };
+      const finalDiagnostics = FinalDiagnosticModel.getAgreed(medicalCase);
+
+      finalDiagnostics.forEach((finalDiagnosticId) => {
+        const finalDiagnostic = medicalCase.nodes[finalDiagnosticId];
+        Object.keys(finalDiagnostic.instances).forEach((healthCaresQuestionId) => {
+          const healthCaresQuestion = finalDiagnostic.instances[healthCaresQuestionId];
+          const dfInstance = medicalCase.nodes[healthCaresQuestion.id].df.find((df) => df.id === finalDiagnosticId);
+          dfInstance.conditionValue = healthCaresQuestion.calculateCondition();
+        });
+      });
+
+      return of(setMedicalCase(medicalCase));
+    })
+  );
+
+export default combineEpics(epicSetAnswer, epicSetDiagnoses);

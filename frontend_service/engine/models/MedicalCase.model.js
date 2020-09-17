@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import { displayFormats, medicalCaseStatus, stages } from '../../constants';
+import { displayFormats, medicalCaseStatus, nodeTypes, stages } from '../../constants';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import Database from '../../../src/engine/api/Database';
 import { differenceNodes } from '../../../src/utils/swissKnives';
@@ -35,6 +35,7 @@ export class MedicalCaseModel {
       this.complaintCategories = [];
       this.isNewCase = true;
       this.isEligible = true;
+      this.comment = "";
       // TODO: when production set to null -> It's ALAIN NOT ME
       this.consent = true;
       this.modal = {
@@ -86,6 +87,7 @@ export class MedicalCaseModel {
         this.clinician = props.clinician;
         this.mac_address = props.mac_address;
         this.fail_safe = props.fail_safe;
+        this.comment = props.comment;
       } else {
         const json = this.json === undefined ? JSON.parse(props.json) : JSON.parse(this.json); // WARNING this might slow down the app
         this._assignValues(json);
@@ -132,6 +134,7 @@ export class MedicalCaseModel {
     this.complaintCategories = data.complaintCategories;
     this.metaData = data.metaData;
     this.diagnoses = data.diagnoses;
+    this.comment = data.comment;
   }
 
   /**
@@ -170,8 +173,9 @@ export class MedicalCaseModel {
     const { diagnostics, nodes } = algorithm;
     try {
       Object.keys(nodes).map((nodeId) => {
-        if (nodes[nodeId].type.match(/^Question$|^QuestionsSequence$/)) {
-          nodes[nodeId].dd.map((dd) => {
+        const node = nodes[nodeId];
+        if ([nodeTypes.question, nodeTypes.questionsSequence].includes(nodes[nodeId].type)) {
+          node.dd.map((dd) => {
             // If the instance is related to the main diagram
             // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
             if (diagnostics[dd.id].instances[nodeId].final_diagnostic_id === null) {
@@ -182,7 +186,7 @@ export class MedicalCaseModel {
           });
 
           // Map trough QS if it is in an another QS itself
-          nodes[nodeId].qs.map((qs) => {
+          node.qs.map((qs) => {
             this.setParentConditionValue(algorithm, qs.id, nodeId);
           });
         }
@@ -190,7 +194,7 @@ export class MedicalCaseModel {
 
       // Set question Formula
       Object.keys(nodes).map((nodeId) => {
-        if (nodes[nodeId].type.match(/^Question$/)) {
+        if (nodes[nodeId].type === nodeTypes.question) {
           nodes[nodeId].referenced_in.map((id) => {
             if (nodes[id].stage === stages.registration) {
               nodes[id].conditionValue = true;

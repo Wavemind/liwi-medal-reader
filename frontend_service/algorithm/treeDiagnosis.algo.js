@@ -41,7 +41,7 @@ export const nextChildFinalQs = (instance, finalQs, medicalCase) => {
   const top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
   // We get the condition of the final link
   const arrayBoolean = top_conditions.map((condition) => {
-    return comparingTopConditions(finalQs, condition, medicalCase);
+    return comparingTopConditions(condition, medicalCase);
   });
 
   return reduceConditionArrayBoolean(arrayBoolean);
@@ -147,6 +147,7 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
    * Initial Var
    */
   const currentNode = medicalCase.nodes[instance.id];
+  const test = find(currentNode.qs, (p) => p.id === qs.id);
   const instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
 
   // If all the conditionValues of the QS are false we set the conditionValues of th node to false
@@ -193,10 +194,6 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
     const processChildren = InstanceChildrenOnQs(medicalCase, instance, qs, actions, currentNode);
 
     return reduceConditionArrayBoolean(processChildren);
-
-    /**
-     *  Here we have parcoured all the children
-     */
   }
   // The node hasn't the expected answer BUT we are not a the end of the QS
   return null;

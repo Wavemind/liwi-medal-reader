@@ -33,6 +33,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       counter = 0,
       diagnostics_related_to_cc = [],
       dd = [],
+      df = [],
       display_format = '',
       is_mandatory = '',
       qs = [],
@@ -50,6 +51,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       system = '',
       is_identifiable = false,
       is_triage = false,
+      is_danger_sign = false,
       is_neonat = false,
       estimable = false,
       estimableValue = 'measured',
@@ -63,6 +65,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       max_message_error = '',
       validationMessage = null,
       validationType = null,
+      medias = [],
     } = props;
 
     this.description = description;
@@ -73,6 +76,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.counter = counter;
     this.diagnostics_related_to_cc = diagnostics_related_to_cc;
     this.dd = dd;
+    this.df = df;
     this.display_format = display_format;
     this.is_mandatory = is_mandatory;
     this.qs = qs;
@@ -88,6 +92,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.reference_table_male = reference_table_male;
     this.reference_table_female = reference_table_female;
     this.system = system;
+    this.is_danger_sign = is_danger_sign;
     this.is_identifiable = is_identifiable;
     this.is_triage = is_triage;
     this.is_neonat = is_neonat;
@@ -102,6 +107,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.validationMessage = validationMessage;
     this.validationType = validationType;
     this.estimable = estimable;
+    this.medias = medias;
 
     // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
     // if (estimable) {
@@ -140,9 +146,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @returns {number}
    *
    */
-  calculateFormula = () => {
-    const state$ = store.getState();
-
+  calculateFormula = (medicalCase) => {
     // Regex to find the brackets [] in the formula
     const findBracketId = /\[(.*?)\]/gi;
     let ready = true;
@@ -153,7 +157,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       const id = item.match(/\d/g).join('');
 
       // Get value of this node
-      const nodeInBracket = state$.nodes[id];
+      const nodeInBracket = medicalCase.nodes[id];
       if (nodeInBracket.value === null || (nodeInBracket.value === 0 && nodeInBracket.answer === null)) {
         ready = false;
         return item;
@@ -165,9 +169,9 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
           return nodeInBracket.value;
       }
     };
-
     // Replace every bracket in the formula with it's value
     const formula = this.formula.replace(findBracketId, replaceBracketToValue);
+
     if (ready) {
       return eval(formula);
     }
@@ -179,27 +183,25 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * Calculate reference score.
    * @returns refer to reference tables
    */
-  calculateReference() {
-    const state$ = store.getState();
-
+  calculateReference(medicalCase) {
     let reference = null;
     let value = null;
 
     // Get X and Y
-    const questionX = state$.nodes[this.reference_table_x_id];
-    const questionY = state$.nodes[this.reference_table_y_id];
+    const questionX = medicalCase.nodes[this.reference_table_x_id];
+    const questionY = medicalCase.nodes[this.reference_table_y_id];
 
     // Get Z
     let questionZ = null;
     if (this.reference_table_z_id !== null) {
-      questionZ = state$.nodes[this.reference_table_z_id];
+      questionZ = medicalCase.nodes[this.reference_table_z_id];
     }
 
     const x = parseInt(questionX.value);
     const y = parseInt(questionY.value);
     const z = questionZ?.value;
 
-    const genderQuestion = state$.nodes[state$.config.basic_questions.gender_question_id];
+    const genderQuestion = medicalCase.nodes[medicalCase.config.basic_questions.gender_question_id];
     const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
 
     // Get reference table for male or female
@@ -210,6 +212,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     }
 
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
+    // TODO: Fixe Z issue when it's null
     if (reference !== null && x !== null && y !== null && x in reference) {
       if (z === undefined) {
         value = this.findValueInReferenceTable(reference[x], y);
@@ -268,6 +271,6 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * Returns the value for a boolean question  or a complaint category
    */
   booleanValue = () => {
-    return this.answer === Number(Object.keys(this.answers)[0]);
+    return this.answer === Number(Object.keys(this.answers).first());
   };
 }

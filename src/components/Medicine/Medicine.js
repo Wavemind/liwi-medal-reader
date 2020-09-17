@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 import { Button, Icon, Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './Medicine.style';
-import { liwiColors } from '../../utils/constants';
 
 export default class Medicine extends Component<{}> {
-  _handleClick = (boolean) => {
+  _handleClick = (value) => {
     const { medicine, diagnosesKey, setMedicine, type } = this.props;
-    if (boolean !== medicine.agreed) {
-      setMedicine(type, diagnosesKey, medicine.id, boolean);
+    if (value !== medicine.agreed) {
+      setMedicine(type, diagnosesKey, medicine.id, value);
     }
   };
 
@@ -30,7 +29,9 @@ export default class Medicine extends Component<{}> {
         <View style={styles.main} margin-top>
           <View style={styles.flex}>
             <Text size-auto>{node?.label}</Text>
-            <Text italic>{t('drug:d')} : {medicine.duration} {t('drug:days')}</Text>
+            <Text italic>
+              {t('drug:d')} : {medicine.duration} {t('drug:days')}
+            </Text>
           </View>
 
           <View style={styles.content}>
@@ -44,10 +45,10 @@ export default class Medicine extends Component<{}> {
                 {t('diagnoses:disagree')}
               </Text>
             </RightButton>
+            <Button style={styles.smallFlex}>
+              <Icon name="block" type="Entypo" style={styles.iconSize} />
+            </Button>
           </View>
-          <Button style={styles.smallFlex}>
-            <Icon name="block" type="Entypo" style={styles.iconSize} />
-          </Button>
         </View>
         {node?.description !== null ? (
           <View margin-top>

@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import { NativeModules } from 'react-native';
+import { LiwiTitle4 } from '../template/layout';
 
 const languageDetector = {
   type: 'languageDetector',
@@ -108,14 +109,15 @@ i18n
           customDrugs: 'Custom drugs',
           proposed: 'Proposed',
         },
-        tooltip: {
+        modal: {
           invalidQuestions: 'Question(s) to fill',
           close: 'Close',
           notcomplete: 'Is not complete!',
           more: '...',
           uncompleted: 'Stage not valid',
           patientnotcomplete: 'The creation of the patient',
-          is_required: 'is required'
+          is_required: 'is required',
+          medicalCaseAlreadyUsed: 'Medical case not available',
         },
         algorithms: {
           never: 'Never synchronized data',
@@ -154,6 +156,7 @@ i18n
         consultation: {
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
+          comment: 'Comment',
         },
         triage: {
           first_look_assessment: 'First look assessments',
@@ -188,6 +191,7 @@ i18n
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
+          comment: 'Comment',
           poct: 'POCT',
           tests: 'Tests',
           strategy: 'Diagnoses',
@@ -195,6 +199,10 @@ i18n
           add: 'Add a patient',
           others: 'Others',
           noredux: 'No consultation loaded',
+        },
+        comment: {
+          save: 'Save comment',
+          edit: 'Edit comment',
         },
         medical_case: {
           in_creation: 'Demographic',
@@ -403,6 +411,7 @@ i18n
           conditions: 'Treatment Conditions',
           filter: 'Filters',
           step_invalid: 'Step is not valid',
+          about: 'About'
         },
         common: {
           back: 'Back',

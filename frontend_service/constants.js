@@ -86,16 +86,23 @@ export const stages = {
 };
 
 export const systems = {
-  general: 'General',
-  respiratory_circulation: 'Respiratory and circulatory system',
-  ear_nose_mouth_throat: 'Ear, nose, mouth and throat system',
-  visual: 'Visual system',
-  integumentary: 'Skin/Hair/Mucosae system',
+  chronic_conditions: 'Chronic conditions',
+  comorbidities: 'Comorbidities',
+  complementary_medical_history: 'Complementary Medical History Questions',
   digestive: 'Digestive system',
-  urinary_reproductive: 'Urinary and reproductive system',
-  nervous: 'Nervous system',
+  ear_nose_mouth_throat: 'Ear, nose, mouth and throat system',
+  exposures: 'Exposures',
+  general: 'General',
+  integumentary: 'Skin/Hair/Mucosae system',
+  prevention: 'Prevention',
+  prophylaxis: 'Prophylaxis',
+  respiratory_circulation: 'Respiratory and circulatory system',
   muscular_skeletal: 'Muscular and skeletal system',
-  null: 'General', // TODO: must be remove when all diag is ok ! 22.04.2020
+  nervous: 'Nervous system',
+  urinary_reproductive: 'Urinary and reproductive system',
+  visual: 'Visual system',
+  vital_signs: 'Vital Signs',
+  null: 'General',
 };
 
 export const categories = {
@@ -125,10 +132,12 @@ export const categories = {
 };
 
 // Type of Tool Tip
-export const toolTipType = {
+export const modalType = {
   medicalCaseLocked: 'medicalCaseLocked',
   algorithmVersion: 'algorithmVersion',
   validation: 'validation',
+  description: 'description',
+  about: 'about',
   loading: 'loading',
 };
 
