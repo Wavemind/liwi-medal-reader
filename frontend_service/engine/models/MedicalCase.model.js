@@ -358,6 +358,10 @@ export class MedicalCaseModel {
     return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.consent;
   };
 
+  isOlderThan1Week = () => {
+    return moment().diff(this.created_at) > 7;
+  };
+
   /**
    * Generates a clean Json of the medical case
    * @param medicalCase - the medical case that need to be stringified
