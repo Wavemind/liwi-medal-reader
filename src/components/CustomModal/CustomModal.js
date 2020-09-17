@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import { Modal, ScrollView } from 'react-native';
+import { Dimensions, Image, Modal, ScrollView } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
 
+import ImageZoom from 'react-native-image-pan-zoom';
 import { routeDependingStatus, modalType } from '../../../frontend_service/constants';
 
 import { styles } from './CustomModal.style';
@@ -131,6 +132,30 @@ export default class CustomModal extends React.Component<Props, State> {
   };
 
   /**
+   * Display node description with media
+   * @returns {*}
+   * @private
+   */
+  _renderConsentFile = () => {
+    const {
+      modalRedux: {
+        params: { consentFile, title },
+      },
+    } = this.props;
+
+    const { width, height } = Dimensions.get('window');
+
+    return (
+      <View>
+        <LiwiTitle5>{title}</LiwiTitle5>
+        <ImageZoom minScale={1} cropWidth={width} cropHeight={height} imageWidth={width - 20} imageHeight={height} enableCenterFocus={false}>
+          <Image source={{ uri: `data:image/png;base64,${consentFile}` }} style={styles.documentImage} />
+        </ImageZoom>
+      </View>
+    );
+  };
+
+  /**
    * Display about app
    * @returns {*}
    * @private
@@ -138,70 +163,51 @@ export default class CustomModal extends React.Component<Props, State> {
   _renderAbout = () => {
     return (
       <View>
-        <LiwiTitle2 noBorder style={styles.center}>ePOCT+: Tanzania</LiwiTitle2>
+        <LiwiTitle2 noBorder style={styles.center}>
+          ePOCT+: Tanzania
+        </LiwiTitle2>
         <LiwiTitle4>What</LiwiTitle4>
         <Text style={styles.aboutDescription}>Electronic clinical decision support algorithm (CDSA) for the management of sick children aged 1 day up to and including 14 years old</Text>
         <LiwiTitle4>Who</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          - Principal users: Assistant Medical Officers (AMO), and Clinical Officers (CO).{"\n"}
-          - Other users: Medical doctors (MD), and nurses.
-        </Text>
+        <Text style={styles.aboutDescription}>- Principal users: Assistant Medical Officers (AMO), and Clinical Officers (CO).{'\n'}- Other users: Medical doctors (MD), and nurses.</Text>
         <LiwiTitle4>Where</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          Peripheral health facilities (Dispensaries and Health Centres) in Tanzania
-        </Text>
+        <Text style={styles.aboutDescription}>Peripheral health facilities (Dispensaries and Health Centres) in Tanzania</Text>
         <LiwiTitle4>Context</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          Only to be used within the DYNAMIC Tanzania study
-        </Text>
+        <Text style={styles.aboutDescription}>Only to be used within the DYNAMIC Tanzania study</Text>
         <LiwiTitle4>Scope</LiwiTitle4>
+        <Text style={styles.aboutDescription}>ePOCT+ proposes the work-up, diagnoses, management and treatment for most frequent and severe childhood illnesses.</Text>
         <Text style={styles.aboutDescription}>
-          ePOCT+ proposes the work-up, diagnoses, management and treatment for most frequent and severe childhood illnesses.
-        </Text>
-        <Text style={styles.aboutDescription}>
-          The clinical algorithms were developed based on the World Health Organization’s Integrated Management of Childhood Illnesses (IMCI) booklet, the Tanzanian Standard Treatment Guidelines, peer reviewed scientific articles, and validated by a Tanzanian expert group
+          The clinical algorithms were developed based on the World Health Organization’s Integrated Management of Childhood Illnesses (IMCI) booklet, the Tanzanian Standard Treatment Guidelines, peer
+          reviewed scientific articles, and validated by a Tanzanian expert group
         </Text>
         <Text style={styles.aboutDescription}>
           Health care workers using ePOCT+ must use their clinical judgement for diagnoses, treatments and management proposed by ePOCT+ may not be applicable in all situations
         </Text>
 
         <LiwiTitle4>ePOCT+ development team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          XXXX
-        </Text>
+        <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>ePOCT+ Tanzanian clinical expert validation team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          XXXX
-        </Text>
+        <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>ePOCTn development team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          XXXX
-        </Text>
+        <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>ePOCTn Tanzanian clinical expert validation team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          XXXX
-        </Text>
+        <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>ePOCT+ and ePOCTn Version</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          XXXX
-        </Text>
+        <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>MEDAL-R Version</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          XXXX
-        </Text>
+        <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>Links</LiwiTitle4>
         <Text style={styles.aboutDescription}>
-          Summary of diagnoses + references{"\n"}
-          Simplified algorithms{"\n"}
-          Detailed algorithms{"\n"}
+          Summary of diagnoses + references{'\n'}
+          Simplified algorithms{'\n'}
+          Detailed algorithms{'\n'}
           Summary of evidence behind major algorithms
-
         </Text>
       </View>
     );
@@ -373,6 +379,8 @@ export default class CustomModal extends React.Component<Props, State> {
         return this._renderDescription();
       case modalType.about:
         return this._renderAbout();
+      case modalType.consentFile:
+        return this._renderConsentFile();
       case modalType.loading:
         return this._renderLoading();
       default:

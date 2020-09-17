@@ -1,25 +1,22 @@
 // @flow
 
 import * as React from 'react';
-import { Button, Icon, Input, Item, Text, View } from 'native-base';
-import _ from 'lodash';
+import { Text, View } from 'native-base';
 
-import { styles } from './ConsentList.style';
-import { SeparatorLine } from '../../template/layout';
-import ListContent from '../../components/ListContent/ListContent';
-import { getItems } from '../../engine/api/LocalStorage';
-import { getDeviceInformation } from '../../engine/api/Device';
 import { FlatList, TouchableOpacity } from 'react-native';
-import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
+import { styles } from './ConsentList.style';
 import LiwiLoader from '../../utils/LiwiLoader';
+import { modalType } from '../../../frontend_service/constants';
 
 export default class ConsentList extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       loading: false,
       nodes: {},
       data: [],
+      columns: props.app.algorithm.mobile_config.patient_list,
       currentPage: 1,
       isLastBatch: false,
       firstLoading: true,
@@ -42,11 +39,13 @@ export default class ConsentList extends React.Component {
    * @returns {Promise<void>}
    */
   _fetchList = async () => {
+    const {
+      app: { database },
+    } = this.props;
     const { currentPage } = this.state;
 
     this.setState({ loading: true });
-    // TODO FAIRE LA REQUEST AU SERVEUR
-    const data = '';
+    const data = await database.httpInterface.getConsentsFile(currentPage);
 
     this.setState({
       data,
@@ -61,6 +60,9 @@ export default class ConsentList extends React.Component {
    * @private
    */
   _handleLoadMore = () => {
+    const {
+      app: { database },
+    } = this.props;
     const { data, currentPage } = this.state;
 
     this.setState(
@@ -68,8 +70,7 @@ export default class ConsentList extends React.Component {
         loading: true,
       },
       async () => {
-        // TODO: FAIRE LA REQUETE
-        const newData = ""
+        const newData = await database.httpInterface.getConsentsFile(currentPage);
         const isLastBatch = newData.length === 0;
 
         this.setState({
@@ -83,18 +84,24 @@ export default class ConsentList extends React.Component {
   };
 
   /**
+   * Display consent file in modal
+   * @param consentFile
+   * @param title
+   */
+  consentModal = (consentFile, title) => {
+    const { updateModalFromRedux } = this.props;
+    updateModalFromRedux({ consentFile, title }, modalType.consentFile);
+  };
+
+  /**
    * Patient rendering
    * @param {object} item
    * @returns {*}
    * @private
    */
   _renderItem = (item) => {
-    const {
-      itemNavigation,
-    } = this.props;
-
     return (
-      <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
+      <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={() => this.consentModal(item.consent_file, item.values.join(' - '))}>
         {item.values.map((value, key) => (
           <View style={styles.itemColumn} key={`${item.id}_${key}`}>
             <Text size-auto>{value}</Text>
@@ -134,22 +141,18 @@ export default class ConsentList extends React.Component {
     const {
       app: { t },
     } = this.props;
-    const { data, firstLoading, nodes, loading, isLastBatch } = this.state;
+    const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
     return firstLoading ? (
       <LiwiLoader />
     ) : (
       <View>
         <View padding-auto style={styles.filterContent}>
-          <View key="first_name" style={styles.columnLabel}>
-            {/*<Text size-auto>{nodes[column].label}</Text>*/}
-          </View>
-          <View key="last_name" style={styles.columnLabel}>
-            {/*<Text size-auto>{nodes[column].label}</Text>*/}
-          </View>
-          <View key="birth_date" style={styles.columnLabel}>
-            {/*<Text size-auto>{nodes[column].label}</Text>*/}
-          </View>
+          {columns.map((column) => (
+            <View key={column} style={styles.columnLabel}>
+              <Text size-auto>{nodes[column].label}</Text>
+            </View>
+          ))}
         </View>
         {data.length > 0 ? (
           <View padding-auto>

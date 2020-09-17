@@ -412,7 +412,8 @@ i18n
           conditions: 'Treatment Conditions',
           filter: 'Filters',
           step_invalid: 'Step is not valid',
-          about: 'About'
+          about: 'About',
+          consent_list: "Facility's consent files",
         },
         common: {
           back: 'Back',
