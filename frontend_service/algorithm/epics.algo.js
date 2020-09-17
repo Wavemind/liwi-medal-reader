@@ -287,7 +287,6 @@ export const epicSetDiagnoses = (action$, state$) =>
         const finalDiagnostic = medicalCase.nodes[finalDiagnosticId];
         Object.keys(finalDiagnostic.instances).forEach((healthCaresQuestionId) => {
           const healthCaresQuestion = finalDiagnostic.instances[healthCaresQuestionId];
-          console.log(healthCaresQuestion);
           const dfInstance = medicalCase.nodes[healthCaresQuestion.id].df.find((df) => df.id === finalDiagnosticId);
           dfInstance.conditionValue = healthCaresQuestion.calculateCondition();
         });
