@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Text, Input, Picker, View } from 'native-base';
+import { Input, Picker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 import { styles } from './Date.style';
@@ -81,16 +81,20 @@ export default class Date extends React.Component<Props, State> {
         setPatientValue(birthDateQuestion.id, moment(birthDate).format());
       } else if (birthDateQuestion.value !== null && !birthDate.isValid()) {
         setPatientValue(birthDateQuestion.id, null);
+        setPatientValue(yearQuestion.id, null);
       }
-    } else if (birthDate !== birthDateQuestion.value && birthDate.isValid()) {
+    } else if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
       setAnswer(birthDateQuestion.id, moment(birthDate).format());
-    } else if (birthDateQuestion.value !== null && !birthDate.isValid()) {
+    } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate > moment()) {
       setAnswer(birthDateQuestion.id, null);
+      setAnswer(yearQuestion.id, null);
+      this.setState({ yearValue: null });
     }
-  }
+  };
 
   /**
    * Set value in store
+   * @param {Integer} questionId
    * @param {String} value
    */
   onValueChange = (questionId, value) => {
@@ -145,7 +149,7 @@ export default class Date extends React.Component<Props, State> {
         </Picker>
 
         <Picker mode="dropdown" style={styles.picker} selectedValue={String(monthQuestion.answer)} onValueChange={(value) => this.onValueChange(monthQuestion.id, value)} enable={isReadOnly}>
-          <Picker.Item label={I18n.t('patient:month')} value={null} />
+          <Picker.Item label={I18n.t('patient:months')} value={null} />
           {pickerMonth}
         </Picker>
 

@@ -5,4 +5,5 @@ export const styles = StyleSheet.create({
   textColor: { color: liwiColors.blackColor, padding: 20, fontSize: 14 },
   placeholder: { color: liwiColors.darkerGreyColor },
   inputStyle: { borderBottomColor: liwiColors.blackLightColor, backgroundColor: liwiColors.whiteColor, textAlign: 'left' },
+  picker: { backgroundColor: liwiColors.whiteColor, marginBottom: 5 },
 });
