@@ -1,12 +1,16 @@
 // @flow
 
 import * as React from 'react';
+import { DocumentDirectoryPath, writeFile, mkdir, write } from 'react-native-fs';
+import uuid from 'react-native-uuid';
+import { zip } from 'react-native-zip-archive';
 import { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Synchronization.style';
 import { synchronizeMedicalCases } from '../../../frontend_service/api/Http';
+
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -56,10 +60,31 @@ export default class Synchronization extends React.Component<Props, State> {
     const { medicalCasesToSynch } = this.state;
     this.setState({ isLoading: true });
 
-    const result = await synchronizeMedicalCases(medicalCasesToSynch);
+    const folder = `${DocumentDirectoryPath}/test`;
+    const targetPath = `${folder}.zip`;
+console.log(folder)
+    // write file
+    await mkdir(folder);
+console.log("j'ai créer le directory")
+    await writeFile(`${folder}/cc.json`, JSON.stringify({id: 11}));
+console.log("J'ai écrit dans le fichier")
+    // medicalCasesToSynch.map(async (medicalCase) => {
+    //   await writeFile(`${folder}/${medicalCase.id}.json`, JSON.stringify(medicalCase));
+    // });
+
+    const path = zip(DocumentDirectoryPath, targetPath)
+      .catch((error) => {
+        console.error(error);
+        this.setState({ isLoading: false});
+      });
+
+    console.log(`zip completed at ${path}`);
+    this.setState({ isLoading: false});
+
+    // const result = await synchronizeMedicalCases(medicalCasesToSynch);
 
     // Reset medicalCases to sync if request success
-    this.setState({ isLoading: false, medicalCasesToSynch: result !== null ? [] : medicalCasesToSynch });
+    // this.setState({ isLoading: false, medicalCasesToSynch: result !== null ? [] : medicalCasesToSynch });
   };
 
   render() {
@@ -72,13 +97,15 @@ export default class Synchronization extends React.Component<Props, State> {
       <View padding-auto margin-top flex>
         {isReady ? (
           <>
-            <LiwiTitle2 style={styles.marginTop} noBorder>{t('synchronize:title')}</LiwiTitle2>
+            <LiwiTitle2 style={styles.marginTop} noBorder>
+              {t('synchronize:title')}
+            </LiwiTitle2>
             <Text style={styles.number}>{medicalCasesToSynch.length}</Text>
             <View flex-center-row>
               {isLoading ? (
                 <LiwiLoader />
               ) : (
-                <Button onPress={this.synchronize} disabled={medicalCasesToSynch.length === 0}>
+                <Button onPress={this.synchronize}>
                   <Text>{t('synchronize:synchronize')}</Text>
                 </Button>
               )}
