@@ -359,6 +359,14 @@ export class MedicalCaseModel {
   };
 
   /**
+   * Test if medicalCase is older than 7 days
+   * @returns {boolean}
+   */
+  isOlderThan1Week = () => {
+    return moment().diff(this.created_at, 'days') > 7;
+  };
+
+  /**
    * Generates a clean Json of the medical case
    * @param medicalCase - the medical case that need to be stringified
    * @returns {*|string}
