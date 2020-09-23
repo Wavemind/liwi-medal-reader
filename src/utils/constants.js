@@ -14,7 +14,7 @@ export const liwiColors = {
   darkGreyColor: '#a9a9a9',
   darkerGreyColor: '#757575',
   greenColor: '#4CAF50',
-  orangeColor: '#e8b30d',
+  orangeColor: '#ec8f09',
   whiteDark: '#f9f9f9',
 };
 

@@ -20,11 +20,27 @@ export default class Home extends React.Component<Props, State> {
 
   state = {
     session: null,
+    medicalCases: [],
   };
 
   async componentDidMount() {
+    const {
+      app: { database },
+    } = this.props;
     const session = await getItems('session');
-    this.setState({ session });
+    const medicalCases = [];
+
+    if (session?.facility.architecture === 'standalone') {
+      const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
+
+      realmMedicalCases.forEach((medicalCase) => {
+        if (medicalCase.canBeSynchronized() && medicalCase.isOlderThan1Week()) {
+          medicalCases.push(medicalCase);
+        }
+      });
+    }
+
+    this.setState({ session, medicalCases });
   }
 
   /**
@@ -32,7 +48,7 @@ export default class Home extends React.Component<Props, State> {
    */
   aboutModal = () => {
     const { updateModalFromRedux } = this.props;
-    updateModalFromRedux({ }, modalType.about);
+    updateModalFromRedux({}, modalType.about);
   };
 
   render() {
@@ -41,7 +57,7 @@ export default class Home extends React.Component<Props, State> {
       app: { t, user, logout, algorithm },
     } = this.props;
 
-    const { session } = this.state;
+    const { session, medicalCases } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen">
@@ -49,6 +65,13 @@ export default class Home extends React.Component<Props, State> {
           <Text bigTitle style={{ textAlign: 'center' }}>
             Welcome {user.preFix} {user.first_name} {user.last_name}
           </Text>
+
+          {medicalCases.length > 0 ? (
+            <View style={styles.warningBloc}>
+              <Text white>{t('synchronize:not_warning')}</Text>
+            </View>
+          ) : null}
+
           <View w50>
             <TouchableOpacity
               testID="GoToPatientUpsert"
