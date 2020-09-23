@@ -55,9 +55,9 @@ export default class Question extends React.Component<Props, State> {
    * @private
    */
   _displayValidation = () => {
-    const { question } = this.props;
+    const { question, patientValueEdit } = this.props;
 
-    if (question.validationType !== null && question.validationMessage !== null) {
+    if (question.validationType !== null && question.validationMessage !== null && !patientValueEdit) {
       return (
         <View style={question.validationType === 'error' ? styles.errorRow : styles.warningRow}>
           <Text white>{question.validationMessage}</Text>
@@ -97,8 +97,7 @@ export default class Question extends React.Component<Props, State> {
   render() {
     const {
       question,
-      app: { t },
-      medicalCase,
+      app: { t, algorithm },
     } = this.props;
     const { flexQuestion, flexToolTip } = this.state;
 
@@ -107,9 +106,9 @@ export default class Question extends React.Component<Props, State> {
     const questionNotDisplayed = [];
 
     // Don't display day/month/year questions
-    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_day_id);
-    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_month_id);
-    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_year_id);
+    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_day_id);
+    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_month_id);
+    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_year_id);
 
     unavailableAnswer = _.find(question.answers, (a) => a.value === 'not_available');
 
@@ -131,7 +130,11 @@ export default class Question extends React.Component<Props, State> {
 
     // Construct generic Component for the question
     return (
-      <ListItem style={[styles.condensed, styles.flexColumn, { backgroundColor: question.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
+      <ListItem
+        style={[styles.condensed, styles.flexColumn, { backgroundColor: question.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
+        noBorder
+        key={`${question.id}_item`}
+      >
         <View style={styles.flexRow}>
           <View flex={flexToolTip}>
             <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal()}>

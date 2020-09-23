@@ -144,7 +144,7 @@ export class ItemButton extends Component<{ t: any, r: any }> {
     }
 
     return (
-      <TouchableOpacity onPress={() => navigate(name, initialPage)} drawerItemButton transparent style={{padding: 5}}>
+      <TouchableOpacity onPress={() => navigate(name, initialPage)} transparent style={{flexDirection: 'row', padding: 5}}>
         <DrawerDot type={dotType} onPress={() => navigate(name, initialPage)} isDrawer={isDrawer} />
         {isDrawer ? (
           <Text drawerItemText style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}>
