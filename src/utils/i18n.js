@@ -411,7 +411,7 @@ i18n
           conditions: 'Treatment Conditions',
           filter: 'Filters',
           step_invalid: 'Step is not valid',
-          about: 'About'
+          about: 'About',
         },
         common: {
           back: 'Back',
@@ -439,6 +439,7 @@ i18n
         synchronize: {
           title: 'Consultations to synchronize',
           synchronize: 'Synchronize',
+          not_warning: 'Medical cases have not been synchronised for more than 1 week'
         },
       },
       fr: {

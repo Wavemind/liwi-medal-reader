@@ -123,15 +123,35 @@ export class NodesModel implements NodeInterface {
       const finalDiagnostic = this[finalDiagnosticId];
       Object.keys(finalDiagnostic.instances).forEach((instanceId) => {
         if (this[instanceId].df.some((df) => df.conditionValue)) {
-          questions = {
-            ...questions,
-            [instanceId]: this[instanceId],
-          };
+          if (this[instanceId].type === nodeTypes.questionsSequence) {
+            this.getQuestionsInQs(medicalCase, questions, this[instanceId]);
+          } else {
+            questions = {
+              ...questions,
+              [instanceId]: this[instanceId],
+            };
+          }
         }
       });
     });
 
     return questions;
+  }
+
+  /**
+   * Recursive call to get question in QS from QS
+   *
+   * @params [Object] state$, [Object] questions, [Object] node: the node we want questions
+   * @return nothing : Immutability
+   */
+  getQuestionsInQs(state$, questions, node) {
+    Object.keys(node.instances).forEach((id) => {
+      if (state$.nodes[id].type === nodeTypes.questionsSequence) {
+        this.getQuestionsInQs(state$, questions, state$.nodes[id]);
+      } else if (state$.nodes[id].qs.some((qs) => qs.conditionValue)) {
+        questions[id] = state$.nodes[id];
+      }
+    });
   }
 
   /**

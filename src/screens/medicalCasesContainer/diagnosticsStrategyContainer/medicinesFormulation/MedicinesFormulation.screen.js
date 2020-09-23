@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 import { Icon, Picker, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
-import { getDrugs } from '../../../../../frontend_service/algorithm/questionsStage.algo';
-import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { styles } from './MedicinesFormulation.style';
+import { DrugModel } from '../../../../../frontend_service/engine/models/Drug.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -35,7 +34,12 @@ export default class MedicinesFormulations extends Component<Props, State> {
 
   static defaultProps = {};
 
-  showSize = (type) => {
+  /**
+   * Display measurement unit
+   * @param type
+   * @returns {string}
+   */
+  displayMedicationForm = (type) => {
     switch (type) {
       case medicationForms.syrup:
       case medicationForms.suspension:
@@ -50,6 +54,14 @@ export default class MedicinesFormulations extends Component<Props, State> {
     }
   };
 
+  /**
+   * Formulation display
+   * @param instance
+   * @param selected
+   * @param onSelect
+   * @returns {JSX.Element}
+   * @private
+   */
   _renderFormulation = (instance, selected, onSelect) => {
     const {
       medicalCase: { nodes },
@@ -57,7 +69,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
     } = this.props;
 
     return (
-      <View style={styles.blocDrug}>
+      <View style={styles.blocDrug} key={instance.id}>
         <View style={styles.flex}>
           <Text size-auto>{nodes[instance.id]?.label}</Text>
           <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${nodes[e.id].label} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
@@ -99,7 +111,13 @@ export default class MedicinesFormulations extends Component<Props, State> {
                 onSelect(index);
               }
 
-              return <Picker.Item key={f} label={`${t(`medication_form:${f.medication_form}`)}: ${string} ${isPossible ? this.showSize(f.medication_form) : ''}`} value={isPossible ? index : false} />;
+              return (
+                <Picker.Item
+                  key={f}
+                  label={`${t(`medication_form:${f.medication_form}`)}: ${string} ${isPossible ? this.displayMedicationForm(f.medication_form) : ''}`}
+                  value={isPossible ? index : false}
+                />
+              );
             })}
           </Picker>
         </View>
@@ -109,34 +127,21 @@ export default class MedicinesFormulations extends Component<Props, State> {
 
   render() {
     const {
-      medicalCase: {
-        diagnoses: { proposed },
-        nodes,
-      },
+      medicalCase: { nodes },
       app: { t },
     } = this.props;
 
-    let isProposed = false;
-
-    Object.keys(proposed).forEach((finalDiagnosticIndex) => {
-      Object.keys(proposed[finalDiagnosticIndex].drugs).forEach((drugIndex) => {
-        if (proposed[finalDiagnosticIndex].drugs[drugIndex].agreed === true && calculateCondition(proposed[finalDiagnosticIndex].drugs[drugIndex]) === true) {
-          isProposed = true;
-        }
-      });
-    });
-
-    const formulations = getDrugs();
+    const drugs = DrugModel.getAgreed();
 
     const generateFormulation = () =>
-      Object.keys(formulations).map((formulation) => {
-        const { formulationSelected } = formulations[formulation];
+      Object.keys(drugs).map((formulation) => {
+        const { formulationSelected } = drugs[formulation];
         const selected = formulationSelected === undefined ? null : formulationSelected;
-        const onSelect = (value) => this.onValueChange(value, formulations[formulation], formulation);
+        const onSelect = (value) => this.onValueChange(value, drugs[formulation], formulation);
 
         return (
           <>
-            {this._renderFormulation(formulations[formulation], selected, onSelect)}
+            {this._renderFormulation(drugs[formulation], selected, onSelect)}
             {selected !== null && administrationRouteCategories.includes(nodes[formulation].formulations[selected].administration_route_category) ? (
               <Text>{nodes[formulation].formulations[formulationSelected].injection_instructions}</Text>
             ) : null}
@@ -146,7 +151,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        {Object.keys(formulations).length > 0 && <Text customTitle>{t('diagnoses:which')}</Text>}
+        {Object.keys(drugs).length > 0 && <Text customTitle>{t('diagnoses:which')}</Text>}
         {generateFormulation()}
       </View>
     );
