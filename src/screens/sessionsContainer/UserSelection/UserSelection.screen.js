@@ -41,11 +41,14 @@ export default function UserSelection() {
    */
   const switchIcon = (role) => {
     switch (role) {
-      case 'clinician':
+      case 'medical_doctor':
+      case 'clinical_officer':
+      case 'assistant_medical_officer':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/doc.png')} />;
-      case 'lab':
+      case 'pharmacist':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/scientist.png')} />;
-      case 'triage_nurse':
+      case 'midwife':
+      case 'nurse':
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/nurse.png')} />;
       default:
         return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/guest.png')} />;
