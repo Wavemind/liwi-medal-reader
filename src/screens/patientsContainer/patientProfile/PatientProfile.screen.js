@@ -16,7 +16,7 @@ export default class PatientProfile extends React.Component {
     patient: {
       medicalCases: [],
     },
-    firstRender: false,
+    firstRender: true,
     deviceInfo: null,
     nodes: {},
     columns: [],
@@ -60,7 +60,7 @@ export default class PatientProfile extends React.Component {
 
     this.setState({
       patient,
-      firstRender: true,
+      firstRender: false,
     });
   }
 
@@ -79,6 +79,7 @@ export default class PatientProfile extends React.Component {
     } = this.props;
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
+
     return (
       <TouchableOpacity
         style={styles.item}
@@ -103,8 +104,8 @@ export default class PatientProfile extends React.Component {
           }
         }}
       >
-        {medicalCase.values.map((value) => (
-          <View style={{ flex: size }} key={`${medicalCase.id}`}>
+        {medicalCase.values.map((value, index) => (
+          <View style={{ flex: size }} key={`${medicalCase.id}_${index}`}>
             <Text size-auto>{value}</Text>
           </View>
         ))}
@@ -134,20 +135,21 @@ export default class PatientProfile extends React.Component {
     const {
       app: { t, algorithm },
       navigation,
-      medicalCase,
     } = this.props;
     const { patient, firstRender, nodes, columns } = this.state;
 
     const questionNotDisplayed = [];
 
-    // Don't display day/month/year questions
-    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_day_id);
-    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_month_id);
-    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_year_id);
+    if (firstRender) {
+      return <LiwiLoader />;
+    }
 
-    return !firstRender ? (
-      <LiwiLoader />
-    ) : (
+    // Don't display day/month/year questions
+    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_day_id);
+    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_month_id);
+    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_year_id);
+
+    return (
       <View style={styles.container}>
         <View style={styles.patientValuesContainer}>
           <View padding-auto margin-top style={styles.flex}>
@@ -171,6 +173,7 @@ export default class PatientProfile extends React.Component {
           </View>
           <Button
             block
+            disabled
             style={styles.marginBottom}
             onPress={() => {
               navigation.navigate('PatientEdit', {

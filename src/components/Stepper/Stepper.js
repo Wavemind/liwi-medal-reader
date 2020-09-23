@@ -17,7 +17,7 @@ import { styles } from './styles';
 import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
-import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
+import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus, modalType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
@@ -301,7 +301,6 @@ class Stepper extends React.Component<Props, State> {
       displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
       if (endMedicalCase === true) {
         NavigationService.resetActionStack('Home');
-        store.dispatch(clearMedicalCase());
       } else {
         navigation.navigate({
           routeName: nextStage,
