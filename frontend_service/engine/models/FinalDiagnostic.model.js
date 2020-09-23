@@ -181,15 +181,14 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    * Return all the drugs that must be shown for the current final diagnostic
    * @returns {Array<DrugModel>>} - All the drugs that must be shown for the current final diagnostic
    */
-  getDrugs = () => {
-    const medicalCase = store.getState();
+  getDrugs = (medicalCase) => {
     const drugsAvailable = [];
     const parents = (top_conditions) => {
       return top_conditions.map((top) => top.first_node_id);
     };
 
     /**
-     * Recusive function that calculate the value of all your parents
+     * Recursive function that calculate the value of all your parents
      * @param top_conditions - the condition of you 1st level parent
      * @returns {boolean}
      */
@@ -212,8 +211,9 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     };
 
     Object.keys(this.drugs).forEach((drugId) => {
-      if (parentsConditionValue(this.drugs[drugId].top_conditions)) {
-        drugsAvailable.push(medicalCase.nodes[drugId]);
+      const drug = medicalCase.nodes[drugId];
+      if (parentsConditionValue(this.drugs[drugId].top_conditions) && !drug.isExcluded(medicalCase)) {
+        drugsAvailable.push(drug);
       }
     });
 
@@ -299,6 +299,22 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
         finalDiagnostics.push(diagnose.id);
       }
     });
-    return finalDiagnostics.concat(Object.keys(medicalCase.diagnoses.additional).map((diagnosesId) => parseInt(diagnosesId)));
+    return finalDiagnostics.concat(Object.keys(medicalCase.diagnoses.additional).map((diagnoseId) => parseInt(diagnoseId)));
+  }
+
+  /**
+   * Retrurns all the final diagnostics that are either manually added or agreed by the clinician
+   * @param medicalCase - The current state of the medical case
+   * @returns {Array<Integer>} - Returns an array with all the diagnoses of the final diagnostics
+   */
+  static getAgreedObject(medicalCase) {
+    const finalDiagnostics = [];
+    Object.keys(medicalCase.diagnoses.proposed).map((diagnoseId) => {
+      const diagnose = medicalCase.diagnoses.proposed[diagnoseId];
+      if (diagnose.agreed) {
+        finalDiagnostics.push(diagnose);
+      }
+    });
+    return finalDiagnostics.concat(Object.keys(medicalCase.diagnoses.additional).map((diagnoseId) => medicalCase.diagnoses.additional[diagnoseId]));
   }
 }

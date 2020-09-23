@@ -93,10 +93,10 @@ export default class Medicines extends Component<Props, State> {
       const proposedFinalDiagnostic = diagnoses[diagnosesKey][key];
       if (proposedFinalDiagnostic.agreed === true || diagnosesKey === 'additional') {
         const finalDiagnostic = medicalCase.nodes[key];
-        const drugs = finalDiagnostic.getDrugs();
+        const drugs = finalDiagnostic.getDrugs(medicalCase);
 
         return (
-          <Card>
+          <Card key={`finalDiagnostic_${finalDiagnostic.id}`}>
             <CardItem style={styles.cardItemCondensed}>
               <View style={styles.cardTitleContent}>
                 <Text customSubTitle style={styles.cardTitle}>

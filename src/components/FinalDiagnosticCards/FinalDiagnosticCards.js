@@ -7,7 +7,6 @@ import { NavigationScreenProps } from 'react-navigation';
 import { TouchableOpacity } from 'react-native';
 import { styles } from './FinalDiagnosticCards.style';
 import { LiwiTitle2 } from '../../template/layout';
-import { getDrugs } from '../../../frontend_service/algorithm/questionsStage.algo';
 import { medicationForms, modalType } from '../../../frontend_service/constants';
 
 import Liquid from '../Formulations/Liquid';
@@ -15,6 +14,7 @@ import Breakable from '../Formulations/Breakable';
 import Capsule from '../Formulations/Capsule';
 import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
+import { DrugModel } from '../../../frontend_service/engine/models/Drug.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -76,7 +76,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
       medicalCase: { nodes },
     } = this.props;
 
-    const drugsAvailable = getDrugs(medicalCase.diagnoses);
+    const drugsAvailable = DrugModel.getAgreed(medicalCase.diagnoses);
 
     return Object.keys(finalDiagnosticCategory).map((key) => {
       if (finalDiagnosticCategory[key].agreed || title === 'additional') {
@@ -107,7 +107,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                   Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
                     if (drugsAvailable[drugKey] !== undefined) {
                       return (
-                        <View style={styles.drugContainer}>
+                        <View style={styles.drugContainer} key={drugKey}>
                           <View flex>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
                           <View style={styles.tooltipButton}>
                             <View flex>
