@@ -71,6 +71,12 @@ export default class RealmInterface {
     return this._generateList(result, model, params.columns);
   };
 
+  getConsentsFile = async (page, columns) => {
+    let result = await this._realm().objects('Patient');
+    result = result.sorted('updated_at', 'ASC').slice((page - 1) * elementPerPage, elementPerPage * page);
+    return this._generateConsentFileList(result, columns);
+  };
+
   /**
    * Creates an entry of a specific model in the database
    * @param { string } model - The model name of the data we want to retrieve
@@ -197,15 +203,26 @@ export default class RealmInterface {
           id: entry.id,
           values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
         };
-      } else {
-        return {
-          id: entry.id,
-          status: entry.status,
-          clinician: entry.clinician,
-          mac_address: entry.mac_address,
-          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
-        };
       }
+      return {
+        id: entry.id,
+        status: entry.status,
+        clinician: entry.clinician,
+        mac_address: entry.mac_address,
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+      };
+    });
+  };
+
+  _generateConsentFileList = async (data, columns) => {
+    const algorithm = await getItems('algorithm');
+    const { nodes } = algorithm;
+    return data.map((entry) => {
+      return {
+        id: entry.id,
+        consent_file: entry.consent_file,
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+      };
     });
   };
 

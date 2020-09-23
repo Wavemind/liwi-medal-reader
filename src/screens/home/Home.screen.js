@@ -146,8 +146,8 @@ export default class Home extends React.Component<Props, State> {
             </TouchableOpacity>
           </View>
 
-          <View w50>
-            {session?.facility.architecture === 'standalone' ? (
+          {session?.facility.architecture === 'standalone' ? (
+            <View w50>
               <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
                 <View style={styles.blocContainer}>
                   <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
@@ -156,16 +156,19 @@ export default class Home extends React.Component<Props, State> {
                   </Text>
                 </View>
               </TouchableOpacity>
-            ) : (
-              <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('ConsentList')}>
-                <View style={styles.blocContainer}>
-                  <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/differential.png')} />
-                  <Text size-auto center style={styles.textButton}>
-                    {t('navigation:consent_list')}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )}
+            </View>
+          ) : null}
+
+          <View w50>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('ConsentList')}>
+              <View style={styles.blocContainer}>
+                <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/differential.png')} />
+                <Text size-auto center style={styles.textButton}>
+                  {t('navigation:consent_list')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+
             <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => logout()}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/logout.png')} />

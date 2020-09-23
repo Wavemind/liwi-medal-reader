@@ -42,10 +42,10 @@ export default class ConsentList extends React.Component {
     const {
       app: { database },
     } = this.props;
-    const { currentPage } = this.state;
+    const { currentPage, columns } = this.state;
 
     this.setState({ loading: true });
-    const data = await database.httpInterface.getConsentsFile(currentPage);
+    const data = await database.getConsentsFile(currentPage, columns);
 
     this.setState({
       data,
@@ -63,14 +63,14 @@ export default class ConsentList extends React.Component {
     const {
       app: { database },
     } = this.props;
-    const { data, currentPage } = this.state;
+    const { data, currentPage, columns } = this.state;
 
     this.setState(
       {
         loading: true,
       },
       async () => {
-        const newData = await database.httpInterface.getConsentsFile(currentPage);
+        const newData = await database.getConsentsFile(currentPage, columns);
         const isLastBatch = newData.length === 0;
 
         this.setState({

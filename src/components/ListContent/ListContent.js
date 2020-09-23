@@ -31,7 +31,9 @@ export default class ListContent extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const { app: {algorithm} } = this.props;
+    const {
+      app: { algorithm },
+    } = this.props;
 
     await this._fetchList();
 
