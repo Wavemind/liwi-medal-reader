@@ -85,11 +85,16 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
             <CardItem style={styles.cardItemCondensed}>
               <Body style={styles.cardTitleContent}>
                 <LiwiTitle2 noBorder style={styles.flex}>
-                  {finalDiagnosticCategory[key].label}
-                </LiwiTitle2>
-                <LiwiTitle2 noBorder style={styles.noRightMargin}>
+                  {finalDiagnosticCategory[key].label}{`\n`}
                   <Text note>{t(`diagnoses_label:${title}`)}</Text>
                 </LiwiTitle2>
+                <View style={styles.tooltipButtonFinalDiagnostic}>
+                  <View flex>
+                    <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(finalDiagnosticCategory[key])}>
+                      <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </Body>
             </CardItem>
             <CardItem style={styles.cardItemCondensed}>
