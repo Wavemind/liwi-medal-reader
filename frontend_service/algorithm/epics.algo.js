@@ -211,8 +211,8 @@ const processUpdatedNode = (medicalCase, nodeId) => {
 
   // If it's birth date node, check eligibility age and update it in medical case
   if (nodeId === medicalCase.config.basic_questions.birth_date_question_id) {
-    const yearQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_year_id].value;
-    const years = yearQuestion !== null ? yearQuestion : 0;
+    const birthDate = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_question_id].value;
+    const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
     medicalCase.isEligible = years < medicalCase.config.age_limit;
   }
 
