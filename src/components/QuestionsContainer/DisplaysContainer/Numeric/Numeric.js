@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { Input, Text, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
-import { liwiColors } from '../../../../utils/constants';
 import { LeftButton, RightButton } from '../../../../template/layout';
 import { styles } from './Numeric.style';
 
@@ -14,10 +13,6 @@ type State = {};
 export default class Numeric extends React.Component<Props, State> {
   state = {
     value: null,
-    style: {
-      borderBottomColor: liwiColors.blackLightColor,
-      borderBottomWidth: 1,
-    },
   };
 
   shouldComponentUpdate(nextProps: Readonly<P>, nextState): boolean {
@@ -100,7 +95,7 @@ export default class Numeric extends React.Component<Props, State> {
       isReadOnly,
       app: { t },
     } = this.props;
-    let { style, value, estimableValue } = this.state;
+    let { value, estimableValue } = this.state;
 
     value = value !== null ? String(value) : null;
     let placeholder = '';
@@ -112,7 +107,7 @@ export default class Numeric extends React.Component<Props, State> {
     return (
       <>
         <View answer>
-          <Input keyboardType="number-pad" question numeric value={value} onChange={this.onChange} style={style} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
+          <Input keyboardType="number-pad" question numeric value={value} onChange={this.onChange} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
         </View>
         {question.estimable ? (
           <View answer style={styles.marginTop}>
