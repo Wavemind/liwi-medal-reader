@@ -1,4 +1,5 @@
 import { NavigationActions, StackActions } from 'react-navigation';
+import { DrawerActions } from 'react-navigation-drawer';
 import _ from 'lodash';
 
 import { store } from '../../../frontend_service/store';
@@ -77,13 +78,20 @@ function setParamsAge(name = '') {
 }
 
 /**
+ * Hide or display drawer
+ */
+function toggleDrawer() {
+  _navigator.dispatch(DrawerActions.toggleDrawer());
+}
+
+/**
  * Get the active route from react-navigation
  *
  * @return : object : the current route
  */
 function getCurrentRoute() {
   if (_navigator === undefined) {
-    return {routeName: 'jestTesting'};
+    return { routeName: 'jestTesting' };
   }
   let route = _navigator?.state.nav;
 
@@ -141,6 +149,7 @@ async function onNavigationStateChange(prevState, currentState) {
 }
 
 export default {
+  toggleDrawer,
   setParamsAge,
   onNavigationStateChange,
   resetActionStack,

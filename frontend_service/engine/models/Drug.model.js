@@ -3,6 +3,8 @@ import { HealthCaresModel } from './HealthCares.model';
 import { medicationForms } from '../../constants';
 import { store } from '../../store';
 import { roundSup } from '../../../src/utils/swissKnives';
+import { FinalDiagnosticModel } from './FinalDiagnostic.model';
+import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 
 export class DrugModel extends HealthCaresModel {
   constructor(props) {
@@ -22,6 +24,8 @@ export class DrugModel extends HealthCaresModel {
       formulationSelected = null,
       is_anti_malarial = false,
       is_antibiotic = false,
+      excluding_nodes_ids = [],
+      excluded_nodes_ids = [],
     } = props;
 
     this.category = category;
@@ -37,6 +41,8 @@ export class DrugModel extends HealthCaresModel {
     this.formulationSelected = formulationSelected;
     this.is_anti_malarial = is_anti_malarial;
     this.is_antibiotic = is_antibiotic;
+    this.excluded_nodes_ids = excluded_nodes_ids;
+    this.excluding_nodes_ids = excluding_nodes_ids;
   }
 
   /**
@@ -154,5 +160,87 @@ export class DrugModel extends HealthCaresModel {
       }
     }
     return { doseResult: null, ...formulation };
+  };
+
+  /**
+   * Check if a drug is excluded by an another
+   * @param medicalCase
+   * @returns {Array<boolean>}
+   */
+  isExcluded = (medicalCase) => {
+    const finalDiagnostics = FinalDiagnosticModel.getAgreedObject(medicalCase);
+    return Object.keys(finalDiagnostics)
+      .map((index) => {
+        const finalDiagnostic = finalDiagnostics[index];
+        return Object.keys(finalDiagnostic.drugs).some((drugId) => {
+          const drug = finalDiagnostic.drugs[drugId];
+          return this.excluded_nodes_ids.includes(parseInt(drugId)) && drug.agreed === true;
+        });
+      })
+      .some((drug) => drug);
+  };
+
+  /**
+   * Get drugs from 3 objects and return one object (manual merging)
+   * Object from :
+   * - Proposed
+   * - Additional
+   *
+   * @return : object list all drugs
+   *
+   */
+  static getAgreed = (diagnoses = null) => {
+    let currentDiagnoses;
+    let currentAdditionalDrugs;
+
+    const medicalCase = store.getState();
+    const drugs = {};
+    const doubleString = ['proposed', 'additional'];
+
+    if (diagnoses === null) {
+      currentDiagnoses = medicalCase.diagnoses;
+      currentAdditionalDrugs = medicalCase.diagnoses.additionalDrugs;
+    } else {
+      currentDiagnoses = diagnoses;
+      currentAdditionalDrugs = diagnoses.additionalDrugs;
+    }
+
+    doubleString.forEach((iteration) => {
+      Object.keys(currentDiagnoses[iteration]).forEach((diagnoseId) => {
+        // If diagnoses selected or additional (auto selected)
+        const finalDiagnostic = currentDiagnoses[iteration][diagnoseId];
+        if (finalDiagnostic.agreed === true || iteration === 'additional') {
+          // Iterate over drugs
+          Object.keys(finalDiagnostic.drugs).forEach((drugId) => {
+            const diagnoseDrug = finalDiagnostic.drugs[drugId];
+            const drug = medicalCase.nodes[drugId];
+            if (diagnoseDrug.agreed === true && calculateCondition(diagnoseDrug) === true && !drug.isExcluded(medicalCase)) {
+              if (drugs[drugId] === undefined) {
+                // New one so add it
+                drugs[drugId] = finalDiagnostic?.drugs[drugId];
+                drugs[drugId].diagnoses = [{ id: diagnoseId, type: iteration }];
+              } else {
+                // Already exist, manage it
+                drugs[drugId].diagnoses.push({ id: diagnoseId, type: iteration });
+                if (finalDiagnostic?.drugs[drugId].duration > drugs[drugId].duration) {
+                  drugs[drugId].duration = finalDiagnostic?.drugs[drugId].duration;
+                }
+              }
+            }
+          });
+        }
+      });
+    });
+
+    // Iterate over manually added drugs
+    Object.keys(currentAdditionalDrugs).forEach((ky) => {
+      if (drugs[ky] === undefined) {
+        // New one so add it
+        drugs[ky] = currentAdditionalDrugs[ky];
+        drugs[ky].diagnoses = [null];
+      }
+    });
+
+    return drugs;
   };
 }
