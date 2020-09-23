@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
-import { ListItem, Text, View, Button, Icon } from 'native-base';
-import { FlatList, ScrollView } from 'react-native';
+import { Text, View, Button, Icon } from 'native-base';
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native';
 
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { LiwiTitle2 } from '../../../template/layout';
@@ -80,7 +80,7 @@ export default class PatientProfile extends React.Component {
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
     return (
-      <ListItem
+      <TouchableOpacity
         style={styles.item}
         key={`${medicalCase.id}_list`}
         onPress={async () => {
@@ -118,7 +118,7 @@ export default class PatientProfile extends React.Component {
             </Text>
           </View>
         ) : null}
-      </ListItem>
+      </TouchableOpacity>
     );
   };
 
@@ -134,8 +134,17 @@ export default class PatientProfile extends React.Component {
     const {
       app: { t, algorithm },
       navigation,
+      medicalCase,
     } = this.props;
     const { patient, firstRender, nodes, columns } = this.state;
+
+    const questionNotDisplayed = [];
+
+    // Don't display day/month/year questions
+    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_day_id);
+    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_month_id);
+    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_year_id);
+
     return !firstRender ? (
       <LiwiLoader />
     ) : (
@@ -145,16 +154,18 @@ export default class PatientProfile extends React.Component {
             <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
             <ScrollView>
               <View style={styles.patientValuesContent}>
-                {patient.patientValues.map((patientValue) => (
-                  <View key={patientValue.node_id} style={styles.wrapper}>
-                    <Text size-auto style={styles.identifierText}>
-                      {nodes[patientValue.node_id].label}
-                    </Text>
-                    <Text size-auto style={styles.patientValues}>
-                      {patient.getLabelFromNode(patientValue.node_id, nodes)}
-                    </Text>
-                  </View>
-                ))}
+                {patient.patientValues.map((patientValue) =>
+                  questionNotDisplayed.includes(patientValue.node_id) ? null : (
+                    <View key={patientValue.node_id} style={styles.wrapper}>
+                      <Text size-auto style={styles.identifierText}>
+                        {nodes[patientValue.node_id].label}
+                      </Text>
+                      <Text size-auto style={styles.patientValues}>
+                        {patient.getLabelFromNode(patientValue.node_id, nodes)}
+                      </Text>
+                    </View>
+                  )
+                )}
               </View>
             </ScrollView>
           </View>
