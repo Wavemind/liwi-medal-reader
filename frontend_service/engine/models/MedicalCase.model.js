@@ -363,7 +363,7 @@ export class MedicalCaseModel {
    * @returns {boolean}
    */
   isOlderThan1Week = () => {
-    return moment().diff(this.created_at) > 7;
+    return moment().diff(this.created_at, 'days') > 7;
   };
 
   /**
