@@ -191,6 +191,7 @@ i18n
           consultation: 'Consultation',
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
+          consent_list: 'Consents file',
           comment: 'Comment',
           poct: 'POCT',
           tests: 'Tests',
@@ -415,6 +416,7 @@ i18n
           filter: 'Filters',
           step_invalid: 'Step is not valid',
           about: 'About',
+          consent_list: "Facility's consent files",
         },
         common: {
           back: 'Back',

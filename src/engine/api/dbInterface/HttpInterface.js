@@ -115,9 +115,24 @@ export default class HttpInterface {
     return this._fetch(url, header);
   };
 
+  /**
+   * Synchronize patients and medical cases with local data
+   * @param patients
+   * @returns {Promise<string|Array>}
+   */
   synchronizePatients = async (patients) => {
     const url = `${this.localDataIp}/api/patients/synchronize`;
     const header = await this._setHeaders('POST', { patients });
+    return this._fetch(url, header);
+  };
+
+  /**
+   * Get all consent file for all users
+   * @returns {Promise<string|Array>}
+   */
+  getConsentsFile = async (page) => {
+    const url = `${this.localDataIp}/api/patients/consents_file?page=${page}`;
+    const header = await this._setHeaders();
     return this._fetch(url, header);
   };
 

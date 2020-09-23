@@ -127,16 +127,6 @@ export default class Home extends React.Component<Props, State> {
           </View>
 
           <View w50>
-            {session?.facility.architecture === 'standalone' ? (
-              <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
-                <View style={styles.blocContainer}>
-                  <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
-                  <Text size-auto center style={styles.textButton}>
-                    {t('navigation:synchronize')}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ) : null}
             <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Settings')}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/settings.png')} />
@@ -145,14 +135,36 @@ export default class Home extends React.Component<Props, State> {
                 </Text>
               </View>
             </TouchableOpacity>
-          </View>
 
-          <View w50>
-            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={this.aboutModal}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => this.aboutModal()}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/about.png')} />
                 <Text size-auto center style={styles.textButton}>
                   {t('navigation:about')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          {session?.facility.architecture === 'standalone' ? (
+            <View w50>
+              <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
+                <View style={styles.blocContainer}>
+                  <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/sync.png')} />
+                  <Text size-auto center style={styles.textButton}>
+                    {t('navigation:synchronize')}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+
+          <View w50>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('ConsentList')}>
+              <View style={styles.blocContainer}>
+                <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/differential.png')} />
+                <Text size-auto center style={styles.textButton}>
+                  {t('navigation:consent_list')}
                 </Text>
               </View>
             </TouchableOpacity>

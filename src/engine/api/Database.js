@@ -40,6 +40,15 @@ export default class Database {
   };
 
   /**
+   * Get all consent file for all users
+   * @returns {Promise<string|Array>}
+   */
+  getConsentsFile = async (page, columns) => {
+    const dbInterface = await this._checkInterface();
+    return this[dbInterface].getConsentsFile(page, columns);
+  };
+
+  /**
    * Creates an entry of a specific model in the database
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
