@@ -16,9 +16,10 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
   constructor(props) {
     super(props);
 
-    const { label, diagnostic_id, drugs, managements, conditions, top_conditions, excluding_final_diagnostics = [], excluded_final_diagnostics = [], cc, instances = [] } = props;
+    const { label, diagnostic_id, drugs, managements, conditions, top_conditions, excluding_final_diagnostics = [], excluded_final_diagnostics = [], cc, instances = [], description = '' } = props;
 
     this.label = label;
+    this.description = description;
     this.diagnostic_id = diagnostic_id;
     this.drugs = drugs;
     this.managements = managements;
@@ -30,7 +31,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     this.instances = instances;
     this.requirement = new RequirementNodeModel({ ...props });
 
-    Object.keys(instances).map((id) => {
+    Object.keys(instances).forEach((id) => {
       this.instances[id] = new InstanceModel({ ...instances[id] });
     });
   }

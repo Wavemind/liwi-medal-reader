@@ -30,6 +30,7 @@ export class QuestionsSequenceModel extends NodeModel implements QuestionsSequen
       label = '',
       dd = [],
       qs = [],
+      df = [],
       conditions = {},
       instances = {},
       top_conditions = {},
@@ -44,6 +45,7 @@ export class QuestionsSequenceModel extends NodeModel implements QuestionsSequen
     this.answers = answers;
     this.dd = dd;
     this.qs = qs;
+    this.df = df;
     this.conditions = conditions;
     this.top_conditions = top_conditions;
     this.instances = instances;
