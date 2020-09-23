@@ -71,10 +71,16 @@ export default class RealmInterface {
     return this._generateList(result, model, params.columns);
   };
 
+  /**
+   * Fetch patient with consent file
+   * @param { integer } page
+   * @param { array } columns - Columns to fetch values
+   * @returns {Promise<*>}
+   */
   getConsentsFile = async (page, columns) => {
     let result = await this._realm().objects('Patient');
     result = result.sorted('updated_at', 'ASC').slice((page - 1) * elementPerPage, elementPerPage * page);
-    return this._generateConsentFileList(result, columns);
+    return this._generateConsentList(result, columns);
   };
 
   /**
@@ -93,6 +99,9 @@ export default class RealmInterface {
     this._savePatientValue(model, object);
   };
 
+  /**
+   * Blank method used in httpInterface
+   */
   lockMedicalCase = () => {};
 
   /**
@@ -164,6 +173,10 @@ export default class RealmInterface {
     return this._realm().objects(model).filtered(`${field} = $0`, value);
   };
 
+  /**
+   * Get all closed and not synchronized case
+   * @returns {Promise<Realm.Results<Realm.Object>>}
+   */
   closedAndNotSynchronized = async () => {
     return this._realm().objects('MedicalCase').filtered("status == 'close' && synchronized_at == null");
   };
@@ -214,7 +227,14 @@ export default class RealmInterface {
     });
   };
 
-  _generateConsentFileList = async (data, columns) => {
+  /**
+   * Generate an object than contains all the data needed to display consent liste
+   * @param data
+   * @param columns
+   * @returns {Promise<*>}
+   * @private
+   */
+  _generateConsentList = async (data, columns) => {
     const algorithm = await getItems('algorithm');
     const { nodes } = algorithm;
     return data.map((entry) => {
