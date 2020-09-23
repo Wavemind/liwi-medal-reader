@@ -18,7 +18,7 @@ export class NodesModel implements NodeInterface {
 
   filterByCategory(category) {
     return _.filter(this, (n) => {
-      return n.category === category
+      return n.category === category;
     });
   }
 
@@ -117,37 +117,41 @@ export class NodesModel implements NodeInterface {
    */
   getHealthCaresQuestions(medicalCase) {
     let questions = {};
-    let finalDiagnostics = [];
-    Object.keys(medicalCase.diagnoses.proposed).map((diagnoseId) => {
-      const diagnose = medicalCase.diagnoses.proposed[diagnoseId];
-      if (diagnose.agreed) {
-        finalDiagnostics.push(diagnose.id);
-      }
-    });
+    const finalDiagnostics = FinalDiagnosticModel.getAgreed(medicalCase);
 
-    finalDiagnostics = finalDiagnostics.concat(Object.keys(medicalCase.diagnoses.additional).map((diagnosesId) => parseInt(diagnosesId)));
-
-    finalDiagnostics.map((finalDiagnosticId) => {
+    finalDiagnostics.forEach((finalDiagnosticId) => {
       const finalDiagnostic = this[finalDiagnosticId];
-      Object.keys(finalDiagnostic.managements).map((managementId) => {
-        const management = this[managementId];
-        const question = management.getQuestions(finalDiagnostic.managements[managementId]);
-        questions = {
-          ...questions,
-          ...question,
-        };
-      });
-      Object.keys(finalDiagnostic.drugs).map((drugId) => {
-        const drug = this[drugId];
-        const question = drug.getQuestions(finalDiagnostic.drugs[drugId]);
-        questions = {
-          ...questions,
-          ...question,
-        };
+      Object.keys(finalDiagnostic.instances).forEach((instanceId) => {
+        if (this[instanceId].df.some((df) => df.conditionValue)) {
+          if (this[instanceId].type === nodeTypes.questionsSequence) {
+            this.getQuestionsInQs(medicalCase, questions, this[instanceId]);
+          } else {
+            questions = {
+              ...questions,
+              [instanceId]: this[instanceId],
+            };
+          }
+        }
       });
     });
 
     return questions;
+  }
+
+  /**
+   * Recursive call to get question in QS from QS
+   *
+   * @params [Object] state$, [Object] questions, [Object] node: the node we want questions
+   * @return nothing : Immutability
+   */
+  getQuestionsInQs(state$, questions, node) {
+    Object.keys(node.instances).forEach((id) => {
+      if (state$.nodes[id].type === nodeTypes.questionsSequence) {
+        this.getQuestionsInQs(state$, questions, state$.nodes[id]);
+      } else if (state$.nodes[id].qs.some((qs) => qs.conditionValue)) {
+        questions[id] = state$.nodes[id];
+      }
+    });
   }
 
   /**

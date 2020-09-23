@@ -270,9 +270,9 @@ class MedicalCaseReducer extends ReducerClass {
    * Update medicine
    *
    * @payload type: additional or proposed
-   * @payload diagnosesKey: the diagnosey identifiant
-   * @payload medicineId: the medecin identifiant
-   * @payload boolean: the agreed / unagree value
+   * @payload diagnosesKey: diagnose id
+   * @payload medicineId: medicine id
+   * @payload boolean: add / remove medicine
    */
   @Action(actions.SET_MEDICINE)
   setMedicine(state, action) {

@@ -91,6 +91,7 @@ export const LeftButton = styled(props => <RNTouchableOpacity {...props} />)`
 
 export const ViewQuestion = styled(props => <RNView {...props} />)`
   flex-direction: row;
+  align-items: center;
   padding: 10px;
   margin-right: ${({ marginRight }) => {
     return marginRight;

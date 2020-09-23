@@ -98,10 +98,18 @@ export default class Question extends React.Component<Props, State> {
     const {
       question,
       app: { t },
+      medicalCase,
     } = this.props;
     const { flexQuestion, flexToolTip } = this.state;
+
     let WrapperUnavailable = () => null;
     let unavailableAnswer = null;
+    const questionNotDisplayed = [];
+
+    // Don't display day/month/year questions
+    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_day_id);
+    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_month_id);
+    questionNotDisplayed.push(medicalCase.config.basic_questions.birth_date_year_id);
 
     unavailableAnswer = _.find(question.answers, (a) => a.value === 'not_available');
 
@@ -117,7 +125,7 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if (question === undefined || question.type !== nodeTypes.question || (question.display_format === displayFormats.formula && question.label !== 'Age in months' && !__DEV__)) {
+    if ((question.display_format === displayFormats.formula && !__DEV__) || questionNotDisplayed.includes(question.id)) {
       return null;
     }
 

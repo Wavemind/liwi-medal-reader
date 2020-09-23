@@ -21,4 +21,16 @@ export const styles = StyleSheet.create({
     height: 60,
   },
   textButton: { color: liwiColors.blackLightColor },
+
+  warningBloc: {
+    backgroundColor: liwiColors.orangeColor,
+    borderRadius: 3,
+    padding: 15,
+    elevation: 1,
+    marginLeft: 10,
+    marginRight: 10,
+    borderColor: liwiColors.lightGreyColor,
+    marginBottom: 10,
+    marginTop: -20,
+  },
 });

@@ -33,6 +33,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       counter = 0,
       diagnostics_related_to_cc = [],
       dd = [],
+      df = [],
       display_format = '',
       is_mandatory = '',
       qs = [],
@@ -75,6 +76,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
     this.counter = counter;
     this.diagnostics_related_to_cc = diagnostics_related_to_cc;
     this.dd = dd;
+    this.df = df;
     this.display_format = display_format;
     this.is_mandatory = is_mandatory;
     this.qs = qs;
