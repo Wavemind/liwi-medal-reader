@@ -69,13 +69,12 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
   }
 
   render() {
-    const { t, r, name, initialPage, navigate, isDrawer, _setScrollPosition, refParent } = this.props;
+    const { t, r, name, initialPage, navigate, isDrawer, _setScrollPosition } = this.props;
 
     // Small drawer
     if (!isDrawer) {
       return (
         <WrapperMiniDrawerCategory
-          ref={(button) => (this.button = button)}
           onLayout={({ nativeEvent }) => {
             // Set scrollView Y if active
             if (r.routeName === name) {

@@ -30,7 +30,7 @@ export default class Date extends React.Component<Props, State> {
     this.state = {
       pickerDay,
       pickerMonth,
-      yearValue: yearQuestion.value,
+      yearValue: yearQuestion.value === null ? '' : yearQuestion.value,
     };
   }
 
@@ -153,7 +153,7 @@ export default class Date extends React.Component<Props, State> {
 
     const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id];
     const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id];
-    console.log('Je rentre ici ');
+
     return (
       <View>
         <Picker mode="dropdown" style={styles.picker} selectedValue={String(dayQuestion.answer)} onValueChange={(value) => this.onValueChange(dayQuestion.id, value)} enable={isReadOnly}>

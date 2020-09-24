@@ -15,7 +15,7 @@ export default class Comment extends React.Component<Props, State> {
 
     this.state = {
       comment: props.comment,
-      isEditting: false,
+      isEditing: false,
     };
   }
 
@@ -24,7 +24,7 @@ export default class Comment extends React.Component<Props, State> {
    */
   save = () => {
     this.setState({
-      isEditting: false,
+      isEditing: false,
     });
 
     this.saveCommentInMedicalCase();
@@ -48,11 +48,11 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   render() {
-    const { comment, isEditting } = this.state;
+    const { comment, isEditing } = this.state;
 
     return (
       <View>
-        {isEditting ? (
+        {isEditing ? (
           <View>
             <Button style={styles.alignRight} onPress={this.save}>
               <Text>{i18n.t('comment:save')}</Text>
@@ -61,7 +61,7 @@ export default class Comment extends React.Component<Props, State> {
           </View>
         ) : (
           <View>
-            <Button style={styles.alignRight} onPress={() => this.setState({ isEditting: true })}>
+            <Button style={styles.alignRight} onPress={() => this.setState({ isEditing: true })}>
               <Text>{i18n.t('comment:edit')}</Text>
             </Button>
             <Textarea rowSpan={24} value={comment} onChange={this.handleComment} disabled style={styles.disabledTextArea} />

@@ -136,8 +136,8 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                     const node = nodes[management.id];
                     if (calculateCondition(management) === true) {
                       return (
-                        <View style={styles.drugContainer}>
-                          <Text key={`${managementKey}-management`}>{node.label}</Text>
+                        <View style={styles.drugContainer} key={`${managementKey}_management`}>
+                          <Text>{node.label}</Text>
                           <View style={styles.tooltipButton}>
                             <View flex>
                               <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(node)}>
