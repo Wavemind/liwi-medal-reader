@@ -30,8 +30,21 @@ export default class Date extends React.Component<Props, State> {
     this.state = {
       pickerDay,
       pickerMonth,
-      yearValue: yearQuestion.value,
+      yearValue: yearQuestion.value === null ? '' : yearQuestion.value,
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { yearValue } = this.state;
+    const { medicalCase } = this.props;
+
+    const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id].answer;
+    const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id].answer;
+
+    const nextPropsDayQuestion = nextProps.medicalCase.nodes[nextProps.medicalCase.config.basic_questions.birth_date_day_id].answer;
+    const nextPropsMonthQuestion = nextProps.medicalCase.nodes[nextProps.medicalCase.config.basic_questions.birth_date_month_id].answer;
+
+    return yearValue !== nextState.yearValue || dayQuestion !== nextPropsDayQuestion || monthQuestion !== nextPropsMonthQuestion;
   }
 
   /**
@@ -64,7 +77,7 @@ export default class Date extends React.Component<Props, State> {
    * Set birth date in medical case
    */
   setBirthDate = () => {
-    const { medicalCase, setAnswer, setPatientValue, patientValueEdit, } = this.props;
+    const { medicalCase, setAnswer, setPatientValue, patientValueEdit } = this.props;
 
     const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id];
     const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id];
@@ -158,7 +171,7 @@ export default class Date extends React.Component<Props, State> {
           placeholder={I18n.t('patient:year')}
           yearQuestion
           numeric
-          value={yearValue}
+          value={String(yearValue)}
           style={styles.inputStyle}
           onChange={this.onChange}
           onEndEditing={this.onEndEditing}

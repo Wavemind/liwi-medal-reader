@@ -32,10 +32,6 @@ export default class UnLockSession extends React.Component<Props, State> {
     });
   };
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
   /**
    * Get the pin code from screen
    * Redirect to userSelection if not opened
@@ -62,17 +58,16 @@ export default class UnLockSession extends React.Component<Props, State> {
       await app.set('database', database);
 
       if (app.user === null) {
+        this.setState({ status: 'success', loading: false });
         NavigationService.navigate('UserSelection');
       } else {
+        this.setState({ status: 'success', loading: false });
         app.set('logged', true);
         NavigationService.navigate('App');
       }
-
-      this.setState({ status: 'success' });
     } else {
-      this.setState({ status: 'failure' });
+      this.setState({ status: 'failure', loading: false });
     }
-    this.setState({ loading: false });
   };
 
   render() {

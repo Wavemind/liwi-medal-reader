@@ -10,9 +10,6 @@ import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 import { modalType } from '../../../frontend_service/constants';
 
-import { store } from '../../../frontend_service/store';
-import { clearMedicalCase } from '../../../frontend_service/actions/creators.actions';
-
 type Props = NavigationScreenProps & {};
 type State = {};
 
@@ -42,7 +39,6 @@ export default class Home extends React.Component<Props, State> {
         }
       });
     }
-    store.dispatch(clearMedicalCase());
     this.setState({ session, medicalCases });
   }
 
