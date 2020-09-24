@@ -64,7 +64,7 @@ export default class Date extends React.Component<Props, State> {
    * Set birth date in medical case
    */
   setBirthDate = () => {
-    const { medicalCase, setAnswer, setPatientValue, patientValueEdit, } = this.props;
+    const { medicalCase, setAnswer, setPatientValue, patientValueEdit } = this.props;
 
     const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id];
     const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id];
