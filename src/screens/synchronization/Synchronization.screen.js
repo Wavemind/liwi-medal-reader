@@ -1,19 +1,20 @@
 // @flow
 
 import * as React from 'react';
-import { DocumentDirectoryPath, writeFile, mkdir, write } from 'react-native-fs';
-import uuid from 'react-native-uuid';
+import { DocumentDirectoryPath, writeFile, mkdir } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
 import { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
-import LiwiLoader from '../../utils/LiwiLoader';
+import { PermissionsAndroid } from 'react-native';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Synchronization.style';
 import { synchronizeMedicalCases } from '../../../frontend_service/api/Http';
-
+import LiwiLoader from '../../utils/LiwiLoader';
 
 type Props = NavigationScreenProps & {};
 type State = {};
+
+const normalizeFilePath = (path) => (path.startsWith('file://') ? path.slice(7) : path);
 
 export default class Synchronization extends React.Component<Props, State> {
   constructor(props) {
@@ -53,38 +54,48 @@ export default class Synchronization extends React.Component<Props, State> {
   }
 
   /**
+   * Ask user to allow write in external storage
+   * Not used actually
+   * @returns {Promise<*>}
+   * @private
+   */
+  _askWriteStorage = async () => {
+    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+  };
+
+  /**
    * Send medical cases to main data
    * @returns {Promise<void>}
    */
   synchronize = async () => {
-    const { medicalCasesToSynch } = this.state;
-    this.setState({ isLoading: true });
+    const writePermission = await this._askWriteStorage();
 
-    const folder = `${DocumentDirectoryPath}/test`;
-    const targetPath = `${folder}.zip`;
-console.log(folder)
-    // write file
-    await mkdir(folder);
-console.log("j'ai créer le directory")
-    await writeFile(`${folder}/cc.json`, JSON.stringify({id: 11}));
-console.log("J'ai écrit dans le fichier")
-    // medicalCasesToSynch.map(async (medicalCase) => {
-    //   await writeFile(`${folder}/${medicalCase.id}.json`, JSON.stringify(medicalCase));
-    // });
+    if (writePermission) {
+      const { medicalCasesToSynch } = this.state;
+      this.setState({ isLoading: true });
 
-    const path = zip(DocumentDirectoryPath, targetPath)
-      .catch((error) => {
-        console.error(error);
-        this.setState({ isLoading: false});
+      const folder = `${DocumentDirectoryPath}/medicalCases`;
+      const targetPath = `${folder}.zip`;
+
+      // Create directory
+      await mkdir(folder);
+
+      // Generate files
+      medicalCasesToSynch.map(async (medicalCase) => {
+        await writeFile(`${folder}/${medicalCase.id}.json`, JSON.stringify(medicalCase));
       });
 
-    console.log(`zip completed at ${path}`);
-    this.setState({ isLoading: false});
+      // Generate archive
+      const path = await zip(normalizeFilePath(folder), targetPath).catch((error) => {
+        console.error(error);
+        this.setState({ isLoading: false });
+      });
 
-    // const result = await synchronizeMedicalCases(medicalCasesToSynch);
+      const result = await synchronizeMedicalCases(path);
 
-    // Reset medicalCases to sync if request success
-    // this.setState({ isLoading: false, medicalCasesToSynch: result !== null ? [] : medicalCasesToSynch });
+      // Reset medicalCases to sync if request success
+      this.setState({ isLoading: false, medicalCasesToSynch: result !== null ? [] : medicalCasesToSynch });
+    }
   };
 
   render() {

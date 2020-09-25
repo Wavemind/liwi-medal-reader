@@ -70,12 +70,21 @@ export const registerDevice = async () => {
 
 /**
  * Send medical cases to main data
- * @param {Array} medicalCases - All medical cases must be synchronize
+ * @param {Array} medicalCasesArchivePath - path to archive
  * @returns {Promise<string|Array>}
  */
-export const synchronizeMedicalCases = async (medicalCases) => {
+// TODO: MUST BE CHECK WITH MAIN DATA
+export const synchronizeMedicalCases = async (medicalCasesArchivePath) => {
+  const data = new FormData();
+  data.append('name', 'medicalCases.zip');
+  data.append('medicalCases', {
+    uri: medicalCasesArchivePath,
+    type: 'zip/archive',
+    name: 'medicalCases.zip',
+  });
+
   const url = `${hostDataServer}sync_medical_cases`;
-  const header = await _setHeaders('POST', medicalCases);
+  const header = await _setHeaders('POST', data, 'application/zip');
   return _fetch(url, header);
 };
 
@@ -118,14 +127,14 @@ const _fetch = async (url, header) => {
  * @return [Object] header
  * @private
  */
-const _setHeaders = async (method = 'GET', body = false) => {
+const _setHeaders = async (method = 'GET', body = false, contentType = 'application/json') => {
   const credentials = await getItem('session');
 
   const header = {
     method,
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': contentType,
       'access-token': credentials?.access_token,
       'health-facility-token': credentials?.facility?.token,
       client: credentials?.client,
