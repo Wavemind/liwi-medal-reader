@@ -116,7 +116,7 @@ export default class Synchronization extends React.Component<Props, State> {
               {isLoading ? (
                 <LiwiLoader />
               ) : (
-                <Button onPress={this.synchronize}>
+                <Button onPress={this.synchronize} disabled={medicalCasesToSynch.length === 0}>
                   <Text>{t('synchronize:synchronize')}</Text>
                 </Button>
               )}
