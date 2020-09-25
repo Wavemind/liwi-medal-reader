@@ -129,6 +129,11 @@ android {
     }
 
     packagingOptions {
+        pickFirst '**/armeabi-v7a/libc++_shared.so'
+        pickFirst '**/x86/libc++_shared.so'
+        pickFirst '**/x86_64/libc++_shared.so'
+        pickFirst '**/arm64-v8a/libc++_shared.so'
+        pickFirst '**/libjsc.so'
         pickFirst '**/libc++_shared.so'
     }
 
@@ -138,6 +143,7 @@ android {
     }
 
     defaultConfig {
+        ndk { abiFilters "armeabi-v7a", "x86" } // ALAIN:  Maybe we wanna remove this at some point
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
         applicationId "com.liwi_native"
@@ -193,6 +199,7 @@ android {
 }
 
 dependencies {
+    implementation 'org.webkit:android-jsc:+'
     implementation project(':react-native-video')
     implementation project(':react-native-sound')
     implementation project(':react-native-rectangle-scanner')
@@ -228,7 +235,7 @@ dependencies {
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
-        implementation jscFlavor
+        // implementation jscFlavor
     }
 }
 

@@ -69,13 +69,12 @@ export class CategorieButton extends Component<{ t: any, r: any }> {
   }
 
   render() {
-    const { t, r, name, initialPage, navigate, isDrawer, _setScrollPosition, refParent } = this.props;
+    const { t, r, name, initialPage, navigate, isDrawer, _setScrollPosition } = this.props;
 
     // Small drawer
     if (!isDrawer) {
       return (
         <WrapperMiniDrawerCategory
-          ref={(button) => (this.button = button)}
           onLayout={({ nativeEvent }) => {
             // Set scrollView Y if active
             if (r.routeName === name) {
@@ -144,7 +143,7 @@ export class ItemButton extends Component<{ t: any, r: any }> {
     }
 
     return (
-      <TouchableOpacity onPress={() => navigate(name, initialPage)} drawerItemButton transparent style={{padding: 5}}>
+      <TouchableOpacity onPress={() => navigate(name, initialPage)} transparent style={{flexDirection: 'row', padding: 5}}>
         <DrawerDot type={dotType} onPress={() => navigate(name, initialPage)} isDrawer={isDrawer} />
         {isDrawer ? (
           <Text drawerItemText style={r?.params?.initialPage >= initialPage && r.routeName === name ? styles.activeLink : null}>

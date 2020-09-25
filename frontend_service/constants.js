@@ -133,19 +133,21 @@ export const categories = {
 
 // Type of Tool Tip
 export const modalType = {
-  medicalCaseLocked: 'medicalCaseLocked',
-  algorithmVersion: 'algorithmVersion',
-  validation: 'validation',
-  description: 'description',
   about: 'about',
+  algorithmVersion: 'algorithmVersion',
+  consentFile: 'consentFile',
+  description: 'description',
+  medicalCaseLocked: 'medicalCaseLocked',
+  validation: 'validation',
   loading: 'loading',
 };
 
 export const userRoles = {
-  clinician: 'Clinician',
-  registration_desk: 'Registration Desk',
-  triage_nurse: 'Triage Nurse',
-  lab: 'Lab',
+  medical_doctor: 'Medical Doctor (MD)',
+  assistant_medical_officer: 'Assistant Medical Officer (AMO)',
+  clinical_officer: 'Assistant Medical Officer (AMO)',
+  nurse: 'Nurse',
+  midwife: 'Midwife',
   pharmacist: 'Pharmacist',
   guest: 'Guest',
 };

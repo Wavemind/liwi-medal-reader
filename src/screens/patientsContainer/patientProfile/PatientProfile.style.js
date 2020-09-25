@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   item: {
     paddingLeft: 10,
     elevation: 1,
-    borderRadius: 4,
+    borderRadius: 10,
     height: 80,
     marginRight: 2,
     marginLeft: 2,
@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: liwiColors.whiteDark,
+    flexDirection: 'row',
   },
 
   separator: {

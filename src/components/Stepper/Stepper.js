@@ -300,7 +300,7 @@ class Stepper extends React.Component<Props, State> {
 
       displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
       if (endMedicalCase === true) {
-        NavigationService.resetActionStack('Home');
+        NavigationService.navigate('Home');
         store.dispatch(clearMedicalCase());
       } else {
         navigation.navigate({
