@@ -68,8 +68,8 @@ class MedicalCaseReducer extends ReducerClass {
    *
    * @payload type: type of diagnoses ()
    *    proposed: [], // Retaind by algo
-   custom: [], // Add by the input
-   additional: [] // Add even though it's false
+   *    custom: [], // Add by the input
+   *    additional: [] // Add even though it's false
    * @payload diagnoses: Diagnoses
    * @payload actionDiagnoses: Specific action to avoid multiple different action
    */
