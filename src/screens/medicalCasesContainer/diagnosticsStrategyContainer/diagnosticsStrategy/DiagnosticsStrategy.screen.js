@@ -39,7 +39,6 @@ export default class DiagnosesStrategy extends Component<Props, State> {
     }
 
     const selectedPage = navigation.getParam('initialPage');
-
     return (
       <Suspense fallback={<LiwiLoader />}>
         <Stepper

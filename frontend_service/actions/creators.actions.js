@@ -34,13 +34,14 @@ export const setAdditionalMedicineDuration = (id, duration) => ({
   },
 });
 
-export const setMedicine = (type, diagnosesKey, medicineId, boolean) => ({
+export const setMedicine = (finalDiagnosticId, diagnoseKey, medicineId, boolean, healthCareType) => ({
   type: actions.SET_MEDICINE,
   payload: {
-    type,
-    diagnosesKey,
+    finalDiagnosticId,
+    diagnoseKey,
     medicineId,
     boolean,
+    healthCareType,
   },
 });
 

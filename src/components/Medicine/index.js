@@ -11,7 +11,7 @@ const mapStateToProps = (medicalCase, props) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    setMedicine: (type, diagnosesKey, medicineId, boolean) => dispatch(setMedicine(type, diagnosesKey, medicineId, boolean)),
+    setMedicine: (diagnoseKey, finalDiagnosticId, medicineId, boolean, healthCareType) => dispatch(setMedicine(diagnoseKey, finalDiagnosticId, medicineId, boolean, healthCareType)),
   };
 };
 
