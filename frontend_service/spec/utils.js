@@ -151,8 +151,8 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
  * @param finalDiagnosticId
  * @param value
  */
-export const validMedicine = (type, medicineId, finalDiagnosticId, value) => {
-  store.dispatch(setMedicine(type, finalDiagnosticId, medicineId, value));
+export const validMedicine = (type, medicineId, finalDiagnosticId, value, healthCareType) => {
+  store.dispatch(setMedicine(type, finalDiagnosticId, medicineId, value, healthCareType));
 };
 
 /**

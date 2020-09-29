@@ -19,18 +19,9 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     customDiagnoses: '',
   };
 
-  shouldComponentUpdate(nextProps: Props) {
-    const { pageIndex } = this.props;
-
-    if (nextProps.medicalCase.id === undefined) {
-      return false;
-    }
-
-    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
-      return nextProps.selectedPage === pageIndex;
-    }
-
-    return true;
+  shouldComponentUpdate() {
+    const { selectedPage } = this.props;
+    return selectedPage === 0;
   }
 
   /**
@@ -90,7 +81,6 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     const { customDiagnoses } = this.state;
 
     const finalDiagnostics = FinalDiagnosticModel.all();
-
     const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
 
     return (

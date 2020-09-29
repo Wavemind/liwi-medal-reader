@@ -184,37 +184,60 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return top_conditions.map((top) => top.first_node_id);
     };
 
-    /**
-     * Recursive function that calculate the value of all your parents
-     * @param top_conditions - the condition of you 1st level parent
-     * @returns {boolean}
-     */
-    const parentsConditionValue = (top_conditions) => {
-      if (top_conditions.length > 0) {
-        const topConditionResults = top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase));
-        const conditionValueResult = reduce(
-          topConditionResults,
-          (result, value) => {
-            return comparingBooleanOr(result, value);
-          },
-          false
-        );
-        if (conditionValueResult) {
-          return parents(top_conditions).some((parentId) => parentsConditionValue(this.instances[parentId].top_conditions));
-        }
-        return false;
-      }
-      return true;
-    };
-
     Object.keys(this.drugs).forEach((drugId) => {
       const drug = medicalCase.nodes[drugId];
-      if (parentsConditionValue(this.drugs[drugId].top_conditions) && !drug.isExcluded(medicalCase)) {
+      if (this.parentsConditionValue(parents, this.drugs[drugId].top_conditions, medicalCase) && !drug.isExcluded(medicalCase)) {
         drugsAvailable.push(drug);
       }
     });
 
     return drugsAvailable;
+  };
+
+  /**
+   * Return all the managements that must be shown for the current final diagnostic
+   * @param medicalCase
+   * @returns {[]}
+   */
+  getManagements = (medicalCase) => {
+    const managementsAvailable = [];
+    const parents = (top_conditions) => {
+      return top_conditions.map((top) => top.first_node_id);
+    };
+
+    Object.keys(this.managements).forEach((managementId) => {
+      const management = medicalCase.nodes[managementId];
+      if (this.parentsConditionValue(parents, this.managements[managementId].top_conditions, medicalCase) && !management.isExcluded(medicalCase)) {
+        managementsAvailable.push(management);
+      }
+    });
+
+    return managementsAvailable;
+  };
+
+  /**
+   * Recursive function that calculate the value of all your parents
+   * @param parentsTopConditions - method mapping top conditions
+   * @param top_conditions - the condition of you 1st level parent
+   * @param medicalCase - current medical case
+   * @returns {boolean}
+   */
+  parentsConditionValue = (parentsTopConditions, top_conditions, medicalCase) => {
+    if (top_conditions.length > 0) {
+      const topConditionResults = top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase));
+      const conditionValueResult = reduce(
+        topConditionResults,
+        (result, value) => {
+          return comparingBooleanOr(result, value);
+        },
+        false
+      );
+      if (conditionValueResult) {
+        return parentsTopConditions(top_conditions).some((parentId) => this.parentsConditionValue(parentsTopConditions, this.instances[parentId].top_conditions, medicalCase));
+      }
+      return false;
+    }
+    return true;
   };
 
   /**
