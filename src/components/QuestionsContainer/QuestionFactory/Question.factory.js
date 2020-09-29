@@ -18,8 +18,8 @@ type State = {};
 
 export default class Question extends React.Component<Props, State> {
   state: {
-    flexLabel: 0.6,
-    flexQuestion: 0.3,
+    flexLabel: 0.4,
+    flexQuestion: 0.5,
     flexToolTip: 0.1,
   };
 

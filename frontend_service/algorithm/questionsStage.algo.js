@@ -43,12 +43,7 @@ export const questionsMedicalHistory = () => {
         by: 'category',
         operator: 'equal',
         value: categories.vaccine,
-      },
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.vitalSignAnthropometric,
-      },
+      }
     ],
     diagnostics,
     'OR',
@@ -56,29 +51,14 @@ export const questionsMedicalHistory = () => {
     true
   );
 
-  const vitalSignsQuestions = state$.nodes.filterBy(
-    [
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.vitalSignAnthropometric,
-      },
-    ],
-    diagnostics,
-    'OR',
-    'array',
-    false
-  );
-
-  const questions = medicalHistoryQuestions.concat(vitalSignsQuestions);
-  const newQuestions = questions.map(({ id }) => id);
+  const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
 
   // Update state$ medical history questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.consultation.medicalHistory, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
   }
 
-  return sortQuestions(questions);
+  return sortQuestions(medicalHistoryQuestions);
 };
 
 /**
@@ -101,7 +81,21 @@ const sortQuestions = (questions) => {
 export const questionsPhysicalExam = () => {
   const state$ = store.getState();
   const { diagnostics } = state$;
-  const questions = state$.nodes.filterBy(
+  const vitalSignQuestions = state$.nodes.filterBy(
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.vitalSignAnthropometric,
+      },
+    ],
+    diagnostics,
+    'OR',
+    'array',
+    false
+  );
+
+  const physicalExamQuestions = state$.nodes.filterBy(
     [
       {
         by: 'category',
@@ -115,6 +109,7 @@ export const questionsPhysicalExam = () => {
     true
   );
 
+  const questions = vitalSignQuestions.concat(physicalExamQuestions);
   const newQuestions = questions.map(({ id }) => id);
 
   // Update state$ physical exam questions if it's different from new questions list

@@ -101,7 +101,7 @@ export const systems = {
   nervous: 'Nervous system',
   urinary_reproductive: 'Urinary and reproductive system',
   visual: 'Visual system',
-  vital_signs: 'Vital Signs',
+  vital_sign: 'Vital Signs',
   null: 'General',
 };
 
