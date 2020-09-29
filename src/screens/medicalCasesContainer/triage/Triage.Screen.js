@@ -20,7 +20,7 @@ type State = StateApplicationContext & {};
 export default class Triage extends React.Component<Props, State> {
   state = {
     widthView: 0,
-    complaintCategories: questionsComplaintCategory()
+    complaintCategories: questionsComplaintCategory(),
   };
 
   componentDidMount() {

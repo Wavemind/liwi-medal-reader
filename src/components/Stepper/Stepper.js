@@ -99,8 +99,6 @@ class Stepper extends React.Component<Props, State> {
   static defaultProps = {
     initialPage: 0,
     nextStage: null,
-    activeStepColor: 'brown',
-    inactiveStepColor: 'grey',
     paramsNextStage: { initialPage: 0 },
     stepNumberStyle: {
       color: 'white'
@@ -256,7 +254,7 @@ class Stepper extends React.Component<Props, State> {
   renderChildren = () => {
     const { children, childrenStyle } = this.props;
 
-    return React.Children.map(children, (child: Object, index: number) => {
+    return React.Children.map(children, (child, index) => {
       return (
         <View key={`child-${index}`}
               style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
