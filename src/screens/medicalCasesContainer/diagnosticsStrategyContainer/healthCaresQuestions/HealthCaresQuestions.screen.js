@@ -10,13 +10,9 @@ type State = {};
 // Because a function component is causing error from wrappers
 // eslint-disable-next-line react/prefer-stateless-function
 export default class HealthCaresQuestions extends Component<Props, State> {
-  shouldComponentUpdate(nextProps, nextState) {
-    const { pageIndex } = this.props;
-
-    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
-      return nextProps.selectedPage === pageIndex;
-    }
-    return true;
+  shouldComponentUpdate() {
+    const { selectedPage } = this.props;
+    return selectedPage === 1;
   }
 
   render() {
@@ -26,7 +22,6 @@ export default class HealthCaresQuestions extends Component<Props, State> {
     } = this.props;
 
     const questions = medicalCase.nodes.getHealthCaresQuestions(medicalCase);
-
     return (
       <View>
         {Object.keys(questions).length > 0 ? (

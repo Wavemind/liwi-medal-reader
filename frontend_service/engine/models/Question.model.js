@@ -3,7 +3,6 @@
 import moment from 'moment';
 import { NodeModel } from './Node.model';
 import { valueFormats, references } from '../../constants';
-import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
 
 interface QuestionInterface {
