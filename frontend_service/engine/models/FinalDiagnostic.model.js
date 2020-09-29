@@ -4,7 +4,6 @@ import find from 'lodash/find';
 import * as _ from 'lodash';
 import reduce from 'lodash/reduce';
 import { NodeModel } from './Node.model';
-import { RequirementNodeModel } from './RequirementNodeModel';
 import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 import { nodeTypes } from '../../constants';
@@ -16,20 +15,18 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
   constructor(props) {
     super(props);
 
-    const { label, diagnostic_id, drugs, managements, conditions, top_conditions, excluding_final_diagnostics = [], excluded_final_diagnostics = [], cc, instances = [], description = '' } = props;
+    const { label, diagnostic_id, drugs, managements, top_conditions, excluding_final_diagnostics = [], excluded_final_diagnostics = [], cc, instances = [], description = '' } = props;
 
     this.label = label;
     this.description = description;
     this.diagnostic_id = diagnostic_id;
     this.drugs = drugs;
     this.managements = managements;
-    this.conditions = conditions;
     this.top_conditions = top_conditions;
     this.excluding_final_diagnostics = excluding_final_diagnostics;
     this.excluded_final_diagnostics = excluded_final_diagnostics;
     this.cc = cc;
     this.instances = instances;
-    this.requirement = new RequirementNodeModel({ ...props });
 
     Object.keys(instances).forEach((id) => {
       this.instances[id] = new InstanceModel({ ...instances[id] });

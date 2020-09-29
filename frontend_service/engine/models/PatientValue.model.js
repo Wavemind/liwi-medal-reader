@@ -8,7 +8,7 @@ import { store } from '../../store';
 export class PatientValueModel {
   constructor(props) {
     if (props !== undefined) {
-      const { id , patient_id, node_id, answer_id, value, fail_safe = false } = props;
+      const { id, patient_id, node_id, answer_id, value, fail_safe = false } = props;
       this.id = id;
       this.patient_id = patient_id;
       this.node_id = node_id;
