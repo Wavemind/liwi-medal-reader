@@ -145,7 +145,7 @@ export const modalType = {
 export const userRoles = {
   medical_doctor: 'Medical Doctor (MD)',
   assistant_medical_officer: 'Assistant Medical Officer (AMO)',
-  clinical_officer: 'Assistant Medical Officer (AMO)',
+  clinical_officer: 'Clinical Officer',
   nurse: 'Nurse',
   midwife: 'Midwife',
   pharmacist: 'Pharmacist',
