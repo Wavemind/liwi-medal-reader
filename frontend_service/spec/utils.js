@@ -169,7 +169,7 @@ export const drugRetained = (drugId) => {
   let drugs = [];
 
   Object.keys(finalDiagnostics).forEach((key) => {
-    drugs = drugs.concat(state$.nodes[key].getDrugs());
+    drugs = drugs.concat(state$.nodes[key].getDrugs(state$));
   });
   return drugs.some((drug) => drug.id === drugId);
 };
