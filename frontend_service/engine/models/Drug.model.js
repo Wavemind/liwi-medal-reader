@@ -43,6 +43,7 @@ export class DrugModel extends HealthCaresModel {
     this.is_antibiotic = is_antibiotic;
     this.excluded_nodes_ids = excluded_nodes_ids;
     this.excluding_nodes_ids = excluding_nodes_ids;
+    this.healthCareObject = 'drugs';
   }
 
   /**
@@ -160,24 +161,6 @@ export class DrugModel extends HealthCaresModel {
       }
     }
     return { doseResult: null, ...formulation };
-  };
-
-  /**
-   * Check if a drug is excluded by an another
-   * @param medicalCase
-   * @returns {Array<boolean>}
-   */
-  isExcluded = (medicalCase) => {
-    const finalDiagnostics = FinalDiagnosticModel.getAgreedObject(medicalCase);
-    return Object.keys(finalDiagnostics)
-      .map((index) => {
-        const finalDiagnostic = finalDiagnostics[index];
-        return Object.keys(finalDiagnostic.drugs).some((drugId) => {
-          const drug = finalDiagnostic.drugs[drugId];
-          return this.excluded_nodes_ids.includes(parseInt(drugId)) && drug.agreed === true;
-        });
-      })
-      .some((drug) => drug);
   };
 
   /**
