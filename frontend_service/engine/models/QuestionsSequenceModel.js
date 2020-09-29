@@ -3,11 +3,9 @@ import filter from 'lodash/filter';
 import find from 'lodash/find';
 import { NodeModel } from './Node.model';
 
-import { RequirementNodeModel } from './RequirementNodeModel';
 import { InstanceModel } from './Instance.model';
 import { valueFormats } from '../../constants';
 import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
-import { store } from '../../store';
 
 interface QuestionsSequenceInterface {
   answer: string;
@@ -31,7 +29,6 @@ export class QuestionsSequenceModel extends NodeModel implements QuestionsSequen
       dd = [],
       qs = [],
       df = [],
-      conditions = {},
       instances = {},
       top_conditions = {},
       category = '',
@@ -46,14 +43,12 @@ export class QuestionsSequenceModel extends NodeModel implements QuestionsSequen
     this.dd = dd;
     this.qs = qs;
     this.df = df;
-    this.conditions = conditions;
     this.top_conditions = top_conditions;
     this.instances = instances;
     this.category = category;
     this.value_format = value_format;
     this.min_score = min_score;
 
-    this.requirement = new RequirementNodeModel({ ...props });
     this.instanceLink();
   }
 
