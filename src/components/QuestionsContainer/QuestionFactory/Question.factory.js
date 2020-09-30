@@ -5,7 +5,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
 
-import { displayFormats, nodeTypes, modalType } from '../../../../frontend_service/constants';
+import { displayFormats, modalType } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
@@ -26,14 +26,14 @@ export default class Question extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    let flexLabel = 0.6;
-    let flexQuestion = 0.3;
+    let flexLabel = 0.5;
+    let flexQuestion = 0.4;
     let flexToolTip = 0.1;
 
     // Change flex for small screen
     if (screenWidth < screensScale.s) {
-      flexLabel = 0.5;
-      flexQuestion = 0.4;
+      flexLabel = 0.4;
+      flexQuestion = 0.5;
       flexToolTip = 0.1;
     }
 
@@ -97,7 +97,7 @@ export default class Question extends React.Component<Props, State> {
   render() {
     const {
       question,
-      app: { t, algorithm },
+      app: { t },
     } = this.props;
     const { flexQuestion, flexToolTip } = this.state;
 
@@ -118,7 +118,7 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if ((question.display_format === displayFormats.formula && !__DEV__)) {
+    if (question.display_format === displayFormats.formula && !__DEV__) {
       return null;
     }
 
