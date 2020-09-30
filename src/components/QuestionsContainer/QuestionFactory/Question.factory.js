@@ -103,12 +103,6 @@ export default class Question extends React.Component<Props, State> {
 
     let WrapperUnavailable = () => null;
     let unavailableAnswer = null;
-    const questionNotDisplayed = [];
-
-    // Don't display day/month/year questions
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_day_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_month_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_year_id);
 
     unavailableAnswer = _.find(question.answers, (a) => a.value === 'not_available');
 
@@ -124,7 +118,7 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if ((question.display_format === displayFormats.formula && !__DEV__) || questionNotDisplayed.includes(question.id)) {
+    if ((question.display_format === displayFormats.formula && !__DEV__)) {
       return null;
     }
 

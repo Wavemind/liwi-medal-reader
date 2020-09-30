@@ -138,16 +138,9 @@ export default class PatientProfile extends React.Component {
     } = this.props;
     const { patient, firstRender, nodes, columns } = this.state;
 
-    const questionNotDisplayed = [];
-
     if (firstRender) {
       return <LiwiLoader />;
     }
-
-    // Don't display day/month/year questions
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_day_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_month_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_year_id);
 
     return (
       <View style={styles.container}>
@@ -156,18 +149,16 @@ export default class PatientProfile extends React.Component {
             <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
             <ScrollView>
               <View style={styles.patientValuesContent}>
-                {patient.patientValues.map((patientValue) =>
-                  questionNotDisplayed.includes(patientValue.node_id) ? null : (
-                    <View key={patientValue.node_id} style={styles.wrapper}>
-                      <Text size-auto style={styles.identifierText}>
-                        {nodes[patientValue.node_id].label}
-                      </Text>
-                      <Text size-auto style={styles.patientValues}>
-                        {patient.getLabelFromNode(patientValue.node_id, nodes)}
-                      </Text>
-                    </View>
-                  )
-                )}
+                {patient.patientValues.map((patientValue) => (
+                  <View key={patientValue.node_id} style={styles.wrapper}>
+                    <Text size-auto style={styles.identifierText}>
+                      {nodes[patientValue.node_id].label}
+                    </Text>
+                    <Text size-auto style={styles.patientValues}>
+                      {patient.getLabelFromNode(patientValue.node_id, nodes)}
+                    </Text>
+                  </View>
+                ))}
               </View>
             </ScrollView>
           </View>
