@@ -34,7 +34,7 @@ export default class Date extends React.Component<Props, State> {
 
     _.range(1, 32).map((day) => pickerDay.push(<Picker.Item key={`${day}_day_picker`} label={String(day)} value={String(day)} />));
     _.range(1, 13).map((month) => pickerMonth.push(<Picker.Item key={`${month}_month_picker`} label={String(month)} value={String(month)} />));
-    _.range(moment().year() - 18, moment().year()).map((year) => pickerYear.push(<Picker.Item key={`${year}_year_picker`} label={String(year)} value={String(year)} />));
+    _.range(moment().year() - 18, moment().year() + 1).map((year) => pickerYear.push(<Picker.Item key={`${year}_year_picker`} label={String(year)} value={String(year)} />));
 
     this.state = {
       pickerDay,
