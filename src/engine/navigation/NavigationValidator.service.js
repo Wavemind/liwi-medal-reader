@@ -51,7 +51,13 @@ const screens = [
   {
     key: 'DiagnosticsStrategy',
     medicalCaseOrder: 4,
-    validations: {},
+    validations: {
+      finalDiagnosticsList: { is_mandatory: true, initialPage: 0 },
+      healthCaresQuestions: { is_mandatory: true, initialPage: 1 },
+      medicines: { initialPage: 2 },
+      medicinesFormulations: { initialPage: 3 },
+      healthCares: { initialPage: 4 },
+    },
   },
 ];
 
