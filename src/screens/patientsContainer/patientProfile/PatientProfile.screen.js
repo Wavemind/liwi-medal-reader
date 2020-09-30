@@ -173,7 +173,6 @@ export default class PatientProfile extends React.Component {
           </View>
           <Button
             block
-            disabled
             style={styles.marginBottom}
             onPress={() => {
               navigation.navigate('PatientEdit', {

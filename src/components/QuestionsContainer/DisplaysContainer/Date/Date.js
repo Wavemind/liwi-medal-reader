@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Input, Picker, View } from 'native-base';
+import { Picker, View } from 'native-base';
 import type { NavigationScreenProps } from 'react-navigation';
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -44,6 +44,11 @@ export default class Date extends React.Component<Props, State> {
       monthValue,
       yearValue,
     };
+
+    // Due to possible change in patient value. Force update to calculate background_calculation like age in days
+    if (question.value !== null) {
+      this.setBirthDate();
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
