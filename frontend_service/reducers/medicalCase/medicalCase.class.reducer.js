@@ -68,8 +68,8 @@ class MedicalCaseReducer extends ReducerClass {
    *
    * @payload type: type of diagnoses ()
    *    proposed: [], // Retaind by algo
-   custom: [], // Add by the input
-   additional: [] // Add even though it's false
+   *    custom: [], // Add by the input
+   *    additional: [] // Add even though it's false
    * @payload diagnoses: Diagnoses
    * @payload actionDiagnoses: Specific action to avoid multiple different action
    */
@@ -276,7 +276,7 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.SET_MEDICINE)
   setMedicine(state, action) {
-    const { type, diagnosesKey, medicineId, boolean } = action.payload;
+    const { finalDiagnosticId, diagnoseKey, medicineId, boolean, healthCareType } = action.payload;
 
     let newAdditionalDrugs = state.diagnoses.additionalDrugs;
     if (state.diagnoses.additionalDrugs[medicineId] !== undefined) {
@@ -290,14 +290,14 @@ class MedicalCaseReducer extends ReducerClass {
       diagnoses: {
         ...state.diagnoses,
         additionalDrugs: { ...newAdditionalDrugs },
-        [type]: {
-          ...state.diagnoses[type],
-          [diagnosesKey]: {
-            ...state.diagnoses[type][diagnosesKey],
-            drugs: {
-              ...state.diagnoses[type][diagnosesKey].drugs,
+        [finalDiagnosticId]: {
+          ...state.diagnoses[finalDiagnosticId],
+          [diagnoseKey]: {
+            ...state.diagnoses[finalDiagnosticId][diagnoseKey],
+            [healthCareType]: {
+              ...state.diagnoses[finalDiagnosticId][diagnoseKey][healthCareType],
               [medicineId]: {
-                ...state.diagnoses[type][diagnosesKey].drugs[medicineId],
+                ...state.diagnoses[finalDiagnosticId][diagnoseKey][healthCareType][medicineId],
                 agreed: boolean,
               },
             },

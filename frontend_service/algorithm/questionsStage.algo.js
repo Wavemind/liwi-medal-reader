@@ -43,12 +43,7 @@ export const questionsMedicalHistory = () => {
         by: 'category',
         operator: 'equal',
         value: categories.vaccine,
-      },
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.vitalSignAnthropometric,
-      },
+      }
     ],
     diagnostics,
     'OR',
@@ -56,29 +51,14 @@ export const questionsMedicalHistory = () => {
     true
   );
 
-  const vitalSignsQuestions = state$.nodes.filterBy(
-    [
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.vitalSignAnthropometric,
-      },
-    ],
-    diagnostics,
-    'OR',
-    'array',
-    false
-  );
-
-  const questions = medicalHistoryQuestions.concat(vitalSignsQuestions);
-  const newQuestions = questions.map(({ id }) => id);
+  const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
 
   // Update state$ medical history questions if it's different from new questions list
   if (!_.isEqual(state$.metaData.consultation.medicalHistory, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
   }
 
-  return sortQuestions(questions);
+  return sortQuestions(medicalHistoryQuestions);
 };
 
 /**
@@ -101,7 +81,21 @@ const sortQuestions = (questions) => {
 export const questionsPhysicalExam = () => {
   const state$ = store.getState();
   const { diagnostics } = state$;
-  const questions = state$.nodes.filterBy(
+  const vitalSignQuestions = state$.nodes.filterBy(
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.vitalSignAnthropometric,
+      },
+    ],
+    diagnostics,
+    'OR',
+    'array',
+    false
+  );
+
+  const physicalExamQuestions = state$.nodes.filterBy(
     [
       {
         by: 'category',
@@ -115,6 +109,7 @@ export const questionsPhysicalExam = () => {
     true
   );
 
+  const questions = vitalSignQuestions.concat(physicalExamQuestions);
   const newQuestions = questions.map(({ id }) => id);
 
   // Update state$ physical exam questions if it's different from new questions list
@@ -277,70 +272,4 @@ export const titleManagementCounseling = () => {
   });
 
   return isPossible;
-};
-
-/**
- * Get drugs from 3 objects and return one object (manual merging)
- * Object from :
- * - Proposed
- * - Additional
- *
- * @return : object list all drugs
- *
- */
-// TODO: Move it in final diagnostic models
-export const getDrugs = (diagnoses = null) => {
-  let currentDiagnoses;
-  let currentAdditionalDrugs;
-
-  if (diagnoses === null) {
-    const state$ = store.getState();
-    currentDiagnoses = state$.diagnoses;
-    currentAdditionalDrugs = state$.diagnoses.additionalDrugs;
-  } else {
-    currentDiagnoses = diagnoses;
-    currentAdditionalDrugs = diagnoses.additionalDrugs;
-  }
-
-  const drugs = {};
-
-  const doubleString = ['proposed', 'additional'];
-
-  doubleString.forEach((iteration) => {
-    Object.keys(currentDiagnoses[iteration]).forEach((diagnoseId) => {
-      // If diagnoses selected or additional (auto selected)
-      if (currentDiagnoses[iteration][diagnoseId].agreed === true || iteration === 'additional') {
-        // Iterate over drugs
-        Object.keys(currentDiagnoses[iteration][diagnoseId].drugs).forEach((drugId) => {
-          if (currentDiagnoses[iteration][diagnoseId].drugs[drugId].agreed === true && calculateCondition(currentDiagnoses[iteration][diagnoseId].drugs[drugId]) === true) {
-            if (drugs[drugId] === undefined) {
-              // New one so add it
-              drugs[drugId] = currentDiagnoses[iteration][diagnoseId]?.drugs[drugId];
-              drugs[drugId].diagnoses = [{ id: diagnoseId, type: iteration }];
-            } else {
-              // Already exist, manage it
-              drugs[drugId].diagnoses.push({ id: diagnoseId, type: iteration });
-              if (currentDiagnoses[iteration][diagnoseId]?.drugs[drugId].duration > drugs[drugId].duration) {
-                drugs[drugId].duration = currentDiagnoses[iteration][diagnoseId]?.drugs[drugId].duration;
-              }
-            }
-          }
-        });
-      }
-    });
-  });
-
-  // Iterate over manually added drugs
-  Object.keys(currentAdditionalDrugs).forEach((ky) => {
-    if (drugs[ky] === undefined) {
-      // New one so add it
-      drugs[ky] = currentAdditionalDrugs[ky];
-      drugs[ky].diagnoses = [null];
-    } else {
-      // Already exist, manage it
-      drugs[ky].diagnoses.push(null);
-    }
-  });
-
-  return drugs;
 };

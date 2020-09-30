@@ -1,8 +1,7 @@
 // @flow
 /* eslint-disable no-case-declarations */
 import { NodeModel } from './Node.model';
-import { nodeTypes } from '../../constants';
-import { store } from '../../store';
+import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 
 interface HealthCaresInterface { }
 
@@ -18,41 +17,24 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
 
     this.description = description;
     this.label = label;
+    this.healthCareObject = 'healthCares';
   }
 
   /**
-   *  Get questions related to a healthcare
-   *
-   *  @params [Object] instanceHealthcare: the instance from a final Diagnostic (management or treatment)
-   *  @return [Object] questions
+   * Check if a healthCare is excluded by an another
+   * @param medicalCase
+   * @returns {Array<boolean>}
    */
-  getQuestions(instanceHealthcare) {
-    const state$ = store.getState();
-    const questions = {};
-    instanceHealthcare.top_conditions.map((tp) => {
-      const node = state$.nodes[tp.first_node_id];
-      if (node.type === nodeTypes.questionsSequence) {
-        this.getQuestionsInQs(state$, questions, node);
-      } else {
-        questions[tp.first_node_id] = node;
-      }
-    });
-    return questions;
-  }
-
-  /**
-  * Recursive call to get question in QS from QS
-  *
-  * @params [Object] state$, [Object] questions, [Object] node: the node we want questions
-  * @return nothing : Immutability
-  */
-  getQuestionsInQs = (state$, questions, node) => {
-    Object.keys(node.instances).map((id) => {
-      if (state$.nodes[id].type === nodeTypes.questionsSequence) {
-        this.getQuestionsInQs(state$, questions, state$.nodes[id]);
-      } else {
-        questions[id] = state$.nodes[id];
-      }
-    });
+  isExcluded = (medicalCase) => {
+    const finalDiagnostics = FinalDiagnosticModel.getAgreedObject(medicalCase);
+    return Object.keys(finalDiagnostics)
+      .map((index) => {
+        const finalDiagnostic = finalDiagnostics[index];
+        return Object.keys(finalDiagnostic[this.healthCareObject]).some((healthCareId) => {
+          const healthCare = finalDiagnostic[this.healthCareObject][healthCareId];
+          return this.excluded_nodes_ids.includes(parseInt(healthCareId)) && healthCare.agreed === true;
+        });
+      })
+      .some((management) => management);
   };
 }

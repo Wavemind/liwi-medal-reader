@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { combineEpics, ofType } from 'redux-observable';
 import find from 'lodash/find';
-import { of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import moment from 'moment';
+import { EMPTY, of } from 'rxjs';
 import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
@@ -277,22 +277,26 @@ export const epicSetDiagnoses = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_DIAGNOSES, actions.SET_ANSWER),
     mergeMap((action) => {
-      const medicalCase = {
-        ...state$.value,
-        nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
-      };
-      const finalDiagnostics = FinalDiagnosticModel.getAgreed(medicalCase);
+      const finalDiagnostics = FinalDiagnosticModel.getAgreed(state$.value);
 
-      finalDiagnostics.forEach((finalDiagnosticId) => {
-        const finalDiagnostic = medicalCase.nodes[finalDiagnosticId];
-        Object.keys(finalDiagnostic.instances).forEach((healthCaresQuestionId) => {
-          const healthCaresQuestion = finalDiagnostic.instances[healthCaresQuestionId];
-          const dfInstance = medicalCase.nodes[healthCaresQuestion.id].df.find((df) => df.id === finalDiagnosticId);
-          dfInstance.conditionValue = healthCaresQuestion.calculateCondition();
+      if (finalDiagnostics.length > 0) {
+        const medicalCase = {
+          ...state$.value,
+          nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
+        };
+
+        finalDiagnostics.forEach((finalDiagnosticId) => {
+          const finalDiagnostic = medicalCase.nodes[finalDiagnosticId];
+          Object.keys(finalDiagnostic.instances).forEach((healthCaresQuestionId) => {
+            const healthCaresQuestion = finalDiagnostic.instances[healthCaresQuestionId];
+            const dfInstance = medicalCase.nodes[healthCaresQuestion.id].df.find((df) => df.id === finalDiagnosticId);
+            dfInstance.conditionValue = healthCaresQuestion.calculateCondition();
+          });
         });
-      });
 
-      return of(setMedicalCase(medicalCase));
+        return of(setMedicalCase(medicalCase));
+      }
+      return EMPTY;
     })
   );
 

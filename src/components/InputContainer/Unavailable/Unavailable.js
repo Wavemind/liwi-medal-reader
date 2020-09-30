@@ -13,6 +13,12 @@ type State = {};
 export default class Unavailable extends React.Component<Props, State> {
   state = {};
 
+  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+    const { question } = this.props;
+
+    return question.answer !== nextProps.question.answer;
+  }
+
   onPress = () => {
     const { setAnswerUnavailable, question, unavailableAnswer } = this.props;
 
@@ -23,12 +29,6 @@ export default class Unavailable extends React.Component<Props, State> {
       setAnswerUnavailable(question.id, null);
     }
   };
-
-  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
-    const { question } = this.props;
-
-    return question.answer !== nextProps.question.answer;
-  }
 
   render() {
     const { question, unavailableAnswer } = this.props;

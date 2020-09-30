@@ -150,9 +150,10 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
  * @param medicineId
  * @param finalDiagnosticId
  * @param value
+ * @params healthCareType
  */
-export const validMedicine = (type, medicineId, finalDiagnosticId, value) => {
-  store.dispatch(setMedicine(type, finalDiagnosticId, medicineId, value));
+export const validMedicine = (type, medicineId, finalDiagnosticId, value, healthCareType) => {
+  store.dispatch(setMedicine(type, finalDiagnosticId, medicineId, value, healthCareType));
 };
 
 /**
@@ -169,7 +170,7 @@ export const drugRetained = (drugId) => {
   let drugs = [];
 
   Object.keys(finalDiagnostics).forEach((key) => {
-    drugs = drugs.concat(state$.nodes[key].getDrugs());
+    drugs = drugs.concat(state$.nodes[key].getDrugs(state$));
   });
   return drugs.some((drug) => drug.id === drugId);
 };
@@ -191,7 +192,7 @@ export const managementRetained = (managementId) => {
     if (finalDiagnostics[key].managements !== undefined && Object.keys(finalDiagnostics[key].managements).length > 0) {
       Object.keys(finalDiagnostics[key].managements).map((managementKey) => {
         const management = finalDiagnostics[key].managements[managementKey];
-        if (calculateCondition(management) === true) {
+        if (calculateCondition(management) === true && !management.isExcluded(state$)) {
           managements.push(management);
         }
       });

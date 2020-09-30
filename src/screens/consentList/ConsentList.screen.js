@@ -1,29 +1,22 @@
 // @flow
 
 import * as React from 'react';
+import { Text, View } from 'native-base';
+
 import { FlatList, TouchableOpacity } from 'react-native';
-import { Button, Text, View, Icon } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
-
-import { getItems } from '../../engine/api/LocalStorage';
-import { styles } from './ListContent.style';
+import { styles } from './ConsentList.style';
 import LiwiLoader from '../../utils/LiwiLoader';
-import { getDeviceInformation } from '../../engine/api/Device';
-import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
+import { modalType } from '../../../frontend_service/constants';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class ListContent extends React.Component<Props, State> {
+export default class ConsentList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       loading: false,
-      columns: props.app.algorithm.mobile_config[props.list],
       nodes: {},
       data: [],
+      columns: props.app.algorithm.mobile_config.patient_list,
       currentPage: 1,
       isLastBatch: false,
       firstLoading: true,
@@ -37,19 +30,8 @@ export default class ListContent extends React.Component<Props, State> {
 
     await this._fetchList();
 
-    const isConnected = await getItems('isConnected');
-    const deviceInfo = await getDeviceInformation();
-
     const { nodes } = algorithm;
-    this.setState({ nodes, firstLoading: false, isConnected, deviceInfo });
-  }
-
-  async componentDidUpdate(nextProps) {
-    const { model, query } = this.props;
-
-    if (nextProps.query !== query || nextProps.app[`filters${model}`] !== this.props.app[`filters${model}`] || this.props.app.isConnected !== nextProps.app.isConnected) {
-      await this._fetchList();
-    }
+    this.setState({ nodes, firstLoading: false });
   }
 
   /**
@@ -59,16 +41,11 @@ export default class ListContent extends React.Component<Props, State> {
   _fetchList = async () => {
     const {
       app: { database },
-      model,
-      query,
     } = this.props;
     const { currentPage, columns } = this.state;
 
-    const filters = this.props.app[`filters${model}`];
-
     this.setState({ loading: true });
-    const options = { query, filters, columns };
-    const data = await database.getAll(model, 1, options);
+    const data = await database.getConsentsFile(currentPage, columns);
 
     this.setState({
       data,
@@ -85,23 +62,15 @@ export default class ListContent extends React.Component<Props, State> {
   _handleLoadMore = () => {
     const {
       app: { database },
-      model,
-      query,
     } = this.props;
     const { data, currentPage, columns } = this.state;
-    const filters = this.props.app[`filters${model}`];
 
     this.setState(
       {
         loading: true,
       },
       async () => {
-        const options = {
-          query,
-          filters,
-          columns,
-        };
-        const newData = await database.getAll(model, currentPage, options);
+        const newData = await database.getConsentsFile(currentPage, columns);
         const isLastBatch = newData.length === 0;
 
         this.setState({
@@ -115,39 +84,29 @@ export default class ListContent extends React.Component<Props, State> {
   };
 
   /**
+   * Display consent file in modal
+   * @param consentFile
+   * @param title
+   */
+  consentModal = (consentFile, title) => {
+    const { updateModalFromRedux } = this.props;
+    updateModalFromRedux({ consentFile, title }, modalType.consentFile);
+  };
+
+  /**
    * Patient rendering
    * @param {object} item
    * @returns {*}
    * @private
    */
   _renderItem = (item) => {
-    const {
-      itemNavigation,
-      model,
-      app: { t, user },
-    } = this.props;
-    const { isConnected, deviceInfo } = this.state;
     return (
-      <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
+      <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={() => this.consentModal(item.consent_file, item.values.join(' - '))}>
         {item.values.map((value, key) => (
           <View style={styles.itemColumn} key={`${item.id}_${key}`}>
             <Text size-auto>{value}</Text>
           </View>
         ))}
-        {model === 'MedicalCase' ? (
-          <>
-            <View style={styles.itemColumn}>
-              <Text size-auto>{t(`medical_case:${item.status}`)}</Text>
-            </View>
-            {isConnected ? (
-              <View style={styles.itemLock}>
-                <Text size-auto right>
-                  {MedicalCaseModel.isLocked(item, deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
-                </Text>
-              </View>
-            ) : null}
-          </>
-        ) : null}
       </TouchableOpacity>
     );
   };
@@ -181,8 +140,6 @@ export default class ListContent extends React.Component<Props, State> {
   render() {
     const {
       app: { t },
-      model,
-      navigation,
     } = this.props;
     const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
@@ -196,14 +153,6 @@ export default class ListContent extends React.Component<Props, State> {
               <Text size-auto>{nodes[column].label}</Text>
             </View>
           ))}
-          {model === 'MedicalCase' ? (
-            <View style={styles.columnLabel}>
-              <Text size-auto>{t('patient_profile:status')}</Text>
-            </View>
-          ) : null}
-          <Button center red style={styles.filterButton} onPress={() => navigation.navigate('Filters', { model })}>
-            <Icon type="FontAwesome" name="filter" />
-          </Button>
         </View>
         {data.length > 0 ? (
           <View padding-auto>

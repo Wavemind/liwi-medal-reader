@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
-import { ListItem, Text, View, Button, Icon } from 'native-base';
-import { FlatList, ScrollView } from 'react-native';
+import { Text, View, Button, Icon } from 'native-base';
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native';
 
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { LiwiTitle2 } from '../../../template/layout';
@@ -16,7 +16,7 @@ export default class PatientProfile extends React.Component {
     patient: {
       medicalCases: [],
     },
-    firstRender: false,
+    firstRender: true,
     deviceInfo: null,
     nodes: {},
     columns: [],
@@ -60,7 +60,7 @@ export default class PatientProfile extends React.Component {
 
     this.setState({
       patient,
-      firstRender: true,
+      firstRender: false,
     });
   }
 
@@ -79,8 +79,9 @@ export default class PatientProfile extends React.Component {
     } = this.props;
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
+
     return (
-      <ListItem
+      <TouchableOpacity
         style={styles.item}
         key={`${medicalCase.id}_list`}
         onPress={async () => {
@@ -103,8 +104,8 @@ export default class PatientProfile extends React.Component {
           }
         }}
       >
-        {medicalCase.values.map((value) => (
-          <View style={{ flex: size }} key={`${medicalCase.id}`}>
+        {medicalCase.values.map((value, index) => (
+          <View style={{ flex: size }} key={`${medicalCase.id}_${index}`}>
             <Text size-auto>{value}</Text>
           </View>
         ))}
@@ -118,7 +119,7 @@ export default class PatientProfile extends React.Component {
             </Text>
           </View>
         ) : null}
-      </ListItem>
+      </TouchableOpacity>
     );
   };
 
@@ -136,9 +137,12 @@ export default class PatientProfile extends React.Component {
       navigation,
     } = this.props;
     const { patient, firstRender, nodes, columns } = this.state;
-    return !firstRender ? (
-      <LiwiLoader />
-    ) : (
+
+    if (firstRender) {
+      return <LiwiLoader />;
+    }
+
+    return (
       <View style={styles.container}>
         <View style={styles.patientValuesContainer}>
           <View padding-auto margin-top style={styles.flex}>

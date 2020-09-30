@@ -5,7 +5,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
 
-import { displayFormats, nodeTypes, modalType } from '../../../../frontend_service/constants';
+import { displayFormats, modalType } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
@@ -18,22 +18,22 @@ type State = {};
 
 export default class Question extends React.Component<Props, State> {
   state: {
-    flexLabel: 0.6,
-    flexQuestion: 0.3,
+    flexLabel: 0.4,
+    flexQuestion: 0.5,
     flexToolTip: 0.1,
   };
 
   constructor(props) {
     super(props);
 
-    let flexLabel = 0.6;
-    let flexQuestion = 0.3;
+    let flexLabel = 0.5;
+    let flexQuestion = 0.4;
     let flexToolTip = 0.1;
 
     // Change flex for small screen
     if (screenWidth < screensScale.s) {
-      flexLabel = 0.5;
-      flexQuestion = 0.4;
+      flexLabel = 0.4;
+      flexQuestion = 0.5;
       flexToolTip = 0.1;
     }
 
@@ -55,9 +55,9 @@ export default class Question extends React.Component<Props, State> {
    * @private
    */
   _displayValidation = () => {
-    const { question } = this.props;
+    const { question, patientValueEdit } = this.props;
 
-    if (question.validationType !== null && question.validationMessage !== null) {
+    if (question.validationType !== null && question.validationMessage !== null && !patientValueEdit) {
       return (
         <View style={question.validationType === 'error' ? styles.errorRow : styles.warningRow}>
           <Text white>{question.validationMessage}</Text>
@@ -100,6 +100,7 @@ export default class Question extends React.Component<Props, State> {
       app: { t },
     } = this.props;
     const { flexQuestion, flexToolTip } = this.state;
+
     let WrapperUnavailable = () => null;
     let unavailableAnswer = null;
 
@@ -117,13 +118,17 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if (question === undefined || question.type !== nodeTypes.question || (question.display_format === displayFormats.formula && question.label !== 'Age in months' && !__DEV__)) {
+    if (question.display_format === displayFormats.formula && !__DEV__) {
       return null;
     }
 
     // Construct generic Component for the question
     return (
-      <ListItem style={[styles.condensed, styles.flexColumn, { backgroundColor: question.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]} noBorder key={`${question.id}_item`}>
+      <ListItem
+        style={[styles.condensed, styles.flexColumn, { backgroundColor: question.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
+        noBorder
+        key={`${question.id}_item`}
+      >
         <View style={styles.flexRow}>
           <View flex={flexToolTip}>
             <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal()}>

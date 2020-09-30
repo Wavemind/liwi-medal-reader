@@ -1,24 +1,21 @@
 // @flow
 import NavigationService from 'engine/navigation/Navigation.service';
-
-import findKey from 'lodash/findKey';
 import React from 'react';
+import findKey from 'lodash/findKey';
 import { categories, valueFormats } from '../../constants';
 import { MedicalCaseModel } from './MedicalCase.model';
 
 interface NodeInterface {
   id: number;
   type: string;
-  reference: string;
   medicalCase: MedicalCaseModel;
 }
 
 export class NodeModel implements NodeInterface {
   constructor(props) {
-    const { id = 0, type = '', reference = '' } = props;
+    const { id = 0, type = '', } = props;
     this.id = id;
     this.type = type;
-    this.reference = reference;
   }
 
   /**

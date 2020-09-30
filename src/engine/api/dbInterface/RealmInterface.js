@@ -72,6 +72,18 @@ export default class RealmInterface {
   };
 
   /**
+   * Fetch patient with consent file
+   * @param { integer } page
+   * @param { array } columns - Columns to fetch values
+   * @returns {Promise<*>}
+   */
+  getConsentsFile = async (page, columns) => {
+    let result = await this._realm().objects('Patient');
+    result = result.sorted('updated_at', 'ASC').slice((page - 1) * elementPerPage, elementPerPage * page);
+    return this._generateConsentList(result, columns);
+  };
+
+  /**
    * Creates an entry of a specific model in the database
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
@@ -87,6 +99,9 @@ export default class RealmInterface {
     this._savePatientValue(model, object);
   };
 
+  /**
+   * Blank method used in httpInterface
+   */
   lockMedicalCase = () => {};
 
   /**
@@ -158,6 +173,10 @@ export default class RealmInterface {
     return this._realm().objects(model).filtered(`${field} = $0`, value);
   };
 
+  /**
+   * Get all closed and not synchronized case
+   * @returns {Promise<Realm.Results<Realm.Object>>}
+   */
   closedAndNotSynchronized = async () => {
     return this._realm().objects('MedicalCase').filtered("status == 'close' && synchronized_at == null");
   };
@@ -197,15 +216,33 @@ export default class RealmInterface {
           id: entry.id,
           values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
         };
-      } else {
-        return {
-          id: entry.id,
-          status: entry.status,
-          clinician: entry.clinician,
-          mac_address: entry.mac_address,
-          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
-        };
       }
+      return {
+        id: entry.id,
+        status: entry.status,
+        clinician: entry.clinician,
+        mac_address: entry.mac_address,
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+      };
+    });
+  };
+
+  /**
+   * Generate an object than contains all the data needed to display consent liste
+   * @param data
+   * @param columns
+   * @returns {Promise<*>}
+   * @private
+   */
+  _generateConsentList = async (data, columns) => {
+    const algorithm = await getItems('algorithm');
+    const { nodes } = algorithm;
+    return data.map((entry) => {
+      return {
+        id: entry.id,
+        consent_file: entry.consent_file,
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+      };
     });
   };
 

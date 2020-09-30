@@ -79,6 +79,6 @@ describe('actions', () => {
     jestSetAnswer(2248, 1160);
 
     expect(drugRetained(1732)).toEqual(true);
-    validMedicine('additional', 1732, 76, true);
+    validMedicine('additional', 1732, 76, true, 'drugs');
   });
 });

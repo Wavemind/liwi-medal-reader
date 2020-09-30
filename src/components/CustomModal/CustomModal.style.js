@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { liwiColors } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 1,
-    width: '95%',
+    width: '94%',
     alignSelf: 'flex-start',
   },
 
@@ -90,4 +90,11 @@ export const styles = StyleSheet.create({
   aboutDescription: { marginBottom: 15, textAlign: 'left', flex: 1 },
 
   center: { textAlign: 'center' },
+
+  documentImage: {
+    flex: 1,
+    width: Dimensions.get('window').width - 20,
+    height: Dimensions.get('window').height / 2,
+    resizeMode: 'contain',
+  },
 });
