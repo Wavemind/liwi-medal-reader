@@ -72,14 +72,14 @@ export default class Date extends React.Component<Props, State> {
     const birthDate = moment(`${month}/${day}/${yearValue}`);
 
     if (patientValueEdit) {
-      if (birthDate !== birthDateQuestion.value && birthDate.isValid()) {
+      if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
         setPatientValue(birthDateQuestion.id, moment(birthDate).format());
-      } else if (birthDateQuestion.value !== null && !birthDate.isValid()) {
+      } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
         setPatientValue(birthDateQuestion.id, null);
       }
     } else if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
       setAnswer(birthDateQuestion.id, moment(birthDate).format());
-    } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate > moment()) {
+    } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
       setAnswer(birthDateQuestion.id, null);
       this.setState({ dayValue: null, monthValue: null, yearValue: null });
     }

@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
     color: liwiColors.whiteColor,
   },
   iconTop: {
-    fontSize: responsiveUi.iconSize(),
+    fontSize: 35,
     color: liwiColors.whiteColor,
   },
   medicalCaseNavigationIcon: {
