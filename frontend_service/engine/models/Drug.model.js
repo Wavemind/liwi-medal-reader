@@ -197,7 +197,7 @@ export class DrugModel extends HealthCaresModel {
           Object.keys(finalDiagnostic.drugs).forEach((drugId) => {
             const diagnoseDrug = finalDiagnostic.drugs[drugId];
             const drug = medicalCase.nodes[drugId];
-            if (diagnoseDrug.agreed === true && calculateCondition(diagnoseDrug) === true && !drug.isExcluded(medicalCase)) {
+            if (diagnoseDrug.agreed === true && calculateCondition(diagnoseDrug, medicalCase) === true && !drug.isExcluded(medicalCase)) {
               if (drugs[drugId] === undefined) {
                 // New one so add it
                 drugs[drugId] = finalDiagnostic?.drugs[drugId];

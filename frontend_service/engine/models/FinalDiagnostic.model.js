@@ -57,7 +57,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
      * Get the condition of the instance link
      * Do not change to this.calculateCondition -> infinite loop
      */
-    const instanceCondition = calculateCondition(instance);
+    const instanceCondition = calculateCondition(instance, medicalCase);
 
     // The condition path is not answered
     // Wait on user
@@ -69,11 +69,13 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     if (instanceCondition === false && instanceConditionValue === false) {
       return false;
     }
+
     // The condition path is not answered
     // Wait on user
     if (instanceCondition === null) {
       return null;
     }
+
     // Remove path other dd
     const childrenWithoutOtherDd = instance.children.filter((id) => {
       if (medicalCase.nodes[id].type === nodeTypes.finalDiagnostic && medicalCase.nodes[id].id !== dd.id) {
@@ -154,7 +156,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const statusOfDD = this.getStatusOfDD(medicalCase, this);
 
     // If this FD can be excluded by other high-priority FD
-    const isExcluded = this.excluded_final_diagnostics.some(
+    const isExcluded = this.excluding_final_diagnostics.some(
       (excludedByFinalDiagnostic) =>
         // Exclude diagnostic if other diagnoses is available and agreed
         medicalCase.nodes[excludedByFinalDiagnostic].calculateCondition(medicalCase) === true &&
@@ -170,7 +172,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     }
     if (statusOfDD === true) {
       const tempDd = { ...this, top_conditions: conditionValueTrue };
-      return calculateCondition(tempDd);
+      return calculateCondition(tempDd, medicalCase);
     }
   };
 

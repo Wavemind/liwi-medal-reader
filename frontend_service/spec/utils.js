@@ -181,10 +181,10 @@ export const drugRetained = (drugId) => {
  * @returns {boolean}
  */
 export const managementRetained = (managementId) => {
-  const state$ = store.getState();
+  const medicalCase = store.getState();
   const finalDiagnostics = {
-    ...state$.diagnoses.proposed,
-    ...state$.diagnoses.additional,
+    ...medicalCase.diagnoses.proposed,
+    ...medicalCase.diagnoses.additional,
   };
   const managements = [];
 
@@ -192,7 +192,7 @@ export const managementRetained = (managementId) => {
     if (finalDiagnostics[key].managements !== undefined && Object.keys(finalDiagnostics[key].managements).length > 0) {
       Object.keys(finalDiagnostics[key].managements).map((managementKey) => {
         const management = finalDiagnostics[key].managements[managementKey];
-        if (calculateCondition(management) === true && !management.isExcluded(state$)) {
+        if (calculateCondition(management, medicalCase) === true && !management.isExcluded(medicalCase)) {
           managements.push(management);
         }
       });

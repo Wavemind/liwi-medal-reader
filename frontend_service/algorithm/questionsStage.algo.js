@@ -247,8 +247,8 @@ export const questionsTests = () => {
  *
  */
 export const titleManagementCounseling = () => {
-  const state$ = store.getState();
-  const { diagnoses } = state$;
+  const medicalCase = store.getState();
+  const { diagnoses } = medicalCase;
 
   if (Object.keys(diagnoses.additional).length === 0 && Object.keys(diagnoses.proposed).length === 0) {
     return false;
@@ -257,17 +257,13 @@ export const titleManagementCounseling = () => {
   let isPossible = false;
   Object.keys(diagnoses.additional).forEach((id) => {
     Object.keys(diagnoses.additional[id].managements).forEach((m) => {
-      if (calculateCondition(diagnoses.additional[id].managements[m]) === true) {
-        isPossible = true;
-      }
+      isPossible = calculateCondition(diagnoses.additional[id].managements[m], medicalCase);
     });
   });
 
   Object.keys(diagnoses.proposed).forEach((id) => {
     Object.keys(diagnoses.proposed[id].managements).forEach((m) => {
-      if (calculateCondition(diagnoses.proposed[id].managements[m]) === true) {
-        isPossible = true;
-      }
+      isPossible = calculateCondition(diagnoses.proposed[id].managements[m], medicalCase);
     });
   });
 
