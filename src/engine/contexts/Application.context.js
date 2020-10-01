@@ -101,17 +101,21 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const session = await getItem('session');
     const ip = session.facility.architecture === 'standalone' ? session.facility.main_data_ip : session.facility.local_data_ip;
 
-    const request = await fetch(ip, 'GET').catch(async (error) => {
-      if (isConnected || firstTime) {
-        await this._setAppStatus(false);
-      }
-    });
+    if (session.facility.architecture !== 'standalone') {
+      const request = await fetch(ip, 'GET').catch(async (error) => {
+        if (isConnected || firstTime) {
+          await this._setAppStatus(false);
+        }
+      });
 
-    if (request !== undefined && !isConnected) {
-      await this._setAppStatus(true);
-      if (session.facility.architecture === 'client_server' && !firstTime) {
-        await this._sendFailSafeData();
+      if (request !== undefined && !isConnected) {
+        await this._setAppStatus(true);
+        if (session.facility.architecture === 'client_server' && !firstTime) {
+          await this._sendFailSafeData();
+        }
       }
+    } else {
+      await this._setAppStatus(false);
     }
   };
 
@@ -192,7 +196,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @returns {Promise<void>}
    */
   logout = async () => {
-    NavigationService.navigate('UnlockSession',{});
+    NavigationService.navigate('UnlockSession', {});
     await setItem('user', null);
     this.setState({
       user: null,
