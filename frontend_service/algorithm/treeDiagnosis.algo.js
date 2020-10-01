@@ -114,7 +114,6 @@ const InstanceChildrenOnQs = (medicalCase, instance, qs, actions, currentNode) =
         updateConditionValue(medicalCase, child.id, qs.id, false, qs.type);
       }
     }
-
     /**
      * If the child is the current QS
      */
@@ -147,7 +146,6 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
    * Initial Var
    */
   const currentNode = medicalCase.nodes[instance.id];
-  const test = find(currentNode.qs, (p) => p.id === qs.id);
   const instanceConditionValue = find(currentNode.qs, (p) => p.id === qs.id).conditionValue;
 
   // If all the conditionValues of the QS are false we set the conditionValues of th node to false
@@ -157,7 +155,7 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
   /**
    * Get the condition of the instance link
    */
-  let instanceCondition = calculateCondition(instance) && qsConditionValue;
+  let instanceCondition = qsConditionValue && calculateCondition(instance, medicalCase);
   if (instanceCondition === null) instanceCondition = false;
 
   /**
@@ -185,14 +183,12 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
    * We process the instance children if
    * The condition is true AND The questions has an answer OR this is a top level node
    */
-
   if ((instanceCondition === true && (currentNode.answer !== null || instance.top_conditions.length === 0)) || isReset) {
     /**
      * From this point we can process all children and go deeper in the tree
      * ProcessChildren return the boolean array of each branch
      */
     const processChildren = InstanceChildrenOnQs(medicalCase, instance, qs, actions, currentNode);
-
     return reduceConditionArrayBoolean(processChildren);
   }
   // The node hasn't the expected answer BUT we are not a the end of the QS
@@ -201,7 +197,7 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
 
 /**
  * 1. Get all nodes without conditons
- * 2. On each node we do work on his children (like change conditon value or check conditon of the child)
+ * 2. On each node we do work on his children (like change condition value or check condition of the child)
  * 3. Update Recursive QS
  *
  * @params state$: All the state of the reducer
@@ -222,7 +218,9 @@ export const getQuestionsSequenceStatus = (medicalCase, qs, actions) => {
     }
   });
 
-  const allNodesAnsweredInQs = topLevelNodes.map((topNode) => recursiveNodeQs(medicalCase, topNode, qs, actions));
+  const allNodesAnsweredInQs = topLevelNodes.map((topNode) => {
+    return recursiveNodeQs(medicalCase, topNode, qs, actions);
+  });
 
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };

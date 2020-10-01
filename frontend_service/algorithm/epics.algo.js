@@ -67,14 +67,18 @@ const computeConditionValue = (medicalCase, diagnosticId, nodeId) => {
  */
 export const updateConditionValue = (medicalCase, nodeId, callerId, value, type) => {
   let caller;
+  let index;
+  let key;
 
   // We get the caller based on type and id
   switch (type) {
     case nodeTypes.diagnostic:
       caller = medicalCase.nodes[nodeId].dd;
+      key = 'dd';
       break;
     case nodeTypes.questionsSequence:
       caller = medicalCase.nodes[nodeId].qs;
+      key = 'qs';
       break;
   }
 
@@ -82,14 +86,14 @@ export const updateConditionValue = (medicalCase, nodeId, callerId, value, type)
 
   // We update only if the condition changes
   if (caller.conditionValue !== value) {
+    index = medicalCase.nodes[nodeId][key].findIndex(d => d.id === callerId);
     // Update counter conditionValue
     if (value === true) {
       medicalCase.nodes[nodeId].counter += 1;
     } else if (value === false) {
       medicalCase.nodes[nodeId].counter -= 1;
     }
-    caller.conditionValue = value;
-
+    medicalCase.nodes[nodeId][key][index].conditionValue = value;
     processUpdatedNode(medicalCase, nodeId);
   }
 };
