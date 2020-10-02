@@ -155,7 +155,7 @@ export default class PatientProfile extends React.Component {
                       {nodes[patientValue.node_id].label}
                     </Text>
                     <Text size-auto style={styles.patientValues}>
-                      {patient.getLabelFromNode(patientValue.node_id, nodes)}
+                      {patient.getLabelFromNode(patientValue.node_id, algorithm)}
                     </Text>
                   </View>
                 ))}

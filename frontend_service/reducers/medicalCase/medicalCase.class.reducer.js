@@ -7,10 +7,8 @@ import 'reflect-metadata';
 import { actions } from '../../actions/types.actions';
 import { categories } from '../../constants';
 import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
-import { NodesModel } from '../../engine/models/Nodes.model';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { QuestionModel } from '../../engine/models/Question.model';
-import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -24,29 +22,16 @@ class MedicalCaseReducer extends ReducerClass {
 
   // The state is a MedicalCase
   // Instance it
-  _instanceMedicalCase(state) {
-    state = this._generateInstanceDiseasesNode(state);
-    state.nodes = new NodesModel(state.nodes);
-    return state;
-  }
-
-  // For the diseases we instance it
-  _generateInstanceDiseasesNode(state) {
-    Object.keys(state.diagnostics).forEach(
-      (i) =>
-        (state.diagnostics[i] = new DiagnosticModel({
-          ...state.diagnostics[i],
-        }))
-    );
-
-    return state;
+  _instanceMedicalCase(medicalCase) {
+    medicalCase.nodes = MedicalCaseModel.instantiateNodes(medicalCase.nodes);
+    return medicalCase;
   }
 
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
   /**
    * Sets the consent file in the patient after scanning it, the consent in the
-   * medical case is automaticaly set to true
+   * medical case is set to true
    * @payload page : the scanned file in a base64 format
    */
   @Action(actions.ADD_CONSENT_FILE)
@@ -364,15 +349,15 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.SET_ANSWER)
   setAnswer(state, action) {
-    const { nodeId, value } = action.payload;
-
+    const { algorithm, nodeId, value } = action.payload;
+console.log(state.nodes, nodeId)
     // Instantiate new object with answered question with new answer value
-    state.nodes[nodeId] = state.nodes.instantiateNode({ ...state.nodes[nodeId] });
-    state.nodes[nodeId].updateAnswer(value);
+    state.nodes[nodeId] = MedicalCaseModel.instantiateNode({ ...state.nodes[nodeId] });
+    state.nodes[nodeId].updateAnswer(value, algorithm);
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: MedicalCaseModel.instantiateNodes(state.nodes),
     };
   }
 
@@ -380,19 +365,19 @@ class MedicalCaseReducer extends ReducerClass {
    * Set estimable value for basic measurement question
    * @param state
    * @param action
-   * @returns {{nodes: NodesModel}}
+   * @returns {{nodes: [NodeModel]}}
    */
   @Action(actions.SET_ESTIMABLE)
   setEstimable(state, action) {
     const { index, value } = action.payload;
 
     // Instantiate new object with answered question with new answer value
-    state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
+    state.nodes[index] = MedicalCaseModel.instantiateNode({ ...state.nodes[index] });
     state.nodes[index].estimableValue = value;
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: MedicalCaseModel.instantiateNodes(state.nodes),
     };
   }
 
@@ -457,7 +442,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     // Instantiate new object with id unavailable answer
     // reset value to default
-    state.nodes[nodeId] = state.nodes.instantiateNode({
+    state.nodes[nodeId] = MedicalCaseModel.instantiateNode({
       ...state.nodes[nodeId],
       answer: value,
       value: null,
@@ -465,7 +450,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: MedicalCaseModel.instantiateNodes(state.nodes),
     };
   }
 
@@ -546,7 +531,7 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
-   * Method call from redux persist and re set the medicalcase
+   * Method call from redux persist and re set the medical case
    *
    * @payload medicalCase: medical case
    */

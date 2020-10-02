@@ -18,13 +18,19 @@ type Props = NavigationScreenProps & {};
 type State = StateApplicationContext & {};
 
 export default class Triage extends React.Component<Props, State> {
-  state = {
-    widthView: 0,
-    complaintCategories: questionsComplaintCategory(),
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    NavigationService.setParamsAge('Triage');
+    const {
+      app: { algorithm },
+    } = props;
+
+    NavigationService.setParamsAge(algorithm, 'Triage');
+
+    this.state = {
+      widthView: 0,
+      complaintCategories: questionsComplaintCategory(algorithm),
+    };
   }
 
   render() {

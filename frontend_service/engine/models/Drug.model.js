@@ -3,46 +3,14 @@ import { HealthCaresModel } from './HealthCares.model';
 import { medicationForms } from '../../constants';
 import { store } from '../../store';
 import { roundSup } from '../../../src/utils/swissKnives';
-import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
 
 export class DrugModel extends HealthCaresModel {
   constructor(props) {
     super(props);
 
-    const {
-      category,
-      minimal_dose_per_kg = '',
-      maximal_dose_per_kg = '',
-      maximal_dose = '',
-      injection_instructions = '',
-      doses_per_day = '',
-      treatment_type = '',
-      pill_size = '',
-      drugDoses = null,
-      formulations = [],
-      formulationSelected = null,
-      is_anti_malarial = false,
-      is_antibiotic = false,
-      excluding_nodes_ids = [],
-      excluded_nodes_ids = [],
-    } = props;
-
-    this.category = category;
-    this.minimalDosePerKg = minimal_dose_per_kg;
-    this.maximalDosePerKg = maximal_dose_per_kg;
-    this.maximalDose = maximal_dose;
-    this.injection_instructions = injection_instructions;
-    this.dosesPerDay = doses_per_day;
-    this.treatmentType = treatment_type;
-    this.pillSize = pill_size;
-    this.drugDoses = drugDoses;
-    this.formulations = formulations;
+    const { formulationSelected = null } = props;
     this.formulationSelected = formulationSelected;
-    this.is_anti_malarial = is_anti_malarial;
-    this.is_antibiotic = is_antibiotic;
-    this.excluded_nodes_ids = excluded_nodes_ids;
-    this.excluding_nodes_ids = excluding_nodes_ids;
     this.healthCareObject = 'drugs';
   }
 
@@ -51,10 +19,12 @@ export class DrugModel extends HealthCaresModel {
    *
    * @return [object] : doses for the treatment, it depend by healthcare type (liquid, tab, pill, etc...)
    */
-  getDrugDoses = (formulationIndex) => {
-    const state$ = store.getState();
+  getDrugDoses = (formulationIndex, algorithm) => {
+    // TODO: Check with algorithm
+    const drug = algorithm.nodes[this.id];
 
-    const weightNode = state$.nodes[state$.config.basic_questions.weight_question_id];
+    const medicalCase = store.getState();
+    const mcWeight = medicalCase.nodes[algorithm.config.basic_questions.weight_question_id];
 
     let minDoseMg;
     let maxDoseMg;
@@ -64,14 +34,14 @@ export class DrugModel extends HealthCaresModel {
     let pillSize;
 
     // select formulation
-    const formulation = this.formulations[formulationIndex];
+    const formulation = drug.formulations[formulationIndex];
 
     if (formulation === undefined) {
       return { doseResult: null };
     }
 
     // protected by_age
-    if ((weightNode !== undefined && weightNode.value !== null) || formulation.by_age === false) {
+    if ((mcWeight !== undefined && mcWeight.value !== null) || formulation.by_age === false) {
       recurrence = 24 / formulation.doses_per_day;
 
       switch (formulation.medication_form) {
@@ -79,8 +49,8 @@ export class DrugModel extends HealthCaresModel {
         case medicationForms.suspension:
         case medicationForms.powder_for_injection:
         case medicationForms.solution:
-          minDoseMg = roundSup((weightNode.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
-          maxDoseMg = roundSup((weightNode.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
+          minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
+          maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
 
           // Second calculate min and max dose (cap)
           const minDoseMl = roundSup((minDoseMg * formulation.dose_form) / formulation.liquid_concentration);
@@ -117,8 +87,8 @@ export class DrugModel extends HealthCaresModel {
         case medicationForms.capsule:
         case medicationForms.tablet:
           // First calculate min and max dose (mg/Kg)
-          minDoseMg = roundSup((weightNode.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
-          maxDoseMg = roundSup((weightNode.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
+          minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
+          maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
           pillSize = formulation.dose_form; // dose form
 
           if (formulation.breakable !== null) {
@@ -141,6 +111,7 @@ export class DrugModel extends HealthCaresModel {
           } else {
             // Out of possibility
             return {
+              // TODO: FUCK YOU
               no_possibility: 'No compatible option for this weight',
               doseResult: null,
             };
@@ -172,7 +143,7 @@ export class DrugModel extends HealthCaresModel {
    * @return : object list all drugs
    *
    */
-  static getAgreed = (diagnoses = null) => {
+  static getAgreed = (diagnoses = null, algorithm) => {
     let currentDiagnoses;
     let currentAdditionalDrugs;
 
@@ -197,7 +168,7 @@ export class DrugModel extends HealthCaresModel {
           Object.keys(finalDiagnostic.drugs).forEach((drugId) => {
             const diagnoseDrug = finalDiagnostic.drugs[drugId];
             const drug = medicalCase.nodes[drugId];
-            if (diagnoseDrug.agreed === true && calculateCondition(diagnoseDrug, medicalCase) === true && !drug.isExcluded(medicalCase)) {
+            if (diagnoseDrug.agreed === true && calculateCondition(algorithm, diagnoseDrug, medicalCase) === true && !drug.isExcluded(medicalCase, algorithm)) {
               if (drugs[drugId] === undefined) {
                 // New one so add it
                 drugs[drugId] = finalDiagnostic?.drugs[drugId];

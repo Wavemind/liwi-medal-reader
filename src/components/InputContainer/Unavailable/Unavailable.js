@@ -20,13 +20,18 @@ export default class Unavailable extends React.Component<Props, State> {
   }
 
   onPress = () => {
-    const { setAnswerUnavailable, question, unavailableAnswer } = this.props;
+    const {
+      app: { algorithm },
+      setAnswerUnavailable,
+      question,
+      unavailableAnswer,
+    } = this.props;
 
     if (question.answer === null || question.answer !== unavailableAnswer.id) {
-      setAnswerUnavailable(question.id, unavailableAnswer.id);
+      setAnswerUnavailable(algorithm, question.id, unavailableAnswer.id);
     } else {
       // reset to null the checkbox
-      setAnswerUnavailable(question.id, null);
+      setAnswerUnavailable(algorithm, question.id, null);
     }
   };
 

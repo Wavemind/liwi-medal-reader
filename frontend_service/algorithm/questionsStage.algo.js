@@ -4,7 +4,7 @@ import moment from 'moment';
 import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
-import { calculateCondition } from './conditionsHelpers.algo';
+import { NodeModel } from '../engine/models/Node.model';
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -14,10 +14,9 @@ import { calculateCondition } from './conditionsHelpers.algo';
  * Get Medical History for consultation
  * Update metadata
  */
-export const questionsMedicalHistory = () => {
-  const state$ = store.getState();
-  const { diagnostics } = state$;
-  const medicalHistoryQuestions = state$.nodes.filterBy(
+export const questionsMedicalHistory = (algorithm) => {
+  const medicalHistoryQuestions = NodeModel.filterBy(
+    algorithm,
     [
       {
         by: 'category',
@@ -43,9 +42,8 @@ export const questionsMedicalHistory = () => {
         by: 'category',
         operator: 'equal',
         value: categories.vaccine,
-      }
+      },
     ],
-    diagnostics,
     'OR',
     'array',
     true
@@ -78,10 +76,9 @@ const sortQuestions = (questions) => {
  * Get physical Exam for consultation
  * Update metadata
  */
-export const questionsPhysicalExam = () => {
-  const state$ = store.getState();
-  const { diagnostics } = state$;
-  const vitalSignQuestions = state$.nodes.filterBy(
+export const questionsPhysicalExam = (algorithm) => {
+  const vitalSignQuestions = NodeModel.filterBy(
+    algorithm,
     [
       {
         by: 'category',
@@ -89,13 +86,13 @@ export const questionsPhysicalExam = () => {
         value: categories.vitalSignAnthropometric,
       },
     ],
-    diagnostics,
     'OR',
     'array',
     false
   );
 
-  const physicalExamQuestions = state$.nodes.filterBy(
+  const physicalExamQuestions = NodeModel.filterBy(
+    algorithm,
     [
       {
         by: 'category',
@@ -103,7 +100,6 @@ export const questionsPhysicalExam = () => {
         value: categories.physicalExam,
       },
     ],
-    diagnostics,
     'OR',
     'array',
     true
@@ -113,7 +109,7 @@ export const questionsPhysicalExam = () => {
   const newQuestions = questions.map(({ id }) => id);
 
   // Update state$ physical exam questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.consultation.physicalExam, newQuestions)) {
+  if (!_.isEqual(algorithm.metaData.consultation.physicalExam, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
   }
 
@@ -150,7 +146,7 @@ export const questionsFirstLookAssessement = () => {
  * Get ComplaintCategories for triage
  * Update metadata
  */
-export const questionsComplaintCategory = () => {
+export const questionsComplaintCategory = (algorithm) => {
   const state$ = store.getState();
   const complaintCategories = [];
   const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
@@ -159,7 +155,7 @@ export const questionsComplaintCategory = () => {
   const birthDate = state$.nodes[state$.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
 
-  store.dispatch(setAnswer(general_cc_id, Object.keys(state$.nodes[general_cc_id].answers)[0]));
+  store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(state$.nodes[general_cc_id].answers)[0]));
   orders.forEach((order) => {
     if (state$.nodes[order].id !== state$.config.basic_questions.general_cc_id) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
@@ -167,7 +163,7 @@ export const questionsComplaintCategory = () => {
       if ((days <= 60 && state$.nodes[order].is_neonat) || (days > 60 && !state$.nodes[order].is_neonat)) {
         complaintCategories.push(state$.nodes[order]);
       } else {
-        store.dispatch(setAnswer(order, Object.keys(state$.nodes[order].answers)[1]));
+        store.dispatch(setAnswer(algorithm, order, Object.keys(state$.nodes[order].answers)[1]));
       }
     }
   });
@@ -194,9 +190,10 @@ export const questionsBasicMeasurements = () => {
   if (orderedQuestions !== undefined) {
     orderedQuestions.forEach((orderedQuestion) => {
       const question = state$.nodes[orderedQuestion];
-      if (question.isDisplayedInTriage(state$)) {
-        basicMeasurements.push(question);
-      }
+      // TODO check if used
+      // if (question.isDisplayedInTriage(state$)) {
+      //   basicMeasurements.push(question);
+      // }
     });
   }
 
@@ -214,58 +211,22 @@ export const questionsBasicMeasurements = () => {
  * Get questions for Test
  * Update metadata
  */
-export const questionsTests = () => {
-  const state$ = store.getState();
-  const { diagnostics } = state$;
+export const questionsTests = (algorithm) => {
   let assessmentTest = [];
-  assessmentTest = state$.nodes.filterBy(
-    [
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.assessment,
-      },
-    ],
-    diagnostics
-  );
+  assessmentTest = NodeModel.filterBy(algorithm, [
+    {
+      by: 'category',
+      operator: 'equal',
+      value: categories.assessment,
+    },
+  ]);
 
   const newQuestions = assessmentTest.map(({ id }) => id);
 
   // Update state$ tests questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.tests.tests, newQuestions)) {
+  if (!_.isEqual(algorithm.metaData.tests.tests, newQuestions)) {
     store.dispatch(updateMetaData('tests', 'tests', newQuestions));
   }
 
   return assessmentTest;
-};
-
-/**
- *
- * Define if the title of drugs additional / proposed must be shown
- *
- * @return :  Boolean
- *
- */
-export const titleManagementCounseling = () => {
-  const medicalCase = store.getState();
-  const { diagnoses } = medicalCase;
-
-  if (Object.keys(diagnoses.additional).length === 0 && Object.keys(diagnoses.proposed).length === 0) {
-    return false;
-  }
-
-  let isPossible = false;
-  Object.keys(diagnoses.additional).forEach((id) => {
-    Object.keys(diagnoses.additional[id].managements).forEach((m) => {
-      isPossible = calculateCondition(diagnoses.additional[id].managements[m], medicalCase);
-    });
-  });
-
-  Object.keys(diagnoses.proposed).forEach((id) => {
-    Object.keys(diagnoses.proposed[id].managements).forEach((m) => {
-      isPossible = calculateCondition(diagnoses.proposed[id].managements[m], medicalCase);
-    });
-  });
-
-  return isPossible;
 };

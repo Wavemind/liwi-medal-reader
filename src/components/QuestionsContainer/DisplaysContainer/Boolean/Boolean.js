@@ -62,6 +62,7 @@ export default class Boolean extends React.Component<Props, State> {
    */
   _handleClick = async (answer) => {
     const {
+      app: { algorithm },
       question,
       question: { answers },
       setAnswer,
@@ -93,7 +94,7 @@ export default class Boolean extends React.Component<Props, State> {
     if (patientValueEdit) {
       setPatientValue(question.id, newAnswer);
     } else {
-      setAnswer(question.id, newAnswer);
+      setAnswer(algorithm, question.id, newAnswer);
     }
   };
 

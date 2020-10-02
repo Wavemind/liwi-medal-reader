@@ -19,6 +19,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
+import { NodeModel } from '../../../../frontend_service/engine/models/Node.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -29,6 +30,13 @@ export default class PatientUpsert extends React.Component<Props, State> {
     patient: null,
     loading: true,
   };
+
+  // Faire le constructeur !
+  constructor(props) {
+    super(props);
+
+
+  }
 
   async componentDidMount() {
     const {
@@ -64,12 +72,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
       });
       if (patientId !== null) {
         patient.patientValues.forEach((patientValue) => {
-          setAnswer(patientValue.node_id, patientValue.value);
+          setAnswer(algorithm, patientValue.node_id, patientValue.value);
         });
       }
     }
 
-    NavigationService.setParamsAge('Patient');
+    NavigationService.setParamsAge(algorithm, 'Patient');
     updateMedicalCaseProperty('patient', { ...patient, medicalCases: [] });
 
     this.setState({
@@ -176,18 +184,18 @@ export default class PatientUpsert extends React.Component<Props, State> {
 
   render() {
     const { patient, errors, loading } = this.state;
-    const { navigation } = this.props;
-
     const {
-      app: { t },
+      app: { t, algorithm },
       medicalCase,
       updateMetaData,
+      navigation,
     } = this.props;
 
     let extraQuestions = [];
     if (medicalCase.nodes !== undefined) {
       // Get nodes to display in registration stage
-      extraQuestions = medicalCase.nodes?.filterBy(
+      extraQuestions = NodeModel.filterBy(
+        algorithm,
         [
           {
             by: 'stage',
@@ -195,7 +203,6 @@ export default class PatientUpsert extends React.Component<Props, State> {
             value: stages.registration,
           },
         ],
-        medicalCase.diagnostics,
         'OR',
         'array',
         false

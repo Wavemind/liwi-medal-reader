@@ -7,32 +7,8 @@ import { NodeModel } from './Node.model';
 import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 import { nodeTypes } from '../../constants';
-import { InstanceModel } from './Instance.model';
 
-interface FinalDiagnosticInterface {}
-
-export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticInterface {
-  constructor(props) {
-    super(props);
-
-    const { label, diagnostic_id, drugs, managements, top_conditions, excluding_final_diagnostics = [], excluded_final_diagnostics = [], cc, instances = [], description = '' } = props;
-
-    this.label = label;
-    this.description = description;
-    this.diagnostic_id = diagnostic_id;
-    this.drugs = drugs;
-    this.managements = managements;
-    this.top_conditions = top_conditions;
-    this.excluding_final_diagnostics = excluding_final_diagnostics;
-    this.excluded_final_diagnostics = excluded_final_diagnostics;
-    this.cc = cc;
-    this.instances = instances;
-
-    Object.keys(instances).forEach((id) => {
-      this.instances[id] = new InstanceModel({ ...instances[id] });
-    });
-  }
-
+export class FinalDiagnosticModel extends NodeModel {
   /**
    * 1. Check the current status of this instance
    * 2. Depending the result go recursive OR calculate final path DD
@@ -46,7 +22,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    *      null = Still possible but not yet
    *      false = can't access the end anymore
    */
-  recursiveNodeDd = (medicalCase, instance, dd) => {
+  recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
     /**
      * Initial Var
      */
@@ -57,7 +33,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
      * Get the condition of the instance link
      * Do not change to this.calculateCondition -> infinite loop
      */
-    const instanceCondition = calculateCondition(instance, medicalCase);
+    const instanceCondition = calculateCondition(algorithm, instance, medicalCase);
 
     // The condition path is not answered
     // Wait on user
@@ -88,7 +64,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       const child = medicalCase.nodes[childId];
       // If this is not the final DD we calculate the conditionValue of the child
       if (child.type === nodeTypes.question || child.type === nodeTypes.questionsSequence) {
-        return this.recursiveNodeDd(medicalCase, medicalCase.diagnostics[dd.diagnostic_id].instances[child.id], dd);
+        return this.recursiveNodeDd(algorithm, medicalCase, medicalCase.diagnostics[dd.diagnostic_id].instances[child.id], dd);
       }
       if (child.id === dd.id && child.type === nodeTypes.finalDiagnostic) {
         const top_conditions = _.filter(dd.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
@@ -142,11 +118,12 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    * Calculate condition to display a final diagnostic
    * Verify if the final diagnostic excluded an another one
    */
-  calculateCondition = (medicalCase) => {
+  calculateCondition = (algorithm, medicalCase) => {
+    const currentNode = algorithm.nodes[this.id];
     const conditionValueTrue = [];
     // Generate only the top_condition with conditionValue to true => they are not disabled
-    this.top_conditions.map((condition) => {
-      const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === this.diagnostic_id);
+    currentNode.top_conditions.map((condition) => {
+      const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === currentNode.diagnostic_id);
       if (findDDinNode.conditionValue === true) {
         conditionValueTrue.push(condition);
       }
@@ -156,10 +133,10 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
     const statusOfDD = this.getStatusOfDD(medicalCase, this);
 
     // If this FD can be excluded by other high-priority FD
-    const isExcluded = this.excluding_final_diagnostics.some(
+    const isExcluded = currentNode.excluding_final_diagnostics.some(
       (excludedByFinalDiagnostic) =>
         // Exclude diagnostic if other diagnoses is available and agreed
-        medicalCase.nodes[excludedByFinalDiagnostic].calculateCondition(medicalCase) === true &&
+        medicalCase.nodes[excludedByFinalDiagnostic].calculateCondition(algorithm, medicalCase) === true &&
         medicalCase.diagnoses.proposed[excludedByFinalDiagnostic] !== undefined &&
         medicalCase.diagnoses.proposed[excludedByFinalDiagnostic].agreed === true
     );
@@ -171,14 +148,14 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
       return null;
     }
     if (statusOfDD === true) {
-      const tempDd = { ...this, top_conditions: conditionValueTrue };
-      return calculateCondition(tempDd, medicalCase);
+      const tempDd = { ...currentNode, top_conditions: conditionValueTrue };
+      return calculateCondition(algorithm, tempDd, medicalCase);
     }
   };
 
   /**
    * Return all the drugs that must be shown for the current final diagnostic
-   * @returns {Array<DrugModel>>} - All the drugs that must be shown for the current final diagnostic
+   * @returns {Array<DrugModel>} - All the drugs that must be shown for the current final diagnostic
    */
   getDrugs = (medicalCase) => {
     const drugsAvailable = [];
@@ -253,11 +230,11 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
    *  }
    *
    */
-  static all() {
+  static all(algorithm) {
     const medicalCase = store.getState();
-    const { nodes } = medicalCase;
+    const { nodes } = algorithm;
 
-    const finalDiagnostics = nodes.filterByType(nodeTypes.finalDiagnostic);
+    const finalDiagnostics = NodeModel.filterByType(nodes, nodeTypes.finalDiagnostic);
 
     const finalDiagnosticsNull = [];
     const finalDiagnosticsTrue = [];
@@ -268,7 +245,7 @@ export class FinalDiagnosticModel extends NodeModel implements FinalDiagnosticIn
         const finalDiagnostic = finalDiagnostics[index];
         const complaintCategory = nodes[finalDiagnostic.cc];
 
-        const condition = finalDiagnostic.calculateCondition(medicalCase);
+        const condition = finalDiagnostic.calculateCondition(algorithm, medicalCase);
 
         // If complaintCategory is not selected, I know it's ugly but what can I do ?
         if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers)[1])) {

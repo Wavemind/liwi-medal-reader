@@ -17,13 +17,18 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Consultation extends React.Component<Props, State> {
-  componentDidMount() {
-    NavigationService.setParamsAge('Consultation');
+  constructor(props) {
+    super(props);
+
+    const {
+      app: { algorithm },
+    } = props;
+    NavigationService.setParamsAge(algorithm, 'Consultation');
   }
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithm },
       focus,
       navigation,
       medicalCase,
@@ -57,7 +62,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
-                <QuestionsPerSystem questions={questionsMedicalHistory()} selectedPage={selectedPage} pageIndex={0} />
+                <QuestionsPerSystem questions={questionsMedicalHistory(algorithm)} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -66,7 +71,7 @@ export default class Consultation extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
-                <QuestionsPerSystem questions={questionsPhysicalExam()} selectedPage={selectedPage} pageIndex={1} />
+                <QuestionsPerSystem questions={questionsPhysicalExam(algorithm)} selectedPage={selectedPage} pageIndex={1} />
               </Suspense>
             ) : (
               <LiwiLoader />

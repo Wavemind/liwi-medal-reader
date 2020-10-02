@@ -16,13 +16,17 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class Tests extends React.Component<Props, State> {
-  componentDidMount() {
-    NavigationService.setParamsAge('Tests');
+  constructor(props) {
+    super(props);
+    const {
+      app: { algorithm },
+    } = props;
+    NavigationService.setParamsAge(algorithm, 'Tests');
   }
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithm },
       focus,
       navigation,
     } = this.props;
@@ -50,7 +54,7 @@ export default class Tests extends React.Component<Props, State> {
             <View style={styles.pad} key="questions-test">
               {focus === 'didFocus' || focus === 'willFocus' ? (
                 <React.Suspense fallback={<LiwiLoader />}>
-                  <Questions questions={questionsTests()} />
+                  <Questions questions={questionsTests(algorithm)} />
                 </React.Suspense>
               ) : (
                 <LiwiLoader />

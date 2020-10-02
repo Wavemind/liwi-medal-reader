@@ -5,111 +5,22 @@ import { NodeModel } from './Node.model';
 import { valueFormats, references } from '../../constants';
 import I18n from '../../../src/utils/i18n';
 
-interface QuestionInterface {
-  answer: string;
-  answers: Object;
-  description: string;
-  label: string;
-  category: string;
-  counter: number;
-  dd: Array<Object>;
-  display_format: string;
-  ps: Array<Object>;
-  value: number;
-  value_format: string;
-}
-
-export class QuestionModel extends NodeModel implements QuestionInterface {
+export class QuestionModel extends NodeModel {
   constructor(props) {
     super(props);
 
-    const {
-      answer = null,
-      answers = {},
-      description = '',
-      label = '',
-      category = '',
-      counter = 0,
-      diagnostics_related_to_cc = [],
-      dd = [],
-      df = [],
-      display_format = '',
-      is_mandatory = '',
-      qs = [],
-      value = '',
-      value_format = '',
-      stage = '',
-      formula = '',
-      referenced_in = [],
-      cc = [],
-      reference_table_x_id = 0,
-      reference_table_y_id = 0,
-      reference_table_z_id = null,
-      reference_table_male = '',
-      reference_table_female = '',
-      system = '',
-      is_identifiable = false,
-      is_triage = false,
-      is_danger_sign = false,
-      is_neonat = false,
-      estimable = false,
-      estimableValue = 'measured',
-      min_value_warning = '',
-      max_value_warning = '',
-      min_value_error = '',
-      max_value_error = '',
-      min_message_warning = '',
-      max_message_warning = '',
-      min_message_error = '',
-      max_message_error = '',
-      validationMessage = null,
-      validationType = null,
-      medias = [],
-    } = props;
+    const { answer = null, counter = 0, dd = [], df = [], qs = [], value = '', estimable = false, estimableValue = 'measured', validationMessage = null, validationType = null } = props;
 
-    this.description = description;
-    this.label = label;
     this.answer = answer;
-    this.answers = answers;
-    this.category = category;
     this.counter = counter;
-    this.diagnostics_related_to_cc = diagnostics_related_to_cc;
     this.dd = dd;
     this.df = df;
-    this.display_format = display_format;
-    this.is_mandatory = is_mandatory;
     this.qs = qs;
     this.value = value;
-    this.value_format = value_format;
-    this.stage = stage;
-    this.formula = formula;
-    this.referenced_in = referenced_in;
-    this.cc = cc;
-    this.reference_table_y_id = reference_table_y_id;
-    this.reference_table_x_id = reference_table_x_id;
-    this.reference_table_z_id = reference_table_z_id;
-    this.reference_table_male = reference_table_male;
-    this.reference_table_female = reference_table_female;
-    this.system = system;
-    this.is_danger_sign = is_danger_sign;
-    this.is_identifiable = is_identifiable;
-    this.is_triage = is_triage;
-    this.is_neonat = is_neonat;
-    this.min_value_warning = min_value_warning;
-    this.max_value_warning = max_value_warning;
-    this.min_value_error = min_value_error;
-    this.max_value_error = max_value_error;
-    this.min_message_warning = min_message_warning;
-    this.max_message_warning = max_message_warning;
-    this.min_message_error = min_message_error;
-    this.max_message_error = max_message_error;
     this.validationMessage = validationMessage;
     this.validationType = validationType;
-    this.estimable = estimable;
-    this.medias = medias;
 
     // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
-    // if (estimable) {
     if (estimable) {
       // Type available [measured, estimated]
       this.estimableValue = estimableValue;
@@ -121,7 +32,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @params medicalCase : object
    * @return isDisplayed : boolean
    */
-  isDisplayedInTriage(medicalCase) {
+  // TODO Check if used
+  isDisplayedInTriage() {
     const { conditions } = medicalCase.triage;
     let isDisplayed = true;
 
@@ -145,9 +57,10 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @returns {number}
    *
    */
-  calculateFormula = (medicalCase) => {
+  calculateFormula = (algorithm, medicalCase) => {
     // Regex to find the brackets [] in the formula
     const findBracketId = /\[(.*?)\]/gi;
+    const currentNode = algorithm.nodes[this.id];
     let ready = true;
 
     // Function to change the [id] into the answered value
@@ -156,20 +69,20 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
       const id = item.match(/\d/g).join('');
 
       // Get value of this node
-      const nodeInBracket = medicalCase.nodes[id];
-      if (nodeInBracket.value === null || (nodeInBracket.value === 0 && nodeInBracket.answer === null)) {
+      const mcNodeInBracket = medicalCase.nodes[id];
+      if (mcNodeInBracket.value === null || (mcNodeInBracket.value === 0 && mcNodeInBracket.answer === null)) {
         ready = false;
         return item;
       }
-      switch (nodeInBracket.value_format) {
+      switch (currentNode.value_format) {
         case valueFormats.date:
-          return moment().diff(moment(nodeInBracket.value).toDate(), item.search('ToMonth') > 0 ? 'months' : 'days');
+          return moment().diff(moment(mcNodeInBracket.value).toDate(), item.search('ToMonth') > 0 ? 'months' : 'days');
         default:
-          return nodeInBracket.value;
+          return mcNodeInBracket.value;
       }
     };
     // Replace every bracket in the formula with it's value
-    const formula = this.formula.replace(findBracketId, replaceBracketToValue);
+    const formula = currentNode.formula.replace(findBracketId, replaceBracketToValue);
 
     if (ready) {
       return eval(formula);
@@ -182,32 +95,34 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * Calculate reference score.
    * @returns refer to reference tables
    */
-  calculateReference(medicalCase) {
+  calculateReference(algorithm, medicalCase) {
     let reference = null;
     let value = null;
+    const currentNode = algorithm.nodes[this.id];
 
     // Get X and Y
-    const questionX = medicalCase.nodes[this.reference_table_x_id];
-    const questionY = medicalCase.nodes[this.reference_table_y_id];
+    const mcQuestionX = medicalCase.nodes[currentNode.reference_table_x_id];
+    const mcQuestionY = medicalCase.nodes[currentNode.reference_table_y_id];
 
     // Get Z
     let questionZ = null;
     if (this.reference_table_z_id !== null) {
-      questionZ = medicalCase.nodes[this.reference_table_z_id];
+      questionZ = medicalCase.nodes[currentNode.reference_table_z_id];
     }
 
-    const x = parseInt(questionX.value);
-    const y = parseInt(questionY.value);
+    const x = parseInt(mcQuestionX.value);
+    const y = parseInt(mcQuestionY.value);
     const z = questionZ?.value;
 
-    const genderQuestion = medicalCase.nodes[medicalCase.config.basic_questions.gender_question_id];
-    const gender = genderQuestion.answer !== null ? genderQuestion.answers[genderQuestion.answer].value : null;
+    const mcGenderQuestion = medicalCase.nodes[algorithm.config.basic_questions.gender_question_id];
+    const genderQuestion = algorithm.nodes[algorithm.config.basic_questions.gender_question_id];
+    const gender = mcGenderQuestion.answer !== null ? genderQuestion.answers[mcGenderQuestion.answer].value : null;
 
     // Get reference table for male or female
     if (gender === 'male') {
-      reference = references[this.reference_table_male];
+      reference = references[currentNode.reference_table_male];
     } else if (gender === 'female') {
-      reference = references[this.reference_table_female];
+      reference = references[currentNode.reference_table_female];
     }
 
     // If X and Y means question is not answered + check if answer is in the scope of the reference table
@@ -229,6 +144,7 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * @param {Integer} maxRange - Y or Z value to not exceed
    * @returns {null|Integer} - Value find
    */
+  // TODO comment
   findValueInReferenceTable(referenceTable, maxRange) {
     let previousKey = null;
     let value = null;
@@ -259,8 +175,9 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
    * Return a humanized value who depend on value_format
    * @returns {string|*}
    */
-  displayValue = () => {
-    if (this.value_format === valueFormats.date && this.value !== null) {
+  displayValue = (algorithm) => {
+    const currentNode = algorithm.nodes[this.id];
+    if (currentNode.value_format === valueFormats.date && this.value !== null) {
       return moment(this.value).format(I18n.t('application:date_format'));
     }
     return this.value === null ? '' : this.value;
@@ -269,7 +186,8 @@ export class QuestionModel extends NodeModel implements QuestionInterface {
   /**
    * Returns the value for a boolean question  or a complaint category
    */
-  booleanValue = () => {
-    return this.answer === Number(Object.keys(this.answers).first());
+  booleanValue = (algorithm) => {
+    const { answers } = algorithm.nodes[this.id];
+    return this.answer === Number(Object.keys(answers).first());
   };
 }

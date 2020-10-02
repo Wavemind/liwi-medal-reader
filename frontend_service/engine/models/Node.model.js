@@ -2,21 +2,20 @@
 import NavigationService from 'engine/navigation/Navigation.service';
 import React from 'react';
 import findKey from 'lodash/findKey';
+import _ from 'lodash';
+
 import { categories, valueFormats } from '../../constants';
-import { MedicalCaseModel } from './MedicalCase.model';
+import { DiagnosticModel } from './Diagnostic.model';
 
-interface NodeInterface {
-  id: number;
-  type: string;
-  medicalCase: MedicalCaseModel;
-}
-
-export class NodeModel implements NodeInterface {
+export class NodeModel {
   constructor(props) {
-    const { id = 0, type = '', } = props;
+    const { id } = props;
     this.id = id;
-    this.type = type;
   }
+
+  displayValue = () => {
+    return this.value;
+  };
 
   /**
    * Update the answer depending his format
@@ -30,19 +29,16 @@ export class NodeModel implements NodeInterface {
    * List If list or array set the new value defined by the component button
    *
    */
-  updateAnswer = (value) => {
+  updateAnswer = (value, algorithm) => {
     let answer = null;
+    const currentNode = algorithm.nodes[this.id];
 
-    if (this.value_format === undefined) {
-      return false;
-    }
-
-    if (this.category !== categories.basicMeasurement) {
-      switch (this?.value_format) {
+    if (currentNode.category !== categories.basicMeasurement) {
+      switch (currentNode.value_format) {
         case valueFormats.int:
         case valueFormats.float:
           if (value !== null) {
-            answer = findKey(this?.answers, (answerCondition) => {
+            answer = findKey(currentNode.answers, (answerCondition) => {
               switch (answerCondition.operator) {
                 case 'more_or_equal':
                   return value >= Number(answerCondition.value);
@@ -90,27 +86,27 @@ export class NodeModel implements NodeInterface {
     }
 
     // Validation for integer and float type based on Medal-C config
-    if (this.value_format === valueFormats.int || this.value_format === valueFormats.float) {
-      if (value !== null && (value < this.min_value_warning || value > this.max_value_warning)) {
+    if (currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) {
+      if (value !== null && (value < currentNode.min_value_warning || value > currentNode.max_value_warning)) {
         // Warning
-        if (value < this.min_value_warning && this.min_value_warning !== null) {
-          this.validationMessage = this.min_message_warning;
+        if (value < currentNode.min_value_warning && currentNode.min_value_warning !== null) {
+          this.validationMessage = currentNode.min_message_warning;
         }
 
-        if (value > this.max_value_warning && this.max_value_warning !== null) {
-          this.validationMessage = this.max_message_warning;
+        if (value > currentNode.max_value_warning && currentNode.max_value_warning !== null) {
+          this.validationMessage = currentNode.max_message_warning;
         }
 
         this.validationType = 'warning';
 
         // Error
-        if (value < this.min_value_error || value > this.max_value_error) {
-          if (value < this.min_value_error && this.min_value_error !== null) {
-            this.validationMessage = this.min_message_error;
+        if (value < currentNode.min_value_error || value > currentNode.max_value_error) {
+          if (value < currentNode.min_value_error && currentNode.min_value_error !== null) {
+            this.validationMessage = currentNode.min_message_error;
           }
 
           if (value > this.max_value_error && this.max_value_error !== null) {
-            this.validationMessage = this.max_message_error;
+            this.validationMessage = currentNode.max_message_error;
           }
           this.validationType = 'error';
         }
@@ -126,7 +122,90 @@ export class NodeModel implements NodeInterface {
     this.value = value;
   };
 
-  displayValue = () => {
-    return this.value;
-  };
+  // TODO comment
+  static filterByType(nodes, type) {
+    return _.filter(nodes, (n) => n.type === type);
+  }
+
+  /**
+   * Return filtered nodes on multiple params
+   * @params filter : array
+   * [{ by: 'category', operator: 'equal', value: categories.symptom },
+   * { by: 'stage', operator: 'equal', value: stage.consultation },
+   * { by: 'counter', operator: 'more', value: 0 },]
+   *
+   * @params operator string
+   *  - AND
+   *  - OR
+   *
+   *  @params formatReturn string
+   *  - array
+   *  - object
+   */
+  static filterBy(algorithm, filters, operator = 'OR', formatReturn = 'array', counter = true) {
+    // return the boolean for one filter
+    const switchTest = (filter, node) => {
+      switch (filter.operator) {
+        case 'equal':
+          return node[filter.by] === filter.value;
+        case 'more':
+          return node[filter.by] > filter.value;
+      }
+    };
+
+    const counterFilter = (filter, node) => {
+      if (counter) {
+        return switchTest(filter, node) && node.counter > 0;
+      }
+      return switchTest(filter, node);
+    };
+
+    const filterByConditionValue = (nodes) => {
+      Object.keys(nodes).forEach((nodeId) => {
+        if (nodes[nodeId].type === 'Question') {
+          nodes[nodeId].counter = 0;
+          nodes[nodeId].dd.forEach((dd) => {
+            !DiagnosticModel.isExcludedByComplaintCategory(algorithm, dd.id) && dd.conditionValue ? nodes[nodeId].counter++ : null;
+          });
+          // Map trough PS if it is in an another PS itself
+          nodes[nodeId].qs.forEach((qs) => {
+            const relatedDiagnostics = nodes[qs.id].dd.some((diagnostic) => !DiagnosticModel.isExcludedByComplaintCategory(algorithm, diagnostic.id));
+            relatedDiagnostics && qs.conditionValue ? nodes[nodeId].counter++ : null;
+          });
+        }
+      });
+    };
+
+    const { nodes } = algorithm;
+    filterByConditionValue(nodes);
+
+    let methodFilteringLodash;
+
+    // Set the right method depending the return format
+    if (formatReturn === 'array') {
+      // Return new array
+      methodFilteringLodash = 'filter';
+    } else if (formatReturn === 'object') {
+      // Return object and keep key
+      methodFilteringLodash = 'pickBy';
+    }
+
+    return _[methodFilteringLodash](nodes, (node) => {
+      // According operator to ALL filters
+      if (operator === 'AND') {
+        // The every() method tests whether all elements in the array pass the test implemented by the provided function.
+        // It returns a Boolean value.
+        return filters.every((filter) => {
+          return counterFilter(filter, node);
+        });
+      }
+      if (operator === 'OR') {
+        // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
+        // It returns a Boolean value.
+        return filters.some((filter) => {
+          return counterFilter(filter, node);
+        });
+      }
+    });
+  }
 }

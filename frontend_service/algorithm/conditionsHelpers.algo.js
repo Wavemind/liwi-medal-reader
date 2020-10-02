@@ -8,18 +8,18 @@ import { store } from '../store';
  * @return {boolean}
  *
  */
-export const calculateCondition = (node, medicalCase = store.getState()) => {
+export const calculateCondition = (algorithm, node, medicalCase = store.getState()) => {
   const { nodes } = medicalCase;
 
   let isExcludedByComplaintCategory = false;
   // We check that all the complaint categories linked to the node are set to true
   switch (typeof node.cc) {
     case 'number':
-      isExcludedByComplaintCategory = nodes[node.cc].booleanValue() === false;
+      isExcludedByComplaintCategory = nodes[node.cc].booleanValue(algorithm) === false;
       break;
     case 'object':
       isExcludedByComplaintCategory = node.cc.some((complaintCategory) => {
-        return nodes[complaintCategory].booleanValue() === false;
+        return nodes[complaintCategory].booleanValue(algorithm) === false;
       });
       break;
   }

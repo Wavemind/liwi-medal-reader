@@ -111,7 +111,7 @@ const InstanceChildrenOnQs = (medicalCase, instance, qs, actions, currentNode) =
       // Reset the child condition value
       if (currentNode.answer === null && childConditionValue === true) {
         // Can be an question or other QS
-        updateConditionValue(medicalCase, child.id, qs.id, false, qs.type);
+        updateConditionValue(algorithm, medicalCase, child.id, qs.id, false, qs.type);
       }
     }
     /**
@@ -140,7 +140,7 @@ const InstanceChildrenOnQs = (medicalCase, instance, qs, actions, currentNode) =
  * @payload value: new condition value
  * @payload type: define if it's a diagnostic or a question sequence
  */
-const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
+const recursiveNodeQs = (algorithm, medicalCase, instance, qs, actions) => {
   let isReset = false;
   /**
    * Initial Var
@@ -155,14 +155,14 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
   /**
    * Get the condition of the instance link
    */
-  let instanceCondition = qsConditionValue && calculateCondition(instance, medicalCase);
+  let instanceCondition = qsConditionValue && calculateCondition(algorithm, instance, medicalCase);
   if (instanceCondition === null) instanceCondition = false;
 
   /**
    * Update condition Value if the instance has to be shown
    */
   if (instanceConditionValue === false && instanceCondition === true) {
-    updateConditionValue(medicalCase, instance.id, qs.id, true, qs.type);
+    updateConditionValue(algorithm, medicalCase, instance.id, qs.id, true, qs.type);
   }
 
   /**
@@ -171,7 +171,7 @@ const recursiveNodeQs = (medicalCase, instance, qs, actions) => {
    */
   if (instanceConditionValue === true && instanceCondition === false) {
     isReset = true;
-    updateConditionValue(medicalCase, instance.id, qs.id, false, qs.type);
+    updateConditionValue(algorithm, medicalCase, instance.id, qs.id, false, qs.type);
   }
 
   /**

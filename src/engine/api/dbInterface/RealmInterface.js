@@ -209,12 +209,11 @@ export default class RealmInterface {
    */
   _generateList = async (data, model, columns) => {
     const algorithm = await getItems('algorithm');
-    const { nodes } = algorithm;
     return data.map((entry) => {
       if (model === 'Patient') {
         return {
           id: entry.id,
-          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
         };
       }
       return {
@@ -222,7 +221,7 @@ export default class RealmInterface {
         status: entry.status,
         clinician: entry.clinician,
         mac_address: entry.mac_address,
-        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
       };
     });
   };
@@ -236,12 +235,11 @@ export default class RealmInterface {
    */
   _generateConsentList = async (data, columns) => {
     const algorithm = await getItems('algorithm');
-    const { nodes } = algorithm;
     return data.map((entry) => {
       return {
         id: entry.id,
         consent_file: entry.consent_file,
-        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
       };
     });
   };

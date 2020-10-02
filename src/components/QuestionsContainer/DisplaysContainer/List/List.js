@@ -20,12 +20,12 @@ export default class List extends React.Component<Props, State> {
    * @param {String} value
    */
   onValueChange = (value: string) => {
-    const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
+    const { app:{algorithm}, setAnswer, setPatientValue, question, patientValueEdit } = this.props;
 
     if (patientValueEdit) {
       setPatientValue(question.id, value);
     } else {
-      setAnswer(question.id, value);
+      setAnswer(algorithm, question.id, value);
     }
   };
 

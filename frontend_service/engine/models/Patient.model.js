@@ -71,9 +71,10 @@ export class PatientModel {
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
-  getLabelFromNode = (nodeId, nodes) => {
+  getLabelFromNode = (nodeId, algorithm) => {
     let displayedValue = '';
     const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
+    const { nodes } = algorithm;
 
     if (currentPatientValue !== undefined) {
       if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
@@ -139,7 +140,7 @@ export class PatientModel {
         status: medicalCase.status,
         clinician: medicalCase.clinician,
         mac_address: medicalCase.mac_address,
-        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, medicalCase.nodes)),
+        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, algorithm)),
       };
     });
   };

@@ -11,7 +11,7 @@ import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 
 export const cl = console.log;
-const algorithm = require('./algorithm.json');
+export const algorithm = require('./algorithm.json');
 
 const medicalCase = new MedicalCaseModel({}, algorithm);
 store.dispatch(setMedicalCase(medicalCase));
@@ -23,7 +23,7 @@ createAppContainer(RootMainNavigator);
  * @param value
  */
 export const jestSetAnswer = (nodeId, value) => {
-  store.dispatch(setAnswer(nodeId, value));
+  store.dispatch(setAnswer(algorithm, nodeId, value));
 };
 
 /**
@@ -90,8 +90,8 @@ export const booleanAnswer = (nodeId) => {
  * @param finalDiagnosticId
  * @returns {boolean}
  */
-export const finalDiagnosticRetained = (finalDiagnosticId) => {
-  const dfs = FinalDiagnosticModel.all();
+export const finalDiagnosticRetained = (finalDiagnosticId,) => {
+  const dfs = FinalDiagnosticModel.all(algorithm);
   return dfs.included.map((df) => df.id).includes(finalDiagnosticId);
 };
 
@@ -192,7 +192,7 @@ export const managementRetained = (managementId) => {
     if (finalDiagnostics[key].managements !== undefined && Object.keys(finalDiagnostics[key].managements).length > 0) {
       Object.keys(finalDiagnostics[key].managements).map((managementKey) => {
         const management = finalDiagnostics[key].managements[managementKey];
-        if (calculateCondition(management, medicalCase) === true && !management.isExcluded(medicalCase)) {
+        if (calculateCondition(algorithm, management, medicalCase) === true && !management.isExcluded(medicalCase)) {
           managements.push(management);
         }
       });

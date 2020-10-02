@@ -19,12 +19,14 @@ type Props = NavigationScreenProps & {};
 type State = {};
 
 export default class DiagnosesStrategy extends Component<Props, State> {
-  componentDidMount() {
-    const {
-      app: { t },
-    } = this.props;
+  constructor(props) {
+    super(props);
 
-    NavigationService.setParamsAge(t('navigation:diagnosticsstrategy'));
+    const {
+      app: { t, algorithm },
+    } = props;
+
+    NavigationService.setParamsAge(algorithm, t('navigation:diagnosticsstrategy'));
   }
 
   render() {

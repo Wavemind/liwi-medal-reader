@@ -75,18 +75,17 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     const {
       setDiagnoses,
       medicalCase: { diagnoses },
-      medicalCase,
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
     const { customDiagnoses } = this.state;
 
-    const finalDiagnostics = FinalDiagnosticModel.all();
+    const finalDiagnostics = FinalDiagnosticModel.all(algorithm);
     const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
 
     return (
       <React.Fragment>
         <Text customTitle style={styles.noMarginTop}>
-          {t('diagnoses:proposed')} {medicalCase.algorithm_name}
+          {t('diagnoses:proposed')} {algorithm.algorithm_name}
         </Text>
         {finalDiagnostics.included.length > 0 ? (
           finalDiagnostics.included.map((finalDiagnostic) => <FinalDiagnostic {...finalDiagnostic} key={finalDiagnostic.id} setDiagnoses={setDiagnoses} />)

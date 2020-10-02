@@ -2,37 +2,35 @@
 
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import { displayFormats, medicalCaseStatus, nodeTypes, stages } from '../../constants';
+import { categories, displayFormats, medicalCaseStatus, nodeTypes, stages } from '../../constants';
 import { getItem } from '../../../src/engine/api/LocalStorage';
 import Database from '../../../src/engine/api/Database';
 import { differenceNodes } from '../../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
 import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
-import { NodesModel } from './Nodes.model';
-import { DiagnosticModel } from './Diagnostic.model';
+import { NodeModel } from './Node.model';
+import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
+import { QuestionsSequenceModel } from './QuestionsSequenceModel';
+import { QuestionModel } from './Question.model';
+import { ManagementModel } from './Management.model';
+import { DrugModel } from './Drug.model';
+import { FinalDiagnosticModel } from './FinalDiagnostic.model';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
     if ((this.id === undefined || this.id === null) && props?.id === undefined) {
+      console.log('avant',currentAlgorithm.nodes)
       this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
       this.activities = [];
-      this.algorithm_name = currentAlgorithm.algorithm_name;
-      this.version_name = currentAlgorithm.version_name;
       this.version_id = currentAlgorithm.version_id;
-      this.algorithm_id = currentAlgorithm.algorithm_id;
-      this.diagnostics = currentAlgorithm.diagnostics;
-      this.nodes = { ...currentAlgorithm.nodes };
-      this.triage = currentAlgorithm.triage;
+      this.nodes = MedicalCaseModel.instantiateNodes(currentAlgorithm.nodes) // TODO new nodes
+      this.triage = currentAlgorithm.triage; //  TODO Voir avec Manu
       this.synchronized_at = null;
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
-      this.mobile_config = currentAlgorithm.mobile_config;
-      this.config = currentAlgorithm.config;
-      this.main_data_medical_case_id = null;
-      this.complaintCategories = [];
       this.isNewCase = true;
       this.isEligible = true;
       this.comment = "";
@@ -121,17 +119,11 @@ export class MedicalCaseModel {
    * @private
    */
   _assignValues(data) {
-    this.mobile_config = data.mobile_config;
-    this.config = data.config;
     this.version_id = data.version_id;
-    this.algorithm_id = data.algorithm_id;
-    this.algorithm_name = data.algorithm_name;
-    this.diagnostics = data.diagnostics;
     this.nodes = data.nodes;
-    this.triage = data.triage;
+    this.triage = data.triage; // Todo Manu
     this.consent = data.consent;
     this.isEligible = data.isEligible;
-    this.complaintCategories = data.complaintCategories;
     this.metaData = data.metaData;
     this.diagnoses = data.diagnoses;
     this.comment = data.comment;
@@ -332,9 +324,9 @@ export class MedicalCaseModel {
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
-  getLabelFromNode = (nodeId, nodes) => {
+  getLabelFromNode = (nodeId, algorithm) => {
     let displayedValue = '';
-    const currentNode = this.nodes[nodeId];
+    const currentNode = algorithm.nodes[nodeId];
 
     if (currentNode !== undefined) {
       if (currentNode.display_format === displayFormats.date) {
@@ -375,17 +367,93 @@ export class MedicalCaseModel {
     return JSON.stringify({ ...medicalCase, patient: null, json: '{}' });
   };
 
+  /**
+   * Create a copy of the medical case
+   * @param medicalCase - The medical case to copy
+   * @returns {{nodes: [NodeModel]}}
+   */
   static copyMedicalCase = (medicalCase) => {
-    const diagnostics = {};
-    Object.keys(medicalCase.diagnostics).forEach((i) => {
-      diagnostics[i] = new DiagnosticModel({ ...medicalCase.diagnostics[i] });
-    });
     return {
       ...medicalCase,
-      nodes: new NodesModel(JSON.parse(JSON.stringify(medicalCase.nodes))),
-      diagnostics,
     };
   };
+
+  /**
+   * Instantiate all the nodes received
+   *
+   * @params nodes : nodes to instantiate
+   */
+  static instantiateNodes(nodes) {
+    let hash = {};
+console.log('nodes',nodes);
+    Object.keys(nodes).forEach((i) => {
+      const node = nodes[i];
+      console.log("Je passe ici")
+      hash = {
+        ...hash,
+        [i]: MedicalCaseModel.instantiateNode(node),
+      }
+    });
+console.log('le hash', hash)
+    return hash;
+  }
+
+  /**
+   * Node factory
+   * Instantiate new Node base on node type
+   *
+   * @params node : node to instantiate
+   */
+  static instantiateNode(node) {
+    let instantiatedNode;
+
+    if (node instanceof NodeModel) {
+      return node;
+    }
+
+    // Based on the node type
+    switch (node.type) {
+      case nodeTypes.questionsSequence:
+        switch (node.category) {
+          case categories.scored:
+            instantiatedNode = new QuestionsSequenceScoredModel({
+              ...node,
+              medicalCase: this,
+            });
+            break;
+          default:
+            instantiatedNode = new QuestionsSequenceModel({
+              ...node,
+              medicalCase: this,
+            });
+            break;
+        }
+        break;
+      case nodeTypes.question:
+        instantiatedNode = new QuestionModel({
+          ...node,
+          medicalCase: this,
+        });
+        break;
+      case nodeTypes.healthCare:
+        switch (node.category) {
+          case categories.management:
+            instantiatedNode = new ManagementModel({ ...node });
+            break;
+          case categories.drug:
+            instantiatedNode = new DrugModel({ ...node });
+            break;
+        }
+        break;
+      case nodeTypes.finalDiagnostic:
+        instantiatedNode = new FinalDiagnosticModel({ ...node });
+        break;
+      default:
+        break;
+    }
+
+    return instantiatedNode;
+  }
 }
 
 MedicalCaseModel.schema = {
