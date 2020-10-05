@@ -8,7 +8,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    setAnswer: (algorithm, index, value) => dispatch(setAnswer(algorithm, index, value)),
+    setAnswer: (algorithm, index, newValue) => dispatch(setAnswer(algorithm, index, newValue)),
     setPatientValue: (index, value) => dispatch(setPatientValue(index, value)),
     setEstimable: (index, value) => dispatch(setEstimable(index, value)),
   };

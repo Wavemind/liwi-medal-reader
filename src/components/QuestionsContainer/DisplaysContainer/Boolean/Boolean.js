@@ -45,10 +45,8 @@ export default class Boolean extends React.Component<Props, State> {
       question,
       question: { answer },
     } = this.props;
-    console.log(algorithm);
 
     const currentNode = algorithm.nodes[question.id];
-    console.log(currentNode);
 
     const idYes = Number(Object.keys(currentNode.answers)[0]);
     const idNo = Number(Object.keys(currentNode.answers)[1]);
@@ -75,7 +73,7 @@ export default class Boolean extends React.Component<Props, State> {
       patientValueEdit,
     } = this.props;
     const currentNode = algorithm.nodes[question.id];
-    console.log(currentNode);
+
     const idYes = Number(Object.keys(currentNode.answers)[0]);
     const idNo = Number(Object.keys(currentNode.answers)[1]);
     let newAnswer = Number(answer);

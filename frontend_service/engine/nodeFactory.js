@@ -1,3 +1,5 @@
+import { valueFormats } from '../constants';
+
 export const generateQuestion = (node) => {
   const { answer = null, counter = 0, dd = [], df = [], qs = [], value = '', estimable = false, estimableValue = 'measured', validationMessage = null, validationType = null } = node;
 
@@ -24,7 +26,6 @@ export const generateQuestion = (node) => {
 
 export const generateQuestionsSequence = (node) => {
   const { answer = null, dd = [], qs = [], df = [] } = node;
-
   return {
     ..._generateCommon(node),
     answer,

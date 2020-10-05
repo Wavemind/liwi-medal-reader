@@ -8,7 +8,7 @@ import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/Diag
 import LiwiLoader from '../../../utils/LiwiLoader';
 import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessement } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessment } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import Boolean from '../../../components/QuestionsContainer/DisplaysContainer/Boolean';
 
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
@@ -35,7 +35,7 @@ export default class Triage extends React.Component<Props, State> {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithm },
       focus,
       navigation,
     } = this.props;
@@ -73,7 +73,7 @@ export default class Triage extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
-                <Questions questions={questionsFirstLookAssessement()} selectedPage={selectedPage} pageIndex={0} />
+                <Questions questions={questionsFirstLookAssessment(algorithm)} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -103,7 +103,7 @@ export default class Triage extends React.Component<Props, State> {
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
-                <Questions questions={questionsBasicMeasurements()} selectedPage={selectedPage} pageIndex={2} />
+                <Questions questions={questionsBasicMeasurements(algorithm)} selectedPage={selectedPage} pageIndex={2} />
               </Suspense>
             ) : (
               <LiwiLoader />

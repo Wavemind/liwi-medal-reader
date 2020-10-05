@@ -21,6 +21,8 @@ import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
  */
 export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   let answer = null;
+  let validationMessage = null;
+  let validationType = null;
   const currentNode = algorithm.nodes[mcNode.id];
 
   if (currentNode.category !== categories.basicMeasurement) {
@@ -66,9 +68,14 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       default:
         // eslint-disable-next-line no-console
         if (__DEV__) {
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${mcNode.display_format}`, this);
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${currentNode.value_format}`, currentNode);
         }
-        answer = value;
+        if (value !== null) {
+          answer = Number(value);
+        } else {
+          // Set the new answer to null for reset
+          answer = value;
+        }
         break;
     }
   } else {
@@ -80,37 +87,40 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
     if (value !== null && (value < currentNode.min_value_warning || value > currentNode.max_value_warning)) {
       // Warning
       if (value < currentNode.min_value_warning && currentNode.min_value_warning !== null) {
-        mcNode.validationMessage = currentNode.min_message_warning;
+        validationMessage = currentNode.min_message_warning;
       }
 
       if (value > currentNode.max_value_warning && currentNode.max_value_warning !== null) {
-        mcNode.validationMessage = currentNode.max_message_warning;
+        validationMessage = currentNode.max_message_warning;
       }
 
-      mcNode.validationType = 'warning';
+      validationType = 'warning';
 
       // Error
       if (value < currentNode.min_value_error || value > currentNode.max_value_error) {
         if (value < currentNode.min_value_error && currentNode.min_value_error !== null) {
-          mcNode.validationMessage = currentNode.min_message_error;
+          validationMessage = currentNode.min_message_error;
         }
 
         if (value > mcNode.max_value_error && mcNode.max_value_error !== null) {
-          mcNode.validationMessage = currentNode.max_message_error;
+          validationMessage = currentNode.max_message_error;
         }
-        mcNode.validationType = 'error';
+        validationType = 'error';
       }
     } else {
-      mcNode.validationMessage = null;
-      mcNode.validationType = null;
+      validationMessage = null;
+      validationType = null;
     }
   }
 
   // Assign final value
-  mcNode.answer = answer;
-  mcNode.answer_stage = NavigationService.getCurrentRoute().routeName;
-  mcNode.value = value;
-  return mcNode;
+  return {
+    answer,
+    value,
+    answer_stage: NavigationService.getCurrentRoute().routeName,
+    validationMessage,
+    validationType,
+  };
 };
 
 // TODO comment
@@ -157,11 +167,11 @@ export const nodeFilterBy = (medicalCase, algorithm, filters, operator = 'OR', f
       if (type === 'Question') {
         nodes[nodeId].counter = 0;
         nodes[nodeId].dd.forEach((dd) => {
-          !diagnosticIsExcludedByComplaintCategory(algorithm, dd.id) && dd.conditionValue ? nodes[nodeId].counter++ : null;
+          !diagnosticIsExcludedByComplaintCategory(algorithm, dd.id, medicalCase) && dd.conditionValue ? nodes[nodeId].counter++ : null;
         });
         // Map trough PS if it is in an another PS itself
         nodes[nodeId].qs.forEach((qs) => {
-          const relatedDiagnostics = nodes[qs.id].dd.some((diagnostic) => !diagnosticIsExcludedByComplaintCategory(algorithm, diagnostic.id));
+          const relatedDiagnostics = nodes[qs.id].dd.some((diagnostic) => !diagnosticIsExcludedByComplaintCategory(algorithm, diagnostic.id, medicalCase));
           relatedDiagnostics && qs.conditionValue ? nodes[nodeId].counter++ : null;
         });
       }

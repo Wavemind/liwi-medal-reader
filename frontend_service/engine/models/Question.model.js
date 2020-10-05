@@ -47,11 +47,14 @@ export const questionCalculateFormula = (algorithm, medicalCase, mcNode) => {
 
     // Get value of node
     const mcNodeInBracket = medicalCase.nodes[id];
+    const currentNodeInBracket = algorithm.nodes[id];
+
     if (mcNodeInBracket.value === null || (mcNodeInBracket.value === 0 && mcNodeInBracket.answer === null)) {
       ready = false;
       return item;
     }
-    switch (currentNode.value_format) {
+
+    switch (currentNodeInBracket.value_format) {
       case valueFormats.date:
         return moment().diff(moment(mcNodeInBracket.value).toDate(), item.search('ToMonth') > 0 ? 'months' : 'days');
       default:
@@ -60,7 +63,7 @@ export const questionCalculateFormula = (algorithm, medicalCase, mcNode) => {
   };
   // Replace every bracket in the formula with it's value
   const formula = currentNode.formula.replace(findBracketId, replaceBracketToValue);
-
+  console.log(currentNode, formula);
   if (ready) {
     return eval(formula);
   }

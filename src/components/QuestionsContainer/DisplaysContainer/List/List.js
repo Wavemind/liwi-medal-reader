@@ -5,7 +5,7 @@ import { Picker, View } from 'native-base';
 import { styles } from './List.style';
 
 export default class List extends React.Component {
-  shouldComponentUpdate(nextProps){
+  shouldComponentUpdate(nextProps) {
     const { question } = this.props;
     return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
@@ -14,7 +14,7 @@ export default class List extends React.Component {
    * Set value in store
    * @param {String} value
    */
-  onValueChange = (value: string) => {
+  onValueChange = (value) => {
     const {
       app: { algorithm },
       setAnswer,

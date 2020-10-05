@@ -6,9 +6,7 @@ import 'reflect-metadata';
 
 import { actions } from '../../actions/types.actions';
 import { categories } from '../../constants';
-import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
-import { QuestionModel } from '../../engine/models/Question.model';
 import { nodeUpdateAnswer } from '../../engine/models/Node.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
@@ -343,12 +341,22 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.SET_ANSWER)
   setAnswer(state, action) {
-    const { algorithm, nodeId, value } = action.payload;
+    const { algorithm, nodeId, newValue } = action.payload;
     // Instantiate new object with answered question with new answer value
-    state.nodes[nodeId] = nodeUpdateAnswer(value, algorithm, state.nodes[nodeId]);
+    const { answer, answer_stage, value, validationMessage, validationType } = nodeUpdateAnswer(newValue, algorithm, state.nodes[nodeId]);
     return {
       ...state,
-      nodes: state.nodes,
+      nodes: {
+        ...state.nodes,
+        [nodeId]: {
+          ...state.nodes[nodeId],
+          answer,
+          answer_stage,
+          value,
+          validationMessage,
+          validationType,
+        },
+      },
     };
   }
 
@@ -362,13 +370,15 @@ class MedicalCaseReducer extends ReducerClass {
   setEstimable(state, action) {
     const { index, value } = action.payload;
 
-    // Instantiate new object with answered question with new answer value
-    state.nodes[index] = MedicalCaseModel.instantiateNode({ ...state.nodes[index] });
-    state.nodes[index].estimableValue = value;
-    // TODO: Not sure
     return {
       ...state,
-      nodes: state.nodes,
+      nodes: {
+        ...state.nodes,
+        [index]: {
+          ...state.nodes[index],
+          estimableValue: value,
+        },
+      },
     };
   }
 
@@ -382,6 +392,7 @@ class MedicalCaseReducer extends ReducerClass {
   setPatientValue(state, action) {
     const { index, value } = action.payload;
 
+    // TODO Steuplé !
     const question = new QuestionModel(state.algorithm.nodes[index]);
     question.updateAnswer(value);
 
@@ -433,7 +444,7 @@ class MedicalCaseReducer extends ReducerClass {
 
     // Instantiate new object with id unavailable answer
     // reset value to default
-    state.nodes[nodeId] ={
+    state.nodes[nodeId] = {
       ...state.nodes[nodeId],
       answer: value,
       value: null,
@@ -532,7 +543,7 @@ class MedicalCaseReducer extends ReducerClass {
       return initialState;
     }
 
-    const modelsMedicalCase = action.payload.nodes;
+    const modelsMedicalCase = action.payload;
 
     modelsMedicalCase.modal.open = false;
     return {

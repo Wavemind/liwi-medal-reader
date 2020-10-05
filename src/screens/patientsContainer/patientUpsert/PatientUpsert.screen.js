@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Col, Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 
 import uuid from 'react-native-uuid';
 import NavigationService from '../../../engine/navigation/Navigation.service';
@@ -21,10 +20,7 @@ import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
 import { nodeFilterBy } from '../../../../frontend_service/engine/models/Node.model';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class PatientUpsert extends React.Component<Props, State> {
+export default class PatientUpsert extends React.Component {
   state = {
     errors: {},
     patient: null,
@@ -88,12 +84,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
    * Calculate age in year of the patient
    */
   renderEligibilityMessage = () => {
-    const { medicalCase } = this.props;
+    const { app: {algorithm}, medicalCase } = this.props;
 
     if (!medicalCase.isEligible) {
       return (
         <View style={styles.warning}>
-          <Text size-auto>{medicalCase.config.age_limit_message}</Text>
+          <Text size-auto>{algorithm.config.age_limit_message}</Text>
         </View>
       );
     }

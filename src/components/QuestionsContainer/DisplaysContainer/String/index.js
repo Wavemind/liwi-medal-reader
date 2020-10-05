@@ -9,7 +9,7 @@ const mapStateToProps = (medicalCase) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     setPatientValue: (index, value) => dispatch(setPatientValue(index, value)),
-    setAnswer: (algorithm, index, value) => dispatch(setAnswer(algorithm, index, value)),
+    setAnswer: (algorithm, index, newValue) => dispatch(setAnswer(algorithm, index, newValue)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(String);

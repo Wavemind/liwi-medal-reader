@@ -9,7 +9,7 @@ import Date from '../DisplaysContainer/Date';
 import List from '../DisplaysContainer/List';
 import Formula from '../DisplaysContainer/Formula';
 
-export default class WrapperQuestion extends React.Component<Props, State> {
+export default class WrapperQuestion extends React.Component {
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     const { question } = this.props;

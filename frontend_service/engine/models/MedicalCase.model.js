@@ -15,7 +15,7 @@ export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
     if ((this.id === undefined || this.id === null) && props?.id === undefined) {
       this.id = uuid.v4();
-      this.nodes = currentAlgorithm.nodes;
+      this.nodes = MedicalCaseModel.instantiateNodes(currentAlgorithm.nodes);
       this.activities = [];
       this.version_id = currentAlgorithm.version_id;
       this.triage = currentAlgorithm.triage; //  TODO Voir avec Manu
@@ -358,6 +358,23 @@ export class MedicalCaseModel {
   static generateJSON = (medicalCase) => {
     return JSON.stringify({ ...medicalCase, patient: null, json: '{}' });
   };
+
+  /**
+   * Instantiate all the nodes received
+   *
+   * @params nodes : nodes to instantiate
+   */
+  static instantiateNodes(nodes) {
+    let hash = {};
+    Object.keys(nodes).forEach((i) => {
+      const node = nodes[i];
+      hash = {
+        ...hash,
+        [i]: MedicalCaseModel.instantiateNode(node),
+      };
+    });
+    return hash;
+  }
 
   /**
    * Node factory

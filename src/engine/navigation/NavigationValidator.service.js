@@ -7,7 +7,7 @@ import i18n from '../../utils/i18n';
 import {
   questionsBasicMeasurements,
   questionsComplaintCategory,
-  questionsFirstLookAssessement,
+  questionsFirstLookAssessment,
   questionsMedicalHistory,
   questionsPhysicalExam,
   questionsTests,
@@ -30,7 +30,7 @@ const screens = [
       complaintCategories: { answer: 'not_null', initialPage: 1 },
       basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
-    generateQuestions: [questionsFirstLookAssessement, questionsComplaintCategory, questionsBasicMeasurements],
+    generateQuestions: [questionsFirstLookAssessment, questionsComplaintCategory, questionsBasicMeasurements],
   },
   {
     key: 'Consultation',

@@ -9,7 +9,7 @@ import { questionBooleanValue } from './Question.model';
  * @returns {boolean}
  */
 // TODO: FIXE COMMENT
-export const diagnosticIsExcludedByComplaintCategory = (algorithm, diagnosticId, medicalCase = store.getState()) => {
+export const diagnosticIsExcludedByComplaintCategory = (algorithm, diagnosticId, medicalCase) => {
   const complaintCategory = algorithm.diagnostics[diagnosticId].complaint_category;
   // TODO: FIXE THIS SHITTTT
   // console.log(medicalCase);
