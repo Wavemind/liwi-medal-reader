@@ -3,7 +3,7 @@
 import find from 'lodash/find';
 import * as _ from 'lodash';
 import reduce from 'lodash/reduce';
-import { NodeModel } from './Node.model';
+import { nodeFilterByType } from './Node.model';
 import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 import { nodeTypes } from '../../constants';
@@ -235,7 +235,7 @@ export class FinalDiagnosticModel extends NodeModel {
     const medicalCase = store.getState();
     const { nodes } = algorithm;
 
-    const finalDiagnostics = NodeModel.filterByType(nodes, nodeTypes.finalDiagnostic);
+    const finalDiagnostics = nodeFilterByType(nodes, nodeTypes.finalDiagnostic);
 
     const finalDiagnosticsNull = [];
     const finalDiagnosticsTrue = [];

@@ -11,7 +11,7 @@ import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Medicines.style';
 import MedicineSelection from '../../../../components/MedicineSelection';
-import { NodeModel } from '../../../../../frontend_service/engine/models/Node.model';
+import { nodeFilterBy } from '../../../../../frontend_service/engine/models/Node.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -80,7 +80,7 @@ export default class Medicines extends Component<Props, State> {
       app: { t, algorithm },
     } = this.props;
 
-    const allHealthCares = NodeModel.filterBy(state$,
+    const allHealthCares = nodeFilterBy(state$,
       algorithm,
       [
         {

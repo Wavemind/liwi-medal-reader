@@ -19,7 +19,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
-import { NodeModel } from '../../../../frontend_service/engine/models/Node.model';
+import { nodeFilterBy } from '../../../../frontend_service/engine/models/Node.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -194,7 +194,7 @@ export default class PatientUpsert extends React.Component<Props, State> {
     }
 
     // Get nodes to display in registration stage
-    const extraQuestions = NodeModel.filterBy(
+    const extraQuestions = nodeFilterBy(
       medicalCase,
       algorithm,
       [

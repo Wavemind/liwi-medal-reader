@@ -8,13 +8,13 @@ import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
-import { NodeModel } from '../engine/models/Node.model';
 import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
 import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { calculateCondition } from './conditionsHelpers.algo';
 import { DiagnosticModel } from '../engine/models/Diagnostic.model';
-import { MedicalCaseModel } from '../engine/models/MedicalCase.model';
 import { questionCalculateFormula } from '../engine/models/Question.model';
+import { questionSequenceCalculateCondition } from '../engine/models/QuestionsSequenceModel';
+import { nodeUpdateAnswer } from '../engine/models/Node.model';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -159,7 +159,7 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
 
   // If ready we calculate condition of the QS
   if (statusQs) {
-    questionsSequenceCondition = currentQuestionsSequence.calculateCondition(algorithm, medicalCase);
+    questionsSequenceCondition = questionSequenceCalculateCondition(algorithm, medicalCase, currentQuestionsSequence);
   }
 
   if (questionsSequenceCondition === true) {
@@ -172,7 +172,7 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
 
   // If the new answer of this QS is different from the older, we change it
   if (answerId !== currentQuestionsSequence.answer) {
-    medicalCase.nodes[currentQuestionsSequence.id].updateAnswer(answerId);
+    medicalCase.nodes[currentQuestionsSequence.id] = nodeUpdateAnswer(answerId, medicalCase.nodes[currentQuestionsSequence.id]);
     processUpdatedNode(algorithm, medicalCase, currentQuestionsSequence.id);
   }
 };
@@ -196,7 +196,7 @@ const referencedNodeAction = (algorithm, medicalCase, nodeId) => {
       break;
   }
   if (value !== currentNode.value) {
-    medicalCase.nodes[currentNode.id].updateAnswer(value);
+    medicalCase.nodes[currentNode.id] = nodeUpdateAnswer(value, medicalCase.nodes[currentNode.id]);
     processUpdatedNode(algorithm, medicalCase, currentNode.id);
   }
 };
@@ -260,10 +260,7 @@ export const epicSetAnswer = (action$, state$) =>
     ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
     mergeMap((action) => {
       const { nodeId, algorithm } = action.payload;
-      const medicalCase = {
-        ...state$.value,
-        nodes: JSON.parse(JSON.stringify(state$.value.nodes)),
-      };
+      const medicalCase = state$.value;
 
       processUpdatedNode(algorithm, medicalCase, nodeId);
 
