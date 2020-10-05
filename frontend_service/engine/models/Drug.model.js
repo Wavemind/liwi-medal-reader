@@ -1,5 +1,5 @@
 // @flow
-import { HealthCaresModel } from './HealthCares.model';
+import {healthCareIsExcluded, HealthCaresModel} from './HealthCares.model';
 import { medicationForms } from '../../constants';
 import { store } from '../../store';
 import { roundSup } from '../../../src/utils/swissKnives';
@@ -168,7 +168,7 @@ export class DrugModel extends HealthCaresModel {
           Object.keys(finalDiagnostic.drugs).forEach((drugId) => {
             const diagnoseDrug = finalDiagnostic.drugs[drugId];
             const drug = medicalCase.nodes[drugId];
-            if (diagnoseDrug.agreed === true && calculateCondition(algorithm, diagnoseDrug, medicalCase) === true && !drug.isExcluded(medicalCase, algorithm)) {
+            if (diagnoseDrug.agreed === true && calculateCondition(algorithm, diagnoseDrug, medicalCase) === true && !healthCareIsExcluded(medicalCase, algorithm,drug)) {
               if (drugs[drugId] === undefined) {
                 // New one so add it
                 drugs[drugId] = finalDiagnostic?.drugs[drugId];

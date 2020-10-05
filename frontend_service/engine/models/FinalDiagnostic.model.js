@@ -7,6 +7,7 @@ import { nodeFilterByType } from './Node.model';
 import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 import { nodeTypes } from '../../constants';
+import {healthCareIsExcluded} from './HealthCares.model';
 
 export class FinalDiagnosticModel extends NodeModel {
   /**
@@ -114,7 +115,6 @@ export class FinalDiagnosticModel extends NodeModel {
     return reduceConditionArrayBoolean(allNodesAnsweredInDd);
   };
 
-
   /**
    * Calculate condition to display a final diagnostic
    * Verify if the final diagnostic excluded an another one
@@ -166,7 +166,7 @@ export class FinalDiagnosticModel extends NodeModel {
 
     Object.keys(this.drugs).forEach((drugId) => {
       const drug = medicalCase.nodes[drugId];
-      if (this.parentsConditionValue(parents, this.drugs[drugId].top_conditions, medicalCase) && !drug.isExcluded(medicalCase)) {
+      if (this.parentsConditionValue(parents, this.drugs[drugId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase,drug)) {
         drugsAvailable.push(drug);
       }
     });
@@ -187,7 +187,7 @@ export class FinalDiagnosticModel extends NodeModel {
 
     Object.keys(this.managements).forEach((managementId) => {
       const management = medicalCase.nodes[managementId];
-      if (this.parentsConditionValue(parents, this.managements[managementId].top_conditions, medicalCase) && !management.isExcluded(medicalCase)) {
+      if (this.parentsConditionValue(parents, this.managements[managementId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase, management)) {
         managementsAvailable.push(management);
       }
     });
