@@ -6,7 +6,10 @@ import { Button, Icon, Input, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
 
 import { styles } from './FinalDiagnosticsList.style';
-import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
+import {
+  finalDiagnosticAll,
+  FinalDiagnosticModel,
+} from '../../../frontend_service/engine/models/FinalDiagnostic.model';
 import FinalDiagnostic from '../FinalDiagnostic';
 import { liwiColors } from '../../utils/constants';
 
@@ -79,7 +82,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     } = this.props;
     const { customDiagnoses } = this.state;
 
-    const finalDiagnostics = FinalDiagnosticModel.all(algorithm);
+    const finalDiagnostics = finalDiagnosticAll(algorithm);
     const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
 
     return (

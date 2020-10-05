@@ -4,7 +4,7 @@ import { Icon, Picker, Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
-import { DrugModel } from '../../../../../frontend_service/engine/models/Drug.model';
+import { drugAgreed, drugDoses } from '../../../../../frontend_service/engine/models/Drug.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -65,7 +65,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
   _renderFormulation = (instance, selected, onSelect) => {
     const {
       medicalCase: { nodes },
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
     return (
@@ -79,7 +79,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
           <Picker note mode="dropdown" style={styles.pickerContent} selectedValue={selected} onValueChange={onSelect}>
             <Picker.Item label={t('application:select')} value={null} />
             {nodes[instance.id]?.formulations.map((f, index) => {
-              const preCalculed = nodes[instance.id].getDrugDoses(index);
+              const preCalculed = drugDoses(index, algorithm)
               let string = '';
               let isPossible = true;
               if (preCalculed.doseResult !== null) {
@@ -128,10 +128,10 @@ export default class MedicinesFormulations extends Component<Props, State> {
   render() {
     const {
       medicalCase: { nodes },
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
-    const drugs = DrugModel.getAgreed();
+    const drugs = drugAgreed(null, algorithm);
 
     const generateFormulation = () =>
       Object.keys(drugs).map((formulation) => {

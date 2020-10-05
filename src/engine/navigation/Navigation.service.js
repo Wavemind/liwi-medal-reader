@@ -6,6 +6,7 @@ import { store } from '../../../frontend_service/store';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import Database from '../api/Database';
+import { questionDisplayValue } from '../../../frontend_service/engine/models/Question.model';
 
 let _navigator;
 
@@ -64,9 +65,9 @@ function setParamsAge(algorithm, name = '') {
   const { mobile_config } = algorithm;
 console.log(algorithm)
 console.log(state$)
-  const left = mobile_config.left_top_question_id !== null ? nodes[mobile_config.left_top_question_id]?.displayValue(algorithm) : '';
-  const first_right = mobile_config.first_top_right_question_id !== null ? nodes[mobile_config.first_top_right_question_id]?.displayValue(algorithm) : '';
-  const second_right = mobile_config.second_top_right_question_id !== null ? nodes[mobile_config.second_top_right_question_id]?.displayValue(algorithm) : '';
+  const left = mobile_config.left_top_question_id !== null ? questionDisplayValue(algorithm, nodes[mobile_config.left_top_question_id]) : '';
+  const first_right = mobile_config.first_top_right_question_id !== null ? questionDisplayValue(algorithm, nodes[mobile_config.first_top_right_question_id]) : '';
+  const second_right = mobile_config.second_top_right_question_id !== null ? questionDisplayValue(algorithm, nodes[mobile_config.second_top_right_question_id]) : '';
 
   const headerRight = `${left} | ${first_right} ${second_right}`;
   const currentRoute = getCurrentRoute();

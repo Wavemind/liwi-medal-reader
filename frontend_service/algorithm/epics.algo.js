@@ -9,12 +9,12 @@ import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 import { NodeModel } from '../engine/models/Node.model';
-import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
+import { finalDiagnosticAgreed, FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
 import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { calculateCondition } from './conditionsHelpers.algo';
-import { DiagnosticModel } from '../engine/models/Diagnostic.model';
+import { diagnosticIsExcludedByComplaintCategory, DiagnosticModel } from '../engine/models/Diagnostic.model';
 import { MedicalCaseModel } from '../engine/models/MedicalCase.model';
-import { questionCalculateFormula } from '../engine/models/Question.model';
+import { questionCalculateFormula, questionCalculateReference } from '../engine/models/Question.model';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -30,7 +30,7 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
   const parentsNodes = getParentsNodes(medicalCase, diagnosticId, nodeId);
 
   // If the complaint category linked to the diagnostic is not selected we set the condition value to false
-  if (DiagnosticModel.isExcludedByComplaintCategory(algorithm, diagnosticId, medicalCase)) {
+  if (diagnosticIsExcludedByComplaintCategory(algorithm, diagnosticId, medicalCase)) {
     updateConditionValue(algorithm, medicalCase, nodeId, diagnosticId, false, diagnostic.type);
   } else {
     // some() – returns true if the function returns true for at least one of the items
@@ -192,7 +192,7 @@ const referencedNodeAction = (algorithm, medicalCase, nodeId) => {
       value = questionCalculateFormula(algorithm, medicalCase, currentNode);
       break;
     case displayFormats.reference:
-      value = currentNode.calculateReference(medicalCase);
+      value = questionCalculateReference(algorithm, medicalCase, currentNode);
       break;
   }
   if (value !== currentNode.value) {
@@ -285,7 +285,7 @@ export const epicSetDiagnoses = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_DIAGNOSES, actions.SET_ANSWER),
     mergeMap((action) => {
-      const finalDiagnostics = FinalDiagnosticModel.getAgreed(state$.value);
+      const finalDiagnostics = finalDiagnosticAgreed(state$.value);
 
       if (finalDiagnostics.length > 0) {
         const medicalCase = {

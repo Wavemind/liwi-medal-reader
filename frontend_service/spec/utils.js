@@ -7,7 +7,11 @@ import { store } from '../store';
 import { setAnswer, setMedicalCase, setDiagnoses, setMedicine } from '../actions/creators.actions';
 import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
-import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
+import {
+  finalDiagnosticAll,
+  finalDiagnosticGetDrugs,
+  FinalDiagnosticModel,
+} from '../engine/models/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 
 export const cl = console.log;
@@ -91,7 +95,7 @@ export const booleanAnswer = (nodeId) => {
  * @returns {boolean}
  */
 export const finalDiagnosticRetained = (finalDiagnosticId,) => {
-  const dfs = FinalDiagnosticModel.all(algorithm);
+  const dfs = finalDiagnosticAll(algorithm);
   return dfs.included.map((df) => df.id).includes(finalDiagnosticId);
 };
 
@@ -170,7 +174,7 @@ export const drugRetained = (drugId) => {
   let drugs = [];
 
   Object.keys(finalDiagnostics).forEach((key) => {
-    drugs = drugs.concat(state$.nodes[key].getDrugs(state$));
+    drugs = drugs.concat(finalDiagnosticGetDrugs(state$, state$.nodes[key]));
   });
   return drugs.some((drug) => drug.id === drugId);
 };

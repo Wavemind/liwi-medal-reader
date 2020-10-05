@@ -9,6 +9,7 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import FinalDiagnosticCards from '../../../components/FinalDiagnosticCards';
+import { questionDisplayValue } from '../../../../frontend_service/engine/models/Question.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -48,11 +49,11 @@ export default class Summary extends React.Component<Props, State> {
         <BackButton />
         <View style={styles.patientContainer}>
           <View flex>
-            <Text size-auto>{nodes[medicalCase.mobile_config.left_top_question_id].displayValue(algorithm)}</Text>
+            <Text size-auto>{questionDisplayValue(algorithm, nodes[medicalCase.mobile_config.left_top_question_id])}</Text>
           </View>
           <View style={styles.alignRight}>
             <Text size-auto>
-              {nodes[medicalCase.mobile_config.first_top_right_question_id].displayValue(algorithm)} {nodes[medicalCase.mobile_config.second_top_right_question_id].displayValue(algorithm)}
+              {questionDisplayValue(algorithm, nodes[medicalCase.mobile_config.first_top_right_question_id])} {questionDisplayValue(algorithm, nodes[medicalCase.mobile_config.second_top_right_question_id])}
             </Text>
           </View>
         </View>

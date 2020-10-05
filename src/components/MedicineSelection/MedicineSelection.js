@@ -5,13 +5,17 @@ import { Body, Card, CardItem, Text, View } from 'native-base';
 import Medicine from '../Medicine';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './MedicineSelection.style';
+import {
+  finalDiagnosticGetDrugs,
+  finalDiagnosticGetManagements,
+} from '../../../frontend_service/engine/models/FinalDiagnostic.model';
 
 export default function MedicineSelection(props) {
   const { t, diagnosesFinalDiagnostic, medicalCase, diagnoseKey } = props;
 
   const finalDiagnostic = medicalCase.nodes[diagnosesFinalDiagnostic.id];
-  const drugs = finalDiagnostic.getDrugs(medicalCase);
-  const managements = finalDiagnostic.getManagements(medicalCase);
+  const drugs = finalDiagnosticGetDrugs(medicalCase, finalDiagnostic);
+  const managements = finalDiagnosticGetManagements(medicalCase, finalDiagnostic);
 
   return (
     <Card key={`finalDiagnostic_${diagnosesFinalDiagnostic.id}`}>

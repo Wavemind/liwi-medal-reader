@@ -5,7 +5,7 @@ import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
 import { categories, valueFormats } from '../../constants';
-import { DiagnosticModel } from './Diagnostic.model';
+import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
 
 export class NodeModel {
   constructor(props) {
@@ -168,11 +168,11 @@ export class NodeModel {
         if (type === 'Question') {
           nodes[nodeId].counter = 0;
           nodes[nodeId].dd.forEach((dd) => {
-            !DiagnosticModel.isExcludedByComplaintCategory(algorithm, dd.id) && dd.conditionValue ? nodes[nodeId].counter++ : null;
+            !diagnosticIsExcludedByComplaintCategory(algorithm, dd.id) && dd.conditionValue ? nodes[nodeId].counter++ : null;
           });
           // Map trough PS if it is in an another PS itself
           nodes[nodeId].qs.forEach((qs) => {
-            const relatedDiagnostics = nodes[qs.id].dd.some((diagnostic) => !DiagnosticModel.isExcludedByComplaintCategory(algorithm, diagnostic.id));
+            const relatedDiagnostics = nodes[qs.id].dd.some((diagnostic) => !diagnosticIsExcludedByComplaintCategory(algorithm, diagnostic.id));
             relatedDiagnostics && qs.conditionValue ? nodes[nodeId].counter++ : null;
           });
         }

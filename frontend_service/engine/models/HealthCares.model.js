@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable no-case-declarations */
 import { NodeModel } from './Node.model';
-import { FinalDiagnosticModel } from './FinalDiagnostic.model';
+import { finalDiagnosticAgreed, finalDiagnosticAgreedObject, FinalDiagnosticModel } from './FinalDiagnostic.model';
 import { nodeTypes } from '../../constants';
 
 interface HealthCaresInterface {}
@@ -23,7 +23,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
    * @returns {Array<boolean>}
    */
   isExcluded = (medicalCase, algorithm) => {
-    const finalDiagnostics = FinalDiagnosticModel.getAgreedObject(medicalCase);
+    const finalDiagnostics = finalDiagnosticAgreedObject(medicalCase);
     const healthCare = algorithm.nodes[this.id];
 
     return Object.keys(finalDiagnostics)
@@ -43,7 +43,7 @@ export class HealthCaresModel extends NodeModel implements HealthCaresInterface 
   static getHealthCaresQuestions(algorithm, medicalCase) {
     const { nodes } = algorithm;
     let questions = {};
-    const finalDiagnostics = FinalDiagnosticModel.getAgreed(medicalCase);
+    const finalDiagnostics = finalDiagnosticAgreed(medicalCase);
 
     finalDiagnostics.forEach((finalDiagnosticId) => {
       const finalDiagnostic = nodes[finalDiagnosticId];

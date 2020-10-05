@@ -14,7 +14,7 @@ import Breakable from '../Formulations/Breakable';
 import Capsule from '../Formulations/Capsule';
 import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
-import { DrugModel } from '../../../frontend_service/engine/models/Drug.model';
+import { drugAgreed, drugDoses } from '../../../frontend_service/engine/models/Drug.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -28,12 +28,12 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
    */
   _renderSwitchFormulation = (drug) => {
     const {
-      app: { t },
+      app: { t, algorithm },
       medicalCase: { nodes },
     } = this.props;
 
     const node = nodes[drug.id];
-    const drugDose = node.getDrugDoses(drug.formulationSelected);
+    const drugDose = drugDoses(drug.formulationSelected, algorithm);
 
     if (node.formulations[drug.formulationSelected] !== undefined) {
       switch (node.formulations[drug.formulationSelected].medication_form) {
@@ -76,7 +76,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
       medicalCase: { nodes },
     } = this.props;
 
-    const drugsAvailable = DrugModel.getAgreed(medicalCase.diagnoses, algorithm);
+    const drugsAvailable = drugAgreed(medicalCase.diagnoses, algorithm);
 
     return Object.keys(diagnoseFinalDiagnostics).map((key) => {
       if (diagnoseFinalDiagnostics[key].agreed || title === 'additional') {
