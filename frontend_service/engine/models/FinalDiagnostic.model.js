@@ -3,10 +3,11 @@
 import find from 'lodash/find';
 import * as _ from 'lodash';
 import reduce from 'lodash/reduce';
-import { NodeModel } from './Node.model';
+import { nodeFilterByType } from './Node.model';
 import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
 import { store } from '../../store';
 import { nodeTypes } from '../../constants';
+import {healthCareIsExcluded} from './HealthCares.model';
 
 /**
  * 1. Check the current status of this instance
@@ -165,7 +166,7 @@ export const finalDiagnosticGetDrugs = (medicalCase, mcNode) => {
 
   Object.keys(mcNode.drugs).forEach((drugId) => {
     const drug = medicalCase.nodes[drugId];
-    if (parentsConditionValue(mcNode, parents, mcNode.drugs[drugId].top_conditions, medicalCase) && !drug.isExcluded(medicalCase)) {
+    if (parentsConditionValue(mcNode, parents, mcNode.drugs[drugId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase,drug)) {
       drugsAvailable.push(drug);
     }
   });
@@ -186,7 +187,7 @@ export const finalDiagnosticGetManagements = (medicalCase, mcNode) => {
 
   Object.keys(mcNode.managements).forEach((managementId) => {
     const management = medicalCase.nodes[managementId];
-    if (parentsConditionValue(mcNode, parents, mcNode.managements[managementId].top_conditions, medicalCase) && !management.isExcluded(medicalCase)) {
+    if (parentsConditionValue(mcNode, parents, mcNode.managements[managementId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase, management)) {
       managementsAvailable.push(management);
     }
   });
@@ -234,7 +235,7 @@ export const finalDiagnosticAll = (algorithm) => {
   const medicalCase = store.getState();
   const { nodes } = algorithm;
 
-  const finalDiagnostics = NodeModel.filterByType(nodes, nodeTypes.finalDiagnostic);
+  const finalDiagnostics = nodeFilterByType(nodes, nodeTypes.finalDiagnostic);
 
   const finalDiagnosticsNull = [];
   const finalDiagnosticsTrue = [];

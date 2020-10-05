@@ -4,7 +4,7 @@ import moment from 'moment';
 import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
-import { NodeModel } from '../engine/models/Node.model';
+import { nodeFilterBy } from '../engine/models/Node.model';
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -15,7 +15,7 @@ import { NodeModel } from '../engine/models/Node.model';
  * Update metadata
  */
 export const questionsMedicalHistory = (algorithm) => {
-  const medicalHistoryQuestions = NodeModel.filterBy(state$,
+  const medicalHistoryQuestions = nodeFilterBy(state$,
     algorithm,
     [
       {
@@ -77,7 +77,7 @@ const sortQuestions = (questions) => {
  * Update metadata
  */
 export const questionsPhysicalExam = (algorithm) => {
-  const vitalSignQuestions = NodeModel.filterBy(state$,
+  const vitalSignQuestions = nodeFilterBy(state$,
     algorithm,
     [
       {
@@ -91,7 +91,7 @@ export const questionsPhysicalExam = (algorithm) => {
     false
   );
 
-  const physicalExamQuestions = NodeModel.filterBy(state$,
+  const physicalExamQuestions = nodeFilterBy(state$,
     algorithm,
     [
       {
@@ -213,7 +213,7 @@ export const questionsBasicMeasurements = () => {
  */
 export const questionsTests = (algorithm) => {
   let assessmentTest = [];
-  assessmentTest = NodeModel.filterBy(state$,algorithm, [
+  assessmentTest = nodeFilterBy(state$,algorithm, [
     {
       by: 'category',
       operator: 'equal',

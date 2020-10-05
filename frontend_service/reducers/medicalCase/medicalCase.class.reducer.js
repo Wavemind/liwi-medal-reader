@@ -9,6 +9,7 @@ import { categories } from '../../constants';
 import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { QuestionModel } from '../../engine/models/Question.model';
+import { nodeUpdateAnswer } from '../../engine/models/Node.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -344,18 +345,11 @@ class MedicalCaseReducer extends ReducerClass {
   setAnswer(state, action) {
     const { algorithm, nodeId, value } = action.payload;
     // Instantiate new object with answered question with new answer value
-    // state.nodes[nodeId] = MedicalCaseModel.instantiateNode({ ...state.nodes[nodeId] });
-    // console.log(state.nodes[nodeId]);
-    // state.nodes[nodeId].updateAnswer(value, algorithm);
-    // console.log(state.nodes[nodeId]);
-    // return {
-    //   ...state,
-    //   nodes: state.nodes,
-    // };
-
-    // TODO: Not sure
-    const questionInstance = MedicalCaseModel.instantiateNode({ ...state.nodes[nodeId] });
-    questionInstance.updateAnswer(value, algorithm);
+    state.nodes[nodeId] = nodeUpdateAnswer(value, algorithm, state.nodes[nodeId]);
+    return {
+      ...state,
+      nodes: state.nodes,
+    };
   }
 
   /**

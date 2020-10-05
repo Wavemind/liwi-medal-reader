@@ -5,7 +5,10 @@ import { Text, View } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../../components/QuestionsContainer/Questions';
 import { NodeModel } from '../../../../../frontend_service/engine/models/Node.model';
-import { HealthCaresModel } from '../../../../../frontend_service/engine/models/HealthCares.model';
+import {
+  healthCaresGetQuestions,
+  HealthCaresModel
+} from '../../../../../frontend_service/engine/models/HealthCares.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -23,7 +26,7 @@ export default class HealthCaresQuestions extends Component<Props, State> {
       app: { t, algorithm },
     } = this.props;
 
-    const questions = HealthCaresModel.getHealthCaresQuestions(algorithm, medicalCase);
+    const questions = healthCaresGetQuestions(algorithm, medicalCase);
     return (
       <View>
         {Object.keys(questions).length > 0 ? (

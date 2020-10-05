@@ -3,7 +3,7 @@ import '../../../src/utils/Prototype.native';
 import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, getAnswer, getValue, setBirthDate, drugRetained, validMedicine, algorithm } from '../utils';
 import { store } from '../../store';
 import { NodeModel } from '../../engine/models/Node.model';
-import { HealthCaresModel } from '../../engine/models/HealthCares.model';
+import {healthCaresGetQuestions, HealthCaresModel} from '../../engine/models/HealthCares.model';
 
 // console.log = () => {};
 console.error = () => {};
@@ -46,7 +46,7 @@ describe('actions', () => {
     validFinalDiagnostic('proposed', 421);
 
     const medicalCase = store.getState();
-    const questions = HealthCaresModel.getHealthCaresQuestions(algorithm, medicalCase);
+    const questions = healthCaresGetQuestions(algorithm, medicalCase);
     expect(Object.keys(questions).includes('2243')).toEqual(true);
   });
 
@@ -58,7 +58,7 @@ describe('actions', () => {
     jestSetAnswer(2243, 1148);
 
     const medicalCase = store.getState();
-    const questions = HealthCaresModel.getHealthCaresQuestions(algorithm, medicalCase);
+    const questions = healthCaresGetQuestions(algorithm, medicalCase);
 
     expect(Object.keys(questions)).toEqual(['119', '2088', '2243']);
   });
