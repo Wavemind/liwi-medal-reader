@@ -114,6 +114,7 @@ export class FinalDiagnosticModel extends NodeModel {
     return reduceConditionArrayBoolean(allNodesAnsweredInDd);
   };
 
+
   /**
    * Calculate condition to display a final diagnostic
    * Verify if the final diagnostic excluded an another one

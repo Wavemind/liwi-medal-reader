@@ -9,23 +9,15 @@ import { differenceNodes } from '../../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
 import { store } from '../../store';
 import I18n from '../../../src/utils/i18n';
-import { NodeModel } from './Node.model';
-import { QuestionsSequenceScoredModel } from './QuestionsSequenceScored.model';
-import { QuestionsSequenceModel } from './QuestionsSequenceModel';
-import { QuestionModel } from './Question.model';
-import { ManagementModel } from './Management.model';
-import { DrugModel } from './Drug.model';
-import { FinalDiagnosticModel } from './FinalDiagnostic.model';
+import { generateDrug, generateFinalDiagnostic, generateManagement, generateQuestion, generateQuestionsSequence } from '../nodeFactory';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
     if ((this.id === undefined || this.id === null) && props?.id === undefined) {
-      console.log('avant',currentAlgorithm.nodes)
-      this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
+      this.nodes = currentAlgorithm.nodes;
       this.activities = [];
       this.version_id = currentAlgorithm.version_id;
-      this.nodes = MedicalCaseModel.instantiateNodes(currentAlgorithm.nodes) // TODO new nodes
       this.triage = currentAlgorithm.triage; //  TODO Voir avec Manu
       this.synchronized_at = null;
       this.updated_at = moment().toDate();
@@ -33,7 +25,7 @@ export class MedicalCaseModel {
       this.status = medicalCaseStatus.inCreation.name;
       this.isNewCase = true;
       this.isEligible = true;
-      this.comment = "";
+      this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
       this.consent = true;
       this.modal = {
@@ -71,6 +63,8 @@ export class MedicalCaseModel {
       };
 
       this.fail_safe = false;
+
+      this.setInitialConditionValue(currentAlgorithm);
     } else {
       // If json is undefined it means it comes from the state
       if (props !== undefined && props.json === undefined) {
@@ -161,13 +155,13 @@ export class MedicalCaseModel {
    * @param [Json] algorithm
    * @return [Json] algorithm
    * */
-  setInitialConditionValue = async (algorithm) => {
+  setInitialConditionValue = (algorithm) => {
     const { diagnostics, nodes } = algorithm;
     try {
-      Object.keys(nodes).map((nodeId) => {
-        const node = nodes[nodeId];
+      Object.keys(nodes).forEach((nodeId) => {
+        const node = this.nodes[nodeId];
         if ([nodeTypes.question, nodeTypes.questionsSequence].includes(nodes[nodeId].type)) {
-          node.dd.map((dd) => {
+          node.dd.forEach((dd) => {
             // If the instance is related to the main diagram
             // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
             if (diagnostics[dd.id].instances[nodeId].final_diagnostic_id === null) {
@@ -178,16 +172,16 @@ export class MedicalCaseModel {
           });
 
           // Map trough QS if it is in an another QS itself
-          node.qs.map((qs) => {
+          node.qs.forEach((qs) => {
             this.setParentConditionValue(algorithm, qs.id, nodeId);
           });
         }
       });
 
       // Set question Formula
-      Object.keys(nodes).map((nodeId) => {
+      Object.keys(nodes).forEach((nodeId) => {
         if (nodes[nodeId].type === nodeTypes.question) {
-          nodes[nodeId].referenced_in.map((id) => {
+          nodes[nodeId].referenced_in.forEach((id) => {
             if (nodes[id].stage === stages.registration) {
               nodes[id].conditionValue = true;
             } else {
@@ -201,8 +195,6 @@ export class MedicalCaseModel {
     } catch (e) {
       console.warn(e);
     }
-
-    return algorithm;
   };
 
   /**
@@ -214,7 +206,7 @@ export class MedicalCaseModel {
     const { diagnostics, nodes } = algorithm;
     // Set condition value for DD if there is any
     if (!nodes[parentId].dd.isEmpty()) {
-      nodes[parentId].dd.map((dd) => {
+      nodes[parentId].dd.forEach((dd) => {
         // If the instance is related to the main diagram
         // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
         if (diagnostics[dd.id].instances[parentId].final_diagnostic_id === null) {
@@ -229,13 +221,13 @@ export class MedicalCaseModel {
     // Set condition value of parent QS if there is any
     if (!nodes[parentId].qs.isEmpty()) {
       // If parentNode is a QS, rerun function
-      nodes[parentId].qs.map((qs) => {
+      nodes[parentId].qs.forEach((qs) => {
         this.setParentConditionValue(algorithm, qs.id, parentId);
       });
       conditionValue = true;
     }
     // Set conditionValue of current QS
-    nodes[id].qs.map((instanceQs) => {
+    nodes[id].qs.forEach((instanceQs) => {
       if (instanceQs.id === parentId) {
         instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
       }
@@ -368,37 +360,6 @@ export class MedicalCaseModel {
   };
 
   /**
-   * Create a copy of the medical case
-   * @param medicalCase - The medical case to copy
-   * @returns {{nodes: [NodeModel]}}
-   */
-  static copyMedicalCase = (medicalCase) => {
-    return {
-      ...medicalCase,
-    };
-  };
-
-  /**
-   * Instantiate all the nodes received
-   *
-   * @params nodes : nodes to instantiate
-   */
-  static instantiateNodes(nodes) {
-    let hash = {};
-console.log('nodes',nodes);
-    Object.keys(nodes).forEach((i) => {
-      const node = nodes[i];
-      console.log("Je passe ici")
-      hash = {
-        ...hash,
-        [i]: MedicalCaseModel.instantiateNode(node),
-      }
-    });
-console.log('le hash', hash)
-    return hash;
-  }
-
-  /**
    * Node factory
    * Instantiate new Node base on node type
    *
@@ -407,46 +368,19 @@ console.log('le hash', hash)
   static instantiateNode(node) {
     let instantiatedNode;
 
-    if (node instanceof NodeModel) {
-      return node;
-    }
-
     // Based on the node type
     switch (node.type) {
       case nodeTypes.questionsSequence:
-        switch (node.category) {
-          case categories.scored:
-            instantiatedNode = new QuestionsSequenceScoredModel({
-              ...node,
-              medicalCase: this,
-            });
-            break;
-          default:
-            instantiatedNode = new QuestionsSequenceModel({
-              ...node,
-              medicalCase: this,
-            });
-            break;
-        }
+        instantiatedNode = generateQuestionsSequence(node);
         break;
       case nodeTypes.question:
-        instantiatedNode = new QuestionModel({
-          ...node,
-          medicalCase: this,
-        });
+        instantiatedNode = generateQuestion(node);
         break;
       case nodeTypes.healthCare:
-        switch (node.category) {
-          case categories.management:
-            instantiatedNode = new ManagementModel({ ...node });
-            break;
-          case categories.drug:
-            instantiatedNode = new DrugModel({ ...node });
-            break;
-        }
+        instantiatedNode = node.category === categories.management ? generateManagement(node) : generateDrug(node);
         break;
       case nodeTypes.finalDiagnostic:
-        instantiatedNode = new FinalDiagnosticModel({ ...node });
+        instantiatedNode = generateFinalDiagnostic(node);
         break;
       default:
         break;

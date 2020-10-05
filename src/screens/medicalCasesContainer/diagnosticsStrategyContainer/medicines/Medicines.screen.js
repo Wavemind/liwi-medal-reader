@@ -80,7 +80,7 @@ export default class Medicines extends Component<Props, State> {
       app: { t, algorithm },
     } = this.props;
 
-    const allHealthCares = NodeModel.filterBy(
+    const allHealthCares = NodeModel.filterBy(state$,
       algorithm,
       [
         {

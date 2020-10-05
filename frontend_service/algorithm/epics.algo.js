@@ -14,6 +14,7 @@ import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { calculateCondition } from './conditionsHelpers.algo';
 import { DiagnosticModel } from '../engine/models/Diagnostic.model';
 import { MedicalCaseModel } from '../engine/models/MedicalCase.model';
+import { questionCalculateFormula } from '../engine/models/Question.model';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -188,7 +189,7 @@ const referencedNodeAction = (algorithm, medicalCase, nodeId) => {
 
   switch (currentNode.display_format) {
     case displayFormats.formula:
-      value = currentNode.calculateFormula(algorithm, medicalCase);
+      value = questionCalculateFormula(algorithm, medicalCase, currentNode);
       break;
     case displayFormats.reference:
       value = currentNode.calculateReference(medicalCase);
@@ -261,7 +262,7 @@ export const epicSetAnswer = (action$, state$) =>
       const { nodeId, algorithm } = action.payload;
       const medicalCase = {
         ...state$.value,
-        nodes: MedicalCaseModel.instantiateNodes(JSON.parse(JSON.stringify(state$.value.nodes))),
+        nodes: JSON.parse(JSON.stringify(state$.value.nodes)),
       };
 
       processUpdatedNode(algorithm, medicalCase, nodeId);
@@ -289,7 +290,7 @@ export const epicSetDiagnoses = (action$, state$) =>
       if (finalDiagnostics.length > 0) {
         const medicalCase = {
           ...state$.value,
-          nodes: MedicalCaseModel.instantiateNodes(JSON.parse(JSON.stringify(state$.value.nodes))),
+          nodes: JSON.parse(JSON.stringify(state$.value.nodes)),
         };
 
         finalDiagnostics.forEach((finalDiagnosticId) => {

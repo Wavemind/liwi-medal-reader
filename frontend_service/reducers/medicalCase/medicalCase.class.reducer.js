@@ -20,13 +20,6 @@ export const initialState = { modal: { open: false, content: '', navigator: {}, 
 class MedicalCaseReducer extends ReducerClass {
   initialState = {};
 
-  // The state is a MedicalCase
-  // Instance it
-  _instanceMedicalCase(medicalCase) {
-    medicalCase.nodes = MedicalCaseModel.instantiateNodes(medicalCase.nodes);
-    return medicalCase;
-  }
-
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
   /**
@@ -350,15 +343,19 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.SET_ANSWER)
   setAnswer(state, action) {
     const { algorithm, nodeId, value } = action.payload;
-console.log(state.nodes, nodeId)
     // Instantiate new object with answered question with new answer value
-    state.nodes[nodeId] = MedicalCaseModel.instantiateNode({ ...state.nodes[nodeId] });
-    state.nodes[nodeId].updateAnswer(value, algorithm);
+    // state.nodes[nodeId] = MedicalCaseModel.instantiateNode({ ...state.nodes[nodeId] });
+    // console.log(state.nodes[nodeId]);
+    // state.nodes[nodeId].updateAnswer(value, algorithm);
+    // console.log(state.nodes[nodeId]);
+    // return {
+    //   ...state,
+    //   nodes: state.nodes,
+    // };
 
-    return {
-      ...state,
-      nodes: MedicalCaseModel.instantiateNodes(state.nodes),
-    };
+    // TODO: Not sure
+    const questionInstance = MedicalCaseModel.instantiateNode({ ...state.nodes[nodeId] });
+    questionInstance.updateAnswer(value, algorithm);
   }
 
   /**
@@ -374,10 +371,10 @@ console.log(state.nodes, nodeId)
     // Instantiate new object with answered question with new answer value
     state.nodes[index] = MedicalCaseModel.instantiateNode({ ...state.nodes[index] });
     state.nodes[index].estimableValue = value;
-
+    // TODO: Not sure
     return {
       ...state,
-      nodes: MedicalCaseModel.instantiateNodes(state.nodes),
+      nodes: state.nodes,
     };
   }
 
@@ -442,15 +439,16 @@ console.log(state.nodes, nodeId)
 
     // Instantiate new object with id unavailable answer
     // reset value to default
-    state.nodes[nodeId] = MedicalCaseModel.instantiateNode({
+    state.nodes[nodeId] ={
       ...state.nodes[nodeId],
       answer: value,
       value: null,
-    });
+    };
 
+    // TODO: Not sure
     return {
       ...state,
-      nodes: MedicalCaseModel.instantiateNodes(state.nodes),
+      nodes: state.nodes,
     };
   }
 
@@ -519,12 +517,11 @@ console.log(state.nodes, nodeId)
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
-    const modelsMedicalCase = MedicalCaseModel.copyMedicalCase(medicalCase);
     return {
-      ...modelsMedicalCase,
+      ...medicalCase,
       json: null,
       patient: {
-        ...modelsMedicalCase.patient,
+        ...medicalCase.patient,
         medicalCases: [],
       },
     };
@@ -541,7 +538,7 @@ console.log(state.nodes, nodeId)
       return initialState;
     }
 
-    const modelsMedicalCase = this._instanceMedicalCase(action.payload);
+    const modelsMedicalCase = action.payload.nodes;
 
     modelsMedicalCase.modal.open = false;
     return {

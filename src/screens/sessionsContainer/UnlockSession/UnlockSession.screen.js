@@ -13,7 +13,7 @@ import NavigationService from '../../../engine/navigation/Navigation.service';
 import Database from '../../../engine/api/Database';
 import LiwiLoader from '../../../utils/LiwiLoader';
 
-export default class UnLockSession extends React.Component<Props, State> {
+export default class UnLockSession extends React.Component {
   state = {
     session: null,
     status: 'initial',

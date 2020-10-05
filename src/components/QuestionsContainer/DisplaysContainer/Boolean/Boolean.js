@@ -41,11 +41,17 @@ export default class Boolean extends React.Component<Props, State> {
 
   componentDidMount() {
     const {
-      question: { answer, answers },
+      app: { algorithm },
+      question,
+      question: { answer },
     } = this.props;
+    console.log(algorithm);
 
-    const idYes = Number(Object.keys(answers)[0]);
-    const idNo = Number(Object.keys(answers)[1]);
+    const currentNode = algorithm.nodes[question.id];
+    console.log(currentNode);
+
+    const idYes = Number(Object.keys(currentNode.answers)[0]);
+    const idNo = Number(Object.keys(currentNode.answers)[1]);
 
     if (answer === idYes) {
       this.setState({ value: true });
@@ -64,14 +70,14 @@ export default class Boolean extends React.Component<Props, State> {
     const {
       app: { algorithm },
       question,
-      question: { answers },
       setAnswer,
       setPatientValue,
       patientValueEdit,
     } = this.props;
-
-    const idYes = Number(Object.keys(answers)[0]);
-    const idNo = Number(Object.keys(answers)[1]);
+    const currentNode = algorithm.nodes[question.id];
+    console.log(currentNode);
+    const idYes = Number(Object.keys(currentNode.answers)[0]);
+    const idNo = Number(Object.keys(currentNode.answers)[1]);
     let newAnswer = Number(answer);
 
     if (newAnswer === idYes) {
@@ -79,11 +85,11 @@ export default class Boolean extends React.Component<Props, State> {
     } else if (newAnswer === idNo) {
       this.setState({ value: false });
     }
-    // Give the time to the component to render the view before updating the stateJ'a
+    // Give the time to the component to render the view before updating the state
     await new Promise((resolve) => setTimeout(resolve, 25));
 
     // Break if complaintCategory
-    if (question.category === categories.complaintCategory && answer === question.answer) {
+    if (currentNode.category === categories.complaintCategory && answer === question.answer) {
       return null;
     }
 
@@ -101,13 +107,14 @@ export default class Boolean extends React.Component<Props, State> {
   // TODO: Sorry for this. But I don't have any strength to refactor this shit
   render = () => {
     const {
-      app: { t },
-      question: { answers, label, category },
+      app: { t, algorithm },
+      question,
       widthView,
       index,
       isReadOnly,
     } = this.props;
     const { value } = this.state;
+    const { answers, label, category } = algorithm.nodes[question.id];
 
     // Define the id for the answer
     const idYes = Number(Object.keys(answers)[0]);

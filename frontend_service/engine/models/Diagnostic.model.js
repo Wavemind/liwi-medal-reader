@@ -11,9 +11,9 @@ export class DiagnosticModel {
   // TODO: FIXE COMMENT
   static isExcludedByComplaintCategory(algorithm, diagnosticId, medicalCase = store.getState()) {
     const complaintCategory = algorithm.diagnostics[diagnosticId].complaint_category;
-    // TODO: Add algorithm
-    console.log(medicalCase);
-    console.log(medicalCase.nodes[complaintCategory])
+    // TODO: FIXE THIS SHITTTT
+    // console.log(medicalCase);
+    // console.log(medicalCase.nodes[complaintCategory])
     return medicalCase.nodes[complaintCategory].booleanValue(algorithm) === false;
   }
 }

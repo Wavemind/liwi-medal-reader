@@ -38,7 +38,7 @@ export default class Summary extends React.Component<Props, State> {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
     const { medicalCase, nodes } = this.state;
@@ -48,11 +48,11 @@ export default class Summary extends React.Component<Props, State> {
         <BackButton />
         <View style={styles.patientContainer}>
           <View flex>
-            <Text size-auto>{nodes[medicalCase.mobile_config.left_top_question_id].displayValue()}</Text>
+            <Text size-auto>{nodes[medicalCase.mobile_config.left_top_question_id].displayValue(algorithm)}</Text>
           </View>
           <View style={styles.alignRight}>
             <Text size-auto>
-              {nodes[medicalCase.mobile_config.first_top_right_question_id].displayValue()} {nodes[medicalCase.mobile_config.second_top_right_question_id].displayValue()}
+              {nodes[medicalCase.mobile_config.first_top_right_question_id].displayValue(algorithm)} {nodes[medicalCase.mobile_config.second_top_right_question_id].displayValue(algorithm)}
             </Text>
           </View>
         </View>

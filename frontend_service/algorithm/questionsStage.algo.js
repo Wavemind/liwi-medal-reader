@@ -15,7 +15,7 @@ import { NodeModel } from '../engine/models/Node.model';
  * Update metadata
  */
 export const questionsMedicalHistory = (algorithm) => {
-  const medicalHistoryQuestions = NodeModel.filterBy(
+  const medicalHistoryQuestions = NodeModel.filterBy(state$,
     algorithm,
     [
       {
@@ -77,7 +77,7 @@ const sortQuestions = (questions) => {
  * Update metadata
  */
 export const questionsPhysicalExam = (algorithm) => {
-  const vitalSignQuestions = NodeModel.filterBy(
+  const vitalSignQuestions = NodeModel.filterBy(state$,
     algorithm,
     [
       {
@@ -91,7 +91,7 @@ export const questionsPhysicalExam = (algorithm) => {
     false
   );
 
-  const physicalExamQuestions = NodeModel.filterBy(
+  const physicalExamQuestions = NodeModel.filterBy(state$,
     algorithm,
     [
       {
@@ -213,7 +213,7 @@ export const questionsBasicMeasurements = () => {
  */
 export const questionsTests = (algorithm) => {
   let assessmentTest = [];
-  assessmentTest = NodeModel.filterBy(algorithm, [
+  assessmentTest = NodeModel.filterBy(state$,algorithm, [
     {
       by: 'category',
       operator: 'equal',

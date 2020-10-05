@@ -1,31 +1,9 @@
 // @flow
 
 import moment from 'moment';
-import { NodeModel } from './Node.model';
 import { valueFormats, references } from '../../constants';
 import I18n from '../../../src/utils/i18n';
 
-export class QuestionModel extends NodeModel {
-  constructor(props) {
-    super(props);
-
-    const { answer = null, counter = 0, dd = [], df = [], qs = [], value = '', estimable = false, estimableValue = 'measured', validationMessage = null, validationType = null } = props;
-
-    this.answer = answer;
-    this.counter = counter;
-    this.dd = dd;
-    this.df = df;
-    this.qs = qs;
-    this.value = value;
-    this.validationMessage = validationMessage;
-    this.validationType = validationType;
-
-    // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
-    if (estimable) {
-      // Type available [measured, estimated]
-      this.estimableValue = estimableValue;
-    }
-  }
 
   /**
    * Calculate condition to display triage question
@@ -33,7 +11,7 @@ export class QuestionModel extends NodeModel {
    * @return isDisplayed : boolean
    */
   // TODO Check if used
-  isDisplayedInTriage() {
+  export const questionIsDisplayedInTriage = (medicalCase) => {
     const { conditions } = medicalCase.triage;
     let isDisplayed = true;
 
@@ -57,10 +35,10 @@ export class QuestionModel extends NodeModel {
    * @returns {number}
    *
    */
-  calculateFormula = (algorithm, medicalCase) => {
+  export const questionCalculateFormula = (algorithm, medicalCase, mcNode) => {
     // Regex to find the brackets [] in the formula
     const findBracketId = /\[(.*?)\]/gi;
-    const currentNode = algorithm.nodes[this.id];
+    const currentNode = algorithm.nodes[mcNode.id];
     let ready = true;
 
     // Function to change the [id] into the answered value
@@ -68,7 +46,7 @@ export class QuestionModel extends NodeModel {
       // Get the id from the brackets []
       const id = item.match(/\d/g).join('');
 
-      // Get value of this node
+      // Get value of node
       const mcNodeInBracket = medicalCase.nodes[id];
       if (mcNodeInBracket.value === null || (mcNodeInBracket.value === 0 && mcNodeInBracket.answer === null)) {
         ready = false;
@@ -190,4 +168,4 @@ export class QuestionModel extends NodeModel {
     const { answers } = algorithm.nodes[this.id];
     return this.answer === Number(Object.keys(answers).first());
   };
-}
+

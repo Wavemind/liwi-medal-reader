@@ -2,17 +2,12 @@
 
 import * as React from 'react';
 import { Picker, View } from 'native-base';
-import type { NavigationScreenProps } from 'react-navigation';
 import * as _ from 'lodash';
 import moment from 'moment';
 import { styles } from './Date.style';
 import I18n from '../../../../utils/i18n';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Date extends React.Component<Props, State> {
+export default class Date extends React.Component {
   constructor(props) {
     super(props);
 

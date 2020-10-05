@@ -31,14 +31,12 @@ export default class PatientUpsert extends React.Component<Props, State> {
     loading: true,
   };
 
-  // Faire le constructeur !
   constructor(props) {
     super(props);
-
-
+    this.init();
   }
 
-  async componentDidMount() {
+  async init() {
     const {
       navigation,
       setMedicalCase,
@@ -191,25 +189,27 @@ export default class PatientUpsert extends React.Component<Props, State> {
       navigation,
     } = this.props;
 
-    let extraQuestions = [];
-    if (medicalCase.nodes !== undefined) {
-      // Get nodes to display in registration stage
-      extraQuestions = NodeModel.filterBy(
-        algorithm,
-        [
-          {
-            by: 'stage',
-            operator: 'equal',
-            value: stages.registration,
-          },
-        ],
-        'OR',
-        'array',
-        false
-      );
+    if (loading) {
+      return <LiwiLoader />;
     }
 
-    if (medicalCase.nodes !== undefined && medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
+    // Get nodes to display in registration stage
+    const extraQuestions = NodeModel.filterBy(
+      medicalCase,
+      algorithm,
+      [
+        {
+          by: 'stage',
+          operator: 'equal',
+          value: stages.registration,
+        },
+      ],
+      'OR',
+      'array',
+      false
+    );
+
+    if (medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
       updateMetaData(
         'patientupsert',
         'custom',
@@ -236,34 +236,28 @@ export default class PatientUpsert extends React.Component<Props, State> {
       >
         {[
           <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen">
-            {loading ? (
-              <LiwiLoader />
-            ) : (
-              <>
-                <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
-                {this.renderEligibilityMessage()}
-                <View>
-                  <Col>
-                    {this.renderIdentifierData()}
-                    {patient.wasInOtherFacility() && (
-                      <CustomInput
-                        init={patient.reason}
-                        label={t('patient:reason')}
-                        change={this.updatePatientValue}
-                        index="reason"
-                        iconName="sign-out"
-                        iconType="FontAwesome"
-                        error={errors.reason}
-                        autoCapitalize="sentences"
-                      />
-                    )}
-                  </Col>
-                </View>
-                <ConsentImage newPatient={patient.id === null} />
-                <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-                <Questions questions={extraQuestions} />
-              </>
-            )}
+            <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+            {this.renderEligibilityMessage()}
+            <View>
+              <Col>
+                {this.renderIdentifierData()}
+                {patient.wasInOtherFacility() && (
+                  <CustomInput
+                    init={patient.reason}
+                    label={t('patient:reason')}
+                    change={this.updatePatientValue}
+                    index="reason"
+                    iconName="sign-out"
+                    iconType="FontAwesome"
+                    error={errors.reason}
+                    autoCapitalize="sentences"
+                  />
+                )}
+              </Col>
+            </View>
+            <ConsentImage newPatient={patient.id === null} />
+            <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+            <Questions questions={extraQuestions} />
           </ScrollView>,
         ]}
       </Stepper>

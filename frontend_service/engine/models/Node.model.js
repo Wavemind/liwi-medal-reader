@@ -142,14 +142,14 @@ export class NodeModel {
    *  - array
    *  - object
    */
-  static filterBy(algorithm, filters, operator = 'OR', formatReturn = 'array', counter = true) {
+  static filterBy(medicalCase, algorithm, filters, operator = 'OR', formatReturn = 'array', counter = true) {
     // return the boolean for one filter
     const switchTest = (filter, node) => {
       switch (filter.operator) {
         case 'equal':
-          return node[filter.by] === filter.value;
+          return algorithm.nodes[node.id][filter.by] === filter.value;
         case 'more':
-          return node[filter.by] > filter.value;
+          return algorithm.nodes[node.id][filter.by] > filter.value;
       }
     };
 
@@ -161,8 +161,11 @@ export class NodeModel {
     };
 
     const filterByConditionValue = (nodes) => {
+      console.log(nodes)
       Object.keys(nodes).forEach((nodeId) => {
-        if (nodes[nodeId].type === 'Question') {
+        console.log(algorithm.nodes)
+        const { type } = algorithm.nodes[nodeId];
+        if (type === 'Question') {
           nodes[nodeId].counter = 0;
           nodes[nodeId].dd.forEach((dd) => {
             !DiagnosticModel.isExcludedByComplaintCategory(algorithm, dd.id) && dd.conditionValue ? nodes[nodeId].counter++ : null;
@@ -176,7 +179,7 @@ export class NodeModel {
       });
     };
 
-    const { nodes } = algorithm;
+    const { nodes } = medicalCase;
     filterByConditionValue(nodes);
 
     let methodFilteringLodash;
@@ -191,21 +194,11 @@ export class NodeModel {
     }
 
     return _[methodFilteringLodash](nodes, (node) => {
-      // According operator to ALL filters
-      if (operator === 'AND') {
-        // The every() method tests whether all elements in the array pass the test implemented by the provided function.
-        // It returns a Boolean value.
-        return filters.every((filter) => {
-          return counterFilter(filter, node);
-        });
-      }
-      if (operator === 'OR') {
-        // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
-        // It returns a Boolean value.
-        return filters.some((filter) => {
-          return counterFilter(filter, node);
-        });
-      }
+      // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
+      // It returns a Boolean value.
+      return filters.some((filter) => {
+        return counterFilter(filter, node);
+      });
     });
   }
 }
