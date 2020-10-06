@@ -4,9 +4,9 @@ import find from 'lodash/find';
 import * as _ from 'lodash';
 import reduce from 'lodash/reduce';
 import { nodeFilterByType } from './Node.model';
-import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../../algorithm/conditionsHelpers.algo';
-import { store } from '../../store';
-import { nodeTypes } from '../../constants';
+import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../algorithm/conditionsHelpers.algo';
+import { store } from '../store';
+import { nodeTypes } from '../constants';
 import {healthCareIsExcluded} from './HealthCares.model';
 
 /**

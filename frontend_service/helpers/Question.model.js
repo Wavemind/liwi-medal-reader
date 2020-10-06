@@ -1,8 +1,8 @@
 // @flow
 
 import moment from 'moment';
-import { valueFormats, references } from '../../constants';
-import I18n from '../../../src/utils/i18n';
+import { valueFormats, references } from '../constants';
+import I18n from '../../src/utils/i18n';
 
 /**
  * Calculate condition to display triage question

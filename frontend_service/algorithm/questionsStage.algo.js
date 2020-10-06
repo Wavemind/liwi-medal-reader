@@ -4,8 +4,8 @@ import moment from 'moment';
 import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
-import { nodeFilterBy } from '../engine/models/Node.model';
-import { questionIsDisplayedInTriage } from '../engine/models/Question.model';
+import { nodeFilterBy } from '../helpers/Node.model';
+import { questionIsDisplayedInTriage } from '../helpers/Question.model';
 
 /**
  * This file contains methods to filter questions to each stages / steps

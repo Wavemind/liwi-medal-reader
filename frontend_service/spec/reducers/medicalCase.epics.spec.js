@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import '../../../src/utils/Prototype.native';
 import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, getAnswer, getValue, setBirthDate, drugRetained, validMedicine, algorithm } from '../utils';
 import { store } from '../../store';
-import { NodeModel } from '../../engine/models/Node.model';
-import {healthCaresGetQuestions, HealthCaresModel} from '../../engine/models/HealthCares.model';
+import { NodeModel } from '../../helpers/Node.model';
+import {healthCaresGetQuestions, HealthCaresModel} from '../../helpers/HealthCares.model';
 
 // console.log = () => {};
 console.error = () => {};

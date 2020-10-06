@@ -8,7 +8,7 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import FinalDiagnosticCards from '../../../components/FinalDiagnosticCards';
-import { questionDisplayValue } from '../../../../frontend_service/engine/models/Question.model';
+import { questionDisplayValue } from '../../../../frontend_service/helpers/Question.model';
 
 export default class Summary extends React.Component {
   constructor(props) {

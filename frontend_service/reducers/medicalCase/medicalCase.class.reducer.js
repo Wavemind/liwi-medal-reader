@@ -7,7 +7,7 @@ import 'reflect-metadata';
 import { actions } from '../../actions/types.actions';
 import { categories } from '../../constants';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
-import { nodeUpdateAnswer } from '../../engine/models/Node.model';
+import { nodeUpdateAnswer } from '../../helpers/Node.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -444,18 +444,16 @@ class MedicalCaseReducer extends ReducerClass {
   setAnswerUnavailable(state, action) {
     const { nodeId, value } = action.payload;
 
-    // Instantiate new object with id unavailable answer
-    // reset value to default
-    state.nodes[nodeId] = {
-      ...state.nodes[nodeId],
-      answer: value,
-      value: null,
-    };
-
-    // TODO: Not sure
     return {
       ...state,
-      nodes: state.nodes,
+      nodes: {
+        ...state.nodes,
+        [nodeId]: {
+          ...state.nodes[nodeId],
+          answer: value,
+          value: null,
+        },
+      },
     };
   }
 

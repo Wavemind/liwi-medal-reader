@@ -14,7 +14,7 @@ import Breakable from '../Formulations/Breakable';
 import Capsule from '../Formulations/Capsule';
 import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
-import { drugAgreed, drugDoses } from '../../../frontend_service/engine/models/Drug.model';
+import { drugAgreed, drugDoses } from '../../../frontend_service/helpers/Drug.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};

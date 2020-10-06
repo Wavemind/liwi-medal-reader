@@ -1,9 +1,9 @@
 // @flow
 import { healthCareIsExcluded } from './HealthCares.model';
-import { medicationForms } from '../../constants';
-import { store } from '../../store';
-import { roundSup } from '../../../src/utils/swissKnives';
-import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
+import { medicationForms } from '../constants';
+import { store } from '../store';
+import { roundSup } from '../../src/utils/swissKnives';
+import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 
 /**
  * Set the right dose calculation for the treatment.

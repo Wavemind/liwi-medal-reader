@@ -20,11 +20,11 @@ import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus, modalType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
-import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../../../frontend_service/helpers/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
 import { displayNotification } from '../../utils/CustomToast';
 import LiwiProgressBar from '../../utils/LiwiProgressBar';
-import { PatientModel } from '../../../frontend_service/engine/models/Patient.model';
+import { PatientModel } from '../../../frontend_service/helpers/Patient.model';
 
 type Props = {
   children: any,

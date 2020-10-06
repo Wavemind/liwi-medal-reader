@@ -2,12 +2,12 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
-import I18n from '../../../src/utils/i18n';
-import Database from '../../../src/engine/api/Database';
+import I18n from '../../src/utils/i18n';
+import Database from '../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 import { PatientValueModel } from './PatientValue.model';
-import { getItem } from '../../../src/engine/api/LocalStorage';
-import { displayFormats } from '../../constants';
+import { getItem } from '../../src/engine/api/LocalStorage';
+import { displayFormats } from '../constants';
 
 export class PatientModel {
   constructor(props = {}) {

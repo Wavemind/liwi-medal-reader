@@ -5,7 +5,7 @@ import { Body, Card, CardItem, Text, View } from 'native-base';
 import Medicine from '../Medicine';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './MedicineSelection.style';
-import { finalDiagnosticGetDrugs, finalDiagnosticGetManagements } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
+import { finalDiagnosticGetDrugs, finalDiagnosticGetManagements } from '../../../frontend_service/helpers/FinalDiagnostic.model';
 
 export default function MedicineSelection(props) {
   const { algorithm, t, diagnosesFinalDiagnostic, medicalCase, diagnoseKey } = props;

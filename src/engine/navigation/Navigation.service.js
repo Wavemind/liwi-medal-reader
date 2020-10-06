@@ -6,7 +6,7 @@ import { store } from '../../../frontend_service/store';
 import { medicalCaseStatus } from '../../../frontend_service/constants';
 import { updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import Database from '../api/Database';
-import { questionDisplayValue } from '../../../frontend_service/engine/models/Question.model';
+import { questionDisplayValue } from '../../../frontend_service/helpers/Question.model';
 
 let _navigator;
 

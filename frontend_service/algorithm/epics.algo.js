@@ -8,13 +8,13 @@ import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
-import { finalDiagnosticAgreed } from '../engine/models/FinalDiagnostic.model';
+import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
 import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { calculateCondition } from './conditionsHelpers.algo';
-import { diagnosticIsExcludedByComplaintCategory } from '../engine/models/Diagnostic.model';
-import { questionCalculateFormula, questionCalculateReference } from '../engine/models/Question.model';
-import { questionSequenceCalculateCondition } from '../engine/models/QuestionsSequenceModel';
-import { nodeUpdateAnswer } from '../engine/models/Node.model';
+import { diagnosticIsExcludedByComplaintCategory } from '../helpers/Diagnostic.model';
+import { questionCalculateFormula, questionCalculateReference } from '../helpers/Question.model';
+import { questionSequenceCalculateCondition } from '../helpers/QuestionsSequenceModel';
+import { nodeUpdateAnswer } from '../helpers/Node.model';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary

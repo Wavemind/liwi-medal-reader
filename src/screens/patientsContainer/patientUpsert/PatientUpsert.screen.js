@@ -6,8 +6,8 @@ import { Col, Text, View } from 'native-base';
 
 import uuid from 'react-native-uuid';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
@@ -18,7 +18,7 @@ import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
-import { nodeFilterBy } from '../../../../frontend_service/engine/models/Node.model';
+import { nodeFilterBy } from '../../../../frontend_service/helpers/Node.model';
 
 export default class PatientUpsert extends React.Component {
   state = {

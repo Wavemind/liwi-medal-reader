@@ -2,14 +2,14 @@
 
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import { categories, displayFormats, medicalCaseStatus, nodeTypes, stages } from '../../constants';
-import { getItem } from '../../../src/engine/api/LocalStorage';
-import Database from '../../../src/engine/api/Database';
-import { differenceNodes } from '../../../src/utils/swissKnives';
+import { categories, displayFormats, medicalCaseStatus, nodeTypes, stages } from '../constants';
+import { getItem } from '../../src/engine/api/LocalStorage';
+import Database from '../../src/engine/api/Database';
+import { differenceNodes } from '../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
-import { store } from '../../store';
-import I18n from '../../../src/utils/i18n';
-import { generateDrug, generateFinalDiagnostic, generateManagement, generateQuestion, generateQuestionsSequence } from '../nodeFactory';
+import { store } from '../store';
+import I18n from '../../src/utils/i18n';
+import { generateDrug, generateFinalDiagnostic, generateManagement, generateQuestion, generateQuestionsSequence } from './nodeFactory';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {

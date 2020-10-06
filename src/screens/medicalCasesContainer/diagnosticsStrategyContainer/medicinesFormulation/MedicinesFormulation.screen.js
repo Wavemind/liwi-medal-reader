@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Icon, Picker, Text, View } from 'native-base';
 import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
-import { drugAgreed, drugDoses } from '../../../../../frontend_service/engine/models/Drug.model';
+import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
 export default class MedicinesFormulations extends Component {
   shouldComponentUpdate(nextProps) {

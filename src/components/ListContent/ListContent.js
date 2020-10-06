@@ -9,7 +9,7 @@ import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { getDeviceInformation } from '../../engine/api/Device';
-import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../../../frontend_service/helpers/MedicalCase.model';
 
 type Props = NavigationScreenProps & {};
 

@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Text, View } from 'native-base';
 import Questions from '../../../../components/QuestionsContainer/Questions';
-import { healthCaresGetQuestions } from '../../../../../frontend_service/engine/models/HealthCares.model';
+import { healthCaresGetQuestions } from '../../../../../frontend_service/helpers/HealthCares.model';
 
 export default class HealthCaresQuestions extends Component {
   shouldComponentUpdate() {

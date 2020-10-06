@@ -1,6 +1,6 @@
 // @flow
 import { finalDiagnosticAgreed, finalDiagnosticAgreedObject } from './FinalDiagnostic.model';
-import { nodeTypes } from '../../constants';
+import { nodeTypes } from '../constants';
 
 /**
  * Check if a healthCare is excluded by an another

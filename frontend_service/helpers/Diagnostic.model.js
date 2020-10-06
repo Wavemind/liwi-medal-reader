@@ -1,6 +1,6 @@
 // @flow
 
-import { store } from '../../store';
+import { store } from '../store';
 import { questionBooleanValue } from './Question.model';
 
 /**

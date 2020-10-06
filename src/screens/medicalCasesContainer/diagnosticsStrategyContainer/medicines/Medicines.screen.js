@@ -10,7 +10,7 @@ import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Medicines.style';
 import MedicineSelection from '../../../../components/MedicineSelection';
-import { nodeFilterBy } from '../../../../../frontend_service/engine/models/Node.model';
+import { nodeFilterBy } from '../../../../../frontend_service/helpers/Node.model';
 import { questionsHealthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 
 export default class Medicines extends Component {

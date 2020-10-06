@@ -1,6 +1,6 @@
 import reduce from 'lodash/reduce';
 import { store } from '../store';
-import { questionBooleanValue } from '../engine/models/Question.model';
+import { questionBooleanValue } from '../helpers/Question.model';
 
 /**
  * Main entry to get the condition boolean for a entity

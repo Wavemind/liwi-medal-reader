@@ -9,7 +9,7 @@ import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 
 export default class PatientProfile extends React.Component {
   state = {

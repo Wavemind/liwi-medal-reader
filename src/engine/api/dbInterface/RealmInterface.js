@@ -2,10 +2,10 @@ import uuid from 'react-native-uuid';
 import * as _ from 'lodash';
 import moment from 'moment';
 
-import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
-import { PatientValueModel } from '../../../../frontend_service/engine/models/PatientValue.model';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { ActivityModel } from '../../../../frontend_service/helpers/Activity.model';
+import { PatientValueModel } from '../../../../frontend_service/helpers/PatientValue.model';
+import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 import { getItem, getItems } from '../LocalStorage';
 import { elementPerPage } from '../../../utils/constants';
 import { categories } from '../../../../frontend_service/constants';

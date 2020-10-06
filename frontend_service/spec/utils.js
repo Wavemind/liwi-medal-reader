@@ -2,7 +2,7 @@
 import { createAppContainer } from 'react-navigation';
 import find from 'lodash/find';
 import moment from 'moment';
-import { MedicalCaseModel } from '../engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../helpers/MedicalCase.model';
 import { store } from '../store';
 import { setAnswer, setMedicalCase, setDiagnoses, setMedicine } from '../actions/creators.actions';
 import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
@@ -11,7 +11,7 @@ import {
   finalDiagnosticAll,
   finalDiagnosticGetDrugs,
   FinalDiagnosticModel,
-} from '../engine/models/FinalDiagnostic.model';
+} from '../helpers/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 
 export const cl = console.log;

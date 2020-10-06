@@ -4,7 +4,7 @@ import React from 'react';
 import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
-import { categories, valueFormats } from '../../constants';
+import { categories, valueFormats } from '../constants';
 import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
 
 /**

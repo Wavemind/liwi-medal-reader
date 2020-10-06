@@ -2,9 +2,9 @@
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 
-import { calculateCondition, comparingTopConditions } from '../../algorithm/conditionsHelpers.algo';
+import { calculateCondition, comparingTopConditions } from '../algorithm/conditionsHelpers.algo';
 
-import { categories } from '../../constants';
+import { categories } from '../constants';
 
 /**
  * Calculate condition by answer scored
