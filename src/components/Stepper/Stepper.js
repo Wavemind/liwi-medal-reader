@@ -164,12 +164,13 @@ class Stepper extends React.Component<Props, State> {
    * @param position
    */
   handleBottomStepper = (position: number) => {
+    const {app:{algorithm}} = this.props;
     const numberOfPages: number = this.props.children.length;
 
     let route = NavigationService.getCurrentRoute();
     route.params.initialPage = position;
 
-    const validator = validatorStep(route, [], modelValidator);
+    const validator = validatorStep(algorithm, route, [], modelValidator);
     if (!validator.isActionValid) {
       this.handleBottomStepper(position - 1);
       displayNotification(i18n.t('navigation:step_invalid'), liwiColors.redColor);
@@ -315,7 +316,7 @@ class Stepper extends React.Component<Props, State> {
    * @returns {null|Array<*>}
    */
   renderSteps = () => {
-    const { steps, icons, validate } = this.props;
+    const { app: { algorithm }, steps, icons, validate } = this.props;
     const { page, error } = this.state;
 
     const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;
@@ -508,10 +509,10 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _validateStage = () => {
-    const { nextStage, paramsNextStage, updateModalFromRedux } = this.props;
+    const { app:{algorithm}, nextStage, paramsNextStage, updateModalFromRedux } = this.props;
 
     // Validate current stage
-    const validator = validatorNavigate({
+    const validator = validatorNavigate(algorithm, {
       currentStage: this.props.navigation.state.routeName,
       nextStage,
       params: paramsNextStage,

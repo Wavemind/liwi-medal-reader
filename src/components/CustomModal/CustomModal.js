@@ -75,7 +75,7 @@ export default class CustomModal extends React.Component<Props, State> {
         <View style={styles.description}>
           {stepToBeFill.map((step) => (
             <View key={`step-name${step.stepName}`}>
-              <View style={styles.questions}>
+              <View key={`step-sub${step.stepName}`} style={styles.questions}>
                 {customErrors.map((error) => (
                   <Text key={error}> - {error}</Text>
                 ))}

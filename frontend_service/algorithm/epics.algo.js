@@ -262,10 +262,7 @@ export const epicSetAnswer = (action$, state$) =>
     ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
     mergeMap((action) => {
       const { nodeId, algorithm } = action.payload;
-      const medicalCase = {
-        ...state$.value,
-        nodes: JSON.parse(JSON.stringify(state$.value.nodes)),
-      };
+      const medicalCase = state$.value;
       processUpdatedNode(algorithm, medicalCase, nodeId);
 
       // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
@@ -291,10 +288,7 @@ export const epicSetDiagnoses = (action$, state$) =>
       if (finalDiagnostics.length > 0) {
         const { algorithm } = action.payload;
 
-        const medicalCase = {
-          ...state$.value,
-          nodes: JSON.parse(JSON.stringify(state$.value.nodes)),
-        };
+        const medicalCase = state$.value;
 
         finalDiagnostics.forEach((finalDiagnosticId) => {
           const finalDiagnostic = medicalCase.nodes[finalDiagnosticId];
