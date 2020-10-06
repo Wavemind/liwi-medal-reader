@@ -391,28 +391,30 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.SET_PATIENT_VALUE)
   setPatientValue(state, action) {
     const { index, value } = action.payload;
+    const { algorithm } = state;
+    const question = algorithm.nodes[index];
+    const { answer } = nodeUpdateAnswer(value, algorithm, question);
 
-    // TODO Steuplé !
-    const question = new QuestionModel(state.algorithm.nodes[index]);
-    question.updateAnswer(value);
+    if (answer === null && value === null) {
+      return state;
+    }
 
-    let nodes = filter(state.algorithm.nodes, (node) => [categories.demographic, categories.basicDemographic].includes(node.category));
-
-    nodes = nodes.map((node) => {
+    // We retrieve all the patient values
+    const nodes = filter(state.algorithm.nodes, (node) => [categories.demographic, categories.basicDemographic].includes(node.category));
+    const patientValues = nodes.map((node) => {
       const patientValue = state.patientValues.find((pv) => pv.node_id === node.id);
       const newNode = patientValue !== undefined ? patientValue : { answer_id: null, node_id: node.id, value: null };
 
       // Set new value for patient value updated
       if (newNode.node_id === index) {
-        newNode.answer_id = question.answer;
-        newNode.value = question.value;
+        newNode.answer_id = answer;
+        newNode.value = value;
       }
       return newNode;
     });
-
     return {
       ...state,
-      patientValues: nodes,
+      patientValues,
     };
   }
 
