@@ -79,7 +79,6 @@ export default class PatientProfile extends React.Component {
     } = this.props;
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
-
     return (
       <TouchableOpacity
         style={styles.item}

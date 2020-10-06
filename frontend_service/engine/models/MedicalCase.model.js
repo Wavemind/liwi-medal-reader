@@ -319,16 +319,17 @@ export class MedicalCaseModel {
   getLabelFromNode = (nodeId, algorithm) => {
     let displayedValue = '';
     const currentNode = algorithm.nodes[nodeId];
+    const mcNode = this.nodes[nodeId];
 
     if (currentNode !== undefined) {
       if (currentNode.display_format === displayFormats.date) {
         // Date display
-        displayedValue = moment(currentNode.value).format(I18n.t('application:date_format'));
-      } else if (currentNode.value === null) {
+        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
+      } else if (mcNode.value === null) {
         // Answer display
-        displayedValue = currentNode.answer;
+        displayedValue = mcNode.answer;
       } else {
-        displayedValue = currentNode.value;
+        displayedValue = mcNode.value;
       }
     }
     return displayedValue;
