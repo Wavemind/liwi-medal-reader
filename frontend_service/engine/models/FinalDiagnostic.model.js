@@ -26,8 +26,8 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
   /**
    * Initial Var
    */
-  const currentNode = medicalCase.nodes[instance.id];
-  const instanceConditionValue = find(currentNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
+  const mcNode = medicalCase.nodes[instance.id];
+  const instanceConditionValue = find(mcNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
 
   /**
    * Get the condition of the instance link
@@ -37,7 +37,7 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
 
   // The condition path is not answered
   // Wait on user
-  if (currentNode.answer === null && instanceCondition === true) {
+  if (mcNode.answer === null && instanceCondition === true) {
     return null;
   }
 
@@ -64,7 +64,7 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
     const child = medicalCase.nodes[childId];
     // If this is not the final DD we calculate the conditionValue of the child
     if (child.type === nodeTypes.question || child.type === nodeTypes.questionsSequence) {
-      return recursiveNodeDd(algorithm, medicalCase, medicalCase.diagnostics[dd.diagnostic_id].instances[child.id], dd);
+      return recursiveNodeDd(algorithm, medicalCase, algorithm.diagnostics[dd.diagnostic_id].instances[child.id], dd);
     }
     if (child.id === dd.id && child.type === nodeTypes.finalDiagnostic) {
       const top_conditions = _.filter(dd.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
@@ -94,10 +94,10 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
  *      null = Still possible but not yet
  *      false = can't access the end anymore
  */
-const getStatusOfDD = (state$, dd) => {
+const getStatusOfDD = (algorithm, medicalCase, dd) => {
   const topLevelNodes = [];
 
-  const instancesOfDiagnosticByDd = state$.diagnostics[dd.diagnostic_id].instances;
+  const instancesOfDiagnosticByDd = algorithm.diagnostics[dd.diagnostic_id].instances;
   // Set top Level Nodes
   Object.keys(instancesOfDiagnosticByDd).map((instanceId) => {
     // Is top level nodes
@@ -109,7 +109,7 @@ const getStatusOfDD = (state$, dd) => {
     }
   });
 
-  const allNodesAnsweredInDd = topLevelNodes.map((topNode) => recursiveNodeDd(state$, topNode, dd));
+  const allNodesAnsweredInDd = topLevelNodes.map((topNode) => recursiveNodeDd(algorithm, medicalCase, topNode, dd));
 
   return reduceConditionArrayBoolean(allNodesAnsweredInDd);
 };
@@ -123,7 +123,7 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcNode
   const currentNode = algorithm.nodes[mcNode.id];
   const conditionValueTrue = [];
   // Generate only the top_condition with conditionValue to true => they are not disabled
-  currentNode.top_conditions.map((condition) => {
+  currentNode.top_conditions.forEach((condition) => {
     const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === currentNode.diagnostic_id);
     if (findDDinNode.conditionValue === true) {
       conditionValueTrue.push(condition);
@@ -131,7 +131,7 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcNode
   });
 
   // Return the status of this dd
-  const statusOfDD = getStatusOfDD(medicalCase, this);
+  const statusOfDD = getStatusOfDD(algorithm, medicalCase, mcNode);
 
   // If this FD can be excluded by other high-priority FD
   const isExcluded = currentNode.excluding_final_diagnostics.some(
@@ -158,7 +158,7 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcNode
  * Return all the drugs that must be shown for the current final diagnostic
  * @returns {Array<DrugModel>} - All the drugs that must be shown for the current final diagnostic
  */
-export const finalDiagnosticGetDrugs = (medicalCase, mcNode) => {
+export const finalDiagnosticGetDrugs = (algorithm, medicalCase, mcNode) => {
   const drugsAvailable = [];
   const parents = (top_conditions) => {
     return top_conditions.map((top) => top.first_node_id);
@@ -166,7 +166,7 @@ export const finalDiagnosticGetDrugs = (medicalCase, mcNode) => {
 
   Object.keys(mcNode.drugs).forEach((drugId) => {
     const drug = medicalCase.nodes[drugId];
-    if (parentsConditionValue(mcNode, parents, mcNode.drugs[drugId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase,drug)) {
+    if (parentsConditionValue(mcNode, parents, mcNode.drugs[drugId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase, algorithm, drug)) {
       drugsAvailable.push(drug);
     }
   });
@@ -179,7 +179,7 @@ export const finalDiagnosticGetDrugs = (medicalCase, mcNode) => {
  * @param medicalCase
  * @returns {[]}
  */
-export const finalDiagnosticGetManagements = (medicalCase, mcNode) => {
+export const finalDiagnosticGetManagements = (algorithm, medicalCase, mcNode) => {
   const managementsAvailable = [];
   const parents = (top_conditions) => {
     return top_conditions.map((top) => top.first_node_id);
@@ -187,7 +187,7 @@ export const finalDiagnosticGetManagements = (medicalCase, mcNode) => {
 
   Object.keys(mcNode.managements).forEach((managementId) => {
     const management = medicalCase.nodes[managementId];
-    if (parentsConditionValue(mcNode, parents, mcNode.managements[managementId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase, management)) {
+    if (parentsConditionValue(mcNode, parents, mcNode.managements[managementId].top_conditions, medicalCase) && !healthCareIsExcluded(medicalCase, algorithm, management)) {
       managementsAvailable.push(management);
     }
   });

@@ -89,7 +89,6 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
   caller = find(caller, (d) => d.id === callerId);
 
   // We update only if the condition changes
-  console.log(medicalCase.nodes[nodeId], key, caller, type)
   if (caller.conditionValue !== value) {
     index = medicalCase.nodes[nodeId][key].findIndex((d) => d.id === callerId);
     // Update counter conditionValue
@@ -98,7 +97,6 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
     } else if (value === false) {
       medicalCase.nodes[nodeId].counter -= 1;
     }
-    console.log(medicalCase.nodes[nodeId], key, index)
     medicalCase.nodes[nodeId][key][index].conditionValue = value;
 
     processUpdatedNode(algorithm, medicalCase, nodeId);
@@ -227,7 +225,6 @@ const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
     const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
     medicalCase.isEligible = years < algorithm.config.age_limit;
   }
-  console.log(mcNode, relatedDiagnostics, relatedQuestionsSequence);
 
   // For each related diagnoses we gonna check if we need to update their status
   relatedDiagnostics.forEach((diagnostic) => nodeAction(algorithm, medicalCase, mcNode.id, diagnostic.id, nodeTypes.diagnostic));
@@ -239,7 +236,7 @@ const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
   if (mcNode.type === nodeTypes.questionsSequence) {
     questionsSequenceAction(algorithm, medicalCase, mcNode.id);
   }
-  console.log(currentNode);
+
   // We tell the related nodes to update themself
   if (mcNode.type === nodeTypes.question) {
     currentNode.referenced_in.forEach((referencedNodeId) => referencedNodeAction(algorithm, medicalCase, referencedNodeId));
@@ -292,6 +289,8 @@ export const epicSetDiagnoses = (action$, state$) =>
       const finalDiagnostics = finalDiagnosticAgreed(state$.value);
 
       if (finalDiagnostics.length > 0) {
+        const { algorithm } = action.payload;
+
         const medicalCase = {
           ...state$.value,
           nodes: JSON.parse(JSON.stringify(state$.value.nodes)),
@@ -302,7 +301,7 @@ export const epicSetDiagnoses = (action$, state$) =>
           Object.keys(finalDiagnostic.instances).forEach((healthCaresQuestionId) => {
             const healthCaresQuestion = finalDiagnostic.instances[healthCaresQuestionId];
             const dfInstance = medicalCase.nodes[healthCaresQuestion.id].df.find((df) => df.id === finalDiagnosticId);
-            dfInstance.conditionValue = healthCaresQuestion.calculateCondition();
+            dfInstance.conditionValue = calculateCondition(algorithm, healthCaresQuestion, medicalCase);
           });
         });
 

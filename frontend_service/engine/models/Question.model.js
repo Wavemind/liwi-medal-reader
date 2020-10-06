@@ -9,7 +9,6 @@ import I18n from '../../../src/utils/i18n';
  * @params medicalCase : object
  * @return isDisplayed : boolean
  */
-// TODO Check if used
 export const questionIsDisplayedInTriage = (medicalCase, mcNode) => {
   const { conditions } = medicalCase.triage;
   let isDisplayed = true;
@@ -17,7 +16,7 @@ export const questionIsDisplayedInTriage = (medicalCase, mcNode) => {
   // Skip if there is no conditions
   if (conditions?.[mcNode.id] !== undefined) {
     isDisplayed = false;
-    conditions[mcNode.id].map((condition) => {
+    conditions[mcNode.id].forEach((condition) => {
       if (medicalCase.nodes[condition.complaint_category_id].answer === condition.answer_id) {
         isDisplayed = true;
       }
@@ -63,7 +62,7 @@ export const questionCalculateFormula = (algorithm, medicalCase, mcNode) => {
   };
   // Replace every bracket in the formula with it's value
   const formula = currentNode.formula.replace(findBracketId, replaceBracketToValue);
-  console.log(currentNode, formula);
+
   if (ready) {
     return eval(formula);
   }

@@ -1,5 +1,5 @@
 // @flow
-import { finalDiagnosticAgreed, finalDiagnosticAgreedObject, FinalDiagnosticModel } from './FinalDiagnostic.model';
+import { finalDiagnosticAgreed, finalDiagnosticAgreedObject } from './FinalDiagnostic.model';
 import { nodeTypes } from '../../constants';
 
 /**
@@ -27,7 +27,7 @@ export const healthCareIsExcluded = (medicalCase, algorithm, mcNode) => {
  * @return Object {questions} list of question that need to be answered
  */
 export const healthCaresGetQuestions = (algorithm, medicalCase) => {
-  const { nodes } = algorithm;
+  const { nodes } = medicalCase;
   let questions = {};
   const finalDiagnostics = finalDiagnosticAgreed(medicalCase);
 

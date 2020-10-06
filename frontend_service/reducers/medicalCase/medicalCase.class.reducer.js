@@ -173,7 +173,7 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Set formulation for a drug
-   * @payload diagnoseId: the diagnosey identifiant
+   * @payload diagnoseId
    * @payload drugId: the drugId
    * @payload type: key in diagnoses
    * @payload formulation: string formulation

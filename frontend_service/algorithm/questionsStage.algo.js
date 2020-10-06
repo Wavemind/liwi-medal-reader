@@ -5,6 +5,7 @@ import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
 import { nodeFilterBy } from '../engine/models/Node.model';
+import { questionIsDisplayedInTriage } from '../engine/models/Question.model';
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -114,7 +115,7 @@ export const questionsPhysicalExam = (algorithm) => {
   const newQuestions = questions.map(({ id }) => id);
 
   // Update state$ physical exam questions if it's different from new questions list
-  if (!_.isEqual(algorithm.metaData.consultation.physicalExam, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.consultation.physicalExam, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
   }
 
@@ -195,10 +196,9 @@ export const questionsBasicMeasurements = (algorithm) => {
   if (orderedQuestions !== undefined) {
     orderedQuestions.forEach((orderedQuestion) => {
       const question = medicalCase.nodes[orderedQuestion];
-      // TODO check if used
-      // if (question.isDisplayedInTriage(state$)) {
-      //   basicMeasurements.push(question);
-      // }
+      if (questionIsDisplayedInTriage(medicalCase, question)) {
+        basicMeasurements.push(question);
+      }
     });
   }
 
@@ -231,9 +231,40 @@ export const questionsTests = (algorithm) => {
   const newQuestions = assessmentTest.map(({ id }) => id);
 
   // Update state$ tests questions if it's different from new questions list
-  if (!_.isEqual(algorithm.metaData.tests.tests, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.tests.tests, newQuestions)) {
     store.dispatch(updateMetaData('tests', 'tests', newQuestions));
   }
 
   return assessmentTest;
+};
+
+/**
+ * Get questions for health cares
+ * @param algorithm
+ * @returns {*}
+ */
+export const questionsHealthCares = (algorithm) => {
+  const medicalCase = store.getState();
+
+  const healthCares = nodeFilterBy(
+    medicalCase,
+    algorithm,
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.drug,
+      },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.management,
+      },
+    ],
+    'OR',
+    'array',
+    true
+  );
+
+  return healthCares;
 };

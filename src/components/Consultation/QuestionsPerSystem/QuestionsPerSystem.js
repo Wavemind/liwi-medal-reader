@@ -1,25 +1,13 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView } from 'react-native';
 import { Text, View } from 'native-base';
 import _ from 'lodash';
 import { styles } from './QuestionsPerSystem.style';
 import System from '../System';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class QuestionsPerSystem extends React.Component<Props, State> {
-  shouldComponentUpdate(nextProps: Props): boolean {
-    if (nextProps.medicalCase.id === undefined) {
-      return false;
-    }
-    return true;
-  }
-
+export default class QuestionsPerSystem extends React.Component {
   render() {
     const {
       app: { t },

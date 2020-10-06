@@ -2,11 +2,9 @@
 
 import React, { Suspense } from 'react';
 import { Content, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import type { StateApplicationContext } from '../../../engine/contexts/Application.context';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessment } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import Boolean from '../../../components/QuestionsContainer/DisplaysContainer/Boolean';
@@ -14,10 +12,7 @@ import Boolean from '../../../components/QuestionsContainer/DisplaysContainer/Bo
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
-type Props = NavigationScreenProps & {};
-type State = StateApplicationContext & {};
-
-export default class Triage extends React.Component<Props, State> {
+export default class Triage extends React.Component {
   constructor(props) {
     super(props);
 

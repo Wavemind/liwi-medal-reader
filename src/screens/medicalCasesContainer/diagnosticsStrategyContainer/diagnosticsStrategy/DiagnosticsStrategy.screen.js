@@ -1,6 +1,5 @@
 // @flow
 
-import { NavigationScreenProps } from 'react-navigation';
 import React, { Component, Suspense } from 'react';
 import { ScrollView, View } from 'react-native';
 
@@ -15,10 +14,7 @@ const Stepper = React.lazy(() => import('../../../../components/Stepper'));
 const HealthCares = React.lazy(() => import('../healthCares'));
 const Medicines = React.lazy(() => import('../medicines'));
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class DiagnosesStrategy extends Component<Props, State> {
+export default class DiagnosesStrategy extends Component {
   constructor(props) {
     super(props);
 

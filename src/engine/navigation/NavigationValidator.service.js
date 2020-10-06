@@ -30,7 +30,6 @@ const screens = [
       complaintCategories: { answer: 'not_null', initialPage: 1 },
       basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
-    generateQuestions: [questionsFirstLookAssessment, questionsComplaintCategory, questionsBasicMeasurements],
   },
   {
     key: 'Consultation',
@@ -40,13 +39,11 @@ const screens = [
       physicalExam: { is_mandatory: true, initialPage: 1 },
       comment: { initialPage: 2 },
     },
-    generateQuestions: [questionsPhysicalExam, questionsMedicalHistory],
   },
   {
     key: 'Tests',
     medicalCaseOrder: 3,
     validations: { tests: { is_mandatory: true, initialPage: 0 } },
-    generateQuestions: [questionsTests],
   },
   {
     key: 'DiagnosticsStrategy',
@@ -106,7 +103,7 @@ function oneValidation(criteria, questions, stepName) {
   // Break Ref JS
   const staticValidator = JSON.parse(JSON.stringify(modelValidator));
   staticValidator.stepName = stepName;
-  console.log(criteria);
+
   Object.keys(criteria).map((c) => {
     switch (c) {
       case 'is_mandatory':
@@ -120,7 +117,7 @@ function oneValidation(criteria, questions, stepName) {
               staticValidator.questionsToBeFill.push(node);
             }
           }
-          console.log(node);
+
           // Test integer or float question if there is validation
           if (node.value_format === valueFormats.int || node.value_format === valueFormats.float) {
             if (node.value !== null && (node.min_value_error !== null || node.max_value_error) && (node.value < node.min_value_error || node.value > node.max_value_error)) {
@@ -175,7 +172,6 @@ export const validatorNavigate = (navigateRoute) => {
   const questionsToValidate = medicalCase.metaData[screenSchema.key.toLowerCase()];
 
   const stepsResult = Object.keys(screenSchema.validations).map((validation) => {
-    console.log('je rentre la?');
     const questions = questionsToValidate[validation];
     const criteria = screenSchema.validations[validation];
     return oneValidation(criteria, questions, validation);

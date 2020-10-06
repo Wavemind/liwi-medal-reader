@@ -11,8 +11,5 @@ import { questionBooleanValue } from './Question.model';
 // TODO: FIXE COMMENT
 export const diagnosticIsExcludedByComplaintCategory = (algorithm, diagnosticId, medicalCase) => {
   const complaintCategory = algorithm.diagnostics[diagnosticId].complaint_category;
-  // TODO: FIXE THIS SHITTTT
-  // console.log(medicalCase);
-  // console.log(medicalCase.nodes[complaintCategory])
   return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
 };

@@ -29,11 +29,10 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
   _renderSwitchFormulation = (drug) => {
     const {
       app: { t, algorithm },
-      medicalCase: { nodes },
     } = this.props;
 
-    const node = nodes[drug.id];
-    const drugDose = drugDoses(drug.formulationSelected, algorithm);
+    const node = algorithm.nodes[drug.id];
+    const drugDose = drugDoses(drug.formulationSelected, algorithm, drug.id);
 
     if (node.formulations[drug.formulationSelected] !== undefined) {
       switch (node.formulations[drug.formulationSelected].medication_form) {
@@ -73,7 +72,6 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
     const {
       app: { t, algorithm },
       medicalCase,
-      medicalCase: { nodes },
     } = this.props;
 
     const drugsAvailable = drugAgreed(medicalCase.diagnoses, algorithm);
@@ -133,7 +131,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                 {diagnoseFinalDiagnostics[key].managements !== undefined && Object.keys(diagnoseFinalDiagnostics[key].managements).length > 0 ? (
                   Object.keys(diagnoseFinalDiagnostics[key].managements).map((managementKey) => {
                     const management = diagnoseFinalDiagnostics[key].managements[managementKey];
-                    const node = nodes[management.id];
+                    const node = algorithm.nodes[management.id];
                     if (calculateCondition(algorithm, management) === true && management.agreed === true) {
                       return (
                         <View style={styles.drugContainer} key={`${managementKey}_management`}>

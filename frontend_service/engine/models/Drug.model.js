@@ -10,9 +10,9 @@ import { calculateCondition } from '../../algorithm/conditionsHelpers.algo';
  *
  * @return [object] : doses for the treatment, it depend by healthcare type (liquid, tab, pill, etc...)
  */
-export const drugDoses = (formulationIndex, algorithm) => {
+export const drugDoses = (formulationIndex, algorithm, drugId) => {
   // TODO: Check with algorithm
-  const drug = algorithm.nodes[this.id];
+  const drug = algorithm.nodes[drugId];
 
   const medicalCase = store.getState();
   const mcWeight = medicalCase.nodes[algorithm.config.basic_questions.weight_question_id];
@@ -134,7 +134,7 @@ export const drugDoses = (formulationIndex, algorithm) => {
  * @return : object list all drugs
  *
  */
-export const drugAgreed = (diagnoses = null, algorithm) => {
+export const drugAgreed = (diagnoses, algorithm) => {
   let currentDiagnoses;
   let currentAdditionalDrugs;
 

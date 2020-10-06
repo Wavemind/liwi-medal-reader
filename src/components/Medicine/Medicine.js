@@ -5,7 +5,7 @@ import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './Medicine.style';
 import { categories } from '../../../frontend_service/constants';
 
-export default class Medicine extends Component<{}> {
+export default class Medicine extends Component {
   _handleClick = (value) => {
     const { medicine, finalDiagnosticId, setMedicine, diagnoseKey, healthCareType } = this.props;
     if (value !== medicine.agreed) {

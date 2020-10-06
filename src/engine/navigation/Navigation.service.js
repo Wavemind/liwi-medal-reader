@@ -63,8 +63,7 @@ function setParamsAge(algorithm, name = '') {
   const state$ = store.getState();
   const { nodes } = state$;
   const { mobile_config } = algorithm;
-console.log(algorithm)
-console.log(state$)
+
   const left = mobile_config.left_top_question_id !== null ? questionDisplayValue(algorithm, nodes[mobile_config.left_top_question_id]) : '';
   const first_right = mobile_config.first_top_right_question_id !== null ? questionDisplayValue(algorithm, nodes[mobile_config.first_top_right_question_id]) : '';
   const second_right = mobile_config.second_top_right_question_id !== null ? questionDisplayValue(algorithm, nodes[mobile_config.second_top_right_question_id]) : '';

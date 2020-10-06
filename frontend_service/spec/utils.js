@@ -123,7 +123,7 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
   // Do not ask FFS
   if (diagnosesKey === 'proposed') {
     store.dispatch(
-      setDiagnoses(diagnosesKey, {
+      setDiagnoses(algorithm, diagnosesKey, {
         id: finalDiagnosticId,
         label: finalDiagnostic.label,
         diagnostic_id: finalDiagnostic.diagnostic_id,
@@ -134,7 +134,7 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
     );
   } else {
     store.dispatch(
-      setDiagnoses(diagnosesKey, {
+      setDiagnoses(algorithm, diagnosesKey, {
         [finalDiagnosticId]: {
           id: finalDiagnosticId,
           label: finalDiagnostic.label,
@@ -174,7 +174,7 @@ export const drugRetained = (drugId) => {
   let drugs = [];
 
   Object.keys(finalDiagnostics).forEach((key) => {
-    drugs = drugs.concat(finalDiagnosticGetDrugs(state$, state$.nodes[key]));
+    drugs = drugs.concat(finalDiagnosticGetDrugs(algorithm, state$, state$.nodes[key]));
   });
   return drugs.some((drug) => drug.id === drugId);
 };

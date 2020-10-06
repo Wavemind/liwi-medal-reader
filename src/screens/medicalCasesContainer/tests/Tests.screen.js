@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import type { NavigationScreenProps } from 'react-navigation';
 import { View } from 'native-base';
 
 import { styles } from './Tests.style';
@@ -12,10 +11,7 @@ import { questionsTests } from '../../../../frontend_service/algorithm/questions
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class Tests extends React.Component<Props, State> {
+export default class Tests extends React.Component {
   constructor(props) {
     super(props);
     const {

@@ -2,19 +2,10 @@
 
 import React, { Component } from 'react';
 import { Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../../components/QuestionsContainer/Questions';
-import { NodeModel } from '../../../../../frontend_service/engine/models/Node.model';
-import {
-  healthCaresGetQuestions,
-  HealthCaresModel
-} from '../../../../../frontend_service/engine/models/HealthCares.model';
+import { healthCaresGetQuestions } from '../../../../../frontend_service/engine/models/HealthCares.model';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-// Because a function component is causing error from wrappers
-// eslint-disable-next-line react/prefer-stateless-function
-export default class HealthCaresQuestions extends Component<Props, State> {
+export default class HealthCaresQuestions extends Component {
   shouldComponentUpdate() {
     const { selectedPage } = this.props;
     return selectedPage === 1;

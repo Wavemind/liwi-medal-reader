@@ -17,9 +17,10 @@ export const setMedicalCase = (medicalCase) => ({
   },
 });
 
-export const setDiagnoses = (type, diagnoses, actionDiagnoses) => ({
+export const setDiagnoses = (algorithm, type, diagnoses, actionDiagnoses) => ({
   type: actions.SET_DIAGNOSES,
   payload: {
+    algorithm,
     type,
     diagnoses,
     actionDiagnoses,
@@ -61,7 +62,7 @@ export const setAdditionalMedicine = (medicines) => ({
   },
 });
 
-export const setFormulation = (diagnoseId, formulation, type, drugId) => ({
+export const setFormulationSelected = (diagnoseId, formulation, type, drugId) => ({
   type: actions.SET_FORMULATION_SELECTED,
   payload: {
     diagnoseId,
