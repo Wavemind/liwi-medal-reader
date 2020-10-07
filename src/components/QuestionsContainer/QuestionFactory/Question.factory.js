@@ -83,12 +83,17 @@ export default class Question extends React.Component<Props, State> {
    * @private
    */
   _labelQuestion() {
-    const { question } = this.props;
+    const {
+      app: { algorithm },
+      question,
+    } = this.props;
     const { flexLabel } = this.state;
+    const currentNode = algorithm.nodes[question.id];
+
     return (
       <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
         <Text style={styles.questionLabel} size-auto>
-          {question.label} {question.is_mandatory ? '*' : null}
+          {currentNode.label} {currentNode.is_mandatory ? '*' : null}
         </Text>
       </ViewQuestion>
     );
@@ -97,14 +102,15 @@ export default class Question extends React.Component<Props, State> {
   render() {
     const {
       question,
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
     const { flexQuestion, flexToolTip } = this.state;
+    const currentNode = algorithm.nodes[question.id];
 
     let WrapperUnavailable = () => null;
     let unavailableAnswer = null;
 
-    unavailableAnswer = _.find(question.answers, (a) => a.value === 'not_available');
+    unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
 
     if (unavailableAnswer !== undefined) {
       WrapperUnavailable = () => {
@@ -118,14 +124,14 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if (question.display_format === displayFormats.formula && !__DEV__) {
+    if (currentNode.display_format === displayFormats.formula && !__DEV__) {
       return null;
     }
 
     // Construct generic Component for the question
     return (
       <ListItem
-        style={[styles.condensed, styles.flexColumn, { backgroundColor: question.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
+        style={[styles.condensed, styles.flexColumn, { backgroundColor: currentNode.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
         noBorder
         key={`${question.id}_item`}
       >

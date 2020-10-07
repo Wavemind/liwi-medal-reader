@@ -4,15 +4,6 @@ import { valueFormats } from '../../../frontend_service/constants';
 import { store } from '../../../frontend_service/store';
 import i18n from '../../utils/i18n';
 
-import {
-  questionsBasicMeasurements,
-  questionsComplaintCategory,
-  questionsFirstLookAssessement,
-  questionsMedicalHistory,
-  questionsPhysicalExam,
-  questionsTests,
-} from '../../../frontend_service/algorithm/questionsStage.algo';
-
 const screens = [
   { key: 'Home' },
   {
@@ -30,7 +21,6 @@ const screens = [
       complaintCategories: { answer: 'not_null', initialPage: 1 },
       basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
-    generateQuestions: [questionsFirstLookAssessement, questionsComplaintCategory, questionsBasicMeasurements],
   },
   {
     key: 'Consultation',
@@ -40,13 +30,11 @@ const screens = [
       physicalExam: { is_mandatory: true, initialPage: 1 },
       comment: { initialPage: 2 },
     },
-    generateQuestions: [questionsPhysicalExam, questionsMedicalHistory],
   },
   {
     key: 'Tests',
     medicalCaseOrder: 3,
     validations: { tests: { is_mandatory: true, initialPage: 0 } },
-    generateQuestions: [questionsTests],
   },
   {
     key: 'DiagnosticsStrategy',
@@ -73,7 +61,7 @@ export const modelValidator = {
  * @param validator : object contain all validation
  * @return validator : may be updated in the function
  */
-export const validatorStep = (route, lastState, validator) => {
+export const validatorStep = (algorithm, route, lastState, validator) => {
   const state$ = store.getState();
   if (route?.params?.initialPage && route.params.initialPage > 0) {
     const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
@@ -83,7 +71,7 @@ export const validatorStep = (route, lastState, validator) => {
       const questionsToValidate = state$.metaData[route.routeName.toLowerCase()];
       const questions = questionsToValidate[detailValidation];
       const criteria = detailSetParamsRoute.validations[detailValidation];
-      validator = oneValidation(criteria, questions, detailValidation);
+      validator = oneValidation(algorithm, criteria, questions, detailValidation);
     }
   }
 
@@ -99,33 +87,34 @@ export const validatorStep = (route, lastState, validator) => {
  * @param stepName : stepName : step to validate
  * @return {validator} :
  */
-function oneValidation(criteria, questions, stepName) {
+function oneValidation(algorithm, criteria, questions, stepName) {
   const medicalCase = store.getState();
   let result;
   let isValid = true;
   // Break Ref JS
   const staticValidator = JSON.parse(JSON.stringify(modelValidator));
   staticValidator.stepName = stepName;
-  console.log(criteria);
+
   Object.keys(criteria).map((c) => {
     switch (c) {
       case 'is_mandatory':
         questions.forEach((questionId) => {
-          const node = medicalCase.nodes[questionId];
-          if (node.is_mandatory === true) {
-            result = node.answer !== null || node.value !== null;
+          const mcNode = medicalCase.nodes[questionId];
+          const currentNode = algorithm.nodes[questionId];
+          if (currentNode.is_mandatory === true) {
+            result = mcNode.answer !== null || mcNode.value !== null;
 
             if (!result) {
               isValid = false;
-              staticValidator.questionsToBeFill.push(node);
+              staticValidator.questionsToBeFill.push(currentNode);
             }
           }
-          console.log(node);
+
           // Test integer or float question if there is validation
-          if (node.value_format === valueFormats.int || node.value_format === valueFormats.float) {
-            if (node.value !== null && (node.min_value_error !== null || node.max_value_error) && (node.value < node.min_value_error || node.value > node.max_value_error)) {
+          if (mcNode.value_format === valueFormats.int || mcNode.value_format === valueFormats.float) {
+            if (mcNode.value !== null && (mcNode.min_value_error !== null || mcNode.max_value_error) && (mcNode.value < mcNode.min_value_error || mcNode.value > mcNode.max_value_error)) {
               isValid = false;
-              staticValidator.questionsToBeFill.push(node);
+              staticValidator.questionsToBeFill.push(currentNode);
             }
           }
         });
@@ -133,11 +122,12 @@ function oneValidation(criteria, questions, stepName) {
       case 'answer':
         if (criteria[c] === 'not_null') {
           questions.forEach((questionId) => {
-            const node = medicalCase.nodes[questionId];
-            result = node.answer !== null;
+            const mcNode = medicalCase.nodes[questionId];
+            const currentNode = algorithm.nodes[questionId];
+            result = mcNode.answer !== null;
             if (!result) {
               isValid = false;
-              staticValidator.questionsToBeFill.push(node);
+              staticValidator.questionsToBeFill.push(currentNode);
             }
           });
         }
@@ -156,7 +146,7 @@ function oneValidation(criteria, questions, stepName) {
  * @param navigateRoute : {currentStage, nextStage, params}
  * @return {any}
  */
-export const validatorNavigate = (navigateRoute) => {
+export const validatorNavigate = (algorithm, navigateRoute) => {
   const validator = JSON.parse(JSON.stringify(modelValidator));
   const medicalCase = store.getState();
 
@@ -175,10 +165,9 @@ export const validatorNavigate = (navigateRoute) => {
   const questionsToValidate = medicalCase.metaData[screenSchema.key.toLowerCase()];
 
   const stepsResult = Object.keys(screenSchema.validations).map((validation) => {
-    console.log('je rentre la?');
     const questions = questionsToValidate[validation];
     const criteria = screenSchema.validations[validation];
-    return oneValidation(criteria, questions, validation);
+    return oneValidation(algorithm, criteria, questions, validation);
   });
 
   // All step need to be valid

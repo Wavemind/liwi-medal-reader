@@ -7,7 +7,7 @@ console.error = () => {};
 console.warn = () => {};
 
 // DOESNT WORK ANYMORE
-describe('actions', () => {
+// describe('actions', () => {
   // it('Respiratory distress', () => {
   //   // STAGE : REGISTRATION
   //   setBirthDate(1, 80);
@@ -101,4 +101,4 @@ describe('actions', () => {
   //   expect(finalDiagnosticRetained(60)).toEqual(true); // Check if Final diagnosis 60 ("Respiratory Distress") is retained
   //   expect(finalDiagnosticRetained(128)).toEqual(false); // Check if Common cold not retained (Respiratory Distress should exclude common cold)
   // });
-});
+// });

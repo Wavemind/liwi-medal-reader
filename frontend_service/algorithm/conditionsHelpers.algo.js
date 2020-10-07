@@ -1,5 +1,6 @@
 import reduce from 'lodash/reduce';
 import { store } from '../store';
+import { questionBooleanValue } from '../helpers/Question.model';
 
 /**
  * Main entry to get the condition boolean for a entity
@@ -8,18 +9,18 @@ import { store } from '../store';
  * @return {boolean}
  *
  */
-export const calculateCondition = (node, medicalCase = store.getState()) => {
+export const calculateCondition = (algorithm, node, medicalCase = store.getState()) => {
   const { nodes } = medicalCase;
 
   let isExcludedByComplaintCategory = false;
   // We check that all the complaint categories linked to the node are set to true
   switch (typeof node.cc) {
     case 'number':
-      isExcludedByComplaintCategory = nodes[node.cc].booleanValue() === false;
+      isExcludedByComplaintCategory = questionBooleanValue(algorithm, nodes[node.cc]) === false;
       break;
     case 'object':
       isExcludedByComplaintCategory = node.cc.some((complaintCategory) => {
-        return nodes[complaintCategory].booleanValue() === false;
+        return questionBooleanValue(algorithm, nodes[complaintCategory]) === false;
       });
       break;
   }

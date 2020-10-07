@@ -2,17 +2,12 @@
 
 import * as React from 'react';
 import { Picker, View } from 'native-base';
-import type { NavigationScreenProps } from 'react-navigation';
 import * as _ from 'lodash';
 import moment from 'moment';
 import { styles } from './Date.style';
 import I18n from '../../../../utils/i18n';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Date extends React.Component<Props, State> {
+export default class Date extends React.Component {
   constructor(props) {
     super(props);
 
@@ -63,7 +58,13 @@ export default class Date extends React.Component<Props, State> {
    */
   setBirthDate = () => {
     const { dayValue, monthValue, yearValue } = this.state;
-    const { question, setAnswer, setPatientValue, patientValueEdit } = this.props;
+    const {
+      app: { algorithm },
+      question,
+      setAnswer,
+      setPatientValue,
+      patientValueEdit,
+    } = this.props;
 
     const birthDateQuestion = question;
     const day = dayValue !== null ? dayValue : '1';
@@ -78,9 +79,9 @@ export default class Date extends React.Component<Props, State> {
         setPatientValue(birthDateQuestion.id, null);
       }
     } else if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
-      setAnswer(birthDateQuestion.id, moment(birthDate).format());
+      setAnswer(algorithm, birthDateQuestion.id, moment(birthDate).format());
     } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
-      setAnswer(birthDateQuestion.id, null);
+      setAnswer(algorithm, birthDateQuestion.id, null);
       this.setState({ dayValue: null, monthValue: null, yearValue: null });
     }
   };

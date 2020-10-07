@@ -2,8 +2,8 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
-import { getItem } from '../../../src/engine/api/LocalStorage';
-import { getDeviceInformation } from '../../../src/engine/api/Device';
+import { getItem } from '../../src/engine/api/LocalStorage';
+import { getDeviceInformation } from '../../src/engine/api/Device';
 
 export class ActivityModel {
   constructor(props) {

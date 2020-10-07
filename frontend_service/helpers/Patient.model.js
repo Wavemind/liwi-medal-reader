@@ -2,12 +2,12 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
-import I18n from '../../../src/utils/i18n';
-import Database from '../../../src/engine/api/Database';
+import I18n from '../../src/utils/i18n';
+import Database from '../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 import { PatientValueModel } from './PatientValue.model';
-import { getItem } from '../../../src/engine/api/LocalStorage';
-import { displayFormats } from '../../constants';
+import { getItem } from '../../src/engine/api/LocalStorage';
+import { displayFormats } from '../constants';
 
 export class PatientModel {
   constructor(props = {}) {
@@ -71,9 +71,17 @@ export class PatientModel {
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
-  getLabelFromNode = (nodeId, nodes) => {
+
+  /**
+   * Format value or answer for a patient that has to be render
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
+   */
+  getLabelFromNode = (nodeId, algorithm) => {
     let displayedValue = '';
     const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
+    const { nodes } = algorithm;
 
     if (currentPatientValue !== undefined) {
       if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
@@ -139,7 +147,7 @@ export class PatientModel {
         status: medicalCase.status,
         clinician: medicalCase.clinician,
         mac_address: medicalCase.mac_address,
-        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, medicalCase.nodes)),
+        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, algorithm)),
       };
     });
   };
