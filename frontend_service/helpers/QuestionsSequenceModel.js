@@ -7,8 +7,12 @@ import { calculateCondition, comparingTopConditions } from '../algorithm/conditi
 import { categories } from '../constants';
 
 /**
- * Calculate condition by answer scored
- * Sum answer scored and comparing it to the questions sequence scored
+ * Calculate score and question sequence scored status
+ * @param algorithm
+ * @param medicalCase
+ * @param mcNode
+ * @returns {null|boolean}
+ * @private
  */
 const _questionSequenceScoredCalculateCondition = (algorithm, medicalCase, mcNode) => {
   const currentNode = algorithm.nodes[mcNode.id];
@@ -79,6 +83,10 @@ const _questionSequenceCalculateCondition = (algorithm, medicalCase, mcNode) => 
 
 /**
  * Calculate condition of question sequence and these children
+ * @param algorithm
+ * @param medicalCase
+ * @param mcNode
+ * @returns {null|boolean}
  */
 export const questionSequenceCalculateCondition = (algorithm, medicalCase, mcNode) => {
   const currentNode = algorithm.nodes[mcNode.id];

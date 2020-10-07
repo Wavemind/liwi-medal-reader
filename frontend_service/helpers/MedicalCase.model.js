@@ -18,7 +18,7 @@ export class MedicalCaseModel {
       this.nodes = MedicalCaseModel.instantiateNodes(currentAlgorithm.nodes);
       this.activities = [];
       this.version_id = currentAlgorithm.version_id;
-      this.triage = currentAlgorithm.triage; //  TODO Voir avec Manu
+      this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
@@ -115,7 +115,7 @@ export class MedicalCaseModel {
   _assignValues(data) {
     this.version_id = data.version_id;
     this.nodes = data.nodes;
-    this.triage = data.triage; // Todo Manu
+    this.triage = data.triage;
     this.consent = data.consent;
     this.isEligible = data.isEligible;
     this.metaData = data.metaData;
@@ -152,9 +152,8 @@ export class MedicalCaseModel {
 
   /**
    * Set condition values of question in order to prepare them for second batch (before the triage one)
-   * @param [Json] algorithm
-   * @return [Json] algorithm
-   * */
+   * @param algorithm
+   */
   setInitialConditionValue = (algorithm) => {
     const { diagnostics, nodes } = algorithm;
     try {
@@ -199,8 +198,10 @@ export class MedicalCaseModel {
 
   /**
    * Recursive function to also set dd and qs parents of current qs
-   * @params [Json][Integer][Integer] algorithm, parentId, id
-   * */
+   * @param algorithm
+   * @param parentId
+   * @param id
+   */
   setParentConditionValue = (algorithm, parentId, id) => {
     let conditionValue = false;
     const { diagnostics, nodes } = algorithm;
@@ -261,11 +262,12 @@ export class MedicalCaseModel {
   };
 
   /**
-  /**
    * Will generate an activity for a medical case comparing the current value and the
    * one stored in the database
-   * @param  {String} stage name of the current stage
-   * @param  {String} user The clinician that did the activity
+   * @param stage
+   * @param user
+   * @param nodes
+   * @returns {Promise<ActivityModel>}
    */
   generateActivity = async (stage, user, nodes) => {
     const algorithm = await getItem('algorithm');
@@ -290,6 +292,10 @@ export class MedicalCaseModel {
 
   /**
    * Defines if the case is locked
+   * @param medicalCaseLight
+   * @param deviceInfo
+   * @param user
+   * @returns {boolean}
    */
   static isLocked = (medicalCaseLight, deviceInfo, user) => {
     return (
@@ -303,6 +309,9 @@ export class MedicalCaseModel {
 
   /**
    * Defines if the case is locked
+   * @param deviceInfo
+   * @param user
+   * @returns {boolean}
    */
   isLocked = (deviceInfo, user) => {
     return (
@@ -312,9 +321,9 @@ export class MedicalCaseModel {
 
   /**
    * Get value of medical case value
-   * @param {integer} nodeId - Node id to retrieved
-   * @param {object} nodes - List of nodes in algorithm
-   * @returns {string|date} - value to display
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
    */
   getLabelFromNode = (nodeId, algorithm) => {
     let displayedValue = '';
@@ -362,7 +371,6 @@ export class MedicalCaseModel {
 
   /**
    * Instantiate all the nodes received
-   *
    * @params nodes : nodes to instantiate
    */
   static instantiateNodes(nodes) {
@@ -380,7 +388,6 @@ export class MedicalCaseModel {
   /**
    * Node factory
    * Instantiate new Node base on node type
-   *
    * @params node : node to instantiate
    */
   static instantiateNode(node) {

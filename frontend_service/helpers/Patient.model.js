@@ -71,6 +71,13 @@ export class PatientModel {
    * @param {object} nodes - List of nodes in algorithm
    * @returns {string|date} - value to display
    */
+
+  /**
+   * Format value or answer for a patient that has to be render
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
+   */
   getLabelFromNode = (nodeId, algorithm) => {
     let displayedValue = '';
     const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);

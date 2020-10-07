@@ -6,7 +6,8 @@ import { nodeTypes } from '../constants';
  * Check if a healthCare is excluded by an another
  * @param medicalCase
  * @param algorithm
- * @returns {Array<boolean>}
+ * @param mcNode
+ * @returns {boolean}
  */
 export const healthCareIsExcluded = (medicalCase, algorithm, mcNode) => {
   const finalDiagnostics = finalDiagnosticAgreedObject(medicalCase);
@@ -24,7 +25,9 @@ export const healthCareIsExcluded = (medicalCase, algorithm, mcNode) => {
 
 /**
  * Return a list of question that need to be answered in order to define the health cares
- * @return Object {questions} list of question that need to be answered
+ * @param algorithm
+ * @param medicalCase
+ * @returns {{}}
  */
 export const healthCaresGetQuestions = (algorithm, medicalCase) => {
   const { nodes } = medicalCase;
@@ -52,9 +55,11 @@ export const healthCaresGetQuestions = (algorithm, medicalCase) => {
 
 /**
  * Recursive call to get question in QS from QS
- *
- * @params [Object] state$, [Object] questions, [Object] node: the node we want questions
- * @return nothing : Immutability
+ * @param algorithm
+ * @param medicalCase
+ * @param questions
+ * @param node
+ * @private
  */
 const _getQuestionsInQs = (algorithm, medicalCase, questions, node) => {
   const { nodes } = algorithm;

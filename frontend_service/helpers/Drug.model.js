@@ -4,14 +4,16 @@ import { medicationForms } from '../constants';
 import { store } from '../store';
 import { roundSup } from '../../src/utils/swissKnives';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
+import i18n from '../../src/utils/i18n';
 
 /**
- * Set the right dose calculation for the treatment.
- *
- * @return [object] : doses for the treatment, it depend by healthcare type (liquid, tab, pill, etc...)
+ * Set the right dose calculation for a drug.
+ * @param formulationIndex
+ * @param algorithm
+ * @param drugId
+ * @returns {{doseResult: null}|{doseResult: null, no_possibility: string}|{recurrence: *, doseResult: *, doseResultMg: *, maxDoseMg: *, minDoseMl: number, maxDoseMl: number, minDoseMg: *}|{recurrence: *, doseResult: *, maxDoseCap: number, maxDoseMg: *, minDoseMg: *, minDoseCap: number}}
  */
 export const drugDoses = (formulationIndex, algorithm, drugId) => {
-  // TODO: Check with algorithm
   const drug = algorithm.nodes[drugId];
 
   const medicalCase = store.getState();
@@ -24,14 +26,14 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
   let recurrence;
   let pillSize;
 
-  // select formulation
+  // Select formulation
   const formulation = drug.formulations[formulationIndex];
 
   if (formulation === undefined) {
     return { doseResult: null };
   }
 
-  // protected by_age
+  // Age and weight must be answered to calculate dosage
   if ((mcWeight !== undefined && mcWeight.value !== null) || formulation.by_age === false) {
     recurrence = 24 / formulation.doses_per_day;
 
@@ -56,13 +58,11 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
 
         doseResultMg = (doseResult * formulation.liquid_concentration) / formulation.dose_form;
 
-        // if we reach the limit / day
+        // If we reach the limit / day
         if (doseResultMg * formulation.doses_per_day > formulation.maximal_dose) {
           doseResultMg = formulation.maximal_dose / formulation.doses_per_day;
           doseResult = (doseResultMg * formulation.dose_form) / formulation.liquid_concentration;
         }
-
-        // Frequency
 
         return {
           minDoseMg,
@@ -102,8 +102,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
         } else {
           // Out of possibility
           return {
-            // TODO: FUCK YOU
-            no_possibility: 'No compatible option for this weight',
+            no_possibility: i18n.t('drug:no_options'),
             doseResult: null,
           };
         }
@@ -118,7 +117,6 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
           ...formulation,
         };
       default:
-        // Other use case will be here in future
         break;
     }
   }
@@ -126,13 +124,13 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
 };
 
 /**
- * Get drugs from 3 objects and return one object (manual merging)
- * Object from :
- * - Proposed
- * - Additional
- *
- * @return : object list all drugs
- *
+ * Get agreed drugs and return a new object
+ * @param diagnoses
+ * @param algorithm
+ * @returns {{
+ *   proposed: {},
+ *   additional: {}
+ * }}
  */
 export const drugAgreed = (diagnoses, algorithm) => {
   let currentDiagnoses;

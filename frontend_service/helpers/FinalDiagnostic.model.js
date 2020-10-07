@@ -4,40 +4,28 @@ import find from 'lodash/find';
 import * as _ from 'lodash';
 import reduce from 'lodash/reduce';
 import { nodeFilterByType } from './Node.model';
-import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../algorithm/conditionsHelpers.algo';
 import { store } from '../store';
 import { nodeTypes } from '../constants';
-import {healthCareIsExcluded} from './HealthCares.model';
+import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../algorithm/conditionsHelpers.algo';
+import { healthCareIsExcluded } from './HealthCares.model';
 
 /**
- * 1. Check the current status of this instance
- * 2. Depending the result go recursive OR calculate final path DD
- *
- * @params state$: All the state of the reducer
- * @params instance: The instance currently working
- * @params dd: The Final Diagnostics we want to get the status
- *
- * @return boolean: return the status of the path
- *      true = can reach the end
- *      null = Still possible but not yet
- *      false = can't access the end anymore
+ * Check the current status of this instance and if it's true, go to next node
+ * @param algorithm
+ * @param medicalCase
+ * @param instance
+ * @param dd
+ * @returns {null|boolean}
  */
 const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
-  /**
-   * Initial Var
-   */
   const mcNode = medicalCase.nodes[instance.id];
   const instanceConditionValue = find(mcNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
 
-  /**
-   * Get the condition of the instance link
-   * Do not change to this.calculateCondition -> infinite loop
-   */
+  // Get the condition of the instance link
   const instanceCondition = calculateCondition(algorithm, instance, medicalCase);
 
   // The condition path is not answered
-  // Wait on user
-  if (mcNode.answer === null && instanceCondition === true) {
+  if ((mcNode.answer === null && instanceCondition === true) || instanceCondition === null) {
     return null;
   }
 
@@ -46,18 +34,9 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
     return false;
   }
 
-  // The condition path is not answered
-  // Wait on user
-  if (instanceCondition === null) {
-    return null;
-  }
-
   // Remove path other dd
   const childrenWithoutOtherDd = instance.children.filter((id) => {
-    if (medicalCase.nodes[id].type === nodeTypes.finalDiagnostic && medicalCase.nodes[id].id !== dd.id) {
-      return false;
-    }
-    return true;
+    return !(medicalCase.nodes[id].type === nodeTypes.finalDiagnostic && medicalCase.nodes[id].id !== dd.id);
   });
 
   const recursif = childrenWithoutOtherDd.map((childId) => {
@@ -72,9 +51,7 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
       const arrayBoolean = top_conditions.map((condition) => {
         return comparingTopConditions(condition, medicalCase);
       });
-      // calcul final path
-      const r = reduceConditionArrayBoolean(arrayBoolean);
-      return r;
+      return reduceConditionArrayBoolean(arrayBoolean);
     }
   });
 
@@ -82,28 +59,20 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
 };
 
 /**
- * 1. Get top level node instance
- * 2.
- * 2. Depending the result go recursive OR calculate final path DD
- *
- * @params state$: All the state of the reducer
- * @params dd: The Final Diagnostics we want to get the status
- *
- * @return boolean: return the status of the DD
- *      true = can reach the end
- *      null = Still possible but not yet
- *      false = can't access the end anymore
+ * Calculate status of a final diagnostic
+ * @param algorithm
+ * @param medicalCase
+ * @param dd
+ * @returns {boolean}
  */
 const getStatusOfDD = (algorithm, medicalCase, dd) => {
   const topLevelNodes = [];
-
   const instancesOfDiagnosticByDd = algorithm.diagnostics[dd.diagnostic_id].instances;
-  // Set top Level Nodes
-  Object.keys(instancesOfDiagnosticByDd).map((instanceId) => {
-    // Is top level nodes
+
+  Object.keys(instancesOfDiagnosticByDd).forEach((instanceId) => {
     const topLevelNode = instancesOfDiagnosticByDd[instanceId].top_conditions.length === 0;
-    // Is not related top treatment or management
     const isNotRelatedToTreatmentManagement = instancesOfDiagnosticByDd[instanceId].final_diagnostic_id === null;
+
     if (topLevelNode && isNotRelatedToTreatmentManagement) {
       topLevelNodes.push(instancesOfDiagnosticByDd[instanceId]);
     }
@@ -115,10 +84,13 @@ const getStatusOfDD = (algorithm, medicalCase, dd) => {
 };
 
 /**
- * Calculate condition to display a final diagnostic
+ * Calculate condition to display a final diagnostic.
  * Verify if the final diagnostic excluded an another one
+ * @param algorithm
+ * @param medicalCase
+ * @param mcNode
+ * @returns {null|boolean}
  */
-// TODO ICI
 export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcNode) => {
   const currentNode = algorithm.nodes[mcNode.id];
   const conditionValueTrue = [];
@@ -156,7 +128,10 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcNode
 
 /**
  * Return all the drugs that must be shown for the current final diagnostic
- * @returns {Array<DrugModel>} - All the drugs that must be shown for the current final diagnostic
+ * @param algorithm
+ * @param medicalCase
+ * @param mcNode
+ * @returns {[]} - All the drugs that must be shown for the current final diagnostic
  */
 export const finalDiagnosticGetDrugs = (algorithm, medicalCase, mcNode) => {
   const drugsAvailable = [];
@@ -176,8 +151,10 @@ export const finalDiagnosticGetDrugs = (algorithm, medicalCase, mcNode) => {
 
 /**
  * Return all the managements that must be shown for the current final diagnostic
+ * @param algorithm
  * @param medicalCase
- * @returns {[]}
+ * @param mcNode
+ * @returns {[]} - All the managements that must be shown for the current final diagnostic
  */
 export const finalDiagnosticGetManagements = (algorithm, medicalCase, mcNode) => {
   const managementsAvailable = [];
@@ -197,10 +174,11 @@ export const finalDiagnosticGetManagements = (algorithm, medicalCase, mcNode) =>
 
 /**
  * Recursive function that calculate the value of all your parents
+ * @param mcNode - node in medical case
  * @param parentsTopConditions - method mapping top conditions
- * @param top_conditions - the condition of you 1st level parent
- * @param medicalCase - current medical case
- * @returns {boolean}
+ * @param top_conditions
+ * @param medicalCase
+ * @returns {boolean|*}
  */
 const parentsConditionValue = (mcNode, parentsTopConditions, top_conditions, medicalCase) => {
   if (top_conditions.length > 0) {
@@ -221,15 +199,9 @@ const parentsConditionValue = (mcNode, parentsTopConditions, top_conditions, med
 };
 
 /**
- * Returns all the FinalDiagnostics by their status (included | excluded | not_defined)
- *
- * @return {object} An hash with all the diagnostics with the following structure
- *  {
- *    included: [],
- *    excluded: [],
- *    not_defined: [],
- *  }
- *
+ * Returns all the FinalDiagnostics by their status
+ * @param algorithm
+ * @returns {{excluded: [], not_defined: [], included: []}}
  */
 export const finalDiagnosticAll = (algorithm) => {
   const medicalCase = store.getState();
@@ -287,7 +259,7 @@ export const finalDiagnosticAll = (algorithm) => {
 };
 
 /**
- * Retrurns all the final diagnostics that are either manually added or agreed by the clinician
+ * Returns all the final diagnostics that are either manually added or agreed by the clinician
  * @param medicalCase - The current state of the medical case
  * @returns {Array<Integer>} - Returns an array with all the ids of the final diagnostics
  */
@@ -303,7 +275,7 @@ export const finalDiagnosticAgreed = (medicalCase) => {
 };
 
 /**
- * Retrurns all the final diagnostics that are either manually added or agreed by the clinician
+ * Returns all the final diagnostics that are either manually added or agreed by the clinician
  * @param medicalCase - The current state of the medical case
  * @returns {Array<Integer>} - Returns an array with all the diagnoses of the final diagnostics
  */

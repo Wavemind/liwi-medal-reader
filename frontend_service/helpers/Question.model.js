@@ -6,8 +6,9 @@ import I18n from '../../src/utils/i18n';
 
 /**
  * Calculate condition to display triage question
- * @params medicalCase : object
- * @return isDisplayed : boolean
+ * @param medicalCase
+ * @param mcNode
+ * @returns {boolean}
  */
 export const questionIsDisplayedInTriage = (medicalCase, mcNode) => {
   const { conditions } = medicalCase.triage;
@@ -27,11 +28,11 @@ export const questionIsDisplayedInTriage = (medicalCase, mcNode) => {
 };
 
 /**
- * Parse the formula and calculate it if possible
- *
- * @param node
- * @returns {number}
- *
+ * Parse the formula and calculate it if all nodes needed is answered
+ * @param algorithm
+ * @param medicalCase
+ * @param mcNode
+ * @returns {null|any}
  */
 export const questionCalculateFormula = (algorithm, medicalCase, mcNode) => {
   // Regex to find the brackets [] in the formula
@@ -72,7 +73,10 @@ export const questionCalculateFormula = (algorithm, medicalCase, mcNode) => {
 
 /**
  * Calculate reference score.
- * @returns refer to reference tables
+ * @param algorithm
+ * @param medicalCase
+ * @param mcNode
+ * @returns {null}
  */
 export const questionCalculateReference = (algorithm, medicalCase, mcNode) => {
   let reference = null;
@@ -118,12 +122,11 @@ export const questionCalculateReference = (algorithm, medicalCase, mcNode) => {
 };
 
 /**
- *
- * @param {JSON} referenceTable - Reference table available in frontend_service/api/...
- * @param {Integer} maxRange - Y or Z value to not exceed
- * @returns {null|Integer} - Value find
+ * Find value in a given reference table
+ * @param referenceTable - Reference table available in frontend_service/api/...
+ * @param maxRange - Y or Z value to not exceed
+ * @returns {null|*}
  */
-// TODO comment
 const findValueInReferenceTable = (referenceTable, maxRange) => {
   let previousKey = null;
   let value = null;
@@ -152,6 +155,8 @@ const findValueInReferenceTable = (referenceTable, maxRange) => {
 
 /**
  * Return a humanized value who depend on value_format
+ * @param algorithm
+ * @param mcNode
  * @returns {string|*}
  */
 export const questionDisplayValue = (algorithm, mcNode) => {
@@ -163,7 +168,10 @@ export const questionDisplayValue = (algorithm, mcNode) => {
 };
 
 /**
- * Returns the value for a boolean question  or a complaint category
+ * Returns the value for a boolean question or a complaint category
+ * @param algorithm
+ * @param mcNode
+ * @returns {boolean}
  */
 export const questionBooleanValue = (algorithm, mcNode) => {
   const { answers } = algorithm.nodes[mcNode.id];

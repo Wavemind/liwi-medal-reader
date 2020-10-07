@@ -8,16 +8,11 @@ import { categories, valueFormats } from '../constants';
 import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
 
 /**
- * Update the answer depending his format
- *
- * @param {(string\|number)} value: new value for the question
- * @return  {Nothing} Update the class
- * Depending the value format of the question
- *
- * Float If float we find the right operator and calculate the new value
- *
- * List If list or array set the new value defined by the component button
- *
+ * Update the answer based node's on value format
+ * @param value
+ * @param algorithm
+ * @param mcNode
+ * @returns {{answer: null, validationMessage: null, validationType: null, answer_stage: string, value: *}}
  */
 export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   let answer = null;
@@ -123,25 +118,25 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   };
 };
 
-// TODO comment
+/**
+ * Filter by type property
+ * @param nodes
+ * @param type
+ * @returns {string[]}
+ */
 export const nodeFilterByType = (nodes, type) => {
   return _.filter(nodes, (n) => n.type === type);
 };
 
 /**
- * Return filtered nodes on multiple params
- * @params filter : array
- * [{ by: 'category', operator: 'equal', value: categories.symptom },
- * { by: 'stage', operator: 'equal', value: stage.consultation },
- * { by: 'counter', operator: 'more', value: 0 },]
- *
- * @params operator string
- *  - AND
- *  - OR
- *
- *  @params formatReturn string
- *  - array
- *  - object
+ * Filtered nodes on multiple params
+ * @param medicalCase
+ * @param algorithm
+ * @param filters
+ * @param operator
+ * @param formatReturn
+ * @param counter
+ * @returns {*}
  */
 export const nodeFilterBy = (medicalCase, algorithm, filters, operator = 'OR', formatReturn = 'array', counter = true) => {
   // return the boolean for one filter
