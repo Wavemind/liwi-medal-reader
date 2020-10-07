@@ -10,9 +10,9 @@ import { LiwiTitle2 } from '../../../template/layout';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { getItem, getItems } from '../../../engine/api/LocalStorage';
-import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
+import { ActivityModel } from '../../../../frontend_service/helpers/Activity.model';
 import { categories } from '../../../../frontend_service/constants';
-import { PatientValueModel } from '../../../../frontend_service/engine/models/PatientValue.model';
+import { PatientValueModel } from '../../../../frontend_service/helpers/PatientValue.model';
 import { convertToObject } from '../../../utils/swissKnives';
 
 import { store } from '../../../../frontend_service/store';

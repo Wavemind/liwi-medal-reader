@@ -37,7 +37,13 @@ export default class Numeric extends React.Component<Props, State> {
    */
   onEndEditing = (e) => {
     const value = e.nativeEvent.text;
-    const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
+    const {
+      app: { algorithm },
+      setAnswer,
+      setPatientValue,
+      question,
+      patientValueEdit,
+    } = this.props;
 
     if (patientValueEdit) {
       if (value !== question.value && value !== '') {
@@ -46,9 +52,9 @@ export default class Numeric extends React.Component<Props, State> {
         setPatientValue(question.id, null);
       }
     } else if (value !== question.value && value !== '') {
-      setAnswer(question.id, value);
+      setAnswer(algorithm, question.id, value);
     } else if (question.value !== null && value === '') {
-      setAnswer(question.id, null);
+      setAnswer(algorithm, question.id, null);
     }
   };
 
@@ -90,12 +96,13 @@ export default class Numeric extends React.Component<Props, State> {
 
   render() {
     const {
+      app: { t, algorithm },
       question,
       unavailableAnswer,
       isReadOnly,
-      app: { t },
     } = this.props;
     let { value, estimableValue } = this.state;
+    const { estimable } = algorithm.nodes[question.id];
 
     value = value !== null ? String(value) : null;
     let placeholder = '';
@@ -109,7 +116,7 @@ export default class Numeric extends React.Component<Props, State> {
         <View answer>
           <Input keyboardType="number-pad" question numeric value={value} onChange={this.onChange} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
         </View>
-        {question.estimable ? (
+        {estimable ? (
           <View answer style={styles.marginTop}>
             <LeftButton active={estimableValue === 'measured'} onPress={() => this._handleEstimable('measured')} disabled={isReadOnly}>
               <Text center white={estimableValue === 'measured'} style={styles.estimableFontSize}>

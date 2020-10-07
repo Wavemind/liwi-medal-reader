@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Icon, Text, View } from 'native-base';
 import { TextInput } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 
@@ -11,15 +10,10 @@ import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Medicines.style';
 import MedicineSelection from '../../../../components/MedicineSelection';
+import { nodeFilterBy } from '../../../../../frontend_service/helpers/Node.model';
+import { questionsHealthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class Medicines extends Component<Props, State> {
-  state = {};
-
-  static defaultProps = {};
-
+export default class Medicines extends Component {
   shouldComponentUpdate() {
     const { selectedPage } = this.props;
     return selectedPage === 2;
@@ -75,30 +69,13 @@ export default class Medicines extends Component<Props, State> {
   render() {
     const {
       medicalCase,
-      medicalCase: { diagnoses, nodes, diagnostics },
-      app: { t },
+      medicalCase: { diagnoses },
+      app: { t, algorithm },
     } = this.props;
 
-    const allHealthCares = nodes.filterBy(
-      [
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.drug,
-        },
-        {
-          by: 'category',
-          operator: 'equal',
-          value: categories.management,
-        },
-      ],
-      diagnostics,
-      'OR',
-      'array',
-      true
-    );
-
+    const allHealthCares = questionsHealthCares(algorithm);
     let filteredHealthCares = allHealthCares;
+
     const selected = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
 
     // Filter drugs proposed
@@ -150,10 +127,27 @@ export default class Medicines extends Component<Props, State> {
         <Text customTitle style={styles.noTopMargin}>
           {t('diagnoses:medicines')}
         </Text>
-        {Object.keys(diagnoses.proposed).length === 0 && Object.keys(diagnoses.additional).length === 0 ? <Text italic>{t('diagnoses:no_medicines')}</Text> : (
+        {Object.keys(diagnoses.proposed).length === 0 && Object.keys(diagnoses.additional).length === 0 ? (
+          <Text italic>{t('diagnoses:no_medicines')}</Text>
+        ) : (
           <>
-            {Object.keys(diagnoses.proposed).map((key) => (<MedicineSelection key={`proposed_medicine_${key}`} diagnosesFinalDiagnostic={diagnoses.proposed[key]} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />))}
-            {Object.keys(diagnoses.additional).map((key) => (<MedicineSelection key={`additional_medicine_${key}`} diagnosesFinalDiagnostic={diagnoses.additional[key]} diagnoseKey="additional" t={t} medicalCase={medicalCase} />))}
+            {Object.keys(diagnoses.proposed).map((key) => {
+              if (diagnoses.proposed[key].agreed === true) {
+                return (
+                  <MedicineSelection key={`proposed_medicine_${key}`} algorithm={algorithm} diagnosesFinalDiagnostic={diagnoses.proposed[key]} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />
+                );
+              }
+            })}
+            {Object.keys(diagnoses.additional).map((key) => (
+              <MedicineSelection
+                key={`additional_medicine_${key}`}
+                algorithm={algorithm}
+                diagnosesFinalDiagnostic={diagnoses.additional[key]}
+                diagnoseKey="additional"
+                t={t}
+                medicalCase={medicalCase}
+              />
+            ))}
           </>
         )}
         {Object.keys(diagnoses.custom).map((w, i) => (

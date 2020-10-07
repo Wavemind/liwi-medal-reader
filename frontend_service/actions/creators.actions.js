@@ -17,9 +17,10 @@ export const setMedicalCase = (medicalCase) => ({
   },
 });
 
-export const setDiagnoses = (type, diagnoses, actionDiagnoses) => ({
+export const setDiagnoses = (algorithm, type, diagnoses, actionDiagnoses) => ({
   type: actions.SET_DIAGNOSES,
   payload: {
+    algorithm,
     type,
     diagnoses,
     actionDiagnoses,
@@ -61,7 +62,7 @@ export const setAdditionalMedicine = (medicines) => ({
   },
 });
 
-export const setFormulation = (diagnoseId, formulation, type, drugId) => ({
+export const setFormulationSelected = (diagnoseId, formulation, type, drugId) => ({
   type: actions.SET_FORMULATION_SELECTED,
   payload: {
     diagnoseId,
@@ -81,7 +82,6 @@ export const updateMetaData = (screen, view, value) => ({
   },
 });
 
-// TODO Check WTF this shit is
 export const updateModalFromRedux = (params = {}, type = '') => ({
   type: actions.MC_UPDATE_MODAL,
   payload: {
@@ -94,11 +94,12 @@ export const clearMedicalCase = () => ({
   type: actions.MC_CLEAR,
 });
 
-export const setAnswer = (nodeId, value) => ({
+export const setAnswer = (algorithm, nodeId, newValue) => ({
   type: actions.SET_ANSWER,
   payload: {
+    algorithm,
     nodeId,
-    value,
+    newValue,
   },
 });
 
@@ -126,9 +127,10 @@ export const setEstimable = (index, value) => ({
   },
 });
 
-export const setAnswerUnavailable = (nodeId, value) => ({
+export const setAnswerUnavailable = (algorithm, nodeId, value) => ({
   type: actions.SET_ANSWER_TO_UNAVAILABLE,
   payload: {
+    algorithm,
     nodeId,
     value,
   },

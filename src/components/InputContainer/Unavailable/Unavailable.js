@@ -1,32 +1,30 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { CheckBox } from 'native-base';
 import { liwiColors } from '../../../utils/constants';
 import { styles } from './Unavailable.style';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Unavailable extends React.Component<Props, State> {
-  state = {};
-
-  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+export default class Unavailable extends React.Component {
+  shouldComponentUpdate(nextProps) {
     const { question } = this.props;
 
     return question.answer !== nextProps.question.answer;
   }
 
   onPress = () => {
-    const { setAnswerUnavailable, question, unavailableAnswer } = this.props;
+    const {
+      app: { algorithm },
+      setAnswerUnavailable,
+      question,
+      unavailableAnswer,
+    } = this.props;
 
     if (question.answer === null || question.answer !== unavailableAnswer.id) {
-      setAnswerUnavailable(question.id, unavailableAnswer.id);
+      setAnswerUnavailable(algorithm, question.id, unavailableAnswer.id);
     } else {
       // reset to null the checkbox
-      setAnswerUnavailable(question.id, null);
+      setAnswerUnavailable(algorithm, question.id, null);
     }
   };
 

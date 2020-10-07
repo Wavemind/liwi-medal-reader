@@ -3,8 +3,8 @@ import fetch from '../../../utils/fetchWithTimeout';
 import { getItem } from '../LocalStorage';
 import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 
 export default class HttpInterface {
   constructor() {

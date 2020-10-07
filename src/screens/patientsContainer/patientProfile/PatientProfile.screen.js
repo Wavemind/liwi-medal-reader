@@ -9,7 +9,7 @@ import { getDeviceInformation } from '../../../engine/api/Device';
 import { getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 
 export default class PatientProfile extends React.Component {
   state = {
@@ -79,7 +79,6 @@ export default class PatientProfile extends React.Component {
     } = this.props;
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
-
     return (
       <TouchableOpacity
         style={styles.item}
@@ -155,7 +154,7 @@ export default class PatientProfile extends React.Component {
                       {nodes[patientValue.node_id].label}
                     </Text>
                     <Text size-auto style={styles.patientValues}>
-                      {patient.getLabelFromNode(patientValue.node_id, nodes)}
+                      {patient.getLabelFromNode(patientValue.node_id, algorithm)}
                     </Text>
                   </View>
                 ))}

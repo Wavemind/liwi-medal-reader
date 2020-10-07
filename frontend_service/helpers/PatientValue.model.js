@@ -2,8 +2,8 @@
 
 import uuid from 'react-native-uuid';
 
-import { differenceNodes } from '../../../src/utils/swissKnives';
-import { store } from '../../store';
+import { differenceNodes } from '../../src/utils/swissKnives';
+import { store } from '../store';
 
 export class PatientValueModel {
   constructor(props) {

@@ -1,17 +1,12 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { styles } from './System.style';
 import Questions from '../../QuestionsContainer/Questions';
 import { systems } from '../../../../frontend_service/constants';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class System extends React.Component<Props, State> {
+export default class System extends React.Component {
   // default settings
   static defaultProps = {
     questions: [],

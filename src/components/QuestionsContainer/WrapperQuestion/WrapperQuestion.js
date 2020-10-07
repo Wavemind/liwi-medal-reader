@@ -9,7 +9,7 @@ import Date from '../DisplaysContainer/Date';
 import List from '../DisplaysContainer/List';
 import Formula from '../DisplaysContainer/Formula';
 
-export default class WrapperQuestion extends React.Component<Props, State> {
+export default class WrapperQuestion extends React.Component {
   // Lifecycle for optimization
   shouldComponentUpdate(nextProps) {
     const { question } = this.props;
@@ -17,14 +17,19 @@ export default class WrapperQuestion extends React.Component<Props, State> {
   }
 
   render() {
-    const { question, flex } = this.props;
+    const {
+      app: { algorithm },
+      question,
+      flex,
+    } = this.props;
+    const currentNode = algorithm.nodes[question.id];
 
     // By default no component
     let WrapperAnswer = () => null;
 
     // Depending the format of the question we call the right component
     // Boolean | Numeric | String | Date | List
-    switch (question.display_format) {
+    switch (currentNode.display_format) {
       case displayFormats.radioButton:
         WrapperAnswer = () => <Boolean question={question} {...this.props} />;
         break;

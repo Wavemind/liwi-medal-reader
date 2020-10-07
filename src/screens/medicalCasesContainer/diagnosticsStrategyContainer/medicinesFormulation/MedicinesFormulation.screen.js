@@ -1,29 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import { Icon, Picker, Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
-import { DrugModel } from '../../../../../frontend_service/engine/models/Drug.model';
+import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class MedicinesFormulations extends Component<Props, State> {
-  onValueChange = (value, node, drugId) => {
-    const { setFormulation } = this.props;
-    if (value !== false) {
-      node.diagnoses.map((diagnose) => {
-        if (diagnose !== null) {
-          setFormulation(diagnose.id, value, diagnose.type, drugId);
-        } else {
-          setFormulation(null, value, 'additionalDrugs', drugId);
-        }
-      });
-    }
-  };
-
-  shouldComponentUpdate(nextProps, nextState) {
+export default class MedicinesFormulations extends Component {
+  shouldComponentUpdate(nextProps) {
     const { pageIndex } = this.props;
 
     if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
@@ -32,7 +15,19 @@ export default class MedicinesFormulations extends Component<Props, State> {
     return true;
   }
 
-  static defaultProps = {};
+  onValueChange = (value, node, drugId) => {
+    const { setFormulationSelected } = this.props;
+
+    if (value !== false) {
+      node.diagnoses.forEach((diagnose) => {
+        if (diagnose !== null) {
+          setFormulationSelected(diagnose.id, value, diagnose.type, drugId);
+        } else {
+          setFormulationSelected(null, value, 'additionalDrugs', drugId);
+        }
+      });
+    }
+  };
 
   /**
    * Display measurement unit
@@ -64,22 +59,21 @@ export default class MedicinesFormulations extends Component<Props, State> {
    */
   _renderFormulation = (instance, selected, onSelect) => {
     const {
-      medicalCase: { nodes },
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
     return (
       <View style={styles.blocDrug} key={instance.id}>
         <View style={styles.flex}>
-          <Text size-auto>{nodes[instance.id]?.label}</Text>
-          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${nodes[e.id].label} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
+          <Text size-auto>{algorithm.nodes[instance.id]?.label}</Text>
+          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${algorithm.nodes[e.id].label} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
         </View>
         <View style={styles.select}>
           <Icon name="arrow-drop-down" type="MaterialIcons" style={styles.pickerIcon} />
           <Picker note mode="dropdown" style={styles.pickerContent} selectedValue={selected} onValueChange={onSelect}>
             <Picker.Item label={t('application:select')} value={null} />
-            {nodes[instance.id]?.formulations.map((f, index) => {
-              const preCalculed = nodes[instance.id].getDrugDoses(index);
+            {algorithm.nodes[instance.id]?.formulations.map((f, index) => {
+              const preCalculed = drugDoses(index, algorithm, instance.id);
               let string = '';
               let isPossible = true;
               if (preCalculed.doseResult !== null) {
@@ -107,7 +101,7 @@ export default class MedicinesFormulations extends Component<Props, State> {
               }
 
               // Only one option so pre-select it if possible
-              if (nodes[instance.id]?.formulations.length === 1 && isPossible && index !== selected) {
+              if (algorithm.nodes[instance.id]?.formulations.length === 1 && isPossible && index !== selected) {
                 onSelect(index);
               }
 
@@ -127,32 +121,30 @@ export default class MedicinesFormulations extends Component<Props, State> {
 
   render() {
     const {
-      medicalCase: { nodes },
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
-    const drugs = DrugModel.getAgreed();
-
-    const generateFormulation = () =>
-      Object.keys(drugs).map((formulation) => {
-        const { formulationSelected } = drugs[formulation];
-        const selected = formulationSelected === undefined ? null : formulationSelected;
-        const onSelect = (value) => this.onValueChange(value, drugs[formulation], formulation);
-
-        return (
-          <>
-            {this._renderFormulation(drugs[formulation], selected, onSelect)}
-            {selected !== null && administrationRouteCategories.includes(nodes[formulation].formulations[selected].administration_route_category) ? (
-              <Text>{nodes[formulation].formulations[formulationSelected].injection_instructions}</Text>
-            ) : null}
-          </>
-        );
-      });
+    const drugs = drugAgreed(null, algorithm);
 
     return (
       <View style={styles.container}>
         {Object.keys(drugs).length > 0 && <Text customTitle>{t('diagnoses:which')}</Text>}
-        {generateFormulation()}
+        {Object.keys(drugs).map((drugId) => {
+          const currentDrug = algorithm.nodes[drugId];
+          const drug = drugs[drugId];
+
+          const selected = drug.formulationSelected === undefined ? null : drug.formulationSelected;
+          const onSelect = (value) => this.onValueChange(value, drugs[drugId], drugId);
+
+          return (
+            <>
+              {this._renderFormulation(drugs[drugId], selected, onSelect)}
+              {selected !== null && administrationRouteCategories.includes(currentDrug.formulations[selected].administration_route_category) ? (
+                <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
+              ) : null}
+            </>
+          );
+        })}
       </View>
     );
   }

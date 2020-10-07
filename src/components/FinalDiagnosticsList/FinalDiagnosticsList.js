@@ -1,20 +1,15 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { Button, Icon, Input, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
 
 import { styles } from './FinalDiagnosticsList.style';
-import { FinalDiagnosticModel } from '../../../frontend_service/engine/models/FinalDiagnostic.model';
+import { finalDiagnosticAll } from '../../../frontend_service/helpers/FinalDiagnostic.model';
 import FinalDiagnostic from '../FinalDiagnostic';
 import { liwiColors } from '../../utils/constants';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class FinalDiagnosticsList extends React.Component<Props, State> {
+export default class FinalDiagnosticsList extends React.Component {
   state = {
     customDiagnoses: '',
   };
@@ -39,8 +34,8 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
    * @private
    */
   _removeCustom = (diagnosis) => {
-    const { setDiagnoses } = this.props;
-    setDiagnoses('custom', diagnosis, 'remove');
+    const { app:{algorithm}, setDiagnoses } = this.props;
+    setDiagnoses(algorithm, 'custom', diagnosis, 'remove');
   };
 
   /**
@@ -49,6 +44,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
    */
   onSelectedItemsChange = (selectedItems) => {
     const {
+      app: {algorithm},
       setDiagnoses,
       medicalCase: { nodes },
     } = this.props;
@@ -57,7 +53,7 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
       obj[i] = nodes[i];
     });
 
-    setDiagnoses('additional', obj);
+    setDiagnoses(algorithm, 'additional', obj);
   };
 
   /**
@@ -65,9 +61,9 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
    * @private
    */
   _addCustom = () => {
-    const { setDiagnoses } = this.props;
+    const { app:{algorithm},setDiagnoses } = this.props;
     const { customDiagnoses } = this.state;
-    setDiagnoses('custom', { label: customDiagnoses, drugs: [] });
+    setDiagnoses(algorithm, 'custom', { label: customDiagnoses, drugs: [] });
     this.setState({ customDiagnoses: '' });
   };
 
@@ -75,18 +71,17 @@ export default class FinalDiagnosticsList extends React.Component<Props, State> 
     const {
       setDiagnoses,
       medicalCase: { diagnoses },
-      medicalCase,
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
     const { customDiagnoses } = this.state;
 
-    const finalDiagnostics = FinalDiagnosticModel.all();
+    const finalDiagnostics = finalDiagnosticAll(algorithm);
     const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
 
     return (
       <React.Fragment>
         <Text customTitle style={styles.noMarginTop}>
-          {t('diagnoses:proposed')} {medicalCase.algorithm_name}
+          {t('diagnoses:proposed')} {algorithm.algorithm_name}
         </Text>
         {finalDiagnostics.included.length > 0 ? (
           finalDiagnostics.included.map((finalDiagnostic) => <FinalDiagnostic {...finalDiagnostic} key={finalDiagnostic.id} setDiagnoses={setDiagnoses} />)

@@ -1,15 +1,11 @@
 // @flow
 
-import * as React from "react";
-import { ScrollView } from "react-native";
-import { NavigationScreenProps } from "react-navigation";
+import * as React from 'react';
+import { ScrollView } from 'react-native';
 
-import HomeScreen from "../home";
+import HomeScreen from '../home';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class MainScreen extends React.Component<Props, State> {
+export default class MainScreen extends React.Component {
   render() {
     const { navigation } = this.props;
 

@@ -6,11 +6,8 @@ import 'reflect-metadata';
 
 import { actions } from '../../actions/types.actions';
 import { categories } from '../../constants';
-import { MedicalCaseModel } from '../../engine/models/MedicalCase.model';
-import { NodesModel } from '../../engine/models/Nodes.model';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
-import { QuestionModel } from '../../engine/models/Question.model';
-import { DiagnosticModel } from '../../engine/models/Diagnostic.model';
+import { nodeUpdateAnswer } from '../../helpers/Node.model';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -22,31 +19,11 @@ export const initialState = { modal: { open: false, content: '', navigator: {}, 
 class MedicalCaseReducer extends ReducerClass {
   initialState = {};
 
-  // The state is a MedicalCase
-  // Instance it
-  _instanceMedicalCase(state) {
-    state = this._generateInstanceDiseasesNode(state);
-    state.nodes = new NodesModel(state.nodes);
-    return state;
-  }
-
-  // For the diseases we instance it
-  _generateInstanceDiseasesNode(state) {
-    Object.keys(state.diagnostics).forEach(
-      (i) =>
-        (state.diagnostics[i] = new DiagnosticModel({
-          ...state.diagnostics[i],
-        }))
-    );
-
-    return state;
-  }
-
   // --------------------------       Actions        --------------------------
   // --------------------------------------------------------------------------
   /**
    * Sets the consent file in the patient after scanning it, the consent in the
-   * medical case is automaticaly set to true
+   * medical case is set to true
    * @payload page : the scanned file in a base64 format
    */
   @Action(actions.ADD_CONSENT_FILE)
@@ -196,7 +173,7 @@ class MedicalCaseReducer extends ReducerClass {
 
   /**
    * Set formulation for a drug
-   * @payload diagnoseId: the diagnosey identifiant
+   * @payload diagnoseId
    * @payload drugId: the drugId
    * @payload type: key in diagnoses
    * @payload formulation: string formulation
@@ -364,15 +341,22 @@ class MedicalCaseReducer extends ReducerClass {
    */
   @Action(actions.SET_ANSWER)
   setAnswer(state, action) {
-    const { nodeId, value } = action.payload;
-
+    const { algorithm, nodeId, newValue } = action.payload;
     // Instantiate new object with answered question with new answer value
-    state.nodes[nodeId] = state.nodes.instantiateNode({ ...state.nodes[nodeId] });
-    state.nodes[nodeId].updateAnswer(value);
-
+    const { answer, answer_stage, value, validationMessage, validationType } = nodeUpdateAnswer(newValue, algorithm, state.nodes[nodeId]);
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: {
+        ...state.nodes,
+        [nodeId]: {
+          ...state.nodes[nodeId],
+          answer,
+          answer_stage,
+          value,
+          validationMessage,
+          validationType,
+        },
+      },
     };
   }
 
@@ -380,19 +364,21 @@ class MedicalCaseReducer extends ReducerClass {
    * Set estimable value for basic measurement question
    * @param state
    * @param action
-   * @returns {{nodes: NodesModel}}
+   * @returns {{nodes: [NodeModel]}}
    */
   @Action(actions.SET_ESTIMABLE)
   setEstimable(state, action) {
     const { index, value } = action.payload;
 
-    // Instantiate new object with answered question with new answer value
-    state.nodes[index] = state.nodes.instantiateNode({ ...state.nodes[index] });
-    state.nodes[index].estimableValue = value;
-
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: {
+        ...state.nodes,
+        [index]: {
+          ...state.nodes[index],
+          estimableValue: value,
+        },
+      },
     };
   }
 
@@ -405,27 +391,30 @@ class MedicalCaseReducer extends ReducerClass {
   @Action(actions.SET_PATIENT_VALUE)
   setPatientValue(state, action) {
     const { index, value } = action.payload;
+    const { algorithm } = state;
+    const question = algorithm.nodes[index];
+    const { answer } = nodeUpdateAnswer(value, algorithm, question);
 
-    const question = new QuestionModel(state.algorithm.nodes[index]);
-    question.updateAnswer(value);
+    if (answer === null && value === null) {
+      return state;
+    }
 
-    let nodes = filter(state.algorithm.nodes, (node) => [categories.demographic, categories.basicDemographic].includes(node.category));
-
-    nodes = nodes.map((node) => {
+    // We retrieve all the patient values
+    const nodes = filter(state.algorithm.nodes, (node) => [categories.demographic, categories.basicDemographic].includes(node.category));
+    const patientValues = nodes.map((node) => {
       const patientValue = state.patientValues.find((pv) => pv.node_id === node.id);
       const newNode = patientValue !== undefined ? patientValue : { answer_id: null, node_id: node.id, value: null };
 
       // Set new value for patient value updated
       if (newNode.node_id === index) {
-        newNode.answer_id = question.answer;
-        newNode.value = question.value;
+        newNode.answer_id = answer;
+        newNode.value = value;
       }
       return newNode;
     });
-
     return {
       ...state,
-      patientValues: nodes,
+      patientValues,
     };
   }
 
@@ -455,17 +444,16 @@ class MedicalCaseReducer extends ReducerClass {
   setAnswerUnavailable(state, action) {
     const { nodeId, value } = action.payload;
 
-    // Instantiate new object with id unavailable answer
-    // reset value to default
-    state.nodes[nodeId] = state.nodes.instantiateNode({
-      ...state.nodes[nodeId],
-      answer: value,
-      value: null,
-    });
-
     return {
       ...state,
-      nodes: new NodesModel(state.nodes),
+      nodes: {
+        ...state.nodes,
+        [nodeId]: {
+          ...state.nodes[nodeId],
+          answer: value,
+          value: null,
+        },
+      },
     };
   }
 
@@ -534,19 +522,18 @@ class MedicalCaseReducer extends ReducerClass {
   medicalCaseSet(state, action) {
     const { medicalCase } = action.payload;
 
-    const modelsMedicalCase = MedicalCaseModel.copyMedicalCase(medicalCase);
     return {
-      ...modelsMedicalCase,
+      ...medicalCase,
       json: null,
       patient: {
-        ...modelsMedicalCase.patient,
+        ...medicalCase.patient,
         medicalCases: [],
       },
     };
   }
 
   /**
-   * Method call from redux persist and re set the medicalcase
+   * Method call from redux persist and re set the medical case
    *
    * @payload medicalCase: medical case
    */
@@ -556,7 +543,7 @@ class MedicalCaseReducer extends ReducerClass {
       return initialState;
     }
 
-    const modelsMedicalCase = this._instanceMedicalCase(action.payload);
+    const modelsMedicalCase = action.payload;
 
     modelsMedicalCase.modal.open = false;
     return {

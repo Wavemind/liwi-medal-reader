@@ -17,7 +17,7 @@ export default class Radio extends React.Component<Props, State> {
   }
 
   render() {
-    const { question, setAnswer } = this.props;
+    const { app:{algorithm}, question, setAnswer } = this.props;
 
     return (
       <View style={styles.view}>
@@ -27,7 +27,7 @@ export default class Radio extends React.Component<Props, State> {
               <Text style={{ color: liwiColors.blackColor }}>{question.answers[id].label}</Text>
             </ColCenter>
             <ColCenter>
-              <Button square onPress={() => setAnswer(question.id, question.answers[id].id)}>
+              <Button square onPress={() => setAnswer(algorithm, question.id, question.answers[id].id)}>
                 <Icon
                   name={question.answer === question.answers[id].id ? 'radio-button-checked' : 'radio-button-unchecked'}
                   type="MaterialIcons"

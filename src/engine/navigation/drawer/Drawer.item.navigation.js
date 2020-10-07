@@ -174,7 +174,6 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
         <TouchableOpacity
           transparent
           style={styles.flexPadding}
-          homeDrawer
           onPress={() => {
             if (r.routeName === 'Home') {
               NavigationService.toggleDrawer();
@@ -187,7 +186,6 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
         <TouchableOpacity
           transparent
           style={styles.flexPadding}
-          homeDrawer
           onPress={() => NavigationService.navigate('Emergency')}
         >
           <Icon style={styles.iconTop} dark type="FontAwesome5" name="plus-square" />
@@ -195,7 +193,6 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
         <TouchableOpacity
           transparent
           style={styles.flexPadding}
-          homeDrawer
           onPress={() => {
             NavigationService.toggleDrawer();
           }}

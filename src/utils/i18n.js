@@ -83,6 +83,7 @@ i18n
           of: 'of',
           no_formulation: ' No formulation selected',
           missing_medicine_formulation: 'Please select a medicine formulation',
+          no_options: 'No compatible option for this weight',
         },
         medication_form: {
           tablet: 'Tablet',

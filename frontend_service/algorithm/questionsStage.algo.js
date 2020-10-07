@@ -4,7 +4,8 @@ import moment from 'moment';
 import { store } from '../store';
 import { categories } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
-import { calculateCondition } from './conditionsHelpers.algo';
+import { nodeFilterBy } from '../helpers/Node.model';
+import { questionIsDisplayedInTriage } from '../helpers/Question.model';
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -14,10 +15,11 @@ import { calculateCondition } from './conditionsHelpers.algo';
  * Get Medical History for consultation
  * Update metadata
  */
-export const questionsMedicalHistory = () => {
-  const state$ = store.getState();
-  const { diagnostics } = state$;
-  const medicalHistoryQuestions = state$.nodes.filterBy(
+export const questionsMedicalHistory = (algorithm) => {
+  const medicalCase = store.getState();
+  const medicalHistoryQuestions = nodeFilterBy(
+    medicalCase,
+    algorithm,
     [
       {
         by: 'category',
@@ -43,9 +45,8 @@ export const questionsMedicalHistory = () => {
         by: 'category',
         operator: 'equal',
         value: categories.vaccine,
-      }
+      },
     ],
-    diagnostics,
     'OR',
     'array',
     true
@@ -54,7 +55,7 @@ export const questionsMedicalHistory = () => {
   const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
 
   // Update state$ medical history questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.consultation.medicalHistory, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.consultation.medicalHistory, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
   }
 
@@ -78,10 +79,11 @@ const sortQuestions = (questions) => {
  * Get physical Exam for consultation
  * Update metadata
  */
-export const questionsPhysicalExam = () => {
-  const state$ = store.getState();
-  const { diagnostics } = state$;
-  const vitalSignQuestions = state$.nodes.filterBy(
+export const questionsPhysicalExam = (algorithm) => {
+  const medicalCase = store.getState();
+  const vitalSignQuestions = nodeFilterBy(
+    medicalCase,
+    algorithm,
     [
       {
         by: 'category',
@@ -89,13 +91,14 @@ export const questionsPhysicalExam = () => {
         value: categories.vitalSignAnthropometric,
       },
     ],
-    diagnostics,
     'OR',
     'array',
     false
   );
 
-  const physicalExamQuestions = state$.nodes.filterBy(
+  const physicalExamQuestions = nodeFilterBy(
+    medicalCase,
+    algorithm,
     [
       {
         by: 'category',
@@ -103,7 +106,6 @@ export const questionsPhysicalExam = () => {
         value: categories.physicalExam,
       },
     ],
-    diagnostics,
     'OR',
     'array',
     true
@@ -113,7 +115,7 @@ export const questionsPhysicalExam = () => {
   const newQuestions = questions.map(({ id }) => id);
 
   // Update state$ physical exam questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.consultation.physicalExam, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.consultation.physicalExam, newQuestions)) {
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
   }
 
@@ -121,60 +123,60 @@ export const questionsPhysicalExam = () => {
 };
 
 /**
- * Get FirstLook Assessement for triage
+ * Get FirstLook Assessment for triage
  * Update metadata
  */
-export const questionsFirstLookAssessement = () => {
-  const state$ = store.getState();
-  const firstLookAssessement = [];
+export const questionsFirstLookAssessment = (algorithm) => {
+  const medicalCase = store.getState();
+  const firstLookAssessment = [];
 
-  const ordersFirstLookAssessment = state$.mobile_config.questions_orders[categories.emergencySign];
+  const ordersFirstLookAssessment = algorithm.mobile_config.questions_orders[categories.emergencySign];
 
   if (ordersFirstLookAssessment !== undefined) {
     ordersFirstLookAssessment.forEach((order) => {
-      firstLookAssessement.push(state$.nodes[order]);
+      firstLookAssessment.push(medicalCase.nodes[order]);
     });
   }
 
-  const newQuestions = firstLookAssessement.map(({ id }) => id);
+  const newQuestions = firstLookAssessment.map(({ id }) => id);
 
   // Update state$ first look assessment questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.triage.firstLookAssessments, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.triage.firstLookAssessments, newQuestions)) {
     store.dispatch(updateMetaData('triage', 'firstLookAssessments', newQuestions));
   }
 
-  return firstLookAssessement;
+  return firstLookAssessment;
 };
 
 /**
  * Get ComplaintCategories for triage
  * Update metadata
  */
-export const questionsComplaintCategory = () => {
-  const state$ = store.getState();
+export const questionsComplaintCategory = (algorithm) => {
+  const medicalCase = store.getState();
   const complaintCategories = [];
-  const orders = state$.mobile_config.questions_orders[categories.complaintCategory];
-  const { general_cc_id } = state$.config.basic_questions;
+  const orders = algorithm.mobile_config.questions_orders[categories.complaintCategory];
+  const { general_cc_id } = algorithm.config.basic_questions;
 
-  const birthDate = state$.nodes[state$.config.basic_questions.birth_date_question_id].value;
+  const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
 
-  store.dispatch(setAnswer(general_cc_id, Object.keys(state$.nodes[general_cc_id].answers)[0]));
+  store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]));
   orders.forEach((order) => {
-    if (state$.nodes[order].id !== state$.config.basic_questions.general_cc_id) {
+    if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
       // For all questions that do not appear, set the answer to "No"
-      if ((days <= 60 && state$.nodes[order].is_neonat) || (days > 60 && !state$.nodes[order].is_neonat)) {
-        complaintCategories.push(state$.nodes[order]);
+      if ((days <= 60 && algorithm.nodes[order].is_neonat) || (days > 60 && !algorithm.nodes[order].is_neonat)) {
+        complaintCategories.push(medicalCase.nodes[order]);
       } else {
-        store.dispatch(setAnswer(order, Object.keys(state$.nodes[order].answers)[1]));
+        store.dispatch(setAnswer(algorithm, order, Object.keys(algorithm.nodes[order].answers)[1]));
       }
     }
   });
   const newQuestions = complaintCategories.map(({ id }) => id);
 
   // Update state$ complaint categories questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.triage.complaintCategories, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.triage.complaintCategories, newQuestions)) {
     store.dispatch(updateMetaData('triage', 'complaintCategories', newQuestions));
   }
 
@@ -185,16 +187,16 @@ export const questionsComplaintCategory = () => {
  * Get Basic Measurements for triage
  * Update metadata
  */
-export const questionsBasicMeasurements = () => {
-  const state$ = store.getState();
+export const questionsBasicMeasurements = (algorithm) => {
+  const medicalCase = store.getState();
   const basicMeasurements = [];
 
-  const orderedQuestions = state$.mobile_config.questions_orders[categories.basicMeasurement];
+  const orderedQuestions = algorithm.mobile_config.questions_orders[categories.basicMeasurement];
 
   if (orderedQuestions !== undefined) {
     orderedQuestions.forEach((orderedQuestion) => {
-      const question = state$.nodes[orderedQuestion];
-      if (question.isDisplayedInTriage(state$)) {
+      const question = medicalCase.nodes[orderedQuestion];
+      if (questionIsDisplayedInTriage(medicalCase, question)) {
         basicMeasurements.push(question);
       }
     });
@@ -203,7 +205,7 @@ export const questionsBasicMeasurements = () => {
   const newQuestions = basicMeasurements.map(({ id }) => id);
 
   // Update state$ basic measurements questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.triage.basicMeasurements, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.triage.basicMeasurements, newQuestions)) {
     store.dispatch(updateMetaData('triage', 'basicMeasurements', newQuestions));
   }
 
@@ -214,25 +216,22 @@ export const questionsBasicMeasurements = () => {
  * Get questions for Test
  * Update metadata
  */
-export const questionsTests = () => {
-  const state$ = store.getState();
-  const { diagnostics } = state$;
+export const questionsTests = (algorithm) => {
+  const medicalCase = store.getState();
   let assessmentTest = [];
-  assessmentTest = state$.nodes.filterBy(
-    [
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.assessment,
-      },
-    ],
-    diagnostics
-  );
+
+  assessmentTest = nodeFilterBy(medicalCase, algorithm, [
+    {
+      by: 'category',
+      operator: 'equal',
+      value: categories.assessment,
+    },
+  ]);
 
   const newQuestions = assessmentTest.map(({ id }) => id);
 
   // Update state$ tests questions if it's different from new questions list
-  if (!_.isEqual(state$.metaData.tests.tests, newQuestions)) {
+  if (!_.isEqual(medicalCase.metaData.tests.tests, newQuestions)) {
     store.dispatch(updateMetaData('tests', 'tests', newQuestions));
   }
 
@@ -240,36 +239,32 @@ export const questionsTests = () => {
 };
 
 /**
- *
- * Define if the title of drugs additional / proposed must be shown
- *
- * @return :  Boolean
- *
+ * Get questions for health cares
+ * @param algorithm
+ * @returns {*}
  */
-export const titleManagementCounseling = () => {
-  const state$ = store.getState();
-  const { diagnoses } = state$;
+export const questionsHealthCares = (algorithm) => {
+  const medicalCase = store.getState();
 
-  if (Object.keys(diagnoses.additional).length === 0 && Object.keys(diagnoses.proposed).length === 0) {
-    return false;
-  }
+  const healthCares = nodeFilterBy(
+    medicalCase,
+    algorithm,
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.drug,
+      },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.management,
+      },
+    ],
+    'OR',
+    'array',
+    true
+  );
 
-  let isPossible = false;
-  Object.keys(diagnoses.additional).forEach((id) => {
-    Object.keys(diagnoses.additional[id].managements).forEach((m) => {
-      if (calculateCondition(diagnoses.additional[id].managements[m]) === true) {
-        isPossible = true;
-      }
-    });
-  });
-
-  Object.keys(diagnoses.proposed).forEach((id) => {
-    Object.keys(diagnoses.proposed[id].managements).forEach((m) => {
-      if (calculateCondition(diagnoses.proposed[id].managements[m]) === true) {
-        isPossible = true;
-      }
-    });
-  });
-
-  return isPossible;
+  return healthCares;
 };
