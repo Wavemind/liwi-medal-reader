@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
 import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
@@ -127,7 +128,7 @@ export default class MedicinesFormulations extends Component {
     const drugs = drugAgreed(null, algorithm);
 
     return (
-      <View style={styles.container}>
+      <ScrollView>
         {Object.keys(drugs).length > 0 && <Text customTitle>{t('diagnoses:which')}</Text>}
         {Object.keys(drugs).map((drugId) => {
           const currentDrug = algorithm.nodes[drugId];
@@ -145,7 +146,7 @@ export default class MedicinesFormulations extends Component {
             </>
           );
         })}
-      </View>
+      </ScrollView>
     );
   }
 }
