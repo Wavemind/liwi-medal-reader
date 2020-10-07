@@ -39,7 +39,7 @@ export const healthCaresGetQuestions = (algorithm, medicalCase) => {
     Object.keys(finalDiagnostic.instances).forEach((instanceId) => {
       if (nodes[instanceId].df.some((df) => df.conditionValue)) {
         if (nodes[instanceId].type === nodeTypes.questionsSequence) {
-          _getQuestionsInQs(algorithm, medicalCase, questions, nodes[instanceId]);
+          _getQuestionsInQs(algorithm, medicalCase, questions, algorithm.nodes[instanceId]);
         } else {
           questions = {
             ...questions,
@@ -68,7 +68,7 @@ const _getQuestionsInQs = (algorithm, medicalCase, questions, node) => {
     if (nodes[id].type === nodeTypes.questionsSequence) {
       _getQuestionsInQs(algorithm, medicalCase, questions, nodes[id]);
     } else if (mcNode.qs.some((qs) => qs.conditionValue)) {
-      questions[id] = nodes[id];
+      questions[id] = mcNode;
     }
   });
 };
