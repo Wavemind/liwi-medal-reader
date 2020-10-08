@@ -37,13 +37,13 @@ export const getParentsNodes = (algorithm, diagnosticId, nodeId) => {
  * @param finalQs {Object} : The child of the link, in this case this is the final Qs
  * @return {boolean|false|true|null}
  */
-export const nextChildFinalQs = (instance, finalQs, medicalCase) => {
-  const top_conditions = _.filter(finalQs.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
+export const nextChildFinalQs = (algorithm, instance, finalQs, medicalCase) => {
+  const currentQuestionSequence = algorithm.nodes[finalQs.id];
+  const top_conditions = _.filter(currentQuestionSequence.top_conditions, (top_condition) => top_condition.first_node_id === instance.id);
   // We get the condition of the final link
   const arrayBoolean = top_conditions.map((condition) => {
     return comparingTopConditions(condition, medicalCase);
   });
-
   return reduceConditionArrayBoolean(arrayBoolean);
 };
 
@@ -116,7 +116,7 @@ const InstanceChildrenOnQs = (algorithm, medicalCase, instance, mcQs, currentNod
     // If the mcNode is the current QS
     if (mcNode.id === mcQs.id && mcNode.type === nodeTypes.questionsSequence) {
       // The branch is open and we can set the answer of this QS
-      return nextChildFinalQs(instance, mcNode, medicalCase);
+      return nextChildFinalQs(algorithm, instance, mcNode, medicalCase);
     }
     if (mcNode.type === nodeTypes.questionsSequence) {
       return nextChildOtherQs(algorithm, medicalCase, mcNode, childConditionValue, mcQs);
@@ -139,53 +139,37 @@ const InstanceChildrenOnQs = (algorithm, medicalCase, instance, mcQs, currentNod
  */
 const recursiveNodeQs = (algorithm, medicalCase, instance, mcQs) => {
   let isReset = false;
-  /**
-   * Initial Var
-   */
+
+  // Initial Var
   const currentNode = algorithm.nodes[instance.id];
   const mcNode = medicalCase.nodes[instance.id];
   const instanceConditionValue = find(currentNode.qs, (p) => p.id === mcQs.id).conditionValue;
 
-  // If all the conditionValues of the QS are false we set the conditionValues of th node to false
+  // If all the conditionValues of the QS are false we set the conditionValues of the node to false
   const qsInstances = mcQs.dd.concat(mcQs.qs);
-  const qsConditionValue = qsInstances.some((instance) => instance.conditionValue);
+  const qsConditionValue = qsInstances.some((qsInstance) => qsInstance.conditionValue);
 
-  /**
-   * Get the condition of the instance link
-   */
+  //  Get the condition of the instance link
   let instanceCondition = qsConditionValue && calculateCondition(algorithm, instance, medicalCase);
   if (instanceCondition === null) instanceCondition = false;
 
-  /**
-   * Update condition Value if the instance has to be shown
-   */
+  // Update condition Value if the instance has to be shown
   if (instanceConditionValue === false && instanceCondition === true) {
     updateConditionValue(algorithm, medicalCase, instance.id, mcQs.id, true, mcQs.type);
   }
 
-  /**
-   * Reset condition value
-   * Hide the node if the instance condition is no longer valid BUT he was already shown
-   */
+  // Reset condition value / Hide the node if the instance condition is no longer valid BUT he was already shown
   if (instanceConditionValue === true && instanceCondition === false) {
     isReset = true;
     updateConditionValue(algorithm, medicalCase, instance.id, mcQs.id, false, mcQs.type);
   }
 
-  /**
-   * Not shown before and the link condition is false -> return false
-   */
+  // Not shown before and the link condition is false -> return false
   if (instanceConditionValue === false && instanceCondition === false) return false;
 
-  /**
-   * We process the instance children if
-   * The condition is true AND The questions has an answer OR this is a top level node
-   */
+  // We process the instance children if the condition is true AND The questions has an answer OR this is a top level node
   if ((instanceCondition === true && (mcNode.answer !== null || instance.top_conditions.length === 0)) || isReset) {
-    /**
-     * From this point we can process all children and go deeper in the tree
-     * ProcessChildren return the boolean array of each branch
-     */
+    // From this point we can process all children and go deeper in the tree processChildren return the boolean array of each branch
     const processChildren = InstanceChildrenOnQs(algorithm, medicalCase, instance, mcQs, mcNode);
     return reduceConditionArrayBoolean(processChildren);
   }
@@ -211,7 +195,7 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
   const topLevelNodes = [];
   const currentNode = algorithm.nodes[mcQs.id];
   // Set top Level Nodes
-  Object.keys(currentNode.instances).map((nodeId) => {
+  Object.keys(currentNode.instances).forEach((nodeId) => {
     if (currentNode.instances[nodeId].top_conditions.length === 0) {
       topLevelNodes.push(currentNode.instances[nodeId]);
     }
@@ -220,6 +204,7 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
   const allNodesAnsweredInQs = topLevelNodes.map((topNode) => {
     return recursiveNodeQs(algorithm, medicalCase, topNode, mcQs);
   });
+
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
 

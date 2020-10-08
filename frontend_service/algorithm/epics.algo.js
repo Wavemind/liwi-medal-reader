@@ -151,7 +151,6 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
    *  false = can't access the end anymore
    */
   const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQuestionsSequence);
-
   // If ready we calculate condition of the QS
   if (statusQs) {
     questionsSequenceCondition = questionSequenceCalculateCondition(algorithm, medicalCase, currentQuestionsSequence);

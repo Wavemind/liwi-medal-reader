@@ -41,7 +41,6 @@ describe('actions', () => {
 
   it('should show the questions from Malaria when selected ', () => {
     enableMalaria();
-
     validFinalDiagnostic('proposed', 421);
 
     const medicalCase = store.getState();

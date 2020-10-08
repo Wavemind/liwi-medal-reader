@@ -30,7 +30,7 @@ i18n
           resource_not_available: 'No connection, resource not available',
         },
         consent_image: {
-          scan: 'Scan file',
+          scan: 'Scan consent',
           show: 'Show consent',
           title: 'Consent',
           label: 'Consent to data processing for this visit. NO if revoked',
