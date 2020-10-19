@@ -73,7 +73,6 @@ export default class Medicines extends Component {
     } = this.props;
 
     const allHealthCares = questionsHealthCares(algorithm);
-    console.log(allHealthCares)
     let filteredHealthCares = allHealthCares;
 
     const selected = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);

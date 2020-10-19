@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import moment from 'moment';
 import { store } from '../store';
-import { categories } from '../constants';
+import { categories, stages } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
 import { nodeFilterBy } from '../helpers/Node.model';
 import { questionIsDisplayedInTriage } from '../helpers/Question.model';
@@ -267,4 +267,33 @@ export const questionsHealthCares = (algorithm) => {
   );
 
   return healthCares;
+};
+
+export const questionsRegistration = (algorithm) => {
+  const medicalCase = store.getState();
+
+  // Get nodes to display in registration stage
+  const registrationQuestions = nodeFilterBy(
+    medicalCase,
+    algorithm,
+    [
+      {
+        by: 'stage',
+        operator: 'equal',
+        value: stages.registration,
+      },
+    ],
+    'OR',
+    'array',
+    false
+  );
+
+  const newQuestions = registrationQuestions.map(({ id }) => id);
+
+  // Update state$ tests questions if it's different from new questions list
+  if (!_.isEqual(medicalCase.metaData.patientupsert.custom, newQuestions)) {
+    store.dispatch(updateMetaData('patientupsert', 'custom', newQuestions));
+  }
+
+  return registrationQuestions;
 };

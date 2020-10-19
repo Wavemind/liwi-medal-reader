@@ -13,12 +13,11 @@ import Stepper from '../../../components/Stepper';
 
 import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
-import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
-import { nodeFilterBy } from '../../../../frontend_service/helpers/Node.model';
+import { questionsRegistration } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 export default class PatientUpsert extends React.Component {
   state = {
@@ -180,8 +179,6 @@ export default class PatientUpsert extends React.Component {
     const { patient, errors, loading } = this.state;
     const {
       app: { t, algorithm },
-      medicalCase,
-      updateMetaData,
       navigation,
     } = this.props;
 
@@ -190,28 +187,7 @@ export default class PatientUpsert extends React.Component {
     }
 
     // Get nodes to display in registration stage
-    const extraQuestions = nodeFilterBy(
-      medicalCase,
-      algorithm,
-      [
-        {
-          by: 'stage',
-          operator: 'equal',
-          value: stages.registration,
-        },
-      ],
-      'OR',
-      'array',
-      false
-    );
-
-    if (medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
-      updateMetaData(
-        'patientupsert',
-        'custom',
-        extraQuestions.map(({ id }) => id)
-      );
-    }
+    const registrationQuestions = questionsRegistration(algorithm);
 
     return (
       <Stepper
@@ -253,7 +229,7 @@ export default class PatientUpsert extends React.Component {
             </View>
             <ConsentImage newPatient={patient.id === null} />
             <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-            <Questions questions={extraQuestions} />
+            <Questions questions={registrationQuestions} />
           </ScrollView>,
         ]}
       </Stepper>
