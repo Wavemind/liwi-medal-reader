@@ -91,22 +91,22 @@ const getStatusOfDD = (algorithm, medicalCase, dd) => {
  * @param mcNode
  * @returns {null|boolean}
  */
-export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcNode) => {
-  const currentNode = algorithm.nodes[mcNode.id];
+export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcFinalDiagnostic) => {
+  const currentFinalDiagnostic = algorithm.nodes[mcFinalDiagnostic.id];
   const conditionValueTrue = [];
   // Generate only the top_condition with conditionValue to true => they are not disabled
-  currentNode.top_conditions.forEach((condition) => {
-    const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === currentNode.diagnostic_id);
+  currentFinalDiagnostic.top_conditions.forEach((condition) => {
+    const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === currentFinalDiagnostic.diagnostic_id);
     if (findDDinNode.conditionValue === true) {
       conditionValueTrue.push(condition);
     }
   });
 
   // Return the status of this dd
-  const statusOfDD = getStatusOfDD(algorithm, medicalCase, mcNode);
+  const statusOfDD = getStatusOfDD(algorithm, medicalCase, mcFinalDiagnostic);
 
   // If this FD can be excluded by other high-priority FD
-  const isExcluded = currentNode.excluding_final_diagnostics.some(
+  const isExcluded = currentFinalDiagnostic.excluding_final_diagnostics.some(
     (excludedByFinalDiagnostic) =>
       // Exclude diagnostic if other diagnoses is available and agreed
       finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[excludedByFinalDiagnostic]) === true &&
@@ -121,8 +121,12 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcNode
     return null;
   }
   if (statusOfDD === true) {
-    const tempDd = { ...currentNode, top_conditions: conditionValueTrue };
-    return calculateCondition(algorithm, tempDd, medicalCase);
+    const tempDd = { ...currentFinalDiagnostic, top_conditions: conditionValueTrue };
+
+    const parents = (top_conditions) => {
+      return top_conditions.map((top) => top.first_node_id);
+    };
+    return calculateCondition(algorithm, tempDd, medicalCase) && parentsConditionValue(algorithm.diagnostics[tempDd.diagnostic_id], parents, conditionValueTrue, medicalCase);
   }
 };
 
@@ -182,7 +186,7 @@ export const finalDiagnosticGetManagements = (algorithm, medicalCase, mcNode) =>
  */
 const parentsConditionValue = (mcNode, parentsTopConditions, top_conditions, medicalCase) => {
   if (top_conditions.length > 0) {
-    const topConditionResults = top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase));
+    const topConditionResults = top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase) && parentsConditionValue(mcNode, parentsTopConditions, mcNode.instances[conditions.first_node_id].top_conditions, medicalCase));
     const conditionValueResult = reduce(
       topConditionResults,
       (result, value) => {
@@ -191,7 +195,7 @@ const parentsConditionValue = (mcNode, parentsTopConditions, top_conditions, med
       false
     );
     if (conditionValueResult) {
-      return parentsTopConditions(top_conditions).some((parentId) => parentsConditionValue(parentsTopConditions, mcNode.instances[parentId].top_conditions, medicalCase));
+      return parentsTopConditions(top_conditions).some((parentId) => parentsConditionValue(mcNode, parentsTopConditions, mcNode.instances[parentId].top_conditions, medicalCase));
     }
     return false;
   }
