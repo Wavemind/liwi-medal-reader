@@ -73,8 +73,14 @@ export default class Question extends React.Component<Props, State> {
    * Open redux modal
    */
   openModal = () => {
-    const { updateModalFromRedux, question } = this.props;
-    updateModalFromRedux({ node: question }, modalType.description);
+    const {
+      app: { algorithm },
+      updateModalFromRedux,
+      question,
+    } = this.props;
+
+    const currentNode = algorithm.nodes[question.id];
+    updateModalFromRedux({ node: currentNode }, modalType.description);
   };
 
   /**
