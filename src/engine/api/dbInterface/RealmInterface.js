@@ -6,7 +6,7 @@ import { ActivityModel } from '../../../../frontend_service/helpers/Activity.mod
 import { PatientValueModel } from '../../../../frontend_service/helpers/PatientValue.model';
 import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
-import { getItem, getItems } from '../LocalStorage';
+import { getItem } from '../LocalStorage';
 import { elementPerPage } from '../../../utils/constants';
 import { categories } from '../../../../frontend_service/constants';
 
@@ -208,7 +208,7 @@ export default class RealmInterface {
    * @private
    */
   _generateList = async (data, model, columns) => {
-    const algorithm = await getItems('algorithm');
+    const algorithm = await getItem('algorithm');
     return data.map((entry) => {
       if (model === 'Patient') {
         return {
@@ -234,7 +234,7 @@ export default class RealmInterface {
    * @private
    */
   _generateConsentList = async (data, columns) => {
-    const algorithm = await getItems('algorithm');
+    const algorithm = await getItem('algorithm');
     return data.map((entry) => {
       return {
         id: entry.id,
