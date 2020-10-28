@@ -29,6 +29,9 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
   const currentNode = nodes[nodeId];
   const parentsNodes = getParentsNodes(algorithm, diagnosticId, nodeId);
 
+  if(nodeId === 25){
+    console.log(diagnosticId, diagnosticIsExcludedByComplaintCategory(algorithm, diagnosticId, medicalCase));
+  }
   // If the complaint category linked to the diagnostic is not selected we set the condition value to false
   if (diagnosticIsExcludedByComplaintCategory(algorithm, diagnosticId, medicalCase)) {
     updateConditionValue(algorithm, medicalCase, nodeId, diagnosticId, false, nodeTypes.diagnostic);
@@ -46,6 +49,9 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
 
     // Get node condition value
     const conditionValue = calculateCondition(algorithm, currentInstance, medicalCase);
+    if(nodeId === 25){
+      console.log( diagnosticId, conditionValue,medicalCase);
+    }
     // If the condition of this node is not null
     if (parentConditionValue === false) {
       // Set parent to false if their condition's isn't correct. Used to stop the algorithm
@@ -225,6 +231,9 @@ const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
     medicalCase.isEligible = years < algorithm.config.age_limit;
   }
 
+  if(nodeId === 121) {
+    console.log(nodeId, relatedDiagnostics);
+  }
   // For each related diagnoses we gonna check if we need to update their status
   relatedDiagnostics.forEach((diagnostic) => nodeAction(algorithm, medicalCase, mcNode.id, diagnostic.id, nodeTypes.diagnostic));
 
