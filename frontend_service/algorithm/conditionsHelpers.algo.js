@@ -32,8 +32,6 @@ export const calculateCondition = (algorithm, node, medicalCase = store.getState
 
   // Loop for top_conditions
   const conditionsArrayBoolean = returnConditionsArray(node, medicalCase);
-  if(node.id === 25)
-    console.log(node, conditionsArrayBoolean, isExcludedByComplaintCategory);
   return reduceConditionArrayBoolean(conditionsArrayBoolean) && !isExcludedByComplaintCategory;
 };
 
