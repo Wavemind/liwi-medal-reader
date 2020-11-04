@@ -19,8 +19,11 @@ export const setItem = async (key, item) => {
   if (key === 'algorithm') {
     AsyncStorage.setItem('diagnostics', stringifyDeepRef(item.diagnostics));
     AsyncStorage.setItem('nodes', stringifyDeepRef(item.nodes));
+    AsyncStorage.setItem('village_json', stringifyDeepRef(item.village_json));
+    console.log('ICI', item);
     delete item.diagnostics;
     delete item.nodes;
+    delete item.village_json;
     AsyncStorage.setItem('algorithm', stringifyDeepRef(item));
   } else {
     const controller = stringifyDeepRef(item);
@@ -52,16 +55,19 @@ export const getItem = async (key) => {
   if (key === 'algorithm') {
     const diagnosticsJSON = await AsyncStorage.getItem('diagnostics');
     const nodesJSON = await AsyncStorage.getItem('nodes');
+    const villageJSON = await AsyncStorage.getItem('village_json');
     const algorithmJSON = await AsyncStorage.getItem('algorithm');
 
     const diagnostics = JSON.parse(diagnosticsJSON);
     const nodes = JSON.parse(nodesJSON);
+    const village = JSON.parse(villageJSON);
     const algorithm = JSON.parse(algorithmJSON);
 
     return {
       ...algorithm,
       diagnostics,
       nodes,
+      village_json: village,
     };
   }
 

@@ -46,11 +46,6 @@ export default class Questions extends React.Component<Props, State> {
       <ScrollView>
         {Object.keys(questions).length > 0 ? (
           Object.keys(questions).map((i) => {
-            // Detect Reference node
-            if (algorithm.nodes[questions[i].id].display_format === displayFormats.reference) {
-              return <QuestionReference question={questions[i]} key={`${i}_ref_factory`} />;
-            }
-
             if (algorithm.nodes[questions[i].id].display_format === displayFormats.autocomplete) {
               return (
                 <View key={`${i}_ref_view`}>
