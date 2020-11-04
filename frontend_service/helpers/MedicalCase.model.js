@@ -17,6 +17,7 @@ export class MedicalCaseModel {
       this.id = uuid.v4();
       this.nodes = MedicalCaseModel.instantiateNodes(currentAlgorithm.nodes);
       this.activities = [];
+      this.algorithm_id = currentAlgorithm.algorithm_id
       this.version_id = currentAlgorithm.version_id;
       this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;

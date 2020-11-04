@@ -8,6 +8,7 @@ import String from '../DisplaysContainer/String';
 import Date from '../DisplaysContainer/Date';
 import List from '../DisplaysContainer/List';
 import Formula from '../DisplaysContainer/Formula';
+import Autocomplete from '../DisplaysContainer/Autocomplete';
 
 export default class WrapperQuestion extends React.Component {
   // Lifecycle for optimization
@@ -38,6 +39,9 @@ export default class WrapperQuestion extends React.Component {
         break;
       case displayFormats.string:
         WrapperAnswer = () => <String question={question} {...this.props} />;
+        break;
+      case displayFormats.autocomplete:
+        WrapperAnswer = () => <Autocomplete question={question} {...this.props} />;
         break;
       case displayFormats.date:
         WrapperAnswer = () => <Date question={question} {...this.props} />;

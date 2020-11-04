@@ -43,6 +43,7 @@ export const displayFormats = {
   formula: 'Formula',
   reference: 'Reference', // table reference
   string: 'String',
+  autocomplete: 'Autocomplete',
   date: 'Date',
 };
 
