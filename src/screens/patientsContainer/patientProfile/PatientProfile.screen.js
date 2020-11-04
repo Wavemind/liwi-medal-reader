@@ -6,7 +6,7 @@ import { FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { LiwiTitle2 } from '../../../template/layout';
 import { getDeviceInformation } from '../../../engine/api/Device';
-import { getItems } from '../../../engine/api/LocalStorage';
+import { getItem, getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
@@ -24,7 +24,7 @@ export default class PatientProfile extends React.Component {
 
   async componentDidMount() {
     const deviceInfo = await getDeviceInformation();
-    const algorithm = await getItems('algorithm');
+    const algorithm = await getItem('algorithm');
     const isConnected = await getItems('isConnected');
 
     const columns = algorithm.mobile_config.medical_case_list;

@@ -15,6 +15,7 @@ import Capsule from '../Formulations/Capsule';
 import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { drugAgreed, drugDoses } from '../../../frontend_service/helpers/Drug.model';
+import { finalDiagnosticCalculateCondition } from '../../../frontend_service/helpers/FinalDiagnostic.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -77,7 +78,7 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
     const drugsAvailable = drugAgreed(medicalCase.diagnoses, algorithm);
 
     return Object.keys(diagnoseFinalDiagnostics).map((key) => {
-      if (diagnoseFinalDiagnostics[key].agreed || title === 'additional') {
+      if ((diagnoseFinalDiagnostics[key].agreed && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) || title === 'additional') {
         return (
           <Card key={key}>
             <CardItem style={styles.cardItemCondensed}>

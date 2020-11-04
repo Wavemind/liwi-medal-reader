@@ -3,7 +3,7 @@ import { Button, Fab, Icon, View } from 'native-base';
 import RNRestart from 'react-native-restart';
 import Realm from 'realm';
 
-import { clearLocalStorage, getItems } from '../engine/api/LocalStorage';
+import { clearLocalStorage, getItem, getItems } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 import { persistor, store } from '../../frontend_service/store';
 import { memorySizeOf } from './swissKnives';
@@ -92,7 +92,7 @@ export default class WavemindTools extends Component {
                   blue
                   onPress={async () => {
                     const session = await getItems('session');
-                    const algorithm = await getItems('algorithm');
+                    const algorithm = await getItem('algorithm');
                     const state$ = store.getState();
                     const sizes = {};
 

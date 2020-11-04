@@ -117,6 +117,7 @@ export default class CustomModal extends React.Component<Props, State> {
         params: { node },
       },
     } = this.props;
+
     return (
       <View>
         <LiwiTitle5>{node.label}</LiwiTitle5>

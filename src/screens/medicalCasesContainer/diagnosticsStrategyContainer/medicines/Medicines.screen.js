@@ -6,12 +6,11 @@ import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 
 import CustomMedicine from '../../../../components/CustomMedicine';
-import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Medicines.style';
 import MedicineSelection from '../../../../components/MedicineSelection';
-import { nodeFilterBy } from '../../../../../frontend_service/helpers/Node.model';
 import { questionsHealthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
+import { finalDiagnosticCalculateCondition } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 
 export default class Medicines extends Component {
   shouldComponentUpdate() {
@@ -132,7 +131,7 @@ export default class Medicines extends Component {
         ) : (
           <>
             {Object.keys(diagnoses.proposed).map((key) => {
-              if (diagnoses.proposed[key].agreed === true) {
+              if (diagnoses.proposed[key].agreed === true && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) {
                 return (
                   <MedicineSelection key={`proposed_medicine_${key}`} algorithm={algorithm} diagnosesFinalDiagnostic={diagnoses.proposed[key]} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />
                 );

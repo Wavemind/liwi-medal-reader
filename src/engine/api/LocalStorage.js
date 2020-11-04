@@ -15,9 +15,20 @@ export const setItem = async (key, item) => {
       })
     );
   }
-  const controller = stringifyDeepRef(item);
 
-  return AsyncStorage.setItem(key, controller);
+  if (key === 'algorithm') {
+    AsyncStorage.setItem('diagnostics', stringifyDeepRef(item.diagnostics));
+    AsyncStorage.setItem('nodes', stringifyDeepRef(item.nodes));
+    AsyncStorage.setItem('village_json', stringifyDeepRef(item.village_json));
+    console.log('ICI', item);
+    delete item.diagnostics;
+    delete item.nodes;
+    delete item.village_json;
+    AsyncStorage.setItem('algorithm', stringifyDeepRef(item));
+  } else {
+    const controller = stringifyDeepRef(item);
+    return AsyncStorage.setItem(key, controller);
+  }
 };
 
 // @params [String] key
@@ -41,6 +52,25 @@ export const getItems = async (key) => {
 // @params key used to store in local storage
 // Get item in local storage
 export const getItem = async (key) => {
+  if (key === 'algorithm') {
+    const diagnosticsJSON = await AsyncStorage.getItem('diagnostics');
+    const nodesJSON = await AsyncStorage.getItem('nodes');
+    const villageJSON = await AsyncStorage.getItem('village_json');
+    const algorithmJSON = await AsyncStorage.getItem('algorithm');
+
+    const diagnostics = JSON.parse(diagnosticsJSON);
+    const nodes = JSON.parse(nodesJSON);
+    const village = JSON.parse(villageJSON);
+    const algorithm = JSON.parse(algorithmJSON);
+
+    return {
+      ...algorithm,
+      diagnostics,
+      nodes,
+      village_json: village,
+    };
+  }
+
   const item = await AsyncStorage.getItem(key);
 
   let itemObj;

@@ -10,7 +10,7 @@ import i18n from '../../utils/i18n';
 import Database from '../api/Database';
 import { secondStatusLocalData, modalType } from '../../../frontend_service/constants';
 import { auth, getAlgorithm, getFacility, registerDevice } from '../../../frontend_service/api/Http';
-import { getItem, getItems, setItem } from '../api/LocalStorage';
+import { getItem, setItem } from '../api/LocalStorage';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
@@ -230,7 +230,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   setInitialData = async () => {
     const facility = await this.getFacility();
-    const algorithm = await getItems('algorithm');
+    const algorithm = await getItem('algorithm');
     let newAlgorithm;
 
     if (facility !== null) {

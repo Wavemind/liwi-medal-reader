@@ -1,10 +1,12 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { Col, Text, View } from 'native-base';
-
 import uuid from 'react-native-uuid';
+import Autocomplete from 'react-native-autocomplete-input';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
@@ -13,12 +15,11 @@ import Stepper from '../../../components/Stepper';
 
 import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
-import { stages } from '../../../../frontend_service/constants';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
-import { nodeFilterBy } from '../../../../frontend_service/helpers/Node.model';
+import { questionsRegistration } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 export default class PatientUpsert extends React.Component {
   state = {
@@ -84,7 +85,10 @@ export default class PatientUpsert extends React.Component {
    * Calculate age in year of the patient
    */
   renderEligibilityMessage = () => {
-    const { app: {algorithm}, medicalCase } = this.props;
+    const {
+      app: { algorithm },
+      medicalCase,
+    } = this.props;
 
     if (!medicalCase.isEligible) {
       return (
@@ -104,9 +108,15 @@ export default class PatientUpsert extends React.Component {
     updatePatient(key, value);
   };
 
+  /**
+   * Display user identifier (study_id, group_id and id)
+   * @returns {JSX.Element|null}
+   */
   renderIdentifierData = () => {
     const { patient } = this.state;
-    const { t } = this.props.app;
+    const {
+      app: { t },
+    } = this.props;
 
     if (patient === null) {
       return null;
@@ -180,8 +190,6 @@ export default class PatientUpsert extends React.Component {
     const { patient, errors, loading } = this.state;
     const {
       app: { t, algorithm },
-      medicalCase,
-      updateMetaData,
       navigation,
     } = this.props;
 
@@ -190,28 +198,7 @@ export default class PatientUpsert extends React.Component {
     }
 
     // Get nodes to display in registration stage
-    const extraQuestions = nodeFilterBy(
-      medicalCase,
-      algorithm,
-      [
-        {
-          by: 'stage',
-          operator: 'equal',
-          value: stages.registration,
-        },
-      ],
-      'OR',
-      'array',
-      false
-    );
-
-    if (medicalCase.metaData.patientupsert.custom.length === 0 && extraQuestions.length !== 0) {
-      updateMetaData(
-        'patientupsert',
-        'custom',
-        extraQuestions.map(({ id }) => id)
-      );
-    }
+    const registrationQuestions = questionsRegistration(algorithm);
 
     return (
       <Stepper
@@ -231,7 +218,7 @@ export default class PatientUpsert extends React.Component {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen">
+          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen" keyboardShouldPersistTaps="always">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {this.renderEligibilityMessage()}
             <View>
@@ -253,7 +240,7 @@ export default class PatientUpsert extends React.Component {
             </View>
             <ConsentImage newPatient={patient.id === null} />
             <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-            <Questions questions={extraQuestions} />
+            <Questions questions={registrationQuestions} />
           </ScrollView>,
         ]}
       </Stepper>

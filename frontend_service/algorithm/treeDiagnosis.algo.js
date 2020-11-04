@@ -18,12 +18,7 @@ export const getParentsNodes = (algorithm, diagnosticId, nodeId) => {
 
   const parentsNodes = [];
 
-  top_conditions.map((top) => {
-    parentsNodes.push(top.first_node_id);
-    if (top.second_type !== null) {
-      parentsNodes.push(top.second_node_id);
-    }
-  });
+  top_conditions.map((top) => parentsNodes.push(top.first_node_id));
 
   return parentsNodes;
 };

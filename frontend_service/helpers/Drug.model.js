@@ -42,6 +42,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
       case medicationForms.solution:
+        // TODO: SI pas minimal_dose_per_kg -> prendre unique_dose
         minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
         maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
 
