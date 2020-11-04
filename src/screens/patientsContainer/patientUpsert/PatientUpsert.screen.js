@@ -6,6 +6,7 @@ import { Col, Text, View } from 'native-base';
 import uuid from 'react-native-uuid';
 import Autocomplete from 'react-native-autocomplete-input';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
@@ -19,7 +20,6 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
 import { questionsRegistration } from '../../../../frontend_service/algorithm/questionsStage.algo';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class PatientUpsert extends React.Component {
   state = {
@@ -217,34 +217,32 @@ export default class PatientUpsert extends React.Component {
         nextStage="Triage"
         nextStageString={t('navigation:triage')}
       >
-        {
-          <KeyboardAwareScrollView>
-            <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen" keyboardShouldPersistTaps="always">
-              <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
-              {this.renderEligibilityMessage()}
-              <View>
-                <Col>
-                  {this.renderIdentifierData()}
-                  {patient.wasInOtherFacility() && (
-                    <CustomInput
-                      init={patient.reason}
-                      label={t('patient:reason')}
-                      change={this.updatePatientValue}
-                      index="reason"
-                      iconName="sign-out"
-                      iconType="FontAwesome"
-                      error={errors.reason}
-                      autoCapitalize="sentences"
-                    />
-                  )}
-                </Col>
-              </View>
-              <ConsentImage newPatient={patient.id === null} />
-              <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-              <Questions questions={registrationQuestions} />
-            </ScrollView>
-          </KeyboardAwareScrollView>
-        }
+        {[
+          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen" keyboardShouldPersistTaps="always">
+            <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+            {this.renderEligibilityMessage()}
+            <View>
+              <Col>
+                {this.renderIdentifierData()}
+                {patient.wasInOtherFacility() && (
+                  <CustomInput
+                    init={patient.reason}
+                    label={t('patient:reason')}
+                    change={this.updatePatientValue}
+                    index="reason"
+                    iconName="sign-out"
+                    iconType="FontAwesome"
+                    error={errors.reason}
+                    autoCapitalize="sentences"
+                  />
+                )}
+              </Col>
+            </View>
+            <ConsentImage newPatient={patient.id === null} />
+            <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+            <Questions questions={registrationQuestions} />
+          </ScrollView>,
+        ]}
       </Stepper>
     );
   }

@@ -4,6 +4,8 @@ import * as React from 'react';
 import { Text, View } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
+
+import { styles } from './Autocomplete.style';
 import { liwiColors } from '../../../../utils/constants';
 import Input from '../../../../template/liwi/native_components/Input';
 
@@ -103,13 +105,13 @@ export default class String extends React.Component {
             defaultValue={query}
             placeholder={`${t('application:select')} ${algorithm.nodes[question.id].label}`}
             autoCorrect
-            style={style.autocompleteStyle}
-            inputContainerStyle={style.autocompleteContainer}
-            listStyle={style.autocompleteList}
+            style={styles.autocompleteStyle}
+            inputContainerStyle={styles.autocompleteContainer}
+            listStyle={styles.autocompleteList}
             onChangeText={(text) => this.setState({ query: text })}
             renderItem={({ item }) => (
-              <TouchableOpacity style={style.autocompleteTouchableOpacity} onPress={() => this.onEndEditing(Object.values(item)[0])}>
-                <Text style={style.autocompleteText}>{Object.values(item)[0]}</Text>
+              <TouchableOpacity style={styles.autocompleteTouchableOpacity} onPress={() => this.onEndEditing(Object.values(item)[0])}>
+                <Text style={styles.autocompleteText}>{Object.values(item)[0]}</Text>
               </TouchableOpacity>
             )}
           />

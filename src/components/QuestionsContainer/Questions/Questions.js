@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { ScrollView, TouchableOpacity } from 'react-native';
-import { Icon, ListItem, Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import QuestionFactory from '../QuestionFactory';
 import { displayFormats, modalType } from '../../../../frontend_service/constants';
 import QuestionReference from '../QuestionReference';
@@ -53,7 +53,7 @@ export default class Questions extends React.Component<Props, State> {
 
             if (algorithm.nodes[questions[i].id].display_format === displayFormats.autocomplete) {
               return (
-                <>
+                <View key={`${i}_ref_view`}>
                   <View style={styles.flexRow}>
                     <View flex={0.12}>
                       <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(questions[i].id)}>
@@ -66,8 +66,8 @@ export default class Questions extends React.Component<Props, State> {
                       </Text>
                     </ViewQuestion>
                   </View>
-                  <Autocomplete question={questions[i]} {...this.props} />
-                </>
+                  <Autocomplete key={`${i}_ref_factory`} question={questions[i]} {...this.props} />
+                </View>
               );
             }
 
