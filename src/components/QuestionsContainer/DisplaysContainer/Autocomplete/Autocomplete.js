@@ -110,8 +110,9 @@ export default class String extends React.Component {
             inputContainerStyle={styles.autocompleteContainer}
             listStyle={styles.autocompleteList}
             onChangeText={(text) => this.setState({ query: text })}
+            onEndEditing={(value) => this.onEndEditing(value.nativeEvent.text)}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.autocompleteTouchableOpacity} onPress={() => this.onEndEditing(Object.values(item)[0])}>
+              <TouchableOpacity key={Object.values(item)[0]} style={styles.autocompleteTouchableOpacity} onPress={() => this.onEndEditing(Object.values(item)[0])}>
                 <Text style={styles.autocompleteText}>{Object.values(item)[0]}</Text>
               </TouchableOpacity>
             )}

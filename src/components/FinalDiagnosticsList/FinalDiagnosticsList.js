@@ -34,7 +34,10 @@ export default class FinalDiagnosticsList extends React.Component {
    * @private
    */
   _removeCustom = (diagnosis) => {
-    const { app:{algorithm}, setDiagnoses } = this.props;
+    const {
+      app: { algorithm },
+      setDiagnoses,
+    } = this.props;
     setDiagnoses(algorithm, 'custom', diagnosis, 'remove');
   };
 
@@ -44,7 +47,7 @@ export default class FinalDiagnosticsList extends React.Component {
    */
   onSelectedItemsChange = (selectedItems) => {
     const {
-      app: {algorithm},
+      app: { algorithm },
       setDiagnoses,
       medicalCase: { nodes },
     } = this.props;
@@ -61,7 +64,10 @@ export default class FinalDiagnosticsList extends React.Component {
    * @private
    */
   _addCustom = () => {
-    const { app:{algorithm},setDiagnoses } = this.props;
+    const {
+      app: { algorithm },
+      setDiagnoses,
+    } = this.props;
     const { customDiagnoses } = this.state;
     setDiagnoses(algorithm, 'custom', { label: customDiagnoses, drugs: [] });
     this.setState({ customDiagnoses: '' });
