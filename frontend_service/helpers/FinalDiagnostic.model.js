@@ -19,6 +19,7 @@ import { healthCareIsExcluded } from './HealthCares.model';
  */
 const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
   const mcNode = medicalCase.nodes[instance.id];
+
   const instanceConditionValue = find(mcNode.dd, (p) => p.id === dd.diagnostic_id).conditionValue;
 
   // Get the condition of the instance link
@@ -88,7 +89,7 @@ const getStatusOfDD = (algorithm, medicalCase, dd) => {
  * Verify if the final diagnostic excluded an another one
  * @param algorithm
  * @param medicalCase
- * @param mcNode
+ * @param mcFinalDiagnostic
  * @returns {null|boolean}
  */
 export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcFinalDiagnostic) => {

@@ -1,13 +1,12 @@
 import reduce from 'lodash/reduce';
 import { store } from '../store';
 import { questionBooleanValue } from '../helpers/Question.model';
-
 /**
  * Main entry to get the condition boolean for a entity
- *
- * @param {(Instance | QuestionsSequence | FinalDiagnostic | QuestionsSequenceScore)} node
- * @return {boolean}
- *
+ * @param algorithm
+ * @param node
+ * @param medicalCase
+ * @returns {boolean}
  */
 export const calculateCondition = (algorithm, node, medicalCase = store.getState()) => {
   const { nodes } = medicalCase;

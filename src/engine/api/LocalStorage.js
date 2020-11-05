@@ -20,7 +20,6 @@ export const setItem = async (key, item) => {
     AsyncStorage.setItem('diagnostics', stringifyDeepRef(item.diagnostics));
     AsyncStorage.setItem('nodes', stringifyDeepRef(item.nodes));
     AsyncStorage.setItem('village_json', stringifyDeepRef(item.village_json));
-    console.log('ICI', item);
     delete item.diagnostics;
     delete item.nodes;
     delete item.village_json;
