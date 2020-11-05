@@ -17,11 +17,12 @@ export default class String extends React.Component {
       app: {
         algorithm: { village_json },
       },
+      question,
     } = props;
 
     this.state = {
       style: null,
-      query: '',
+      query: question.value === null ? '' : question.value,
       villages: village_json,
     };
   }
