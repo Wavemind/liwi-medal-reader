@@ -52,26 +52,42 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     true
   );
 
+
+  const questionAlreadyShown = (question) => {
+    if(Object.keys(medicalCase.metaData.consultation.medicalHistory).length === 0){
+      return false;
+    }
+    return medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) !== undefined
+  };
+
   const questionPerSystem = {};
   systemsOrder.map((system) => (questionPerSystem[system] = []));
   questionPerSystem.follow_up_questions = [];
-
-  console.log(medicalCase.metaData.consultation.medicalHistory);
-  // Add questions in proper system
-  medicalHistoryQuestions.forEach((question) => {
-    // Add question in 'follow_up_questions' system if his question's system was already answered
-    if (
-      medicalCase.metaData.consultation.medicalHistory.length === 0 ||
-      algorithm.nodes[answeredQuestionId]?.system === undefined ||
-      medicalCase.metaData.consultation.medicalHistory.length > 0 && medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) || (
-        algorithm.nodes[answeredQuestionId]?.system !== undefined && systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system)
-      )
-    ) {
+  console.log()
+  if (Object.keys(medicalCase.metaData.consultation.medicalHistory).length === 0 ||
+    algorithm.nodes[answeredQuestionId]?.system === undefined){
+    medicalHistoryQuestions.forEach((question) => {
+      console.log("Coucou");
       questionPerSystem[question.system].push(question);
-    } else {
-      questionPerSystem.follow_up_questions.push(question);
+      });
     }
-  });
+  else {
+    medicalHistoryQuestions.forEach((question) => {
+      // Add question in 'follow_up_questions' system if his question's system was already answered
+      if (Object.keys(medicalCase.metaData.consultation.medicalHistory).length > 0 && medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) !== undefined || (
+        algorithm.nodes[answeredQuestionId]?.system !== undefined && medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) === undefined && systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))) {
+        console.log("Loolloo");
+
+        questionPerSystem[question.system].push(question);
+      } else {
+        console.log("Lalalal");
+        questionPerSystem.follow_up_questions.push(question);
+      }
+    });
+  }
+
+
+  console.log(medicalCase.metaData.consultation.medicalHistory, questionPerSystem)
 
   if (!_.isEqual(medicalCase.metaData.consultation.medicalHistory, questionPerSystem)) {
     store.dispatch(updateMetaData('consultation', 'medicalHistory', questionPerSystem));
