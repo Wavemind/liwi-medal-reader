@@ -43,7 +43,6 @@ export default class System extends React.Component {
     if (questions.length === 0) {
       return null;
     }
-console.log(system, questions)
     return (
       <View style={styles.spacingChiefComplaints} key={`view_system_${system}`}>
         <Text customTitle>{i18n.t(`systems:${system}`)}</Text>

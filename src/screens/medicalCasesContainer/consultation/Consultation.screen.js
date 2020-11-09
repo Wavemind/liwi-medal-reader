@@ -3,16 +3,15 @@
 import React, { Suspense } from 'react';
 import { Text, View } from 'native-base';
 
+import { ScrollView } from 'react-native';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import Comment from '../../../components/Comment';
 import System from '../../../components/Consultation/System';
-import { ScrollView } from "react-native";
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
-const QuestionsPerSystem = React.lazy(() => import('../../../components/Consultation/QuestionsPerSystem'));
 
 export default class Consultation extends React.Component {
   constructor(props) {
@@ -33,7 +32,8 @@ export default class Consultation extends React.Component {
     } = this.props;
 
     const selectedPage = navigation.getParam('initialPage');
-    const medicalHistorySystem = questionsMedicalHistory(algorithm, answeredQuestionId)
+    const medicalHistorySystem = questionsMedicalHistory(algorithm, answeredQuestionId);
+    const physicalExamSystem = questionsPhysicalExam(algorithm, answeredQuestionId);
 
     return (
       <Suspense fallback={<LiwiLoader />}>
@@ -78,7 +78,15 @@ export default class Consultation extends React.Component {
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
-                <QuestionsPerSystem questions={questionsPhysicalExam(algorithm, answeredQuestionId)} selectedPage={selectedPage} pageIndex={1} />
+                <ScrollView contentContainerStyle={styles.container}>
+                  {Object.keys(physicalExamSystem).length > 0 ? (
+                    Object.keys(physicalExamSystem).map((keySystem) => <System system={keySystem} key={`system_${keySystem}`} questions={physicalExamSystem[keySystem]} />)
+                  ) : (
+                    <View padding-auto margin-auto>
+                      <Text not-available>{t('patient_list:not_found')}</Text>
+                    </View>
+                  )}
+                </ScrollView>
               </Suspense>
             ) : (
               <LiwiLoader />

@@ -16,8 +16,6 @@ export default class QuestionsPerSystem extends React.Component {
 
     const groupBySystem = _.groupBy(questions, 'system');
 
-    console.log(groupBySystem)
-
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {Object.keys(groupBySystem).length > 0 ? (

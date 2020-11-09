@@ -56,16 +56,17 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   systemsOrder.map((system) => (questionPerSystem[system] = []));
   questionPerSystem.follow_up_questions = [];
 
-  console.log(medicalCase.metaData.consultation.medicalHistory);
   // Add questions in proper system
   medicalHistoryQuestions.forEach((question) => {
     // Add question in 'follow_up_questions' system if his question's system was already answered
     if (
-      medicalCase.metaData.consultation.medicalHistory.length === 0 ||
+      Object.keys(medicalCase.metaData.consultation.medicalHistory).length === 0 ||
       algorithm.nodes[answeredQuestionId]?.system === undefined ||
-      medicalCase.metaData.consultation.medicalHistory.length > 0 && medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) || (
-        algorithm.nodes[answeredQuestionId]?.system !== undefined && systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system)
-      )
+      (Object.keys(medicalCase.metaData.consultation.medicalHistory).length > 0 &&
+        medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) !== undefined) ||
+      (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
+        medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) === undefined &&
+        systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
     ) {
       questionPerSystem[question.system].push(question);
     } else {

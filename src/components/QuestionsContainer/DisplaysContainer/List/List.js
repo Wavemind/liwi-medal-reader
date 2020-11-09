@@ -16,7 +16,7 @@ export default class List extends React.Component {
    */
   onValueChange = (value) => {
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       setAnswer,
       setPatientValue,
       question,
@@ -28,6 +28,8 @@ export default class List extends React.Component {
     } else {
       setAnswer(algorithm, question.id, value);
     }
+
+    set('answeredQuestionId', question.id);
   };
 
   render() {

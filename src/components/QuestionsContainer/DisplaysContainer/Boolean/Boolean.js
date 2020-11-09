@@ -73,11 +73,9 @@ export default class Boolean extends React.Component<Props, State> {
       patientValueEdit,
     } = this.props;
     const currentNode = algorithm.nodes[question.id];
-
-    set('answeredQuestionId', question.id);
-
     const idYes = Number(Object.keys(currentNode.answers)[0]);
     const idNo = Number(Object.keys(currentNode.answers)[1]);
+
     let newAnswer = Number(answer);
 
     if (newAnswer === idYes) {
@@ -102,6 +100,8 @@ export default class Boolean extends React.Component<Props, State> {
     } else {
       setAnswer(algorithm, question.id, newAnswer);
     }
+
+    set('answeredQuestionId', question.id);
   };
 
   // TODO: Sorry for this. But I don't have any strength to refactor this shit
