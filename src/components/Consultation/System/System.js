@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Text, View } from 'native-base';
 import { styles } from './System.style';
 import Questions from '../../QuestionsContainer/Questions';
-import { systems } from '../../../../frontend_service/constants';
+import i18n from '../../../utils/i18n';
 
 export default class System extends React.Component {
   // default settings
@@ -43,10 +43,10 @@ export default class System extends React.Component {
     if (questions.length === 0) {
       return null;
     }
-
+console.log(system, questions)
     return (
       <View style={styles.spacingChiefComplaints} key={`view_system_${system}`}>
-        <Text customTitle>{systems[system]}</Text>
+        <Text customTitle>{i18n.t(`systems:${system}`)}</Text>
         <Questions questions={questions} />
       </View>
     );

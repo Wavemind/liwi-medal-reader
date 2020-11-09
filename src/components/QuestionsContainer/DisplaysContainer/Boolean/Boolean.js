@@ -66,13 +66,15 @@ export default class Boolean extends React.Component<Props, State> {
    */
   _handleClick = async (answer) => {
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       question,
       setAnswer,
       setPatientValue,
       patientValueEdit,
     } = this.props;
     const currentNode = algorithm.nodes[question.id];
+
+    set('answeredQuestionId', question.id);
 
     const idYes = Number(Object.keys(currentNode.answers)[0]);
     const idNo = Number(Object.keys(currentNode.answers)[1]);

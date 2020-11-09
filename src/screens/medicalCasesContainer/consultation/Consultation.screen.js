@@ -1,13 +1,15 @@
 // @flow
 
 import React, { Suspense } from 'react';
-import { View } from 'native-base';
+import { Text, View } from 'native-base';
 
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import Comment from '../../../components/Comment';
+import System from '../../../components/Consultation/System';
+import { ScrollView } from "react-native";
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 const QuestionsPerSystem = React.lazy(() => import('../../../components/Consultation/QuestionsPerSystem'));
@@ -24,13 +26,14 @@ export default class Consultation extends React.Component {
 
   render() {
     const {
-      app: { t, algorithm },
+      app: { t, algorithm, answeredQuestionId },
       focus,
       navigation,
       medicalCase,
     } = this.props;
 
     const selectedPage = navigation.getParam('initialPage');
+    const medicalHistorySystem = questionsMedicalHistory(algorithm, answeredQuestionId)
 
     return (
       <Suspense fallback={<LiwiLoader />}>
@@ -58,7 +61,15 @@ export default class Consultation extends React.Component {
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
-                <QuestionsPerSystem questions={questionsMedicalHistory(algorithm)} selectedPage={selectedPage} pageIndex={0} />
+                <ScrollView contentContainerStyle={styles.container}>
+                  {Object.keys(medicalHistorySystem).length > 0 ? (
+                    Object.keys(medicalHistorySystem).map((keySystem) => <System system={keySystem} key={`system_${keySystem}`} questions={medicalHistorySystem[keySystem]} />)
+                  ) : (
+                    <View padding-auto margin-auto>
+                      <Text not-available>{t('patient_list:not_found')}</Text>
+                    </View>
+                  )}
+                </ScrollView>
               </Suspense>
             ) : (
               <LiwiLoader />
@@ -67,7 +78,7 @@ export default class Consultation extends React.Component {
           <View style={styles.pad}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
-                <QuestionsPerSystem questions={questionsPhysicalExam(algorithm)} selectedPage={selectedPage} pageIndex={1} />
+                <QuestionsPerSystem questions={questionsPhysicalExam(algorithm, answeredQuestionId)} selectedPage={selectedPage} pageIndex={1} />
               </Suspense>
             ) : (
               <LiwiLoader />
