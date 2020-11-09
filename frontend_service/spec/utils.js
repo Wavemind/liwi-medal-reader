@@ -7,11 +7,7 @@ import { store } from '../store';
 import { setAnswer, setMedicalCase, setDiagnoses, setMedicine } from '../actions/creators.actions';
 import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
-import {
-  finalDiagnosticAll,
-  finalDiagnosticGetDrugs,
-  FinalDiagnosticModel,
-} from '../helpers/FinalDiagnostic.model';
+import { finalDiagnosticAll, finalDiagnosticGetDrugs } from '../helpers/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 
 export const cl = console.log;
@@ -77,13 +73,14 @@ export const getNode = (nodeId) => {
  */
 export const booleanAnswer = (nodeId) => {
   const state$ = store.getState();
-  const node = state$.nodes[nodeId];
-  if (node.value_format === valueFormats.bool) {
-    if (node.answer === null) return null;
-    const idYes = Number(Object.keys(node.answers)[0]);
-    const idNo = Number(Object.keys(node.answers)[1]);
-    if (node.answer === idYes) return true;
-    if (node.answer === idNo) return false;
+  const mcNode = state$.nodes[nodeId];
+  const currentNode = algorithm.nodes[nodeId];
+  if (currentNode.value_format === valueFormats.bool) {
+    if (mcNode.answer === null) return null;
+    const idYes = Number(Object.keys(mcNode.answers)[0]);
+    const idNo = Number(Object.keys(mcNode.answers)[1]);
+    if (mcNode.answer === idYes) return true;
+    if (mcNode.answer === idNo) return false;
   } else {
     cl('This node is not Boolean', nodeId);
   }
@@ -94,7 +91,7 @@ export const booleanAnswer = (nodeId) => {
  * @param finalDiagnosticId
  * @returns {boolean}
  */
-export const finalDiagnosticRetained = (finalDiagnosticId,) => {
+export const finalDiagnosticRetained = (finalDiagnosticId) => {
   const dfs = finalDiagnosticAll(algorithm);
   return dfs.included.map((df) => df.id).includes(finalDiagnosticId);
 };
@@ -118,18 +115,19 @@ export const conditionValue = (id, elemId, elem = 'dd') => {
  */
 export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
   const state$ = store.getState();
-  const finalDiagnostic = state$.nodes[finalDiagnosticId];
+  // const mcFinalDiagnostic = state$.nodes[finalDiagnosticId];
+  const currentFinalDiagnostic = algorithm.nodes[finalDiagnosticId];
 
   // Do not ask FFS
   if (diagnosesKey === 'proposed') {
     store.dispatch(
       setDiagnoses(algorithm, diagnosesKey, {
         id: finalDiagnosticId,
-        label: finalDiagnostic.label,
-        diagnostic_id: finalDiagnostic.diagnostic_id,
+        label: currentFinalDiagnostic.label,
+        diagnostic_id: currentFinalDiagnostic.diagnostic_id,
         agreed: true,
-        drugs: finalDiagnostic.drugs,
-        managements: finalDiagnostic.managements,
+        drugs: currentFinalDiagnostic.drugs,
+        managements: currentFinalDiagnostic.managements,
       })
     );
   } else {
@@ -137,11 +135,11 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
       setDiagnoses(algorithm, diagnosesKey, {
         [finalDiagnosticId]: {
           id: finalDiagnosticId,
-          label: finalDiagnostic.label,
-          diagnostic_id: finalDiagnostic.diagnostic_id,
+          label: currentFinalDiagnostic.label,
+          diagnostic_id: currentFinalDiagnostic.diagnostic_id,
           agreed: true,
-          drugs: finalDiagnostic.drugs,
-          managements: finalDiagnostic.managements,
+          drugs: currentFinalDiagnostic.drugs,
+          managements: currentFinalDiagnostic.managements,
         },
       })
     );

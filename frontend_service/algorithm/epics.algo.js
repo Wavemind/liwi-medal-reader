@@ -129,7 +129,7 @@ const nodeAction = (algorithm, medicalCase, nodeId, callerId, callerType) => {
         return of(dispatchFinalDiagnosticAction(nodeId, mcNode.id));
       default:
         if (__DEV__) {
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', mcNode.type, 'doesn\'t exist');
+          // console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', mcNode.type, 'doesn\'t exist');
         }
     }
   }
@@ -265,14 +265,14 @@ export const epicSetAnswer = (action$, state$) =>
       processUpdatedNode(algorithm, medicalCase, nodeId);
 
       // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
-      if (
-        (nodeId === algorithm.mobile_config.left_top_question_id ||
-          nodeId === algorithm.mobile_config.first_top_right_question_id ||
-          nodeId === algorithm.mobile_config.second_top_right_question_id) &&
-        process.env.node_ENV !== 'test'
-      ) {
-        NavigationService.setParamsAge(algorithm);
-      }
+      // if (
+      //   (nodeId === algorithm.mobile_config.left_top_question_id ||
+      //     nodeId === algorithm.mobile_config.first_top_right_question_id ||
+      //     nodeId === algorithm.mobile_config.second_top_right_question_id) &&
+      //   process.env.node_ENV !== 'test'
+      // ) {
+      //   NavigationService.setParamsAge(algorithm);
+      // }
 
       return of(setMedicalCase(medicalCase));
     })
