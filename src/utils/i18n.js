@@ -130,7 +130,7 @@ i18n
           visual: 'Visual system',
           vital_sign: 'Vital Signs',
           follow_up_questions: 'Follow up questions',
-          null: 'No system assign',
+          null: 'No assigned system',
         },
         modal: {
           invalidQuestions: 'Question(s) to fill',
