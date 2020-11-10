@@ -41,7 +41,6 @@ export default class Questions extends React.Component<Props, State> {
       questions,
       app: { t, algorithm },
     } = this.props;
-
     return (
       <ScrollView>
         {Object.keys(questions).length > 0 ? (

@@ -53,10 +53,11 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   );
 
   const questionPerSystem = {};
+  const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
   systemsOrder.map((system) => (questionPerSystem[system] = []));
-  questionPerSystem.follow_up_questions = [];
 
-  if (Object.keys(medicalCase.metaData.consultation.medicalHistory).length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
+  questionPerSystem.follow_up_questions = [];
+  if (medicalCase.metaData.consultation.medicalHistory.length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
     medicalHistoryQuestions.forEach((question) => {
       questionPerSystem[question.system].push(question);
     });
@@ -64,10 +65,9 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     medicalHistoryQuestions.forEach((question) => {
       // Add question in 'follow_up_questions' system if his question's system was already answered
       if (
-        (Object.keys(medicalCase.metaData.consultation.medicalHistory).length > 0 &&
-          medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) !== undefined) ||
+        (medicalCase.metaData.consultation.medicalHistory.length > 0 && medicalCase.metaData.consultation.medicalHistory.includes(question.id)) ||
         (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
-          medicalCase.metaData.consultation.medicalHistory[question.system].find((systemQuestion) => systemQuestion.id === question.id) === undefined &&
+          !medicalCase.metaData.consultation.medicalHistory.includes(question.id) &&
           systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
       ) {
         questionPerSystem[question.system].push(question);
@@ -77,12 +77,12 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     });
   }
 
-  if (!_.isEqual(medicalCase.metaData.consultation.medicalHistory, questionPerSystem)) {
-    store.dispatch(updateMetaData('consultation', 'medicalHistory', questionPerSystem));
+  if (!_.isEqual(medicalCase.metaData.consultation.medicalHistory, newQuestions)) {
+    store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
     return sortQuestions(questionPerSystem);
   }
 
-  return medicalCase.metaData.consultation.medicalHistory;
+  return questionPerSystem;
 };
 
 /**
@@ -105,7 +105,7 @@ const sortQuestions = (questionsPerSystem) => {
  * Get physical Exam for consultation
  * Update metadata
  */
-export const questionsPhysicalExam = (algorithm) => {
+export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   const medicalCase = store.getState();
   const vitalSignQuestions = nodeFilterBy(
     medicalCase,
@@ -137,16 +137,39 @@ export const questionsPhysicalExam = (algorithm) => {
     true
   );
 
+  const questionPerSystem = {};
   const questions = vitalSignQuestions.concat(physicalExamQuestions);
   const newQuestions = questions.map(({ id }) => id);
 
-  // Update state$ physical exam questions if it's different from new questions list
-  if (!_.isEqual(medicalCase.metaData.consultation.physicalExam, newQuestions)) {
-    store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
+  systemsOrder.map((system) => (questionPerSystem[system] = []));
+
+  questionPerSystem.follow_up_questions = [];
+  if (medicalCase.metaData.consultation.medicalHistory.length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
+    questions.forEach((question) => {
+      questionPerSystem[question.system].push(question);
+    });
+  } else {
+    questions.forEach((question) => {
+      // Add question in 'follow_up_questions' system if his question's system was already answered
+      if (
+        (medicalCase.metaData.consultation.medicalHistory.length > 0 && medicalCase.metaData.consultation.medicalHistory.includes(question.id)) ||
+        (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
+          !medicalCase.metaData.consultation.medicalHistory.includes(question.id) &&
+          systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
+      ) {
+        questionPerSystem[question.system].push(question);
+      } else {
+        questionPerSystem.follow_up_questions.push(question);
+      }
+    });
   }
 
-  // TODO: MUST BE SORTED
-  return questions;
+  if (!_.isEqual(medicalCase.metaData.consultation.physicalExam, newQuestions)) {
+    store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
+    return sortQuestions(questionPerSystem);
+  }
+
+  return questionPerSystem;
 };
 
 /**
