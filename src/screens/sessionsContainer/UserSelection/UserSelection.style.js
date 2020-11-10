@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
-import { liwiColors, screenWidth } from "../../../utils/constants";
+import { StyleSheet } from 'react-native';
+import { liwiColors, screenWidth } from '../../../utils/constants';
 
 export const styles = StyleSheet.create({
-  title: { color: liwiColors.blackLightColor, fontSize: 22, fontWeight: '100', fontFamily: 'Roboto-Light' },
+  title: { color: liwiColors.blackLightColor, fontSize: 16, fontWeight: '100', fontFamily: 'Roboto-Light', marginTop: 10 },
   desc: { color: liwiColors.blackLightColor, fontFamily: 'Roboto-Bold', justifyContent: 'flex-start', fontSize: 25 },
   img: { width: 70, height: 70, margin: 10 },
   icon: { position: 'absolute', right: -10, bottom: -10, color: liwiColors.redColor, backgroundColor: liwiColors.whiteColor, borderRadius: 50, padding: 0, elevation: 3, fontSize: 35 },
@@ -19,8 +19,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 1,
   },
-  flex: {flex: 1},
-  blocInput: {flex: 1, flexDirection: 'row' },
+  flex: { flex: 1 },
+  blocInput: { flex: 1, flexDirection: 'row' },
   items: { flex: 1, margin: 10 },
   blocParent: { flex: 1, flexDirection: 'row', flexWrap: 'wrap' },
   button: { flexDirection: 'row', marginBottom: 20, alignSelf: 'flex-end', marginRight: 20, height: 'auto', justifyContent: 'center', flexWrap: 'wrap' },
