@@ -1,13 +1,12 @@
 // @flow
 
 import * as React from 'react';
-import { Text, View } from 'native-base';
+import { Text, View, Input } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 
 import { styles } from './Autocomplete.style';
 import { liwiColors } from '../../../../utils/constants';
-import Input from '../../../../template/liwi/native_components/Input';
 
 export default class String extends React.Component {
   constructor(props) {

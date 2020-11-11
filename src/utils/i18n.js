@@ -51,7 +51,7 @@ i18n
           management: 'Management & Counselling',
           medicine: 'Medicine',
           medicines: 'Medicines',
-          no_drugs: 'No drugs available',
+          no_drugs: 'No drugs proposed',
           drugs: 'Drugs',
           managements: 'Managements',
           none: 'none',

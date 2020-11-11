@@ -59,9 +59,7 @@ export default class HttpInterface {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}&query=${params.query}${stringFilters !== '' ? `&filter=${stringFilters}` : ''}`;
 
     const header = await this._setHeaders();
-    const data = await this._fetch(url, header);
-
-    return data;
+    return this._fetch(url, header);
   };
 
   /**
@@ -147,6 +145,7 @@ export default class HttpInterface {
     const httpRequest = await fetch(url, header).catch((error) => {
       handleHttpError(error);
     });
+
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();
