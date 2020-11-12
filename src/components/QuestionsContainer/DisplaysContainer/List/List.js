@@ -2,15 +2,10 @@
 
 import * as React from 'react';
 import { Picker, View } from 'native-base';
-import type { NavigationScreenProps } from 'react-navigation';
 import { styles } from './List.style';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class List extends React.Component<Props, State> {
-  shouldComponentUpdate(nextProps: Readonly<P>): boolean {
+export default class List extends React.Component {
+  shouldComponentUpdate(nextProps) {
     const { question } = this.props;
     return nextProps.question.answer !== question.answer || nextProps.question.value !== question.value;
   }
@@ -19,28 +14,37 @@ export default class List extends React.Component<Props, State> {
    * Set value in store
    * @param {String} value
    */
-  onValueChange = (value: string) => {
-    const { setAnswer, setPatientValue, question, patientValueEdit } = this.props;
+  onValueChange = (value) => {
+    const {
+      app: { algorithm },
+      setAnswer,
+      setPatientValue,
+      question,
+      patientValueEdit,
+    } = this.props;
 
     if (patientValueEdit) {
       setPatientValue(question.id, value);
     } else {
-      setAnswer(question.id, value);
+      setAnswer(algorithm, question.id, value);
     }
   };
 
   render() {
-    const { question, isReadOnly } = this.props;
+    const {
+      app: { algorithm },
+      question,
+      isReadOnly,
+    } = this.props;
 
     const PickerItem = [];
+    const { answers } = algorithm.nodes[question.id];
 
-    Object.keys(question.answers).map((id) =>
-      question.answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={question.answers[id].label} value={String(id)} />) : null
-    );
+    Object.keys(answers).map((id) => (answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={answers[id].label} value={String(id)} />) : null));
 
     return (
       <View answer>
-        <Picker mode="dropdown" iosHeader="Select " style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange} enable={isReadOnly}>
+        <Picker mode="dropdown" style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange} enable={isReadOnly}>
           <Picker.Item label="Select" value={null} />
           {PickerItem}
         </Picker>

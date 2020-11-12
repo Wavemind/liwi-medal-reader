@@ -23,9 +23,9 @@ export default class FinalDiagnostic extends React.Component<{}> {
   }
 
   _handleClick = (bool) => {
-    const { setDiagnoses, id, diagnostic_id, label, drugs, managements } = this.props;
+    const { algorithm, setDiagnoses, id, diagnostic_id, label, drugs, managements } = this.props;
 
-    setDiagnoses('proposed', {
+    setDiagnoses(algorithm, 'proposed', {
       id,
       label,
       diagnostic_id,

@@ -10,7 +10,7 @@ import i18n from '../../utils/i18n';
 import Database from '../api/Database';
 import { secondStatusLocalData, modalType } from '../../../frontend_service/constants';
 import { auth, getAlgorithm, getFacility, registerDevice } from '../../../frontend_service/api/Http';
-import { getItem, getItems, setItem } from '../api/LocalStorage';
+import { getItem, setItem } from '../api/LocalStorage';
 import { updateModalFromRedux } from '../../../frontend_service/actions/creators.actions';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
@@ -101,17 +101,21 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const session = await getItem('session');
     const ip = session.facility.architecture === 'standalone' ? session.facility.main_data_ip : session.facility.local_data_ip;
 
-    const request = await fetch(ip, 'GET').catch(async (error) => {
-      if (isConnected || firstTime) {
-        await this._setAppStatus(false);
-      }
-    });
+    if (session.facility.architecture !== 'standalone') {
+      const request = await fetch(ip, 'GET').catch(async (error) => {
+        if (isConnected || firstTime) {
+          await this._setAppStatus(false);
+        }
+      });
 
-    if (request !== undefined && !isConnected) {
-      await this._setAppStatus(true);
-      if (session.facility.architecture === 'client_server' && !firstTime) {
-        await this._sendFailSafeData();
+      if (request !== undefined && !isConnected) {
+        await this._setAppStatus(true);
+        if (session.facility.architecture === 'client_server' && !firstTime) {
+          await this._sendFailSafeData();
+        }
       }
+    } else {
+      await this._setAppStatus(false);
     }
   };
 
@@ -192,7 +196,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @returns {Promise<void>}
    */
   logout = async () => {
-    NavigationService.navigate('UnlockSession',{});
+    NavigationService.navigate('UnlockSession', {});
     await setItem('user', null);
     this.setState({
       user: null,
@@ -226,7 +230,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   setInitialData = async () => {
     const facility = await this.getFacility();
-    const algorithm = await getItems('algorithm');
+    const algorithm = await getItem('algorithm');
     let newAlgorithm;
 
     if (facility !== null) {

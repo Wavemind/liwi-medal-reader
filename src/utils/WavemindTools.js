@@ -3,12 +3,12 @@ import { Button, Fab, Icon, View } from 'native-base';
 import RNRestart from 'react-native-restart';
 import Realm from 'realm';
 
-import { clearLocalStorage, getItems } from '../engine/api/LocalStorage';
+import { clearLocalStorage, getItem, getItems } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
 import { persistor, store } from '../../frontend_service/store';
 import { memorySizeOf } from './swissKnives';
-import { PatientModel } from '../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../frontend_service/engine/models/MedicalCase.model';
+import { PatientModel } from '../../frontend_service/helpers/Patient.model';
+import { MedicalCaseModel } from '../../frontend_service/helpers/MedicalCase.model';
 import Database from '../engine/api/Database';
 import { patientTemplate } from './template/PatientTemplate';
 import { displayNotification } from './CustomToast';
@@ -92,7 +92,7 @@ export default class WavemindTools extends Component {
                   blue
                   onPress={async () => {
                     const session = await getItems('session');
-                    const algorithm = await getItems('algorithm');
+                    const algorithm = await getItem('algorithm');
                     const state$ = store.getState();
                     const sizes = {};
 

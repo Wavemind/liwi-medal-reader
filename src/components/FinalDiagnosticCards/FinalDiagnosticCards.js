@@ -14,7 +14,8 @@ import Breakable from '../Formulations/Breakable';
 import Capsule from '../Formulations/Capsule';
 import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
-import { DrugModel } from '../../../frontend_service/engine/models/Drug.model';
+import { drugAgreed, drugDoses } from '../../../frontend_service/helpers/Drug.model';
+import { finalDiagnosticCalculateCondition } from '../../../frontend_service/helpers/FinalDiagnostic.model';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -28,12 +29,11 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
    */
   _renderSwitchFormulation = (drug) => {
     const {
-      app: { t },
-      medicalCase: { nodes },
+      app: { t, algorithm },
     } = this.props;
 
-    const node = nodes[drug.id];
-    const drugDose = node.getDrugDoses(drug.formulationSelected);
+    const node = algorithm.nodes[drug.id];
+    const drugDose = drugDoses(drug.formulationSelected, algorithm, drug.id);
 
     if (node.formulations[drug.formulationSelected] !== undefined) {
       switch (node.formulations[drug.formulationSelected].medication_form) {
@@ -64,33 +64,32 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
 
   /**
    * Display final diagnostic cards with medicine and management choose
-   * @param {Object} finalDiagnosticCategory - Diagnoses entry in medical case
+   * @param {Object} diagnoseFinalDiagnostics - Diagnoses entry in medical case
    * @param {String} title - Diagnoses key
    * @returns {Array<unknown>}
    * @private
    */
-  _renderFinalDiagnosticCards = (finalDiagnosticCategory, title) => {
+  _renderFinalDiagnosticCards = (diagnoseFinalDiagnostics, title) => {
     const {
-      app: { t },
+      app: { t, algorithm },
       medicalCase,
-      medicalCase: { nodes },
     } = this.props;
 
-    const drugsAvailable = DrugModel.getAgreed(medicalCase.diagnoses);
+    const drugsAvailable = drugAgreed(medicalCase.diagnoses, algorithm);
 
-    return Object.keys(finalDiagnosticCategory).map((key) => {
-      if (finalDiagnosticCategory[key].agreed || title === 'additional') {
+    return Object.keys(diagnoseFinalDiagnostics).map((key) => {
+      if ((diagnoseFinalDiagnostics[key].agreed && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) || title === 'additional') {
         return (
           <Card key={key}>
             <CardItem style={styles.cardItemCondensed}>
               <Body style={styles.cardTitleContent}>
                 <LiwiTitle2 noBorder style={styles.flex}>
-                  {finalDiagnosticCategory[key].label}{`\n`}
+                  {diagnoseFinalDiagnostics[key].label}{`\n`}
                   <Text note>{t(`diagnoses_label:${title}`)}</Text>
                 </LiwiTitle2>
                 <View style={styles.tooltipButtonFinalDiagnostic}>
                   <View flex>
-                    <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(finalDiagnosticCategory[key])}>
+                    <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(diagnoseFinalDiagnostics[key])}>
                       <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                     </TouchableOpacity>
                   </View>
@@ -103,8 +102,8 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                   {t('diagnoses:medicines')}
                 </LiwiTitle2>
 
-                {finalDiagnosticCategory[key].drugs !== undefined && Object.keys(finalDiagnosticCategory[key].drugs).length > 0 ? (
-                  Object.keys(finalDiagnosticCategory[key].drugs).map((drugKey) => {
+                {diagnoseFinalDiagnostics[key].drugs !== undefined && Object.keys(diagnoseFinalDiagnostics[key].drugs).length > 0 ? (
+                  Object.keys(diagnoseFinalDiagnostics[key].drugs).map((drugKey) => {
                     if (drugsAvailable[drugKey] !== undefined) {
                       return (
                         <View style={styles.drugContainer} key={drugKey}>
@@ -130,11 +129,11 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
                 <LiwiTitle2 noBorder style={styles.cardTitle}>
                   {t('diagnoses:management')}
                 </LiwiTitle2>
-                {finalDiagnosticCategory[key].managements !== undefined && Object.keys(finalDiagnosticCategory[key].managements).length > 0 ? (
-                  Object.keys(finalDiagnosticCategory[key].managements).map((managementKey) => {
-                    const management = finalDiagnosticCategory[key].managements[managementKey];
-                    const node = nodes[management.id];
-                    if (calculateCondition(management) === true) {
+                {diagnoseFinalDiagnostics[key].managements !== undefined && Object.keys(diagnoseFinalDiagnostics[key].managements).length > 0 ? (
+                  Object.keys(diagnoseFinalDiagnostics[key].managements).map((managementKey) => {
+                    const management = diagnoseFinalDiagnostics[key].managements[managementKey];
+                    const node = algorithm.nodes[management.id];
+                    if (calculateCondition(algorithm, management) === true && management.agreed === true) {
                       return (
                         <View style={styles.drugContainer} key={`${managementKey}_management`}>
                           <Text>{node.label}</Text>

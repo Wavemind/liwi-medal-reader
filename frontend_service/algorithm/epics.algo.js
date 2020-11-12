@@ -8,9 +8,13 @@ import { actions } from '../actions/types.actions';
 import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
-import { NodesModel } from '../engine/models/Nodes.model';
-import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
+import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
 import NavigationService from '../../src/engine/navigation/Navigation.service';
+import { calculateCondition } from './conditionsHelpers.algo';
+import { diagnosticIsExcludedByComplaintCategory } from '../helpers/Diagnostic.model';
+import { questionCalculateFormula, questionCalculateReference } from '../helpers/Question.model';
+import { questionSequenceCalculateCondition } from '../helpers/QuestionsSequenceModel';
+import { nodeUpdateAnswer } from '../helpers/Node.model';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -18,16 +22,16 @@ import NavigationService from '../../src/engine/navigation/Navigation.service';
  * @param { integer } diagnosticId - The id of diagnostic related
  * @param { integer } nodeId - The id of node related
  */
-const computeConditionValue = (medicalCase, diagnosticId, nodeId) => {
-  const diagnostic = medicalCase.diagnostics[diagnosticId];
+const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => {
+  const diagnostic = algorithm.diagnostics[diagnosticId];
   const { nodes } = medicalCase;
   const currentInstance = diagnostic.instances[nodeId];
   const currentNode = nodes[nodeId];
-  const parentsNodes = getParentsNodes(medicalCase, diagnosticId, nodeId);
+  const parentsNodes = getParentsNodes(algorithm, diagnosticId, nodeId);
 
   // If the complaint category linked to the diagnostic is not selected we set the condition value to false
-  if (diagnostic.isExcludedByComplaintCategory(nodes)) {
-    updateConditionValue(medicalCase, nodeId, diagnosticId, false, diagnostic.type);
+  if (diagnosticIsExcludedByComplaintCategory(algorithm, diagnosticId, medicalCase)) {
+    updateConditionValue(algorithm, medicalCase, nodeId, diagnosticId, false, nodeTypes.diagnostic);
   } else {
     // some() – returns true if the function returns true for at least one of the items
     // If one parentsNodes has to be show and answered
@@ -41,17 +45,17 @@ const computeConditionValue = (medicalCase, diagnosticId, nodeId) => {
     }
 
     // Get node condition value
-    const conditionValue = currentInstance.calculateCondition(medicalCase);
+    const conditionValue = calculateCondition(algorithm, currentInstance, medicalCase);
     // If the condition of this node is not null
     if (parentConditionValue === false) {
       // Set parent to false if their condition's isn't correct. Used to stop the algorithm
-      updateConditionValue(medicalCase, nodeId, diagnosticId, false, diagnostic.type);
+      updateConditionValue(algorithm, medicalCase, nodeId, diagnosticId, false, nodeTypes.diagnostic);
     } else if (conditionValue !== null) {
-      updateConditionValue(medicalCase, nodeId, diagnosticId, conditionValue, diagnostic.type);
+      updateConditionValue(algorithm, medicalCase, nodeId, diagnosticId, conditionValue, nodeTypes.diagnostic);
 
       // If the node is answered go his children
       if (currentNode.answer !== null) {
-        nodeAction(medicalCase, nodeId, diagnosticId, nodeTypes.diagnostic);
+        nodeAction(algorithm, medicalCase, nodeId, diagnosticId, nodeTypes.diagnostic);
       }
     }
   }
@@ -65,16 +69,20 @@ const computeConditionValue = (medicalCase, diagnosticId, nodeId) => {
  * @param { boolean } value - the new value of the condition Value
  * @param { string } type - The type of the caller can be either diagnostic or questionsSequence
  */
-export const updateConditionValue = (medicalCase, nodeId, callerId, value, type) => {
+export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, value, type) => {
   let caller;
+  let index;
+  let key;
 
   // We get the caller based on type and id
   switch (type) {
     case nodeTypes.diagnostic:
       caller = medicalCase.nodes[nodeId].dd;
+      key = 'dd';
       break;
     case nodeTypes.questionsSequence:
       caller = medicalCase.nodes[nodeId].qs;
+      key = 'qs';
       break;
   }
 
@@ -82,15 +90,16 @@ export const updateConditionValue = (medicalCase, nodeId, callerId, value, type)
 
   // We update only if the condition changes
   if (caller.conditionValue !== value) {
+    index = medicalCase.nodes[nodeId][key].findIndex((d) => d.id === callerId);
     // Update counter conditionValue
     if (value === true) {
       medicalCase.nodes[nodeId].counter += 1;
     } else if (value === false) {
       medicalCase.nodes[nodeId].counter -= 1;
     }
-    caller.conditionValue = value;
+    medicalCase.nodes[nodeId][key][index].conditionValue = value;
 
-    processUpdatedNode(medicalCase, nodeId);
+    processUpdatedNode(algorithm, medicalCase, nodeId);
   }
 };
 
@@ -101,34 +110,28 @@ export const updateConditionValue = (medicalCase, nodeId, callerId, value, type)
  * @param { integer } callerId - the id of the caller
  * @param { string } callerType - The type of the caller can be either diagnostic or questionsSequence
  */
-const nodeAction = (medicalCase, nodeId, callerId, callerType) => {
-  let caller;
-
-  if (callerType === nodeTypes.diagnostic) caller = medicalCase.diagnostics[callerId];
-  else if (callerType !== nodeTypes.diagnostic) caller = medicalCase.nodes[callerId];
-
-  // What do we do with this child -> switch according to type
-  switch (caller.type) {
-    case nodeTypes.question:
-    case nodeTypes.questionsSequence:
-      computeConditionValue(medicalCase, nodeId, caller.id);
-      break;
-    case nodeTypes.finalDiagnostic:
-      return of(dispatchFinalDiagnosticAction(nodeId, caller.id));
-    case nodeTypes.healthCare:
-      // TODO: to implement
-      break;
-    case nodeTypes.diagnostic:
-      // Check children of the node in the current diagnostic and process them as well.
-      caller.instances[nodeId].children.map((childId) => {
-        nodeAction(medicalCase, caller.id, childId, medicalCase.nodes[childId].type);
-      });
-      break;
-    default:
-      // eslint-disable-next-line no-console
-      if (__DEV__) {
-        console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', caller.type, 'doesn\'t exist');
-      }
+const nodeAction = (algorithm, medicalCase, nodeId, callerId, callerType) => {
+  if (callerType === nodeTypes.diagnostic) {
+    const diagnostic = algorithm.diagnostics[callerId];
+    diagnostic.instances[nodeId].children.map((childId) => {
+      nodeAction(algorithm, medicalCase, diagnostic.id, childId, medicalCase.nodes[childId].type);
+    });
+  } else {
+    const mcNode = medicalCase.nodes[callerId];
+    switch (mcNode.type) {
+      case nodeTypes.question:
+      case nodeTypes.questionsSequence:
+        computeConditionValue(algorithm, medicalCase, nodeId, mcNode.id);
+        break;
+      case nodeTypes.healthCare:
+        break;
+      case nodeTypes.finalDiagnostic:
+        return of(dispatchFinalDiagnosticAction(nodeId, mcNode.id));
+      default:
+        if (__DEV__) {
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', mcNode.type, 'doesn\'t exist');
+        }
+    }
   }
 };
 
@@ -137,8 +140,8 @@ const nodeAction = (medicalCase, nodeId, callerId, callerType) => {
  * @param { object } medicalCase - The current state of the medical case
  * @param { integer } questionsSequenceId - The id of Question sequence related
  */
-const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
-  const currentQuestionsSequence = medicalCase.nodes[questionsSequenceId];
+const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) => {
+  const currentQuestionsSequence = algorithm.nodes[questionsSequenceId];
   let answerId = null;
   let questionsSequenceCondition = null;
   /**
@@ -147,11 +150,10 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
    *  null = Still possible but not yet
    *  false = can't access the end anymore
    */
-  const statusQs = getQuestionsSequenceStatus(medicalCase, currentQuestionsSequence, actions);
-
+  const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQuestionsSequence);
   // If ready we calculate condition of the QS
   if (statusQs) {
-    questionsSequenceCondition = currentQuestionsSequence.calculateCondition(medicalCase);
+    questionsSequenceCondition = questionSequenceCalculateCondition(algorithm, medicalCase, currentQuestionsSequence);
   }
 
   if (questionsSequenceCondition === true) {
@@ -163,9 +165,12 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
   }
 
   // If the new answer of this QS is different from the older, we change it
-  if (answerId !== currentQuestionsSequence.answer) {
-    medicalCase.nodes[currentQuestionsSequence.id].updateAnswer(answerId);
-    processUpdatedNode(medicalCase, currentQuestionsSequence.id);
+  if (answerId !== medicalCase.nodes[currentQuestionsSequence.id].answer) {
+    medicalCase.nodes[currentQuestionsSequence.id] = {
+      ...medicalCase.nodes[currentQuestionsSequence.id],
+      ...nodeUpdateAnswer(answerId, algorithm, medicalCase.nodes[currentQuestionsSequence.id]),
+    };
+    processUpdatedNode(algorithm, medicalCase, currentQuestionsSequence.id);
   }
 };
 
@@ -175,21 +180,25 @@ const questionsSequenceAction = (medicalCase, questionsSequenceId) => {
  * @param { object } medicalCase - The current state of the medical case
  * @param { integer } nodeId - The id of node related
  */
-const referencedNodeAction = (medicalCase, nodeId) => {
-  const currentNode = medicalCase.nodes[nodeId];
+const referencedNodeAction = (algorithm, medicalCase, nodeId) => {
+  const currentNode = algorithm.nodes[nodeId];
+  const mcNode = medicalCase.nodes[nodeId];
   let value = null;
 
   switch (currentNode.display_format) {
     case displayFormats.formula:
-      value = currentNode.calculateFormula(medicalCase);
+      value = questionCalculateFormula(algorithm, medicalCase, currentNode);
       break;
     case displayFormats.reference:
-      value = currentNode.calculateReference(medicalCase);
+      value = questionCalculateReference(algorithm, medicalCase, currentNode);
       break;
   }
-  if (value !== currentNode.value) {
-    medicalCase.nodes[currentNode.id].updateAnswer(value);
-    processUpdatedNode(medicalCase, currentNode.id);
+  if (value !== mcNode.value) {
+    medicalCase.nodes[currentNode.id] = {
+      ...medicalCase.nodes[currentNode.id],
+      ...nodeUpdateAnswer(value, algorithm, medicalCase.nodes[currentNode.id]),
+    };
+    processUpdatedNode(algorithm, medicalCase, currentNode.id);
   }
 };
 
@@ -199,45 +208,45 @@ const referencedNodeAction = (medicalCase, nodeId) => {
  * @param { object } medicalCase - The current state of the medical case
  * @param { integer } nodeId - The id of node related
  */
-const processUpdatedNode = (medicalCase, nodeId) => {
-  const currentNode = medicalCase.nodes[nodeId];
-  const relatedDiagnostics = currentNode.dd;
-  const relatedQuestionsSequence = currentNode.qs;
+const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
+  const mcNode = medicalCase.nodes[nodeId];
+  const currentNode = algorithm.nodes[nodeId];
+  const relatedDiagnostics = mcNode.dd;
+  const relatedQuestionsSequence = mcNode.qs;
   const relatedDiagnosticsForCC = currentNode.diagnostics_related_to_cc;
-  const referencedNodes = currentNode.referenced_in;
 
   // Inject update
   medicalCase.updated_at = moment().format();
 
   // If it's birth date node, check eligibility age and update it in medical case
-  if (nodeId === medicalCase.config.basic_questions.birth_date_question_id) {
-    const birthDate = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_question_id].value;
+  if (nodeId === algorithm.config.basic_questions.birth_date_question_id) {
+    const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
     const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
-    medicalCase.isEligible = years < medicalCase.config.age_limit;
+    medicalCase.isEligible = years < algorithm.config.age_limit;
   }
 
   // For each related diagnoses we gonna check if we need to update their status
-  relatedDiagnostics.forEach((diagnostic) => nodeAction(medicalCase, currentNode.id, diagnostic.id, nodeTypes.diagnostic));
+  relatedDiagnostics.forEach((diagnostic) => nodeAction(algorithm, medicalCase, mcNode.id, diagnostic.id, nodeTypes.diagnostic));
 
   // For each related questionSequence we gonna check if we need to update their status
-  relatedQuestionsSequence.forEach((questionsSequence) => questionsSequenceAction(medicalCase, questionsSequence.id));
+  relatedQuestionsSequence.forEach((questionsSequence) => questionsSequenceAction(algorithm, medicalCase, questionsSequence.id));
 
   // If the node is a QuestionSequence we gonna update the status of all the instances of the questions sequence
-  if (currentNode.type === nodeTypes.questionsSequence) {
-    questionsSequenceAction(medicalCase, currentNode.id);
+  if (mcNode.type === nodeTypes.questionsSequence) {
+    questionsSequenceAction(algorithm, medicalCase, mcNode.id);
   }
 
   // We tell the related nodes to update themself
-  if (currentNode.type === nodeTypes.question) {
-    referencedNodes.forEach((referencedNodeId) => referencedNodeAction(medicalCase, referencedNodeId));
+  if (mcNode.type === nodeTypes.question) {
+    currentNode.referenced_in.forEach((referencedNodeId) => referencedNodeAction(algorithm, medicalCase, referencedNodeId));
   }
 
   if (relatedDiagnosticsForCC !== undefined) {
     relatedDiagnosticsForCC.forEach((diagnosticId) => {
-      const { instances } = medicalCase.diagnostics[diagnosticId];
+      const { instances } = algorithm.diagnostics[diagnosticId];
       Object.keys(instances).forEach((nodeId) => {
         if (instances[nodeId].top_conditions.length === 0) {
-          computeConditionValue(medicalCase, diagnosticId, nodeId);
+          computeConditionValue(algorithm, medicalCase, diagnosticId, nodeId);
         }
       });
     });
@@ -251,22 +260,18 @@ export const epicSetAnswer = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
     mergeMap((action) => {
-      const { nodeId } = action.payload;
-      const medicalCase = {
-        ...state$.value,
-        nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
-      };
-
-      processUpdatedNode(medicalCase, nodeId);
+      const { nodeId, algorithm } = action.payload;
+      const medicalCase = state$.value;
+      processUpdatedNode(algorithm, medicalCase, nodeId);
 
       // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
       if (
-        (nodeId === medicalCase.mobile_config.left_top_question_id ||
-          nodeId === medicalCase.mobile_config.first_top_right_question_id ||
-          nodeId === medicalCase.mobile_config.second_top_right_question_id) &&
+        (nodeId === algorithm.mobile_config.left_top_question_id ||
+          nodeId === algorithm.mobile_config.first_top_right_question_id ||
+          nodeId === algorithm.mobile_config.second_top_right_question_id) &&
         process.env.node_ENV !== 'test'
       ) {
-        NavigationService.setParamsAge();
+        NavigationService.setParamsAge(algorithm);
       }
 
       return of(setMedicalCase(medicalCase));
@@ -277,20 +282,19 @@ export const epicSetDiagnoses = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_DIAGNOSES, actions.SET_ANSWER),
     mergeMap((action) => {
-      const finalDiagnostics = FinalDiagnosticModel.getAgreed(state$.value);
+      const finalDiagnostics = finalDiagnosticAgreed(state$.value);
 
       if (finalDiagnostics.length > 0) {
-        const medicalCase = {
-          ...state$.value,
-          nodes: new NodesModel(JSON.parse(JSON.stringify(state$.value.nodes))),
-        };
+        const { algorithm } = action.payload;
+
+        const medicalCase = state$.value;
 
         finalDiagnostics.forEach((finalDiagnosticId) => {
           const finalDiagnostic = medicalCase.nodes[finalDiagnosticId];
           Object.keys(finalDiagnostic.instances).forEach((healthCaresQuestionId) => {
             const healthCaresQuestion = finalDiagnostic.instances[healthCaresQuestionId];
             const dfInstance = medicalCase.nodes[healthCaresQuestion.id].df.find((df) => df.id === finalDiagnosticId);
-            dfInstance.conditionValue = healthCaresQuestion.calculateCondition();
+            dfInstance.conditionValue = calculateCondition(algorithm, healthCaresQuestion, medicalCase);
           });
         });
 

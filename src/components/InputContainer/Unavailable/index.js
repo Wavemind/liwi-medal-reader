@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Unavailable from './Unavailable';
 import { setAnswerUnavailable } from '../../../../frontend_service/actions/creators.actions';
+import { withApplication } from '../../../engine/contexts/Application.context';
 
 const mapStateToProps = (medicalCase) => {
   return { medicalCase };
@@ -8,7 +9,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setAnswerUnavailable: (nodeId, value) => dispatch(setAnswerUnavailable(nodeId, value)),
+    setAnswerUnavailable: (algorithm, nodeId, value) => dispatch(setAnswerUnavailable(algorithm, nodeId, value)),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Unavailable);
+export default withApplication(connect(mapStateToProps, mapDispatchToProps)(Unavailable));

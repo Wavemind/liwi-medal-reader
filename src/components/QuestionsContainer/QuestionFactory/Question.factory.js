@@ -5,7 +5,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
 
-import { displayFormats, nodeTypes, modalType } from '../../../../frontend_service/constants';
+import { displayFormats, modalType } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
@@ -18,22 +18,22 @@ type State = {};
 
 export default class Question extends React.Component<Props, State> {
   state: {
-    flexLabel: 0.6,
-    flexQuestion: 0.3,
+    flexLabel: 0.4,
+    flexQuestion: 0.5,
     flexToolTip: 0.1,
   };
 
   constructor(props) {
     super(props);
 
-    let flexLabel = 0.6;
-    let flexQuestion = 0.3;
+    let flexLabel = 0.5;
+    let flexQuestion = 0.4;
     let flexToolTip = 0.1;
 
     // Change flex for small screen
     if (screenWidth < screensScale.s) {
-      flexLabel = 0.5;
-      flexQuestion = 0.4;
+      flexLabel = 0.4;
+      flexQuestion = 0.5;
       flexToolTip = 0.1;
     }
 
@@ -73,8 +73,14 @@ export default class Question extends React.Component<Props, State> {
    * Open redux modal
    */
   openModal = () => {
-    const { updateModalFromRedux, question } = this.props;
-    updateModalFromRedux({ node: question }, modalType.description);
+    const {
+      app: { algorithm },
+      updateModalFromRedux,
+      question,
+    } = this.props;
+
+    const currentNode = algorithm.nodes[question.id];
+    updateModalFromRedux({ node: currentNode }, modalType.description);
   };
 
   /**
@@ -83,12 +89,17 @@ export default class Question extends React.Component<Props, State> {
    * @private
    */
   _labelQuestion() {
-    const { question } = this.props;
+    const {
+      app: { algorithm },
+      question,
+    } = this.props;
     const { flexLabel } = this.state;
+    const currentNode = algorithm.nodes[question.id];
+
     return (
       <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
         <Text style={styles.questionLabel} size-auto>
-          {question.label} {question.is_mandatory ? '*' : null}
+          {currentNode.label} {currentNode.is_mandatory ? '*' : null}
         </Text>
       </ViewQuestion>
     );
@@ -100,17 +111,12 @@ export default class Question extends React.Component<Props, State> {
       app: { t, algorithm },
     } = this.props;
     const { flexQuestion, flexToolTip } = this.state;
+    const currentNode = algorithm.nodes[question.id];
 
     let WrapperUnavailable = () => null;
     let unavailableAnswer = null;
-    const questionNotDisplayed = [];
 
-    // Don't display day/month/year questions
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_day_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_month_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_year_id);
-
-    unavailableAnswer = _.find(question.answers, (a) => a.value === 'not_available');
+    unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
 
     if (unavailableAnswer !== undefined) {
       WrapperUnavailable = () => {
@@ -124,14 +130,14 @@ export default class Question extends React.Component<Props, State> {
     }
 
     // If this is not a question we return null
-    if ((question.display_format === displayFormats.formula && !__DEV__) || questionNotDisplayed.includes(question.id)) {
+    if (currentNode.display_format === displayFormats.formula && !__DEV__) {
       return null;
     }
 
     // Construct generic Component for the question
     return (
       <ListItem
-        style={[styles.condensed, styles.flexColumn, { backgroundColor: question.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
+        style={[styles.condensed, styles.flexColumn, { backgroundColor: currentNode.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
         noBorder
         key={`${question.id}_item`}
       >

@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import '../../../src/utils/Prototype.native';
-import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, getAnswer, getValue, setBirthDate, drugRetained, validMedicine } from '../utils';
+import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, getAnswer, getValue, setBirthDate, drugRetained, validMedicine, algorithm } from '../utils';
 import { store } from '../../store';
+import { healthCaresGetQuestions } from '../../helpers/HealthCares.model';
 
 // console.log = () => {};
 console.error = () => {};
@@ -40,11 +41,10 @@ describe('actions', () => {
 
   it('should show the questions from Malaria when selected ', () => {
     enableMalaria();
-
     validFinalDiagnostic('proposed', 421);
 
     const medicalCase = store.getState();
-    const questions = medicalCase.nodes.getHealthCaresQuestions(medicalCase);
+    const questions = healthCaresGetQuestions(algorithm, medicalCase);
     expect(Object.keys(questions).includes('2243')).toEqual(true);
   });
 
@@ -56,7 +56,7 @@ describe('actions', () => {
     jestSetAnswer(2243, 1148);
 
     const medicalCase = store.getState();
-    const questions = medicalCase.nodes.getHealthCaresQuestions(medicalCase);
+    const questions = healthCaresGetQuestions(algorithm, medicalCase);
 
     expect(Object.keys(questions)).toEqual(['119', '2088', '2243']);
   });
@@ -79,6 +79,6 @@ describe('actions', () => {
     jestSetAnswer(2248, 1160);
 
     expect(drugRetained(1732)).toEqual(true);
-    validMedicine('additional', 1732, 76, true);
+    validMedicine('additional', 1732, 76, true, 'drugs');
   });
 });

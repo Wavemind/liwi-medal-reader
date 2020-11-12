@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 
-import { Button, Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './Medicine.style';
+import { categories } from '../../../frontend_service/constants';
 
-export default class Medicine extends Component<{}> {
+export default class Medicine extends Component {
   _handleClick = (value) => {
-    const { medicine, diagnosesKey, setMedicine, type } = this.props;
+    const { medicine, finalDiagnosticId, setMedicine, diagnoseKey, healthCareType } = this.props;
     if (value !== medicine.agreed) {
-      setMedicine(type, diagnosesKey, medicine.id, value);
+      setMedicine(diagnoseKey, finalDiagnosticId, medicine.id, value, healthCareType);
     }
   };
 
@@ -28,10 +29,12 @@ export default class Medicine extends Component<{}> {
       <>
         <View style={styles.main} margin-top>
           <View style={styles.flex}>
-            <Text size-auto>{node?.label}</Text>
-            <Text italic>
-              {t('drug:d')} : {medicine.duration} {t('drug:days')}
-            </Text>
+            <Text italic>{node?.label}</Text>
+            {node.category === categories.drug ? (
+              <Text size-auto>
+                {t('drug:d')} : {medicine.duration} {t('drug:days')}
+              </Text>
+            ) : null}
           </View>
 
           <View style={styles.content}>
@@ -45,9 +48,6 @@ export default class Medicine extends Component<{}> {
                 {t('diagnoses:disagree')}
               </Text>
             </RightButton>
-            <Button style={styles.smallFlex}>
-              <Icon name="block" type="Entypo" style={styles.iconSize} />
-            </Button>
           </View>
         </View>
         {node?.description !== null ? (

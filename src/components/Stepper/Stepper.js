@@ -20,11 +20,11 @@ import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
 import { medicalCaseStatus, modalType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
-import { MedicalCaseModel } from '../../../frontend_service/engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../../../frontend_service/helpers/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
 import { displayNotification } from '../../utils/CustomToast';
 import LiwiProgressBar from '../../utils/LiwiProgressBar';
-import { PatientModel } from '../../../frontend_service/engine/models/Patient.model';
+import { PatientModel } from '../../../frontend_service/helpers/Patient.model';
 
 type Props = {
   children: any,
@@ -99,8 +99,6 @@ class Stepper extends React.Component<Props, State> {
   static defaultProps = {
     initialPage: 0,
     nextStage: null,
-    activeStepColor: 'brown',
-    inactiveStepColor: 'grey',
     paramsNextStage: { initialPage: 0 },
     stepNumberStyle: {
       color: 'white'
@@ -166,12 +164,13 @@ class Stepper extends React.Component<Props, State> {
    * @param position
    */
   handleBottomStepper = (position: number) => {
+    const {app:{algorithm}} = this.props;
     const numberOfPages: number = this.props.children.length;
 
     let route = NavigationService.getCurrentRoute();
     route.params.initialPage = position;
 
-    const validator = validatorStep(route, [], modelValidator);
+    const validator = validatorStep(algorithm, route, [], modelValidator);
     if (!validator.isActionValid) {
       this.handleBottomStepper(position - 1);
       displayNotification(i18n.t('navigation:step_invalid'), liwiColors.redColor);
@@ -256,7 +255,7 @@ class Stepper extends React.Component<Props, State> {
   renderChildren = () => {
     const { children, childrenStyle } = this.props;
 
-    return React.Children.map(children, (child: Object, index: number) => {
+    return React.Children.map(children, (child, index) => {
       return (
         <View key={`child-${index}`}
               style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
@@ -317,7 +316,7 @@ class Stepper extends React.Component<Props, State> {
    * @returns {null|Array<*>}
    */
   renderSteps = () => {
-    const { steps, icons, validate } = this.props;
+    const { app: { algorithm }, steps, icons, validate } = this.props;
     const { page, error } = this.state;
 
     const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;
@@ -510,10 +509,10 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _validateStage = () => {
-    const { nextStage, paramsNextStage, updateModalFromRedux } = this.props;
+    const { app:{algorithm}, nextStage, paramsNextStage, updateModalFromRedux } = this.props;
 
     // Validate current stage
-    const validator = validatorNavigate({
+    const validator = validatorNavigate(algorithm, {
       currentStage: this.props.navigation.state.routeName,
       nextStage,
       params: paramsNextStage,

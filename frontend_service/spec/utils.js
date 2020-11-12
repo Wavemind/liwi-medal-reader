@@ -2,16 +2,20 @@
 import { createAppContainer } from 'react-navigation';
 import find from 'lodash/find';
 import moment from 'moment';
-import { MedicalCaseModel } from '../engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../helpers/MedicalCase.model';
 import { store } from '../store';
 import { setAnswer, setMedicalCase, setDiagnoses, setMedicine } from '../actions/creators.actions';
 import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
-import { FinalDiagnosticModel } from '../engine/models/FinalDiagnostic.model';
+import {
+  finalDiagnosticAll,
+  finalDiagnosticGetDrugs,
+  FinalDiagnosticModel,
+} from '../helpers/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 
 export const cl = console.log;
-const algorithm = require('./algorithm.json');
+export const algorithm = require('./algorithm.json');
 
 const medicalCase = new MedicalCaseModel({}, algorithm);
 store.dispatch(setMedicalCase(medicalCase));
@@ -23,7 +27,7 @@ createAppContainer(RootMainNavigator);
  * @param value
  */
 export const jestSetAnswer = (nodeId, value) => {
-  store.dispatch(setAnswer(nodeId, value));
+  store.dispatch(setAnswer(algorithm, nodeId, value));
 };
 
 /**
@@ -90,8 +94,8 @@ export const booleanAnswer = (nodeId) => {
  * @param finalDiagnosticId
  * @returns {boolean}
  */
-export const finalDiagnosticRetained = (finalDiagnosticId) => {
-  const dfs = FinalDiagnosticModel.all();
+export const finalDiagnosticRetained = (finalDiagnosticId,) => {
+  const dfs = finalDiagnosticAll(algorithm);
   return dfs.included.map((df) => df.id).includes(finalDiagnosticId);
 };
 
@@ -119,7 +123,7 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
   // Do not ask FFS
   if (diagnosesKey === 'proposed') {
     store.dispatch(
-      setDiagnoses(diagnosesKey, {
+      setDiagnoses(algorithm, diagnosesKey, {
         id: finalDiagnosticId,
         label: finalDiagnostic.label,
         diagnostic_id: finalDiagnostic.diagnostic_id,
@@ -130,7 +134,7 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
     );
   } else {
     store.dispatch(
-      setDiagnoses(diagnosesKey, {
+      setDiagnoses(algorithm, diagnosesKey, {
         [finalDiagnosticId]: {
           id: finalDiagnosticId,
           label: finalDiagnostic.label,
@@ -150,9 +154,10 @@ export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
  * @param medicineId
  * @param finalDiagnosticId
  * @param value
+ * @params healthCareType
  */
-export const validMedicine = (type, medicineId, finalDiagnosticId, value) => {
-  store.dispatch(setMedicine(type, finalDiagnosticId, medicineId, value));
+export const validMedicine = (type, medicineId, finalDiagnosticId, value, healthCareType) => {
+  store.dispatch(setMedicine(type, finalDiagnosticId, medicineId, value, healthCareType));
 };
 
 /**
@@ -169,7 +174,7 @@ export const drugRetained = (drugId) => {
   let drugs = [];
 
   Object.keys(finalDiagnostics).forEach((key) => {
-    drugs = drugs.concat(state$.nodes[key].getDrugs());
+    drugs = drugs.concat(finalDiagnosticGetDrugs(algorithm, state$, state$.nodes[key]));
   });
   return drugs.some((drug) => drug.id === drugId);
 };
@@ -180,10 +185,10 @@ export const drugRetained = (drugId) => {
  * @returns {boolean}
  */
 export const managementRetained = (managementId) => {
-  const state$ = store.getState();
+  const medicalCase = store.getState();
   const finalDiagnostics = {
-    ...state$.diagnoses.proposed,
-    ...state$.diagnoses.additional,
+    ...medicalCase.diagnoses.proposed,
+    ...medicalCase.diagnoses.additional,
   };
   const managements = [];
 
@@ -191,7 +196,7 @@ export const managementRetained = (managementId) => {
     if (finalDiagnostics[key].managements !== undefined && Object.keys(finalDiagnostics[key].managements).length > 0) {
       Object.keys(finalDiagnostics[key].managements).map((managementKey) => {
         const management = finalDiagnostics[key].managements[managementKey];
-        if (calculateCondition(management) === true) {
+        if (calculateCondition(algorithm, management, medicalCase) === true && !management.isExcluded(medicalCase)) {
           managements.push(management);
         }
       });

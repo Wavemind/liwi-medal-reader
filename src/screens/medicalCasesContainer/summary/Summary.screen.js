@@ -2,20 +2,15 @@
 
 import * as React from 'react';
 import { Content, Tab, Tabs, View, Text } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 
 import { styles } from './Summary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import FinalDiagnosticCards from '../../../components/FinalDiagnosticCards';
+import { questionDisplayValue } from '../../../../frontend_service/helpers/Question.model';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class Summary extends React.Component<Props, State> {
-  state = {};
-
+export default class Summary extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,7 +33,7 @@ export default class Summary extends React.Component<Props, State> {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
     const { medicalCase, nodes } = this.state;
@@ -48,11 +43,11 @@ export default class Summary extends React.Component<Props, State> {
         <BackButton />
         <View style={styles.patientContainer}>
           <View flex>
-            <Text size-auto>{nodes[medicalCase.mobile_config.left_top_question_id].displayValue()}</Text>
+            <Text size-auto>{questionDisplayValue(algorithm, nodes[algorithm.mobile_config.left_top_question_id])}</Text>
           </View>
           <View style={styles.alignRight}>
             <Text size-auto>
-              {nodes[medicalCase.mobile_config.first_top_right_question_id].displayValue()} {nodes[medicalCase.mobile_config.second_top_right_question_id].displayValue()}
+              {questionDisplayValue(algorithm, nodes[algorithm.mobile_config.first_top_right_question_id])} {questionDisplayValue(algorithm, nodes[algorithm.mobile_config.second_top_right_question_id])}
             </Text>
           </View>
         </View>

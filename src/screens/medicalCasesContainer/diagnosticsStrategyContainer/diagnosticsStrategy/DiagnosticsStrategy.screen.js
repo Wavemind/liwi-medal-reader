@@ -1,6 +1,5 @@
 // @flow
 
-import { NavigationScreenProps } from 'react-navigation';
 import React, { Component, Suspense } from 'react';
 import { ScrollView, View } from 'react-native';
 
@@ -15,16 +14,15 @@ const Stepper = React.lazy(() => import('../../../../components/Stepper'));
 const HealthCares = React.lazy(() => import('../healthCares'));
 const Medicines = React.lazy(() => import('../medicines'));
 
-type Props = NavigationScreenProps & {};
-type State = {};
+export default class DiagnosesStrategy extends Component {
+  constructor(props) {
+    super(props);
 
-export default class DiagnosesStrategy extends Component<Props, State> {
-  componentDidMount() {
     const {
-      app: { t },
-    } = this.props;
+      app: { t, algorithm },
+    } = props;
 
-    NavigationService.setParamsAge(t('navigation:diagnosticsstrategy'));
+    NavigationService.setParamsAge(algorithm, t('navigation:diagnosticsstrategy'));
   }
 
   render() {
@@ -39,7 +37,6 @@ export default class DiagnosesStrategy extends Component<Props, State> {
     }
 
     const selectedPage = navigation.getParam('initialPage');
-
     return (
       <Suspense fallback={<LiwiLoader />}>
         <Stepper

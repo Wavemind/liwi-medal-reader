@@ -2,40 +2,31 @@
 
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import { displayFormats, medicalCaseStatus, nodeTypes, stages } from '../../constants';
-import { getItem } from '../../../src/engine/api/LocalStorage';
-import Database from '../../../src/engine/api/Database';
-import { differenceNodes } from '../../../src/utils/swissKnives';
+import { categories, displayFormats, medicalCaseStatus, nodeTypes, stages } from '../constants';
+import { getItem } from '../../src/engine/api/LocalStorage';
+import Database from '../../src/engine/api/Database';
+import { differenceNodes } from '../../src/utils/swissKnives';
 import { ActivityModel } from './Activity.model';
-import { store } from '../../store';
-import I18n from '../../../src/utils/i18n';
-import { NodesModel } from './Nodes.model';
-import { DiagnosticModel } from './Diagnostic.model';
+import { store } from '../store';
+import I18n from '../../src/utils/i18n';
+import { generateDrug, generateFinalDiagnostic, generateManagement, generateQuestion, generateQuestionsSequence } from './nodeFactory';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
     if ((this.id === undefined || this.id === null) && props?.id === undefined) {
-      this.setInitialConditionValue(currentAlgorithm);
       this.id = uuid.v4();
+      this.nodes = MedicalCaseModel.instantiateNodes(currentAlgorithm.nodes);
       this.activities = [];
-      this.algorithm_name = currentAlgorithm.algorithm_name;
-      this.version_name = currentAlgorithm.version_name;
+      this.algorithm_id = currentAlgorithm.algorithm_id
       this.version_id = currentAlgorithm.version_id;
-      this.algorithm_id = currentAlgorithm.algorithm_id;
-      this.diagnostics = currentAlgorithm.diagnostics;
-      this.nodes = { ...currentAlgorithm.nodes };
       this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
       this.updated_at = moment().toDate();
       this.created_at = moment().toDate();
       this.status = medicalCaseStatus.inCreation.name;
-      this.mobile_config = currentAlgorithm.mobile_config;
-      this.config = currentAlgorithm.config;
-      this.main_data_medical_case_id = null;
-      this.complaintCategories = [];
       this.isNewCase = true;
       this.isEligible = true;
-      this.comment = "";
+      this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
       this.consent = true;
       this.modal = {
@@ -73,6 +64,8 @@ export class MedicalCaseModel {
       };
 
       this.fail_safe = false;
+
+      this.setInitialConditionValue(currentAlgorithm);
     } else {
       // If json is undefined it means it comes from the state
       if (props !== undefined && props.json === undefined) {
@@ -121,17 +114,11 @@ export class MedicalCaseModel {
    * @private
    */
   _assignValues(data) {
-    this.mobile_config = data.mobile_config;
-    this.config = data.config;
     this.version_id = data.version_id;
-    this.algorithm_id = data.algorithm_id;
-    this.algorithm_name = data.algorithm_name;
-    this.diagnostics = data.diagnostics;
     this.nodes = data.nodes;
     this.triage = data.triage;
     this.consent = data.consent;
     this.isEligible = data.isEligible;
-    this.complaintCategories = data.complaintCategories;
     this.metaData = data.metaData;
     this.diagnoses = data.diagnoses;
     this.comment = data.comment;
@@ -166,16 +153,15 @@ export class MedicalCaseModel {
 
   /**
    * Set condition values of question in order to prepare them for second batch (before the triage one)
-   * @param [Json] algorithm
-   * @return [Json] algorithm
-   * */
-  setInitialConditionValue = async (algorithm) => {
+   * @param algorithm
+   */
+  setInitialConditionValue = (algorithm) => {
     const { diagnostics, nodes } = algorithm;
     try {
-      Object.keys(nodes).map((nodeId) => {
-        const node = nodes[nodeId];
+      Object.keys(nodes).forEach((nodeId) => {
+        const node = this.nodes[nodeId];
         if ([nodeTypes.question, nodeTypes.questionsSequence].includes(nodes[nodeId].type)) {
-          node.dd.map((dd) => {
+          node.dd.forEach((dd) => {
             // If the instance is related to the main diagram
             // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
             if (diagnostics[dd.id].instances[nodeId].final_diagnostic_id === null) {
@@ -186,16 +172,16 @@ export class MedicalCaseModel {
           });
 
           // Map trough QS if it is in an another QS itself
-          node.qs.map((qs) => {
+          node.qs.forEach((qs) => {
             this.setParentConditionValue(algorithm, qs.id, nodeId);
           });
         }
       });
 
       // Set question Formula
-      Object.keys(nodes).map((nodeId) => {
+      Object.keys(nodes).forEach((nodeId) => {
         if (nodes[nodeId].type === nodeTypes.question) {
-          nodes[nodeId].referenced_in.map((id) => {
+          nodes[nodeId].referenced_in.forEach((id) => {
             if (nodes[id].stage === stages.registration) {
               nodes[id].conditionValue = true;
             } else {
@@ -209,20 +195,20 @@ export class MedicalCaseModel {
     } catch (e) {
       console.warn(e);
     }
-
-    return algorithm;
   };
 
   /**
    * Recursive function to also set dd and qs parents of current qs
-   * @params [Json][Integer][Integer] algorithm, parentId, id
-   * */
+   * @param algorithm
+   * @param parentId
+   * @param id
+   */
   setParentConditionValue = (algorithm, parentId, id) => {
     let conditionValue = false;
     const { diagnostics, nodes } = algorithm;
     // Set condition value for DD if there is any
     if (!nodes[parentId].dd.isEmpty()) {
-      nodes[parentId].dd.map((dd) => {
+      nodes[parentId].dd.forEach((dd) => {
         // If the instance is related to the main diagram
         // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
         if (diagnostics[dd.id].instances[parentId].final_diagnostic_id === null) {
@@ -237,13 +223,13 @@ export class MedicalCaseModel {
     // Set condition value of parent QS if there is any
     if (!nodes[parentId].qs.isEmpty()) {
       // If parentNode is a QS, rerun function
-      nodes[parentId].qs.map((qs) => {
+      nodes[parentId].qs.forEach((qs) => {
         this.setParentConditionValue(algorithm, qs.id, parentId);
       });
       conditionValue = true;
     }
     // Set conditionValue of current QS
-    nodes[id].qs.map((instanceQs) => {
+    nodes[id].qs.forEach((instanceQs) => {
       if (instanceQs.id === parentId) {
         instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
       }
@@ -277,11 +263,12 @@ export class MedicalCaseModel {
   };
 
   /**
-  /**
    * Will generate an activity for a medical case comparing the current value and the
    * one stored in the database
-   * @param  {String} stage name of the current stage
-   * @param  {String} user The clinician that did the activity
+   * @param stage
+   * @param user
+   * @param nodes
+   * @returns {Promise<ActivityModel>}
    */
   generateActivity = async (stage, user, nodes) => {
     const algorithm = await getItem('algorithm');
@@ -306,6 +293,10 @@ export class MedicalCaseModel {
 
   /**
    * Defines if the case is locked
+   * @param medicalCaseLight
+   * @param deviceInfo
+   * @param user
+   * @returns {boolean}
    */
   static isLocked = (medicalCaseLight, deviceInfo, user) => {
     return (
@@ -319,6 +310,9 @@ export class MedicalCaseModel {
 
   /**
    * Defines if the case is locked
+   * @param deviceInfo
+   * @param user
+   * @returns {boolean}
    */
   isLocked = (deviceInfo, user) => {
     return (
@@ -328,23 +322,24 @@ export class MedicalCaseModel {
 
   /**
    * Get value of medical case value
-   * @param {integer} nodeId - Node id to retrieved
-   * @param {object} nodes - List of nodes in algorithm
-   * @returns {string|date} - value to display
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
    */
-  getLabelFromNode = (nodeId, nodes) => {
+  getLabelFromNode = (nodeId, algorithm) => {
     let displayedValue = '';
-    const currentNode = this.nodes[nodeId];
+    const currentNode = algorithm.nodes[nodeId];
+    const mcNode = this.nodes[nodeId];
 
     if (currentNode !== undefined) {
       if (currentNode.display_format === displayFormats.date) {
         // Date display
-        displayedValue = moment(currentNode.value).format(I18n.t('application:date_format'));
-      } else if (currentNode.value === null) {
+        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
+      } else if (mcNode.value === null) {
         // Answer display
-        displayedValue = currentNode.answer;
+        displayedValue = mcNode.answer;
       } else {
-        displayedValue = currentNode.value;
+        displayedValue = mcNode.value;
       }
     }
     return displayedValue;
@@ -375,17 +370,50 @@ export class MedicalCaseModel {
     return JSON.stringify({ ...medicalCase, patient: null, json: '{}' });
   };
 
-  static copyMedicalCase = (medicalCase) => {
-    const diagnostics = {};
-    Object.keys(medicalCase.diagnostics).forEach((i) => {
-      diagnostics[i] = new DiagnosticModel({ ...medicalCase.diagnostics[i] });
+  /**
+   * Instantiate all the nodes received
+   * @params nodes : nodes to instantiate
+   */
+  static instantiateNodes(nodes) {
+    let hash = {};
+    Object.keys(nodes).forEach((i) => {
+      const node = nodes[i];
+      hash = {
+        ...hash,
+        [i]: MedicalCaseModel.instantiateNode(node),
+      };
     });
-    return {
-      ...medicalCase,
-      nodes: new NodesModel(JSON.parse(JSON.stringify(medicalCase.nodes))),
-      diagnostics,
-    };
-  };
+    return hash;
+  }
+
+  /**
+   * Node factory
+   * Instantiate new Node base on node type
+   * @params node : node to instantiate
+   */
+  static instantiateNode(node) {
+    let instantiatedNode;
+
+    // Based on the node type
+    switch (node.type) {
+      case nodeTypes.questionsSequence:
+        instantiatedNode = generateQuestionsSequence(node);
+        break;
+      case nodeTypes.question:
+        instantiatedNode = generateQuestion(node);
+        break;
+      case nodeTypes.healthCare:
+        instantiatedNode = node.category === categories.management ? generateManagement(node) : generateDrug(node);
+        break;
+      case nodeTypes.finalDiagnostic:
+        instantiatedNode = generateFinalDiagnostic(node);
+        break;
+      default:
+        break;
+    }
+
+    return instantiatedNode;
+  }
 }
 
 MedicalCaseModel.schema = {

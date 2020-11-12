@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import { persistReducer, persistStore } from 'redux-persist';
 import FilesystemStorage from 'redux-persist-filesystem-storage';
+// import AsyncStorage from '@react-native-community/async-storage'; // FOR TESTING
 import rootReducer from './reducers';
 import rootEpic from './algorithm/epics.algo';
 
@@ -11,6 +12,7 @@ const persistConfig = {
   debug: __DEV__,
   key: 'medicalCase',
   storage: FilesystemStorage,
+  // storage: AsyncStorage, // FOR TESTING
   timeout: 10000,
   stateReconciler: hardSet, // see "Merge Process" section for details.
 };

@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    setDiagnoses: (type, diagnoses, actionDiagnoses) => dispatch(setDiagnoses(type, diagnoses, actionDiagnoses)),
+    setDiagnoses: (algorithm, type, diagnoses, actionDiagnoses) => dispatch(setDiagnoses(algorithm, type, diagnoses, actionDiagnoses)),
   };
 };
 

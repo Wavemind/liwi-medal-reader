@@ -1,33 +1,21 @@
 // @flow
 import React, { Component } from 'react';
-import { Icon, Text, View, Card, CardItem, Body } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import { TextInput } from 'react-native';
-
-import { NavigationScreenProps } from 'react-navigation';
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
-import { liwiColors } from '../../../../utils/constants';
-import Medicine from '../../../../components/Medicine';
-import { categories } from '../../../../../frontend_service/constants';
+
 import CustomMedicine from '../../../../components/CustomMedicine';
-import { calculateCondition } from '../../../../../frontend_service/algorithm/conditionsHelpers.algo';
+import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Medicines.style';
-import { LiwiTitle2 } from '../../../../template/layout';
+import MedicineSelection from '../../../../components/MedicineSelection';
+import { questionsHealthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
+import { finalDiagnosticCalculateCondition } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class Medicines extends Component<Props, State> {
-  state = {};
-
-  static defaultProps = {};
-
-  shouldComponentUpdate(nextProps) {
-    const { pageIndex } = this.props;
-    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
-      return nextProps.selectedPage === pageIndex;
-    }
-    return true;
+export default class Medicines extends Component {
+  shouldComponentUpdate() {
+    const { selectedPage } = this.props;
+    return selectedPage === 2;
   }
 
   /**
@@ -77,71 +65,34 @@ export default class Medicines extends Component<Props, State> {
     }
   };
 
-  /**
-   * Display available drugs for diagnoses agreed
-   * @param diagnosesKey
-   * @returns {unknown[]}
-   */
-  renderFinalDiagnosticDrugs = (diagnosesKey) => {
+  render() {
     const {
       medicalCase,
       medicalCase: { diagnoses },
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
-    return Object.keys(diagnoses[diagnosesKey]).map((key) => {
-      const proposedFinalDiagnostic = diagnoses[diagnosesKey][key];
-      if (proposedFinalDiagnostic.agreed === true || diagnosesKey === 'additional') {
-        const finalDiagnostic = medicalCase.nodes[key];
-        const drugs = finalDiagnostic.getDrugs(medicalCase);
+    const allHealthCares = questionsHealthCares(algorithm);
+    let filteredHealthCares = allHealthCares;
 
-        return (
-          <Card key={`finalDiagnostic_${finalDiagnostic.id}`}>
-            <CardItem style={styles.cardItemCondensed}>
-              <View style={styles.cardTitleContent}>
-                <Text customSubTitle style={styles.cardTitle}>
-                  {finalDiagnostic.label}
-                </Text>
-                <LiwiTitle2 noBorder style={styles.noRightMargin}>
-                  <Text note>{t(`diagnoses_label:${diagnosesKey}`)}</Text>
-                </LiwiTitle2>
-              </View>
-            </CardItem>
-            <CardItem style={styles.cardItemCondensed}>
-              <Body>
-                {drugs.length > 0 ? (
-                  drugs.map((drug) => <Medicine type={diagnosesKey} key={`${drug.id}_medicine`} medicine={proposedFinalDiagnostic.drugs[drug.id]} diagnosesKey={key} node={drug} />)
-                ) : (
-                  <Text key={`${key}diagnoses`} italic>
-                    {t('diagnoses:no_drugs')}
-                  </Text>
-                )}
-              </Body>
-            </CardItem>
-          </Card>
-        );
-      }
-    });
-  };
-
-  render() {
-    const {
-      medicalCase: { diagnoses, nodes },
-      app: { t },
-    } = this.props;
-
-    const allDrugs = nodes.filterByCategory(categories.drug);
-
-    let filteredAllDrugs = allDrugs;
     const selected = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
 
-    // Filter drugs
+    // Filter drugs proposed
     Object.keys(diagnoses.proposed).forEach((key) => {
       if (diagnoses.proposed[key].agreed === true) {
         Object.keys(diagnoses.proposed[key].drugs).forEach((treatmentId) => {
-          filteredAllDrugs = _.filter(filteredAllDrugs, (item) => {
+          filteredHealthCares = _.filter(filteredHealthCares, (item) => {
             if (diagnoses.proposed[key].drugs[treatmentId].agreed === true) {
               return item.id !== Number(treatmentId);
+            }
+            return true;
+          });
+        });
+
+        Object.keys(diagnoses.proposed[key].managements).forEach((managementId) => {
+          filteredHealthCares = _.filter(filteredHealthCares, (item) => {
+            if (diagnoses.proposed[key].managements[managementId].agreed === true) {
+              return item.id !== Number(managementId);
             }
             return true;
           });
@@ -149,12 +100,21 @@ export default class Medicines extends Component<Props, State> {
       }
     });
 
-    // filter drugs
+    // Filter drugs additional
     Object.keys(diagnoses.additional).forEach((key) => {
       Object.keys(diagnoses.additional[key].drugs).forEach((treatmentId) => {
-        filteredAllDrugs = _.filter(filteredAllDrugs, (item) => {
+        filteredHealthCares = _.filter(filteredHealthCares, (item) => {
           if (diagnoses.additional[key].drugs[treatmentId].agreed === true) {
             return item.id !== Number(treatmentId);
+          }
+          return true;
+        });
+      });
+
+      Object.keys(diagnoses.additional[key].managements).forEach((managementId) => {
+        filteredHealthCares = _.filter(filteredHealthCares, (item) => {
+          if (diagnoses.additional[key].drugs[managementId].agreed === true) {
+            return item.id !== Number(managementId);
           }
           return true;
         });
@@ -166,14 +126,34 @@ export default class Medicines extends Component<Props, State> {
         <Text customTitle style={styles.noTopMargin}>
           {t('diagnoses:medicines')}
         </Text>
-        {this.renderFinalDiagnosticDrugs('proposed')}
-        {this.renderFinalDiagnosticDrugs('additional')}
-        {Object.keys(diagnoses.proposed).length === 0 && Object.keys(diagnoses.additional).length === 0 ? <Text italic>{t('diagnoses:no_medicines')}</Text> : null}
+        {Object.keys(diagnoses.proposed).length === 0 && Object.keys(diagnoses.additional).length === 0 ? (
+          <Text italic>{t('diagnoses:no_medicines')}</Text>
+        ) : (
+          <>
+            {Object.keys(diagnoses.proposed).map((key) => {
+              if (diagnoses.proposed[key].agreed === true && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) {
+                return (
+                  <MedicineSelection key={`proposed_medicine_${key}`} algorithm={algorithm} diagnosesFinalDiagnostic={diagnoses.proposed[key]} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />
+                );
+              }
+            })}
+            {Object.keys(diagnoses.additional).map((key) => (
+              <MedicineSelection
+                key={`additional_medicine_${key}`}
+                algorithm={algorithm}
+                diagnosesFinalDiagnostic={diagnoses.additional[key]}
+                diagnoseKey="additional"
+                t={t}
+                medicalCase={medicalCase}
+              />
+            ))}
+          </>
+        )}
         {Object.keys(diagnoses.custom).map((w, i) => (
           <CustomMedicine key={i} diagnose={diagnoses.custom[w]} diagnoseKey={i} />
         ))}
 
-        {filteredAllDrugs.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
+        {filteredHealthCares.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
         <View style={styles.viewBox}>
           {Object.keys(diagnoses.additionalDrugs).map((s) => (
             <View style={styles.viewItem} key={s}>
@@ -201,10 +181,10 @@ export default class Medicines extends Component<Props, State> {
           ))}
         </View>
 
-        {filteredAllDrugs.length > 0 && (
+        {filteredHealthCares.length > 0 && (
           <MultiSelect
             hideTags
-            items={filteredAllDrugs}
+            items={filteredHealthCares}
             uniqueKey="id"
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={selected}

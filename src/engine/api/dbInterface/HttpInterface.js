@@ -3,8 +3,8 @@ import fetch from '../../../utils/fetchWithTimeout';
 import { getItem } from '../LocalStorage';
 import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 
 export default class HttpInterface {
   constructor() {
@@ -59,9 +59,7 @@ export default class HttpInterface {
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}&query=${params.query}${stringFilters !== '' ? `&filter=${stringFilters}` : ''}`;
 
     const header = await this._setHeaders();
-    const data = await this._fetch(url, header);
-
-    return data;
+    return this._fetch(url, header);
   };
 
   /**
@@ -147,6 +145,7 @@ export default class HttpInterface {
     const httpRequest = await fetch(url, header).catch((error) => {
       handleHttpError(error);
     });
+
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();

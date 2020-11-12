@@ -2,11 +2,11 @@ import uuid from 'react-native-uuid';
 import * as _ from 'lodash';
 import moment from 'moment';
 
-import { ActivityModel } from '../../../../frontend_service/engine/models/Activity.model';
-import { PatientValueModel } from '../../../../frontend_service/engine/models/PatientValue.model';
-import { PatientModel } from '../../../../frontend_service/engine/models/Patient.model';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
-import { getItem, getItems } from '../LocalStorage';
+import { ActivityModel } from '../../../../frontend_service/helpers/Activity.model';
+import { PatientValueModel } from '../../../../frontend_service/helpers/PatientValue.model';
+import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
+import { getItem } from '../LocalStorage';
 import { elementPerPage } from '../../../utils/constants';
 import { categories } from '../../../../frontend_service/constants';
 
@@ -208,13 +208,12 @@ export default class RealmInterface {
    * @private
    */
   _generateList = async (data, model, columns) => {
-    const algorithm = await getItems('algorithm');
-    const { nodes } = algorithm;
+    const algorithm = await getItem('algorithm');
     return data.map((entry) => {
       if (model === 'Patient') {
         return {
           id: entry.id,
-          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
         };
       }
       return {
@@ -222,26 +221,25 @@ export default class RealmInterface {
         status: entry.status,
         clinician: entry.clinician,
         mac_address: entry.mac_address,
-        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
       };
     });
   };
 
   /**
-   * Generate an object than contains all the data needed to display consent liste
+   * Generate an object than contains all the data needed to display consent list
    * @param data
    * @param columns
    * @returns {Promise<*>}
    * @private
    */
   _generateConsentList = async (data, columns) => {
-    const algorithm = await getItems('algorithm');
-    const { nodes } = algorithm;
+    const algorithm = await getItem('algorithm');
     return data.map((entry) => {
       return {
         id: entry.id,
         consent_file: entry.consent_file,
-        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, nodes)),
+        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
       };
     });
   };

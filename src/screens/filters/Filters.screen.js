@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Filters.style';
 import FilterAccordion from '../../components/FilterAccordion';
-import { getItems } from '../../engine/api/LocalStorage';
+import { getItem } from '../../engine/api/LocalStorage';
 import { categories, medicalCaseStatus } from '../../../frontend_service/constants';
 import FilterAccordionStatus from '../../components/FilterAccordionStatus';
 
@@ -24,7 +24,7 @@ export default class Filter extends React.Component<Props, State> {
     // TODO: Find better solutions
     const activeFilters = JSON.parse(JSON.stringify(filters));
 
-    const algorithm = await getItems('algorithm');
+    const algorithm = await getItem('algorithm');
     const availableFilters = _.filter(algorithm.nodes, { category: categories.demographic });
 
     this.setState({ model, availableFilters, activeFilters });

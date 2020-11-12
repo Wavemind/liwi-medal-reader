@@ -43,6 +43,7 @@ export const displayFormats = {
   formula: 'Formula',
   reference: 'Reference', // table reference
   string: 'String',
+  autocomplete: 'Autocomplete',
   date: 'Date',
 };
 
@@ -101,7 +102,7 @@ export const systems = {
   nervous: 'Nervous system',
   urinary_reproductive: 'Urinary and reproductive system',
   visual: 'Visual system',
-  vital_signs: 'Vital Signs',
+  vital_sign: 'Vital Signs',
   null: 'General',
 };
 
@@ -145,7 +146,7 @@ export const modalType = {
 export const userRoles = {
   medical_doctor: 'Medical Doctor (MD)',
   assistant_medical_officer: 'Assistant Medical Officer (AMO)',
-  clinical_officer: 'Assistant Medical Officer (AMO)',
+  clinical_officer: 'Clinical Officer',
   nurse: 'Nurse',
   midwife: 'Midwife',
   pharmacist: 'Pharmacist',

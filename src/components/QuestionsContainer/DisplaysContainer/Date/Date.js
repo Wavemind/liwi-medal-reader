@@ -1,182 +1,121 @@
 // @flow
 
 import * as React from 'react';
-import { Input, Picker, View } from 'native-base';
-import type { NavigationScreenProps } from 'react-navigation';
+import { Picker, View } from 'native-base';
+import * as _ from 'lodash';
 import moment from 'moment';
 import { styles } from './Date.style';
 import I18n from '../../../../utils/i18n';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Date extends React.Component<Props, State> {
+export default class Date extends React.Component {
   constructor(props) {
     super(props);
 
-    const { medicalCase } = props;
+    const { question } = props;
 
     const pickerDay = [];
     const pickerMonth = [];
+    const pickerYear = [];
+    let dayValue = null;
+    let monthValue = null;
+    let yearValue = null;
 
-    const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id];
-    const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id];
-    const yearQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_year_id];
+    if (question.value !== null) {
+      const momentDate = moment(question.value, 'YYYY/MM/DD');
+      dayValue = momentDate.format('D');
+      monthValue = momentDate.format('M');
+      yearValue = momentDate.format('YYYY');
+    }
 
-    Object.keys(dayQuestion.answers).map((id) => pickerDay.push(<Picker.Item key={`${id}_picker`} label={dayQuestion.answers[id].label} value={String(id)} />));
-    Object.keys(monthQuestion.answers).map((id) => pickerMonth.push(<Picker.Item key={`${id}_picker`} label={monthQuestion.answers[id].label} value={String(id)} />));
+    _.range(1, 32).map((day) => pickerDay.push(<Picker.Item key={`${day}_day_picker`} label={String(day)} value={String(day)} />));
+    _.range(1, 13).map((month) => pickerMonth.push(<Picker.Item key={`${month}_month_picker`} label={String(month)} value={String(month)} />));
+    _.range(moment().year() - 18, moment().year() + 1).map((year) => pickerYear.push(<Picker.Item key={`${year}_year_picker`} label={String(year)} value={String(year)} />));
 
     this.state = {
       pickerDay,
       pickerMonth,
-      yearValue: yearQuestion.value === null ? '' : yearQuestion.value,
+      pickerYear,
+      dayValue,
+      monthValue,
+      yearValue,
     };
+
+    // Due to possible change in patient value. Force update to calculate background_calculation like age in days
+    if (question.value !== null) {
+      this.setBirthDate();
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { yearValue } = this.state;
-    const { medicalCase } = this.props;
+    const { dayValue, monthValue, yearValue } = this.state;
+    const { question } = this.props;
 
-    const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id].answer;
-    const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id].answer;
-
-    const nextPropsDayQuestion = nextProps.medicalCase.nodes[nextProps.medicalCase.config.basic_questions.birth_date_day_id].answer;
-    const nextPropsMonthQuestion = nextProps.medicalCase.nodes[nextProps.medicalCase.config.basic_questions.birth_date_month_id].answer;
-
-    return yearValue !== nextState.yearValue || dayQuestion !== nextPropsDayQuestion || monthQuestion !== nextPropsMonthQuestion;
+    return question.value !== nextProps.question.value || dayValue !== nextState.dayValue || monthValue !== nextState.monthValue || yearValue !== nextState.yearValue;
   }
-
-  /**
-   * Set date in store
-   * @param {Integer} e
-   * @private
-   */
-  onEndEditing = (e) => {
-    const value = e.nativeEvent.text;
-    const { setAnswer, setPatientValue, patientValueEdit, medicalCase } = this.props;
-
-    const yearQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_year_id];
-
-    if (patientValueEdit) {
-      if (value !== yearQuestion.value && value !== '') {
-        setPatientValue(yearQuestion.id, value);
-      } else if (yearQuestion.value !== null && value === '') {
-        setPatientValue(yearQuestion.id, null);
-      }
-    } else if (value !== yearQuestion.value && value !== '') {
-      setAnswer(yearQuestion.id, value);
-    } else if (yearQuestion.value !== null && value === '') {
-      setAnswer(yearQuestion.id, null);
-    }
-
-    this.setBirthDate();
-  };
 
   /**
    * Set birth date in medical case
    */
   setBirthDate = () => {
-    const { medicalCase, setAnswer, setPatientValue, patientValueEdit } = this.props;
+    const { dayValue, monthValue, yearValue } = this.state;
+    const {
+      app: { algorithm },
+      question,
+      setAnswer,
+      setPatientValue,
+      patientValueEdit,
+    } = this.props;
 
-    const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id];
-    const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id];
-    const yearQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_year_id];
-    const birthDateQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_question_id];
+    const birthDateQuestion = question;
+    const day = dayValue !== null ? dayValue : '1';
+    const month = monthValue !== null ? monthValue : '1';
 
-    const day = dayQuestion.answer !== null ? dayQuestion.answers[dayQuestion.answer].value : '01';
-    const month = monthQuestion.answer !== null ? monthQuestion.answers[monthQuestion.answer].value : '01';
-
-    const birthDate = moment(`${month}/${day}/${yearQuestion.value}`);
+    const birthDate = moment(`${month}/${day}/${yearValue}`);
 
     if (patientValueEdit) {
-      if (birthDate !== birthDateQuestion.value && birthDate.isValid()) {
+      if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
         setPatientValue(birthDateQuestion.id, moment(birthDate).format());
-      } else if (birthDateQuestion.value !== null && !birthDate.isValid()) {
+      } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
         setPatientValue(birthDateQuestion.id, null);
-        setPatientValue(yearQuestion.id, null);
       }
     } else if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
-      setAnswer(birthDateQuestion.id, moment(birthDate).format());
-    } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate > moment()) {
-      setAnswer(birthDateQuestion.id, null);
-      setAnswer(yearQuestion.id, null);
-      this.setState({ yearValue: null });
+      setAnswer(algorithm, birthDateQuestion.id, moment(birthDate).format());
+    } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
+      setAnswer(algorithm, birthDateQuestion.id, null);
+      this.setState({ dayValue: null, monthValue: null, yearValue: null });
     }
   };
 
   /**
-   * Set value in store
-   * @param {Integer} questionId
+   * Set value in state
+   * @param {String} key
    * @param {String} value
    */
-  onValueChange = (questionId, value) => {
-    const { setAnswer, setPatientValue, patientValueEdit } = this.props;
-
-    if (patientValueEdit) {
-      setPatientValue(questionId, value);
-    } else {
-      setAnswer(questionId, value);
-    }
-
+  onValueChange = async (key, value) => {
+    await this.setState({ [key]: value });
     this.setBirthDate();
   };
 
-  /**
-   * Check if there is no unpermitted char
-   * @param {Event} e
-   */
-  onChange = (e) => {
-    let value = e.nativeEvent.text;
-
-    const regWithComma = /^[0-9,]+$/;
-
-    // Replace comma with dot
-    if (regWithComma.test(value)) {
-      value = value.replace(',', '.');
-    }
-
-    // Remove char that are not number or dot
-    value = value.replace(/[^0-9.]/g, '');
-
-    // Parse to float if value is not empty and last char is not dot
-    if (value !== '' && value.charAt(value.length - 1) !== '.') {
-      value = parseFloat(value);
-    }
-
-    this.setState({ yearValue: value });
-  };
-
   render() {
-    const { isReadOnly, medicalCase } = this.props;
-    const { yearValue, pickerDay, pickerMonth } = this.state;
-
-    const dayQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_day_id];
-    const monthQuestion = medicalCase.nodes[medicalCase.config.basic_questions.birth_date_month_id];
+    const { isReadOnly } = this.props;
+    const { dayValue, monthValue, yearValue, pickerDay, pickerMonth, pickerYear } = this.state;
 
     return (
       <View>
-        <Picker mode="dropdown" style={styles.picker} selectedValue={String(dayQuestion.answer)} onValueChange={(value) => this.onValueChange(dayQuestion.id, value)} enable={isReadOnly}>
+        <Picker mode="dropdown" style={styles.picker} selectedValue={String(dayValue)} onValueChange={(value) => this.onValueChange('dayValue', value)} enable={isReadOnly}>
           <Picker.Item label={I18n.t('patient:days')} value={null} />
           {pickerDay}
         </Picker>
 
-        <Picker mode="dropdown" style={styles.picker} selectedValue={String(monthQuestion.answer)} onValueChange={(value) => this.onValueChange(monthQuestion.id, value)} enable={isReadOnly}>
+        <Picker mode="dropdown" style={styles.picker} selectedValue={String(monthValue)} onValueChange={(value) => this.onValueChange('monthValue', value)} enable={isReadOnly}>
           <Picker.Item label={I18n.t('patient:months')} value={null} />
           {pickerMonth}
         </Picker>
 
-        <Input
-          keyboardType="number-pad"
-          placeholder={I18n.t('patient:year')}
-          yearQuestion
-          numeric
-          value={String(yearValue)}
-          style={styles.inputStyle}
-          onChange={this.onChange}
-          onEndEditing={this.onEndEditing}
-          disabled={isReadOnly}
-        />
+        <Picker mode="dropdown" style={styles.picker} selectedValue={String(yearValue)} onValueChange={(value) => this.onValueChange('yearValue', value)} enable={isReadOnly}>
+          <Picker.Item label={I18n.t('patient:year')} value={null} />
+          {pickerYear}
+        </Picker>
       </View>
     );
   }

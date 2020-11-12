@@ -6,10 +6,10 @@ import { FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { LiwiTitle2 } from '../../../template/layout';
 import { getDeviceInformation } from '../../../engine/api/Device';
-import { getItems } from '../../../engine/api/LocalStorage';
+import { getItem, getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { MedicalCaseModel } from '../../../../frontend_service/engine/models/MedicalCase.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 
 export default class PatientProfile extends React.Component {
   state = {
@@ -20,17 +20,18 @@ export default class PatientProfile extends React.Component {
     deviceInfo: null,
     nodes: {},
     columns: [],
+    medicalCaseData: [],
   };
 
   async componentDidMount() {
     const deviceInfo = await getDeviceInformation();
-    const algorithm = await getItems('algorithm');
+    const algorithm = await getItem('algorithm');
     const isConnected = await getItems('isConnected');
 
     const columns = algorithm.mobile_config.medical_case_list;
     const { nodes } = algorithm;
 
-    this.setState({ deviceInfo, columns, nodes, isConnected });
+    this.setState({ deviceInfo, columns, nodes, isConnected, algorithm });
     await this._getPatient();
   }
 
@@ -54,13 +55,16 @@ export default class PatientProfile extends React.Component {
       navigation,
       app: { database },
     } = this.props;
+    const { algorithm } = this.state;
 
     const id = navigation.getParam('id');
     const patient = await database.findBy('Patient', id);
+    const medicalCaseData = await patient.medicalCasesLight(algorithm);
 
     this.setState({
       patient,
       firstRender: false,
+      medicalCaseData,
     });
   }
 
@@ -77,6 +81,7 @@ export default class PatientProfile extends React.Component {
       updateModalFromRedux,
       app: { t, database, user },
     } = this.props;
+
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
 
@@ -136,18 +141,11 @@ export default class PatientProfile extends React.Component {
       app: { t, algorithm },
       navigation,
     } = this.props;
-    const { patient, firstRender, nodes, columns } = this.state;
-
-    const questionNotDisplayed = [];
+    const { patient, firstRender, nodes, columns, medicalCaseData } = this.state;
 
     if (firstRender) {
       return <LiwiLoader />;
     }
-
-    // Don't display day/month/year questions
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_day_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_month_id);
-    questionNotDisplayed.push(algorithm.config.basic_questions.birth_date_year_id);
 
     return (
       <View style={styles.container}>
@@ -156,24 +154,21 @@ export default class PatientProfile extends React.Component {
             <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
             <ScrollView>
               <View style={styles.patientValuesContent}>
-                {patient.patientValues.map((patientValue) =>
-                  questionNotDisplayed.includes(patientValue.node_id) ? null : (
-                    <View key={patientValue.node_id} style={styles.wrapper}>
-                      <Text size-auto style={styles.identifierText}>
-                        {nodes[patientValue.node_id].label}
-                      </Text>
-                      <Text size-auto style={styles.patientValues}>
-                        {patient.getLabelFromNode(patientValue.node_id, nodes)}
-                      </Text>
-                    </View>
-                  )
-                )}
+                {patient.patientValues.map((patientValue) => (
+                  <View key={patientValue.node_id} style={styles.wrapper}>
+                    <Text size-auto style={styles.identifierText}>
+                      {nodes[patientValue.node_id].label}
+                    </Text>
+                    <Text size-auto style={styles.patientValues}>
+                      {patient.getLabelFromNode(patientValue.node_id, algorithm)}
+                    </Text>
+                  </View>
+                ))}
               </View>
             </ScrollView>
           </View>
           <Button
             block
-            disabled
             style={styles.marginBottom}
             onPress={() => {
               navigation.navigate('PatientEdit', {
@@ -204,7 +199,7 @@ export default class PatientProfile extends React.Component {
           <View padding-auto>
             <FlatList
               key="dataList"
-              data={patient.medicalCasesLight(algorithm)}
+              data={medicalCaseData}
               contentContainerStyle={styles.flatList}
               renderItem={(value) => this._renderItem(value.item)}
               ItemSeparatorComponent={this._renderSeparator}

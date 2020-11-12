@@ -2,31 +2,22 @@
 
 import React, { Component } from 'react';
 import { Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 import Questions from '../../../../components/QuestionsContainer/Questions';
+import { healthCaresGetQuestions } from '../../../../../frontend_service/helpers/HealthCares.model';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-// Because a function component is causing error from wrappers
-// eslint-disable-next-line react/prefer-stateless-function
-export default class HealthCaresQuestions extends Component<Props, State> {
-  shouldComponentUpdate(nextProps, nextState) {
-    const { pageIndex } = this.props;
-
-    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
-      return nextProps.selectedPage === pageIndex;
-    }
-    return true;
+export default class HealthCaresQuestions extends Component {
+  shouldComponentUpdate() {
+    const { selectedPage } = this.props;
+    return selectedPage === 1;
   }
 
   render() {
     const {
       medicalCase,
-      app: { t },
+      app: { t, algorithm },
     } = this.props;
 
-    const questions = medicalCase.nodes.getHealthCaresQuestions(medicalCase);
-
+    const questions = healthCaresGetQuestions(algorithm, medicalCase);
     return (
       <View>
         {Object.keys(questions).length > 0 ? (
