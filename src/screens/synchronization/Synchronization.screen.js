@@ -93,7 +93,6 @@ export default class Synchronization extends React.Component<Props, State> {
 
       // Generate files
       medicalCasesToSynch.map(async (medicalCase) => {
-        console.log(JSON.parse(medicalCase.json))
         await writeFile(`${folder}/${medicalCase.id}.json`, medicalCase.json);
       });
 
