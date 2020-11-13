@@ -43,20 +43,12 @@ export default class Synchronization extends React.Component<Props, State> {
     const medicalCases = await database.realmInterface.closedAndNotSynchronized();
 
     // Retrieve all medical cases need to be synchronized
-    await medicalCases.forEach(async (medicalCase) => {
+    medicalCases.forEach((medicalCase) => {
       if (medicalCase.canBeSynchronized()) {
         if (reduxMedicalCase.id === medicalCase.id) {
           medicalCasesToSynch.push(reduxMedicalCase);
         } else {
-          const patient = await medicalCase.getPatient();
-          const medicalCaseHash = {
-            ...JSON.parse(medicalCase.json),
-            patient: {
-              ...patient,
-              medicalCases: [],
-            },
-          };
-          medicalCasesToSynch.push(medicalCaseHash);
+          medicalCasesToSynch.push(medicalCase);
         }
       }
     });
@@ -101,7 +93,8 @@ export default class Synchronization extends React.Component<Props, State> {
 
       // Generate files
       medicalCasesToSynch.map(async (medicalCase) => {
-        await writeFile(`${folder}/${medicalCase.id}.json`, JSON.stringify(medicalCase));
+        console.log(JSON.parse(medicalCase.json))
+        await writeFile(`${folder}/${medicalCase.id}.json`, medicalCase.json);
       });
 
       // Generate archive
