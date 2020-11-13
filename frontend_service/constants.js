@@ -15,8 +15,6 @@ export const host = async () => {
   }
 };
 
-export const hostDataServer = 'https://liwi-main-data.herokuapp.com/api/';
-
 export const secondStatusLocalData = 5000;
 
 export const navigationStateKey = 'navigationState';
