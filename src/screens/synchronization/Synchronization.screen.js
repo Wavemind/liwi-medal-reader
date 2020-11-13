@@ -6,10 +6,12 @@ import { zip } from 'react-native-zip-archive';
 import { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
 import { PermissionsAndroid } from 'react-native';
+import moment from 'moment';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Synchronization.style';
 import { synchronizeMedicalCases } from '../../../frontend_service/api/Http';
 import LiwiLoader from '../../utils/LiwiLoader';
+import { getItem } from '../../engine/api/LocalStorage';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -24,6 +26,7 @@ export default class Synchronization extends React.Component<Props, State> {
       medicalCasesToSynch: [],
       isReady: false,
       isLoading: false,
+      mainDataURL: '',
     };
   }
 
@@ -32,6 +35,9 @@ export default class Synchronization extends React.Component<Props, State> {
       medicalCase: reduxMedicalCase,
       app: { database },
     } = this.props;
+
+    const session = await getItem('session');
+    const mainDataURL = session.facility.main_data_ip;
 
     const medicalCasesToSynch = [];
     const medicalCases = await database.realmInterface.closedAndNotSynchronized();
@@ -49,6 +55,7 @@ export default class Synchronization extends React.Component<Props, State> {
 
     this.setState({
       medicalCasesToSynch,
+      mainDataURL,
       isReady: true,
     });
   }
@@ -71,10 +78,14 @@ export default class Synchronization extends React.Component<Props, State> {
     const writePermission = await this._askWriteStorage();
 
     if (writePermission) {
-      const { medicalCasesToSynch } = this.state;
+      const { medicalCasesToSynch, mainDataURL } = this.state;
+      const {
+        app: { t, database },
+      } = this.props;
+
       this.setState({ isLoading: true });
 
-      const folder = `${DocumentDirectoryPath}/medicalCases`;
+      const folder = `${DocumentDirectoryPath}/medical_cases`;
       const targetPath = `${folder}.zip`;
 
       // Create directory
@@ -91,10 +102,18 @@ export default class Synchronization extends React.Component<Props, State> {
         this.setState({ isLoading: false });
       });
 
-      const result = await synchronizeMedicalCases(path);
+      const result = await synchronizeMedicalCases(mainDataURL, path);
 
-      // Reset medicalCases to sync if request success
-      this.setState({ isLoading: false, medicalCasesToSynch: result !== null ? [] : medicalCasesToSynch });
+      if (result !== null && result.data_received) {
+        // Reset medicalCases to sync if request success
+        medicalCasesToSynch.forEach((medicalCase) => {
+          database.realmInterface.update('MedicalCase', medicalCase.id, { synchronized_at: moment().toDate() });
+        });
+
+        this.setState({ isLoading: false, error: '', medicalCasesToSynch: [] });
+      } else {
+        this.setState({ isLoading: false, error: t('synchronize:error'), medicalCasesToSynch });
+      }
     }
   };
 
@@ -102,26 +121,33 @@ export default class Synchronization extends React.Component<Props, State> {
     const {
       app: { t },
     } = this.props;
-    const { isReady, isLoading, medicalCasesToSynch } = this.state;
+    const { isReady, isLoading, medicalCasesToSynch, mainDataURL, error } = this.state;
 
     return (
       <View padding-auto margin-top flex>
         {isReady ? (
-          <>
+          mainDataURL !== '' ? (
+            <>
+              <LiwiTitle2 style={styles.marginTop} noBorder>
+                {t('synchronize:title')}
+              </LiwiTitle2>
+              <Text style={styles.number}>{medicalCasesToSynch.length}</Text>
+              {error !== '' ? <Text style={styles.error}>{error}</Text> : null}
+              <View flex-center-row>
+                {isLoading ? (
+                  <LiwiLoader />
+                ) : (
+                  <Button onPress={this.synchronize} disabled={medicalCasesToSynch.length === 0}>
+                    <Text>{t('synchronize:synchronize')}</Text>
+                  </Button>
+                )}
+              </View>
+            </>
+          ) : (
             <LiwiTitle2 style={styles.marginTop} noBorder>
-              {t('synchronize:title')}
+              {t('synchronize:main_data_address_missing')}
             </LiwiTitle2>
-            <Text style={styles.number}>{medicalCasesToSynch.length}</Text>
-            <View flex-center-row>
-              {isLoading ? (
-                <LiwiLoader />
-              ) : (
-                <Button onPress={this.synchronize} disabled={medicalCasesToSynch.length === 0}>
-                  <Text>{t('synchronize:synchronize')}</Text>
-                </Button>
-              )}
-            </View>
-          </>
+          )
         ) : (
           <LiwiLoader />
         )}

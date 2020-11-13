@@ -1,8 +1,10 @@
-import { host, hostDataServer } from '../constants';
+import RNFetchBlob from 'rn-fetch-blob';
+import { host } from '../constants';
 import { getDeviceInformation } from '../../src/engine/api/Device';
 import { handleHttpError } from '../../src/utils/CustomToast';
 import { getItem } from '../../src/engine/api/LocalStorage';
 import fetch from '../../src/utils/fetchWithTimeout';
+import i18n from '../../src/utils/i18n';
 
 /**
  * Get facility configuration by device mac address
@@ -70,22 +72,35 @@ export const registerDevice = async () => {
 
 /**
  * Send medical cases to main data
+ * @param {String} mainDataURL- Main data URL
  * @param {Array} medicalCasesArchivePath - path to archive
  * @returns {Promise<string|Array>}
  */
-// TODO: MUST BE CHECK WITH MAIN DATA
-export const synchronizeMedicalCases = async (medicalCasesArchivePath) => {
-  const data = new FormData();
-  data.append('name', 'medicalCases.zip');
-  data.append('medicalCases', {
-    uri: medicalCasesArchivePath,
-    type: 'zip/archive',
-    name: 'medicalCases.zip',
+export const synchronizeMedicalCases = async (mainDataURL, medicalCasesArchivePath) => {
+  const url = `${mainDataURL}/api/sync_medical_cases`;
+
+  const requestResult = await RNFetchBlob.fetch(
+    'POST',
+    url,
+    {
+      'Content-Type': 'multipart/form-data',
+    },
+    [
+      {
+        name: 'file',
+        filename: 'file.zip',
+        data: RNFetchBlob.wrap(medicalCasesArchivePath),
+      },
+    ]
+  ).catch((err) => {
+    handleHttpError(err.errors);
   });
 
-  const url = `${hostDataServer}sync_medical_cases`;
-  const header = await _setHeaders('POST', data, 'application/zip');
-  return _fetch(url, header);
+  if (requestResult.respInfo.status > 404) {
+    return null;
+  }
+
+  return JSON.parse(requestResult.data);
 };
 
 /**
