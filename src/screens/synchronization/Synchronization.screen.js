@@ -43,12 +43,20 @@ export default class Synchronization extends React.Component<Props, State> {
     const medicalCases = await database.realmInterface.closedAndNotSynchronized();
 
     // Retrieve all medical cases need to be synchronized
-    medicalCases.forEach((medicalCase) => {
+    await medicalCases.forEach(async (medicalCase) => {
       if (medicalCase.canBeSynchronized()) {
         if (reduxMedicalCase.id === medicalCase.id) {
           medicalCasesToSynch.push(reduxMedicalCase);
         } else {
-          medicalCasesToSynch.push(medicalCase);
+          const patient = await medicalCase.getPatient();
+          const medicalCaseHash = {
+            ...JSON.parse(medicalCase.json),
+            patient: {
+              ...patient,
+              medicalCases: [],
+            },
+          };
+          medicalCasesToSynch.push(medicalCaseHash);
         }
       }
     });
@@ -135,7 +143,7 @@ export default class Synchronization extends React.Component<Props, State> {
               {error !== '' ? <Text style={styles.error}>{error}</Text> : null}
               <View flex-center-row>
                 {isLoading ? (
-                  <LiwiLoader />
+                  <LiwiLoader/>
                 ) : (
                   <Button onPress={this.synchronize} disabled={medicalCasesToSynch.length === 0}>
                     <Text>{t('synchronize:synchronize')}</Text>
@@ -149,7 +157,7 @@ export default class Synchronization extends React.Component<Props, State> {
             </LiwiTitle2>
           )
         ) : (
-          <LiwiLoader />
+          <LiwiLoader/>
         )}
       </View>
     );

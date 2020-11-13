@@ -115,6 +115,7 @@ export class MedicalCaseModel {
    */
   _assignValues(data) {
     this.version_id = data.version_id;
+    this.algorithm_id = data.algorithm_id;
     this.nodes = data.nodes;
     this.triage = data.triage;
     this.consent = data.consent;
