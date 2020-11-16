@@ -12,7 +12,6 @@ export default class HttpInterface {
       const session = await getItem('session');
       const deviceInfo = await getDeviceInformation();
       this.localDataIp = session.facility.local_data_ip;
-      this.mainDataIp = session.facility.main_data_ip;
       this.macAddress = deviceInfo.mac_address;
       await this._setClinician();
       return this;
