@@ -1,6 +1,17 @@
 import 'reflect-metadata';
 import '../../../src/utils/Prototype.native';
-import { jestSetAnswer, finalDiagnosticRetained, validFinalDiagnostic, getAnswer, getValue, setBirthDate, drugRetained, validMedicine, algorithm } from '../utils';
+import {
+  jestSetAnswer,
+  finalDiagnosticRetained,
+  validFinalDiagnostic,
+  getAnswer,
+  getValue,
+  setBirthDate,
+  drugRetained,
+  validMedicine,
+  algorithm,
+  getDrugDoses,
+} from '../utils';
 import { store } from '../../store';
 import { healthCaresGetQuestions } from '../../helpers/HealthCares.model';
 
@@ -70,5 +81,19 @@ describe('actions', () => {
 
     expect(drugRetained(1732)).toEqual(true);
     validMedicine('additional', 1732, 76, true, 'drugs');
+  });
+
+  it('testing drugs', () => {
+    jestSetAnswer(3, 20);
+    const result = getDrugDoses(1679, 3);
+
+    expect(result.doseResult).toEqual(8);
+  });
+
+  it('testing drugs v2', () => {
+    jestSetAnswer(3, 20);
+    const result = getDrugDoses(1708, 13);
+
+    expect(result.maxDoseMl).toEqual(2000);
   });
 });

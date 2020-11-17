@@ -9,6 +9,7 @@ import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
 import { finalDiagnosticAll, finalDiagnosticGetDrugs } from '../helpers/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
+import { drugDoses } from '../helpers/Drug.model';
 
 export const cl = console.log;
 export const algorithm = require('./algorithm.json');
@@ -202,4 +203,16 @@ export const managementRetained = (managementId) => {
   });
 
   return managements.map((management) => management.id).includes(managementId);
+};
+
+/**
+ * Get drug doses result
+ * @param drugId
+ * @param formulationId
+ * @returns {{doseResult: null}|{doseResult: null, no_possibility: string}|{recurrence: *, doseResult: *, doseResultMg: *, maxDoseMg: *, minDoseMl: number, maxDoseMl: number, minDoseMg: *}|{recurrence: *, doseResult: *, maxDoseCap: number, maxDoseMg: *, minDoseMg: *, minDoseCap: number}}
+ */
+export const getDrugDoses = (drugId, formulationId) => {
+  const drug = algorithm.nodes[drugId];
+  const formulationIndex = drug.formulations.findIndex((formulation) => formulation.id === formulationId);
+  return drugDoses(formulationIndex, algorithm, drugId);
 };
