@@ -129,7 +129,7 @@ const nodeAction = (algorithm, medicalCase, nodeId, callerId, callerType) => {
         return of(dispatchFinalDiagnosticAction(nodeId, mcNode.id));
       default:
         if (__DEV__) {
-          // console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', mcNode.type, 'doesn\'t exist');
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', mcNode.type, 'doesn\'t exist');
         }
     }
   }

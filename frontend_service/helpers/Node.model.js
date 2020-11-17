@@ -63,7 +63,7 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       default:
         // eslint-disable-next-line no-console
         if (__DEV__) {
-          // console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${currentNode.value_format}`, currentNode);
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${currentNode.value_format}`, currentNode);
         }
         if (value !== null) {
           answer = Number(value);
