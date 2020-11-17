@@ -16,7 +16,6 @@ export default class Boolean extends React.Component<Props, State> {
   static defaultProps = {
     question: {},
     category: null,
-    widthView: 0,
   };
 
   state = {
@@ -24,7 +23,7 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { widthView, pageIndex, selectedPage } = this.props;
+    const { pageIndex, selectedPage } = this.props;
     const { value } = this.state;
 
     if (pageIndex !== undefined && nextProps.selectedPage !== pageIndex) {
@@ -36,7 +35,7 @@ export default class Boolean extends React.Component<Props, State> {
       return true;
     }
 
-    return nextState.value !== value || nextProps.widthView !== widthView;
+    return nextState.value !== value;
   }
 
   componentDidMount() {
@@ -107,7 +106,6 @@ export default class Boolean extends React.Component<Props, State> {
     const {
       app: { t, algorithm },
       question,
-      widthView,
       index,
       isReadOnly,
     } = this.props;
@@ -119,7 +117,7 @@ export default class Boolean extends React.Component<Props, State> {
     const idNo = Number(Object.keys(answers)[1]);
 
     const margin = 15;
-    const sizeButton = Math.floor(widthView / 3 - margin * 1.33);
+    const sizeButton = 160;
     const mod = index % 3;
 
     let styleMargin = {};
@@ -133,12 +131,6 @@ export default class Boolean extends React.Component<Props, State> {
     switch (category) {
       // If this is a chief complain
       case categories.complaintCategory:
-        // onlayout isn't set
-        if (widthView === 0) {
-          RenderJsx = () => null;
-          return null;
-        }
-
         if (mod === 0) {
           styleMargin = {
             marginTop: margin,
