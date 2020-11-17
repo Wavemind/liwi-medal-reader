@@ -165,15 +165,10 @@ export default class Boolean extends React.Component<Props, State> {
         if (value === null) {
           activeStyle = { backgroundColor: 'transparent' };
           idOnPress = idYes;
-        } else if (value === true) {
+        } else {
+          idOnPress = value ? idYes : idNo;
           activeStyle = {
-            borderColor: liwiColors.greenColor,
-          };
-          idOnPress = idNo;
-        } else if (value === false) {
-          idOnPress = idYes;
-          activeStyle = {
-            borderColor: liwiColors.redColor,
+            borderColor: liwiColors.darkerGreyColor,
           };
         }
 
