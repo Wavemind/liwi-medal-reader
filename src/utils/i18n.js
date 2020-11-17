@@ -67,6 +67,7 @@ i18n
           weight: 'weight',
           which: 'Which formulation of medicine is available and appropriate for your patient?',
           write: 'Write the medicine',
+          consultation_comment: 'You may add further clinical details for your records if you wish (Non-mandatory. Will not be used in the algorithm)'
         },
         drug: {
           give: 'Give',
