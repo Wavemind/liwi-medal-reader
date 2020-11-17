@@ -3,19 +3,24 @@
 import * as React from 'react';
 import { Content, Tab, Tabs, View, Text } from 'native-base';
 
+import moment from 'moment';
 import { styles } from './Summary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import FinalDiagnosticCards from '../../../components/FinalDiagnosticCards';
 import { questionDisplayValue } from '../../../../frontend_service/helpers/Question.model';
+import { categories } from '../../../../frontend_service/constants';
 
 export default class Summary extends React.Component {
   constructor(props) {
     super(props);
 
-    const { medicalCase, navigation } = props;
-
+    const {
+      medicalCase,
+      navigation,
+      app: { algorithm },
+    } = props;
     let currentMedicalCase = medicalCase;
     let { nodes } = currentMedicalCase;
 
@@ -24,6 +29,19 @@ export default class Summary extends React.Component {
       currentMedicalCase = navigation.getParam('medicalCase');
       nodes = currentMedicalCase.nodes;
     }
+
+    // Remove / Keep neonat question based on patient age
+    const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
+    const neonatCCs = algorithm.mobile_config.questions_orders[categories.complaintCategory].filter((ccId) => algorithm.nodes[ccId].is_neonat);
+    const days = birthDate !== null ? moment(medicalCase.created_at).diff(birthDate, 'days') : 0;
+
+    Object.keys(nodes).forEach((nodeId) => {
+      const mcNode = algorithm.nodes[nodeId];
+      // If patient is older than 60 days, we remove YI questions
+      if (days > 60 && mcNode.conditioned_by_cc !== undefined && mcNode.conditioned_by_cc.length > 0 && mcNode.conditioned_by_cc.some((ccId) => neonatCCs.includes(ccId))) {
+        delete nodes[nodeId];
+      }
+    });
 
     this.state = {
       medicalCase: currentMedicalCase,
@@ -47,7 +65,8 @@ export default class Summary extends React.Component {
           </View>
           <View style={styles.alignRight}>
             <Text size-auto>
-              {questionDisplayValue(algorithm, nodes[algorithm.mobile_config.first_top_right_question_id])} {questionDisplayValue(algorithm, nodes[algorithm.mobile_config.second_top_right_question_id])}
+              {questionDisplayValue(algorithm, nodes[algorithm.mobile_config.first_top_right_question_id])}{' '}
+              {questionDisplayValue(algorithm, nodes[algorithm.mobile_config.second_top_right_question_id])}
             </Text>
           </View>
         </View>
