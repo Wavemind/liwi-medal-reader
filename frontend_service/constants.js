@@ -139,6 +139,7 @@ export const modalType = {
   medicalCaseLocked: 'medicalCaseLocked',
   validation: 'validation',
   loading: 'loading',
+  emergency: 'emergency',
 };
 
 export const userRoles = {
