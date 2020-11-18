@@ -484,7 +484,7 @@ i18n
           tests: 'Tests Médicaux disponible',
           app: 'Application',
           awake: 'Empécher la mise en veille',
-          generate_cases: 'Génerer des cas médicaux',
+          generate_cases: 'Générer des cas médicaux',
         },
         work_case: {
           create: 'Nouveau cas médical',
