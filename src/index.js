@@ -12,6 +12,7 @@ import { persistor, store } from '../frontend_service/store';
 import Layout from './template/Layout.template';
 import CustomModal from './components/CustomModal';
 import StatusIndicator from './components/StatusIndicator';
+import EmergencyButton from './components/EmergencyButton';
 
 export default class Root extends React.Component {
   async componentDidMount() {
@@ -26,6 +27,7 @@ export default class Root extends React.Component {
             <Layout />
             <CustomModal />
             {__DEV__ ? <WavemindTools /> : null}
+            <EmergencyButton />
             <StatusIndicator />
           </ApplicationProvider>
         </PersistGate>

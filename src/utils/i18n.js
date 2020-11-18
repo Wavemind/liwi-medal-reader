@@ -140,7 +140,8 @@ i18n
           continue: 'Continue creating case',
         },
         emergency: {
-          emergency: 'Emergency assistance',
+          title: 'Emergency assistance',
+          description: 'This page has been created to provide emergency assistance in case of need',
           back: 'Back to home',
         },
         qrcode: {
