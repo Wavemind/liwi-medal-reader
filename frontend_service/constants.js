@@ -159,12 +159,13 @@ export const modalType = {
   medicalCaseLocked: 'medicalCaseLocked',
   validation: 'validation',
   loading: 'loading',
+  emergency: 'emergency',
 };
 
 export const userRoles = {
   medical_doctor: 'Medical Doctor (MD)',
   assistant_medical_officer: 'Assistant Medical Officer (AMO)',
-  clinical_officer: 'Clinical Officer',
+  clinical_officer: 'Clinical Officer (CO)',
   nurse: 'Nurse',
   midwife: 'Midwife',
   pharmacist: 'Pharmacist',

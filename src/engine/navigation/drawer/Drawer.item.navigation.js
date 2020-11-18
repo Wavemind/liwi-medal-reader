@@ -183,13 +183,7 @@ export const HeaderButtonsDrawer = class Header extends React.Component {
         >
           <Icon style={styles.iconTop} dark type="FontAwesome" name="home" />
         </TouchableOpacity>
-        <TouchableOpacity
-          transparent
-          style={styles.flexPadding}
-          onPress={() => NavigationService.navigate('Emergency')}
-        >
-          <Icon style={styles.iconTop} dark type="FontAwesome5" name="plus-square" />
-        </TouchableOpacity>
+
         <TouchableOpacity
           transparent
           style={styles.flexPadding}

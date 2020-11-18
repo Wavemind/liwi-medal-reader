@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import type { NavigationScreenProps } from 'react-navigation';
 import { TouchableOpacity, View } from 'react-native';
 import { Icon, ListItem, Text } from 'native-base';
 import _ from 'lodash';
@@ -12,11 +11,7 @@ import { styles } from './Question.factory.style';
 import Unavailable from '../../InputContainer/Unavailable';
 import WrapperQuestion from '../WrapperQuestion/WrapperQuestion';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Question extends React.Component<Props, State> {
+export default class Question extends React.Component {
   state: {
     flexLabel: 0.4,
     flexQuestion: 0.5,

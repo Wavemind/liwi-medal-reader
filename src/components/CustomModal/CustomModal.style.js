@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { liwiColors } from '../../utils/constants';
+import { liwiColors, screenWidth } from '../../utils/constants';
 
 export const styles = StyleSheet.create({
   buttonNav: {
@@ -97,4 +97,6 @@ export const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 2,
     resizeMode: 'contain',
   },
+
+  image: { width: screenWidth * 0.8, height: screenWidth },
 });
