@@ -227,7 +227,7 @@ export default class RealmInterface {
   };
 
   /**
-   * Generate an object than contains all the data needed to display consent liste
+   * Generate an object than contains all the data needed to display consent list
    * @param data
    * @param columns
    * @returns {Promise<*>}

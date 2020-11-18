@@ -23,7 +23,6 @@ export default class Triage extends React.Component {
     NavigationService.setParamsAge(algorithm, 'Triage');
 
     this.state = {
-      widthView: 0,
       complaintCategories: questionsComplaintCategory(algorithm),
     };
   }
@@ -35,7 +34,7 @@ export default class Triage extends React.Component {
       navigation,
     } = this.props;
 
-    const { widthView, complaintCategories } = this.state;
+    const { complaintCategories } = this.state;
 
     const selectedPage = navigation.getParam('initialPage');
 
@@ -55,38 +54,32 @@ export default class Triage extends React.Component {
           initialPage={selectedPage}
           showBottomStepper
           icons={[
-            { name: 'heartbeat', type: 'FontAwesome5' },
+            // { name: 'heartbeat', type: 'FontAwesome5' },
             { name: 'stethoscope', type: 'FontAwesome5' },
             { name: 'thermometer', type: 'FontAwesome5' },
           ]}
-          steps={[t('triage:first_look_assessment'), t('triage:chief'), t('triage:basic_measurement')]}
+          steps={[t('triage:chief'), t('triage:basic_measurement')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Consultation"
           nextStageString={t('medical_case:consultation')}
         >
-          <View style={styles.pad}>
-            {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={<LiwiLoader />}>
-                <Questions questions={questionsFirstLookAssessment(algorithm)} selectedPage={selectedPage} pageIndex={0} />
-              </Suspense>
-            ) : (
-              <LiwiLoader />
-            )}
-          </View>
+          {/*<View style={styles.pad}>*/}
+          {/*  {focus === 'didFocus' || focus === 'willFocus' ? (*/}
+          {/*    <Suspense fallback={<LiwiLoader />}>*/}
+          {/*      <Questions questions={questionsFirstLookAssessment(algorithm)} selectedPage={selectedPage} pageIndex={0} />*/}
+          {/*    </Suspense>*/}
+          {/*  ) : (*/}
+          {/*    <LiwiLoader />*/}
+          {/*  )}*/}
+          {/*</View>*/}
           <View style={styles.flex}>
             {focus === 'didFocus' || focus === 'willFocus' ? (
               <Suspense fallback={<LiwiLoader />}>
                 <Content>
-                  <View
-                    flex-container-fluid
-                    onLayout={async (p) => {
-                      const w = await p.nativeEvent;
-                      this.setState({ widthView: w.layout.width });
-                    }}
-                  >
+                  <View flex-container-fluid>
                     {complaintCategories.map((question, i) => (
-                      <Boolean key={`${question.id}chief_boolean`} widthView={widthView} question={question} index={i} selectedPage={selectedPage} pageIndex={1} />
+                      <Boolean key={`${question.id}_chief_boolean`} question={question} index={i} selectedPage={selectedPage} pageIndex={1} />
                     ))}
                   </View>
                 </Content>

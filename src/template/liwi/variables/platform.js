@@ -1,8 +1,8 @@
 // @flow
 
-import color from "color";
+import color from 'color';
 
-import { Dimensions, PixelRatio, Platform } from "react-native";
+import { Dimensions, PixelRatio, Platform } from 'react-native';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;

@@ -6,7 +6,7 @@ import I18n from '../../src/utils/i18n';
 import Database from '../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 import { PatientValueModel } from './PatientValue.model';
-import { getItem } from '../../src/engine/api/LocalStorage';
+import { getItem, getItems } from '../../src/engine/api/LocalStorage';
 import { displayFormats } from '../constants';
 
 export class PatientModel {
@@ -90,10 +90,10 @@ export class PatientModel {
       } else if (nodes[currentPatientValue.node_id].display_format === displayFormats.dropDownList) {
         // Date display
         displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
-      } else if (currentPatientValue.value === null) {
+      } else if (currentPatientValue.value === null && currentPatientValue.answer_id !== null) {
         // Answer display
         displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
-      } else {
+      } else if (currentPatientValue.value !== null && currentPatientValue.answer_id === null) {
         displayedValue = currentPatientValue.value;
       }
     }
@@ -135,19 +135,20 @@ export class PatientModel {
   };
 
   /**
-   * Returns an arraay of MedicalCaseLight used to display in a list of medicalCase
-   * @param algorithm - the algorithm that contains the list of field to display
+   * Returns an array of MedicalCaseLight used to display in a list of medicalCase
    * @returns {Array<{clinician: (string|string), mac_address: string, values: *, id: *, status: *}>}
    */
-  medicalCasesLight = (algorithm) => {
+  medicalCasesLight = async (algorithm) => {
     const columns = algorithm.mobile_config.medical_case_list;
+    const isConnected = await getItems('isConnected');
+
     return this.medicalCases.map((medicalCase) => {
       return {
         id: medicalCase.id,
         status: medicalCase.status,
         clinician: medicalCase.clinician,
         mac_address: medicalCase.mac_address,
-        values: columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, algorithm)),
+        values: isConnected ? medicalCase.values : columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, algorithm)),
       };
     });
   };

@@ -85,6 +85,7 @@
     "react-native-uuid": "^1.4.9",
     "react-native-vector-icons": "^6.6.0",
     "react-native-video": "^4.4.5",
+    "react-native-zip-archive": "^5.0.6",
     "react-navigation": "4.3.7",
     "react-navigation-drawer": "2.4.11",
     "react-navigation-stack": "2.3.11",

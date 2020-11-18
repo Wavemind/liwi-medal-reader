@@ -83,7 +83,7 @@ export const LeftButton = styled(props => <RNTouchableOpacity {...props} />)`
   padding: 10px;
   background-color: ${({ active }) => {
     if (active) {
-      return liwiColors.greenColor;
+      return liwiColors.darkerGreyColor;
     }
     return liwiColors.whiteColor;
   }};
@@ -112,7 +112,7 @@ export const RightButton = styled(props => <RNTouchableOpacity {...props} />)`
   border-color: ${liwiColors.blackColor};
   background-color: ${({ active }) => {
     if (active) {
-      return liwiColors.redColor;
+      return liwiColors.darkerGreyColor;
     }
     return liwiColors.whiteColor;
   }};
