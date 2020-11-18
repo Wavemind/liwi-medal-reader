@@ -20,7 +20,7 @@ export default class EmergencyButton extends Component {
     const { active } = this.state;
     return (
       <View>
-        <Fab active={active} direction="up" style={styles.button} containerStyle={__DEV__ ? styles.container : {}} position="bottomLeft" onPress={this.openModal}>
+        <Fab active={active} direction="up" style={styles.button} position="bottomLeft" onPress={this.openModal}>
           <Icon name="warning" type="FontAwesome" style={styles.icon} />
         </Fab>
       </View>
