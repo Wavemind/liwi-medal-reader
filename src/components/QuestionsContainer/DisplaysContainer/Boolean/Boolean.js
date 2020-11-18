@@ -1,22 +1,19 @@
 // @flow
 
 import * as React from 'react';
-import type { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
+import { Dimensions } from 'react-native';
 
 import { LeftButton, RightButton } from '../../../../template/layout';
 import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Boolean.style';
 
-type Props = NavigationScreenProps & {};
-type State = {};
 
-export default class Boolean extends React.Component<Props, State> {
+export default class Boolean extends React.Component {
   static defaultProps = {
     question: {},
     category: null,
-    widthView: 0,
   };
 
   state = {
@@ -24,19 +21,8 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { widthView, pageIndex, selectedPage } = this.props;
     const { value } = this.state;
-
-    if (pageIndex !== undefined && nextProps.selectedPage !== pageIndex) {
-      return false;
-    }
-
-    // When view is selected
-    if (selectedPage !== pageIndex && nextProps.selectedPage === pageIndex) {
-      return true;
-    }
-
-    return nextState.value !== value || nextProps.widthView !== widthView;
+    return nextState.value !== value;
   }
 
   componentDidMount() {
@@ -107,7 +93,6 @@ export default class Boolean extends React.Component<Props, State> {
     const {
       app: { t, algorithm },
       question,
-      widthView,
       index,
       isReadOnly,
     } = this.props;
@@ -119,7 +104,7 @@ export default class Boolean extends React.Component<Props, State> {
     const idNo = Number(Object.keys(answers)[1]);
 
     const margin = 15;
-    const sizeButton = Math.floor(widthView / 3 - margin * 1.33);
+    const sizeButton = Math.floor(Dimensions.get('window').width / 3 - margin * 2.7);
     const mod = index % 3;
 
     let styleMargin = {};
@@ -133,12 +118,6 @@ export default class Boolean extends React.Component<Props, State> {
     switch (category) {
       // If this is a chief complain
       case categories.complaintCategory:
-        // onlayout isn't set
-        if (widthView === 0) {
-          RenderJsx = () => null;
-          return null;
-        }
-
         if (mod === 0) {
           styleMargin = {
             marginTop: margin,
@@ -165,15 +144,10 @@ export default class Boolean extends React.Component<Props, State> {
         if (value === null) {
           activeStyle = { backgroundColor: 'transparent' };
           idOnPress = idYes;
-        } else if (value === true) {
+        } else {
+          idOnPress = value ? idYes : idNo;
           activeStyle = {
-            borderColor: liwiColors.greenColor,
-          };
-          idOnPress = idNo;
-        } else if (value === false) {
-          idOnPress = idYes;
-          activeStyle = {
-            borderColor: liwiColors.redColor,
+            borderColor: liwiColors.darkerGreyColor,
           };
         }
 

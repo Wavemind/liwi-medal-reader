@@ -17,7 +17,7 @@ export class MedicalCaseModel {
       this.id = uuid.v4();
       this.nodes = MedicalCaseModel.instantiateNodes(currentAlgorithm.nodes);
       this.activities = [];
-      this.algorithm_id = currentAlgorithm.algorithm_id
+      this.algorithm_id = currentAlgorithm.algorithm_id;
       this.version_id = currentAlgorithm.version_id;
       this.triage = currentAlgorithm.triage;
       this.synchronized_at = null;
@@ -115,6 +115,7 @@ export class MedicalCaseModel {
    */
   _assignValues(data) {
     this.version_id = data.version_id;
+    this.algorithm_id = data.algorithm_id;
     this.nodes = data.nodes;
     this.triage = data.triage;
     this.consent = data.consent;
@@ -367,7 +368,7 @@ export class MedicalCaseModel {
    * @returns {*|string}
    */
   static generateJSON = (medicalCase) => {
-    return JSON.stringify({ ...medicalCase, patient: null, json: '{}' });
+    return JSON.stringify({ ...medicalCase, patient: { ...medicalCase.patient, medicalCases: [] }, json: '{}' });
   };
 
   /**

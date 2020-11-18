@@ -135,6 +135,13 @@ jest.mock('react-native', () => ({
     create: () => {},
   },
   View: jest.fn(),
+  Platform: {
+    OS: jest.fn(() => 'android'),
+    version: jest.fn(() => 25),
+  },
+  PixelRatio: {
+    getPixelSizeForLayoutSize: jest.fn(),
+  },
 }));
 
 jest.mock('../i18n.js', () => {
@@ -186,3 +193,5 @@ jest.mock(
   },
   { virtual: true }
 );
+
+jest.mock('react-native-autocomplete-input', () => 'Autocomplete');

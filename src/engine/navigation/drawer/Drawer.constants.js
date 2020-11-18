@@ -16,6 +16,18 @@ export const renderingDrawerItems = [
     routeName: 'Triage',
     t: i18n.t('menu:triage'),
   },
+  // {
+  //   type: 'path',
+  //   initialPage: 0,
+  //   routeName: 'Triage',
+  // },
+  // {
+  //   type: 'item',
+  //   initialPage: 0,
+  //   name: 'Triage',
+  //   routeName: 'Triage',
+  //   t: i18n.t('menu:first_look_assessments'),
+  // },
   {
     type: 'path',
     initialPage: 0,
@@ -24,30 +36,18 @@ export const renderingDrawerItems = [
   {
     type: 'item',
     initialPage: 0,
-    name: 'Triage',
-    routeName: 'Triage',
-    t: i18n.t('menu:first_look_assessments'),
-  },
-  {
-    type: 'path',
-    initialPage: 1,
-    routeName: 'Triage',
-  },
-  {
-    type: 'item',
-    initialPage: 1,
     name: 'Triage',
     routeName: 'Triage',
     t: i18n.t('menu:complaint_categories'),
   },
   {
     type: 'path',
-    initialPage: 2,
+    initialPage: 1,
     routeName: 'Triage',
   },
   {
     type: 'item',
-    initialPage: 2,
+    initialPage: 1,
     name: 'Triage',
     routeName: 'Triage',
     t: i18n.t('menu:basic_measurements'),

@@ -133,6 +133,25 @@ export default class CustomModal extends React.Component<Props, State> {
   };
 
   /**
+   * Display emergency content
+   * @returns {JSX.Element}
+   * @private
+   */
+  _renderEmergency = () => {
+    const {
+      app: { t },
+    } = this.props;
+
+    return (
+      <View>
+        <LiwiTitle2>{t('emergency:title')}</LiwiTitle2>
+        <Text>{t('emergency:description')}</Text>
+        <Image style={styles.image} resizeMode="cover" source={require('../../../assets/images/emergency.jpg')} />
+      </View>
+    );
+  };
+
+  /**
    * Display node description with media
    * @returns {*}
    * @private
@@ -384,6 +403,8 @@ export default class CustomModal extends React.Component<Props, State> {
         return this._renderConsentFile();
       case modalType.loading:
         return this._renderLoading();
+      case modalType.emergency:
+        return this._renderEmergency();
       default:
         return <View />;
     }

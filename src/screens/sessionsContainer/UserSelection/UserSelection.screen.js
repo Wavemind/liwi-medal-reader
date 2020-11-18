@@ -1,14 +1,14 @@
 // @flow
 
-import * as React from "react";
-import { Image, ScrollView, TouchableOpacity } from "react-native";
-import { Button, Icon, Picker, Text, View } from "native-base";
+import * as React from 'react';
+import { ScrollView, TouchableOpacity } from 'react-native';
+import { Button, Icon, Picker, Text, View } from 'native-base';
 
-import { ApplicationContext } from "../../../engine/contexts/Application.context";
-import CustomInput from "../../../components/InputContainer/CustomInput";
-import { userRoles } from "../../../../frontend_service/constants";
-import { getItem } from "../../../engine/api/LocalStorage";
-import { styles } from "./UserSelection.style";
+import { ApplicationContext } from '../../../engine/contexts/Application.context';
+import CustomInput from '../../../components/InputContainer/CustomInput';
+import { userRoles } from '../../../../frontend_service/constants';
+import { getItem } from '../../../engine/api/LocalStorage';
+import { styles } from './UserSelection.style';
 
 export default function UserSelection() {
   const [selectedUser, setUser] = React.useState({
@@ -35,27 +35,6 @@ export default function UserSelection() {
   }
 
   /**
-   * Render icon on role dependency
-   * @param role
-   * @returns {*}
-   */
-  const switchIcon = (role) => {
-    switch (role) {
-      case 'medical_doctor':
-      case 'clinical_officer':
-      case 'assistant_medical_officer':
-        return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/doc.png')} />;
-      case 'pharmacist':
-        return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/scientist.png')} />;
-      case 'midwife':
-      case 'nurse':
-        return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/nurse.png')} />;
-      default:
-        return <Image style={styles.img} resizeMode="contain" source={require('../../../../assets/images/guest.png')} />;
-    }
-  };
-
-  /**
    * Render clinician button to select a clinician
    * @param user
    * @returns {*}
@@ -76,12 +55,11 @@ export default function UserSelection() {
             elevation: selectedUser?.id === user.id ? 5 : 0.5,
           }}
         >
-          <Text style={styles.desc}>{userRoles[user.role]}</Text>
-          {switchIcon(user.role)}
           <View style={styles.blocName}>
-            <Text style={styles.title}>{user.first_name} </Text>
-            <Text style={styles.title}>{user.last_name}</Text>
+            <Text style={styles.desc}>{user.first_name} </Text>
+            <Text style={styles.desc}>{user.last_name}</Text>
           </View>
+          <Text style={styles.title}>{userRoles[user.role]}</Text>
 
           {selectedUser?.id === user.id && <Icon type="AntDesign" name="checkcircleo" style={styles.icon} />}
         </View>
