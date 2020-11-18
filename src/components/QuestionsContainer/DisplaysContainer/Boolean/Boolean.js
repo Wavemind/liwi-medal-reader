@@ -1,18 +1,16 @@
 // @flow
 
 import * as React from 'react';
-import type { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
+import { Dimensions } from 'react-native';
 
 import { LeftButton, RightButton } from '../../../../template/layout';
 import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Boolean.style';
 
-type Props = NavigationScreenProps & {};
-type State = {};
 
-export default class Boolean extends React.Component<Props, State> {
+export default class Boolean extends React.Component {
   static defaultProps = {
     question: {},
     category: null,
@@ -23,18 +21,7 @@ export default class Boolean extends React.Component<Props, State> {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { pageIndex, selectedPage } = this.props;
     const { value } = this.state;
-
-    if (pageIndex !== undefined && nextProps.selectedPage !== pageIndex) {
-      return false;
-    }
-
-    // When view is selected
-    if (selectedPage !== pageIndex && nextProps.selectedPage === pageIndex) {
-      return true;
-    }
-
     return nextState.value !== value;
   }
 
@@ -117,7 +104,7 @@ export default class Boolean extends React.Component<Props, State> {
     const idNo = Number(Object.keys(answers)[1]);
 
     const margin = 15;
-    const sizeButton = 160;
+    const sizeButton = Math.floor(Dimensions.get('window').width / 3 - margin * 2.7);
     const mod = index % 3;
 
     let styleMargin = {};
