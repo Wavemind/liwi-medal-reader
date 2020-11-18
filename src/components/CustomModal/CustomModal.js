@@ -12,7 +12,7 @@ import LiwiLoader from '../../utils/LiwiLoader';
 import { LiwiTitle4, LiwiTitle5, LiwiTitle2 } from '../../template/layout';
 import Media from '../Media/Media';
 
-export default class CustomModal extends React.Component<Props, State> {
+export default class CustomModal extends React.Component {
   static defaultProps = {
     visible: false,
   };
@@ -144,11 +144,42 @@ export default class CustomModal extends React.Component<Props, State> {
 
     return (
       <View>
-        <LiwiTitle2>{t('emergency:title')}</LiwiTitle2>
-        <Text>{t('emergency:description')}</Text>
+        <LiwiTitle5>{t('emergency:title')}</LiwiTitle5>
+        <Text style={styles.description}>{t('emergency:description')}</Text>
         <Image style={styles.image} resizeMode="cover" source={require('../../../assets/images/emergency.jpg')} />
       </View>
     );
+  };
+
+  /**
+   * Display emergency warning if user type yes to a severe question
+   * @returns {JSX.Element}
+   * @private
+   */
+  _renderEmergencyWarning = () => {
+    const {
+      app: { t },
+    } = this.props;
+
+    return (
+      <View>
+        <LiwiTitle5>{t('emergency:title')}</LiwiTitle5>
+        <Text style={styles.description}>{t('emergency:description_warning')}</Text>
+        <Button style={styles.buttonNav} onPress={this._openEmergency}>
+          <Text>{t('emergency:go_to_emergency')}y</Text>
+        </Button>
+      </View>
+    );
+  };
+
+  /**
+   * Close modal and open emergency modal
+   * @private
+   */
+  _openEmergency = () => {
+    const { updateModalFromRedux } = this.props;
+    this.closeModal();
+    updateModalFromRedux({}, modalType.emergency);
   };
 
   /**
@@ -403,6 +434,8 @@ export default class CustomModal extends React.Component<Props, State> {
         return this._renderConsentFile();
       case modalType.loading:
         return this._renderLoading();
+      case modalType.emergencyWarning:
+        return this._renderEmergencyWarning();
       case modalType.emergency:
         return this._renderEmergency();
       default:

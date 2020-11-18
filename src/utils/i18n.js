@@ -142,6 +142,8 @@ i18n
         emergency: {
           title: 'Emergency assistance',
           description: 'This page has been created to provide emergency assistance in case of need',
+          description_warning: 'if the child is unconscious or unstable, click the emergency button to provide urgent care now',
+          go_to_emergency: 'Go to emergency',
           back: 'Back to home',
         },
         qrcode: {

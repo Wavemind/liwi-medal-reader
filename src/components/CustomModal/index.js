@@ -20,7 +20,7 @@ const mapStateToProps = (medicalCase) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateModalFromRedux: () => dispatch(updateModalFromRedux()),
+    updateModalFromRedux: (params, type) => dispatch(updateModalFromRedux(params, type)),
     setMedicalCase: (medicalCase) => dispatch(setMedicalCase(medicalCase)),
   };
 };
