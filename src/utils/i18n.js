@@ -242,6 +242,7 @@ i18n
           app: 'Application',
           version: 'Version',
           environment: 'Environment',
+          generate_cases: 'Generate Medical Cases',
         },
         work_case: {
           create: 'New case',
@@ -483,6 +484,7 @@ i18n
           tests: 'Tests Médicaux disponible',
           app: 'Application',
           awake: 'Empécher la mise en veille',
+          generate_cases: 'Générer des cas médicaux',
         },
         work_case: {
           create: 'Nouveau cas médical',
