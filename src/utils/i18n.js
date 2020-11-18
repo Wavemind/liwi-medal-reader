@@ -242,6 +242,7 @@ i18n
           app: 'Application',
           version: 'Version',
           environment: 'Environment',
+          generate_cases: 'Generate Medical Cases',
         },
         work_case: {
           create: 'New case',
