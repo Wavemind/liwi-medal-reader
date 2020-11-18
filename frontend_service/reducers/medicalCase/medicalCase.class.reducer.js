@@ -160,7 +160,7 @@ class MedicalCaseReducer extends ReducerClass {
     const { params, type } = action.payload;
 
     const newModal = {
-      open: !state.modal.open,
+      open: state?.modal?.open === undefined ? true : !state.modal.open,
       params,
       type,
     };

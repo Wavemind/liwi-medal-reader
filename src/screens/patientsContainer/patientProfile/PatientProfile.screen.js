@@ -20,6 +20,7 @@ export default class PatientProfile extends React.Component {
     deviceInfo: null,
     nodes: {},
     columns: [],
+    medicalCaseData: [],
   };
 
   async componentDidMount() {
@@ -30,7 +31,7 @@ export default class PatientProfile extends React.Component {
     const columns = algorithm.mobile_config.medical_case_list;
     const { nodes } = algorithm;
 
-    this.setState({ deviceInfo, columns, nodes, isConnected });
+    this.setState({ deviceInfo, columns, nodes, isConnected, algorithm });
     await this._getPatient();
   }
 
@@ -54,13 +55,16 @@ export default class PatientProfile extends React.Component {
       navigation,
       app: { database },
     } = this.props;
+    const { algorithm } = this.state;
 
     const id = navigation.getParam('id');
     const patient = await database.findBy('Patient', id);
+    const medicalCaseData = await patient.medicalCasesLight(algorithm);
 
     this.setState({
       patient,
       firstRender: false,
+      medicalCaseData,
     });
   }
 
@@ -77,8 +81,10 @@ export default class PatientProfile extends React.Component {
       updateModalFromRedux,
       app: { t, database, user },
     } = this.props;
+
     const { columns, deviceInfo, isConnected } = this.state;
     const size = 1 / columns.length + 1;
+
     return (
       <TouchableOpacity
         style={styles.item}
@@ -135,7 +141,7 @@ export default class PatientProfile extends React.Component {
       app: { t, algorithm },
       navigation,
     } = this.props;
-    const { patient, firstRender, nodes, columns } = this.state;
+    const { patient, firstRender, nodes, columns, medicalCaseData } = this.state;
 
     if (firstRender) {
       return <LiwiLoader />;
@@ -193,7 +199,7 @@ export default class PatientProfile extends React.Component {
           <View padding-auto>
             <FlatList
               key="dataList"
-              data={patient.medicalCasesLight(algorithm)}
+              data={medicalCaseData}
               contentContainerStyle={styles.flatList}
               renderItem={(value) => this._renderItem(value.item)}
               ItemSeparatorComponent={this._renderSeparator}

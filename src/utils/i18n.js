@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import { NativeModules } from 'react-native';
-import { LiwiTitle4 } from '../template/layout';
 
 const languageDetector = {
   type: 'languageDetector',
@@ -28,6 +27,7 @@ i18n
           select: 'Select',
           save: 'Save',
           resource_not_available: 'No connection, resource not available',
+          server_error: 'Server error',
         },
         consent_image: {
           scan: 'Scan consent',
@@ -51,7 +51,7 @@ i18n
           management: 'Management & Counselling',
           medicine: 'Medicine',
           medicines: 'Medicines',
-          no_drugs: 'No drugs available',
+          no_drugs: 'No drugs proposed',
           drugs: 'Drugs',
           managements: 'Managements',
           none: 'none',
@@ -67,6 +67,7 @@ i18n
           weight: 'weight',
           which: 'Which formulation of medicine is available and appropriate for your patient?',
           write: 'Write the medicine',
+          consultation_comment: 'You may add further clinical details for your records if you wish (Non-mandatory. Will not be used in the algorithm)'
         },
         drug: {
           give: 'Give',
@@ -159,7 +160,8 @@ i18n
           continue: 'Continue creating case',
         },
         emergency: {
-          emergency: 'Emergency assistance',
+          title: 'Emergency assistance',
+          description: 'This page has been created to provide emergency assistance in case of need',
           back: 'Back to home',
         },
         qrcode: {
@@ -467,7 +469,9 @@ i18n
         synchronize: {
           title: 'Consultations to synchronize',
           synchronize: 'Synchronize',
-          not_warning: 'Medical cases have not been synchronised for more than 1 week'
+          not_warning: 'Medical cases have not been synchronised for more than 1 week',
+          main_data_address_missing: 'Main data URL is missing in health facility configuration',
+          error: 'An error occurred on Main Data server',
         },
       },
       fr: {

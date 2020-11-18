@@ -5,7 +5,7 @@ import { store } from '../store';
 import { categories, stages, systemsOrder } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
 import { nodeFilterBy } from '../helpers/Node.model';
-import { questionIsDisplayedInTriage } from '../helpers/Question.model';
+import { questionBooleanValue, questionIsDisplayedInTriage } from '../helpers/Question.model';
 
 /**
  * This file contains methods to filter questions to each stages / steps
@@ -240,14 +240,20 @@ export const questionsComplaintCategory = (algorithm) => {
 export const questionsBasicMeasurements = (algorithm) => {
   const medicalCase = store.getState();
   const basicMeasurements = [];
-
   const orderedQuestions = algorithm.mobile_config.questions_orders[categories.basicMeasurement];
 
   if (orderedQuestions !== undefined) {
     orderedQuestions.forEach((orderedQuestion) => {
-      const question = medicalCase.nodes[orderedQuestion];
-      if (questionIsDisplayedInTriage(medicalCase, question)) {
-        basicMeasurements.push(question);
+      const mcNode = medicalCase.nodes[orderedQuestion];
+      const currentNode = algorithm.nodes[orderedQuestion];
+
+      // Main target -> exclude YI questions
+      const isExcludedByComplaintCategory = currentNode.conditioned_by_cc.some((complaintCategory) => {
+        return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
+      });
+
+      if (questionIsDisplayedInTriage(medicalCase, mcNode) && !isExcludedByComplaintCategory) {
+        basicMeasurements.push(mcNode);
       }
     });
   }

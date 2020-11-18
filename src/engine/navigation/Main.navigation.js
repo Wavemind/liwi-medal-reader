@@ -21,7 +21,6 @@ import Tests from '../../screens/medicalCasesContainer/tests';
 import DiagnosticsStrategy from '../../screens/medicalCasesContainer/diagnosticsStrategyContainer/diagnosticsStrategy';
 import Triage from '../../screens/medicalCasesContainer/triage';
 import Consultation from '../../screens/medicalCasesContainer/consultation';
-import Emergency from '../../screens/emergency';
 import ConsentList from '../../screens/consentList';
 
 import i18n from '../../utils/i18n';
@@ -31,6 +30,7 @@ import { medicalCaseStatus } from '../../../frontend_service/constants';
 const Stack = createStackNavigator(
   {
     // PLEASE FOR THE SAKE OF GOD KEEP HOME AT THE TOP OF THE STACK :-*
+    // No you
     Home: {
       screen: MainScreen,
       params: {},
@@ -116,15 +116,6 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
-        };
-      },
-    },
-    Emergency: {
-      screen: Emergency,
-      params: {},
-      navigationOptions: () => {
-        return {
-          title: i18n.t('navigation:emergency'),
         };
       },
     },

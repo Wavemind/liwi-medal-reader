@@ -5,11 +5,7 @@ import { Button, View, Textarea, Text } from 'native-base';
 import { styles } from './Comment.style';
 import i18n from '../../utils/i18n';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Comment extends React.Component<Props, State> {
+export default class Comment extends React.Component {
   constructor(props) {
     super(props);
 
@@ -48,10 +44,14 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   render() {
+    const {
+      app: { t },
+    } = this.props;
     const { comment, isEditing } = this.state;
 
     return (
       <View>
+        <Text style={styles.text}>{t('diagnoses:consultation_comment')}</Text>
         {isEditing ? (
           <View>
             <Button style={styles.alignRight} onPress={this.save}>
