@@ -18,7 +18,7 @@ export const patientTemplate = async () => {
   const algorithm = await getItem('algorithm');
 
   const medicalCase = {
-    id: "c16ac40b-3345-4603-93e3-58f2ace511bf",
+    id: uuid.v4(),
     nodes: {
       "1": {
         "id": 1,
