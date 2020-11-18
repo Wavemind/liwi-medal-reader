@@ -23,12 +23,13 @@ export default class WavemindTools extends Component {
   }
 
   generatePatients = async () => {
-    const entryAmount = 10;
+    const entryAmount = 100;
     let i = 0;
     for (i = 0; i < entryAmount; i++) {
       const patient = await patientTemplate();
       const database = await new Database();
       await database.insert('Patient', patient);
+      console.log(`${i + 1} / ${entryAmount}`)
     }
     displayNotification(`Successfully created ${entryAmount} entries`, liwiColors.greenColor);
   };
@@ -43,15 +44,15 @@ export default class WavemindTools extends Component {
           <Icon name="developer-mode" type="MaterialIcons" />
           {active
             ? [
-              <Button
-                  key="0"
-                  blue
-                  onPress={async () => {
+                <Button
+                key="0"
+                blue
+                onPress={async () => {
                     await this.generatePatients();
                   }}
-                >
-                  <Icon type="AntDesign" name="areachart" />
-                </Button>,
+              >
+                <Icon type="AntDesign" name="areachart" />
+              </Button>,
               <Button
                   key="1"
                   blue
@@ -103,6 +104,7 @@ export default class WavemindTools extends Component {
                     // eslint-disable-next-line no-console
                     console.log({
                       state$,
+                      state_json: JSON.stringify(state$),
                       size_state$: memorySizeOf({ ...state$, patient: null }),
                       size_nodes: memorySizeOf(state$.nodes),
                       size_diagnostics: memorySizeOf(state$.diagnostics),
