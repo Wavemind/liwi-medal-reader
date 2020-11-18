@@ -13,6 +13,7 @@ import { patientTemplate } from '../../utils/template/PatientTemplate';
 import Database from '../../engine/api/Database';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
+import { styles } from './settings.style'
 
 type Props = NavigationScreenProps & {};
 
@@ -77,6 +78,10 @@ export default class Settings extends React.Component<Props, State> {
     );
   };
 
+  /**
+   * Generates Patients with a single Medical Case
+   * @returns {Promise<void>}
+   */
   handleGeneratePatients = async () => {
     this.setState({ disabled: true });
     const entryAmount = 250;
@@ -183,7 +188,7 @@ export default class Settings extends React.Component<Props, State> {
             </Right>
           </ListItem>
         </List>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={styles.buttons}>
           <Button onPress={() => navigation.goBack()}>
             <Text>{t('common:back')}</Text>
           </Button>

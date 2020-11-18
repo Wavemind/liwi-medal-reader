@@ -29,7 +29,7 @@ export default class WavemindTools extends Component {
     for (i = 0; i < entryAmount; i++) {
       const patient = await patientTemplate();
       await database.insert('Patient', patient);
-      console.log(`${i + 1} / ${entryAmount}`)
+      console.log(`${i + 1} / ${entryAmount}`);
     }
     displayNotification(`Successfully created ${entryAmount} entries`, liwiColors.greenColor);
   };
