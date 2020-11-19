@@ -33,7 +33,6 @@ export default class System extends React.Component {
     if (nextProps.questions.length !== questions.length) {
       return true;
     }
-    console.log(nextProps, questions);
 
     return this.isSomeQuestionsDifferent(nextProps.questions);
   }
@@ -44,6 +43,7 @@ export default class System extends React.Component {
     if (questions.length === 0) {
       return null;
     }
+
     return (
       <View style={styles.spacingChiefComplaints} key={`view_system_${system}`}>
         <Text customTitle>{i18n.t(`systems:${system}`)}</Text>

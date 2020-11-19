@@ -52,17 +52,28 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     true
   );
 
-  const questionPerSystem = {};
-  systemsOrder.map((system) => (questionPerSystem[system] = []));
-  questionPerSystem.follow_up_questions = [];
-
+  const questionPerSystem = [];
+  systemsOrder.forEach((system) => {
+    questionPerSystem.push({
+      title: system,
+      data: []
+    })
+  });
+  questionPerSystem.push({
+    title: 'follow_up_questions',
+    data: [],
+  });
+console.log(questionPerSystem);
   const newQuestions = medicalHistoryQuestions.map(({id}) => id);
+
+  // TODO : MUST BE IMPROVED
 
   if (!_.isEqual(medicalCase.metaData.consultation.medicalHistory, newQuestions)) {
     if (medicalCase.metaData.consultation.medicalHistory.length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
       console.time("if");
       medicalHistoryQuestions.forEach((question) => {
-        questionPerSystem[question.system].push(question);
+        const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
+        questionPerSystem[index].data.push(question);
       });
       console.timeEnd("if");
 
@@ -76,9 +87,11 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
             !medicalCase.metaData.consultation.medicalHistory.includes(question.id) &&
             systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
         ) {
-          questionPerSystem[question.system].push(question);
+          const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
+          questionPerSystem[index].data.push(question);
         } else {
-          questionPerSystem.follow_up_questions.push(question);
+          const index = questionPerSystem.findIndex((system) => system.title === 'follow_up_questions');
+          questionPerSystem[index].data.push(question);
         }
       });
       console.timeEnd("else");
@@ -86,7 +99,7 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
 
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
     store.dispatch(updateMetaData('consultation', 'test', questionPerSystem));
-    return sortQuestions(questionPerSystem);
+    return questionPerSystem.filter((system) => system.data.length > 0);
   }
 
   return medicalCase.metaData.consultation.test;
@@ -99,7 +112,7 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
  */
 const sortQuestions = (questionsPerSystem) => {
   return Object.keys(questionsPerSystem).map((index) => {
-    const questions = questionsPerSystem[index];
+    const questions = questionsPerSystem[index].data;
     return questions.sort((a, b) => {
       if (a.is_danger_sign === b.is_danger_sign) return 0;
       if (a.is_danger_sign === true) return -1;

@@ -9,7 +9,6 @@ import { categories } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Boolean.style';
 
-
 export default class Boolean extends React.Component {
   static defaultProps = {
     question: {},
