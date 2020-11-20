@@ -7,13 +7,9 @@ import { styles } from './MedicinesFormulation.style';
 import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
 export default class MedicinesFormulations extends Component {
-  shouldComponentUpdate(nextProps) {
-    const { pageIndex } = this.props;
-
-    if (pageIndex !== undefined && nextProps.selectedPage !== undefined) {
-      return nextProps.selectedPage === pageIndex;
-    }
-    return true;
+  shouldComponentUpdate() {
+    const { selectedPage } = this.props;
+    return selectedPage === 3;
   }
 
   onValueChange = (value, node, drugId) => {

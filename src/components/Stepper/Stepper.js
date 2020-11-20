@@ -316,7 +316,7 @@ class Stepper extends React.Component<Props, State> {
    * @returns {null|Array<*>}
    */
   renderSteps = () => {
-    const { app: { algorithm }, steps, icons, validate } = this.props;
+    const { steps, icons, validate } = this.props;
     const { page, error } = this.state;
 
     const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;

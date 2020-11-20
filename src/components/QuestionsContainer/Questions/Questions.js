@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { TouchableOpacity, VirtualizedList, SafeAreaView } from 'react-native';
 import { Icon, Text, View } from 'native-base';
 import QuestionFactory from '../QuestionFactory';
@@ -10,14 +9,10 @@ import Autocomplete from '../DisplaysContainer/Autocomplete';
 import { styles } from '../QuestionFactory/Question.factory.style';
 import { ViewQuestion } from '../../../template/layout';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Questions extends React.Component<Props, State> {
+export default class Questions extends React.Component {
   state = {};
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps) {
     const { pageIndex } = this.props;
     return (pageIndex !== undefined && nextProps.selectedPage === pageIndex) || pageIndex === undefined;
   }
@@ -68,11 +63,11 @@ export default class Questions extends React.Component<Props, State> {
       questions,
       app: { t },
     } = this.props;
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {Object.keys(questions).length > 0 ? (
           <VirtualizedList
-            removeClippedSubviews
             data={questions}
             getItem={(data, index) => data[index]}
             getItemCount={(data) => data.length}
