@@ -88,10 +88,13 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
 
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
     store.dispatch(updateMetaData('consultation', 'medicalHistoryQuestions', questionPerSystem));
-    return questionPerSystem.filter((system) => system.data.length > 0);
+
+    const filteredMedicalHistory = questionPerSystem.filter((system) => system.data.length > 0);
+    return sortQuestions(filteredMedicalHistory);
   }
 
-  return medicalCase.metaData.consultation.medicalHistoryQuestions;
+  const filteredMedicalHistory = medicalCase.metaData.consultation.medicalHistoryQuestions.filter((system) => system.data.length > 0);
+  return sortQuestions(filteredMedicalHistory);
 };
 
 /**
@@ -142,7 +145,8 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
     data: [],
   });
 
-  const newQuestions = physicalExamQuestions.map(({ id }) => id);
+  const questions = vitalSignQuestions.concat(physicalExamQuestions);
+  const newQuestions = questions.map(({ id }) => id);
 
   if (!_.isEqual(medicalCase.metaData.consultation.physicalExam, newQuestions)) {
     if (medicalCase.metaData.consultation.physicalExam.length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
@@ -170,25 +174,28 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
 
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
     store.dispatch(updateMetaData('consultation', 'physicalExamQuestions', questionPerSystem));
-    return questionPerSystem.filter((system) => system.data.length > 0);
+
+    const filteredQuestionPerSystem = questionPerSystem.filter((system) => system.data.length > 0);
+    return sortQuestions(filteredQuestionPerSystem);
   }
 
-  return medicalCase.metaData.consultation.physicalExamQuestions;
+  const filteredQuestionPerSystem = medicalCase.metaData.consultation.physicalExamQuestions.filter((system) => system.data.length > 0);
+  return sortQuestions(filteredQuestionPerSystem);
 };
 
 /**
  * Sorts the array of question
  * @param questionsPerSystem - Array to sort
- * @returns {Array<QuestionModel>} - Sorted array
+ * @returns {*} - Sorted array
  */
 const sortQuestions = (questionsPerSystem) => {
-  return Object.keys(questionsPerSystem).map((index) => {
-    const questions = questionsPerSystem[index].data;
-    return questions.sort((a, b) => {
+  return questionsPerSystem.map((system) => {
+    system.data.sort((a, b) => {
       if (a.is_danger_sign === b.is_danger_sign) return 0;
-      if (a.is_danger_sign === true) return -1;
+      if (a.is_danger_sign) return -1;
       return 1;
     });
+    return system;
   });
 };
 

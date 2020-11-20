@@ -101,7 +101,7 @@ export const systems = {
   urinary_reproductive: 'Urinary and reproductive system',
   visual: 'Visual system',
   vital_sign: 'Vital Signs',
-  null: 'No system assign',
+  null: 'No assigned system',
 };
 
 export const systemsOrder = [
