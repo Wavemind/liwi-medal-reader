@@ -132,7 +132,7 @@ export default class Question extends React.Component {
     // Construct generic Component for the question
     return (
       <ListItem
-        style={[styles.condensed, styles.flexColumn, { backgroundColor: currentNode.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
+        style={[styles.condensed, styles.flexColumn, { backgroundColor: currentNode.is_danger_sign || currentNode?.emergency_status === 'referral' ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
         noBorder
         key={`${question.id}_item`}
       >

@@ -69,8 +69,8 @@ export const questionsMedicalHistory = (algorithm) => {
  */
 const sortQuestions = (questions) => {
   return questions.sort((a, b) => {
-    if (a.is_danger_sign === b.is_danger_sign) return 0;
-    if (a.is_danger_sign === true) return -1;
+    if ((a.is_danger_sign === b.is_danger_sign) || (a?.emergency_status === b?.emergency_status)) return 0;
+    if (a.is_danger_sign === true || a?.emergency_status === 'referral') return -1;
     return 1;
   });
 };

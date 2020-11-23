@@ -87,8 +87,10 @@ export default class Boolean extends React.Component {
       setAnswer(algorithm, question.id, newAnswer);
     }
 
-    // TODO : Add test with emergency variable
-    // updateModalFromRedux({}, modalType.emergencyWarning);
+    // Open emergency modal
+    if (currentNode?.emergency_status === 'emergency') {
+      updateModalFromRedux({}, modalType.emergencyWarning);
+    }
   };
 
   // TODO: Sorry for this. But I don't have any strength to refactor this shit
