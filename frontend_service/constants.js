@@ -101,8 +101,28 @@ export const systems = {
   urinary_reproductive: 'Urinary and reproductive system',
   visual: 'Visual system',
   vital_sign: 'Vital Signs',
-  null: 'General',
+  null: 'No assigned system',
 };
+
+export const systemsOrder = [
+  'chronic_conditions',
+  'comorbidities',
+  'complementary_medical_history',
+  'digestive',
+  'ear_nose_mouth_throat',
+  'exposures',
+  'general',
+  'integumentary',
+  'prevention',
+  'prophylaxis',
+  'respiratory_circulation',
+  'muscular_skeletal',
+  'nervous',
+  'urinary_reproductive',
+  'visual',
+  'vital_sign',
+  'null',
+];
 
 export const categories = {
   assessment: 'assessment_test',

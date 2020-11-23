@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { Icon, ListItem, Text } from 'native-base';
+import { Icon, Text } from 'native-base';
 import _ from 'lodash';
 
 import { displayFormats, modalType } from '../../../../frontend_service/constants';
@@ -39,7 +39,7 @@ export default class Question extends React.Component {
     };
   }
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps) {
     const { question } = this.props;
     return question.counter !== nextProps.question.counter || question.answer !== nextProps.question.answer || question.value !== nextProps.question.value || question.id !== nextProps.question.id;
   }
@@ -78,78 +78,46 @@ export default class Question extends React.Component {
     updateModalFromRedux({ node: currentNode }, modalType.description);
   };
 
-  /**
-   * Display question label
-   * @returns {JSX.Element}
-   * @private
-   */
-  _labelQuestion() {
-    const {
-      app: { algorithm },
-      question,
-    } = this.props;
-    const { flexLabel } = this.state;
-    const currentNode = algorithm.nodes[question.id];
-
-    return (
-      <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
-        <Text style={styles.questionLabel} size-auto>
-          {currentNode.label} {currentNode.is_mandatory ? '*' : null}
-        </Text>
-      </ViewQuestion>
-    );
-  }
-
   render() {
     const {
       question,
       app: { t, algorithm },
     } = this.props;
-    const { flexQuestion, flexToolTip } = this.state;
+    const { flexQuestion, flexToolTip, flexLabel } = this.state;
     const currentNode = algorithm.nodes[question.id];
-
-    let WrapperUnavailable = () => null;
-    let unavailableAnswer = null;
-
-    unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
-
-    if (unavailableAnswer !== undefined) {
-      WrapperUnavailable = () => {
-        return (
-          <React.Fragment>
-            <Text>{t('question:unavailable')} </Text>
-            <Unavailable question={question} unavailableAnswer={unavailableAnswer} />
-          </React.Fragment>
-        );
-      };
-    }
 
     // If this is not a question we return null
     if (currentNode.display_format === displayFormats.formula && !__DEV__) {
       return null;
     }
 
-    // Construct generic Component for the question
+    const unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
+
     return (
-      <ListItem
-        style={[styles.condensed, styles.flexColumn, { backgroundColor: currentNode.is_danger_sign || currentNode?.emergency_status === 'referral' ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
-        noBorder
-        key={`${question.id}_item`}
-      >
+      <View style={[styles.condensed, styles.flexColumn, { backgroundColor: currentNode.is_danger_sign || currentNode?.emergency_status === 'referral' ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}>
         <View style={styles.flexRow}>
           <View flex={flexToolTip}>
-            <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal()}>
+            <TouchableOpacity style={styles.touchable} transparent onPress={this.openModal}>
               <Icon type="AntDesign" name="info" style={styles.iconInfo} />
             </TouchableOpacity>
           </View>
-          {this._labelQuestion()}
+          <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
+            <Text style={styles.questionLabel} size-auto>
+              {currentNode.label} {currentNode.is_mandatory ? '*' : null}
+            </Text>
+          </ViewQuestion>
           <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
         </View>
         {this._displayValidation()}
         <View style={styles.unavailable}>
-          <WrapperUnavailable />
+          {unavailableAnswer !== undefined ? (
+            <>
+              <Text>{t('question:unavailable')} </Text>
+              <Unavailable question={question} unavailableAnswer={unavailableAnswer} />
+            </>
+          ) : null}
         </View>
-      </ListItem>
+      </View>
     );
   }
 }

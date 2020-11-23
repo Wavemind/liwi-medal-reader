@@ -51,7 +51,7 @@ export default class Boolean extends React.Component {
    */
   _handleClick = async (answer) => {
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       question,
       setAnswer,
       setPatientValue,
@@ -62,6 +62,7 @@ export default class Boolean extends React.Component {
 
     const idYes = Number(Object.keys(currentNode.answers)[0]);
     const idNo = Number(Object.keys(currentNode.answers)[1]);
+
     let newAnswer = Number(answer);
 
     if (newAnswer === idYes) {
@@ -86,6 +87,8 @@ export default class Boolean extends React.Component {
     } else {
       setAnswer(algorithm, question.id, newAnswer);
     }
+
+    set('answeredQuestionId', question.id);
 
     // Open emergency modal
     if (currentNode?.emergency_status === 'emergency' && newAnswer === idYes) {

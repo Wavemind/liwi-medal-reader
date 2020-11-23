@@ -46,7 +46,9 @@ export class MedicalCaseModel {
         },
         consultation: {
           medicalHistory: [],
+          medicalHistoryQuestions: [],
           physicalExam: [],
+          PhysicalExamQuestions: [],
         },
         tests: {
           tests: [],

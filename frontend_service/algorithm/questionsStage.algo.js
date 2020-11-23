@@ -2,20 +2,16 @@ import * as _ from 'lodash';
 
 import moment from 'moment';
 import { store } from '../store';
-import { categories, stages } from '../constants';
+import { categories, stages, systemsOrder } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
 import { nodeFilterBy } from '../helpers/Node.model';
 import { questionBooleanValue, questionIsDisplayedInTriage } from '../helpers/Question.model';
 
 /**
- * This file contains methods to filter questions to each stages / steps
- */
-
-/**
  * Get Medical History for consultation
  * Update metadata
  */
-export const questionsMedicalHistory = (algorithm) => {
+export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   const medicalCase = store.getState();
   const medicalHistoryQuestions = nodeFilterBy(
     medicalCase,
@@ -52,34 +48,60 @@ export const questionsMedicalHistory = (algorithm) => {
     true
   );
 
+  const questionPerSystem = [];
+  systemsOrder.forEach((system) => {
+    questionPerSystem.push({
+      title: system,
+      data: [],
+    });
+  });
+  questionPerSystem.push({
+    title: 'follow_up_questions',
+    data: [],
+  });
+
   const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
 
-  // Update state$ medical history questions if it's different from new questions list
   if (!_.isEqual(medicalCase.metaData.consultation.medicalHistory, newQuestions)) {
+    if (medicalCase.metaData.consultation.medicalHistory.length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
+      medicalHistoryQuestions.forEach((question) => {
+        const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
+        questionPerSystem[index].data.push(question);
+      });
+    } else {
+      medicalHistoryQuestions.forEach((question) => {
+        // Add question in 'follow_up_questions' system if his question's system was already answered
+        if (
+          (medicalCase.metaData.consultation.medicalHistory.length > 0 && medicalCase.metaData.consultation.medicalHistory.includes(question.id)) ||
+          (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
+            !medicalCase.metaData.consultation.medicalHistory.includes(question.id) &&
+            systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
+        ) {
+          const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
+          questionPerSystem[index].data.push(question);
+        } else {
+          const index = questionPerSystem.findIndex((system) => system.title === 'follow_up_questions');
+          questionPerSystem[index].data.push(question);
+        }
+      });
+    }
+
     store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
+    store.dispatch(updateMetaData('consultation', 'medicalHistoryQuestions', questionPerSystem));
+
+    const filteredMedicalHistory = questionPerSystem.filter((system) => system.data.length > 0);
+    return sortQuestions(filteredMedicalHistory);
   }
 
-  return sortQuestions(medicalHistoryQuestions);
-};
-
-/**
- * Sorts the array of question
- * @param questions - Array to sort
- * @returns {Array<QuestionModel>} - Sorted array
- */
-const sortQuestions = (questions) => {
-  return questions.sort((a, b) => {
-    if ((a.is_danger_sign === b.is_danger_sign) || (a?.emergency_status === b?.emergency_status)) return 0;
-    if (a.is_danger_sign === true || a?.emergency_status === 'referral') return -1;
-    return 1;
-  });
+  const filteredMedicalHistory = medicalCase.metaData.consultation.medicalHistoryQuestions.filter((system) => system.data.length > 0);
+  return sortQuestions(filteredMedicalHistory);
 };
 
 /**
  * Get physical Exam for consultation
  * Update metadata
  */
-export const questionsPhysicalExam = (algorithm) => {
+export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   const medicalCase = store.getState();
   const vitalSignQuestions = nodeFilterBy(
     medicalCase,
@@ -111,15 +133,70 @@ export const questionsPhysicalExam = (algorithm) => {
     true
   );
 
+  const questionPerSystem = [];
+  systemsOrder.forEach((system) => {
+    questionPerSystem.push({
+      title: system,
+      data: [],
+    });
+  });
+  questionPerSystem.push({
+    title: 'follow_up_questions',
+    data: [],
+  });
+
   const questions = vitalSignQuestions.concat(physicalExamQuestions);
   const newQuestions = questions.map(({ id }) => id);
 
-  // Update state$ physical exam questions if it's different from new questions list
   if (!_.isEqual(medicalCase.metaData.consultation.physicalExam, newQuestions)) {
+    if (medicalCase.metaData.consultation.physicalExam.length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
+      physicalExamQuestions.forEach((question) => {
+        const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
+        questionPerSystem[index].data.push(question);
+      });
+    } else {
+      physicalExamQuestions.forEach((question) => {
+        // Add question in 'follow_up_questions' system if his question's system was already answered
+        if (
+          (medicalCase.metaData.consultation.physicalExam.length > 0 && medicalCase.metaData.consultation.physicalExam.includes(question.id)) ||
+          (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
+            !medicalCase.metaData.consultation.physicalExam.includes(question.id) &&
+            systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
+        ) {
+          const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
+          questionPerSystem[index].data.push(question);
+        } else {
+          const index = questionPerSystem.findIndex((system) => system.title === 'follow_up_questions');
+          questionPerSystem[index].data.push(question);
+        }
+      });
+    }
+
     store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
+    store.dispatch(updateMetaData('consultation', 'physicalExamQuestions', questionPerSystem));
+
+    const filteredQuestionPerSystem = questionPerSystem.filter((system) => system.data.length > 0);
+    return sortQuestions(filteredQuestionPerSystem);
   }
 
-  return sortQuestions(questions);
+  const filteredQuestionPerSystem = medicalCase.metaData.consultation.physicalExamQuestions.filter((system) => system.data.length > 0);
+  return sortQuestions(filteredQuestionPerSystem);
+};
+
+/**
+ * Sorts the array of question
+ * @param questionsPerSystem - Array to sort
+ * @returns {*} - Sorted array
+ */
+const sortQuestions = (questionsPerSystem) => {
+  return questionsPerSystem.map((system) => {
+    system.data.sort((a, b) => {
+      if ((a.is_danger_sign === b.is_danger_sign) || (a?.emergency_status === b?.emergency_status)) return 0;
+      if (a.is_danger_sign === true || a?.emergency_status === 'referral') return -1;
+      return 1;
+    });
+    return system;
+  });
 };
 
 /**

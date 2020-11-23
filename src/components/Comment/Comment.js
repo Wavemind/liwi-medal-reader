@@ -50,7 +50,7 @@ export default class Comment extends React.Component {
     const { comment, isEditing } = this.state;
 
     return (
-      <View>
+      <View style={styles.pad}>
         <Text style={styles.text}>{t('diagnoses:consultation_comment')}</Text>
         {isEditing ? (
           <View>

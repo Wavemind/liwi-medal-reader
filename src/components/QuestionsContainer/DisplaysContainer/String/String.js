@@ -28,12 +28,13 @@ export default class String extends React.Component {
    */
   onEndEditing = (value) => {
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       setAnswer,
       setPatientValue,
       question,
       patientValueEdit,
     } = this.props;
+
     if (patientValueEdit) {
       if (value.nativeEvent.text !== question.value && value.nativeEvent.text !== '') {
         setPatientValue(question.id, value.nativeEvent.text);
@@ -45,6 +46,8 @@ export default class String extends React.Component {
     } else if (question.value !== null && value.nativeEvent.text === '') {
       setAnswer(algorithm, question.id, null);
     }
+
+    set('answeredQuestionId', question.id);
   };
 
   render() {
