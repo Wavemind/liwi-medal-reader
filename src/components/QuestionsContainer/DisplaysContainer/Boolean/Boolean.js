@@ -88,7 +88,7 @@ export default class Boolean extends React.Component {
     }
 
     // Open emergency modal
-    if (currentNode?.emergency_status === 'emergency') {
+    if (currentNode?.emergency_status === 'emergency' && newAnswer === idYes) {
       updateModalFromRedux({}, modalType.emergencyWarning);
     }
   };
