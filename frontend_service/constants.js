@@ -140,6 +140,7 @@ export const modalType = {
   validation: 'validation',
   loading: 'loading',
   emergency: 'emergency',
+  emergencyWarning: 'emergencyWarning',
 };
 
 export const userRoles = {

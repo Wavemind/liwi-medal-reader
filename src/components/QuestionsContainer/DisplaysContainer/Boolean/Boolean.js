@@ -5,10 +5,9 @@ import { Button, Text, View } from 'native-base';
 import { Dimensions } from 'react-native';
 
 import { LeftButton, RightButton } from '../../../../template/layout';
-import { categories } from '../../../../../frontend_service/constants';
+import { categories, modalType } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Boolean.style';
-
 
 export default class Boolean extends React.Component {
   static defaultProps = {
@@ -57,6 +56,7 @@ export default class Boolean extends React.Component {
       setAnswer,
       setPatientValue,
       patientValueEdit,
+      updateModalFromRedux,
     } = this.props;
     const currentNode = algorithm.nodes[question.id];
 
@@ -85,6 +85,11 @@ export default class Boolean extends React.Component {
       setPatientValue(question.id, newAnswer);
     } else {
       setAnswer(algorithm, question.id, newAnswer);
+    }
+
+    // Open emergency modal
+    if (currentNode?.emergency_status === 'emergency' && newAnswer === idYes) {
+      updateModalFromRedux({}, modalType.emergencyWarning);
     }
   };
 
