@@ -57,6 +57,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
+  unavailableBox: {
+    marginRight: 45,
+  },
+
   warningRow: {
     flex: 1,
     flexDirection: 'row',

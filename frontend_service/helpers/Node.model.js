@@ -4,7 +4,7 @@ import React from 'react';
 import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
-import { categories, valueFormats } from '../constants';
+import { valueFormats } from '../constants';
 import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
 
 /**
@@ -19,62 +19,58 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   let validationMessage = null;
   let validationType = null;
   const currentNode = algorithm.nodes[mcNode.id];
-
-  if (currentNode.category !== categories.basicMeasurement) {
-    switch (currentNode.value_format) {
-      case valueFormats.int:
-      case valueFormats.float:
-        if (value !== null) {
-          answer = findKey(currentNode.answers, (answerCondition) => {
-            switch (answerCondition.operator) {
-              case 'more_or_equal':
-                return value >= Number(answerCondition.value);
-              case 'less':
-                return value < Number(answerCondition.value);
-              case 'between':
-                return value >= Number(answerCondition.value.split(',').first()) && value < Number(answerCondition.value.split(',').second());
-            }
-          });
-          if (answer !== undefined) {
-            answer = Number(answer);
-          } else {
-            answer = null;
+console.log("J'arrive ici non ?", value)
+  switch (currentNode.value_format) {
+    case valueFormats.int:
+    case valueFormats.float:
+      if (value !== null) {
+        answer = findKey(currentNode.answers, (answerCondition) => {
+          switch (answerCondition.operator) {
+            case 'more_or_equal':
+              return value >= Number(answerCondition.value);
+            case 'less':
+              return value < Number(answerCondition.value);
+            case 'between':
+              return value >= Number(answerCondition.value.split(',').first()) && value < Number(answerCondition.value.split(',').second());
           }
+        });
+        if (answer !== undefined) {
+          answer = Number(answer);
         } else {
           answer = null;
         }
-        break;
-      case valueFormats.string:
-      case valueFormats.date:
-        //  Nothing to do
-        break;
-      case valueFormats.bool:
-      case valueFormats.array:
-      case valueFormats.present:
-      case valueFormats.positive:
-        // Set Number only if this is a number
-        if (value !== null) {
-          answer = Number(value);
-        } else {
-          // Set the new answer to null for reset
-          answer = value;
-        }
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        if (__DEV__) {
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${currentNode.value_format}`, currentNode);
-        }
-        if (value !== null) {
-          answer = Number(value);
-        } else {
-          // Set the new answer to null for reset
-          answer = value;
-        }
-        break;
-    }
-  } else {
-    answer = null;
+      } else {
+        answer = null;
+      }
+      break;
+    case valueFormats.string:
+    case valueFormats.date:
+      //  Nothing to do
+      break;
+    case valueFormats.bool:
+    case valueFormats.array:
+    case valueFormats.present:
+    case valueFormats.positive:
+      // Set Number only if this is a number
+      if (value !== null) {
+        answer = Number(value);
+      } else {
+        // Set the new answer to null for reset
+        answer = value;
+      }
+      break;
+    default:
+      // eslint-disable-next-line no-console
+      if (__DEV__) {
+        console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${currentNode.value_format}`, currentNode);
+      }
+      if (value !== null) {
+        answer = Number(value);
+      } else {
+        // Set the new answer to null for reset
+        answer = value;
+      }
+      break;
   }
 
   // Validation for integer and float type based on Medal-C config

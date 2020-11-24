@@ -4,7 +4,20 @@
  * @returns {{dd: [], df: [], qs: [], system: *, answer: null, validationMessage: null, validationType: null, id: *, counter: number, type: *, category: *, value: string}}
  */
 export const generateQuestion = (node) => {
-  const { answer = null, counter = 0, dd = [], df = [], qs = [], value = '', estimable = false, estimableValue = 'measured', validationMessage = null, validationType = null, system } = node;
+  const {
+    answer = null,
+    counter = 0,
+    dd = [],
+    df = [],
+    qs = [],
+    value = '',
+    estimable = false,
+    estimableValue = 'measured',
+    validationMessage = null,
+    validationType = null,
+    system,
+    unavailableValue = false,
+  } = node;
 
   const hash = {
     ..._generateCommon(node),
@@ -17,6 +30,7 @@ export const generateQuestion = (node) => {
     system,
     validationMessage,
     validationType,
+    unavailableValue,
   };
 
   // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
