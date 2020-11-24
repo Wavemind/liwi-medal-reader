@@ -4,7 +4,7 @@ import React from 'react';
 import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
-import { valueFormats } from '../constants';
+import {categories, valueFormats} from '../constants';
 import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
 
 /**
@@ -25,7 +25,14 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   switch (currentNode.value_format) {
     case valueFormats.int:
     case valueFormats.float:
-      if (value !== null) {
+      if (value === null) {
+        answer = value;
+      } else if (mcNode.unavailableValue && (currentNode.category === categories.basicMeasurement || currentNode.category === categories.vitalSignAnthropometric)) {
+        // Unavailable question
+        answer = Number(value);
+        value = currentNode.answers[answer].value;
+      } else {
+        // Normal process
         answer = findKey(currentNode.answers, (answerCondition) => {
           switch (answerCondition.operator) {
             case 'more_or_equal':
@@ -41,8 +48,6 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
         } else {
           answer = null;
         }
-      } else {
-        answer = null;
       }
       break;
     case valueFormats.string:
