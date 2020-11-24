@@ -4,7 +4,7 @@ import React from 'react';
 import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
-import {categories, valueFormats} from '../constants';
+import { categories, valueFormats } from '../constants';
 import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
 
 /**
@@ -18,10 +18,9 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   let answer = null;
   let validationMessage = null;
   let validationType = null;
+
   const currentNode = algorithm.nodes[mcNode.id];
 
-
-  console.log("J'arrive ici non ?", value, currentNode.answers)
   switch (currentNode.value_format) {
     case valueFormats.int:
     case valueFormats.float:

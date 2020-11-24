@@ -55,6 +55,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'flex-end',
     flexDirection: 'row',
+    marginTop: 5,
   },
 
   unavailableBox: {
