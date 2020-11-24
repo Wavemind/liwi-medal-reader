@@ -19,7 +19,9 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   let validationMessage = null;
   let validationType = null;
   const currentNode = algorithm.nodes[mcNode.id];
-console.log("J'arrive ici non ?", value)
+
+
+  console.log("J'arrive ici non ?", value, currentNode.answers)
   switch (currentNode.value_format) {
     case valueFormats.int:
     case valueFormats.float:
@@ -52,11 +54,12 @@ console.log("J'arrive ici non ?", value)
     case valueFormats.present:
     case valueFormats.positive:
       // Set Number only if this is a number
-      if (value !== null) {
-        answer = Number(value);
-      } else {
+      if (value === null) {
         // Set the new answer to null for reset
         answer = value;
+      } else {
+        answer = Number(value);
+        value = currentNode.answers[answer].value;
       }
       break;
     default:
