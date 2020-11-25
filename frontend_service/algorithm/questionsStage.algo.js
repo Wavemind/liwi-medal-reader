@@ -48,15 +48,24 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     true
   );
 
+  // TODO: MUST BE REMOVE IN NEXT APK
+  const systemOrders = algorithm.mobile_config.systems_orders !== undefined ? algorithm.mobile_config.systems_orders : systemsOrder;
+
   const questionPerSystem = [];
-  systemsOrder.forEach((system) => {
+  systemOrders.forEach((system) => {
     questionPerSystem.push({
       title: system,
       data: [],
     });
   });
+
   questionPerSystem.push({
     title: 'follow_up_questions',
+    data: [],
+  });
+
+  questionPerSystem.push({
+    title: 'null',
     data: [],
   });
 
@@ -75,7 +84,7 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
           (medicalCase.metaData.consultation.medicalHistory.length > 0 && medicalCase.metaData.consultation.medicalHistory.includes(question.id)) ||
           (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
             !medicalCase.metaData.consultation.medicalHistory.includes(question.id) &&
-            systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
+            systemOrders.indexOf(question.system) >= systemOrders.indexOf(algorithm.nodes[answeredQuestionId].system))
         ) {
           const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
           questionPerSystem[index].data.push(question);
@@ -133,15 +142,24 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
     true
   );
 
+  // TODO: MUST BE REMOVE IN NEXT APK
+  const systemOrders = algorithm.mobile_config.systems_orders !== undefined ? algorithm.mobile_config.systems_orders : systemsOrder;
+
   const questionPerSystem = [];
-  systemsOrder.forEach((system) => {
+  systemOrders.forEach((system) => {
     questionPerSystem.push({
       title: system,
       data: [],
     });
   });
+
   questionPerSystem.push({
     title: 'follow_up_questions',
+    data: [],
+  });
+
+  questionPerSystem.push({
+    title: 'null',
     data: [],
   });
 
@@ -161,7 +179,7 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
           (medicalCase.metaData.consultation.physicalExam.length > 0 && medicalCase.metaData.consultation.physicalExam.includes(question.id)) ||
           (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
             !medicalCase.metaData.consultation.physicalExam.includes(question.id) &&
-            systemsOrder.indexOf(question.system) >= systemsOrder.indexOf(algorithm.nodes[answeredQuestionId].system))
+            systemOrders.indexOf(question.system) >= systemOrders.indexOf(algorithm.nodes[answeredQuestionId].system))
         ) {
           const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
           questionPerSystem[index].data.push(question);
