@@ -458,6 +458,28 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
+   * Set unavailable value
+   * @param state
+   * @param action
+   * @returns {{nodes}}
+   */
+  @Action(actions.SET_UNAVAILABLE)
+  setUnavailable(state, action) {
+    const { nodeId, value } = action.payload;
+
+    return {
+      ...state,
+      nodes: {
+        ...state.nodes,
+        [nodeId]: {
+          ...state.nodes[nodeId],
+          unavailableValue: value,
+        },
+      },
+    };
+  }
+
+  /**
    * Update the metadata in MC
    *
    * @payload screen: Main screen in MC (Triage...)

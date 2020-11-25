@@ -59,7 +59,7 @@ export default class Date extends React.Component {
   setBirthDate = () => {
     const { dayValue, monthValue, yearValue } = this.state;
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       question,
       setAnswer,
       setPatientValue,
@@ -84,6 +84,7 @@ export default class Date extends React.Component {
       setAnswer(algorithm, birthDateQuestion.id, null);
       this.setState({ dayValue: null, monthValue: null, yearValue: null });
     }
+    set('answeredQuestionId', question.id);
   };
 
   /**

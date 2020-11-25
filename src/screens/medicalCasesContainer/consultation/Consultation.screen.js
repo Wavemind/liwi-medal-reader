@@ -1,16 +1,14 @@
 // @flow
 
 import React, { Suspense } from 'react';
-import { View } from 'native-base';
 
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsMedicalHistory, questionsPhysicalExam } from '../../../../frontend_service/algorithm/questionsStage.algo';
-import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import Comment from '../../../components/Comment';
+import MedicalHistory from '../../../components/MedicalHistory';
+import PhysicalExam from '../../../components/PhysicalExam';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
-const QuestionsPerSystem = React.lazy(() => import('../../../components/Consultation/QuestionsPerSystem'));
 
 export default class Consultation extends React.Component {
   constructor(props) {
@@ -24,8 +22,7 @@ export default class Consultation extends React.Component {
 
   render() {
     const {
-      app: { t, algorithm },
-      focus,
+      app: { t },
       navigation,
       medicalCase,
     } = this.props;
@@ -35,6 +32,7 @@ export default class Consultation extends React.Component {
     return (
       <Suspense fallback={<LiwiLoader />}>
         <Stepper
+          params={{ initialPage: 0 }}
           initialPage={selectedPage}
           validation={false}
           showTopStepper
@@ -55,33 +53,9 @@ export default class Consultation extends React.Component {
           nextStage="Tests"
           nextStageString={t('medical_case:test')}
         >
-          <View style={styles.pad}>
-            {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={<LiwiLoader />}>
-                <QuestionsPerSystem questions={questionsMedicalHistory(algorithm)} selectedPage={selectedPage} pageIndex={0} />
-              </Suspense>
-            ) : (
-              <LiwiLoader />
-            )}
-          </View>
-          <View style={styles.pad}>
-            {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={<LiwiLoader />}>
-                <QuestionsPerSystem questions={questionsPhysicalExam(algorithm)} selectedPage={selectedPage} pageIndex={1} />
-              </Suspense>
-            ) : (
-              <LiwiLoader />
-            )}
-          </View>
-          <View style={styles.pad}>
-            {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={<LiwiLoader />}>
-                <Comment pageIndex={1} selectedPage={selectedPage} comment={medicalCase.comment} />
-              </Suspense>
-            ) : (
-              <LiwiLoader />
-            )}
-          </View>
+          <MedicalHistory selectedPage={selectedPage} />
+          <PhysicalExam selectedPage={selectedPage} />
+          <Comment comment={medicalCase.comment} />
         </Stepper>
       </Suspense>
     );

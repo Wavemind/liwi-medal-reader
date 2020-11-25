@@ -38,7 +38,7 @@ export default class Numeric extends React.Component<Props, State> {
   onEndEditing = (e) => {
     const value = e.nativeEvent.text;
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       setAnswer,
       setPatientValue,
       question,
@@ -56,6 +56,8 @@ export default class Numeric extends React.Component<Props, State> {
     } else if (question.value !== null && value === '') {
       setAnswer(algorithm, question.id, null);
     }
+
+    set('answeredQuestionId', question.id);
   };
 
   /**

@@ -136,6 +136,15 @@ export const setAnswerUnavailable = (algorithm, nodeId, value) => ({
   },
 });
 
+export const setUnavailable = (algorithm, nodeId, value) => ({
+  type: actions.SET_UNAVAILABLE,
+  payload: {
+    algorithm,
+    nodeId,
+    value,
+  },
+});
+
 export const updatePatient = (index, value) => ({
   type: actions.MC_UPDATE_PATIENT,
   payload: {

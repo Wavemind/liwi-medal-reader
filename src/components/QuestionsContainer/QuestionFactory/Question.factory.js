@@ -1,15 +1,16 @@
 // @flow
 import * as React from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { Icon, ListItem, Text } from 'native-base';
+import { CheckBox, Icon, Text } from 'native-base';
 import _ from 'lodash';
 
-import { displayFormats, modalType } from '../../../../frontend_service/constants';
+import { categories, displayFormats, modalType } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
 import Unavailable from '../../InputContainer/Unavailable';
 import WrapperQuestion from '../WrapperQuestion/WrapperQuestion';
+import List from '../DisplaysContainer/List';
 
 export default class Question extends React.Component {
   state: {
@@ -36,12 +37,21 @@ export default class Question extends React.Component {
       flexLabel,
       flexQuestion,
       flexToolTip,
+      unavailableValue: props.question.unavailableValue,
     };
   }
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps, nextState) {
     const { question } = this.props;
-    return question.counter !== nextProps.question.counter || question.answer !== nextProps.question.answer || question.value !== nextProps.question.value || question.id !== nextProps.question.id;
+    const { unavailableValue } = this.state;
+
+    return (
+      question.counter !== nextProps.question.counter ||
+      question.answer !== nextProps.question.answer ||
+      question.value !== nextProps.question.value ||
+      question.id !== nextProps.question.id ||
+      unavailableValue !== nextState.unavailableValue
+    );
   }
 
   /**
@@ -60,7 +70,6 @@ export default class Question extends React.Component {
       );
     }
 
-    // Nothing
     return null;
   };
 
@@ -79,77 +88,84 @@ export default class Question extends React.Component {
   };
 
   /**
-   * Display question label
-   * @returns {JSX.Element}
-   * @private
+   * Set check box and reset unavailable answer to null if check box is unchecked
    */
-  _labelQuestion() {
+  handleUnavailable = () => {
     const {
       app: { algorithm },
+      setAnswer,
+      setUnavailable,
       question,
     } = this.props;
-    const { flexLabel } = this.state;
-    const currentNode = algorithm.nodes[question.id];
+    const { unavailableValue } = this.state;
 
-    return (
-      <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
-        <Text style={styles.questionLabel} size-auto>
-          {currentNode.label} {currentNode.is_mandatory ? '*' : null}
-        </Text>
-      </ViewQuestion>
-    );
-  }
+    // Reset unavailable answer
+    if (question.unavailableValue) {
+      setAnswer(algorithm, question.id, null);
+    }
+
+    setUnavailable(algorithm, question.id, !unavailableValue);
+    this.setState({ unavailableValue: !unavailableValue });
+  };
 
   render() {
     const {
       question,
       app: { t, algorithm },
     } = this.props;
-    const { flexQuestion, flexToolTip } = this.state;
+    const { flexQuestion, flexToolTip, flexLabel, unavailableValue } = this.state;
     const currentNode = algorithm.nodes[question.id];
-
-    let WrapperUnavailable = () => null;
-    let unavailableAnswer = null;
-
-    unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
-
-    if (unavailableAnswer !== undefined) {
-      WrapperUnavailable = () => {
-        return (
-          <React.Fragment>
-            <Text>{t('question:unavailable')} </Text>
-            <Unavailable question={question} unavailableAnswer={unavailableAnswer} />
-          </React.Fragment>
-        );
-      };
-    }
 
     // If this is not a question we return null
     if (currentNode.display_format === displayFormats.formula && !__DEV__) {
       return null;
     }
 
-    // Construct generic Component for the question
+    // Unavailable for test
+    const unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
+
+    // Unavailable for vital sign and basic measurements
+    const displayUnavailable =
+      (currentNode.unavailable && (currentNode.category === categories.basicMeasurement || currentNode.category === categories.vitalSignAnthropometric)) || question.unavailableValue;
+
     return (
-      <ListItem
-        style={[styles.condensed, styles.flexColumn, { backgroundColor: currentNode.is_danger_sign ? liwiColors.redLightColor : 'transparant', marginLeft: 0 }]}
-        noBorder
-        key={`${question.id}_item`}
+      <View
+        style={[
+          styles.condensed,
+          styles.flexColumn,
+          { backgroundColor: currentNode.is_danger_sign || currentNode?.emergency_status === 'referral' ? liwiColors.redLightColor : 'transparent', marginLeft: 0 },
+        ]}
       >
         <View style={styles.flexRow}>
           <View flex={flexToolTip}>
-            <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal()}>
+            <TouchableOpacity style={styles.touchable} transparent onPress={this.openModal}>
               <Icon type="AntDesign" name="info" style={styles.iconInfo} />
             </TouchableOpacity>
           </View>
-          {this._labelQuestion()}
-          <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
+          <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
+            <Text style={styles.questionLabel} size-auto>
+              {currentNode.label} {currentNode.is_mandatory ? '*' : null}
+            </Text>
+          </ViewQuestion>
+          {unavailableValue ? (
+            <View flex={flexQuestion}>
+              <List question={question} {...this.props} />
+            </View>
+          ) : (
+            <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
+          )}
         </View>
         {this._displayValidation()}
         <View style={styles.unavailable}>
-          <WrapperUnavailable />
+          {unavailableAnswer !== undefined ? (
+            <>
+              <Text>{t('question:unavailable')} </Text>
+              <Unavailable question={question} unavailableAnswer={unavailableAnswer} />
+            </>
+          ) : null}
+          {displayUnavailable ? <CheckBox style={styles.unavailableBox} onPress={this.handleUnavailable} color={liwiColors.redColor} checked={unavailableValue} /> : null}
         </View>
-      </ListItem>
+      </View>
     );
   }
 }

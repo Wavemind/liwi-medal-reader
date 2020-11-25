@@ -6,10 +6,10 @@ import { Content, View } from 'native-base';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsBasicMeasurements, questionsComplaintCategory, questionsFirstLookAssessment } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsComplaintCategory } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import Boolean from '../../../components/QuestionsContainer/DisplaysContainer/Boolean';
+import BasicMeasurements from '../../../components/BasicMeasurements';
 
-const Questions = React.lazy(() => import('../../../components/QuestionsContainer/Questions'));
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
 export default class Triage extends React.Component {
@@ -29,8 +29,7 @@ export default class Triage extends React.Component {
 
   render() {
     const {
-      app: { t, algorithm },
-      focus,
+      app: { t },
       navigation,
     } = this.props;
 
@@ -42,17 +41,15 @@ export default class Triage extends React.Component {
       <Suspense fallback={<LiwiLoader />}>
         <Stepper
           params={{ initialPage: 0 }}
-          t={t}
+          initialPage={selectedPage}
           validation={false}
           showTopStepper
-          initial
+          showBottomStepper
           onPageSelected={(e) => {
             navigation.setParams({
               initialPage: e,
             });
           }}
-          initialPage={selectedPage}
-          showBottomStepper
           icons={[
             // { name: 'heartbeat', type: 'FontAwesome5' },
             { name: 'stethoscope', type: 'FontAwesome5' },
@@ -64,39 +61,27 @@ export default class Triage extends React.Component {
           nextStage="Consultation"
           nextStageString={t('medical_case:consultation')}
         >
-          {/*<View style={styles.pad}>*/}
-          {/*  {focus === 'didFocus' || focus === 'willFocus' ? (*/}
-          {/*    <Suspense fallback={<LiwiLoader />}>*/}
-          {/*      <Questions questions={questionsFirstLookAssessment(algorithm)} selectedPage={selectedPage} pageIndex={0} />*/}
-          {/*    </Suspense>*/}
-          {/*  ) : (*/}
-          {/*    <LiwiLoader />*/}
-          {/*  )}*/}
-          {/*</View>*/}
+          {/* <View style={styles.pad}> */}
+          {/*  {focus === 'didFocus' || focus === 'willFocus' ? ( */}
+          {/*    <Suspense fallback={<LiwiLoader />}> */}
+          {/*      <Questions questions={questionsFirstLookAssessment(algorithm)} selectedPage={selectedPage} pageIndex={0} /> */}
+          {/*    </Suspense> */}
+          {/*  ) : ( */}
+          {/*    <LiwiLoader /> */}
+          {/*  )} */}
+          {/* </View> */}
           <View style={styles.flex}>
-            {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={<LiwiLoader />}>
-                <Content>
-                  <View flex-container-fluid>
-                    {complaintCategories.map((question, i) => (
-                      <Boolean key={`${question.id}_chief_boolean`} question={question} index={i} selectedPage={selectedPage} pageIndex={1} />
-                    ))}
-                  </View>
-                </Content>
-              </Suspense>
-            ) : (
-              <LiwiLoader />
-            )}
+            <Suspense fallback={<LiwiLoader />}>
+              <Content>
+                <View flex-container-fluid>
+                  {complaintCategories.map((question, i) => (
+                    <Boolean key={`${question.id}_chief_boolean`} question={question} index={i} />
+                  ))}
+                </View>
+              </Content>
+            </Suspense>
           </View>
-          <View style={styles.pad}>
-            {focus === 'didFocus' || focus === 'willFocus' ? (
-              <Suspense fallback={<LiwiLoader />}>
-                <Questions questions={questionsBasicMeasurements(algorithm)} selectedPage={selectedPage} pageIndex={2} />
-              </Suspense>
-            ) : (
-              <LiwiLoader />
-            )}
-          </View>
+          <BasicMeasurements selectedPage={selectedPage} />
         </Stepper>
       </Suspense>
     );

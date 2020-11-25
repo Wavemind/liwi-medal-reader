@@ -63,7 +63,7 @@ export default class String extends React.Component {
    */
   onEndEditing = (value) => {
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       setAnswer,
       setPatientValue,
       question,
@@ -82,6 +82,7 @@ export default class String extends React.Component {
       setAnswer(algorithm, question.id, null);
     }
 
+    set('answeredQuestionId', question.id);
     this.setState({ query: value });
   };
 
