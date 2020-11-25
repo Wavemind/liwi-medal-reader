@@ -1,19 +1,12 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './FinalDiagnostic.style';
 
-type Props = NavigationScreenProps & {};
-
-export default class FinalDiagnostic extends React.Component<{}> {
-  static defaultProps = {
-    findInDiagnoses: {},
-  };
-
-  shouldComponentUpdate(nextProps: Props): boolean {
+export default class FinalDiagnostic extends React.Component {
+  shouldComponentUpdate(nextProps) {
     const {
       id,
       medicalCase: { diagnoses },
@@ -23,7 +16,16 @@ export default class FinalDiagnostic extends React.Component<{}> {
   }
 
   _handleClick = (bool) => {
-    const { algorithm, setDiagnoses, id, diagnostic_id, label, drugs, managements } = this.props;
+    const {
+      app: { algorithm },
+      setDiagnoses,
+      id,
+      diagnostic_id,
+      label,
+      drugs,
+      managements,
+      medicalCase: { diagnoses },
+    } = this.props;
 
     setDiagnoses(algorithm, 'proposed', {
       id,
@@ -32,6 +34,21 @@ export default class FinalDiagnostic extends React.Component<{}> {
       agreed: bool,
       drugs,
       managements,
+    });
+
+    // Remove agreed excluded diagnoses
+    algorithm.nodes[id].excluded_final_diagnostics.forEach((diagnosticId) => {
+      if (Object.keys(diagnoses.proposed).includes(String(diagnosticId)) && bool) {
+        const diagnostic = algorithm.nodes[diagnosticId];
+        setDiagnoses(algorithm, 'proposed', {
+          id: diagnosticId,
+          label: diagnostic.label,
+          diagnostic_id: diagnostic.diagnostic_id,
+          agreed: false,
+          drugs: diagnostic.drugs,
+          managements: diagnostic.managements,
+        });
+      }
     });
   };
 

@@ -60,7 +60,6 @@ export default class Question extends React.Component {
       );
     }
 
-    // Nothing
     return null;
   };
 
