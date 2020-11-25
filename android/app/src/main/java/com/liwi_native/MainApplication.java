@@ -7,7 +7,7 @@ import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.rectanglescanner.RectangleScannerPackage;
-import com.bugsnag.BugsnagReactNative;
+import com.bugsnag.android.Bugsnag;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -47,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    Bugsnag.start(this);
   }
 
   /**
