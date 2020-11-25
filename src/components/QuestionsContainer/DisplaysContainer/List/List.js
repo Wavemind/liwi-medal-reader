@@ -42,7 +42,7 @@ export default class List extends React.Component {
     const PickerItem = [];
     const { answers } = algorithm.nodes[question.id];
 
-    Object.keys(answers).map((id) => (answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={answers[id].label} value={String(id)} />) : null));
+    Object.keys(answers).forEach((id) => (answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={answers[id].label} value={String(id)} />) : null));
 
     return (
       <View answer>
