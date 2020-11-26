@@ -19,7 +19,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
   /**
    * Set medical case in store
-   * @param {object} medicalCase
+   * @param {object} medicalCaseLight
    * @returns {Promise<void>}
    */
   selectMedicalCase = async (medicalCaseLight) => {
@@ -33,7 +33,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
   /**
    * Action call when element of flatlist is clicked
-   * @param {object} medicalCase - Medical case clicked
+   * @param {object} medicalCaseLight - Medical case clicked
    * @returns {Promise<void>}
    */
   itemNavigation = async (medicalCaseLight) => {
