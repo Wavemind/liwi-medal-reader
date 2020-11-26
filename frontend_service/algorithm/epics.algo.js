@@ -40,7 +40,13 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
       parentConditionValue = parentsNodes.some((i) => {
         const parentNode = nodes[i];
         const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
-        return parentNode.answer !== null && diagnostic.conditionValue === true;
+
+        const parentHasCorrectAnswer = algorithm.diagnostics[diagnosticId].instances[nodeId].top_conditions.some((condition) => {
+          if (condition.first_node_id === parentNode.id) {
+            return parentNode.answer === condition.first_id;
+          }
+        });
+        return parentNode.answer !== null && diagnostic.conditionValue === true && parentHasCorrectAnswer;
       });
     }
 
