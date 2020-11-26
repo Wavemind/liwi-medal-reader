@@ -23,8 +23,16 @@ export default class Triage extends React.Component {
     NavigationService.setParamsAge(algorithm, 'Triage');
 
     this.state = {
-      complaintCategories: questionsComplaintCategory(algorithm),
+      complaintCategories: [],
     };
+  }
+
+  componentDidMount() {
+    const {
+      app: { algorithm },
+    } = this.props;
+
+    this.setState({ complaintCategories: questionsComplaintCategory(algorithm) });
   }
 
   render() {
