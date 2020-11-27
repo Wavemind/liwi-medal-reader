@@ -113,9 +113,9 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcFina
     isExcluded = currentFinalDiagnostic.excluding_final_diagnostics.some(
       (excludedByFinalDiagnostic) =>
         // Exclude diagnostic if other diagnoses is available and agreed
-        finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[excludedByFinalDiagnostic]) === true &&
+        finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[excludedByFinalDiagnostic]) &&
         medicalCase.diagnoses.proposed[excludedByFinalDiagnostic] !== undefined &&
-        medicalCase.diagnoses.proposed[excludedByFinalDiagnostic].agreed === true
+        medicalCase.diagnoses.proposed[excludedByFinalDiagnostic].agreed
     );
   }
 
@@ -269,7 +269,7 @@ export const finalDiagnosticAll = (algorithm) => {
     return finalDiagnostic.excluding_final_diagnostics.some(
       (excludingFinalDiagnosticId) =>
         finalDiagnosticIds.includes(excludingFinalDiagnosticId) &&
-        (medicalCase.diagnoses.proposed[excludingFinalDiagnosticId] === undefined || medicalCase.diagnoses.proposed[excludingFinalDiagnosticId].agreed === true)
+        (medicalCase.diagnoses.proposed[excludingFinalDiagnosticId] === undefined || medicalCase.diagnoses.proposed[excludingFinalDiagnosticId].agreed)
     );
   });
 
