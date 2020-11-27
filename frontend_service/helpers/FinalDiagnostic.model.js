@@ -276,9 +276,10 @@ export const finalDiagnosticAll = (algorithm) => {
   // Hide excluded diagnoses
   const finalDiagnosticToHideIds = finalDiagnosticToHide.map(({ id }) => id);
   const result = finalDiagnosticsTrue.filter((finalDiagnostic) => !finalDiagnosticToHideIds.includes(finalDiagnostic.id));
+  const included = _.orderBy(result, (finalDiagnostic) => finalDiagnostic.level_of_urgency, ['desc', 'asc']);
 
   return {
-    included: result,
+    included,
     excluded: finalDiagnosticsFalse,
     not_defined: finalDiagnosticsNull,
   };
