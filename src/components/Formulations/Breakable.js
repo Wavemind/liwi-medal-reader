@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'native-base';
+import { Text, View } from 'native-base';
 
 import toReadableFraction from '../../utils/toReadableFraction';
 import i18n from '../../utils/i18n';
@@ -25,7 +25,7 @@ export default function Breakable(drug, node, drugDose) {
       fractionString = `${r.numerator} / ${r.denominator}`;
     }
   }
-
+console.log('breakable',drug, node)
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
@@ -35,7 +35,7 @@ export default function Breakable(drug, node, drugDose) {
       {drugDose.doseResult === null ? (
         <Text size-auto>{drugDose.no_possibility}</Text>
       ) : (
-        <>
+        <View style={{flex: 1}}>
           <Text size-auto>
             {i18n.t('drug:give')} {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} {i18n.t('drug:mg')} : {num !== Infinity && num !== 0 ? `${num}` : null}
             {fractionString}
@@ -47,7 +47,10 @@ export default function Breakable(drug, node, drugDose) {
           <Text size-auto>
             {`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}
           </Text>
-        </>
+          <Text size-auto style={{ marginTop: 10 }}>
+            {node.formulations[drug.formulationSelected].dispensing_description}
+          </Text>
+        </View>
       )}
     </>
   );

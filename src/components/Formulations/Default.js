@@ -10,6 +10,7 @@ export default function Default(drug, node, drugDose) {
   if (drug.formulationSelected !== null) {
     every = `${i18n.t('drug:every')} ${24 / drugDose.doses_per_day} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`;
   }
+
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
@@ -25,6 +26,9 @@ export default function Default(drug, node, drugDose) {
         </Text>
       )}
       {drug.formulationSelected !== null && <Text>{every}</Text>}
+      <Text size-auto style={{ marginTop: 10 }}>
+        {node.formulations[drug.formulationSelected].dispensing_description}
+      </Text>
     </>
   );
 }

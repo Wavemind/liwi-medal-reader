@@ -20,6 +20,9 @@ export default function Capsule(drug, node, drugDose) {
           <Text size-auto>
             {`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}
           </Text>
+          <Text size-auto style={{ marginTop: 10 }}>
+            {node.formulations[drug.formulationSelected].dispensing_description}
+          </Text>
         </>
       )}
     </>

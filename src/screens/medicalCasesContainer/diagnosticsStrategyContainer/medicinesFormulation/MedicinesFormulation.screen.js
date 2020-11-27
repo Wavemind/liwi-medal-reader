@@ -102,10 +102,12 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
+              const description = f.description !== null ? `- ${f.description}` : '';
+
               return (
                 <Picker.Item
                   key={f}
-                  label={`${t(`medication_form:${f.medication_form}`)}: ${string} ${isPossible ? this.displayMedicationForm(f.medication_form) : ''}`}
+                  label={`${t(`medication_form:${f.medication_form}`)}: ${string} ${isPossible ? this.displayMedicationForm(f.medication_form) : ''} ${description}`}
                   value={isPossible ? index : false}
                 />
               );
