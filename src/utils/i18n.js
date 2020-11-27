@@ -101,6 +101,8 @@ i18n
           gel: 'Gel',
           spray: 'Spray',
           inhaler: 'Inhaler',
+          per: 'per',
+          per_administration: 'per administration',
         },
         media: {
           file_not_supported: 'File not supported',
