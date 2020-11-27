@@ -90,11 +90,13 @@ const getStatusOfDD = (algorithm, medicalCase, dd) => {
  * @param algorithm
  * @param medicalCase
  * @param mcFinalDiagnostic
+ * @param includeExclusion
  * @returns {null|boolean}
  */
-export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcFinalDiagnostic) => {
+export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcFinalDiagnostic, includeExclusion = true) => {
   const currentFinalDiagnostic = algorithm.nodes[mcFinalDiagnostic.id];
   const conditionValueTrue = [];
+  let isExcluded = false;
   // Generate only the top_condition with conditionValue to true => they are not disabled
   currentFinalDiagnostic.top_conditions.forEach((condition) => {
     const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === currentFinalDiagnostic.diagnostic_id);
@@ -106,14 +108,16 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcFina
   // Return the status of this dd
   const statusOfDD = getStatusOfDD(algorithm, medicalCase, mcFinalDiagnostic);
 
-  // If this FD can be excluded by other high-priority FD
-  const isExcluded = currentFinalDiagnostic.excluding_final_diagnostics.some(
-    (excludedByFinalDiagnostic) =>
-      // Exclude diagnostic if other diagnoses is available and agreed
-      finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[excludedByFinalDiagnostic]) === true &&
-      medicalCase.diagnoses.proposed[excludedByFinalDiagnostic] !== undefined &&
-      medicalCase.diagnoses.proposed[excludedByFinalDiagnostic].agreed === true
-  );
+  if (includeExclusion) {
+    // If this FD can be excluded by other high-priority FD
+    isExcluded = currentFinalDiagnostic.excluding_final_diagnostics.some(
+      (excludedByFinalDiagnostic) =>
+        // Exclude diagnostic if other diagnoses is available and agreed
+        finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[excludedByFinalDiagnostic]) === true &&
+        medicalCase.diagnoses.proposed[excludedByFinalDiagnostic] !== undefined &&
+        medicalCase.diagnoses.proposed[excludedByFinalDiagnostic].agreed === true
+    );
+  }
 
   if (statusOfDD === false || isExcluded) {
     return false;
@@ -187,7 +191,9 @@ export const finalDiagnosticGetManagements = (algorithm, medicalCase, mcNode) =>
  */
 const parentsConditionValue = (mcNode, parentsTopConditions, top_conditions, medicalCase) => {
   if (top_conditions.length > 0) {
-    const topConditionResults = top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase) && parentsConditionValue(mcNode, parentsTopConditions, mcNode.instances[conditions.first_node_id].top_conditions, medicalCase));
+    const topConditionResults = top_conditions.map(
+      (conditions) => comparingTopConditions(conditions, medicalCase) && parentsConditionValue(mcNode, parentsTopConditions, mcNode.instances[conditions.first_node_id].top_conditions, medicalCase)
+    );
     const conditionValueResult = reduce(
       topConditionResults,
       (result, value) => {
@@ -223,7 +229,7 @@ export const finalDiagnosticAll = (algorithm) => {
       const finalDiagnostic = finalDiagnostics[index];
       const complaintCategory = nodes[finalDiagnostic.cc];
 
-      const condition = finalDiagnosticCalculateCondition(algorithm, medicalCase, finalDiagnostic);
+      const condition = finalDiagnosticCalculateCondition(algorithm, medicalCase, finalDiagnostic, false);
 
       // If complaintCategory is not selected, I know it's ugly but what can I do ?
       if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers)[1])) {
@@ -256,8 +262,23 @@ export const finalDiagnosticAll = (algorithm) => {
     }
   }
 
+  const finalDiagnosticIds = finalDiagnosticsTrue.map(({ id }) => id);
+
+  // Get excluded final diagnostics by a final diagnostics present in the array. Check if the excluding final diagnostic is not answered
+  const finalDiagnosticToHide = finalDiagnosticsTrue.filter((finalDiagnostic) => {
+    return finalDiagnostic.excluding_final_diagnostics.some(
+      (excludingFinalDiagnosticId) =>
+        finalDiagnosticIds.includes(excludingFinalDiagnosticId) &&
+        (medicalCase.diagnoses.proposed[excludingFinalDiagnosticId] === undefined || medicalCase.diagnoses.proposed[excludingFinalDiagnosticId].agreed === true)
+    );
+  });
+
+  // Hide excluded diagnoses
+  const finalDiagnosticToHideIds = finalDiagnosticToHide.map(({ id }) => id);
+  const result = finalDiagnosticsTrue.filter((finalDiagnostic) => !finalDiagnosticToHideIds.includes(finalDiagnostic.id));
+
   return {
-    included: finalDiagnosticsTrue,
+    included: result,
     excluded: finalDiagnosticsFalse,
     not_defined: finalDiagnosticsNull,
   };
