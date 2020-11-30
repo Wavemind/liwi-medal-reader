@@ -485,10 +485,10 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _renderSaveButton = () => {
-    const { app: { t } } = this.props;
+    const { app: { t }, nextStage } = this.props;
     const { showNext } = this.state;
 
-    if (showNext) {
+    if (showNext || nextStage === 'finish') {
       return null;
     }
 
