@@ -4,6 +4,7 @@ import { Text, View } from 'native-base';
 import toReadableFraction from '../../utils/toReadableFraction';
 import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
+import { styles } from './styles';
 
 export default function Breakable(drug, node, drugDose) {
   //  12 hours for 5 days = recurrence for instance in diagnoses .duration
@@ -25,7 +26,7 @@ export default function Breakable(drug, node, drugDose) {
       fractionString = `${r.numerator} / ${r.denominator}`;
     }
   }
-console.log('breakable',drug, node)
+
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
@@ -35,7 +36,7 @@ console.log('breakable',drug, node)
       {drugDose.doseResult === null ? (
         <Text size-auto>{drugDose.no_possibility}</Text>
       ) : (
-        <View style={{flex: 1}}>
+        <View style={styles.container}>
           <Text size-auto>
             {i18n.t('drug:give')} {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} {i18n.t('drug:mg')} : {num !== Infinity && num !== 0 ? `${num}` : null}
             {fractionString}
@@ -44,10 +45,8 @@ console.log('breakable',drug, node)
             {` ${drugDose.dose_form} `}
             {i18n.t('drug:mg')} {drugDose.administration_route_name}
           </Text>
-          <Text size-auto>
-            {`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}
-          </Text>
-          <Text size-auto style={{ marginTop: 10 }}>
+          <Text size-auto>{`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
+          <Text size-auto style={styles.description}>
             {node.formulations[drug.formulationSelected].dispensing_description}
           </Text>
         </View>

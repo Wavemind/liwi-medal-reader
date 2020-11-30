@@ -33,4 +33,5 @@ export const styles = StyleSheet.create({
   drugContainer: { flex: 1, flexDirection: 'row' },
   tooltipButton: { flex: 0.1, alignSelf: 'center', alignItems: 'flex-end' },
   tooltipButtonFinalDiagnostic: { flex: 0.1, alignSelf: 'center', alignItems: 'flex-end' },
+  formulationContainer: { flex: 0.9 },
 });

@@ -3,6 +3,7 @@ import { Text } from 'native-base';
 
 import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
+import { styles } from './styles';
 
 export default function Default(drug, node, drugDose) {
   let every = '';
@@ -26,7 +27,7 @@ export default function Default(drug, node, drugDose) {
         </Text>
       )}
       {drug.formulationSelected !== null && <Text>{every}</Text>}
-      <Text size-auto style={{ marginTop: 10 }}>
+      <Text size-auto style={styles.description}>
         {node.formulations[drug.formulationSelected].dispensing_description}
       </Text>
     </>
