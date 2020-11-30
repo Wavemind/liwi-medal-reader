@@ -45,7 +45,12 @@ export default class MedicinesFormulations extends Component {
         return `ml ${t('medication_form:per_administration')}`;
       case medicationForms.tablet:
       case medicationForms.capsule:
-        return `mg (${drugDose.dose_form}mg ${t('medication_form:per')} ${t(`medication_form:${type}`).toLowerCase()})`;
+        if (drugDose.dose_form !== null) {
+          return `mg (${drugDose.dose_form}mg ${t('medication_form:per')} ${t(`medication_form:${type}`).toLowerCase()})`;
+        } else {
+          return `mg ${t('medication_form:per_administration')}`;
+        }
+
       default:
         return ' dose';
     }

@@ -34,7 +34,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
   }
 
   // Age and weight must be answered to calculate dosage
-  if ((mcWeight !== undefined && mcWeight.value !== null) || formulation.by_age === false) {
+  if ((mcWeight !== undefined && mcWeight.value !== null) && formulation.by_age === false) {
     recurrence = 24 / formulation.doses_per_day;
 
     switch (formulation.medication_form) {
