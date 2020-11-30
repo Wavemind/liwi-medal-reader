@@ -1,14 +1,15 @@
 import React from 'react';
-import { Text } from 'native-base';
+import { Text, View } from 'native-base';
 
 import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
+import { styles } from './styles';
 
 export default function Liquid(drug, node, drugDose) {
   const ratio = drugDose.liquid_concentration / drugDose.dose_form;
 
   return (
-    <>
+    <View>
       <LiwiTitle5>{node.label}</LiwiTitle5>
       <Text>
         {i18n.t('drug:mode')} : {i18n.t(`medication_form:${node.formulations[drug.formulationSelected].medication_form}`)}
@@ -20,9 +21,10 @@ export default function Liquid(drug, node, drugDose) {
         {i18n.t('drug:mg')}/{drugDose.dose_form}
         {i18n.t('drug:ml')}
       </Text>
-      <Text>
-        {`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}
+      <Text>{`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
+      <Text size-auto style={styles.description}>
+        {node.formulations[drug.formulationSelected].dispensing_description}
       </Text>
-    </>
+    </View>
   );
 }
