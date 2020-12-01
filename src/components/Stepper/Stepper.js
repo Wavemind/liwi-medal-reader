@@ -254,14 +254,16 @@ class Stepper extends React.Component<Props, State> {
    */
   renderChildren = () => {
     const { children, childrenStyle } = this.props;
-
     return React.Children.map(children, (child, index) => {
-      return (
-        <View key={`child-${index}`}
-              style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
-          {child}
-        </View>
-      );
+      if (child !== null) {
+        return (
+          <View key={`child-${index}`}
+                style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
+            {child}
+          </View>
+        );
+      }
+
     });
   };
 
