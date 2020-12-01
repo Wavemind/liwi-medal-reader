@@ -218,7 +218,7 @@ export default class HttpInterface {
    */
   _setClinician = async () => {
     const user = await getItem('user');
-    this.clinician = user !== null ? `${user.first_name} ${user.last_name}` : null;
+    this.clinician = user ? `${user.first_name} ${user.last_name}` : null;
   };
 
   /**

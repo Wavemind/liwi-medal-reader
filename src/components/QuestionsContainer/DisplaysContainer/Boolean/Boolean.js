@@ -183,8 +183,8 @@ export default class Boolean extends React.Component {
             </Text>
           </View>
           <View style={styles.bottomInput}>
-            <LeftButton active={value === true} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
-              <Text white={value === true} center>
+            <LeftButton active={value} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
+              <Text white={value} center>
                 {t('question:yes')}
               </Text>
             </LeftButton>
@@ -203,8 +203,8 @@ export default class Boolean extends React.Component {
 
       RenderJsx = () => (
         <View answer>
-          <LeftButton active={value === true} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
-            <Text white={value === true} center style={{ fontSize: leftLabel.length > 3 ? 10 : 16 }}>
+          <LeftButton active={value} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
+            <Text white={value} center style={{ fontSize: leftLabel.length > 3 ? 10 : 16 }}>
               {leftLabel}
             </Text>
           </LeftButton>

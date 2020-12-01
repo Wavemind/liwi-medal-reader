@@ -95,8 +95,8 @@ export default class Summary extends React.Component {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
           >
             <Content
-              style={{flex: 1}}
-              contentContainerStyle={{flex: 1}} // important!
+              style={styles.flex}
+              contentContainerStyle={styles.flex} // important!
             >
               <Questions questions={arrayNodes} isReadOnly />
             </Content>
