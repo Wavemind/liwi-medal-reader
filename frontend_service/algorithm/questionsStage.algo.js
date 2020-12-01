@@ -209,7 +209,7 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
 const sortQuestions = (questionsPerSystem) => {
   return questionsPerSystem.map((system) => {
     system.data.sort((a, b) => {
-      if ((a.is_danger_sign === b.is_danger_sign) || (a?.emergency_status === b?.emergency_status)) return 0;
+      if (a.is_danger_sign === b.is_danger_sign || a?.emergency_status === b?.emergency_status) return 0;
       if (a.is_danger_sign === true || a?.emergency_status === 'referral') return -1;
       return 1;
     });
@@ -321,13 +321,20 @@ export const questionsTests = (algorithm) => {
   const medicalCase = store.getState();
   let assessmentTest = [];
 
-  assessmentTest = nodeFilterBy(medicalCase, algorithm, [
-    {
-      by: 'category',
-      operator: 'equal',
-      value: categories.assessment,
-    },
-  ]);
+  assessmentTest = nodeFilterBy(
+    medicalCase,
+    algorithm,
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.assessment,
+      },
+    ],
+    'OR',
+    'array',
+    !algorithm.is_arm_control
+  );
 
   const newQuestions = assessmentTest.map(({ id }) => id);
 

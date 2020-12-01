@@ -43,6 +43,36 @@ const screens = [
   },
 ];
 
+const armControlScreen = [
+  { key: 'Home' },
+  {
+    key: 'PatientUpsert',
+    medicalCaseOrder: 0,
+    validations: {
+      custom: { is_mandatory: true },
+    },
+  },
+  {
+    key: 'Triage',
+    medicalCaseOrder: 1,
+    validations: {
+      // firstLookAssessments: { is_mandatory: true, initialPage: 0 },
+      complaintCategories: { answer: 'not_null', initialPage: 0 },
+      basicMeasurements: { initialPage: 1 },
+    },
+  },
+  {
+    key: 'Tests',
+    medicalCaseOrder: 2,
+    validations: { tests: { initialPage: 0 } },
+  },
+  {
+    key: 'DiagnosticsStrategy',
+    medicalCaseOrder: 3,
+    validations: {},
+  },
+];
+
 export const modelValidator = {
   isActionValid: true,
   routeRequested: null,
@@ -64,7 +94,7 @@ export const modelValidator = {
 export const validatorStep = (algorithm, route, lastState, validator) => {
   const state$ = store.getState();
   if (route?.params?.initialPage && route.params.initialPage > 0) {
-    const detailSetParamsRoute = screens.find((s) => s.key === route.routeName);
+    const detailSetParamsRoute = algorithm.is_arm_control ? armControlScreen.find((s) => s.key === route.routeName) : screens.find((s) => s.key === route.routeName);
     const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
 
     if (detailValidation !== undefined) {
@@ -159,7 +189,7 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
     }
   }
 
-  const screenSchema = screens.find((s) => s.key === navigateRoute.currentStage);
+  const screenSchema = algorithm.is_arm_control ? armControlScreen.find((s) => s.key === navigateRoute.currentStage) : screens.find((s) => s.key === navigateRoute.currentStage);
 
   // Questions to be validated
   const questionsToValidate = medicalCase.metaData[screenSchema.key.toLowerCase()];

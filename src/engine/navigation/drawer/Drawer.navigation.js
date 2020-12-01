@@ -7,7 +7,7 @@ import type { StateApplicationContext } from '../../contexts/Application.context
 import NavigationService from '../Navigation.service';
 import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
 import { displayNotification } from '../../../utils/CustomToast';
-import { renderingDrawerItems } from './Drawer.constants';
+import { armControlRenderingDrawerItems, renderingDrawerItems } from './Drawer.constants';
 import { liwiColors } from '../../../utils/constants';
 
 type Props = NavigationScreenProps & {};
@@ -40,7 +40,7 @@ export default class Drawer extends Component<Props, State> {
     const {
       navigation,
       medicalCase,
-      app: { t },
+      app: { t, algorithm },
       isDrawer,
     } = this.props;
 
@@ -87,8 +87,10 @@ export default class Drawer extends Component<Props, State> {
       }[key];
     };
 
+    const drawerItems = algorithm.is_arm_control ? armControlRenderingDrawerItems : renderingDrawerItems;
+
     // Render items
-    const renderDrawerButtons = <View style={[styles.top, { opacity: isMedicalCaseLoaded ? 1 : 0.3 }]}>{renderingDrawerItems.map((item, i) => enumRender(item, i))}</View>;
+    const renderDrawerButtons = <View style={[styles.top, { opacity: isMedicalCaseLoaded ? 1 : 0.3 }]}>{drawerItems.map((item, i) => enumRender(item, i))}</View>;
 
     return (
       <ScrollView
