@@ -56,7 +56,6 @@ export default class HttpInterface {
   getAll = async (model, page, params) => {
     const stringFilters = this._generateFiltersUrl(params.filters);
     const url = `${this.localDataIp}/api/${this._mapModelToRoute(model)}?page=${page}&query=${params.query}${stringFilters !== '' ? `&filter=${stringFilters}` : ''}`;
-console.log("Je suis la bitch")
     const header = await this._setHeaders();
     return this._fetch(url, header);
   };
@@ -219,7 +218,7 @@ console.log("Je suis la bitch")
    */
   _setClinician = async () => {
     const user = await getItem('user');
-    this.clinician = `${user?.first_name} ${user?.last_name}`;
+    this.clinician = user !== null ? `${user.first_name} ${user.last_name}` : null;
   };
 
   /**
