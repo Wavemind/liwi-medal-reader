@@ -17,6 +17,6 @@ import './src/utils/NativeExceptionHandler';
 // eslint-disable-next-line no-unused-vars
 import Prototype from './src/utils/Prototype.native';
 
-Bugsnag.start();
+// Bugsnag.start();
 
 AppRegistry.registerComponent(appName, () => App);

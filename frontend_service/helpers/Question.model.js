@@ -174,6 +174,8 @@ export const questionDisplayValue = (algorithm, mcNode) => {
  * @returns {boolean}
  */
 export const questionBooleanValue = (algorithm, mcNode) => {
-  const { answers } = algorithm.nodes[mcNode.id];
-  return mcNode.answer === Number(Object.keys(answers).first());
+  if (mcNode !== undefined) {
+    const { answers } = algorithm.nodes[mcNode.id];
+    return mcNode.answer === Number(Object.keys(answers).first());
+  }
 };

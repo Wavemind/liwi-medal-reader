@@ -171,9 +171,10 @@ export const nodeFilterBy = (medicalCase, algorithm, filters, operator = 'OR', f
         nodes[nodeId].dd.forEach((dd) => {
           !diagnosticIsExcludedByComplaintCategory(algorithm, dd.id, medicalCase) && dd.conditionValue ? nodes[nodeId].counter++ : null;
         });
+
         // Map trough PS if it is in an another PS itself
         nodes[nodeId].qs.forEach((qs) => {
-          const relatedDiagnostics = nodes[qs.id].dd.some((diagnostic) => !diagnosticIsExcludedByComplaintCategory(algorithm, diagnostic.id, medicalCase));
+          const relatedDiagnostics = nodes[qs.id]?.dd.some((diagnostic) => !diagnosticIsExcludedByComplaintCategory(algorithm, diagnostic.id, medicalCase));
           relatedDiagnostics && qs.conditionValue ? nodes[nodeId].counter++ : null;
         });
       }
