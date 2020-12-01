@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Body, Card, CardItem, Text, View } from 'native-base';
+import * as _ from 'lodash';
 
 import Medicine from '../Medicine';
 import { LiwiTitle2 } from '../../template/layout';
@@ -13,6 +14,8 @@ export default function MedicineSelection(props) {
   const mcFinalDiagnostic = medicalCase.nodes[diagnosesFinalDiagnostic.id];
   const drugs = finalDiagnosticGetDrugs(algorithm, medicalCase, mcFinalDiagnostic);
   const managements = finalDiagnosticGetManagements(algorithm, medicalCase, mcFinalDiagnostic);
+
+  const orderedManagement = _.orderBy(managements, (management) => management.level_of_urgency, ['desc', 'asc']);
 
   return (
     <Card key={`finalDiagnostic_${diagnosesFinalDiagnostic.id}`}>
@@ -51,7 +54,7 @@ export default function MedicineSelection(props) {
             {t('diagnoses:management')}
           </LiwiTitle2>
           {managements.length > 0 ? (
-            managements.map((management) => (
+            orderedManagement.map((management) => (
               <Medicine
                 healthCareType="managements"
                 diagnoseKey={diagnoseKey}
