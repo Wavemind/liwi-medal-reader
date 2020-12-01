@@ -79,6 +79,7 @@ i18n
           mode: 'Mode',
           tablet: 'tablet of',
           d: 'duration',
+          during: 'during',
           admin: 'Administration',
           ml: 'ml',
           of: 'of',
