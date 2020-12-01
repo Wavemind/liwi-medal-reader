@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import { Content, Tab, Tabs, View, Text } from 'native-base';
-
+import * as _ from 'lodash';
 import moment from 'moment';
+
 import { styles } from './Summary.style';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import { LiwiTabStyle } from '../../../template/layout';
@@ -43,9 +44,12 @@ export default class Summary extends React.Component {
       }
     });
 
+    const arrayNodes = _.values(nodes);
+
     this.state = {
       medicalCase: currentMedicalCase,
       nodes,
+      arrayNodes,
     };
   }
 
@@ -54,7 +58,7 @@ export default class Summary extends React.Component {
       app: { t, algorithm },
     } = this.props;
 
-    const { medicalCase, nodes } = this.state;
+    const { medicalCase, nodes, arrayNodes } = this.state;
 
     return (
       <View padding-auto flex>
@@ -90,9 +94,12 @@ export default class Summary extends React.Component {
             textStyle={LiwiTabStyle.textStyle}
             activeTabStyle={LiwiTabStyle.activeTabStyle}
           >
-            <View>
-              <Questions questions={nodes} isReadOnly />
-            </View>
+            <Content
+              style={{flex: 1}}
+              contentContainerStyle={{flex: 1}} // important!
+            >
+              <Questions questions={arrayNodes} isReadOnly />
+            </Content>
           </Tab>
         </Tabs>
       </View>

@@ -60,9 +60,9 @@ export default class Question extends React.Component {
    * @private
    */
   _displayValidation = () => {
-    const { question, patientValueEdit } = this.props;
+    const { question, patientValueEdit, isReadOnly } = this.props;
 
-    if (question.validationType !== null && question.validationMessage !== null && !patientValueEdit) {
+    if (question.validationType !== null && question.validationMessage !== null && !patientValueEdit && !isReadOnly) {
       return (
         <View style={question.validationType === 'error' ? styles.errorRow : styles.warningRow}>
           <Text white>{question.validationMessage}</Text>
@@ -112,6 +112,7 @@ export default class Question extends React.Component {
     const {
       question,
       app: { t, algorithm },
+      isReadOnly,
     } = this.props;
     const { flexQuestion, flexToolTip, flexLabel, unavailableValue } = this.state;
     const currentNode = algorithm.nodes[question.id];
@@ -157,13 +158,13 @@ export default class Question extends React.Component {
         </View>
         {this._displayValidation()}
         <View style={styles.unavailable}>
-          {unavailableAnswer !== undefined ? (
+          {unavailableAnswer !== undefined && !isReadOnly ? (
             <>
               <Text>{t('question:unavailable')} </Text>
               <Unavailable question={question} unavailableAnswer={unavailableAnswer} />
             </>
           ) : null}
-          {displayUnavailable ? <CheckBox style={styles.unavailableBox} onPress={this.handleUnavailable} color={liwiColors.redColor} checked={unavailableValue} /> : null}
+          {displayUnavailable && !isReadOnly ? <CheckBox style={styles.unavailableBox} onPress={this.handleUnavailable} color={liwiColors.redColor} checked={unavailableValue} /> : null}
         </View>
       </View>
     );

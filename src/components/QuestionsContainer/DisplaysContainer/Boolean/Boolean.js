@@ -123,102 +123,98 @@ export default class Boolean extends React.Component {
     let RenderJsx;
 
     // By the type of boolean node
-    switch (category) {
+    if (category === categories.complaintCategory && !isReadOnly) {
       // If this is a chief complain
-      case categories.complaintCategory:
-        if (mod === 0) {
-          styleMargin = {
-            marginTop: margin,
-            marginBottom: 0,
-            marginLeft: margin,
-            marginRight: 0,
-          };
-        } else if (mod === 1) {
-          styleMargin = {
-            marginTop: margin,
-            marginBottom: 0,
-            marginLeft: margin,
-            marginRight: margin,
-          };
-        } else if (mod === 2) {
-          styleMargin = {
-            marginTop: margin,
-            marginBottom: 0,
-            marginLeft: 0,
-            marginRight: margin,
-          };
-        }
-
-        if (value === null) {
-          activeStyle = { backgroundColor: 'transparent' };
-          idOnPress = idYes;
-        } else {
-          idOnPress = value ? idYes : idNo;
-          activeStyle = {
-            borderColor: liwiColors.darkerGreyColor,
-          };
-        }
-
-        concatStyle = {
-          width: sizeButton,
-          flexDirection: 'column',
-          height: sizeButton,
-          elevation: 5,
-          borderRadius: 2,
-          borderColor: liwiColors.darkGreyColor,
-          ...styleMargin,
-          ...activeStyle,
-          justifyContent: 'space-between',
-          backgroundColor: liwiColors.whiteColor,
-          borderWidth: 2,
-          paddingTop: 0,
-          paddingBottom: 0,
+      if (mod === 0) {
+        styleMargin = {
+          marginTop: margin,
+          marginBottom: 0,
+          marginLeft: margin,
+          marginRight: 0,
         };
+      } else if (mod === 1) {
+        styleMargin = {
+          marginTop: margin,
+          marginBottom: 0,
+          marginLeft: margin,
+          marginRight: margin,
+        };
+      } else if (mod === 2) {
+        styleMargin = {
+          marginTop: margin,
+          marginBottom: 0,
+          marginLeft: 0,
+          marginRight: margin,
+        };
+      }
 
-        // Only one button for this type of node
-        RenderJsx = () => (
-          <Button key={index + category} onPress={() => this._handleClick(idOnPress)} style={concatStyle} light>
-            <View complaintCategories>
-              <Text center size-auto>
-                {label}
-              </Text>
-            </View>
-            <View style={styles.bottomInput}>
-              <LeftButton active={value === true} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
-                <Text white={value === true} center>
-                  {t('question:yes')}
-                </Text>
-              </LeftButton>
+      if (value === null) {
+        activeStyle = { backgroundColor: 'transparent' };
+        idOnPress = idYes;
+      } else {
+        idOnPress = value ? idYes : idNo;
+        activeStyle = {
+          borderColor: liwiColors.darkerGreyColor,
+        };
+      }
 
-              <RightButton active={value === false} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
-                <Text center white={value === false}>
-                  {t('question:no')}
-                </Text>
-              </RightButton>
-            </View>
-          </Button>
-        );
-        break;
+      concatStyle = {
+        width: sizeButton,
+        flexDirection: 'column',
+        height: sizeButton,
+        elevation: 5,
+        borderRadius: 2,
+        borderColor: liwiColors.darkGreyColor,
+        ...styleMargin,
+        ...activeStyle,
+        justifyContent: 'space-between',
+        backgroundColor: liwiColors.whiteColor,
+        borderWidth: 2,
+        paddingTop: 0,
+        paddingBottom: 0,
+      };
 
-      default:
-        const leftLabel = Object.values(answers)[0].label;
-        const rightLabel = Object.values(answers)[1].label;
-
-        RenderJsx = () => (
-          <View answer>
+      // Only one button for this type of node
+      RenderJsx = () => (
+        <Button key={index + category} onPress={() => this._handleClick(idOnPress)} style={concatStyle} light>
+          <View complaintCategories>
+            <Text center size-auto>
+              {label}
+            </Text>
+          </View>
+          <View style={styles.bottomInput}>
             <LeftButton active={value === true} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
-              <Text white={value === true} center style={{ fontSize: leftLabel.length > 3 ? 10 : 16 }}>
-                {leftLabel}
+              <Text white={value === true} center>
+                {t('question:yes')}
               </Text>
             </LeftButton>
+
             <RightButton active={value === false} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
-              <Text center white={value === false} style={{ fontSize: rightLabel.length > 3 ? 10 : 16 }}>
-                {rightLabel}
+              <Text center white={value === false}>
+                {t('question:no')}
               </Text>
             </RightButton>
           </View>
-        );
-        break;
+        </Button>
+      );
+    } else {
+      const leftLabel = Object.values(answers)[0].label;
+      const rightLabel = Object.values(answers)[1].label;
+
+      RenderJsx = () => (
+        <View answer>
+          <LeftButton active={value === true} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
+            <Text white={value === true} center style={{ fontSize: leftLabel.length > 3 ? 10 : 16 }}>
+              {leftLabel}
+            </Text>
+          </LeftButton>
+          <RightButton active={value === false} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
+            <Text center white={value === false} style={{ fontSize: rightLabel.length > 3 ? 10 : 16 }}>
+              {rightLabel}
+            </Text>
+          </RightButton>
+        </View>
+      );
     }
 
     return <RenderJsx />;

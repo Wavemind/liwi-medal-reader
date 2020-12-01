@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Picker, View } from 'native-base';
+import { Input, Picker, View } from 'native-base';
 import * as _ from 'lodash';
 import moment from 'moment';
 import { styles } from './Date.style';
@@ -21,7 +21,7 @@ export default class Date extends React.Component {
     let yearValue = null;
 
     if (question.value !== null) {
-      const momentDate = moment(question.value, 'YYYY/MM/DD');
+      const momentDate = moment(question.value, 'YYYY-MM-DD');
       dayValue = momentDate.format('D');
       monthValue = momentDate.format('M');
       yearValue = momentDate.format('YYYY');
@@ -70,7 +70,7 @@ export default class Date extends React.Component {
     const day = dayValue !== null ? dayValue : '1';
     const month = monthValue !== null ? monthValue : '1';
 
-    const birthDate = moment(`${month}/${day}/${yearValue}`);
+    const birthDate = moment(`${yearValue}-${month}-${day}`, 'YYYY-MM-DD');
 
     if (patientValueEdit) {
       if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
@@ -98,25 +98,31 @@ export default class Date extends React.Component {
   };
 
   render() {
-    const { isReadOnly } = this.props;
+    const { isReadOnly, question } = this.props;
     const { dayValue, monthValue, yearValue, pickerDay, pickerMonth, pickerYear } = this.state;
 
     return (
       <View>
-        <Picker mode="dropdown" style={styles.picker} selectedValue={String(dayValue)} onValueChange={(value) => this.onValueChange('dayValue', value)} enable={isReadOnly}>
-          <Picker.Item label={I18n.t('patient:days')} value={null} />
-          {pickerDay}
-        </Picker>
+        {isReadOnly ? (
+          <Input question defaultValue={moment(question.value).format('DD/MM/YYYY')} disabled={isReadOnly} />
+        ) : (
+          <>
+            <Picker mode="dropdown" style={styles.picker} selectedValue={String(dayValue)} onValueChange={(value) => this.onValueChange('dayValue', value)}>
+              <Picker.Item label={I18n.t('patient:days')} value={null} />
+              {pickerDay}
+            </Picker>
 
-        <Picker mode="dropdown" style={styles.picker} selectedValue={String(monthValue)} onValueChange={(value) => this.onValueChange('monthValue', value)} enable={isReadOnly}>
-          <Picker.Item label={I18n.t('patient:months')} value={null} />
-          {pickerMonth}
-        </Picker>
+            <Picker mode="dropdown" style={styles.picker} selectedValue={String(monthValue)} onValueChange={(value) => this.onValueChange('monthValue', value)}>
+              <Picker.Item label={I18n.t('patient:months')} value={null} />
+              {pickerMonth}
+            </Picker>
 
-        <Picker mode="dropdown" style={styles.picker} selectedValue={String(yearValue)} onValueChange={(value) => this.onValueChange('yearValue', value)} enable={isReadOnly}>
-          <Picker.Item label={I18n.t('patient:year')} value={null} />
-          {pickerYear}
-        </Picker>
+            <Picker mode="dropdown" style={styles.picker} selectedValue={String(yearValue)} onValueChange={(value) => this.onValueChange('yearValue', value)}>
+              <Picker.Item label={I18n.t('patient:year')} value={null} />
+              {pickerYear}
+            </Picker>
+          </>
+        )}
       </View>
     );
   }
