@@ -250,7 +250,7 @@ export default class CustomModal extends React.Component {
         <LiwiTitle4>ePOCT+ and ePOCTn Version</LiwiTitle4>
         <Text style={styles.aboutDescription}>XXXX</Text>
 
-        <LiwiTitle4>MEDAL-R Version</LiwiTitle4>
+        <LiwiTitle4>medAL-reader Version</LiwiTitle4>
         <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>Links</LiwiTitle4>
