@@ -91,7 +91,7 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     });
   }
 
-  if (!_.isEqual(medicalCase.metaData.consultation.medicalHistory, questionPerSystem)) {
+  if (!_.isEqual(medicalCase.metaData.consultation.medicalHistoryQuestions, questionPerSystem)) {
     store.dispatch(updateMetaData('consultation', 'medicalHistoryQuestions', questionPerSystem));
 
     const filteredMedicalHistory = questionPerSystem.filter((system) => system.data.length > 0);
