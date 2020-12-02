@@ -62,6 +62,7 @@ export class MedicalCaseModel {
         custom: [], // Add by the input
         additional: {}, // Add even though it's false
         additionalDrugs: {},
+        additionalManagements: {},
         customDrugs: [],
       };
 

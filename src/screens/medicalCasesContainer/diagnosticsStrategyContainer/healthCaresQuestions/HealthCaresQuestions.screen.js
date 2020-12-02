@@ -18,6 +18,7 @@ export default class HealthCaresQuestions extends Component {
     } = this.props;
 
     const questions = healthCaresGetQuestions(algorithm, medicalCase);
+
     return (
       <View>
         {Object.keys(questions).length > 0 ? (

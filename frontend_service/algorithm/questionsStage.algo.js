@@ -338,11 +338,11 @@ export const questionsTests = (algorithm) => {
 };
 
 /**
- * Get questions for health cares
+ * Get health cares
  * @param algorithm
  * @returns {*}
  */
-export const questionsHealthCares = (algorithm) => {
+export const healthCares = (algorithm) => {
   const medicalCase = store.getState();
 
   const healthCares = nodeFilterBy(
@@ -362,7 +362,7 @@ export const questionsHealthCares = (algorithm) => {
     ],
     'OR',
     'array',
-    true
+    false
   );
 
   return healthCares;
