@@ -15,7 +15,6 @@ export default class HealthCares extends Component {
 
     return (
       <Content>
-        <Text>BOOM BOOM</Text>
         <FinalDiagnosticCards medicalCase={medicalCase} />
       </Content>
     );
