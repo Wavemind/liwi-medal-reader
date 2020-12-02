@@ -5,9 +5,9 @@ import { Button, Icon, Input, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
 
 import { styles } from './FinalDiagnosticsList.style';
-import { finalDiagnosticAll } from '../../../frontend_service/helpers/FinalDiagnostic.model';
-import FinalDiagnostic from '../FinalDiagnostic';
-import { liwiColors } from '../../utils/constants';
+import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
+import FinalDiagnostic from '../../../../components/FinalDiagnostic';
+import { liwiColors } from '../../../../utils/constants';
 
 export default class FinalDiagnosticsList extends React.Component {
   state = {
@@ -83,22 +83,27 @@ export default class FinalDiagnosticsList extends React.Component {
 
     const finalDiagnostics = finalDiagnosticAll(algorithm);
     const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
+    const items = algorithm.is_arm_control
+      ? [...finalDiagnostics.included, ...finalDiagnostics.excluded, ...finalDiagnostics.not_defined]
+      : [...finalDiagnostics.excluded, ...finalDiagnostics.not_defined];
 
     return (
       <React.Fragment>
-        <Text customTitle style={styles.noMarginTop}>
-          {t('diagnoses:proposed')} {algorithm.algorithm_name}
-        </Text>
-        {finalDiagnostics.included.length > 0 ? (
-          finalDiagnostics.included.map((finalDiagnostic) => <FinalDiagnostic {...finalDiagnostic} key={finalDiagnostic.id} setDiagnoses={setDiagnoses} />)
-        ) : (
-          <Text italic>{t('diagnoses:no_proposed')}</Text>
+        {algorithm.is_arm_control ? null : (
+          <>
+            <Text customTitle style={styles.noMarginTop}>
+              {t('diagnoses:proposed')} {algorithm.algorithm_name}
+            </Text>
+            {finalDiagnostics.included.length > 0 ? (
+              finalDiagnostics.included.map((finalDiagnostic) => <FinalDiagnostic {...finalDiagnostic} key={finalDiagnostic.id} setDiagnoses={setDiagnoses} />)
+            ) : (
+              <Text italic>{t('diagnoses:no_proposed')}</Text>
+            )}
+          </>
         )}
-
-        <Text customTitle style={styles.marginTop30}>
+        <Text customTitle style={algorithm.is_arm_control ? null : styles.marginTop30}>
           {t('diagnoses:title_additional')}
         </Text>
-
         {Object.keys(diagnoses.additional).length > 0 ? (
           Object.keys(diagnoses.additional).map((additionalKey) => (
             <Text key={`additional-${additionalKey}`} style={styles.additionalText}>
@@ -108,14 +113,12 @@ export default class FinalDiagnosticsList extends React.Component {
         ) : (
           <Text italic>{t('diagnoses:no_additional')}</Text>
         )}
-
         <Text customTitle style={styles.marginTop30}>
           {t('diagnoses:additional')}
         </Text>
-
         <MultiSelect
           hideTags
-          items={[...finalDiagnostics.excluded, ...finalDiagnostics.not_defined]}
+          items={items}
           uniqueKey="id"
           onSelectedItemsChange={this.onSelectedItemsChange}
           selectedItems={selected}
@@ -135,28 +138,31 @@ export default class FinalDiagnosticsList extends React.Component {
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
         />
-
-        <Text customTitle style={styles.marginTop30}>
-          {t('diagnoses:custom')}
-        </Text>
-        <View style={styles.customContent}>
-          <Input question style={styles.flex} value={customDiagnoses} onChange={this._handleCustomInput} />
-          <Button style={styles.width50} onPress={this._addCustom}>
-            <Icon active name="add" type="MaterialIcons" style={styles.iconSize} />
-          </Button>
-        </View>
-        {diagnoses.custom.map((diagnose) => (
-          <View key={diagnose.label} style={styles.customContainer}>
-            <View style={styles.customText}>
-              <Text style={styles.flex} size-auto>
-                {diagnose.label}
-              </Text>
+        {algorithm.is_arm_control ? null : (
+          <>
+            <Text customTitle style={styles.marginTop30}>
+              {t('diagnoses:custom')}
+            </Text>
+            <View style={styles.customContent}>
+              <Input question style={styles.flex} value={customDiagnoses} onChange={this._handleCustomInput} />
+              <Button style={styles.width50} onPress={this._addCustom}>
+                <Icon active name="add" type="MaterialIcons" style={styles.iconSize} />
+              </Button>
             </View>
-            <Button style={styles.width50} onPress={() => this._removeCustom(diagnose)}>
-              <Icon active name="delete" type="MaterialIcons" style={styles.iconSize} />
-            </Button>
-          </View>
-        ))}
+            {diagnoses.custom.map((diagnose) => (
+              <View key={diagnose.label} style={styles.customContainer}>
+                <View style={styles.customText}>
+                  <Text style={styles.flex} size-auto>
+                    {diagnose.label}
+                  </Text>
+                </View>
+                <Button style={styles.width50} onPress={() => this._removeCustom(diagnose)}>
+                  <Icon active name="delete" type="MaterialIcons" style={styles.iconSize} />
+                </Button>
+              </View>
+            ))}
+          </>
+        )}
       </React.Fragment>
     );
   }
