@@ -112,7 +112,7 @@ class Stepper extends React.Component<Props, State> {
     super(props);
     this.state = {
       showBack: props.initialPage > 0,
-      showNext: props.initialPage + 1 !== props.children.length,
+      showNext: props.initialPage + 1 !== props.children.filter(Boolean).length,
       page: props.initialPage,
       width: 0,
       height: 0,
@@ -148,7 +148,7 @@ class Stepper extends React.Component<Props, State> {
 
     // Only call the function if the index is an integer
     if (index === parseInt(index, 10)) {
-      if (index < 0 || index >= React.Children.count(this.props.children)) {
+      if (index < 0 || index >= React.Children.count(this.props.children.filter(Boolean))) {
         return undefined;
       }
       if (this.props.onScrollPage) {
@@ -165,7 +165,7 @@ class Stepper extends React.Component<Props, State> {
    */
   handleBottomStepper = (position: number) => {
     const {app:{algorithm}} = this.props;
-    const numberOfPages: number = this.props.children.length;
+    const numberOfPages: number = this.props.children.filter(Boolean).length;
 
     let route = NavigationService.getCurrentRoute();
     route.params.initialPage = position;
@@ -230,7 +230,7 @@ class Stepper extends React.Component<Props, State> {
     let dots = [];
     const { activeDotStyle, inactiveDotStyle } = styles;
 
-    for (let index = 0; index < this.props.children.length; index++) {
+    for (let index = 0; index < this.props.children.filter(Boolean).length; index++) {
       const isSelected: boolean = this.state.page === index;
       dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index} />);
     }

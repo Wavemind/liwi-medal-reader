@@ -307,6 +307,28 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
+   * Update medicine
+   * @payload type: Text that will be shown in modal
+   * @payload diagnosesKey: the diagnosey identifiant
+   * @payload medicineId: the medecin identifiant
+   * @payload boolean: the agreed / unagree value
+   */
+  @Action(actions.SET_ADDITIONAL_MANAGEMENT)
+  setAdditionalManagement(state, action) {
+    const { management } = action.payload;
+
+    return {
+      ...state,
+      diagnoses: {
+        ...state.diagnoses,
+        additionalManagements: {
+          ...management,
+        },
+      },
+    };
+  }
+
+  /**
    * Update medicine duration
    * @payload id: id of the medicine
    * @payload duration: the new value to update

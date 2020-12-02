@@ -10,6 +10,7 @@ import LiwiLoader from '../../../../utils/LiwiLoader';
 const FinalDiagnosticsList = React.lazy(() => import('../finalDiagnosticsList'));
 const MedicinesFormulations = React.lazy(() => import('../medicinesFormulation'));
 const HealthCaresQuestions = React.lazy(() => import('../healthCaresQuestions'));
+const ArmControlMedicines = React.lazy(() => import('../armControlMedicines'));
 const Stepper = React.lazy(() => import('../../../../components/Stepper'));
 const HealthCares = React.lazy(() => import('../healthCares'));
 const Medicines = React.lazy(() => import('../medicines'));
@@ -36,10 +37,13 @@ export default class DiagnosesStrategy extends Component {
 
     // Remove health cares questions if we're in arm control
     if (algorithm.is_arm_control) {
-      icons.splice(1, 1);
-      icons.splice(2, 1);
-      steps.splice(1, 1);
-      steps.splice(2, 1);
+      icons.splice(1, 1); // Health cares questions
+      icons.splice(2, 1); // Medicines formulations
+      icons.splice(2, 1); // Summary
+
+      steps.splice(1, 1); // Health cares questions
+      steps.splice(2, 1); // Medicines formulations
+      steps.splice(2, 1); // Summary
     }
 
     this.state = {
@@ -95,7 +99,7 @@ export default class DiagnosesStrategy extends Component {
           <View style={styles.pad}>
             <ScrollView>
               <Suspense fallback={<LiwiLoader />}>
-                <Medicines key="Medicines" selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 1 : 2} />
+                {algorithm.is_arm_control ? <ArmControlMedicines key="Medicines" selectedPage={selectedPage} pageIndex={1} /> : <Medicines key="Medicines" selectedPage={selectedPage} pageIndex={2} />}
               </Suspense>
             </ScrollView>
           </View>
@@ -106,11 +110,13 @@ export default class DiagnosesStrategy extends Component {
               </Suspense>
             </View>
           )}
-          <View style={styles.pad}>
-            <Suspense fallback={<LiwiLoader />}>
-              <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 2 : 4} />
-            </Suspense>
-          </View>
+          {algorithm.is_arm_control ? null : (
+            <View style={styles.pad}>
+              <Suspense fallback={<LiwiLoader />}>
+                <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={4} />
+              </Suspense>
+            </View>
+          )}
         </Stepper>
       </Suspense>
     );
