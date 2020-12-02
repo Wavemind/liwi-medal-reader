@@ -78,10 +78,6 @@ export default class Boolean extends React.Component {
       return null;
     }
 
-    if (answer === question.answer) {
-      newAnswer = null;
-    }
-
     if (patientValueEdit) {
       setPatientValue(question.id, newAnswer);
     } else {

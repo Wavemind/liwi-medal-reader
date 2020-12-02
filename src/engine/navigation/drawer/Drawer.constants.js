@@ -110,3 +110,71 @@ export const renderingDrawerItems = [
     t: i18n.t('menu:strategy'),
   },
 ];
+
+// routing render by object, more clean
+export const armControlRenderingDrawerItems = [
+  {
+    type: 'categorie',
+    initialPage: 0,
+    name: 'PatientUpsert',
+    routeName: 'PatientUpsert',
+    t: i18n.t('menu:patientUpsert'),
+  },
+  {
+    type: 'categorie',
+    initialPage: 0,
+    name: 'Triage',
+    routeName: 'Triage',
+    t: i18n.t('menu:triage'),
+  },
+  // {
+  //   type: 'path',
+  //   initialPage: 0,
+  //   routeName: 'Triage',
+  // },
+  // {
+  //   type: 'item',
+  //   initialPage: 0,
+  //   name: 'Triage',
+  //   routeName: 'Triage',
+  //   t: i18n.t('menu:first_look_assessments'),
+  // },
+  {
+    type: 'path',
+    initialPage: 0,
+    routeName: 'Triage',
+  },
+  {
+    type: 'item',
+    initialPage: 0,
+    name: 'Triage',
+    routeName: 'Triage',
+    t: i18n.t('menu:complaint_categories'),
+  },
+  {
+    type: 'path',
+    initialPage: 1,
+    routeName: 'Triage',
+  },
+  {
+    type: 'item',
+    initialPage: 1,
+    name: 'Triage',
+    routeName: 'Triage',
+    t: i18n.t('menu:basic_measurements'),
+  },
+  {
+    type: 'categorie',
+    initialPage: 0,
+    name: 'Tests',
+    routeName: 'Tests',
+    t: i18n.t('menu:tests'),
+  },
+  {
+    type: 'categorie',
+    initialPage: 0,
+    name: 'DiagnosticsStrategy',
+    routeName: 'DiagnosticsStrategy',
+    t: i18n.t('menu:strategy'),
+  },
+];

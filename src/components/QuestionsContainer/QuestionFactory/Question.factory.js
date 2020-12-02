@@ -128,7 +128,6 @@ export default class Question extends React.Component {
     // Unavailable for vital sign and basic measurements
     const displayUnavailable =
       (currentNode.unavailable && (currentNode.category === categories.basicMeasurement || currentNode.category === categories.vitalSignAnthropometric)) || question.unavailableValue;
-
     return (
       <View
         style={[
