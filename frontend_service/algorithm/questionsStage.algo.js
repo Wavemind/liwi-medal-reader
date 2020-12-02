@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import moment from 'moment';
 import { store } from '../store';
-import { categories, stages, systemsOrder } from '../constants';
+import { categories, stages } from '../constants';
 import { updateMetaData, setAnswer } from '../actions/creators.actions';
 import { nodeFilterBy } from '../helpers/Node.model';
 import { questionBooleanValue, questionIsDisplayedInTriage } from '../helpers/Question.model';
@@ -138,6 +138,7 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
     true
   );
 
+  const questions = vitalSignQuestions.concat(physicalExamQuestions);
   const systemOrders = algorithm.mobile_config.systems_order;
 
   const questionPerSystem = [];
@@ -159,12 +160,12 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   });
 
   if (medicalCase.metaData.consultation.physicalExam.length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
-    physicalExamQuestions.forEach((question) => {
+    questions.forEach((question) => {
       const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
       questionPerSystem[index].data.push(question);
     });
   } else {
-    physicalExamQuestions.forEach((question) => {
+    questions.forEach((question) => {
       // Add question in 'follow_up_questions' system if his question's system was already answered
       if (
         (medicalCase.metaData.consultation.physicalExam.length > 0 && medicalCase.metaData.consultation.physicalExam.includes(question.id)) ||
