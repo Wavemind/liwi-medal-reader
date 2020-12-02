@@ -56,6 +56,7 @@ export const medicationForms = {
   powder_for_injection: 'powder_for_injection',
   patch: 'patch',
   cream: 'cream',
+  pessary: 'pessary',
   ointment: 'ointment',
   gel: 'gel',
   spray: 'spray',

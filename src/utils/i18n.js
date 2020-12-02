@@ -104,6 +104,7 @@ i18n
           powder_for_injection: 'Powder for injection',
           patch: 'Patch',
           cream: 'Cream',
+          pessary: 'Pessary',
           ointment: 'Ointment',
           gel: 'Gel',
           spray: 'Spray',
