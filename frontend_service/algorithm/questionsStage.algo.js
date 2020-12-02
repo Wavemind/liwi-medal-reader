@@ -48,8 +48,7 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     true
   );
 
-  // TODO: MUST BE REMOVE IN NEXT APK
-  const systemOrders = algorithm.mobile_config.systems_orders !== undefined ? algorithm.mobile_config.systems_orders : systemsOrder;
+  const systemOrders = algorithm.mobile_config.systems_order;
 
   const questionPerSystem = [];
   systemOrders.forEach((system) => {
@@ -142,8 +141,7 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
     true
   );
 
-  // TODO: MUST BE REMOVE IN NEXT APK
-  const systemOrders = algorithm.mobile_config.systems_orders !== undefined ? algorithm.mobile_config.systems_orders : systemsOrder;
+  const systemOrders = algorithm.mobile_config.systems_order;
 
   const questionPerSystem = [];
   systemOrders.forEach((system) => {
