@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Content, Text } from 'native-base';
+import { Content } from 'native-base';
 
 import FinalDiagnosticCards from '../../../../components/FinalDiagnosticCards';
 
