@@ -99,4 +99,6 @@ export const styles = StyleSheet.create({
   },
 
   image: { width: screenWidth * 0.8, height: screenWidth },
+
+  italic: { fontStyle: 'italic' },
 });
