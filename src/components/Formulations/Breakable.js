@@ -8,12 +8,15 @@ import { styles } from './styles';
 
 export default function Breakable(drug, node, drugDose) {
   //  12 hours for 5 days = recurrence for instance in diagnoses .duration
-  if (!drugDose.by_age) {
+  let num = null;
+  let fractionString = ' ';
+
+  if (drugDose.doseResult !== null) {
     const unit = drugDose.doseResult / drugDose.breakable;
-    const num = Math.floor(unit);
+    num = Math.floor(unit);
 
     const rest = drugDose.doseResult % drugDose.breakable;
-    let fractionString = ' ';
+
     if (rest !== 0) {
       const r = toReadableFraction(rest / drugDose.breakable);
       if (r.numerator === 1 && r.denominator === 2) {
