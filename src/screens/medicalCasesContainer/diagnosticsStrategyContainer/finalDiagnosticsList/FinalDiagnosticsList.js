@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { Button, Icon, Input, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
-
 import moment from 'moment';
+
 import { styles } from './FinalDiagnosticsList.style';
 import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 import FinalDiagnostic from '../../../../components/FinalDiagnostic';
