@@ -109,11 +109,10 @@ export const questionCalculateReference = (algorithm, medicalCase, mcNode) => {
   }
 
   // If X and Y means question is not answered + check if answer is in the scope of the reference table
-  // TODO: Fixe Z issue when it's null
   if (reference !== null && x !== null && y !== null && x in reference) {
-    if (z === undefined) {
+    if (this.reference_table_z_id === null) {
       value = findValueInReferenceTable(reference[x], y);
-    } else if (String(y) in reference[x]) {
+    } else if (String(y) in reference[x] && z !== null) {
       value = findValueInReferenceTable(reference[x][y], z);
     }
   }
