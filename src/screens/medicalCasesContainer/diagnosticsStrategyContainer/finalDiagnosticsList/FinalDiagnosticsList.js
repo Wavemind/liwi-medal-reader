@@ -9,9 +9,6 @@ import { styles } from './FinalDiagnosticsList.style';
 import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 import FinalDiagnostic from '../../../../components/FinalDiagnostic';
 import { liwiColors } from '../../../../utils/constants';
-import { store } from '../../../../../frontend_service/store';
-import { categories } from '../../../../../frontend_service/constants';
-import { setAnswer } from '../../../../../frontend_service/actions/creators.actions';
 
 export default class FinalDiagnosticsList extends React.Component {
   state = {
