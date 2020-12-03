@@ -116,7 +116,7 @@ export default class Medicines extends Component {
 
       Object.keys(diagnoses.additional[key].managements).forEach((managementId) => {
         filteredHealthCares = _.filter(filteredHealthCares, (item) => {
-          if (diagnoses.additional[key].drugs[managementId].agreed === true) {
+          if (diagnoses.additional[key].managements[managementId].agreed === true) {
             return item.id !== Number(managementId);
           }
           return true;

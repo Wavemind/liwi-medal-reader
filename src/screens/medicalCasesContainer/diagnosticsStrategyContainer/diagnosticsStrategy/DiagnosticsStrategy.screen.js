@@ -55,10 +55,16 @@ export default class DiagnosesStrategy extends Component {
   render() {
     const {
       app: { algorithm, t },
+      medicalCase,
       navigation,
     } = this.props;
     const { icons, steps } = this.state;
     const selectedPage = navigation.getParam('initialPage');
+
+    // Need this shit when closing a medical otherwise it crash
+    if (medicalCase.id === undefined) {
+      return null;
+    }
 
     return (
       <Suspense fallback={<LiwiLoader />}>

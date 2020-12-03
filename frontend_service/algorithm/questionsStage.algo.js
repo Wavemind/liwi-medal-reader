@@ -92,7 +92,12 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   }
 
   if (!_.isEqual(medicalCase.metaData.consultation.medicalHistoryQuestions, questionPerSystem)) {
+    const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
+
     store.dispatch(updateMetaData('consultation', 'medicalHistoryQuestions', questionPerSystem));
+
+    // Used to validate step
+    store.dispatch(updateMetaData('consultation', 'medicalHistory', newQuestions));
 
     const filteredMedicalHistory = questionPerSystem.filter((system) => system.data.length > 0);
     return sortQuestions(filteredMedicalHistory);
@@ -183,7 +188,12 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   }
 
   if (!_.isEqual(medicalCase.metaData.consultation.physicalExamQuestions, questionPerSystem)) {
+    const newQuestions = questions.map(({ id }) => id);
+
     store.dispatch(updateMetaData('consultation', 'physicalExamQuestions', questionPerSystem));
+
+    // Used to validate step
+    store.dispatch(updateMetaData('consultation', 'physicalExam', newQuestions));
 
     const filteredQuestionPerSystem = questionPerSystem.filter((system) => system.data.length > 0);
     return sortQuestions(filteredQuestionPerSystem);
