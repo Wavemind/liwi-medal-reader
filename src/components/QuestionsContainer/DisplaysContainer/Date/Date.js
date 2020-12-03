@@ -66,25 +66,27 @@ export default class Date extends React.Component {
       patientValueEdit,
     } = this.props;
 
-    const birthDateQuestion = question;
-    const day = dayValue !== null ? dayValue : '1';
-    const month = monthValue !== null ? monthValue : '1';
+    if (yearValue !== null) {
+      const birthDateQuestion = question;
+      const day = dayValue !== null ? dayValue : '1';
+      const month = monthValue !== null ? monthValue : '1';
 
-    const birthDate = moment(`${yearValue}-${month}-${day}`, 'YYYY-MM-DD');
+      const birthDate = moment(`${yearValue}-${month}-${day}`, 'YYYY-MM-DD');
 
-    if (patientValueEdit) {
-      if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
-        setPatientValue(birthDateQuestion.id, moment(birthDate).format());
+      if (patientValueEdit) {
+        if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
+          setPatientValue(birthDateQuestion.id, moment(birthDate).format());
+        } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
+          setPatientValue(birthDateQuestion.id, null);
+        }
+      } else if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
+        setAnswer(algorithm, birthDateQuestion.id, moment(birthDate).format());
       } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
-        setPatientValue(birthDateQuestion.id, null);
+        setAnswer(algorithm, birthDateQuestion.id, null);
+        this.setState({ dayValue: null, monthValue: null, yearValue: null });
       }
-    } else if (birthDate !== birthDateQuestion.value && birthDate.isValid() && birthDate < moment()) {
-      setAnswer(algorithm, birthDateQuestion.id, moment(birthDate).format());
-    } else if ((birthDateQuestion.value !== null && !birthDate.isValid()) || birthDate >= moment()) {
-      setAnswer(algorithm, birthDateQuestion.id, null);
-      this.setState({ dayValue: null, monthValue: null, yearValue: null });
+      set('answeredQuestionId', question.id);
     }
-    set('answeredQuestionId', question.id);
   };
 
   /**
