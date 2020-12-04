@@ -23,13 +23,21 @@ export default class Triage extends React.Component {
     NavigationService.setParamsAge(algorithm, 'Triage');
 
     this.state = {
-      complaintCategories: questionsComplaintCategory(algorithm),
+      complaintCategories: [],
     };
+  }
+
+  componentDidMount() {
+    const {
+      app: { algorithm },
+    } = this.props;
+
+    this.setState({ complaintCategories: questionsComplaintCategory(algorithm) });
   }
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithm },
       navigation,
     } = this.props;
 
@@ -58,8 +66,8 @@ export default class Triage extends React.Component {
           steps={[t('triage:chief'), t('triage:basic_measurement')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
-          nextStage="Consultation"
-          nextStageString={t('medical_case:consultation')}
+          nextStage={algorithm.is_arm_control ? 'Tests' : 'Consultation'}
+          nextStageString={algorithm.is_arm_control ? t('medical_case:test') : t('medical_case:consultation')}
         >
           {/* <View style={styles.pad}> */}
           {/*  {focus === 'didFocus' || focus === 'willFocus' ? ( */}

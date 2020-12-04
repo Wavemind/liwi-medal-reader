@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
   cardTitle: { flex: 1, fontSize: 18 },
   noRightMargin: { marginRight: 0 },
   drugContainer: { flex: 1, flexDirection: 'row' },
-  tooltipButton: { flex: 1, alignSelf: 'center', alignItems: 'flex-end' },
+  tooltipButton: { flex: 0.1, alignSelf: 'center', alignItems: 'flex-end' },
   tooltipButtonFinalDiagnostic: { flex: 0.1, alignSelf: 'center', alignItems: 'flex-end' },
+  formulationContainer: { flex: 0.9 },
 });

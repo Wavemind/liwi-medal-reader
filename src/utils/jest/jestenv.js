@@ -152,6 +152,7 @@ jest.mock('../i18n.js', () => {
 });
 
 jest.mock('react-native-tiny-toast', () => {});
+jest.mock('react-native-zip-archive', () => {});
 jest.mock('react-native-safe-modules', () => {});
 jest.mock('lottie-react-native', () => {});
 jest.mock('native-base', () => {});

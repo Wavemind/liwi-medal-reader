@@ -56,6 +56,7 @@ export const medicationForms = {
   powder_for_injection: 'powder_for_injection',
   patch: 'patch',
   cream: 'cream',
+  pessary: 'pessary',
   ointment: 'ointment',
   gel: 'gel',
   spray: 'spray',
@@ -103,26 +104,6 @@ export const systems = {
   vital_sign: 'Vital Signs',
   null: 'No assigned system',
 };
-
-export const systemsOrder = [
-  'chronic_conditions',
-  'comorbidities',
-  'complementary_medical_history',
-  'digestive',
-  'ear_nose_mouth_throat',
-  'exposures',
-  'general',
-  'integumentary',
-  'prevention',
-  'prophylaxis',
-  'respiratory_circulation',
-  'muscular_skeletal',
-  'nervous',
-  'urinary_reproductive',
-  'visual',
-  'vital_sign',
-  'null',
-];
 
 export const categories = {
   assessment: 'assessment_test',

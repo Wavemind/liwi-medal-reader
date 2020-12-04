@@ -26,7 +26,6 @@ export default class Consultation extends React.Component {
       navigation,
       medicalCase,
     } = this.props;
-
     const selectedPage = navigation.getParam('initialPage');
 
     return (

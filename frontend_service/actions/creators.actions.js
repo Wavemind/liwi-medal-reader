@@ -62,6 +62,13 @@ export const setAdditionalMedicine = (medicines) => ({
   },
 });
 
+export const setAdditionalManagement = (management) => ({
+  type: actions.SET_ADDITIONAL_MANAGEMENT,
+  payload: {
+    management,
+  },
+});
+
 export const setFormulationSelected = (diagnoseId, formulation, type, drugId) => ({
   type: actions.SET_FORMULATION_SELECTED,
   payload: {

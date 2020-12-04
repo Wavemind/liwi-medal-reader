@@ -9,7 +9,7 @@ import CustomMedicine from '../../../../components/CustomMedicine';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Medicines.style';
 import MedicineSelection from '../../../../components/MedicineSelection';
-import { questionsHealthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
+import { healthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { finalDiagnosticCalculateCondition } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 
 export default class Medicines extends Component {
@@ -25,7 +25,10 @@ export default class Medicines extends Component {
   onSelectedItemsChange = (selectedItems) => {
     const {
       setAdditionalMedicine,
-      medicalCase: { nodes, diagnostics },
+      medicalCase: { nodes },
+      app: {
+        algorithm: { diagnostics },
+      },
     } = this.props;
 
     const objMedicine = {};
@@ -72,7 +75,7 @@ export default class Medicines extends Component {
       app: { t, algorithm },
     } = this.props;
 
-    const allHealthCares = questionsHealthCares(algorithm);
+    const allHealthCares = healthCares(algorithm);
     let filteredHealthCares = allHealthCares;
 
     const selected = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
@@ -113,7 +116,7 @@ export default class Medicines extends Component {
 
       Object.keys(diagnoses.additional[key].managements).forEach((managementId) => {
         filteredHealthCares = _.filter(filteredHealthCares, (item) => {
-          if (diagnoses.additional[key].drugs[managementId].agreed === true) {
+          if (diagnoses.additional[key].managements[managementId].agreed === true) {
             return item.id !== Number(managementId);
           }
           return true;

@@ -29,18 +29,28 @@ export default class MedicinesFormulations extends Component {
   /**
    * Display measurement unit
    * @param type
+   * @param drugDose
    * @returns {string}
    */
-  displayMedicationForm = (type) => {
+  displayMedicationForm = (type, drugDose) => {
+    const {
+      app: { t },
+    } = this.props;
+
     switch (type) {
       case medicationForms.syrup:
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
       case medicationForms.solution:
-        return 'ml';
+        return `ml ${t('medication_form:per_administration')}`;
       case medicationForms.tablet:
       case medicationForms.capsule:
-        return 'mg';
+        if (drugDose.dose_form !== null) {
+          return `mg (${drugDose.dose_form}mg ${t('medication_form:per')} ${t(`medication_form:${type}`).toLowerCase()})`;
+        } else {
+          return `mg ${t('medication_form:per_administration')}`;
+        }
+
       default:
         return ' dose';
     }
@@ -102,13 +112,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return (
-                <Picker.Item
-                  key={f}
-                  label={`${t(`medication_form:${f.medication_form}`)}: ${string} ${isPossible ? this.displayMedicationForm(f.medication_form) : ''}`}
-                  value={isPossible ? index : false}
-                />
-              );
+              return <Picker.Item key={f} label={`${string} ${isPossible ? this.displayMedicationForm(f.medication_form, preCalculed) : ''}`} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
@@ -137,7 +141,10 @@ export default class MedicinesFormulations extends Component {
             <>
               {this._renderFormulation(drugs[drugId], selected, onSelect)}
               {selected !== null && administrationRouteCategories.includes(currentDrug.formulations[selected].administration_route_category) ? (
-                <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
+                <>
+                  <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
+                  <Text>{currentDrug.formulations[selected].description !== null ? currentDrug.formulations[selected].description : ''}</Text>
+                </>
               ) : null}
             </>
           );
