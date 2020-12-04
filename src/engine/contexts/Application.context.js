@@ -193,7 +193,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     await this.setState({ [prop]: value });
   };
 
-  // TODO: Check useness of this method and lockSession method
   /**
    * Logout user
    * @returns {Promise<void>}
@@ -207,7 +206,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // TODO: Check useness of this method and logout method
   /**
    * Lock session
    * @returns {Promise<void>}
