@@ -226,7 +226,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   /**
-   * Fetch group and algorithm from medal-c
+   * Fetch group and algorithm from medAL-creator
    * @returns {Promise<boolean>}
    */
   setInitialData = async () => {
@@ -275,7 +275,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   /**
-   * Authenticate user and then register device in medal-c
+   * Authenticate user and then register device in medAL-creator
    * @param { string } email - User email
    * @param { string } password - User password
    * @returns {Promise<boolean>}

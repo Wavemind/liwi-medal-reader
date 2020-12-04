@@ -172,7 +172,7 @@ i18n
         emergency: {
           title: 'Emergency assistance',
           description: 'This page has been created to provide emergency assistance in case of need',
-          description_warning: 'if the child is unconscious or unstable, click the emergency button to provide urgent care now',
+          description_warning: 'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergent care now',
           go_to_emergency: 'Go to emergency',
           back: 'Back to home',
         },
@@ -388,7 +388,7 @@ i18n
           respiratory_rate: 'Respiratory rate',
         },
         new_session: {
-          title: 'Connect to main server',
+          title: 'Connect to medAL-creator',
           unlock_session: 'Local login',
           connect: 'Login',
         },
@@ -401,7 +401,7 @@ i18n
           assign: 'An administrator will assign this device to your health facility',
           code: 'Code',
           unlock: 'Login',
-          title: 'Sync with server',
+          title: 'Sync with medAL-creator',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
           logout: 'logout',

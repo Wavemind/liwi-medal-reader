@@ -31,7 +31,7 @@ export const getAlgorithm = async (json_version) => {
 };
 
 /**
- * Auth user to medal-c
+ * Auth user to medAL-creator
  * @param { string } email - User email
  * @param { string } password - User password
  * @returns {Promise<{access_token: any, uid: any, client: any, expiry: any}|null>}
@@ -58,7 +58,7 @@ export const auth = async (email, password) => {
 };
 
 /**
- * Register device in Medal C
+ * Register device in medAL-creator
  * @returns {Promise<boolean>}
  */
 export const registerDevice = async () => {
