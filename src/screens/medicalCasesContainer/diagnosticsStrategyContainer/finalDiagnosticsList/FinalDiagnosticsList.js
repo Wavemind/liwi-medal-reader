@@ -74,6 +74,11 @@ export default class FinalDiagnosticsList extends React.Component {
     this.setState({ customDiagnoses: '' });
   };
 
+  /**
+   * Filters finalDiagnostics by neoNat or not neoNat
+   * @param finalDiagnostics
+   * @returns {Array<T>}
+   */
   filterByNeonat = (finalDiagnostics) => {
     const {
       app: { algorithm },
