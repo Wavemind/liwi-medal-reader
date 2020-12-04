@@ -12,7 +12,7 @@ export default class FinalDiagnostic extends React.Component {
       medicalCase: { diagnoses },
     } = this.props;
 
-    return diagnoses.proposed[id]?.agreed !== nextProps.medicalCase.diagnoses.proposed[id]?.agreed;
+    return diagnoses?.proposed[id]?.agreed !== nextProps.medicalCase?.diagnoses?.proposed[id]?.agreed;
   }
 
   _handleClick = (bool) => {

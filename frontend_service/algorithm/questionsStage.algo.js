@@ -37,10 +37,13 @@ const removeQuestions = (medicalCase, questionPerSystem, newQuestions, view) => 
  * @returns {*}
  */
 const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, questionPerSystem, systemOrders, algorithm, view) => {
-  if (medicalCase.metaData.consultation[view].length === 0 || algorithm.nodes[answeredQuestionId]?.system === undefined) {
+  if (medicalCase.metaData.consultation[view].length === 0) {
     questions.forEach((question) => {
       const index = questionPerSystem.findIndex((system) => system.title === String(question.system));
-      questionPerSystem[index].data.push(question);
+      // TODO: MUST BE REMOVED WHEN ALL SYSTEM IS SET FOR QUESTIONS
+      if (index !== -1) {
+        questionPerSystem[index].data.push(question);
+      }
     });
   } else {
     questions.forEach((question) => {
@@ -52,12 +55,15 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
           systemOrders.indexOf(question.system) >= systemOrders.indexOf(algorithm.nodes[answeredQuestionId].system))
       ) {
         const systemIndex = questionPerSystem.findIndex((system) => system.title === String(question.system));
-        const questionIndex = questionPerSystem[systemIndex].data.findIndex((q) => q.id === question.id);
 
-        if (questionIndex !== -1) {
-          questionPerSystem[systemIndex].data[questionIndex] = question;
-        } else {
-          questionPerSystem[systemIndex].data.push(question);
+        // TODO: MUST BE REMOVED WHEN ALL SYSTEM IS SET FOR QUESTIONS
+        if (systemIndex !== -1) {
+          const questionIndex = questionPerSystem[systemIndex].data.findIndex((q) => q.id === question.id);
+          if (questionIndex !== -1) {
+            questionPerSystem[systemIndex].data[questionIndex] = question;
+          } else {
+            questionPerSystem[systemIndex].data.push(question);
+          }
         }
       } else {
         const systemIndex = questionPerSystem.findIndex((system) => system.title === 'follow_up_questions');

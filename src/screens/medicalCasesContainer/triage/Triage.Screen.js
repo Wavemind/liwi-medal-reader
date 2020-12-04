@@ -28,15 +28,6 @@ export default class Triage extends React.Component {
     };
   }
 
-  shouldComponentUpdate(nextProps) {
-    const {
-      app: { answeredQuestionId },
-    } = this.props;
-    const { firstRender } = this.state;
-
-    return NavigationService.getCurrentRoute().routeName === 'Triage' && (answeredQuestionId !== nextProps.app.answeredQuestionId || firstRender);
-  }
-
   componentDidMount() {
     const {
       app: { algorithm },

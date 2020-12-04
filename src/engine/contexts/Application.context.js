@@ -190,7 +190,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @returns {Promise<void>}
    */
   setValState = async (prop: any, value: any) => {
-    console.log("Je fait un set state ?", prop, value)
     await this.setState({ [prop]: value });
   };
 
