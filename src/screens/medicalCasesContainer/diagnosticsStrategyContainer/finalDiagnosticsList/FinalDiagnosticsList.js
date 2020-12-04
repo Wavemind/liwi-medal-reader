@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Button, Icon, Input, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
+import moment from 'moment';
 
 import { styles } from './FinalDiagnosticsList.style';
 import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
@@ -73,6 +74,38 @@ export default class FinalDiagnosticsList extends React.Component {
     this.setState({ customDiagnoses: '' });
   };
 
+  /**
+   * Filters finalDiagnostics by neoNat or not neoNat
+   * @param finalDiagnostics
+   * @returns {Array<T>}
+   */
+  filterByNeonat = (finalDiagnostics) => {
+    const {
+      app: { algorithm },
+      medicalCase,
+    } = this.props;
+
+    const items = algorithm.is_arm_control
+      ? [...finalDiagnostics.included, ...finalDiagnostics.excluded, ...finalDiagnostics.not_defined]
+      : [...finalDiagnostics.excluded, ...finalDiagnostics.not_defined];
+
+    const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
+    const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
+
+    return items
+      .filter((item) => {
+        if (days <= 60 && algorithm.nodes[item.cc].is_neonat) {
+          return true;
+        }
+        if (days > 60 && !algorithm.nodes[item.cc].is_neonat) {
+          return true;
+        }
+      })
+      .sort((a, b) => {
+        return a.label > b.label ? 1 : b.label > a.label ? -1 : 0;
+      });
+  };
+
   render() {
     const {
       setDiagnoses,
@@ -83,9 +116,7 @@ export default class FinalDiagnosticsList extends React.Component {
 
     const finalDiagnostics = finalDiagnosticAll(algorithm);
     const selected = Object.keys(diagnoses.additional).map((additionalKey) => diagnoses.additional[additionalKey].id);
-    const items = algorithm.is_arm_control
-      ? [...finalDiagnostics.included, ...finalDiagnostics.excluded, ...finalDiagnostics.not_defined]
-      : [...finalDiagnostics.excluded, ...finalDiagnostics.not_defined];
+    const items = this.filterByNeonat(finalDiagnostics);
 
     return (
       <React.Fragment>
