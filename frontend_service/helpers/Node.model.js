@@ -84,7 +84,7 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       break;
   }
 
-  // Validation for integer and float type based on Medal-C config
+  // Validation for integer and float type based on medAL-creator config
   if (currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) {
     if (value !== null && (value < currentNode.min_value_warning || value > currentNode.max_value_warning)) {
       // Warning

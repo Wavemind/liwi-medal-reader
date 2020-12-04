@@ -388,7 +388,7 @@ i18n
           respiratory_rate: 'Respiratory rate',
         },
         new_session: {
-          title: 'Connect to main server',
+          title: 'Connect to medAL-creator',
           unlock_session: 'Local login',
           connect: 'Login',
         },
@@ -401,7 +401,7 @@ i18n
           assign: 'An administrator will assign this device to your health facility',
           code: 'Code',
           unlock: 'Login',
-          title: 'Sync with server',
+          title: 'Sync with medAL-creator',
           new_session: 'Create new session',
           sync_group: 'Synchronize',
           logout: 'logout',
