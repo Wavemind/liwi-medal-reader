@@ -190,10 +190,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    * @returns {Promise<void>}
    */
   setValState = async (prop: any, value: any) => {
+    console.log("Je fait un set state ?", prop, value)
     await this.setState({ [prop]: value });
   };
 
-  // TODO: Check useness of this method and lockSession method
   /**
    * Logout user
    * @returns {Promise<void>}
@@ -207,7 +207,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // TODO: Check useness of this method and logout method
   /**
    * Lock session
    * @returns {Promise<void>}

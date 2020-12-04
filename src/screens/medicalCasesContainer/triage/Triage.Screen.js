@@ -24,7 +24,17 @@ export default class Triage extends React.Component {
 
     this.state = {
       complaintCategories: [],
+      firstRender: true,
     };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const {
+      app: { answeredQuestionId },
+    } = this.props;
+    const { firstRender } = this.state;
+
+    return NavigationService.getCurrentRoute().routeName === 'Triage' && (answeredQuestionId !== nextProps.app.answeredQuestionId || firstRender);
   }
 
   componentDidMount() {
@@ -32,7 +42,7 @@ export default class Triage extends React.Component {
       app: { algorithm },
     } = this.props;
 
-    this.setState({ complaintCategories: questionsComplaintCategory(algorithm) });
+    this.setState({ complaintCategories: questionsComplaintCategory(algorithm), firstRender: false });
   }
 
   render() {
