@@ -132,7 +132,7 @@ export default class CustomModal extends React.Component {
       });
       return <Text style={styles.description}>{innerComponents}</Text>;
     }
-    return description;
+    return <Text style={styles.description}>{description}</Text>;
   };
 
   /**
