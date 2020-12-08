@@ -1,12 +1,10 @@
 // @flow
 
 import * as React from 'react';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Col, Text, View } from 'native-base';
 import uuid from 'react-native-uuid';
-import Autocomplete from 'react-native-autocomplete-input';
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
@@ -26,11 +24,21 @@ export default class PatientUpsert extends React.Component {
     errors: {},
     patient: null,
     loading: true,
+    firstRender: true,
   };
 
   constructor(props) {
     super(props);
     this.init();
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const {
+      app: { answeredQuestionId },
+    } = this.props;
+    const { firstRender } = this.state;
+
+    return NavigationService.getCurrentRoute().routeName === 'PatientUpsert' && (answeredQuestionId !== nextProps.app.answeredQuestionId || firstRender);
   }
 
   async init() {
@@ -78,6 +86,7 @@ export default class PatientUpsert extends React.Component {
     this.setState({
       patient,
       loading: false,
+      firstRender: false,
     });
   }
 

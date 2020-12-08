@@ -1,30 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import { NavigationScreenProps } from 'react-navigation';
+import { ScrollView, View } from 'react-native';
 import { styles } from './Drawer.style';
-import type { StateApplicationContext } from '../../contexts/Application.context';
 import NavigationService from '../Navigation.service';
 import { BottomButtonsDrawer, CategorieButton, HeaderButtonsDrawer, ItemButton, PathBar } from './Drawer.item.navigation';
 import { displayNotification } from '../../../utils/CustomToast';
 import { armControlRenderingDrawerItems, renderingDrawerItems } from './Drawer.constants';
 import { liwiColors } from '../../../utils/constants';
 
-type Props = NavigationScreenProps & {};
-type State = StateApplicationContext & {};
-
-// TODO: REFACTOR THIS SHIT
-// TODO: REFACTOR THIS SHIT
-// TODO: REFACTOR THIS SHIT
-// TODO: REFACTOR THIS SHIT
-
-export default class Drawer extends Component<Props, State> {
+export default class Drawer extends Component {
   static defaultProps = {
     isDrawer: false,
-  };
-
-  state = {
-    refParent: null,
   };
 
   _setScrollPosition = (y) => {
@@ -45,7 +31,7 @@ export default class Drawer extends Component<Props, State> {
     } = this.props;
 
     // Get current route from navigation
-    const r = NavigationService.getCurrentRoute();
+    const currentRoute = NavigationService.getCurrentRoute();
 
     // Is redux ready, for disabled buttons
     const isMedicalCaseLoaded = medicalCase.id !== undefined && !medicalCase?.isNewCase;
@@ -70,7 +56,7 @@ export default class Drawer extends Component<Props, State> {
       }
     };
 
-    if (r === null) {
+    if (currentRoute === null) {
       return null;
     }
 
@@ -80,10 +66,10 @@ export default class Drawer extends Component<Props, State> {
 
       return {
         categorie: (
-          <CategorieButton _setScrollPosition={this._setScrollPosition} key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />
+          <CategorieButton _setScrollPosition={this._setScrollPosition} key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={currentRoute} {...item} isDrawer={isDrawer} />
         ),
-        item: <ItemButton key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
-        path: <PathBar key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={r} {...item} isDrawer={isDrawer} />,
+        item: <ItemButton key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={currentRoute} {...item} isDrawer={isDrawer} />,
+        path: <PathBar key={`${key + i}-enum`} isMedicalCaseLoaded={isMedicalCaseLoaded} navigate={navigate} r={currentRoute} {...item} isDrawer={isDrawer} />,
       }[key];
     };
 
@@ -111,7 +97,7 @@ export default class Drawer extends Component<Props, State> {
             flex: 1,
           }}
         >
-          {isDrawer && <HeaderButtonsDrawer r={r} />}
+          {isDrawer && <HeaderButtonsDrawer r={currentRoute} />}
           {renderDrawerButtons}
           <BottomButtonsDrawer medicalCase={medicalCase} isDrawer={isDrawer} />
         </View>

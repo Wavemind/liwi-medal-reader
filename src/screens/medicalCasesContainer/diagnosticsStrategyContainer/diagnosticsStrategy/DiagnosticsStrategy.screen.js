@@ -52,6 +52,10 @@ export default class DiagnosesStrategy extends Component {
     };
   }
 
+  shouldComponentUpdate() {
+    return NavigationService.getCurrentRoute().routeName === 'DiagnosticsStrategy';
+  }
+
   render() {
     const {
       app: { algorithm, t },

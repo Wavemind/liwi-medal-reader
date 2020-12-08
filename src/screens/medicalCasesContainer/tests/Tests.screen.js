@@ -18,6 +18,23 @@ export default class Tests extends React.Component {
       app: { algorithm },
     } = props;
     NavigationService.setParamsAge(algorithm, 'Tests');
+
+    this.state = {
+      firstRender: true,
+    };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const {
+      app: { answeredQuestionId },
+    } = this.props;
+    const { firstRender } = this.state;
+
+    return NavigationService.getCurrentRoute().routeName === 'Tests' && (answeredQuestionId !== nextProps.app.answeredQuestionId || firstRender);
+  }
+
+  componentDidMount(): * {
+    this.setState({ firstRender: false });
   }
 
   render() {
