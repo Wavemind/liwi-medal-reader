@@ -25,8 +25,15 @@ export const getFacility = async () => {
 export const getAlgorithm = async (json_version) => {
   const deviceInfo = await getDeviceInformation();
   const hostname = await host();
-  const url = `${hostname}versions?mac_address=${deviceInfo.mac_address}&json_version=${json_version}`;
-  const header = await _setHeaders();
+  const url = `${hostname}versions/retrieve_algorithm_version`;
+  const body = {
+    mac_address: deviceInfo.mac_address,
+    json_version,
+    latitude: deviceInfo.latitude,
+    longitude: deviceInfo.longitude,
+    timezone: deviceInfo.timezone,
+  };
+  const header = await _setHeaders('POST', body);
   return _fetch(url, header);
 };
 
