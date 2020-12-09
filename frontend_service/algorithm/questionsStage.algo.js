@@ -98,6 +98,17 @@ const dispatchToStore = (questionPerSystem, medicalCase, newQuestions, view, red
   return sortQuestions(filteredQuestions);
 };
 
+export const questionsReferral = (algorithm) => {
+  const medicalCase = store.getState();
+  return nodeFilterBy(medicalCase, algorithm, [
+    {
+      by: 'category',
+      operator: 'equal',
+      value: categories.referral,
+    },
+  ]);
+};
+
 /**
  * Get Medical History for consultation
  * Update metadata

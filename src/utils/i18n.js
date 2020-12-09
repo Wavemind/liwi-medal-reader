@@ -194,6 +194,7 @@ i18n
           medical_history: 'Medical history',
           physical_exam: 'Physical exam',
           comment: 'Comment',
+          referral: 'Referral',
         },
         triage: {
           first_look_assessment: 'First look assessments',
@@ -230,6 +231,7 @@ i18n
           physical_exam: 'Physical exam',
           consent_list: 'Consents file',
           comment: 'Comment',
+          referral: 'Referral',
           poct: 'POCT',
           tests: 'Tests',
           strategy: 'Diagnoses',
