@@ -96,18 +96,6 @@ export const renderingDrawerItems = [
     t: i18n.t('menu:comment'),
   },
   {
-    type: 'path',
-    initialPage: 3,
-    routeName: 'Consultation',
-  },
-  {
-    type: 'item',
-    initialPage: 3,
-    name: 'Consultation',
-    routeName: 'Consultation',
-    t: i18n.t('menu:referral'),
-  },
-  {
     type: 'categorie',
     initialPage: 0,
     name: 'Tests',

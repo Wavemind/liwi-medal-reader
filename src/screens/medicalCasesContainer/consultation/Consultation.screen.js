@@ -7,7 +7,6 @@ import NavigationService from '../../../engine/navigation/Navigation.service';
 import Comment from '../../../components/Comment';
 import MedicalHistory from '../../../components/MedicalHistory';
 import PhysicalExam from '../../../components/PhysicalExam';
-import Referral from '../../../components/Referral';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -64,9 +63,8 @@ export default class Consultation extends React.Component {
             { name: 'comment-medical', type: 'FontAwesome5' },
             { name: 'male', type: 'FontAwesome5' },
             { name: 'comment', type: 'FontAwesome5' },
-            { name: 'referral', type: 'FontAwesome5' },
           ]}
-          steps={[t('consultation:medical_history'), t('consultation:physical_exam'), t('consultation:comment'), t('consultation:referral')]}
+          steps={[t('consultation:medical_history'), t('consultation:physical_exam'), t('consultation:comment')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Tests"
@@ -74,8 +72,7 @@ export default class Consultation extends React.Component {
         >
           <MedicalHistory selectedPage={selectedPage} />
           <PhysicalExam selectedPage={selectedPage} />
-          <Comment selectedPage={selectedPage} comment={medicalCase.comment} />
-          <Referral selectedPage={selectedPage} />
+          <Comment comment={medicalCase.comment} />
         </Stepper>
       </Suspense>
     );

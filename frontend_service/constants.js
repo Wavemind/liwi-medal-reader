@@ -129,7 +129,6 @@ export const categories = {
   observedPhysicalSign: 'observed_physical_sign',
   consultationRelated: 'consultation_related',
   uniqueTriagePhysicalSign: 'unique_triage_physical_sign',
-  referral: 'referral',
 };
 
 // Type of Tool Tip
