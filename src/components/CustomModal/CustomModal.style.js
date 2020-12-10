@@ -87,6 +87,8 @@ export const styles = StyleSheet.create({
 
   description: { marginTop: 20, textAlign: 'left', flex: 1 },
 
+  link: { color: 'blue' },
+
   aboutDescription: { marginBottom: 15, textAlign: 'left', flex: 1 },
 
   center: { textAlign: 'center' },
