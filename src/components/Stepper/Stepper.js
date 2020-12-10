@@ -143,16 +143,14 @@ class Stepper extends React.Component<Props, State> {
     const { cutoffStepLength, page } = this.state;
     const { steps } = this.props;
 
-    if (Platform.OS === 'android') {
-      if (page < e.nativeEvent.position && (page + 1) % cutoffStepLength === 0) {
-        this.scrollViewRef.scrollTo({x: Math.floor((page + 1) / cutoffStepLength) * this.state.width});
-      }
-
-      if (page > e.nativeEvent.position && (steps.length - page) % cutoffStepLength === 0) {
-        this.scrollViewRef.scrollTo({x: (Math.floor((steps.length - page) / cutoffStepLength) - 1) * this.state.width});
-      }
-      return this.handleBottomStepper(e.nativeEvent.position);
+    if (page < e.nativeEvent.position && (page + 1) % cutoffStepLength === 0) {
+      this.scrollViewRef.scrollTo({x: Math.floor((page + 1) / cutoffStepLength) * this.state.width});
     }
+
+    if (page > e.nativeEvent.position && (steps.length - page) % cutoffStepLength === 0) {
+      this.scrollViewRef.scrollTo({x: (Math.floor((steps.length - page) / cutoffStepLength) - 1) * this.state.width});
+    }
+    return this.handleBottomStepper(e.nativeEvent.position);
 
     // Calculate current index
     const index = e.nativeEvent.contentOffset.x / this.state.width;
