@@ -85,26 +85,6 @@ export const stages = {
   diagnosis_management: 'diagnosis_management',
 };
 
-export const systems = {
-  chronic_conditions: 'Chronic conditions',
-  comorbidities: 'Comorbidities',
-  complementary_medical_history: 'Complementary Medical History Questions',
-  digestive: 'Digestive system',
-  ear_nose_mouth_throat: 'Ear, nose, mouth and throat system',
-  exposures: 'Exposures',
-  general: 'General',
-  integumentary: 'Skin/Hair/Mucosae system',
-  prevention: 'Prevention',
-  prophylaxis: 'Prophylaxis',
-  respiratory_circulation: 'Respiratory and circulatory system',
-  muscular_skeletal: 'Muscular and skeletal system',
-  nervous: 'Nervous system',
-  urinary_reproductive: 'Urinary and reproductive system',
-  visual: 'Visual system',
-  vital_sign: 'Vital Signs',
-  null: 'No assigned system',
-};
-
 export const categories = {
   assessment: 'assessment_test',
   chronicCondition: 'chronic_condition',

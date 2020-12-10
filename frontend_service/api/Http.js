@@ -4,7 +4,6 @@ import { getDeviceInformation } from '../../src/engine/api/Device';
 import { handleHttpError } from '../../src/utils/CustomToast';
 import { getItem } from '../../src/engine/api/LocalStorage';
 import fetch from '../../src/utils/fetchWithTimeout';
-import i18n from '../../src/utils/i18n';
 
 /**
  * Get facility configuration by device mac address
