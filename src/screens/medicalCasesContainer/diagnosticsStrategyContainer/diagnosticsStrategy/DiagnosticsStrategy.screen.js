@@ -48,11 +48,11 @@ export default class DiagnosesStrategy extends Component {
     if (algorithm.is_arm_control) {
       icons.splice(1, 1); // Health cares questions
       icons.splice(2, 1); // Medicines formulations
-      icons.splice(2, 1); // Summary
+      icons.splice(3, 1); // Summary
 
       steps.splice(1, 1); // Health cares questions
       steps.splice(2, 1); // Medicines formulations
-      steps.splice(2, 1); // Summary
+      steps.splice(3, 1); // Summary
     }
 
     this.state = {
