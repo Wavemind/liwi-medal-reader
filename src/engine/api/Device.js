@@ -4,8 +4,8 @@ import { getItem } from './LocalStorage';
 // Return device information and his location
 export const getDeviceInformation = async () => {
   const date = new Date();
-  const manufacturer = DeviceInfo.getManufacturer();
-  const deviceName = DeviceInfo.getDeviceName();
+  const brand = await DeviceInfo.getBrand();
+  const deviceName = await DeviceInfo.getDeviceName();
   const model = DeviceInfo.getModel();
   const systemName = DeviceInfo.getSystemName();
   const systemVersion = DeviceInfo.getSystemVersion();
@@ -22,7 +22,7 @@ export const getDeviceInformation = async () => {
     version,
     mac_address: mac,
     model,
-    brand: manufacturer,
+    brand,
     name: deviceName,
     os: systemName,
     os_version: systemVersion,
