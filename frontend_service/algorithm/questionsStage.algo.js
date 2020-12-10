@@ -274,14 +274,19 @@ export const questionsComplaintCategory = (algorithm) => {
   const medicalCase = store.getState();
   const complaintCategories = [];
   const orders = algorithm.mobile_config.questions_orders[categories.complaintCategory];
-  const { general_cc_id } = algorithm.config.basic_questions;
+  const { general_cc_id, yi_cc_general } = algorithm.config.basic_questions;
 
   const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
-
-  store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]));
+  if(days <= 60) {
+    store.dispatch(setAnswer(algorithm, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[0]));
+    store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[1]));
+  } else {
+    store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]));
+    store.dispatch(setAnswer(algorithm, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[1]));
+  }
   orders.forEach((order) => {
-    if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id) {
+    if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id && medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
       // For all questions that do not appear, set the answer to "No"
       if ((days <= 60 && algorithm.nodes[order].is_neonat) || (days > 60 && !algorithm.nodes[order].is_neonat)) {
