@@ -37,9 +37,10 @@ const styles: Object = StyleSheet.create({
   inactiveStepNumberStyle: {
     color: 'black',
   },
-
-  topStepper: {
+  topStepperFlex: {
     flexDirection: 'row',
+  },
+  topStepperGeneral: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 10,
@@ -47,6 +48,10 @@ const styles: Object = StyleSheet.create({
     elevation: 4,
     height: 100,
     backgroundColor: 'white',
+  },
+  horizontalScrollView: {
+    flex: 1,
+    flexDirection: 'column',
   },
   bottomStepper: {
     height: 50,

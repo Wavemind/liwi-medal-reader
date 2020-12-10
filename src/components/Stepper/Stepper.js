@@ -193,9 +193,13 @@ class Stepper extends React.Component<Props, State> {
   /**
    * Handles back button behaviour
    */
-  onPressBack = () => {
+  onPressBack = (cutoffStepLength, stepsLength) => {
     if (this.props.onPressBack) {
       this.props.onPressBack();
+    }
+
+    if ((stepsLength - this.state.page) % cutoffStepLength === 0) {
+      this.scrollViewRef.scrollTo({x: (Math.floor((stepsLength - this.state.page) / cutoffStepLength) - 1) * this.state.width});
     }
 
     Platform.OS === 'ios'
@@ -209,9 +213,13 @@ class Stepper extends React.Component<Props, State> {
   /**
    * Handles next button behaviour
    */
-  onPressNext = () => {
+  onPressNext = (cutoffStepLength) => {
     if (this.props.onPressNext) {
       this.props.onPressNext();
+    }
+
+    if ((this.state.page + 1) % cutoffStepLength === 0) {
+      this.scrollViewRef.scrollTo({x: Math.floor((this.state.page + 1) / cutoffStepLength) * this.state.width});
     }
 
     Platform.OS === 'ios'
@@ -317,7 +325,7 @@ class Stepper extends React.Component<Props, State> {
    * Display button step
    * @returns {null|Array<*>}
    */
-  renderSteps = () => {
+  renderSteps = (cutoffStepLength) => {
     const { steps, icons, validate } = this.props;
     const { page, error } = this.state;
 
@@ -333,9 +341,11 @@ class Stepper extends React.Component<Props, State> {
           type: icons[index]?.type
         };
 
+        const divisionValue = steps.length > cutoffStepLength ? cutoffStepLength : steps.length
+
         return (
           <TouchableOpacity onPress={() => this.handleBottomStepper(index)} key={`TouchableOpacity${index}`}>
-            <View key={`step${index}`} style={[styles.stepContainer, { width: screenWidth / steps.length - 20 }]}>
+            <View key={`step${index}`} style={[styles.stepContainer, { width: screenWidth / divisionValue - 20 }]}>
               <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
                 {index < page && validate ? (
                   error ? (
@@ -578,17 +588,25 @@ class Stepper extends React.Component<Props, State> {
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
 
     const { showBack, showNext, isLoading } = this.state;
+    const cutoffStepLength = 4
 
     return (
       <View style={styles.container}>
         {showTopStepper ? (
-          <View style={[styles.topStepper, topStepperStyle]}>
-            {steps.length >= 30 ? (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {this.renderSteps()}
+          <View style={[styles.topStepperGeneral, steps.length > cutoffStepLength ?  null : styles.topStepperFlex, topStepperStyle]}>
+            {steps.length > cutoffStepLength ? (
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.horizontalScrollView}
+                ref={ref => this.scrollViewRef = ref}
+                pagingEnabled={true}
+                onLayout={this.setDimensions}
+              >
+                {this.renderSteps(cutoffStepLength)}
               </ScrollView>
             ) : (
-              this.renderSteps()
+                this.renderSteps(cutoffStepLength)
             )}
           </View>
         ) : null}
@@ -600,7 +618,7 @@ class Stepper extends React.Component<Props, State> {
               <>
                 {showBack ? (
                   <TouchableOpacity
-                    onPress={this.onPressBack}
+                    onPress={() => this.onPressBack(cutoffStepLength, steps.length)}
                     style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
@@ -613,7 +631,7 @@ class Stepper extends React.Component<Props, State> {
                 {this._renderSaveButton()}
 
                 {showNext ? (
-                  <TouchableOpacity onPress={this.onPressNext} style={{ zIndex: 1 }}>
+                  <TouchableOpacity onPress={() => this.onPressNext(cutoffStepLength)} style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                       {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}

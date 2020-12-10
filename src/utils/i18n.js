@@ -250,6 +250,7 @@ i18n
           final_diagnoses: 'Diagnoses',
           healthcares_questions: 'Management questions',
           healthcares: 'Treatments & Management',
+          referral: 'Referral',
           managements: 'Managements',
           treatments: 'Treatments',
           waiting_triage: 'Waiting for 1st assessment',
