@@ -14,6 +14,7 @@ const ArmControlMedicines = React.lazy(() => import('../armControlMedicines'));
 const Stepper = React.lazy(() => import('../../../../components/Stepper'));
 const HealthCares = React.lazy(() => import('../healthCares'));
 const Medicines = React.lazy(() => import('../medicines'));
+const Referral = React.lazy(() => import('../referral'));
 
 export default class DiagnosesStrategy extends Component {
   constructor(props) {
@@ -30,20 +31,28 @@ export default class DiagnosesStrategy extends Component {
       { name: 'comment-medical', type: 'FontAwesome5' },
       { name: 'pills', type: 'FontAwesome5' },
       { name: 'balance-scale', type: 'FontAwesome5' },
+      { name: 'hospital', type: 'FontAwesome5' },
       { name: 'notes-medical', type: 'FontAwesome5' },
     ];
 
-    const steps = [t('medical_case:final_diagnoses'), t('medical_case:conditions'), t('medical_case:medicines'), t('medical_case:medicines_formulation'), t('medical_case:healthcares')];
+    const steps = [
+      t('medical_case:final_diagnoses'),
+      t('medical_case:conditions'),
+      t('medical_case:medicines'),
+      t('medical_case:medicines_formulation'),
+      t('medical_case:referral'),
+      t('medical_case:healthcares'),
+    ];
 
     // Remove health cares questions if we're in arm control
     if (algorithm.is_arm_control) {
       icons.splice(1, 1); // Health cares questions
       icons.splice(2, 1); // Medicines formulations
-      icons.splice(2, 1); // Summary
+      icons.splice(3, 1); // Summary
 
       steps.splice(1, 1); // Health cares questions
       steps.splice(2, 1); // Medicines formulations
-      steps.splice(2, 1); // Summary
+      steps.splice(3, 1); // Summary
     }
 
     this.state = {
@@ -120,10 +129,15 @@ export default class DiagnosesStrategy extends Component {
               </Suspense>
             </View>
           )}
+          <View style={styles.pad}>
+            <Suspense fallback={<LiwiLoader />}>
+              <Referral key="referral" selectedPage={selectedPage} pageIndex={4} />
+            </Suspense>
+          </View>
           {algorithm.is_arm_control ? null : (
             <View style={styles.pad}>
               <Suspense fallback={<LiwiLoader />}>
-                <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={4} />
+                <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={5} />
               </Suspense>
             </View>
           )}

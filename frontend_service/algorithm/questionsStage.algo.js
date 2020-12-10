@@ -104,6 +104,29 @@ const dispatchToStore = (questionPerSystem, medicalCase, newQuestions, view, red
 };
 
 /**
+ * Get Referrals for Diagnosis
+ * Update metadata
+ */
+export const questionsReferrals = (algorithm) => {
+  const medicalCase = store.getState();
+  const referralQuestions = nodeFilterBy(
+    medicalCase,
+    algorithm,
+    [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.referral,
+      },
+    ],
+    'OR',
+    'array',
+    false
+  );
+  return referralQuestions;
+};
+
+/**
  * Get Medical History for consultation
  * Update metadata
  */
