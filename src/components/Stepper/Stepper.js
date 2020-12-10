@@ -194,9 +194,7 @@ class Stepper extends React.Component<Props, State> {
           showBack: position !== 0,
           page: position
         },
-        () => {
-          Platform.OS !== 'ios' ? this.viewPager.setPage(position) : null;
-        }
+        () => this.viewPager.setPage(position)
       );
     }
   };
@@ -204,41 +202,36 @@ class Stepper extends React.Component<Props, State> {
   /**
    * Handles back button behaviour
    */
-  onPressBack = (cutoffStepLength, stepsLength) => {
+  onPressBack = () => {
     if (this.props.onPressBack) {
       this.props.onPressBack();
     }
 
-    if ((stepsLength - this.state.page) % cutoffStepLength === 0) {
-      this.scrollViewRef.scrollTo({x: (Math.floor((stepsLength - this.state.page) / cutoffStepLength) - 1) * this.state.width});
+    const { page, width, cutoffStepLength } = this.state;
+    const { steps } = this.props;
+
+    if ((steps.length - page) % cutoffStepLength === 0) {
+      this.scrollViewRef.scrollTo({x: (Math.floor((steps.length - page) / cutoffStepLength) - 1) * width});
     }
 
-    Platform.OS === 'ios'
-      ? this.scrollView.scrollTo({
-        x: (this.state.page - 1) * this.state.width,
-        animated: true
-      })
-      : this.handleBottomStepper(this.state.page - 1);
+    this.handleBottomStepper(page - 1);
   };
 
   /**
    * Handles next button behaviour
    */
-  onPressNext = (cutoffStepLength) => {
+  onPressNext = () => {
     if (this.props.onPressNext) {
       this.props.onPressNext();
     }
 
-    if ((this.state.page + 1) % cutoffStepLength === 0) {
-      this.scrollViewRef.scrollTo({x: Math.floor((this.state.page + 1) / cutoffStepLength) * this.state.width});
+    const { page, width, cutoffStepLength } = this.state;
+
+    if ((page + 1) % cutoffStepLength === 0) {
+      this.scrollViewRef.scrollTo({x: Math.floor((page + 1) / cutoffStepLength) * width});
     }
 
-    Platform.OS === 'ios'
-      ? this.scrollView.scrollTo({
-        x: (this.state.page + 1) * this.state.width,
-        animated: true
-      })
-      : this.handleBottomStepper(this.state.page + 1);
+    this.handleBottomStepper(page + 1);
   };
 
   /**
@@ -380,38 +373,10 @@ class Stepper extends React.Component<Props, State> {
   };
 
   /**
-   * Render a ScrollView on iOS
+   * Render a ScrollView
    * @returns {React.ReactChild}
    */
   renderViewPager = () => {
-    if (Platform.OS === 'ios') {
-      return (
-        <ScrollView
-          {...this.props}
-          ref={(ref: any) => {
-            this.scrollView = ref;
-          }}
-          horizontal={true}
-          pagingEnabled={true}
-          removeClippedSubviews={true}
-          directionalLockEnabled={true}
-          scrollEventThrottle={120}
-          bounces={false}
-          scrollsToTop={false}
-          automaticallyAdjustContentInsets={false}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          onScroll={this.onPageSelected}
-          onLayout={this.setDimensions}
-          contentOffset={{
-            x: this.state.width * this.props.initialPage,
-            y: 0
-          }}
-        >
-          {this.renderChildren()}
-        </ScrollView>
-      );
-    }
     return (
       <ViewPager
         {...this.props}
@@ -606,11 +571,11 @@ class Stepper extends React.Component<Props, State> {
           <View style={[styles.topStepperGeneral, steps.length > cutoffStepLength ?  null : styles.topStepperFlex, topStepperStyle]}>
             {steps.length > cutoffStepLength ? (
               <ScrollView
+                ref={ref => this.scrollViewRef = ref}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={styles.horizontalScrollView}
-                ref={ref => this.scrollViewRef = ref}
-                pagingEnabled={true}
+                pagingEnabled
                 onLayout={this.setDimensions}
               >
                 {this.renderSteps()}
@@ -628,7 +593,7 @@ class Stepper extends React.Component<Props, State> {
               <>
                 {showBack ? (
                   <TouchableOpacity
-                    onPress={() => this.onPressBack(cutoffStepLength, steps.length)}
+                    onPress={() => this.onPressBack()}
                     style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
@@ -641,7 +606,7 @@ class Stepper extends React.Component<Props, State> {
                 {this._renderSaveButton()}
 
                 {showNext ? (
-                  <TouchableOpacity onPress={() => this.onPressNext(cutoffStepLength)} style={{ zIndex: 1 }}>
+                  <TouchableOpacity onPress={() => this.onPressNext()} style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
                       {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
