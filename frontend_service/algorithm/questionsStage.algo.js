@@ -67,7 +67,12 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
         }
       } else {
         const systemIndex = questionPerSystem.findIndex((system) => system.title === 'follow_up_questions');
-        questionPerSystem[systemIndex].data.push(question);
+        const questionIndex = questionPerSystem[systemIndex].data.findIndex((q) => q.id === question.id);
+        if (questionIndex !== -1) {
+          questionPerSystem[systemIndex].data[questionIndex] = question;
+        } else {
+          questionPerSystem[systemIndex].data.push(question);
+        }
       }
     });
   }
@@ -152,11 +157,6 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
     });
   });
 
-  questionPerSystem.push({
-    title: 'follow_up_questions',
-    data: medicalCase.metaData.consultation.medicalHistoryQuestions.follow_up_questions?.data || [],
-  });
-
   const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
   questionPerSystem = orderQuestionsInSystems(medicalCase, answeredQuestionId, medicalHistoryQuestions, questionPerSystem, systemOrders, algorithm, 'medicalHistory');
   questionPerSystem = removeQuestions(medicalCase, questionPerSystem, newQuestions, 'medicalHistory');
@@ -211,11 +211,6 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
           return physicalExamQuestion.title === system;
         })?.data || [],
     });
-  });
-
-  questionPerSystem.push({
-    title: 'follow_up_questions',
-    data: medicalCase.metaData.consultation.physicalExamQuestions?.follow_up_questions?.data || [],
   });
 
   const newQuestions = questions.map(({ id }) => id);
