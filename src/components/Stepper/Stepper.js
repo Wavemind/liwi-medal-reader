@@ -118,7 +118,8 @@ class Stepper extends React.Component<Props, State> {
       height: 0,
       error: false,
       status: '',
-      isLoading: false
+      isLoading: false,
+      cutoffStepLength: 4
     };
   }
 
@@ -139,7 +140,17 @@ class Stepper extends React.Component<Props, State> {
    * @param e
    */
   onPageSelected = (e: Object) => {
+    const { cutoffStepLength, page } = this.state;
+    const { steps } = this.props;
+
     if (Platform.OS === 'android') {
+      if (page < e.nativeEvent.position && (page + 1) % cutoffStepLength === 0) {
+        this.scrollViewRef.scrollTo({x: Math.floor((page + 1) / cutoffStepLength) * this.state.width});
+      }
+
+      if (page > e.nativeEvent.position && (steps.length - page) % cutoffStepLength === 0) {
+        this.scrollViewRef.scrollTo({x: (Math.floor((steps.length - page) / cutoffStepLength) - 1) * this.state.width});
+      }
       return this.handleBottomStepper(e.nativeEvent.position);
     }
 
@@ -325,9 +336,9 @@ class Stepper extends React.Component<Props, State> {
    * Display button step
    * @returns {null|Array<*>}
    */
-  renderSteps = (cutoffStepLength) => {
+  renderSteps = () => {
     const { steps, icons, validate } = this.props;
-    const { page, error } = this.state;
+    const { page, error, cutoffStepLength } = this.state;
 
     const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;
 
@@ -587,8 +598,7 @@ class Stepper extends React.Component<Props, State> {
 
     const { textButtonsStyle, topStepperStyle, bottomStepperStyle } = styles;
 
-    const { showBack, showNext, isLoading } = this.state;
-    const cutoffStepLength = 4
+    const { showBack, showNext, isLoading, cutoffStepLength } = this.state;
 
     return (
       <View style={styles.container}>
@@ -603,10 +613,10 @@ class Stepper extends React.Component<Props, State> {
                 pagingEnabled={true}
                 onLayout={this.setDimensions}
               >
-                {this.renderSteps(cutoffStepLength)}
+                {this.renderSteps()}
               </ScrollView>
             ) : (
-                this.renderSteps(cutoffStepLength)
+                this.renderSteps()
             )}
           </View>
         ) : null}
