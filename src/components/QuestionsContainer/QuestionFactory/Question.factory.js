@@ -55,7 +55,7 @@ export default class Question extends React.Component {
   }
 
   /**
-   * Display validation for integer and float type. Based on Medal-C info
+   * Display validation for integer and float type. Based on medAL-creator info
    * @returns {null|*}
    * @private
    */

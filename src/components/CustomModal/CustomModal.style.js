@@ -87,6 +87,8 @@ export const styles = StyleSheet.create({
 
   description: { marginTop: 20, textAlign: 'left', flex: 1 },
 
+  link: { color: 'blue' },
+
   aboutDescription: { marginBottom: 15, textAlign: 'left', flex: 1 },
 
   center: { textAlign: 'center' },
@@ -99,4 +101,6 @@ export const styles = StyleSheet.create({
   },
 
   image: { width: screenWidth * 0.8, height: screenWidth },
+
+  italic: { fontStyle: 'italic' },
 });

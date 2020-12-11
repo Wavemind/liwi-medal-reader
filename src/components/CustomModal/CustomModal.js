@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Dimensions, Image, Modal, ScrollView } from 'react-native';
+import { Dimensions, Image, Modal, ScrollView, Linking } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
 
 import ImageZoom from 'react-native-image-pan-zoom';
@@ -107,6 +107,35 @@ export default class CustomModal extends React.Component {
   };
 
   /**
+   * Converts a tags to Links in description if needed
+   * @param description
+   * @returns {JSX.Element|*}
+   * @private
+   */
+  _createDescription = (description) => {
+    const fullRegex = /(?<full><a.+?href=".+?".*?>.+?<\/a>)/gs;
+    const innerRegex = /<a.+?href="(?<link>.+?)".*?>(?<label>.+?)<\/a>/gs;
+
+    const textWithLinks = fullRegex.exec(description);
+
+    if (textWithLinks) {
+      const innerComponents = description.split(fullRegex).map((subText) => {
+        const found = innerRegex.exec(subText);
+        if (found) {
+          return (
+            <Text style={styles.link} onPress={() => Linking.openURL(found.groups.link)}>
+              {found.groups.label}
+            </Text>
+          );
+        }
+        return <Text style={styles.description}>{subText}</Text>;
+      });
+      return <Text style={styles.description}>{innerComponents}</Text>;
+    }
+    return <Text style={styles.description}>{description}</Text>;
+  };
+
+  /**
    * Display node description with media
    * @returns {*}
    * @private
@@ -121,7 +150,7 @@ export default class CustomModal extends React.Component {
     return (
       <View>
         <LiwiTitle5>{node.label}</LiwiTitle5>
-        <Text style={styles.description}>{node.description}</Text>
+        {this._createDescription(node.description)}
         {node.medias !== undefined && node.medias.length > 0
           ? node.medias.map((media) => {
               return <Media key={media.url} media={media} />;
@@ -250,7 +279,9 @@ export default class CustomModal extends React.Component {
         <LiwiTitle4>ePOCT+ and ePOCTn Version</LiwiTitle4>
         <Text style={styles.aboutDescription}>XXXX</Text>
 
-        <LiwiTitle4>MEDAL-R Version</LiwiTitle4>
+        <LiwiTitle4>
+          medAL-<LiwiTitle4 style={styles.italic}>reader</LiwiTitle4> Version
+        </LiwiTitle4>
         <Text style={styles.aboutDescription}>XXXX</Text>
 
         <LiwiTitle4>Links</LiwiTitle4>

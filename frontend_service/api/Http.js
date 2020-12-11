@@ -4,7 +4,6 @@ import { getDeviceInformation } from '../../src/engine/api/Device';
 import { handleHttpError } from '../../src/utils/CustomToast';
 import { getItem } from '../../src/engine/api/LocalStorage';
 import fetch from '../../src/utils/fetchWithTimeout';
-import i18n from '../../src/utils/i18n';
 
 /**
  * Get facility configuration by device mac address
@@ -25,13 +24,21 @@ export const getFacility = async () => {
 export const getAlgorithm = async (json_version) => {
   const deviceInfo = await getDeviceInformation();
   const hostname = await host();
-  const url = `${hostname}versions?mac_address=${deviceInfo.mac_address}&json_version=${json_version}`;
-  const header = await _setHeaders();
+  const url = `${hostname}versions/retrieve_algorithm_version`;
+  const body = {
+    mac_address: deviceInfo.mac_address,
+    json_version,
+    latitude: deviceInfo.latitude,
+    longitude: deviceInfo.longitude,
+    timezone: deviceInfo.timezone,
+  };
+
+  const header = await _setHeaders('POST', body);
   return _fetch(url, header);
 };
 
 /**
- * Auth user to medal-c
+ * Auth user to medAL-creator
  * @param { string } email - User email
  * @param { string } password - User password
  * @returns {Promise<{access_token: any, uid: any, client: any, expiry: any}|null>}
@@ -58,7 +65,7 @@ export const auth = async (email, password) => {
 };
 
 /**
- * Register device in Medal C
+ * Register device in medAL-creator
  * @returns {Promise<boolean>}
  */
 export const registerDevice = async () => {

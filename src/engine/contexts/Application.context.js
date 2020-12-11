@@ -127,9 +127,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   _setAppStatus = async (status) => {
     const { isConnected } = this.state;
-    if(isConnected !== status) {
+    if (isConnected !== status) {
       await setItem('isConnected', status);
-      this.setState({isConnected: status});
+      this.setState({ isConnected: status });
     }
   };
 
@@ -193,7 +193,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     await this.setState({ [prop]: value });
   };
 
-  // TODO: Check useness of this method and lockSession method
   /**
    * Logout user
    * @returns {Promise<void>}
@@ -207,7 +206,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     });
   };
 
-  // TODO: Check useness of this method and logout method
   /**
    * Lock session
    * @returns {Promise<void>}
@@ -228,7 +226,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   /**
-   * Fetch group and algorithm from medal-c
+   * Fetch group and algorithm from medAL-creator
    * @returns {Promise<boolean>}
    */
   setInitialData = async () => {
@@ -238,6 +236,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (facility !== null) {
       newAlgorithm = await getAlgorithm(algorithm?.json_version);
+
       if (newAlgorithm !== null) {
         newAlgorithm.selected = true;
 
@@ -255,7 +254,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
             )
           );
         }
-        await setItem('algorithm', newAlgorithm);
+
+        await setItem('algorithm', JSON.parse(JSON.stringify(newAlgorithm)));
       } else {
         newAlgorithm = algorithm;
       }
@@ -277,7 +277,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   };
 
   /**
-   * Authenticate user and then register device in medal-c
+   * Authenticate user and then register device in medAL-creator
    * @param { string } email - User email
    * @param { string } password - User password
    * @returns {Promise<boolean>}

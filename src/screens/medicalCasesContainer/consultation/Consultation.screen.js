@@ -18,6 +18,23 @@ export default class Consultation extends React.Component {
       app: { algorithm },
     } = props;
     NavigationService.setParamsAge(algorithm, 'Consultation');
+
+    this.state = {
+      firstRender: true,
+    };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const {
+      app: { answeredQuestionId },
+    } = this.props;
+    const { firstRender } = this.state;
+
+    return NavigationService.getCurrentRoute().routeName === 'Consultation' && (answeredQuestionId !== nextProps.app.answeredQuestionId || firstRender);
+  }
+
+  componentDidMount() {
+    this.setState({ firstRender: false });
   }
 
   render() {
@@ -26,6 +43,7 @@ export default class Consultation extends React.Component {
       navigation,
       medicalCase,
     } = this.props;
+
     const selectedPage = navigation.getParam('initialPage');
 
     return (

@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Text, Card, CardItem, Body, View, Icon } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 
 import { TouchableOpacity } from 'react-native';
 import { styles } from './FinalDiagnosticCards.style';
@@ -17,10 +16,7 @@ import { calculateCondition } from '../../../frontend_service/algorithm/conditio
 import { drugAgreed, drugDoses } from '../../../frontend_service/helpers/Drug.model';
 import { finalDiagnosticCalculateCondition } from '../../../frontend_service/helpers/FinalDiagnostic.model';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
-export default class FinalDiagnosticCards extends React.Component<Props, State> {
+export default class FinalDiagnosticCards extends React.Component {
   /**
    * Display drug formulation based on medication form selected
    * @param {Object} drug - Drug in final diagnostic model
@@ -166,6 +162,12 @@ export default class FinalDiagnosticCards extends React.Component<Props, State> 
 
   render() {
     const { medicalCase } = this.props;
+
+    // Need this shit when closing a medical otherwise it crash
+    if (medicalCase.id === undefined) {
+      return null;
+    }
+
     return Object.keys(medicalCase.diagnoses).map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key));
   }
 }

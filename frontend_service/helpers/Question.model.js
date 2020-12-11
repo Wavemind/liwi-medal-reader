@@ -89,7 +89,7 @@ export const questionCalculateReference = (algorithm, medicalCase, mcNode) => {
 
   // Get Z
   let questionZ = null;
-  if (this.reference_table_z_id !== null) {
+  if (currentNode.reference_table_z_id !== null) {
     questionZ = medicalCase.nodes[currentNode.reference_table_z_id];
   }
 
@@ -109,40 +109,90 @@ export const questionCalculateReference = (algorithm, medicalCase, mcNode) => {
   }
 
   // If X and Y means question is not answered + check if answer is in the scope of the reference table
-  if (reference !== null && x !== null && y !== null && x in reference) {
-    if (this.reference_table_z_id === null) {
-      value = findValueInReferenceTable(reference[x], y);
-    } else if (String(y) in reference[x] && z !== null) {
-      value = findValueInReferenceTable(reference[x][y], z);
-    }
+  if (reference !== null && x !== null && y !== null && z === undefined) {
+    value = processReferenceTable(reference, x, y);
+  } else if (reference !== null && x !== null && y !== null && z !== null) {
+    value = processReferenceTable3D(reference, x, y, z);
   }
 
   return value;
 };
 
 /**
- * Find value in a given reference table
+ * Find value for a 3D reference table
  * @param referenceTable - Reference table available in frontend_service/api/...
- * @param maxRange - Y or Z value to not exceed
+ * @param referenceX - X value to not exceed
+ * @param referenceY - Y value to not exceed
+ * @param referenceZ - Z value to not exceed
  * @returns {null|*}
  */
-const findValueInReferenceTable = (referenceTable, maxRange) => {
+const processReferenceTable3D = (referenceTable, referenceX, referenceY, referenceZ) => {
+  let value = null;
+
+  // If X exist in reference table
+  if (referenceX in referenceTable) {
+    value = processReferenceTable(referenceTable[referenceX], referenceY, referenceZ);
+  } else {
+    const scopedRange = Object.keys(referenceTable).sortByNumber();
+
+    if (scopedRange.first() > referenceX) {
+      value = processReferenceTable(referenceTable[scopedRange.first()], referenceY, referenceZ);
+    } else {
+      value = processReferenceTable(referenceTable[scopedRange.last()], referenceY, referenceZ);
+    }
+  }
+  return value;
+};
+
+/**
+ * Find value for a 2D reference table
+ * @param referenceTable - Reference table available in frontend_service/api/...
+ * @param referenceX - Z value to not exceed
+ * @param referenceY - Y value to not exceed
+ * @returns {null|*}
+ */
+const processReferenceTable = (referenceTable, referenceX, referenceY) => {
+  let value = null;
+
+  // If X exist in reference table
+  if (referenceX in referenceTable) {
+    value = findValueInReferenceTable(referenceTable[referenceX], referenceY);
+  } else {
+    const scopedRange = Object.keys(referenceTable).sortByNumber();
+
+    if (scopedRange.first() > referenceX) {
+      value = findValueInReferenceTable(referenceTable[scopedRange.first()], referenceY);
+    } else {
+      value = findValueInReferenceTable(referenceTable[scopedRange.last()], referenceY);
+    }
+  }
+  return value;
+};
+
+/**
+ * Find value in a given reference table
+ * @param referenceTable
+ * @param reference
+ * @returns {null|*}
+ */
+const findValueInReferenceTable = (referenceTable, reference) => {
   let previousKey = null;
   let value = null;
 
-  // Order the keys
   const scopedRange = Object.keys(referenceTable).sortByNumber();
 
-  // if value smaller than smallest element return the smaller value
-  if (referenceTable[scopedRange.first()] > maxRange) {
+  // If reference is smaller than the smallest value
+  if (reference < referenceTable[scopedRange.first()]) {
     return scopedRange.first();
   }
-  if (referenceTable[scopedRange.last()] < maxRange) {
+
+  // If reference is bigger than the best value
+  if (reference > referenceTable[scopedRange.last()]) {
     return scopedRange.last();
   }
 
   scopedRange.map((key) => {
-    if (referenceTable[key] > maxRange) {
+    if (referenceTable[key] > reference) {
       value = Number(previousKey);
       return true;
     }
