@@ -32,6 +32,7 @@ export const getAlgorithm = async (json_version) => {
     longitude: deviceInfo.longitude,
     timezone: deviceInfo.timezone,
   };
+
   const header = await _setHeaders('POST', body);
   return _fetch(url, header);
 };

@@ -380,6 +380,7 @@ export class MedicalCaseModel {
    */
   static instantiateNodes(nodes) {
     let hash = {};
+
     Object.keys(nodes).forEach((i) => {
       const node = nodes[i];
       hash = {

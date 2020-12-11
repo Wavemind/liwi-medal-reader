@@ -127,9 +127,9 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
    */
   _setAppStatus = async (status) => {
     const { isConnected } = this.state;
-    if(isConnected !== status) {
+    if (isConnected !== status) {
       await setItem('isConnected', status);
-      this.setState({isConnected: status});
+      this.setState({ isConnected: status });
     }
   };
 
@@ -236,6 +236,7 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
     if (facility !== null) {
       newAlgorithm = await getAlgorithm(algorithm?.json_version);
+
       if (newAlgorithm !== null) {
         newAlgorithm.selected = true;
 
@@ -253,7 +254,8 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
             )
           );
         }
-        await setItem('algorithm', newAlgorithm);
+
+        await setItem('algorithm', JSON.parse(JSON.stringify(newAlgorithm)));
       } else {
         newAlgorithm = algorithm;
       }
