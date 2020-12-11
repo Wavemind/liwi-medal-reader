@@ -5,10 +5,12 @@ import { Button, Icon, Input, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
 import moment from 'moment';
 
+import { TouchableOpacity } from 'react-native';
 import { styles } from './FinalDiagnosticsList.style';
 import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 import FinalDiagnostic from '../../../../components/FinalDiagnostic';
 import { liwiColors } from '../../../../utils/constants';
+import {modalType} from '../../../../../frontend_service/constants';
 
 export default class FinalDiagnosticsList extends React.Component {
   state = {
@@ -106,6 +108,19 @@ export default class FinalDiagnosticsList extends React.Component {
       });
   };
 
+  /**
+   * Open redux modal
+   */
+  openModal = (questionId) => {
+    const {
+      app: { algorithm },
+      updateModalFromRedux,
+    } = this.props;
+
+    const currentNode = algorithm.nodes[questionId];
+    updateModalFromRedux({ node: currentNode }, modalType.description);
+  };
+
   render() {
     const {
       setDiagnoses,
@@ -137,9 +152,12 @@ export default class FinalDiagnosticsList extends React.Component {
         </Text>
         {Object.keys(diagnoses.additional).length > 0 ? (
           Object.keys(diagnoses.additional).map((additionalKey) => (
-            <Text key={`additional-${additionalKey}`} style={styles.additionalText}>
-              {diagnoses.additional[additionalKey].label}
-            </Text>
+            <View key={`additional-${additionalKey}`} style={styles.container}>
+              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(diagnoses.additional[additionalKey].id)}>
+                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+              </TouchableOpacity>
+              <Text>{diagnoses.additional[additionalKey].label}</Text>
+            </View>
           ))
         ) : (
           <Text italic>{t('diagnoses:no_additional')}</Text>
