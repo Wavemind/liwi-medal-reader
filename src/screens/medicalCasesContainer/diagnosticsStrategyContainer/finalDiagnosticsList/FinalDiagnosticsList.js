@@ -10,7 +10,7 @@ import { styles } from './FinalDiagnosticsList.style';
 import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 import FinalDiagnostic from '../../../../components/FinalDiagnostic';
 import { liwiColors } from '../../../../utils/constants';
-import {modalType} from '../../../../../frontend_service/constants';
+import { modalType } from '../../../../../frontend_service/constants';
 
 export default class FinalDiagnosticsList extends React.Component {
   state = {
