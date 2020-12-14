@@ -18,8 +18,8 @@ const screens = [
     medicalCaseOrder: 1,
     validations: {
       firstLookAssessments: { is_mandatory: true, initialPage: 0 },
-      complaintCategories: { answer: 'not_null', initialPage: 0 },
-      basicMeasurements: { is_mandatory: true, initialPage: 1 },
+      complaintCategories: { answer: 'not_null', initialPage: 1 },
+      basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
   },
   {
