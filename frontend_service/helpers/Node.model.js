@@ -61,13 +61,11 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       if (value === null) {
         // Set the new answer to null for reset
         answer = value;
+      } else if (/^\d+$/.test(value)) {
+        answer = Number(value);
+        value = currentNode.answers[answer].value;
       } else {
-        if (/^\d+$/.test(value)) {
-          answer = Number(value);
-          value = currentNode.answers[answer].value;
-        } else {
-          answer = Object.keys(currentNode.answers).find((currentNodeAnswerId) => currentNode.answers[currentNodeAnswerId].value === value);
-        }
+        answer = Object.keys(currentNode.answers).find((currentNodeAnswerId) => currentNode.answers[currentNodeAnswerId].value === value);
       }
       break;
     default:
