@@ -141,8 +141,8 @@ function oneValidation(algorithm, criteria, questions, stepName) {
           }
 
           // Test integer or float question if there is validation
-          if (mcNode.value_format === valueFormats.int || mcNode.value_format === valueFormats.float) {
-            if (mcNode.value !== null && (mcNode.min_value_error !== null || mcNode.max_value_error) && (mcNode.value < mcNode.min_value_error || mcNode.value > mcNode.max_value_error)) {
+          if (currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) {
+            if (mcNode.value !== null && (currentNode.min_value_error !== null || currentNode.max_value_error) && (mcNode.value < currentNode.min_value_error || mcNode.value > currentNode.max_value_error)) {
               isValid = false;
               staticValidator.questionsToBeFill.push(currentNode);
             }
