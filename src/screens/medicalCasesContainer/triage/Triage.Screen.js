@@ -6,7 +6,7 @@ import { Content, View } from 'native-base';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsComplaintCategory, questionsFirstLookAssessment } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsComplaintCategory, questionsUniqueTriageQuestion } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import Boolean from '../../../components/QuestionsContainer/DisplaysContainer/Boolean';
 import BasicMeasurements from '../../../components/BasicMeasurements';
 import Questions from '../../../components/QuestionsContainer/Questions';
@@ -29,7 +29,7 @@ export default class Triage extends React.Component {
       { name: 'thermometer', type: 'FontAwesome5' },
     ];
 
-    const steps = [t('triage:first_look_assessment'), t('triage:chief'), t('triage:basic_measurement')];
+    const steps = [t('triage:unique_triage_questions'), t('triage:chief'), t('triage:basic_measurement')];
 
     // Remove health cares questions if we're in arm control
     if (algorithm.is_arm_control) {
@@ -101,7 +101,7 @@ export default class Triage extends React.Component {
           {algorithm.is_arm_control ? null : (
             <View style={styles.pad}>
               <Suspense fallback={<LiwiLoader />}>
-                <Questions questions={questionsFirstLookAssessment(algorithm)} selectedPage={selectedPage} pageIndex={0} />
+                <Questions questions={questionsUniqueTriageQuestion(algorithm)} selectedPage={selectedPage} pageIndex={0} />
               </Suspense>
             </View>
           )}
