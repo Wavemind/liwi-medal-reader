@@ -102,7 +102,7 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
           validationMessage = currentNode.min_message_error;
         }
 
-        if (value > mcNode.max_value_error && mcNode.max_value_error !== null) {
+        if (value > currentNode.max_value_error && currentNode.max_value_error !== null) {
           validationMessage = currentNode.max_message_error;
         }
         validationType = 'error';
