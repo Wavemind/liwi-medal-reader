@@ -26,6 +26,7 @@ export class MedicalCaseModel {
       this.status = medicalCaseStatus.inCreation.name;
       this.isNewCase = true;
       this.isEligible = true;
+      this.isOldEnough = false;
       this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
       this.consent = true;
@@ -123,6 +124,7 @@ export class MedicalCaseModel {
     this.triage = data.triage;
     this.consent = data.consent;
     this.isEligible = data.isEligible;
+    this.isOldEnough = data.isOldEnough;
     this.metaData = data.metaData;
     this.diagnoses = data.diagnoses;
     this.comment = data.comment;
@@ -354,7 +356,7 @@ export class MedicalCaseModel {
    * @returns {boolean}
    */
   canBeSynchronized = () => {
-    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.consent;
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.isOldEnough && this.consent;
   };
 
   /**

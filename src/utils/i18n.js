@@ -73,7 +73,7 @@ i18n
           weight: 'weight',
           which: 'Which formulation of medicine is available and appropriate for your patient?',
           write: 'Write the medicine',
-          consultation_comment: 'You may add further clinical details for your records if you wish (Non-mandatory. Will not be used in the algorithm)'
+          consultation_comment: 'You may add further clinical details for your records if you wish (Non-mandatory. Will not be used in the algorithm)',
         },
         drug: {
           give: 'Give',
@@ -299,6 +299,7 @@ i18n
           show_consent: 'Show consent file',
         },
         patient_upsert: {
+          too_young: "This algorithm cannot manage children below {{age_in_days}} day(s) of age",
           uid: 'UID',
           study_id: 'Study ID',
           group_id: 'Health Facility ID',
