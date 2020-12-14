@@ -57,7 +57,7 @@ const armControlScreen = [
     medicalCaseOrder: 1,
     validations: {
       // firstLookAssessments: { is_mandatory: true, initialPage: 0 },
-      complaintCategories: { answer: 'not_null', initialPage: 0 },
+      complaintCategories: { initialPage: 0 },
       basicMeasurements: { initialPage: 1 },
     },
   },
