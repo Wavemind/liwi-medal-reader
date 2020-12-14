@@ -4,6 +4,7 @@ import * as React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
+import moment from 'moment';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
@@ -129,6 +130,10 @@ export default class ListContent extends React.Component<Props, State> {
     const { isConnected, deviceInfo } = this.state;
     return (
       <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
+        <View style={styles.itemColumn}>
+          <Text size-auto>{moment(item.updated_at).format('DD.MM.yyyy')}</Text>
+          <Text size-auto>{moment(item.updated_at).format('HH:mm')}</Text>
+        </View>
         {item.values.map((value, key) => (
           <View style={styles.itemColumn} key={`${item.id}_${key}`}>
             <Text size-auto>{value}</Text>
@@ -191,6 +196,9 @@ export default class ListContent extends React.Component<Props, State> {
     ) : (
       <View>
         <View padding-auto style={styles.filterContent}>
+          <View style={styles.columnLabel}>
+            <Text size-auto>{t('patient_profile:date')}</Text>
+          </View>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
               <Text size-auto>{nodes[column].label}</Text>
