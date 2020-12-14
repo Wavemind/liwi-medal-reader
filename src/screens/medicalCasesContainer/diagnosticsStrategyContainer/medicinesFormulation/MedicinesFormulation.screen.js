@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
-import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
+import { administrationRouteCategories } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
 import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
@@ -23,36 +23,6 @@ export default class MedicinesFormulations extends Component {
           setFormulationSelected(null, value, 'additionalDrugs', drugId);
         }
       });
-    }
-  };
-
-  /**
-   * Display measurement unit
-   * @param type
-   * @param drugDose
-   * @returns {string}
-   */
-  displayMedicationForm = (type, drugDose) => {
-    const {
-      app: { t },
-    } = this.props;
-
-    switch (type) {
-      case medicationForms.syrup:
-      case medicationForms.suspension:
-      case medicationForms.powder_for_injection:
-      case medicationForms.solution:
-        return `ml ${t('medication_form:per_administration')}`;
-      case medicationForms.tablet:
-      case medicationForms.capsule:
-        if (drugDose.dose_form !== null) {
-          return `mg (${drugDose.dose_form}mg ${t('medication_form:per')} ${t(`medication_form:${type}`).toLowerCase()})`;
-        } else {
-          return `mg ${t('medication_form:per_administration')}`;
-        }
-
-      default:
-        return ' dose';
     }
   };
 
@@ -81,26 +51,8 @@ export default class MedicinesFormulations extends Component {
             <Picker.Item label={t('application:select')} value={null} />
             {algorithm.nodes[instance.id]?.formulations.map((f, index) => {
               const preCalculed = drugDoses(index, algorithm, instance.id);
-              let string = '';
+              let string = f.description;
               let isPossible = true;
-              if (preCalculed.doseResult !== null) {
-                switch (preCalculed.medication_form) {
-                  case medicationForms.syrup:
-                  case medicationForms.suspension:
-                  case medicationForms.powder_for_injection:
-                  case medicationForms.solution:
-                    string = preCalculed.doseResult;
-                    break;
-                  case medicationForms.capsule:
-                  case medicationForms.tablet:
-                    string = (preCalculed.doseResult * preCalculed.dose_form) / preCalculed.breakable;
-                    break;
-                }
-              }
-
-              if (preCalculed.unique_dose !== null) {
-                string = preCalculed.unique_dose;
-              }
 
               if (preCalculed.no_possibility !== undefined) {
                 string = preCalculed.no_possibility;
@@ -112,7 +64,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return <Picker.Item key={f} label={`${string} ${isPossible ? this.displayMedicationForm(f.medication_form, preCalculed) : ''}`} value={isPossible ? index : false} />;
+              return <Picker.Item key={f} label={string} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
@@ -141,10 +93,7 @@ export default class MedicinesFormulations extends Component {
             <>
               {this._renderFormulation(drugs[drugId], selected, onSelect)}
               {selected !== null && administrationRouteCategories.includes(currentDrug.formulations[selected].administration_route_category) ? (
-                <>
-                  <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
-                  <Text>{currentDrug.formulations[selected].description !== null ? currentDrug.formulations[selected].description : ''}</Text>
-                </>
+                <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
               ) : null}
             </>
           );
