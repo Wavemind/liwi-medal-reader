@@ -131,7 +131,7 @@ export default class ListContent extends React.Component<Props, State> {
     return (
       <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         <View style={styles.itemColumn}>
-          <Text size-auto>{moment(item.updated_at).format('DD.MM.yyyy')}</Text>
+          <Text size-auto>{moment(item.updated_at).format('DD.MM.YYYY')}</Text>
           <Text size-auto>{moment(item.updated_at).format('HH:mm')}</Text>
         </View>
         {item.values.map((value, key) => (
