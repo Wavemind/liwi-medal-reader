@@ -56,7 +56,8 @@ export default class Triage extends React.Component {
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 
     return (
-      NavigationService.getCurrentRoute().routeName === 'Triage' && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value)
+      NavigationService.getCurrentRoute().routeName === 'Triage' ||
+      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
     );
   }
 

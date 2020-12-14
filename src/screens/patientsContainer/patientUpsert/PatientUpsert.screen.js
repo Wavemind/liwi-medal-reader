@@ -41,8 +41,10 @@ export default class PatientUpsert extends React.Component {
 
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
-
-    return NavigationService.getCurrentRoute().routeName === 'PatientUpsert' && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value);
+    return (
+      NavigationService.getCurrentRoute().routeName === 'PatientUpsert' ||
+      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
+    );
   }
 
   async init() {
@@ -155,7 +157,8 @@ export default class PatientUpsert extends React.Component {
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
+          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences"
+          />
         </View>
 
         <View w50 style={styles.containerText}>
