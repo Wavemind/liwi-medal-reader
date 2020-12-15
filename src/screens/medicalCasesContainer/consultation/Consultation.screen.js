@@ -27,10 +27,17 @@ export default class Consultation extends React.Component {
   shouldComponentUpdate(nextProps) {
     const {
       app: { answeredQuestionId },
+      medicalCase,
     } = this.props;
     const { firstRender } = this.state;
 
-    return NavigationService.getCurrentRoute().routeName === 'Consultation' && (answeredQuestionId !== nextProps.app.answeredQuestionId || firstRender);
+    const question = medicalCase.nodes[answeredQuestionId];
+    const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
+
+    return (
+      NavigationService.getCurrentRoute().routeName === 'Consultation' ||
+      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
+    );
   }
 
   componentDidMount() {

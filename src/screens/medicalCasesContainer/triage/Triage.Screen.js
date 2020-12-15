@@ -6,9 +6,10 @@ import { Content, View } from 'native-base';
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import { questionsComplaintCategory } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsComplaintCategory, questionsUniqueTriageQuestion } from '../../../../frontend_service/algorithm/questionsStage.algo';
 import Boolean from '../../../components/QuestionsContainer/DisplaysContainer/Boolean';
 import BasicMeasurements from '../../../components/BasicMeasurements';
+import Questions from '../../../components/QuestionsContainer/Questions';
 
 const Stepper = React.lazy(() => import('../../../components/Stepper'));
 
@@ -17,15 +18,47 @@ export default class Triage extends React.Component {
     super(props);
 
     const {
-      app: { algorithm },
+      app: { t, algorithm },
     } = props;
 
     NavigationService.setParamsAge(algorithm, 'Triage');
 
+    const icons = [
+      { name: 'heartbeat', type: 'FontAwesome5' },
+      { name: 'stethoscope', type: 'FontAwesome5' },
+      { name: 'thermometer', type: 'FontAwesome5' },
+    ];
+
+    const steps = [t('triage:unique_triage_questions'), t('triage:chief'), t('triage:basic_measurement')];
+
+    // Remove health cares questions if we're in arm control
+    if (algorithm.is_arm_control) {
+      icons.splice(1, 1); // Unique Triage Question
+      steps.splice(1, 1); // Unique Triage Question
+    }
+
     this.state = {
+      icons,
+      steps,
       complaintCategories: [],
       firstRender: true,
     };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const {
+      app: { answeredQuestionId },
+      medicalCase,
+    } = this.props;
+    const { firstRender } = this.state;
+
+    const question = medicalCase.nodes[answeredQuestionId];
+    const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
+
+    return (
+      NavigationService.getCurrentRoute().routeName === 'Triage' ||
+      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
+    );
   }
 
   componentDidMount() {
@@ -42,7 +75,7 @@ export default class Triage extends React.Component {
       navigation,
     } = this.props;
 
-    const { complaintCategories } = this.state;
+    const { complaintCategories, icons, steps } = this.state;
 
     const selectedPage = navigation.getParam('initialPage');
 
@@ -59,26 +92,20 @@ export default class Triage extends React.Component {
               initialPage: e,
             });
           }}
-          icons={[
-            // { name: 'heartbeat', type: 'FontAwesome5' },
-            { name: 'stethoscope', type: 'FontAwesome5' },
-            { name: 'thermometer', type: 'FontAwesome5' },
-          ]}
-          steps={[t('triage:chief'), t('triage:basic_measurement')]}
+          icons={icons}
+          steps={steps}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage={algorithm.is_arm_control ? 'Tests' : 'Consultation'}
           nextStageString={algorithm.is_arm_control ? t('medical_case:test') : t('medical_case:consultation')}
         >
-          {/* <View style={styles.pad}> */}
-          {/*  {focus === 'didFocus' || focus === 'willFocus' ? ( */}
-          {/*    <Suspense fallback={<LiwiLoader />}> */}
-          {/*      <Questions questions={questionsFirstLookAssessment(algorithm)} selectedPage={selectedPage} pageIndex={0} /> */}
-          {/*    </Suspense> */}
-          {/*  ) : ( */}
-          {/*    <LiwiLoader /> */}
-          {/*  )} */}
-          {/* </View> */}
+          {algorithm.is_arm_control ? null : (
+            <View style={styles.pad}>
+              <Suspense fallback={<LiwiLoader />}>
+                <Questions questions={questionsUniqueTriageQuestion(algorithm)} selectedPage={selectedPage} pageIndex={0} />
+              </Suspense>
+            </View>
+          )}
           <View style={styles.flex}>
             <Suspense fallback={<LiwiLoader />}>
               <Content>
