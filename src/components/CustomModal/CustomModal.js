@@ -62,7 +62,7 @@ export default class CustomModal extends React.Component {
   // TODO: refactor
   _renderValidation = () => {
     const { modalRedux } = this.props;
-    const { screenToBeFill, stepToBeFill, customErrors } = modalRedux.params;
+    const { screenToBeFill, stepToBeFill, customErrors, isTooYoung } = modalRedux.params;
 
     const {
       app: { t },
@@ -72,36 +72,53 @@ export default class CustomModal extends React.Component {
     return (
       <View>
         <LiwiTitle4 style={styles.center}>{t('modal:uncompleted')}</LiwiTitle4>
-        <View style={styles.description}>
-          {stepToBeFill.map((step) => (
-            <View key={`step-name${step.stepName}`}>
-              <View key={`step-sub${step.stepName}`} style={styles.questions}>
-                {customErrors.map((error) => (
-                  <Text key={error}> - {error}</Text>
-                ))}
-                {this._renderQuestions(step.questionsToBeFill)}
-              </View>
+        {isTooYoung ? (
+          <View style={styles.description}>
+            {customErrors.map((error) => (
+              <Text key={error}>{error}</Text>
+            ))}
+            <View style={{ flexDirection: 'row' }}>
+              <Button
+                style={styles.buttonNav}
+                onPress={() => {
+                  this.closeModal();
+                  NavigationService.navigate('Home');
+                }}
+              >
+                <Text>{t('modal:close')}</Text>
+              </Button>
             </View>
-          ))}
-          <View style={{ flexDirection: 'row' }}>
-            <Button
-              style={styles.buttonNav}
-              onPress={() => {
-                this.closeModal();
-                const params = {};
-
-                if (screenToBeFill === 'PatientUpsert') {
-                  params.idPatient = patientId;
-                  params.newMedicalCase = false;
-                }
-
-                NavigationService.navigate(screenToBeFill, params);
-              }}
-            >
-              <Text>{t('modal:close')}</Text>
-            </Button>
           </View>
-        </View>
+        ) : (
+          <View style={styles.description}>
+            {stepToBeFill.map((step) => (
+              <View key={`step-name${step.stepName}`}>
+                <View key={`step-sub${step.stepName}`} style={styles.questions}>
+                  {customErrors.map((error) => (
+                    <Text key={error}> - {error}</Text>
+                  ))}
+                  {this._renderQuestions(step.questionsToBeFill)}
+                </View>
+              </View>
+            ))}
+            <View style={{ flexDirection: 'row' }}>
+              <Button
+                style={styles.buttonNav}
+                onPress={() => {
+                  this.closeModal();
+                  const params = {};
+                  if (screenToBeFill === 'PatientUpsert') {
+                    params.idPatient = patientId;
+                    params.newMedicalCase = false;
+                  }
+                  NavigationService.navigate(screenToBeFill, params);
+                }}
+              >
+                <Text>{t('modal:close')}</Text>
+              </Button>
+            </View>
+          </View>
+        )}
       </View>
     );
   };
@@ -307,6 +324,7 @@ export default class CustomModal extends React.Component {
   renderContent = () => {
     const { modalRedux, children, visible } = this.props;
     const { isVisibleJSX } = this.state;
+    const { isTooYoung } = modalRedux.params;
 
     const isFromRedux = modalRedux.open;
     const isFromJsx = isVisibleJSX || visible;
@@ -314,9 +332,11 @@ export default class CustomModal extends React.Component {
     return (
       <View style={styles.modal}>
         <View style={styles.modalContainer}>
-          <Button onPress={this.closeModal} rounded style={styles.closeButton}>
-            <Icon name="close" type="AntDesign" style={styles.icon} />
-          </Button>
+          {isTooYoung ? null : (
+            <Button onPress={this.closeModal} rounded style={styles.closeButton}>
+              <Icon name="close" type="AntDesign" style={styles.icon} />
+            </Button>
+          )}
           <ScrollView style={styles.modalContent}>
             {isFromJsx && children}
             {isFromRedux && this.renderTypeModal()}

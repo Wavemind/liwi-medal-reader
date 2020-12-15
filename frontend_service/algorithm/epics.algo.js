@@ -229,7 +229,9 @@ const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
   if (nodeId === algorithm.config.basic_questions.birth_date_question_id) {
     const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
     const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
+    const age_in_days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
     medicalCase.isEligible = years < algorithm.config.age_limit;
+    medicalCase.isOldEnough = age_in_days >= algorithm.config.minimum_age;
   }
 
   // For each related diagnoses we gonna check if we need to update their status
