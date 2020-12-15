@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
 
   aboutDescription: { marginBottom: 15, textAlign: 'left', flex: 1 },
 
-  center: { textAlign: 'center' },
+  center: { textAlign: 'center', marginTop: 10 },
 
   documentImage: {
     flex: 1,
