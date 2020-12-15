@@ -61,13 +61,11 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       if (value === null) {
         // Set the new answer to null for reset
         answer = value;
+      } else if (/^\d+$/.test(value)) {
+        answer = Number(value);
+        value = currentNode.answers[answer].value;
       } else {
-        if (/^\d+$/.test(value)) {
-          answer = Number(value);
-          value = currentNode.answers[answer].value;
-        } else {
-          answer = Object.keys(currentNode.answers).find((currentNodeAnswerId) => currentNode.answers[currentNodeAnswerId].value === value);
-        }
+        answer = Object.keys(currentNode.answers).find((currentNodeAnswerId) => currentNode.answers[currentNodeAnswerId].value === value);
       }
       break;
     default:
@@ -104,7 +102,7 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
           validationMessage = currentNode.min_message_error;
         }
 
-        if (value > mcNode.max_value_error && mcNode.max_value_error !== null) {
+        if (value > currentNode.max_value_error && currentNode.max_value_error !== null) {
           validationMessage = currentNode.max_message_error;
         }
         validationType = 'error';
