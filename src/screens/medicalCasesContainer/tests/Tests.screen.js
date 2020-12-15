@@ -35,7 +35,8 @@ export default class Tests extends React.Component {
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 
     return (
-      NavigationService.getCurrentRoute().routeName === 'Tests' && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value)
+      NavigationService.getCurrentRoute().routeName === 'Tests' ||
+      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
     );
   }
 

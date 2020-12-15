@@ -262,26 +262,26 @@ const sortQuestions = (questionsPerSystem) => {
  * Get FirstLook Assessment for triage
  * Update metadata
  */
-export const questionsFirstLookAssessment = (algorithm) => {
+export const questionsUniqueTriageQuestion = (algorithm) => {
   const medicalCase = store.getState();
-  const firstLookAssessment = [];
+  const uniqueTriageQuestions = [];
 
-  const ordersFirstLookAssessment = algorithm.mobile_config.questions_orders[categories.emergencySign];
+  const ordersUniqueTriageQuestion = algorithm.mobile_config.questions_orders[categories.uniqueTriageQuestion];
 
-  if (ordersFirstLookAssessment !== undefined) {
-    ordersFirstLookAssessment.forEach((order) => {
-      firstLookAssessment.push(medicalCase.nodes[order]);
+  if (ordersUniqueTriageQuestion !== undefined) {
+    ordersUniqueTriageQuestion.forEach((order) => {
+      uniqueTriageQuestions.push(medicalCase.nodes[order]);
     });
   }
 
-  const newQuestions = firstLookAssessment.map(({ id }) => id);
+  const newQuestions = uniqueTriageQuestions.map(({ id }) => id);
 
   // Update state$ first look assessment questions if it's different from new questions list
-  if (!_.isEqual(medicalCase.metaData.triage.firstLookAssessments, newQuestions)) {
-    store.dispatch(updateMetaData('triage', 'firstLookAssessments', newQuestions));
+  if (!_.isEqual(medicalCase.metaData.triage.uniqueTriageQuestion, newQuestions)) {
+    store.dispatch(updateMetaData('triage', 'uniqueTriageQuestion', newQuestions));
   }
 
-  return firstLookAssessment;
+  return uniqueTriageQuestions;
 };
 
 /**

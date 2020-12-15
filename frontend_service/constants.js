@@ -90,7 +90,6 @@ export const categories = {
   chronicCondition: 'chronic_condition',
   basicMeasurement: 'basic_measurement',
   basicDemographic: 'basic_demographic',
-  uniqueTriageQuestion: 'unique_triage_question',
   exposure: 'exposure',
   physicalExam: 'physical_exam',
   symptom: 'symptom',
@@ -109,6 +108,7 @@ export const categories = {
   observedPhysicalSign: 'observed_physical_sign',
   consultationRelated: 'consultation_related',
   uniqueTriagePhysicalSign: 'unique_triage_physical_sign',
+  uniqueTriageQuestion: 'unique_triage_question',
   referral: 'referral',
 };
 
