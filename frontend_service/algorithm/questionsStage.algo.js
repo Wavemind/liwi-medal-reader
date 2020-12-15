@@ -192,19 +192,20 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
  */
 export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   const medicalCase = store.getState();
-  const vitalSignQuestions = nodeFilterBy(
+  const vitalSignQuestions = [];
+  const backgroundCalculationQuestions = nodeFilterBy(
     medicalCase,
     algorithm,
     [
       {
         by: 'category',
         operator: 'equal',
-        value: categories.vitalSignAnthropometric,
+        value: categories.backgroundCalculation,
       },
     ],
     'OR',
     'array',
-    false
+    true
   );
 
   const physicalExamQuestions = nodeFilterBy(
@@ -221,6 +222,15 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
     'array',
     true
   );
+
+  // Get vital signs questions based on background calculation
+  backgroundCalculationQuestions.forEach((bcQuestion) => {
+    algorithm.nodes[bcQuestion.id].vital_signs.forEach((id) => {
+      if (algorithm.nodes[id].category === categories.vitalSignAnthropometric) {
+        vitalSignQuestions.push(medicalCase.nodes[id]);
+      }
+    });
+  });
 
   const questions = vitalSignQuestions.concat(physicalExamQuestions);
   const systemOrders = algorithm.mobile_config.systems_order;
@@ -296,13 +306,15 @@ export const questionsComplaintCategory = (algorithm) => {
 
   const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
-  if(days <= 60) {
+
+  if (days <= 60) {
     store.dispatch(setAnswer(algorithm, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[0]));
     store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[1]));
   } else {
     store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]));
     store.dispatch(setAnswer(algorithm, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[1]));
   }
+
   orders.forEach((order) => {
     if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id && medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
