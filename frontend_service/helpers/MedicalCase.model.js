@@ -26,7 +26,7 @@ export class MedicalCaseModel {
       this.status = medicalCaseStatus.inCreation.name;
       this.isNewCase = true;
       this.isEligible = true;
-      this.isOldEnough = false;
+      this.isOldEnough = true;
       this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
       this.consent = true;

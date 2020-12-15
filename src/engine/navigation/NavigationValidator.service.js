@@ -191,7 +191,8 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
     }
     if (!medicalCase.isOldEnough) {
       validator.isActionValid = false;
-      validator.customErrors.push(i18next.t('patient_upsert:too_young', { age_in_days: algorithm.config.minimum_age}));
+      validator.isTooYoung = true;
+      validator.customErrors.push(i18next.t('patient_upsert:too_young', { age_in_days: algorithm.config.minimum_age }));
       return validator;
     }
   }
