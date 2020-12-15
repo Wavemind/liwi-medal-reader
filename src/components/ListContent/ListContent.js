@@ -137,7 +137,7 @@ export default class ListContent extends React.Component<Props, State> {
         ))}
         {model === 'Patient' ? (
           <View style={styles.itemColumn}>
-            <Text size-auto>{moment(item.updated_at).format('DD.MM.YYYY')}</Text>
+            <Text size-auto>{moment(item.updated_at).format(t('application:date_format'))}</Text>
             <Text size-auto>{moment(item.updated_at).format('HH:mm')}</Text>
           </View>
         ) : null}
@@ -190,7 +190,6 @@ export default class ListContent extends React.Component<Props, State> {
       app: { t },
       model,
       navigation,
-      list,
     } = this.props;
     const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
