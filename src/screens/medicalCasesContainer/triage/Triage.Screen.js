@@ -33,8 +33,8 @@ export default class Triage extends React.Component {
 
     // Remove health cares questions if we're in arm control
     if (algorithm.is_arm_control) {
-      icons.splice(1, 1); // first_look_assessment
-      steps.splice(1, 1); // first_look_assessment
+      icons.splice(1, 1); // Unique Triage Question
+      steps.splice(1, 1); // Unique Triage Question
     }
 
     this.state = {
