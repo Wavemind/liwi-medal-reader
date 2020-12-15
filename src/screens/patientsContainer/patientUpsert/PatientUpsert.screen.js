@@ -39,6 +39,10 @@ export default class PatientUpsert extends React.Component {
     } = this.props;
     const { firstRender } = this.state;
 
+    if (firstRender) {
+      return true;
+    }
+
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
     return (
