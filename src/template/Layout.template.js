@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import { createAppContainer } from 'react-navigation';
+import { NetworkProvider } from 'react-native-offline';
+
 import getTheme from 'template/liwi/native_components/index.ignore';
 import material from 'template/liwi/variables/material';
 import liwi from 'template/liwi/styles';
@@ -13,8 +15,9 @@ import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';
 import { getItem, setItem } from '../engine/api/LocalStorage';
-import { navigationRoute, navigationStateKey } from '../../frontend_service/constants';
+import { navigationRoute, navigationStateKey, secondStatusLocalData } from '../../frontend_service/constants';
 import { RootMainNavigator } from '../engine/navigation/Root.navigation';
+import StatusIndicator from '../components/StatusIndicator';
 
 type Props = {
   app: {
@@ -79,42 +82,58 @@ class LayoutTemplate extends React.Component<Props> {
 
   render() {
     const {
-      app: { logged, ready },
+      app: { logged, ready, session },
     } = this.props;
 
     const { AppContainer, navigationState, mustSetNavigation } = this.state;
-
+    let serverURL = '';
+    let isStandalone = false;
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
+    console.log(this.props);
+    console.log(session)
+
+    if (session !== null) {
+      isStandalone = session.facility.architecture === 'standalone';
+      if (!isStandalone) {
+        serverURL = session.facility.local_data_ip;
+      }
+    }
+
+    console.log('shouldPing', !isStandalone)
+    console.log('serverURL', serverURL)
 
     return (
-      <Root>
-        <StyleProvider style={theme}>
-          {ready ? (
-            <Container>
-              <RootView>
-                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                <AppContainer
-                  mustSetNavigation={mustSetNavigation}
-                  updateMustSetNavigation={() => this.setState({ mustSetNavigation: false })}
-                  navigationState={navigationState}
-                  logged={logged}
-                  persistNavigationState={persistNavigationState}
-                  renderLoadingExperimental={() => <LiwiLoader />}
-                  ref={(navigatorRef) => {
-                    NavigationService.setTopLevelNavigator(navigatorRef);
-                  }}
-                  onNavigationStateChange={(prevState, currentState) => {
-                    NavigationService.onNavigationStateChange(prevState, currentState);
-                  }}
-                />
-              </RootView>
-            </Container>
-          ) : (
-            <LiwiLoader />
-          )}
-        </StyleProvider>
-      </Root>
+      <NetworkProvider shouldPing={!isStandalone} pingServerUrl={serverURL} pingInterval={secondStatusLocalData}>
+        <Root>
+          <StyleProvider style={theme}>
+            {ready ? (
+              <Container>
+                <RootView>
+                  {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                  <AppContainer
+                    mustSetNavigation={mustSetNavigation}
+                    updateMustSetNavigation={() => this.setState({ mustSetNavigation: false })}
+                    navigationState={navigationState}
+                    logged={logged}
+                    persistNavigationState={persistNavigationState}
+                    renderLoadingExperimental={() => <LiwiLoader />}
+                    ref={(navigatorRef) => {
+                      NavigationService.setTopLevelNavigator(navigatorRef);
+                    }}
+                    onNavigationStateChange={(prevState, currentState) => {
+                      NavigationService.onNavigationStateChange(prevState, currentState);
+                    }}
+                  />
+                </RootView>
+              </Container>
+            ) : (
+              <LiwiLoader />
+            )}
+          </StyleProvider>
+        </Root>
+        <StatusIndicator />
+      </NetworkProvider>
     );
   }
 }

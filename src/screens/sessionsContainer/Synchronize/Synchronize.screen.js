@@ -33,7 +33,6 @@ export default class Synchronize extends React.Component<Props, State> {
     if (result !== null) {
       const database = await new Database();
       await app.set('database', database);
-      await app.subscribePingApplicationServer();
       navigation.navigate('UnlockSession');
     }
 
