@@ -192,19 +192,20 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
  */
 export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   const medicalCase = store.getState();
-  const vitalSignQuestions = nodeFilterBy(
+  const vitalSignQuestions = [];
+  const backgroundCalculationQuestions = nodeFilterBy(
     medicalCase,
     algorithm,
     [
       {
         by: 'category',
         operator: 'equal',
-        value: categories.vitalSignAnthropometric,
+        value: categories.backgroundCalculation,
       },
     ],
     'OR',
     'array',
-    false
+    true
   );
 
   const physicalExamQuestions = nodeFilterBy(
@@ -221,6 +222,15 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
     'array',
     true
   );
+
+  // Get vital signs questions based on background calculation
+  backgroundCalculationQuestions.forEach((bcQuestion) => {
+    algorithm.nodes[bcQuestion.id].vital_signs.forEach((id) => {
+      if (algorithm.nodes[id].category === categories.vitalSignAnthropometric) {
+        vitalSignQuestions.push(medicalCase.nodes[id]);
+      }
+    });
+  });
 
   const questions = vitalSignQuestions.concat(physicalExamQuestions);
   const systemOrders = algorithm.mobile_config.systems_order;
@@ -262,26 +272,26 @@ const sortQuestions = (questionsPerSystem) => {
  * Get FirstLook Assessment for triage
  * Update metadata
  */
-export const questionsFirstLookAssessment = (algorithm) => {
+export const questionsUniqueTriageQuestion = (algorithm) => {
   const medicalCase = store.getState();
-  const firstLookAssessment = [];
+  const uniqueTriageQuestions = [];
 
-  const ordersFirstLookAssessment = algorithm.mobile_config.questions_orders[categories.emergencySign];
+  const ordersUniqueTriageQuestion = algorithm.mobile_config.questions_orders[categories.uniqueTriageQuestion];
 
-  if (ordersFirstLookAssessment !== undefined) {
-    ordersFirstLookAssessment.forEach((order) => {
-      firstLookAssessment.push(medicalCase.nodes[order]);
+  if (ordersUniqueTriageQuestion !== undefined) {
+    ordersUniqueTriageQuestion.forEach((order) => {
+      uniqueTriageQuestions.push(medicalCase.nodes[order]);
     });
   }
 
-  const newQuestions = firstLookAssessment.map(({ id }) => id);
+  const newQuestions = uniqueTriageQuestions.map(({ id }) => id);
 
   // Update state$ first look assessment questions if it's different from new questions list
-  if (!_.isEqual(medicalCase.metaData.triage.firstLookAssessments, newQuestions)) {
-    store.dispatch(updateMetaData('triage', 'firstLookAssessments', newQuestions));
+  if (!_.isEqual(medicalCase.metaData.triage.uniqueTriageQuestion, newQuestions)) {
+    store.dispatch(updateMetaData('triage', 'uniqueTriageQuestion', newQuestions));
   }
 
-  return firstLookAssessment;
+  return uniqueTriageQuestions;
 };
 
 /**
@@ -296,13 +306,15 @@ export const questionsComplaintCategory = (algorithm) => {
 
   const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
-  if(days <= 60) {
+
+  if (days <= 60) {
     store.dispatch(setAnswer(algorithm, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[0]));
     store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[1]));
   } else {
     store.dispatch(setAnswer(algorithm, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]));
     store.dispatch(setAnswer(algorithm, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[1]));
   }
+
   orders.forEach((order) => {
     if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id && medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others

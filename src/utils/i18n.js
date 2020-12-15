@@ -176,7 +176,7 @@ i18n
           comment: 'Comment',
         },
         triage: {
-          first_look_assessment: 'First look assessments',
+          unique_triage_questions: 'Unique triage questions',
           basic_measurement: 'Basic measurements',
           chronical_condition: 'Chronical conditions',
           other: 'Others',
@@ -201,7 +201,7 @@ i18n
         menu: {
           patientUpsert: 'Registration',
           triage: '1st assessment',
-          first_look_assessments: 'First look assessment',
+          unique_triage_questions: 'Unique triage questions',
           basic_measurements: 'Basic measurements',
           chronical_conditions: 'Chronical conditions',
           complaint_categories: 'Complaint categories',
@@ -291,6 +291,7 @@ i18n
         patient_profile: {
           personal_information: 'Personal information',
           medical_cases: 'Consultations',
+          date: 'Last visit',
           status: 'Status',
           add_case: 'Add consultation',
           edit_patient_value: 'Edit patient values',

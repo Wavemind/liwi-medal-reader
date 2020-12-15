@@ -4,6 +4,7 @@ import * as React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
+import moment from 'moment';
 
 import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
@@ -134,6 +135,12 @@ export default class ListContent extends React.Component<Props, State> {
             <Text size-auto>{value}</Text>
           </View>
         ))}
+        {model === 'Patient' ? (
+          <View style={styles.itemColumn}>
+            <Text size-auto>{moment(item.updated_at).format(t('application:date_format'))}</Text>
+            <Text size-auto>{moment(item.updated_at).format('HH:mm')}</Text>
+          </View>
+        ) : null}
         {model === 'MedicalCase' ? (
           <>
             <View style={styles.itemColumn}>
@@ -196,6 +203,11 @@ export default class ListContent extends React.Component<Props, State> {
               <Text size-auto>{nodes[column].label}</Text>
             </View>
           ))}
+          {model === 'Patient' ? (
+            <View style={styles.columnLabel}>
+              <Text size-auto>{t('patient_profile:date')}</Text>
+            </View>
+          ) : null}
           {model === 'MedicalCase' ? (
             <View style={styles.columnLabel}>
               <Text size-auto>{t('patient_profile:status')}</Text>
