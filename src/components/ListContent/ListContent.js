@@ -125,23 +125,22 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       itemNavigation,
       model,
-      list,
       app: { t, user },
     } = this.props;
     const { isConnected, deviceInfo } = this.state;
     return (
       <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
-        {list === 'patient_list' ? (
-          <View style={styles.itemColumn}>
-            <Text size-auto>{moment(item.updated_at).format('DD.MM.YYYY')}</Text>
-            <Text size-auto>{moment(item.updated_at).format('HH:mm')}</Text>
-          </View>
-        ) : null}
         {item.values.map((value, key) => (
           <View style={styles.itemColumn} key={`${item.id}_${key}`}>
             <Text size-auto>{value}</Text>
           </View>
         ))}
+        {model === 'Patient' ? (
+          <View style={styles.itemColumn}>
+            <Text size-auto>{moment(item.updated_at).format('DD.MM.YYYY')}</Text>
+            <Text size-auto>{moment(item.updated_at).format('HH:mm')}</Text>
+          </View>
+        ) : null}
         {model === 'MedicalCase' ? (
           <>
             <View style={styles.itemColumn}>
@@ -200,16 +199,16 @@ export default class ListContent extends React.Component<Props, State> {
     ) : (
       <View>
         <View padding-auto style={styles.filterContent}>
-          {list === 'patient_list' ? (
-            <View style={styles.columnLabel}>
-              <Text size-auto>{t('patient_profile:date')}</Text>
-            </View>
-          ) : null}
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
               <Text size-auto>{nodes[column].label}</Text>
             </View>
           ))}
+          {model === 'Patient' ? (
+            <View style={styles.columnLabel}>
+              <Text size-auto>{t('patient_profile:date')}</Text>
+            </View>
+          ) : null}
           {model === 'MedicalCase' ? (
             <View style={styles.columnLabel}>
               <Text size-auto>{t('patient_profile:status')}</Text>

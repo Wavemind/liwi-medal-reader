@@ -291,7 +291,7 @@ i18n
         patient_profile: {
           personal_information: 'Personal information',
           medical_cases: 'Consultations',
-          date: 'Date',
+          date: 'Last visit',
           status: 'Status',
           add_case: 'Add consultation',
           edit_patient_value: 'Edit patient values',
