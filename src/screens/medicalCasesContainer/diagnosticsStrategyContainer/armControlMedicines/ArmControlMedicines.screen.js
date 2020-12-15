@@ -56,6 +56,11 @@ export default class ArmControlMedicines extends Component {
       app: { t, algorithm },
     } = this.props;
 
+    // Need this shit when closing a medical otherwise it crash
+    if (diagnoses === undefined) {
+      return null;
+    }
+
     const drugsList = _.filter(algorithm.nodes, (f) => f.category === categories.drug);
     const selectedDrugs = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
 

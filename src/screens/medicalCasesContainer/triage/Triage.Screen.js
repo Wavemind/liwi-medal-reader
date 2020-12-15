@@ -33,8 +33,8 @@ export default class Triage extends React.Component {
 
     // Remove health cares questions if we're in arm control
     if (algorithm.is_arm_control) {
-      icons.splice(1, 1); // Unique Triage Question
-      steps.splice(1, 1); // Unique Triage Question
+      icons.splice(0, 1); // Unique Triage Question
+      steps.splice(0, 1); // Unique Triage Question
     }
 
     this.state = {
@@ -51,6 +51,10 @@ export default class Triage extends React.Component {
       medicalCase,
     } = this.props;
     const { firstRender } = this.state;
+
+    if (firstRender) {
+      return true;
+    }
 
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];

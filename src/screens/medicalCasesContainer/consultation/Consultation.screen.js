@@ -31,6 +31,10 @@ export default class Consultation extends React.Component {
     } = this.props;
     const { firstRender } = this.state;
 
+    if (firstRender) {
+      return true;
+    }
+
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 
