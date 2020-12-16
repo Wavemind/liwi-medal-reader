@@ -41,7 +41,7 @@ export class MedicalCaseModel {
           custom: [],
         },
         triage: {
-          firstLookAssessments: [],
+          uniqueTriageQuestion: [],
           complaintCategories: [],
           basicMeasurements: [],
         },
@@ -54,8 +54,9 @@ export class MedicalCaseModel {
         tests: {
           tests: [],
         },
-        diagnosticsStrategy: {
+        diagnosticsstrategy: {
           managementQuestions: [],
+          referral: [],
         },
       };
       this.diagnoses = {

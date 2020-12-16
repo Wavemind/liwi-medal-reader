@@ -123,6 +123,14 @@ export const questionsReferrals = (algorithm) => {
     'array',
     false
   );
+
+  const newQuestions = referralQuestions.map(({ id }) => id);
+
+  // Update state$ first look assessment questions if it's different from new questions list
+  if (!_.isEqual(medicalCase.metaData.diagnosticsstrategy.referral, newQuestions)) {
+    store.dispatch(updateMetaData('diagnosticsstrategy', 'referral', newQuestions));
+  }
+
   return referralQuestions;
 };
 
