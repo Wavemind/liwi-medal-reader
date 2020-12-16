@@ -175,71 +175,18 @@ export class MedicalCaseModel {
             } else {
               dd.conditionValue = false;
             }
+            if (dd.conditionValue) node.counter++;
           });
 
-          // Map trough QS if it is in an another QS itself
           node.qs.forEach((qs) => {
-            this.setParentConditionValue(algorithm, qs.id, nodeId);
-          });
-        }
-      });
-
-      // Set question Formula
-      Object.keys(nodes).forEach((nodeId) => {
-        if (nodes[nodeId].type === nodeTypes.question) {
-          nodes[nodeId].referenced_in.forEach((id) => {
-            if (nodes[id].stage === stages.registration) {
-              nodes[id].conditionValue = true;
-            } else {
-              const dd = nodes[id].dd?.some((e) => e.conditionValue);
-              const qs = nodes[id].qs?.some((e) => e.conditionValue);
-              if (dd || qs) nodes[id].conditionValue = true;
-            }
+            qs.conditionValue = nodes[qs.id].instances[nodeId].top_conditions.length === 0;
+            if (qs.conditionValue) node.counter++;
           });
         }
       });
     } catch (e) {
       console.warn(e);
     }
-  };
-
-  /**
-   * Recursive function to also set dd and qs parents of current qs
-   * @param algorithm
-   * @param parentId
-   * @param id
-   */
-  setParentConditionValue = (algorithm, parentId, id) => {
-    let conditionValue = false;
-    const { diagnostics, nodes } = algorithm;
-    // Set condition value for DD if there is any
-    if (!nodes[parentId].dd.isEmpty()) {
-      nodes[parentId].dd.forEach((dd) => {
-        // If the instance is related to the main diagram
-        // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
-        if (diagnostics[dd.id].instances[parentId].final_diagnostic_id === null) {
-          dd.conditionValue = diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
-        } else {
-          dd.conditionValue = false;
-        }
-      });
-      conditionValue = true;
-    }
-
-    // Set condition value of parent QS if there is any
-    if (!nodes[parentId].qs.isEmpty()) {
-      // If parentNode is a QS, rerun function
-      nodes[parentId].qs.forEach((qs) => {
-        this.setParentConditionValue(algorithm, qs.id, parentId);
-      });
-      conditionValue = true;
-    }
-    // Set conditionValue of current QS
-    nodes[id].qs.forEach((instanceQs) => {
-      if (instanceQs.id === parentId) {
-        instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
-      }
-    });
   };
 
   /**
@@ -255,7 +202,11 @@ export class MedicalCaseModel {
       // Find patient in Realm
       const patient = await database.findBy('Patient', this.patient_id);
       if (patient === null) {
-        await database.insert('Patient', { ...storeMedicalCase.patient, id: storeMedicalCase.patient_id, medicalCases: [this] });
+        await database.insert('Patient', {
+          ...storeMedicalCase.patient,
+          id: storeMedicalCase.patient_id,
+          medicalCases: [this],
+        });
       }
     }
   };

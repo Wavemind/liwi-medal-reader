@@ -5,7 +5,6 @@ import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
 import { categories, valueFormats } from '../constants';
-import { diagnosticIsExcludedByComplaintCategory } from './Diagnostic.model';
 
 /**
  * Update the answer based node's on value format
@@ -161,26 +160,7 @@ export const nodeFilterBy = (medicalCase, algorithm, filters, operator = 'OR', f
     return switchTest(filter, node);
   };
 
-  const filterByConditionValue = (nodes) => {
-    Object.keys(nodes).forEach((nodeId) => {
-      const { type } = algorithm.nodes[nodeId];
-      if (type === 'Question') {
-        nodes[nodeId].counter = 0;
-        nodes[nodeId].dd.forEach((dd) => {
-          !diagnosticIsExcludedByComplaintCategory(algorithm, dd.id, medicalCase) && dd.conditionValue ? nodes[nodeId].counter++ : null;
-        });
-
-        // Map trough PS if it is in an another PS itself
-        nodes[nodeId].qs.forEach((qs) => {
-          const relatedDiagnostics = nodes[qs.id]?.dd.some((diagnostic) => !diagnosticIsExcludedByComplaintCategory(algorithm, diagnostic.id, medicalCase));
-          relatedDiagnostics && qs.conditionValue ? nodes[nodeId].counter++ : null;
-        });
-      }
-    });
-  };
-
   const { nodes } = medicalCase;
-  filterByConditionValue(nodes);
 
   let methodFilteringLodash;
 
