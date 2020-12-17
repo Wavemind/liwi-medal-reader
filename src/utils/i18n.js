@@ -338,8 +338,8 @@ i18n
           female: 'Female',
           age_not_defined: 'Age is not defined',
           reason: 'Reason for changing facility',
-          days: 'Days',
-          months: 'Months',
+          day: 'Day',
+          month: 'Month',
           year: 'Year *',
         },
         login: {
