@@ -8,6 +8,8 @@ import { actions } from '../../actions/types.actions';
 import { categories } from '../../constants';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { nodeUpdateAnswer } from '../../helpers/Node.model';
+import NavigationService from '../../../src/engine/navigation/Navigation.service';
+import { processUpdatedNode } from '../../algorithm/epics.algo';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };
 
@@ -366,18 +368,41 @@ class MedicalCaseReducer extends ReducerClass {
     const { algorithm, nodeId, newValue } = action.payload;
     // Instantiate new object with answered question with new answer value
     const { answer, answer_stage, value, validationMessage, validationType } = nodeUpdateAnswer(newValue, algorithm, state.nodes[nodeId]);
-    return {
-      ...state,
-      nodes: {
-        ...state.nodes,
-        [nodeId]: {
-          ...state.nodes[nodeId],
-          answer,
-          answer_stage,
-          value,
-          validationMessage,
-          validationType,
+
+    const medicalCase = JSON.parse(
+      JSON.stringify({
+        ...state,
+        nodes: {
+          ...state.nodes,
+          [nodeId]: {
+            ...state.nodes[nodeId],
+            answer,
+            answer_stage,
+            value,
+            validationMessage,
+            validationType,
+          },
         },
+      })
+    );
+    processUpdatedNode(algorithm, medicalCase, nodeId);
+
+    // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
+    // if (
+    //   (nodeId === algorithm.mobile_config.left_top_question_id ||
+    //     nodeId === algorithm.mobile_config.first_top_right_question_id ||
+    //     nodeId === algorithm.mobile_config.second_top_right_question_id) &&
+    //   process.env.node_ENV !== 'test'
+    // ) {
+    //   NavigationService.setParamsAge(algorithm);
+    // }
+
+    return {
+      ...medicalCase,
+      json: null,
+      patient: {
+        ...medicalCase.patient,
+        medicalCases: [],
       },
     };
   }

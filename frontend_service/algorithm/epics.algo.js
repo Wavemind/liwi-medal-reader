@@ -215,7 +215,7 @@ const referencedNodeAction = (algorithm, medicalCase, nodeId) => {
  * @param { object } medicalCase - The current state of the medical case
  * @param { integer } nodeId - The id of node related
  */
-const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
+export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
   const mcNode = medicalCase.nodes[nodeId];
   const currentNode = algorithm.nodes[nodeId];
   const relatedDiagnostics = mcNode.dd;
@@ -267,7 +267,7 @@ const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
  */
 export const epicSetAnswer = (action$, state$) =>
   action$.pipe(
-    ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
+    ofType(actions.SET_ANSWER_TO_UNAVAILABLE),
     mergeMap((action) => {
       const { nodeId, algorithm } = action.payload;
       const medicalCase = state$.value;

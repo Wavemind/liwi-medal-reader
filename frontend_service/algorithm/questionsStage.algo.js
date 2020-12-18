@@ -17,6 +17,9 @@ import { questionBooleanValue, questionIsDisplayedInTriage } from '../helpers/Qu
  */
 const removeQuestions = (medicalCase, questionPerSystem, newQuestions, view) => {
   const questionsToRemove = _.difference(medicalCase.metaData.consultation[view], newQuestions);
+  console.log('Dans le store',medicalCase.metaData.consultation[view])
+  console.log("calculé", newQuestions)
+  console.log("questionsToRemove", questionsToRemove)
   if (questionsToRemove.length > 0) {
     return questionPerSystem.map((system) => {
       return { title: system.title, data: _.reject(system.data, (dataItem) => questionsToRemove.includes(dataItem.id)) };
@@ -48,6 +51,7 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
   } else {
     questions.forEach((question) => {
       // Add question in 'follow_up_questions' system if his question's system was already answered
+
       if (
         (medicalCase.metaData.consultation[view].length > 0 && medicalCase.metaData.consultation[view].includes(question.id)) ||
         (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
@@ -85,21 +89,21 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
  * @param medicalCase
  * @param newQuestions
  * @param view
- * @param reducedView
+ * @param viewQuestion
  * @returns {*}
  */
-const dispatchToStore = (questionPerSystem, medicalCase, newQuestions, view, reducedView) => {
-  if (!_.isEqual(medicalCase.metaData.consultation[view], questionPerSystem)) {
-    store.dispatch(updateMetaData('consultation', view, questionPerSystem));
-
+const dispatchToStore = (questionPerSystem, medicalCase, newQuestions, view, viewQuestion) => {
+  if (!_.isEqual(medicalCase.metaData.consultation[viewQuestion], questionPerSystem)) {
+    store.dispatch(updateMetaData('consultation', viewQuestion, questionPerSystem));
+// console.log("Je m'update")
     // Used to validate step
-    store.dispatch(updateMetaData('consultation', reducedView, newQuestions));
+    store.dispatch(updateMetaData('consultation', view, newQuestions));
 
     const filteredQuestions = questionPerSystem.filter((system) => system.data.length > 0);
     return sortQuestions(filteredQuestions);
   }
 
-  const filteredQuestions = medicalCase.metaData.consultation[view].filter((system) => system.data.length > 0);
+  const filteredQuestions = medicalCase.metaData.consultation[viewQuestion].filter((system) => system.data.length > 0);
   return sortQuestions(filteredQuestions);
 };
 
@@ -140,6 +144,7 @@ export const questionsReferrals = (algorithm) => {
  */
 export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   const medicalCase = store.getState();
+
   const medicalHistoryQuestions = nodeFilterBy(
     medicalCase,
     algorithm,
@@ -176,6 +181,7 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   );
 
   const systemOrders = algorithm.mobile_config.systems_order;
+console.log('answeredQuestionId', answeredQuestionId)
 
   let questionPerSystem = [];
   systemOrders.forEach((system) => {
@@ -189,9 +195,10 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   });
 
   const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
-  questionPerSystem = orderQuestionsInSystems(medicalCase, answeredQuestionId, medicalHistoryQuestions, questionPerSystem, systemOrders, algorithm, 'medicalHistory');
+  console.log('calculé avant',newQuestions)
+  questionPerSystem = orderQuestionsInSystems(medicalCase, answeredQuestionId, medicalHistoryQuestions, questionPerSystem, systemOrders, algorithm, 'medicalHistory', 'medicalHistoryQuestions');
   questionPerSystem = removeQuestions(medicalCase, questionPerSystem, newQuestions, 'medicalHistory');
-  return dispatchToStore(questionPerSystem, medicalCase, newQuestions, 'medicalHistoryQuestions', 'medicalHistory');
+  return dispatchToStore(questionPerSystem, medicalCase, newQuestions, 'medicalHistory', 'medicalHistoryQuestions');
 };
 
 /**
@@ -257,7 +264,7 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   const newQuestions = questions.map(({ id }) => id);
   questionPerSystem = orderQuestionsInSystems(medicalCase, answeredQuestionId, questions, questionPerSystem, systemOrders, algorithm, 'physicalExam');
   questionPerSystem = removeQuestions(medicalCase, questionPerSystem, newQuestions, 'physicalExam');
-  return dispatchToStore(questionPerSystem, medicalCase, newQuestions, 'physicalExamQuestions', 'physicalExam');
+  return dispatchToStore(questionPerSystem, medicalCase, newQuestions, 'physicalExam', 'physicalExamQuestions');
 };
 
 /**

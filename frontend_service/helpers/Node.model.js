@@ -172,7 +172,7 @@ export const nodeFilterBy = (medicalCase, algorithm, filters, operator = 'OR', f
     // Return object and keep key
     methodFilteringLodash = 'pickBy';
   }
-
+console.log('ici',JSON.parse(JSON.stringify(nodes)))
   return _[methodFilteringLodash](nodes, (node) => {
     // The some() method tests whether at least one element in the array passes the test implemented by the provided function.
     // It returns a Boolean value.
