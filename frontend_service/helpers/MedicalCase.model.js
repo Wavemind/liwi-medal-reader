@@ -49,7 +49,7 @@ export class MedicalCaseModel {
           medicalHistory: [],
           medicalHistoryQuestions: [],
           physicalExam: [],
-          PhysicalExamQuestions: [],
+          physicalExamQuestions: [],
         },
         tests: {
           tests: [],
