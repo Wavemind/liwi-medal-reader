@@ -93,11 +93,13 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
  * @returns {*}
  */
 const dispatchToStore = (questionPerSystem, medicalCase, newQuestions, view, viewQuestion) => {
+
+  console.log(medicalCase.metaData.consultation[viewQuestion],questionPerSystem)
   if (!_.isEqual(medicalCase.metaData.consultation[viewQuestion], questionPerSystem)) {
     store.dispatch(updateMetaData('consultation', viewQuestion, questionPerSystem));
-// console.log("Je m'update")
     // Used to validate step
     store.dispatch(updateMetaData('consultation', view, newQuestions));
+    console.log("Je m'update",newQuestions,questionPerSystem)
 
     const filteredQuestions = questionPerSystem.filter((system) => system.data.length > 0);
     return sortQuestions(filteredQuestions);
@@ -185,12 +187,12 @@ console.log('answeredQuestionId', answeredQuestionId)
 
   let questionPerSystem = [];
   systemOrders.forEach((system) => {
+    const data = medicalCase.metaData.consultation.medicalHistoryQuestions?.find((medicalHistoryQuestion) => {
+      return medicalHistoryQuestion.title === system;
+    })?.data || [];
     questionPerSystem.push({
       title: system,
-      data:
-        medicalCase.metaData.consultation.medicalHistoryQuestions?.find((medicalHistoryQuestion) => {
-          return medicalHistoryQuestion.title === system;
-        })?.data || [],
+      data: [...data],
     });
   });
 
