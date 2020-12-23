@@ -80,7 +80,7 @@ export default class Consultation extends React.Component {
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Tests"
-          nextStageString={t('medical_case:test')}
+          nextStageString={t('medical_case:tests')}
         >
           <MedicalHistory selectedPage={selectedPage} />
           <PhysicalExam selectedPage={selectedPage} />

@@ -186,6 +186,7 @@ export default class FinalDiagnosticsList extends React.Component {
           searchInputStyle={styles.selectColor}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
+          flatListProps={{ maxHeight: 200 }}
         />
         {algorithm.is_arm_control ? null : (
           <>
