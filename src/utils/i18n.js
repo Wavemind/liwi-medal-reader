@@ -72,7 +72,7 @@ i18n
           no_managements: 'No managements available',
           weight: 'weight',
           which: 'Which formulation of medicine is available and appropriate for your patient?',
-          write: 'Write the medicine',
+          write: 'Enter additional medicine',
           consultation_comment: 'You may add further clinical details for your records if you wish (Non-mandatory. Will not be used in the algorithm)',
         },
         drug: {
@@ -263,7 +263,7 @@ i18n
           medical_cases: 'Consultations',
           no_medical_cases: 'No consultations',
           no_algorithm: 'No algorithm loaded',
-          no_questions: 'No question for this category',
+          no_questions: 'No tests or assessments proposed',
         },
         patient_detail: {},
         patient_list: {
@@ -338,8 +338,8 @@ i18n
           female: 'Female',
           age_not_defined: 'Age is not defined',
           reason: 'Reason for changing facility',
-          days: 'Days',
-          months: 'Months',
+          day: 'Day',
+          month: 'Month',
           year: 'Year *',
         },
         login: {
@@ -467,7 +467,7 @@ i18n
           synchronize: 'Synchronize',
           not_warning: 'Medical cases have not been synchronised for more than 1 week',
           main_data_address_missing: 'Main data URL is missing in health facility configuration',
-          error: 'An error occurred on Main Data server',
+          error: 'An error occurred on the medAL-data server',
         },
       },
       fr: {
@@ -548,7 +548,7 @@ i18n
           waiting_tests: 'Waiting for tests',
           consultation: 'Consultation',
           waiting_test: 'Waiting for test',
-          test: 'Test',
+          tests: 'Tests',
           waiting_diagnostic: 'Waiting for diagnostic',
           final_diagnostic: 'Diagnosis',
           close: 'Close',
