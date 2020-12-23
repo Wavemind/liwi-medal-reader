@@ -38,8 +38,6 @@ export default class Consultation extends React.Component {
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 
-    console.log('consultation ?', NavigationService.getCurrentRoute().routeName === 'Consultation' && ((question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value)))
-
     return (
       NavigationService.getCurrentRoute().routeName === 'Consultation' && ((question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
     );

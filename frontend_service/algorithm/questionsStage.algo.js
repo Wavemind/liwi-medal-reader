@@ -17,9 +17,7 @@ import { questionBooleanValue, questionIsDisplayedInTriage } from '../helpers/Qu
  */
 const removeQuestions = (medicalCase, questionPerSystem, newQuestions, view) => {
   const questionsToRemove = _.difference(medicalCase.metaData.consultation[view], newQuestions);
-  console.log('Dans le store',medicalCase.metaData.consultation[view])
-  console.log("calculé", newQuestions)
-  console.log("questionsToRemove", questionsToRemove)
+
   if (questionsToRemove.length > 0) {
     return questionPerSystem.map((system) => {
       return { title: system.title, data: _.reject(system.data, (dataItem) => questionsToRemove.includes(dataItem.id)) };
@@ -94,12 +92,10 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
  */
 const dispatchToStore = (questionPerSystem, medicalCase, newQuestions, view, viewQuestion) => {
 
-  console.log(medicalCase.metaData.consultation[viewQuestion],questionPerSystem)
   if (!_.isEqual(medicalCase.metaData.consultation[viewQuestion], questionPerSystem)) {
     store.dispatch(updateMetaData('consultation', viewQuestion, questionPerSystem));
     // Used to validate step
     store.dispatch(updateMetaData('consultation', view, newQuestions));
-    console.log("Je m'update",newQuestions,questionPerSystem)
 
     const filteredQuestions = questionPerSystem.filter((system) => system.data.length > 0);
     return sortQuestions(filteredQuestions);

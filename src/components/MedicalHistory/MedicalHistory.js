@@ -21,15 +21,6 @@ export default class MedicalHistory extends React.Component {
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 
-    // console.log("sinan", JSON.parse(JSON.stringify(nextProps.medicalCase.nodes)))
-
-    console.log(
-      'medicalHistory',
-      (nextProps.selectedPage === undefined || nextProps.selectedPage === 0) &&
-        NavigationService.getCurrentRoute().routeName === 'Consultation' &&
-        (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value)
-    );
-
     return (
       (nextProps.selectedPage === undefined || nextProps.selectedPage === 0) &&
       NavigationService.getCurrentRoute().routeName === 'Consultation' &&
