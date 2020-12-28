@@ -98,11 +98,13 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
   // We update only if the condition changes
   if (caller.conditionValue !== value) {
     index = medicalCase.nodes[nodeId][key].findIndex((d) => d.id === callerId);
-    // Update counter conditionValue
-    if (value === true) {
-      medicalCase.nodes[nodeId].counter += 1;
-    } else if (value === false) {
-      medicalCase.nodes[nodeId].counter -= 1;
+    if (algorithm.nodes[nodeId].type === nodeTypes.question) {
+      // Update counter conditionValue
+      if (value === true) {
+        medicalCase.nodes[nodeId].counter += 1;
+      } else if (value === false) {
+        medicalCase.nodes[nodeId].counter -= 1;
+      }
     }
     medicalCase.nodes[nodeId][key][index].conditionValue = value;
 
@@ -265,28 +267,6 @@ export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
 /**
  * Catches the action SET_ANSWER so whenever a question is answered by the user this function will be triggered
  */
-export const epicSetAnswer = (action$, state$) =>
-  action$.pipe(
-    ofType(actions.SET_ANSWER_TO_UNAVAILABLE),
-    mergeMap((action) => {
-      const { nodeId, algorithm } = action.payload;
-      const medicalCase = state$.value;
-      processUpdatedNode(algorithm, medicalCase, nodeId);
-
-      // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
-      if (
-        (nodeId === algorithm.mobile_config.left_top_question_id ||
-          nodeId === algorithm.mobile_config.first_top_right_question_id ||
-          nodeId === algorithm.mobile_config.second_top_right_question_id) &&
-        process.env.node_ENV !== 'test'
-      ) {
-        NavigationService.setParamsAge(algorithm);
-      }
-
-      return of(setMedicalCase(medicalCase));
-    })
-  );
-
 export const epicSetDiagnoses = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_DIAGNOSES, actions.SET_ANSWER),
@@ -313,4 +293,4 @@ export const epicSetDiagnoses = (action$, state$) =>
     })
   );
 
-export default combineEpics(epicSetAnswer, epicSetDiagnoses);
+export default combineEpics(epicSetDiagnoses);

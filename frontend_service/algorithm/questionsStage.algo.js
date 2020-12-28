@@ -179,13 +179,13 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
   );
 
   const systemOrders = algorithm.mobile_config.systems_order;
-console.log('answeredQuestionId', answeredQuestionId)
 
   let questionPerSystem = [];
   systemOrders.forEach((system) => {
-    const data = medicalCase.metaData.consultation.medicalHistoryQuestions?.find((medicalHistoryQuestion) => {
-      return medicalHistoryQuestion.title === system;
-    })?.data || [];
+    const data =
+      medicalCase.metaData.consultation.medicalHistoryQuestions?.find((medicalHistoryQuestion) => {
+        return medicalHistoryQuestion.title === system;
+      })?.data || [];
     questionPerSystem.push({
       title: system,
       data: [...data],
@@ -193,7 +193,7 @@ console.log('answeredQuestionId', answeredQuestionId)
   });
 
   const newQuestions = medicalHistoryQuestions.map(({ id }) => id);
-  console.log('calculé avant',newQuestions)
+
   questionPerSystem = orderQuestionsInSystems(medicalCase, answeredQuestionId, medicalHistoryQuestions, questionPerSystem, systemOrders, algorithm, 'medicalHistory', 'medicalHistoryQuestions');
   questionPerSystem = removeQuestions(medicalCase, questionPerSystem, newQuestions, 'medicalHistory');
   return dispatchToStore(questionPerSystem, medicalCase, newQuestions, 'medicalHistory', 'medicalHistoryQuestions');
@@ -250,12 +250,14 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
 
   let questionPerSystem = [];
   systemOrders.forEach((system) => {
+    const data =
+      medicalCase.metaData.consultation.physicalExamQuestions?.find((physicalExamQuestion) => {
+        return physicalExamQuestion.title === system;
+      })?.data || [];
+
     questionPerSystem.push({
       title: system,
-      data:
-        medicalCase.metaData.consultation.physicalExamQuestions?.find((physicalExamQuestion) => {
-          return physicalExamQuestion.title === system;
-        })?.data || [],
+      data: [...data],
     });
   });
 
