@@ -264,6 +264,7 @@ i18n
           no_medical_cases: 'No consultations',
           no_algorithm: 'No algorithm loaded',
           no_questions: 'No tests or assessments proposed',
+          no_conditions: 'No treatments conditions in this case. Please continue.',
         },
         patient_detail: {},
         patient_list: {

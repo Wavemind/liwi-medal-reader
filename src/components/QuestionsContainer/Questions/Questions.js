@@ -61,6 +61,7 @@ export default class Questions extends React.Component {
   render() {
     const {
       questions,
+      source,
       app: { t },
     } = this.props;
 
@@ -76,7 +77,7 @@ export default class Questions extends React.Component {
           />
         ) : (
           <View padding-auto margin-auto>
-            <Text not-available>{t('work_case:no_questions')}</Text>
+            <Text not-available>{source === 'conditions' ? t('work_case:no_conditions') : t('work_case:no_questions')}</Text>
           </View>
         )}
       </SafeAreaView>
