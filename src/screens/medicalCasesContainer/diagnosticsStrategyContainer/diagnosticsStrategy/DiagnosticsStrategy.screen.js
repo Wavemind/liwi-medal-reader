@@ -131,7 +131,7 @@ export default class DiagnosesStrategy extends Component {
           )}
           <View style={styles.pad}>
             <Suspense fallback={<LiwiLoader />}>
-              <Referral key="referral" selectedPage={selectedPage} pageIndex={4} />
+              <Referral key="referral" selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 2 : 4} />
             </Suspense>
           </View>
           {algorithm.is_arm_control ? null : (

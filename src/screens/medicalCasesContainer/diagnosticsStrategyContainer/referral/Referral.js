@@ -10,7 +10,10 @@ import Questions from '../../../../components/QuestionsContainer/Questions';
 
 export default class Referral extends React.Component {
   shouldComponentUpdate(nextProps) {
-    return nextProps.selectedPage === 4;
+    const {
+      app: { algorithm },
+    } = this.props;
+    return nextProps.selectedPage === algorithm.is_arm_control ? 2 : 4;
   }
 
   render() {
@@ -24,7 +27,7 @@ export default class Referral extends React.Component {
     return (
       <View style={styles.pad}>
         <Suspense fallback={<LiwiLoader />}>
-          <Questions questions={questions} selectedPage={selectedPage} pageIndex={4} />
+          <Questions questions={questions} selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 2 : 4} />
         </Suspense>
       </View>
     );
