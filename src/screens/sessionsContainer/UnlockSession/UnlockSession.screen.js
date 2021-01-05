@@ -30,6 +30,10 @@ export default class UnLockSession extends React.Component {
     this.setState({
       session,
     });
+
+    if (__DEV__) {
+      this.openSession('1234');
+    }
   };
 
   /**
