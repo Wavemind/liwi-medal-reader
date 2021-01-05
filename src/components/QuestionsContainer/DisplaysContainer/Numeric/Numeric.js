@@ -116,7 +116,7 @@ export default class Numeric extends React.Component<Props, State> {
     return (
       <>
         <View answer>
-          <Input keyboardType="number-pad" question numeric value={value} onChange={this.onChange} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
+          <Input keyboardType="decimal-pad" question numeric value={value} onChange={this.onChange} onEndEditing={this.onEndEditing} placeholder={placeholder} disabled={isReadOnly} />
         </View>
         {estimable ? (
           <View answer style={styles.marginTop}>
