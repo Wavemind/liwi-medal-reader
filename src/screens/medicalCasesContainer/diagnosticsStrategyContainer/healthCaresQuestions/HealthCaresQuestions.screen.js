@@ -22,7 +22,7 @@ export default class HealthCaresQuestions extends Component {
 
     return (
       <View style={styles.flex}>
-        <Questions questions={questions} />
+        <Questions questions={questions} source="conditions" />
       </View>
     );
   }
