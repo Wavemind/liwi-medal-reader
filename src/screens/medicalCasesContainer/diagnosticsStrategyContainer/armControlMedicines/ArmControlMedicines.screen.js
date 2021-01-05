@@ -14,7 +14,7 @@ export default class ArmControlMedicines extends Component {
    * Set additional medicine in medical case
    * @param {Array} selectedItems - List of all additional item selected
    */
-  onSelectedItemsChange = (selectedItems) => {
+  onSelectedItemsChange = (selectedItems, type) => {
     const {
       setAdditionalMedicine,
       setAdditionalManagement,
@@ -43,8 +43,7 @@ export default class ArmControlMedicines extends Component {
       objMedicine[i].agreed = true;
       objMedicine[i].duration = duration;
     });
-
-    if (algorithm.nodes[Object.keys(objMedicine)[0]].category === categories.drug) {
+    if (type === categories.drug) {
       setAdditionalMedicine(objMedicine);
     } else {
       setAdditionalManagement(objMedicine);
@@ -109,7 +108,7 @@ export default class ArmControlMedicines extends Component {
           hideTags
           items={drugsList}
           uniqueKey="id"
-          onSelectedItemsChange={this.onSelectedItemsChange}
+          onSelectedItemsChange={(item) => this.onSelectedItemsChange(item, 'drug')}
           selectedItems={selectedDrugs}
           selectText={t('diagnoses:select')}
           searchInputPlaceholderText={t('diagnoses:search')}
@@ -151,7 +150,7 @@ export default class ArmControlMedicines extends Component {
           hideTags
           items={managementsList}
           uniqueKey="id"
-          onSelectedItemsChange={this.onSelectedItemsChange}
+          onSelectedItemsChange={(item) => this.onSelectedItemsChange(item, 'management')}
           selectedItems={selectedManagements}
           selectText={t('diagnoses:select')}
           searchInputPlaceholderText={t('diagnoses:search')}
