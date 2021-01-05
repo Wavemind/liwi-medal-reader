@@ -18,6 +18,10 @@ export default class MedicalHistory extends React.Component {
       medicalCase,
     } = this.props;
 
+    if (nextProps.app.answeredQuestionId === undefined || answeredQuestionId === undefined) {
+      return true;
+    }
+
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 

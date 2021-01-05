@@ -47,11 +47,14 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
       }
     });
   } else {
-    questions.forEach((question) => {
-      // Add question in 'follow_up_questions' system if his question's system was already answered
+    const followUpQuestionsSystem = questionPerSystem.findIndex((system) => system.title === 'follow_up_questions');
 
+    questions.forEach((question) => {
+      const followUpQuestionIndex = questionPerSystem[followUpQuestionsSystem].data.findIndex((q) => q.id === question.id);
+
+      // Add question in 'follow_up_questions' system if his question's system was already answered
       if (
-        (medicalCase.metaData.consultation[view].length > 0 && medicalCase.metaData.consultation[view].includes(question.id)) ||
+        (medicalCase.metaData.consultation[view].length > 0 && medicalCase.metaData.consultation[view].includes(question.id) && followUpQuestionIndex === -1) ||
         (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
           !medicalCase.metaData.consultation[view].includes(question.id) &&
           systemOrders.indexOf(question.system) >= systemOrders.indexOf(algorithm.nodes[answeredQuestionId].system))
@@ -68,12 +71,10 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
           }
         }
       } else {
-        const systemIndex = questionPerSystem.findIndex((system) => system.title === 'follow_up_questions');
-        const questionIndex = questionPerSystem[systemIndex].data.findIndex((q) => q.id === question.id);
-        if (questionIndex !== -1) {
-          questionPerSystem[systemIndex].data[questionIndex] = question;
+        if (followUpQuestionIndex !== -1) {
+          questionPerSystem[followUpQuestionsSystem].data[followUpQuestionIndex] = question;
         } else {
-          questionPerSystem[systemIndex].data.push(question);
+          questionPerSystem[followUpQuestionsSystem].data.push(question);
         }
       }
     });
@@ -91,7 +92,6 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
  * @returns {*}
  */
 const dispatchToStore = (questionPerSystem, medicalCase, newQuestions, view, viewQuestion) => {
-
   if (!_.isEqual(medicalCase.metaData.consultation[viewQuestion], questionPerSystem)) {
     store.dispatch(updateMetaData('consultation', viewQuestion, questionPerSystem));
     // Used to validate step
