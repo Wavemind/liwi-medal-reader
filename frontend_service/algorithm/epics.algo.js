@@ -9,7 +9,6 @@ import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
-import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { calculateCondition } from './conditionsHelpers.algo';
 import { diagnosticIsExcludedByComplaintCategory } from '../helpers/Diagnostic.model';
 import { questionCalculateFormula, questionCalculateReference } from '../helpers/Question.model';
@@ -183,7 +182,6 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
       ...medicalCase.nodes[currentQuestionsSequence.id],
       ...nodeUpdateAnswer(answerId, algorithm, medicalCase.nodes[currentQuestionsSequence.id]),
     };
-    if(questionsSequenceId === 38) console.log("Apres", questionsSequenceId, answerId,  medicalCase.nodes[currentQuestionsSequence.id])
 
     processUpdatedNode(algorithm, medicalCase, currentQuestionsSequence.id);
   }
