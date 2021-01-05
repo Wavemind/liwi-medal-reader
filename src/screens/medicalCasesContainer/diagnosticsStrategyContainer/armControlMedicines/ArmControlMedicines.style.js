@@ -21,4 +21,17 @@ export const styles = StyleSheet.create({
   noTopMargin: { marginTop: 0 },
   rowStyle: { marginTop: 10, marginBottom: 10 },
   additionalText: { backgroundColor: liwiColors.whiteColor, padding: 15, marginBottom: 5 },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 5,
+    backgroundColor: liwiColors.whiteColor,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  iconInfo: { color: liwiColors.redColor },
+  touchable: {
+    marginRight: 7,
+  },
 });

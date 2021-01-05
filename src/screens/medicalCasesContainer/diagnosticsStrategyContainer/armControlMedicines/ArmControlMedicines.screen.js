@@ -1,12 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, View } from 'native-base';
+import { TouchableOpacity } from 'react-native';
+import { Icon, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
 import * as _ from 'lodash';
 
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './ArmControlMedicines.style';
-import { categories } from '../../../../../frontend_service/constants';
+import { categories, modalType } from '../../../../../frontend_service/constants';
 
 export default class ArmControlMedicines extends Component {
   /**
@@ -50,6 +51,19 @@ export default class ArmControlMedicines extends Component {
     }
   };
 
+  /**
+   * Open redux modal
+   */
+  openModal = (questionId) => {
+    const {
+      app: { algorithm },
+      updateModalFromRedux,
+    } = this.props;
+
+    const currentNode = algorithm.nodes[questionId];
+    updateModalFromRedux({ node: currentNode }, modalType.description);
+  };
+
   render() {
     const {
       medicalCase: { diagnoses },
@@ -78,9 +92,12 @@ export default class ArmControlMedicines extends Component {
         </Text>
         {Object.keys(diagnoses.additionalDrugs).length > 0 ? (
           Object.keys(diagnoses.additionalDrugs).map((additionalKey) => (
-            <Text key={`additional-${additionalKey}`} style={styles.additionalText}>
-              {algorithm.nodes[additionalKey].label}
-            </Text>
+            <View key={`additional-${additionalKey}`} style={styles.container}>
+              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
+                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+              </TouchableOpacity>
+              <Text key={`additional-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
+            </View>
           ))
         ) : (
           <Text italic>{t('diagnoses:no_additional_drugs')}</Text>
@@ -109,6 +126,7 @@ export default class ArmControlMedicines extends Component {
           searchInputStyle={styles.searchInputStyle}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
+          flatListProps={{ maxHeight: 200 }}
         />
 
         <Text customTitle style={styles.marginTop30}>
@@ -116,9 +134,12 @@ export default class ArmControlMedicines extends Component {
         </Text>
         {Object.keys(diagnoses.additionalManagements).length > 0 ? (
           Object.keys(diagnoses.additionalManagements).map((additionalKey) => (
-            <Text key={`additional-${additionalKey}`} style={styles.additionalText}>
-              {algorithm.nodes[additionalKey].label}
-            </Text>
+            <View key={`additional-${additionalKey}`} style={styles.container}>
+              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
+                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+              </TouchableOpacity>
+              <Text key={`additional-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
+            </View>
           ))
         ) : (
           <Text italic>{t('diagnoses:no_additional_managements')}</Text>
@@ -147,6 +168,7 @@ export default class ArmControlMedicines extends Component {
           searchInputStyle={styles.searchInputStyle}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
+          flatListProps={{ maxHeight: 200 }}
         />
       </View>
     );
