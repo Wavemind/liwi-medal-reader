@@ -73,7 +73,7 @@ export const nextChildOtherQs = (algorithm, medicalCase, child, childConditionVa
   }
 
   // The recursiveNodeQs function will do all the sub action like change condition value
-  return recursiveNodeQs(algorithm, medicalCase, currentQs.instances[child.id], qs);
+  return recursiveNodeQs(algorithm, medicalCase, currentQs.instances[child.id], qs.id);
 };
 
 /**
@@ -117,7 +117,7 @@ const InstanceChildrenOnQs = (algorithm, medicalCase, instance, mcQs, currentNod
       return nextChildOtherQs(algorithm, medicalCase, mcNode, childConditionValue, mcQs);
     }
     if (mcNode.type === nodeTypes.question) {
-      return recursiveNodeQs(algorithm, medicalCase, currentQs.instances[mcNode.id], mcQs);
+      return recursiveNodeQs(algorithm, medicalCase, currentQs.instances[mcNode.id], mcQs.id);
     }
     console.warn('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'This QS', mcQs, 'You do not have to be here !! mcNode in QS is wrong for : ', mcNode);
   });
@@ -132,12 +132,13 @@ const InstanceChildrenOnQs = (algorithm, medicalCase, instance, mcQs, currentNod
  * @payload value: new condition value
  * @payload type: define if it's a diagnostic or a question sequence
  */
-const recursiveNodeQs = (algorithm, medicalCase, instance, mcQs) => {
+const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
   let isReset = false;
 
   // Initial Var
   const currentNode = algorithm.nodes[instance.id];
   const mcNode = medicalCase.nodes[instance.id];
+  const mcQs = medicalCase.nodes[qsId];
   const instanceConditionValue = find(currentNode.qs, (p) => p.id === mcQs.id).conditionValue;
 
   // If all the conditionValues of the QS are false we set the conditionValues of the node to false
@@ -196,9 +197,8 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
   });
 
   const allNodesAnsweredInQs = topLevelNodes.map((topNode) => {
-    return recursiveNodeQs(algorithm, medicalCase, topNode, mcQs);
+    return recursiveNodeQs(algorithm, medicalCase, topNode, mcQs.id);
   });
-
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
 

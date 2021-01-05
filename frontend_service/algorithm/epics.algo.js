@@ -41,18 +41,22 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
         const parentNode = nodes[i];
         const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
 
+        // Early return to optimize perf
+        if (!diagnostic.conditionValue) return false;
+
         // Check if answer given by parent node is the same requested by current node tested
         const parentHasCorrectAnswer = algorithm.diagnostics[diagnosticId].instances[nodeId].top_conditions.some((condition) => {
           if (condition.first_node_id === parentNode.id) {
             return parentNode.answer === condition.first_id;
           }
         });
-        return parentNode.answer !== null && diagnostic.conditionValue === true && parentHasCorrectAnswer;
+        return parentNode.answer !== null && diagnostic.conditionValue && parentHasCorrectAnswer;
       });
     }
 
     // Get node condition value
     const conditionValue = calculateCondition(algorithm, currentInstance, medicalCase);
+
     // If the condition of this node is not null
     if (parentConditionValue === false) {
       // Set parent to false if their condition's isn't correct. Used to stop the algorithm
@@ -179,6 +183,8 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
       ...medicalCase.nodes[currentQuestionsSequence.id],
       ...nodeUpdateAnswer(answerId, algorithm, medicalCase.nodes[currentQuestionsSequence.id]),
     };
+    if(questionsSequenceId === 38) console.log("Apres", questionsSequenceId, answerId,  medicalCase.nodes[currentQuestionsSequence.id])
+
     processUpdatedNode(algorithm, medicalCase, currentQuestionsSequence.id);
   }
 };
