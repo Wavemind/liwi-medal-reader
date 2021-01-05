@@ -9,10 +9,27 @@ import { styles } from './MedicalHistory.style';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { questionsMedicalHistory } from '../../../frontend_service/algorithm/questionsStage.algo';
 import QuestionFactory from '../QuestionsContainer/QuestionFactory';
+import NavigationService from '../../engine/navigation/Navigation.service';
 
 export default class MedicalHistory extends React.Component {
   shouldComponentUpdate(nextProps) {
-    return nextProps.selectedPage === undefined || nextProps.selectedPage === 0;
+    const {
+      app: { answeredQuestionId },
+      medicalCase,
+    } = this.props;
+
+    if (nextProps.app.answeredQuestionId === undefined || answeredQuestionId === undefined) {
+      return true;
+    }
+
+    const question = medicalCase.nodes[answeredQuestionId];
+    const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
+
+    return (
+      (nextProps.selectedPage === undefined || nextProps.selectedPage === 0) &&
+      NavigationService.getCurrentRoute().routeName === 'Consultation' &&
+      (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value)
+    );
   }
 
   render() {

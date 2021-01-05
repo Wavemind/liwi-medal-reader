@@ -9,7 +9,6 @@ import { displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
-import NavigationService from '../../src/engine/navigation/Navigation.service';
 import { calculateCondition } from './conditionsHelpers.algo';
 import { diagnosticIsExcludedByComplaintCategory } from '../helpers/Diagnostic.model';
 import { questionCalculateFormula, questionCalculateReference } from '../helpers/Question.model';
@@ -41,18 +40,22 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
         const parentNode = nodes[i];
         const diagnostic = find(parentNode.dd, (nodeDiagnostic) => nodeDiagnostic.id === diagnosticId);
 
+        // Early return to optimize perf
+        if (!diagnostic.conditionValue) return false;
+
         // Check if answer given by parent node is the same requested by current node tested
         const parentHasCorrectAnswer = algorithm.diagnostics[diagnosticId].instances[nodeId].top_conditions.some((condition) => {
           if (condition.first_node_id === parentNode.id) {
             return parentNode.answer === condition.first_id;
           }
         });
-        return parentNode.answer !== null && diagnostic.conditionValue === true && parentHasCorrectAnswer;
+        return parentNode.answer !== null && diagnostic.conditionValue && parentHasCorrectAnswer;
       });
     }
 
     // Get node condition value
     const conditionValue = calculateCondition(algorithm, currentInstance, medicalCase);
+
     // If the condition of this node is not null
     if (parentConditionValue === false) {
       // Set parent to false if their condition's isn't correct. Used to stop the algorithm
@@ -98,11 +101,13 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
   // We update only if the condition changes
   if (caller.conditionValue !== value) {
     index = medicalCase.nodes[nodeId][key].findIndex((d) => d.id === callerId);
-    // Update counter conditionValue
-    if (value === true) {
-      medicalCase.nodes[nodeId].counter += 1;
-    } else if (value === false) {
-      medicalCase.nodes[nodeId].counter -= 1;
+    if (algorithm.nodes[nodeId].type === nodeTypes.question) {
+      // Update counter conditionValue
+      if (value === true) {
+        medicalCase.nodes[nodeId].counter += 1;
+      } else if (value === false) {
+        medicalCase.nodes[nodeId].counter -= 1;
+      }
     }
     medicalCase.nodes[nodeId][key][index].conditionValue = value;
 
@@ -177,6 +182,7 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
       ...medicalCase.nodes[currentQuestionsSequence.id],
       ...nodeUpdateAnswer(answerId, algorithm, medicalCase.nodes[currentQuestionsSequence.id]),
     };
+
     processUpdatedNode(algorithm, medicalCase, currentQuestionsSequence.id);
   }
 };
@@ -215,7 +221,7 @@ const referencedNodeAction = (algorithm, medicalCase, nodeId) => {
  * @param { object } medicalCase - The current state of the medical case
  * @param { integer } nodeId - The id of node related
  */
-const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
+export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
   const mcNode = medicalCase.nodes[nodeId];
   const currentNode = algorithm.nodes[nodeId];
   const relatedDiagnostics = mcNode.dd;
@@ -265,28 +271,6 @@ const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
 /**
  * Catches the action SET_ANSWER so whenever a question is answered by the user this function will be triggered
  */
-export const epicSetAnswer = (action$, state$) =>
-  action$.pipe(
-    ofType(actions.SET_ANSWER, actions.SET_ANSWER_TO_UNAVAILABLE),
-    mergeMap((action) => {
-      const { nodeId, algorithm } = action.payload;
-      const medicalCase = state$.value;
-      processUpdatedNode(algorithm, medicalCase, nodeId);
-
-      // TODO: Error on dispatch in NavigationService. Have not found a solution to mock it
-      if (
-        (nodeId === algorithm.mobile_config.left_top_question_id ||
-          nodeId === algorithm.mobile_config.first_top_right_question_id ||
-          nodeId === algorithm.mobile_config.second_top_right_question_id) &&
-        process.env.node_ENV !== 'test'
-      ) {
-        NavigationService.setParamsAge(algorithm);
-      }
-
-      return of(setMedicalCase(medicalCase));
-    })
-  );
-
 export const epicSetDiagnoses = (action$, state$) =>
   action$.pipe(
     ofType(actions.SET_DIAGNOSES, actions.SET_ANSWER),
@@ -313,4 +297,4 @@ export const epicSetDiagnoses = (action$, state$) =>
     })
   );
 
-export default combineEpics(epicSetAnswer, epicSetDiagnoses);
+export default combineEpics(epicSetDiagnoses);

@@ -60,8 +60,8 @@ function getActiveRouteName(navigationState) {
  * @params : string : set the title of the page
  */
 function setParamsAge(algorithm, name = '') {
-  const state$ = store.getState();
-  const { nodes } = state$;
+  const medicalCase = store.getState();
+  const { nodes } = medicalCase;
   const { mobile_config } = algorithm;
 
   const left = mobile_config.left_top_question_id !== null ? questionDisplayValue(algorithm, nodes[mobile_config.left_top_question_id]) : '';

@@ -26,7 +26,7 @@ export const renderingDrawerItems = [
     initialPage: 0,
     name: 'Triage',
     routeName: 'Triage',
-    t: i18n.t('menu:unique_triage_question'),
+    t: i18n.t('menu:unique_triage_questions'),
   },
   {
     type: 'path',
