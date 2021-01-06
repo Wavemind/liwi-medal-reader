@@ -70,7 +70,7 @@ export default class PatientUpsert extends React.Component {
 
     if (patientId === null) {
       if (facility === undefined) {
-        facility = { uid: uuid.v4(), group_id: session.facility.id, study_id: 'Dynamic Tanzania' };
+        facility = { uid: uuid.v4(), group_id: session.facility.id, study_id: algorithm.study.label };
       }
       patient = new PatientModel({ otherFacility, facility });
     } else {
@@ -169,7 +169,7 @@ export default class PatientUpsert extends React.Component {
           <CustomInput
             disabled
             placeholder="..."
-            keyboardType="number-pad"
+            keyboardType="decimal-pad"
             condensed
             style={[styles.identifierText, styles.identifierTextDisabled]}
             init={patient.group_id}
