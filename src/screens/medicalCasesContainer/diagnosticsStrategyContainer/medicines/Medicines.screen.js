@@ -91,15 +91,6 @@ export default class Medicines extends Component {
             return true;
           });
         });
-
-        Object.keys(diagnoses.proposed[key].managements).forEach((managementId) => {
-          filteredHealthCares = _.filter(filteredHealthCares, (item) => {
-            if (diagnoses.proposed[key].managements[managementId].agreed === true) {
-              return item.id !== Number(managementId);
-            }
-            return true;
-          });
-        });
       }
     });
 
@@ -113,17 +104,8 @@ export default class Medicines extends Component {
           return true;
         });
       });
-
-      Object.keys(diagnoses.additional[key].managements).forEach((managementId) => {
-        filteredHealthCares = _.filter(filteredHealthCares, (item) => {
-          if (diagnoses.additional[key].managements[managementId].agreed === true) {
-            return item.id !== Number(managementId);
-          }
-          return true;
-        });
-      });
     });
-
+    console.log(diagnoses.additionalDrugs)
     return (
       <View>
         <Text customTitle style={styles.noTopMargin}>
@@ -158,23 +140,23 @@ export default class Medicines extends Component {
 
         {filteredHealthCares.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
         <View style={styles.viewBox}>
-          {Object.keys(diagnoses.additionalDrugs).map((s) => (
-            <View style={styles.viewItem} key={s}>
+          {Object.keys(diagnoses.additionalDrugs).map((drugId) => (
+            <View style={styles.viewItem} key={drugId}>
               <View style={styles.flex50}>
-                <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
-                <Text italic>
-                  {t('diagnoses:duration')}: {diagnoses.additionalDrugs[s].duration} {t('drug:days')}
+                <Text italic>{algorithm.nodes[drugId].label}</Text>
+                <Text size-auto>
+                  {t('diagnoses:duration')}: {diagnoses.additionalDrugs[drugId].duration} {t('drug:days')}
                 </Text>
               </View>
               <View style={styles.flex50}>
-                <Text> {t('diagnoses:custom_duration')}:</Text>
+                <Text>{t('diagnoses:custom_duration')}:</Text>
                 <View style={styles.box}>
                   <Icon style={styles.icon} type="Feather" name="clock" size={18} color="#000" />
                   <TextInput
                     style={styles.text}
                     keyboardType="numeric"
-                    value={diagnoses.additionalDrugs[s].duration}
-                    onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, s)}
+                    value={diagnoses.additionalDrugs[drugId].duration}
+                    onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, drugId)}
                     maxLength={2}
                     placeholder="..."
                   />
@@ -206,6 +188,7 @@ export default class Medicines extends Component {
             searchInputStyle={styles.searchInputStyle}
             submitButtonColor={liwiColors.redColor}
             submitButtonText={t('diagnoses:close')}
+            flatListProps={{ maxHeight: 200 }}
           />
         )}
       </View>

@@ -1,5 +1,4 @@
 // @flow
-import * as _ from 'lodash';
 import { finalDiagnosticAgreed, finalDiagnosticAgreedObject } from './FinalDiagnostic.model';
 import { nodeTypes } from '../constants';
 
