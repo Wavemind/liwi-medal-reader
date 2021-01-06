@@ -105,7 +105,7 @@ export default class Medicines extends Component {
         });
       });
     });
-    console.log(diagnoses.additionalDrugs)
+
     return (
       <View>
         <Text customTitle style={styles.noTopMargin}>
