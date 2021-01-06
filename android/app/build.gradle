@@ -143,13 +143,13 @@ android {
     }
 
     defaultConfig {
-        ndk { abiFilters "armeabi-v7a", "x86" } // ALAIN:  Maybe we wanna remove this at some point
+        ndk { abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64" } // ALAIN:  Maybe we wanna remove this at some point
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
         applicationId "com.liwi_native"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
