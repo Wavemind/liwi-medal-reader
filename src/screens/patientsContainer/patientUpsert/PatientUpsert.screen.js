@@ -161,7 +161,8 @@ export default class PatientUpsert extends React.Component {
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
+          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={patient.study_id}
+                       change={this.updatePatientValue} index="study_id" autoCapitalize="sentences"/>
         </View>
 
         <View w50 style={styles.containerText}>
@@ -213,7 +214,7 @@ export default class PatientUpsert extends React.Component {
     } = this.props;
 
     if (loading) {
-      return <LiwiLoader />;
+      return <LiwiLoader/>;
     }
 
     // Get nodes to display in registration stage
@@ -237,7 +238,8 @@ export default class PatientUpsert extends React.Component {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen" keyboardShouldPersistTaps="always">
+          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen"
+                      keyboardShouldPersistTaps="always">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             {this.renderEligibilityMessage()}
             <View>
@@ -257,9 +259,9 @@ export default class PatientUpsert extends React.Component {
                 )}
               </Col>
             </View>
-            <ConsentImage newPatient={patient.id === null} />
+            <ConsentImage newPatient={patient.id === null}/>
             <Text customSubTitle>{t('patient_upsert:questions')}</Text>
-            <Questions questions={registrationQuestions} />
+            <Questions questions={registrationQuestions}/>
           </ScrollView>,
         ]}
       </Stepper>
