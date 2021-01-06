@@ -20,7 +20,13 @@ export default class Referral extends React.Component {
     const {
       app: { algorithm },
       selectedPage,
+      medicalCase
     } = this.props;
+
+    // Need this shit when closing a medical otherwise it crash
+    if (medicalCase.id === undefined) {
+      return null;
+    }
 
     const questions = questionsReferrals(algorithm);
 
