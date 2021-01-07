@@ -187,7 +187,7 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
 
   // TODO Clean validation of custom fields it's very gross !
   if (navigateRoute.currentStage === 'PatientUpsert') {
-    if (medicalCase.consent === null) {
+    if (medicalCase.consent === null && algorithm.config.consent_management) {
       validator.isActionValid = false;
       validator.customErrors.push(i18n.t('consent_image:required'));
       return validator;

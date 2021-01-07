@@ -161,8 +161,7 @@ export default class PatientUpsert extends React.Component {
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences"
-          />
+          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
@@ -258,7 +257,7 @@ export default class PatientUpsert extends React.Component {
                 )}
               </Col>
             </View>
-            <ConsentImage newPatient={patient.id === null} />
+            {algorithm.config.consent_management && <ConsentImage newPatient={patient.id === null} />}
             <Text customSubTitle>{t('patient_upsert:questions')}</Text>
             <Questions questions={registrationQuestions} />
           </ScrollView>,
