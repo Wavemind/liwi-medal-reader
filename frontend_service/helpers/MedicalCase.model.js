@@ -2,14 +2,20 @@
 
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import { categories, displayFormats, medicalCaseStatus, nodeTypes, stages } from '../constants';
-import { getItem } from '../../src/engine/api/LocalStorage';
+import {categories, displayFormats, medicalCaseStatus, nodeTypes, stages} from '../constants';
+import {getItem} from '../../src/engine/api/LocalStorage';
 import Database from '../../src/engine/api/Database';
-import { differenceNodes } from '../../src/utils/swissKnives';
-import { ActivityModel } from './Activity.model';
-import { store } from '../store';
+import {differenceNodes} from '../../src/utils/swissKnives';
+import {ActivityModel} from './Activity.model';
+import {store} from '../store';
 import I18n from '../../src/utils/i18n';
-import { generateDrug, generateFinalDiagnostic, generateManagement, generateQuestion, generateQuestionsSequence } from './nodeFactory';
+import {
+  generateDrug,
+  generateFinalDiagnostic,
+  generateManagement,
+  generateQuestion,
+  generateQuestionsSequence
+} from './nodeFactory';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -29,7 +35,7 @@ export class MedicalCaseModel {
       this.isOldEnough = true;
       this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
-      this.consent = true;
+      this.consent = currentAlgorithm.config.consent_management ? true : false;
       this.modal = {
         open: false,
         content: '',
@@ -41,7 +47,7 @@ export class MedicalCaseModel {
           custom: [],
         },
         triage: {
-          firstLookAssessments: [],
+          uniqueTriageQuestion: [],
           complaintCategories: [],
           basicMeasurements: [],
         },
@@ -49,13 +55,14 @@ export class MedicalCaseModel {
           medicalHistory: [],
           medicalHistoryQuestions: [],
           physicalExam: [],
-          PhysicalExamQuestions: [],
+          physicalExamQuestions: [],
         },
         tests: {
           tests: [],
         },
-        diagnosticsStrategy: {
+        diagnosticsstrategy: {
           managementQuestions: [],
+          referral: [],
         },
       };
       this.diagnoses = {
@@ -72,7 +79,7 @@ export class MedicalCaseModel {
       this.setInitialConditionValue(currentAlgorithm);
     } else {
       // If json is undefined it means it comes from the state
-      if (props !== undefined && props.json === undefined) {
+      if (props !== undefined && (props.json === undefined || props.json === null)) {
         this._assignValues(props);
         this.id = props.id;
         this.isNewCase = props.isNewCase;
@@ -104,7 +111,7 @@ export class MedicalCaseModel {
 
       this.modal = {
         open: false,
-        params: { showClose: true },
+        params: {showClose: true},
         type: '',
       };
     }
@@ -162,7 +169,7 @@ export class MedicalCaseModel {
    * @param algorithm
    */
   setInitialConditionValue = (algorithm) => {
-    const { diagnostics, nodes } = algorithm;
+    const {diagnostics, nodes} = algorithm;
     try {
       Object.keys(nodes).forEach((nodeId) => {
         const node = this.nodes[nodeId];
@@ -175,6 +182,7 @@ export class MedicalCaseModel {
             } else {
               dd.conditionValue = false;
             }
+            if (dd.conditionValue && nodes[nodeId].type === nodeTypes.question) node.counter++;
           });
 
           // Map trough QS if it is in an another QS itself
@@ -188,13 +196,10 @@ export class MedicalCaseModel {
       Object.keys(nodes).forEach((nodeId) => {
         if (nodes[nodeId].type === nodeTypes.question) {
           nodes[nodeId].referenced_in.forEach((id) => {
-            if (nodes[id].stage === stages.registration) {
-              nodes[id].conditionValue = true;
-            } else {
-              const dd = nodes[id].dd?.some((e) => e.conditionValue);
-              const qs = nodes[id].qs?.some((e) => e.conditionValue);
-              if (dd || qs) nodes[id].conditionValue = true;
-            }
+
+            const dd = nodes[id].dd?.some((e) => e.conditionValue);
+            const qs = nodes[id].qs?.some((e) => e.conditionValue);
+            if (dd || qs) this.nodes[nodeId].counter++;
           });
         }
       });
@@ -210,37 +215,36 @@ export class MedicalCaseModel {
    * @param id
    */
   setParentConditionValue = (algorithm, parentId, id) => {
-    let conditionValue = false;
-    const { diagnostics, nodes } = algorithm;
+    const {diagnostics, nodes} = algorithm;
+
     // Set condition value for DD if there is any
-    if (!nodes[parentId].dd.isEmpty()) {
-      nodes[parentId].dd.forEach((dd) => {
-        // If the instance is related to the main diagram
-        // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
-        if (diagnostics[dd.id].instances[parentId].final_diagnostic_id === null) {
-          dd.conditionValue = diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
-        } else {
-          dd.conditionValue = false;
-        }
-      });
-      conditionValue = true;
-    }
+    this.nodes[parentId].dd.forEach((dd) => {
+      // If the instance is related to the main diagram
+      // If the node has an final_diagnostic_id it's belongs to a health care so don't set conditionValue
+      if (diagnostics[dd.id].instances[parentId].final_diagnostic_id === null) {
+        dd.conditionValue = diagnostics[dd.id].instances[parentId].top_conditions.length === 0;
+      } else {
+        dd.conditionValue = false;
+      }
+    });
 
     // Set condition value of parent QS if there is any
-    if (!nodes[parentId].qs.isEmpty()) {
-      // If parentNode is a QS, rerun function
-      nodes[parentId].qs.forEach((qs) => {
-        this.setParentConditionValue(algorithm, qs.id, parentId);
-      });
-      conditionValue = true;
-    }
+    nodes[parentId].qs.forEach((qs) => {
+      this.setParentConditionValue(algorithm, qs.id, parentId);
+    });
+
+    const dd = this.nodes[id].dd?.some((e) => e.conditionValue);
+    const qs = this.nodes[id].qs?.some((e) => e.conditionValue);
+    const conditionValue = dd || qs;
+
     // Set conditionValue of current QS
-    nodes[id].qs.forEach((instanceQs) => {
+    this.nodes[id].qs.forEach((instanceQs) => {
       if (instanceQs.id === parentId) {
         instanceQs.conditionValue = nodes[instanceQs.id].instances[id].top_conditions.length === 0 && conditionValue;
       }
     });
   };
+
 
   /**
    * Will set the needed value in the database if we switch to fail Safe mode
@@ -255,7 +259,11 @@ export class MedicalCaseModel {
       // Find patient in Realm
       const patient = await database.findBy('Patient', this.patient_id);
       if (patient === null) {
-        await database.insert('Patient', { ...storeMedicalCase.patient, id: storeMedicalCase.patient_id, medicalCases: [this] });
+        await database.insert('Patient', {
+          ...storeMedicalCase.patient,
+          id: storeMedicalCase.patient_id,
+          medicalCases: [this],
+        });
       }
     }
   };
@@ -355,8 +363,8 @@ export class MedicalCaseModel {
    * Check if case can be synchronized with main data
    * @returns {boolean}
    */
-  canBeSynchronized = () => {
-    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.isOldEnough && this.consent;
+  canBeSynchronized = (algorithm) => {
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.isOldEnough && (this.consent || !algorithm.config.consent_management);
   };
 
   /**
@@ -435,6 +443,6 @@ MedicalCaseModel.schema = {
     updated_at: 'date',
     status: 'string',
     patient_id: 'string',
-    fail_safe: { type: 'bool', default: false },
+    fail_safe: {type: 'bool', default: false},
   },
 };

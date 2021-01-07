@@ -4,7 +4,7 @@ import * as React from 'react';
 import { TouchableOpacity, VirtualizedList, SafeAreaView } from 'react-native';
 import { Icon, Text, View } from 'native-base';
 import QuestionFactory from '../QuestionFactory';
-import { displayFormats, modalType } from '../../../../frontend_service/constants';
+import {categories, displayFormats, modalType} from '../../../../frontend_service/constants';
 import Autocomplete from '../DisplaysContainer/Autocomplete';
 import { styles } from '../QuestionFactory/Question.factory.style';
 import { ViewQuestion } from '../../../template/layout';
@@ -61,14 +61,18 @@ export default class Questions extends React.Component {
   render() {
     const {
       questions,
+      source,
       app: { t },
     } = this.props;
 
+    // Avoid to show an empty screen when there is only Background calculation in the questions screen in production mode
+    const questionList = __DEV__ ? questions : questions.filter((question) => question.category !== categories.backgroundCalculation);
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {Object.keys(questions).length > 0 ? (
+        {Object.keys(questionList).length > 0 ? (
           <VirtualizedList
-            data={questions}
+            data={questionList}
             getItem={(data, index) => data[index]}
             getItemCount={(data) => data.length}
             keyExtractor={(item) => item.id}
@@ -76,7 +80,7 @@ export default class Questions extends React.Component {
           />
         ) : (
           <View padding-auto margin-auto>
-            <Text not-available>{t('work_case:no_questions')}</Text>
+            <Text not-available>{source === 'conditions' ? t('work_case:no_conditions') : t('work_case:no_questions')}</Text>
           </View>
         )}
       </SafeAreaView>

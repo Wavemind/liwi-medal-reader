@@ -80,7 +80,6 @@ export default class Triage extends React.Component {
     } = this.props;
 
     const { complaintCategories, icons, steps } = this.state;
-
     const selectedPage = navigation.getParam('initialPage');
 
     return (

@@ -106,7 +106,7 @@ export class PatientModel {
    * @returns {Promise<void|string|Array|v.Chain|v.ExplicitChain<string>>}
    */
   save = async () => {
-    const medicalCase = this.medicalCases[this.medicalCases.length - 1];
+    const medicalCase = new MedicalCaseModel(this.medicalCases[this.medicalCases.length - 1]);
     const user = await getItem('user');
     const database = await new Database();
     this.id = uuid.v4();

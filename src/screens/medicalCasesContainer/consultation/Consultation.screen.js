@@ -31,16 +31,14 @@ export default class Consultation extends React.Component {
     } = this.props;
     const { firstRender } = this.state;
 
-    if (firstRender) {
+    if (firstRender || nextProps.app.answeredQuestionId === undefined || answeredQuestionId === undefined) {
       return true;
     }
-
     const question = medicalCase.nodes[answeredQuestionId];
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 
     return (
-      NavigationService.getCurrentRoute().routeName === 'Consultation' ||
-      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
+      NavigationService.getCurrentRoute().routeName === 'Consultation' && ((question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
     );
   }
 
@@ -79,7 +77,7 @@ export default class Consultation extends React.Component {
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="Tests"
-          nextStageString={t('medical_case:test')}
+          nextStageString={t('medical_case:tests')}
         >
           <MedicalHistory selectedPage={selectedPage} />
           <PhysicalExam selectedPage={selectedPage} />

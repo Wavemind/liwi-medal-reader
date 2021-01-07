@@ -74,7 +74,7 @@ export default class FinalDiagnosticCards extends React.Component {
     const drugsAvailable = drugAgreed(medicalCase.diagnoses, algorithm);
 
     return Object.keys(diagnoseFinalDiagnostics).map((key) => {
-      if ((diagnoseFinalDiagnostics[key].agreed && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) || title === 'additional') {
+      if ((diagnoseFinalDiagnostics[key].agreed && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) || title === 'additional' || title === 'custom') {
         return (
           <Card key={key}>
             <CardItem style={styles.cardItemCondensed}>
@@ -100,22 +100,30 @@ export default class FinalDiagnosticCards extends React.Component {
                 </LiwiTitle2>
 
                 {diagnoseFinalDiagnostics[key].drugs !== undefined && Object.keys(diagnoseFinalDiagnostics[key].drugs).length > 0 ? (
-                  Object.keys(diagnoseFinalDiagnostics[key].drugs).map((drugKey) => {
-                    if (drugsAvailable[drugKey] !== undefined) {
-                      return (
-                        <View style={styles.drugContainer} key={drugKey}>
-                          <View style={styles.formulationContainer}>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
-                          <View style={styles.tooltipButton}>
-                            <View flex>
-                              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(drugsAvailable[drugKey])}>
-                                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
-                              </TouchableOpacity>
+                  title === 'custom' ? (
+                    diagnoseFinalDiagnostics[key].drugs.map((drug) => (
+                      <View style={styles.drugContainer} key={drug}>
+                        <View style={styles.formulationContainer}><Text>{drug}</Text></View>
+                      </View>
+                    ))
+                  ) : (
+                    Object.keys(diagnoseFinalDiagnostics[key].drugs).map((drugKey) => {
+                      if (drugsAvailable[drugKey] !== undefined) {
+                        return (
+                          <View style={styles.drugContainer} key={drugKey}>
+                            <View style={styles.formulationContainer}>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
+                            <View style={styles.tooltipButton}>
+                              <View flex>
+                                <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(drugsAvailable[drugKey])}>
+                                  <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                                </TouchableOpacity>
+                              </View>
                             </View>
                           </View>
-                        </View>
-                      );
-                    }
-                  })
+                        );
+                      }
+                    })
+                  )
                 ) : (
                   <Text italic>{t('diagnoses:no_medicines')}</Text>
                 )}

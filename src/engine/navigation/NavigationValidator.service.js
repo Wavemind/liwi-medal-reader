@@ -19,7 +19,7 @@ const screens = [
     key: 'Triage',
     medicalCaseOrder: 1,
     validations: {
-      firstLookAssessments: { is_mandatory: true, initialPage: 0 },
+      uniqueTriageQuestion: { is_mandatory: true, initialPage: 0 },
       complaintCategories: { answer: 'not_null', initialPage: 1 },
       basicMeasurements: { is_mandatory: true, initialPage: 2 },
     },
@@ -41,7 +41,9 @@ const screens = [
   {
     key: 'DiagnosticsStrategy',
     medicalCaseOrder: 4,
-    validations: {},
+    validations: {
+      referral: {is_mandatory: true, initialPage: 4}
+    },
   },
 ];
 
@@ -96,6 +98,7 @@ export const modelValidator = {
 export const validatorStep = (algorithm, route, lastState, validator) => {
   const state$ = store.getState();
   if (route?.params?.initialPage && route.params.initialPage > 0) {
+
     const detailSetParamsRoute = algorithm.is_arm_control ? armControlScreen.find((s) => s.key === route.routeName) : screens.find((s) => s.key === route.routeName);
     const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
 
@@ -184,7 +187,7 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
 
   // TODO Clean validation of custom fields it's very gross !
   if (navigateRoute.currentStage === 'PatientUpsert') {
-    if (medicalCase.consent === null) {
+    if (medicalCase.consent === null && algorithm.config.consent_management) {
       validator.isActionValid = false;
       validator.customErrors.push(i18n.t('consent_image:required'));
       return validator;

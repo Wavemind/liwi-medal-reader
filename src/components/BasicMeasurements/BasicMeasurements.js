@@ -10,8 +10,18 @@ import { questionsBasicMeasurements } from '../../../frontend_service/algorithm/
 import Questions from '../QuestionsContainer/Questions';
 
 export default class BasicMeasurements extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      index: props.app.algorithm.is_arm_control ? 1 : 2,
+    };
+  }
+
   shouldComponentUpdate(nextProps) {
-    return nextProps.selectedPage === 1;
+    const { index } = this.state;
+
+    return nextProps.selectedPage === index;
   }
 
   render() {
@@ -19,11 +29,12 @@ export default class BasicMeasurements extends React.Component {
       app: { algorithm },
       selectedPage,
     } = this.props;
+    const { index } = this.state;
 
     return (
       <View style={styles.pad}>
-        <Suspense fallback={<LiwiLoader />}>
-          <Questions questions={questionsBasicMeasurements(algorithm)} selectedPage={selectedPage} pageIndex={1} />
+        <Suspense fallback={<LiwiLoader/>}>
+          <Questions questions={questionsBasicMeasurements(algorithm)} selectedPage={selectedPage} pageIndex={index}/>
         </Suspense>
       </View>
     );

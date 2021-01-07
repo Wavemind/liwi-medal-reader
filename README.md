@@ -1,7 +1,7 @@
 Liwi React Native
 ======
 
-Medical Analysis Application 
+Medical Analysis Application
 
 Contributor
 ======
@@ -18,53 +18,10 @@ Management
 )
 
 
-Commandes
-=======
-
-Install
-```
-npm i
-```
-
-Launch React Native bundler
-```
-react-native run-ios
-```
-
-Launch React Native app
-```
-react-native start run-ios --reset-cache
-```
-
-Generator documentation.md for React Component
-```
-npm run doc
-```
-
-launch documentation
-``` 
-cd documentarus
-npm run start
-```
-
-E2E test
-
-before you have to run
- 
-```
-detox build -c android.emu.debug
-```
- and then
-
-```
-npm run detox-android
-npm run detox-ios
-```
-
 Libraries (not final)
 =======
 
-- Redux -> Node State manager
+- Redux -> Master State manager
 
 - Redux-thunk OU Redux-observable -> middleware
 
@@ -95,7 +52,7 @@ Exemple
 import React, { Component } from 'react'
 
 export default class ComponentName extends Component {
-  
+
   render() {
     return null
   }

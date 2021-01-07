@@ -80,6 +80,11 @@ export default class FinalDiagnostic extends React.Component {
       medicalCase: { diagnoses },
     } = this.props;
 
+    // Need this shit when closing a medical otherwise it crash
+    if (diagnoses === undefined) {
+      return null;
+    }
+
     return (
       <View style={styles.content}>
         <View style={styles.container}>
