@@ -5,6 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import moment from 'moment';
 import { AppState, PermissionsAndroid } from 'react-native';
 
+import { NetworkConsumer, NetworkProvider } from 'react-native-offline';
 import i18n from '../../utils/i18n';
 import Database from '../api/Database';
 import { secondStatusLocalData, modalType } from '../../../frontend_service/constants';
@@ -33,7 +34,6 @@ export class ApplicationProvider extends React.Component {
    */
   _init = async () => {
     const session = await getItem('session');
-    console.log(session)
     // Session already exist
     if (session !== null && session?.facility !== null) {
       const user = await getItem('user');
@@ -372,7 +372,23 @@ export class ApplicationProvider extends React.Component {
 
   render() {
     const { children } = this.props;
-    return <ApplicationContext.Provider value={this.state}>{children}</ApplicationContext.Provider>;
+    const { session } = this.state;
+
+    let serverURL = '';
+    let isStandalone = false;
+
+    if (session !== null) {
+      isStandalone = session.facility.architecture === 'standalone';
+      if (!isStandalone) {
+        serverURL = session.facility.local_data_ip;
+      }
+    }
+
+    return (
+      <NetworkProvider shouldPing={!isStandalone} pingServerUrl={serverURL} pingInterval={secondStatusLocalData}>
+        <NetworkConsumer>{({ isConnected }) => <ApplicationContext.Provider value={{ ...this.state, isConnected }}>{children}</ApplicationContext.Provider>}</NetworkConsumer>
+      </NetworkProvider>
+    );
   }
 }
 

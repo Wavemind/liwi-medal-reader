@@ -9,7 +9,6 @@ import material from 'template/liwi/variables/material';
 import liwi from 'template/liwi/styles';
 import merge from 'deepmerge';
 import { RootView } from 'template/layout';
-import { Platform, StatusBar } from 'react-native';
 import { Container, Root, StyleProvider } from 'native-base';
 import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
@@ -82,35 +81,20 @@ class LayoutTemplate extends React.Component<Props> {
 
   render() {
     const {
-      app: { logged, ready, session },
+      app: { logged, ready },
     } = this.props;
 
     const { AppContainer, navigationState, mustSetNavigation } = this.state;
-    let serverURL = '';
-    let isStandalone = false;
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
-    console.log(this.props);
-    console.log(session)
-
-    if (session !== null) {
-      isStandalone = session.facility.architecture === 'standalone';
-      if (!isStandalone) {
-        serverURL = session.facility.local_data_ip;
-      }
-    }
-
-    console.log('shouldPing', !isStandalone)
-    console.log('serverURL', serverURL)
 
     return (
-      <NetworkProvider shouldPing={!isStandalone} pingServerUrl={serverURL} pingInterval={secondStatusLocalData}>
+      <>
         <Root>
           <StyleProvider style={theme}>
             {ready ? (
               <Container>
                 <RootView>
-                  {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                   <AppContainer
                     mustSetNavigation={mustSetNavigation}
                     updateMustSetNavigation={() => this.setState({ mustSetNavigation: false })}
@@ -133,7 +117,7 @@ class LayoutTemplate extends React.Component<Props> {
           </StyleProvider>
         </Root>
         <StatusIndicator />
-      </NetworkProvider>
+      </>
     );
   }
 }
