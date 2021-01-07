@@ -28,4 +28,15 @@ export const styles = StyleSheet.create({
   height: {
     height: 200,
   },
+
+  listItem: {
+    marginLeft: 0,
+    paddingRight: 0,
+    borderBottomWidth: 0,
+  },
+
+  picker: {
+    width: 220,
+    backgroundColor: liwiColors.lighterGreyColor,
+  },
 });
