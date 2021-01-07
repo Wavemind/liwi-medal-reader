@@ -62,13 +62,13 @@ const armControlScreen = [
     validations: {
       // firstLookAssessments: { is_mandatory: true, initialPage: 0 },
       complaintCategories: { initialPage: 0 },
-      basicMeasurements: { initialPage: 1 },
+      basicMeasurements: { is_mandatory: true, initialPage: 1 },
     },
   },
   {
     key: 'Tests',
     medicalCaseOrder: 2,
-    validations: { tests: { initialPage: 0 } },
+    validations: { is_mandatory: true, tests: { initialPage: 0 } },
   },
   {
     key: 'DiagnosticsStrategy',
