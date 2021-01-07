@@ -4,7 +4,7 @@ import * as React from 'react';
 import { TouchableOpacity, VirtualizedList, SafeAreaView } from 'react-native';
 import { Icon, Text, View } from 'native-base';
 import QuestionFactory from '../QuestionFactory';
-import { displayFormats, modalType } from '../../../../frontend_service/constants';
+import {categories, displayFormats, modalType} from '../../../../frontend_service/constants';
 import Autocomplete from '../DisplaysContainer/Autocomplete';
 import { styles } from '../QuestionFactory/Question.factory.style';
 import { ViewQuestion } from '../../../template/layout';
@@ -65,11 +65,13 @@ export default class Questions extends React.Component {
       app: { t },
     } = this.props;
 
+    const questionList = __DEV__ ? questions : questions.filter((question) => question.category !== categories.backgroundCalculation);
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {Object.keys(questions).length > 0 ? (
+        {Object.keys(questionList).length > 0 ? (
           <VirtualizedList
-            data={questions}
+            data={questionList}
             getItem={(data, index) => data[index]}
             getItemCount={(data) => data.length}
             keyExtractor={(item) => item.id}
