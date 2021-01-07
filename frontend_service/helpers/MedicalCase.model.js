@@ -35,7 +35,7 @@ export class MedicalCaseModel {
       this.isOldEnough = true;
       this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
-      this.consent = true;
+      this.consent = currentAlgorithm.config.consent_management ? true : false;
       this.modal = {
         open: false,
         content: '',
@@ -363,8 +363,8 @@ export class MedicalCaseModel {
    * Check if case can be synchronized with main data
    * @returns {boolean}
    */
-  canBeSynchronized = () => {
-    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.isOldEnough && this.consent;
+  canBeSynchronized = (algorithm) => {
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.isOldEnough && (this.consent || !algorithm.config.consent_management);
   };
 
   /**

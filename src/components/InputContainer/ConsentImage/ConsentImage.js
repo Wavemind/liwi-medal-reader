@@ -4,19 +4,15 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Button, Text } from 'native-base';
 import { View } from 'react-native';
-import RNFS from 'react-native-fs';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { styles } from './ConsentImage.style';
-import { liwiColors } from '../../../utils/constants';
-import { displayNotification } from '../../../utils/CustomToast';
 import { LeftButton, RightButton } from '../../../template/layout';
 
 type Props = NavigationScreenProps & { autoCapitalize: string };
 type State = {};
 
 export default class ConsentImage extends React.Component<Props, State> {
-
   /**
    * Displays the consent management form
    * @returns {*}
