@@ -65,6 +65,7 @@ export default class Questions extends React.Component {
       app: { t },
     } = this.props;
 
+    // Avoid to show an empty screen when there is only Background calculation in the questions screen in production mode
     const questionList = __DEV__ ? questions : questions.filter((question) => question.category !== categories.backgroundCalculation);
 
     return (
