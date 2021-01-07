@@ -37,6 +37,6 @@ export const styles = StyleSheet.create({
 
   picker: {
     width: 220,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: liwiColors.lighterGreyColor,
   },
 });
