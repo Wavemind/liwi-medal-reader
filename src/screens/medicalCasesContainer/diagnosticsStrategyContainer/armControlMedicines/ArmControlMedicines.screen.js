@@ -125,7 +125,7 @@ export default class ArmControlMedicines extends Component {
           searchInputStyle={styles.searchInputStyle}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
-          flatListProps={{ maxHeight: 200 }}
+          flatListProps={{ maxHeight: 200, nestedScrollEnabled: true }}
         />
 
         <Text customTitle style={styles.marginTop30}>
@@ -167,7 +167,7 @@ export default class ArmControlMedicines extends Component {
           searchInputStyle={styles.searchInputStyle}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
-          flatListProps={{ maxHeight: 200 }}
+          flatListProps={{ maxHeight: 200, nestedScrollEnabled: true }}
         />
       </View>
     );

@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Icon, Text, View } from 'native-base';
-import { TextInput } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 
@@ -138,30 +138,32 @@ export default class Medicines extends Component {
           <CustomMedicine key={i} diagnose={diagnoses.custom[w]} diagnoseKey={i} />
         ))}
 
-        {filteredHealthCares.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
+        {filteredHealthCares.length > 0 && (
+          <View style={styles.additionalDrugWrapper}>
+            <Text tyle={styles.additionalDrugTitle} customTitle>
+              {t('diagnoses:add_medicine')}
+            </Text>
+            <Text style={styles.additionalDrugSubtitle} italic>
+              {t('diagnoses:duration_in_days')}
+            </Text>
+          </View>
+        )}
         <View style={styles.viewBox}>
           {Object.keys(diagnoses.additionalDrugs).map((drugId) => (
-            <View style={styles.viewItem} key={drugId}>
-              <View style={styles.flex50}>
-                <Text italic>{algorithm.nodes[drugId].label}</Text>
-                <Text size-auto>
-                  {t('diagnoses:duration')}: {diagnoses.additionalDrugs[drugId].duration} {t('drug:days')}
-                </Text>
+            <View key={`drug-${drugId}`} style={styles.container}>
+              <View style={styles.additionalDrugName}>
+                <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[drugId].id)}>
+                  <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                </TouchableOpacity>
+                <Text key={`drug-${drugId}`}>{algorithm.nodes[drugId].label}</Text>
               </View>
-              <View style={styles.flex50}>
-                <Text>{t('diagnoses:custom_duration')}:</Text>
-                <View style={styles.box}>
-                  <Icon style={styles.icon} type="Feather" name="clock" size={18} color="#000" />
-                  <TextInput
-                    style={styles.text}
-                    keyboardType="numeric"
-                    value={diagnoses.additionalDrugs[drugId].duration}
-                    onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, drugId)}
-                    maxLength={2}
-                    placeholder="..."
-                  />
-                </View>
-              </View>
+              <TextInput
+                style={styles.durationInput}
+                keyboardType="decimal-pad"
+                value={diagnoses.additionalDrugs[drugId].duration}
+                onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, drugId)}
+                maxLength={2}
+              />
             </View>
           ))}
         </View>
@@ -188,7 +190,7 @@ export default class Medicines extends Component {
             searchInputStyle={styles.searchInputStyle}
             submitButtonColor={liwiColors.redColor}
             submitButtonText={t('diagnoses:close')}
-            flatListProps={{ maxHeight: 200 }}
+            flatListProps={{ maxHeight: 200, nestedScrollEnabled: true }}
           />
         )}
       </View>
