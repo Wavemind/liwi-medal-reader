@@ -3,11 +3,11 @@ import * as React from 'react';
 import { Button, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 
+import * as NetInfo from '@react-native-community/netinfo';
 import { styles } from './Synchronize.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
 import { modalType } from '../../../../frontend_service/constants';
-import * as NetInfo from '@react-native-community/netinfo';
 
 export default class Synchronize extends React.Component {
   state = {
@@ -41,10 +41,12 @@ export default class Synchronize extends React.Component {
   };
 
   render() {
-    const {app: {t}}= this.props;
+    const {
+      app: { t },
+    } = this.props;
     const { loading } = this.state;
 
-    // First time tablet is used
+    // Internet connection status
     const netInfoConnection = NetInfo.fetch();
     const { isConnected } = netInfoConnection;
 

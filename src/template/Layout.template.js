@@ -14,9 +14,10 @@ import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
 import LiwiLoader from '../utils/LiwiLoader';
 import { getItem, setItem } from '../engine/api/LocalStorage';
-import { navigationRoute, navigationStateKey, secondStatusLocalData } from '../../frontend_service/constants';
+import { navigationRoute, navigationStateKey } from '../../frontend_service/constants';
 import { RootMainNavigator } from '../engine/navigation/Root.navigation';
 import StatusIndicator from '../components/StatusIndicator';
+import Database from '../engine/api/Database';
 
 type Props = {
   app: {
@@ -50,6 +51,7 @@ class LayoutTemplate extends React.Component<Props> {
       prevRoute: null,
       mustSetNavigation: false,
       navigationState: null,
+      previousConnectionStatus: 'online',
       AppContainer: createAppContainer(RootMainNavigator),
     };
   }
@@ -71,6 +73,40 @@ class LayoutTemplate extends React.Component<Props> {
     }
   };
 
+  /**
+   * Send fail safe data when connection lost on client server architecture
+   * @returns {Promise<void>}
+   * @private
+   */
+  _sendFailSafeData = async () => {
+    const database = await new Database();
+    const patients = await database.realmInterface.getAll('Patient');
+    const success = await database.httpInterface.synchronizePatients(patients);
+
+    // TODO: It's not me and improve this shit
+    if (success === 'Synchronize success') {
+      database.realmInterface.delete(patients);
+    }
+  };
+
+  connectionHandler = async () => {
+    const { previousConnectionStatus } = this.state;
+    const {
+      app: { isConnected, session },
+    } = this.props;
+
+    if (session?.facility.architecture === 'client_server') {
+      if (!isConnected && previousConnectionStatus === 'online') {
+        this.setState({ previousConnectionStatus: 'offline' });
+      } else if (isConnected && previousConnectionStatus === 'offline') {
+        await this._sendFailSafeData();
+        this.setState({ previousConnectionStatus: 'online' });
+      }
+
+      await setItem('isConnected', isConnected);
+    }
+  };
+
   async componentDidMount() {
     await this.updatePrevRoute();
   }
@@ -87,6 +123,8 @@ class LayoutTemplate extends React.Component<Props> {
     const { AppContainer, navigationState, mustSetNavigation } = this.state;
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
+
+    this.connectionHandler();
 
     return (
       <>
