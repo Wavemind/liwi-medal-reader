@@ -11,6 +11,7 @@ import { styles } from './Medicines.style';
 import MedicineSelection from '../../../../components/MedicineSelection';
 import { healthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { finalDiagnosticCalculateCondition } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
+import { modalType } from '../../../../../frontend_service/constants';
 
 export default class Medicines extends Component {
   shouldComponentUpdate() {
@@ -51,6 +52,19 @@ export default class Medicines extends Component {
     });
 
     setAdditionalMedicine(objMedicine);
+  };
+
+  /**
+   * Open redux modal
+   */
+  openModal = (questionId) => {
+    const {
+      app: { algorithm },
+      updateModalFromRedux,
+    } = this.props;
+
+    const currentNode = algorithm.nodes[questionId];
+    updateModalFromRedux({ node: currentNode }, modalType.description);
   };
 
   /**

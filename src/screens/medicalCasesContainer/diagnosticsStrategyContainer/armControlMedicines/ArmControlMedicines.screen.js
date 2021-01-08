@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import { Icon, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
 import * as _ from 'lodash';
@@ -51,6 +51,21 @@ export default class ArmControlMedicines extends Component {
   };
 
   /**
+   * Set duration value for custom medicine
+   * @param {Integer} value
+   * @param {Integer} id
+   * @private
+   */
+  _changeCustomDuration = (value, id) => {
+    const reg = new RegExp(/^\d+$/);
+
+    const { setAdditionalMedicineDuration } = this.props;
+    if (reg.test(value) || value === '') {
+      setAdditionalMedicineDuration(id, value);
+    }
+  };
+
+  /**
    * Open redux modal
    */
   openModal = (questionId) => {
@@ -86,16 +101,31 @@ export default class ArmControlMedicines extends Component {
           {t('diagnoses:medicines')}
         </Text>
 
-        <Text customTitle style={styles.marginTop30}>
-          {t('diagnoses:additional_drugs')}
-        </Text>
+        <View style={styles.additionalDrugWrapper}>
+          <Text tyle={styles.additionalDrugTitle} customTitle>
+            {t('diagnoses:additional_drugs')}
+          </Text>
+          <Text style={styles.additionalDrugSubtitle} italic>
+            {t('diagnoses:duration_in_days')}
+          </Text>
+        </View>
+
         {Object.keys(diagnoses.additionalDrugs).length > 0 ? (
           Object.keys(diagnoses.additionalDrugs).map((additionalKey) => (
-            <View key={`additional-${additionalKey}`} style={styles.container}>
-              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
-                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
-              </TouchableOpacity>
-              <Text key={`additional-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
+            <View key={`drug-${additionalKey}`} style={styles.drugContainer}>
+              <View style={styles.additionalDrugName}>
+                <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
+                  <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                </TouchableOpacity>
+                <Text key={`drug-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
+              </View>
+              <TextInput
+                style={styles.durationInput}
+                keyboardType="decimal-pad"
+                value={diagnoses.additionalDrugs[additionalKey].duration}
+                onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, additionalKey)}
+                maxLength={2}
+              />
             </View>
           ))
         ) : (
