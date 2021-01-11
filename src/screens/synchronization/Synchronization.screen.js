@@ -33,7 +33,7 @@ export default class Synchronization extends React.Component<Props, State> {
   async componentDidMount() {
     const {
       medicalCase: reduxMedicalCase,
-      app: { database },
+      app: { database, algorithm },
     } = this.props;
 
     const session = await getItem('session');
@@ -44,7 +44,7 @@ export default class Synchronization extends React.Component<Props, State> {
 
     // Retrieve all medical cases need to be synchronized
     medicalCases.forEach((medicalCase) => {
-      if (medicalCase.canBeSynchronized()) {
+      if (medicalCase.canBeSynchronized(algorithm)) {
         if (reduxMedicalCase.id === medicalCase.id) {
           medicalCasesToSynch.push(reduxMedicalCase);
         } else {

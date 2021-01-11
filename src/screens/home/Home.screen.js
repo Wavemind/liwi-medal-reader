@@ -25,7 +25,7 @@ export default class Home extends React.Component<Props, State> {
 
   async componentDidMount() {
     const {
-      app: { database },
+      app: { database, algorithm },
     } = this.props;
     const session = await getItems('session');
     const medicalCases = [];
@@ -34,7 +34,7 @@ export default class Home extends React.Component<Props, State> {
       const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
 
       realmMedicalCases.forEach((medicalCase) => {
-        if (medicalCase.canBeSynchronized() && medicalCase.isOlderThan1Week()) {
+        if (medicalCase.canBeSynchronized(algorithm) && medicalCase.isOlderThan1Week()) {
           medicalCases.push(medicalCase);
         }
       });
@@ -159,14 +159,16 @@ export default class Home extends React.Component<Props, State> {
           ) : null}
 
           <View w50>
-            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('ConsentList')}>
-              <View style={styles.blocContainer}>
-                <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/differential.png')} />
-                <Text size-auto center style={styles.textButton}>
-                  {t('navigation:consent_list')}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {algorithm.config.consent_management && (
+              <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('ConsentList')}>
+                <View style={styles.blocContainer}>
+                  <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/differential.png')} />
+                  <Text size-auto center style={styles.textButton}>
+                    {t('navigation:consent_list')}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => logout()}>
               <View style={styles.blocContainer}>

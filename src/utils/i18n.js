@@ -437,7 +437,7 @@ i18n
           diagnosticsstrategy: 'Diagnoses',
           conditions: 'Treatment Conditions',
           filter: 'Filters',
-          step_invalid: 'Step is not valid',
+          step_invalid: 'Step not valid. Please complete all of the mandatory fields',
           about: 'About',
           consent_list: "Facility's consent files",
         },
