@@ -52,7 +52,7 @@
     "react-native": "0.61.5",
     "react-native-autocomplete-input": "^4.2.0",
     "react-native-background-color": "^0.0.8",
-    "react-native-camera": "^3.23.1",
+    "react-native-camera": "^3.41.0",
     "react-native-custom-picker": "^0.4.0",
     "react-native-device-info": "^7.3.1",
     "react-native-dotenv": "^2.2.0",

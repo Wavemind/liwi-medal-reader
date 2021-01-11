@@ -161,8 +161,7 @@ export default class PatientUpsert extends React.Component {
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences"
-          />
+          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
