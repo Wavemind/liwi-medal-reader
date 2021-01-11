@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import LottieView from 'lottie-react-native';
+import * as NetInfo from '@react-native-community/netinfo';
 import { Button, Form, Picker, Text, View, List, ListItem, Left, Right } from 'native-base';
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -19,8 +20,9 @@ export default function HookSession() {
   const [password, setPassword] = React.useState(__DEV__ ? '123456' : '');
   const [success, setSuccess] = React.useState(false);
   const [environment, setEnvironment] = React.useState(null);
+  const [isConnected, setIsConnected] = React.useState(false);
   const app = React.useContext(ApplicationContext);
-  const { isConnected, t } = app;
+  const { t } = app;
 
   React.useEffect(() => {
     const fetchEnvironment = async () => {
@@ -34,6 +36,10 @@ export default function HookSession() {
       } else {
         setEnvironment(storedEnvironment);
       }
+
+      const netInfoConnection = await NetInfo.fetch();
+      setIsConnected(netInfoConnection.isConnected);
+
       setLoading(false);
     };
 
