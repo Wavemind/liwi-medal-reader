@@ -3,12 +3,13 @@ import * as React from 'react';
 import { Button, Text, View } from 'native-base';
 import { ScrollView } from 'react-native';
 
+import * as NetInfo from '@react-native-community/netinfo';
 import { styles } from './Synchronize.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
 import { modalType } from '../../../../frontend_service/constants';
 
-export default class Synchronize extends React.Component<Props, State> {
+export default class Synchronize extends React.Component {
   state = {
     loading: false,
   };
@@ -33,7 +34,6 @@ export default class Synchronize extends React.Component<Props, State> {
     if (result !== null) {
       const database = await new Database();
       await app.set('database', database);
-      await app.subscribePingApplicationServer();
       navigation.navigate('UnlockSession');
     }
 
@@ -41,8 +41,14 @@ export default class Synchronize extends React.Component<Props, State> {
   };
 
   render() {
-    const { app } = this.props;
+    const {
+      app: { t },
+    } = this.props;
     const { loading } = this.state;
+
+    // Internet connection status
+    const netInfoConnection = NetInfo.fetch();
+    const { isConnected } = netInfoConnection;
 
     return (
       <ScrollView>
@@ -55,11 +61,11 @@ export default class Synchronize extends React.Component<Props, State> {
                 ) : (
                   <>
                     <Text bigTitle noBorder>
-                      {app.t('unlock_session:title')}
+                      {t('unlock_session:title')}
                     </Text>
-                    <Text size-auto>{app.t('unlock_session:assign')}</Text>
-                    <Button onPress={this.createSession} disabled={!app.isConnected} testID="new_session" style={styles.buttonSync}>
-                      <Text size-auto>{app.t('unlock_session:sync_group')}</Text>
+                    <Text size-auto>{t('unlock_session:assign')}</Text>
+                    <Button onPress={this.createSession} disabled={isConnected} testID="new_session" style={styles.buttonSync}>
+                      <Text size-auto>{t('unlock_session:sync_group')}</Text>
                     </Button>
                   </>
                 )}

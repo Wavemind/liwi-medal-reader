@@ -38,11 +38,10 @@ export default class ListContent extends React.Component<Props, State> {
 
     await this._fetchList();
 
-    const isConnected = await getItems('isConnected');
     const deviceInfo = await getDeviceInformation();
 
     const { nodes } = algorithm;
-    this.setState({ nodes, firstLoading: false, isConnected, deviceInfo });
+    this.setState({ nodes, firstLoading: false, deviceInfo });
   }
 
   async componentDidUpdate(nextProps) {
@@ -125,9 +124,10 @@ export default class ListContent extends React.Component<Props, State> {
     const {
       itemNavigation,
       model,
-      app: { t, user },
+      app: { t, user, isConnected },
     } = this.props;
-    const { isConnected, deviceInfo } = this.state;
+    const { deviceInfo } = this.state;
+
     return (
       <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         {item.values.map((value, key) => (

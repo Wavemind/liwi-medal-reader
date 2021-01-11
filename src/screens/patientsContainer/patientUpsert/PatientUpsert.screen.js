@@ -257,7 +257,7 @@ export default class PatientUpsert extends React.Component {
                 )}
               </Col>
             </View>
-            <ConsentImage newPatient={patient.id === null} />
+            {algorithm.config.consent_management && <ConsentImage newPatient={patient.id === null} />}
             <Text customSubTitle>{t('patient_upsert:questions')}</Text>
             <Questions questions={registrationQuestions} />
           </ScrollView>,

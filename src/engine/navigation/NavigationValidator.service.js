@@ -62,13 +62,13 @@ const armControlScreen = [
     validations: {
       // firstLookAssessments: { is_mandatory: true, initialPage: 0 },
       complaintCategories: { initialPage: 0 },
-      basicMeasurements: { initialPage: 1 },
+      basicMeasurements: { is_mandatory: true, initialPage: 1 },
     },
   },
   {
     key: 'Tests',
     medicalCaseOrder: 2,
-    validations: { tests: { initialPage: 0 } },
+    validations: { is_mandatory: true, tests: { initialPage: 0 } },
   },
   {
     key: 'DiagnosticsStrategy',
@@ -187,7 +187,7 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
 
   // TODO Clean validation of custom fields it's very gross !
   if (navigateRoute.currentStage === 'PatientUpsert') {
-    if (medicalCase.consent === null) {
+    if (medicalCase.consent === null && algorithm.config.consent_management) {
       validator.isActionValid = false;
       validator.customErrors.push(i18n.t('consent_image:required'));
       return validator;

@@ -116,7 +116,7 @@ export default class DiagnosesStrategy extends Component {
             </View>
           )}
           <View style={styles.pad}>
-            <ScrollView>
+            <ScrollView nestedScrollEnabled>
               <Suspense fallback={<LiwiLoader />}>
                 {algorithm.is_arm_control ? <ArmControlMedicines key="Medicines" selectedPage={selectedPage} pageIndex={1} /> : <Medicines key="Medicines" selectedPage={selectedPage} pageIndex={2} />}
               </Suspense>
