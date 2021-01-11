@@ -38,8 +38,9 @@ export default class Date extends React.Component {
       dayValue,
       monthValue,
       yearValue,
+      enable: true,
     };
-
+console.log("Je re rentre ici ?!")
     // Due to possible change in patient value. Force update to calculate background_calculation like age in days
     if (question.value !== null) {
       this.setBirthDate();
@@ -95,13 +96,14 @@ export default class Date extends React.Component {
    * @param {String} value
    */
   onValueChange = async (key, value) => {
-    await this.setState({ [key]: value });
+    await this.setState({ [key]: value, enable: false });
     this.setBirthDate();
+    await this.setState({ enable: true });
   };
 
   render() {
     const { isReadOnly, question } = this.props;
-    const { dayValue, monthValue, yearValue, pickerDay, pickerMonth, pickerYear } = this.state;
+    const { dayValue, monthValue, yearValue, pickerDay, pickerMonth, pickerYear, enable } = this.state;
 
     return (
       <View>
@@ -109,17 +111,17 @@ export default class Date extends React.Component {
           <Input question defaultValue={moment(question.value).format('DD/MM/YYYY')} disabled={isReadOnly} />
         ) : (
           <>
-            <Picker mode="dropdown" style={styles.picker} selectedValue={String(yearValue)} onValueChange={(value) => this.onValueChange('yearValue', value)}>
+            <Picker mode="dropdown" style={styles.picker} selectedValue={String(yearValue)} onValueChange={(value) => this.onValueChange('yearValue', value)} enabled={enable}>
               <Picker.Item label={I18n.t('patient:year')} value={null} />
               {pickerYear}
             </Picker>
 
-            <Picker mode="dropdown" style={styles.picker} selectedValue={String(monthValue)} onValueChange={(value) => this.onValueChange('monthValue', value)}>
+            <Picker mode="dropdown" style={styles.picker} selectedValue={String(monthValue)} onValueChange={(value) => this.onValueChange('monthValue', value)} enabled={enable}>
               <Picker.Item label={I18n.t('patient:month')} value={null} />
               {pickerMonth}
             </Picker>
 
-            <Picker mode="dropdown" style={styles.picker} selectedValue={String(dayValue)} onValueChange={(value) => this.onValueChange('dayValue', value)}>
+            <Picker mode="dropdown" style={styles.picker} selectedValue={String(dayValue)} onValueChange={(value) => this.onValueChange('dayValue', value)} enabled={enable}>
               <Picker.Item label={I18n.t('patient:day')} value={null} />
               {pickerDay}
             </Picker>
