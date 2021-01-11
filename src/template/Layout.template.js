@@ -2,12 +2,13 @@
 
 import * as React from 'react';
 import { createAppContainer } from 'react-navigation';
+import { NetworkProvider } from 'react-native-offline';
+
 import getTheme from 'template/liwi/native_components/index.ignore';
 import material from 'template/liwi/variables/material';
 import liwi from 'template/liwi/styles';
 import merge from 'deepmerge';
 import { RootView } from 'template/layout';
-import { Platform, StatusBar } from 'react-native';
 import { Container, Root, StyleProvider } from 'native-base';
 import { withApplication } from '../engine/contexts/Application.context';
 import NavigationService from '../engine/navigation/Navigation.service';
@@ -15,6 +16,8 @@ import LiwiLoader from '../utils/LiwiLoader';
 import { getItem, setItem } from '../engine/api/LocalStorage';
 import { navigationRoute, navigationStateKey } from '../../frontend_service/constants';
 import { RootMainNavigator } from '../engine/navigation/Root.navigation';
+import StatusIndicator from '../components/StatusIndicator';
+import Database from '../engine/api/Database';
 
 type Props = {
   app: {
@@ -48,6 +51,7 @@ class LayoutTemplate extends React.Component<Props> {
       prevRoute: null,
       mustSetNavigation: false,
       navigationState: null,
+      wasConnected: true,
       AppContainer: createAppContainer(RootMainNavigator),
     };
   }
@@ -69,6 +73,44 @@ class LayoutTemplate extends React.Component<Props> {
     }
   };
 
+  /**
+   * Send fail safe data when connection lost on client server architecture
+   * @returns {Promise<void>}
+   * @private
+   */
+  _sendFailSafeData = async () => {
+    const database = await new Database();
+    const patients = await database.realmInterface.getAll('Patient');
+    const success = await database.httpInterface.synchronizePatients(patients);
+
+    // TODO: It's not me and improve this shit
+    if (success === 'Synchronize success') {
+      database.realmInterface.delete(patients);
+    }
+  };
+
+  /**
+   * Handle connection change and process data send
+   * @returns {Promise<void>}
+   */
+  connectionHandler = async () => {
+    const { wasConnected } = this.state;
+    const {
+      app: { isConnected, session },
+    } = this.props;
+
+    if (session?.facility.architecture === 'client_server') {
+      if (!isConnected && wasConnected) {
+        this.setState({ wasConnected: !wasConnected });
+      } else if (isConnected && !wasConnected) {
+        await this._sendFailSafeData();
+        this.setState({ wasConnected: !wasConnected });
+      }
+
+      await setItem('isConnected', isConnected);
+    }
+  };
+
   async componentDidMount() {
     await this.updatePrevRoute();
   }
@@ -83,38 +125,41 @@ class LayoutTemplate extends React.Component<Props> {
     } = this.props;
 
     const { AppContainer, navigationState, mustSetNavigation } = this.state;
-
     const baseTheme = getTheme(material);
     const theme = merge(baseTheme, liwi);
 
+    this.connectionHandler();
+
     return (
-      <Root>
-        <StyleProvider style={theme}>
-          {ready ? (
-            <Container>
-              <RootView>
-                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                <AppContainer
-                  mustSetNavigation={mustSetNavigation}
-                  updateMustSetNavigation={() => this.setState({ mustSetNavigation: false })}
-                  navigationState={navigationState}
-                  logged={logged}
-                  persistNavigationState={persistNavigationState}
-                  renderLoadingExperimental={() => <LiwiLoader />}
-                  ref={(navigatorRef) => {
-                    NavigationService.setTopLevelNavigator(navigatorRef);
-                  }}
-                  onNavigationStateChange={(prevState, currentState) => {
-                    NavigationService.onNavigationStateChange(prevState, currentState);
-                  }}
-                />
-              </RootView>
-            </Container>
-          ) : (
-            <LiwiLoader />
-          )}
-        </StyleProvider>
-      </Root>
+      <>
+        <Root>
+          <StyleProvider style={theme}>
+            {ready ? (
+              <Container>
+                <RootView>
+                  <AppContainer
+                    mustSetNavigation={mustSetNavigation}
+                    updateMustSetNavigation={() => this.setState({ mustSetNavigation: false })}
+                    navigationState={navigationState}
+                    logged={logged}
+                    persistNavigationState={persistNavigationState}
+                    renderLoadingExperimental={() => <LiwiLoader />}
+                    ref={(navigatorRef) => {
+                      NavigationService.setTopLevelNavigator(navigatorRef);
+                    }}
+                    onNavigationStateChange={(prevState, currentState) => {
+                      NavigationService.onNavigationStateChange(prevState, currentState);
+                    }}
+                  />
+                </RootView>
+              </Container>
+            ) : (
+              <LiwiLoader />
+            )}
+          </StyleProvider>
+        </Root>
+        <StatusIndicator />
+      </>
     );
   }
 }

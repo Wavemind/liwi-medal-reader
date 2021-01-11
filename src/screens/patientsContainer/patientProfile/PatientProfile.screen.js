@@ -26,12 +26,11 @@ export default class PatientProfile extends React.Component {
   async componentDidMount() {
     const deviceInfo = await getDeviceInformation();
     const algorithm = await getItem('algorithm');
-    const isConnected = await getItems('isConnected');
 
     const columns = algorithm.mobile_config.medical_case_list;
     const { nodes } = algorithm;
 
-    this.setState({ deviceInfo, columns, nodes, isConnected, algorithm });
+    this.setState({ deviceInfo, columns, nodes, algorithm });
     await this._getPatient();
   }
 
@@ -79,10 +78,10 @@ export default class PatientProfile extends React.Component {
       setMedicalCase,
       navigation,
       updateModalFromRedux,
-      app: { t, database, user },
+      app: { t, database, user, isConnected },
     } = this.props;
 
-    const { columns, deviceInfo, isConnected } = this.state;
+    const { columns, deviceInfo } = this.state;
     const size = 1 / columns.length + 1;
 
     return (
@@ -91,9 +90,8 @@ export default class PatientProfile extends React.Component {
         key={`${medicalCase.id}_list`}
         onPress={async () => {
           const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
-          const currentConnectionStatus = await getItems('isConnected');
 
-          if (newMedicalCase.isLocked(deviceInfo, user) && currentConnectionStatus) {
+          if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
             updateModalFromRedux({ medicalCase: newMedicalCase }, modalType.medicalCaseLocked);
           } else if (newMedicalCase.status === medicalCaseStatus.close) {
             navigation.navigate('Summary', { medicalCase });
