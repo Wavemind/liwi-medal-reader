@@ -51,7 +51,7 @@ class LayoutTemplate extends React.Component<Props> {
       prevRoute: null,
       mustSetNavigation: false,
       navigationState: null,
-      previousConnectionStatus: 'online',
+      wasConnected: true,
       AppContainer: createAppContainer(RootMainNavigator),
     };
   }
@@ -89,18 +89,22 @@ class LayoutTemplate extends React.Component<Props> {
     }
   };
 
+  /**
+   * Handle connection change and process data send
+   * @returns {Promise<void>}
+   */
   connectionHandler = async () => {
-    const { previousConnectionStatus } = this.state;
+    const { wasConnected } = this.state;
     const {
       app: { isConnected, session },
     } = this.props;
 
     if (session?.facility.architecture === 'client_server') {
-      if (!isConnected && previousConnectionStatus === 'online') {
-        this.setState({ previousConnectionStatus: 'offline' });
-      } else if (isConnected && previousConnectionStatus === 'offline') {
+      if (!isConnected && wasConnected) {
+        this.setState({ wasConnected: !wasConnected });
+      } else if (isConnected && !wasConnected) {
         await this._sendFailSafeData();
-        this.setState({ previousConnectionStatus: 'online' });
+        this.setState({ wasConnected: !wasConnected });
       }
 
       await setItem('isConnected', isConnected);
