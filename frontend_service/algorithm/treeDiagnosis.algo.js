@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { nodeTypes } from '../constants';
 import { updateConditionValue } from './epics.algo';
 import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from './conditionsHelpers.algo';
+import { questionBooleanValue } from '../helpers/Question.model';
 
 /**
  * Get the parents for an instance in a diagnostic
@@ -162,8 +163,8 @@ const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
   // Not shown before and the link condition is false -> return false
   if (instanceConditionValue === false && instanceCondition === false) return false;
 
-   // We process the instance children if the condition is true AND The questions has an answer OR this is a top level node
-  if ((mcNode.answer !== null || instance.top_conditions.length === 0) || isReset) {
+  // We process the instance children if the condition is true AND The questions has an answer OR this is a top level node
+  if (mcNode.answer !== null || instance.top_conditions.length === 0 || isReset) {
     // From this point we can process all children and go deeper in the tree processChildren return the boolean array of each branch
     const processChildren = InstanceChildrenOnQs(algorithm, medicalCase, instance, mcQs, mcNode);
     return reduceConditionArrayBoolean(processChildren);
@@ -173,7 +174,7 @@ const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
 };
 
 /**
- * 1. Get all nodes without conditons
+ * 1. Get all nodes without conditions
  * 2. On each node we do work on his children (like change condition value or check condition of the child)
  * 3. Update Recursive QS
  *
@@ -189,6 +190,17 @@ const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
 export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
   const topLevelNodes = [];
   const currentNode = algorithm.nodes[mcQs.id];
+  if (currentNode.conditioned_by_cc.length > 0) {
+    const isExcludedByComplaintCategory = currentNode.conditioned_by_cc.some((complaintCategory) => {
+      return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
+    });
+
+    // Stop if QS is excluded
+    if (isExcludedByComplaintCategory) {
+      return isExcludedByComplaintCategory;
+    }
+  }
+
   // Set top Level Nodes
   Object.keys(currentNode.instances).forEach((nodeId) => {
     if (currentNode.instances[nodeId].top_conditions.length === 0) {
@@ -199,6 +211,7 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
   const allNodesAnsweredInQs = topLevelNodes.map((topNode) => {
     return recursiveNodeQs(algorithm, medicalCase, topNode, mcQs.id);
   });
+
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
 
