@@ -1,13 +1,11 @@
 // @flow
 import * as React from 'react';
-import * as NetInfo from '@react-native-community/netinfo';
 import Geolocation from '@react-native-community/geolocation';
 import moment from 'moment';
-import { NavigationScreenProps } from 'react-navigation';
 import { AppState, PermissionsAndroid } from 'react-native';
 
+import { NetworkConsumer, NetworkProvider } from 'react-native-offline';
 import i18n from '../../utils/i18n';
-import Database from '../api/Database';
 import { secondStatusLocalData, modalType } from '../../../frontend_service/constants';
 import { auth, getAlgorithm, getFacility, registerDevice } from '../../../frontend_service/api/Http';
 import { getItem, setItem } from '../api/LocalStorage';
@@ -21,31 +19,7 @@ const defaultValue = {};
 
 export const ApplicationContext = React.createContext<Object>(defaultValue);
 
-type Props = NavigationScreenProps & {
-  children: React.Node,
-};
-
-export type StateApplicationContext = {
-  name: string,
-  lang: string,
-  set: (prop: any, value: any) => Promise<any>,
-  logged: boolean,
-  user: Object,
-  logout: () => Promise<any>,
-  unLockSession: (id: number, code: string) => Promise<any>,
-  lockSession: () => Promise<any>,
-  setMedicalCase: (medicalcase: Object) => Promise<any>,
-  isConnected: boolean,
-  medicalCase: Object,
-  appState: string,
-  setModal: () => Promise<any>,
-  contentModal: string,
-  t: (string) => Function<string>,
-  ready: boolean,
-  showPinOnUnlock: boolean,
-};
-
-export class ApplicationProvider extends React.Component<Props, StateApplicationContext> {
+export class ApplicationProvider extends React.Component {
   constructor(props: Props) {
     super(props);
     this._init();
@@ -60,93 +34,19 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     const session = await getItem('session');
     // Session already exist
     if (session !== null && session?.facility !== null) {
-      await this._handleApplicationServer(true);
       const user = await getItem('user');
-      const { isConnected } = this.state;
       this.setState({
         session,
         user,
         ready: true,
-        isConnected,
       });
-
-      // Start ping to local or main data server
-      this.subscribePingApplicationServer();
     } else {
-      // First time tablet is used
-      const netInfoConnection = await NetInfo.fetch();
-      const { isConnected } = netInfoConnection;
-      await setItem('isConnected', isConnected);
-      this.setState({ ready: true, isConnected });
+      this.setState({
+        ready: true,
+      });
     }
 
     AppState.addEventListener('change', this._handleAppStateChange);
-  };
-
-  /**
-   * Start an interval to ping application server like main data or local data
-   */
-  subscribePingApplicationServer = () => {
-    this.unsubscribePingApplicationServer = setInterval(this._handleApplicationServer, secondStatusLocalData);
-  };
-
-  /**
-   * Ping local or main data to define status of the app
-   * @param {boolean} firstTime - Force call to this._setAppStatus(false) to initialize it
-   * @returns {Promise<void>}
-   * @private
-   */
-  _handleApplicationServer = async (firstTime = false) => {
-    const { isConnected } = this.state;
-    const session = await getItem('session');
-    const ip = session.facility.architecture === 'standalone' ? session.facility.main_data_ip : session.facility.local_data_ip;
-
-    if (session.facility.architecture !== 'standalone') {
-      const request = await fetch(ip, 'GET').catch(async (error) => {
-        if (isConnected || firstTime) {
-          await this._setAppStatus(false);
-        }
-      });
-
-      if (request !== undefined && !isConnected) {
-        await this._setAppStatus(true);
-        if (session.facility.architecture === 'client_server' && !firstTime) {
-          await this._sendFailSafeData();
-        }
-      }
-    } else {
-      await this._setAppStatus(false);
-    }
-  };
-
-  /**
-   * Store in state and local storage connection status
-   * @param { boolean } status - connection status
-   * @returns {Promise<void>}
-   * @private
-   */
-  _setAppStatus = async (status) => {
-    const { isConnected } = this.state;
-    if (isConnected !== status) {
-      await setItem('isConnected', status);
-      this.setState({ isConnected: status });
-    }
-  };
-
-  /**
-   * Send fail safe data when connection lost on client server architecture
-   * @returns {Promise<void>}
-   * @private
-   */
-  _sendFailSafeData = async () => {
-    const database = await new Database();
-    const patients = await database.realmInterface.getAll('Patient');
-    const success = await database.httpInterface.synchronizePatients(patients);
-
-    // TODO: It's not me and improve this shit
-    if (success === 'Synchronize success') {
-      database.realmInterface.delete(patients);
-    }
   };
 
   /**
@@ -262,6 +162,10 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
       this.setState({ filtersPatient: {}, filtersMedicalCase: {}, algorithm: newAlgorithm });
     }
 
+    if (facility.architecture === 'standalone') {
+      await setItem('isConnected', false);
+    }
+
     return facility;
   };
 
@@ -337,7 +241,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
     lockSession: this.lockSession,
     newSession: this.newSession,
     set: this.setValState,
-    subscribePingApplicationServer: this.subscribePingApplicationServer,
     setUser: this.setUser,
     showPinOnUnlock: true,
     t: (translate) => i18n.t(translate),
@@ -370,7 +273,6 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
   }
 
   componentWillUnmount() {
-    clearInterval(this.unsubscribePingApplicationServer);
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
@@ -401,7 +303,23 @@ export class ApplicationProvider extends React.Component<Props, StateApplication
 
   render() {
     const { children } = this.props;
-    return <ApplicationContext.Provider value={this.state}>{children}</ApplicationContext.Provider>;
+    const { session } = this.state;
+
+    let serverURL = '';
+    let isStandalone = false;
+
+    if (session !== null) {
+      isStandalone = session.facility.architecture === 'standalone';
+      if (!isStandalone) {
+        serverURL = session.facility.local_data_ip;
+      }
+    }
+
+    return (
+      <NetworkProvider shouldPing={!isStandalone} pingServerUrl={serverURL} pingInterval={secondStatusLocalData}>
+        <NetworkConsumer>{({ isConnected }) => <ApplicationContext.Provider value={{ ...this.state, isConnected }}>{children}</ApplicationContext.Provider>}</NetworkConsumer>
+      </NetworkProvider>
+    );
   }
 }
 
