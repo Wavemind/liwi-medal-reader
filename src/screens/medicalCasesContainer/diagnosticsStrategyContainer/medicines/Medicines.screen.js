@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Icon, Text, View } from 'native-base';
-import { TextInput } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 import _ from 'lodash';
 
@@ -11,6 +11,7 @@ import { styles } from './Medicines.style';
 import MedicineSelection from '../../../../components/MedicineSelection';
 import { healthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { finalDiagnosticCalculateCondition } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
+import { modalType } from '../../../../../frontend_service/constants';
 
 export default class Medicines extends Component {
   shouldComponentUpdate() {
@@ -54,6 +55,19 @@ export default class Medicines extends Component {
   };
 
   /**
+   * Open redux modal
+   */
+  openModal = (questionId) => {
+    const {
+      app: { algorithm },
+      updateModalFromRedux,
+    } = this.props;
+
+    const currentNode = algorithm.nodes[questionId];
+    updateModalFromRedux({ node: currentNode }, modalType.description);
+  };
+
+  /**
    * Set duration value for custom medicine
    * @param {Integer} value
    * @param {Integer} id
@@ -91,15 +105,6 @@ export default class Medicines extends Component {
             return true;
           });
         });
-
-        Object.keys(diagnoses.proposed[key].managements).forEach((managementId) => {
-          filteredHealthCares = _.filter(filteredHealthCares, (item) => {
-            if (diagnoses.proposed[key].managements[managementId].agreed === true) {
-              return item.id !== Number(managementId);
-            }
-            return true;
-          });
-        });
       }
     });
 
@@ -109,15 +114,6 @@ export default class Medicines extends Component {
         filteredHealthCares = _.filter(filteredHealthCares, (item) => {
           if (diagnoses.additional[key].drugs[treatmentId].agreed === true) {
             return item.id !== Number(treatmentId);
-          }
-          return true;
-        });
-      });
-
-      Object.keys(diagnoses.additional[key].managements).forEach((managementId) => {
-        filteredHealthCares = _.filter(filteredHealthCares, (item) => {
-          if (diagnoses.additional[key].managements[managementId].agreed === true) {
-            return item.id !== Number(managementId);
           }
           return true;
         });
@@ -156,30 +152,32 @@ export default class Medicines extends Component {
           <CustomMedicine key={i} diagnose={diagnoses.custom[w]} diagnoseKey={i} />
         ))}
 
-        {filteredHealthCares.length > 0 && <Text customTitle>{t('diagnoses:add_medicine')}</Text>}
+        {filteredHealthCares.length > 0 && (
+          <View style={styles.additionalDrugWrapper}>
+            <Text tyle={styles.additionalDrugTitle} customTitle>
+              {t('diagnoses:add_medicine')}
+            </Text>
+            <Text style={styles.additionalDrugSubtitle} italic>
+              {t('diagnoses:duration_in_days')}
+            </Text>
+          </View>
+        )}
         <View style={styles.viewBox}>
-          {Object.keys(diagnoses.additionalDrugs).map((s) => (
-            <View style={styles.viewItem} key={s}>
-              <View style={styles.flex50}>
-                <Text size-auto>{diagnoses.additionalDrugs[s].label}</Text>
-                <Text italic>
-                  {t('diagnoses:duration')}: {diagnoses.additionalDrugs[s].duration} {t('drug:days')}
-                </Text>
+          {Object.keys(diagnoses.additionalDrugs).map((drugId) => (
+            <View key={`drug-${drugId}`} style={styles.container}>
+              <View style={styles.additionalDrugName}>
+                <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[drugId].id)}>
+                  <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                </TouchableOpacity>
+                <Text key={`drug-${drugId}`}>{algorithm.nodes[drugId].label}</Text>
               </View>
-              <View style={styles.flex50}>
-                <Text> {t('diagnoses:custom_duration')}:</Text>
-                <View style={styles.box}>
-                  <Icon style={styles.icon} type="Feather" name="clock" size={18} color="#000" />
-                  <TextInput
-                    style={styles.text}
-                    keyboardType="numeric"
-                    value={diagnoses.additionalDrugs[s].duration}
-                    onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, s)}
-                    maxLength={2}
-                    placeholder="..."
-                  />
-                </View>
-              </View>
+              <TextInput
+                style={styles.durationInput}
+                keyboardType="decimal-pad"
+                value={diagnoses.additionalDrugs[drugId].duration}
+                onChange={(val) => this._changeCustomDuration(val.nativeEvent.text, drugId)}
+                maxLength={2}
+              />
             </View>
           ))}
         </View>
@@ -206,6 +204,7 @@ export default class Medicines extends Component {
             searchInputStyle={styles.searchInputStyle}
             submitButtonColor={liwiColors.redColor}
             submitButtonText={t('diagnoses:close')}
+            flatListProps={{ maxHeight: 200, nestedScrollEnabled: true }}
           />
         )}
       </View>

@@ -20,7 +20,7 @@ export default class Referral extends React.Component {
     const {
       app: { algorithm },
       selectedPage,
-      medicalCase
+      medicalCase,
     } = this.props;
 
     // Need this shit when closing a medical otherwise it crash

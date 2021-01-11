@@ -30,8 +30,35 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
   },
+
+  drugContainer: {
+    flexDirection: 'row',
+  },
   iconInfo: { color: liwiColors.redColor },
   touchable: {
     marginRight: 7,
+  },
+
+  additionalDrugWrapper: { flexDirection: 'row', alignItems: 'center' },
+  additionalDrugTitle: { flex: 1 },
+  additionalDrugSubtitle: { flex: 1, textAlign: 'right' },
+  additionalDrugName: {
+    backgroundColor: 'white',
+    marginBottom: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  durationInput: {
+    flex: 0.2,
+    padding: 5,
+    fontSize: 18,
+    backgroundColor: liwiColors.lightGreyColor,
+    marginBottom: 5,
+    marginLeft: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
 });

@@ -20,10 +20,16 @@ export default class Medicine extends Component {
 
   render() {
     const {
+      app: { t },
       medicine,
       node,
-      app: { t },
+      healthCareType,
     } = this.props;
+
+    // Auto agree management
+    if (healthCareType === 'managements') {
+      this._handleClick(true);
+    }
 
     return (
       <>
@@ -37,18 +43,20 @@ export default class Medicine extends Component {
             ) : null}
           </View>
 
-          <View style={styles.content}>
-            <LeftButton active={medicine.agreed === true} onPress={() => this._handleClick(true)}>
-              <Text white={medicine.agreed === true} center style={styles.label}>
-                {t('diagnoses:agree')}
-              </Text>
-            </LeftButton>
-            <RightButton onPress={() => this._handleClick(false)} active={medicine.agreed === false}>
-              <Text center white={medicine.agreed === false} style={styles.label}>
-                {t('diagnoses:disagree')}
-              </Text>
-            </RightButton>
-          </View>
+          {healthCareType !== 'managements' && (
+            <View style={styles.content}>
+              <LeftButton active={medicine.agreed === true} onPress={() => this._handleClick(true)}>
+                <Text white={medicine.agreed === true} center style={styles.label}>
+                  {t('diagnoses:agree')}
+                </Text>
+              </LeftButton>
+              <RightButton onPress={() => this._handleClick(false)} active={medicine.agreed === false}>
+                <Text center white={medicine.agreed === false} style={styles.label}>
+                  {t('diagnoses:disagree')}
+                </Text>
+              </RightButton>
+            </View>
+          )}
         </View>
         {node?.description !== null ? (
           <View margin-top>

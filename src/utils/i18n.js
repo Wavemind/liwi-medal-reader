@@ -39,6 +39,7 @@ i18n
         diagnoses: {
           add: 'Create',
           add_medicine: 'Additional Medicines',
+          duration_in_days: 'Duration in days',
           add_drugs: 'Add drugs',
           add_managements: 'Add management',
           additional_drugs: 'Drugs',

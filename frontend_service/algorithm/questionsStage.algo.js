@@ -425,29 +425,7 @@ export const questionsTests = (algorithm) => {
  * @returns {*}
  */
 export const healthCares = (algorithm) => {
-  const medicalCase = store.getState();
-
-  const healthCares = nodeFilterBy(
-    medicalCase,
-    algorithm,
-    [
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.drug,
-      },
-      {
-        by: 'category',
-        operator: 'equal',
-        value: categories.management,
-      },
-    ],
-    'OR',
-    'array',
-    false
-  );
-
-  return healthCares;
+  return _.filter(algorithm.nodes, (f) => f.category === categories.drug);
 };
 
 export const questionsRegistration = (algorithm) => {
