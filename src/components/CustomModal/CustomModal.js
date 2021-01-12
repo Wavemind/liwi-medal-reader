@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Dimensions, Image, Modal, ScrollView, Linking } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
+import HTML from "react-native-render-html";
 
 import ImageZoom from 'react-native-image-pan-zoom';
 import { routeDependingStatus, modalType } from '../../../frontend_service/constants';
@@ -263,6 +264,9 @@ export default class CustomModal extends React.Component {
         <LiwiTitle2 noBorder style={styles.center}>
           ePOCT+: Tanzania
         </LiwiTitle2>
+        {/*TODO This is the section that needs to be played around with. */}
+        <LiwiTitle4>Description</LiwiTitle4>
+        <HTML source={{ html: '<p>Hello world <b>world</b> <i>foo</i> abc</p>' }} />
         <LiwiTitle4>What</LiwiTitle4>
         <Text style={styles.aboutDescription}>Electronic clinical decision support algorithm (CDSA) for the management of sick children aged 1 day up to and including 14 years old</Text>
         <LiwiTitle4>Who</LiwiTitle4>
