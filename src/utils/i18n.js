@@ -232,6 +232,7 @@ i18n
           healthcares_questions: 'Management questions',
           healthcares: 'Treatments & Management',
           referral: 'Referral',
+          reset_stage: 'Reset questions',
           managements: 'Managements',
           treatments: 'Treatments',
           waiting_triage: 'Waiting for 1st assessment',

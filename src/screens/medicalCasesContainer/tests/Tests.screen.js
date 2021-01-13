@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View } from 'native-base';
+import { Button, Text, View } from 'native-base';
 
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -22,6 +22,38 @@ export default class Tests extends React.Component {
     this.state = {
       firstRender: true,
     };
+  }
+
+  /**
+   * Shows the button to reset the stage
+   * @returns {JSX.Element}
+   */
+  renderReset() {
+    const {
+      app: { t },
+    } = this.props;
+
+    return (
+      <View>
+        <Button block onPress={() => this.resetState()}>
+          <Text size-auto>{t('medical_case:reset_stage')}</Text>
+        </Button>
+      </View>
+    );
+  }
+
+  /**
+   * Loads the medical case from the database in order to reset all edits that are not saved
+   * @returns {Promise<void>}
+   */
+  async resetState() {
+    const {
+      setMedicalCase,
+      medicalCase,
+      app: { database },
+    } = this.props;
+    const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+    await setMedicalCase({ ...newMedicalCase, patient: medicalCase.patient });
   }
 
   shouldComponentUpdate(nextProps) {
@@ -83,6 +115,7 @@ export default class Tests extends React.Component {
               ) : (
                 <LiwiLoader />
               )}
+              {algorithm.is_arm_control ? this.renderReset() : null}
             </View>,
           ]}
         </Stepper>
