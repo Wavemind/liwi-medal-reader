@@ -43,12 +43,15 @@ export default class PatientUpsert extends React.Component {
       return true;
     }
 
-    const question = medicalCase.nodes[answeredQuestionId];
-    const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
-    return (
-      NavigationService.getCurrentRoute().routeName === 'PatientUpsert' ||
-      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
-    );
+    if (answeredQuestionId !== undefined && nextProps.app.answeredQuestionId !== undefined) {
+      const question = medicalCase.nodes[answeredQuestionId];
+      const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
+      return (
+        NavigationService.getCurrentRoute().routeName === 'PatientUpsert' ||
+        (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
+      );
+    }
+    return true;
   }
 
   async init() {
