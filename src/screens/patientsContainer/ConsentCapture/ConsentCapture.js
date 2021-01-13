@@ -104,10 +104,10 @@ export default class ConsentCapture extends React.Component {
         ratio={ratio}
         focusDepth={depth}
         androidCameraPermissionOptions={{
-          title: t('permission_title'),
-          message: t('permission_message'),
-          buttonPositive: t('permission_buttonPositive'),
-          buttonNegative: t('permission_buttonNegative'),
+          title: t('patient_upsert:permission_title'),
+          message: t('patient_upsert:permission_message'),
+          buttonPositive: t('patient_upsert:permission_buttonPositive'),
+          buttonNegative: t('patient_upsert:permission_buttonNegative'),
         }}
       >
         <View style={StyleSheet.absoluteFill}>
