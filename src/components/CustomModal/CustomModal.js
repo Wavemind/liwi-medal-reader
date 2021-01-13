@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Dimensions, Image, Modal, ScrollView, Linking } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
-import HTML from "react-native-render-html";
+import { WebView } from 'react-native-webview';
 
 import ImageZoom from 'react-native-image-pan-zoom';
 import { routeDependingStatus, modalType } from '../../../frontend_service/constants';
@@ -259,59 +259,67 @@ export default class CustomModal extends React.Component {
    * @private
    */
   _renderAbout = () => {
+    const htmlContent = `
+      <h1>This HTML snippet is now rendered with native components !</h1>
+      <a href="#example3">Example3</a></br>
+      <a href="#example8">Example8</a>
+      <p id="example3">Example3</p></br></br></br></br></br></br></br></br></br></br></br></br>
+      <p id="example8">Example8</p>
+  `;
     return (
       <View>
         <LiwiTitle2 noBorder style={styles.center}>
           ePOCT+: Tanzania
         </LiwiTitle2>
-        {/*TODO This is the section that needs to be played around with. */}
         <LiwiTitle4>Description</LiwiTitle4>
-        <HTML source={{ html: '<p>Hello world <b>world</b> <i>foo</i> abc</p>' }} />
-        <LiwiTitle4>What</LiwiTitle4>
-        <Text style={styles.aboutDescription}>Electronic clinical decision support algorithm (CDSA) for the management of sick children aged 1 day up to and including 14 years old</Text>
-        <LiwiTitle4>Who</LiwiTitle4>
-        <Text style={styles.aboutDescription}>- Principal users: Assistant Medical Officers (AMO), and Clinical Officers (CO).{'\n'}- Other users: Medical doctors (MD), and nurses.</Text>
-        <LiwiTitle4>Where</LiwiTitle4>
-        <Text style={styles.aboutDescription}>Peripheral health facilities (Dispensaries and Health Centres) in Tanzania</Text>
-        <LiwiTitle4>Context</LiwiTitle4>
-        <Text style={styles.aboutDescription}>Only to be used within the DYNAMIC Tanzania study</Text>
-        <LiwiTitle4>Scope</LiwiTitle4>
-        <Text style={styles.aboutDescription}>ePOCT+ proposes the work-up, diagnoses, management and treatment for most frequent and severe childhood illnesses.</Text>
-        <Text style={styles.aboutDescription}>
-          The clinical algorithms were developed based on the World Health Organization’s Integrated Management of Childhood Illnesses (IMCI) booklet, the Tanzanian Standard Treatment Guidelines, peer
-          reviewed scientific articles, and validated by a Tanzanian expert group
-        </Text>
-        <Text style={styles.aboutDescription}>
-          Health care workers using ePOCT+ must use their clinical judgement for diagnoses, treatments and management proposed by ePOCT+ may not be applicable in all situations
-        </Text>
+        <WebView source={{ html: htmlContent }} style={{ marginTop: 20, height: 200 }} />
+        {/* <LiwiTitle4>What</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}> */}
+        {/*  Electronic clinical decision support algorithm (CDSA) for the management of sick children aged 1 day up to and including 14 years old */}
+        {/* </Text> */}
+        {/* <LiwiTitle4>Who</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>- Principal users: Assistant Medical Officers (AMO), and Clinical Officers (CO).{'\n'}- Other users: Medical doctors (MD), and nurses.</Text> */}
+        {/* <LiwiTitle4>Where</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>Peripheral health facilities (Dispensaries and Health Centres) in Tanzania</Text> */}
+        {/* <LiwiTitle4>Context</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>Only to be used within the DYNAMIC Tanzania study</Text> */}
+        {/* <LiwiTitle4>Scope</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>ePOCT+ proposes the work-up, diagnoses, management and treatment for most frequent and severe childhood illnesses.</Text> */}
+        {/* <Text style={styles.aboutDescription}> */}
+        {/*  The clinical algorithms were developed based on the World Health Organization’s Integrated Management of Childhood Illnesses (IMCI) booklet, the Tanzanian Standard Treatment Guidelines, peer */}
+        {/*  reviewed scientific articles, and validated by a Tanzanian expert group */}
+        {/* </Text> */}
+        {/* <Text style={styles.aboutDescription}> */}
+        {/*  Health care workers using ePOCT+ must use their clinical judgement for diagnoses, treatments and management proposed by ePOCT+ may not be applicable in all situations */}
+        {/* </Text> */}
 
-        <LiwiTitle4>ePOCT+ development team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>XXXX</Text>
+        {/* <LiwiTitle4>ePOCT+ development team</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>XXXX</Text> */}
 
-        <LiwiTitle4>ePOCT+ Tanzanian clinical expert validation team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>XXXX</Text>
+        {/* <LiwiTitle4>ePOCT+ Tanzanian clinical expert validation team</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>XXXX</Text> */}
 
-        <LiwiTitle4>ePOCTn development team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>XXXX</Text>
+        {/* <LiwiTitle4>ePOCTn development team</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>XXXX</Text> */}
 
-        <LiwiTitle4>ePOCTn Tanzanian clinical expert validation team</LiwiTitle4>
-        <Text style={styles.aboutDescription}>XXXX</Text>
+        {/* <LiwiTitle4>ePOCTn Tanzanian clinical expert validation team</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>XXXX</Text> */}
 
-        <LiwiTitle4>ePOCT+ and ePOCTn Version</LiwiTitle4>
-        <Text style={styles.aboutDescription}>XXXX</Text>
+        {/* <LiwiTitle4>ePOCT+ and ePOCTn Version</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>XXXX</Text> */}
 
-        <LiwiTitle4>
-          medAL-<LiwiTitle4 style={styles.italic}>reader</LiwiTitle4> Version
-        </LiwiTitle4>
-        <Text style={styles.aboutDescription}>XXXX</Text>
+        {/* <LiwiTitle4> */}
+        {/*  medAL-<LiwiTitle4 style={styles.italic}>reader</LiwiTitle4> Version */}
+        {/* </LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}>XXXX</Text> */}
 
-        <LiwiTitle4>Links</LiwiTitle4>
-        <Text style={styles.aboutDescription}>
-          Summary of diagnoses + references{'\n'}
-          Simplified algorithms{'\n'}
-          Detailed algorithms{'\n'}
-          Summary of evidence behind major algorithms
-        </Text>
+        {/* <LiwiTitle4>Links</LiwiTitle4> */}
+        {/* <Text style={styles.aboutDescription}> */}
+        {/*  Summary of diagnoses + references{'\n'} */}
+        {/*  Simplified algorithms{'\n'} */}
+        {/*  Detailed algorithms{'\n'} */}
+        {/*  Summary of evidence behind major algorithms */}
+        {/* </Text> */}
       </View>
     );
   };
