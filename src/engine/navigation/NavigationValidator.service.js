@@ -42,7 +42,7 @@ const screens = [
     key: 'DiagnosticsStrategy',
     medicalCaseOrder: 4,
     validations: {
-      referral: {is_mandatory: true, initialPage: 4}
+      referral: { is_mandatory: true, initialPage: 4 },
     },
   },
 ];
@@ -60,7 +60,6 @@ const armControlScreen = [
     key: 'Triage',
     medicalCaseOrder: 1,
     validations: {
-      // firstLookAssessments: { is_mandatory: true, initialPage: 0 },
       complaintCategories: { initialPage: 0 },
       basicMeasurements: { is_mandatory: true, initialPage: 1 },
     },
@@ -98,7 +97,6 @@ export const modelValidator = {
 export const validatorStep = (algorithm, route, lastState, validator) => {
   const state$ = store.getState();
   if (route?.params?.initialPage && route.params.initialPage > 0) {
-
     const detailSetParamsRoute = algorithm.is_arm_control ? armControlScreen.find((s) => s.key === route.routeName) : screens.find((s) => s.key === route.routeName);
     const detailValidation = _.findKey(detailSetParamsRoute.validations, (v) => v.initialPage === route.params.initialPage - 1);
 
@@ -147,7 +145,11 @@ function oneValidation(algorithm, criteria, questions, stepName) {
 
           // Test integer or float question if there is validation
           if (currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) {
-            if (mcNode.value !== null && (currentNode.min_value_error !== null || currentNode.max_value_error) && (mcNode.value < currentNode.min_value_error || mcNode.value > currentNode.max_value_error)) {
+            if (
+              mcNode.value !== null &&
+              (currentNode.min_value_error !== null || currentNode.max_value_error) &&
+              (mcNode.value < currentNode.min_value_error || mcNode.value > currentNode.max_value_error)
+            ) {
               isValid = false;
               staticValidator.questionsToBeFill.push(currentNode);
             }
