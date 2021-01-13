@@ -134,8 +134,6 @@ function oneValidation(algorithm, criteria, questions, stepName) {
         questions.forEach((questionId) => {
           const mcNode = medicalCase.nodes[questionId];
           const currentNode = algorithm.nodes[questionId];
-          if (currentNode.id === 7)
-            console.log("Je rentre ici ?", currentNode, mcNode)
           if (currentNode.is_mandatory === true) {
             result = mcNode.answer !== null || mcNode.value !== null;
 
@@ -147,8 +145,6 @@ function oneValidation(algorithm, criteria, questions, stepName) {
 
           // Test integer or float question if there is validation
           if (currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) {
-            if (currentNode.id === 7)
-              console.log('ici ffs')
             if (
               mcNode.value !== null &&
               (currentNode.min_value_error !== null || currentNode.max_value_error) &&
