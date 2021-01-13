@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { getDeviceInformation } from '../../../engine/api/Device';
-import { getItems } from '../../../engine/api/LocalStorage';
 import ListContent from '../../../components/ListContent';
 
 export default class MedicalCaseList extends React.Component<Props, State> {

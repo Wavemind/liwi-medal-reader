@@ -40,7 +40,7 @@ export default class Date extends React.Component {
       yearValue,
       enable: true,
     };
-console.log("Je re rentre ici ?!")
+
     // Due to possible change in patient value. Force update to calculate background_calculation like age in days
     if (question.value !== null) {
       this.setBirthDate();
