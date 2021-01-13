@@ -21,7 +21,7 @@ export default class ConsentCapture extends React.Component {
     },
     depth: 0,
     type: 'back',
-    ratio: '4:3',
+    ratio: '16:9',
   };
 
   /**
@@ -82,6 +82,10 @@ export default class ConsentCapture extends React.Component {
       autoFocusPoint: { normalized, drawRectPosition },
     } = this.state;
 
+    const {
+      app: { t },
+    } = this.props;
+
     const drawFocusRingPosition = {
       top: drawRectPosition.y - 32,
       left: drawRectPosition.x - 32,
@@ -100,25 +104,23 @@ export default class ConsentCapture extends React.Component {
         ratio={ratio}
         focusDepth={depth}
         androidCameraPermissionOptions={{
-          title: 'Permission to use camera',
-          message: 'We need your permission to use your camera',
-          buttonPositive: 'Ok',
-          buttonNegative: 'Cancel',
+          title: t('permission_title'),
+          message: t('permission_message'),
+          buttonPositive: t('permission_buttonPositive'),
+          buttonNegative: t('permission_buttonNegative'),
         }}
       >
         <View style={StyleSheet.absoluteFill}>
           <View style={[styles.autoFocusBox, drawFocusRingPosition]} />
-          <TouchableWithoutFeedback onPress={this.touchToFocus.bind(this)}>
-            <View style={{ flex: 1 }} />
+          <TouchableWithoutFeedback onPress={(e) => this.touchToFocus(e)}>
+            <View style={styles.flex} />
           </TouchableWithoutFeedback>
         </View>
 
-        <View style={{ bottom: 70, position: 'absolute', alignSelf: 'center' }}>
-          <View style={styles.iconWrapper}>
-            <TouchableOpacity style={[styles.flipButton]} onPress={this.takePicture.bind(this)}>
-              <Icon name="dot-circle" style={styles.snapIcon} type="FontAwesome5" />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.iconWrapper}>
+          <TouchableOpacity style={[styles.flipButton]} onPress={(e) => this.takePicture(e)}>
+            <Icon name="dot-circle" style={styles.snapIcon} type="FontAwesome5" />
+          </TouchableOpacity>
         </View>
       </RNCamera>
     );

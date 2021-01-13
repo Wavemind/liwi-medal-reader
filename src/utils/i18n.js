@@ -316,6 +316,10 @@ i18n
           save_and_wait: 'Save + add to waiting list',
           save_and_case: 'Save + create new case',
           save: 'Save',
+          permission_buttonNegative: 'Cancel',
+          permission_buttonPositive: 'Ok',
+          permission_message: 'We need your permission to use your camera',
+          permission_title: 'Permission to use camera'
         },
         medical_case_list: {
           all: 'All',

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -27,6 +27,9 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontSize: 75,
     opacity: 0.7,
+  },
+  flex: {
+    flex: 1,
   },
   iconWrapper: {
     height: 75,
