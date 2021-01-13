@@ -1,130 +1,131 @@
 // @flow
-import * as React from 'react';
-import { View, Icon } from 'native-base';
-import Scanner, { RectangleOverlay } from 'react-native-rectangle-scanner';
-import { Dimensions, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { Icon } from 'native-base';
+import { RNCamera } from 'react-native-camera';
+import * as RNFS from 'react-native-fs';
+import ImageResizer from 'react-native-image-resizer';
 
-import RNFS from 'react-native-fs';
-import LiwiLoader from '../../../utils/LiwiLoader';
 import { styles } from './ConsentCapture.style';
+import LiwiLoader from '../../../utils/LiwiLoader';
 
 export default class ConsentCapture extends React.Component {
   state = {
     loading: false,
+    autoFocusPoint: {
+      normalized: { x: 0.5, y: 0.5 }, // normalized values required for autoFocusPointOfInterest
+      drawRectPosition: {
+        x: Dimensions.get('window').width * 0.5 - 32,
+        y: Dimensions.get('window').height * 0.5 - 32,
+      },
+    },
+    depth: 0,
+    type: 'back',
+    ratio: '4:3',
   };
 
-  constructor(props) {
-    super(props);
+  /**
+   * Will focus in the touched area
+   * @param event
+   */
+  touchToFocus(event) {
+    const { pageX, pageY } = event.nativeEvent;
+    const { width, height } = Dimensions.get('window');
+    const screenWidth = width;
+    const screenHeight = height;
+    const isPortrait = screenHeight > screenWidth;
 
-    this.state = {
-      previewHeightPercent: 1,
-      previewWidthPercent: 1,
-    };
+    let x = pageX / screenWidth;
+    let y = pageY / screenHeight;
 
-    this.camera = React.createRef();
+    // Coordinate transform for portrait. See autoFocusPointOfInterest in docs for more info
+    if (isPortrait) {
+      x = pageY / screenHeight;
+      y = -(pageX / screenWidth) + 1;
+    }
+
+    this.setState({
+      autoFocusPoint: {
+        normalized: { x, y },
+        drawRectPosition: { x: pageX, y: pageY },
+      },
+    });
   }
 
   /**
-   * Stores the cropped image in the patient when the picture is processed
-   * @param croppedImage
+   * Takes a picture and stores the image in the patient when the picture is processed and resized
    * @returns {Promise<void>}
    */
-  handleOnPictureProcessed = async ({ croppedImage }) => {
+  takePicture = async function () {
     const { addConsentFile, navigation } = this.props;
-    this.setState({ loading: true });
-
-    addConsentFile(await RNFS.readFile(croppedImage, 'base64'));
-    navigation.goBack();
-  };
-
-  /**
-   * On some android devices, the aspect ratio of the preview is different than
-   * the screen size. This leads to distorted camera previews. This allows for correcting that.
-   * @returns {{width, marginTop: number, height, marginLeft: number}}
-   */
-  getPreviewSize() {
-    const { previewHeightPercent, previewWidthPercent } = this.state;
-    const dimensions = Dimensions.get('window');
-
-    // We use set margin amounts because for some reasons the percentage values don't align the camera preview in the center correctly.
-    const heightMargin = ((1 - previewHeightPercent) * dimensions.height) / 2;
-    const widthMargin = ((1 - previewWidthPercent) * dimensions.width) / 2;
-    return {
-      height: previewHeightPercent,
-      width: previewWidthPercent,
-      marginTop: heightMargin,
-      marginLeft: widthMargin,
-    };
-  }
-
-  /**
-   * When the scanner detects a rectangle he triggers the capture of the picture
-   * @param data
-   */
-  handleRectangleDetected = async (data) => {
-    if (data.detectedRectangle !== false) {
-      this.setState({ detectedRectangle: data.detectedRectangle });
+    if (this.camera) {
+      const data = await this.camera.takePictureAsync();
+      this.setState({ loading: true });
+      ImageResizer.createResizedImage(data.uri, 720, 960, 'JPEG', 93)
+        .then((response) => {
+          RNFS.readFile(response.uri.substring(7), 'base64').then((newFile) => {
+            addConsentFile(newFile);
+            navigation.goBack();
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
-  /**
-   * Called after the device gets setup. This lets you know some platform specific
-   * like if the device has a camera or flash, or even if you have permission to use the
-   * camera. It also includes the aspect ratio correction of the preview
-   * @param deviceDetails
-   */
-  onDeviceSetup = (deviceDetails) => {
-    const { previewHeightPercent, previewWidthPercent } = deviceDetails;
-    this.setState({
-      previewHeightPercent: previewHeightPercent || 1,
-      previewWidthPercent: previewWidthPercent || 1,
-    });
-  };
+  renderCamera() {
+    const {
+      type,
+      ratio,
+      depth,
+      autoFocusPoint: { normalized, drawRectPosition },
+    } = this.state;
 
-  /**
-   * Render snap and cancel button
-   * @returns {JSX.Element}
-   */
-  renderCameraControls() {
-    const { navigation } = this.props;
+    const drawFocusRingPosition = {
+      top: drawRectPosition.y - 32,
+      left: drawRectPosition.x - 32,
+    };
 
     return (
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonWrapper}>
-          <View style={styles.cameraOutline}>
-            <TouchableOpacity activeOpacity={0.8} style={styles.cameraButton} onPress={() => this.camera.current.capture()} />
+      <RNCamera
+        ref={(ref) => {
+          this.camera = ref;
+        }}
+        style={styles.camera}
+        type={type}
+        flashMode="off"
+        autoFocus="on"
+        autoFocusPointOfInterest={normalized}
+        ratio={ratio}
+        focusDepth={depth}
+        androidCameraPermissionOptions={{
+          title: 'Permission to use camera',
+          message: 'We need your permission to use your camera',
+          buttonPositive: 'Ok',
+          buttonNegative: 'Cancel',
+        }}
+      >
+        <View style={StyleSheet.absoluteFill}>
+          <View style={[styles.autoFocusBox, drawFocusRingPosition]} />
+          <TouchableWithoutFeedback onPress={this.touchToFocus.bind(this)}>
+            <View style={{ flex: 1 }} />
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View style={{ bottom: 70, position: 'absolute', alignSelf: 'center' }}>
+          <View style={styles.iconWrapper}>
+            <TouchableOpacity style={[styles.flipButton]} onPress={this.takePicture.bind(this)}>
+              <Icon name="dot-circle" style={styles.snapIcon} type="FontAwesome5" />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={navigation.goBack}>
-            <Icon name="close" type="AntDesign" style={styles.buttonIcon} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      </RNCamera>
     );
   }
 
   render() {
-    const { loading, detectedRectangle } = this.state;
-    const previewSize = this.getPreviewSize();
-    return (
-      <>
-        <View style={styles.content}>
-          {loading ? (
-            <LiwiLoader />
-          ) : (
-            <Scanner
-              onRectangleDetected={this.handleRectangleDetected}
-              onPictureProcessed={this.handleOnPictureProcessed}
-              ref={this.camera}
-              style={styles.scannerWrapper}
-              onDeviceSetup={this.onDeviceSetup}
-            />
-          )}
-          <RectangleOverlay detectedRectangle={detectedRectangle} previewRatio={previewSize} backgroundColor="rgba(255,181,6, 0.2)" borderColor="rgb(255,181,6)" borderWidth={4} />
-          {this.renderCameraControls()}
-        </View>
-      </>
-    );
+    const { loading } = this.state;
+    return loading ? <LiwiLoader /> : <View style={styles.container}>{this.renderCamera()}</View>;
   }
 }
