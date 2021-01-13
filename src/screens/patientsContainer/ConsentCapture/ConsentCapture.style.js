@@ -48,4 +48,9 @@ export const styles = StyleSheet.create({
     backgroundColor: 'black',
     flex: 1,
   },
+  scannerWrapper: {
+    width: '100%',
+    height: undefined,
+    aspectRatio: 3 / 4,
+  },
 });
