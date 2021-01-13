@@ -92,7 +92,7 @@ export default class ConsentCapture extends React.Component {
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
           <View style={styles.cameraOutline}>
-            <TouchableOpacity activeOpacity={0.8} style={styles.cameraButton} onPress={this.camera.current.capture} />
+            <TouchableOpacity activeOpacity={0.8} style={styles.cameraButton} onPress={() => this.camera.current.capture()} />
           </View>
         </View>
         <View style={styles.buttonWrapper}>
