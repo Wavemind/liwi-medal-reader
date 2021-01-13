@@ -96,15 +96,17 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       validationType = 'warning';
 
       // Error
-      if (value < currentNode.min_value_error || value > currentNode.max_value_error) {
-        if (value < currentNode.min_value_error && currentNode.min_value_error !== null) {
-          validationMessage = currentNode.min_message_error;
-        }
+      if (currentNode.min_value_error !== null || currentNode.max_value_error !== null) {
+        if (value < currentNode.min_value_error || value > currentNode.max_value_error) {
+          if (value < currentNode.min_value_error && currentNode.min_value_error !== null) {
+            validationMessage = currentNode.min_message_error;
+          }
 
-        if (value > currentNode.max_value_error && currentNode.max_value_error !== null) {
-          validationMessage = currentNode.max_message_error;
+          if (value > currentNode.max_value_error && currentNode.max_value_error !== null) {
+            validationMessage = currentNode.max_message_error;
+          }
+          validationType = 'error';
         }
-        validationType = 'error';
       }
     } else {
       validationMessage = null;

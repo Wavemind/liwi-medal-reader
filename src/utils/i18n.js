@@ -225,7 +225,7 @@ i18n
         },
         medical_case: {
           in_creation: 'Demographic',
-          conditions: 'Conditions',
+          conditions: 'Treatment Conditions',
           medicines: 'Medicines',
           medicines_formulation: 'Medicine Formulations',
           final_diagnoses: 'Diagnoses',

@@ -99,7 +99,7 @@ class LayoutTemplate extends React.Component<Props> {
       app: { isConnected, session },
     } = this.props;
 
-    if (session?.facility.architecture === 'client_server') {
+    if (session?.facility?.architecture === 'client_server') {
       if (!isConnected && wasConnected) {
         this.setState({ wasConnected: !wasConnected });
       } else if (isConnected && !wasConnected) {
