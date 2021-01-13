@@ -106,8 +106,8 @@ export default class ConsentCapture extends React.Component {
         androidCameraPermissionOptions={{
           title: t('patient_upsert:permission_title'),
           message: t('patient_upsert:permission_message'),
-          buttonPositive: t('patient_upsert:permission_buttonPositive'),
-          buttonNegative: t('patient_upsert:permission_buttonNegative'),
+          buttonPositive: t('patient_upsert:permission_button_positive'),
+          buttonNegative: t('patient_upsert:permission_button_negative'),
         }}
       >
         <View style={StyleSheet.absoluteFill}>
@@ -118,7 +118,7 @@ export default class ConsentCapture extends React.Component {
         </View>
 
         <View style={styles.iconWrapper}>
-          <TouchableOpacity style={[styles.flipButton]} onPress={(e) => this.takePicture(e)}>
+          <TouchableOpacity style={styles.flipButton} onPress={(e) => this.takePicture(e)}>
             <Icon name="dot-circle" style={styles.snapIcon} type="FontAwesome5" />
           </TouchableOpacity>
         </View>
