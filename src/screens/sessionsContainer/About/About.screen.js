@@ -36,13 +36,17 @@ const About = (props) => {
    * @private
    */
   const _renderAbout = () => {
-    const htmlContent = `
-      <h1>This HTML snippet is now rendered with native components !</h1>
-      <a href="#example3">Example3</a></br>
-      <a href="#example8">Example8</a>
-      <p id="example3">Example3</p></br></br></br></br></br></br></br></br></br></br></br></br>
-      <p id="example8">Example8</p>
-  `;
+    const htmlSource = {
+      html: `
+        <html lang="en">
+            <head>
+                <title>About page content</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>${body}</body>
+        </html>`,
+    };
+
     return (
       <View style={styles.flexColumn}>
         <View style={styles.content}>
@@ -50,7 +54,7 @@ const About = (props) => {
             ePOCT+: Tanzania
           </LiwiTitle2>
           <LiwiTitle4>Description</LiwiTitle4>
-          <WebView source={{ html: body }} style={{ marginTop: 20, backgroundColor: 'transparent', flex: 1 }} startInLoadingState renderLoading={() => <LiwiLoader />} />
+          <WebView source={htmlSource} style={styles.webview} startInLoadingState renderLoading={() => <LiwiLoader />} />
         </View>
         <View style={styles.footer}>
           <Button onPress={() => handlePress()} style={styles.button}>
