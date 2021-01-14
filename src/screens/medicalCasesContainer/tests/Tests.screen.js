@@ -83,7 +83,6 @@ export default class Tests extends React.Component {
   render() {
     const {
       app: { t, algorithm },
-      focus,
       navigation,
     } = this.props;
 
@@ -108,14 +107,10 @@ export default class Tests extends React.Component {
         >
           {[
             <View style={styles.pad} key="questions-test">
-              {focus === 'didFocus' || focus === 'willFocus' ? (
-                <React.Suspense fallback={<LiwiLoader />}>
-                  <Questions questions={questionsTests(algorithm)} />
-                </React.Suspense>
-              ) : (
-                <LiwiLoader />
-              )}
-              {algorithm.is_arm_control ? this.renderReset() : null}
+              <React.Suspense fallback={<LiwiLoader />}>
+                <Questions questions={questionsTests(algorithm)} />
+              </React.Suspense>
+              {algorithm.is_arm_control && this.renderReset()}
             </View>,
           ]}
         </Stepper>

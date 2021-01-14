@@ -129,10 +129,11 @@ class Stepper extends React.Component<Props, State> {
     this.setState({ status });
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps: Props, nextContext: *): * {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.initialPage !== this.state.page) {
       this.handleBottomStepper(nextProps.initialPage);
     }
+    return true
   }
 
   /**
