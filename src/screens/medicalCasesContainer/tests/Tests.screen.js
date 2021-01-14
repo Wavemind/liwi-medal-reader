@@ -99,7 +99,7 @@ export default class Tests extends React.Component {
           initialPage={0}
           showBottomStepper
           icons={[{ name: 'vial', type: 'FontAwesome5' }]}
-          steps={[t('medical_case:test')]}
+          steps={[t('medical_case:tests')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="DiagnosticsStrategy"

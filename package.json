@@ -62,6 +62,7 @@
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.5.6",
     "react-native-image-pan-zoom": "^2.1.12",
+    "react-native-image-resizer": "^1.4.2",
     "react-native-js-stepper": "^0.2.1",
     "react-native-keep-awake": "^4.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
