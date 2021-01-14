@@ -8,7 +8,6 @@ import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
-import { modalType } from '../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -41,14 +40,6 @@ export default class Home extends React.Component<Props, State> {
     }
     this.setState({ session, medicalCases });
   }
-
-  /**
-   * Open redux modal
-   */
-  aboutModal = () => {
-    const { updateModalFromRedux } = this.props;
-    updateModalFromRedux({}, modalType.about);
-  };
 
   render() {
     const {
@@ -135,7 +126,7 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => this.aboutModal()}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('About', { source: 'home' })}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/about.png')} />
                 <Text size-auto center style={styles.textButton}>

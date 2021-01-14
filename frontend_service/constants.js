@@ -114,7 +114,6 @@ export const categories = {
 
 // Type of Tool Tip
 export const modalType = {
-  about: 'about',
   algorithmVersion: 'algorithmVersion',
   consentFile: 'consentFile',
   description: 'description',

@@ -7,7 +7,6 @@ import * as NetInfo from '@react-native-community/netinfo';
 import { styles } from './Synchronize.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
-import { modalType } from '../../../../frontend_service/constants';
 
 export default class Synchronize extends React.Component {
   state = {
@@ -16,9 +15,6 @@ export default class Synchronize extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const { updateModalFromRedux } = props;
-    updateModalFromRedux({}, modalType.about);
   }
 
   /**
@@ -34,10 +30,8 @@ export default class Synchronize extends React.Component {
     if (result !== null) {
       const database = await new Database();
       await app.set('database', database);
-      navigation.navigate('UnlockSession');
+      navigation.navigate('About', { source: 'synchronize' });
     }
-
-    this.setState({ loading: false });
   };
 
   render() {
