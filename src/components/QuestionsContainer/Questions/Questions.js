@@ -4,7 +4,7 @@ import * as React from 'react';
 import { TouchableOpacity, VirtualizedList, SafeAreaView } from 'react-native';
 import { Icon, Text, View } from 'native-base';
 import QuestionFactory from '../QuestionFactory';
-import {categories, displayFormats, modalType} from '../../../../frontend_service/constants';
+import { displayFormats, modalType} from '../../../../frontend_service/constants';
 import Autocomplete from '../DisplaysContainer/Autocomplete';
 import { styles } from '../QuestionFactory/Question.factory.style';
 import { ViewQuestion } from '../../../template/layout';
@@ -62,11 +62,14 @@ export default class Questions extends React.Component {
     const {
       questions,
       source,
-      app: { t },
+      app: {
+        t,
+        algorithm: { nodes },
+      },
     } = this.props;
 
-    // Avoid to show an empty screen when there is only Background calculation in the questions screen in production mode
-    const questionList = __DEV__ ? questions : questions.filter((question) => question.category !== categories.backgroundCalculation);
+    // Avoid to show an empty screen when there is only Formulas in the questions screen in production mode
+    const questionList = __DEV__ ? questions : questions.filter((question) => nodes[question.id].display_format !== displayFormats.formula);
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
