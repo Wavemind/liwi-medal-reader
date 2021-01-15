@@ -90,6 +90,8 @@ i18n
           admin: 'Administration',
           ml: 'ml',
           of: 'of',
+          tablets: 'tablets',
+          capsules: 'capsules',
           no_formulation: ' No formulation selected',
           missing_medicine_formulation: 'Please select a medicine formulation',
           no_options: 'No compatible option for this weight',
