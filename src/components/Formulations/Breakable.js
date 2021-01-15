@@ -10,7 +10,6 @@ export default function Breakable(drug, node, drugDose) {
   //  12 hours for 5 days = recurrence for instance in diagnoses .duration
   let num = null;
   let fractionString = ' ';
-
   if (drugDose.doseResult !== null) {
     const unit = drugDose.doseResult / drugDose.breakable;
     num = Math.floor(unit);
@@ -37,7 +36,7 @@ export default function Breakable(drug, node, drugDose) {
       <LiwiTitle5>{node.label}</LiwiTitle5>
       <Text size-auto>{i18n.t(`medication_form:${node.formulations[drug.formulationSelected].medication_form}`)}</Text>
       {drugDose.by_age ? (
-        <Text size-auto>{`${drugDose.unique_dose}mg ${i18n.t('medication_form:per_administration')} ${i18n.t('drug:during')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
+        <Text size-auto>{`${parseInt(drugDose.unique_dose)} ${i18n.t('drug:tablets')} ${i18n.t('medication_form:per_administration')} ${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${i18n.t('drug:during')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text size-auto>{drugDose.no_possibility}</Text>
       ) : (

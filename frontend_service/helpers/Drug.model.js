@@ -33,10 +33,10 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
     return { doseResult: null };
   }
 
+  recurrence = 24 / formulation.doses_per_day;
+
   // Age and weight must be answered to calculate dosage
   if ((mcWeight !== undefined && mcWeight.value !== null) && !formulation.by_age) {
-    recurrence = 24 / formulation.doses_per_day;
-
     switch (formulation.medication_form) {
       case medicationForms.syrup:
       case medicationForms.suspension:
@@ -103,6 +103,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
         } else {
           // Out of possibility
           return {
+            ...formulation,
             no_possibility: i18n.t('drug:no_options'),
             doseResult: null,
           };
@@ -121,7 +122,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
         break;
     }
   }
-  return { doseResult: null, ...formulation };
+  return { doseResult: null, recurrence, ...formulation };
 };
 
 /**
