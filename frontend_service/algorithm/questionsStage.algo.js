@@ -220,6 +220,11 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
         operator: 'equal',
         value: categories.backgroundCalculation,
       },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.backgroundCalculation,
+      },
     ],
     'OR',
     'array',
