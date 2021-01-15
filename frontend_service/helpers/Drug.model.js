@@ -103,6 +103,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
         } else {
           // Out of possibility
           return {
+            ...formulation,
             no_possibility: i18n.t('drug:no_options'),
             doseResult: null,
           };

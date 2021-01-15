@@ -39,18 +39,24 @@ export default class MedicinesFormulations extends Component {
     switch (formulation.medication_form) {
       case medicationForms.tablet:
       case medicationForms.capsule: {
-        return `${parseInt(formulation.dose_form)}mg ${formulation.medication_form}: ${formulation.doseResult !== null ? `${formulation.doseResult}mg` : t('drug:no_options')}`;
+        if (formulation.by_age) {
+          return `${formulation.description}: ${parseInt(formulation.unique_dose)} ${t('drug:tablets')}`;
+        }
+        return `${parseInt(formulation.dose_form)}mg ${formulation.medication_form}: ${formulation.doseResult !== null ? `${formulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')}`;
       }
       case medicationForms.syrup:
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
       case medicationForms.solution: {
+        if (formulation.by_age) {
+          return `${formulation.description}: ${parseInt(formulation.unique_dose)}ml`;
+        }
         return `${parseInt(formulation.liquid_concentration)}/${parseInt(formulation.dose_form)}mg ${formulation.medication_form}: ${formulation.doseResult}ml ${t(
           'medication_form:per_administration'
         )}`;
       }
       default: {
-        return '';
+        return t('drug:medication_form_not_exist');
       }
     }
   };
