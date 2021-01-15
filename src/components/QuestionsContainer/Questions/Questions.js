@@ -69,7 +69,7 @@ export default class Questions extends React.Component {
     } = this.props;
 
     // Avoid to show an empty screen when there is only Formulas in the questions screen in production mode
-    const questionList = !__DEV__ ? questions : questions.filter((question) => nodes[question.id].display_format !== displayFormats.formula);
+    const questionList = __DEV__ ? questions : questions.filter((question) => nodes[question.id].display_format !== displayFormats.formula);
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
