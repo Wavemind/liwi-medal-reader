@@ -31,27 +31,27 @@ export default class MedicinesFormulations extends Component {
    * @param formulation
    * @returns {string}
    */
-  formulationLabel = (formulation) => {
+  formulationLabel = (calculatedFormulation) => {
     const {
       app: { t },
     } = this.props;
 
-    switch (formulation.medication_form) {
+    switch (calculatedFormulation.medication_form) {
       case medicationForms.tablet:
       case medicationForms.capsule: {
-        if (formulation.by_age) {
-          return `${formulation.description}: ${parseInt(formulation.unique_dose)} ${t('drug:tablets')}`;
+        if (calculatedFormulation.by_age) {
+          return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t('drug:tablets')}`;
         }
-        return `${parseInt(formulation.dose_form)}mg ${formulation.medication_form}: ${formulation.doseResult !== null ? `${formulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')}`;
+        return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${calculatedFormulation.doseResult !== null ? `${calculatedFormulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')}`;
       }
       case medicationForms.syrup:
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
       case medicationForms.solution: {
-        if (formulation.by_age) {
-          return `${formulation.description}: ${parseInt(formulation.unique_dose)}ml`;
+        if (calculatedFormulation.by_age) {
+          return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)}ml`;
         }
-        return `${parseInt(formulation.liquid_concentration)}/${parseInt(formulation.dose_form)}mg ${formulation.medication_form}: ${formulation.doseResult}ml ${t(
+        return `${parseInt(calculatedFormulation.liquid_concentration)}/${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${calculatedFormulation.doseResult}ml ${t(
           'medication_form:per_administration'
         )}`;
       }
@@ -85,10 +85,10 @@ export default class MedicinesFormulations extends Component {
           <Picker note mode="dropdown" style={styles.pickerContent} selectedValue={selected} onValueChange={onSelect}>
             <Picker.Item label={t('application:select')} value={null} />
             {algorithm.nodes[instance.id]?.formulations.map((f, index) => {
-              const preCalculed = drugDoses(index, algorithm, instance.id);
+              const calculatedFormulation = drugDoses(index, algorithm, instance.id);
               let isPossible = true;
 
-              if (preCalculed.no_possibility !== undefined) {
+              if (calculatedFormulation.no_possibility !== undefined) {
                 isPossible = false;
               }
 
@@ -97,7 +97,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return <Picker.Item key={preCalculed} label={this.formulationLabel(preCalculed)} value={isPossible ? index : false} />;
+              return <Picker.Item key={calculatedFormulation} label={this.formulationLabel(calculatedFormulation)} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
