@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
-import { administrationRouteCategories } from '../../../../../frontend_service/constants';
+import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
 import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
@@ -23,6 +23,35 @@ export default class MedicinesFormulations extends Component {
           setFormulationSelected(null, value, 'additionalDrugs', drugId);
         }
       });
+    }
+  };
+
+  /**
+   * Formulation display
+   * @param formulation
+   * @returns {string}
+   */
+  formulationLabel = (formulation) => {
+    const {
+      app: { t },
+    } = this.props;
+
+    switch (formulation.medication_form) {
+      case medicationForms.tablet:
+      case medicationForms.capsule: {
+        return `${parseInt(formulation.dose_form)}mg ${formulation.medication_form}: ${formulation.doseResult !== null ? `${formulation.doseResult}mg` : t('drug:no_options')}`;
+      }
+      case medicationForms.syrup:
+      case medicationForms.suspension:
+      case medicationForms.powder_for_injection:
+      case medicationForms.solution: {
+        return `${parseInt(formulation.liquid_concentration)}/${parseInt(formulation.dose_form)}mg ${formulation.medication_form}: ${formulation.doseResult}ml ${t(
+          'medication_form:per_administration'
+        )}`;
+      }
+      default: {
+        return '';
+      }
     }
   };
 
@@ -51,11 +80,9 @@ export default class MedicinesFormulations extends Component {
             <Picker.Item label={t('application:select')} value={null} />
             {algorithm.nodes[instance.id]?.formulations.map((f, index) => {
               const preCalculed = drugDoses(index, algorithm, instance.id);
-              let string = f.description;
               let isPossible = true;
 
               if (preCalculed.no_possibility !== undefined) {
-                string = preCalculed.no_possibility;
                 isPossible = false;
               }
 
@@ -64,7 +91,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return <Picker.Item key={f} label={string} value={isPossible ? index : false} />;
+              return <Picker.Item key={preCalculed} label={this.formulationLabel(preCalculed)} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
@@ -92,6 +119,7 @@ export default class MedicinesFormulations extends Component {
           return (
             <>
               {this._renderFormulation(drugs[drugId], selected, onSelect)}
+              {selected !== null ? <Text>{currentDrug.formulations[drug.formulationSelected].description}</Text> : null}
               {selected !== null && administrationRouteCategories.includes(currentDrug.formulations[selected].administration_route_category) ? (
                 <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
               ) : null}
