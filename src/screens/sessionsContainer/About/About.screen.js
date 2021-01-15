@@ -15,6 +15,7 @@ const About = (props) => {
   const {
     t,
     algorithm: {
+      algorithm_emergency_content,
       study: {
         description: { body },
       },
@@ -43,7 +44,7 @@ const About = (props) => {
                 <title>About page content</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
-            <body>${body}</body>
+            <body>${algorithm_emergency_content}</body>
         </html>`,
     };
 
