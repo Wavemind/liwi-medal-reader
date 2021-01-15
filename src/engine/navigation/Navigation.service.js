@@ -131,9 +131,9 @@ async function onNavigationStateChange(prevState, currentState) {
     const state$ = store.getState();
 
     // This route can change the status of MC
-    if (currentRoute.params !== undefined && currentRoute?.params?.medicalCaseStatus !== undefined && state$.status !== currentRoute.params.medicalCaseStatus) {
+    if (currentRoute?.params !== undefined && currentRoute?.params?.medicalCaseStatus !== undefined && state$.status !== currentRoute?.params.medicalCaseStatus) {
       const currentStatus = _.find(medicalCaseStatus, (i) => i.name === state$.status);
-      const routeStatus = _.find(medicalCaseStatus, (i) => i.name === currentRoute.params.medicalCaseStatus);
+      const routeStatus = _.find(medicalCaseStatus, (i) => i.name === currentRoute?.params.medicalCaseStatus);
 
       // The status has to be changed !
       if (currentStatus?.index < routeStatus?.index) {

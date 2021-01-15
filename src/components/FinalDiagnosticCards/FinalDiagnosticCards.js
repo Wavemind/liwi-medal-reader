@@ -27,7 +27,6 @@ export default class FinalDiagnosticCards extends React.Component {
     const {
       app: { t, algorithm },
     } = this.props;
-
     const node = algorithm.nodes[drug.id];
     const drugDose = drugDoses(drug.formulationSelected, algorithm, drug.id);
 
