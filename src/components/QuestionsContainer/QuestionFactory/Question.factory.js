@@ -117,11 +117,6 @@ export default class Question extends React.Component {
     const { flexQuestion, flexToolTip, flexLabel, unavailableValue } = this.state;
     const currentNode = algorithm.nodes[question.id];
 
-    // If this is not a question we return null
-    if (currentNode.display_format === displayFormats.formula && !__DEV__) {
-      return null;
-    }
-
     // Unavailable for test
     const unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
 
