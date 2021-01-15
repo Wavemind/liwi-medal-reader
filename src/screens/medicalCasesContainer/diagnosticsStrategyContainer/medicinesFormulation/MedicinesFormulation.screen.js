@@ -28,7 +28,7 @@ export default class MedicinesFormulations extends Component {
 
   /**
    * Formulation display
-   * @param formulation
+   * @param calculatedFormulation
    * @returns {string}
    */
   formulationLabel = (calculatedFormulation) => {
@@ -42,7 +42,9 @@ export default class MedicinesFormulations extends Component {
         if (calculatedFormulation.by_age) {
           return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t('drug:tablets')}`;
         }
-        return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${calculatedFormulation.doseResult !== null ? `${calculatedFormulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')}`;
+        return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
+          calculatedFormulation.doseResult !== null ? `${calculatedFormulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')
+        }`;
       }
       case medicationForms.syrup:
       case medicationForms.suspension:
@@ -51,9 +53,9 @@ export default class MedicinesFormulations extends Component {
         if (calculatedFormulation.by_age) {
           return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)}ml`;
         }
-        return `${parseInt(calculatedFormulation.liquid_concentration)}/${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${calculatedFormulation.doseResult}ml ${t(
-          'medication_form:per_administration'
-        )}`;
+        return `${parseInt(calculatedFormulation.liquid_concentration)}/${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
+          calculatedFormulation.doseResult
+        }ml ${t('medication_form:per_administration')}`;
       }
       default: {
         return t('drug:medication_form_not_exist');
