@@ -29,14 +29,20 @@ export default class MedicinesFormulations extends Component {
   /**
    * Formulation display
    * @param calculatedFormulation
+   * @param drug
    * @returns {string}
    */
-  formulationLabel = (calculatedFormulation) => {
+  formulationLabel = (calculatedFormulation, drug) => {
     const {
       app: { t },
     } = this.props;
 
     switch (calculatedFormulation.medication_form) {
+      case medicationForms.spray:
+      case medicationForms.patch:
+      case medicationForms.inhaler: {
+        return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t(`drug:${calculatedFormulation.medication_form}`)}`;
+      }
       case medicationForms.tablet:
       case medicationForms.capsule: {
         if (calculatedFormulation.by_age) {
@@ -45,6 +51,12 @@ export default class MedicinesFormulations extends Component {
         return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
           calculatedFormulation.doseResult !== null ? `${calculatedFormulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')
         }`;
+      }
+      case medicationForms.cream:
+      case medicationForms.ointment:
+      case medicationForms.gel:
+      case medicationForms.drops: {
+        return `${drug.label}`;
       }
       case medicationForms.syrup:
       case medicationForms.suspension:
@@ -58,7 +70,7 @@ export default class MedicinesFormulations extends Component {
         }ml ${t('medication_form:per_administration')}`;
       }
       default: {
-        return t('drug:medication_form_not_exist');
+        return `(${calculatedFormulation.medication_form}) ${t('drug:medication_form_not_handled')}`;
       }
     }
   };
@@ -99,7 +111,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return <Picker.Item key={calculatedFormulation} label={this.formulationLabel(calculatedFormulation)} value={isPossible ? index : false} />;
+              return <Picker.Item key={calculatedFormulation} label={this.formulationLabel(calculatedFormulation, algorithm.nodes[instance.id])} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
