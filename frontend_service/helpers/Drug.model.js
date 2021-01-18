@@ -23,7 +23,6 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
   let maxDoseMg;
   let doseResult;
   let doseResultMg;
-  let recurrence;
   let pillSize;
 
   // Select formulation
@@ -33,7 +32,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
     return { doseResult: null };
   }
 
-  recurrence = 24 / formulation.doses_per_day;
+  const recurrence = 24 / formulation.doses_per_day;
 
   // Age and weight must be answered to calculate dosage
   if ((mcWeight !== undefined && mcWeight.value !== null) && !formulation.by_age) {
@@ -42,7 +41,6 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
       case medicationForms.solution:
-        // TODO: SI pas minimal_dose_per_kg -> prendre unique_dose
         minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
         maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
 

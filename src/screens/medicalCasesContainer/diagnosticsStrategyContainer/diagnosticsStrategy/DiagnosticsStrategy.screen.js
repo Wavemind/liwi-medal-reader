@@ -53,6 +53,16 @@ export default class DiagnosesStrategy extends Component {
       steps.splice(1, 1); // Health cares questions
       steps.splice(2, 1); // Medicines formulations
       steps.splice(3, 1); // Summary
+
+      if (!algorithm.config.track_referral) {
+        icons.splice(2, 1); // Referral
+        steps.splice(2, 1); // Referral
+      }
+    }
+
+    if (!algorithm.config.track_referral) {
+      icons.splice(4, 1); // Referral
+      steps.splice(4, 1); // Referral
     }
 
     this.state = {
@@ -129,15 +139,17 @@ export default class DiagnosesStrategy extends Component {
               </Suspense>
             </View>
           )}
-          <View style={styles.pad}>
-            <Suspense fallback={<LiwiLoader />}>
-              <Referral key="referral" selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 2 : 4} />
-            </Suspense>
-          </View>
+          {algorithm.config.track_referral ? (
+            <View style={styles.pad}>
+              <Suspense fallback={<LiwiLoader />}>
+                <Referral key="referral" selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 2 : 4} />
+              </Suspense>
+            </View>
+          ) : null}
           {algorithm.is_arm_control ? null : (
             <View style={styles.pad}>
               <Suspense fallback={<LiwiLoader />}>
-                <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={5} />
+                <HealthCares key="healthCares" selectedPage={selectedPage} pageIndex={algorithm.config.track_referral ? 5 : 4} />
               </Suspense>
             </View>
           )}
