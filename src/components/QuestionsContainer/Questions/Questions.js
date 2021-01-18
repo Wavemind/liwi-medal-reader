@@ -4,7 +4,7 @@ import * as React from 'react';
 import { TouchableOpacity, VirtualizedList, SafeAreaView } from 'react-native';
 import { Icon, Text, View } from 'native-base';
 import QuestionFactory from '../QuestionFactory';
-import { displayFormats, modalType} from '../../../../frontend_service/constants';
+import { displayFormats, modalType } from '../../../../frontend_service/constants';
 import Autocomplete from '../DisplaysContainer/Autocomplete';
 import { styles } from '../QuestionFactory/Question.factory.style';
 import { ViewQuestion } from '../../../template/layout';
