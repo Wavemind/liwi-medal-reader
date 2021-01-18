@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
-import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
+import { medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
 import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
@@ -29,15 +29,15 @@ export default class MedicinesFormulations extends Component {
   /**
    * Formulation display
    * @param calculatedFormulation
-   * @param drug
    * @returns {string}
    */
-  formulationLabel = (calculatedFormulation, drug) => {
+  formulationLabel = (calculatedFormulation) => {
     const {
       app: { t },
     } = this.props;
 
     switch (calculatedFormulation.medication_form) {
+      case medicationForms.pessary:
       case medicationForms.spray:
       case medicationForms.patch:
       case medicationForms.inhaler: {
@@ -56,7 +56,7 @@ export default class MedicinesFormulations extends Component {
       case medicationForms.ointment:
       case medicationForms.gel:
       case medicationForms.drops: {
-        return `${drug.label}`;
+        return `${calculatedFormulation.description}`;
       }
       case medicationForms.syrup:
       case medicationForms.suspension:
@@ -111,7 +111,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return <Picker.Item key={calculatedFormulation} label={this.formulationLabel(calculatedFormulation, algorithm.nodes[instance.id])} value={isPossible ? index : false} />;
+              return <Picker.Item key={calculatedFormulation} label={this.formulationLabel(calculatedFormulation)} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
@@ -140,9 +140,6 @@ export default class MedicinesFormulations extends Component {
             <>
               {this._renderFormulation(drugs[drugId], selected, onSelect)}
               {selected !== null ? <Text>{currentDrug.formulations[drug.formulationSelected].description}</Text> : null}
-              {selected !== null && administrationRouteCategories.includes(currentDrug.formulations[selected].administration_route_category) ? (
-                <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
-              ) : null}
             </>
           );
         })}

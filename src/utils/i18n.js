@@ -95,6 +95,7 @@ i18n
           inhaler: 'inhalation(s)',
           patch: 'patch(es)',
           spray: 'spray(s)',
+          pessary: 'pessary(ies)',
           no_formulation: ' No formulation selected',
           missing_medicine_formulation: 'Please select a medicine formulation',
           no_options: 'No compatible option',
