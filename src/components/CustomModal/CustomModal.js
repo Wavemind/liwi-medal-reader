@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { Dimensions, Image, Modal, ScrollView, Linking } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
-
 import ImageZoom from 'react-native-image-pan-zoom';
 import { routeDependingStatus, modalType } from '../../../frontend_service/constants';
 
@@ -11,6 +10,7 @@ import NavigationService from '../../engine/navigation/Navigation.service';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { LiwiTitle4, LiwiTitle5 } from '../../template/layout';
 import Media from '../Media/Media';
+import WebviewComponent from '../WebviewComponent';
 
 export default class CustomModal extends React.Component {
   static defaultProps = {
@@ -185,14 +185,14 @@ export default class CustomModal extends React.Component {
    */
   _renderEmergency = () => {
     const {
-      app: { t },
+      app: {
+        algorithm: { algorithm_emergency_content },
+      },
     } = this.props;
 
     return (
       <View>
-        <LiwiTitle5>{t('emergency:title')}</LiwiTitle5>
-        <Text style={styles.description}>{t('emergency:description')}</Text>
-        <Image style={styles.image} resizeMode="cover" source={require('../../../assets/images/emergency.jpg')} />
+        <WebviewComponent htmlSource={algorithm_emergency_content} customStyle={styles.webview} />
       </View>
     );
   };

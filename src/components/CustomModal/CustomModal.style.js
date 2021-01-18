@@ -99,4 +99,6 @@ export const styles = StyleSheet.create({
   },
 
   image: { width: screenWidth * 0.8, height: screenWidth },
+
+  webview: { marginTop: 20, backgroundColor: 'transparent', width: screenWidth * 0.8, height: screenWidth },
 });
