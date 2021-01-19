@@ -65,7 +65,7 @@ export default class MedicinesFormulations extends Component {
         if (calculatedFormulation.by_age) {
           return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)}ml`;
         }
-        return `${parseInt(calculatedFormulation.liquid_concentration)}/${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
+        return `${parseInt(calculatedFormulation.liquid_concentration)}mg/${parseInt(calculatedFormulation.dose_form)}ml ${calculatedFormulation.medication_form}: ${
           calculatedFormulation.doseResult
         }ml ${t('medication_form:per_administration')}`;
       }
