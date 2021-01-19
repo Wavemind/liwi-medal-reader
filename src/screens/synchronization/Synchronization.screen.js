@@ -32,7 +32,6 @@ export default class Synchronization extends React.Component<Props, State> {
 
   async componentDidMount() {
     const {
-      medicalCase: reduxMedicalCase,
       app: { database, algorithm },
     } = this.props;
 
@@ -45,11 +44,7 @@ export default class Synchronization extends React.Component<Props, State> {
     // Retrieve all medical cases need to be synchronized
     medicalCases.forEach((medicalCase) => {
       if (medicalCase.canBeSynchronized(algorithm)) {
-        if (reduxMedicalCase.id === medicalCase.id) {
-          medicalCasesToSynch.push(reduxMedicalCase);
-        } else {
-          medicalCasesToSynch.push(medicalCase);
-        }
+        medicalCasesToSynch.push(medicalCase);
       }
     });
 
@@ -93,7 +88,8 @@ export default class Synchronization extends React.Component<Props, State> {
 
       // Generate files
       medicalCasesToSynch.map(async (medicalCase) => {
-        await writeFile(`${folder}/${medicalCase.id}.json`, medicalCase.json);
+        const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), activities: medicalCase.activities });
+        await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson);
       });
 
       // Generate archive
