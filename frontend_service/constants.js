@@ -10,8 +10,9 @@ export const host = async () => {
     case 'staging':
       return 'https://liwi.wavelab.top/api/v1/';
     case 'test':
-    default:
       return 'https://liwi-test.wavelab.top/api/v1/';
+    default:
+      return __DEV__ ? 'https://liwi-test.wavelab.top/api/v1/' : 'https://medalc.unisante.ch/api/v1/';
   }
 };
 
