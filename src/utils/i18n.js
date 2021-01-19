@@ -458,6 +458,8 @@ i18n
           disconnect: 'Disconnect',
           consultation: 'Consultation',
           patient_data: 'Patient',
+          continue: 'Continue',
+          page_content: 'Page content',
         },
         filters: {
           title: 'Filters',
@@ -593,6 +595,7 @@ i18n
           disconnect: 'Déconnecter',
           consultation: 'Consultation',
           patient_data: 'Données patient',
+          continue: 'Continuer',
         },
       },
     },
