@@ -100,7 +100,7 @@ export const finalDiagnosticCalculateCondition = (algorithm, medicalCase, mcFina
   // Generate only the top_condition with conditionValue to true => they are not disabled
   currentFinalDiagnostic.top_conditions.forEach((condition) => {
     const findDDinNode = medicalCase.nodes[condition.first_node_id].dd.find((d) => d.id === currentFinalDiagnostic.diagnostic_id);
-    if (findDDinNode.conditionValue === true) {
+    if (findDDinNode.conditionValue) {
       conditionValueTrue.push(condition);
     }
   });
