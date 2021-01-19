@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
-import { administrationRouteCategories, medicationForms } from '../../../../../frontend_service/constants';
+import { medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
 import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
@@ -37,6 +37,12 @@ export default class MedicinesFormulations extends Component {
     } = this.props;
 
     switch (calculatedFormulation.medication_form) {
+      case medicationForms.pessary:
+      case medicationForms.spray:
+      case medicationForms.patch:
+      case medicationForms.inhaler: {
+        return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t(`drug:${calculatedFormulation.medication_form}`)}`;
+      }
       case medicationForms.tablet:
       case medicationForms.capsule: {
         if (calculatedFormulation.by_age) {
@@ -46,6 +52,12 @@ export default class MedicinesFormulations extends Component {
           calculatedFormulation.doseResult !== null ? `${calculatedFormulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')
         }`;
       }
+      case medicationForms.cream:
+      case medicationForms.ointment:
+      case medicationForms.gel:
+      case medicationForms.drops: {
+        return `${calculatedFormulation.description}`;
+      }
       case medicationForms.syrup:
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
@@ -53,12 +65,12 @@ export default class MedicinesFormulations extends Component {
         if (calculatedFormulation.by_age) {
           return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)}ml`;
         }
-        return `${parseInt(calculatedFormulation.liquid_concentration)}/${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
+        return `${parseInt(calculatedFormulation.liquid_concentration)}mg/${parseInt(calculatedFormulation.dose_form)}ml ${calculatedFormulation.medication_form}: ${
           calculatedFormulation.doseResult
         }ml ${t('medication_form:per_administration')}`;
       }
       default: {
-        return t('drug:medication_form_not_exist');
+        return `(${calculatedFormulation.medication_form}) ${t('drug:medication_form_not_handled')}`;
       }
     }
   };
@@ -128,9 +140,6 @@ export default class MedicinesFormulations extends Component {
             <>
               {this._renderFormulation(drugs[drugId], selected, onSelect)}
               {selected !== null ? <Text>{currentDrug.formulations[drug.formulationSelected].description}</Text> : null}
-              {selected !== null && administrationRouteCategories.includes(currentDrug.formulations[selected].administration_route_category) ? (
-                <Text key={`text_${drugId}`}>{currentDrug.formulations[drug.formulationSelected].injection_instructions}</Text>
-              ) : null}
             </>
           );
         })}

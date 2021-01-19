@@ -4,6 +4,7 @@ import { Text } from 'native-base';
 import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
 import { styles } from './styles';
+import { administrationRouteCategories } from '../../../frontend_service/constants';
 
 export default function Default(drug, node, drugDose) {
   let every = '';
@@ -28,6 +29,7 @@ export default function Default(drug, node, drugDose) {
       <Text size-auto style={styles.description}>
         {node.formulations[drug.formulationSelected].dispensing_description}
       </Text>
+      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{drugDose.injection_instructions}</Text> : null}
     </>
   );
 }
