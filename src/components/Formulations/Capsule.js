@@ -4,6 +4,7 @@ import { Text } from 'native-base';
 import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
 import { styles } from './styles';
+import { administrationRouteCategories } from '../../../frontend_service/constants';
 
 export default function Capsule(drug, node, drugDose) {
   return (
@@ -26,6 +27,7 @@ export default function Capsule(drug, node, drugDose) {
           </Text>
         </>
       )}
+      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{drugDose.injection_instructions}</Text> : null}
     </>
   );
 }
