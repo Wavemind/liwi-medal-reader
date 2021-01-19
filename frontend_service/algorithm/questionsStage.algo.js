@@ -172,6 +172,11 @@ export const questionsMedicalHistory = (algorithm, answeredQuestionId) => {
         operator: 'equal',
         value: categories.vaccine,
       },
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.backgroundCalculation,
+      },
     ],
     'OR',
     'array',
@@ -210,6 +215,11 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
     medicalCase,
     algorithm,
     [
+      {
+        by: 'category',
+        operator: 'equal',
+        value: categories.backgroundCalculation,
+      },
       {
         by: 'category',
         operator: 'equal',

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View } from 'native-base';
+import { Button, Text, View } from 'native-base';
 
 import { styles } from './Tests.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -22,6 +22,38 @@ export default class Tests extends React.Component {
     this.state = {
       firstRender: true,
     };
+  }
+
+  /**
+   * Shows the button to reset the stage
+   * @returns {JSX.Element}
+   */
+  renderReset() {
+    const {
+      app: { t },
+    } = this.props;
+
+    return (
+      <View>
+        <Button block onPress={() => this.resetState()}>
+          <Text size-auto>{t('medical_case:reset_stage')}</Text>
+        </Button>
+      </View>
+    );
+  }
+
+  /**
+   * Loads the medical case from the database in order to reset all edits that are not saved
+   * @returns {Promise<void>}
+   */
+  async resetState() {
+    const {
+      setMedicalCase,
+      medicalCase,
+      app: { database },
+    } = this.props;
+    const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
+    await setMedicalCase({ ...newMedicalCase, patient: medicalCase.patient });
   }
 
   shouldComponentUpdate(nextProps) {
@@ -51,7 +83,6 @@ export default class Tests extends React.Component {
   render() {
     const {
       app: { t, algorithm },
-      focus,
       navigation,
     } = this.props;
 
@@ -68,7 +99,7 @@ export default class Tests extends React.Component {
           initialPage={0}
           showBottomStepper
           icons={[{ name: 'vial', type: 'FontAwesome5' }]}
-          steps={[t('medical_case:test')]}
+          steps={[t('medical_case:tests')]}
           backButtonTitle={t('medical_case:back')}
           nextButtonTitle={t('medical_case:next')}
           nextStage="DiagnosticsStrategy"
@@ -76,13 +107,10 @@ export default class Tests extends React.Component {
         >
           {[
             <View style={styles.pad} key="questions-test">
-              {focus === 'didFocus' || focus === 'willFocus' ? (
-                <React.Suspense fallback={<LiwiLoader />}>
-                  <Questions questions={questionsTests(algorithm)} />
-                </React.Suspense>
-              ) : (
-                <LiwiLoader />
-              )}
+              <React.Suspense fallback={<LiwiLoader />}>
+                <Questions questions={questionsTests(algorithm)} />
+              </React.Suspense>
+              {algorithm.is_arm_control && this.renderReset()}
             </View>,
           ]}
         </Stepper>

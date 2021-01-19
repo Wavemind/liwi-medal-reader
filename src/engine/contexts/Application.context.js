@@ -162,7 +162,7 @@ export class ApplicationProvider extends React.Component {
       this.setState({ filtersPatient: {}, filtersMedicalCase: {}, algorithm: newAlgorithm });
     }
 
-    if (facility.architecture === 'standalone') {
+    if (facility?.architecture === 'standalone') {
       await setItem('isConnected', false);
     }
 
@@ -308,7 +308,7 @@ export class ApplicationProvider extends React.Component {
     let serverURL = '';
     let isStandalone = false;
 
-    if (session !== null) {
+    if (session !== null && session.facility !== null) {
       isStandalone = session.facility.architecture === 'standalone';
       if (!isStandalone) {
         serverURL = session.facility.local_data_ip;
