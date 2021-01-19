@@ -1,6 +1,7 @@
 import React from 'react';
 import { WebView } from 'react-native-webview';
 import LiwiLoader from '../../utils/LiwiLoader';
+import i18n from '../../utils/i18n';
 
 const WebviewComponent = (props) => {
   const { htmlSource, customStyle } = props;
@@ -9,7 +10,7 @@ const WebviewComponent = (props) => {
     html: `
         <html lang="en">
             <head>
-                <title>About page content</title>
+                <title>${i18n.t('common:page_content')}</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
             <body>${htmlSource}</body>

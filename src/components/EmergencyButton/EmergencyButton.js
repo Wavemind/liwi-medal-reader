@@ -17,13 +17,17 @@ export default class EmergencyButton extends Component {
   };
 
   render() {
+    const {
+      app: { algorithm },
+    } = this.props;
+
     const { active } = this.state;
-    return (
+    return algorithm ? (
       <View>
         <Fab active={active} direction="up" style={styles.button} position="bottomLeft" onPress={this.openModal}>
           <Icon name="warning" type="FontAwesome" style={styles.icon} />
         </Fab>
       </View>
-    );
+    ) : null;
   }
 }

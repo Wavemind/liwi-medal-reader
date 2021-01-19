@@ -13,9 +13,7 @@ const About = (props) => {
   const {
     t,
     algorithm: {
-      study: {
-        description: { body },
-      },
+      study: { description },
     },
   } = app;
 
@@ -35,7 +33,7 @@ const About = (props) => {
           ePOCT+: Tanzania
         </LiwiTitle2>
         <LiwiTitle4>Description</LiwiTitle4>
-        <WebviewComponent htmlSource={body} customStyle={styles.webview} />
+        <WebviewComponent htmlSource={description} customStyle={styles.webview} />
       </View>
       <View style={styles.footer}>
         <Button onPress={() => handlePress()} style={styles.button}>

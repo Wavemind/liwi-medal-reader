@@ -459,6 +459,7 @@ i18n
           consultation: 'Consultation',
           patient_data: 'Patient',
           continue: 'Continue',
+          page_content: 'Page content',
         },
         filters: {
           title: 'Filters',

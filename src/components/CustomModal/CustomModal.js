@@ -186,13 +186,13 @@ export default class CustomModal extends React.Component {
   _renderEmergency = () => {
     const {
       app: {
-        algorithm: { algorithm_emergency_content },
+        algorithm: { emergency_content },
       },
     } = this.props;
 
     return (
       <View>
-        <WebviewComponent htmlSource={algorithm_emergency_content} customStyle={styles.webview} />
+        <WebviewComponent htmlSource={emergency_content} customStyle={styles.webview} />
       </View>
     );
   };
