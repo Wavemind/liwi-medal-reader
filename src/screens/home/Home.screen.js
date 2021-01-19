@@ -41,13 +41,28 @@ export default class Home extends React.Component<Props, State> {
     this.setState({ session, medicalCases });
   }
 
+  /**
+   * Check if there is medical case to synchronize with medAL-data
+   * @returns {Promise<boolean>}
+   */
+  shouldDisplaySynchronizeButton = async () => {
+    const {
+      app: { database },
+    } = this.props;
+    const { session } = this.state;
+
+    const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
+
+    return session?.facility.architecture === 'standalone' || (session?.facility.architecture === 'client_server' && realmMedicalCases.length > 0);
+  };
+
   render() {
     const {
       navigation,
       app: { t, user, logout, algorithm },
     } = this.props;
 
-    const { session, medicalCases } = this.state;
+    const { medicalCases } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen">
@@ -136,7 +151,7 @@ export default class Home extends React.Component<Props, State> {
             </TouchableOpacity>
           </View>
 
-          {session?.facility.architecture === 'standalone' ? (
+          {this.shouldDisplaySynchronizeButton() ? (
             <View w50>
               <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
                 <View style={styles.blocContainer}>
