@@ -49,9 +49,9 @@ export default class UnLockSession extends React.Component {
 
     if (session.facility.pin_code === pinCode) {
       const netInfoConnection = await NetInfo.fetch();
-      const { isConnected } = netInfoConnection;
+      const { isInternetReachable } = netInfoConnection;
 
-      if (isConnected) {
+      if (isInternetReachable) {
         await app.setInitialData();
       } else {
         const algorithm = await getItem('algorithm');
