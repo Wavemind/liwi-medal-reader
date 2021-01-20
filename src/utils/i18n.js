@@ -452,12 +452,15 @@ i18n
           step_invalid: 'Step not valid. Please complete all of the mandatory fields',
           about: 'About',
           consent_list: "Facility's consent files",
+          qr_reader: 'Scanner',
         },
         common: {
           back: 'Back',
           disconnect: 'Disconnect',
           consultation: 'Consultation',
           patient_data: 'Patient',
+          continue: 'Continue',
+          page_content: 'Page content',
         },
         filters: {
           title: 'Filters',
@@ -593,6 +596,7 @@ i18n
           disconnect: 'Déconnecter',
           consultation: 'Consultation',
           patient_data: 'Données patient',
+          continue: 'Continuer',
         },
       },
     },

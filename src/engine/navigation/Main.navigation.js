@@ -12,6 +12,7 @@ import PatientEdit from '../../screens/patientsContainer/patientEdit';
 import PatientUpsert from '../../screens/patientsContainer/patientUpsert';
 import PatientProfile from '../../screens/patientsContainer/patientProfile';
 import Filters from '../../screens/filters';
+import About from '../../screens/sessionsContainer/About';
 import Synchronization from '../../screens/synchronization';
 import PatientList from '../../screens/patientsContainer/patientList';
 import Settings from '../../screens/settings';
@@ -100,7 +101,7 @@ const Stack = createStackNavigator(
       params: {},
       navigationOptions: ({ navigation }) => {
         return {
-          title: navigation.getParam('title'),
+          title: i18n.t('navigation:qr_reader'),
         };
       },
     },
@@ -189,6 +190,16 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:settings'),
+        };
+      },
+    },
+    About: {
+      screen: About,
+      path: 'about',
+      params: {},
+      navigationOptions: () => {
+        return {
+          title: i18n.t('navigation:about'),
         };
       },
     },

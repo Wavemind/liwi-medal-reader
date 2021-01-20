@@ -8,7 +8,6 @@ import { styles } from './Home.style';
 import { getItems } from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
-import { modalType } from '../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -43,11 +42,18 @@ export default class Home extends React.Component<Props, State> {
   }
 
   /**
-   * Open redux modal
+   * Check if there is medical case to synchronize with medAL-data
+   * @returns {Promise<boolean>}
    */
-  aboutModal = () => {
-    const { updateModalFromRedux } = this.props;
-    updateModalFromRedux({}, modalType.about);
+  shouldDisplaySynchronizeButton = async () => {
+    const {
+      app: { database },
+    } = this.props;
+    const { session } = this.state;
+
+    const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
+
+    return session?.facility.architecture === 'standalone' || (session?.facility.architecture === 'client_server' && realmMedicalCases.length > 0);
   };
 
   render() {
@@ -56,7 +62,7 @@ export default class Home extends React.Component<Props, State> {
       app: { t, user, logout, algorithm },
     } = this.props;
 
-    const { session, medicalCases } = this.state;
+    const { medicalCases } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen">
@@ -135,7 +141,7 @@ export default class Home extends React.Component<Props, State> {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => this.aboutModal()}>
+            <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('About', { source: 'home' })}>
               <View style={styles.blocContainer}>
                 <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/about.png')} />
                 <Text size-auto center style={styles.textButton}>
@@ -145,7 +151,7 @@ export default class Home extends React.Component<Props, State> {
             </TouchableOpacity>
           </View>
 
-          {session?.facility.architecture === 'standalone' ? (
+          {this.shouldDisplaySynchronizeButton() ? (
             <View w50>
               <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('Synchronization')}>
                 <View style={styles.blocContainer}>
