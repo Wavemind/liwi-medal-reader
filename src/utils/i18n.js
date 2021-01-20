@@ -452,6 +452,7 @@ i18n
           step_invalid: 'Step not valid. Please complete all of the mandatory fields',
           about: 'About',
           consent_list: "Facility's consent files",
+          qr_reader: 'Scanner',
         },
         common: {
           back: 'Back',

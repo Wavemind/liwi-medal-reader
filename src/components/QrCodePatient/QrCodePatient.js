@@ -3,7 +3,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 
 import { styles } from './QrCodePatient.style';
@@ -11,11 +10,7 @@ import { getItem } from '../../engine/api/LocalStorage';
 import { liwiColors } from '../../utils/constants';
 import { displayNotification } from '../../utils/CustomToast';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class QrCodePatient extends React.Component<Props, State> {
+export default class QrCodePatient extends React.Component {
   state = {
     generateNewQR: false,
     otherQR: null,
@@ -37,7 +32,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
     if ('uid' in json && 'study_id' in json && 'group_id' in json) {
       const session = await getItem('session');
 
-      const sameFacility = session?.facility?.id === json.group_id;
+      const sameFacility = session?.facility?.id === parseInt(json.group_id);
 
       const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'other_uid');
 
@@ -83,7 +78,7 @@ export default class QrCodePatient extends React.Component<Props, State> {
           {generateNewQR ? t('qrcode:new') : t('qrcode:scan')}
         </Text>
         <View style={styles.content}>
-          <QRCodeScanner onRead={this.onSuccess} showMarker reactivate reactivateTimeout={2000} cameraStyle={styles.camera} containerStyle={styles.content} markerStyle={styles.marker} />
+          <QRCodeScanner vibrate onRead={this.onSuccess} showMarker reactivate reactivateTimeout={2000} cameraStyle={styles.camera} containerStyle={styles.content} markerStyle={styles.marker} />
         </View>
       </>
     );

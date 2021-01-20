@@ -101,7 +101,7 @@ const Stack = createStackNavigator(
       params: {},
       navigationOptions: ({ navigation }) => {
         return {
-          title: navigation.getParam('title'),
+          title: i18n.t('navigation:qr_reader'),
         };
       },
     },
