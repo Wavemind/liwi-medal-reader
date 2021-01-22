@@ -4,7 +4,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { CheckBox, Icon, Text } from 'native-base';
 import _ from 'lodash';
 
-import { categories, displayFormats, modalType } from '../../../../frontend_service/constants';
+import { categories, modalType } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
@@ -117,24 +117,28 @@ export default class Question extends React.Component {
     const { flexQuestion, flexToolTip, flexLabel, unavailableValue } = this.state;
     const currentNode = algorithm.nodes[question.id];
 
-    // Unavailable for test
+    // Unavailable for consultations
     const unavailableAnswer = _.find(currentNode.answers, (a) => a.value === 'not_available');
 
     // Unavailable for vital sign and basic measurements
     const displayUnavailable =
       (currentNode.unavailable && (currentNode.category === categories.basicMeasurement || currentNode.category === categories.vitalSignAnthropometric)) || question.unavailableValue;
+
     return (
       <View
         style={[
           styles.condensed,
           styles.flexColumn,
-          { backgroundColor: currentNode.is_danger_sign || currentNode?.emergency_status === 'referral' ? liwiColors.redLightColor : 'transparent', marginLeft: 0 },
+          {
+            backgroundColor: currentNode.is_danger_sign || currentNode?.emergency_status === 'referral' ? liwiColors.redLightColor : 'transparent',
+            marginLeft: 0,
+          },
         ]}
       >
         <View style={styles.flexRow}>
           <View flex={flexToolTip}>
             <TouchableOpacity style={styles.touchable} transparent onPress={this.openModal}>
-              <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+              <Icon type="AntDesign" name="info" style={styles.iconInfo}/>
             </TouchableOpacity>
           </View>
           <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
@@ -155,10 +159,20 @@ export default class Question extends React.Component {
           {unavailableAnswer !== undefined && !isReadOnly ? (
             <>
               <Text>{t('question:unavailable')} </Text>
-              <Unavailable question={question} unavailableAnswer={unavailableAnswer} />
+              <Unavailable question={question} unavailableAnswer={unavailableAnswer}/>
             </>
           ) : null}
-          {displayUnavailable && !isReadOnly ? <CheckBox style={styles.unavailableBox} onPress={this.handleUnavailable} color={liwiColors.redColor} checked={unavailableValue} /> : null}
+          {displayUnavailable && !isReadOnly ? (
+            <>
+              <Text>{currentNode.unavailable_label}</Text>
+              <CheckBox
+                style={styles.unavailableBox}
+                onPress={this.handleUnavailable}
+                color={liwiColors.redColor}
+                checked={unavailableValue}
+              />
+            </>
+          ): null}
         </View>
       </View>
     );
