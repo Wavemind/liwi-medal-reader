@@ -167,6 +167,8 @@ jest.mock('react-native-sound', () => {});
 jest.mock('react-native-lightbox', () => {});
 jest.mock('react-native-vector-icons/MaterialIcons', () => {});
 jest.mock('react-native-vector-icons', () => {});
+jest.mock('react-native-offline', () => {});
+jest.mock('react-native-webview', () => {});
 
 jest.mock(
   'rn-fetch-blob',
