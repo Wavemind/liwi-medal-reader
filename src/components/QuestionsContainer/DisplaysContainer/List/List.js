@@ -41,15 +41,25 @@ export default class List extends React.Component {
 
     const PickerItem = [];
     const { answers } = algorithm.nodes[question.id];
-
+    const unavailableAndOneAnswer = question.unavailableValue && Object.keys(answers).length === 1;
     Object.keys(answers).forEach((id) => (answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={answers[id].label} value={String(id)} />) : null));
+
+    if (unavailableAndOneAnswer) {
+      this.onValueChange(String(Object.keys(answers)[0]));
+    }
 
     return (
       <View answer>
-        <Picker mode="dropdown" style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange} enable={isReadOnly}>
-          <Picker.Item label="Select" value={null} />
-          {PickerItem}
-        </Picker>
+        {unavailableAndOneAnswer ? (
+          <Picker mode="dropdown" style={styles.picker} selectedValue={String(Object.keys(answers)[0])} enable={false}>
+            {PickerItem}
+          </Picker>
+        ) : (
+          <Picker mode="dropdown" style={styles.picker} selectedValue={String(question.answer)} onValueChange={this.onValueChange} enable={isReadOnly}>
+            <Picker.Item label="Select" value={null} />
+            {PickerItem}
+          </Picker>
+        )}
       </View>
     );
   }
