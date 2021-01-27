@@ -9,10 +9,27 @@ import { styles } from './PhysicalExam.style';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { questionsPhysicalExam } from '../../../frontend_service/algorithm/questionsStage.algo';
 import QuestionFactory from '../QuestionsContainer/QuestionFactory';
+import NavigationService from '../../engine/navigation/Navigation.service';
 
 export default class PhysicalExam extends React.Component {
   shouldComponentUpdate(nextProps) {
-    return nextProps.selectedPage === 1;
+    const {
+      app: { answeredQuestionId },
+      medicalCase,
+    } = this.props;
+
+    if (nextProps.app.answeredQuestionId === undefined || answeredQuestionId === undefined) {
+      return true;
+    }
+
+    const question = medicalCase.nodes[answeredQuestionId];
+    const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
+
+    return (
+      (nextProps.selectedPage === undefined || nextProps.selectedPage === 1) &&
+      NavigationService.getCurrentRoute().routeName === 'Consultation' &&
+      (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value)
+    );
   }
 
   render() {
