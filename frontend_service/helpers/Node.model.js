@@ -82,7 +82,7 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
   }
 
   // Validation for integer and float type based on medAL-creator config
-  if (currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) {
+  if ((currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) && !mcNode.unavailableValue) {
     if (value !== null && (value < currentNode.min_value_warning || value > currentNode.max_value_warning)) {
       // Warning
       if (value < currentNode.min_value_warning && currentNode.min_value_warning !== null) {
