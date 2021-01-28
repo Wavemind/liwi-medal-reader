@@ -18,12 +18,13 @@ import type { StateApplicationContext } from "../../engine/contexts/Application.
 import { ApplicationProvider, withApplication } from "../../engine/contexts/Application.context";
 import "jest-styled-components";
 import { NavigationScreenProps } from "react-navigation";
+import { LogBox } from 'react-native';
 
 type Props = NavigationScreenProps & {};
 
 type State = StateApplicationContext & {};
 
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs(true)
 
 export class JestWithContext extends React.Component<Props, State> {
   render() {
