@@ -5,7 +5,7 @@ import { mergeMap } from 'rxjs/operators';
 import moment from 'moment';
 import { EMPTY, of } from 'rxjs';
 import { actions } from '../actions/types.actions';
-import { displayFormats, nodeTypes } from '../constants';
+import { categories, displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
 import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
