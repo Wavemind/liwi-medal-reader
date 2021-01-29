@@ -21,7 +21,8 @@ export default class Boolean extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const { value } = this.state;
-    return nextState.value !== value;
+    const { question } = this.props;
+    return nextState.value !== value || question.answer !== nextProps.question.answer;
   }
 
   componentDidMount() {
@@ -169,7 +170,7 @@ export default class Boolean extends React.Component {
         paddingTop: 0,
         paddingBottom: 0,
       };
-
+      console.log(question)
       // Only one button for this type of node
       RenderJsx = () => (
         <Button key={index + category} onPress={() => this._handleClick(idOnPress)} style={concatStyle} light>

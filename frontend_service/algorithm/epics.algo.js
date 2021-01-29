@@ -231,14 +231,7 @@ export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
   // Inject update
   medicalCase.updated_at = moment().format();
 
-  // If it's birth date node, check eligibility age and update it in medical case
-  if (nodeId === algorithm.config.basic_questions.birth_date_question_id) {
-    const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
-    const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
-    const age_in_days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
-    medicalCase.isEligible = years < algorithm.config.age_limit;
-    medicalCase.isOldEnough = age_in_days >= algorithm.config.minimum_age;
-  }
+  updateCustomNodes(algorithm, medicalCase, nodeId);
 
   // For each related diagnoses we gonna check if we need to update their status
   relatedDiagnostics.forEach((diagnostic) => nodeAction(algorithm, medicalCase, mcNode.id, diagnostic.id, nodeTypes.diagnostic));
@@ -264,6 +257,73 @@ export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
           computeConditionValue(algorithm, medicalCase, diagnosticId, nodeId);
         }
       });
+    });
+  }
+};
+
+/**
+ * Sets the answer of a node and triggers the update of everything that is related
+ * @param algorithm : related algorithm
+ * @param medicalCase : related medical case
+ * @param nodeId : id of the node to update
+ * @param newValue : new volue of the node
+ */
+const setAnswer = (algorithm, medicalCase, nodeId, newValue) => {
+  if (medicalCase.nodes[nodeId].answer !== newValue) {
+    const {
+      answer,
+      answer_stage,
+      value,
+      validationMessage,
+      validationType,
+    } = nodeUpdateAnswer(newValue, algorithm, medicalCase.nodes[nodeId]);
+    medicalCase.nodes[nodeId] = {
+      ...medicalCase.nodes[nodeId],
+      answer,
+      answer_stage,
+      value,
+      validationMessage,
+      validationType,
+    };
+    processUpdatedNode(algorithm, medicalCase, nodeId);
+  }
+};
+
+/**
+ * Handles hardcoded behaviour when the medicalcase is edited
+ * @param algorithm : related algorithm
+ * @param medicalCase : related medical case
+ * @param nodeId : id of the node to update
+ */
+const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
+  // TODO : If we add more custom code (other that birthdate) put the code below in an other function
+
+  // If it's birth date node, check eligibility age and update it in medical case
+  if (nodeId === algorithm.config.basic_questions.birth_date_question_id) {
+    const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
+    const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
+    const age_in_days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
+    const orders =  algorithm.mobile_config.questions_orders[categories.complaintCategory];
+    const { general_cc_id, yi_cc_general } = algorithm.config.basic_questions;
+
+    medicalCase.isEligible = years < algorithm.config.age_limit;
+    medicalCase.isOldEnough = age_in_days >= algorithm.config.minimum_age;
+
+    if (age_in_days <= 60) {
+      setAnswer(algorithm, medicalCase, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[0]);
+      setAnswer(algorithm, medicalCase, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[1]);
+    } else {
+      setAnswer(algorithm, medicalCase, yi_cc_general, Object.keys(algorithm.nodes[yi_cc_general].answers)[1]);
+      setAnswer(algorithm, medicalCase, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]);
+    }
+
+    orders.forEach((order) => {
+      if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id &&
+        medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
+        if ((age_in_days <= 60 && !algorithm.nodes[order].is_neonat) || (age_in_days > 60 && algorithm.nodes[order].is_neonat)) {
+          setAnswer(algorithm, medicalCase, order, Object.keys(algorithm.nodes[order].answers)[1]);
+        }
+      }
     });
   }
 };

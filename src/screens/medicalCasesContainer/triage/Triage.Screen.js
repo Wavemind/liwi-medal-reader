@@ -66,11 +66,7 @@ export default class Triage extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      app: { algorithm },
-    } = this.props;
-
-    this.setState({ complaintCategories: questionsComplaintCategory(algorithm), firstRender: false });
+    this.setState({ firstRender: false });
   }
 
   render() {
@@ -79,8 +75,10 @@ export default class Triage extends React.Component {
       navigation,
     } = this.props;
 
-    const { complaintCategories, icons, steps } = this.state;
+    const { icons, steps } = this.state;
     const selectedPage = navigation.getParam('initialPage');
+
+    const complaintCategories = questionsComplaintCategory(algorithm);
 
     return (
       <Suspense fallback={<LiwiLoader />}>
@@ -114,7 +112,7 @@ export default class Triage extends React.Component {
               <Content>
                 <View flex-container-fluid>
                   {complaintCategories.map((question, i) => (
-                    <Boolean key={`${question.id}_chief_boolean`} question={question} index={i} />
+                    <Boolean key={`${question.id}_${question.answer}_chief_boolean`} question={question} index={i} />
                   ))}
                 </View>
               </Content>
