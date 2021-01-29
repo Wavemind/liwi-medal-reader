@@ -43,14 +43,13 @@ export default class Question extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const { question } = this.props;
-    const { unavailableValue } = this.state;
 
     return (
       question.counter !== nextProps.question.counter ||
       question.answer !== nextProps.question.answer ||
       question.value !== nextProps.question.value ||
       question.id !== nextProps.question.id ||
-      unavailableValue !== nextState.unavailableValue
+      question.unavailableValue !== nextProps.question.unavailableValue
     );
   }
 
@@ -92,18 +91,19 @@ export default class Question extends React.Component {
    */
   handleUnavailable = () => {
     const {
-      app: { algorithm },
+      app: { algorithm, set },
       setAnswer,
       setUnavailable,
       question,
     } = this.props;
     const { unavailableValue } = this.state;
 
+    set('answeredQuestionId', question.id);
+
     // Reset unavailable answer
-    if (question.unavailableValue) {
+    if (question.unavailableValue && question.answer !== null) {
       setAnswer(algorithm, question.id, null);
     }
-
     setUnavailable(algorithm, question.id, !unavailableValue);
     this.setState({ unavailableValue: !unavailableValue });
   };

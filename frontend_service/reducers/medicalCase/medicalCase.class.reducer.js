@@ -470,31 +470,6 @@ class MedicalCaseReducer extends ReducerClass {
   }
 
   /**
-   * Sets an question to unavailable
-   *
-   * @trigger When a checkbox is triggered
-   * @payload index : Question id
-   * @payload value : Answer id find in questions.answers
-   *
-   */
-  @Action(actions.SET_ANSWER_TO_UNAVAILABLE)
-  setAnswerUnavailable(state, action) {
-    const { nodeId, value } = action.payload;
-
-    return {
-      ...state,
-      nodes: {
-        ...state.nodes,
-        [nodeId]: {
-          ...state.nodes[nodeId],
-          answer: value,
-          value: null,
-        },
-      },
-    };
-  }
-
-  /**
    * Set unavailable value
    * @param state
    * @param action

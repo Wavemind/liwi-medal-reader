@@ -28,7 +28,7 @@ export default class MedicalHistory extends React.Component {
     return (
       (nextProps.selectedPage === undefined || nextProps.selectedPage === 0) &&
       NavigationService.getCurrentRoute().routeName === 'Consultation' &&
-      (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value)
+      (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value || question.unavailableValue !== nextQuestion.unavailableValue)
     );
   }
 

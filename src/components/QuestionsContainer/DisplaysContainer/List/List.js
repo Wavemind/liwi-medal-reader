@@ -23,13 +23,13 @@ export default class List extends React.Component {
       patientValueEdit,
     } = this.props;
 
+    set('answeredQuestionId', question.id);
+
     if (patientValueEdit) {
       setPatientValue(question.id, value);
     } else {
       setAnswer(algorithm, question.id, value);
     }
-
-    set('answeredQuestionId', question.id);
   };
 
   render() {
