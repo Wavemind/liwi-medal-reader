@@ -49,12 +49,24 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
             return parentNode.answer === condition.first_id;
           }
         });
+
+        // if (currentNode.id === 3487) {
+        //   console.log(i, parentNode.answer !== null, diagnostic.conditionValue, parentHasCorrectAnswer)
+        //   console.log(i, parentNode.answer !== null && diagnostic.conditionValue && parentHasCorrectAnswer)
+        // }
+
         return parentNode.answer !== null && diagnostic.conditionValue && parentHasCorrectAnswer;
       });
     }
 
     // Get node condition value
     const conditionValue = calculateCondition(algorithm, currentInstance, medicalCase);
+
+    // if (currentNode.id === 3487 && conditionValue && parentConditionValue) {
+    //   console.log("Je me met à TRUE FFS");
+    //   console.log(currentInstance)
+    // console.log(parentsNodes)
+  // }
 
     // If the condition of this node is not null
     if (parentConditionValue === false) {
@@ -163,9 +175,13 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
    *  false = can't access the end anymore
    */
   const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQuestionsSequence);
+
   // If ready we calculate condition of the QS
   if (statusQs) {
-    questionsSequenceCondition = questionSequenceCalculateCondition(algorithm, medicalCase, currentQuestionsSequence);
+    const qsInstances = currentQuestionsSequence.dd.concat(currentQuestionsSequence.qs);
+    const qsConditionValue = qsInstances.some((qsInstance) => qsInstance.conditionValue);
+
+    questionsSequenceCondition = qsConditionValue && questionSequenceCalculateCondition(algorithm, medicalCase, currentQuestionsSequence);
   }
 
   if (questionsSequenceCondition === true) {
@@ -175,6 +191,10 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
     // questionsSequenceCondition === false -> can't find a condition to true
     answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[1]].id;
   }
+
+  // if (questionsSequenceId === 1662) {
+  //   console.log('statusQs',statusQs, answerId)
+  // }
 
   // If the new answer of this QS is different from the older, we change it
   if (answerId !== medicalCase.nodes[currentQuestionsSequence.id].answer) {
@@ -303,7 +323,7 @@ const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
     const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
     const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
     const age_in_days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
-    const orders =  algorithm.mobile_config.questions_orders[categories.complaintCategory];
+    const orders = algorithm.mobile_config.questions_orders[categories.complaintCategory];
     const { general_cc_id, yi_cc_general } = algorithm.config.basic_questions;
 
     medicalCase.isEligible = years < algorithm.config.age_limit;

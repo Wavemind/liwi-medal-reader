@@ -105,12 +105,11 @@ export default class Question extends React.Component {
 
     set('answeredQuestionId', question.id);
 
-    // Reset unavailable answer
     if (question.unavailableValue && question.answer !== null) {
       setAnswer(algorithm, question.id, null);
     }
 
-    if (question.unavailableValue && unavailableAnswer !== undefined) {
+    if (!unavailableValue && unavailableAnswer !== undefined) {
       setAnswer(algorithm, question.id, unavailableAnswer.id);
     }
 
@@ -161,11 +160,7 @@ export default class Question extends React.Component {
             </Text>
           </ViewQuestion>
           {unavailableValue ? (
-            unavailableAnswer === undefined ? (
-              <View flex={flexQuestion}>
-                <List question={question} {...this.props} />
-              </View>
-            ) : null
+            <View flex={flexQuestion}>{unavailableAnswer === undefined ? <List question={question} {...this.props} /> : null}</View>
           ) : (
             <WrapperQuestion key={`${question.id}_answer`} question={question} flex={flexQuestion} {...this.props} />
           )}
