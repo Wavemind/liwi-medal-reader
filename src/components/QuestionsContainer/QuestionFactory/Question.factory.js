@@ -105,10 +105,12 @@ export default class Question extends React.Component {
 
     set('answeredQuestionId', question.id);
 
+    // Reset answer
     if (question.unavailableValue && question.answer !== null) {
       setAnswer(algorithm, question.id, null);
     }
 
+    // Set answer (not_available answer)
     if (!unavailableValue && unavailableAnswer !== undefined) {
       setAnswer(algorithm, question.id, unavailableAnswer.id);
     }
@@ -125,17 +127,6 @@ export default class Question extends React.Component {
     } = this.props;
     const { flexQuestion, flexToolTip, flexLabel, unavailableValue, unavailableAnswer } = this.state;
     const currentNode = algorithm.nodes[question.id];
-
-    // Unavailable for consultations
-
-    // console.log(unavailableAnswer)
-    // Unavailable for vital sign and basic measurements
-    // const displayUnavailable =
-    //   (currentNode.unavailable && (currentNode.category === categories.basicMeasurement || currentNode.category === categories.vitalSignAnthropometric)) || question.unavailableValue;
-
-    // Set unavailable value pour les answers
-    // Avoid les validations
-    // Ne plus afficher l'input
 
     return (
       <View
@@ -166,18 +157,6 @@ export default class Question extends React.Component {
           )}
         </View>
         <View style={styles.unavailable}>
-          {/* {unavailableAnswer !== undefined && !isReadOnly ? ( */}
-          {/*  <> */}
-          {/*    <Text>{t('question:unavailable')} </Text> */}
-          {/*    <Unavailable question={question} unavailableAnswer={unavailableAnswer} /> */}
-          {/*  </> */}
-          {/* ) : null} */}
-          {/* {displayUnavailable && !isReadOnly ? ( */}
-          {/*  <> */}
-          {/*    <Text>{currentNode.unavailable_label}</Text> */}
-          {/*    <CheckBox style={styles.unavailableBox} onPress={this.handleUnavailable} color={liwiColors.redColor} checked={unavailableValue} /> */}
-          {/*  </> */}
-          {/* ) : null} */}
           {currentNode.unavailable && !isReadOnly ? (
             <>
               <Text>{currentNode.unavailable_label !== '' ? currentNode.unavailable_label : unavailableAnswer.label}</Text>

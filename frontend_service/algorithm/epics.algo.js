@@ -50,23 +50,12 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
           }
         });
 
-        // if (currentNode.id === 3487) {
-        //   console.log(i, parentNode.answer !== null, diagnostic.conditionValue, parentHasCorrectAnswer)
-        //   console.log(i, parentNode.answer !== null && diagnostic.conditionValue && parentHasCorrectAnswer)
-        // }
-
         return parentNode.answer !== null && diagnostic.conditionValue && parentHasCorrectAnswer;
       });
     }
 
     // Get node condition value
     const conditionValue = calculateCondition(algorithm, currentInstance, medicalCase);
-
-    // if (currentNode.id === 3487 && conditionValue && parentConditionValue) {
-    //   console.log("Je me met à TRUE FFS");
-    //   console.log(currentInstance)
-    // console.log(parentsNodes)
-  // }
 
     // If the condition of this node is not null
     if (parentConditionValue === false) {
@@ -191,10 +180,6 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
     // questionsSequenceCondition === false -> can't find a condition to true
     answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[1]].id;
   }
-
-  // if (questionsSequenceId === 1662) {
-  //   console.log('statusQs',statusQs, answerId)
-  // }
 
   // If the new answer of this QS is different from the older, we change it
   if (answerId !== medicalCase.nodes[currentQuestionsSequence.id].answer) {
@@ -374,7 +359,7 @@ export const epicSetDiagnoses = (action$, state$) =>
         return of(setMedicalCase(medicalCase));
       }
       return EMPTY;
-    })
+    }),
   );
 
 export default combineEpics(epicSetDiagnoses);
