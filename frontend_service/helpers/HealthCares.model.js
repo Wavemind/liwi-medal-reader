@@ -17,7 +17,7 @@ export const healthCareIsExcluded = (medicalCase, algorithm, mcNode) => {
     .map((index) => {
       const finalDiagnostic = finalDiagnostics[index];
       return Object.keys(finalDiagnostic[mcNode.healthCareObject]).some((healthCareId) => {
-        return healthCare.excluded_nodes_ids.includes(parseInt(healthCareId)) && finalDiagnostic[mcNode.healthCareObject][healthCareId].agreed === true;
+        return healthCare.excluding_nodes_ids.includes(parseInt(healthCareId)) && finalDiagnostic[mcNode.healthCareObject][healthCareId].agreed === true;
       });
     })
     .some((healthCareValue) => healthCareValue);
