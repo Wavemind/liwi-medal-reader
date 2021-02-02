@@ -7,12 +7,17 @@ import { EMPTY, of } from 'rxjs';
 import { actions } from '../actions/types.actions';
 import { categories, displayFormats, nodeTypes } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
-import { getParentsNodes, getQuestionsSequenceStatus } from './treeDiagnosis.algo';
+import { getParentsNodes } from './treeDiagnosis.algo';
 import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
 import { calculateCondition } from './conditionsHelpers.algo';
 import { diagnosticIsExcludedByComplaintCategory } from '../helpers/Diagnostic.model';
 import { questionCalculateFormula, questionCalculateReference } from '../helpers/Question.model';
-import { questionSequenceCalculateCondition } from '../helpers/QuestionsSequenceModel';
+import {
+  questionSequenceCalculateCondition,
+  getQuestionsSequenceStatus,
+  processQSChildren,
+  recursiveNodeQs,
+} from '../helpers/QuestionsSequenceModel';
 import { nodeUpdateAnswer } from '../helpers/Node.model';
 
 /**
@@ -155,8 +160,18 @@ const nodeAction = (algorithm, medicalCase, nodeId, callerId, callerType) => {
  */
 const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) => {
   const currentQuestionsSequence = algorithm.nodes[questionsSequenceId];
+  const mcQuestionsSequence = medicalCase.nodes[questionsSequenceId];
   let answerId = null;
   let questionsSequenceCondition = null;
+
+  // Set top Level Nodes
+  Object.keys(currentQuestionsSequence.instances).forEach((nodeId) => {
+    if (currentQuestionsSequence.instances[nodeId].top_conditions.length === 0) {
+      // processQSChildren(algorithm, medicalCase, currentQuestionsSequence.instances[nodeId], mcQuestionsSequence, currentQuestionsSequence)
+      recursiveNodeQs(algorithm, medicalCase, currentQuestionsSequence.instances[nodeId], questionsSequenceId)
+    }
+  });
+
   /**
    *  Return the status of the QS
    *  true = can reach the end
@@ -164,6 +179,10 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
    *  false = can't access the end anymore
    */
   const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQuestionsSequence);
+
+  if (questionsSequenceId === 58) {
+    console.log(questionsSequenceId, statusQs)
+  }
 
   // If ready we calculate condition of the QS
   if (statusQs) {
