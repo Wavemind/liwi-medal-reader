@@ -175,7 +175,7 @@ export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
 
   //  Get the condition of the instance link
   let instanceCondition = qsConditionValue && calculateCondition(algorithm, instance, medicalCase);
-  // console.log(qsConditionValue, calculateCondition(algorithm, instance, medicalCase))
+
   if (instanceCondition === null) instanceCondition = false;
   // Update condition Value if the instance has to be shown
   if (instanceConditionValue === false && instanceCondition === true) {
