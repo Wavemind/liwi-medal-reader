@@ -3,11 +3,7 @@ import filter from 'lodash/filter';
 import find from 'lodash/find';
 import * as _ from 'lodash';
 
-import {
-  calculateCondition,
-  comparingTopConditions,
-  reduceConditionArrayBoolean,
-} from '../algorithm/conditionsHelpers.algo';
+import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean } from '../algorithm/conditionsHelpers.algo';
 import { categories, nodeTypes } from '../constants';
 import { updateConditionValue } from '../algorithm/epics.algo';
 import { questionBooleanValue } from './Question.model';
@@ -207,9 +203,7 @@ export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
 };
 
 /**
- * 1. Get all nodes without conditions
- * 2. On each node we do work on his children (like change condition value or check condition of the child)
- * 3. Update Recursive QS
+ * For each topLevel Node ( nodes with no conditions ) we are going to check if we can reach the end of the QS
  *
  * @params state$: All the state of the reducer
  * @params qs: The QS we want to get the status
@@ -221,7 +215,6 @@ export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
  *      false = can't access the end anymore
  */
 export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
-  const topLevelNodes = [];
   const currentNode = algorithm.nodes[mcQs.id];
 
   if (currentNode.conditioned_by_cc.length > 0) {
@@ -234,22 +227,23 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
     }
   }
 
-  // Set top Level Nodes
-  Object.keys(currentNode.instances).forEach((nodeId) => {
-    if (currentNode.instances[nodeId].top_conditions.length === 0) {
-      topLevelNodes.push(currentNode.instances[nodeId]);
-    }
-  });
-
   // Check if we can reach the end of questionSequences
-  const allNodesAnsweredInQs = topLevelNodes.map((instance) => {
+  const allNodesAnsweredInQs = getTopLevelNodes(currentNode).map((instance) => {
     return getQuestionsSequenceChildrenStatus(algorithm, medicalCase, instance, currentNode);
   });
-  if (mcQs.id === 58) {
-    console.log(allNodesAnsweredInQs)
-  }
 
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
+};
+
+/**
+ * Get the top level nodes of a QS
+ * @param node : Question Sequence
+ * @returns [Array] : array of top level nodes
+ */
+export const getTopLevelNodes = (node) => {
+  return Object.keys(node.instances)
+    .filter((nodeId) => node.instances[nodeId].top_conditions.length === 0)
+    .map((nodeId) => node.instances[nodeId]);
 };
 
 /**
@@ -262,9 +256,7 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
  */
 const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mcQs) => {
   const condition = calculateCondition(algorithm, instance, medicalCase);
-  if (mcQs.id === 58) {
-    console.log(instance.id, condition)
-  }
+
   if (condition === null) return null;
   if (condition === false) return false;
   if (instance.children.length > 0) {
@@ -272,11 +264,24 @@ const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mc
       instance.children.map((childId) => {
         if (childId !== mcQs.id) {
           return getQuestionsSequenceChildrenStatus(algorithm, medicalCase, mcQs.instances[childId], mcQs);
-        } else {
-          return true;
         }
+        return true;
       })
     );
   }
   return condition;
+};
+
+/**
+ * Gest the id of the answer of a QS based on the value in params
+ * @param qs: related QS
+ * @param value : Boolean value wanted
+ * @returns Id of the answer
+ */
+export const getQsAnswer = (qs, value) => {
+  if (value) {
+    return qs.answers[Object.keys(qs.answers)[0]].id;
+  } else {
+    return qs.answers[Object.keys(qs.answers)[1]].id;
+  }
 };

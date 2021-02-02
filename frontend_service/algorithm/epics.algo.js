@@ -12,12 +12,7 @@ import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
 import { calculateCondition } from './conditionsHelpers.algo';
 import { diagnosticIsExcludedByComplaintCategory } from '../helpers/Diagnostic.model';
 import { questionCalculateFormula, questionCalculateReference } from '../helpers/Question.model';
-import {
-  questionSequenceCalculateCondition,
-  getQuestionsSequenceStatus,
-  processQSChildren,
-  recursiveNodeQs,
-} from '../helpers/QuestionsSequenceModel';
+import { questionSequenceCalculateCondition, getQuestionsSequenceStatus, recursiveNodeQs, getQsAnswer, getTopLevelNodes } from '../helpers/QuestionsSequenceModel';
 import { nodeUpdateAnswer } from '../helpers/Node.model';
 
 /**
@@ -159,56 +154,50 @@ const nodeAction = (algorithm, medicalCase, nodeId, callerId, callerType) => {
  * @param { integer } questionsSequenceId - The id of Question sequence related
  */
 const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) => {
-  const currentQuestionsSequence = algorithm.nodes[questionsSequenceId];
-  const mcQuestionsSequence = medicalCase.nodes[questionsSequenceId];
-  let answerId = null;
-  let questionsSequenceCondition = null;
+  const currentQs = algorithm.nodes[questionsSequenceId];
+  const mcQs = medicalCase.nodes[questionsSequenceId];
 
-  // Set top Level Nodes
-  Object.keys(currentQuestionsSequence.instances).forEach((nodeId) => {
-    if (currentQuestionsSequence.instances[nodeId].top_conditions.length === 0) {
-      // processQSChildren(algorithm, medicalCase, currentQuestionsSequence.instances[nodeId], mcQuestionsSequence, currentQuestionsSequence)
-      recursiveNodeQs(algorithm, medicalCase, currentQuestionsSequence.instances[nodeId], questionsSequenceId)
+  const qsInstances = mcQs.dd.concat(mcQs.qs);
+  const qsConditionValue = qsInstances.some((qsInstance) => qsInstance.conditionValue);
+
+  // SET QS answer
+  if (qsConditionValue) {
+    let qsCondition = null;
+    let answerId = null;
+
+    /**
+     *  Return the status of the QS
+     *  true = can reach the end
+     *  null = Still possible but not yet
+     *  false = can't access the end anymore
+     */
+    const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQs);
+
+    // If ready we calculate condition of the QS
+    if (statusQs) {
+      qsCondition = questionSequenceCalculateCondition(algorithm, medicalCase, currentQs);
     }
-  });
 
-  /**
-   *  Return the status of the QS
-   *  true = can reach the end
-   *  null = Still possible but not yet
-   *  false = can't access the end anymore
-   */
-  const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQuestionsSequence);
+    if (qsCondition === true) {
+      answerId = getQsAnswer(currentQs, true);
+    } else if (qsCondition === false || statusQs === false) {
+      // statusQd === false -> can't access the end of the QS anymore
+      // questionsSequenceCondition === false -> can't find a condition to true
+      answerId = getQsAnswer(currentQs, false);
+    }
 
-  if (questionsSequenceId === 58) {
-    console.log(questionsSequenceId, statusQs)
+    // If the new answer of this QS is different from the older, we change it
+    if (answerId !== medicalCase.nodes[currentQs.id].answer) {
+      medicalCase.nodes[currentQs.id] = {
+        ...medicalCase.nodes[currentQs.id],
+        ...nodeUpdateAnswer(answerId, algorithm, medicalCase.nodes[currentQs.id]),
+      };
+
+      processUpdatedNode(algorithm, medicalCase, currentQs.id);
+    }
   }
 
-  // If ready we calculate condition of the QS
-  if (statusQs) {
-    const qsInstances = currentQuestionsSequence.dd.concat(currentQuestionsSequence.qs);
-    const qsConditionValue = qsInstances.some((qsInstance) => qsInstance.conditionValue);
-
-    questionsSequenceCondition = qsConditionValue && questionSequenceCalculateCondition(algorithm, medicalCase, currentQuestionsSequence);
-  }
-
-  if (questionsSequenceCondition === true) {
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[0]].id;
-  } else if (questionsSequenceCondition === false || statusQs === false) {
-    // statusQd === false -> can't access the end of the QS anymore
-    // questionsSequenceCondition === false -> can't find a condition to true
-    answerId = currentQuestionsSequence.answers[Object.keys(currentQuestionsSequence.answers)[1]].id;
-  }
-
-  // If the new answer of this QS is different from the older, we change it
-  if (answerId !== medicalCase.nodes[currentQuestionsSequence.id].answer) {
-    medicalCase.nodes[currentQuestionsSequence.id] = {
-      ...medicalCase.nodes[currentQuestionsSequence.id],
-      ...nodeUpdateAnswer(answerId, algorithm, medicalCase.nodes[currentQuestionsSequence.id]),
-    };
-
-    processUpdatedNode(algorithm, medicalCase, currentQuestionsSequence.id);
-  }
+  getTopLevelNodes(currentQs).forEach((instance) => recursiveNodeQs(algorithm, medicalCase, instance, currentQs.id));
 };
 
 /**
@@ -294,13 +283,7 @@ export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
  */
 const setAnswer = (algorithm, medicalCase, nodeId, newValue) => {
   if (medicalCase.nodes[nodeId].answer !== newValue) {
-    const {
-      answer,
-      answer_stage,
-      value,
-      validationMessage,
-      validationType,
-    } = nodeUpdateAnswer(newValue, algorithm, medicalCase.nodes[nodeId]);
+    const { answer, answer_stage, value, validationMessage, validationType } = nodeUpdateAnswer(newValue, algorithm, medicalCase.nodes[nodeId]);
     medicalCase.nodes[nodeId] = {
       ...medicalCase.nodes[nodeId],
       answer,
@@ -342,8 +325,7 @@ const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
     }
 
     orders.forEach((order) => {
-      if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id &&
-        medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
+      if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id && medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
         if ((age_in_days <= 60 && !algorithm.nodes[order].is_neonat) || (age_in_days > 60 && algorithm.nodes[order].is_neonat)) {
           setAnswer(algorithm, medicalCase, order, Object.keys(algorithm.nodes[order].answers)[1]);
         }
@@ -378,7 +360,7 @@ export const epicSetDiagnoses = (action$, state$) =>
         return of(setMedicalCase(medicalCase));
       }
       return EMPTY;
-    }),
+    })
   );
 
 export default combineEpics(epicSetDiagnoses);
