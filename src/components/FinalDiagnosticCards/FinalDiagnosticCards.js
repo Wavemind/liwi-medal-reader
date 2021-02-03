@@ -174,7 +174,6 @@ export default class FinalDiagnosticCards extends React.Component {
     if (medicalCase.id === undefined) {
       return null;
     }
-
-    return Object.keys(medicalCase.diagnoses).map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key));
+    return ['additional', 'custom', 'proposed'].map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key));
   }
 }
