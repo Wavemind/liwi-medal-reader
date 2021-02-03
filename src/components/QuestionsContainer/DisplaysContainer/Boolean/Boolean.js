@@ -170,7 +170,7 @@ export default class Boolean extends React.Component {
         paddingTop: 0,
         paddingBottom: 0,
       };
-      console.log(question)
+
       // Only one button for this type of node
       RenderJsx = () => (
         <Button key={index + category} onPress={() => this._handleClick(idOnPress)} style={concatStyle} light>
