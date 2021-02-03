@@ -58,7 +58,7 @@ export default class Medicine extends Component {
             </View>
           )}
         </View>
-        {node?.description !== null ? (
+        {node?.description !== null && healthCareType === 'drugs' ? (
           <View margin-top>
             <Text size-auto>{node?.description}</Text>
           </View>
