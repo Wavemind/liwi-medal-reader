@@ -161,7 +161,7 @@ i18n
           title: 'Emergency assistance',
           description: 'This page has been created to provide emergency assistance in case of need',
           description_warning: 'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergent care now',
-          go_to_emergency: 'Go to emergency',
+          go_to_emergency: 'Go to emergency management',
           back: 'Back to home',
         },
         qrcode: {
@@ -482,7 +482,7 @@ i18n
         synchronize: {
           title: 'Consultations to synchronize',
           synchronize: 'Synchronize',
-          not_warning: 'Medical cases have not been synchronised for more than 1 week',
+          not_warning: 'Consultations in this device have not been synchronised with medAL-data for more than 1 week. Please synchronize',
           main_data_address_missing: 'Main data URL is missing in health facility configuration',
           error: 'An error occurred on the medAL-data server',
         },
