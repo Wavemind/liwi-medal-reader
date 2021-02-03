@@ -72,11 +72,11 @@ export default class Tests extends React.Component {
 
     return (
       NavigationService.getCurrentRoute().routeName === 'Tests' ||
-      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value))
+      (!firstRender && (firstRender || question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value || question.unavailableValue !== nextQuestion.unavailableValue))
     );
   }
 
-  componentDidMount(): * {
+  componentDidMount() {
     this.setState({ firstRender: false });
   }
 

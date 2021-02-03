@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
 import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Picker, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
 import RNRestart from 'react-native-restart';
@@ -13,37 +12,14 @@ import { patientTemplate } from '../../utils/template/PatientTemplate';
 import Database from '../../engine/api/Database';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
-import { styles } from './settings.style'
+import { styles } from './settings.style';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Settings extends React.Component<Props, State> {
+export default class Settings extends React.Component {
   // default settings
   state = {
     disabled: false,
     environment: null,
     settings: {
-      tests: {
-        mRDT: false,
-        'other malaria test': false,
-        Hb: false,
-        CRP: false,
-        'Blood sugar': false,
-        'trail of bronchodilator ': false,
-        PCT: false,
-        'skin lesion description and picture': false,
-      },
-      devices: {
-        'Anesthesia Machines': false,
-        Defibrillators: false,
-        Sterilizers: false,
-        'EKG/ECG Machines': false,
-        'Blanket and Fluid Warmers': false,
-        'Electrosurgical Units': false,
-        'Surgical Lights': false,
-      },
       app: {
         awake: false,
       },
@@ -99,7 +75,7 @@ export default class Settings extends React.Component<Props, State> {
   };
 
   render() {
-    const { settings, environment, disabled } = this.state;
+    const { environment, disabled } = this.state;
     const {
       navigation,
       app: { t },
@@ -110,51 +86,8 @@ export default class Settings extends React.Component<Props, State> {
         <List testID="settings_view">
           <ListItem itemDivider>
             <Text white bold>
-              {t('tests')}
-            </Text>
-          </ListItem>
-          {Object.keys(settings.tests).map((test) => (
-            <ListItem key={test}>
-              <Left>
-                <Text>{test}</Text>
-              </Left>
-              <Right>
-                <Switch value={settings.tests[test]} onValueChange={() => this.changeSettings('tests', test)} />
-              </Right>
-            </ListItem>
-          ))}
-          <ListItem itemDivider>
-            <Text white bold>
-              {t('devices')}
-            </Text>
-          </ListItem>
-          {Object.keys(settings.devices).map((device) => (
-            <ListItem key={device}>
-              <Left>
-                <Text>{device}</Text>
-              </Left>
-              <Right>
-                <Switch value={settings.devices[device]} onValueChange={() => this.changeSettings('devices', device)} />
-              </Right>
-            </ListItem>
-          ))}
-          <ListItem itemDivider>
-            <Text white bold>
               {t('app')}
             </Text>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>{t('awake')}</Text>
-            </Left>
-            <Body>
-              <Button iconLeft iconMenu>
-                <Icon grey type="FontAwesome" name={settings.app.awake ? 'eye' : 'eye-slash'} />
-              </Button>
-            </Body>
-            <Right>
-              <Switch value={settings.app.awake} onValueChange={() => this.changeSettings('app', 'awake')} />
-            </Right>
           </ListItem>
           <ListItem>
             <Left>

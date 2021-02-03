@@ -1,6 +1,6 @@
 import reduce from 'lodash/reduce';
 import { store } from '../store';
-import { questionBooleanValue } from '../helpers/Question.model';
+
 /**
  * Main entry to get the condition boolean for a entity
  * @param algorithm
@@ -9,29 +9,12 @@ import { questionBooleanValue } from '../helpers/Question.model';
  * @returns {boolean}
  */
 export const calculateCondition = (algorithm, node, medicalCase = store.getState()) => {
-  const { nodes } = medicalCase;
-
-  let isExcludedByComplaintCategory = false;
-  // We check that all the complaint categories linked to the node are set to true
-  switch (typeof node.cc) {
-    case 'number':
-      isExcludedByComplaintCategory = questionBooleanValue(algorithm, nodes[node.cc]) === false;
-      break;
-    case 'object':
-      isExcludedByComplaintCategory = node.cc.some((complaintCategory) => {
-        return questionBooleanValue(algorithm, nodes[complaintCategory]) === false;
-      });
-      break;
-  }
-
-  // If this is a top parent node
-  if (node.top_conditions.length === 0 && !isExcludedByComplaintCategory) {
+  if (node.top_conditions.length === 0) {
     return true;
   }
-
   // Loop for top_conditions
   const conditionsArrayBoolean = returnConditionsArray(node, medicalCase);
-  return reduceConditionArrayBoolean(conditionsArrayBoolean) && !isExcludedByComplaintCategory;
+  return reduceConditionArrayBoolean(conditionsArrayBoolean);
 };
 
 /**
@@ -43,7 +26,6 @@ export const calculateCondition = (algorithm, node, medicalCase = store.getState
  *
  */
 export const returnConditionsArray = (node, medicalCase) => node.top_conditions.map((conditions) => comparingTopConditions(conditions, medicalCase));
-
 /**
  * Get a array of boolean and return the final boolean between null | true | false
  *
@@ -51,6 +33,7 @@ export const returnConditionsArray = (node, medicalCase) => node.top_conditions.
  * @return {boolean}
  *
  */
+
 export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
   reduce(
     conditionsArrayBoolean,
@@ -72,7 +55,6 @@ export const reduceConditionArrayBoolean = (conditionsArrayBoolean) =>
  *
  */
 const checkOneCondition = (wantedId, nodeId, medicalCase = store.getState()) => {
-
   if (medicalCase.nodes[nodeId].answer !== null) {
     return Number(medicalCase.nodes[nodeId].answer) === Number(wantedId);
   }
@@ -87,24 +69,9 @@ const checkOneCondition = (wantedId, nodeId, medicalCase = store.getState()) => 
  *
  */
 export const comparingTopConditions = (condition, medicalCase) => {
-  const { first_id, first_node_id, operator, second_node_id, second_id } = condition;
-  const first_sub_condition = checkOneCondition(first_id, first_node_id, medicalCase);
+  const { first_id, first_node_id } = condition;
+  return checkOneCondition(first_id, first_node_id, medicalCase);
 
-  // if (operator === null) {
-  return first_sub_condition;
-  // }
-
-  // Not used so far
-  // const second_sub_condition = checkOneCondition(child, second_id, second_node_id, medicalCase);
-  //
-  // if (operator === 'AND') {
-  //   return first_sub_condition && second_sub_condition;
-  // }
-  // if (operator === 'OR') {
-  //   return comparingBooleanOr(first_sub_condition, second_sub_condition);
-  // }
-
-  // return null;
 };
 
 /**
