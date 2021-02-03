@@ -128,7 +128,15 @@ export default class MedicinesFormulations extends Component {
 
     return (
       <ScrollView>
-        {Object.keys(drugs).length > 0 && <Text customTitle>{t('diagnoses:which')}</Text>}
+        {Object.keys(drugs).length > 0 && (
+          <>
+            <Text customTitle>{t('diagnoses:which')}</Text>
+            <View style={styles.warningBloc}>
+              <Text white>{t('diagnoses:formulation_mandatory')}</Text>
+            </View>
+          </>
+        )}
+
         {Object.keys(drugs).map((drugId) => {
           const currentDrug = algorithm.nodes[drugId];
           const drug = drugs[drugId];

@@ -64,4 +64,15 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
   },
+  warningBloc: {
+    backgroundColor: liwiColors.orangeColor,
+    borderRadius: 3,
+    padding: 15,
+    elevation: 1,
+    marginLeft: 10,
+    marginRight: 10,
+    borderColor: liwiColors.lightGreyColor,
+    marginBottom: 10,
+    marginTop: 10,
+  },
 });

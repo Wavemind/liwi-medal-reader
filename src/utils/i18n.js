@@ -58,6 +58,8 @@ i18n
           medicines: 'Medicines',
           no_drugs: 'No drugs proposed',
           drugs: 'Drugs',
+          formulation_mandatory: 'You must choose a formulation in order to get the recommended prescription(s)',
+          medicine_mandatory: 'You must agree or disagree to drugs in order to get the recommended prescription(s)',
           managements: 'Managements',
           none: 'none',
           proposed: 'Diagnoses proposed by',

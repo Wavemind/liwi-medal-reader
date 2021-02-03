@@ -125,6 +125,9 @@ export default class Medicines extends Component {
         <Text customTitle style={styles.noTopMargin}>
           {t('diagnoses:medicines')}
         </Text>
+        <View style={styles.warningBloc}>
+          <Text white>{t('diagnoses:medicine_mandatory')}</Text>
+        </View>
         {Object.keys(diagnoses.proposed).length === 0 && Object.keys(diagnoses.additional).length === 0 ? (
           <Text italic>{t('diagnoses:no_medicines')}</Text>
         ) : (
