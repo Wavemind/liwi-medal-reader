@@ -72,7 +72,9 @@ const armControlScreen = [
   {
     key: 'DiagnosticsStrategy',
     medicalCaseOrder: 3,
-    validations: {},
+    validations: {
+      referral: { is_mandatory: true, initialPage: 2 },
+    },
   },
 ];
 

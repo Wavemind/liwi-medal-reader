@@ -148,7 +148,7 @@ export default class FinalDiagnosticsList extends React.Component {
           </>
         )}
         <Text customTitle style={algorithm.is_arm_control ? null : styles.marginTop30}>
-          {t('diagnoses:title_additional')}
+          {algorithm.is_arm_control ? t('diagnoses:title_additional_arm_control') : t('diagnoses:title_additional')}
         </Text>
         {Object.keys(diagnoses.additional).length > 0 ? (
           Object.keys(diagnoses.additional).map((additionalKey) => (
@@ -160,10 +160,10 @@ export default class FinalDiagnosticsList extends React.Component {
             </View>
           ))
         ) : (
-          <Text italic>{t('diagnoses:no_additional')}</Text>
+          <Text italic>{algorithm.is_arm_control ? t('diagnoses:no_additional_arm_control') : t('diagnoses:no_additional')}</Text>
         )}
         <Text customTitle style={styles.marginTop30}>
-          {t('diagnoses:additional')}
+          {algorithm.is_arm_control ? t('diagnoses:additional_arm_control') : t('diagnoses:additional')}
         </Text>
         <MultiSelect
           hideTags
