@@ -104,6 +104,7 @@ export default class Question extends React.Component {
     const { unavailableValue, unavailableAnswer } = this.state;
 
     set('answeredQuestionId', question.id);
+    setUnavailable(algorithm, question.id, !unavailableValue);
 
     // Reset answer
     if (question.unavailableValue && question.answer !== null) {
@@ -115,7 +116,6 @@ export default class Question extends React.Component {
       setAnswer(algorithm, question.id, unavailableAnswer.id);
     }
 
-    setUnavailable(algorithm, question.id, !unavailableValue);
     this.setState({ unavailableValue: !unavailableValue });
   };
 
