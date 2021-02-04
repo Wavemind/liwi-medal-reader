@@ -59,6 +59,8 @@ i18n
           medicines: 'Medicines',
           no_drugs: 'No drugs proposed',
           drugs: 'Drugs',
+          formulation_mandatory: 'You must choose a formulation in order to get the recommended prescription(s)',
+          medicine_mandatory: 'You must agree or disagree to drugs in order to get the recommended prescription(s)',
           managements: 'Managements',
           none: 'none',
           proposed: 'Diagnoses proposed by',
@@ -546,6 +548,8 @@ i18n
           which: 'Quelle formulation est disponible et appropriée pour votre patient ?',
           write: 'Saisir médicament ajouté',
           consultation_comment: 'Vous pouvez indiquer les détails cliniques pour vos archives si souhaité (Pas obligatoire. Pas utilisé dans l\'algorithme)',
+          medicine_mandatory: 'Vous devez accepter ou rejeter les médicaments proposés pour aboutir à la bonne prescription',
+          formulation_mandatory: 'Vous devez choisir la bonne formulation pour aboutir à la bonne prescription',
         },
         drug: {
           give: 'Donner',
