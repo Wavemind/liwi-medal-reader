@@ -10,7 +10,7 @@ export const patientTemplate = async () => {
   const patient = {
     id: uuid.v4(),
     uid: uuid.v4(),
-    study_id: 'BigStudy',
+    study_id: 'Generated',
     group_id: '5',
     medicalCases: [],
     updated_at: faker.fake('{{date.past}}'),
@@ -25,6 +25,10 @@ export const patientTemplate = async () => {
   medicalCase.nodes[basic_questions.weight_question_id].value = faker.random.number({ max: 14, min: 6 });
   medicalCase.nodes[basic_questions.gender_question_id].answer_id = Object.keys(algorithm.nodes[basic_questions.gender_question_id].answers)[faker.random.number({ max: 1, min: 0 })];
   medicalCase.nodes[basic_questions.birth_date_question_id].value = faker.fake('{{date.past}}');
+
+  const today = moment();
+  const fifteenYearsAgo = moment().subtract(15, 'years');
+  medicalCase.nodes[basic_questions.birth_date_question_id].value = faker.date.between(fifteenYearsAgo.format('YYYY-MM-DD'), today.format('YYYY-MM-DD'));
 
   medicalCase.activities = [
     {
