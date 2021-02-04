@@ -45,6 +45,7 @@ i18n
           additional_drugs: 'Drugs',
           additional_managements: 'Managements',
           additional: 'Do you want to add additional diagnoses not proposed?',
+          additional_arm_control: 'Add diagnoses',
           agree: 'Agree',
           close: 'Close',
           custom: 'Do you want to manually add other diagnoses not proposed?',
@@ -68,7 +69,9 @@ i18n
           select: '  Please select...', // Keep the space at the begin of string
           sum: 'Summary Treatment',
           title_additional: 'Additional selected',
+          title_additional_arm_control: 'Diagnoses selected',
           no_additional: 'No additional diagnosis',
+          no_additional_arm_control: 'No diagnosis selected',
           no_additional_drugs: 'No additional drugs',
           no_additional_managements: 'No additional managements',
           no_medicines: 'No medicines available',
