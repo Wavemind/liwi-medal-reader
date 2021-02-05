@@ -164,10 +164,9 @@ const processQSChildren = (algorithm, medicalCase, instance, mcQs, currentNode) 
  */
 export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
   let isReset = false;
-  const currentNode = algorithm.nodes[instance.id];
   const mcNode = medicalCase.nodes[instance.id];
   const mcQs = medicalCase.nodes[qsId];
-  const instanceConditionValue = find(currentNode.qs, (p) => p.id === mcQs.id).conditionValue;
+  const instanceConditionValue = find(mcNode.qs, (p) => p.id === mcQs.id).conditionValue;
 
   // If all the conditionValues of the QS are false we set the conditionValues of the node to false
   const qsInstances = mcQs.dd.concat(mcQs.qs);
@@ -231,7 +230,6 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
   const allNodesAnsweredInQs = getTopLevelNodes(currentNode).map((instance) => {
     return getQuestionsSequenceChildrenStatus(algorithm, medicalCase, instance, currentNode);
   });
-
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
 
@@ -256,7 +254,6 @@ export const getTopLevelNodes = (node) => {
  */
 const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mcQs) => {
   const condition = calculateCondition(algorithm, instance, medicalCase);
-
   if (condition === null) return null;
   if (condition === false) return false;
   if (instance.children.length > 0) {
@@ -265,7 +262,7 @@ const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mc
         if (childId !== mcQs.id) {
           return getQuestionsSequenceChildrenStatus(algorithm, medicalCase, mcQs.instances[childId], mcQs);
         }
-        return true;
+        return calculateCondition(algorithm, mcQs, medicalCase);
       })
     );
   }
@@ -281,7 +278,6 @@ const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mc
 export const getQsAnswer = (qs, value) => {
   if (value) {
     return qs.answers[Object.keys(qs.answers)[0]].id;
-  } else {
-    return qs.answers[Object.keys(qs.answers)[1]].id;
   }
+  return qs.answers[Object.keys(qs.answers)[1]].id;
 };
