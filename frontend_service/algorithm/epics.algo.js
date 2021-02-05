@@ -197,7 +197,7 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
     }
   }
 
-  getTopLevelNodes(currentQs).forEach((instance) => recursiveNodeQs(algorithm, medicalCase, instance, currentQs.id));
+  getTopLevelNodes(currentQs).forEach(async (instance) => recursiveNodeQs(algorithm, medicalCase, instance, currentQs.id));
 };
 
 /**
