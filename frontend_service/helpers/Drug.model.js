@@ -49,7 +49,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
         const maxDoseMl = roundSup((maxDoseMg * formulation.dose_form) / formulation.liquid_concentration);
 
         // Round
-        doseResult = Math.round((minDoseMl + maxDoseMl) / 2);
+        doseResult = roundSup((minDoseMl + maxDoseMl) / 2);
 
         if (doseResult > maxDoseMl) {
           doseResult -= 1;
