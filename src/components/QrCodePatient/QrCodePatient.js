@@ -16,25 +16,57 @@ export default class QrCodePatient extends React.Component {
     otherQR: null,
   };
 
+  /**
+   * Parse TIMCI QR code data because they didn't want to use the existing format just to piss us off
+   * @param QRData : String value comming from QRCODE
+   * @returns {{uid: number, group_id: number, study_id}} : Formated data
+   */
+  parseHeleneQR = (QRData) => {
+    const regexStudy = /^[IKMST]/;
+    const regexGroup = /\d{4}/g;
+
+    const study_id = QRData.match(regexStudy)[0];
+    const digits = [...QRData.matchAll(regexGroup)].flat();
+
+    return {
+      study_id,
+      group_id: parseInt(digits[0]),
+      uid: parseInt(digits[1]),
+    };
+  };
+
   onSuccess = async (e) => {
     const {
       navigation,
       app: { database, t },
     } = this.props;
     const { otherQR, generateNewQR } = this.state;
-    const json = await JSON.parse(e.data);
+    let QRData = null;
 
-    if (_.isEqual(otherQR, json)) {
+    // Data example : T-F0049-P0002
+    const regexHelene = /^[IKMST](-F)\d{4}(-P)\d{4}$/;
+
+    if (e.data.match(regexHelene)) {
+      QRData = this.parseHeleneQR(e.data);
+    } else {
+      try {
+        QRData = await JSON.parse(e.data);
+      } catch (e) {
+        displayNotification(t('qrcode:new_sticker_wrong_facility'), liwiColors.orangeColor);
+      }
+    }
+
+    if (_.isEqual(otherQR, QRData)) {
       return;
     }
 
     // QR code valid ?
-    if ('uid' in json && 'study_id' in json && 'group_id' in json) {
+    if ('uid' in QRData && 'study_id' in QRData && 'group_id' in QRData) {
       const session = await getItem('session');
 
-      const sameFacility = session?.facility?.id === parseInt(json.group_id);
+      const sameFacility = session?.facility?.id === parseInt(QRData.group_id);
 
-      const patient = sameFacility ? await database.findBy('Patient', json.uid, 'uid') : await database.findBy('Patient', json.uid, 'other_uid');
+      const patient = sameFacility ? await database.findBy('Patient', QRData.uid, 'uid') : await database.findBy('Patient', QRData.uid, 'other_uid');
 
       if (patient !== null) {
         navigation.navigate('PatientProfile', {
@@ -48,7 +80,7 @@ export default class QrCodePatient extends React.Component {
           idPatient: null,
           newMedicalCase: true,
           facility: {
-            ...json,
+            ...QRData,
           },
           otherFacility: otherQR,
         });
@@ -60,7 +92,7 @@ export default class QrCodePatient extends React.Component {
       // Another medical center
       else {
         // We give him another QR sticker
-        await this.setState({ generateNewQR: true, otherQR: json });
+        await this.setState({ generateNewQR: true, otherQR: QRData });
         displayNotification(t('qrcode:new_sticker_notification'), liwiColors.orangeColor);
       }
     }
