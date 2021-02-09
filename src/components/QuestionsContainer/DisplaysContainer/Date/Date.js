@@ -48,10 +48,10 @@ export default class Date extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { dayValue, monthValue, yearValue } = this.state;
+    const { dayValue, monthValue, yearValue, enable } = this.state;
     const { question } = this.props;
 
-    return question.value !== nextProps.question.value || dayValue !== nextState.dayValue || monthValue !== nextState.monthValue || yearValue !== nextState.yearValue;
+    return question.value !== nextProps.question.value || dayValue !== nextState.dayValue || monthValue !== nextState.monthValue || yearValue !== nextState.yearValue || enable !== nextState.enable;
   }
 
   /**
