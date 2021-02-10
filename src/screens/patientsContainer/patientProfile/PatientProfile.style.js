@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   },
   lock: { color: liwiColors.redColor },
   unlock: { color: liwiColors.greenColor },
-
+  marginTop: { marginTop: 15 },
   identifierText: {
     flex: 1,
     justifyContent: 'center',
@@ -18,8 +18,9 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     elevation: 1,
   },
+  consultationContainer: { flexGrow: 1, alignSelf: 'stretch' },
   patientValues: { flex: 1, alignSelf: 'center', padding: 10, textAlign: 'right', paddingLeft: 20 },
-
+  icons: { marginRight: 15 },
   columnLabel: {
     flex: 1,
     padding: 10,
@@ -36,8 +37,6 @@ export const styles = StyleSheet.create({
   item: {
     paddingLeft: 10,
     elevation: 1,
-    borderRadius: 10,
-    height: 80,
     marginRight: 2,
     marginLeft: 2,
     borderWidth: 0,
@@ -48,16 +47,14 @@ export const styles = StyleSheet.create({
   },
 
   separator: {
-    height: 3,
+    height: 10,
     width: '100%',
-    backgroundColor: liwiColors.lighterGreyColor,
+    backgroundColor: 'transparent',
   },
 
-  filterContent: { flexDirection: 'row', paddingBottom: 5 },
+  filterContent: { flexShrink: 1, flexDirection: 'row', paddingBottom: 5 },
 
   sortButton: { borderRadius: 5, backgroundColor: liwiColors.whiteDark, borderColor: liwiColors.lightGreyColor },
-
-  flatList: { paddingBottom: 220 },
 
   picker: { borderRadius: 5, color: liwiColors.whiteDark },
 
@@ -65,17 +62,15 @@ export const styles = StyleSheet.create({
 
   wrapper: { flexDirection: 'row', flexBasis: '50%' },
 
-  footerButton: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+  footerButton: { margin: 15, paddingLeft: 35, paddingRight: 35, flexShrink: 1},
 
-  patientValuesContainer: { flex: 0.4, flexDirection: 'column', justifyContent: 'space-between' },
+  patientValuesContainer: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
 
-  patientValuesContent: { flex: 1, flexDirection: 'row', flexWrap: 'wrap' },
+  patientValuesContent: { flexDirection: 'row', flexWrap: 'wrap', flexGrow: 1 },
 
   flex: { flex: 1 },
 
   container: { flex: 1, flexDirection: 'column' },
 
   marginBottom: { marginBottom: 20 },
-
-  flex06: { flex: 0.6 },
 });

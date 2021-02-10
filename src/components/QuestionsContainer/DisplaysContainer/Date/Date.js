@@ -11,7 +11,7 @@ export default class Date extends React.Component {
   constructor(props) {
     super(props);
 
-    const { question } = props;
+    const { question, isReadOnly } = props;
 
     const pickerDay = [];
     const pickerMonth = [];
@@ -42,7 +42,7 @@ export default class Date extends React.Component {
     };
 
     // Due to possible change in patient value. Force update to calculate background_calculation like age in days
-    if (question.value !== null) {
+    if (question.value !== null && !isReadOnly) {
       this.setBirthDate();
     }
   }
