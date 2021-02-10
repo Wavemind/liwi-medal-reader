@@ -427,6 +427,12 @@ export const healthCares = (algorithm) => {
   return _.filter(algorithm.nodes, (f) => f.category === categories.drug);
 };
 
+
+/**
+ * Get all question needed to be answered for registration step
+ * @param algorithm
+ * @returns {[]}
+ */
 export const questionsRegistration = (algorithm) => {
   const medicalCase = store.getState();
   const registrationQuestions = [];
