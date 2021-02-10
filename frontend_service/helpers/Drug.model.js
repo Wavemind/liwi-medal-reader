@@ -5,6 +5,7 @@ import { store } from '../store';
 import { roundSup } from '../../src/utils/swissKnives';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 import i18n from '../../src/utils/i18n';
+import toReadableFraction from '../../src/utils/toReadableFraction';
 
 /**
  * Set the right dose calculation for a drug.
@@ -35,7 +36,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
   const recurrence = 24 / formulation.doses_per_day;
 
   // Age and weight must be answered to calculate dosage
-  if ((mcWeight !== undefined && mcWeight.value !== null) && !formulation.by_age) {
+  if (mcWeight !== undefined && mcWeight.value !== null && !formulation.by_age) {
     switch (formulation.medication_form) {
       case medicationForms.syrup:
       case medicationForms.suspension:
@@ -49,7 +50,7 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
         const maxDoseMl = roundSup((maxDoseMg * formulation.dose_form) / formulation.liquid_concentration);
 
         // Round
-        doseResult = Math.round((minDoseMl + maxDoseMl) / 2);
+        doseResult = roundSup((minDoseMl + maxDoseMl) / 2);
 
         if (doseResult > maxDoseMl) {
           doseResult -= 1;
@@ -92,6 +93,13 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
         // Define Dose Result
         doseResult = (minDoseCap + maxDoseCap) / 2;
 
+        if (maxDoseCap < 1) {
+          return {
+            ...formulation,
+            no_possibility: i18n.t('drug:no_options'),
+            doseResult: null,
+          };
+        }
         if (Math.ceil(doseResult) <= maxDoseCap) {
           // Viable Solution
           doseResult = Math.ceil(doseResult);
@@ -100,11 +108,8 @@ export const drugDoses = (formulationIndex, algorithm, drugId) => {
           doseResult = Math.floor(doseResult);
         } else {
           // Out of possibility
-          return {
-            ...formulation,
-            no_possibility: i18n.t('drug:no_options'),
-            doseResult: null,
-          };
+          // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
+          doseResult = Math.floor(minDoseCap);
         }
 
         return {
@@ -185,4 +190,37 @@ export const drugAgreed = (diagnoses, algorithm) => {
   });
 
   return drugs;
+};
+
+/**
+ * Returns a string with the amount of breakable to give to the patient
+ * @param drugDose - related drug informations
+ * @returns {string} - amount of breakable to give to the patient
+ */
+export const breakableFraction = (drugDose) => {
+  const unit = drugDose.doseResult / drugDose.breakable;
+  const num = Math.floor(unit);
+  let result = '';
+
+  if (num > 0 && num !== Infinity) {
+    result = num;
+  }
+  if (drugDose.doseResult !== null) {
+    const rest = drugDose.doseResult % drugDose.breakable;
+
+    if (rest !== 0) {
+      const r = toReadableFraction(rest / drugDose.breakable);
+      if (r.numerator === 1 && r.denominator === 2) {
+        result += ' ½';
+      } else if (r.numerator === 1 && r.denominator === 4) {
+        result += ' ¼';
+      } else if (r.numerator === 3 && r.denominator === 4) {
+        result += ' ¾';
+      } else {
+        // other fraction
+        result = `${result} ${r.numerator} / ${r.denominator}`;
+      }
+    }
+  }
+  return result;
 };

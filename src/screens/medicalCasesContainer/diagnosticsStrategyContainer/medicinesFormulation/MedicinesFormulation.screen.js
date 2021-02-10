@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
 import { medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
-import { drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
+import { breakableFraction, drugAgreed, drugDoses} from '../../../../../frontend_service/helpers/Drug.model';
 
 export default class MedicinesFormulations extends Component {
   shouldComponentUpdate() {
@@ -49,7 +49,7 @@ export default class MedicinesFormulations extends Component {
           return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t('drug:tablets')}`;
         }
         return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
-          calculatedFormulation.doseResult !== null ? `${calculatedFormulation.doseResult} ${t('drug:tablets')}` : t('drug:no_options')
+          calculatedFormulation.doseResult !== null ? `${breakableFraction(calculatedFormulation)} ${t('drug:tablets')}` : t('drug:no_options')
         }`;
       }
       case medicationForms.cream:
