@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Text, View } from 'native-base';
-import { NavigationScreenProps } from 'react-navigation';
 import * as NetInfo from '@react-native-community/netinfo';
 import { AUDIOS_EXTENSION, MOVIES_EXTENSION, PICTURES_EXTENSION } from '../../utils/constants';
 import i18n from '../../utils/i18n';
@@ -11,11 +10,7 @@ import Movie from './Movie';
 import Audio from './Audio';
 import Picture from './Picture';
 
-type Props = NavigationScreenProps & {};
-
-type State = {};
-
-export default class Media extends React.Component<Props, State> {
+export default class Media extends React.Component {
   constructor(props) {
     super(props);
 
@@ -39,14 +34,16 @@ export default class Media extends React.Component<Props, State> {
    * @returns {*}
    */
   mediaType(media) {
+    const url = media.url.match(/^.*[?]/)[0];
+
     if (MOVIES_EXTENSION.includes(media.extension)) {
-      return <Movie url={media.url} />;
+      return <Movie url={url} />;
     }
     if (AUDIOS_EXTENSION.includes(media.extension)) {
-      return <Audio url={media.url} />;
+      return <Audio url={url} />;
     }
     if (PICTURES_EXTENSION.includes(media.extension)) {
-      return <Picture url={media.url} />;
+      return <Picture url={url} />;
     }
     return <Text>{i18n.t('media:file_not_supported')}</Text>;
   }
