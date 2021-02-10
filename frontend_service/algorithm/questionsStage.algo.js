@@ -429,23 +429,13 @@ export const healthCares = (algorithm) => {
 
 export const questionsRegistration = (algorithm) => {
   const medicalCase = store.getState();
+  const registrationQuestions = [];
+  const registrationOrder = algorithm.mobile_config.questions_orders['registration_step'];
 
-  const ordersBasicDemographic = algorithm.mobile_config.questions_orders[categories.basicDemographic];
-  const ordersDemographic = algorithm.mobile_config.questions_orders[categories.demographic];
-
-  // Get nodes to display in registration stage
-  const basicDemographicQuestions = [];
-  const demographicQuestions = [];
-
-  ordersBasicDemographic.forEach((order) => {
-    basicDemographicQuestions.push(medicalCase.nodes[order]);
+  registrationOrder.forEach((order) => {
+    registrationQuestions.push(medicalCase.nodes[order]);
   });
 
-  ordersDemographic.forEach((order) => {
-    demographicQuestions.push(medicalCase.nodes[order]);
-  });
-
-  const registrationQuestions = basicDemographicQuestions.concat(demographicQuestions);
   const newQuestions = registrationQuestions.map(({ id }) => id);
 
   // Update state$ tests questions if it's different from new questions list
