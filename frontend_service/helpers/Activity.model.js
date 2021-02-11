@@ -2,6 +2,8 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
+import {Model} from '@nozbe/watermelondb';
+
 import { getItem } from '../../src/engine/api/LocalStorage';
 import { getDeviceInformation } from '../../src/engine/api/Device';
 
@@ -29,19 +31,10 @@ export class ActivityModel {
   };
 }
 
-ActivityModel.schema = {
-  name: 'Activity',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    stage: 'string',
-    clinician: 'string',
-    nodes: 'string',
-    mode: 'string',
-    mac_address: 'string',
-    medical_case_id: 'string?',
-    created_at: 'date',
-    synchronized_at: 'date?',
-    fail_safe: { type: 'bool', default: false }
-  },
-};
+export class Activity extends Model {
+  static table = 'activities';
+
+  static associations = {
+    posts: { type: 'belongs_to', key: 'post_id' },
+  }
+}

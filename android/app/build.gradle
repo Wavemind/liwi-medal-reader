@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply plugin: 'kotlin-android'  // ⬅️ This!
 import com.android.build.OutputFile
 
 /**
@@ -141,7 +141,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+            include "armeabi-v7a", "arm64-v8a"
         }
     }
     signingConfigs {
@@ -179,12 +179,21 @@ android {
 
         }
     }
+    packagingOptions {
+        // Make sure libjsc.so does not packed in APK
+        exclude "**/libjsc.so"
+    }
 }
 
 dependencies {
+
+    implementation project(':watermelondb')  // ⬅️ This!
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    // Add v8-android - prebuilt libv8android.so into APK
+    implementation 'org.chromium:v8-android:+'
     implementation project(':lottie-react-native')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 

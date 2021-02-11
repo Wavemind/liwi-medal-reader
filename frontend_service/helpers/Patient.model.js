@@ -2,6 +2,8 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
+import { Model } from '@nozbe/watermelondb';
+
 import I18n from '../../src/utils/i18n';
 import Database from '../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
@@ -154,22 +156,11 @@ export class PatientModel {
   };
 }
 
-PatientModel.schema = {
-  name: 'Patient',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    uid: 'string',
-    study_id: 'string',
-    group_id: 'string',
-    other_uid: 'string?',
-    other_study_id: 'string?',
-    other_group_id: 'string?',
-    reason: 'string?',
-    medicalCases: 'MedicalCase[]',
-    patientValues: 'PatientValue[]',
-    updated_at: 'date',
-    consent_file: 'string?',
-    fail_safe: { type: 'bool', default: false },
-  },
-};
+export class Patient extends Model {
+  static table = 'patients';
+
+  static associations = {
+    medicalCases: { type: 'has_many', foreignKey: 'patient_id' },
+    patientValues: { type: 'has_many', foreignKey: 'patient_id' },
+  };
+}

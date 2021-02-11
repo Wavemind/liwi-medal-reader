@@ -83,9 +83,9 @@ export default class Summary extends React.Component {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
             style={LiwiTabStyle.style}
           >
-            <Content style={styles.marginTop}>
+            <View style={styles.marginTop}>
               <FinalDiagnosticCards medicalCase={medicalCase} />
-            </Content>
+            </View>
           </Tab>
           <Tab
             heading={t('summary:questions')}

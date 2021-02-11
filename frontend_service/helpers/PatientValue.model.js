@@ -4,6 +4,7 @@ import uuid from 'react-native-uuid';
 
 import { differenceNodes } from '../../src/utils/swissKnives';
 import { store } from '../store';
+import {Model} from '@nozbe/watermelondb';
 
 export class PatientValueModel {
   constructor(props) {
@@ -47,15 +48,6 @@ export class PatientValueModel {
   };
 }
 
-PatientValueModel.schema = {
-  name: 'PatientValue',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    patient_id: 'string',
-    node_id: 'int',
-    answer_id: 'int?',
-    value: 'string?',
-    fail_safe: { type: 'bool', default: false },
-  },
-};
+export class PatientValue extends Model {
+  static table = 'patient_values';
+}

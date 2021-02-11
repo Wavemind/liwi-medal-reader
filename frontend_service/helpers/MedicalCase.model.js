@@ -1,21 +1,16 @@
 // @flow
-
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import {categories, displayFormats, medicalCaseStatus, nodeTypes, stages} from '../constants';
-import {getItem} from '../../src/engine/api/LocalStorage';
+import { Model } from '@nozbe/watermelondb';
+
+import { categories, displayFormats, medicalCaseStatus, nodeTypes, stages } from '../constants';
+import { getItem } from '../../src/engine/api/LocalStorage';
 import Database from '../../src/engine/api/Database';
-import {differenceNodes} from '../../src/utils/swissKnives';
-import {ActivityModel} from './Activity.model';
-import {store} from '../store';
+import { differenceNodes } from '../../src/utils/swissKnives';
+import { ActivityModel } from './Activity.model';
+import { store } from '../store';
 import I18n from '../../src/utils/i18n';
-import {
-  generateDrug,
-  generateFinalDiagnostic,
-  generateManagement,
-  generateQuestion,
-  generateQuestionsSequence
-} from './nodeFactory';
+import { generateDrug, generateFinalDiagnostic, generateManagement, generateQuestion, generateQuestionsSequence } from './nodeFactory';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -35,7 +30,7 @@ export class MedicalCaseModel {
       this.isOldEnough = true;
       this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
-      this.consent = currentAlgorithm.config.consent_management ? true : false;
+      this.consent = !!currentAlgorithm.config.consent_management;
       this.modal = {
         open: false,
         content: '',
@@ -111,7 +106,7 @@ export class MedicalCaseModel {
 
       this.modal = {
         open: false,
-        params: {showClose: true},
+        params: { showClose: true },
         type: '',
       };
     }
@@ -169,7 +164,7 @@ export class MedicalCaseModel {
    * @param algorithm
    */
   setInitialConditionValue = (algorithm) => {
-    const {diagnostics, nodes} = algorithm;
+    const { diagnostics, nodes } = algorithm;
     try {
       Object.keys(nodes).forEach((nodeId) => {
         const node = this.nodes[nodeId];
@@ -196,7 +191,6 @@ export class MedicalCaseModel {
       Object.keys(nodes).forEach((nodeId) => {
         if (nodes[nodeId].type === nodeTypes.question) {
           nodes[nodeId].referenced_in.forEach((id) => {
-
             const dd = nodes[id].dd?.some((e) => e.conditionValue);
             const qs = nodes[id].qs?.some((e) => e.conditionValue);
             if (dd || qs) this.nodes[nodeId].counter++;
@@ -215,7 +209,7 @@ export class MedicalCaseModel {
    * @param id
    */
   setParentConditionValue = (algorithm, parentId, id) => {
-    const {diagnostics, nodes} = algorithm;
+    const { diagnostics, nodes } = algorithm;
 
     // Set condition value for DD if there is any
     this.nodes[parentId].dd.forEach((dd) => {
@@ -244,7 +238,6 @@ export class MedicalCaseModel {
       }
     });
   };
-
 
   /**
    * Will set the needed value in the database if we switch to fail Safe mode
@@ -431,18 +424,10 @@ export class MedicalCaseModel {
   }
 }
 
-MedicalCaseModel.schema = {
-  name: 'MedicalCase',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    json: 'string',
-    activities: 'Activity[]',
-    synchronized_at: 'date?',
-    created_at: 'date',
-    updated_at: 'date',
-    status: 'string',
-    patient_id: 'string',
-    fail_safe: {type: 'bool', default: false},
-  },
-};
+export class MedicalCase extends Model {
+  static table = 'medical_cases';
+
+  static associations = {
+    activities: { type: 'has_many', foreignKey: 'medical_case_id' },
+  };
+}
