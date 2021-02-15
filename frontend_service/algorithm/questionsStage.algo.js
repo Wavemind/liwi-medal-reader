@@ -2,8 +2,8 @@ import * as _ from 'lodash';
 
 import moment from 'moment';
 import { store } from '../store';
-import { categories, stages } from '../constants';
-import { updateMetaData, setAnswer } from '../actions/creators.actions';
+import { categories } from '../constants';
+import { updateMetaData } from '../actions/creators.actions';
 import { nodeFilterBy } from '../helpers/Node.model';
 import { questionBooleanValue, questionIsDisplayedInTriage } from '../helpers/Question.model';
 
@@ -248,6 +248,7 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
 
   // Get vital signs questions based on background calculation
   backgroundCalculationQuestions.forEach((bcQuestion) => {
+    // console.log(bcQuestion.id)
     algorithm.nodes[bcQuestion.id].vital_signs.forEach((id) => {
       if (algorithm.nodes[id].category === categories.vitalSignAnthropometric) {
         vitalSignQuestions.push(medicalCase.nodes[id]);
