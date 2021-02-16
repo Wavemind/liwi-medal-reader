@@ -60,11 +60,12 @@ export default class Settings extends React.Component {
    */
   handleGeneratePatients = async () => {
     this.setState({ disabled: true });
-    const entryAmount = 250;
+    const entryAmount = 2;
     const database = await new Database();
     let i = 0;
     for (i = 0; i < entryAmount; i++) {
       const patient = await patientTemplate();
+      console.log("database",patient)
       await database.insert('Patient', patient);
       if (i % 25 === 0) {
         displayNotification(`Created ${i} of ${entryAmount} entries`, liwiColors.greenColor);

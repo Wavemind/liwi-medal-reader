@@ -46,7 +46,7 @@ export default class String extends React.Component {
     const regex = new RegExp(`${query.trim()}`, 'i');
     return villages.filter((village) => {
       return Object.keys(village)[0].search(regex) >= 0;
-    });
+    }).slice(0,5);
   }
 
   /**

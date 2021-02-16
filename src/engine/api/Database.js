@@ -2,13 +2,14 @@ import HttpInterface from './dbInterface/HttpInterface';
 
 import { getItem } from './LocalStorage';
 import { databaseInterface } from '../../../frontend_service/constants';
+import LocalInterface from './dbInterface/LocalInterface';
 
 export default class Database {
   constructor() {
     return (async () => {
       const session = await getItem('session');
       this.architecture = session.facility.architecture;
-      this.realmInterface = await new HttpInterface();
+      this.realmInterface = await new LocalInterface();
       this.httpInterface = await new HttpInterface();
       return this;
     })();
@@ -125,10 +126,11 @@ export default class Database {
     const isConnected = await getItem('isConnected');
     if (this.architecture === 'standalone' || !isConnected) {
       // dbInterface = databaseInterface.realmInterface;
-      dbInterface = databaseInterface.httpInterface;
+      dbInterface = databaseInterface.realmInterface;
     } else {
       dbInterface = databaseInterface.httpInterface;
     }
+    console.log(dbInterface)
     return dbInterface;
   };
 }
