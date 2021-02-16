@@ -71,15 +71,13 @@ const adapter = new SQLiteAdapter({
   synchronous: true, // synchronous mode only works on iOS. improves performance and reduces glitches in most cases, but also has some downsides - test with and without it
 });
 
-const database =  new Database({
+const database = new Database({
   adapter,
   modelClasses: [Patient, PatientValue, MedicalCase, Activity],
   actionsEnabled: true,
 });
 
 export default class LocalInterface {
-
-
   /**
    * Map model to Watermelon table
    * @param { string } model - The model name of the data we want to retrieve
@@ -121,8 +119,8 @@ export default class LocalInterface {
    */
   getAll = async (model, page = null, params) => {
     const collection = database.get(this._mapModelToTable(model));
-
     const result = await collection.query().fetch();
+    console.log(result);
     return this._generateList(result, model, params.columns);
   };
 
@@ -140,19 +138,16 @@ export default class LocalInterface {
    * @param { object } object - The value of the object
    */
   insert = async (model, object) => {
-    console.log("object", object);
+    database.unsafeResetDatabase();
     const session = await getItem('session');
     const collection = database.get(this._mapModelToTable(model));
     if (session.facility.architecture === 'client_server') object = { ...object, fail_safe: true };
     await database.action(async () => {
-      const newRecord = await collection.create(record => {
-        record.uid = "fsdfsd"
-        record.study_id = "dsad"
-        record.group_id = "dsad"
-        record.fail_safe = true
+      const newRecord = await collection.create((record) => {
+        Object.keys(object).forEach((value) => {
+          record[value] = object[value];
+        });
       });
-      console.log(newRecord);
-
     });
 
    // this._savePatientValue(model, object);

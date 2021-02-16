@@ -68,6 +68,7 @@ export default class WavemindTools extends Component {
                   onPress={async () => {
                     await clearLocalStorage();
                     await persistor.purge();
+
                     NavigationService.navigate('NewSession');
                     await RNRestart.Restart();
                   }}
