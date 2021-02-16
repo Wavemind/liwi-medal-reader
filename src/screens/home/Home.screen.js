@@ -5,7 +5,7 @@ import { Image, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { styles } from './Home.style';
-import { getItems } from '../../engine/api/LocalStorage';
+import { getItem, getItems} from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 
@@ -20,6 +20,7 @@ export default class Home extends React.Component<Props, State> {
   state = {
     session: null,
     medicalCases: [],
+    environment: null,
   };
 
   async componentDidMount() {
@@ -27,6 +28,7 @@ export default class Home extends React.Component<Props, State> {
       app: { database, algorithm },
     } = this.props;
     const session = await getItems('session');
+    const environment = await getItem('environment');
     const medicalCases = [];
 
     if (session?.facility.architecture === 'standalone') {
@@ -38,7 +40,8 @@ export default class Home extends React.Component<Props, State> {
         }
       });
     }
-    this.setState({ session, medicalCases });
+
+    this.setState({ environment, session, medicalCases });
   }
 
   /**
@@ -62,7 +65,7 @@ export default class Home extends React.Component<Props, State> {
       app: { t, user, logout, algorithm },
     } = this.props;
 
-    const { medicalCases } = this.state;
+    const { medicalCases, environment } = this.state;
 
     return (
       <View padding-auto testID="HomeScreen">
@@ -78,28 +81,30 @@ export default class Home extends React.Component<Props, State> {
           ) : null}
 
           <View w50>
-            <TouchableOpacity
-              testID="GoToPatientUpsert"
-              underlayColor="transparent"
-              style={styles.navigationButton}
-              onPress={() => {
-                if (algorithm === undefined) {
-                  displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
-                } else {
-                  navigation.navigate('PatientUpsert', {
-                    idPatient: null,
-                    newMedicalCase: true,
-                  });
-                }
-              }}
-            >
-              <View style={styles.blocContainer}>
-                <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/heartbeat.png')} />
-                <Text size-auto center style={styles.textButton}>
-                  {t('navigation:patient_add')}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {environment !== 'production' && (
+              <TouchableOpacity
+                testID="GoToPatientUpsert"
+                underlayColor="transparent"
+                style={styles.navigationButton}
+                onPress={() => {
+                  if (algorithm === undefined) {
+                    displayNotification(t('work_case:no_algorithm'), liwiColors.redColor);
+                  } else {
+                    navigation.navigate('PatientUpsert', {
+                      idPatient: null,
+                      newMedicalCase: true,
+                    });
+                  }
+                }}
+              >
+                <View style={styles.blocContainer}>
+                  <Image style={styles.icons} resizeMode="contain" source={require('../../../assets/images/heartbeat.png')} />
+                  <Text size-auto center style={styles.textButton}>
+                    {t('navigation:patient_add')}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('QrCodePatient')}>
               <View style={styles.blocContainer}>
