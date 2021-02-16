@@ -437,7 +437,7 @@ export class MedicalCase extends Model {
 
   @relation('patients', 'patient_id') patient;
 
-  // @field('json') json;
+  @field('json') json;
   // https://nozbe.github.io/WatermelonDB/Advanced/AdvancedFields.html?highlight=json#json
   @json('json', json) json;
   @field('synchronized_at') synchronized_at;

@@ -130,7 +130,6 @@ export default class Database {
     } else {
       dbInterface = databaseInterface.httpInterface;
     }
-    console.log(dbInterface)
     return dbInterface;
   };
 }

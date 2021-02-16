@@ -4,6 +4,7 @@ import uuid from 'react-native-uuid';
 import moment from 'moment';
 import { Model } from '@nozbe/watermelondb';
 import { field, date, readonly, children } from '@nozbe/watermelondb/decorators';
+import { setGenerator } from '@nozbe/watermelondb/utils/common/randomId';
 
 import I18n from '../../src/utils/i18n';
 import Database from '../../src/engine/api/Database';

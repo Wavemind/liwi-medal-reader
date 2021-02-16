@@ -147,30 +147,33 @@ export default class LocalInterface {
     await database.action(async () => {
       // database.unsafeResetDatabase();
       patient = await collection.create((record) => {
-        Object.keys(object).forEach((value) => {
-          if (value !== 'medicalCases') {
-            record[value] = object[value];
-          }
-        });
+        record._raw.id = object.id;
+        record.uid = object.uid;
+        record.study_id = object.study_id;
+        record.group_id = object.group_id;
+        record.other_uid = object.other_uid;
+        record.other_study_id = object.other_study_id;
+        record.other_group_id = object.other_group_id;
+        record.reason = object.reason;
+        record.consent = object.consent;
+        record.fail_safe = object.fail_safe;
       });
     });
 
     const nestedCollection = database.get('medical_cases');
-console.log(patient)
+
     // MedicalCase
     await database.action(async () => {
       await nestedCollection.create((nestedRecord) => {
         object.medicalCases.forEach((medicalCase) => {
-          Object.keys(medicalCase).forEach((key) => {
-            console.log(key, medicalCase[key])
-            nestedRecord[key] = medicalCase[key];
-          });
+          nestedRecord._raw.id = medicalCase.id;
+          nestedRecord.json = medicalCase.json;
+          nestedRecord.synchronized_at = medicalCase.synchronized_at;
+          nestedRecord.status = medicalCase.status;
           nestedRecord.patient.set(patient);
         });
       });
     });
-
-    console.log('patient', patient)
 
     // this._savePatientValue(model, object);
   };
