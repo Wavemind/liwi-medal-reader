@@ -1,12 +1,12 @@
 // @flow
 import * as React from 'react';
-import { Text, View, Button, Icon } from 'native-base';
+import { Text, View, Button, Icon, Tabs, Tab, Content } from 'native-base';
 import { FlatList, ScrollView, TouchableOpacity } from 'react-native';
 
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
-import { LiwiTitle2 } from '../../../template/layout';
+import { LiwiTabStyle } from '../../../template/layout';
 import { getDeviceInformation } from '../../../engine/api/Device';
-import { getItem, getItems } from '../../../engine/api/LocalStorage';
+import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
@@ -68,6 +68,33 @@ export default class PatientProfile extends React.Component {
   }
 
   /**
+   * Prints icon at the end of the line based on medical Case status
+   * @param medicalCase -  Medical case concerned
+   * @returns {JSX.Element}
+   */
+  showIcons = (medicalCase) => {
+    const {
+      app: { user, isConnected },
+    } = this.props;
+    const { deviceInfo } = this.state;
+    let icon = null;
+
+    if (isConnected && MedicalCaseModel.isLocked(medicalCase, deviceInfo, user)) {
+      icon = <Icon name="lock" type="EvilIcons" style={styles.lock} />;
+    } else if (medicalCase.status !== 'close') {
+      icon = <Icon dark type="EvilIcons" name="chevron-right" />;
+    } else {
+      icon = <Icon dark type="EvilIcons" name="eye" />;
+    }
+
+    return (
+      <Text size-auto right style={styles.icons}>
+        {icon}
+      </Text>
+    );
+  };
+
+  /**
    * Medical case rendering
    * @param {object} medicalCase
    * @returns {*}
@@ -115,13 +142,8 @@ export default class PatientProfile extends React.Component {
         <View style={{ flex: size }}>
           <Text size-auto>{t(`medical_case:${medicalCase.status}`)}</Text>
         </View>
-        {isConnected ? (
-          <View style={styles.itemLock}>
-            <Text size-auto right>
-              {MedicalCaseModel.isLocked(medicalCase, deviceInfo, user) ? <Icon name="lock" type="EvilIcons" style={styles.lock} /> : null}
-            </Text>
-          </View>
-        ) : null}
+
+        {this.showIcons(medicalCase)}
       </TouchableOpacity>
     );
   };
@@ -134,40 +156,38 @@ export default class PatientProfile extends React.Component {
     return <View style={styles.separator} />;
   };
 
-  render() {
+  /**
+   * Renders the patient values Tab
+   * @returns {JSX.Element}
+   */
+  renderPatientValues = () => {
     const {
       app: { t, algorithm },
       navigation,
     } = this.props;
-    const { patient, firstRender, nodes, columns, medicalCaseData } = this.state;
-
-    if (firstRender) {
-      return <LiwiLoader />;
-    }
+    const { patient, nodes } = this.state;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.patientValuesContainer}>
-          <View padding-auto margin-top style={styles.flex}>
-            <LiwiTitle2 noBorder>{t('patient_profile:personal_information')}</LiwiTitle2>
-            <ScrollView>
-              <View style={styles.patientValuesContent}>
-                {patient.patientValues.map((patientValue) => (
-                  <View key={patientValue.node_id} style={styles.wrapper}>
-                    <Text size-auto style={styles.identifierText}>
-                      {nodes[patientValue.node_id].label}
-                    </Text>
-                    <Text size-auto style={styles.patientValues}>
-                      {patient.getLabelFromNode(patientValue.node_id, algorithm)}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            </ScrollView>
-          </View>
+      <>
+        <View padding-auto margin-top style={styles.flex}>
+          <ScrollView>
+            <View style={styles.patientValuesContent}>
+              {patient.patientValues.map((patientValue) => (
+                <View key={patientValue.node_id} style={styles.wrapper}>
+                  <Text size-auto style={styles.identifierText}>
+                    {nodes[patientValue.node_id].label}
+                  </Text>
+                  <Text size-auto style={styles.patientValues}>
+                    {patient.getLabelFromNode(patientValue.node_id, algorithm)}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+        <View style={styles.footerButton}>
           <Button
             block
-            style={styles.marginBottom}
             onPress={() => {
               navigation.navigate('PatientEdit', {
                 patient,
@@ -177,34 +197,39 @@ export default class PatientProfile extends React.Component {
             <Text size-auto>{t('patient_profile:edit_patient_value')}</Text>
           </Button>
         </View>
+      </>
+    );
+  };
 
-        <View style={styles.flex06}>
-          <View padding-auto>
-            <LiwiTitle2 noBorder>{t('patient_profile:medical_cases')}</LiwiTitle2>
-          </View>
+  /**
+   * Renders the consultation tab
+   * @returns {JSX.Element}
+   */
+  renderConsultations = () => {
+    const {
+      app: { t },
+      navigation,
+    } = this.props;
+    const { patient, nodes, columns, medicalCaseData } = this.state;
 
-          <View padding-auto style={styles.filterContent}>
-            {columns.map((column) => (
-              <View key={column} style={styles.columnLabel}>
-                <Text size-auto>{nodes[column].label}</Text>
-              </View>
-            ))}
-            <View style={styles.columnLabel}>
-              <Text size-auto>{t('patient_profile:status')}</Text>
+    return (
+      <>
+        <View padding-auto style={styles.filterContent}>
+          {columns.map((column) => (
+            <View key={column} style={styles.columnLabel}>
+              <Text size-auto>{nodes[column].label}</Text>
             </View>
+          ))}
+          <View style={styles.columnLabel}>
+            <Text size-auto>{t('patient_profile:status')}</Text>
           </View>
+        </View>
 
-          <View padding-auto>
-            <FlatList
-              key="dataList"
-              data={medicalCaseData}
-              contentContainerStyle={styles.flatList}
-              renderItem={(value) => this._renderItem(value.item)}
-              ItemSeparatorComponent={this._renderSeparator}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
+        <View padding-auto style={styles.consultationContainer}>
+          <FlatList key="dataList" data={medicalCaseData} renderItem={(value) => this._renderItem(value.item)} ItemSeparatorComponent={this._renderSeparator} keyExtractor={(item) => item.id} />
+        </View>
 
+        {medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (
           <View style={styles.footerButton}>
             <Button
               block
@@ -218,7 +243,55 @@ export default class PatientProfile extends React.Component {
               <Text size-auto>{t('patient_profile:add_case')}</Text>
             </Button>
           </View>
-        </View>
+        )}
+      </>
+    );
+  };
+
+  render() {
+    const {
+      app: { t },
+    } = this.props;
+    const { firstRender } = this.state;
+
+    if (firstRender) {
+      return <LiwiLoader />;
+    }
+
+    return (
+      <View style={styles.container}>
+        <Tabs tabBarUnderlineStyle={LiwiTabStyle.tabBarUnderlineStyle}>
+          <Tab
+            heading={t('patient_profile:medical_cases')}
+            tabStyle={LiwiTabStyle.tabStyle}
+            activeTextStyle={LiwiTabStyle.activeTextStyle}
+            textStyle={LiwiTabStyle.textStyle}
+            activeTabStyle={LiwiTabStyle.activeTabStyle}
+            style={LiwiTabStyle.style}
+          >
+            <Content
+              style={styles.marginTop}
+              contentContainerStyle={styles.flex} // important!
+            >
+              {this.renderConsultations()}
+            </Content>
+          </Tab>
+          <Tab
+            heading={t('patient_profile:personal_information')}
+            tabStyle={LiwiTabStyle.tabStyle}
+            activeTextStyle={LiwiTabStyle.activeTextStyle}
+            textStyle={LiwiTabStyle.textStyle}
+            activeTabStyle={LiwiTabStyle.activeTabStyle}
+            style={LiwiTabStyle.style}
+          >
+            <Content
+              style={styles.marginTop}
+              contentContainerStyle={styles.flex} // important!
+            >
+              {this.renderPatientValues()}
+            </Content>
+          </Tab>
+        </Tabs>
       </View>
     );
   }

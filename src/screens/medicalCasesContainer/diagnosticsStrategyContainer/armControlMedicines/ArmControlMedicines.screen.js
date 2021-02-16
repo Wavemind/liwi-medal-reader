@@ -12,36 +12,22 @@ import { categories, modalType } from '../../../../../frontend_service/constants
 export default class ArmControlMedicines extends Component {
   /**
    * Set additional medicine in medical case
-   * @param {Array} selectedItems - List of all additional item selected
+   * @param selectedItems
+   * @param type
    */
   onSelectedItemsChange = (selectedItems, type) => {
     const {
       setAdditionalMedicine,
       setAdditionalManagement,
       medicalCase: { nodes },
-      app: {
-        algorithm,
-        algorithm: { diagnostics },
-      },
     } = this.props;
 
     const objMedicine = {};
 
     selectedItems.forEach((i) => {
-      let duration = 0;
-
-      // Get max duration from final_diagnostics
-      Object.keys(diagnostics).forEach((id) => {
-        Object.keys(diagnostics[id].final_diagnostics).forEach((finalDiagnosticId) => {
-          if (diagnostics[id].final_diagnostics[finalDiagnosticId].drugs[i]?.duration > duration) {
-            duration = diagnostics[id].final_diagnostics[finalDiagnosticId].drugs[i].duration;
-          }
-        });
-      });
-
       objMedicine[i] = nodes[i];
       objMedicine[i].agreed = true;
-      objMedicine[i].duration = duration;
+      objMedicine[i].duration = '';
     });
     if (type === categories.drug) {
       setAdditionalMedicine(objMedicine);
@@ -92,9 +78,6 @@ export default class ArmControlMedicines extends Component {
     const drugsList = _.filter(algorithm.nodes, (f) => f.category === categories.drug);
     const selectedDrugs = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
 
-    const managementsList = _.filter(algorithm.nodes, (f) => f.category === categories.management);
-    const selectedManagements = Object.keys(diagnoses.additionalManagements).map((s) => diagnoses.additionalManagements[s].id);
-
     return (
       <View>
         <Text customTitle style={styles.noTopMargin}>
@@ -114,8 +97,9 @@ export default class ArmControlMedicines extends Component {
           Object.keys(diagnoses.additionalDrugs).map((additionalKey) => (
             <View key={`drug-${additionalKey}`} style={styles.drugContainer}>
               <View style={styles.additionalDrugName}>
-                <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
-                  <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                <TouchableOpacity style={styles.touchable} transparent
+                                  onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
+                  <Icon type="AntDesign" name="info" style={styles.iconInfo}/>
                 </TouchableOpacity>
                 <Text key={`drug-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
               </View>
@@ -140,48 +124,6 @@ export default class ArmControlMedicines extends Component {
           uniqueKey="id"
           onSelectedItemsChange={(item) => this.onSelectedItemsChange(item, 'drug')}
           selectedItems={selectedDrugs}
-          selectText={t('diagnoses:select')}
-          searchInputPlaceholderText={t('diagnoses:search')}
-          tagRemoveIconColor="#CCC"
-          tagBorderColor="#CCC"
-          textInputProps={{ autoFocus: false }}
-          tagTextColor="#CCC"
-          selectedItemTextColor="#CCC"
-          selectedItemIconColor={liwiColors.redColor}
-          itemTextColor="#000"
-          itemFontSize={15}
-          styleRowList={styles.rowStyle}
-          displayKey="label"
-          searchInputStyle={styles.searchInputStyle}
-          submitButtonColor={liwiColors.redColor}
-          submitButtonText={t('diagnoses:close')}
-          flatListProps={{ maxHeight: 200, nestedScrollEnabled: true }}
-        />
-
-        <Text customTitle style={styles.marginTop30}>
-          {t('diagnoses:additional_managements')}
-        </Text>
-        {Object.keys(diagnoses.additionalManagements).length > 0 ? (
-          Object.keys(diagnoses.additionalManagements).map((additionalKey) => (
-            <View key={`additional-${additionalKey}`} style={styles.container}>
-              <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
-                <Icon type="AntDesign" name="info" style={styles.iconInfo} />
-              </TouchableOpacity>
-              <Text key={`additional-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
-            </View>
-          ))
-        ) : (
-          <Text italic>{t('diagnoses:no_additional_managements')}</Text>
-        )}
-
-        <Text customTitle>{t('diagnoses:add_managements')}</Text>
-
-        <MultiSelect
-          hideTags
-          items={managementsList}
-          uniqueKey="id"
-          onSelectedItemsChange={(item) => this.onSelectedItemsChange(item, 'management')}
-          selectedItems={selectedManagements}
           selectText={t('diagnoses:select')}
           searchInputPlaceholderText={t('diagnoses:search')}
           tagRemoveIconColor="#CCC"

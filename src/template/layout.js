@@ -123,7 +123,6 @@ export const LiwiTabStyle = StyleSheet.create({
     borderColor: liwiColors.darkGreyColor,
     borderWidth: 1,
   },
-
   activeTextStyle: {
     color: liwiColors.blackColor,
     fontSize: 20,
@@ -135,7 +134,7 @@ export const LiwiTabStyle = StyleSheet.create({
   },
 
   tabBarUnderlineStyle: {
-    backgroundColor: liwiColors.darkGreyColor,
+    backgroundColor: liwiColors.redColor,
   },
 
   activeTabStyle: {

@@ -47,6 +47,7 @@ const Stack = createStackNavigator(
           headerTitleContainerStyle: {
             marginLeft: 15,
           },
+          animationEnabled: false,
         };
       },
     },
@@ -62,6 +63,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+          animationEnabled: false,
         };
       },
     },
@@ -72,6 +74,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+          animationEnabled: false,
         };
       },
     },
@@ -82,6 +85,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+          animationEnabled: false,
         };
       },
     },
@@ -92,6 +96,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: i18n.t('navigation:consent_list'),
+          animationEnabled: false,
         };
       },
     },
@@ -102,6 +107,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: i18n.t('navigation:qr_reader'),
+          animationEnabled: false,
         };
       },
     },
@@ -117,6 +123,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+          animationEnabled: false,
         };
       },
     },
@@ -127,6 +134,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:medical_case_list'),
+          animationEnabled: false,
         };
       },
     },
@@ -137,6 +145,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_edit'),
+          animationEnabled: false,
         };
       },
     },
@@ -147,6 +156,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_list'),
+          animationEnabled: false,
         };
       },
     },
@@ -159,6 +169,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           headerShown: false,
+          animationEnabled: false,
         };
       },
     },
@@ -168,6 +179,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_profile'),
+          animationEnabled: false,
         };
       },
     },
@@ -180,6 +192,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:patient_upsert'),
+          animationEnabled: false,
         };
       },
     },
@@ -190,6 +203,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:settings'),
+          animationEnabled: false,
         };
       },
     },
@@ -200,6 +214,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:about'),
+          animationEnabled: false,
         };
       },
     },
@@ -210,6 +225,7 @@ const Stack = createStackNavigator(
       navigationOptions: () => {
         return {
           title: i18n.t('navigation:synchronization'),
+          animationEnabled: false,
         };
       },
     },
@@ -225,6 +241,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+          animationEnabled: false,
         };
       },
     },
@@ -242,6 +259,7 @@ const Stack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           title: navigation.getParam('title'),
+          animationEnabled: false,
         };
       },
     },
