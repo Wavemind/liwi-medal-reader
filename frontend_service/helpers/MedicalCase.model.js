@@ -425,6 +425,8 @@ export class MedicalCaseModel {
   }
 }
 
+const sanitizeJson = json => json;
+
 export class MedicalCase extends Model {
   static table = 'medical_cases';
 
@@ -437,15 +439,18 @@ export class MedicalCase extends Model {
 
   @relation('patients', 'patient_id') patient;
 
-  @field('json') json;
   // https://nozbe.github.io/WatermelonDB/Advanced/AdvancedFields.html?highlight=json#json
-  @json('json', json) json;
+  @json('json', sanitizeJson) json;
+
   @field('synchronized_at') synchronized_at;
+
   @field('status') status;
+
   @field('fail_safe') fail_safe;
 
   @readonly @date('created_at') createdAt;
 
   @readonly @date('updated_at') updatedAt;
-
 }
+
+
