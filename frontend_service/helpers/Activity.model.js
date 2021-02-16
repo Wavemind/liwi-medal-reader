@@ -2,10 +2,11 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
-import {Model} from '@nozbe/watermelondb';
+import { Model } from '@nozbe/watermelondb';
 
 import { getItem } from '../../src/engine/api/LocalStorage';
 import { getDeviceInformation } from '../../src/engine/api/Device';
+import { relation } from '@nozbe/watermelondb/decorators';
 
 export class ActivityModel {
   constructor(props) {
@@ -18,7 +19,7 @@ export class ActivityModel {
         this.id = uuid.v4();
         this.stage = stage;
         this.nodes = JSON.stringify(nodes);
-        this.clinician = user.first_name + " " + user.last_name;
+        this.clinician = `${user.first_name} ${user.last_name}`;
         this.medical_case_id = medical_case_id?.toString();
         this.mode = session.facility.architecture;
         this.mac_address = deviceInfo.mac_address;
@@ -28,13 +29,15 @@ export class ActivityModel {
         return this;
       })();
     }
-  };
+  }
 }
 
 export class Activity extends Model {
   static table = 'activities';
 
   static associations = {
-    posts: { type: 'belongs_to', key: 'post_id' },
-  }
+    medicalCases: { type: 'belongs_to', key: 'medical_case_id' },
+  };
+
+  @relation('medical_cases', 'medical_case_id') medicalCases;
 }

@@ -1,10 +1,11 @@
 // @flow
 
 import uuid from 'react-native-uuid';
+import { Model } from '@nozbe/watermelondb';
+import { relation } from '@nozbe/watermelondb/decorators';
 
 import { differenceNodes } from '../../src/utils/swissKnives';
 import { store } from '../store';
-import {Model} from '@nozbe/watermelondb';
 
 export class PatientValueModel {
   constructor(props) {
@@ -39,9 +40,8 @@ export class PatientValueModel {
           patient_id: patient.id,
           id,
         };
-      } else {
-        return patientValue;
       }
+      return patientValue;
     });
 
     return newPatientValues.filter((newPatientValue) => newPatientValue.id !== undefined);
@@ -50,4 +50,10 @@ export class PatientValueModel {
 
 export class PatientValue extends Model {
   static table = 'patient_values';
+
+  static associations = {
+    patients: { type: 'belongs_to', foreignKey: 'patient_id' },
+  };
+
+  @relation('patients', 'patient_id') patient;
 }

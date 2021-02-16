@@ -2,8 +2,9 @@
 import moment from 'moment';
 import uuid from 'react-native-uuid';
 import { Model } from '@nozbe/watermelondb';
+import { children, date, field, readonly, relation, json } from '@nozbe/watermelondb/decorators';
 
-import { categories, displayFormats, medicalCaseStatus, nodeTypes, stages } from '../constants';
+import { categories, displayFormats, medicalCaseStatus, nodeTypes } from '../constants';
 import { getItem } from '../../src/engine/api/LocalStorage';
 import Database from '../../src/engine/api/Database';
 import { differenceNodes } from '../../src/utils/swissKnives';
@@ -429,5 +430,22 @@ export class MedicalCase extends Model {
 
   static associations = {
     activities: { type: 'has_many', foreignKey: 'medical_case_id' },
+    patients: { type: 'belongs_to', foreignKey: 'patient_id' },
   };
+
+  @children('medical_cases') medicalCases;
+
+  @relation('patients', 'patient_id') patient;
+
+  // @field('json') json;
+  // https://nozbe.github.io/WatermelonDB/Advanced/AdvancedFields.html?highlight=json#json
+  @json('json', json) json;
+  @field('synchronized_at') synchronized_at;
+  @field('status') status;
+  @field('fail_safe') fail_safe;
+
+  @readonly @date('created_at') createdAt;
+
+  @readonly @date('updated_at') updatedAt;
+
 }

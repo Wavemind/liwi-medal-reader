@@ -164,17 +164,28 @@ export class Patient extends Model {
     medicalCases: { type: 'has_many', foreignKey: 'patient_id' },
     patientValues: { type: 'has_many', foreignKey: 'patient_id' },
   };
-  @children('medical_cases') medicalCases
 
-  @field('uid') uid
-  @field('study_id') study_id
-  @field('group_id') group_id
-  @field('other_uid') other_uid
-  @field('other_study_id') other_study_id
-  @field('reason') reason
-  @field('consent') consent
-  @field('fail_safe') fail_safe
-  @readonly @date('created_at') createdAt
-  @readonly @date('updated_at') updatedAt
+  @children('medical_cases') medicalCases;
 
+  @children('patient_values') patientValues;
+
+  @field('uid') uid;
+
+  @field('study_id') study_id;
+
+  @field('group_id') group_id;
+
+  @field('other_uid') other_uid;
+
+  @field('other_study_id') other_study_id;
+
+  @field('reason') reason;
+
+  @field('consent') consent;
+
+  @field('fail_safe') fail_safe;
+
+  @readonly @date('created_at') createdAt;
+
+  @readonly @date('updated_at') updatedAt;
 }

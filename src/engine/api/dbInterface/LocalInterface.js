@@ -138,19 +138,41 @@ export default class LocalInterface {
    * @param { object } object - The value of the object
    */
   insert = async (model, object) => {
-    database.unsafeResetDatabase();
     const session = await getItem('session');
     const collection = database.get(this._mapModelToTable(model));
+    let patient = null;
+
     if (session.facility.architecture === 'client_server') object = { ...object, fail_safe: true };
+
     await database.action(async () => {
-      const newRecord = await collection.create((record) => {
+      // database.unsafeResetDatabase();
+      patient = await collection.create((record) => {
         Object.keys(object).forEach((value) => {
-          record[value] = object[value];
+          if (value !== 'medicalCases') {
+            record[value] = object[value];
+          }
         });
       });
     });
 
-   // this._savePatientValue(model, object);
+    const nestedCollection = database.get('medical_cases');
+console.log(patient)
+    // MedicalCase
+    await database.action(async () => {
+      await nestedCollection.create((nestedRecord) => {
+        object.medicalCases.forEach((medicalCase) => {
+          Object.keys(medicalCase).forEach((key) => {
+            console.log(key, medicalCase[key])
+            nestedRecord[key] = medicalCase[key];
+          });
+          nestedRecord.patient.set(patient);
+        });
+      });
+    });
+
+    console.log('patient', patient)
+
+    // this._savePatientValue(model, object);
   };
 
   /**
