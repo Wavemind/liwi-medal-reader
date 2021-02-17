@@ -120,6 +120,10 @@ export default class Medicines extends Component {
       });
     });
 
+    // Order by priority
+    const proposed = _.orderBy(Object.values(diagnoses.proposed), (finalDiagnostic) => algorithm.nodes[finalDiagnostic.id].level_of_urgency, ['desc', 'asc']);
+    const additional = _.orderBy(Object.values(diagnoses.additional), (finalDiagnostic) => algorithm.nodes[finalDiagnostic.id].level_of_urgency, ['desc', 'asc']);
+
     return (
       <View>
         <Text customTitle style={styles.noTopMargin}>
@@ -132,18 +136,18 @@ export default class Medicines extends Component {
           <Text italic>{t('diagnoses:no_medicines')}</Text>
         ) : (
           <>
-            {Object.keys(diagnoses.proposed).map((key) => {
-              if (diagnoses.proposed[key].agreed === true && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) {
+            {proposed.map((finalDiagnostic) => {
+              if (finalDiagnostic.agreed === true && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[finalDiagnostic.id])) {
                 return (
-                  <MedicineSelection key={`proposed_medicine_${key}`} algorithm={algorithm} diagnosesFinalDiagnostic={diagnoses.proposed[key]} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />
+                  <MedicineSelection key={`proposed_medicine_${finalDiagnostic.id}`} algorithm={algorithm} diagnosesFinalDiagnostic={finalDiagnostic} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />
                 );
               }
             })}
-            {Object.keys(diagnoses.additional).map((key) => (
+            {additional.map((finalDiagnostic) => (
               <MedicineSelection
-                key={`additional_medicine_${key}`}
+                key={`additional_medicine_${finalDiagnostic.id}`}
                 algorithm={algorithm}
-                diagnosesFinalDiagnostic={diagnoses.additional[key]}
+                diagnosesFinalDiagnostic={diagnoses.additional[finalDiagnostic.id]}
                 diagnoseKey="additional"
                 t={t}
                 medicalCase={medicalCase}
