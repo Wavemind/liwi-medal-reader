@@ -8,7 +8,6 @@ import { actions } from '../../actions/types.actions';
 import { categories } from '../../constants';
 import { newDrugsFilter } from '../../algorithm/treeDiagnosis.algo';
 import { nodeUpdateAnswer } from '../../helpers/Node.model';
-import NavigationService from '../../../src/engine/navigation/Navigation.service';
 import { processUpdatedNode } from '../../algorithm/epics.algo';
 
 export const initialState = { modal: { open: false, content: '', navigator: {}, params: {} } };

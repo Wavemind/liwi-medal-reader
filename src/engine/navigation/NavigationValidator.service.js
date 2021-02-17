@@ -149,8 +149,7 @@ function oneValidation(algorithm, criteria, questions, stepName) {
           if ((currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) && !mcNode.unavailableValue) {
             if (
               mcNode.value !== null &&
-              (currentNode.min_value_error !== null || currentNode.max_value_error) &&
-              (mcNode.value < currentNode.min_value_error || mcNode.value > currentNode.max_value_error)
+              ((currentNode.min_value_error !== null && mcNode.value < currentNode.min_value_error) || (currentNode.max_value_error !== null && mcNode.value > currentNode.max_value_error))
             ) {
               isValid = false;
               staticValidator.questionsToBeFill.push(currentNode);
