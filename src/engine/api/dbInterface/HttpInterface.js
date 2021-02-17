@@ -257,13 +257,15 @@ export default class HttpInterface {
    */
   _initClasses = async (data, model) => {
     const object = [];
+    const environment = await getItem('environment');
+
     if (model === 'Patient') {
       if (data instanceof Array) {
         data.forEach((item) => {
-          object.push(new PatientModel(item));
+          object.push(new PatientModel(item, environment));
         });
       } else {
-        return new PatientModel(data);
+        return new PatientModel(data, environment);
       }
     } else if (data instanceof Array) {
       data.forEach((item) => {

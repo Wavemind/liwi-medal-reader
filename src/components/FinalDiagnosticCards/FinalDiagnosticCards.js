@@ -15,6 +15,7 @@ import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { drugAgreed, drugDoses } from '../../../frontend_service/helpers/Drug.model';
 import { finalDiagnosticCalculateCondition } from '../../../frontend_service/helpers/FinalDiagnostic.model';
+import _ from 'lodash';
 
 export default class FinalDiagnosticCards extends React.Component {
   /**
@@ -71,25 +72,36 @@ export default class FinalDiagnosticCards extends React.Component {
     } = this.props;
 
     const drugsAvailable = drugAgreed(medicalCase.diagnoses, algorithm);
+    let finalDiagnostics = [];
 
-    return Object.keys(diagnoseFinalDiagnostics).map((key) => {
-      if ((diagnoseFinalDiagnostics[key].agreed && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[key])) || title === 'additional' || title === 'custom') {
+    // Skip ordering for custom final diagnostics
+    if (title !== 'custom') {
+      // Order by priority
+      finalDiagnostics = _.orderBy(Object.values(diagnoseFinalDiagnostics), (finalDiagnostic) => algorithm.nodes[finalDiagnostic.id].level_of_urgency, ['desc', 'asc']);
+    } else {
+      finalDiagnostics = Object.values(diagnoseFinalDiagnostics);
+    }
+
+    return finalDiagnostics.map((finalDiagnostic) => {
+      if ((finalDiagnostic.agreed && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[finalDiagnostic.id])) || title === 'additional' || title === 'custom') {
         return (
-          <Card key={key}>
+          <Card key={finalDiagnostic.id}>
             <CardItem style={styles.cardItemCondensed}>
               <Body style={styles.cardTitleContent}>
                 <LiwiTitle2 noBorder style={styles.flex}>
-                  {diagnoseFinalDiagnostics[key].label}
+                  {finalDiagnostic.label}
                   {'\n'}
                   <Text note>{t(`diagnoses_label:${title}`)}</Text>
                 </LiwiTitle2>
-                <View style={styles.tooltipButtonFinalDiagnostic}>
-                  <View flex>
-                    <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(diagnoseFinalDiagnostics[key])}>
-                      <Icon type="AntDesign" name="info" style={styles.iconInfo} />
-                    </TouchableOpacity>
+                {title !== 'custom' && (
+                  <View style={styles.tooltipButtonFinalDiagnostic}>
+                    <View flex>
+                      <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[finalDiagnostic.id])}>
+                        <Icon type="AntDesign" name="info" style={styles.iconInfo} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
+                )}
               </Body>
             </CardItem>
             <CardItem style={styles.cardItemCondensed}>
@@ -98,15 +110,15 @@ export default class FinalDiagnosticCards extends React.Component {
                   {t('diagnoses:medicines')}
                 </LiwiTitle2>
 
-                {diagnoseFinalDiagnostics[key].drugs !== undefined && Object.keys(diagnoseFinalDiagnostics[key].drugs).length > 0 ? (
+                {finalDiagnostic.drugs !== undefined && Object.keys(finalDiagnostic.drugs).length > 0 ? (
                   title === 'custom' ? (
-                    diagnoseFinalDiagnostics[key].drugs.map((drug) => (
+                    finalDiagnostic.drugs.map((drug) => (
                       <View style={styles.drugContainer} key={drug}>
                         <View style={styles.formulationContainer}><Text>{drug}</Text></View>
                       </View>
                     ))
                   ) : (
-                    Object.keys(diagnoseFinalDiagnostics[key].drugs).map((drugKey) => {
+                    Object.keys(finalDiagnostic.drugs).map((drugKey) => {
                       if (drugsAvailable[drugKey] !== undefined) {
                         return (
                           <View style={styles.drugContainer} key={drugKey}>
@@ -133,9 +145,9 @@ export default class FinalDiagnosticCards extends React.Component {
                 <LiwiTitle2 noBorder style={styles.cardTitle}>
                   {t('diagnoses:management')}
                 </LiwiTitle2>
-                {diagnoseFinalDiagnostics[key].managements !== undefined && Object.keys(diagnoseFinalDiagnostics[key].managements).length > 0 ? (
-                  Object.keys(diagnoseFinalDiagnostics[key].managements).map((managementKey) => {
-                    const management = diagnoseFinalDiagnostics[key].managements[managementKey];
+                {finalDiagnostic.managements !== undefined && Object.keys(finalDiagnostic.managements).length > 0 ? (
+                  Object.keys(finalDiagnostic.managements).map((managementKey) => {
+                    const management = finalDiagnostic.managements[managementKey];
                     const node = algorithm.nodes[management.id];
                     if (calculateCondition(algorithm, management) === true && management.agreed === true) {
                       return (
@@ -174,6 +186,7 @@ export default class FinalDiagnosticCards extends React.Component {
     if (medicalCase.id === undefined) {
       return null;
     }
-    return ['additional', 'custom', 'proposed'].map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key));
+
+    return ['proposed', 'additional', 'custom'].map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key));
   }
 }

@@ -25,6 +25,7 @@ import { validatorNavigate, validatorStep, modelValidator } from '../../engine/n
 import { displayNotification } from '../../utils/CustomToast';
 import LiwiProgressBar from '../../utils/LiwiProgressBar';
 import { PatientModel } from '../../../frontend_service/helpers/Patient.model';
+import { getItem } from '../../engine/api/LocalStorage';
 
 type Props = {
   children: any,
@@ -544,6 +545,8 @@ class Stepper extends React.Component<Props, State> {
   _createNewMedicalCase = async (medicalCase) => {
     const { navigation, app: { database } } = this.props;
     const patientId = navigation.getParam('idPatient');
+    const environment = await getItem('environment');
+
     const medicalCaseObject = store.getState();
     let patient;
     medicalCaseObject.isNewCase = false;
@@ -562,7 +565,7 @@ class Stepper extends React.Component<Props, State> {
         other_study_id: patientObject.other_study_id,
         other_group_id: patientObject.other_group_id,
       };
-      patient = new PatientModel({ ...patientObject, facility, otherFacility });
+      patient = new PatientModel({ ...patientObject, facility, otherFacility }, environment);
 
       // Create patient if there are no errors
       await patient.medicalCases.push(medicalCaseObject);

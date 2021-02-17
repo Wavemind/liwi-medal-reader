@@ -31,8 +31,8 @@ export default class DiagnosesStrategy extends Component {
       { name: 'comment-medical', type: 'FontAwesome5' },
       { name: 'pills', type: 'FontAwesome5' },
       { name: 'balance-scale', type: 'FontAwesome5' },
-      { name: 'hospital', type: 'FontAwesome5' },
       { name: 'notes-medical', type: 'FontAwesome5' },
+      { name: 'hospital', type: 'FontAwesome5' },
     ];
 
     const steps = [
@@ -40,8 +40,8 @@ export default class DiagnosesStrategy extends Component {
       t('medical_case:conditions'),
       t('medical_case:medicines'),
       t('medical_case:medicines_formulation'),
-      t('medical_case:referral'),
       t('medical_case:healthcares'),
+      t('medical_case:referral'),
     ];
 
     // Remove health cares questions if we're in arm control
@@ -61,8 +61,8 @@ export default class DiagnosesStrategy extends Component {
     }
 
     if (!algorithm.config.track_referral) {
-      icons.splice(4, 1); // Referral
-      steps.splice(4, 1); // Referral
+      icons.splice(5, 1); // Referral
+      steps.splice(5, 1); // Referral
     }
 
     this.state = {
@@ -139,13 +139,6 @@ export default class DiagnosesStrategy extends Component {
               </Suspense>
             </View>
           )}
-          {algorithm.config.track_referral ? (
-            <View style={styles.pad}>
-              <Suspense fallback={<LiwiLoader />}>
-                <Referral key="referral" selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 2 : 4} />
-              </Suspense>
-            </View>
-          ) : null}
           {algorithm.is_arm_control ? null : (
             <View style={styles.pad}>
               <Suspense fallback={<LiwiLoader />}>
@@ -153,6 +146,13 @@ export default class DiagnosesStrategy extends Component {
               </Suspense>
             </View>
           )}
+          {algorithm.config.track_referral ? (
+            <View style={styles.pad}>
+              <Suspense fallback={<LiwiLoader />}>
+                <Referral key="referral" selectedPage={selectedPage} pageIndex={algorithm.is_arm_control ? 2 : 5} />
+              </Suspense>
+            </View>
+          ) : null}
         </Stepper>
       </Suspense>
     );

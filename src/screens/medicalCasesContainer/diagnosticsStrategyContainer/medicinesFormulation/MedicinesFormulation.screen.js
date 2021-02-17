@@ -41,7 +41,7 @@ export default class MedicinesFormulations extends Component {
       case medicationForms.spray:
       case medicationForms.patch:
       case medicationForms.inhaler: {
-        return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t(`drug:${calculatedFormulation.medication_form}`)}`;
+        return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}`;
       }
       case medicationForms.tablet:
       case medicationForms.capsule: {
@@ -65,7 +65,7 @@ export default class MedicinesFormulations extends Component {
         if (calculatedFormulation.by_age) {
           return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)}ml`;
         }
-        return `${parseInt(calculatedFormulation.liquid_concentration)}mg/${parseInt(calculatedFormulation.dose_form)}ml ${calculatedFormulation.medication_form}: ${
+        return `${parseInt(calculatedFormulation.liquid_concentration)}mg/${parseInt(calculatedFormulation.dose_form)}ml ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}: ${
           calculatedFormulation.doseResult
         }ml ${t('medication_form:per_administration')}`;
       }
