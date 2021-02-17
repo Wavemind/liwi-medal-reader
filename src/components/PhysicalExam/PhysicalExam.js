@@ -26,9 +26,10 @@ export default class PhysicalExam extends React.Component {
     const nextQuestion = nextProps.medicalCase.nodes[nextProps.app.answeredQuestionId];
 
     return (
-      (nextProps.selectedPage === undefined || nextProps.selectedPage === 1) &&
-      NavigationService.getCurrentRoute().routeName === 'Consultation' &&
-      (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value || question.unavailableValue !== nextQuestion.unavailableValue)
+      nextProps.selectedPage !== this.props.selectedPage ||
+      ((nextProps.selectedPage === undefined || nextProps.selectedPage === 1) &&
+        NavigationService.getCurrentRoute().routeName === 'Consultation' &&
+        (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value || question.unavailableValue !== nextQuestion.unavailableValue))
     );
   }
 

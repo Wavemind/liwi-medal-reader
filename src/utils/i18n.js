@@ -315,7 +315,7 @@ i18n
           show_consent: 'Show consent file',
         },
         patient_upsert: {
-          too_young: "This algorithm cannot manage children below {{age_in_days}} day(s) of age. Consultation will now be closed.",
+          too_young: "This algorithm cannot manage children below {{age_in_days}} day(s) of age. The consultation cannot continue with this date of birth",
           uid: 'UID',
           study_id: 'Study ID',
           group_id: 'Health Facility ID',

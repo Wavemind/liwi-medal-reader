@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { Col, Text, View } from 'native-base';
 import uuid from 'react-native-uuid';
+import i18next from 'i18next';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
@@ -11,7 +12,7 @@ import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCa
 import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
-import { getItem } from '../../../engine/api/LocalStorage';
+import { getItem, getItems } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
@@ -69,13 +70,15 @@ export default class PatientUpsert extends React.Component {
     const session = await getItem('session');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
+    const environment = await getItem('environment');
+
     let facility = navigation.getParam('facility'); // Object
 
     if (patientId === null) {
       if (facility === undefined) {
         facility = { uid: uuid.v4(), group_id: session.facility.id, study_id: algorithm.study.label };
       }
-      patient = new PatientModel({ otherFacility, facility });
+      patient = new PatientModel({ otherFacility, facility }, environment);
     } else {
       patient = await database.findBy('Patient', patientId);
     }
@@ -116,6 +119,25 @@ export default class PatientUpsert extends React.Component {
       return (
         <View style={styles.warning}>
           <Text size-auto>{algorithm.config.age_limit_message}</Text>
+        </View>
+      );
+    }
+  };
+
+  /**
+   * Prints warning if patient is too young
+   */
+  renderTooYoungMessage = () => {
+    const {
+      app: { algorithm },
+      medicalCase,
+    } = this.props;
+
+    // Had to use i18next instead of t from context because interpolation wasn't working
+    if (!medicalCase.isOldEnough) {
+      return (
+        <View style={styles.warning}>
+          <Text size-auto>{i18next.t('patient_upsert:too_young', { age_in_days: algorithm.config.minimum_age })}</Text>
         </View>
       );
     }
@@ -242,7 +264,6 @@ export default class PatientUpsert extends React.Component {
         {[
           <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen" keyboardShouldPersistTaps="always">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
-            {this.renderEligibilityMessage()}
             <View>
               <Col>
                 {this.renderIdentifierData()}
@@ -262,6 +283,8 @@ export default class PatientUpsert extends React.Component {
             </View>
             {algorithm.config.consent_management && <ConsentImage newPatient={patient.id === null} />}
             <Text customSubTitle>{t('patient_upsert:questions')}</Text>
+            {this.renderEligibilityMessage()}
+            {this.renderTooYoungMessage()}
             <Questions questions={registrationQuestions} />
           </ScrollView>,
         ]}

@@ -1,36 +1,14 @@
 import React from 'react';
 import { Text, View } from 'native-base';
 
-import toReadableFraction from '../../utils/toReadableFraction';
 import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
 import { styles } from './styles';
 import { administrationRouteCategories } from '../../../frontend_service/constants';
+import { breakableFraction } from '../../../frontend_service/helpers/Drug.model';
 
 export default function Breakable(drug, node, drugDose) {
-  //  12 hours for 5 days = recurrence for instance in diagnoses .duration
-  let num = null;
-  let fractionString = ' ';
-  if (drugDose.doseResult !== null) {
-    const unit = drugDose.doseResult / drugDose.breakable;
-    num = Math.floor(unit);
-
-    const rest = drugDose.doseResult % drugDose.breakable;
-
-    if (rest !== 0) {
-      const r = toReadableFraction(rest / drugDose.breakable);
-      if (r.numerator === 1 && r.denominator === 2) {
-        fractionString = '½ ';
-      } else if (r.numerator === 1 && r.denominator === 4) {
-        fractionString = '¼ ';
-      } else if (r.numerator === 3 && r.denominator === 4) {
-        fractionString = '¾ ';
-      } else {
-        // other fraction
-        fractionString = `${r.numerator} / ${r.denominator}`;
-      }
-    }
-  }
+  const fractionString = breakableFraction(drugDose);
 
   return (
     <>
@@ -43,11 +21,7 @@ export default function Breakable(drug, node, drugDose) {
       ) : (
         <View style={styles.container}>
           <Text size-auto>
-            {i18n.t('drug:give')} {drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} {i18n.t('drug:mg')} : {num !== Infinity && num !== 0 ? `${num}` : null}
-            {fractionString}
-            {num !== Infinity && num > 0 && fractionString !== ' ' && ' '}
-            {i18n.t('drug:tablet')}
-            {` ${drugDose.dose_form} `}
+            {`${i18n.t('drug:give')} ${drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} ${i18n.t('drug:mg')} : ${fractionString} ${i18n.t('drug:tablet')} ${drugDose.dose_form}`}
             {i18n.t('drug:mg')} {drugDose.administration_route_name}
           </Text>
           <Text size-auto>{`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
