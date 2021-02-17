@@ -88,14 +88,19 @@ export const questionCalculateReference = (algorithm, medicalCase, mcNode) => {
   const mcQuestionY = medicalCase.nodes[currentNode.reference_table_y_id];
 
   // Get Z
-  let questionZ = null;
+  let mcQuestionZ = null;
   if (currentNode.reference_table_z_id !== null) {
-    questionZ = medicalCase.nodes[currentNode.reference_table_z_id];
+    mcQuestionZ = medicalCase.nodes[currentNode.reference_table_z_id];
   }
 
-  const x = parseInt(mcQuestionX.value);
-  const y = parseInt(mcQuestionY.value);
-  const z = questionZ?.value;
+  // Parse value in correct format
+  const x = algorithm.nodes[mcQuestionX.id].value_format === valueFormats.int ? parseInt(mcQuestionX.value) : parseFloat(mcQuestionX.value);
+  const y = algorithm.nodes[mcQuestionY.id].value_format === valueFormats.int ? parseInt(mcQuestionY.value) : parseFloat(mcQuestionY.value);
+  let z;
+
+  if (mcQuestionZ !== null) {
+    z = algorithm.nodes[mcQuestionZ.id].value_format === valueFormats.int ? parseInt(mcQuestionZ.value) : parseFloat(mcQuestionZ.value);
+  }
 
   const mcGenderQuestion = medicalCase.nodes[algorithm.config.basic_questions.gender_question_id];
   const genderQuestion = algorithm.nodes[algorithm.config.basic_questions.gender_question_id];
@@ -192,6 +197,11 @@ const findValueInReferenceTable = (referenceTable, reference) => {
   }
 
   scopedRange.map((key) => {
+    if (referenceTable[key] === reference) {
+      value = Number(key);
+      return true;
+    }
+
     if (referenceTable[key] > reference) {
       value = Number(previousKey);
       return true;

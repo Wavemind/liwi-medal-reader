@@ -42,7 +42,7 @@ const screens = [
     key: 'DiagnosticsStrategy',
     medicalCaseOrder: 4,
     validations: {
-      referral: { is_mandatory: true, initialPage: 4 },
+      referral: { is_mandatory: true, initialPage: 5 },
     },
   },
 ];

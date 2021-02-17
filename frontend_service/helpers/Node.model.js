@@ -81,8 +81,8 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       break;
   }
 
-  // Validation for integer and float type based on medAL-creator config
-  if ((currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) && !mcNode.unavailableValue) {
+  // Validation for integer and float type based on medAL-creator config. Skip validation if we're in arm control mode or question is set as unavailable
+  if ((currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) && !mcNode.unavailableValue && !algorithm.is_arm_control) {
     if (value !== null && (value < currentNode.min_value_warning || value > currentNode.max_value_warning)) {
       // Warning
       if (value < currentNode.min_value_warning && currentNode.min_value_warning !== null) {
