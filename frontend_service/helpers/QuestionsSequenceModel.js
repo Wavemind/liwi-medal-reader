@@ -123,33 +123,33 @@ export const nextChildFinalQs = (algorithm, instance, finalQs, medicalCase) => {
  * @param medicalCase
  * @param instance
  * @param mcQs
- * @param currentNode
+ * @param mcNode
  * @return boolean : the status of children
  */
-const processQSChildren = async (algorithm, medicalCase, instance, mcQs, currentNode) => {
+const processQSChildren = (algorithm, medicalCase, instance, mcQs, mcNode) => {
   const currentQs = algorithm.nodes[mcQs.id];
 
   return instance.children.map((childId) => {
-    const mcNode = medicalCase.nodes[childId];
+    const mcChildNode = medicalCase.nodes[childId];
     let childConditionValue;
     // If this is not the final QS we calculate the conditionValue of the mcNode
     if (mcNode.id !== mcQs.id) {
       childConditionValue = find(mcNode.qs, (q) => q.id === mcQs.id).conditionValue;
       // Reset the mcNode condition value
-      if (currentNode.answer === null && childConditionValue === true) {
+      if (mcNode.answer === null && childConditionValue === true) {
         // Can be an question or other QS
-        updateConditionValue(algorithm, medicalCase, mcNode.id, mcQs.id, false, mcQs.type);
+        updateConditionValue(algorithm, medicalCase, mcChildNode.id, mcQs.id, false, mcQs.type);
       }
     }
-    // If the mcNode is the current QS
-    if (mcNode.id === mcQs.id && mcNode.type === nodeTypes.questionsSequence) {
+
+    // If the mcChild is the current QS
+    if (mcChildNode.id === mcQs.id && mcChildNode.type === nodeTypes.questionsSequence) {
       // The branch is open and we can set the answer of this QS
-      return nextChildFinalQs(algorithm, instance, mcNode, medicalCase);
+      return nextChildFinalQs(algorithm, instance, mcChildNode, medicalCase);
     }
-    if (mcNode.type === nodeTypes.question || mcNode.type === nodeTypes.questionsSequence) {
-      return recursiveNodeQs(algorithm, medicalCase, currentQs.instances[mcNode.id], mcQs.id);
+    if (mcChildNode.type === nodeTypes.question || mcChildNode.type === nodeTypes.questionsSequence) {
+      return recursiveNodeQs(algorithm, medicalCase, currentQs.instances[mcChildNode.id], mcQs.id);
     }
-    console.warn('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'This QS', mcQs, 'You do not have to be here !! mcNode in QS is wrong for : ', mcNode);
   });
 };
 
@@ -162,7 +162,7 @@ const processQSChildren = async (algorithm, medicalCase, instance, mcQs, current
  * @payload value: new condition value
  * @payload type: define if it's a diagnostic or a question sequence
  */
-export const recursiveNodeQs = async (algorithm, medicalCase, instance, qsId) => {
+export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
   let isReset = false;
   const mcNode = medicalCase.nodes[instance.id];
   const mcQs = medicalCase.nodes[qsId];
@@ -191,9 +191,9 @@ export const recursiveNodeQs = async (algorithm, medicalCase, instance, qsId) =>
   if (instanceConditionValue === false && instanceCondition === false) return false;
 
   // We process the instance children if the condition is true AND The questions has an answer OR this is a top level node
-  if (mcNode.answer !== null || instance.top_conditions.length === 0 || isReset) {
+  if (mcNode.answer !== null && (instance.top_conditions.length === 0 || isReset)) {
     // From this point we can process all children and go deeper in the tree processChildren return the boolean array of each branch
-    const processChildren = await processQSChildren(algorithm, medicalCase, instance, mcQs, mcNode);
+    const processChildren = processQSChildren(algorithm, medicalCase, instance, mcQs, mcNode);
     return reduceConditionArrayBoolean(processChildren);
   }
 
@@ -213,7 +213,7 @@ export const recursiveNodeQs = async (algorithm, medicalCase, instance, qsId) =>
  *      null = Still possible but not yet
  *      false = can't access the end anymore
  */
-export const getQuestionsSequenceStatus = async (algorithm, medicalCase, mcQs) => {
+export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
   const currentNode = algorithm.nodes[mcQs.id];
 
   if (currentNode.conditioned_by_cc.length > 0) {
@@ -230,6 +230,7 @@ export const getQuestionsSequenceStatus = async (algorithm, medicalCase, mcQs) =
   const allNodesAnsweredInQs = getTopLevelNodes(currentNode).map((instance) => {
     return getQuestionsSequenceChildrenStatus(algorithm, medicalCase, instance, currentNode);
   });
+
   return reduceConditionArrayBoolean(allNodesAnsweredInQs);
 };
 
@@ -252,17 +253,41 @@ export const getTopLevelNodes = (node) => {
  * @param mcQs
  * @returns {null|boolean}
  */
-const getQuestionsSequenceChildrenStatus = async (algorithm, medicalCase, instance, mcQs) => {
+const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mcQs) => {
   const condition = calculateCondition(algorithm, instance, medicalCase);
+  const mcNode = medicalCase.nodes[instance.id];
+
   if (condition === null) return null;
   if (condition === false) return false;
+
   if (instance.children.length > 0) {
     return reduceConditionArrayBoolean(
       instance.children.map((childId) => {
+        let childParentHasCorrectAnswer = true;
+        const topConditions = childId !== mcQs.id ? mcQs.instances[childId].top_conditions : mcQs.top_conditions;
+
         if (childId !== mcQs.id) {
-          return getQuestionsSequenceChildrenStatus(algorithm, medicalCase, mcQs.instances[childId], mcQs);
+          // Check if parent has the right answer.
+          if (topConditions.length > 1) {
+            childParentHasCorrectAnswer = topConditions.some((condition) => {
+              if (condition.first_node_id === mcNode.id) {
+                return mcNode.answer === condition.first_id;
+              }
+            });
+          }
+          return childParentHasCorrectAnswer && getQuestionsSequenceChildrenStatus(algorithm, medicalCase, mcQs.instances[childId], mcQs);
         }
-        return calculateCondition(algorithm, mcQs, medicalCase);
+
+        // Check if parent has the right answer. Reach the end of QS
+        if (topConditions.length > 1) {
+          childParentHasCorrectAnswer = topConditions.some((condition) => {
+            if (condition.first_node_id === mcNode.id) {
+              return mcNode.answer === condition.first_id;
+            }
+          });
+        }
+
+        return childParentHasCorrectAnswer && calculateCondition(algorithm, mcQs, medicalCase);
       })
     );
   }

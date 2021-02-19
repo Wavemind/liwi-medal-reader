@@ -98,7 +98,6 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
   }
 
   caller = find(caller, (d) => d.id === callerId);
-
   // We update only if the condition changes
   if (caller.conditionValue !== value) {
     index = medicalCase.nodes[nodeId][key].findIndex((d) => d.id === callerId);
@@ -111,7 +110,6 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
       }
     }
     medicalCase.nodes[nodeId][key][index].conditionValue = value;
-
     processUpdatedNode(algorithm, medicalCase, nodeId);
   }
 };
@@ -197,7 +195,7 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
     }
   }
 
-  getTopLevelNodes(currentQs).forEach(async (instance) => recursiveNodeQs(algorithm, medicalCase, instance, currentQs.id));
+  getTopLevelNodes(currentQs).forEach((instance) => recursiveNodeQs(algorithm, medicalCase, instance, currentQs.id));
 };
 
 /**
@@ -279,7 +277,7 @@ export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
  * @param algorithm : related algorithm
  * @param medicalCase : related medical case
  * @param nodeId : id of the node to update
- * @param newValue : new volue of the node
+ * @param newValue : new value of the node
  */
 const setAnswer = (algorithm, medicalCase, nodeId, newValue) => {
   if (medicalCase.nodes[nodeId].answer !== newValue) {
