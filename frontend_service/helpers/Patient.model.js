@@ -2,8 +2,9 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
-import { Model } from '@nozbe/watermelondb';
-import { field, date, readonly, children } from '@nozbe/watermelondb/decorators';
+import { Model, Q } from '@nozbe/watermelondb';
+import { field, date, readonly, children, lazy } from '@nozbe/watermelondb/decorators';
+
 import { setGenerator } from '@nozbe/watermelondb/utils/common/randomId';
 
 import I18n from '../../src/utils/i18n';
@@ -162,7 +163,7 @@ export class Patient extends Model {
   static table = 'patients';
 
   static associations = {
-    medicalCases: { type: 'has_many', foreignKey: 'patient_id' },
+    medical_cases: { type: 'has_many', foreignKey: 'patient_id' },
     patientValues: { type: 'has_many', foreignKey: 'patient_id' },
   };
 

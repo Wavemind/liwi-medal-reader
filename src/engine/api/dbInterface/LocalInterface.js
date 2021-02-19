@@ -1,11 +1,15 @@
-import { appSchema, tableSchema, Database } from '@nozbe/watermelondb';
-
+import { appSchema, tableSchema, Database, Q } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
+import uuid from 'react-native-uuid';
+import * as _ from 'lodash';
+
 import { Patient } from '../../../../frontend_service/helpers/Patient.model';
 import { PatientValue } from '../../../../frontend_service/helpers/PatientValue.model';
 import { MedicalCase } from '../../../../frontend_service/helpers/MedicalCase.model';
 import { Activity } from '../../../../frontend_service/helpers/Activity.model';
 import { getItem } from '../LocalStorage';
+import { categories } from '../../../../frontend_service/constants';
+import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
   version: 1,
@@ -119,8 +123,18 @@ export default class LocalInterface {
    */
   getAll = async (model, page = null, params) => {
     const collection = database.get(this._mapModelToTable(model));
-    const result = await collection.query().fetch();
-    console.log(result);
+    let result = await collection.query().fetch();
+
+    if (page === null) {
+      return result;
+    }
+    const filters = this._generateFilteredQuery(model, params.filters);
+
+    if (params.query !== '' && model === 'Patient') result = await collection.query(Q.like(`%${Q.sanitizeLikeString(params.query)}%`));
+    // if (filters !== '') result = await result.filtered(filters);
+
+    result = await collection.query(Q.experimentalSortBy('updated_at', Q.asc), Q.experimentalSkip((page - 1) * elementPerPage), Q.experimentalTake(elementPerPage * page));
+
     return this._generateList(result, model, params.columns);
   };
 
@@ -145,7 +159,6 @@ export default class LocalInterface {
     if (session.facility.architecture === 'client_server') object = { ...object, fail_safe: true };
 
     await database.action(async () => {
-      // database.unsafeResetDatabase();
       patient = await collection.create((record) => {
         record._raw.id = object.id;
         record.uid = object.uid;
@@ -175,7 +188,7 @@ export default class LocalInterface {
       });
     });
 
-    // this._savePatientValue(model, object);
+    this._savePatientValue(model, object);
   };
 
   /**
@@ -230,7 +243,16 @@ export default class LocalInterface {
    * @returns { MedicalCaseModel } returns the medical case
    * @private
    */
-  _getMedicalCaseFromModel = (model, object) => {};
+  _getMedicalCaseFromModel = (model, object) => {
+    switch (model) {
+      case 'MedicalCase':
+        return object;
+      case 'Patient':
+        return object.medicalCases[object.medicalCases.length - 1];
+      default:
+        console.error('Wrong model :', model, object);
+    }
+  };
 
   /**
    * Generate an object than contains all the data needed to display a model in a list
@@ -302,5 +324,30 @@ export default class LocalInterface {
    * @param { object } object - The value of the object
    * @private
    */
-  _savePatientValue = (model, object) => {};
+  _savePatientValue = (model, object) => {
+    const medicalCase = this._getMedicalCaseFromModel(model, object);
+    // Will update the patient values based on activities so we only take the edits
+    const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
+    const patient = this.findBy('Patient', medicalCase.patient_id);
+
+    nodeActivities.map((node) => {
+      if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
+        const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
+        // If the values doesn't exist we create it otherwise we edit it
+        if (patientValue === undefined) {
+          this.push('Patient', medicalCase.patient_id, 'patientValues', {
+            id: uuid.v4(),
+            value: String(node.value),
+            node_id: parseInt(node.id),
+            answer_id: node.answer === null ? null : parseInt(node.answer),
+            patient_id: medicalCase.patient_id,
+          });
+        } else {
+          this._realm().write(() => {
+            this.update('PatientValue', patientValue.id, { value: String(node.value), answer_id: node.answer === null ? null : parseInt(node.answer) });
+          });
+        }
+      }
+    });
+  };
 }

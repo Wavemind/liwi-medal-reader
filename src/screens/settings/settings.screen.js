@@ -60,7 +60,7 @@ export default class Settings extends React.Component {
    */
   handleGeneratePatients = async () => {
     this.setState({ disabled: true });
-    const entryAmount = 2;
+    const entryAmount = 1;
     const database = await new Database();
     let i = 0;
     for (i = 0; i < entryAmount; i++) {
