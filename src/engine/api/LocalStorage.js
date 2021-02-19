@@ -18,9 +18,11 @@ export const setItem = async (key, item) => {
 
   if (key === 'algorithm') {
     AsyncStorage.setItem('diagnostics', stringifyDeepRef(item.diagnostics));
+    AsyncStorage.setItem('study', stringifyDeepRef(item.study));
     AsyncStorage.setItem('nodes', stringifyDeepRef(item.nodes));
     AsyncStorage.setItem('village_json', stringifyDeepRef(item.village_json));
     delete item.diagnostics;
+    delete item.study;
     delete item.nodes;
     delete item.village_json;
     AsyncStorage.setItem('algorithm', stringifyDeepRef(item));
@@ -54,11 +56,13 @@ export const getItem = async (key) => {
   if (key === 'algorithm') {
     const diagnosticsJSON = await AsyncStorage.getItem('diagnostics');
     const nodesJSON = await AsyncStorage.getItem('nodes');
+    const studyJSON = await AsyncStorage.getItem('study');
     const villageJSON = await AsyncStorage.getItem('village_json');
     const algorithmJSON = await AsyncStorage.getItem('algorithm');
 
     const diagnostics = JSON.parse(diagnosticsJSON);
     const nodes = JSON.parse(nodesJSON);
+    const study = JSON.parse(studyJSON);
     const village = JSON.parse(villageJSON);
     const algorithm = JSON.parse(algorithmJSON);
 
@@ -66,6 +70,7 @@ export const getItem = async (key) => {
       ...algorithm,
       diagnostics,
       nodes,
+      study,
       village_json: village,
     };
   }

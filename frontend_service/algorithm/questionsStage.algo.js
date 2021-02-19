@@ -248,7 +248,6 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
 
   // Get vital signs questions based on background calculation
   backgroundCalculationQuestions.forEach((bcQuestion) => {
-    // console.log(bcQuestion.id)
     algorithm.nodes[bcQuestion.id].vital_signs.forEach((id) => {
       if (algorithm.nodes[id].category === categories.vitalSignAnthropometric) {
         vitalSignQuestions.push(medicalCase.nodes[id]);

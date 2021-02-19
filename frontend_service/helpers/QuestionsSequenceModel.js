@@ -222,7 +222,7 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
     });
     // Stop if QS is excluded
     if (isExcludedByComplaintCategory) {
-      return isExcludedByComplaintCategory;
+      return false;
     }
   }
 
@@ -266,25 +266,17 @@ const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mc
         let childParentHasCorrectAnswer = true;
         const topConditions = childId !== mcQs.id ? mcQs.instances[childId].top_conditions : mcQs.top_conditions;
 
-        if (childId !== mcQs.id) {
-          // Check if parent has the right answer.
-          if (topConditions.length > 1) {
-            childParentHasCorrectAnswer = topConditions.some((condition) => {
-              if (condition.first_node_id === mcNode.id) {
-                return mcNode.answer === condition.first_id;
-              }
-            });
-          }
-          return childParentHasCorrectAnswer && getQuestionsSequenceChildrenStatus(algorithm, medicalCase, mcQs.instances[childId], mcQs);
-        }
-
-        // Check if parent has the right answer. Reach the end of QS
         if (topConditions.length > 1) {
           childParentHasCorrectAnswer = topConditions.some((condition) => {
             if (condition.first_node_id === mcNode.id) {
               return mcNode.answer === condition.first_id;
             }
           });
+        }
+
+        if (childId !== mcQs.id) {
+          // Check if parent has the right answer.
+          return childParentHasCorrectAnswer && getQuestionsSequenceChildrenStatus(algorithm, medicalCase, mcQs.instances[childId], mcQs);
         }
 
         return childParentHasCorrectAnswer && calculateCondition(algorithm, mcQs, medicalCase);
