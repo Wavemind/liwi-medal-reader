@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { Button, Text, View } from 'native-base';
-import { ScrollView } from 'react-native';
+import { PermissionsAndroid, ScrollView } from 'react-native';
 
 import * as NetInfo from '@react-native-community/netinfo';
 import { styles } from './Synchronize.style';
@@ -18,19 +18,34 @@ export default class Synchronize extends React.Component {
   }
 
   /**
+   * Ask user to allow write in external storage
+   * Not used actually
+   * @returns {Promise<*>}
+   * @private
+   */
+  _askWriteStorage = async () => {
+    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+  };
+
+  /**
    * Get group, algorithm and store it in local storage
    * @returns {Promise<void>}
    */
   createSession = async () => {
-    this.setState({ loading: true });
+    const writePermission = await this._askWriteStorage();
 
-    const { app, navigation } = this.props;
-    const result = await app.setInitialData();
+    if (writePermission) {
+      this.setState({ loading: true });
 
-    if (result !== null) {
-      const database = await new Database();
-      await app.set('database', database);
-      navigation.navigate('About', { source: 'synchronize' });
+      const { app, navigation } = this.props;
+      const result = await app.setInitialData();
+
+      if (result !== null) {
+        this.setState({ loading: false });
+        const database = await new Database();
+        await app.set('database', database);
+        navigation.navigate('About', { source: 'synchronize' });
+      }
     }
   };
 

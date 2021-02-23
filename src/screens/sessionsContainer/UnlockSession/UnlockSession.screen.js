@@ -3,7 +3,7 @@ import * as React from 'react';
 import PINCode from '@haskkor/react-native-pincode';
 import * as NetInfo from '@react-native-community/netinfo';
 import { Button, Text, View } from 'native-base';
-import { ScrollView } from 'react-native';
+import { PermissionsAndroid, ScrollView } from 'react-native';
 
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { userRoles } from '../../../../frontend_service/constants';
@@ -37,40 +37,56 @@ export default class UnLockSession extends React.Component {
   };
 
   /**
+   * Ask user to allow write in external storage
+   * Not used actually
+   * @returns {Promise<*>}
+   * @private
+   */
+  _askWriteStorage = async () => {
+    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+  };
+
+  /**
    * Get the pin code from screen
    * Redirect to userSelection if not opened
    * Redirect to home if already opened
    * @params { string }: pinCode : pin code from screen
    */
   openSession = async (pinCode) => {
-    this.setState({ loading: true });
-    const { session } = this.state;
-    const { app } = this.props;
+    const writePermission = await this._askWriteStorage();
 
-    if (session.facility.pin_code === pinCode) {
-      const netInfoConnection = await NetInfo.fetch();
-      const { isInternetReachable } = netInfoConnection;
+    if (writePermission) {
+      this.setState({ loading: true });
+      const { session } = this.state;
+      const { app } = this.props;
 
-      if (isInternetReachable) {
-        await app.setInitialData();
+      if (session.facility.pin_code === pinCode) {
+        const netInfoConnection = await NetInfo.fetch();
+        const { isInternetReachable } = netInfoConnection;
+
+        if (isInternetReachable) {
+          await app.setInitialData();
+        } else {
+          const algorithm = await getItem('algorithm');
+          app.set('algorithm', algorithm);
+        }
+
+        const database = await new Database();
+        await app.set('database', database);
+
+        if (app.user === null) {
+          this.setState({ status: 'success', loading: false });
+          NavigationService.navigate('UserSelection');
+        } else {
+          this.setState({ status: 'success', loading: false });
+          app.set('logged', true);
+          NavigationService.navigate('App');
+        }
       } else {
-        const algorithm = await getItem('algorithm');
-        app.set('algorithm', algorithm);
-      }
-
-      const database = await new Database();
-      await app.set('database', database);
-
-      if (app.user === null) {
-        this.setState({ status: 'success', loading: false });
-        NavigationService.navigate('UserSelection');
-      } else {
-        this.setState({ status: 'success', loading: false });
-        app.set('logged', true);
-        NavigationService.navigate('App');
+        this.setState({ status: 'failure', loading: false });
       }
     } else {
-      this.setState({ status: 'failure', loading: false });
+      this.setState({ status: 'failure' });
     }
   };
 

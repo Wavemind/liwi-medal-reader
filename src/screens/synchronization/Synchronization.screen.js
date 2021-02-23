@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { DocumentDirectoryPath, writeFile, mkdir } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
-import { NavigationScreenProps } from 'react-navigation';
 import { Button, Text, View } from 'native-base';
 import { PermissionsAndroid } from 'react-native';
 import moment from 'moment';
@@ -13,12 +12,9 @@ import { synchronizeMedicalCases } from '../../../frontend_service/api/Http';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { getItem } from '../../engine/api/LocalStorage';
 
-type Props = NavigationScreenProps & {};
-type State = {};
-
 const normalizeFilePath = (path) => (path.startsWith('file://') ? path.slice(7) : path);
 
-export default class Synchronization extends React.Component<Props, State> {
+export default class Synchronization extends React.Component {
   constructor(props) {
     super(props);
 

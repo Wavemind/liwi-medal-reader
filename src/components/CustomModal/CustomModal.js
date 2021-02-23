@@ -11,6 +11,7 @@ import LiwiLoader from '../../utils/LiwiLoader';
 import { LiwiTitle4, LiwiTitle5 } from '../../template/layout';
 import Media from '../Media/Media';
 import WebviewComponent from '../WebviewComponent';
+import { DocumentDirectoryPath, readFile } from 'react-native-fs';
 
 export default class CustomModal extends React.Component {
   static defaultProps = {
@@ -185,14 +186,14 @@ export default class CustomModal extends React.Component {
    */
   _renderEmergency = () => {
     const {
-      app: {
-        algorithm: { emergency_content },
+      modalRedux: {
+        params: { emergencyContent },
       },
     } = this.props;
 
     return (
       <View>
-        <WebviewComponent htmlSource={emergency_content} customStyle={styles.webview} />
+        <WebviewComponent htmlSource={emergencyContent} customStyle={styles.webview} />
       </View>
     );
   };
@@ -269,6 +270,8 @@ export default class CustomModal extends React.Component {
     const isFromRedux = modalRedux.open;
     const isFromJsx = isVisibleJSX || visible;
 
+    const content = this.renderTypeModal();
+
     return (
       <View style={styles.modal}>
         <View style={styles.modalContainer}>
@@ -279,7 +282,7 @@ export default class CustomModal extends React.Component {
           )}
           <ScrollView style={styles.modalContent}>
             {isFromJsx && children}
-            {isFromRedux && this.renderTypeModal()}
+            {isFromRedux && content}
           </ScrollView>
         </View>
       </View>

@@ -25,6 +25,7 @@ export const setItem = async (key, item) => {
     delete item.study;
     delete item.nodes;
     delete item.village_json;
+    delete item.emergency_content; // Removed cause too huge. It's save as a file in external storage
     AsyncStorage.setItem('algorithm', stringifyDeepRef(item));
   } else {
     const controller = stringifyDeepRef(item);
