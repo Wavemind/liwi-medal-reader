@@ -316,6 +316,7 @@ i18n
         },
         patient_upsert: {
           too_young: "This algorithm cannot manage children below {{age_in_days}} day(s) of age. The consultation cannot continue with this date of birth",
+          too_old: "This algorithm cannot manage children above {{age_in_days}} day(s) of age. The consultation cannot continue with this date of birth",
           uid: 'UID',
           study_id: 'Study ID',
           group_id: 'Health Facility ID',
@@ -786,6 +787,7 @@ i18n
         },
         patient_upsert: {
           too_young: "Cet algorithme ne peut pas prendre en charge en charge les enfants de moins de {{age_in_days}} jour(s). Fin de la consultation.",
+          too_old: "Cet algorithme ne peut pas prendre en charge en charge les enfants de plus de {{age_in_days}} jour(s). Fin de la consultation.",
           uid: 'ID du patient',
           study_id: 'ID de l\'étude',
           group_id: 'ID du centre de santé',

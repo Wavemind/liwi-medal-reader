@@ -12,7 +12,7 @@ import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCa
 import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
-import { getItem, getItems } from '../../../engine/api/LocalStorage';
+import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientUpsert.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
