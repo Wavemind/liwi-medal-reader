@@ -12,6 +12,7 @@ import { styles } from './UnlockSession.style';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import Database from '../../../engine/api/Database';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { askWriteStorage } from '../../../utils/permission';
 
 export default class UnLockSession extends React.Component {
   state = {
@@ -43,34 +44,40 @@ export default class UnLockSession extends React.Component {
    * @params { string }: pinCode : pin code from screen
    */
   openSession = async (pinCode) => {
-    this.setState({ loading: true });
-    const { session } = this.state;
-    const { app } = this.props;
+    const writePermission = await askWriteStorage();
 
-    if (session.facility.pin_code === pinCode) {
-      const netInfoConnection = await NetInfo.fetch();
-      const { isInternetReachable } = netInfoConnection;
+    if (writePermission) {
+      this.setState({ loading: true });
+      const { session } = this.state;
+      const { app } = this.props;
 
-      if (isInternetReachable) {
-        await app.setInitialData();
+      if (session.facility.pin_code === pinCode) {
+        const netInfoConnection = await NetInfo.fetch();
+        const { isInternetReachable } = netInfoConnection;
+
+        if (isInternetReachable) {
+          await app.setInitialData();
+        } else {
+          const algorithm = await getItem('algorithm');
+          app.set('algorithm', algorithm);
+        }
+
+        const database = await new Database();
+        await app.set('database', database);
+
+        if (app.user === null) {
+          this.setState({ status: 'success', loading: false });
+          NavigationService.navigate('UserSelection');
+        } else {
+          this.setState({ status: 'success', loading: false });
+          app.set('logged', true);
+          NavigationService.navigate('App');
+        }
       } else {
-        const algorithm = await getItem('algorithm');
-        app.set('algorithm', algorithm);
-      }
-
-      const database = await new Database();
-      await app.set('database', database);
-
-      if (app.user === null) {
-        this.setState({ status: 'success', loading: false });
-        NavigationService.navigate('UserSelection');
-      } else {
-        this.setState({ status: 'success', loading: false });
-        app.set('logged', true);
-        NavigationService.navigate('App');
+        this.setState({ status: 'failure', loading: false });
       }
     } else {
-      this.setState({ status: 'failure', loading: false });
+      this.setState({ status: 'failure' });
     }
   };
 

@@ -7,6 +7,7 @@ import * as NetInfo from '@react-native-community/netinfo';
 import { styles } from './Synchronize.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
+import { askWriteStorage } from '../../../utils/permission';
 
 export default class Synchronize extends React.Component {
   state = {
@@ -22,15 +23,20 @@ export default class Synchronize extends React.Component {
    * @returns {Promise<void>}
    */
   createSession = async () => {
-    this.setState({ loading: true });
+    const writePermission = await askWriteStorage();
 
-    const { app, navigation } = this.props;
-    const result = await app.setInitialData();
+    if (writePermission) {
+      this.setState({ loading: true });
 
-    if (result !== null) {
-      const database = await new Database();
-      await app.set('database', database);
-      navigation.navigate('About', { source: 'synchronize' });
+      const { app, navigation } = this.props;
+      const result = await app.setInitialData();
+
+      if (result !== null) {
+        this.setState({ loading: false });
+        const database = await new Database();
+        await app.set('database', database);
+        navigation.navigate('About', { source: 'synchronize' });
+      }
     }
   };
 
