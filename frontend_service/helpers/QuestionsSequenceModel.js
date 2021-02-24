@@ -110,6 +110,7 @@ const processQSChildren = (algorithm, medicalCase, instance, mcQs, mcNode) => {
 
   return instance.children.map((childId) => {
     const mcChildNode = medicalCase.nodes[childId];
+
     let childConditionValue;
     // If this is not the final QS we calculate the conditionValue of the mcNode
     if (mcNode.id !== mcQs.id) {
@@ -170,7 +171,7 @@ export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
   if (instanceConditionValue === false && instanceCondition === false) return false;
 
   // We process the instance children if the condition is true AND The questions has an answer OR this is a top level node
-  if (mcNode.answer !== null && (instance.top_conditions.length === 0 || isReset)) {
+  if (mcNode.answer !== null && (instance.top_conditions.length === 0 || isReset || instanceConditionValue)) {
     // From this point we can process all children and go deeper in the tree processChildren return the boolean array of each branch
     const processChildren = processQSChildren(algorithm, medicalCase, instance, mcQs, mcNode);
     return reduceConditionArrayBoolean(processChildren);
