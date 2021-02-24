@@ -42,7 +42,7 @@ const screens = [
     key: 'DiagnosticsStrategy',
     medicalCaseOrder: 4,
     validations: {
-      referral: { is_mandatory: true, initialPage: 4 },
+      referral: { is_mandatory: true, initialPage: 5 },
     },
   },
 ];
@@ -149,8 +149,7 @@ function oneValidation(algorithm, criteria, questions, stepName) {
           if ((currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) && !mcNode.unavailableValue) {
             if (
               mcNode.value !== null &&
-              (currentNode.min_value_error !== null || currentNode.max_value_error) &&
-              (mcNode.value < currentNode.min_value_error || mcNode.value > currentNode.max_value_error)
+              ((currentNode.min_value_error !== null && mcNode.value < currentNode.min_value_error) || (currentNode.max_value_error !== null && mcNode.value > currentNode.max_value_error))
             ) {
               isValid = false;
               staticValidator.questionsToBeFill.push(currentNode);
@@ -182,8 +181,9 @@ function oneValidation(algorithm, criteria, questions, stepName) {
 
 /**
  * Validate full stage
- * @param navigateRoute : {currentStage, nextStage, params}
- * @return {any}
+ * @param algorithm
+ * @param navigateRoute
+ * @returns {any}
  */
 export const validatorNavigate = (algorithm, navigateRoute) => {
   const validator = JSON.parse(JSON.stringify(modelValidator));
@@ -196,10 +196,14 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
       validator.customErrors.push(i18n.t('consent_image:required'));
       return validator;
     }
-    if (!medicalCase.isOldEnough) {
+    if (!medicalCase.isOldEnough || !medicalCase.isEligible) {
       validator.isActionValid = false;
       validator.isTooYoung = true;
-      validator.customErrors.push(i18next.t('patient_upsert:too_young', { age_in_days: algorithm.config.minimum_age }));
+      if (!medicalCase.isOldEnough) {
+        validator.customErrors.push(i18next.t('patient_upsert:too_young', { age_in_days: algorithm.config.minimum_age }));
+      } else {
+        validator.customErrors.push(i18next.t('patient_upsert:too_old', { age_in_days: algorithm.config.age_limit }));
+      }
       return validator;
     }
   }

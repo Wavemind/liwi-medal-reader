@@ -15,10 +15,10 @@ export const getParentsNodes = (algorithm, diagnosticId, nodeId) => {
 };
 
 /**
+ * Remove drugs from manually if new diagnoses contain this drug (no duplicate !)
+ *
  * @params diagnoses: New diagnoses will be placed into state
  * @params drugs: all the drugs selected manually
- *
- * Remove drugs from manually if new diagnoses contain this drug (no duplicate !)
  */
 export const newDrugsFilter = (diagnoses, drugs) => {
   const newDrugs = { ...drugs };

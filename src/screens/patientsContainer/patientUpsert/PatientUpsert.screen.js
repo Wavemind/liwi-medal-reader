@@ -70,13 +70,15 @@ export default class PatientUpsert extends React.Component {
     const session = await getItem('session');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
+    const environment = await getItem('environment');
+
     let facility = navigation.getParam('facility'); // Object
 
     if (patientId === null) {
       if (facility === undefined) {
         facility = { uid: uuid.v4(), group_id: session.facility.id, study_id: algorithm.study.label };
       }
-      patient = new PatientModel({ otherFacility, facility });
+      patient = new PatientModel({ otherFacility, facility }, environment);
     } else {
       patient = await database.findBy('Patient', patientId);
     }

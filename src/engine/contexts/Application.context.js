@@ -5,6 +5,8 @@ import moment from 'moment';
 import { AppState, PermissionsAndroid } from 'react-native';
 
 import { NetworkConsumer, NetworkProvider } from 'react-native-offline';
+import { DocumentDirectoryPath, mkdir, writeFile } from 'react-native-fs';
+import { zip } from 'react-native-zip-archive';
 import i18n from '../../utils/i18n';
 import { secondStatusLocalData, modalType } from '../../../frontend_service/constants';
 import { auth, getAlgorithm, getFacility, registerDevice } from '../../../frontend_service/api/Http';
@@ -140,6 +142,9 @@ export class ApplicationProvider extends React.Component {
       if (newAlgorithm !== null) {
         newAlgorithm.selected = true;
 
+        const targetPath = `${DocumentDirectoryPath}/emergency_content.html`;
+        await writeFile(targetPath, newAlgorithm.emergency_content);
+
         // Update popup only if version has changed
         if (newAlgorithm.version_id !== algorithm.version_id) {
           store.dispatch(
@@ -227,7 +232,6 @@ export class ApplicationProvider extends React.Component {
     isConnected: false,
     filtersPatient: {},
     filtersMedicalCase: {},
-    environment: 'production',
     lang: 'fr',
     logged: false,
     name: 'App',

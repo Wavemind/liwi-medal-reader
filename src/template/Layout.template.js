@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { createAppContainer } from 'react-navigation';
-import { NetworkProvider } from 'react-native-offline';
 
 import getTheme from 'template/liwi/native_components/index.ignore';
 import material from 'template/liwi/variables/material';
