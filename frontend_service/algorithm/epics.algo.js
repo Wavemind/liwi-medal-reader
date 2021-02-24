@@ -5,7 +5,7 @@ import { mergeMap } from 'rxjs/operators';
 import moment from 'moment';
 import { EMPTY, of } from 'rxjs';
 import { actions } from '../actions/types.actions';
-import { categories, displayFormats, nodeTypes } from '../constants';
+import { displayFormats, nodeTypes, stepOrders } from '../constants';
 import { dispatchFinalDiagnosticAction, setMedicalCase } from '../actions/creators.actions';
 import { getParentsNodes } from './treeDiagnosis.algo';
 import { finalDiagnosticAgreed } from '../helpers/FinalDiagnostic.model';
@@ -308,7 +308,7 @@ const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
     const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
     const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
     const age_in_days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
-    const orders = algorithm.mobile_config.questions_orders[categories.complaintCategory];
+    const orders = algorithm.mobile_config.questions_orders[stepOrders.complaintCategories];
     const { general_cc_id, yi_cc_general } = algorithm.config.basic_questions;
 
     medicalCase.isEligible = years < algorithm.config.age_limit;

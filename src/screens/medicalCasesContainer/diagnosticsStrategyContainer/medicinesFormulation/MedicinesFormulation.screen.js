@@ -4,7 +4,8 @@ import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
 import { medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
-import { breakableFraction, drugAgreed, drugDoses} from '../../../../../frontend_service/helpers/Drug.model';
+import { breakableFraction, drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
+import { roundSup } from '../../../../utils/swissKnives';
 
 export default class MedicinesFormulations extends Component {
   shouldComponentUpdate() {
@@ -46,7 +47,7 @@ export default class MedicinesFormulations extends Component {
       case medicationForms.tablet:
       case medicationForms.capsule: {
         if (calculatedFormulation.by_age) {
-          return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t('drug:tablets')}`;
+          return `${calculatedFormulation.description}: ${roundSup(calculatedFormulation.unique_dose)} ${t('drug:tablets')}`;
         }
         return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
           calculatedFormulation.doseResult !== null ? `${breakableFraction(calculatedFormulation)} ${t('drug:tablets')}` : t('drug:no_options')

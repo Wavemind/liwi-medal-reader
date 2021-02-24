@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import moment from 'moment';
 import { store } from '../store';
-import { categories } from '../constants';
+import { categories, stepOrders } from '../constants';
 import { updateMetaData } from '../actions/creators.actions';
 import { nodeFilterBy } from '../helpers/Node.model';
 import { questionBooleanValue, questionIsDisplayedInTriage } from '../helpers/Question.model';
@@ -301,7 +301,7 @@ export const questionsUniqueTriageQuestion = (algorithm) => {
   const medicalCase = store.getState();
   const uniqueTriageQuestions = [];
 
-  const ordersUniqueTriageQuestion = algorithm.mobile_config.questions_orders[categories.uniqueTriageQuestion];
+  const ordersUniqueTriageQuestion = algorithm.mobile_config.questions_orders[stepOrders.firstLookAssessment];
 
   if (ordersUniqueTriageQuestion !== undefined) {
     ordersUniqueTriageQuestion.forEach((order) => {
@@ -326,7 +326,7 @@ export const questionsUniqueTriageQuestion = (algorithm) => {
 export const questionsComplaintCategory = (algorithm) => {
   const medicalCase = store.getState();
   const complaintCategories = [];
-  const orders = algorithm.mobile_config.questions_orders[categories.complaintCategory];
+  const orders = algorithm.mobile_config.questions_orders[stepOrders.complaintCategories];
   const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
 
@@ -357,7 +357,7 @@ export const questionsComplaintCategory = (algorithm) => {
 export const questionsBasicMeasurements = (algorithm) => {
   const medicalCase = store.getState();
   const basicMeasurements = [];
-  const orderedQuestions = algorithm.mobile_config.questions_orders[categories.basicMeasurement];
+  const orderedQuestions = algorithm.mobile_config.questions_orders[stepOrders.basicMeasurements];
 
   if (orderedQuestions !== undefined) {
     orderedQuestions.forEach((orderedQuestion) => {
@@ -436,7 +436,7 @@ export const healthCares = (algorithm) => {
 export const questionsRegistration = (algorithm) => {
   const medicalCase = store.getState();
   const registrationQuestions = [];
-  const registrationOrder = algorithm.mobile_config.questions_orders['registration_step'];
+  const registrationOrder = algorithm.mobile_config.questions_orders[stepOrders.registration];
 
   registrationOrder.forEach((order) => {
     registrationQuestions.push(medicalCase.nodes[order]);
