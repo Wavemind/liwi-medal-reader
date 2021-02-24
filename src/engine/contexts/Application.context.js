@@ -142,7 +142,7 @@ export class ApplicationProvider extends React.Component {
       if (newAlgorithm !== null) {
         newAlgorithm.selected = true;
 
-        const targetPath = `${DocumentDirectoryPath}/emergency_content.json`;
+        const targetPath = `${DocumentDirectoryPath}/emergency_content.html`;
         await writeFile(targetPath, newAlgorithm.emergency_content);
 
         // Update popup only if version has changed

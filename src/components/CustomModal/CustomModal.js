@@ -11,7 +11,6 @@ import LiwiLoader from '../../utils/LiwiLoader';
 import { LiwiTitle4, LiwiTitle5 } from '../../template/layout';
 import Media from '../Media/Media';
 import WebviewComponent from '../WebviewComponent';
-import { DocumentDirectoryPath, readFile } from 'react-native-fs';
 
 export default class CustomModal extends React.Component {
   static defaultProps = {

@@ -1,12 +1,13 @@
 // @flow
 import * as React from 'react';
 import { Button, Text, View } from 'native-base';
-import { PermissionsAndroid, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import * as NetInfo from '@react-native-community/netinfo';
 import { styles } from './Synchronize.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Database from '../../../engine/api/Database';
+import { askWriteStorage } from '../../../utils/permission';
 
 export default class Synchronize extends React.Component {
   state = {
@@ -18,21 +19,11 @@ export default class Synchronize extends React.Component {
   }
 
   /**
-   * Ask user to allow write in external storage
-   * Not used actually
-   * @returns {Promise<*>}
-   * @private
-   */
-  _askWriteStorage = async () => {
-    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-  };
-
-  /**
    * Get group, algorithm and store it in local storage
    * @returns {Promise<void>}
    */
   createSession = async () => {
-    const writePermission = await this._askWriteStorage();
+    const writePermission = await askWriteStorage();
 
     if (writePermission) {
       this.setState({ loading: true });

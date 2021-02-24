@@ -4,13 +4,14 @@ import * as React from 'react';
 import { DocumentDirectoryPath, writeFile, mkdir } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
 import { Button, Text, View } from 'native-base';
-import { PermissionsAndroid } from 'react-native';
 import moment from 'moment';
+
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './Synchronization.style';
 import { synchronizeMedicalCases } from '../../../frontend_service/api/Http';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { getItem } from '../../engine/api/LocalStorage';
+import { askWriteStorage } from '../../utils/permission';
 
 const normalizeFilePath = (path) => (path.startsWith('file://') ? path.slice(7) : path);
 
@@ -52,21 +53,11 @@ export default class Synchronization extends React.Component {
   }
 
   /**
-   * Ask user to allow write in external storage
-   * Not used actually
-   * @returns {Promise<*>}
-   * @private
-   */
-  _askWriteStorage = async () => {
-    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-  };
-
-  /**
    * Send medical cases to main data
    * @returns {Promise<void>}
    */
   synchronize = async () => {
-    const writePermission = await this._askWriteStorage();
+    const writePermission = await askWriteStorage();
 
     if (writePermission) {
       const { medicalCasesToSynch, mainDataURL } = this.state;

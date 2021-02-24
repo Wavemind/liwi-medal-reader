@@ -3,7 +3,7 @@ import * as React from 'react';
 import PINCode from '@haskkor/react-native-pincode';
 import * as NetInfo from '@react-native-community/netinfo';
 import { Button, Text, View } from 'native-base';
-import { PermissionsAndroid, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { userRoles } from '../../../../frontend_service/constants';
@@ -12,6 +12,7 @@ import { styles } from './UnlockSession.style';
 import NavigationService from '../../../engine/navigation/Navigation.service';
 import Database from '../../../engine/api/Database';
 import LiwiLoader from '../../../utils/LiwiLoader';
+import { askWriteStorage } from '../../../utils/permission';
 
 export default class UnLockSession extends React.Component {
   state = {
@@ -37,23 +38,13 @@ export default class UnLockSession extends React.Component {
   };
 
   /**
-   * Ask user to allow write in external storage
-   * Not used actually
-   * @returns {Promise<*>}
-   * @private
-   */
-  _askWriteStorage = async () => {
-    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-  };
-
-  /**
    * Get the pin code from screen
    * Redirect to userSelection if not opened
    * Redirect to home if already opened
    * @params { string }: pinCode : pin code from screen
    */
   openSession = async (pinCode) => {
-    const writePermission = await this._askWriteStorage();
+    const writePermission = await askWriteStorage();
 
     if (writePermission) {
       this.setState({ loading: true });

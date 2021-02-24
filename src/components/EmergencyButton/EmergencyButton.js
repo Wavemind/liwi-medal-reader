@@ -15,7 +15,7 @@ export default class EmergencyButton extends Component {
    * @returns {Promise<string>}
    */
   getEmergencyContent = async () => {
-    const targetPath = `${DocumentDirectoryPath}/emergency_content.json`;
+    const targetPath = `${DocumentDirectoryPath}/emergency_content.html`;
     return readFile(targetPath);
   };
 
