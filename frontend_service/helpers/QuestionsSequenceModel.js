@@ -59,28 +59,7 @@ const _questionSequenceScoredCalculateCondition = (algorithm, medicalCase, mcNod
 
 const _questionSequenceCalculateCondition = (algorithm, medicalCase, mcNode) => {
   const currentNode = algorithm.nodes[mcNode.id];
-  /**
-   * Filter the top conditions
-   *
-   *  1. On Each top_condition
-   *  2. Find the instance Id of the condition
-   *  3. Check if the instance has the conditionValue to true
-   *    If false the instance is closed (not answered or wrong answer)
-   *  4. Return new array of top_condition
-   */
-  const topConditionsWithConditionValueTrue = filter(currentNode.top_conditions, (top_condition) => {
-    const { conditionValue } = find(medicalCase.nodes[top_condition.first_node_id].qs, (qs) => {
-      return qs.id === mcNode.id;
-    });
-    return conditionValue;
-  });
-
-  const tempNodeFiltered = {
-    ...mcNode,
-    top_conditions: topConditionsWithConditionValueTrue,
-  };
-
-  return calculateCondition(algorithm, tempNodeFiltered, medicalCase);
+  return calculateCondition(algorithm, currentNode, medicalCase);
 };
 
 /**
