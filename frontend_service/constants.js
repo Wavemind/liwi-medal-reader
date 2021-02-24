@@ -113,6 +113,15 @@ export const categories = {
   referral: 'referral',
 };
 
+export const stepOrders = {
+  basicMeasurements: 'basic_measurements',
+  complaintCategories: 'complaint_categories',
+  firstLookAssessment: 'first_look_assessment',
+  physicalExam: 'physical_exam',
+  referral: 'referral_step',
+  registration: 'registration_step',
+};
+
 // Type of Tool Tip
 export const modalType = {
   algorithmVersion: 'algorithmVersion',

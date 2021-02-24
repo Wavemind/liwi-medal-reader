@@ -11,7 +11,7 @@ import { LiwiTabStyle } from '../../../template/layout';
 import BackButton from '../../../components/BackButton';
 import FinalDiagnosticCards from '../../../components/FinalDiagnosticCards';
 import { questionDisplayValue } from '../../../../frontend_service/helpers/Question.model';
-import { categories } from '../../../../frontend_service/constants';
+import { stepOrders } from '../../../../frontend_service/constants';
 
 export default class Summary extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ export default class Summary extends React.Component {
 
     // Remove / Keep neonat question based on patient age
     const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
-    const neonatCCs = algorithm.mobile_config.questions_orders[categories.complaintCategory].filter((ccId) => algorithm.nodes[ccId].is_neonat);
+    const neonatCCs = algorithm.mobile_config.questions_orders[stepOrders.complaintCategories].filter((ccId) => algorithm.nodes[ccId].is_neonat);
     const days = birthDate !== null ? moment(medicalCase.created_at).diff(birthDate, 'days') : 0;
 
     Object.keys(nodes).forEach((nodeId) => {
