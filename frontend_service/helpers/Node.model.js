@@ -4,7 +4,7 @@ import React from 'react';
 import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
-import { categories, valueFormats } from '../constants';
+import { valueFormats } from '../constants';
 
 /**
  * Update the answer based node's on value format
@@ -25,7 +25,7 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
     case valueFormats.float:
       if (value === null) {
         answer = value;
-      } else if (mcNode.unavailableValue && (currentNode.category === categories.basicMeasurement || currentNode.category === categories.vitalSignAnthropometric)) {
+      } else if (mcNode.unavailableValue) {
         // Unavailable question
         answer = Number(value);
         value = currentNode.answers[answer].value;

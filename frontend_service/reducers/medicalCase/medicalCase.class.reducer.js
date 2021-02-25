@@ -368,7 +368,7 @@ class MedicalCaseReducer extends ReducerClass {
     // Instantiate new object with answered question with new answer value
     const { answer, answer_stage, value, validationMessage, validationType } = nodeUpdateAnswer(newValue, algorithm, state.nodes[nodeId]);
 
-    const medicalCase = JSON.parse(
+    let medicalCase = JSON.parse(
       JSON.stringify({
         ...state,
         nodes: {
@@ -380,11 +380,26 @@ class MedicalCaseReducer extends ReducerClass {
             value,
             validationMessage,
             validationType,
+            isReset: newValue === null,
           },
         },
       })
     );
+
     processUpdatedNode(algorithm, medicalCase, nodeId);
+
+    JSON.parse(
+      JSON.stringify({
+        ...state,
+        nodes: {
+          ...state.nodes,
+          [nodeId]: {
+            ...state.nodes[nodeId],
+            isReset: false,
+          },
+        },
+      })
+    );
 
     return {
       ...medicalCase,
