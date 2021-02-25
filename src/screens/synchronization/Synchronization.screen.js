@@ -75,7 +75,8 @@ export default class Synchronization extends React.Component {
 
       // Generate files
       medicalCasesToSynch.map(async (medicalCase) => {
-        const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: database.realmInterface.findBy('Patient', medicalCase.patient_id), activities: medicalCase.activities });
+        const patient = await database.realmInterface.findBy('Patient', medicalCase.patient_id)
+        const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: patient, activities: medicalCase.activities });
         await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson);
       });
 

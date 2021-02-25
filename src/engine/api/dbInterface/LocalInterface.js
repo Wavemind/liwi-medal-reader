@@ -106,7 +106,11 @@ export default class LocalInterface {
    * @param { string } field - The field we wanna search for
    * @returns { Collection } - The wanted object
    */
-  findBy = (model, value, field = 'id') => {};
+  findBy = async (model, value, field = 'id') => {
+    const collection = database.get(this._mapModelToTable(model));
+    const object = await collection.query(Q.where(field, value));
+    return object[0] === undefined ? null : object[0];
+  };
 
   /**
    * Deletes a specific object from the DB
@@ -124,6 +128,11 @@ export default class LocalInterface {
   getAll = async (model, page = null, params) => {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
+
+    const test_collection = database.get('patient_values');
+    let result_test = await test_collection.query().fetch();
+
+    console.log(result_test);
 
     if (page === null) {
       return result;
@@ -188,7 +197,7 @@ export default class LocalInterface {
       });
     });
 
-    this._savePatientValue(model, object);
+    await this._savePatientValue(model, object);
   };
 
   /**
@@ -204,7 +213,20 @@ export default class LocalInterface {
    * @param { any } value - value to update
    * @returns { Collection } - Updated object
    */
-  push = async (model, id, field, value) => {};
+  push = async (model, id, field, value) => {
+    const session = await getItem('session');
+    const object = await this.findBy(model, id);
+
+    if (session.facility.architecture === 'client_server') {
+      value = { ...value, fail_safe: true };
+    }
+
+    //
+    // this._realm().write(() => {
+    //   object[field].push(value);
+    // });
+    if (field === 'medicalCases') this._savePatientValue(model, object);
+  };
 
   /**
    * Blank method used in httpInterface
@@ -324,23 +346,32 @@ export default class LocalInterface {
    * @param { object } object - The value of the object
    * @private
    */
-  _savePatientValue = (model, object) => {
+  _savePatientValue = async (model, object) => {
     const medicalCase = this._getMedicalCaseFromModel(model, object);
     // Will update the patient values based on activities so we only take the edits
     const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
-    const patient = this.findBy('Patient', medicalCase.patient_id);
+    const patient = await this.findBy('Patient', medicalCase.patient_id);
 
-    nodeActivities.map((node) => {
+
+
+    nodeActivities.map(async (node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
-        const patientValue = patient.patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
+        const patientValues = await patient.patientValues;
+        const patientValue = patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
         // If the values doesn't exist we create it otherwise we edit it
+        console.log("nodeActivities", node, patientValue)
+
         if (patientValue === undefined) {
-          this.push('Patient', medicalCase.patient_id, 'patientValues', {
-            id: uuid.v4(),
-            value: String(node.value),
-            node_id: parseInt(node.id),
-            answer_id: node.answer === null ? null : parseInt(node.answer),
-            patient_id: medicalCase.patient_id,
+          const collection = database.get('patient_values');
+
+          await database.action(async () => {
+            await collection.create((record) => {
+              record._raw.id = uuid.v4();
+              record.value = String(node.value);
+              record.node_id = parseInt(node.id);
+              record.answer_id = node.answer === null ? null : parseInt(node.answer);
+              record.patient_id = medicalCase.patient_id;
+            });
           });
         } else {
           this._realm().write(() => {

@@ -5,8 +5,6 @@ import moment from 'moment';
 import { Model, Q } from '@nozbe/watermelondb';
 import { field, date, readonly, children, lazy } from '@nozbe/watermelondb/decorators';
 
-import { setGenerator } from '@nozbe/watermelondb/utils/common/randomId';
-
 import I18n from '../../src/utils/i18n';
 import Database from '../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
@@ -74,42 +72,6 @@ export class PatientModel {
   };
 
   /**
-   * Get value of patient value
-   * @param {integer} nodeId - Node id to retrieved
-   * @param {object} nodes - List of nodes in algorithm
-   * @returns {string|date} - value to display
-   */
-
-  /**
-   * Format value or answer for a patient that has to be render
-   * @param nodeId
-   * @param algorithm
-   * @returns {string}
-   */
-  getLabelFromNode = (nodeId, algorithm) => {
-    let displayedValue = '';
-    const currentPatientValue = this.patientValues.find((patientValue) => patientValue.node_id === nodeId);
-    const { nodes } = algorithm;
-
-    if (currentPatientValue !== undefined) {
-      if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
-        // Date display
-        displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
-      } else if (nodes[currentPatientValue.node_id].display_format === displayFormats.dropDownList) {
-        // Date display
-        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
-      } else if (currentPatientValue.value === null && currentPatientValue.answer_id !== null) {
-        // Answer display
-        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
-      } else if (currentPatientValue.value !== null && currentPatientValue.answer_id === null) {
-        displayedValue = currentPatientValue.value;
-      }
-    }
-
-    return displayedValue;
-  };
-
-  /**
    * Save patient in database
    * @returns {Promise<void|string|Array|v.Chain|v.ExplicitChain<string>>}
    */
@@ -120,6 +82,7 @@ export class PatientModel {
     this.id = uuid.v4();
 
     const activity = await medicalCase.generateActivity('registration', user, medicalCase.nodes);
+    console.log('Goona insert');
     return database.insert('Patient', {
       ...this,
       medicalCases: [
@@ -167,7 +130,38 @@ export class Patient extends Model {
 
   static associations = {
     medical_cases: { type: 'has_many', foreignKey: 'patient_id' },
-    patientValues: { type: 'has_many', foreignKey: 'patient_id' },
+    patient_values: { type: 'has_many', foreignKey: 'patient_id' },
+  };
+
+  /**
+   * Format value or answer for a patient that has to be render
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
+   */
+  getLabelFromNode = async (nodeId, algorithm) => {
+    let displayedValue = '';
+    const patientValues = await this.patientValues;
+    const currentPatientValue = patientValues.find((patientValue) => patientValue.node_id === nodeId);
+    console.log(this, patientValues, currentPatientValue);
+    const { nodes } = algorithm;
+
+    if (currentPatientValue !== undefined) {
+      if (nodes[currentPatientValue.node_id].display_format === displayFormats.date) {
+        // Date display
+        displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
+      } else if (nodes[currentPatientValue.node_id].display_format === displayFormats.dropDownList) {
+        // Date display
+        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
+      } else if (currentPatientValue.value === null && currentPatientValue.answer_id !== null) {
+        // Answer display
+        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
+      } else if (currentPatientValue.value !== null && currentPatientValue.answer_id === null) {
+        displayedValue = currentPatientValue.value;
+      }
+    }
+
+    return displayedValue;
   };
 
   @children('medical_cases') medicalCases;

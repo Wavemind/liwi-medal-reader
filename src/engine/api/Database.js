@@ -128,7 +128,7 @@ export default class Database {
       // dbInterface = databaseInterface.realmInterface;
       dbInterface = databaseInterface.realmInterface;
     } else {
-      dbInterface = databaseInterface.httpInterface;
+      dbInterface = databaseInterface.realmInterface;
     }
     return dbInterface;
   };

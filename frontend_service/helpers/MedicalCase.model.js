@@ -284,6 +284,7 @@ export class MedicalCaseModel {
     let differenceNode = [];
 
     const medicalCase = await database.findBy('MedicalCase', this.id);
+    console.log(medicalCase);
     if (medicalCase === null) {
       // TODO maybe check version id algo is not different ?
       differenceNode = differenceNodes(nodes, algorithm.nodes);

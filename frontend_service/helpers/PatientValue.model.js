@@ -2,7 +2,7 @@
 
 import uuid from 'react-native-uuid';
 import { Model } from '@nozbe/watermelondb';
-import { relation } from '@nozbe/watermelondb/decorators';
+import {field, relation} from '@nozbe/watermelondb/decorators';
 
 import { differenceNodes } from '../../src/utils/swissKnives';
 import { store } from '../store';
@@ -56,4 +56,14 @@ export class PatientValue extends Model {
   };
 
   @relation('patients', 'patient_id') patient;
+
+  @field('patient_id') patient_id;
+
+  @field('node_id') node_id;
+
+  @field('answer_id') answer_id;
+
+  @field('value') value;
+
+  @field('fail_safe') fail_safe;
 }
