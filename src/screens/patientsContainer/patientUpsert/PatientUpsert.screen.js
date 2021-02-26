@@ -89,9 +89,14 @@ export default class PatientUpsert extends React.Component {
         ...generatedMedicalCase,
         patient: { ...patient, medicalCases: [] }, // Force
       });
+
       if (patientId !== null) {
         patient.patientValues.forEach((patientValue) => {
-          setAnswer(algorithm, patientValue.node_id, patientValue.value);
+          if (patientValue.value !== null) {
+            setAnswer(algorithm, patientValue.node_id, patientValue.value);
+          } else {
+            setAnswer(algorithm, patientValue.node_id, patientValue.answer_id);
+          }
         });
       }
     }
