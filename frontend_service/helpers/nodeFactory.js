@@ -31,6 +31,7 @@ export const generateQuestion = (node) => {
     validationMessage,
     validationType,
     unavailableValue,
+    isReset: false,
   };
 
   // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
@@ -55,6 +56,7 @@ export const generateQuestionsSequence = (node) => {
     dd,
     df,
     qs,
+    isReset: false,
   };
 };
 

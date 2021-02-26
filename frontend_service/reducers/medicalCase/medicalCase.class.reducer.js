@@ -382,7 +382,7 @@ class MedicalCaseReducer extends ReducerClass {
         },
       },
     });
-    const medicalCase = JSON.parse(
+    let medicalCase = JSON.parse(
       JSON.stringify({
         ...state,
         nodes: {
@@ -394,11 +394,27 @@ class MedicalCaseReducer extends ReducerClass {
             value,
             validationMessage,
             validationType,
+            isReset: newValue === null,
           },
         },
       })
     );
+
     processUpdatedNode(algorithm, medicalCase, nodeId);
+
+    // TODO Qtn is an ass !!!!!!!!!!!!!!!!!!!!!!!
+    JSON.parse(
+      JSON.stringify({
+        ...state,
+        nodes: {
+          ...state.nodes,
+          [nodeId]: {
+            ...state.nodes[nodeId],
+            isReset: false,
+          },
+        },
+      })
+    );
 
     return {
       ...medicalCase,
