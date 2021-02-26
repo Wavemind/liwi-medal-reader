@@ -114,7 +114,7 @@ export const conditionValue = (id, elemId, elem = 'dd') => {
  * @param diagnosesKey
  * @param finalDiagnosticId
  */
-export const validFinalDiagnostic = (diagnosesKey, finalDiagnosticId) => {
+export const validFinalDiagnostic = (finalDiagnosticId, diagnosesKey = 'proposed') => {
   const state$ = store.getState();
   // const mcFinalDiagnostic = state$.nodes[finalDiagnosticId];
   const currentFinalDiagnostic = algorithm.nodes[finalDiagnosticId];
