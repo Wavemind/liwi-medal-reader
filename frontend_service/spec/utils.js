@@ -103,9 +103,9 @@ export const finalDiagnosticRetained = (finalDiagnosticId) => {
 
 /**
  * Get node condition value
- * @param id: Node Id
- * @param elemId: diagnostic Id | QS Id
- * @param elem : dd | qs default = dd
+ * @param id: Node id
+ * @param elemId: diagnostic id | question sequences id | final diagnostic id
+ * @param elem : dd => default | qs | df
  * @returns {boolean}
  */
 export const conditionValue = (id, elemId, elem = 'dd') => {
