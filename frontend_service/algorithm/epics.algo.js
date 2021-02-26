@@ -25,7 +25,7 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
   const diagnostic = algorithm.diagnostics[diagnosticId];
   const { nodes } = medicalCase;
   const currentInstance = diagnostic.instances[nodeId];
-  const currentNode = nodes[nodeId];
+  const mcNode = nodes[nodeId];
   const parentsNodes = getParentsNodes(algorithm, diagnosticId, nodeId);
 
   // If the complaint category linked to the diagnostic is not selected we set the condition value to false
@@ -61,11 +61,11 @@ const computeConditionValue = (algorithm, medicalCase, diagnosticId, nodeId) => 
     if (parentConditionValue === false) {
       // Set parent to false if their condition's isn't correct. Used to stop the algorithm
       updateConditionValue(algorithm, medicalCase, nodeId, diagnosticId, false, nodeTypes.diagnostic);
-    } else if (conditionValue !== null) {
+    } else if (conditionValue !== null || mcNode.isReset) {
       updateConditionValue(algorithm, medicalCase, nodeId, diagnosticId, conditionValue, nodeTypes.diagnostic);
 
       // If the node is answered go his children
-      if (currentNode.answer !== null) {
+      if (mcNode.answer !== null || mcNode.isReset) {
         nodeAction(algorithm, medicalCase, nodeId, diagnosticId, nodeTypes.diagnostic);
       }
     }
@@ -129,6 +129,7 @@ const nodeAction = (algorithm, medicalCase, nodeId, callerId, callerType) => {
     });
   } else {
     const mcNode = medicalCase.nodes[callerId];
+
     switch (mcNode.type) {
       case nodeTypes.question:
       case nodeTypes.questionsSequence:
