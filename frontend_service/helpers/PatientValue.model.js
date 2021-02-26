@@ -27,8 +27,8 @@ export class PatientValueModel {
    */
   static getUpdatedPatientValue = (patient) => {
     const state = store.getState();
-
-    const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id');
+    const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id',true);
+    console.log("test", diffPatientValues)
 
     const newPatientValues = state.patientValues.map((patientValue) => {
       const diffPatientValue = diffPatientValues.find((dpv) => dpv.node_id === patientValue.node_id);

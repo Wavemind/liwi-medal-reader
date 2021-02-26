@@ -95,6 +95,8 @@ export default class LocalInterface {
         return 'patients';
       case 'MedicalCase':
         return 'medical_cases';
+      case 'PatientValue':
+        return 'patient_values';
       default:
         console.warn('Watermelon table doesn\'t exist', model);
     }
@@ -431,7 +433,7 @@ export default class LocalInterface {
           await database.action(async () => {
             await collection.create((record) => {
               record._raw.id = uuid.v4();
-              record.value = String(node.value);
+              record.value = node.value;
               record.node_id = parseInt(node.id);
               record.answer_id = node.answer === null ? null : parseInt(node.answer);
               record.patient_id = medicalCase.patient_id;

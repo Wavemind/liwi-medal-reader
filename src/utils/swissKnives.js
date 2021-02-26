@@ -197,16 +197,26 @@ export const roundSup = (n) => Math.round(n * 10) / 10;
  * @param  {Object} oldNodes Old NodesObject to compare with
  * @return {Object}        Return a new array who represent the diff
  */
-export function differenceNodes(newNodes, oldNodes, answerKey = 'answer', idKey = 'id') {
+export function differenceNodes(newNodes, oldNodes, answerKey = 'answer', idKey = 'id', findInArray = false) {
   const diff = [];
   Object.keys(newNodes).map((key) => {
     const log = {};
     const iterator = ['value', answerKey];
+    let oldNode;
+
+    if (findInArray) {
+      oldNode = oldNodes.find((node) => newNodes[key].node_id === node.node_id);
+    } else {
+      oldNode = oldNodes[key];
+    }
+
+    console.log(oldNode,newNodes[key])
 
     const isDifferent = iterator.some((index) => {
-      if (oldNodes[key] === undefined) return newNodes[key][index] !== null;
-      return newNodes[key][index] !== oldNodes[key][index];
+      if (oldNode === undefined) return newNodes[key][index] !== null;
+      return newNodes[key][index] !== oldNode[index];
     });
+    console.log(key, isDifferent);
 
     if (isDifferent) {
       log[idKey] = idKey === 'id' ? key : newNodes[key][idKey];

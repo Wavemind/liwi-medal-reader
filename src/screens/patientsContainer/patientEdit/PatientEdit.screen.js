@@ -31,13 +31,13 @@ export default class PatientEdit extends React.Component {
     const { navigation, setPatient } = this.props;
     const algorithm = await getItem('algorithm');
     const currentPatient = navigation.getParam('patient');
-    const patient = convertToObject(currentPatient);
+    const patient = convertToObject(JSON.parse(JSON.stringify({ ...currentPatient, medicalCases: [] })));
 
     setPatient(patient, algorithm);
 
     this.setState({
       algorithm,
-      patient,
+      patient: currentPatient,
       loading: false,
     });
   }
@@ -69,28 +69,30 @@ export default class PatientEdit extends React.Component {
     const { patient } = this.state;
     const {
       navigation,
-      app: { isActionAvailable, t, database },
+      app: { t, database, session: {facility}},
     } = this.props;
 
-    if (isActionAvailable()) {
-      this.setState({ disable: true });
-      const user = await getItem('user');
+    this.setState({ disable: true });
+    const user = await getItem('user');
 
-      // Gets all the patient values that need to be stored in the database
-      // meaning remove empty ones
-      const newPatientValues = PatientValueModel.getUpdatedPatientValue(patient);
-      const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
+    // Gets all the patient values that need to be stored in the database
+    // meaning remove empty ones
+    const newPatientValues = PatientValueModel.getUpdatedPatientValue(patient);
 
+    const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
+
+    if (facility.architecture === 'client_server') {
       await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
-
-      navigation.navigate('PatientProfile', {
-        id: patient.id,
-        refresh: true,
-      });
     } else {
-      displayNotification(t('application:resource_not_available'), liwiColors.redColor);
-      navigation.navigate('Home');
+      newPatientValues.forEach(async (patientValue) => {
+        await database.update('PatientValue', patientValue.id, { ...patientValue, activities });
+      });
     }
+
+    navigation.navigate('PatientProfile', {
+      id: patient.id,
+      refresh: true,
+    });
   };
 
   render() {
