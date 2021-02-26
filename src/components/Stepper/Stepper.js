@@ -565,10 +565,9 @@ class Stepper extends React.Component<Props, State> {
         other_study_id: patientObject.other_study_id,
         other_group_id: patientObject.other_group_id,
       };
-      patient = new PatientModel({ ...patientObject, facility, otherFacility }, environment);
+      patient = await new PatientModel({ ...patientObject, facility, otherFacility }, environment);
 
       // Create patient if there are no errors
-      console.log(patient, medicalCaseObject)
       await patient.medicalCases.push(medicalCaseObject);
       await patient.save();
     }

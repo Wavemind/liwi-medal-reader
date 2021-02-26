@@ -1,21 +1,22 @@
 // @flow
 import * as React from 'react';
-import { Text, View, Button, Icon, Tabs, Tab, Content } from 'native-base';
-import { FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import {Text, View, Button, Icon, Tabs, Tab, Content} from 'native-base';
+import {FlatList, ScrollView, TouchableOpacity} from 'react-native';
 
-import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
-import { LiwiTabStyle } from '../../../template/layout';
-import { getDeviceInformation } from '../../../engine/api/Device';
-import { getItem } from '../../../engine/api/LocalStorage';
-import { styles } from './PatientProfile.style';
+import {medicalCaseStatus, routeDependingStatus, modalType} from '../../../../frontend_service/constants';
+import {LiwiTabStyle} from '../../../template/layout';
+import {getDeviceInformation} from '../../../engine/api/Device';
+import {getItem} from '../../../engine/api/LocalStorage';
+import {styles} from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
-import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
+import {MedicalCaseModel} from '../../../../frontend_service/helpers/MedicalCase.model';
 
 export default class PatientProfile extends React.Component {
   state = {
     patient: {
       medicalCases: [],
     },
+    patientValues: [],
     firstRender: true,
     deviceInfo: null,
     nodes: {},
@@ -28,18 +29,18 @@ export default class PatientProfile extends React.Component {
     const algorithm = await getItem('algorithm');
 
     const columns = algorithm.mobile_config.medical_case_list;
-    const { nodes } = algorithm;
+    const {nodes} = algorithm;
 
-    this.setState({ deviceInfo, columns, nodes, algorithm });
+    this.setState({deviceInfo, columns, nodes, algorithm});
     await this._getPatient();
   }
 
   async componentDidUpdate() {
-    const { navigation } = this.props;
+    const {navigation} = this.props;
 
     // TODO: Do it better
     if (navigation.getParam('refresh')) {
-      navigation.setParams({ refresh: false });
+      navigation.setParams({refresh: false});
       await this._getPatient();
     }
   }
@@ -52,18 +53,23 @@ export default class PatientProfile extends React.Component {
   async _getPatient() {
     const {
       navigation,
-      app: { database },
+      app: {database},
     } = this.props;
-    const { algorithm } = this.state;
+    const {algorithm} = this.state;
 
     const id = navigation.getParam('id');
     const patient = await database.findBy('Patient', id);
     const medicalCaseData = await patient.medicalCasesLight(algorithm);
+    const patientValues = await patient.patientValues;
+    const labelFromNode = await Promise.all(patientValues.map((patientValue) => patient.getLabelFromNode(patientValue.node_id, algorithm)));
+    console.log(labelFromNode);
 
     this.setState({
       patient,
+      patientValues,
       firstRender: false,
       medicalCaseData,
+      labelFromNode,
     });
   }
 
@@ -74,17 +80,17 @@ export default class PatientProfile extends React.Component {
    */
   showIcons = (medicalCase) => {
     const {
-      app: { user, isConnected },
+      app: {user, isConnected},
     } = this.props;
-    const { deviceInfo } = this.state;
+    const {deviceInfo} = this.state;
     let icon = null;
 
     if (isConnected && MedicalCaseModel.isLocked(medicalCase, deviceInfo, user)) {
-      icon = <Icon name="lock" type="EvilIcons" style={styles.lock} />;
+      icon = <Icon name="lock" type="EvilIcons" style={styles.lock}/>;
     } else if (medicalCase.status !== 'close') {
-      icon = <Icon dark type="EvilIcons" name="chevron-right" />;
+      icon = <Icon dark type="EvilIcons" name="chevron-right"/>;
     } else {
-      icon = <Icon dark type="EvilIcons" name="eye" />;
+      icon = <Icon dark type="EvilIcons" name="eye"/>;
     }
 
     return (
@@ -105,10 +111,10 @@ export default class PatientProfile extends React.Component {
       setMedicalCase,
       navigation,
       updateModalFromRedux,
-      app: { t, database, user, isConnected },
+      app: {t, database, user, isConnected},
     } = this.props;
 
-    const { columns, deviceInfo } = this.state;
+    const {columns, deviceInfo} = this.state;
     const size = 1 / columns.length + 1;
 
     return (
@@ -119,9 +125,9 @@ export default class PatientProfile extends React.Component {
           const newMedicalCase = await database.findBy('MedicalCase', medicalCase.id);
 
           if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
-            updateModalFromRedux({ medicalCase: newMedicalCase }, modalType.medicalCaseLocked);
+            updateModalFromRedux({medicalCase: newMedicalCase}, modalType.medicalCaseLocked);
           } else if (newMedicalCase.status === medicalCaseStatus.close) {
-            navigation.navigate('Summary', { medicalCase });
+            navigation.navigate('Summary', {medicalCase});
           } else {
             // Set medical case in store and lock case
             await setMedicalCase(newMedicalCase);
@@ -135,11 +141,11 @@ export default class PatientProfile extends React.Component {
         }}
       >
         {medicalCase.values.map((value, index) => (
-          <View style={{ flex: size }} key={`${medicalCase.id}_${index}`}>
+          <View style={{flex: size}} key={`${medicalCase.id}_${index}`}>
             <Text size-auto>{value}</Text>
           </View>
         ))}
-        <View style={{ flex: size }}>
+        <View style={{flex: size}}>
           <Text size-auto>{t(`medical_case:${medicalCase.status}`)}</Text>
         </View>
 
@@ -153,7 +159,7 @@ export default class PatientProfile extends React.Component {
    * @returns {*}
    */
   _renderSeparator = () => {
-    return <View style={styles.separator} />;
+    return <View style={styles.separator}/>;
   };
 
   /**
@@ -162,29 +168,13 @@ export default class PatientProfile extends React.Component {
    */
   renderPatientValues = () => {
     const {
-      app: { t, algorithm },
+      app: {t, algorithm},
       navigation,
     } = this.props;
-    const { patient, nodes } = this.state;
+    const {patient, nodes, patientValues, labelFromNode} = this.state;
 
     return (
       <>
-        <View padding-auto margin-top style={styles.flex}>
-          <ScrollView>
-            <View style={styles.patientValuesContent}>
-              {patient.patientValues.map((patientValue) => (
-                <View key={patientValue.node_id} style={styles.wrapper}>
-                  <Text size-auto style={styles.identifierText}>
-                    {nodes[patientValue.node_id].label}
-                  </Text>
-                  <Text size-auto style={styles.patientValues}>
-                    {patient.getLabelFromNode(patientValue.node_id, algorithm)}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
         <View style={styles.footerButton}>
           <Button
             block
@@ -197,6 +187,22 @@ export default class PatientProfile extends React.Component {
             <Text size-auto>{t('patient_profile:edit_patient_value')}</Text>
           </Button>
         </View>
+        <ScrollView>
+          <View padding-auto margin-top style={styles.flex}>
+            <View style={styles.patientValuesContent}>
+              {patientValues.map((patientValue, index) => (
+                <View key={patientValue.node_id} style={styles.wrapper}>
+                  <Text size-auto style={styles.identifierText}>
+                    {nodes[patientValue.node_id].label}
+                  </Text>
+                  <Text size-auto style={styles.patientValues}>
+                    {labelFromNode[index]}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
       </>
     );
   };
@@ -207,11 +213,11 @@ export default class PatientProfile extends React.Component {
    */
   renderConsultations = () => {
     const {
-      app: { t },
+      app: {t},
       navigation,
     } = this.props;
-    const { patient, nodes, columns, medicalCaseData } = this.state;
-
+    const {patient, nodes, columns, medicalCaseData} = this.state;
+    console.log(medicalCaseData);
     return (
       <>
         <View padding-auto style={styles.filterContent}>
@@ -226,7 +232,9 @@ export default class PatientProfile extends React.Component {
         </View>
 
         <View padding-auto style={styles.consultationContainer}>
-          <FlatList key="dataList" data={medicalCaseData} renderItem={(value) => this._renderItem(value.item)} ItemSeparatorComponent={this._renderSeparator} keyExtractor={(item) => item.id} />
+          <FlatList key="dataList" data={medicalCaseData} renderItem={(value) => this._renderItem(value.item)}
+                    ItemSeparatorComponent={this._renderSeparator} keyExtractor={(item) => item.id}
+          />
         </View>
 
         {medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (
@@ -250,12 +258,12 @@ export default class PatientProfile extends React.Component {
 
   render() {
     const {
-      app: { t },
+      app: {t},
     } = this.props;
-    const { firstRender } = this.state;
+    const {firstRender} = this.state;
 
     if (firstRender) {
-      return <LiwiLoader />;
+      return <LiwiLoader/>;
     }
 
     return (
@@ -269,12 +277,12 @@ export default class PatientProfile extends React.Component {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
             style={LiwiTabStyle.style}
           >
-            <Content
+            <View
               style={styles.marginTop}
               contentContainerStyle={styles.flex} // important!
             >
               {this.renderConsultations()}
-            </Content>
+            </View>
           </Tab>
           <Tab
             heading={t('patient_profile:personal_information')}
@@ -284,12 +292,12 @@ export default class PatientProfile extends React.Component {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
             style={LiwiTabStyle.style}
           >
-            <Content
+            <View
               style={styles.marginTop}
               contentContainerStyle={styles.flex} // important!
             >
               {this.renderPatientValues()}
-            </Content>
+            </View>
           </Tab>
         </Tabs>
       </View>

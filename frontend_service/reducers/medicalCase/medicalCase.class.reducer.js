@@ -367,7 +367,21 @@ class MedicalCaseReducer extends ReducerClass {
     const { algorithm, nodeId, newValue } = action.payload;
     // Instantiate new object with answered question with new answer value
     const { answer, answer_stage, value, validationMessage, validationType } = nodeUpdateAnswer(newValue, algorithm, state.nodes[nodeId]);
-
+    console.log(Object.keys(state))
+    console.log({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        [nodeId]: {
+          ...state.nodes[nodeId],
+          answer,
+          answer_stage,
+          value,
+          validationMessage,
+          validationType,
+        },
+      },
+    });
     const medicalCase = JSON.parse(
       JSON.stringify({
         ...state,

@@ -261,8 +261,9 @@ export default class HttpInterface {
 
     if (model === 'Patient') {
       if (data instanceof Array) {
-        data.forEach((item) => {
-          object.push(new PatientModel(item, environment));
+        data.forEach(async (item) => {
+          const newPatient = await new PatientModel(item, environment)
+          object.push(newPatient);
         });
       } else {
         return new PatientModel(data, environment);

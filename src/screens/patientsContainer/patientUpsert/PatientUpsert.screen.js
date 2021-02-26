@@ -71,14 +71,13 @@ export default class PatientUpsert extends React.Component {
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
     const environment = await getItem('environment');
-
     let facility = navigation.getParam('facility'); // Object
 
     if (patientId === null) {
       if (facility === undefined) {
         facility = { uid: uuid.v4(), group_id: session.facility.id, study_id: algorithm.study.label };
       }
-      patient = new PatientModel({ otherFacility, facility }, environment);
+      patient = await new PatientModel({ otherFacility, facility }, environment);
     } else {
       patient = await database.findBy('Patient', patientId);
     }
@@ -90,12 +89,14 @@ export default class PatientUpsert extends React.Component {
         patient: { ...patient, medicalCases: [] }, // Force
       });
       if (patientId !== null) {
-        patient.patientValues.forEach((patientValue) => {
+        const patientValues = await patient.patientValues;
+        console.log(patientValues)
+        patientValues.forEach((patientValue) => {
           setAnswer(algorithm, patientValue.node_id, patientValue.value);
         });
       }
     }
-
+    console.log(patient);
     NavigationService.setParamsAge(algorithm, 'Patient');
     updateMedicalCaseProperty('patient', { ...patient, medicalCases: [] });
 
@@ -166,7 +167,7 @@ export default class PatientUpsert extends React.Component {
       return null;
     }
 
-    const { other_uid, other_study_id, other_group_id } = patient;
+    const { uid, study_id, group_id, other_uid, other_study_id, other_group_id } = patient;
 
     return (
       <View>
@@ -178,7 +179,7 @@ export default class PatientUpsert extends React.Component {
             placeholder=""
             condensed
             style={[styles.identifierText, styles.identifierTextDisabled]}
-            init={patient.uid}
+            init={uid}
             change={this.updatePatientValue}
             index="uid"
             autoCapitalize="sentences"
@@ -186,7 +187,7 @@ export default class PatientUpsert extends React.Component {
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={patient.study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
+          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>
@@ -197,7 +198,7 @@ export default class PatientUpsert extends React.Component {
             keyboardType="decimal-pad"
             condensed
             style={[styles.identifierText, styles.identifierTextDisabled]}
-            init={patient.group_id}
+            init={group_id}
             change={this.updatePatientValue}
             index="group_id"
             autoCapitalize="sentences"

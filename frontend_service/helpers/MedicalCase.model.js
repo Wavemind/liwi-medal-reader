@@ -2,7 +2,7 @@
 import moment from 'moment';
 import uuid from 'react-native-uuid';
 import { Model } from '@nozbe/watermelondb';
-import { children, date, field, readonly, relation, json } from '@nozbe/watermelondb/decorators';
+import { children, date, field, readonly, relation, json, lazy } from '@nozbe/watermelondb/decorators';
 
 import { categories, displayFormats, medicalCaseStatus, nodeTypes } from '../constants';
 import { getItem } from '../../src/engine/api/LocalStorage';
@@ -103,6 +103,7 @@ export class MedicalCaseModel {
           this.fail_safe = props.fail_safe;
           this.isNewCase = json.isNewCase;
         }
+
       }
 
       this.modal = {
@@ -284,7 +285,7 @@ export class MedicalCaseModel {
     let differenceNode = [];
 
     const medicalCase = await database.findBy('MedicalCase', this.id);
-    console.log(medicalCase);
+
     if (medicalCase === null) {
       // TODO maybe check version id algo is not different ?
       differenceNode = differenceNodes(nodes, algorithm.nodes);
@@ -327,31 +328,6 @@ export class MedicalCaseModel {
     return (
       this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address))
     );
-  };
-
-  /**
-   * Get value of medical case value
-   * @param nodeId
-   * @param algorithm
-   * @returns {string}
-   */
-  getLabelFromNode = (nodeId, algorithm) => {
-    let displayedValue = '';
-    const currentNode = algorithm.nodes[nodeId];
-    const mcNode = this.nodes[nodeId];
-
-    if (currentNode !== undefined) {
-      if (currentNode.display_format === displayFormats.date) {
-        // Date display
-        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
-      } else if (mcNode.value === null) {
-        // Answer display
-        displayedValue = mcNode.answer;
-      } else {
-        displayedValue = mcNode.value;
-      }
-    }
-    return displayedValue;
   };
 
   /**
@@ -424,9 +400,35 @@ export class MedicalCaseModel {
 
     return instantiatedNode;
   }
+
+  /**
+   * Get value of medical case value
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
+   */
+  getLabelFromNode = (nodeId, algorithm) => {
+    let displayedValue = '';
+    const currentNode = algorithm.nodes[nodeId];
+    const mcNode = this.nodes[nodeId];
+
+    if (currentNode !== undefined) {
+      if (currentNode.display_format === displayFormats.date) {
+        // Date display
+        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
+      } else if (mcNode.value === null) {
+        // Answer display
+        displayedValue = mcNode.answer;
+      } else {
+        displayedValue = mcNode.value;
+      }
+    }
+    return displayedValue;
+  };
+
 }
 
-const sanitizeJson = json => json;
+const sanitizeJson = (json) => json;
 
 export class MedicalCase extends Model {
   static table = 'medical_cases';
@@ -434,6 +436,32 @@ export class MedicalCase extends Model {
   static associations = {
     activities: { type: 'has_many', foreignKey: 'medical_case_id' },
     patients: { type: 'belongs_to', foreignKey: 'patient_id' },
+  };
+
+  /**
+   * Get value of medical case value
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
+   */
+  getLabelFromNode = (nodeId, algorithm) => {
+    let displayedValue = '';
+    const currentNode = algorithm.nodes[nodeId];
+    const { nodes } = JSON.parse(this.json);
+    const mcNode = nodes[nodeId];
+
+    if (currentNode !== undefined) {
+      if (currentNode.display_format === displayFormats.date) {
+        // Date display
+        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
+      } else if (mcNode.value === null) {
+        // Answer display
+        displayedValue = mcNode.answer;
+      } else {
+        displayedValue = mcNode.value;
+      }
+    }
+    return displayedValue;
   };
 
   @children('medical_cases') medicalCases;
@@ -445,7 +473,9 @@ export class MedicalCase extends Model {
 
   @field('synchronized_at') synchronized_at;
 
-  @field('status') status;
+  @field('patient_id') patient_id;
+
+  @field('progress_status') status;
 
   @field('fail_safe') fail_safe;
 
@@ -453,5 +483,3 @@ export class MedicalCase extends Model {
 
   @readonly @date('updated_at') updatedAt;
 }
-
-

@@ -3,16 +3,17 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import uuid from 'react-native-uuid';
 import * as _ from 'lodash';
 
-import { Patient } from '../../../../frontend_service/helpers/Patient.model';
+import moment from 'moment';
+import { Patient, PatientModel } from '../../../../frontend_service/helpers/Patient.model';
 import { PatientValue } from '../../../../frontend_service/helpers/PatientValue.model';
-import { MedicalCase } from '../../../../frontend_service/helpers/MedicalCase.model';
+import { MedicalCase, MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 import { Activity } from '../../../../frontend_service/helpers/Activity.model';
 import { getItem } from '../LocalStorage';
 import { categories } from '../../../../frontend_service/constants';
 import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
-  version: 1,
+  version: 2,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -21,7 +22,7 @@ const schema = appSchema({
         { name: 'synchronized_at', type: 'number', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
-        { name: 'status', type: 'string' },
+        { name: 'progress_status', type: 'string' },
         { name: 'patient_id', type: 'string' },
         { name: 'fail_safe', type: 'boolean', isOptional: true },
       ],
@@ -109,7 +110,8 @@ export default class LocalInterface {
   findBy = async (model, value, field = 'id') => {
     const collection = database.get(this._mapModelToTable(model));
     const object = await collection.query(Q.where(field, value));
-    return object[0] === undefined ? null : object[0];
+
+    return object[0] === undefined ? null : this._initClasses(object[0], model);
   };
 
   /**
@@ -128,22 +130,22 @@ export default class LocalInterface {
   getAll = async (model, page = null, params) => {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
-
-    const test_collection = database.get('patient_values');
-    let result_test = await test_collection.query().fetch();
-
-    console.log(result_test);
+    const queries = [];
 
     if (page === null) {
       return result;
     }
     const filters = this._generateFilteredQuery(model, params.filters);
 
-    if (params.query !== '' && model === 'Patient') result = await collection.query(Q.like(`%${Q.sanitizeLikeString(params.query)}%`));
+    if (params.query !== '' && model === 'Patient') queries.push(Q.on('patient_values', 'value', Q.like(`%${Q.sanitizeLikeString(params.query)}%`)));
     // if (filters !== '') result = await result.filtered(filters);
 
-    result = await collection.query(Q.experimentalSortBy('updated_at', Q.asc), Q.experimentalSkip((page - 1) * elementPerPage), Q.experimentalTake(elementPerPage * page));
+    queries.push(Q.experimentalSortBy('updated_at', Q.asc));
+    queries.push(Q.experimentalSkip((page - 1) * elementPerPage));
+    queries.push(Q.experimentalTake(elementPerPage * page));
 
+    result = await collection.query(...queries);
+    result = await this._initClasses(result, model);
     return this._generateList(result, model, params.columns);
   };
 
@@ -241,7 +243,38 @@ export default class LocalInterface {
    * @param { boolean } updatePatientValue - Flag that tells us if we need to update the patient values
    * @returns { Collection } - Updated object
    */
-  update = async (model, id, fields, updatePatientValue) => {};
+  update = async (model, id, fields, updatePatientValue) => {
+    const session = await getItem('session');
+    const collection = database.get(this._mapModelToTable(model));
+
+    if (session.facility.architecture === 'client_server') {
+      fields = { ...fields, fail_safe: true };
+    }
+    let object = null;
+    await database.action(async () => {
+      object = await collection.find(id);
+      await object.update((record) => {
+        Object.keys(fields).forEach((field) => {
+          console.log('1', object, fields, field);
+          if (field !== 'patient') record[field] = fields[field];
+          console.log('2');
+        });
+      });
+    });
+
+    // Update patient updated_at value
+    if (model === 'MedicalCase') {
+      await database.action(async () => {
+        const patientCollection = database.get('patients');
+        const patient = await patientCollection.find(object.patient_id);
+        await patient.update((record) => (record.updated_at = moment().toDate()));
+      });
+    }
+
+    if (updatePatientValue && !Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
+      this._savePatientValue(model, object);
+    }
+  };
 
   /**
    * Finds a collection of objects based on a field and a value
@@ -286,23 +319,28 @@ export default class LocalInterface {
    */
   _generateList = async (data, model, columns) => {
     const algorithm = await getItem('algorithm');
-    return data.map((entry) => {
-      if (model === 'Patient') {
+    console.log(data);
+    return Promise.all(
+      data.map(async (entry) => {
+        if (model === 'Patient') {
+          const values = await Promise.all(columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)));
+          return {
+            id: entry.id,
+            updated_at: entry.updatedAt,
+            values,
+          };
+        }
+        const values = await Promise.all(columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)));
         return {
           id: entry.id,
+          status: entry.status,
+          clinician: entry.clinician,
+          mac_address: entry.mac_address,
           updated_at: entry.updated_at,
-          values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
+          values,
         };
-      }
-      return {
-        id: entry.id,
-        status: entry.status,
-        clinician: entry.clinician,
-        mac_address: entry.mac_address,
-        updated_at: entry.updated_at,
-        values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
-      };
-    });
+      })
+    );
   };
 
   /**
@@ -341,6 +379,35 @@ export default class LocalInterface {
   };
 
   /**
+   * Generate class
+   * @param { array|object } data - Data retrieved from server
+   * @param { string } model - Class name
+   * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
+   * @private
+   */
+  _initClasses = async (data, model) => {
+    const object = [];
+    const environment = await getItem('environment');
+
+    if (model === 'Patient') {
+      if (data instanceof Array) {
+        data.forEach((item) => {
+          object.push(new PatientModel(item, environment));
+        });
+      } else {
+        return new PatientModel(data, environment);
+      }
+    } else if (data instanceof Array) {
+      data.forEach((item) => {
+        object.push(new MedicalCaseModel(item));
+      });
+    } else {
+      return new MedicalCaseModel(data);
+    }
+    return Promise.all(object);
+  };
+
+  /**
    * Saves the patient values based on the activities on the object
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
@@ -352,14 +419,11 @@ export default class LocalInterface {
     const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
     const patient = await this.findBy('Patient', medicalCase.patient_id);
 
-
-
     nodeActivities.map(async (node) => {
       if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
         const patientValues = await patient.patientValues;
         const patientValue = patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
         // If the values doesn't exist we create it otherwise we edit it
-        console.log("nodeActivities", node, patientValue)
 
         if (patientValue === undefined) {
           const collection = database.get('patient_values');
@@ -375,7 +439,10 @@ export default class LocalInterface {
           });
         } else {
           this._realm().write(() => {
-            this.update('PatientValue', patientValue.id, { value: String(node.value), answer_id: node.answer === null ? null : parseInt(node.answer) });
+            this.update('PatientValue', patientValue.id, {
+              value: String(node.value),
+              answer_id: node.answer === null ? null : parseInt(node.answer),
+            });
           });
         }
       }

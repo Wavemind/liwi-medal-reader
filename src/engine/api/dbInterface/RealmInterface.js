@@ -213,7 +213,7 @@ export default class RealmInterface {
       if (model === 'Patient') {
         return {
           id: entry.id,
-          updated_at: entry.updated_at,
+          updated_at: entry.updatedAt,
           values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
         };
       }
@@ -222,7 +222,7 @@ export default class RealmInterface {
         status: entry.status,
         clinician: entry.clinician,
         mac_address: entry.mac_address,
-        updated_at: entry.updated_at,
+        updated_at: entry.updatedAt,
         values: columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)),
       };
     });
