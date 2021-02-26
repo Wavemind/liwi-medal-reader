@@ -7,7 +7,11 @@ import { store } from '../store';
 import { setAnswer, setMedicalCase, setDiagnoses, setMedicine } from '../actions/creators.actions';
 import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
-import { finalDiagnosticAll, finalDiagnosticGetDrugs } from '../helpers/FinalDiagnostic.model';
+import {
+  finalDiagnosticAll,
+  finalDiagnosticGetDrugs,
+  finalDiagnosticGetManagements,
+} from '../helpers/FinalDiagnostic.model';
 import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
 import { drugDoses } from '../helpers/Drug.model';
 
@@ -189,20 +193,23 @@ export const managementRetained = (managementId) => {
     ...medicalCase.diagnoses.proposed,
     ...medicalCase.diagnoses.additional,
   };
-  const managements = [];
+  let managements = [];
+
+  // Object.keys(finalDiagnostics).forEach((key) => {
+  //   if (finalDiagnostics[key].managements !== undefined && Object.keys(finalDiagnostics[key].managements).length > 0) {
+  //     Object.keys(finalDiagnostics[key].managements).map((managementKey) => {
+  //       const management = finalDiagnostics[key].managements[managementKey];
+  //       if (calculateCondition(algorithm, management, medicalCase) === true && !management.isExcluded(medicalCase)) {
+  //         managements.push(management);
+  //       }
+  //     });
+  //   }
+  // });
 
   Object.keys(finalDiagnostics).forEach((key) => {
-    if (finalDiagnostics[key].managements !== undefined && Object.keys(finalDiagnostics[key].managements).length > 0) {
-      Object.keys(finalDiagnostics[key].managements).map((managementKey) => {
-        const management = finalDiagnostics[key].managements[managementKey];
-        if (calculateCondition(algorithm, management, medicalCase) === true && !management.isExcluded(medicalCase)) {
-          managements.push(management);
-        }
-      });
-    }
+    managements = managements.concat(finalDiagnosticGetManagements(algorithm, medicalCase, medicalCase.nodes[key]));
   });
-
-  return managements.map((management) => management.id).includes(managementId);
+  return managements.some((management) => management.id === managementId);
 };
 
 /**
