@@ -104,10 +104,10 @@ export default class PatientEdit extends React.Component {
       <>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
           <View style={styles.flexRow}>
-            <View style={{ flex: 0.5 }}>
+            <View style={styles.flex05}>
               <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             </View>
-            <View style={{ flex: 0.5 }}>
+            <View style={styles.flex05}>
               <Button onPress={() => NavigationService.navigate('ConsentPreview')}>
                 <Text style={styles.flexCenter}>{t('patient_edit:show_consent')}</Text>
               </Button>
