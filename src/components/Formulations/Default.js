@@ -27,7 +27,7 @@ export default function Default(drug, node, drugDose) {
       )}
       {drug.formulationSelected !== null && <Text>{every}</Text>}
       <Text size-auto style={styles.description}>
-        {node.formulations[drug.formulationSelected].dispensing_description}
+        {drugDose.dispensing_description}
       </Text>
       {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{drugDose.injection_instructions}</Text> : null}
     </>

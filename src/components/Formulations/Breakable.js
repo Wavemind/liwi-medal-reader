@@ -26,7 +26,7 @@ export default function Breakable(drug, node, drugDose) {
           </Text>
           <Text size-auto>{`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
           <Text size-auto style={styles.description}>
-            {node.formulations[drug.formulationSelected].dispensing_description}
+            {drugDose.dispensing_description}
           </Text>
         </View>
       )}
