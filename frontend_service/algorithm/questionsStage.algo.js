@@ -57,7 +57,7 @@ const orderQuestionsInSystems = (medicalCase, answeredQuestionId, questions, que
         (medicalCase.metaData.consultation[view].length > 0 && medicalCase.metaData.consultation[view].includes(question.id) && followUpQuestionIndex === -1) ||
         (algorithm.nodes[answeredQuestionId]?.system !== undefined &&
           !medicalCase.metaData.consultation[view].includes(question.id) &&
-          systemOrders.indexOf(question.system) >= systemOrders.indexOf(algorithm.nodes[answeredQuestionId].system))
+          systemOrders.indexOf(question.system) >= systemOrders.indexOf(algorithm.nodes[answeredQuestionId].system)) || question.category
       ) {
         const systemIndex = questionPerSystem.findIndex((system) => system.title === String(question.system));
 
@@ -272,7 +272,7 @@ export const questionsPhysicalExam = (algorithm, answeredQuestionId) => {
   });
 
   const newQuestions = questions.map(({ id }) => id);
-  questionPerSystem = orderQuestionsInSystems(medicalCase, answeredQuestionId, questions, questionPerSystem, systemOrders, algorithm, 'physicalExam');
+  questionPerSystem = orderQuestionsInSystems(medicalCase, answeredQuestionId, questions, questionPerSystem, systemOrders, algorithm, 'physicalExam', 'physicalExamQuestions');
   questionPerSystem = removeQuestions(medicalCase, questionPerSystem, newQuestions, 'physicalExam');
   return dispatchToStore(questionPerSystem, medicalCase, newQuestions, 'physicalExam', 'physicalExamQuestions');
 };
