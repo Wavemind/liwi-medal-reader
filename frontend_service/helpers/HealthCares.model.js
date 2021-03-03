@@ -1,6 +1,8 @@
 // @flow
 import { finalDiagnosticAgreed, finalDiagnosticAgreedObject } from './FinalDiagnostic.model';
-import { nodeTypes } from '../constants';
+import { medicationForms, nodeTypes } from '../constants';
+import { roundSup } from '../../src/utils/swissKnives';
+import { breakableFraction } from './Drug.model';
 
 /**
  * Check if a healthCare is excluded by an another

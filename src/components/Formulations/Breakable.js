@@ -5,7 +5,8 @@ import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
 import { styles } from './styles';
 import { administrationRouteCategories } from '../../../frontend_service/constants';
-import { breakableFraction } from '../../../frontend_service/helpers/Drug.model';
+import { breakableFraction, formulationLabel } from '../../../frontend_service/helpers/Drug.model';
+import { roundSup } from '../../utils/swissKnives';
 
 export default function Breakable(drug, node, drugDose) {
   const fractionString = breakableFraction(drugDose);
@@ -13,9 +14,9 @@ export default function Breakable(drug, node, drugDose) {
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
-      <Text size-auto>{i18n.t(`medication_form:${node.formulations[drug.formulationSelected].medication_form}`)}</Text>
+      <Text size-auto>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
-        <Text size-auto>{`${parseInt(drugDose.unique_dose)} ${i18n.t('drug:tablets')} ${i18n.t('medication_form:per_administration')} ${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${i18n.t('drug:during')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
+        <Text size-auto>{`${roundSup(drugDose.unique_dose)} ${i18n.t('drug:tablets')} ${i18n.t('medication_form:per_administration')} ${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${i18n.t('drug:during')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
       ) : drugDose.doseResult === null ? (
         <Text size-auto>{drugDose.no_possibility}</Text>
       ) : (
@@ -30,7 +31,7 @@ export default function Breakable(drug, node, drugDose) {
           </Text>
         </View>
       )}
-      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{drugDose.injection_instructions}</Text> : null}
+      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`} size-auto>{drugDose.injection_instructions}</Text> : null}
     </>
   );
 }
