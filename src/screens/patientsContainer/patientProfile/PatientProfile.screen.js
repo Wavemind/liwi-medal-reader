@@ -108,7 +108,7 @@ export default class PatientProfile extends React.Component {
       app: { t, database, user, isConnected },
     } = this.props;
 
-    const { columns, deviceInfo } = this.state;
+    const { columns, deviceInfo, patient } = this.state;
     const size = 1 / columns.length + 1;
 
     return (
@@ -124,7 +124,7 @@ export default class PatientProfile extends React.Component {
             navigation.navigate('Summary', { medicalCase });
           } else {
             // Set medical case in store and lock case
-            await setMedicalCase(newMedicalCase);
+            await setMedicalCase({...newMedicalCase, patient: {...patient, medicalCases: []}});
             await database.lockMedicalCase(newMedicalCase.id);
 
             navigation.navigate(routeDependingStatus(newMedicalCase), {

@@ -103,14 +103,19 @@ export default class PatientEdit extends React.Component {
     return (
       <>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
-          <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+          <View style={styles.flexRow}>
+            <View style={styles.flex05}>
+              <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
+            </View>
+            <View style={styles.flex05}>
+              <Button onPress={() => NavigationService.navigate('ConsentPreview')}>
+                <Text style={styles.flexCenter}>{t('patient_edit:show_consent')}</Text>
+              </Button>
+            </View>
+          </View>
+
           {loading ? <LiwiLoader /> : <Questions questions={nodes} patientValueEdit />}
         </ScrollView>
-        <View style={styles.flexRow}>
-          <Button block onPress={() => NavigationService.navigate('ConsentPreview')}>
-            <Text style={styles.flexCenter}>{t('patient_edit:show_consent')}</Text>
-          </Button>
-        </View>
         <View bottom-view>
           <Button block onPress={() => this.savePatientValues()} disabled={disable}>
             <Text size-auto>{t('application:save')}</Text>
