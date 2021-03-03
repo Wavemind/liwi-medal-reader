@@ -42,14 +42,14 @@ export default class MedicinesFormulations extends Component {
       case medicationForms.spray:
       case medicationForms.patch:
       case medicationForms.inhaler: {
-        return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}`;
+        return `${calculatedFormulation.description}: ${roundSup(calculatedFormulation.unique_dose)} ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}`;
       }
       case medicationForms.tablet:
       case medicationForms.capsule: {
         if (calculatedFormulation.by_age) {
           return `${calculatedFormulation.description}: ${roundSup(calculatedFormulation.unique_dose)} ${t('drug:tablets')}`;
         }
-        return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
+        return `${roundSup(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
           calculatedFormulation.doseResult !== null ? `${breakableFraction(calculatedFormulation)} ${t('drug:tablets')}` : t('drug:no_options')
         }`;
       }
@@ -64,9 +64,9 @@ export default class MedicinesFormulations extends Component {
       case medicationForms.powder_for_injection:
       case medicationForms.solution: {
         if (calculatedFormulation.by_age) {
-          return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)}ml`;
+          return `${calculatedFormulation.description}: ${roundSup(calculatedFormulation.unique_dose)}ml`;
         }
-        return `${parseInt(calculatedFormulation.liquid_concentration)}mg/${parseInt(calculatedFormulation.dose_form)}ml ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}: ${
+        return `${roundSup(calculatedFormulation.liquid_concentration)}mg/${roundSup(calculatedFormulation.dose_form)}ml ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}: ${
           calculatedFormulation.doseResult
         }ml ${t('medication_form:per_administration')}`;
       }
