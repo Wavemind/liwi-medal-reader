@@ -59,7 +59,6 @@ const schema = appSchema({
         { name: 'stage', type: 'string' },
         { name: 'clinician', type: 'string' },
         { name: 'nodes', type: 'string' },
-        // { name: 'node', type: 'number', isOptional: true },
         { name: 'mac_address', type: 'string' },
         { name: 'medical_case_id', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
@@ -98,7 +97,7 @@ export default class LocalInterface {
       case 'PatientValue':
         return 'patient_values';
       default:
-        console.warn('Watermelon table doesn\'t exist', model);
+        console.warn("Watermelon table doesn't exist", model);
     }
   };
 
@@ -133,6 +132,7 @@ export default class LocalInterface {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
     const queries = [];
+    const activity = await database.get('medical_cases').query();
 
     if (page === null) {
       return result;
@@ -197,6 +197,8 @@ export default class LocalInterface {
           nestedRecord.synchronized_at = medicalCase.synchronized_at;
           nestedRecord.status = medicalCase.status;
           nestedRecord.patient.set(patient);
+
+          this._generateActivities(medicalCase.activities, medicalCase.id);
         });
       });
     });
@@ -224,11 +226,6 @@ export default class LocalInterface {
     if (session.facility.architecture === 'client_server') {
       value = { ...value, fail_safe: true };
     }
-
-    //
-    // this._realm().write(() => {
-    //   object[field].push(value);
-    // });
     if (field === 'medicalCases') this._savePatientValue(model, object);
   };
 
@@ -257,9 +254,14 @@ export default class LocalInterface {
       object = await collection.find(id);
       await object.update((record) => {
         Object.keys(fields).forEach((field) => {
-          console.log('1', object, fields, field);
-          if (field !== 'patient') record[field] = fields[field];
-          console.log('2');
+          switch (field) {
+            case 'patient':
+              break;
+            case 'activities':
+              this._generateActivities(fields[field], id);
+            default:
+              record[field] = fields[field];
+          }
         });
       });
     });
@@ -321,14 +323,13 @@ export default class LocalInterface {
    */
   _generateList = async (data, model, columns) => {
     const algorithm = await getItem('algorithm');
-    console.log(data);
     return Promise.all(
       data.map(async (entry) => {
         if (model === 'Patient') {
           const values = await Promise.all(columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)));
           return {
             id: entry.id,
-            updated_at: entry.updatedAt,
+            updated_at: entry.updated_at,
             values,
           };
         }
@@ -407,6 +408,20 @@ export default class LocalInterface {
       return new MedicalCaseModel(data);
     }
     return Promise.all(object);
+  };
+
+  _generateActivities = (activities, medicalCaseId) => {
+    activities.forEach((activity) => {
+      database.get('activities').create((record) => {
+        record._raw.id = activity.id;
+        record.stage = activity.stage;
+        record.clinician = activity.clinician;
+        record.nodes = activity.nodes;
+        record.mac_address = activity.mac_address;
+        record.medical_case_id = medicalCaseId;
+        record.fail_safe = activity.fail_safe;
+      });
+    });
   };
 
   /**

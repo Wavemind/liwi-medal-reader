@@ -9,7 +9,7 @@ export default class Database {
     return (async () => {
       const session = await getItem('session');
       this.architecture = session.facility.architecture;
-      this.realmInterface = await new LocalInterface();
+      this.localInterface = await new LocalInterface();
       this.httpInterface = await new HttpInterface();
       return this;
     })();
@@ -125,10 +125,9 @@ export default class Database {
     let dbInterface = '';
     const isConnected = await getItem('isConnected');
     if (this.architecture === 'standalone' || !isConnected) {
-      // dbInterface = databaseInterface.realmInterface;
-      dbInterface = databaseInterface.realmInterface;
+      dbInterface = databaseInterface.localInterface;
     } else {
-      dbInterface = databaseInterface.realmInterface;
+      dbInterface = databaseInterface.httpInterface;
     }
     return dbInterface;
   };

@@ -47,7 +47,6 @@ export default class List extends React.Component {
     if (unavailableAndOneAnswer) {
       this.onValueChange(String(Object.keys(answers)[0]));
     }
-    console.log(question)
     return (
       <View answer>
         {unavailableAndOneAnswer ? (

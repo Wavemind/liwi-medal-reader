@@ -479,7 +479,7 @@ export class MedicalCase extends Model {
 
   @field('fail_safe') fail_safe;
 
-  @readonly @date('created_at') createdAt;
+  @readonly @date('created_at') created_at;
 
-  @readonly @date('updated_at') updatedAt;
+  @readonly @date('updated_at') updated_at;
 }

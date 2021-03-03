@@ -126,7 +126,6 @@ export default class ListContent extends React.Component<Props, State> {
       app: { t, user, isConnected },
     } = this.props;
     const { deviceInfo } = this.state;
-
     return (
       <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         {item.values.map((value, key) => (

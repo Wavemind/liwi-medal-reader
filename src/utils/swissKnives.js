@@ -210,13 +210,10 @@ export function differenceNodes(newNodes, oldNodes, answerKey = 'answer', idKey 
       oldNode = oldNodes[key];
     }
 
-    console.log(oldNode,newNodes[key])
-
     const isDifferent = iterator.some((index) => {
       if (oldNode === undefined) return newNodes[key][index] !== null;
       return newNodes[key][index] !== oldNode[index];
     });
-    console.log(key, isDifferent);
 
     if (isDifferent) {
       log[idKey] = idKey === 'id' ? key : newNodes[key][idKey];

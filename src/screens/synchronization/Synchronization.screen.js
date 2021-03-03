@@ -75,7 +75,7 @@ export default class Synchronization extends React.Component {
 
       // Generate files
       medicalCasesToSynch.map(async (medicalCase) => {
-        const patient = await database.realmInterface.findBy('Patient', medicalCase.patient_id)
+        const patient = await database.localInterface.findBy('Patient', medicalCase.patient_id)
         const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: patient, activities: medicalCase.activities });
         await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson);
       });
@@ -91,7 +91,7 @@ export default class Synchronization extends React.Component {
       if (result !== null && result.data_received) {
         // // Reset medicalCases to sync if request success
         medicalCasesToSynch.forEach((medicalCase) => {
-          database.realmInterface.update('MedicalCase', medicalCase.id, { synchronized_at: moment().toDate() });
+          database.localInterface.update('MedicalCase', medicalCase.id, { synchronized_at: moment().toDate() });
         });
 
         this.setState({ isLoading: false, error: '', medicalCasesToSynch: [] });

@@ -2,7 +2,7 @@
 
 import uuid from 'react-native-uuid';
 import { Model } from '@nozbe/watermelondb';
-import {field, relation} from '@nozbe/watermelondb/decorators';
+import { field, relation } from '@nozbe/watermelondb/decorators';
 
 import { differenceNodes } from '../../src/utils/swissKnives';
 import { store } from '../store';
@@ -27,8 +27,7 @@ export class PatientValueModel {
    */
   static getUpdatedPatientValue = (patient) => {
     const state = store.getState();
-    const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id',true);
-    console.log("test", diffPatientValues)
+    const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id', true);
 
     const newPatientValues = state.patientValues.map((patientValue) => {
       const diffPatientValue = diffPatientValues.find((dpv) => dpv.node_id === patientValue.node_id);

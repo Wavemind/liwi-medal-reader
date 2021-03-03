@@ -171,6 +171,8 @@
     "react-devtools": "^3.6.3",
     "react-doc-generator": "^1.2.5",
     "react-native-debugger-open": "^0.3.17",
+    "react-native-flipper": "^0.78.0",
+    "react-native-flipper-databases": "^0.2.1",
     "react-test-renderer": "16.13.1",
     "redux-devtools-extension": "^2.13.8",
     "rn-fetch-blob": "^0.12.0"

@@ -22,7 +22,7 @@ export const navigationStateKey = 'navigationState';
 export const navigationRoute = 'navigationRoute';
 
 export const databaseInterface = {
-  realmInterface: 'realmInterface',
+  localInterface: 'localInterface',
   httpInterface: 'httpInterface',
 };
 

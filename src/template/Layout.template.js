@@ -79,12 +79,12 @@ class LayoutTemplate extends React.Component<Props> {
    */
   _sendFailSafeData = async () => {
     const database = await new Database();
-    const patients = await database.realmInterface.getAll('Patient');
+    const patients = await database.localInterface.getAll('Patient');
     const success = await database.httpInterface.synchronizePatients(patients);
 
     // TODO: It's not me and improve this shit
     if (success === 'Synchronize success') {
-      database.realmInterface.delete(patients);
+      database.localInterface.delete(patients);
     }
   };
 

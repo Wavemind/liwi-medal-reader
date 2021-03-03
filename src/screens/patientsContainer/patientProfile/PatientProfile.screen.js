@@ -59,11 +59,9 @@ export default class PatientProfile extends React.Component {
 
     const id = navigation.getParam('id');
     const patient = await database.findBy('Patient', id);
-    console.log(patient);
     const medicalCaseData = await patient.medicalCasesLight(algorithm);
     const patientValues = await patient.patientValues;
     const labelFromNode = await Promise.all(patientValues.map((patientValue) => patient.getLabelFromNode(patientValue.node_id, algorithm)));
-    console.log(labelFromNode);
 
     this.setState({
       patient,
@@ -218,7 +216,6 @@ export default class PatientProfile extends React.Component {
       navigation,
     } = this.props;
     const { patient, nodes, columns, medicalCaseData } = this.state;
-    console.log(medicalCaseData);
     return (
       <>
         <View padding-auto style={styles.filterContent}>

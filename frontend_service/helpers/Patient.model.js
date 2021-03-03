@@ -2,20 +2,20 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
-import {Model, Q} from '@nozbe/watermelondb';
-import {field, date, readonly, children, lazy} from '@nozbe/watermelondb/decorators';
+import { Model } from '@nozbe/watermelondb';
+import { field, date, readonly, children } from '@nozbe/watermelondb/decorators';
 
 import I18n from '../../src/utils/i18n';
 import Database from '../../src/engine/api/Database';
-import {MedicalCaseModel} from './MedicalCase.model';
-import {PatientValueModel} from './PatientValue.model';
-import {getItem, getItems} from '../../src/engine/api/LocalStorage';
-import {displayFormats} from '../constants';
+import { MedicalCaseModel } from './MedicalCase.model';
+import { PatientValueModel } from './PatientValue.model';
+import { getItem, getItems } from '../../src/engine/api/LocalStorage';
+import { displayFormats } from '../constants';
 
 export class PatientModel {
   constructor(props = {}, environment = 'production') {
     return (async () => {
-      const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, reason = '', patientValues = [], consent_file = null } = props;
+      const { id, medicalCases = [], main_data_patient_id = null, otherFacility = null, reason = '', patientValues = [], consent_file = null, updated_at = null, created_at = null } = props;
       let { facility = null } = props;
       if (props.uid !== undefined || props.study_id !== undefined || props.group_id !== undefined) {
         facility = { uid: props.uid, study_id: props.study_id, group_id: props.group_id };
@@ -31,11 +31,12 @@ export class PatientModel {
           this.other_study_id = null;
           this.other_group_id = null;
         }
-        this.updated_at = moment().toDate();
+        this.updated_at = moment(updated_at).toDate();
+        this.created_at = moment(created_at).toDate();
         this.main_data_patient_id = main_data_patient_id;
-        console.log(props, patientValues);
+
         if (props.patientValues !== undefined && props.patientValues.constructor.name === 'Query') {
-          const tempPatientValue = await props.patientValues
+          const tempPatientValue = await props.patientValues;
           this.patientValues = tempPatientValue?.map((patientValue) => new PatientValueModel(patientValue));
         } else {
           this.patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
@@ -71,7 +72,7 @@ export class PatientModel {
    */
   addMedicalCase = async (medicalCase) => {
     const user = await getItem('user');
-    const medicalCaseClass = new MedicalCaseModel({...medicalCase, json: MedicalCaseModel.generateJSON(medicalCase)});
+    const medicalCaseClass = new MedicalCaseModel({ ...medicalCase, json: MedicalCaseModel.generateJSON(medicalCase) });
     const database = await new Database();
     const activity = await medicalCaseClass.generateActivity('registration', user, medicalCase.nodes);
     medicalCaseClass.patient_id = this.id;
@@ -80,7 +81,7 @@ export class PatientModel {
     medicalCaseClass.activities = [activity];
 
     await database.push('Patient', this.id, 'medicalCases', medicalCaseClass);
-    await database.update('Patient', this.id, {updated_at: moment().toDate()});
+    await database.update('Patient', this.id, { updated_at: moment().toDate() });
     return true;
   };
 
@@ -118,7 +119,6 @@ export class PatientModel {
     const columns = algorithm.mobile_config.medical_case_list;
     const isConnected = await getItems('isConnected');
     const medicalCases = await this.medicalCases;
-    console.log(medicalCases);
 
     return Promise.all(
       medicalCases.map(async (medicalCase) => {
@@ -209,10 +209,9 @@ export class Patient extends Model {
   static table = 'patients';
 
   static associations = {
-    medical_cases: {type: 'has_many', foreignKey: 'patient_id'},
-    patient_values: {type: 'has_many', foreignKey: 'patient_id'},
+    medical_cases: { type: 'has_many', foreignKey: 'patient_id' },
+    patient_values: { type: 'has_many', foreignKey: 'patient_id' },
   };
-
 
   @children('medical_cases') medicalCases;
 
@@ -236,7 +235,7 @@ export class Patient extends Model {
 
   @field('fail_safe') fail_safe;
 
-  @readonly @date('created_at') createdAt;
+  @readonly @date('created_at') created_at;
 
-  @readonly @date('updated_at') updatedAt;
+  @readonly @date('updated_at') updated_at;
 }

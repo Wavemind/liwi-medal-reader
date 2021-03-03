@@ -2,11 +2,11 @@
 
 import uuid from 'react-native-uuid';
 import moment from 'moment';
+import { date, field, readonly, relation } from '@nozbe/watermelondb/decorators';
 import { Model } from '@nozbe/watermelondb';
 
 import { getItem } from '../../src/engine/api/LocalStorage';
 import { getDeviceInformation } from '../../src/engine/api/Device';
-import { relation } from '@nozbe/watermelondb/decorators';
 
 export class ActivityModel {
   constructor(props) {
@@ -39,5 +39,15 @@ export class Activity extends Model {
     medicalCases: { type: 'belongs_to', key: 'medical_case_id' },
   };
 
-  @relation('medical_cases', 'medical_case_id') medicalCases;
+  @field('stage') stage;
+  @field('clinician') clinician;
+  @field('nodes') nodes;
+  @field('mac_address') mac_address;
+  @field('medical_case_id') medical_case_id;
+  @date('synchronized_at') synchronized_at;
+  @field('fail_safe') fail_safe;
+
+  @readonly @date('created_at') createdAt;
+
+  @relation('medical_cases', 'medical_case_id') medicalCase;
 }

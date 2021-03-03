@@ -32,7 +32,6 @@ export default class Home extends React.Component<Props, State> {
     const medicalCases = [];
 
     if (session?.facility.architecture === 'standalone') {
-      const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
 
       realmMedicalCases.forEach((medicalCase) => {
         if (medicalCase.canBeSynchronized(algorithm) && medicalCase.isOlderThan1Week()) {
@@ -54,7 +53,7 @@ export default class Home extends React.Component<Props, State> {
     } = this.props;
     const { session } = this.state;
 
-    const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
+    const realmMedicalCases = await database.localInterface.closedAndNotSynchronized();
 
     return session?.facility.architecture === 'standalone' || (session?.facility.architecture === 'client_server' && realmMedicalCases.length > 0);
   };

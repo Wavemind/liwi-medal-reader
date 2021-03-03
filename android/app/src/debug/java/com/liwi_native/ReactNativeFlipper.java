@@ -11,7 +11,7 @@ import com.facebook.flipper.android.AndroidFlipperClient;
 import com.facebook.flipper.android.utils.FlipperUtils;
 import com.facebook.flipper.core.FlipperClient;
 import com.facebook.flipper.plugins.crashreporter.CrashReporterPlugin;
-import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin;
+// import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin;
 import com.facebook.flipper.plugins.fresco.FrescoFlipperPlugin;
 import com.facebook.flipper.plugins.inspector.DescriptorMapping;
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin;
@@ -31,7 +31,7 @@ public class ReactNativeFlipper {
 
       client.addPlugin(new InspectorFlipperPlugin(context, DescriptorMapping.withDefaults()));
       client.addPlugin(new ReactFlipperPlugin());
-      client.addPlugin(new DatabasesFlipperPlugin(context));
+     // client.addPlugin(new DatabasesFlipperPlugin(context));
       client.addPlugin(new SharedPreferencesFlipperPlugin(context));
       client.addPlugin(CrashReporterPlugin.getInstance());
 
