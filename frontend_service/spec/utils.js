@@ -7,12 +7,7 @@ import { store } from '../store';
 import { setAnswer, setMedicalCase, setDiagnoses, setMedicine } from '../actions/creators.actions';
 import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
-import {
-  finalDiagnosticAll,
-  finalDiagnosticGetDrugs,
-  finalDiagnosticGetManagements,
-} from '../helpers/FinalDiagnostic.model';
-import { calculateCondition } from '../algorithm/conditionsHelpers.algo';
+import { finalDiagnosticAll, finalDiagnosticGetDrugs, finalDiagnosticGetManagements } from '../helpers/FinalDiagnostic.model';
 import { drugDoses } from '../helpers/Drug.model';
 
 export const cl = console.log;
@@ -119,8 +114,6 @@ export const conditionValue = (id, elemId, elem = 'dd') => {
  * @param finalDiagnosticId
  */
 export const validFinalDiagnostic = (finalDiagnosticId, diagnosesKey = 'proposed') => {
-  const state$ = store.getState();
-  // const mcFinalDiagnostic = state$.nodes[finalDiagnosticId];
   const currentFinalDiagnostic = algorithm.nodes[finalDiagnosticId];
 
   // Do not ask FFS
@@ -194,17 +187,6 @@ export const managementRetained = (managementId) => {
     ...medicalCase.diagnoses.additional,
   };
   let managements = [];
-
-  // Object.keys(finalDiagnostics).forEach((key) => {
-  //   if (finalDiagnostics[key].managements !== undefined && Object.keys(finalDiagnostics[key].managements).length > 0) {
-  //     Object.keys(finalDiagnostics[key].managements).map((managementKey) => {
-  //       const management = finalDiagnostics[key].managements[managementKey];
-  //       if (calculateCondition(algorithm, management, medicalCase) === true && !management.isExcluded(medicalCase)) {
-  //         managements.push(management);
-  //       }
-  //     });
-  //   }
-  // });
 
   Object.keys(finalDiagnostics).forEach((key) => {
     managements = managements.concat(finalDiagnosticGetManagements(algorithm, medicalCase, medicalCase.nodes[key]));
