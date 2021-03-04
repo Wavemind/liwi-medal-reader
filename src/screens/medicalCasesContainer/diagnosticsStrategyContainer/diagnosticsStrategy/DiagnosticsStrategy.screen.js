@@ -52,17 +52,17 @@ export default class DiagnosesStrategy extends Component {
 
       steps.splice(1, 1); // Health cares questions
       steps.splice(2, 1); // Medicines formulations
-      steps.splice(3, 1); // Summary
+      steps.splice(2, 1); // Summary
 
       if (!algorithm.config.track_referral) {
         icons.splice(2, 1); // Referral
         steps.splice(2, 1); // Referral
       }
-    }
-
-    if (!algorithm.config.track_referral) {
-      icons.splice(5, 1); // Referral
-      steps.splice(5, 1); // Referral
+    } else {
+      if (!algorithm.config.track_referral) {
+        icons.splice(5, 1); // Referral
+        steps.splice(5, 1); // Referral
+      }
     }
 
     this.state = {

@@ -5,6 +5,7 @@ import i18n from '../../utils/i18n';
 import { LiwiTitle5 } from '../../template/layout';
 import { styles } from './styles';
 import { administrationRouteCategories } from '../../../frontend_service/constants';
+import { formulationLabel } from '../../../frontend_service/helpers/Drug.model';
 
 export default function Default(drug, node, drugDose) {
   let every = '';
@@ -16,7 +17,7 @@ export default function Default(drug, node, drugDose) {
   return (
     <>
       <LiwiTitle5>{node.label}</LiwiTitle5>
-      <Text size-auto>{drug.formulationSelected === null ? i18n.t('drug:no_formulation') : i18n.t(`medication_form:${node.formulations[drug.formulationSelected].medication_form}`)}</Text>
+      <Text size-auto>{formulationLabel(drugDose)}</Text>
       <Text size-auto>
         {i18n.t('drug:d')}: {drug.duration}
       </Text>
@@ -27,9 +28,9 @@ export default function Default(drug, node, drugDose) {
       )}
       {drug.formulationSelected !== null && <Text>{every}</Text>}
       <Text size-auto style={styles.description}>
-        {node.formulations[drug.formulationSelected].dispensing_description}
+        {drugDose.dispensing_description}
       </Text>
-      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{drugDose.injection_instructions}</Text> : null}
+      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`} size-auto>{drugDose.injection_instructions}</Text> : null}
     </>
   );
 }

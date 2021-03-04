@@ -11,6 +11,7 @@ import LiwiLoader from '../../utils/LiwiLoader';
 import { LiwiTitle4, LiwiTitle5 } from '../../template/layout';
 import Media from '../Media/Media';
 import WebviewComponent from '../WebviewComponent';
+import { store } from '../../../frontend_service/store';
 
 export default class CustomModal extends React.Component {
   static defaultProps = {
@@ -162,18 +163,50 @@ export default class CustomModal extends React.Component {
       modalRedux: {
         params: { node },
       },
+      app: { algorithm },
     } = this.props;
+
+    const medicalCase = store.getState();
+
+    const currentNode = algorithm.nodes[node.id];
+    const mcNode = medicalCase.nodes[node.id];
 
     return (
       <View>
-        <LiwiTitle5>{node.label}</LiwiTitle5>
-        {this._createDescription(node.description)}
-        {node.medias !== undefined && node.medias.length > 0
-          ? node.medias.map((media) => {
+        <LiwiTitle5>{currentNode.label}</LiwiTitle5>
+        {this._createDescription(currentNode.description)}
+        {currentNode.medias !== undefined && currentNode.medias.length > 0
+          ? currentNode.medias.map((media) => {
               return <Media key={media.url} media={media} />;
             })
           : null}
-        {__DEV__ ? <Text>id: {node.id}</Text> : null}
+        {__DEV__ ? (
+          <View>
+            <Text>id: {node.id}</Text>
+            <Text>
+              answer: {currentNode.answers[mcNode.answer]} ({mcNode.answer})
+            </Text>
+            <Text>value: {mcNode.value}</Text>
+            <LiwiTitle5>CC</LiwiTitle5>
+            {currentNode.cc.map((nodeId) => (
+              <Text key={nodeId}>
+                {algorithm.nodes[nodeId].label} ({nodeId})
+              </Text>
+            ))}
+            <LiwiTitle5>DD</LiwiTitle5>
+            {mcNode.dd.map((diagnostic) => (
+              <Text key={diagnostic.id}>
+                {algorithm.diagnostics[diagnostic.id].label} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
+              </Text>
+            ))}
+            <LiwiTitle5>QS</LiwiTitle5>
+            {mcNode.qs.map((qs) => (
+              <Text key={qs.id}>
+                {algorithm.nodes[qs.id].label} ({qs.id}) - {String(qs.conditionValue)}
+              </Text>
+            ))}
+          </View>
+        ) : null}
       </View>
     );
   };
