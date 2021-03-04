@@ -119,7 +119,9 @@ export default class LocalInterface {
    * Deletes a specific object from the DB
    * @param { object } object - the object to delete
    */
-  delete = (object) => {};
+  delete = (object) => {
+    object.destroyPermanently();
+  };
 
   /**
    * Returns all the entry on a specific model
@@ -242,7 +244,24 @@ export default class LocalInterface {
     if (session.facility.architecture === 'client_server') {
       value = { ...value, fail_safe: true };
     }
-    if (field === 'medicalCases') this._savePatientValue(model, object);
+    if (field === 'medicalCases') {
+      const collection = database.get('medical_cases');
+
+      // MedicalCase
+      await database.action(async () => {
+        await collection.create((record) => {
+          record._raw.id = value.id;
+          record.json = value.json;
+          record.synchronized_at = value.synchronized_at;
+          record.status = value.status;
+          record.patient_id = id;
+          console.log(record);
+          this._generateActivities(value.activities, value.id);
+        });
+      });
+
+      this._savePatientValue(model, object);
+    }
   };
 
   /**
@@ -321,12 +340,14 @@ export default class LocalInterface {
    * @returns { MedicalCaseModel } returns the medical case
    * @private
    */
-  _getMedicalCaseFromModel = (model, object) => {
+  _getMedicalCaseFromModel = async (model, object) => {
+    console.log(model, object);
     switch (model) {
       case 'MedicalCase':
         return object;
       case 'Patient':
-        return object.medicalCases[object.medicalCases.length - 1];
+        const medicalCases = await object.medicalCases;
+        return this._initClasses(medicalCases[medicalCases.length - 1], 'MedicalCase');
       default:
         console.error('Wrong model :', model, object);
     }
@@ -468,9 +489,10 @@ export default class LocalInterface {
    * @private
    */
   _savePatientValue = async (model, object) => {
-    const medicalCase = this._getMedicalCaseFromModel(model, object);
+    const medicalCase = await this._getMedicalCaseFromModel(model, object);
     // Will update the patient values based on activities so we only take the edits
-    const nodeActivities = JSON.parse(medicalCase.activities[medicalCase.activities.length - 1].nodes);
+    const activities = await medicalCase.activities;
+    const nodeActivities = JSON.parse(activities[activities.length - 1].nodes);
     const patient = await this.findBy('Patient', medicalCase.patient_id);
 
     nodeActivities.map(async (node) => {
@@ -478,7 +500,6 @@ export default class LocalInterface {
         const patientValues = await patient.patientValues;
         const patientValue = patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
         // If the values doesn't exist we create it otherwise we edit it
-
         if (patientValue === undefined) {
           const collection = database.get('patient_values');
 
@@ -492,11 +513,10 @@ export default class LocalInterface {
             });
           });
         } else {
-          this._realm().write(() => {
-            this.update('PatientValue', patientValue.id, {
-              value: String(node.value),
-              answer_id: node.answer === null ? null : parseInt(node.answer),
-            });
+          console.log(node);
+          await this.update('PatientValue', patientValue.id, {
+            value: String(node.value),
+            answer_id: node.answer === null ? null : parseInt(node.answer),
           });
         }
       }

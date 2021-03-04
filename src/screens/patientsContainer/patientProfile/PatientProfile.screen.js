@@ -129,7 +129,7 @@ export default class PatientProfile extends React.Component {
             navigation.navigate('Summary', { medicalCase });
           } else {
             // Set medical case in store and lock case
-            await setMedicalCase({...newMedicalCase, patient: {...patient, medicalCases: []}});
+            await setMedicalCase({ ...newMedicalCase, patient: { ...patient, medicalCases: [] } });
             await database.lockMedicalCase(newMedicalCase.id);
 
             navigation.navigate(routeDependingStatus(newMedicalCase), {
@@ -217,7 +217,7 @@ export default class PatientProfile extends React.Component {
     } = this.props;
     const { patient, nodes, columns, medicalCaseData } = this.state;
     return (
-      <>
+      <ScrollView>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
@@ -230,26 +230,25 @@ export default class PatientProfile extends React.Component {
         </View>
 
         <View padding-auto style={styles.consultationContainer}>
-          <FlatList key="dataList" data={medicalCaseData} renderItem={(value) => this._renderItem(value.item)} ItemSeparatorComponent={this._renderSeparator} keyExtractor={(item) => item.id}
-          />
+          <FlatList key="dataList" data={medicalCaseData} renderItem={(value) => this._renderItem(value.item)} ItemSeparatorComponent={this._renderSeparator} keyExtractor={(item) => item.id} />
         </View>
 
-        {medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (
-          <View style={styles.footerButton}>
-            <Button
-              block
-              onPress={() => {
-                navigation.navigate('PatientUpsert', {
-                  idPatient: patient.id,
-                  newMedicalCase: true,
-                });
-              }}
-            >
-              <Text size-auto>{t('patient_profile:add_case')}</Text>
-            </Button>
-          </View>
-        )}
-      </>
+        {/*{medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (*/}
+        <View style={styles.footerButton}>
+          <Button
+            block
+            onPress={() => {
+              navigation.navigate('PatientUpsert', {
+                idPatient: patient.id,
+                newMedicalCase: true,
+              });
+            }}
+          >
+            <Text size-auto>{t('patient_profile:add_case')}</Text>
+          </Button>
+        </View>
+        {/*)}*/}
+      </ScrollView>
     );
   };
 

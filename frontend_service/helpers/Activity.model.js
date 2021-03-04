@@ -47,7 +47,7 @@ export class Activity extends Model {
   @date('synchronized_at') synchronized_at;
   @field('fail_safe') fail_safe;
 
-  @readonly @date('created_at') createdAt;
+  @date('created_at') created_at;
 
   @relation('medical_cases', 'medical_case_id') medicalCase;
 }

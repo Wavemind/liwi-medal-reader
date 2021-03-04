@@ -463,7 +463,7 @@ export class MedicalCase extends Model {
     return displayedValue;
   };
 
-  @children('medical_cases') medicalCases;
+  @children('activities') activities;
 
   @relation('patients', 'patient_id') patient;
 
