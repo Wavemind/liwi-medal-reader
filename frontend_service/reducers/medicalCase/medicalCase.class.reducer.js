@@ -368,7 +368,7 @@ class MedicalCaseReducer extends ReducerClass {
     // Instantiate new object with answered question with new answer value
     const { answer, answer_stage, value, validationMessage, validationType } = nodeUpdateAnswer(newValue, algorithm, state.nodes[nodeId]);
 
-    let medicalCase = JSON.parse(
+    const medicalCase = JSON.parse(
       JSON.stringify({
         ...state,
         nodes: {
@@ -387,20 +387,6 @@ class MedicalCaseReducer extends ReducerClass {
     );
 
     processUpdatedNode(algorithm, medicalCase, nodeId);
-
-    // TODO Qtn is an ass !!!!!!!!!!!!!!!!!!!!!!!
-    JSON.parse(
-      JSON.stringify({
-        ...state,
-        nodes: {
-          ...state.nodes,
-          [nodeId]: {
-            ...state.nodes[nodeId],
-            isReset: false,
-          },
-        },
-      })
-    );
 
     return {
       ...medicalCase,
