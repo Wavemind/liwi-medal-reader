@@ -423,7 +423,6 @@ class Stepper extends React.Component<Props, State> {
     // Create activity
     let newActivities = [];
     const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
-    console.log('activity', activity);
     // You are probably wondering why I do this shit...
     // well it's because of Realm I cannot edit an existing object,
     // so I cannot add the activity with a simple push... I am sorry

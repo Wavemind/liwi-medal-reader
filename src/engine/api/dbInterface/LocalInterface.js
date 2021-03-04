@@ -132,7 +132,6 @@ export default class LocalInterface {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
     const queries = [];
-    const activity = await database.get('medical_cases').query();
 
     if (page === null) {
       return result;
@@ -157,7 +156,24 @@ export default class LocalInterface {
    * @param { array } columns - Columns to fetch values
    * @returns {Promise<*>}
    */
-  getConsentsFile = async (page, columns) => {};
+  getConsentsFile = async (page, columns) => {
+    const queries = [];
+    const collection = database.get('patients');
+    let result = await collection.query().fetch();
+
+    if (page === null) {
+      return result;
+    }
+
+    queries.push(Q.experimentalSortBy('updated_at', Q.asc));
+    queries.push(Q.experimentalSkip((page - 1) * elementPerPage));
+    queries.push(Q.experimentalTake(elementPerPage * page));
+
+    result = await collection.query(...queries);
+    result = await this._initClasses(result, 'Patient');
+
+    return this._generateConsentList(result, columns);
+  };
 
   /**
    * Creates an entry of a specific model in the database
@@ -246,21 +262,17 @@ export default class LocalInterface {
     const session = await getItem('session');
     const collection = database.get(this._mapModelToTable(model));
 
-    console.log('fields tout court', fields.node_id, fields);
-
     if (session.facility.architecture === 'client_server') {
       fields = { ...fields, fail_safe: true };
     }
-    let object = null;
-    object = await collection.find(id);
+
+    const object = await collection.find(id);
+
     await database.action(async () => {
-      object.update((record) => {
-        Object.keys(fields).forEach((field) => {
+      Object.keys(fields).forEach((field) => {
+        object.update((record) => {
           switch (field) {
             case 'patient':
-              break;
-            case 'activities':
-              this._generateActivities(fields[field], id);
               break;
             default:
               record[field] = fields[field];
@@ -281,26 +293,6 @@ export default class LocalInterface {
     if (updatePatientValue && !Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
       this._savePatientValue(model, object);
     }
-  };
-
-  updateAllPatientValues = async (patientValues) => {
-    const collection = database.get('patient_values');
-    const patientValuesUpdates = [];
-    let object;
-    const updates = patientValues.map(async (patientValue) => {
-      object = await collection.find(patientValue.id);
-      patientValuesUpdates.push(
-        object.prepareUpdate((record) => {
-          Object.keys(patientValues).forEach((field) => {
-            record[field] = patientValues[field];
-          });
-        })
-      );
-    });
-    await database.action(async () => {
-      Promise.all(updates);
-    });
-    database.batch(patientValuesUpdates);
   };
 
   /**
@@ -380,7 +372,19 @@ export default class LocalInterface {
    * @returns {Promise<*>}
    * @private
    */
-  _generateConsentList = async (data, columns) => {};
+  _generateConsentList = async (data, columns) => {
+    const algorithm = await getItem('algorithm');
+    return Promise.all(
+      data.map(async (entry) => {
+        const values = await Promise.all(columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)));
+        return {
+          id: entry.id,
+          consent_file: entry.consent_file,
+          values,
+        };
+      })
+    );
+  };
 
   /**
    * Generate query with filters
@@ -437,6 +441,12 @@ export default class LocalInterface {
     return Promise.all(object);
   };
 
+  /**
+   * Create activities for a releated medical case
+   * @param { array } activities - List of activities to create
+   * @param { integer } medicalCaseId
+   * @private
+   */
   _generateActivities = (activities, medicalCaseId) => {
     activities.forEach((activity) => {
       database.get('activities').create((record) => {
