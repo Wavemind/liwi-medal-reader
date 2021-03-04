@@ -87,10 +87,7 @@ export default class PatientEdit extends React.Component {
     if (facility.architecture === 'client_server') {
       await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
     } else {
-      console.log(newPatientValues);
-      newPatientValues.forEach(async (patientValue) => {
-        await database.update('PatientValue', patientValue.id, { ...patientValue, activities });
-      });
+      await database.localInterface.updateAllPatientValues(newPatientValues);
     }
 
     navigation.navigate('PatientProfile', {

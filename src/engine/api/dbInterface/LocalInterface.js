@@ -13,7 +13,7 @@ import { categories } from '../../../../frontend_service/constants';
 import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
-  version: 2,
+  version: 3,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -22,7 +22,7 @@ const schema = appSchema({
         { name: 'synchronized_at', type: 'number', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
-        { name: 'progress_status', type: 'string' },
+        { name: 'status', type: 'string' },
         { name: 'patient_id', type: 'string' },
         { name: 'fail_safe', type: 'boolean', isOptional: true },
       ],
@@ -245,18 +245,17 @@ export default class LocalInterface {
   update = async (model, id, fields, updatePatientValue) => {
     const session = await getItem('session');
     const collection = database.get(this._mapModelToTable(model));
+
     console.log('fields tout court', fields.node_id, fields);
+
     if (session.facility.architecture === 'client_server') {
       fields = { ...fields, fail_safe: true };
     }
     let object = null;
-    let batch = [];
     object = await collection.find(id);
-    console.log(fields.node_id, object, id);
-    Object.keys(fields).forEach((field) => {
-      batch.push(
-        object.prepareUpdate((record) => {
-          console.log(field, fields[field]);
+    await database.action(async () => {
+      object.update((record) => {
+        Object.keys(fields).forEach((field) => {
           switch (field) {
             case 'patient':
               break;
@@ -266,10 +265,10 @@ export default class LocalInterface {
             default:
               record[field] = fields[field];
           }
-        })
-      );
+        });
+      });
     });
-    database.batch(batch);
+
     // Update patient updated_at value
     if (model === 'MedicalCase') {
       await database.action(async () => {
@@ -282,6 +281,26 @@ export default class LocalInterface {
     if (updatePatientValue && !Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
       this._savePatientValue(model, object);
     }
+  };
+
+  updateAllPatientValues = async (patientValues) => {
+    const collection = database.get('patient_values');
+    const patientValuesUpdates = [];
+    let object;
+    const updates = patientValues.map(async (patientValue) => {
+      object = await collection.find(patientValue.id);
+      patientValuesUpdates.push(
+        object.prepareUpdate((record) => {
+          Object.keys(patientValues).forEach((field) => {
+            record[field] = patientValues[field];
+          });
+        })
+      );
+    });
+    await database.action(async () => {
+      Promise.all(updates);
+    });
+    database.batch(patientValuesUpdates);
   };
 
   /**
@@ -297,7 +316,11 @@ export default class LocalInterface {
    * Get all closed and not synchronized case
    * @returns {Promise<Realm.Results<Realm.Object>>}
    */
-  closedAndNotSynchronized = async () => {};
+  closedAndNotSynchronized = async () => {
+    const collection = database.get('medical_cases');
+
+    return collection.query(Q.where('status', 'close'), Q.where('synchronized_at', null)).fetch();
+  };
 
   /**
    * Returns the medical case

@@ -103,7 +103,6 @@ export class MedicalCaseModel {
           this.fail_safe = props.fail_safe;
           this.isNewCase = json.isNewCase;
         }
-
       }
 
       this.modal = {
@@ -331,22 +330,6 @@ export class MedicalCaseModel {
   };
 
   /**
-   * Check if case can be synchronized with main data
-   * @returns {boolean}
-   */
-  canBeSynchronized = (algorithm) => {
-    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.isOldEnough && (this.consent || !algorithm.config.consent_management);
-  };
-
-  /**
-   * Test if medicalCase is older than 7 days
-   * @returns {boolean}
-   */
-  isOlderThan1Week = () => {
-    return moment().diff(this.created_at, 'days') > 7;
-  };
-
-  /**
    * Generates a clean Json of the medical case
    * @param medicalCase - the medical case that need to be stringified
    * @returns {*|string}
@@ -425,7 +408,6 @@ export class MedicalCaseModel {
     }
     return displayedValue;
   };
-
 }
 
 const sanitizeJson = (json) => json;
@@ -436,6 +418,23 @@ export class MedicalCase extends Model {
   static associations = {
     activities: { type: 'has_many', foreignKey: 'medical_case_id' },
     patients: { type: 'belongs_to', foreignKey: 'patient_id' },
+  };
+
+  /**
+   * Check if case can be synchronized with main data
+   * @returns {boolean}
+   */
+  canBeSynchronized = (algorithm) => {
+    const json = JSON.parse(this.json);
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && json.isEligible && json.isOldEnough && (json.consent || !algorithm.config.consent_management);
+  };
+
+  /**
+   * Test if medicalCase is older than 7 days
+   * @returns {boolean}
+   */
+  isOlderThan1Week = () => {
+    return moment().diff(this.created_at, 'days') > 7;
   };
 
   /**
@@ -475,11 +474,11 @@ export class MedicalCase extends Model {
 
   @field('patient_id') patient_id;
 
-  @field('progress_status') status;
+  @field('status') status;
 
   @field('fail_safe') fail_safe;
 
-  @readonly @date('created_at') created_at;
+  @date('created_at') created_at;
 
-  @readonly @date('updated_at') updated_at;
+  @date('updated_at') updated_at;
 }

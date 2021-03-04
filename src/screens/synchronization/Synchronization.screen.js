@@ -36,7 +36,7 @@ export default class Synchronization extends React.Component {
     const mainDataURL = session.facility.main_data_ip;
 
     const medicalCasesToSynch = [];
-    const medicalCases = await database.realmInterface.closedAndNotSynchronized();
+    const medicalCases = await database.localInterface.closedAndNotSynchronized();
 
     // Retrieve all medical cases need to be synchronized
     medicalCases.forEach((medicalCase) => {
@@ -75,7 +75,7 @@ export default class Synchronization extends React.Component {
 
       // Generate files
       medicalCasesToSynch.map(async (medicalCase) => {
-        const patient = await database.localInterface.findBy('Patient', medicalCase.patient_id)
+        const patient = await database.localInterface.findBy('Patient', medicalCase.patient_id);
         const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: patient, activities: medicalCase.activities });
         await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson);
       });
@@ -119,7 +119,7 @@ export default class Synchronization extends React.Component {
               {error !== '' ? <Text style={styles.error}>{error}</Text> : null}
               <View flex-center-row>
                 {isLoading ? (
-                  <LiwiLoader/>
+                  <LiwiLoader />
                 ) : (
                   <Button onPress={this.synchronize} disabled={medicalCasesToSynch.length === 0}>
                     <Text>{t('synchronize:synchronize')}</Text>
@@ -133,7 +133,7 @@ export default class Synchronization extends React.Component {
             </LiwiTitle2>
           )
         ) : (
-          <LiwiLoader/>
+          <LiwiLoader />
         )}
       </View>
     );

@@ -236,7 +236,7 @@ export class Patient extends Model {
 
   @field('fail_safe') fail_safe;
 
-  @readonly @date('created_at') created_at;
+  @date('created_at') created_at;
 
-  @readonly @date('updated_at') updated_at;
+  @date('updated_at') updated_at;
 }
