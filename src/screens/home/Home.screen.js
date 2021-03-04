@@ -32,8 +32,6 @@ export default class Home extends React.Component<Props, State> {
     const medicalCases = [];
     const localMedicalCases = await database.localInterface.closedAndNotSynchronized();
 
-    console.log(localMedicalCases);
-
     if (session?.facility.architecture === 'standalone') {
       localMedicalCases.forEach((medicalCase) => {
         if (medicalCase.canBeSynchronized(algorithm) && medicalCase.isOlderThan1Week()) {

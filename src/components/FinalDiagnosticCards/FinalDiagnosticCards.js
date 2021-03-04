@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import { Text, Card, CardItem, Body, View, Icon } from 'native-base';
+import _ from 'lodash';
 
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, ScrollView } from 'react-native';
 import { styles } from './FinalDiagnosticCards.style';
 import { LiwiTitle2 } from '../../template/layout';
 import { medicationForms, modalType } from '../../../frontend_service/constants';
@@ -15,7 +16,6 @@ import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { drugAgreed, drugDoses } from '../../../frontend_service/helpers/Drug.model';
 import { finalDiagnosticCalculateCondition } from '../../../frontend_service/helpers/FinalDiagnostic.model';
-import _ from 'lodash';
 
 export default class FinalDiagnosticCards extends React.Component {
   /**
@@ -106,6 +106,7 @@ export default class FinalDiagnosticCards extends React.Component {
             </CardItem>
             <CardItem style={styles.cardItemCondensed}>
               <Body>
+
                 <LiwiTitle2 noBorder style={styles.cardTitle}>
                   {t('diagnoses:medicines')}
                 </LiwiTitle2>
@@ -114,7 +115,7 @@ export default class FinalDiagnosticCards extends React.Component {
                   title === 'custom' ? (
                     finalDiagnostic.drugs.map((drug) => (
                       <View style={styles.drugContainer} key={drug}>
-                        <View style={styles.formulationContainer}><Text>{drug}</Text></View>
+                        <Text>{drug}</Text>
                       </View>
                     ))
                   ) : (
@@ -122,7 +123,7 @@ export default class FinalDiagnosticCards extends React.Component {
                       if (drugsAvailable[drugKey] !== undefined) {
                         return (
                           <View style={styles.drugContainer} key={drugKey}>
-                            <View style={styles.formulationContainer}>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
+                            <View style={{ flex: 1 }}>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
                             <View style={styles.tooltipButton}>
                               <View flex>
                                 <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(drugsAvailable[drugKey])}>
@@ -152,8 +153,8 @@ export default class FinalDiagnosticCards extends React.Component {
                     if (calculateCondition(algorithm, management) === true && management.agreed === true) {
                       return (
                         <View style={styles.drugContainer} key={`${managementKey}_management`}>
-                          <View style={styles.formulationContainer}>
-                            <Text>{node.label}</Text>
+                          <View style={{ flex: 1, marginTop: 15 }}>
+                            <Text size-auto>{node.label}</Text>
                           </View>
                           <View style={styles.tooltipButton}>
                             <View flex>
@@ -187,6 +188,6 @@ export default class FinalDiagnosticCards extends React.Component {
       return null;
     }
 
-    return ['proposed', 'additional', 'custom'].map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key));
+    return (<ScrollView>{['proposed', 'additional', 'custom'].map((key) => this._renderFinalDiagnosticCards(medicalCase.diagnoses[key], key))}</ScrollView>);
   }
 }

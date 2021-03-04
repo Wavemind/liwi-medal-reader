@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Content, Tab, Tabs, View, Text } from 'native-base';
+import { Tab, Tabs, View, Text } from 'native-base';
 import * as _ from 'lodash';
 import moment from 'moment';
 
@@ -94,12 +94,12 @@ export default class Summary extends React.Component {
             textStyle={LiwiTabStyle.textStyle}
             activeTabStyle={LiwiTabStyle.activeTabStyle}
           >
-            <Content
+            <View
               style={styles.flex}
               contentContainerStyle={styles.flex} // important!
             >
               <Questions questions={arrayNodes} isReadOnly />
-            </Content>
+            </View>
           </Tab>
         </Tabs>
       </View>
