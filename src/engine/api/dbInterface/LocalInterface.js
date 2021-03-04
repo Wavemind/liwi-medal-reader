@@ -245,27 +245,31 @@ export default class LocalInterface {
   update = async (model, id, fields, updatePatientValue) => {
     const session = await getItem('session');
     const collection = database.get(this._mapModelToTable(model));
-
+    console.log('fields tout court', fields.node_id, fields);
     if (session.facility.architecture === 'client_server') {
       fields = { ...fields, fail_safe: true };
     }
     let object = null;
-    await database.action(async () => {
-      object = await collection.find(id);
-      await object.update((record) => {
-        Object.keys(fields).forEach((field) => {
+    let batch = [];
+    object = await collection.find(id);
+    console.log(fields.node_id, object, id);
+    Object.keys(fields).forEach((field) => {
+      batch.push(
+        object.prepareUpdate((record) => {
+          console.log(field, fields[field]);
           switch (field) {
             case 'patient':
               break;
             case 'activities':
               this._generateActivities(fields[field], id);
+              break;
             default:
               record[field] = fields[field];
           }
-        });
-      });
+        })
+      );
     });
-
+    database.batch(batch);
     // Update patient updated_at value
     if (model === 'MedicalCase') {
       await database.action(async () => {

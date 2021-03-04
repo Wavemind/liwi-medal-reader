@@ -69,7 +69,10 @@ export default class PatientEdit extends React.Component {
     const { patient } = this.state;
     const {
       navigation,
-      app: { t, database, session: {facility}},
+      app: {
+        database,
+        session: { facility },
+      },
     } = this.props;
 
     this.setState({ disable: true });
@@ -84,6 +87,7 @@ export default class PatientEdit extends React.Component {
     if (facility.architecture === 'client_server') {
       await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
     } else {
+      console.log(newPatientValues);
       newPatientValues.forEach(async (patientValue) => {
         await database.update('PatientValue', patientValue.id, { ...patientValue, activities });
       });
