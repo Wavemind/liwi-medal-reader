@@ -57,6 +57,7 @@ export class PatientModel {
         if (id !== undefined) {
           this.id = id;
           this.medicalCases = medicalCases;
+          this.consent_file = consent_file;
         } else {
           this.id = null;
         }

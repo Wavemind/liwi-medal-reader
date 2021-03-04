@@ -12,4 +12,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
   },
+  flexRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  flex05: {
+    flex: 0.5,
+  },
 });

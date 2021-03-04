@@ -2,10 +2,8 @@
 import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
-import { medicationForms } from '../../../../../frontend_service/constants';
 import { styles } from './MedicinesFormulation.style';
-import { breakableFraction, drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
-import { roundSup } from '../../../../utils/swissKnives';
+import { formulationLabel, drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
 
 export default class MedicinesFormulations extends Component {
   shouldComponentUpdate() {
@@ -24,55 +22,6 @@ export default class MedicinesFormulations extends Component {
           setFormulationSelected(null, value, 'additionalDrugs', drugId);
         }
       });
-    }
-  };
-
-  /**
-   * Formulation display
-   * @param calculatedFormulation
-   * @returns {string}
-   */
-  formulationLabel = (calculatedFormulation) => {
-    const {
-      app: { t },
-    } = this.props;
-
-    switch (calculatedFormulation.medication_form) {
-      case medicationForms.pessary:
-      case medicationForms.spray:
-      case medicationForms.patch:
-      case medicationForms.inhaler: {
-        return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)} ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}`;
-      }
-      case medicationForms.tablet:
-      case medicationForms.capsule: {
-        if (calculatedFormulation.by_age) {
-          return `${calculatedFormulation.description}: ${roundSup(calculatedFormulation.unique_dose)} ${t('drug:tablets')}`;
-        }
-        return `${parseInt(calculatedFormulation.dose_form)}mg ${calculatedFormulation.medication_form}: ${
-          calculatedFormulation.doseResult !== null ? `${breakableFraction(calculatedFormulation)} ${t('drug:tablets')}` : t('drug:no_options')
-        }`;
-      }
-      case medicationForms.cream:
-      case medicationForms.ointment:
-      case medicationForms.gel:
-      case medicationForms.drops: {
-        return `${calculatedFormulation.description}`;
-      }
-      case medicationForms.syrup:
-      case medicationForms.suspension:
-      case medicationForms.powder_for_injection:
-      case medicationForms.solution: {
-        if (calculatedFormulation.by_age) {
-          return `${calculatedFormulation.description}: ${parseInt(calculatedFormulation.unique_dose)}ml`;
-        }
-        return `${parseInt(calculatedFormulation.liquid_concentration)}mg/${parseInt(calculatedFormulation.dose_form)}ml ${t(`medication_form:${calculatedFormulation.medication_form}`).toLowerCase()}: ${
-          calculatedFormulation.doseResult
-        }ml ${t('medication_form:per_administration')}`;
-      }
-      default: {
-        return `(${calculatedFormulation.medication_form}) ${t('drug:medication_form_not_handled')}`;
-      }
     }
   };
 
@@ -112,7 +61,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return <Picker.Item key={calculatedFormulation} label={this.formulationLabel(calculatedFormulation)} value={isPossible ? index : false} />;
+              return <Picker.Item key={calculatedFormulation} label={formulationLabel(calculatedFormulation)} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
