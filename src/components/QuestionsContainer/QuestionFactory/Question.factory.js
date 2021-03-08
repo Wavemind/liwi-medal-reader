@@ -121,7 +121,7 @@ export default class Question extends React.Component {
   render() {
     const {
       question,
-      app: { algorithm },
+      app: { algorithm, algorithmLanguage },
       isReadOnly,
     } = this.props;
     const { flexQuestion, flexToolTip, flexLabel, unavailableValue, unavailableAnswer } = this.state;
@@ -146,7 +146,7 @@ export default class Question extends React.Component {
           </View>
           <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
             <Text style={styles.questionLabel} size-auto>
-              {currentNode.label} {currentNode.is_mandatory ? '*' : null}
+              {currentNode.label[algorithmLanguage]} {currentNode.is_mandatory ? '*' : null}
             </Text>
           </ViewQuestion>
           {unavailableValue ? (
@@ -158,7 +158,7 @@ export default class Question extends React.Component {
         <View style={styles.unavailable}>
           {currentNode.unavailable && !isReadOnly ? (
             <>
-              <Text>{currentNode.unavailable_label !== '' ? currentNode.unavailable_label : unavailableAnswer.label}</Text>
+              <Text>{currentNode.unavailable_label[algorithmLanguage] !== '' ? currentNode.unavailable_label : unavailableAnswer.label[algorithmLanguage]}</Text>
               <CheckBox style={styles.unavailableBox} onPress={this.handleUnavailable} color={liwiColors.redColor} checked={unavailableValue} />
             </>
           ) : null}

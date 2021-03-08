@@ -67,7 +67,7 @@ export default class ArmControlMedicines extends Component {
   render() {
     const {
       medicalCase: { diagnoses },
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
 
     // Need this shit when closing a medical otherwise it crash
@@ -101,7 +101,7 @@ export default class ArmControlMedicines extends Component {
                                   onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
                   <Icon type="AntDesign" name="info" style={styles.iconInfo}/>
                 </TouchableOpacity>
-                <Text key={`drug-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
+                <Text key={`drug-${additionalKey}`}>{algorithm.nodes[additionalKey].label[algorithmLanguage]}</Text>
               </View>
               <TextInput
                 style={styles.durationInput}

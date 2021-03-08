@@ -20,7 +20,7 @@ export default class Medicine extends Component {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithmLanguage },
       medicine,
       node,
       healthCareType,
@@ -35,7 +35,7 @@ export default class Medicine extends Component {
       <>
         <View style={styles.main} margin-top>
           <View style={styles.flex}>
-            <Text italic>{node?.label}</Text>
+            <Text italic>{node?.label[algorithmLanguage]}</Text>
             {node.category === categories.drug ? (
               <Text size-auto>
                 {t('drug:d')} : {medicine.duration} {t('drug:days')}
@@ -60,7 +60,7 @@ export default class Medicine extends Component {
         </View>
         {node?.description !== null && healthCareType === 'drugs' ? (
           <View margin-top>
-            <Text size-auto>{node?.description}</Text>
+            <Text size-auto>{node?.description[algorithmLanguage]}</Text>
           </View>
         ) : null}
       </>

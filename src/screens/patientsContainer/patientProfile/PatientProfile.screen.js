@@ -167,7 +167,7 @@ export default class PatientProfile extends React.Component {
    */
   renderPatientValues = () => {
     const {
-      app: { t, algorithm },
+      app: { t, algorithmLanguage },
       navigation,
     } = this.props;
     const { patient, nodes, patientValues, labelFromNode } = this.state;
@@ -192,7 +192,7 @@ export default class PatientProfile extends React.Component {
               {patientValues.map((patientValue, index) => (
                 <View key={patientValue.node_id} style={styles.wrapper}>
                   <Text size-auto style={styles.identifierText}>
-                    {nodes[patientValue.node_id].label}
+                    {nodes[patientValue.node_id].label[algorithmLanguage]}
                   </Text>
                   <Text size-auto style={styles.patientValues}>
                     {labelFromNode[index]}
@@ -212,7 +212,7 @@ export default class PatientProfile extends React.Component {
    */
   renderConsultations = () => {
     const {
-      app: { t },
+      app: { t, algorithmLanguage },
       navigation,
     } = this.props;
     const { patient, nodes, columns, medicalCaseData } = this.state;
@@ -221,7 +221,7 @@ export default class PatientProfile extends React.Component {
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
-              <Text size-auto>{nodes[column].label}</Text>
+              <Text size-auto>{nodes[column].label[algorithmLanguage]}</Text>
             </View>
           ))}
           <View style={styles.columnLabel}>
@@ -233,21 +233,21 @@ export default class PatientProfile extends React.Component {
           <FlatList key="dataList" data={medicalCaseData} renderItem={(value) => this._renderItem(value.item)} ItemSeparatorComponent={this._renderSeparator} keyExtractor={(item) => item.id} />
         </View>
 
-        {/*{medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (*/}
-        <View style={styles.footerButton}>
-          <Button
-            block
-            onPress={() => {
-              navigation.navigate('PatientUpsert', {
-                idPatient: patient.id,
-                newMedicalCase: true,
-              });
-            }}
-          >
-            <Text size-auto>{t('patient_profile:add_case')}</Text>
-          </Button>
-        </View>
-        {/*)}*/}
+        {medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (
+          <View style={styles.footerButton}>
+            <Button
+              block
+              onPress={() => {
+                navigation.navigate('PatientUpsert', {
+                  idPatient: patient.id,
+                  newMedicalCase: true,
+                });
+              }}
+            >
+              <Text size-auto>{t('patient_profile:add_case')}</Text>
+            </Button>
+          </View>
+        )}
       </ScrollView>
     );
   };

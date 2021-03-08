@@ -185,7 +185,7 @@ export default class ListContent extends React.Component<Props, State> {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithmLanguage },
       model,
       navigation,
     } = this.props;
@@ -198,7 +198,7 @@ export default class ListContent extends React.Component<Props, State> {
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
-              <Text size-auto>{nodes[column].label}</Text>
+              <Text size-auto>{nodes[column].label[algorithmLanguage]}</Text>
             </View>
           ))}
           {model === 'Patient' ? (

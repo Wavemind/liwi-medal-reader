@@ -8,10 +8,10 @@ import { administrationRouteCategories } from '../../../frontend_service/constan
 import { formulationLabel } from '../../../frontend_service/helpers/Drug.model';
 import { roundSup } from '../../utils/swissKnives';
 
-export default function Capsule(drug, node, drugDose) {
+export default function Capsule(drug, node, drugDose, algorithmLanguage) {
   return (
     <>
-      <LiwiTitle5>{node.label}</LiwiTitle5>
+      <LiwiTitle5>{node.label[algorithmLanguage]}</LiwiTitle5>
       <Text size-auto>{formulationLabel(drugDose)}</Text>
       {drugDose.by_age ? (
         <Text size-auto>{`${roundSup(drugDose.unique_dose)} ${i18n.t('drug:capsules')} ${i18n.t('medication_form:per_administration')} ${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${i18n.t('drug:during')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
@@ -25,11 +25,11 @@ export default function Capsule(drug, node, drugDose) {
           </Text>
           <Text size-auto>{`${i18n.t('drug:every')} ${drugDose.recurrence} ${i18n.t('drug:h')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
           <Text size-auto style={styles.description}>
-            {drugDose.dispensing_description}
+            {drugDose.dispensing_description[algorithmLanguage]}
           </Text>
         </>
       )}
-      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`} size-auto>{drugDose.injection_instructions}</Text> : null}
+      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`} size-auto>{drugDose.injection_instructions[algorithmLanguage]}</Text> : null}
     </>
   );
 }

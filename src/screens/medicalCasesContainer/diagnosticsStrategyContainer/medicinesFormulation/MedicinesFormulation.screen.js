@@ -35,14 +35,14 @@ export default class MedicinesFormulations extends Component {
    */
   _renderFormulation = (instance, selected, onSelect) => {
     const {
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
 
     return (
       <View style={styles.blocDrug} key={instance.id}>
         <View style={styles.flex}>
-          <Text size-auto>{algorithm.nodes[instance.id]?.label}</Text>
-          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${algorithm.nodes[e.id].label} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
+          <Text size-auto>{algorithm.nodes[instance.id]?.label[algorithmLanguage]}</Text>
+          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${algorithm.nodes[e.id].label[algorithmLanguage]} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
         </View>
         <View style={styles.select}>
           <Icon name="arrow-drop-down" type="MaterialIcons" style={styles.pickerIcon} />
@@ -71,7 +71,7 @@ export default class MedicinesFormulations extends Component {
 
   render() {
     const {
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
 
     const drugs = drugAgreed(null, algorithm);
@@ -97,7 +97,7 @@ export default class MedicinesFormulations extends Component {
           return (
             <>
               {this._renderFormulation(drugs[drugId], selected, onSelect)}
-              {selected !== null ? <Text>{currentDrug.formulations[drug.formulationSelected].description}</Text> : null}
+              {selected !== null ? <Text>{currentDrug.formulations[drug.formulationSelected].description[algorithmLanguage]}</Text> : null}
             </>
           );
         })}

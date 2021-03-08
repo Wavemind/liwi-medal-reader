@@ -32,7 +32,7 @@ export default class Questions extends React.Component {
 
   displayQuestion = (question) => {
     const {
-      app: { algorithm },
+      app: { algorithm, algorithmLanguage },
     } = this.props;
 
     if (algorithm.nodes[question.id].display_format === displayFormats.autocomplete) {
@@ -46,7 +46,7 @@ export default class Questions extends React.Component {
             </View>
             <ViewQuestion marginRight={10} marginLeft={0}>
               <Text style={styles.questionLabel} size-auto>
-                {algorithm.nodes[question.id].label} {algorithm.nodes[question.id].is_mandatory ? '*' : null}
+                {algorithm.nodes[question.id].label[algorithmLanguage]} {algorithm.nodes[question.id].is_mandatory ? '*' : null}
               </Text>
             </ViewQuestion>
           </View>

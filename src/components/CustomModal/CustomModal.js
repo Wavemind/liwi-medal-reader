@@ -30,7 +30,7 @@ export default class CustomModal extends React.Component {
    */
   _renderQuestions = (questions) => {
     const {
-      app: { t },
+      app: { t, algorithmLanguage },
     } = this.props;
 
     const rowQuestions = [];
@@ -40,7 +40,7 @@ export default class CustomModal extends React.Component {
       rowQuestions.push(
         <Text key={i}>
           {' '}
-          - {questions[i].label} {t('modal:is_required')}
+          - {questions[i].label[algorithmLanguage]} {t('modal:is_required')}
         </Text>
       );
 
@@ -163,7 +163,7 @@ export default class CustomModal extends React.Component {
       modalRedux: {
         params: { node },
       },
-      app: { algorithm },
+      app: { algorithm, algorithmLanguage },
     } = this.props;
 
     const medicalCase = store.getState();
@@ -173,8 +173,8 @@ export default class CustomModal extends React.Component {
 
     return (
       <View>
-        <LiwiTitle5>{currentNode.label}</LiwiTitle5>
-        {this._createDescription(currentNode.description)}
+        <LiwiTitle5>{currentNode.label[algorithmLanguage]}</LiwiTitle5>
+        {this._createDescription(currentNode.description[algorithmLanguage])}
         {currentNode.medias !== undefined && currentNode.medias.length > 0
           ? currentNode.medias.map((media) => {
               return <Media key={media.url} media={media} />;
@@ -186,25 +186,25 @@ export default class CustomModal extends React.Component {
             {node.type === 'Question' ? (
               <View>
                 <Text>
-                  answer: {currentNode.answers[mcNode.answer].label} ({mcNode.answer})
+                  answer: {currentNode.answers[mcNode?.answer]?.label[algorithmLanguage]} ({mcNode.answer})
                 </Text>
                 <Text>value: {mcNode.value}</Text>
                 <LiwiTitle5>CC</LiwiTitle5>
                 {currentNode.cc.map((nodeId) => (
                   <Text key={nodeId}>
-                    {algorithm.nodes[nodeId].label} ({nodeId})
+                    {algorithm.nodes[nodeId].label[algorithmLanguage]} ({nodeId})
                   </Text>
                 ))}
                 <LiwiTitle5>DD</LiwiTitle5>
                 {mcNode.dd.map((diagnostic) => (
                   <Text key={diagnostic.id}>
-                    {algorithm.diagnostics[diagnostic.id].label} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
+                    {algorithm.diagnostics[diagnostic.id].label[algorithmLanguage]} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
                   </Text>
                 ))}
                 <LiwiTitle5>QS</LiwiTitle5>
                 {mcNode.qs.map((qs) => (
                   <Text key={qs.id}>
-                    {algorithm.nodes[qs.id].label} ({qs.id}) - {String(qs.conditionValue)}
+                    {algorithm.nodes[qs.id].label[algorithmLanguage]} ({qs.id}) - {String(qs.conditionValue)}
                   </Text>
                 ))}
               </View>

@@ -83,7 +83,7 @@ export default class FinalDiagnosticsList extends React.Component {
    */
   filterByNeonat = (finalDiagnostics) => {
     const {
-      app: { algorithm },
+      app: { algorithm, algorithmLanguage },
       medicalCase,
     } = this.props;
 
@@ -104,7 +104,7 @@ export default class FinalDiagnosticsList extends React.Component {
         }
       })
       .sort((a, b) => {
-        return a.label > b.label ? 1 : b.label > a.label ? -1 : 0;
+        return a.label[algorithmLanguage] > b.label[algorithmLanguage] ? 1 : b.label[algorithmLanguage] > a.label[algorithmLanguage] ? -1 : 0;
       });
   };
 
@@ -125,7 +125,7 @@ export default class FinalDiagnosticsList extends React.Component {
     const {
       setDiagnoses,
       medicalCase: { diagnoses },
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
     const { customDiagnoses } = this.state;
 
@@ -156,7 +156,7 @@ export default class FinalDiagnosticsList extends React.Component {
               <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(diagnoses.additional[additionalKey].id)}>
                 <Icon type="AntDesign" name="info" style={styles.iconInfo} />
               </TouchableOpacity>
-              <Text>{diagnoses.additional[additionalKey].label}</Text>
+              <Text>{diagnoses.additional[additionalKey].label[algorithmLanguage]}</Text>
             </View>
           ))
         ) : (

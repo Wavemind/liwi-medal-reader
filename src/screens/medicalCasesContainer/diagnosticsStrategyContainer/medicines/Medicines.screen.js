@@ -86,7 +86,7 @@ export default class Medicines extends Component {
     const {
       medicalCase,
       medicalCase: { diagnoses },
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
 
     const allHealthCares = healthCares(algorithm);
@@ -139,7 +139,7 @@ export default class Medicines extends Component {
             {proposed.map((finalDiagnostic) => {
               if (finalDiagnostic.agreed === true && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[finalDiagnostic.id])) {
                 return (
-                  <MedicineSelection key={`proposed_medicine_${finalDiagnostic.id}`} algorithm={algorithm} diagnosesFinalDiagnostic={finalDiagnostic} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />
+                  <MedicineSelection key={`proposed_medicine_${finalDiagnostic.id}`} algorithm={algorithm} diagnosesFinalDiagnostic={finalDiagnostic} diagnoseKey="proposed" t={t} medicalCase={medicalCase} algorithmLanguage={algorithmLanguage} />
                 );
               }
             })}
@@ -151,6 +151,7 @@ export default class Medicines extends Component {
                 diagnoseKey="additional"
                 t={t}
                 medicalCase={medicalCase}
+                algorithmLanguage={algorithmLanguage}
               />
             ))}
           </>
@@ -176,7 +177,7 @@ export default class Medicines extends Component {
                 <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[drugId].id)}>
                   <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                 </TouchableOpacity>
-                <Text key={`drug-${drugId}`}>{algorithm.nodes[drugId].label}</Text>
+                <Text key={`drug-${drugId}`}>{algorithm.nodes[drugId].label[algorithmLanguage]}</Text>
               </View>
               <TextInput
                 style={styles.durationInput}

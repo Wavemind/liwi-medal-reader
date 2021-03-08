@@ -139,7 +139,7 @@ export default class ConsentList extends React.Component {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithmLanguage },
     } = this.props;
     const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
 
@@ -150,7 +150,7 @@ export default class ConsentList extends React.Component {
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
-              <Text size-auto>{nodes[column].label}</Text>
+              <Text size-auto>{nodes[column].label[algorithmLanguage]}</Text>
             </View>
           ))}
         </View>

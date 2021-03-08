@@ -26,7 +26,7 @@ export default class FinalDiagnosticCards extends React.Component {
    */
   _renderSwitchFormulation = (drug) => {
     const {
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
     const node = algorithm.nodes[drug.id];
     const drugDose = drugDoses(drug.formulationSelected, algorithm, drug.id);
@@ -37,13 +37,13 @@ export default class FinalDiagnosticCards extends React.Component {
         case medicationForms.suspension:
         case medicationForms.powder_for_injection:
         case medicationForms.solution:
-          return Liquid(drug, node, drugDose);
+          return Liquid(drug, node, drugDose, algorithmLanguage);
         case medicationForms.tablet:
-          return Breakable(drug, node, drugDose);
+          return Breakable(drug, node, drugDose, algorithmLanguage);
         case medicationForms.capsule:
-          return Capsule(drug, node, drugDose);
+          return Capsule(drug, node, drugDose, algorithmLanguage);
         default:
-          return Default(drug, node, drugDose);
+          return Default(drug, node, drugDose, algorithmLanguage);
       }
     } else {
       return <Text italic>{t('drug:missing_medicine_formulation')}</Text>;
@@ -67,7 +67,7 @@ export default class FinalDiagnosticCards extends React.Component {
    */
   _renderFinalDiagnosticCards = (diagnoseFinalDiagnostics, title) => {
     const {
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
       medicalCase,
     } = this.props;
 
@@ -89,7 +89,7 @@ export default class FinalDiagnosticCards extends React.Component {
             <CardItem style={styles.cardItemCondensed}>
               <Body style={styles.cardTitleContent}>
                 <LiwiTitle2 noBorder style={styles.flex}>
-                  {finalDiagnostic.label}
+                  {finalDiagnostic.label[algorithmLanguage]}
                   {'\n'}
                   <Text note>{t(`diagnoses_label:${title}`)}</Text>
                 </LiwiTitle2>
@@ -154,7 +154,7 @@ export default class FinalDiagnosticCards extends React.Component {
                       return (
                         <View style={styles.drugContainer} key={`${managementKey}_management`}>
                           <View style={{ flex: 1, marginTop: 15 }}>
-                            <Text size-auto>{node.label}</Text>
+                            <Text size-auto>{node.label[algorithmLanguage]}</Text>
                           </View>
                           <View style={styles.tooltipButton}>
                             <View flex>
