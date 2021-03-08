@@ -61,7 +61,7 @@ const armControlScreen = [
     medicalCaseOrder: 1,
     validations: {
       complaintCategories: { initialPage: 0 },
-      basicMeasurements: { is_mandatory: true, initialPage: 1 },
+      basicMeasurements: { initialPage: 1 },
     },
   },
   {
