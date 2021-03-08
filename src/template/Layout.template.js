@@ -55,8 +55,8 @@ class LayoutTemplate extends React.Component<Props> {
     };
   }
 
-  shouldComponentUpdate(nextProps: Props): boolean {
-    return nextProps.app.appState !== 'background';
+  shouldComponentUpdate(nextProps) {
+    return nextProps.app.appState !== 'background' || this.props.app.isConnected !== nextProps.app.isConnected;
   }
 
   updatePrevRoute = async () => {
@@ -99,14 +99,13 @@ class LayoutTemplate extends React.Component<Props> {
     } = this.props;
 
     if (session?.facility?.architecture === 'client_server') {
+      await setItem('isConnected', isConnected);
       if (!isConnected && wasConnected) {
         this.setState({ wasConnected: !wasConnected });
       } else if (isConnected && !wasConnected) {
         await this._sendFailSafeData();
         this.setState({ wasConnected: !wasConnected });
       }
-
-      await setItem('isConnected', isConnected);
     }
   };
 
