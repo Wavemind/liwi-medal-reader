@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     backgroundColor: liwiColors.lighterGreyColor,
   },
 
-  filterContent: { flex: 1, flexDirection: 'row', paddingBottom: 5 },
+  filterContent: { flexDirection: 'row', paddingBottom: 5 },
 
   filterButton: {
     backgroundColor: liwiColors.redColor,

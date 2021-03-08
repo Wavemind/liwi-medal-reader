@@ -6,6 +6,8 @@
  *
  * */
 
+import { LogBox } from 'react-native';
+
 /**
  *  Compare two object with deep properties
  *  to use :
@@ -147,7 +149,7 @@ Object.defineProperty(Object.prototype, 'renameKey', {
 
 // disabled console yellow box
 // eslint-disable-next-line no-console
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs(true)
 
 /**
  * Optimisazion for production

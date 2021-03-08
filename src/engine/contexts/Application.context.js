@@ -211,20 +211,6 @@ export class ApplicationProvider extends React.Component {
     return false;
   };
 
-  /**
-   * Check if action is available depending on architecture and connection status
-   * @returns {boolean}
-   */
-  isActionAvailable = () => {
-    const { isConnected, session } = this.state;
-
-    if (session.facility.architecture === 'client_server') {
-      return isConnected;
-    }
-
-    return true;
-  };
-
   state = {
     appState: AppState.currentState,
     currentRoute: null,
@@ -240,7 +226,6 @@ export class ApplicationProvider extends React.Component {
     ready: false,
     user: null,
     setInitialData: this.setInitialData,
-    isActionAvailable: this.isActionAvailable,
     logout: this.logout,
     lockSession: this.lockSession,
     newSession: this.newSession,

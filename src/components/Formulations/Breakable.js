@@ -20,7 +20,7 @@ export default function Breakable(drug, node, drugDose) {
       ) : drugDose.doseResult === null ? (
         <Text size-auto>{drugDose.no_possibility}</Text>
       ) : (
-        <View style={styles.container}>
+        <View>
           <Text size-auto>
             {`${i18n.t('drug:give')} ${drugDose.doseResult * (drugDose.dose_form / drugDose.breakable)} ${i18n.t('drug:mg')} : ${fractionString} ${i18n.t('drug:tablet')} ${drugDose.dose_form}`}
             {i18n.t('drug:mg')} {drugDose.administration_route_name}

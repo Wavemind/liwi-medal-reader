@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Suspense } from 'react';
-import { Content, View } from 'native-base';
+import { View } from 'native-base';
 
 import { styles } from '../diagnosticsStrategyContainer/diagnosticsStrategy/DiagnosticsStrategy.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
@@ -109,13 +109,11 @@ export default class Triage extends React.Component {
           )}
           <View style={styles.flex}>
             <Suspense fallback={<LiwiLoader />}>
-              <Content>
                 <View flex-container-fluid>
                   {complaintCategories.map((question, i) => (
                     <Boolean key={`${question.id}_${question.answer}_chief_boolean`} question={question} index={i} />
                   ))}
                 </View>
-              </Content>
             </Suspense>
           </View>
           <BasicMeasurements selectedPage={selectedPage} />

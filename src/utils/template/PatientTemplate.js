@@ -7,9 +7,12 @@ import { MedicalCaseModel } from '../../../frontend_service/helpers/MedicalCase.
 
 export const patientTemplate = async () => {
   const faker = require('faker');
+
+  const id = uuid.v4();
+
   const patient = {
-    id: uuid.v4(),
-    uid: uuid.v4(),
+    id,
+    uid: id,
     study_id: 'Generated',
     group_id: '5',
     medicalCases: [],

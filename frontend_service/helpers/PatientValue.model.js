@@ -1,6 +1,8 @@
 // @flow
 
 import uuid from 'react-native-uuid';
+import { Model } from '@nozbe/watermelondb';
+import { field, relation } from '@nozbe/watermelondb/decorators';
 
 import { differenceNodes } from '../../src/utils/swissKnives';
 import { store } from '../store';
@@ -25,37 +27,42 @@ export class PatientValueModel {
    */
   static getUpdatedPatientValue = (patient) => {
     const state = store.getState();
-
-    const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id');
+    const diffPatientValues = differenceNodes(state.patientValues, patient.patientValues, 'answer_id', 'node_id', true);
 
     const newPatientValues = state.patientValues.map((patientValue) => {
       const diffPatientValue = diffPatientValues.find((dpv) => dpv.node_id === patientValue.node_id);
       if (diffPatientValue !== undefined) {
-        const newPatientValue = patient.patientValues.find((pv) => pv.node_id === diffPatientValues.node_id);
+        const newPatientValue = patient.patientValues.find((pv) => pv.node_id === diffPatientValue.node_id);
         const id = newPatientValue === undefined ? uuid.v4() : newPatientValue.id;
         return {
           ...diffPatientValue,
           patient_id: patient.id,
           id,
         };
-      } else {
-        return patientValue;
       }
+      return patientValue;
     });
 
     return newPatientValues.filter((newPatientValue) => newPatientValue.id !== undefined);
   };
 }
 
-PatientValueModel.schema = {
-  name: 'PatientValue',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    patient_id: 'string',
-    node_id: 'int',
-    answer_id: 'int?',
-    value: 'string?',
-    fail_safe: { type: 'bool', default: false },
-  },
-};
+export class PatientValue extends Model {
+  static table = 'patient_values';
+
+  static associations = {
+    patients: { type: 'belongs_to', foreignKey: 'patient_id' },
+  };
+
+  @relation('patients', 'patient_id') patient;
+
+  @field('patient_id') patient_id;
+
+  @field('node_id') node_id;
+
+  @field('answer_id') answer_id;
+
+  @field('value') value;
+
+  @field('fail_safe') fail_safe;
+}

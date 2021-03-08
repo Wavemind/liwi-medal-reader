@@ -16,6 +16,7 @@ export default class PatientProfile extends React.Component {
     patient: {
       medicalCases: [],
     },
+    patientValues: [],
     firstRender: true,
     deviceInfo: null,
     nodes: {},
@@ -59,11 +60,15 @@ export default class PatientProfile extends React.Component {
     const id = navigation.getParam('id');
     const patient = await database.findBy('Patient', id);
     const medicalCaseData = await patient.medicalCasesLight(algorithm);
+    const patientValues = await patient.patientValues;
+    const labelFromNode = await Promise.all(patientValues.map((patientValue) => patient.getLabelFromNode(patientValue.node_id, algorithm)));
 
     this.setState({
       patient,
+      patientValues,
       firstRender: false,
       medicalCaseData,
+      labelFromNode,
     });
   }
 
@@ -124,7 +129,7 @@ export default class PatientProfile extends React.Component {
             navigation.navigate('Summary', { medicalCase });
           } else {
             // Set medical case in store and lock case
-            await setMedicalCase({...newMedicalCase, patient: {...patient, medicalCases: []}});
+            await setMedicalCase({ ...newMedicalCase, patient: { ...patient, medicalCases: [] } });
             await database.lockMedicalCase(newMedicalCase.id);
 
             navigation.navigate(routeDependingStatus(newMedicalCase), {
@@ -165,26 +170,10 @@ export default class PatientProfile extends React.Component {
       app: { t, algorithm },
       navigation,
     } = this.props;
-    const { patient, nodes } = this.state;
+    const { patient, nodes, patientValues, labelFromNode } = this.state;
 
     return (
       <>
-        <View padding-auto margin-top style={styles.flex}>
-          <ScrollView>
-            <View style={styles.patientValuesContent}>
-              {patient.patientValues.map((patientValue) => (
-                <View key={patientValue.node_id} style={styles.wrapper}>
-                  <Text size-auto style={styles.identifierText}>
-                    {nodes[patientValue.node_id].label}
-                  </Text>
-                  <Text size-auto style={styles.patientValues}>
-                    {patient.getLabelFromNode(patientValue.node_id, algorithm)}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
         <View style={styles.footerButton}>
           <Button
             block
@@ -197,6 +186,22 @@ export default class PatientProfile extends React.Component {
             <Text size-auto>{t('patient_profile:edit_patient_value')}</Text>
           </Button>
         </View>
+        <ScrollView>
+          <View padding-auto margin-top style={styles.flex}>
+            <View style={styles.patientValuesContent}>
+              {patientValues.map((patientValue, index) => (
+                <View key={patientValue.node_id} style={styles.wrapper}>
+                  <Text size-auto style={styles.identifierText}>
+                    {nodes[patientValue.node_id].label}
+                  </Text>
+                  <Text size-auto style={styles.patientValues}>
+                    {labelFromNode[index]}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
       </>
     );
   };
@@ -211,9 +216,8 @@ export default class PatientProfile extends React.Component {
       navigation,
     } = this.props;
     const { patient, nodes, columns, medicalCaseData } = this.state;
-
     return (
-      <>
+      <ScrollView>
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
@@ -229,22 +233,22 @@ export default class PatientProfile extends React.Component {
           <FlatList key="dataList" data={medicalCaseData} renderItem={(value) => this._renderItem(value.item)} ItemSeparatorComponent={this._renderSeparator} keyExtractor={(item) => item.id} />
         </View>
 
-        {medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (
-          <View style={styles.footerButton}>
-            <Button
-              block
-              onPress={() => {
-                navigation.navigate('PatientUpsert', {
-                  idPatient: patient.id,
-                  newMedicalCase: true,
-                });
-              }}
-            >
-              <Text size-auto>{t('patient_profile:add_case')}</Text>
-            </Button>
-          </View>
-        )}
-      </>
+        {/*{medicalCaseData.some((medicalCase) => medicalCase.status !== 'close') ? null : (*/}
+        <View style={styles.footerButton}>
+          <Button
+            block
+            onPress={() => {
+              navigation.navigate('PatientUpsert', {
+                idPatient: patient.id,
+                newMedicalCase: true,
+              });
+            }}
+          >
+            <Text size-auto>{t('patient_profile:add_case')}</Text>
+          </Button>
+        </View>
+        {/*)}*/}
+      </ScrollView>
     );
   };
 
@@ -269,12 +273,12 @@ export default class PatientProfile extends React.Component {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
             style={LiwiTabStyle.style}
           >
-            <Content
+            <View
               style={styles.marginTop}
               contentContainerStyle={styles.flex} // important!
             >
               {this.renderConsultations()}
-            </Content>
+            </View>
           </Tab>
           <Tab
             heading={t('patient_profile:personal_information')}
@@ -284,12 +288,12 @@ export default class PatientProfile extends React.Component {
             activeTabStyle={LiwiTabStyle.activeTabStyle}
             style={LiwiTabStyle.style}
           >
-            <Content
+            <View
               style={styles.marginTop}
               contentContainerStyle={styles.flex} // important!
             >
               {this.renderPatientValues()}
-            </Content>
+            </View>
           </Tab>
         </Tabs>
       </View>

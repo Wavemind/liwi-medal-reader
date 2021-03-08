@@ -28,10 +28,9 @@ export const styles = StyleSheet.create({
     paddingBottom: 7,
   },
   cardTitleContent: { flexDirection: 'row', flex: 1, justifyContent: 'center' },
-  cardTitle: { flex: 1, fontSize: 18 },
+  cardTitle: { fontSize: 18 },
   noRightMargin: { marginRight: 0 },
-  drugContainer: { flex: 1, flexDirection: 'row' },
+  drugContainer: { flexDirection: 'row' },
   tooltipButton: { flex: 0.1, alignSelf: 'center', alignItems: 'flex-end' },
   tooltipButtonFinalDiagnostic: { flex: 0.1, alignSelf: 'center', alignItems: 'flex-end' },
-  formulationContainer: { flex: 0.9 },
 });

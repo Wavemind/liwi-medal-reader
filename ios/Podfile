@@ -33,12 +33,10 @@ target 'liwi_native' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-  pod 'BugsnagReactNative', :path => '../node_modules/bugsnag-react-native'
 
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  pod 'RNRectangleScanner', :path => '../node_modules/react-native-rectangle-scanner'
   pod 'RNSound', :path => '../node_modules/react-native-sound'
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'

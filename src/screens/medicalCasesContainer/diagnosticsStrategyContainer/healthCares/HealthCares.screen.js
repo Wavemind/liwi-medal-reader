@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Content } from 'native-base';
+import { View } from 'native-base';
 
 import FinalDiagnosticCards from '../../../../components/FinalDiagnosticCards';
 
@@ -18,9 +18,7 @@ export default class HealthCares extends Component {
     const { medicalCase } = this.props;
 
     return (
-      <Content>
-        <FinalDiagnosticCards medicalCase={medicalCase} />
-      </Content>
+      <FinalDiagnosticCards medicalCase={medicalCase} />
     );
   }
 }
