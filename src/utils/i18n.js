@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
 import { NativeModules } from 'react-native';
+import { getItem } from '../engine/api/LocalStorage';
 
 const languageDetector = {
   type: 'languageDetector',
@@ -9,7 +10,10 @@ const languageDetector = {
     const deviceLocale = NativeModules.I18nManager.localeIdentifier;
     callback(deviceLocale);
   },
-  init: () => {},
+  init: async () => {
+    const language = await getItem('language');
+    i18n.changeLanguage(language);
+  },
   cacheUserLanguage: () => {},
 };
 
@@ -21,6 +25,7 @@ i18n
     resources: {
       en: {
         application: {
+          welcome: 'Welcome',
           loading: 'Loading...',
           no_data: 'No data available',
           date_format: 'DD/MM/YYYY',
@@ -269,6 +274,7 @@ i18n
           app: 'Application',
           version: 'Version',
           environment: 'Environment',
+          languages: 'Languages',
           generate_cases: 'Generate Medical Cases',
         },
         work_case: {
@@ -315,8 +321,8 @@ i18n
           show_consent: 'Show consent file',
         },
         patient_upsert: {
-          too_young: "This algorithm cannot manage children below {{age_in_days}} day(s) of age. The consultation cannot continue with this date of birth",
-          too_old: "This algorithm cannot manage children above {{age_in_days}} day(s) of age. The consultation cannot continue with this date of birth",
+          too_young: 'This algorithm cannot manage children below {{age_in_days}} day(s) of age. The consultation cannot continue with this date of birth',
+          too_old: 'This algorithm cannot manage children above {{age_in_days}} day(s) of age. The consultation cannot continue with this date of birth',
           uid: 'UID',
           study_id: 'Study ID',
           group_id: 'Health Facility ID',
@@ -332,7 +338,7 @@ i18n
           permission_button_negative: 'Cancel',
           permission_button_positive: 'Ok',
           permission_message: 'We need your permission to use your camera',
-          permission_title: 'Permission to use camera'
+          permission_title: 'Permission to use camera',
         },
         medical_case_list: {
           all: 'All',
@@ -495,6 +501,7 @@ i18n
       },
       fr: {
         application: {
+          welcome: 'Bonjour',
           loading: 'Chargement en cours...',
           no_data: 'Aucune donnée disponible',
           date_format: 'DD/MM/YYYY',
@@ -508,7 +515,7 @@ i18n
           show: 'Voir consentement',
           title: 'Consentement',
           label: 'Consentir au traitement de données pour cette visite ?',
-          required: "Le consentement au traitement des données ne peut être ignoré",
+          required: 'Le consentement au traitement des données ne peut être ignoré',
         },
         diagnoses: {
           add: 'Créer',
@@ -521,13 +528,13 @@ i18n
           additional: 'Ajouter un des diagnostics non-proposés ?',
           agree: 'Accepter',
           close: 'Fermer',
-          custom: 'Ajouter manuellement d0autres diagnostics non-proposés ?',
+          custom: 'Ajouter manuellement d\'autres diagnostics non-proposés ?',
           custom_duration: 'Durée personnalisée',
           disagree: 'Rejeter',
           duration: 'Durée',
           list: 'Liste de diagnostics',
           manually_medicine: 'Médicaments pour les diagnostics ajoutés',
-          management: 'PRise en charge et conseil',
+          management: 'Prise en charge et conseil',
           medicine: 'Médicament',
           medicines: 'Médicaments',
           no_drugs: 'Aucun médicament proposé',
@@ -740,6 +747,7 @@ i18n
           app: 'Application',
           version: 'Version',
           environment: 'Environnement',
+          languages: 'Langues',
           generate_cases: 'Créer des consultations (test)',
         },
         work_case: {
@@ -786,8 +794,8 @@ i18n
           show_consent: 'Voir consentements',
         },
         patient_upsert: {
-          too_young: "Cet algorithme ne peut pas prendre en charge en charge les enfants de moins de {{age_in_days}} jour(s). Fin de la consultation.",
-          too_old: "Cet algorithme ne peut pas prendre en charge en charge les enfants de plus de {{age_in_days}} jour(s). Fin de la consultation.",
+          too_young: 'Cet algorithme ne peut pas prendre en charge en charge les enfants de moins de {{age_in_days}} jour(s). Fin de la consultation.',
+          too_old: 'Cet algorithme ne peut pas prendre en charge en charge les enfants de plus de {{age_in_days}} jour(s). Fin de la consultation.',
           uid: 'ID du patient',
           study_id: 'ID de l\'étude',
           group_id: 'ID du centre de santé',
@@ -803,7 +811,7 @@ i18n
           permission_button_negative: 'Annuler',
           permission_button_positive: 'Ok',
           permission_message: 'Nous avons besoin de votre permission pour utiliser l\'appareil photo',
-          permission_title: 'Permission appareil photo'
+          permission_title: 'Permission appareil photo',
         },
         medical_case_list: {
           all: 'Tous',
@@ -814,7 +822,7 @@ i18n
           surname: 'Nom de famille',
           status: 'Statut',
           no_medical_cases: 'Aucune consultation en cours',
-          not_found: "Pas d\'enregistrement trouvé",
+          not_found: "Pas d'enregistrement trouvé",
           waiting_triage: 'Examen initial',
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
@@ -922,13 +930,13 @@ i18n
           my_profile: 'Mon profil',
           logout: 'Logout',
           synchronization: 'Synchronization',
-          emergency: 'Emergency',
-          diagnosticsstrategy: 'Diagnoses',
-          conditions: 'Treatment Conditions',
+          emergency: 'Urgence',
+          diagnosticsstrategy: 'Diagnostics',
+          conditions: 'Condition de traitement',
           filter: 'Filters',
-          step_invalid: 'Step not valid. Please complete all of the mandatory fields',
-          about: 'About',
-          consent_list: "Facility's consent files",
+          step_invalid: 'Étape non valide. Veuillez remplir tous les champs obligatoires',
+          about: 'A propos',
+          consent_list: 'Dossiers de consentement',
           qr_reader: 'Scanner',
         },
         common: {
@@ -940,9 +948,9 @@ i18n
           page_content: 'Page content',
         },
         filters: {
-          title: 'Filters',
-          clear: 'Clear all',
-          apply: 'Apply',
+          title: 'Filtres',
+          clear: 'Effacer tout',
+          apply: 'Appliquer',
           status: 'Status',
         },
         notifications: {
@@ -963,7 +971,7 @@ i18n
           main_data_address_missing: 'URL du serveur medAL-data manquante dans la configuration du centre de santé',
           error: 'Erreur sur le serveur medAL-data',
         },
-      }
+      },
     },
     // have a common namespace used around the full app
     ns: ['common'],

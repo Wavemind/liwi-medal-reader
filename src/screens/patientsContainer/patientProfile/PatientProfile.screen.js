@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Text, View, Button, Icon, Tabs, Tab, Content } from 'native-base';
+import { Text, View, Button, Icon, Tabs, Tab } from 'native-base';
 import { FlatList, ScrollView, TouchableOpacity } from 'react-native';
 
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';

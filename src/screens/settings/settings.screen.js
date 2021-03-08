@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Body, Button, Icon, Left, List, ListItem, Right, Switch, Picker, Text } from 'native-base';
+import { Button, Left, List, ListItem, Right, Picker, Text } from 'native-base';
 import { ScrollView, View } from 'react-native';
 import RNRestart from 'react-native-restart';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,12 +13,14 @@ import Database from '../../engine/api/Database';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 import { styles } from './settings.style';
+import i18n from '../../utils/i18n';
 
 export default class Settings extends React.Component {
   // default settings
   state = {
     disabled: false,
     environment: null,
+    language: 'en',
     settings: {
       app: {
         awake: false,
@@ -30,8 +32,10 @@ export default class Settings extends React.Component {
     const { settings } = this.state;
     const localStorageSettings = await getItem('settings');
     const environment = await getItem('environment');
+    const language = await getItem('language');
     this.setState({
       environment,
+      language,
       settings: {
         ...settings,
         ...localStorageSettings,
@@ -52,6 +56,13 @@ export default class Settings extends React.Component {
         await setItem('settings', settings);
       }
     );
+  };
+
+  handleLanguage = async (value) => {
+    await setItem('language', value);
+    i18n.changeLanguage(value);
+    this.setState({ language: value });
+    await RNRestart.Restart();
   };
 
   /**
@@ -75,7 +86,7 @@ export default class Settings extends React.Component {
   };
 
   render() {
-    const { environment, disabled } = this.state;
+    const { environment, disabled, language } = this.state;
     const {
       navigation,
       app: { t },
@@ -109,6 +120,24 @@ export default class Settings extends React.Component {
                 <Picker.Item label="Production" value="production" />
                 <Picker.Item label="Test" value="test" />
                 <Picker.Item label="Staging" value="staging" />
+              </Picker>
+            </Right>
+          </ListItem>
+          <ListItem>
+            <Left>
+              <Text>{t('settings:languages')}</Text>
+            </Left>
+            <Right>
+              <Picker
+                mode="dropdown"
+                style={{ width: 220 }}
+                selectedValue={language}
+                onValueChange={(value) => {
+                  this.handleLanguage(value);
+                }}
+              >
+                <Picker.Item label="English" value="en" />
+                <Picker.Item label="Français" value="fr" />
               </Picker>
             </Right>
           </ListItem>

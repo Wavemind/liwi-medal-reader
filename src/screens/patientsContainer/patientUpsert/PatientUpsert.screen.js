@@ -1,24 +1,24 @@
 // @flow
 
 import * as React from 'react';
-import {ScrollView} from 'react-native';
-import {Col, Text, View} from 'native-base';
+import { ScrollView } from 'react-native';
+import { Col, Text, View } from 'native-base';
 import uuid from 'react-native-uuid';
 import i18next from 'i18next';
 
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import {PatientModel} from '../../../../frontend_service/helpers/Patient.model';
-import {MedicalCaseModel} from '../../../../frontend_service/helpers/MedicalCase.model';
-import {LiwiTitle2} from '../../../template/layout';
+import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
+import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
+import { LiwiTitle2 } from '../../../template/layout';
 import Stepper from '../../../components/Stepper';
 
-import {getItem} from '../../../engine/api/LocalStorage';
-import {styles} from './PatientUpsert.style';
+import { getItem } from '../../../engine/api/LocalStorage';
+import { styles } from './PatientUpsert.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
-import {questionsRegistration} from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { questionsRegistration } from '../../../../frontend_service/algorithm/questionsStage.algo';
 
 export default class PatientUpsert extends React.Component {
   state = {
@@ -35,10 +35,10 @@ export default class PatientUpsert extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     const {
-      app: {answeredQuestionId},
+      app: { answeredQuestionId },
       medicalCase,
     } = this.props;
-    const {firstRender} = this.state;
+    const { firstRender } = this.state;
 
     if (firstRender) {
       return true;
@@ -61,7 +61,7 @@ export default class PatientUpsert extends React.Component {
       setMedicalCase,
       setAnswer,
       updateMedicalCaseProperty,
-      app: {database, algorithm},
+      app: { database, algorithm },
     } = this.props;
 
     let patient = {};
@@ -75,9 +75,9 @@ export default class PatientUpsert extends React.Component {
 
     if (patientId === null) {
       if (facility === undefined) {
-        facility = {uid: uuid.v4(), group_id: session.facility.id, study_id: algorithm.study.label};
+        facility = { uid: uuid.v4(), group_id: session.facility.id, study_id: algorithm.study.label };
       }
-      patient = await new PatientModel({otherFacility, facility}, environment);
+      patient = await new PatientModel({ otherFacility, facility }, environment);
     } else {
       patient = await database.findBy('Patient', patientId);
     }
@@ -86,7 +86,7 @@ export default class PatientUpsert extends React.Component {
       // If the patient already exists we gonna retrieve it's patient Value
       await setMedicalCase({
         ...generatedMedicalCase,
-        patient: {...patient, medicalCases: []}, // Force
+        patient: { ...patient, medicalCases: [] }, // Force
       });
 
       if (patientId !== null) {
@@ -111,7 +111,7 @@ export default class PatientUpsert extends React.Component {
    */
   renderEligibilityMessage = () => {
     const {
-      app: {algorithm},
+      app: { algorithm },
       medicalCase,
     } = this.props;
 
@@ -129,7 +129,7 @@ export default class PatientUpsert extends React.Component {
    */
   renderTooYoungMessage = () => {
     const {
-      app: {algorithm},
+      app: { algorithm },
       medicalCase,
     } = this.props;
 
@@ -137,7 +137,7 @@ export default class PatientUpsert extends React.Component {
     if (!medicalCase.isOldEnough) {
       return (
         <View style={styles.warning}>
-          <Text size-auto>{i18next.t('patient_upsert:too_young', {age_in_days: algorithm.config.minimum_age})}</Text>
+          <Text size-auto>{i18next.t('patient_upsert:too_young', { age_in_days: algorithm.config.minimum_age })}</Text>
         </View>
       );
     }
@@ -148,7 +148,7 @@ export default class PatientUpsert extends React.Component {
    * @params [String] key [String] value
    */
   updatePatientValue = async (key, value) => {
-    const {updatePatient} = this.props;
+    const { updatePatient } = this.props;
     updatePatient(key, value);
   };
 
@@ -157,16 +157,16 @@ export default class PatientUpsert extends React.Component {
    * @returns {JSX.Element|null}
    */
   renderIdentifierData = () => {
-    const {patient} = this.state;
+    const { patient } = this.state;
     const {
-      app: {t},
+      app: { t },
     } = this.props;
 
     if (patient === null) {
       return null;
     }
 
-    const {uid, study_id, group_id, other_uid, other_study_id, other_group_id} = patient;
+    const { uid, study_id, group_id, other_uid, other_study_id, other_group_id } = patient;
 
     return (
       <View>
@@ -186,8 +186,8 @@ export default class PatientUpsert extends React.Component {
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={study_id}
-                       change={this.updatePatientValue} index="study_id" autoCapitalize="sentences"/>
+          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences"
+          />
         </View>
 
         <View w50 style={styles.containerText}>
@@ -232,14 +232,14 @@ export default class PatientUpsert extends React.Component {
   };
 
   render() {
-    const {patient, errors, loading} = this.state;
+    const { patient, errors, loading } = this.state;
     const {
-      app: {t, algorithm},
+      app: { t, algorithm },
       navigation,
     } = this.props;
 
     if (loading) {
-      return <LiwiLoader/>;
+      return <LiwiLoader />;
     }
 
     // Get nodes to display in registration stage
@@ -255,7 +255,7 @@ export default class PatientUpsert extends React.Component {
         }}
         initialPage={0}
         showBottomStepper
-        icons={[{name: 'test-tube', type: 'MaterialCommunityIcons'}]}
+        icons={[{ name: 'test-tube', type: 'MaterialCommunityIcons' }]}
         steps={[t('medical_case:triage')]}
         backButtonTitle={t('medical_case:back')}
         nextButtonTitle={t('medical_case:next')}
@@ -263,8 +263,7 @@ export default class PatientUpsert extends React.Component {
         nextStageString={t('navigation:triage')}
       >
         {[
-          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen"
-                      keyboardShouldPersistTaps="always">
+          <ScrollView key="PatientUpsertScreen" contentContainerStyle={styles.container} testID="PatientUpsertScreen" keyboardShouldPersistTaps="always">
             <LiwiTitle2 noBorder>{t('patient_upsert:title')}</LiwiTitle2>
             <View>
               <Col>
@@ -283,11 +282,11 @@ export default class PatientUpsert extends React.Component {
                 )}
               </Col>
             </View>
-            {algorithm.config.consent_management && <ConsentImage newPatient={patient.id === null}/>}
+            {algorithm.config.consent_management && <ConsentImage newPatient={patient.id === null} />}
             <Text customSubTitle>{t('patient_upsert:questions')}</Text>
             {this.renderEligibilityMessage()}
             {this.renderTooYoungMessage()}
-            <Questions questions={registrationQuestions}/>
+            <Questions questions={registrationQuestions} />
           </ScrollView>,
         ]}
       </Stepper>

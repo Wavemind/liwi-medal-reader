@@ -4,11 +4,10 @@ import { TouchableOpacity, View } from 'react-native';
 import { CheckBox, Icon, Text } from 'native-base';
 import _ from 'lodash';
 
-import { categories, modalType } from '../../../../frontend_service/constants';
+import { modalType } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
-import Unavailable from '../../InputContainer/Unavailable';
 import WrapperQuestion from '../WrapperQuestion/WrapperQuestion';
 import List from '../DisplaysContainer/List';
 
