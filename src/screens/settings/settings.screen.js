@@ -20,7 +20,7 @@ export default class Settings extends React.Component {
   state = {
     disabled: false,
     environment: null,
-    language: 'en',
+    applicationLanguage: 'en',
     settings: {
       app: {
         awake: false,
@@ -32,10 +32,10 @@ export default class Settings extends React.Component {
     const { settings } = this.state;
     const localStorageSettings = await getItem('settings');
     const environment = await getItem('environment');
-    const language = await getItem('language');
+    const applicationLanguage = await getItem('applicationLanguage');
     this.setState({
       environment,
-      language,
+      applicationLanguage,
       settings: {
         ...settings,
         ...localStorageSettings,
@@ -58,10 +58,19 @@ export default class Settings extends React.Component {
     );
   };
 
-  handleLanguage = async (value) => {
-    await setItem('language', value);
+  handleApplicationLanguage = async (value) => {
+    await setItem('applicationLanguage', value);
     i18n.changeLanguage(value);
-    this.setState({ language: value });
+    this.setState({ applicationLanguage: value });
+    await RNRestart.Restart();
+  };
+
+  handleAlgorithmLanguage = async (value) => {
+    const {
+      app: { set },
+    } = this.props;
+    await setItem('algorithmLanguage', value);
+    set('algorithmLanguage', value);
     await RNRestart.Restart();
   };
 
@@ -86,10 +95,14 @@ export default class Settings extends React.Component {
   };
 
   render() {
-    const { environment, disabled, language } = this.state;
+    const { environment, disabled, applicationLanguage } = this.state;
     const {
       navigation,
-      app: { t },
+      app: {
+        t,
+        algorithmLanguage,
+        algorithm: { version_languages },
+      },
     } = this.props;
 
     return (
@@ -125,19 +138,38 @@ export default class Settings extends React.Component {
           </ListItem>
           <ListItem>
             <Left>
-              <Text>{t('settings:languages')}</Text>
+              <Text>{t('settings:application_languages')}</Text>
             </Left>
             <Right>
               <Picker
                 mode="dropdown"
                 style={{ width: 220 }}
-                selectedValue={language}
+                selectedValue={applicationLanguage}
                 onValueChange={(value) => {
-                  this.handleLanguage(value);
+                  this.handleApplicationLanguage(value);
                 }}
               >
-                <Picker.Item label="English" value="en" />
-                <Picker.Item label="Français" value="fr" />
+                <Picker.Item key="en" label={t('settings:languages:en')} value="en" />
+                <Picker.Item key="fr" label={t('settings:languages:fr')} value="fr" />
+              </Picker>
+            </Right>
+          </ListItem>
+          <ListItem>
+            <Left>
+              <Text>{t('settings:algorithm_languages')}</Text>
+            </Left>
+            <Right>
+              <Picker
+                mode="dropdown"
+                style={{ width: 220 }}
+                selectedValue={algorithmLanguage}
+                onValueChange={(value) => {
+                  this.handleAlgorithmLanguage(value);
+                }}
+              >
+                {version_languages.map((language) => (
+                  <Picker.Item key={language} label={t(`settings:languages:${language}`)} value={language} />
+                ))}
               </Picker>
             </Right>
           </ListItem>

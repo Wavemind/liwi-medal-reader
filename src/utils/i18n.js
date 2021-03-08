@@ -11,7 +11,7 @@ const languageDetector = {
     callback(deviceLocale);
   },
   init: async () => {
-    const language = await getItem('language');
+    const language = await getItem('applicationLanguage');
     i18n.changeLanguage(language);
   },
   cacheUserLanguage: () => {},
@@ -274,8 +274,13 @@ i18n
           app: 'Application',
           version: 'Version',
           environment: 'Environment',
-          languages: 'Languages',
+          application_languages: 'App languages',
+          algorithm_languages: 'Algorithm languages',
           generate_cases: 'Generate Medical Cases',
+          languages: {
+            en: 'English',
+            fr: 'Français',
+          },
         },
         work_case: {
           create: 'New case',
@@ -747,8 +752,13 @@ i18n
           app: 'Application',
           version: 'Version',
           environment: 'Environnement',
-          languages: 'Langues',
+          application_languages: 'langues de l\'application',
+          algorithm_languages: 'langues de l\'algorithm',
           generate_cases: 'Créer des consultations (test)',
+          languages: {
+            en: 'English',
+            fr: 'Français',
+          },
         },
         work_case: {
           create: 'Nouvelle consultation',

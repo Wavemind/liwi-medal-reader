@@ -218,7 +218,7 @@ export class ApplicationProvider extends React.Component {
     isConnected: false,
     filtersPatient: {},
     filtersMedicalCase: {},
-    lang: 'fr',
+    algorithmLanguage: 'en',
     logged: false,
     name: 'App',
     session: null,
