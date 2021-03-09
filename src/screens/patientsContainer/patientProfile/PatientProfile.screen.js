@@ -10,6 +10,7 @@ import { getItem } from '../../../engine/api/LocalStorage';
 import { styles } from './PatientProfile.style';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
+import { translateText } from '../../../utils/i18n';
 
 export default class PatientProfile extends React.Component {
   state = {
@@ -192,7 +193,7 @@ export default class PatientProfile extends React.Component {
               {patientValues.map((patientValue, index) => (
                 <View key={patientValue.node_id} style={styles.wrapper}>
                   <Text size-auto style={styles.identifierText}>
-                    {nodes[patientValue.node_id].label[algorithmLanguage]}
+                    {translateText(nodes[patientValue.node_id].label, algorithmLanguage)}
                   </Text>
                   <Text size-auto style={styles.patientValues}>
                     {labelFromNode[index]}
@@ -221,7 +222,7 @@ export default class PatientProfile extends React.Component {
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
-              <Text size-auto>{nodes[column].label[algorithmLanguage]}</Text>
+              <Text size-auto>{translateText(nodes[column].label, algorithmLanguage)}</Text>
             </View>
           ))}
           <View style={styles.columnLabel}>

@@ -11,6 +11,7 @@ import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/Fina
 import FinalDiagnostic from '../../../../components/FinalDiagnostic';
 import { liwiColors } from '../../../../utils/constants';
 import { modalType } from '../../../../../frontend_service/constants';
+import { translateText } from '../../../../utils/i18n';
 
 export default class FinalDiagnosticsList extends React.Component {
   state = {
@@ -104,7 +105,7 @@ export default class FinalDiagnosticsList extends React.Component {
         }
       })
       .sort((a, b) => {
-        return a.label[algorithmLanguage] > b.label[algorithmLanguage] ? 1 : b.label[algorithmLanguage] > a.label[algorithmLanguage] ? -1 : 0;
+        return translateText(a.label, algorithmLanguage) > translateText(b.label, algorithmLanguage) ? 1 : translateText(b.label, algorithmLanguage) > translateText(a.label, algorithmLanguage) ? -1 : 0;
       });
   };
 
@@ -156,7 +157,7 @@ export default class FinalDiagnosticsList extends React.Component {
               <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(diagnoses.additional[additionalKey].id)}>
                 <Icon type="AntDesign" name="info" style={styles.iconInfo} />
               </TouchableOpacity>
-              <Text>{diagnoses.additional[additionalKey].label[algorithmLanguage]}</Text>
+              <Text>{translateText(diagnoses.additional[additionalKey].label, algorithmLanguage)}</Text>
             </View>
           ))
         ) : (

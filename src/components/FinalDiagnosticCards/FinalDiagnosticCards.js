@@ -16,6 +16,7 @@ import Default from '../Formulations/Default';
 import { calculateCondition } from '../../../frontend_service/algorithm/conditionsHelpers.algo';
 import { drugAgreed, drugDoses } from '../../../frontend_service/helpers/Drug.model';
 import { finalDiagnosticCalculateCondition } from '../../../frontend_service/helpers/FinalDiagnostic.model';
+import { translateText } from '../../utils/i18n';
 
 export default class FinalDiagnosticCards extends React.Component {
   /**
@@ -89,7 +90,7 @@ export default class FinalDiagnosticCards extends React.Component {
             <CardItem style={styles.cardItemCondensed}>
               <Body style={styles.cardTitleContent}>
                 <LiwiTitle2 noBorder style={styles.flex}>
-                  {finalDiagnostic.label[algorithmLanguage]}
+                  {translateText(finalDiagnostic.label, algorithmLanguage)}
                   {'\n'}
                   <Text note>{t(`diagnoses_label:${title}`)}</Text>
                 </LiwiTitle2>
@@ -154,7 +155,7 @@ export default class FinalDiagnosticCards extends React.Component {
                       return (
                         <View style={styles.drugContainer} key={`${managementKey}_management`}>
                           <View style={{ flex: 1, marginTop: 15 }}>
-                            <Text size-auto>{node.label[algorithmLanguage]}</Text>
+                            <Text size-auto>{translateText(node.label, algorithmLanguage)}</Text>
                           </View>
                           <View style={styles.tooltipButton}>
                             <View flex>

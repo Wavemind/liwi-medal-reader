@@ -12,6 +12,7 @@ import { LiwiTitle4, LiwiTitle5 } from '../../template/layout';
 import Media from '../Media/Media';
 import WebviewComponent from '../WebviewComponent';
 import { store } from '../../../frontend_service/store';
+import { translateText } from '../../utils/i18n';
 
 export default class CustomModal extends React.Component {
   static defaultProps = {
@@ -40,7 +41,7 @@ export default class CustomModal extends React.Component {
       rowQuestions.push(
         <Text key={i}>
           {' '}
-          - {questions[i].label[algorithmLanguage]} {t('modal:is_required')}
+          - {translateText(questions[i].label, algorithmLanguage)} {t('modal:is_required')}
         </Text>
       );
 
@@ -173,8 +174,8 @@ export default class CustomModal extends React.Component {
 
     return (
       <View>
-        <LiwiTitle5>{currentNode.label[algorithmLanguage]}</LiwiTitle5>
-        {this._createDescription(currentNode.description[algorithmLanguage])}
+        <LiwiTitle5>{translateText(currentNode.label, algorithmLanguage)}</LiwiTitle5>
+        {this._createDescription(translateText(currentNode.description, algorithmLanguage)}
         {currentNode.medias !== undefined && currentNode.medias.length > 0
           ? currentNode.medias.map((media) => {
               return <Media key={media.url} media={media} />;
@@ -186,25 +187,25 @@ export default class CustomModal extends React.Component {
             {node.type === 'Question' ? (
               <View>
                 <Text>
-                  answer: {currentNode.answers[mcNode?.answer]?.label[algorithmLanguage]} ({mcNode.answer})
+                  answer: {translateText(currentNode.answers[mcNode?.answer]?.label, algorithmLanguage)} ({mcNode.answer})
                 </Text>
                 <Text>value: {mcNode.value}</Text>
                 <LiwiTitle5>CC</LiwiTitle5>
                 {currentNode.cc.map((nodeId) => (
                   <Text key={nodeId}>
-                    {algorithm.nodes[nodeId].label[algorithmLanguage]} ({nodeId})
+                    {translateText(algorithm.nodes[nodeId].label, algorithmLanguage)} ({nodeId})
                   </Text>
                 ))}
                 <LiwiTitle5>DD</LiwiTitle5>
                 {mcNode.dd.map((diagnostic) => (
                   <Text key={diagnostic.id}>
-                    {algorithm.diagnostics[diagnostic.id].label[algorithmLanguage]} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
+                    {translateText(algorithm.diagnostics[diagnostic.id].label, algorithmLanguage)} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
                   </Text>
                 ))}
                 <LiwiTitle5>QS</LiwiTitle5>
                 {mcNode.qs.map((qs) => (
                   <Text key={qs.id}>
-                    {algorithm.nodes[qs.id].label[algorithmLanguage]} ({qs.id}) - {String(qs.conditionValue)}
+                    {translateText(algorithm.nodes[qs.id].label, algorithmLanguage)} ({qs.id}) - {String(qs.conditionValue)}
                   </Text>
                 ))}
               </View>

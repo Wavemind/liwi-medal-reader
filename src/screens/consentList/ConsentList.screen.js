@@ -7,6 +7,7 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import { styles } from './ConsentList.style';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { modalType } from '../../../frontend_service/constants';
+import { translateText } from '../../utils/i18n';
 
 export default class ConsentList extends React.Component {
   constructor(props) {
@@ -150,7 +151,7 @@ export default class ConsentList extends React.Component {
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
-              <Text size-auto>{nodes[column].label[algorithmLanguage]}</Text>
+              <Text size-auto>{translateText(nodes[column].label, algorithmLanguage)}</Text>
             </View>
           ))}
         </View>

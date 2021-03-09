@@ -10,6 +10,7 @@ import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { getDeviceInformation } from '../../engine/api/Device';
 import { MedicalCaseModel } from '../../../frontend_service/helpers/MedicalCase.model';
+import { translateText } from '../../utils/i18n';
 
 type Props = NavigationScreenProps & {};
 
@@ -198,7 +199,7 @@ export default class ListContent extends React.Component<Props, State> {
         <View padding-auto style={styles.filterContent}>
           {columns.map((column) => (
             <View key={column} style={styles.columnLabel}>
-              <Text size-auto>{nodes[column].label[algorithmLanguage]}</Text>
+              <Text size-auto>{translateText(nodes[column].label, algorithmLanguage)}</Text>
             </View>
           ))}
           {model === 'Patient' ? (

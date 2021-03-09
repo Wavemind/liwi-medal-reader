@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './FinalDiagnostic.style';
 import { modalType } from '../../../frontend_service/constants';
+import { translateText } from '../../utils/i18n';
 
 export default class FinalDiagnostic extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -91,7 +92,7 @@ export default class FinalDiagnostic extends React.Component {
           <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(id)}>
             <Icon type="AntDesign" name="info" style={styles.iconInfo} />
           </TouchableOpacity>
-          <Text>{label[algorithmLanguage]}</Text>
+          <Text>{translateText(label, algorithmLanguage)}</Text>
         </View>
         <View style={styles.bloc}>
           <LeftButton active={diagnoses.proposed[id]?.agreed === true} onPress={() => this._handleClick(true)}>

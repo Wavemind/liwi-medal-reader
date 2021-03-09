@@ -8,6 +8,7 @@ import { displayFormats, modalType } from '../../../../frontend_service/constant
 import Autocomplete from '../DisplaysContainer/Autocomplete';
 import { styles } from '../QuestionFactory/Question.factory.style';
 import { ViewQuestion } from '../../../template/layout';
+import { translateText } from '../../../utils/i18n';
 
 export default class Questions extends React.Component {
   state = {};
@@ -46,7 +47,7 @@ export default class Questions extends React.Component {
             </View>
             <ViewQuestion marginRight={10} marginLeft={0}>
               <Text style={styles.questionLabel} size-auto>
-                {algorithm.nodes[question.id].label[algorithmLanguage]} {algorithm.nodes[question.id].is_mandatory ? '*' : null}
+                {translateText(algorithm.nodes[question.id].label, algorithmLanguage)} {algorithm.nodes[question.id].is_mandatory ? '*' : null}
               </Text>
             </ViewQuestion>
           </View>

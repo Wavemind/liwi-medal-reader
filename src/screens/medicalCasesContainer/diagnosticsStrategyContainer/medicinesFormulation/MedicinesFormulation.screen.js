@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native';
 import { Icon, Picker, Text, View } from 'native-base';
 import { styles } from './MedicinesFormulation.style';
 import { formulationLabel, drugAgreed, drugDoses } from '../../../../../frontend_service/helpers/Drug.model';
+import { translateText } from '../../../../utils/i18n';
 
 export default class MedicinesFormulations extends Component {
   shouldComponentUpdate() {
@@ -41,8 +42,8 @@ export default class MedicinesFormulations extends Component {
     return (
       <View style={styles.blocDrug} key={instance.id}>
         <View style={styles.flex}>
-          <Text size-auto>{algorithm.nodes[instance.id]?.label[algorithmLanguage]}</Text>
-          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${algorithm.nodes[e.id].label[algorithmLanguage]} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
+          <Text size-auto>{translateText(algorithm.nodes[instance.id]?.label, algorithmLanguage)}</Text>
+          <Text italic>{instance.diagnoses.map((e, i) => (e !== null ? `${translateText(algorithm.nodes[e.id].label, algorithmLanguage)} ${instance.diagnoses.length - 1 === i ? '' : '/'} ` : t('diagnoses:none')))}</Text>
         </View>
         <View style={styles.select}>
           <Icon name="arrow-drop-down" type="MaterialIcons" style={styles.pickerIcon} />
@@ -97,7 +98,7 @@ export default class MedicinesFormulations extends Component {
           return (
             <>
               {this._renderFormulation(drugs[drugId], selected, onSelect)}
-              {selected !== null ? <Text>{currentDrug.formulations[drug.formulationSelected].description[algorithmLanguage]}</Text> : null}
+              {selected !== null ? <Text>{translateText(currentDrug.formulations[drug.formulationSelected].description, algorithmLanguage)}</Text> : null}
             </>
           );
         })}

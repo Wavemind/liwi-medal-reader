@@ -12,6 +12,7 @@ import MedicineSelection from '../../../../components/MedicineSelection';
 import { healthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { finalDiagnosticCalculateCondition } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 import { modalType } from '../../../../../frontend_service/constants';
+import { translateText } from '../../../../utils/i18n';
 
 export default class Medicines extends Component {
   shouldComponentUpdate() {
@@ -177,7 +178,7 @@ export default class Medicines extends Component {
                 <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[drugId].id)}>
                   <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                 </TouchableOpacity>
-                <Text key={`drug-${drugId}`}>{algorithm.nodes[drugId].label[algorithmLanguage]}</Text>
+                <Text key={`drug-${drugId}`}>{translateText(algorithm.nodes[drugId].label, algorithmLanguage)}</Text>
               </View>
               <TextInput
                 style={styles.durationInput}

@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './ArmControlMedicines.style';
 import { categories, modalType } from '../../../../../frontend_service/constants';
+import { translateText } from '../../../../utils/i18n';
 
 export default class ArmControlMedicines extends Component {
   /**
@@ -101,7 +102,7 @@ export default class ArmControlMedicines extends Component {
                                   onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
                   <Icon type="AntDesign" name="info" style={styles.iconInfo}/>
                 </TouchableOpacity>
-                <Text key={`drug-${additionalKey}`}>{algorithm.nodes[additionalKey].label[algorithmLanguage]}</Text>
+                <Text key={`drug-${additionalKey}`}>{translateText(algorithm.nodes[additionalKey].label, algorithmLanguage)}</Text>
               </View>
               <TextInput
                 style={styles.durationInput}

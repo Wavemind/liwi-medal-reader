@@ -5,6 +5,7 @@ import { Collapse, CollapseBody, CollapseHeader } from 'accordion-collapse-react
 
 import { styles } from './FilterAccordion.style';
 import { liwiColors } from '../../utils/constants';
+import { translateText } from '../../utils/i18n';
 
 export default class FilterAccordion extends Component {
   render() {
@@ -13,14 +14,14 @@ export default class FilterAccordion extends Component {
     return (
       <Collapse key={node.id}>
         <CollapseHeader style={styles.filterButton}>
-          <Text white>{node.label[algorithmLanguage]}</Text>
+          <Text white>{translateText(node.label, algorithmLanguage)}</Text>
         </CollapseHeader>
         <CollapseBody style={styles.content}>
           {Object.keys(node.answers).map((key) => (
             <ListItem key={key} style={styles.listItem}>
               <CheckBox onPress={() => handleFilters(node, key)} color={liwiColors.redColor} checked={_.includes(activeFilters[node.id], node.answers[key].id)} />
               <Body>
-                <Text size-auto>{node.answers[key].label[algorithmLanguage]}</Text>
+                <Text size-auto>{translateText(node.answers[key].label, algorithmLanguage)}</Text>
               </Body>
             </ListItem>
           ))}

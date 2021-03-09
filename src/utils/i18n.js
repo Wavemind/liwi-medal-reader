@@ -3,6 +3,21 @@ import { reactI18nextModule } from 'react-i18next';
 import { NativeModules } from 'react-native';
 import { getItem } from '../engine/api/LocalStorage';
 
+/**
+ * Translate algorithm value
+ * @param translation
+ * @param language
+ * @returns {*}
+ */
+export const translateText = (translation, language) => {
+  if (translation.hasOwnProperty(language)) {
+    return translation[language];
+  }
+
+  // Fallback in english
+  return translation.en;
+};
+
 const languageDetector = {
   type: 'languageDetector',
   async: true, // flags below detection to be async
@@ -39,7 +54,7 @@ i18n
           show: 'Show consent',
           title: 'Consent',
           label: 'Consent to data processing for this visit. NO if revoked',
-          required: "The data processing consent can't be blank",
+          required: 'The data processing consent can\'t be blank',
         },
         diagnoses: {
           add: 'Create',
@@ -468,7 +483,7 @@ i18n
           filter: 'Filters',
           step_invalid: 'Step not valid. Please complete all of the mandatory fields',
           about: 'About',
-          consent_list: "Facility's consent files",
+          consent_list: 'Facility\'s consent files',
           qr_reader: 'Scanner',
         },
         common: {
@@ -832,7 +847,7 @@ i18n
           surname: 'Nom de famille',
           status: 'Statut',
           no_medical_cases: 'Aucune consultation en cours',
-          not_found: "Pas d'enregistrement trouvé",
+          not_found: 'Pas d\'enregistrement trouvé',
           waiting_triage: 'Examen initial',
           waiting_consultation: 'Consultation',
           waiting_test: 'Test',
@@ -968,7 +983,7 @@ i18n
           invalid_code: ' Votre code local est invalide, veuillez ré-essayer',
           session_does_not_exist: 'Votre utilisateur local n\'existe pas, veuillez ré-essayer SVP',
           session_already_exist: 'Une session existe déjà',
-          no_internet: "Vous n'avez pas de connexion internet",
+          no_internet: 'Vous n\'avez pas de connexion internet',
           connection_successful: 'Conncté(e)',
           algorithm_updated: 'Votre algorithme a été mis à jour',
           get_group: 'Centre de santé et personnel de santé en cours de réception',
