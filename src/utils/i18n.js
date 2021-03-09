@@ -10,6 +10,13 @@ import { getItem } from '../engine/api/LocalStorage';
  * @returns {*}
  */
 export const translateText = (translation, language) => {
+  const type = typeof translation;
+
+  // TODO: Must be removed when medal-c have handled all translation
+  if (type === 'string') {
+    return translation;
+  }
+
   if (translation.hasOwnProperty(language)) {
     return translation[language];
   }
