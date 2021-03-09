@@ -139,7 +139,7 @@ export default class ArmControlMedicines extends Component {
           itemTextColor="#000"
           itemFontSize={15}
           styleRowList={styles.rowStyle}
-          displayKey="label"
+          displayKey="label_translated"
           searchInputStyle={styles.searchInputStyle}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}
