@@ -4,8 +4,8 @@ import * as React from 'react';
 import { Button, Icon, Input, Text, View } from 'native-base';
 import MultiSelect from 'react-native-multiple-select';
 import moment from 'moment';
-
 import { TouchableOpacity } from 'react-native';
+
 import { styles } from './FinalDiagnosticsList.style';
 import { finalDiagnosticAll } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 import FinalDiagnostic from '../../../../components/FinalDiagnostic';
@@ -97,6 +97,7 @@ export default class FinalDiagnosticsList extends React.Component {
 
     return items
       .filter((item) => {
+        item.label_translated = translateText(item.label, algorithmLanguage);
         if (days <= 60 && algorithm.nodes[item.cc].is_neonat) {
           return true;
         }
@@ -105,7 +106,11 @@ export default class FinalDiagnosticsList extends React.Component {
         }
       })
       .sort((a, b) => {
-        return translateText(a.label, algorithmLanguage) > translateText(b.label, algorithmLanguage) ? 1 : translateText(b.label, algorithmLanguage) > translateText(a.label, algorithmLanguage) ? -1 : 0;
+        return translateText(a.label, algorithmLanguage) > translateText(b.label, algorithmLanguage)
+          ? 1
+          : translateText(b.label, algorithmLanguage) > translateText(a.label, algorithmLanguage)
+          ? -1
+          : 0;
       });
   };
 
@@ -183,7 +188,7 @@ export default class FinalDiagnosticsList extends React.Component {
           itemTextColor="#000"
           itemFontSize={15}
           styleRowList={styles.rowStyle}
-          displayKey="label"
+          displayKey="label_translated"
           searchInputStyle={styles.selectColor}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}

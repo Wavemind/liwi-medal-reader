@@ -100,6 +100,7 @@ export default class Medicines extends Component {
       if (diagnoses.proposed[key].agreed === true) {
         Object.keys(diagnoses.proposed[key].drugs).forEach((treatmentId) => {
           filteredHealthCares = _.filter(filteredHealthCares, (item) => {
+            item.label_translated = translateText(item.label, algorithmLanguage);
             if (diagnoses.proposed[key].drugs[treatmentId].agreed === true) {
               return item.id !== Number(treatmentId);
             }
@@ -113,6 +114,7 @@ export default class Medicines extends Component {
     Object.keys(diagnoses.additional).forEach((key) => {
       Object.keys(diagnoses.additional[key].drugs).forEach((treatmentId) => {
         filteredHealthCares = _.filter(filteredHealthCares, (item) => {
+          item.label_translated = translateText(item.label, algorithmLanguage);
           if (diagnoses.additional[key].drugs[treatmentId].agreed === true) {
             return item.id !== Number(treatmentId);
           }
@@ -209,7 +211,7 @@ export default class Medicines extends Component {
             itemTextColor="#000"
             itemFontSize={15}
             styleRowList={styles.rowStyle}
-            displayKey="label"
+            displayKey="label_translated"
             searchInputStyle={styles.searchInputStyle}
             submitButtonColor={liwiColors.redColor}
             submitButtonText={t('diagnoses:close')}

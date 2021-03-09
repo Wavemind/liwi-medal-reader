@@ -76,7 +76,11 @@ export default class ArmControlMedicines extends Component {
       return null;
     }
 
-    const drugsList = _.filter(algorithm.nodes, (f) => f.category === categories.drug);
+    const drugsList = _.filter(algorithm.nodes, (f) => {
+      item.label_translated = translateText(f.label, algorithmLanguage);
+      return f.category === categories.drug;
+    });
+
     const selectedDrugs = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
 
     return (
@@ -98,9 +102,8 @@ export default class ArmControlMedicines extends Component {
           Object.keys(diagnoses.additionalDrugs).map((additionalKey) => (
             <View key={`drug-${additionalKey}`} style={styles.drugContainer}>
               <View style={styles.additionalDrugName}>
-                <TouchableOpacity style={styles.touchable} transparent
-                                  onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
-                  <Icon type="AntDesign" name="info" style={styles.iconInfo}/>
+                <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
+                  <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                 </TouchableOpacity>
                 <Text key={`drug-${additionalKey}`}>{translateText(algorithm.nodes[additionalKey].label, algorithmLanguage)}</Text>
               </View>
