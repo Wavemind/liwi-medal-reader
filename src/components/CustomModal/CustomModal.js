@@ -175,7 +175,7 @@ export default class CustomModal extends React.Component {
     return (
       <View>
         <LiwiTitle5>{translateText(currentNode.label, algorithmLanguage)}</LiwiTitle5>
-        {this._createDescription(translateText(currentNode.description, algorithmLanguage)}
+        {this._createDescription(translateText(currentNode.description, algorithmLanguage))}
         {currentNode.medias !== undefined && currentNode.medias.length > 0
           ? currentNode.medias.map((media) => {
               return <Media key={media.url} media={media} />;
