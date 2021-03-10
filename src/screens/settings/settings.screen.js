@@ -149,8 +149,9 @@ export default class Settings extends React.Component {
                   this.handleApplicationLanguage(value);
                 }}
               >
-                <Picker.Item key="en" label={t('settings:languages:en')} value="en" />
-                <Picker.Item key="fr" label={t('settings:languages:fr')} value="fr" />
+                {['en', 'fr'].map((language) => (
+                  <Picker.Item key={language} label={t(`settings:languages:${language}`)} value={language} />
+                ))}
               </Picker>
             </Right>
           </ListItem>
