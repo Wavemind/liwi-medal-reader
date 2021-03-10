@@ -5,11 +5,11 @@ import moment from 'moment';
 import { Model } from '@nozbe/watermelondb';
 import { field, date, readonly, children } from '@nozbe/watermelondb/decorators';
 
-import I18n from '../../src/utils/i18n';
+import I18n, { translateText } from '../../src/utils/i18n';
 import Database from '../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
 import { PatientValueModel } from './PatientValue.model';
-import { getItem, getItems } from '../../src/engine/api/LocalStorage';
+import { getItem, getItems, setItem } from '../../src/engine/api/LocalStorage';
 import { displayFormats } from '../constants';
 
 export class PatientModel {
@@ -144,6 +144,7 @@ export class PatientModel {
    */
   getLabelFromNode = async (nodeId, algorithm) => {
     let displayedValue = '';
+    const algorithmLanguage = await getItem('algorithmLanguage');
     const patientValues = await this.patientValues;
     const currentPatientValue = patientValues.find((patientValue) => patientValue.node_id === nodeId);
 
@@ -155,10 +156,10 @@ export class PatientModel {
         displayedValue = moment(currentPatientValue.value).format(I18n.t('application:date_format'));
       } else if (nodes[currentPatientValue.node_id].display_format === displayFormats.dropDownList) {
         // Date display
-        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
+        displayedValue = translateText(nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label, [algorithmLanguage]);
       } else if (currentPatientValue.value === null && currentPatientValue.answer_id !== null) {
         // Answer display
-        displayedValue = nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label;
+        displayedValue = translateText(nodes[currentPatientValue.node_id].answers[currentPatientValue.answer_id].label, [algorithmLanguage]);
       } else if (currentPatientValue.value !== null && currentPatientValue.answer_id === null) {
         displayedValue = currentPatientValue.value;
       }

@@ -202,25 +202,26 @@ export default class LocalInterface {
         record.consent = object.consent;
         record.fail_safe = object.fail_safe;
       });
-    });
+    }, 'create patient');
 
     const nestedCollection = database.get('medical_cases');
 
     // MedicalCase
     await database.action(async () => {
       await nestedCollection.create((nestedRecord) => {
-        object.medicalCases.forEach((medicalCase) => {
+        object.medicalCases.map((medicalCase) => {
           nestedRecord._raw.id = medicalCase.id;
           nestedRecord.json = medicalCase.json;
           nestedRecord.synchronized_at = medicalCase.synchronized_at;
           nestedRecord.status = medicalCase.status;
           nestedRecord.patient.set(patient);
 
-          this._generateActivities(medicalCase.activities, medicalCase.id);
+          // this._generateActivities(medicalCase.activities, medicalCase.id);
         });
       });
-    });
+    }, 'create medicalCases');
 
+    console.log('insert');
     await this._savePatientValue(model, object);
   };
 
@@ -255,10 +256,11 @@ export default class LocalInterface {
           record.synchronized_at = value.synchronized_at;
           record.status = value.status;
           record.patient_id = id;
-          this._generateActivities(value.activities, value.id);
+          // this._generateActivities(value.activities, value.id);
         });
       });
 
+      console.log('push');
       this._savePatientValue(model, object);
     }
   };
@@ -309,6 +311,7 @@ export default class LocalInterface {
     }
 
     if (updatePatientValue && !Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
+      console.log('update');
       this._savePatientValue(model, object);
     }
   };
@@ -466,18 +469,22 @@ export default class LocalInterface {
    * @param { integer } medicalCaseId
    * @private
    */
-  _generateActivities = (activities, medicalCaseId) => {
-    activities.forEach((activity) => {
-      database.get('activities').create((record) => {
-        record._raw.id = activity.id;
-        record.stage = activity.stage;
-        record.clinician = activity.clinician;
-        record.nodes = activity.nodes;
-        record.mac_address = activity.mac_address;
-        record.medical_case_id = medicalCaseId;
-        record.fail_safe = activity.fail_safe;
+  _generateActivities = async (activities, medicalCaseId) => {
+    await database.action(async () => {
+      activities.map(async (activity) => {
+        await database.batch(
+          database.get('activities').prepareCreate((record) => {
+            record._raw.id = activity.id;
+            record.stage = activity.stage;
+            record.clinician = activity.clinician;
+            record.nodes = activity.nodes;
+            record.mac_address = activity.mac_address;
+            record.medical_case_id = medicalCaseId;
+            record.fail_safe = activity.fail_safe;
+          })
+        );
       });
-    });
+    }, 'generate activities');
   };
 
   /**
@@ -493,30 +500,31 @@ export default class LocalInterface {
     const nodeActivities = JSON.parse(activities[activities.length - 1].nodes);
     const patient = await this.findBy('Patient', medicalCase.patient_id);
 
-    nodeActivities.map(async (node) => {
-      if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
-        const patientValues = await patient.patientValues;
-        const patientValue = patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
-        // If the values doesn't exist we create it otherwise we edit it
-        if (patientValue === undefined) {
-          const collection = database.get('patient_values');
-
-          await database.action(async () => {
-            await collection.create((record) => {
-              record._raw.id = uuid.v4();
-              record.value = node.value;
-              record.node_id = parseInt(node.id);
-              record.answer_id = node.answer === null ? null : parseInt(node.answer);
-              record.patient_id = medicalCase.patient_id;
+    await database.action(async () => {
+      nodeActivities.map(async (node) => {
+        if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
+          const patientValues = await patient.patientValues;
+          const patientValue = patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
+          // If the values doesn't exist we create it otherwise we edit it
+          if (patientValue === undefined) {
+            const patientValuesCollection = database.get('patient_values');
+            await database.batch(
+              patientValuesCollection.prepareCreate((record) => {
+                record._raw.id = uuid.v4();
+                record.value = node.value;
+                record.node_id = parseInt(node.id);
+                record.answer_id = node.answer === null ? null : parseInt(node.answer);
+                record.patient_id = medicalCase.patient_id;
+              })
+            );
+          } else {
+            await this.update('PatientValue', patientValue.id, {
+              value: String(node.value),
+              answer_id: node.answer === null ? null : parseInt(node.answer),
             });
-          });
-        } else {
-          await this.update('PatientValue', patientValue.id, {
-            value: String(node.value),
-            answer_id: node.answer === null ? null : parseInt(node.answer),
-          });
+          }
         }
-      }
-    });
+      });
+    }, 'create patient values');
   };
 }
