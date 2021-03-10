@@ -4,13 +4,13 @@ import { TouchableOpacity, View } from 'react-native';
 import { CheckBox, Icon, Text } from 'native-base';
 import _ from 'lodash';
 
-import { categories, modalType } from '../../../../frontend_service/constants';
+import { modalType } from '../../../../frontend_service/constants';
 import { liwiColors, screensScale, screenWidth } from '../../../utils/constants';
 import { ViewQuestion } from '../../../template/layout';
 import { styles } from './Question.factory.style';
-import Unavailable from '../../InputContainer/Unavailable';
 import WrapperQuestion from '../WrapperQuestion/WrapperQuestion';
 import List from '../DisplaysContainer/List';
+import { translateText } from '../../../utils/i18n';
 
 export default class Question extends React.Component {
   state: {
@@ -122,7 +122,7 @@ export default class Question extends React.Component {
   render() {
     const {
       question,
-      app: { algorithm },
+      app: { algorithm, algorithmLanguage },
       isReadOnly,
     } = this.props;
     const { flexQuestion, flexToolTip, flexLabel, unavailableValue, unavailableAnswer } = this.state;
@@ -147,7 +147,7 @@ export default class Question extends React.Component {
           </View>
           <ViewQuestion flex={flexLabel} marginRight={10} marginLeft={0}>
             <Text style={styles.questionLabel} size-auto>
-              {currentNode.label} {currentNode.is_mandatory ? '*' : null}
+              {translateText(currentNode.label, algorithmLanguage)} {currentNode.is_mandatory ? '*' : null}
             </Text>
           </ViewQuestion>
           {unavailableValue ? (
@@ -159,7 +159,7 @@ export default class Question extends React.Component {
         <View style={styles.unavailable}>
           {currentNode.unavailable && !isReadOnly ? (
             <>
-              <Text>{currentNode.unavailable_label !== '' ? currentNode.unavailable_label : unavailableAnswer.label}</Text>
+              <Text>{currentNode.unavailable_label !== '' ? translateText(currentNode.unavailable_label, algorithmLanguage) : translateText(unavailableAnswer.label, algorithmLanguage)}</Text>
               <CheckBox style={styles.unavailableBox} onPress={this.handleUnavailable} color={liwiColors.redColor} checked={unavailableValue} />
             </>
           ) : null}

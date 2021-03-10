@@ -8,6 +8,7 @@ import { LeftButton, RightButton } from '../../../../template/layout';
 import { categories, modalType } from '../../../../../frontend_service/constants';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Boolean.style';
+import { translateText } from '../../../../utils/i18n';
 
 export default class Boolean extends React.Component {
   static defaultProps = {
@@ -96,7 +97,7 @@ export default class Boolean extends React.Component {
   // TODO: Sorry for this. But I don't have any strength to refactor this shit
   render = () => {
     const {
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
       question,
       index,
       isReadOnly,
@@ -176,7 +177,7 @@ export default class Boolean extends React.Component {
         <Button key={index + category} onPress={() => this._handleClick(idOnPress)} style={concatStyle} light>
           <View complaintCategories>
             <Text center size-auto>
-              {label}
+              {translateText(label, algorithmLanguage)}
             </Text>
           </View>
           <View style={styles.bottomInput}>
@@ -195,8 +196,8 @@ export default class Boolean extends React.Component {
         </Button>
       );
     } else {
-      const leftLabel = Object.values(answers)[0].label;
-      const rightLabel = Object.values(answers)[1].label;
+      const leftLabel = translateText(Object.values(answers)[0].label, algorithmLanguage);
+      const rightLabel = translateText(Object.values(answers)[1].label, algorithmLanguage);
 
       RenderJsx = () => (
         <View answer>

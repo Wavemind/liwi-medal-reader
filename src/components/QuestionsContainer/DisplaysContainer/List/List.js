@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Picker, View } from 'native-base';
 import { styles } from './List.style';
+import { translateText } from '../../../../utils/i18n';
 
 export default class List extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -34,7 +35,7 @@ export default class List extends React.Component {
 
   render() {
     const {
-      app: { algorithm },
+      app: { algorithm, algorithmLanguage },
       question,
       isReadOnly,
     } = this.props;
@@ -42,7 +43,7 @@ export default class List extends React.Component {
     const PickerItem = [];
     const { answers } = algorithm.nodes[question.id];
     const unavailableAndOneAnswer = question.unavailableValue && Object.keys(answers).length === 1;
-    Object.keys(answers).forEach((id) => (answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={answers[id].label} value={String(id)} />) : null));
+    Object.keys(answers).forEach((id) => (answers[id].value !== 'not_available' ? PickerItem.push(<Picker.Item key={`${id}_picker`} label={translateText(answers[id].label, algorithmLanguage)} value={String(id)} />) : null));
 
     if (unavailableAndOneAnswer) {
       this.onValueChange(String(Object.keys(answers)[0]));

@@ -10,6 +10,7 @@ import LiwiLoader from '../../utils/LiwiLoader';
 import { questionsMedicalHistory } from '../../../frontend_service/algorithm/questionsStage.algo';
 import QuestionFactory from '../QuestionsContainer/QuestionFactory';
 import NavigationService from '../../engine/navigation/Navigation.service';
+import { translateText } from '../../utils/i18n';
 
 export default class MedicalHistory extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -34,7 +35,7 @@ export default class MedicalHistory extends React.Component {
 
   render() {
     const {
-      app: { algorithm, answeredQuestionId },
+      app: { algorithm, answeredQuestionId, algorithmLanguage },
     } = this.props;
 
     const medicalHistorySystem = questionsMedicalHistory(algorithm, answeredQuestionId);
@@ -47,7 +48,7 @@ export default class MedicalHistory extends React.Component {
             sections={questions}
             keyExtractor={(item, index) => item + index}
             renderItem={({ item }) => <QuestionFactory question={item} key={`${item.id}_factory`} {...this.props} />}
-            renderSectionHeader={({ section: { title } }) => <Text customTitle>{algorithm.config.systems_translations[title]}</Text>}
+            renderSectionHeader={({ section: { title } }) => <Text customTitle>{translateText(algorithm.config.systems_translations[title], algorithmLanguage)}</Text>}
           />
         </Suspense>
       </View>

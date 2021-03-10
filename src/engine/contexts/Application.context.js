@@ -37,9 +37,11 @@ export class ApplicationProvider extends React.Component {
     // Session already exist
     if (session !== null && session?.facility !== null) {
       const user = await getItem('user');
+      const algorithmLanguage = await getItem('algorithmLanguage');
       this.setState({
         session,
         user,
+        algorithmLanguage,
         ready: true,
       });
     } else {
@@ -218,7 +220,7 @@ export class ApplicationProvider extends React.Component {
     isConnected: false,
     filtersPatient: {},
     filtersMedicalCase: {},
-    lang: 'fr',
+    algorithmLanguage: 'en',
     logged: false,
     name: 'App',
     session: null,

@@ -7,6 +7,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 
 import { styles } from './Autocomplete.style';
 import { liwiColors } from '../../../../utils/constants';
+import { translateText } from '../../../../utils/i18n';
 
 export default class String extends React.Component {
   constructor(props) {
@@ -90,7 +91,7 @@ export default class String extends React.Component {
     const {
       question,
       isReadOnly,
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
     const { style, query } = this.state;
 
@@ -104,7 +105,7 @@ export default class String extends React.Component {
           <Autocomplete
             data={villages}
             defaultValue={query}
-            placeholder={`${t('application:select')} ${algorithm.nodes[question.id].label}`}
+            placeholder={`${t('application:select')} ${translateText(algorithm.nodes[question.id].label, algorithmLanguage)}`}
             autoCorrect
             style={styles.autocompleteStyle}
             inputContainerStyle={styles.autocompleteContainer}

@@ -7,9 +7,10 @@ import Medicine from '../Medicine';
 import { LiwiTitle2 } from '../../template/layout';
 import { styles } from './MedicineSelection.style';
 import { finalDiagnosticGetDrugs, finalDiagnosticGetManagements } from '../../../frontend_service/helpers/FinalDiagnostic.model';
+import { translateText } from '../../utils/i18n';
 
 export default function MedicineSelection(props) {
-  const { algorithm, t, diagnosesFinalDiagnostic, medicalCase, diagnoseKey } = props;
+  const { algorithm, t, diagnosesFinalDiagnostic, medicalCase, diagnoseKey, algorithmLanguage } = props;
 
   const mcFinalDiagnostic = medicalCase.nodes[diagnosesFinalDiagnostic.id];
   const drugs = finalDiagnosticGetDrugs(algorithm, medicalCase, mcFinalDiagnostic);
@@ -22,7 +23,7 @@ export default function MedicineSelection(props) {
       <CardItem style={styles.cardItemCondensed}>
         <View style={styles.cardTitleContent}>
           <Text customSubTitle style={styles.cardTitle}>
-            {diagnosesFinalDiagnostic.label}
+            {translateText(diagnosesFinalDiagnostic.label, algorithmLanguage)}
           </Text>
           <LiwiTitle2 noBorder style={styles.noRightMargin}>
             <Text note>{t(`diagnoses_label:${diagnoseKey}`)}</Text>

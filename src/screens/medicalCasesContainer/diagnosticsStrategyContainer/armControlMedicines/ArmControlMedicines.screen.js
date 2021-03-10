@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './ArmControlMedicines.style';
 import { categories, modalType } from '../../../../../frontend_service/constants';
+import { translateText } from '../../../../utils/i18n';
 
 export default class ArmControlMedicines extends Component {
   /**
@@ -67,7 +68,7 @@ export default class ArmControlMedicines extends Component {
   render() {
     const {
       medicalCase: { diagnoses },
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
 
     // Need this shit when closing a medical otherwise it crash
@@ -75,7 +76,11 @@ export default class ArmControlMedicines extends Component {
       return null;
     }
 
-    const drugsList = _.filter(algorithm.nodes, (f) => f.category === categories.drug);
+    const drugsList = _.filter(algorithm.nodes, (f) => {
+      item.label_translated = translateText(f.label, algorithmLanguage);
+      return f.category === categories.drug;
+    });
+
     const selectedDrugs = Object.keys(diagnoses.additionalDrugs).map((s) => diagnoses.additionalDrugs[s].id);
 
     return (
@@ -97,11 +102,10 @@ export default class ArmControlMedicines extends Component {
           Object.keys(diagnoses.additionalDrugs).map((additionalKey) => (
             <View key={`drug-${additionalKey}`} style={styles.drugContainer}>
               <View style={styles.additionalDrugName}>
-                <TouchableOpacity style={styles.touchable} transparent
-                                  onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
-                  <Icon type="AntDesign" name="info" style={styles.iconInfo}/>
+                <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[additionalKey].id)}>
+                  <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                 </TouchableOpacity>
-                <Text key={`drug-${additionalKey}`}>{algorithm.nodes[additionalKey].label}</Text>
+                <Text key={`drug-${additionalKey}`}>{translateText(algorithm.nodes[additionalKey].label, algorithmLanguage)}</Text>
               </View>
               <TextInput
                 style={styles.durationInput}
@@ -135,7 +139,7 @@ export default class ArmControlMedicines extends Component {
           itemTextColor="#000"
           itemFontSize={15}
           styleRowList={styles.rowStyle}
-          displayKey="label"
+          displayKey="label_translated"
           searchInputStyle={styles.searchInputStyle}
           submitButtonColor={liwiColors.redColor}
           submitButtonText={t('diagnoses:close')}

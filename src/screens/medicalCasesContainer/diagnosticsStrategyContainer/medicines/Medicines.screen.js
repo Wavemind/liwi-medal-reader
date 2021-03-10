@@ -12,6 +12,7 @@ import MedicineSelection from '../../../../components/MedicineSelection';
 import { healthCares } from '../../../../../frontend_service/algorithm/questionsStage.algo';
 import { finalDiagnosticCalculateCondition } from '../../../../../frontend_service/helpers/FinalDiagnostic.model';
 import { modalType } from '../../../../../frontend_service/constants';
+import { translateText } from '../../../../utils/i18n';
 
 export default class Medicines extends Component {
   shouldComponentUpdate() {
@@ -86,7 +87,7 @@ export default class Medicines extends Component {
     const {
       medicalCase,
       medicalCase: { diagnoses },
-      app: { t, algorithm },
+      app: { t, algorithm, algorithmLanguage },
     } = this.props;
 
     const allHealthCares = healthCares(algorithm);
@@ -99,6 +100,7 @@ export default class Medicines extends Component {
       if (diagnoses.proposed[key].agreed === true) {
         Object.keys(diagnoses.proposed[key].drugs).forEach((treatmentId) => {
           filteredHealthCares = _.filter(filteredHealthCares, (item) => {
+            item.label_translated = translateText(item.label, algorithmLanguage);
             if (diagnoses.proposed[key].drugs[treatmentId].agreed === true) {
               return item.id !== Number(treatmentId);
             }
@@ -112,6 +114,7 @@ export default class Medicines extends Component {
     Object.keys(diagnoses.additional).forEach((key) => {
       Object.keys(diagnoses.additional[key].drugs).forEach((treatmentId) => {
         filteredHealthCares = _.filter(filteredHealthCares, (item) => {
+          item.label_translated = translateText(item.label, algorithmLanguage);
           if (diagnoses.additional[key].drugs[treatmentId].agreed === true) {
             return item.id !== Number(treatmentId);
           }
@@ -139,7 +142,7 @@ export default class Medicines extends Component {
             {proposed.map((finalDiagnostic) => {
               if (finalDiagnostic.agreed === true && finalDiagnosticCalculateCondition(algorithm, medicalCase, medicalCase.nodes[finalDiagnostic.id])) {
                 return (
-                  <MedicineSelection key={`proposed_medicine_${finalDiagnostic.id}`} algorithm={algorithm} diagnosesFinalDiagnostic={finalDiagnostic} diagnoseKey="proposed" t={t} medicalCase={medicalCase} />
+                  <MedicineSelection key={`proposed_medicine_${finalDiagnostic.id}`} algorithm={algorithm} diagnosesFinalDiagnostic={finalDiagnostic} diagnoseKey="proposed" t={t} medicalCase={medicalCase} algorithmLanguage={algorithmLanguage} />
                 );
               }
             })}
@@ -151,6 +154,7 @@ export default class Medicines extends Component {
                 diagnoseKey="additional"
                 t={t}
                 medicalCase={medicalCase}
+                algorithmLanguage={algorithmLanguage}
               />
             ))}
           </>
@@ -176,7 +180,7 @@ export default class Medicines extends Component {
                 <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(algorithm.nodes[drugId].id)}>
                   <Icon type="AntDesign" name="info" style={styles.iconInfo} />
                 </TouchableOpacity>
-                <Text key={`drug-${drugId}`}>{algorithm.nodes[drugId].label}</Text>
+                <Text key={`drug-${drugId}`}>{translateText(algorithm.nodes[drugId].label, algorithmLanguage)}</Text>
               </View>
               <TextInput
                 style={styles.durationInput}
@@ -207,7 +211,7 @@ export default class Medicines extends Component {
             itemTextColor="#000"
             itemFontSize={15}
             styleRowList={styles.rowStyle}
-            displayKey="label"
+            displayKey="label_translated"
             searchInputStyle={styles.searchInputStyle}
             submitButtonColor={liwiColors.redColor}
             submitButtonText={t('diagnoses:close')}

@@ -4,6 +4,7 @@ import { Text, View } from 'native-base';
 import { LeftButton, RightButton } from '../../template/layout';
 import { styles } from './Medicine.style';
 import { categories } from '../../../frontend_service/constants';
+import { translateText } from '../../utils/i18n';
 
 export default class Medicine extends Component {
   _handleClick = (value) => {
@@ -20,7 +21,7 @@ export default class Medicine extends Component {
 
   render() {
     const {
-      app: { t },
+      app: { t, algorithmLanguage },
       medicine,
       node,
       healthCareType,
@@ -35,7 +36,7 @@ export default class Medicine extends Component {
       <>
         <View style={styles.main} margin-top>
           <View style={styles.flex}>
-            <Text italic>{node?.label}</Text>
+            <Text italic>{translateText(node?.label, algorithmLanguage)}</Text>
             {node.category === categories.drug ? (
               <Text size-auto>
                 {t('drug:d')} : {medicine.duration} {t('drug:days')}
@@ -60,7 +61,7 @@ export default class Medicine extends Component {
         </View>
         {node?.description !== null && healthCareType === 'drugs' ? (
           <View margin-top>
-            <Text size-auto>{node?.description}</Text>
+            <Text size-auto>{translateText(node?.description, algorithmLanguage)}</Text>
           </View>
         ) : null}
       </>

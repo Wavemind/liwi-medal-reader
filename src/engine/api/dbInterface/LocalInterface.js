@@ -255,7 +255,6 @@ export default class LocalInterface {
           record.synchronized_at = value.synchronized_at;
           record.status = value.status;
           record.patient_id = id;
-          console.log(record);
           this._generateActivities(value.activities, value.id);
         });
       });
@@ -341,7 +340,6 @@ export default class LocalInterface {
    * @private
    */
   _getMedicalCaseFromModel = async (model, object) => {
-    console.log(model, object);
     switch (model) {
       case 'MedicalCase':
         return object;
@@ -513,7 +511,6 @@ export default class LocalInterface {
             });
           });
         } else {
-          console.log(node);
           await this.update('PatientValue', patientValue.id, {
             value: String(node.value),
             answer_id: node.answer === null ? null : parseInt(node.answer),
