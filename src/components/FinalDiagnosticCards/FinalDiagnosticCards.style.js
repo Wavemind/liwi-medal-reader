@@ -13,6 +13,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
+  managementCard: {
+    flex: 1,
+    marginTop: 15,
+  },
+
   iconInfo: {
     color: liwiColors.redColor,
     marginTop: 10,

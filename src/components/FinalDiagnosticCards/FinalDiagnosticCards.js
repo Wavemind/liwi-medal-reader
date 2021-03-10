@@ -124,7 +124,7 @@ export default class FinalDiagnosticCards extends React.Component {
                       if (drugsAvailable[drugKey] !== undefined) {
                         return (
                           <View style={styles.drugContainer} key={drugKey}>
-                            <View style={{ flex: 1 }}>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
+                            <View style={styles.flex}>{this._renderSwitchFormulation(drugsAvailable[drugKey])}</View>
                             <View style={styles.tooltipButton}>
                               <View flex>
                                 <TouchableOpacity style={styles.touchable} transparent onPress={() => this.openModal(drugsAvailable[drugKey])}>
@@ -154,7 +154,7 @@ export default class FinalDiagnosticCards extends React.Component {
                     if (calculateCondition(algorithm, management) === true && management.agreed === true) {
                       return (
                         <View style={styles.drugContainer} key={`${managementKey}_management`}>
-                          <View style={{ flex: 1, marginTop: 15 }}>
+                          <View style={styles.managementCard}>
                             <Text size-auto>{translateText(node.label, algorithmLanguage)}</Text>
                           </View>
                           <View style={styles.tooltipButton}>
