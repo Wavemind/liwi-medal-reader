@@ -1,15 +1,15 @@
-import RealmInterface from './dbInterface/RealmInterface';
 import HttpInterface from './dbInterface/HttpInterface';
 
 import { getItem } from './LocalStorage';
 import { databaseInterface } from '../../../frontend_service/constants';
+import LocalInterface from './dbInterface/LocalInterface';
 
 export default class Database {
   constructor() {
     return (async () => {
       const session = await getItem('session');
       this.architecture = session.facility.architecture;
-      this.realmInterface = new RealmInterface();
+      this.localInterface = await new LocalInterface();
       this.httpInterface = await new HttpInterface();
       return this;
     })();
@@ -125,7 +125,7 @@ export default class Database {
     let dbInterface = '';
     const isConnected = await getItem('isConnected');
     if (this.architecture === 'standalone' || !isConnected) {
-      dbInterface = databaseInterface.realmInterface;
+      dbInterface = databaseInterface.localInterface;
     } else {
       dbInterface = databaseInterface.httpInterface;
     }

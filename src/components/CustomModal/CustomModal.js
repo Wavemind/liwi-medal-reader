@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Dimensions, Image, Modal, ScrollView, Linking } from 'react-native';
 import { Button, Icon, Text, View } from 'native-base';
 import ImageZoom from 'react-native-image-pan-zoom';
-import { routeDependingStatus, modalType } from '../../../frontend_service/constants';
+import { routeDependingStatus, modalType, categories } from '../../../frontend_service/constants';
 
 import { styles } from './CustomModal.style';
 import NavigationService from '../../engine/navigation/Navigation.service';
@@ -183,28 +183,32 @@ export default class CustomModal extends React.Component {
         {__DEV__ ? (
           <View>
             <Text>id: {node.id}</Text>
-            <Text>
-              answer: {currentNode.answers[mcNode.answer]} ({mcNode.answer})
-            </Text>
-            <Text>value: {mcNode.value}</Text>
-            <LiwiTitle5>CC</LiwiTitle5>
-            {currentNode.cc.map((nodeId) => (
-              <Text key={nodeId}>
-                {algorithm.nodes[nodeId].label} ({nodeId})
-              </Text>
-            ))}
-            <LiwiTitle5>DD</LiwiTitle5>
-            {mcNode.dd.map((diagnostic) => (
-              <Text key={diagnostic.id}>
-                {algorithm.diagnostics[diagnostic.id].label} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
-              </Text>
-            ))}
-            <LiwiTitle5>QS</LiwiTitle5>
-            {mcNode.qs.map((qs) => (
-              <Text key={qs.id}>
-                {algorithm.nodes[qs.id].label} ({qs.id}) - {String(qs.conditionValue)}
-              </Text>
-            ))}
+            {node.type === 'Question' ? (
+              <View>
+                <Text>
+                  answer: {currentNode.answers[mcNode.answer].label} ({mcNode.answer})
+                </Text>
+                <Text>value: {mcNode.value}</Text>
+                <LiwiTitle5>CC</LiwiTitle5>
+                {currentNode.cc.map((nodeId) => (
+                  <Text key={nodeId}>
+                    {algorithm.nodes[nodeId].label} ({nodeId})
+                  </Text>
+                ))}
+                <LiwiTitle5>DD</LiwiTitle5>
+                {mcNode.dd.map((diagnostic) => (
+                  <Text key={diagnostic.id}>
+                    {algorithm.diagnostics[diagnostic.id].label} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
+                  </Text>
+                ))}
+                <LiwiTitle5>QS</LiwiTitle5>
+                {mcNode.qs.map((qs) => (
+                  <Text key={qs.id}>
+                    {algorithm.nodes[qs.id].label} ({qs.id}) - {String(qs.conditionValue)}
+                  </Text>
+                ))}
+              </View>
+            ) : null}
           </View>
         ) : null}
       </View>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Fab, Icon, View } from 'native-base';
 import RNRestart from 'react-native-restart';
-import Realm from 'realm';
 
 import { clearLocalStorage, getItem, getItems } from '../engine/api/LocalStorage';
 import NavigationService from '../engine/navigation/Navigation.service';
@@ -67,12 +66,9 @@ export default class WavemindTools extends Component {
                   key="2"
                   blue
                   onPress={async () => {
-                    await Realm.deleteFile({
-                      schema: [PatientModel, MedicalCaseModel],
-                      deleteRealmIfMigrationNeeded: true,
-                    });
                     await clearLocalStorage();
                     await persistor.purge();
+
                     NavigationService.navigate('NewSession');
                     await RNRestart.Restart();
                   }}

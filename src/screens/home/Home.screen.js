@@ -5,7 +5,7 @@ import { Image, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { styles } from './Home.style';
-import { getItem, getItems} from '../../engine/api/LocalStorage';
+import { getItem, getItems } from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 
@@ -30,11 +30,10 @@ export default class Home extends React.Component<Props, State> {
     const session = await getItems('session');
     const environment = await getItem('environment');
     const medicalCases = [];
+    const localMedicalCases = await database.localInterface.closedAndNotSynchronized();
 
     if (session?.facility.architecture === 'standalone') {
-      const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
-
-      realmMedicalCases.forEach((medicalCase) => {
+      localMedicalCases.forEach((medicalCase) => {
         if (medicalCase.canBeSynchronized(algorithm) && medicalCase.isOlderThan1Week()) {
           medicalCases.push(medicalCase);
         }
@@ -54,7 +53,7 @@ export default class Home extends React.Component<Props, State> {
     } = this.props;
     const { session } = this.state;
 
-    const realmMedicalCases = await database.realmInterface.closedAndNotSynchronized();
+    const realmMedicalCases = await database.localInterface.closedAndNotSynchronized();
 
     return session?.facility.architecture === 'standalone' || (session?.facility.architecture === 'client_server' && realmMedicalCases.length > 0);
   };

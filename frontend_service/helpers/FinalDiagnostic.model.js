@@ -31,7 +31,7 @@ const recursiveNodeDd = (algorithm, medicalCase, instance, dd) => {
   }
 
   // The condition path is not respected so we cant go deeper
-  if (instanceCondition === false && instanceConditionValue === false) {
+  if (instanceCondition === false || instanceConditionValue === false) {
     return false;
   }
 

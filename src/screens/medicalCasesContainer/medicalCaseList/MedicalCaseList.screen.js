@@ -5,6 +5,7 @@ import * as React from 'react';
 import { medicalCaseStatus, routeDependingStatus, modalType } from '../../../../frontend_service/constants';
 import { getDeviceInformation } from '../../../engine/api/Device';
 import ListContent from '../../../components/ListContent';
+import {MedicalCaseModel} from '../../../../frontend_service/helpers/MedicalCase.model';
 
 export default class MedicalCaseList extends React.Component<Props, State> {
   state = {
@@ -27,6 +28,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       app: { database },
     } = this.props;
     const medicalCase = await database.findBy('MedicalCase', medicalCaseLight.id);
+
     await setMedicalCase({ ...medicalCase, patient: await medicalCase.getPatient() });
   };
 
@@ -45,7 +47,7 @@ export default class MedicalCaseList extends React.Component<Props, State> {
 
     const newMedicalCase = await database.findBy('MedicalCase', medicalCaseLight.id);
 
-    if (newMedicalCase.isLocked(deviceInfo, user) && isConnected) {
+    if (MedicalCaseModel.isLocked(newMedicalCase, deviceInfo, user) && isConnected) {
       updateModalFromRedux({ medicalCase: newMedicalCase }, modalType.medicalCaseLocked);
     } else if (newMedicalCase.status === medicalCaseStatus.close) {
       navigation.navigate('Summary', { medicalCaseLight });

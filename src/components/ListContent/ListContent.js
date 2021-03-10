@@ -6,7 +6,6 @@ import { Button, Text, View, Icon } from 'native-base';
 import { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
 
-import { getItems } from '../../engine/api/LocalStorage';
 import { styles } from './ListContent.style';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { getDeviceInformation } from '../../engine/api/Device';
@@ -127,7 +126,6 @@ export default class ListContent extends React.Component<Props, State> {
       app: { t, user, isConnected },
     } = this.props;
     const { deviceInfo } = this.state;
-
     return (
       <TouchableOpacity style={styles.item} key={`${item.id}_list`} onPress={async () => itemNavigation(item)}>
         {item.values.map((value, key) => (

@@ -157,7 +157,6 @@ jest.mock('react-native-safe-modules', () => {});
 jest.mock('lottie-react-native', () => {});
 jest.mock('native-base', () => {});
 jest.mock('@haskkor/react-native-pincode', () => {});
-jest.mock('react-native-rectangle-scanner', () => {});
 jest.mock('react-native-camera', () => {});
 jest.mock('react-native-qrcode-scanner', () => {});
 jest.mock('react-native-video', () => {});

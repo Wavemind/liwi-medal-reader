@@ -134,7 +134,7 @@ class Stepper extends React.Component<Props, State> {
     if (nextProps.initialPage !== this.state.page) {
       this.handleBottomStepper(nextProps.initialPage);
     }
-    return true
+    return true;
   }
 
   /**
@@ -175,7 +175,9 @@ class Stepper extends React.Component<Props, State> {
    * @param position
    */
   handleBottomStepper = (position: number) => {
-    const { app: { algorithm } } = this.props;
+    const {
+      app: { algorithm },
+    } = this.props;
     const numberOfPages: number = this.props.children.filter(Boolean).length;
 
     let route = NavigationService.getCurrentRoute();
@@ -194,7 +196,7 @@ class Stepper extends React.Component<Props, State> {
           showBack: position !== 0,
           page: position,
         },
-        () => this.viewPager.setPage(position),
+        () => this.viewPager.setPage(position)
       );
     }
   };
@@ -244,7 +246,7 @@ class Stepper extends React.Component<Props, State> {
 
     for (let index = 0; index < this.props.children.filter(Boolean).length; index++) {
       const isSelected: boolean = this.state.page === index;
-      dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index}/>);
+      dots.push(<View style={[styles.dot, isSelected ? activeDotStyle : inactiveDotStyle]} key={index} />);
     }
     return <View style={styles.dotsContainer}>{dots}</View>;
   };
@@ -269,13 +271,11 @@ class Stepper extends React.Component<Props, State> {
     return React.Children.map(children, (child, index) => {
       if (child !== null) {
         return (
-          <View key={`child-${index}`}
-                style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
+          <View key={`child-${index}`} style={[styles.container, { width: this.state.width, height: this.state.height }, childrenStyle]}>
             {child}
           </View>
         );
       }
-
     });
   };
 
@@ -284,13 +284,19 @@ class Stepper extends React.Component<Props, State> {
    * @returns {Promise<void>}
    */
   nextStage = async () => {
-    const { navigation, nextStage, endMedicalCase, paramsNextStage, app: { database, t } } = this.props;
+    const {
+      navigation,
+      nextStage,
+      endMedicalCase,
+      paramsNextStage,
+      app: { database, t },
+    } = this.props;
 
     this.setState({ isLoading: true });
 
     // The next 2 lines are to give the time to the reducer to store the last input so we don't have validation errors
     Keyboard.dismiss();
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     const medicalCaseObject = store.getState();
 
     // Can we update the next status ? All questions are valid ?
@@ -311,11 +317,17 @@ class Stepper extends React.Component<Props, State> {
         const newActivities = await this._generateActivity(medicalCase, medicalCaseObject);
 
         medicalCaseObject.json = MedicalCaseModel.generateJSON(medicalCaseObject);
-        await database.update('MedicalCase', medicalCase.id, {
-          ...medicalCaseObject,
-          activities: newActivities,
-          patient: {},
-        }, true);
+
+        await database.update(
+          'MedicalCase',
+          medicalCase.id,
+          {
+            ...medicalCaseObject,
+            activities: newActivities,
+            patient: {},
+          },
+          true
+        );
       }
 
       displayNotification(t('popup:saveSuccess'), liwiColors.greenColor);
@@ -340,14 +352,7 @@ class Stepper extends React.Component<Props, State> {
     const { steps, icons, validate } = this.props;
     const { page, error, cutoffStepLength } = this.state;
 
-    const {
-      activeStepStyle,
-      inactiveStepStyle,
-      activeStepTitleStyle,
-      inactiveStepTitleStyle,
-      activeStepNumberStyle,
-      inactiveStepNumberStyle,
-    } = styles;
+    const { activeStepStyle, inactiveStepStyle, activeStepTitleStyle, inactiveStepTitleStyle, activeStepNumberStyle, inactiveStepNumberStyle } = styles;
 
     if (steps) {
       return steps.map((step: string, index: number) => {
@@ -367,11 +372,9 @@ class Stepper extends React.Component<Props, State> {
               <View style={[styles.steps, isSelected ? activeStepStyle : inactiveStepStyle]}>
                 {index < page && validate ? (
                   error ? (
-                    <MaterialIcon name="close" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle}/>
+                    <MaterialIcon name="close" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   ) : (
-                    <MaterialIcon name="check" size={24}
-                                  style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle}/>
+                    <MaterialIcon name="check" size={24} style={isSelected ? activeStepNumberStyle : inactiveStepNumberStyle} />
                   )
                 ) : (
                   <Icon {...iconConfig} />
@@ -413,12 +416,13 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _generateActivity = async (medicalCase, medicalCaseObject) => {
-    const { app: { user } } = this.props;
+    const {
+      app: { user },
+    } = this.props;
 
     // Create activity
     let newActivities = [];
     const activity = await medicalCase.generateActivity(NavigationService.getCurrentRoute().routeName, user, medicalCaseObject.nodes);
-
     // You are probably wondering why I do this shit...
     // well it's because of Realm I cannot edit an existing object,
     // so I cannot add the activity with a simple push... I am sorry
@@ -446,7 +450,7 @@ class Stepper extends React.Component<Props, State> {
 
     // The next 2 lines are to give the time to the reducer to store the last input so we don't have validation errors
     Keyboard.dismiss();
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     // Can we update the next status ? All questions are valid ?
     if (this._validateStage()) {
@@ -461,7 +465,7 @@ class Stepper extends React.Component<Props, State> {
         await medicalCase.handleFailSafe();
 
         // Find next status
-        let currentStatus = _.find(medicalCaseStatus, status => status.name === medicalCase.status);
+        let currentStatus = _.find(medicalCaseStatus, (status) => status.name === medicalCase.status);
         let nextStatus = _.find(medicalCaseStatus, (o) => o.index === currentStatus.index + 1);
         if (medicalCase.isMaxStage(nextStage) && (nextStatus !== undefined || nextStatus.name !== medicalCaseStatus.close.name)) {
           medicalCaseObject.status = nextStatus.name;
@@ -472,11 +476,16 @@ class Stepper extends React.Component<Props, State> {
 
         // Save value
         medicalCaseObject.json = MedicalCaseModel.generateJSON(medicalCaseObject);
-        await database.update('MedicalCase', medicalCase.id, {
-          ...medicalCaseObject,
-          activities: newActivities,
-          patient: {},
-        }, true);
+        await database.update(
+          'MedicalCase',
+          medicalCase.id,
+          {
+            ...medicalCaseObject,
+            activities: newActivities,
+            patient: {},
+          },
+          true
+        );
         await database.unlockMedicalCase(medicalCase.id);
       }
 
@@ -494,7 +503,10 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _renderSaveButton = () => {
-    const { app: { t }, nextStage } = this.props;
+    const {
+      app: { t },
+      nextStage,
+    } = this.props;
     const { showNext } = this.state;
 
     if (showNext || nextStage === 'finish') {
@@ -518,7 +530,12 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _validateStage = () => {
-    const { app: { algorithm }, nextStage, paramsNextStage, updateModalFromRedux } = this.props;
+    const {
+      app: { algorithm },
+      nextStage,
+      paramsNextStage,
+      updateModalFromRedux,
+    } = this.props;
 
     // Validate current stage
     const validator = validatorNavigate(algorithm, {
@@ -543,7 +560,10 @@ class Stepper extends React.Component<Props, State> {
    * @private
    */
   _createNewMedicalCase = async (medicalCase) => {
-    const { navigation, app: { database } } = this.props;
+    const {
+      navigation,
+      app: { database },
+    } = this.props;
     const patientId = navigation.getParam('idPatient');
     const environment = await getItem('environment');
 
@@ -565,7 +585,7 @@ class Stepper extends React.Component<Props, State> {
         other_study_id: patientObject.other_study_id,
         other_group_id: patientObject.other_group_id,
       };
-      patient = new PatientModel({ ...patientObject, facility, otherFacility }, environment);
+      patient = await new PatientModel({ ...patientObject, facility, otherFacility }, environment);
 
       // Create patient if there are no errors
       await patient.medicalCases.push(medicalCaseObject);
@@ -595,17 +615,9 @@ class Stepper extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         {showTopStepper ? (
-          <View
-            style={[styles.topStepperGeneral, steps.length > cutoffStepLength ? null : styles.topStepperFlex, topStepperStyle]}>
+          <View style={[styles.topStepperGeneral, steps.length > cutoffStepLength ? null : styles.topStepperFlex, topStepperStyle]}>
             {steps.length > cutoffStepLength ? (
-              <ScrollView
-                ref={ref => this.scrollViewRef = ref}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.horizontalScrollView}
-                pagingEnabled
-                onLayout={this.setDimensions}
-              >
+              <ScrollView ref={(ref) => (this.scrollViewRef = ref)} horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView} pagingEnabled onLayout={this.setDimensions}>
                 {this.renderSteps()}
               </ScrollView>
             ) : (
@@ -615,16 +627,15 @@ class Stepper extends React.Component<Props, State> {
         ) : null}
         {this.renderViewPager()}
         {showBottomStepper ? (
-          <View
-            style={[styles.bottomStepper, { justifyContent: showBack ? 'space-between' : 'flex-end' }, bottomStepperStyle]}>
-            {isLoading ? <LiwiProgressBar/> : (
+          <View style={[styles.bottomStepper, { justifyContent: showBack ? 'space-between' : 'flex-end' }, bottomStepperStyle]}>
+            {isLoading ? (
+              <LiwiProgressBar />
+            ) : (
               <>
                 {showBack ? (
-                  <TouchableOpacity
-                    onPress={() => this.onPressBack()}
-                    style={{ zIndex: 1 }}>
+                  <TouchableOpacity onPress={() => this.onPressBack()} style={{ zIndex: 1 }}>
                     <View style={styles.button}>
-                      {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24}/>}
+                      {bottomNavigationLeftIconComponent || <MaterialIcon name="navigate-before" size={24} />}
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{backButtonTitle}</Text>
                     </View>
                   </TouchableOpacity>
@@ -637,7 +648,7 @@ class Stepper extends React.Component<Props, State> {
                   <TouchableOpacity onPress={() => this.onPressNext()} style={{ zIndex: 1 }}>
                     <View style={styles.button}>
                       <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextButtonTitle}</Text>
-                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24}/>}
+                      {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                     </View>
                   </TouchableOpacity>
                 ) : (
@@ -645,11 +656,11 @@ class Stepper extends React.Component<Props, State> {
                     <TouchableOpacity onPress={this.nextStage} style={{ zIndex: 1 }}>
                       <View style={[styles.button]}>
                         <Text style={[styles.bottomTextButtons, textButtonsStyle]}>{nextStageString}</Text>
-                        {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24}/>}
+                        {bottomNavigationRightIconComponent || <MaterialIcon name="navigate-next" size={24} />}
                       </View>
                     </TouchableOpacity>
-                  ))
-                }
+                  )
+                )}
               </>
             )}
           </View>

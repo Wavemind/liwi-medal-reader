@@ -1,21 +1,17 @@
 // @flow
-
 import moment from 'moment';
 import uuid from 'react-native-uuid';
-import {categories, displayFormats, medicalCaseStatus, nodeTypes, stages} from '../constants';
-import {getItem} from '../../src/engine/api/LocalStorage';
+import { Model } from '@nozbe/watermelondb';
+import { children, date, field, readonly, relation, json, lazy } from '@nozbe/watermelondb/decorators';
+
+import { categories, displayFormats, medicalCaseStatus, nodeTypes } from '../constants';
+import { getItem } from '../../src/engine/api/LocalStorage';
 import Database from '../../src/engine/api/Database';
-import {differenceNodes} from '../../src/utils/swissKnives';
-import {ActivityModel} from './Activity.model';
-import {store} from '../store';
+import { differenceNodes } from '../../src/utils/swissKnives';
+import { ActivityModel } from './Activity.model';
+import { store } from '../store';
 import I18n from '../../src/utils/i18n';
-import {
-  generateDrug,
-  generateFinalDiagnostic,
-  generateManagement,
-  generateQuestion,
-  generateQuestionsSequence
-} from './nodeFactory';
+import { generateDrug, generateFinalDiagnostic, generateManagement, generateQuestion, generateQuestionsSequence } from './nodeFactory';
 
 export class MedicalCaseModel {
   constructor(props, currentAlgorithm) {
@@ -35,7 +31,7 @@ export class MedicalCaseModel {
       this.isOldEnough = true;
       this.comment = '';
       // TODO: when production set to null -> It's ALAIN NOT ME
-      this.consent = currentAlgorithm.config.consent_management ? true : false;
+      this.consent = !!currentAlgorithm.config.consent_management;
       this.modal = {
         open: false,
         content: '',
@@ -111,7 +107,7 @@ export class MedicalCaseModel {
 
       this.modal = {
         open: false,
-        params: {showClose: true},
+        params: { showClose: true },
         type: '',
       };
     }
@@ -169,7 +165,7 @@ export class MedicalCaseModel {
    * @param algorithm
    */
   setInitialConditionValue = (algorithm) => {
-    const {diagnostics, nodes} = algorithm;
+    const { diagnostics, nodes } = algorithm;
     try {
       Object.keys(nodes).forEach((nodeId) => {
         const node = this.nodes[nodeId];
@@ -196,7 +192,6 @@ export class MedicalCaseModel {
       Object.keys(nodes).forEach((nodeId) => {
         if (nodes[nodeId].type === nodeTypes.question) {
           nodes[nodeId].referenced_in.forEach((id) => {
-
             const dd = nodes[id].dd?.some((e) => e.conditionValue);
             const qs = nodes[id].qs?.some((e) => e.conditionValue);
             if (dd || qs) this.nodes[nodeId].counter++;
@@ -215,7 +210,7 @@ export class MedicalCaseModel {
    * @param id
    */
   setParentConditionValue = (algorithm, parentId, id) => {
-    const {diagnostics, nodes} = algorithm;
+    const { diagnostics, nodes } = algorithm;
 
     // Set condition value for DD if there is any
     this.nodes[parentId].dd.forEach((dd) => {
@@ -244,7 +239,6 @@ export class MedicalCaseModel {
       }
     });
   };
-
 
   /**
    * Will set the needed value in the database if we switch to fail Safe mode
@@ -290,6 +284,7 @@ export class MedicalCaseModel {
     let differenceNode = [];
 
     const medicalCase = await database.findBy('MedicalCase', this.id);
+
     if (medicalCase === null) {
       // TODO maybe check version id algo is not different ?
       differenceNode = differenceNodes(nodes, algorithm.nodes);
@@ -332,47 +327,6 @@ export class MedicalCaseModel {
     return (
       this.status !== 'close' && !((this.clinician === null && this.mac_address === null) || (this.clinician === `${user.first_name} ${user.last_name}` && this.mac_address === deviceInfo.mac_address))
     );
-  };
-
-  /**
-   * Get value of medical case value
-   * @param nodeId
-   * @param algorithm
-   * @returns {string}
-   */
-  getLabelFromNode = (nodeId, algorithm) => {
-    let displayedValue = '';
-    const currentNode = algorithm.nodes[nodeId];
-    const mcNode = this.nodes[nodeId];
-
-    if (currentNode !== undefined) {
-      if (currentNode.display_format === displayFormats.date) {
-        // Date display
-        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
-      } else if (mcNode.value === null) {
-        // Answer display
-        displayedValue = mcNode.answer;
-      } else {
-        displayedValue = mcNode.value;
-      }
-    }
-    return displayedValue;
-  };
-
-  /**
-   * Check if case can be synchronized with main data
-   * @returns {boolean}
-   */
-  canBeSynchronized = (algorithm) => {
-    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && this.isEligible && this.isOldEnough && (this.consent || !algorithm.config.consent_management);
-  };
-
-  /**
-   * Test if medicalCase is older than 7 days
-   * @returns {boolean}
-   */
-  isOlderThan1Week = () => {
-    return moment().diff(this.created_at, 'days') > 7;
   };
 
   /**
@@ -429,20 +383,102 @@ export class MedicalCaseModel {
 
     return instantiatedNode;
   }
+
+  /**
+   * Get value of medical case value
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
+   */
+  getLabelFromNode = (nodeId, algorithm) => {
+    let displayedValue = '';
+    const currentNode = algorithm.nodes[nodeId];
+    const mcNode = this.nodes[nodeId];
+
+    if (currentNode !== undefined) {
+      if (currentNode.display_format === displayFormats.date) {
+        // Date display
+        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
+      } else if (mcNode.value === null) {
+        // Answer display
+        displayedValue = mcNode.answer;
+      } else {
+        displayedValue = mcNode.value;
+      }
+    }
+    return displayedValue;
+  };
 }
 
-MedicalCaseModel.schema = {
-  name: 'MedicalCase',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    json: 'string',
-    activities: 'Activity[]',
-    synchronized_at: 'date?',
-    created_at: 'date',
-    updated_at: 'date',
-    status: 'string',
-    patient_id: 'string',
-    fail_safe: {type: 'bool', default: false},
-  },
-};
+const sanitizeJson = (json) => json;
+
+export class MedicalCase extends Model {
+  static table = 'medical_cases';
+
+  static associations = {
+    activities: { type: 'has_many', foreignKey: 'medical_case_id' },
+    patients: { type: 'belongs_to', foreignKey: 'patient_id' },
+  };
+
+  /**
+   * Check if case can be synchronized with main data
+   * @returns {boolean}
+   */
+  canBeSynchronized = (algorithm) => {
+    const json = JSON.parse(this.json);
+    return this.status === medicalCaseStatus.close.name && this.synchronized_at === null && json.isEligible && json.isOldEnough && (json.consent || !algorithm.config.consent_management);
+  };
+
+  /**
+   * Test if medicalCase is older than 7 days
+   * @returns {boolean}
+   */
+  isOlderThan1Week = () => {
+    return moment().diff(this.created_at, 'days') > 7;
+  };
+
+  /**
+   * Get value of medical case value
+   * @param nodeId
+   * @param algorithm
+   * @returns {string}
+   */
+  getLabelFromNode = (nodeId, algorithm) => {
+    let displayedValue = '';
+    const currentNode = algorithm.nodes[nodeId];
+    const { nodes } = JSON.parse(this.json);
+    const mcNode = nodes[nodeId];
+
+    if (currentNode !== undefined) {
+      if (currentNode.display_format === displayFormats.date) {
+        // Date display
+        displayedValue = moment(mcNode.value).format(I18n.t('application:date_format'));
+      } else if (mcNode.value === null) {
+        // Answer display
+        displayedValue = mcNode.answer;
+      } else {
+        displayedValue = mcNode.value;
+      }
+    }
+    return displayedValue;
+  };
+
+  @children('activities') activities;
+
+  @relation('patients', 'patient_id') patient;
+
+  // https://nozbe.github.io/WatermelonDB/Advanced/AdvancedFields.html?highlight=json#json
+  @json('json', sanitizeJson) json;
+
+  @field('synchronized_at') synchronized_at;
+
+  @field('patient_id') patient_id;
+
+  @field('status') status;
+
+  @field('fail_safe') fail_safe;
+
+  @date('created_at') created_at;
+
+  @date('updated_at') updated_at;
+}
