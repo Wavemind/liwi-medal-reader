@@ -70,7 +70,7 @@ export default class Home extends React.Component<Props, State> {
       <View padding-auto testID="HomeScreen">
         <View flex-container-column>
           <Text bigTitle style={{ textAlign: 'center' }}>
-            Welcome {user.preFix} {user.first_name} {user.last_name}
+            {t('application:welcome')} {user.first_name} {user.last_name}
           </Text>
 
           {medicalCases.length > 0 ? (
