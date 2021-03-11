@@ -2,7 +2,7 @@
 import moment from 'moment';
 import uuid from 'react-native-uuid';
 import { Model } from '@nozbe/watermelondb';
-import { children, date, field, readonly, relation, json, lazy } from '@nozbe/watermelondb/decorators';
+import { children, date, field, action, relation, json } from '@nozbe/watermelondb/decorators';
 
 import { categories, displayFormats, medicalCaseStatus, nodeTypes } from '../constants';
 import { getItem } from '../../src/engine/api/LocalStorage';
@@ -481,4 +481,8 @@ export class MedicalCase extends Model {
   @date('created_at') created_at;
 
   @date('updated_at') updated_at;
+
+  // @action async generateActivities(activities) {
+  //
+  // }
 }

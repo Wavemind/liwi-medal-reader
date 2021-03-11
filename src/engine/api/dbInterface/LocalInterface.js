@@ -208,18 +208,18 @@ export default class LocalInterface {
 
     // MedicalCase
     await database.action(async () => {
-      await nestedCollection.create((nestedRecord) => {
-        object.medicalCases.map((medicalCase) => {
+      object.medicalCases.map(async (medicalCase) => {
+        await nestedCollection.create((nestedRecord) => {
           nestedRecord._raw.id = medicalCase.id;
           nestedRecord.json = medicalCase.json;
           nestedRecord.synchronized_at = medicalCase.synchronized_at;
           nestedRecord.status = medicalCase.status;
           nestedRecord.patient.set(patient);
-
-          // this._generateActivities(medicalCase.activities, medicalCase.id);
         });
-      });
-    }, 'create medicalCases');
+
+        await this._generateActivities(medicalCase.activities, medicalCase.id);
+      }, 'create medicalCases');
+    });
 
     console.log('insert');
     await this._savePatientValue(model, object);
