@@ -482,7 +482,4 @@ export class MedicalCase extends Model {
 
   @date('updated_at') updated_at;
 
-  // @action async generateActivities(activities) {
-  //
-  // }
 }

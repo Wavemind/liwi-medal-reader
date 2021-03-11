@@ -130,7 +130,7 @@ export default class PatientProfile extends React.Component {
             navigation.navigate('Summary', { medicalCase });
           } else {
             // Set medical case in store and lock case
-            await setMedicalCase({ ...newMedicalCase, patient: { ...patient, medicalCases: [] } });
+            await setMedicalCase({ ...newMedicalCase, patient: { ...patient, medicalCases: [] }, activities: [] });
             await database.lockMedicalCase(newMedicalCase.id);
 
             navigation.navigate(routeDependingStatus(newMedicalCase), {

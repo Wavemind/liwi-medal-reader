@@ -221,7 +221,6 @@ export default class LocalInterface {
       }, 'create medicalCases');
     });
 
-    console.log('insert');
     await this._savePatientValue(model, object);
   };
 
@@ -256,11 +255,10 @@ export default class LocalInterface {
           record.synchronized_at = value.synchronized_at;
           record.status = value.status;
           record.patient_id = id;
-          // this._generateActivities(value.activities, value.id);
         });
+        await this._generateActivities(value.activities, value.id);
       });
 
-      console.log('push');
       this._savePatientValue(model, object);
     }
   };
@@ -289,15 +287,14 @@ export default class LocalInterface {
     const object = await collection.find(id);
 
     await database.action(async () => {
-      Object.keys(fields).forEach((field) => {
-        object.update((record) => {
-          switch (field) {
-            case 'patient':
-              break;
-            default:
+      Object.keys(fields).map(async (field) => {
+        await database.batch(
+          object.prepareUpdate((record) => {
+            if (field !== 'patient' && field !== 'activities') {
               record[field] = fields[field];
-          }
-        });
+            }
+          })
+        );
       });
     });
 
@@ -311,7 +308,6 @@ export default class LocalInterface {
     }
 
     if (updatePatientValue && !Object.keys(fields).includes('patientValues') && ['Patient', 'MedicalCase'].includes(model)) {
-      console.log('update');
       this._savePatientValue(model, object);
     }
   };

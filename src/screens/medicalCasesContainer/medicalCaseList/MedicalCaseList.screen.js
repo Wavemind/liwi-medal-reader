@@ -28,8 +28,9 @@ export default class MedicalCaseList extends React.Component<Props, State> {
       app: { database },
     } = this.props;
     const medicalCase = await database.findBy('MedicalCase', medicalCaseLight.id);
+    const patient = medicalCase.getPatient();
 
-    await setMedicalCase({ ...medicalCase, patient: await medicalCase.getPatient() });
+    await setMedicalCase({ ...medicalCase, patient: { ...patient, medicalCases: [] }, activities: [] });
   };
 
   /**

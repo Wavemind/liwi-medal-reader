@@ -74,7 +74,7 @@ export const SeparatorLine = styled(props => <RNView {...props} />)`
   background-color: #d6d6d6;
   height: 1px;
   margin-bottom: 5px;
-  margin-top: 5;
+  margin-top: 5px;
 `;
 
 export const LeftButton = styled(props => <RNTouchableOpacity {...props} />)`
