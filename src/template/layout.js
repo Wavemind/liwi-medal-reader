@@ -95,10 +95,10 @@ export const ViewQuestion = styled(props => <RNView {...props} />)`
   padding: 10px;
   margin-right: ${({ marginRight }) => {
     return marginRight;
-  }};
+  }}px;
   margin-left: ${({ marginLeft }) => {
     return marginLeft;
-  }};
+  }}px;
   flex: ${({ flex }) => {
     return flex;
   }};
