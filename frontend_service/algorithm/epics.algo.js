@@ -316,7 +316,7 @@ const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
     medicalCase.isOldEnough = age_in_days >= algorithm.config.minimum_age;
 
     // TODO REMOVE IT WHEN MANU UPDATED CONFIG OF ALL ALGORITHMS
-    const yi_cc = yi_cc_general === undefined ? yi_general_cc_id === undefined ? yi_cc_general_id : null : yi_cc_general;
+    const yi_cc = yi_cc_general === undefined ? yi_general_cc_id === undefined ? null : yi_cc_general_id : yi_cc_general;
 
     if (age_in_days <= 60) {
       setAnswer(algorithm, medicalCase, yi_cc, Object.keys(algorithm.nodes[yi_cc].answers)[0]);
