@@ -112,10 +112,7 @@ export default class LocalInterface {
   findBy = async (model, value, field = 'id') => {
     const collection = database.get(this._mapModelToTable(model));
     const object = await collection.query(Q.where(field, value));
-    displayNotification(JSON.stringify(object), liwiColors.redColor);
     this._initClasses(object[0], model);
-    displayNotification('CA PASSE', liwiColors.redColor);
-
     return object[0] === undefined ? null : this._initClasses(object[0], model);
   };
 
@@ -157,7 +154,6 @@ export default class LocalInterface {
 
     result = await collection.query(...queries);
     result = await this._initClasses(result, model);
-    displayNotification(`INITINIT CLASS INIT CLASS INIT CLASS INIT CLASS  CLASS ${result.length}`, liwiColors.redColor);
     return this._generateList(result, model, params.columns);
   };
 
@@ -229,7 +225,6 @@ export default class LocalInterface {
         await this._generateActivities(medicalCase.activities, medicalCase.id);
       }, 'create medicalCases');
     });
-    displayNotification('Je suis là', liwiColors.redColor);
     await Promise.all([this._savePatientValue(model, object)]);
   };
 
@@ -369,12 +364,10 @@ export default class LocalInterface {
    */
   _generateList = async (data, model, columns) => {
     const algorithm = await getItem('algorithm');
-    displayNotification(`data machin machin ${data.length}`, liwiColors.redColor);
     return Promise.all(
       data.map(async (entry) => {
         if (model === 'Patient') {
           const values = await Promise.all(columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)));
-          displayNotification(`VALUES +  ${values.length}`, liwiColors.redColor);
           return {
             id: entry.id,
             updated_at: entry.updated_at,
@@ -457,7 +450,7 @@ export default class LocalInterface {
         data.map(async (item) => {
           let patientValues = await item.patientValues;
           patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
-          item = { ...item, patientValues };
+          item = { ...item, id: item.id, patientValues };
           object.push(new PatientModel(item, environment));
         });
       } else {
