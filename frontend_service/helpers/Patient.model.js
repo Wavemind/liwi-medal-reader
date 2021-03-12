@@ -3,16 +3,13 @@
 import uuid from 'react-native-uuid';
 import moment from 'moment';
 import { Model } from '@nozbe/watermelondb';
-import { field, date, readonly, children } from '@nozbe/watermelondb/decorators';
+import { field, date, children } from '@nozbe/watermelondb/decorators';
 
 import I18n, { translateText } from '../../src/utils/i18n';
 import Database from '../../src/engine/api/Database';
 import { MedicalCaseModel } from './MedicalCase.model';
-import { PatientValueModel } from './PatientValue.model';
-import { getItem, getItems, setItem } from '../../src/engine/api/LocalStorage';
+import { getItem, getItems } from '../../src/engine/api/LocalStorage';
 import { displayFormats } from '../constants';
-import { displayNotification } from '../../src/utils/CustomToast';
-import { liwiColors } from '../../src/utils/constants';
 
 export class PatientModel {
   constructor(props = {}, environment = 'production') {
@@ -52,8 +49,7 @@ export class PatientModel {
       this.medicalCases = props.medicalCases;
       this.patientValues = props.patientValues;
       this.fail_safe = false;
-      console.log(props);
-      console.log(props.id);
+
       if (props.id !== undefined) {
         this.id = props.id;
         this.medicalCases = props.medicalCases;
@@ -114,7 +110,6 @@ export class PatientModel {
    * @returns {Array<{clinician: (string|string), mac_address: string, values: *, id: *, status: *}>}
    */
   medicalCasesLight = async (algorithm) => {
-    console.log(this);
     const columns = algorithm.mobile_config.medical_case_list;
     const isConnected = await getItems('isConnected');
     const medicalCases = await this.medicalCases;
@@ -161,7 +156,6 @@ export class PatientModel {
         displayedValue = currentPatientValue.value;
       }
     }
-    displayNotification(`displayedValue ${displayedValue}`, liwiColors.redColor);
     return displayedValue;
   };
 

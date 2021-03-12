@@ -16,10 +16,7 @@ import { PatientValueModel } from '../../../../frontend_service/helpers/PatientV
 import { convertToObject } from '../../../utils/swissKnives';
 
 import { store } from '../../../../frontend_service/store';
-import { displayNotification } from '../../../utils/CustomToast';
-import { liwiColors } from '../../../utils/constants';
 import NavigationService from '../../../engine/navigation/Navigation.service';
-import LocalInterface from '../../../engine/api/dbInterface/LocalInterface';
 
 export default class PatientEdit extends React.Component {
   state = {

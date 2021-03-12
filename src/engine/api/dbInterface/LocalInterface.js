@@ -10,8 +10,7 @@ import { MedicalCase, MedicalCaseModel } from '../../../../frontend_service/help
 import { Activity } from '../../../../frontend_service/helpers/Activity.model';
 import { getItem } from '../LocalStorage';
 import { categories } from '../../../../frontend_service/constants';
-import { elementPerPage, liwiColors } from '../../../utils/constants';
-import { displayNotification } from '../../../utils/CustomToast';
+import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
   version: 3,
@@ -134,9 +133,6 @@ export default class LocalInterface {
   getAll = async (model, page = null, params) => {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
-
-    const test = database.get('patient_values').query();
-    console.log(test);
 
     const queries = [];
 
@@ -515,7 +511,7 @@ export default class LocalInterface {
               // const patientValues = await patient.patientValues;
               // const patientValue = patientValues.find((pv) => pv.node_id === parseInt(node.id));
               // If the values doesn't exist we create it otherwise we edit it
-              if (patientValue === undefined) {
+              //if (patientValue === undefined) {
               const patientValuesCollection = database.get('patient_values');
 
               return patientValuesCollection.prepareCreate((record) => {
