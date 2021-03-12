@@ -450,10 +450,14 @@ export default class LocalInterface {
         data.map(async (item) => {
           let patientValues = await item.patientValues;
           patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
-          item = { ...item, id: item.id, patientValues };
+          item = { ...item, id: item.id, patientValues, medicalCases: item.medicalCases };
           object.push(new PatientModel(item, environment));
         });
       } else {
+        let patientValues = await data.patientValues;
+        patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
+        data = { ...data, id: data.id, patientValues, medicalCases: data.medicalCases };
+
         return new PatientModel(data, environment);
       }
     } else if (data instanceof Array) {
@@ -511,7 +515,7 @@ export default class LocalInterface {
               // const patientValues = await patient.patientValues;
               // const patientValue = patientValues.find((pv) => pv.node_id === parseInt(node.id));
               // If the values doesn't exist we create it otherwise we edit it
-              // if (patientValue === undefined) {
+              if (patientValue === undefined) {
               const patientValuesCollection = database.get('patient_values');
 
               return patientValuesCollection.prepareCreate((record) => {
