@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import moment from 'moment';
 import { Patient, PatientModel } from '../../../../frontend_service/helpers/Patient.model';
-import { PatientValue } from '../../../../frontend_service/helpers/PatientValue.model';
+import { PatientValue, PatientValueModel } from '../../../../frontend_service/helpers/PatientValue.model';
 import { MedicalCase, MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 import { Activity } from '../../../../frontend_service/helpers/Activity.model';
 import { getItem } from '../LocalStorage';
@@ -454,8 +454,10 @@ export default class LocalInterface {
 
     if (model === 'Patient') {
       if (data instanceof Array) {
-        data.forEach((item) => {
-          console.log(`DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA ${item.id}`);
+        data.map(async (item) => {
+          let patientValues = await item.patientValues;
+          patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
+          item = { ...item, patientValues };
           object.push(new PatientModel(item, environment));
         });
       } else {
@@ -468,7 +470,6 @@ export default class LocalInterface {
     } else {
       return new MedicalCaseModel(data);
     }
-    console.log(`DATA LOL LOL LOL LOL LOL LOL LOL  ${JSON.stringify(object)}`);
     return object;
   };
 
