@@ -121,15 +121,13 @@ export class PatientModel {
 
     return Promise.all(
       medicalCases.map(async (medicalCase) => {
-        const { clinician, mac_address } = JSON.parse(medicalCase.json);
-
-        const values = await Promise.all(columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, algorithm)));
+        const values = isConnected ? medicalCase.values : await Promise.all(columns.map((nodeId) => medicalCase.getLabelFromNode(nodeId, algorithm)));
         return {
           id: medicalCase.id,
           status: medicalCase.status,
-          clinician,
-          mac_address,
-          values: isConnected ? medicalCase.values : values,
+          clinician: medicalCase.clinician,
+          mac_address: medicalCase.mac_address,
+          values,
         };
       })
     );
