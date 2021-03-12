@@ -137,6 +137,10 @@ export default class LocalInterface {
   getAll = async (model, page = null, params) => {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
+
+    const test = database.get('patient_values').query();
+    console.log(test);
+
     const queries = [];
 
     if (page === null) {
@@ -153,6 +157,7 @@ export default class LocalInterface {
 
     result = await collection.query(...queries);
     result = await this._initClasses(result, model);
+    displayNotification(`INITINIT CLASS INIT CLASS INIT CLASS INIT CLASS  CLASS ${result.length}`, liwiColors.redColor);
     return this._generateList(result, model, params.columns);
   };
 
@@ -364,10 +369,12 @@ export default class LocalInterface {
    */
   _generateList = async (data, model, columns) => {
     const algorithm = await getItem('algorithm');
+    displayNotification(`data machin machin ${data.length}`, liwiColors.redColor);
     return Promise.all(
       data.map(async (entry) => {
         if (model === 'Patient') {
           const values = await Promise.all(columns.map((nodeId) => entry.getLabelFromNode(nodeId, algorithm)));
+          displayNotification(`VALUES +  ${values.length}`, liwiColors.redColor);
           return {
             id: entry.id,
             updated_at: entry.updated_at,
@@ -448,6 +455,7 @@ export default class LocalInterface {
     if (model === 'Patient') {
       if (data instanceof Array) {
         data.forEach((item) => {
+          console.log(`DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA DATA ${item.id}`);
           object.push(new PatientModel(item, environment));
         });
       } else {
@@ -460,7 +468,8 @@ export default class LocalInterface {
     } else {
       return new MedicalCaseModel(data);
     }
-    return Promise.all(object);
+    console.log(`DATA LOL LOL LOL LOL LOL LOL LOL  ${JSON.stringify(object)}`);
+    return object;
   };
 
   /**
@@ -495,44 +504,38 @@ export default class LocalInterface {
    */
   _savePatientValue = async (model, object) => {
     const medicalCase = await this._getMedicalCaseFromModel(model, object);
-    displayNotification(' ICI 1', liwiColors.redColor);
     // Will update the patient values based on activities so we only take the edits
     const activities = await medicalCase.activities;
-    displayNotification(' ICI 2', liwiColors.redColor);
     const nodeActivities = JSON.parse(activities[activities.length - 1].nodes);
-    displayNotification(` ICI 3 ${medicalCase.patient_id}`, liwiColors.redColor);
     const patient = database.get('patients').find(medicalCase.patient_id);
-    displayNotification(`NodeActivities ${nodeActivities.length}`, liwiColors.redColor);
 
     if (nodeActivities.length > 0) {
       await database.action(async () => {
-        nodeActivities.map(async (node) => {
-          if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
-            const patientValues = await patient.patientValues;
-            const patientValue = patientValues.find((pv) => pv.node_id === parseInt(node.id));
-            // If the values doesn't exist we create it otherwise we edit it
-            if (patientValue === undefined) {
+        database.batch(
+          ...nodeActivities.map((node) => {
+            if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
+              // const patientValues = await patient.patientValues;
+              // const patientValue = patientValues.find((pv) => pv.node_id === parseInt(node.id));
+              // If the values doesn't exist we create it otherwise we edit it
+              // if (patientValue === undefined) {
               const patientValuesCollection = database.get('patient_values');
-              displayNotification('Je suis un connard  ', liwiColors.redColor);
 
-              patientValuesCollection.create((record) => {
+              return patientValuesCollection.prepareCreate((record) => {
                 record._raw.id = uuid.v4();
                 record.value = node.value;
                 record.node_id = parseInt(node.id);
                 record.answer_id = node.answer === null ? null : parseInt(node.answer);
                 record.patient_id = medicalCase.patient_id;
               });
-            } else {
-              await this.update('PatientValue', patientValue.id, {
-                value: String(node.value),
-                answer_id: node.answer === null ? null : parseInt(node.answer),
-              });
+              // } else {
+              //  await this.update('PatientValue', patientValue.id, {
+              //    value: String(node.value),
+              //    answer_id: node.answer === null ? null : parseInt(node.answer),
+              //  });
             }
-          }
-        });
-        displayNotification('Un ici !! ', liwiColors.redColor);
+          })
+        );
         // await database.batch(...(await Promise.all(records)));
-        displayNotification('Après le batch ', liwiColors.redColor);
       }, 'create patient values');
     }
   };
