@@ -77,7 +77,7 @@ export default class ArmControlMedicines extends Component {
     }
 
     const drugsList = _.filter(algorithm.nodes, (f) => {
-      item.label_translated = translateText(f.label, algorithmLanguage);
+      f.label_translated = translateText(f.label, algorithmLanguage);
       return f.category === categories.drug;
     });
 
