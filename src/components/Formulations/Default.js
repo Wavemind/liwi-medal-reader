@@ -17,7 +17,7 @@ export default function Default(drug, node, drugDose, algorithmLanguage) {
   return (
     <>
       <LiwiTitle5>{translateText(node.label, algorithmLanguage)}</LiwiTitle5>
-      <Text size-auto>{formulationLabel(drugDose)}</Text>
+      <Text size-auto>{formulationLabel(drugDose, algorithmLanguage)}</Text>
       <Text size-auto>
         {i18n.t('drug:d')}: {drug.duration}
       </Text>

@@ -62,7 +62,7 @@ export default class MedicinesFormulations extends Component {
                 onSelect(index);
               }
 
-              return <Picker.Item key={calculatedFormulation} label={formulationLabel(calculatedFormulation)} value={isPossible ? index : false} />;
+              return <Picker.Item key={calculatedFormulation} label={formulationLabel(calculatedFormulation, algorithmLanguage)} value={isPossible ? index : false} />;
             })}
           </Picker>
         </View>
