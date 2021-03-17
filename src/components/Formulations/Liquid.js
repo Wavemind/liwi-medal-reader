@@ -14,7 +14,7 @@ export default function Liquid(drug, node, drugDose, algorithmLanguage) {
   return (
     <View>
       <LiwiTitle5>{translateText(node.label, algorithmLanguage)}</LiwiTitle5>
-      <Text size-auto>{formulationLabel(drugDose)}</Text>
+      <Text size-auto>{formulationLabel(drugDose, algorithmLanguage)}</Text>
       {drugDose.by_age ? (
         <Text size-auto>{`${roundSup(drugDose.unique_dose)}ml ${i18n.t('medication_form:per_administration')} ${i18n.t('drug:during')} ${drug.duration} ${i18n.t('drug:days')}`}</Text>
       ) : drugDose.doseResult === null ? (

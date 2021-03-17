@@ -501,17 +501,12 @@ export default class LocalInterface {
     // Will update the patient values based on activities so we only take the edits
     const activities = await medicalCase.activities;
     const nodeActivities = JSON.parse(activities[activities.length - 1].nodes);
-    const patient = database.get('patients').find(medicalCase.patient_id);
 
     if (nodeActivities.length > 0) {
       await database.action(async () => {
         database.batch(
           ...nodeActivities.map((node) => {
             if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
-              // const patientValues = await patient.patientValues;
-              // const patientValue = patientValues.find((pv) => pv.node_id === parseInt(node.id));
-              // If the values doesn't exist we create it otherwise we edit it
-              //if (patientValue === undefined) {
               const patientValuesCollection = database.get('patient_values');
 
               return patientValuesCollection.prepareCreate((record) => {
@@ -521,15 +516,9 @@ export default class LocalInterface {
                 record.answer_id = node.answer === null ? null : parseInt(node.answer);
                 record.patient_id = medicalCase.patient_id;
               });
-              // } else {
-              //  await this.update('PatientValue', patientValue.id, {
-              //    value: String(node.value),
-              //    answer_id: node.answer === null ? null : parseInt(node.answer),
-              //  });
             }
           })
         );
-        // await database.batch(...(await Promise.all(records)));
       }, 'create patient values');
     }
   };
