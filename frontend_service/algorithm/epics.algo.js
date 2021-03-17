@@ -310,16 +310,19 @@ const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
     const years = birthDate !== null ? moment().diff(birthDate, 'years') : 0;
     const age_in_days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
     const orders = algorithm.mobile_config.questions_orders[stepOrders.complaintCategories];
-    const { general_cc_id, yi_general_cc_id } = algorithm.config.basic_questions;
+    const { general_cc_id, yi_cc_general, yi_general_cc_id, yi_cc_general_id } = algorithm.config.basic_questions;
 
     medicalCase.isEligible = years < algorithm.config.age_limit;
     medicalCase.isOldEnough = age_in_days >= algorithm.config.minimum_age;
 
+    // TODO REMOVE IT WHEN MANU UPDATED CONFIG OF ALL ALGORITHMS
+    const yi_cc = yi_cc_general === undefined ? yi_general_cc_id === undefined ? yi_cc_general_id : yi_general_cc_id : yi_cc_general;
+
     if (age_in_days <= 60) {
-      setAnswer(algorithm, medicalCase, yi_general_cc_id, Object.keys(algorithm.nodes[yi_general_cc_id].answers)[0]);
+      setAnswer(algorithm, medicalCase, yi_cc, Object.keys(algorithm.nodes[yi_cc].answers)[0]);
       setAnswer(algorithm, medicalCase, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[1]);
     } else {
-      setAnswer(algorithm, medicalCase, yi_general_cc_id, Object.keys(algorithm.nodes[yi_general_cc_id].answers)[1]);
+      setAnswer(algorithm, medicalCase, yi_cc, Object.keys(algorithm.nodes[yi_cc].answers)[1]);
       setAnswer(algorithm, medicalCase, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]);
     }
 

@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import moment from 'moment';
 import { Patient, PatientModel } from '../../../../frontend_service/helpers/Patient.model';
-import { PatientValue } from '../../../../frontend_service/helpers/PatientValue.model';
+import { PatientValue, PatientValueModel } from '../../../../frontend_service/helpers/PatientValue.model';
 import { MedicalCase, MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 import { Activity } from '../../../../frontend_service/helpers/Activity.model';
 import { getItem } from '../LocalStorage';
@@ -111,7 +111,7 @@ export default class LocalInterface {
   findBy = async (model, value, field = 'id') => {
     const collection = database.get(this._mapModelToTable(model));
     const object = await collection.query(Q.where(field, value));
-
+    this._initClasses(object[0], model);
     return object[0] === undefined ? null : this._initClasses(object[0], model);
   };
 
@@ -133,6 +133,7 @@ export default class LocalInterface {
   getAll = async (model, page = null, params) => {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
+
     const queries = [];
 
     if (page === null) {
@@ -202,26 +203,25 @@ export default class LocalInterface {
         record.consent = object.consent;
         record.fail_safe = object.fail_safe;
       });
-    });
+    }, 'create patient');
 
     const nestedCollection = database.get('medical_cases');
 
     // MedicalCase
     await database.action(async () => {
-      await nestedCollection.create((nestedRecord) => {
-        object.medicalCases.forEach((medicalCase) => {
+      object.medicalCases.map(async (medicalCase) => {
+        await nestedCollection.create((nestedRecord) => {
           nestedRecord._raw.id = medicalCase.id;
           nestedRecord.json = medicalCase.json;
           nestedRecord.synchronized_at = medicalCase.synchronized_at;
           nestedRecord.status = medicalCase.status;
           nestedRecord.patient.set(patient);
-
-          this._generateActivities(medicalCase.activities, medicalCase.id);
         });
-      });
-    });
 
-    await this._savePatientValue(model, object);
+        await this._generateActivities(medicalCase.activities, medicalCase.id);
+      }, 'create medicalCases');
+    });
+    await Promise.all([this._savePatientValue(model, object)]);
   };
 
   /**
@@ -255,8 +255,8 @@ export default class LocalInterface {
           record.synchronized_at = value.synchronized_at;
           record.status = value.status;
           record.patient_id = id;
-          this._generateActivities(value.activities, value.id);
         });
+        await this._generateActivities(value.activities, value.id);
       });
 
       this._savePatientValue(model, object);
@@ -287,15 +287,14 @@ export default class LocalInterface {
     const object = await collection.find(id);
 
     await database.action(async () => {
-      Object.keys(fields).forEach((field) => {
-        object.update((record) => {
-          switch (field) {
-            case 'patient':
-              break;
-            default:
+      Object.keys(fields).map(async (field) => {
+        await database.batch(
+          object.prepareUpdate((record) => {
+            if (field !== 'patient' && field !== 'activities') {
               record[field] = fields[field];
-          }
-        });
+            }
+          })
+        );
       });
     });
 
@@ -444,10 +443,17 @@ export default class LocalInterface {
 
     if (model === 'Patient') {
       if (data instanceof Array) {
-        data.forEach((item) => {
+        data.map(async (item) => {
+          let patientValues = await item.patientValues;
+          patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
+          item = { ...item, id: item.id, patientValues, medicalCases: item.medicalCases };
           object.push(new PatientModel(item, environment));
         });
       } else {
+        let patientValues = await data.patientValues;
+        patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
+        data = { ...data, id: data.id, patientValues, medicalCases: data.medicalCases };
+
         return new PatientModel(data, environment);
       }
     } else if (data instanceof Array) {
@@ -457,7 +463,7 @@ export default class LocalInterface {
     } else {
       return new MedicalCaseModel(data);
     }
-    return Promise.all(object);
+    return object;
   };
 
   /**
@@ -466,18 +472,22 @@ export default class LocalInterface {
    * @param { integer } medicalCaseId
    * @private
    */
-  _generateActivities = (activities, medicalCaseId) => {
-    activities.forEach((activity) => {
-      database.get('activities').create((record) => {
-        record._raw.id = activity.id;
-        record.stage = activity.stage;
-        record.clinician = activity.clinician;
-        record.nodes = activity.nodes;
-        record.mac_address = activity.mac_address;
-        record.medical_case_id = medicalCaseId;
-        record.fail_safe = activity.fail_safe;
+  _generateActivities = async (activities, medicalCaseId) => {
+    await database.action(async () => {
+      activities.map(async (activity) => {
+        await database.batch(
+          database.get('activities').prepareCreate((record) => {
+            record._raw.id = activity.id;
+            record.stage = activity.stage;
+            record.clinician = activity.clinician;
+            record.nodes = activity.nodes;
+            record.mac_address = activity.mac_address;
+            record.medical_case_id = medicalCaseId;
+            record.fail_safe = activity.fail_safe;
+          })
+        );
       });
-    });
+    }, 'generate activities');
   };
 
   /**
@@ -491,32 +501,25 @@ export default class LocalInterface {
     // Will update the patient values based on activities so we only take the edits
     const activities = await medicalCase.activities;
     const nodeActivities = JSON.parse(activities[activities.length - 1].nodes);
-    const patient = await this.findBy('Patient', medicalCase.patient_id);
 
-    nodeActivities.map(async (node) => {
-      if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
-        const patientValues = await patient.patientValues;
-        const patientValue = patientValues.find((patientValue) => patientValue.node_id === parseInt(node.id));
-        // If the values doesn't exist we create it otherwise we edit it
-        if (patientValue === undefined) {
-          const collection = database.get('patient_values');
+    if (nodeActivities.length > 0) {
+      await database.action(async () => {
+        database.batch(
+          ...nodeActivities.map((node) => {
+            if ([categories.demographic, categories.basicDemographic].includes(medicalCase.nodes[node.id].category)) {
+              const patientValuesCollection = database.get('patient_values');
 
-          await database.action(async () => {
-            await collection.create((record) => {
-              record._raw.id = uuid.v4();
-              record.value = node.value;
-              record.node_id = parseInt(node.id);
-              record.answer_id = node.answer === null ? null : parseInt(node.answer);
-              record.patient_id = medicalCase.patient_id;
-            });
-          });
-        } else {
-          await this.update('PatientValue', patientValue.id, {
-            value: String(node.value),
-            answer_id: node.answer === null ? null : parseInt(node.answer),
-          });
-        }
-      }
-    });
+              return patientValuesCollection.prepareCreate((record) => {
+                record._raw.id = uuid.v4();
+                record.value = node.value;
+                record.node_id = parseInt(node.id);
+                record.answer_id = node.answer === null ? null : parseInt(node.answer);
+                record.patient_id = medicalCase.patient_id;
+              });
+            }
+          })
+        );
+      }, 'create patient values');
+    }
   };
 }

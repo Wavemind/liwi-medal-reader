@@ -13,13 +13,21 @@ import NavigationService from '../../engine/navigation/Navigation.service';
 import { translateText } from '../../utils/i18n';
 
 export default class PhysicalExam extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      firstRender: true,
+    };
+  }
+
   shouldComponentUpdate(nextProps) {
     const {
       app: { answeredQuestionId },
       medicalCase,
     } = this.props;
+    const { firstRender } = this.state;
 
-    if (nextProps.app.answeredQuestionId === undefined || answeredQuestionId === undefined) {
+    if (firstRender || nextProps.app.answeredQuestionId === undefined || answeredQuestionId === undefined) {
       return true;
     }
 
@@ -32,6 +40,10 @@ export default class PhysicalExam extends React.Component {
         NavigationService.getCurrentRoute().routeName === 'Consultation' &&
         (question.id !== nextQuestion.id || question.answer !== nextQuestion.answer || question.value !== nextQuestion.value || question.unavailableValue !== nextQuestion.unavailableValue))
     );
+  }
+
+  componentDidMount() {
+    this.setState({ firstRender: false });
   }
 
   render() {

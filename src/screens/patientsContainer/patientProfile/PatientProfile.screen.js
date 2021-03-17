@@ -60,10 +60,10 @@ export default class PatientProfile extends React.Component {
 
     const id = navigation.getParam('id');
     const patient = await database.findBy('Patient', id);
+
     const medicalCaseData = await patient.medicalCasesLight(algorithm);
     const patientValues = await patient.patientValues;
     const labelFromNode = await Promise.all(patientValues.map((patientValue) => patient.getLabelFromNode(patientValue.node_id, algorithm)));
-
     this.setState({
       patient,
       patientValues,
@@ -130,7 +130,7 @@ export default class PatientProfile extends React.Component {
             navigation.navigate('Summary', { medicalCase });
           } else {
             // Set medical case in store and lock case
-            await setMedicalCase({ ...newMedicalCase, patient: { ...patient, medicalCases: [] } });
+            await setMedicalCase({ ...newMedicalCase, patient: { ...patient, medicalCases: [] }, activities: [] });
             await database.lockMedicalCase(newMedicalCase.id);
 
             navigation.navigate(routeDependingStatus(newMedicalCase), {

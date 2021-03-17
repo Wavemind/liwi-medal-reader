@@ -15,7 +15,7 @@ const ListItemDot = styled(props => <TouchableOpacity {...props} />)`
 const ListItemDotOuter = styled( props => <View {...props} />)`
   width: 28px;
   height: 28px;
-  border-radius: 50;
+  border-radius: 50px;
   border-width: 3px;
   border-color: ${({ color }) => color};
 `;
@@ -27,7 +27,7 @@ const ListItemDotInner = styled(props => <View {...props} />)`
   top: 7px;
   left: 7px;
   background-color: ${({ color }) => color};
-  border-radius: 50;
+  border-radius: 50px;
 `;
 
 const DrawerDot = ({ type, onPress, isDrawer }) => {
