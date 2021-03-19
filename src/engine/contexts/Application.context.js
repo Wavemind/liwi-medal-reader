@@ -5,8 +5,7 @@ import moment from 'moment';
 import { AppState, PermissionsAndroid } from 'react-native';
 
 import { NetworkConsumer, NetworkProvider } from 'react-native-offline';
-import { DocumentDirectoryPath, mkdir, writeFile } from 'react-native-fs';
-import { zip } from 'react-native-zip-archive';
+import { DocumentDirectoryPath, writeFile } from 'react-native-fs';
 import i18n from '../../utils/i18n';
 import { secondStatusLocalData, modalType } from '../../../frontend_service/constants';
 import { auth, getAlgorithm, getFacility, registerDevice } from '../../../frontend_service/api/Http';
@@ -121,6 +120,10 @@ export class ApplicationProvider extends React.Component {
     });
   };
 
+  /**
+   * Get facility info
+   * @returns {Promise<*>}
+   */
   getFacility = async () => {
     const facility = await getFacility();
     const session = await getItem('session');

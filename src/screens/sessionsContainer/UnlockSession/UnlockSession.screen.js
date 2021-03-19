@@ -13,6 +13,7 @@ import NavigationService from '../../../engine/navigation/Navigation.service';
 import Database from '../../../engine/api/Database';
 import LiwiLoader from '../../../utils/LiwiLoader';
 import { askWriteStorage } from '../../../utils/permission';
+import { checkInternetConnection } from 'react-native-offline';
 
 export default class UnLockSession extends React.Component {
   state = {
@@ -52,10 +53,9 @@ export default class UnLockSession extends React.Component {
       const { app } = this.props;
 
       if (session.facility.pin_code === pinCode) {
-        const netInfoConnection = await NetInfo.fetch();
-        const { isInternetReachable } = netInfoConnection;
+        const isConnected = await checkInternetConnection('https://medalc.unisante.ch');
 
-        if (isInternetReachable) {
+        if (isConnected) {
           await app.setInitialData();
         } else {
           const algorithm = await getItem('algorithm');

@@ -250,7 +250,7 @@ export default class CustomModal extends React.Component {
         <LiwiTitle5>{t('emergency:title')}</LiwiTitle5>
         <Text style={styles.description}>{t('emergency:description_warning')}</Text>
         <Button style={styles.buttonNav} onPress={this._openEmergency}>
-          <Text>{t('emergency:go_to_emergency')}y</Text>
+          <Text>{t('emergency:go_to_emergency')}</Text>
         </Button>
       </View>
     );

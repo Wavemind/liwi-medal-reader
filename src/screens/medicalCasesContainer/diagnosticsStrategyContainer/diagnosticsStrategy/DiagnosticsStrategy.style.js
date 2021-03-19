@@ -10,4 +10,6 @@ export const styles = StyleSheet.create({
   padded: {
     padding: responsiveUi.padding(),
   },
+
+  ccList: { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
 });
