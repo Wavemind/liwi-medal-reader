@@ -12,14 +12,14 @@ export class ActivityModel {
   constructor(props) {
     if (this.id === undefined) {
       return (async () => {
-        const { stage, nodes, user, medical_case_id } = props;
+        const { stage, nodes, clinician, medical_case_id } = props;
         const session = await getItem('session');
         const deviceInfo = await getDeviceInformation();
 
         this.id = uuid.v4();
         this.stage = stage;
-        this.nodes = JSON.stringify(nodes);
-        this.clinician = `${user.first_name} ${user.last_name}`;
+        this.nodes = JSON.stringify(nodes, (key, value) => (typeof value === 'undefined' ? null : value));
+        this.clinician = clinician;
         this.medical_case_id = medical_case_id?.toString();
         this.mode = session.facility.architecture;
         this.mac_address = deviceInfo.mac_address;

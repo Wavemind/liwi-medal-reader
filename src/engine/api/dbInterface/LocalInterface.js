@@ -13,7 +13,7 @@ import { categories } from '../../../../frontend_service/constants';
 import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
-  version: 3,
+  version: 5,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -119,8 +119,14 @@ export default class LocalInterface {
    * Deletes a specific object from the DB
    * @param { object } object - the object to delete
    */
-  delete = (object) => {
-    object.destroyPermanently();
+  delete = async (object) => {
+    await database.action(async () => {
+      if (object instanceof Array) {
+        object.forEach((o) => o.destroyPermanently());
+      } else {
+        object.destroyPermanently();
+      }
+    });
   };
 
   /**
@@ -130,13 +136,13 @@ export default class LocalInterface {
    * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model, page = null, params) => {
+  getAll = async (model, page = null, params, rawData = false) => {
     const collection = database.get(this._mapModelToTable(model));
     let result = await collection.query().fetch();
-
     const queries = [];
 
     if (page === null) {
+      if (!rawData) result = await this._initClasses(result, model);
       return result;
     }
     const filters = this._generateFilteredQuery(model, params.filters);
@@ -438,22 +444,22 @@ export default class LocalInterface {
    * @private
    */
   _initClasses = async (data, model) => {
-    const object = [];
+    let object = [];
     const environment = await getItem('environment');
-
     if (model === 'Patient') {
       if (data instanceof Array) {
-        data.map(async (item) => {
-          let patientValues = await item.patientValues;
-          patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
-          item = { ...item, id: item.id, patientValues, medicalCases: item.medicalCases };
-          object.push(new PatientModel(item, environment));
-        });
+        object = Promise.all(
+          data.map(async (item) => {
+            let patientValues = await item.patientValues;
+            patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
+            item = { ...item, id: item.id, patientValues, medicalCases: item.medicalCases };
+            return new PatientModel(item, environment);
+          })
+        );
       } else {
         let patientValues = await data.patientValues;
         patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
         data = { ...data, id: data.id, patientValues, medicalCases: data.medicalCases };
-
         return new PatientModel(data, environment);
       }
     } else if (data instanceof Array) {

@@ -196,14 +196,9 @@ const findValueInReferenceTable = (referenceTable, reference) => {
     return scopedRange.last();
   }
 
-  scopedRange.map((key) => {
-    if (referenceTable[key] === reference) {
+  scopedRange.some((key) => {
+    if (referenceTable[key] >= reference) {
       value = Number(key);
-      return true;
-    }
-
-    if (referenceTable[key] > reference) {
-      value = Number(previousKey);
       return true;
     }
     previousKey = key;

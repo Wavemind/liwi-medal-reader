@@ -17,6 +17,7 @@ import { navigationRoute, navigationStateKey } from '../../frontend_service/cons
 import { RootMainNavigator } from '../engine/navigation/Root.navigation';
 import StatusIndicator from '../components/StatusIndicator';
 import Database from '../engine/api/Database';
+import { ActivityModel } from '../../frontend_service/helpers/Activity.model';
 
 type Props = {
   app: {
@@ -79,12 +80,36 @@ class LayoutTemplate extends React.Component<Props> {
    */
   _sendFailSafeData = async () => {
     const database = await new Database();
-    const patients = await database.localInterface.getAll('Patient');
-    const success = await database.httpInterface.synchronizePatients(patients);
-
-    // TODO: It's not me and improve this shit
-    if (success === 'Synchronize success') {
-      database.localInterface.delete(patients);
+    let patients = await database.localInterface.getAll('Patient');
+    patients = await Promise.all(
+      patients.map(async (patient) => {
+        const medicalCases = await patient.medicalCases;
+        patient.medicalCases = await Promise.all(
+          medicalCases.map(async (medicalCase) => {
+            const activitesDb = await medicalCase.activities;
+            const activities = new ActivityModel(activitesDb);
+            return {
+              id: medicalCase.id,
+              json: medicalCase.json,
+              created_at: medicalCase.created_at,
+              updated_at: medicalCase.updated_at,
+              status: medicalCase.status,
+              patient_id: medicalCase.patient_id,
+              fail_safe: medicalCase.fail_safe,
+              activities,
+            };
+          })
+        );
+        return patient;
+      })
+    );
+    if (patients.count > 0) {
+      const success = await database.httpInterface.synchronizePatients(patients);
+      // TODO: It's not me and improve this shit
+      if (success === 'Synchronize success') {
+        const patientsToDelete = await database.localInterface.getAll('Patient', null, null, true);
+        await database.localInterface.delete(patientsToDelete);
+      }
     }
   };
 

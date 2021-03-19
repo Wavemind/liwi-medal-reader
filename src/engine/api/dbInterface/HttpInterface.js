@@ -175,11 +175,16 @@ export default class HttpInterface {
         route = 'medical_cases';
         break;
       default:
-        console.warn('route doesn\'t exist', model);
+        console.warn("route doesn't exist", model);
     }
 
     return route;
   };
+
+  /**
+   * Keeps the undefined values when Json.stringify
+   */
+  _replacer = (key, value) => (typeof value === 'undefined' ? null : value);
 
   /**
    * Set header credentials to communicate with server
@@ -204,7 +209,7 @@ export default class HttpInterface {
     };
 
     if (method === 'POST' || method === 'PATCH' || method === 'PUT' || method === 'DELETE') {
-      header.body = JSON.stringify(body);
+      header.body = JSON.stringify(body, this._replacer);
     }
 
     return header;
@@ -262,7 +267,7 @@ export default class HttpInterface {
     if (model === 'Patient') {
       if (data instanceof Array) {
         data.forEach(async (item) => {
-          const newPatient = await new PatientModel(item, environment)
+          const newPatient = await new PatientModel(item, environment);
           object.push(newPatient);
         });
       } else {

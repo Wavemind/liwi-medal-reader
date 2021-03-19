@@ -12,6 +12,7 @@ import { synchronizeMedicalCases } from '../../../frontend_service/api/Http';
 import LiwiLoader from '../../utils/LiwiLoader';
 import { getItem } from '../../engine/api/LocalStorage';
 import { askWriteStorage } from '../../utils/permission';
+import { ActivityModel } from '../../../frontend_service/helpers/Activity.model';
 
 const normalizeFilePath = (path) => (path.startsWith('file://') ? path.slice(7) : path);
 
@@ -72,26 +73,28 @@ export default class Synchronization extends React.Component {
 
       // Create directory
       await mkdir(folder);
-
       // Generate files
       medicalCasesToSynch.map(async (medicalCase) => {
         const patient = await database.localInterface.findBy('Patient', medicalCase.patient_id);
-        const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: patient, activities: medicalCase.activities });
+        const activitiesDB = await medicalCase.activities;
+        const activities = await Promise.all(activitiesDB.map((activity) => new ActivityModel(activity)));
+        const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: { ...patient, medicalCases: [] }, activities }, (key, value) =>
+          typeof value === 'undefined' ? null : value
+        );
         await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson);
       });
 
       // Generate archive
       const path = await zip(normalizeFilePath(folder), targetPath).catch((error) => {
-        console.error(error);
         this.setState({ isLoading: false });
       });
 
       const result = await synchronizeMedicalCases(mainDataURL, path);
 
       if (result !== null && result.data_received) {
-        // // Reset medicalCases to sync if request success
+        // Reset medicalCases to sync if request success
         medicalCasesToSynch.forEach((medicalCase) => {
-          database.localInterface.update('MedicalCase', medicalCase.id, { synchronized_at: moment().toDate() });
+          database.localInterface.update('MedicalCase', medicalCase.id, { synchronized_at: moment().unix() });
         });
 
         this.setState({ isLoading: false, error: '', medicalCasesToSynch: [] });

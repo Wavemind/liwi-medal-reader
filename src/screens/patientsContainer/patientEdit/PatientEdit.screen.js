@@ -81,7 +81,7 @@ export default class PatientEdit extends React.Component {
     const newPatientValues = PatientValueModel.getUpdatedPatientValue(patient);
 
     if (facility.architecture === 'client_server') {
-      const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', user });
+      const activities = await new ActivityModel({ nodes: newPatientValues, stage: 'PatientEdit', clinician: `${user.first_name} ${user.last_name}` });
 
       await database.update('Patient', patient.id, { patientValues: newPatientValues, activities });
     } else {

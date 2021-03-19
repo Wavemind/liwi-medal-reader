@@ -295,7 +295,7 @@ export class MedicalCaseModel {
     return new ActivityModel({
       nodes: differenceNode,
       stage,
-      user,
+      clinician: `${user.first_name} ${user.last_name}`,
       medical_case_id: this.id,
     });
   };
@@ -481,5 +481,4 @@ export class MedicalCase extends Model {
   @date('created_at') created_at;
 
   @date('updated_at') updated_at;
-
 }
