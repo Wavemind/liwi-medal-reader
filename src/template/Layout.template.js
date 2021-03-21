@@ -103,9 +103,8 @@ class LayoutTemplate extends React.Component<Props> {
         return patient;
       })
     );
-    if (patients.count > 0) {
+    if (patients.length > 0) {
       const success = await database.httpInterface.synchronizePatients(patients);
-      // TODO: It's not me and improve this shit
       if (success === 'Synchronize success') {
         const patientsToDelete = await database.localInterface.getAll('Patient', null, null, true);
         await database.localInterface.delete(patientsToDelete);
