@@ -14,15 +14,20 @@ import { displayFormats } from '../constants';
 export class PatientModel {
   constructor(props = {}, environment = 'production') {
     let { facility = null } = props;
+    let { otherFacility = null } = props;
     if (props.uid !== undefined || props.study_id !== undefined || props.group_id !== undefined) {
       facility = { uid: props.uid, study_id: props.study_id, group_id: props.group_id };
     }
 
+    if (otherFacility === null && (props.other_uid !== undefined || props.other_study_id !== undefined || props.other_group_id !== undefined)) {
+      otherFacility = { uid: props.other_uid, study_id: props.other_study_id, group_id: props.other_group_id };
+    }
+
     if (this.id === undefined || this.id === null) {
-      if (props.otherFacility !== null) {
-        this.other_uid = props.otherFacility?.uid?.toString();
-        this.other_study_id = props.otherFacility?.study_id?.toString();
-        this.other_group_id = props.otherFacility?.group_id?.toString();
+      if (otherFacility !== null) {
+        this.other_uid = otherFacility?.uid?.toString();
+        this.other_study_id = otherFacility?.study_id?.toString();
+        this.other_group_id = otherFacility?.group_id?.toString();
       } else {
         this.other_uid = null;
         this.other_study_id = null;

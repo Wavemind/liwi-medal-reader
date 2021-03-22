@@ -77,6 +77,7 @@ export default class Synchronization extends React.Component {
       await Promise.all(
         medicalCasesToSynch.map(async (medicalCase) => {
           const patient = await database.localInterface.findBy('Patient', medicalCase.patient_id);
+          const patientAll = await database.localInterface.getAll('Patient', null, null, true);
           const activitiesDB = await medicalCase.activities;
           const activities = await Promise.all(activitiesDB.map((activity) => new ActivityModel(activity)));
           const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: { ...patient, medicalCases: [] }, activities }, (key, value) =>
