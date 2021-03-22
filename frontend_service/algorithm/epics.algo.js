@@ -98,6 +98,7 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
   }
 
   caller = find(caller, (d) => d.id === callerId);
+
   // We update only if the condition changes
   if (caller.conditionValue !== value) {
     index = medicalCase.nodes[nodeId][key].findIndex((d) => d.id === callerId);
@@ -171,6 +172,10 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
      *  false = can't access the end anymore
      */
     const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQs);
+
+    if (questionsSequenceId === 6481) {
+      console.log(questionsSequenceId, statusQs)
+    }
 
     // If ready we calculate condition of the QS
     if (statusQs) {
@@ -261,6 +266,8 @@ export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
     currentNode.referenced_in.forEach((referencedNodeId) => referencedNodeAction(algorithm, medicalCase, referencedNodeId));
   }
 
+  // TODO: MISSING QS AND QUESTIONS
+  // TODO: MUST BE UPDATED WHEN CC IS VALUE CHANGE
   if (relatedDiagnosticsForCC !== undefined) {
     relatedDiagnosticsForCC.forEach((diagnosticId) => {
       const { instances } = algorithm.diagnostics[diagnosticId];

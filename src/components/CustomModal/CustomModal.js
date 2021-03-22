@@ -185,32 +185,32 @@ export default class CustomModal extends React.Component {
         {__DEV__ ? (
           <View>
             <Text>id: {node.id}</Text>
-            {node.type === 'Question' ? (
-              <View>
-                <Text>
-                  answer: {translateText(currentNode.answers[mcNode?.answer]?.label, algorithmLanguage)} ({mcNode.answer})
-                </Text>
-                <Text>value: {mcNode.value}</Text>
-                <LiwiTitle5>CC</LiwiTitle5>
-                {currentNode.cc.map((nodeId) => (
-                  <Text key={nodeId}>
-                    {translateText(algorithm.nodes[nodeId].label, algorithmLanguage)} ({nodeId})
-                  </Text>
-                ))}
-                <LiwiTitle5>DD</LiwiTitle5>
-                {mcNode.dd.map((diagnostic) => (
-                  <Text key={diagnostic.id}>
-                    {translateText(algorithm.diagnostics[diagnostic.id].label, algorithmLanguage)} ({diagnostic.id}) - {String(diagnostic.conditionValue)}
-                  </Text>
-                ))}
-                <LiwiTitle5>QS</LiwiTitle5>
-                {mcNode.qs.map((qs) => (
-                  <Text key={qs.id}>
-                    {translateText(algorithm.nodes[qs.id].label, algorithmLanguage)} ({qs.id}) - {String(qs.conditionValue)}
-                  </Text>
-                ))}
-              </View>
-            ) : null}
+            {/*{node.type === 'Question' ? (*/}
+            {/*  <View>*/}
+            {/*    <Text>*/}
+            {/*      answer: {translateText(currentNode.answers[mcNode?.answer]?.label, algorithmLanguage)} ({mcNode.answer})*/}
+            {/*    </Text>*/}
+            {/*    <Text>value: {mcNode.value}</Text>*/}
+            {/*    <LiwiTitle5>CC</LiwiTitle5>*/}
+            {/*    {currentNode.cc.map((nodeId) => (*/}
+            {/*      <Text key={nodeId}>*/}
+            {/*        {translateText(algorithm.nodes[nodeId].label, algorithmLanguage)} ({nodeId})*/}
+            {/*      </Text>*/}
+            {/*    ))}*/}
+            {/*    <LiwiTitle5>DD</LiwiTitle5>*/}
+            {/*    {mcNode.dd.map((diagnostic) => (*/}
+            {/*      <Text key={diagnostic.id}>*/}
+            {/*        {translateText(algorithm.diagnostics[diagnostic.id].label, algorithmLanguage)} ({diagnostic.id}) - {String(diagnostic.conditionValue)}*/}
+            {/*      </Text>*/}
+            {/*    ))}*/}
+            {/*    <LiwiTitle5>QS</LiwiTitle5>*/}
+            {/*    {mcNode.qs.map((qs) => (*/}
+            {/*      <Text key={qs.id}>*/}
+            {/*        {translateText(algorithm.nodes[qs.id].label, algorithmLanguage)} ({qs.id}) - {String(qs.conditionValue)}*/}
+            {/*      </Text>*/}
+            {/*    ))}*/}
+            {/*  </View>*/}
+            {/*) : null}*/}
           </View>
         ) : null}
       </View>
