@@ -452,14 +452,14 @@ export default class LocalInterface {
           data.map(async (item) => {
             let patientValues = await item.patientValues;
             patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
-            item = { ...item, id: item.id, patientValues, medicalCases: item.medicalCases };
+            item = { ...item._raw, id: item.id, patientValues, medicalCases: item.medicalCases };
             return new PatientModel(item, environment);
           })
         );
       } else {
         let patientValues = await data.patientValues;
         patientValues = patientValues?.map((patientValue) => new PatientValueModel(patientValue));
-        data = { ...data, id: data.id, patientValues, medicalCases: data.medicalCases };
+        data = { ...data._raw, id: data.id, patientValues, medicalCases: data.medicalCases };
         return new PatientModel(data, environment);
       }
     } else if (data instanceof Array) {

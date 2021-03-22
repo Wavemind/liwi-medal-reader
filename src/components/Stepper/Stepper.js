@@ -581,9 +581,9 @@ class Stepper extends React.Component<Props, State> {
       const patientObject = medicalCaseObject.patient;
       const facility = { uid: patientObject.uid, study_id: patientObject.study_id, group_id: patientObject.group_id };
       const otherFacility = {
-        other_uid: patientObject.other_uid,
-        other_study_id: patientObject.other_study_id,
-        other_group_id: patientObject.other_group_id,
+        uid: patientObject.other_uid,
+        study_id: patientObject.other_study_id,
+        group_id: patientObject.other_group_id,
       };
       patient = await new PatientModel({ ...patientObject, facility, otherFacility }, environment);
 

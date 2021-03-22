@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { DocumentDirectoryPath, writeFile, mkdir } from 'react-native-fs';
+import { DocumentDirectoryPath, writeFile, mkdir, unlink } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
 import { Button, Text, View } from 'native-base';
 import moment from 'moment';
@@ -74,20 +74,28 @@ export default class Synchronization extends React.Component {
       // Create directory
       await mkdir(folder);
       // Generate files
-      medicalCasesToSynch.map(async (medicalCase) => {
-        const patient = await database.localInterface.findBy('Patient', medicalCase.patient_id);
-        const activitiesDB = await medicalCase.activities;
-        const activities = await Promise.all(activitiesDB.map((activity) => new ActivityModel(activity)));
-        const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: { ...patient, medicalCases: [] }, activities }, (key, value) =>
-          typeof value === 'undefined' ? null : value
-        );
-        await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson);
-      });
+      await Promise.all(
+        medicalCasesToSynch.map(async (medicalCase) => {
+          const patient = await database.localInterface.findBy('Patient', medicalCase.patient_id);
+          const activitiesDB = await medicalCase.activities;
+          const activities = await Promise.all(activitiesDB.map((activity) => new ActivityModel(activity)));
+          const medicalCaseJson = JSON.stringify({ ...JSON.parse(medicalCase.json), patient: { ...patient, medicalCases: [] }, activities }, (key, value) =>
+            typeof value === 'undefined' ? null : value
+          );
+          await writeFile(`${folder}/${medicalCase.id}.json`, medicalCaseJson);
+        })
+      );
 
       // Generate archive
       const path = await zip(normalizeFilePath(folder), targetPath).catch((error) => {
         this.setState({ isLoading: false });
       });
+
+      await Promise.all(
+        medicalCasesToSynch.map(async (medicalCase) => {
+          await unlink(`${folder}/${medicalCase.id}.json`);
+        })
+      );
 
       const result = await synchronizeMedicalCases(mainDataURL, path);
 

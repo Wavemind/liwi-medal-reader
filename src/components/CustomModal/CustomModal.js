@@ -13,6 +13,7 @@ import Media from '../Media/Media';
 import WebviewComponent from '../WebviewComponent';
 import { store } from '../../../frontend_service/store';
 import { translateText } from '../../utils/i18n';
+import { DocumentDirectoryPath, readFile } from 'react-native-fs';
 
 export default class CustomModal extends React.Component {
   static defaultProps = {
@@ -257,13 +258,24 @@ export default class CustomModal extends React.Component {
   };
 
   /**
+   * Fetch content from external storage
+   * @returns {Promise<string>}
+   */
+  getEmergencyContent = async () => {
+    const targetPath = `${DocumentDirectoryPath}/emergency_content.html`;
+    return readFile(targetPath);
+  };
+
+  /**
    * Close modal and open emergency modal
    * @private
    */
-  _openEmergency = () => {
+  _openEmergency = async () => {
     const { updateModalFromRedux } = this.props;
     this.closeModal();
-    updateModalFromRedux({}, modalType.emergency);
+
+    const emergencyContent = await this.getEmergencyContent();
+    updateModalFromRedux({ emergencyContent }, modalType.emergency);
   };
 
   /**
