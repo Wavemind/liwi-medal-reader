@@ -173,10 +173,6 @@ const questionsSequenceAction = (algorithm, medicalCase, questionsSequenceId) =>
      */
     const statusQs = getQuestionsSequenceStatus(algorithm, medicalCase, currentQs);
 
-    if (questionsSequenceId === 6481) {
-      console.log(questionsSequenceId, statusQs)
-    }
-
     // If ready we calculate condition of the QS
     if (statusQs) {
       qsCondition = questionSequenceCalculateCondition(algorithm, medicalCase, currentQs);
