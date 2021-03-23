@@ -13,12 +13,14 @@ export const calculateCondition = (algorithm, node, medicalCase = store.getState
   const currentNode = algorithm.nodes[node.id];
 
   // Check if node is excluded by a CC
-  const isExcludedByComplaintCategory = currentNode.conditioned_by_cc.some((complaintCategory) => {
-    return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
-  });
+  if (currentNode.conditioned_by_cc !== undefined) {
+    const isExcludedByComplaintCategory = currentNode.conditioned_by_cc.some((complaintCategory) => {
+      return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
+    });
 
-  if (isExcludedByComplaintCategory) {
-    return false;
+    if (isExcludedByComplaintCategory) {
+      return false;
+    }
   }
 
   if (node.top_conditions.length === 0) {
