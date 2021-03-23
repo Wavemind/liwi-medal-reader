@@ -113,7 +113,7 @@ const processQSChildren = (algorithm, medicalCase, instance, mcQs, mcNode) => {
     let childConditionValue;
 
     // If this is not the final QS we calculate the conditionValue of the mcNode
-    if (mcNode.id !== mcQs.id) {
+    if (mcNode.id !== mcQs.id && mcChildNode.id !== mcQs.id) {
       childConditionValue = find(mcNode.qs, (q) => q.id === mcQs.id).conditionValue;
       // Reset the mcNode condition value
       if (mcNode.answer === null && childConditionValue === true) {
