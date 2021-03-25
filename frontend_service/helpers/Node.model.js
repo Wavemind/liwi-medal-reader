@@ -4,7 +4,7 @@ import React from 'react';
 import findKey from 'lodash/findKey';
 import _ from 'lodash';
 
-import { valueFormats } from '../constants';
+import { stages, valueFormats } from '../constants';
 
 /**
  * Update the answer based node's on value format
@@ -70,7 +70,7 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
     default:
       // eslint-disable-next-line no-console
       if (__DEV__) {
-        console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${currentNode.value_format}`, currentNode);
+        console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', `Unhandled question format ${currentNode.value_format}`);
       }
       if (value !== null) {
         answer = Number(value);
@@ -81,8 +81,8 @@ export const nodeUpdateAnswer = (value, algorithm, mcNode) => {
       break;
   }
 
-  // Validation for integer and float type based on medAL-creator config. Skip validation if we're in arm control mode or question is set as unavailable
-  if ((currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) && !mcNode.unavailableValue && !algorithm.is_arm_control) {
+  // Validation for integer and float type based on medAL-creator config. Skip validation if we're in arm control mode or question is set as unavailable except for registration stage
+  if (((currentNode.value_format === valueFormats.int || currentNode.value_format === valueFormats.float) && !mcNode.unavailableValue && !algorithm.is_arm_control) || (algorithm.is_arm_control && currentNode.stage === stages.registration)) {
     if (value !== null && (value < currentNode.min_value_warning || value > currentNode.max_value_warning)) {
       // Warning
       if (value < currentNode.min_value_warning && currentNode.min_value_warning !== null) {
