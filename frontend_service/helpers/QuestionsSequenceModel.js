@@ -113,7 +113,7 @@ const processQSChildren = (algorithm, medicalCase, instance, mcQs, mcNode) => {
     let childConditionValue;
 
     // If this is not the final QS we calculate the conditionValue of the mcNode
-    if (mcNode.id !== mcQs.id) {
+    if (mcNode.id !== mcQs.id && mcChildNode.id !== mcQs.id) {
       childConditionValue = find(mcNode.qs, (q) => q.id === mcQs.id).conditionValue;
       // Reset the mcNode condition value
       if (mcNode.answer === null && childConditionValue === true) {
@@ -146,6 +146,7 @@ export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
   let isReset = false;
   const mcNode = medicalCase.nodes[instance.id];
   const mcQs = medicalCase.nodes[qsId];
+  const currentQs = algorithm.nodes[qsId];
   const instanceConditionValue = find(mcNode.qs, (p) => p.id === mcQs.id).conditionValue;
 
   // If all the conditionValues of the QS are false we set the conditionValues of the node to false
@@ -156,8 +157,13 @@ export const recursiveNodeQs = (algorithm, medicalCase, instance, qsId) => {
   let instanceCondition = qsConditionValue && calculateCondition(algorithm, instance, medicalCase);
 
   if (instanceCondition === null) instanceCondition = false;
+
+  const isExcludedByComplaintCategory = currentQs.conditioned_by_cc.some((complaintCategory) => {
+    return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
+  });
+
   // Update condition Value if the instance has to be shown
-  if (instanceConditionValue === false && instanceCondition === true) {
+  if (instanceConditionValue === false && instanceCondition === true && !isExcludedByComplaintCategory) {
     updateConditionValue(algorithm, medicalCase, instance.id, mcQs.id, true, mcQs.type);
   }
 
@@ -200,6 +206,7 @@ export const getQuestionsSequenceStatus = (algorithm, medicalCase, mcQs) => {
     const isExcludedByComplaintCategory = currentNode.conditioned_by_cc.some((complaintCategory) => {
       return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
     });
+
     // Stop if QS is excluded
     if (isExcludedByComplaintCategory) {
       return false;

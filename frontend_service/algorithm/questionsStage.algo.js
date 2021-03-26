@@ -329,9 +329,13 @@ export const questionsComplaintCategory = (algorithm) => {
   const orders = algorithm.mobile_config.questions_orders[stepOrders.complaintCategories];
   const birthDate = medicalCase.nodes[algorithm.config.basic_questions.birth_date_question_id].value;
   const days = birthDate !== null ? moment().diff(birthDate, 'days') : 0;
+  const { general_cc_id, yi_cc_general, yi_general_cc_id, yi_cc_general_id } = algorithm.config.basic_questions;
+
+  // TODO REMOVE IT WHEN MANU UPDATED CONFIG OF ALL ALGORITHMS
+  const yi_cc = yi_cc_general === undefined ? yi_general_cc_id === undefined ? yi_cc_general_id : yi_general_cc_id : yi_cc_general;
 
   orders.forEach((order) => {
-    if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id && medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
+    if (medicalCase.nodes[order].id !== general_cc_id && medicalCase.nodes[order].id !== yi_cc) {
       // Differentiate complaint categories specific for neo_nat (<= 60 days) cases and others
       // For all questions that do not appear, set the answer to "No"
       if ((days <= 60 && algorithm.nodes[order].is_neonat) || (days > 60 && !algorithm.nodes[order].is_neonat)) {

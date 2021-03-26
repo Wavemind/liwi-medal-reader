@@ -98,6 +98,7 @@ export const updateConditionValue = (algorithm, medicalCase, nodeId, callerId, v
   }
 
   caller = find(caller, (d) => d.id === callerId);
+
   // We update only if the condition changes
   if (caller.conditionValue !== value) {
     index = medicalCase.nodes[nodeId][key].findIndex((d) => d.id === callerId);
@@ -261,6 +262,8 @@ export const processUpdatedNode = (algorithm, medicalCase, nodeId) => {
     currentNode.referenced_in.forEach((referencedNodeId) => referencedNodeAction(algorithm, medicalCase, referencedNodeId));
   }
 
+  // TODO: MISSING QS AND QUESTIONS
+  // TODO: MUST BE UPDATED WHEN CC IS VALUE CHANGE
   if (relatedDiagnosticsForCC !== undefined) {
     relatedDiagnosticsForCC.forEach((diagnosticId) => {
       const { instances } = algorithm.diagnostics[diagnosticId];

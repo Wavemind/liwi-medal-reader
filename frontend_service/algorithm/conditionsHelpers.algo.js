@@ -1,5 +1,6 @@
 import reduce from 'lodash/reduce';
 import { store } from '../store';
+import { questionBooleanValue } from '../helpers/Question.model';
 
 /**
  * Main entry to get the condition boolean for a entity
@@ -9,9 +10,23 @@ import { store } from '../store';
  * @returns {boolean}
  */
 export const calculateCondition = (algorithm, node, medicalCase = store.getState()) => {
+  const currentNode = algorithm.nodes[node.id];
+
+  // Check if node is excluded by a CC
+  if (currentNode.conditioned_by_cc !== undefined) {
+    const isExcludedByComplaintCategory = currentNode.conditioned_by_cc.some((complaintCategory) => {
+      return questionBooleanValue(algorithm, medicalCase.nodes[complaintCategory]) === false;
+    });
+
+    if (isExcludedByComplaintCategory) {
+      return false;
+    }
+  }
+
   if (node.top_conditions.length === 0) {
     return true;
   }
+
   // Loop for top_conditions
   const conditionsArrayBoolean = returnConditionsArray(node, medicalCase);
   return reduceConditionArrayBoolean(conditionsArrayBoolean);
@@ -71,7 +86,6 @@ const checkOneCondition = (wantedId, nodeId, medicalCase = store.getState()) => 
 export const comparingTopConditions = (condition, medicalCase) => {
   const { first_id, first_node_id } = condition;
   return checkOneCondition(first_id, first_node_id, medicalCase);
-
 };
 
 /**
