@@ -9,7 +9,7 @@ import { PatientValue, PatientValueModel } from '../../../../frontend_service/he
 import { MedicalCase, MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
 import { Activity } from '../../../../frontend_service/helpers/Activity.model';
 import { getItem } from '../LocalStorage';
-import { categories } from '../../../../frontend_service/constants';
+import { categories, getEnvironment } from '../../../../frontend_service/constants';
 import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
@@ -445,7 +445,7 @@ export default class LocalInterface {
    */
   _initClasses = async (data, model) => {
     let object = [];
-    const environment = await getItem('environment');
+    const environment = await getEnvironment();
     if (model === 'Patient') {
       if (data instanceof Array) {
         object = Promise.all(

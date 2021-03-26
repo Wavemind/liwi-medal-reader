@@ -5,6 +5,7 @@ import { handleHttpError } from '../../../utils/CustomToast';
 import { getDeviceInformation } from '../Device';
 import { PatientModel } from '../../../../frontend_service/helpers/Patient.model';
 import { MedicalCaseModel } from '../../../../frontend_service/helpers/MedicalCase.model';
+import { getEnvironment } from '../../../../frontend_service/constants';
 
 export default class HttpInterface {
   constructor() {
@@ -262,7 +263,7 @@ export default class HttpInterface {
    */
   _initClasses = async (data, model) => {
     const object = [];
-    const environment = await getItem('environment');
+    const environment = await getEnvironment();
 
     if (model === 'Patient') {
       if (data instanceof Array) {

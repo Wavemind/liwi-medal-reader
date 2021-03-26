@@ -14,6 +14,7 @@ import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
 import { styles } from './settings.style';
 import i18n from '../../utils/i18n';
+import { getEnvironment } from '../../../frontend_service/constants';
 
 export default class Settings extends React.Component {
   // default settings
@@ -31,7 +32,7 @@ export default class Settings extends React.Component {
   async componentDidMount() {
     const { settings } = this.state;
     const localStorageSettings = await getItem('settings');
-    const environment = await getItem('environment');
+    const environment = await getEnvironment();
     const applicationLanguage = await getItem('applicationLanguage');
     this.setState({
       environment,

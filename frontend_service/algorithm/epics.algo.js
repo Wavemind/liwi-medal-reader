@@ -141,7 +141,7 @@ const nodeAction = (algorithm, medicalCase, nodeId, callerId, callerType) => {
         return of(dispatchFinalDiagnosticAction(nodeId, mcNode.id));
       default:
         if (__DEV__) {
-          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', mcNode.type, 'doesn\'t exist');
+          console.log('%c --- DANGER --- ', 'background: #FF0000; color: #F6F3ED; padding: 5px', 'nodes type ', mcNode.type, "doesn't exist");
         }
     }
   }
@@ -316,7 +316,7 @@ const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
     medicalCase.isOldEnough = age_in_days >= algorithm.config.minimum_age;
 
     // TODO REMOVE IT WHEN MANU UPDATED CONFIG OF ALL ALGORITHMS
-    const yi_cc = yi_cc_general === undefined ? yi_general_cc_id === undefined ? yi_cc_general_id : yi_general_cc_id : yi_cc_general;
+    const yi_cc = yi_cc_general === undefined ? (yi_general_cc_id === undefined ? yi_cc_general_id : yi_general_cc_id) : yi_cc_general;
 
     if (age_in_days <= 60) {
       setAnswer(algorithm, medicalCase, yi_cc, Object.keys(algorithm.nodes[yi_cc].answers)[0]);

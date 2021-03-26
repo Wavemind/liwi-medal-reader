@@ -2,8 +2,7 @@ import { getItem } from '../src/engine/api/LocalStorage';
 
 // Server address
 export const host = async () => {
-  const environment = await getItem('environment');
-
+  const environment = await getEnvironment();
   switch (environment) {
     case 'production':
       return 'https://medalc.unisante.ch/api/v1/';
@@ -11,9 +10,13 @@ export const host = async () => {
       return 'https://liwi.wavelab.top/api/v1/';
     case 'test':
       return 'https://liwi-test.wavelab.top/api/v1/';
-    default:
-      return __DEV__ ? 'https://liwi-test.wavelab.top/api/v1/' : 'https://medalc.unisante.ch/api/v1/';
   }
+};
+
+export const getEnvironment = async () => {
+  const environment = await getItem('environment');
+  if (environment === null) return __DEV__ ? 'test' : 'production';
+  return environment;
 };
 
 export const secondStatusLocalData = 5000;

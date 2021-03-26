@@ -110,7 +110,7 @@ function getCurrentRoute() {
 
 // Try to build reset action stack
 function resetActionStack(routeName) {
-  const resetAction = StackActions.replace({ routeName});
+  const resetAction = StackActions.replace({ routeName });
   _navigator.dispatch(resetAction);
 }
 

@@ -19,6 +19,7 @@ import Questions from '../../../components/QuestionsContainer/Questions';
 import CustomInput from '../../../components/InputContainer/CustomInput/index';
 import ConsentImage from '../../../components/InputContainer/ConsentImage/index';
 import { questionsRegistration } from '../../../../frontend_service/algorithm/questionsStage.algo';
+import { getEnvironment } from '../../../../frontend_service/constants';
 
 export default class PatientUpsert extends React.Component {
   state = {
@@ -70,7 +71,7 @@ export default class PatientUpsert extends React.Component {
     const session = await getItem('session');
     const newMedicalCase = navigation.getParam('newMedicalCase'); // boolean
     const otherFacility = navigation.getParam('otherFacility'); // Object
-    const environment = await getItem('environment');
+    const environment = await getEnvironment();
     let facility = navigation.getParam('facility'); // Object
 
     if (patientId === null) {
@@ -186,8 +187,7 @@ export default class PatientUpsert extends React.Component {
         </View>
         <View w50 style={styles.containerText}>
           <Text style={styles.identifierText}>{t('patient_upsert:study_id')}</Text>
-          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences"
-          />
+          <CustomInput disabled placeholder="" condensed style={styles.identifierText} init={study_id} change={this.updatePatientValue} index="study_id" autoCapitalize="sentences" />
         </View>
 
         <View w50 style={styles.containerText}>

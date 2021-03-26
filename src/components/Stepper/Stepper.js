@@ -18,7 +18,7 @@ import { liwiColors, screenWidth } from '../../utils/constants';
 import { Icon } from 'native-base';
 import { store } from '../../../frontend_service/store';
 import { clearMedicalCase, updateMedicalCaseProperty } from '../../../frontend_service/actions/creators.actions';
-import { medicalCaseStatus, modalType } from '../../../frontend_service/constants';
+import { getEnvironment, medicalCaseStatus, modalType } from '../../../frontend_service/constants';
 import NavigationService from '../../engine/navigation/Navigation.service';
 import { MedicalCaseModel } from '../../../frontend_service/helpers/MedicalCase.model';
 import { validatorNavigate, validatorStep, modelValidator } from '../../engine/navigation/NavigationValidator.service';
@@ -565,7 +565,7 @@ class Stepper extends React.Component<Props, State> {
       app: { database },
     } = this.props;
     const patientId = navigation.getParam('idPatient');
-    const environment = await getItem('environment');
+    const environment = await getEnvironment();
 
     const medicalCaseObject = store.getState();
     let patient;

@@ -5,9 +5,10 @@ import { Image, TouchableOpacity } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Text, View } from 'native-base';
 import { styles } from './Home.style';
-import { getItem, getItems } from '../../engine/api/LocalStorage';
+import { getItems } from '../../engine/api/LocalStorage';
 import { displayNotification } from '../../utils/CustomToast';
 import { liwiColors } from '../../utils/constants';
+import { getEnvironment } from '../../../frontend_service/constants';
 
 type Props = NavigationScreenProps & {};
 type State = {};
@@ -28,7 +29,7 @@ export default class Home extends React.Component<Props, State> {
       app: { database, algorithm },
     } = this.props;
     const session = await getItems('session');
-    const environment = await getItem('environment');
+    const environment = await getEnvironment();
     const medicalCases = [];
     const localMedicalCases = await database.localInterface.closedAndNotSynchronized();
 
