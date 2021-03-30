@@ -6,6 +6,7 @@ import { calculateCondition, comparingTopConditions, reduceConditionArrayBoolean
 import { categories, nodeTypes } from '../constants';
 import { updateConditionValue } from '../algorithm/epics.algo';
 import { questionBooleanValue } from './Question.model';
+import { getNoAnswer, getYesAnswer } from '../../src/utils/answers';
 
 /**
  * Calculate score and question sequence scored status
@@ -280,8 +281,11 @@ const getQuestionsSequenceChildrenStatus = (algorithm, medicalCase, instance, mc
  * @returns Id of the answer
  */
 export const getQsAnswer = (qs, value) => {
+  const yesAnswer = getYesAnswer(qs);
+  const noAnswer = getNoAnswer(qs);
+
   if (value) {
-    return qs.answers[Object.keys(qs.answers)[0]].id;
+    return yesAnswer.id;
   }
-  return qs.answers[Object.keys(qs.answers)[1]].id;
+  return noAnswer.id;
 };

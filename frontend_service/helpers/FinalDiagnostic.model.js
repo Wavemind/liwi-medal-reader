@@ -8,6 +8,7 @@ import { store } from '../store';
 import { nodeTypes } from '../constants';
 import { calculateCondition, comparingBooleanOr, comparingTopConditions, reduceConditionArrayBoolean } from '../algorithm/conditionsHelpers.algo';
 import { healthCareIsExcluded } from './HealthCares.model';
+import { getNoAnswer } from '../../src/utils/answers';
 
 /**
  * Check the current status of this instance and if it's true, go to next node
@@ -230,9 +231,10 @@ export const finalDiagnosticAll = (algorithm) => {
       const complaintCategory = nodes[finalDiagnostic.cc];
 
       const condition = finalDiagnosticCalculateCondition(algorithm, medicalCase, finalDiagnostic, false);
+      const ccNoAnswer = getNoAnswer(complaintCategory);
 
       // If complaintCategory is not selected, I know it's ugly but what can I do ?
-      if (complaintCategory.answer === Number(Object.keys(complaintCategory.answers)[1])) {
+      if (complaintCategory.answer === ccNoAnswer.id) {
         finalDiagnosticsFalse.push({
           ...finalDiagnostic,
         });

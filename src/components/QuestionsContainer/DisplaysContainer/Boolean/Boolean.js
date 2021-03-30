@@ -9,6 +9,7 @@ import { categories, modalType } from '../../../../../frontend_service/constants
 import { liwiColors } from '../../../../utils/constants';
 import { styles } from './Boolean.style';
 import { translateText } from '../../../../utils/i18n';
+import { getNoAnswer, getYesAnswer } from '../../../../utils/answers';
 
 export default class Boolean extends React.Component {
   static defaultProps = {
@@ -33,14 +34,14 @@ export default class Boolean extends React.Component {
       question: { answer },
     } = this.props;
 
-    const currentNode = algorithm.nodes[question.id];
+    // Define the id for the answer
+    const yesAnswer = getYesAnswer(algorithm.nodes[question.id]);
+    const noAnswer = getNoAnswer(algorithm.nodes[question.id]);
 
-    const idYes = Number(Object.keys(currentNode.answers)[0]);
-    const idNo = Number(Object.keys(currentNode.answers)[1]);
 
-    if (answer === idYes) {
+    if (answer === yesAnswer.id) {
       this.setState({ value: true });
-    } else if (answer === idNo) {
+    } else if (answer === noAnswer.id) {
       this.setState({ value: false });
     }
   }
@@ -62,14 +63,15 @@ export default class Boolean extends React.Component {
     } = this.props;
     const currentNode = algorithm.nodes[question.id];
 
-    const idYes = Number(Object.keys(currentNode.answers)[0]);
-    const idNo = Number(Object.keys(currentNode.answers)[1]);
+    // Define the id for the answer
+    const yesAnswer = getYesAnswer(currentNode);
+    const noAnswer = getNoAnswer(currentNode);
 
     let newAnswer = Number(answer);
 
-    if (newAnswer === idYes) {
+    if (newAnswer === yesAnswer.id) {
       this.setState({ value: true });
-    } else if (newAnswer === idNo) {
+    } else if (newAnswer === noAnswer.id) {
       this.setState({ value: false });
     }
     // Give the time to the component to render the view before updating the state
@@ -89,7 +91,7 @@ export default class Boolean extends React.Component {
     set('answeredQuestionId', question.id);
 
     // Open emergency modal
-    if (currentNode?.emergency_status === 'emergency' && newAnswer === idYes) {
+    if (currentNode?.emergency_status === 'emergency' && newAnswer === yesAnswer.id) {
       updateModalFromRedux({}, modalType.emergencyWarning);
     }
   };
@@ -103,11 +105,11 @@ export default class Boolean extends React.Component {
       isReadOnly,
     } = this.props;
     const { value } = this.state;
-    const { answers, label, category } = algorithm.nodes[question.id];
+    const { label, category } = algorithm.nodes[question.id];
 
     // Define the id for the answer
-    const idYes = Number(Object.keys(answers)[0]);
-    const idNo = Number(Object.keys(answers)[1]);
+    const yesAnswer = getYesAnswer(algorithm.nodes[question.id]);
+    const noAnswer = getNoAnswer(algorithm.nodes[question.id]);
 
     const margin = 15;
     const sizeButton = Math.floor(Dimensions.get('window').width / 3 - margin * 2.7);
@@ -148,9 +150,9 @@ export default class Boolean extends React.Component {
 
       if (value === null) {
         activeStyle = { backgroundColor: 'transparent' };
-        idOnPress = idYes;
+        idOnPress = yesAnswer.id;
       } else {
-        idOnPress = value ? idYes : idNo;
+        idOnPress = value ? yesAnswer.id : noAnswer.id;
         activeStyle = {
           borderColor: liwiColors.darkerGreyColor,
         };
@@ -181,13 +183,13 @@ export default class Boolean extends React.Component {
             </Text>
           </View>
           <View style={styles.bottomInput}>
-            <LeftButton active={value} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
+            <LeftButton active={value} onPress={() => this._handleClick(yesAnswer.id)} disabled={isReadOnly}>
               <Text white={value} center>
                 {t('question:yes')}
               </Text>
             </LeftButton>
 
-            <RightButton active={value === false} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
+            <RightButton active={value === false} onPress={() => this._handleClick(noAnswer.id)} disabled={isReadOnly}>
               <Text center white={value === false}>
                 {t('question:no')}
               </Text>
@@ -196,17 +198,17 @@ export default class Boolean extends React.Component {
         </Button>
       );
     } else {
-      const leftLabel = translateText(Object.values(answers)[0].label, algorithmLanguage);
-      const rightLabel = translateText(Object.values(answers)[1].label, algorithmLanguage);
+      const leftLabel = translateText(yesAnswer.label, algorithmLanguage);
+      const rightLabel = translateText(noAnswer.label, algorithmLanguage);
 
       RenderJsx = () => (
         <View answer>
-          <LeftButton active={value} onPress={() => this._handleClick(idYes)} disabled={isReadOnly}>
+          <LeftButton active={value} onPress={() => this._handleClick(yesAnswer.id)} disabled={isReadOnly}>
             <Text white={value} center style={{ fontSize: leftLabel.length > 3 ? 10 : 16 }}>
               {leftLabel}
             </Text>
           </LeftButton>
-          <RightButton active={value === false} onPress={() => this._handleClick(idNo)} disabled={isReadOnly}>
+          <RightButton active={value === false} onPress={() => this._handleClick(noAnswer.id)} disabled={isReadOnly}>
             <Text center white={value === false} style={{ fontSize: rightLabel.length > 3 ? 10 : 16 }}>
               {rightLabel}
             </Text>

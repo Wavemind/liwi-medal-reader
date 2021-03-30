@@ -14,6 +14,7 @@ import { diagnosticIsExcludedByComplaintCategory } from '../helpers/Diagnostic.m
 import { questionCalculateFormula, questionCalculateReference } from '../helpers/Question.model';
 import { questionSequenceCalculateCondition, getQuestionsSequenceStatus, recursiveNodeQs, getQsAnswer, getTopLevelNodes } from '../helpers/QuestionsSequenceModel';
 import { nodeUpdateAnswer } from '../helpers/Node.model';
+import { getNoAnswer, getYesAnswer } from '../../src/utils/answers';
 
 /**
  * Computes the value of the conditionValue for the given parameters, and updates it if necessary
@@ -321,18 +322,27 @@ const updateCustomNodes = (algorithm, medicalCase, nodeId) => {
     // TODO REMOVE IT WHEN MANU UPDATED CONFIG OF ALL ALGORITHMS
     const yi_cc = yi_cc_general === undefined ? (yi_general_cc_id === undefined ? yi_cc_general_id : yi_general_cc_id) : yi_cc_general;
 
+    // Get YI general CC answers
+    const yiCCYes = getYesAnswer(algorithm.nodes[yi_cc]);
+    const yiCCNo = getNoAnswer(algorithm.nodes[yi_cc]);
+
+    // Get general CC answers
+    const generalCCYes = getYesAnswer(algorithm.nodes[general_cc_id]);
+    const generalCCNo = getNoAnswer(algorithm.nodes[general_cc_id]);
+
     if (age_in_days <= 60) {
-      setAnswer(algorithm, medicalCase, yi_cc, Object.keys(algorithm.nodes[yi_cc].answers)[0]);
-      setAnswer(algorithm, medicalCase, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[1]);
+      setAnswer(algorithm, medicalCase, yi_cc, yiCCYes.id);
+      setAnswer(algorithm, medicalCase, general_cc_id, generalCCNo);
     } else {
-      setAnswer(algorithm, medicalCase, yi_cc, Object.keys(algorithm.nodes[yi_cc].answers)[1]);
-      setAnswer(algorithm, medicalCase, general_cc_id, Object.keys(algorithm.nodes[general_cc_id].answers)[0]);
+      setAnswer(algorithm, medicalCase, yi_cc, yiCCNo.id);
+      setAnswer(algorithm, medicalCase, general_cc_id, generalCCYes.id);
     }
 
     orders.forEach((order) => {
       if (medicalCase.nodes[order].id !== algorithm.config.basic_questions.general_cc_id && medicalCase.nodes[order].id !== algorithm.config.basic_questions.yi_cc_general) {
         if ((age_in_days <= 60 && !algorithm.nodes[order].is_neonat) || (age_in_days > 60 && algorithm.nodes[order].is_neonat)) {
-          setAnswer(algorithm, medicalCase, order, Object.keys(algorithm.nodes[order].answers)[1]);
+          const ccNoAnswer = getNoAnswer(algorithm.nodes[order]);
+          setAnswer(algorithm, medicalCase, order, ccNoAnswer.id);
         }
       }
     });

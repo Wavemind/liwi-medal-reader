@@ -9,6 +9,7 @@ import { RootMainNavigator } from '../../src/engine/navigation/Root.navigation';
 import { valueFormats } from '../constants';
 import { finalDiagnosticAll, finalDiagnosticGetDrugs, finalDiagnosticGetManagements } from '../helpers/FinalDiagnostic.model';
 import { drugDoses } from '../helpers/Drug.model';
+import { getNoAnswer, getYesAnswer } from '../../src/utils/answers';
 
 export const cl = console.log;
 export const algorithm = require('./algorithm.json');
@@ -77,8 +78,8 @@ export const booleanAnswer = (nodeId) => {
   const currentNode = algorithm.nodes[nodeId];
   if (currentNode.value_format === valueFormats.bool) {
     if (mcNode.answer === null) return null;
-    const idYes = Number(Object.keys(mcNode.answers)[0]);
-    const idNo = Number(Object.keys(mcNode.answers)[1]);
+    const idYes = getYesAnswer(currentNode).id;
+    const idNo = getNoAnswer(currentNode).id;
     if (mcNode.answer === idYes) return true;
     if (mcNode.answer === idNo) return false;
   } else {

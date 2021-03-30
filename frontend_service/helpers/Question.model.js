@@ -3,6 +3,7 @@
 import moment from 'moment';
 import { valueFormats, references } from '../constants';
 import I18n from '../../src/utils/i18n';
+import { getYesAnswer } from '../../src/utils/answers';
 
 /**
  * Calculate condition to display triage question
@@ -229,7 +230,7 @@ export const questionDisplayValue = (algorithm, mcNode) => {
  */
 export const questionBooleanValue = (algorithm, mcNode) => {
   if (mcNode !== undefined) {
-    const { answers } = algorithm.nodes[mcNode.id];
-    return mcNode.answer === Number(Object.keys(answers).first());
+    const yesAnswer = getYesAnswer(algorithm.nodes[mcNode.id]);
+    return mcNode.answer === yesAnswer.id;
   }
 };
