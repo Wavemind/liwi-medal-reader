@@ -194,31 +194,27 @@ export default class FinalDiagnosticsList extends React.Component {
           submitButtonText={t('diagnoses:close')}
           flatListProps={{ maxHeight: 200, nestedScrollEnabled: true }}
         />
-        {algorithm.is_arm_control ? null : (
-          <>
-            <Text customTitle style={styles.marginTop30}>
-              {t('diagnoses:custom')}
-            </Text>
-            <View style={styles.customContent}>
-              <Input question style={styles.flex} value={customDiagnoses} onChange={this._handleCustomInput} />
-              <Button style={styles.width50} onPress={this._addCustom}>
-                <Icon active name="add" type="MaterialIcons" style={styles.iconSize} />
-              </Button>
+        <Text customTitle style={styles.marginTop30}>
+          {t('diagnoses:custom')}
+        </Text>
+        <View style={styles.customContent}>
+          <Input question style={styles.flex} value={customDiagnoses} onChange={this._handleCustomInput} />
+          <Button style={styles.width50} onPress={this._addCustom}>
+            <Icon active name="add" type="MaterialIcons" style={styles.iconSize} />
+          </Button>
+        </View>
+        {diagnoses.custom.map((diagnose) => (
+          <View key={diagnose.label} style={styles.customContainer}>
+            <View style={styles.customText}>
+              <Text style={styles.flex} size-auto>
+                {diagnose.label}
+              </Text>
             </View>
-            {diagnoses.custom.map((diagnose) => (
-              <View key={diagnose.label} style={styles.customContainer}>
-                <View style={styles.customText}>
-                  <Text style={styles.flex} size-auto>
-                    {diagnose.label}
-                  </Text>
-                </View>
-                <Button style={styles.width50} onPress={() => this._removeCustom(diagnose)}>
-                  <Icon active name="delete" type="MaterialIcons" style={styles.iconSize} />
-                </Button>
-              </View>
-            ))}
-          </>
-        )}
+            <Button style={styles.width50} onPress={() => this._removeCustom(diagnose)}>
+              <Icon active name="delete" type="MaterialIcons" style={styles.iconSize} />
+            </Button>
+          </View>
+        ))}
       </React.Fragment>
     );
   }
