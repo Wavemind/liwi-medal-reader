@@ -81,6 +81,7 @@ class LayoutTemplate extends React.Component<Props> {
   _sendFailSafeData = async () => {
     const database = await new Database();
     let patients = await database.localInterface.getAll('Patient');
+
     patients = await Promise.all(
       patients.map(async (patient) => {
         const medicalCases = await patient.medicalCases;
@@ -106,8 +107,7 @@ class LayoutTemplate extends React.Component<Props> {
     if (patients.length > 0) {
       const success = await database.httpInterface.synchronizePatients(patients);
       if (success === 'Synchronize success') {
-        const patientsToDelete = await database.localInterface.getAll('Patient', null, null, true);
-        await database.localInterface.delete(patientsToDelete);
+        await database.localInterface.clearDatabase();
       }
     }
   };

@@ -13,7 +13,7 @@ import { categories, getEnvironment } from '../../../../frontend_service/constan
 import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
-  version: 6,
+  version: 7,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -24,7 +24,7 @@ const schema = appSchema({
         { name: 'updated_at', type: 'number' },
         { name: 'status', type: 'string' },
         { name: 'patient_id', type: 'string' },
-        { name: 'fail_safe', type: 'boolean', isOptional: true },
+        { name: 'fail_safe', type: 'boolean' },
       ],
     }),
     tableSchema({
@@ -100,6 +100,21 @@ export default class LocalInterface {
       default:
         console.warn("Watermelon table doesn't exist", model);
     }
+  };
+
+  /**
+   * Clear all table
+   * @returns {Promise<void>}
+   */
+  clearDatabase = async () => {
+    const patientsToDelete = await database.localInterface.getAll('Patient', null, null, true);
+    await database.localInterface.delete(patientsToDelete);
+    const medicalCasesToDelete = await database.localInterface.getAll('MedicalCase', null, null, true);
+    await database.localInterface.delete(medicalCasesToDelete);
+    const patientValuesToDelete = await database.localInterface.getAll('PatientValue', null, null, true);
+    await database.localInterface.delete(patientValuesToDelete);
+    const activitiesToDelete = await database.localInterface.getAll('Activity', null, null, true);
+    await database.localInterface.delete(activitiesToDelete);
   };
 
   /**
@@ -223,6 +238,7 @@ export default class LocalInterface {
           nestedRecord.json = medicalCase.json;
           nestedRecord.synchronized_at = medicalCase.synchronized_at;
           nestedRecord.status = medicalCase.status;
+          nestedRecord.fail_safe = object.fail_safe;
           nestedRecord.patient.set(patient);
         });
 
@@ -252,6 +268,7 @@ export default class LocalInterface {
     if (session.facility.architecture === 'client_server') {
       value = { ...value, fail_safe: true };
     }
+
     if (field === 'medicalCases') {
       const collection = database.get('medical_cases');
 
@@ -262,6 +279,7 @@ export default class LocalInterface {
           record.json = value.json;
           record.synchronized_at = value.synchronized_at;
           record.status = value.status;
+          record.fail_safe = value.fail_safe;
           record.patient_id = id;
         });
         await this._generateActivities(value.activities, value.id);

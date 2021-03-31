@@ -143,7 +143,8 @@ export default class ConsentList extends React.Component {
       app: { t, algorithmLanguage },
     } = this.props;
     const { data, firstLoading, columns, nodes, loading, isLastBatch } = this.state;
-
+console.log(nodes)
+console.log(columns)
     return firstLoading ? (
       <LiwiLoader />
     ) : (

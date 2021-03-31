@@ -142,9 +142,10 @@ export default class HttpInterface {
    */
   _fetch = async (url, header) => {
     const httpRequest = await fetch(url, header).catch((error) => {
+      console.log("error", error)
       handleHttpError(error);
     });
-
+console.log(httpRequest)
     // In case of fetch timeout
     if (httpRequest !== undefined) {
       const result = await httpRequest.json();
@@ -152,6 +153,7 @@ export default class HttpInterface {
         return result;
       }
       if (httpRequest.status > 404) {
+        console.log(result.message)
         handleHttpError(result.message);
       }
     }

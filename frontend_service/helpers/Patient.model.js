@@ -46,8 +46,7 @@ export class PatientModel {
       this.study_id = facility !== null ? facility?.study_id?.toString() : null;
       this.group_id = facility !== null ? facility?.group_id?.toString() : null;
       this.reason = props.reason;
-
-      this.consent_file = consent_file
+      this.consent_file = consent_file;
       // this.consent_file =
       //   environment === 'production'
       //     ? consent_file

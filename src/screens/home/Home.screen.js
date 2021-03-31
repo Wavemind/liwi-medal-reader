@@ -81,7 +81,7 @@ export default class Home extends React.Component<Props, State> {
           ) : null}
 
           <View w50>
-            {environment !== 'production' && (
+            {/*{environment !== 'production' && (*/}
               <TouchableOpacity
                 testID="GoToPatientUpsert"
                 underlayColor="transparent"
@@ -104,7 +104,7 @@ export default class Home extends React.Component<Props, State> {
                   </Text>
                 </View>
               </TouchableOpacity>
-            )}
+            {/*)}*/}
 
             <TouchableOpacity underlayColor="transparent" style={styles.navigationButton} onPress={() => navigation.navigate('QrCodePatient')}>
               <View style={styles.blocContainer}>
