@@ -13,7 +13,7 @@ import { categories, getEnvironment } from '../../../../frontend_service/constan
 import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
-  version: 5,
+  version: 6,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -38,6 +38,7 @@ const schema = appSchema({
         { name: 'other_group_id', type: 'string', isOptional: true },
         { name: 'reason', type: 'string', isOptional: true },
         { name: 'consent', type: 'string', isOptional: true },
+        { name: 'consent_file', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
         { name: 'fail_safe', type: 'boolean' },
@@ -206,7 +207,8 @@ export default class LocalInterface {
         record.other_study_id = object.other_study_id;
         record.other_group_id = object.other_group_id;
         record.reason = object.reason;
-        record.consent = object.consent;
+        record.consent = object.medicalCases[0].consent;
+        record.consent_file = object.consent_file;
         record.fail_safe = object.fail_safe;
       });
     }, 'create patient');
