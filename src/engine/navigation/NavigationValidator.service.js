@@ -191,10 +191,9 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
 
   // TODO Clean validation of custom fields it's very gross !
   if (navigateRoute.currentStage === 'PatientUpsert') {
-    if (medicalCase.consent === null && algorithm.config.consent_management) {
+    if ((medicalCase.consent === null || medicalCase.consent === false || medicalCase.patient.consent_file === null) && algorithm.config.consent_management) {
       validator.isActionValid = false;
-      validator.customErrors.push(i18n.t('consent_image:required'));
-      return validator;
+      validator.customErrors.push(i18next.t('consent_image:required'));
     }
     if (!medicalCase.isOldEnough || !medicalCase.isEligible) {
       validator.isActionValid = false;
@@ -204,7 +203,6 @@ export const validatorNavigate = (algorithm, navigateRoute) => {
       } else {
         validator.customErrors.push(i18next.t('patient_upsert:too_old', { age_in_days: algorithm.config.age_limit }));
       }
-      return validator;
     }
   }
 
