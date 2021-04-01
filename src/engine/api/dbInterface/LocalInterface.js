@@ -13,7 +13,7 @@ import { categories, getEnvironment } from '../../../../frontend_service/constan
 import { elementPerPage } from '../../../utils/constants';
 
 const schema = appSchema({
-  version: 5,
+  version: 7,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -24,7 +24,7 @@ const schema = appSchema({
         { name: 'updated_at', type: 'number' },
         { name: 'status', type: 'string' },
         { name: 'patient_id', type: 'string' },
-        { name: 'fail_safe', type: 'boolean', isOptional: true },
+        { name: 'fail_safe', type: 'boolean' },
       ],
     }),
     tableSchema({
@@ -38,6 +38,7 @@ const schema = appSchema({
         { name: 'other_group_id', type: 'string', isOptional: true },
         { name: 'reason', type: 'string', isOptional: true },
         { name: 'consent', type: 'string', isOptional: true },
+        { name: 'consent_file', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
         { name: 'fail_safe', type: 'boolean' },
@@ -96,9 +97,26 @@ export default class LocalInterface {
         return 'medical_cases';
       case 'PatientValue':
         return 'patient_values';
+      case 'Activity':
+        return 'activities';
       default:
-        console.warn("Watermelon table doesn't exist", model);
+        console.log("Watermelon table doesn't exist", model);
     }
+  };
+
+  /**
+   * Clear all table
+   * @returns {Promise<void>}
+   */
+  clearDatabase = async () => {
+    const patientsToDelete = await this.getAll('Patient', null, null, true);
+    await this.delete(patientsToDelete);
+    const medicalCasesToDelete = await this.getAll('MedicalCase', null, null, true);
+    await this.delete(medicalCasesToDelete);
+    const patientValuesToDelete = await this.getAll('PatientValue', null, null, true);
+    await this.delete(patientValuesToDelete);
+    const activitiesToDelete = await this.getAll('Activity', null, null, true);
+    await this.delete(activitiesToDelete);
   };
 
   /**
@@ -206,7 +224,8 @@ export default class LocalInterface {
         record.other_study_id = object.other_study_id;
         record.other_group_id = object.other_group_id;
         record.reason = object.reason;
-        record.consent = object.consent;
+        record.consent = object.medicalCases[0].consent;
+        record.consent_file = object.consent_file;
         record.fail_safe = object.fail_safe;
       });
     }, 'create patient');
@@ -221,6 +240,7 @@ export default class LocalInterface {
           nestedRecord.json = medicalCase.json;
           nestedRecord.synchronized_at = medicalCase.synchronized_at;
           nestedRecord.status = medicalCase.status;
+          nestedRecord.fail_safe = object.fail_safe;
           nestedRecord.patient.set(patient);
         });
 
@@ -250,6 +270,7 @@ export default class LocalInterface {
     if (session.facility.architecture === 'client_server') {
       value = { ...value, fail_safe: true };
     }
+
     if (field === 'medicalCases') {
       const collection = database.get('medical_cases');
 
@@ -260,6 +281,7 @@ export default class LocalInterface {
           record.json = value.json;
           record.synchronized_at = value.synchronized_at;
           record.status = value.status;
+          record.fail_safe = value.fail_safe;
           record.patient_id = id;
         });
         await this._generateActivities(value.activities, value.id);

@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Platform, ScrollView, Text, TouchableOpacity, View, Keyboard } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, Keyboard } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
@@ -25,7 +25,6 @@ import { validatorNavigate, validatorStep, modelValidator } from '../../engine/n
 import { displayNotification } from '../../utils/CustomToast';
 import LiwiProgressBar from '../../utils/LiwiProgressBar';
 import { PatientModel } from '../../../frontend_service/helpers/Patient.model';
-import { getItem } from '../../engine/api/LocalStorage';
 
 type Props = {
   children: any,

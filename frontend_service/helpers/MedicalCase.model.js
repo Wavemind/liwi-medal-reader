@@ -2,7 +2,7 @@
 import moment from 'moment';
 import uuid from 'react-native-uuid';
 import { Model } from '@nozbe/watermelondb';
-import { children, date, field, action, relation, json } from '@nozbe/watermelondb/decorators';
+import { children, date, field, relation, json } from '@nozbe/watermelondb/decorators';
 
 import { categories, displayFormats, medicalCaseStatus, nodeTypes } from '../constants';
 import { getItem } from '../../src/engine/api/LocalStorage';
@@ -30,7 +30,6 @@ export class MedicalCaseModel {
       this.isEligible = true;
       this.isOldEnough = true;
       this.comment = '';
-      // TODO: when production set to null -> It's ALAIN NOT ME
       this.consent = !!currentAlgorithm.config.consent_management;
       this.modal = {
         open: false,

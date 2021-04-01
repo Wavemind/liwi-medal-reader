@@ -124,9 +124,13 @@ export default class Settings extends React.Component {
                 style={{ width: 220 }}
                 selectedValue={environment}
                 onValueChange={async (value) => {
+                  const database = await new Database();
+                  await database.localInterface.clearDatabase();
+
                   await setItem('environment', value);
                   await AsyncStorage.removeItem('session');
                   await AsyncStorage.removeItem('user');
+
                   navigation.navigate('NewSession');
                   await RNRestart.Restart();
                 }}
