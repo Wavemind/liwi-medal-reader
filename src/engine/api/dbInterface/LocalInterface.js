@@ -97,8 +97,10 @@ export default class LocalInterface {
         return 'medical_cases';
       case 'PatientValue':
         return 'patient_values';
+      case 'Activity':
+        return 'activities';
       default:
-        console.warn("Watermelon table doesn't exist", model);
+        console.log("Watermelon table doesn't exist", model);
     }
   };
 
@@ -107,14 +109,14 @@ export default class LocalInterface {
    * @returns {Promise<void>}
    */
   clearDatabase = async () => {
-    const patientsToDelete = await database.localInterface.getAll('Patient', null, null, true);
-    await database.localInterface.delete(patientsToDelete);
-    const medicalCasesToDelete = await database.localInterface.getAll('MedicalCase', null, null, true);
-    await database.localInterface.delete(medicalCasesToDelete);
-    const patientValuesToDelete = await database.localInterface.getAll('PatientValue', null, null, true);
-    await database.localInterface.delete(patientValuesToDelete);
-    const activitiesToDelete = await database.localInterface.getAll('Activity', null, null, true);
-    await database.localInterface.delete(activitiesToDelete);
+    const patientsToDelete = await this.getAll('Patient', null, null, true);
+    await this.delete(patientsToDelete);
+    const medicalCasesToDelete = await this.getAll('MedicalCase', null, null, true);
+    await this.delete(medicalCasesToDelete);
+    const patientValuesToDelete = await this.getAll('PatientValue', null, null, true);
+    await this.delete(patientValuesToDelete);
+    const activitiesToDelete = await this.getAll('Activity', null, null, true);
+    await this.delete(activitiesToDelete);
   };
 
   /**
