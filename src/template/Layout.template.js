@@ -112,8 +112,6 @@ class LayoutTemplate extends React.Component<Props> {
     }
   };
 
-  _replacer = (key, value) => (typeof value === 'undefined' ? null : value);
-
   /**
    * Handle connection change and process data send
    * @returns {Promise<void>}
