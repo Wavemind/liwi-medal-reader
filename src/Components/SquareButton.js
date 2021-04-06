@@ -13,20 +13,20 @@ const SquareButton = props => {
   const { content, filled, disabled } = props
   const type = filled ? 'filled' : 'outlined'
 
-  const { Common } = useTheme()
+  const { Components } = useTheme()
 
   const handlePress = () => {
     console.log('button pressed')
   }
 
   return (
-    <View style={Common.squareButton.wrapper}>
+    <View style={Components.squareButton.wrapper}>
       <TouchableOpacity
         onPress={() => handlePress()}
-        style={Common.squareButton[type](disabled)}
+        style={Components.squareButton[type](disabled)}
         disabled={disabled}
       >
-        <Text style={Common.squareButton[`${type}Text`]}>{content}</Text>
+        <Text style={Components.squareButton[`${type}Text`]}>{content}</Text>
       </TouchableOpacity>
     </View>
   )

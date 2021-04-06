@@ -6,6 +6,7 @@ import Gutters from '@/Theme/Gutters'
 import Images from '@/Theme/Images'
 import Layout from '@/Theme/Layout'
 import Common from '@/Theme/Common'
+import Components from '@/Theme/Components'
 import * as DefaultVariables from '@/Theme/Variables'
 import themes from '@/Theme/themes'
 
@@ -37,6 +38,12 @@ export default function () {
     Gutters: Gutters(themeVariables),
     Images: Images(themeVariables),
     Layout: Layout(themeVariables),
+    Components: Components({
+      ...themeVariables,
+      Layout: Layout(themeVariables),
+      Gutters: Gutters(themeVariables),
+      Fonts: Fonts(themeVariables),
+    }),
     Common: Common({
       ...themeVariables,
       Layout: Layout(themeVariables),

@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native'
-import { BooleanButtons, SectionHeader, Select, SquareButton, RoundedButton } from '@/Components'
+import {BooleanButtons, SectionHeader, Select, SquareButton, RoundedButton, Checkbox} from '@/Components'
 import { useTheme } from '@/Theme'
 import FetchOne from '@/Store/User/FetchOne'
 import { useTranslation } from 'react-i18next'
@@ -60,10 +60,18 @@ const IndexExampleContainer = () => {
 
       {/* Rounded buttons */}
       <View style={{ paddingTop: 20 }}>
-        <RoundedButton content="Add" icon={'add'} />
+        <RoundedButton content="Add" icon="add" />
       </View>
       <View style={{ paddingTop: 10 }}>
-        <RoundedButton content="Add" disabled />
+        <RoundedButton content="Add" icon="add" disabled />
+      </View>
+
+      {/* Checkboxes */}
+      <View style={{ paddingTop: 20 }}>
+        <Checkbox content="Unavailable" />
+      </View>
+      <View style={{ paddingTop: 10 }}>
+        <Checkbox content="Unavailable" disabled />
       </View>
     </View>
   )

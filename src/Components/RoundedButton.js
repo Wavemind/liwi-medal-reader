@@ -13,26 +13,26 @@ import { useTheme } from '@/Theme'
 const RoundedButton = props => {
   const { content, disabled, icon } = props
 
-  const { Common, Colors, Gutters } = useTheme()
+  const { Components, Colors, Gutters } = useTheme()
 
   const handlePress = () => {
     console.log('button pressed')
   }
 
   return (
-    <View style={Common.roundedButton.wrapper}>
+    <View style={Components.roundedButton.wrapper}>
       <TouchableOpacity
         onPress={() => handlePress()}
-        style={Common.roundedButton.base(disabled)}
+        style={Components.roundedButton.base(disabled)}
         disabled={disabled}
       >
-        <View style={Common.roundedButton.content}>
+        <View style={Components.roundedButton.content}>
           {icon && (
             <View style={Gutters.regularRMargin}>
               <Icon name={icon} size={18} color={Colors.white} />
             </View>
           )}
-          <Text style={Common.roundedButton.baseText}>{content}</Text>
+          <Text style={Components.roundedButton.baseText}>{content}</Text>
         </View>
       </TouchableOpacity>
     </View>
