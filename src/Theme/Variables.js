@@ -14,6 +14,7 @@ export const Colors = {
   inputBackground: '#FFFFFF',
   white: '#ffffff',
   black: '#000000',
+  buttonGrey: '#303030',
   grey: '#808080',
   text: '#212529',
   primary: '#E14032',

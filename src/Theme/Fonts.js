@@ -52,5 +52,8 @@ export default function ({ FontSize, Colors }) {
     textRight: {
       textAlign: 'right',
     },
+    textUppercase: {
+      textTransform: 'uppercase',
+    },
   })
 }

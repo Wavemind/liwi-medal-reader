@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native'
-import { BooleanButtons, SectionHeader, Select } from '@/Components'
+import { BooleanButtons, SectionHeader, Select, SquareButton, RoundedButton } from '@/Components'
 import { useTheme } from '@/Theme'
 import FetchOne from '@/Store/User/FetchOne'
 import { useTranslation } from 'react-i18next'
@@ -44,6 +44,26 @@ const IndexExampleContainer = () => {
       <View style={[Gutters.largeVMargin, Layout.row, Layout.justifyContentBetween, Layout.fullWidth, Layout.alignItemsCenter]}>
         <Text style={[Fonts.textRegular]}>Select how awesome I am</Text>
         <Select />
+      </View>
+
+      {/* Square buttons */}
+      <SquareButton content="Hello there" filled />
+      <View style={{ paddingTop: 10 }}>
+        <SquareButton content="Hello there" filled disabled />
+      </View>
+      <View style={{ paddingTop: 10 }}>
+        <SquareButton content="General Kenobi" />
+      </View>
+      <View style={{ paddingTop: 10 }}>
+        <SquareButton content="General Kenobi" disabled />
+      </View>
+
+      {/* Rounded buttons */}
+      <View style={{ paddingTop: 20 }}>
+        <RoundedButton content="Add" icon={'add'} />
+      </View>
+      <View style={{ paddingTop: 10 }}>
+        <RoundedButton content="Add" disabled />
       </View>
     </View>
   )

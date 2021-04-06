@@ -4,7 +4,8 @@
  * Use it to define generic component styles (e.g. the default text styles, default button styles...).
  */
 import { StyleSheet } from 'react-native'
-import buttonStyles from './components/Buttons'
+import squareButtonStyles from './components/SquareButton'
+import roundedButtonStyles from './components/RoundedButton'
 /**
  *
  * @param Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -12,7 +13,8 @@ import buttonStyles from './components/Buttons'
  */
 export default function ({ Colors, ...args }) {
   return {
-    button: buttonStyles({ Colors, ...args }),
+    squareButton: squareButtonStyles({ Colors, ...args }),
+    roundedButton: roundedButtonStyles({ Colors, ...args }),
     ...StyleSheet.create({
       backgroundPrimary: {
         backgroundColor: Colors.primary,

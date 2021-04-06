@@ -91,6 +91,9 @@ export default function () {
     fill: {
       flex: 1,
     },
+    grow: {
+      flexGrow: 1,
+    },
     fullSize: {
       height: '100%',
       width: '100%',

@@ -41,6 +41,7 @@ export default function () {
       ...themeVariables,
       Layout: Layout(themeVariables),
       Gutters: Gutters(themeVariables),
+      Fonts: Fonts(themeVariables),
     }),
     ...themeVariables,
   }
