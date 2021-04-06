@@ -1,26 +1,40 @@
+/**
+ * The external imports
+ */
 import React, { useState } from 'react'
-import { useTheme } from '@/Theme'
+import { Text, View } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 
-const Select = () => {
-  const { Layout, Gutters, Common, Fonts } = useTheme()
+/**
+ * The internal imports
+ */
+import { useTheme } from '@/Theme'
 
+const Select = props => {
+  // Props deconstruction
+  const { items } = props
+
+  // Theme and style elements deconstruction
+  const {
+    Components: { select },
+  } = useTheme()
+
+  // Local state definition
   const [awesome, setAwesome] = useState('')
 
   return (
-    <DropDownPicker
-      items={[
-        { label: 'Awesome', value: 'awesome' },
-        { label: 'Stupendous', value: 'stupendous' },
-        { label: 'Magnificent', value: 'magnificent' },
-      ]}
-      defaultValue={awesome}
-      containerStyle={{ height: 40, width: 200 }}
-      style={[Common.backgroundWhite, { borderBottomRightRadius: 20, borderBottomLeftRadius: 20, borderTopRightRadius: 20, borderTopLeftRadius: 20 }]}
-      itemStyle={[Layout.justifyContentStart]}
-      dropDownStyle={[Common.backgroundWhite]}
-      onChangeItem={item => setAwesome(item.value)}
-    />
+    <View style={select.wrapper}>
+      <Text style={select.label}>Select how awesome I am</Text>
+      <DropDownPicker
+        items={items}
+        defaultValue={awesome}
+        containerStyle={select.pickerContainer}
+        style={select.pickerWrapperStyle}
+        itemStyle={select.pickerItem}
+        dropDownStyle={select.pickerDropDown}
+        onChangeItem={item => setAwesome(item.value)}
+      />
+    </View>
   )
 }
 

@@ -11,24 +11,27 @@ import CheckBox from '@react-native-community/checkbox'
 import { useTheme } from '@/Theme'
 
 const Checkbox = props => {
+  // Props deconstruction
   const { content, disabled } = props
 
+  // Theme and style elements deconstruction
+  const {
+    Components: { checkbox },
+  } = useTheme()
+
+  // Local state definition
   const [isSelected, setSelection] = useState(false)
 
-  const { Components } = useTheme()
-
   return (
-    <View>
-      <View style={Components.checkbox.checkboxContainer}>
-        <CheckBox
-          value={isSelected}
-          onValueChange={setSelection}
-          style={Components.checkbox.checkbox}
-          disabled={disabled}
-          tintColors={Components.checkbox.tintColors(disabled)}
-        />
-        <Text style={Components.checkbox.label(disabled)}>{content}</Text>
-      </View>
+    <View style={checkbox.checkboxContainer}>
+      <CheckBox
+        value={isSelected}
+        onValueChange={setSelection}
+        style={checkbox.checkbox}
+        disabled={disabled}
+        tintColors={checkbox.tintColors(disabled)}
+      />
+      <Text style={checkbox.label(disabled)}>{content}</Text>
     </View>
   )
 }

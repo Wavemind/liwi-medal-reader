@@ -6,15 +6,21 @@
 import squareButtonStyles from './components/SquareButton.style'
 import roundedButtonStyles from './components/RoundedButton.style'
 import checkboxStyles from './components/Checkbox.style'
+import booleanButtonStyles from './components/BooleanButtons.style'
+import selectStyles from './components/Select.style'
+import sectionHeaderStyles from './components/SectionHeader.style'
 /**
  *
- * @param Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
+ * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
  * @return {*}
  */
-export default function ({ Colors, ...args }) {
+export default function (props) {
   return {
-    squareButton: squareButtonStyles({ Colors, ...args }),
-    roundedButton: roundedButtonStyles({ Colors, ...args }),
-    checkbox: checkboxStyles({ Colors, ...args }),
+    booleanButton: booleanButtonStyles(props),
+    squareButton: squareButtonStyles(props),
+    roundedButton: roundedButtonStyles(props),
+    checkbox: checkboxStyles(props),
+    select: selectStyles(props),
+    sectionHeader: sectionHeaderStyles(props),
   }
 }

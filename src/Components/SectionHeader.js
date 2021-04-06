@@ -1,21 +1,28 @@
+/**
+ * The external imports
+ */
 import React from 'react'
 import { View, Text } from 'react-native'
+
+/**
+ * The internal imports
+ */
 import { useTheme } from '@/Theme'
 
 const SectionHeader = props => {
+  // Props deconstruction
   const { label } = props
-  const { Layout, Gutters, Common, Fonts } = useTheme()
 
-  const styles = {
-    beforeStyle: { height: 2, width: 50 },
-    afterStyle: { height: 2 },
-  }
+  // Theme and style elements deconstruction
+  const {
+    Components: { sectionHeader },
+  } = useTheme()
 
   return (
-    <View style={[Layout.row]}>
-      <View style={[styles.beforeStyle, Common.backgroundBlack, Layout.selfCenter]} />
-      <Text style={[Fonts.textSectionHeader, Layout.selfCenter, Gutters.largeHPadding]}>{label}</Text>
-      <View style={[styles.afterStyle, Common.backgroundBlack, Layout.selfCenter, Layout.fill]} />
+    <View style={sectionHeader.wrapper}>
+      <View style={sectionHeader.before} />
+      <Text style={sectionHeader.label}>{label}</Text>
+      <View style={sectionHeader.after} />
     </View>
   )
 }

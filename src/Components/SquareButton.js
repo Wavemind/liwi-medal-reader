@@ -10,23 +10,32 @@ import { TouchableOpacity, Text, View } from 'react-native'
 import { useTheme } from '@/Theme'
 
 const SquareButton = props => {
+  // Props deconstruction
   const { content, filled, disabled } = props
+
+  // Theme and style elements deconstruction
+  const {
+    Components: { squareButton },
+  } = useTheme()
+
+  // Constants definition
   const type = filled ? 'filled' : 'outlined'
 
-  const { Components } = useTheme()
-
+  /**
+   * Handles the press action on the TouchableOpacity
+   */
   const handlePress = () => {
     console.log('button pressed')
   }
 
   return (
-    <View style={Components.squareButton.wrapper}>
+    <View style={squareButton.wrapper}>
       <TouchableOpacity
         onPress={() => handlePress()}
-        style={Components.squareButton[type](disabled)}
+        style={squareButton[type](disabled)}
         disabled={disabled}
       >
-        <Text style={Components.squareButton[`${type}Text`]}>{content}</Text>
+        <Text style={squareButton[`${type}Text`]}>{content}</Text>
       </TouchableOpacity>
     </View>
   )

@@ -7,7 +7,14 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native'
-import {BooleanButtons, SectionHeader, Select, SquareButton, RoundedButton, Checkbox} from '@/Components'
+import {
+  BooleanButtons,
+  SectionHeader,
+  Select,
+  SquareButton,
+  RoundedButton,
+  Checkbox,
+} from '@/Components'
 import { useTheme } from '@/Theme'
 import FetchOne from '@/Store/User/FetchOne'
 import { useTranslation } from 'react-i18next'
@@ -33,18 +40,24 @@ const IndexExampleContainer = () => {
     dispatch(ChangeTheme.action({ theme, darkMode }))
   }
 
+  const items = [
+    { label: 'Awesome', value: 'awesome' },
+    { label: 'Stupendous', value: 'stupendous' },
+    { label: 'Magnificent', value: 'magnificent' },
+  ]
+
+  const answers = ['Yes', 'No']
+
   return (
     <View style={[Layout.fill, Layout.colCenter, Gutters.largeHPadding]}>
+      {/* SectionHeader */}
       <SectionHeader label="Questions" />
-      <View style={[Gutters.largeTMargin, Layout.row, Layout.justifyContentBetween, Layout.fullWidth, Layout.alignItemsCenter]}>
-        <Text style={[Fonts.textRegular]}>Am I the man ?</Text>
-        <BooleanButtons width={200} answers={['Yes', 'No']} />
-      </View>
 
-      <View style={[Gutters.largeVMargin, Layout.row, Layout.justifyContentBetween, Layout.fullWidth, Layout.alignItemsCenter]}>
-        <Text style={[Fonts.textRegular]}>Select how awesome I am</Text>
-        <Select />
-      </View>
+      {/* BooleanButtons */}
+      <BooleanButtons answers={answers} label="Am I the man ?" />
+
+      {/* Select */}
+      <Select items={items} />
 
       {/* Square buttons */}
       <SquareButton content="Hello there" filled />

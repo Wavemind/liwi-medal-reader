@@ -1,43 +1,44 @@
+/**
+ * The external imports
+ */
 import React, { useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+
+/**
+ * The internal imports
+ */
 import { useTheme } from '@/Theme'
 
 const BooleanButtons = props => {
-  const { width, answers } = props
-  const { Layout, Gutters, Common, Fonts } = useTheme()
+  // Props deconstruction
+  const { answers, label } = props
 
+  // Theme and style elements deconstruction
+  const {
+    Components: { booleanButton },
+    Layout,
+  } = useTheme()
+
+  // Local state definition
   const [answer, setAnswer] = useState('')
 
-  const defineBackgroundColor = ans => {
-    return answer === ans ? Common.backgroundPrimary : Common.backgroundWhite
-  }
-
-  const defineTextColor = ans => {
-    return answer === ans ? Fonts.textColorWhite : Fonts.textColorBlack
-  }
-
-  const buttons = [
-    {
-      viewStyle: { borderBottomLeftRadius: 20, borderTopLeftRadius: 20, borderRightWidth: 1 },
-      text: answers[0],
-    },
-    {
-      viewStyle: { borderBottomRightRadius: 20, borderTopRightRadius: 20 },
-      text: answers[1],
-    },
-  ]
-
   return (
-    <View style={[{ width }, Layout.justifyContentAround, Layout.row]}>
-      {buttons.map(button => {
-        return (
-          <View key={`booleanButton-${button.text}`} style={[button.viewStyle, defineBackgroundColor(button.text), Layout.fill]}>
-            <TouchableOpacity style={[Layout.center]} onPress={() => setAnswer(button.text)}>
-              <Text style={[Gutters.smallVPadding, defineTextColor(button.text)]}>{button.text}</Text>
-            </TouchableOpacity>
-          </View>
-        )
-      })}
+    <View style={booleanButton.wrapper}>
+      <Text style={booleanButton.label}>{label}</Text>
+      <View style={booleanButton.buttonsWrapper}>
+        {answers.map(ans => {
+          const side = answers.indexOf(ans) === 0 ? 'left' : 'right'
+          const active = answer === ans
+
+          return (
+            <View key={`booleanButton-${side}`} style={booleanButton.buttonWrapper(side, active)}>
+              <TouchableOpacity style={[Layout.center]} onPress={() => setAnswer(ans)} >
+                <Text style={booleanButton.buttonText(active)}>{ans}</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        })}
+      </View>
     </View>
   )
 }

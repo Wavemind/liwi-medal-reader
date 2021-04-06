@@ -1,24 +1,36 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors } = props
+  const { Colors, Gutters, Layout, Fonts } = props
 
   return StyleSheet.create({
-    checkboxContainer: {
-      flexDirection: 'row',
-      marginBottom: 20,
+    wrapper: {
+      ...Gutters.largeTMargin,
+      ...Layout.row,
+      ...Layout.justifyContentBetween,
+      ...Layout.fullWidth,
+      ...Layout.alignItemsCenter,
     },
-    checkbox: {
-      alignSelf: 'center',
+    label: {
+      ...Fonts.textRegular,
     },
-    label: disabled => ({
-      margin: 8,
-      color: disabled ? Colors.black : Colors.primary,
-      opacity: disabled ? 0.3 : 1,
+    buttonsWrapper: {
+      ...Layout.justifyContentAround,
+      ...Layout.row,
+      width: 200,
+    },
+    buttonWrapper: (side, active) => ({
+      ...Layout.fill,
+      backgroundColor: active ? Colors.primary : Colors.white,
+      borderBottomLeftRadius: side === 'left' ? 20 : 0,
+      borderTopLeftRadius: side === 'left' ? 20 : 0,
+      borderBottomRightRadius: side === 'right' ? 20 : 0,
+      borderTopRightRadius: side === 'right' ? 20 : 0,
+      borderRightWidth: side === 'left' ? 1 : 0,
     }),
-    tintColors: disabled => ({
-      true: Colors.primary,
-      false: disabled ? Colors.grey : Colors.primary,
+    buttonText: active => ({
+      ...Gutters.smallVPadding,
+      color: active ? Colors.white : Colors.black,
     }),
   })
 }

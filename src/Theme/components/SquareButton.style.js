@@ -3,16 +3,11 @@ import { StyleSheet } from 'react-native'
 export default function (props) {
   const { Colors, Gutters, Layout, Fonts } = props
 
-  const wrapper = {
-    ...Layout.row,
-    ...Layout.fullWidth,
-  }
-
   const base = disabled => ({
-    borderRadius: 5,
-    opacity: disabled ? 0.3 : 1,
     ...Layout.grow,
     ...Gutters.smallVPadding,
+    borderRadius: 5,
+    opacity: disabled ? 0.3 : 1,
   })
 
   const baseText = {
@@ -22,7 +17,10 @@ export default function (props) {
   }
 
   return StyleSheet.create({
-    wrapper,
+    wrapper: {
+      ...Layout.row,
+      ...Layout.fullWidth,
+    },
     filled: disabled => ({
       ...base(disabled),
       backgroundColor: Colors.buttonGrey,

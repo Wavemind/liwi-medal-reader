@@ -11,28 +11,37 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from '@/Theme'
 
 const RoundedButton = props => {
+  // Props deconstruction
   const { content, disabled, icon } = props
 
-  const { Components, Colors, Gutters } = useTheme()
+  // Theme and style elements deconstruction
+  const {
+    Components: { roundedButton },
+    Colors,
+    Gutters,
+  } = useTheme()
 
+  /**
+   * Handles the press action on the TouchableOpacity
+   */
   const handlePress = () => {
     console.log('button pressed')
   }
 
   return (
-    <View style={Components.roundedButton.wrapper}>
+    <View style={roundedButton.wrapper}>
       <TouchableOpacity
         onPress={() => handlePress()}
-        style={Components.roundedButton.base(disabled)}
+        style={roundedButton.base(disabled)}
         disabled={disabled}
       >
-        <View style={Components.roundedButton.content}>
+        <View style={roundedButton.content}>
           {icon && (
             <View style={Gutters.regularRMargin}>
               <Icon name={icon} size={18} color={Colors.white} />
             </View>
           )}
-          <Text style={Components.roundedButton.baseText}>{content}</Text>
+          <Text style={roundedButton.baseText}>{content}</Text>
         </View>
       </TouchableOpacity>
     </View>
