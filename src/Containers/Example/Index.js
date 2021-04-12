@@ -27,7 +27,6 @@ const IndexExampleContainer = () => {
   const dispatch = useDispatch()
 
   const state = useSelector(state => state)
-  console.log(state)
   const fetchOneUserLoading = useSelector(state => state.user.fetchOne.loading)
   const fetchOneUserError = useSelector(state => state.user.fetchOne.error)
 
@@ -40,8 +39,6 @@ const IndexExampleContainer = () => {
   }
 
   const changeTheme = ({ theme, darkMode }) => {
-    console.log(theme)
-    console.log(darkMode)
     dispatch(ChangeTheme.action({ theme, darkMode }))
     setIsEnabled(!isEnabled)
   }
