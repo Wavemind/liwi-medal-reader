@@ -9,7 +9,7 @@ export default function (props) {
     },
     before: {
       ...Layout.selfCenter,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.text,
       height: 2,
       width: 50,
     },
@@ -17,11 +17,12 @@ export default function (props) {
       ...Fonts.textSectionHeader,
       ...Layout.selfCenter,
       ...Gutters.largeHPadding,
+      color: Colors.text,
     },
     after: {
       ...Layout.selfCenter,
       ...Layout.fill,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.text,
       height: 2,
     },
   })

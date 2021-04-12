@@ -13,7 +13,7 @@ export default function (props) {
     },
     label: disabled => ({
       margin: 8,
-      color: disabled ? Colors.black : Colors.primary,
+      color: disabled ? Colors.text : Colors.primary,
       opacity: disabled ? 0.3 : 1,
     }),
     tintColors: disabled => ({

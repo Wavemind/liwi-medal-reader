@@ -13,6 +13,7 @@ export default function (props) {
     },
     label: {
       ...Fonts.textRegular,
+      color: Colors.text,
     },
     buttonsWrapper: {
       ...Layout.justifyContentAround,

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   View,
+  Switch,
   ActivityIndicator,
   Text,
   TextInput,
@@ -22,14 +23,16 @@ import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 const IndexExampleContainer = () => {
   const { t } = useTranslation()
-  const { Common, Fonts, Gutters, Layout } = useTheme()
+  const { Common, Fonts, Gutters, Layout, Colors } = useTheme()
   const dispatch = useDispatch()
 
-  const user = useSelector(state => state.user.item)
+  const state = useSelector(state => state)
+  console.log(state)
   const fetchOneUserLoading = useSelector(state => state.user.fetchOne.loading)
   const fetchOneUserError = useSelector(state => state.user.fetchOne.error)
 
   const [userId, setUserId] = useState('1')
+  const [isEnabled, setIsEnabled] = useState(false)
 
   const fetch = id => {
     setUserId(id)
@@ -37,7 +40,10 @@ const IndexExampleContainer = () => {
   }
 
   const changeTheme = ({ theme, darkMode }) => {
+    console.log(theme)
+    console.log(darkMode)
     dispatch(ChangeTheme.action({ theme, darkMode }))
+    setIsEnabled(!isEnabled)
   }
 
   const items = [
@@ -85,6 +91,22 @@ const IndexExampleContainer = () => {
       </View>
       <View style={{ paddingTop: 10 }}>
         <Checkbox content="Unavailable" disabled />
+      </View>
+
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text style={{ color: Colors.text }}>Dark mode</Text>
+        <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          onValueChange={() => changeTheme({ theme: 'default', darkMode: !state.theme.darkMode })}
+          value={isEnabled}
+        />
       </View>
     </View>
   )
