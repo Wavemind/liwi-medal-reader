@@ -9,6 +9,7 @@ import checkboxStyles from './components/Checkbox.style'
 import booleanButtonStyles from './components/BooleanButtons.style'
 import selectStyles from './components/Select.style'
 import sectionHeaderStyles from './components/SectionHeader.style'
+import infoStyles from './components/Info.style'
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -22,5 +23,6 @@ export default function (props) {
     checkbox: checkboxStyles(props),
     select: selectStyles(props),
     sectionHeader: sectionHeaderStyles(props),
+    info: infoStyles(props),
   }
 }

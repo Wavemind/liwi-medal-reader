@@ -15,6 +15,7 @@ import {
   SquareButton,
   RoundedButton,
   Checkbox,
+  Info,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import FetchOne from '@/Store/User/FetchOne'
@@ -90,6 +91,7 @@ const IndexExampleContainer = () => {
         <Checkbox content="Unavailable" disabled />
       </View>
 
+      {/* Dark mode switch */}
       <View
         style={{
           flex: 1,
@@ -104,6 +106,11 @@ const IndexExampleContainer = () => {
           onValueChange={() => changeTheme({ theme: 'default', darkMode: !state.theme.darkMode })}
           value={isEnabled}
         />
+      </View>
+
+      {/*Info button and modal*/}
+      <View style={{ paddingTop: 20, paddingBottom: 40 }}>
+        <Info />
       </View>
     </View>
   )

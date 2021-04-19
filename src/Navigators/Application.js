@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { IndexStartupContainer } from '@/Containers'
+import { IndexStartupContainer, IndexModalContainer } from '@/Containers'
 import { useSelector } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
 import { navigationRef } from '@/Navigators/Root'
@@ -38,16 +38,17 @@ const ApplicationNavigator = () => {
     <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
       <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
-        <Stack.Navigator headerMode={'none'}>
+        <Stack.Navigator headerMode={'none'} mode="modal">
           <Stack.Screen name="Startup" component={IndexStartupContainer} />
           {isApplicationLoaded && MainNavigator != null && (
-            <Stack.Screen
-              name="Main"
-              component={MainNavigator}
-              options={{
-                animationEnabled: false,
-              }}
-            />
+            <>
+              <Stack.Screen
+                name="Main"
+                component={MainNavigator}
+                options={{ animationEnabled: false }}
+              />
+              <Stack.Screen name="InfoModal" component={IndexModalContainer} />
+            </>
           )}
         </Stack.Navigator>
       </NavigationContainer>

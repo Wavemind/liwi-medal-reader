@@ -10,11 +10,8 @@ import { StyleSheet } from 'react-native'
  */
 export default function ({ FontSize, Colors }) {
   return StyleSheet.create({
-    textColorBlack: {
+    textColorText: {
       color: Colors.text,
-    },
-    textColorWhite: {
-      color: Colors.white,
     },
     textSmall: {
       fontSize: FontSize.small,
