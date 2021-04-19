@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 
 /**
@@ -23,16 +23,18 @@ const Checkbox = props => {
   const [isSelected, setSelection] = useState(false)
 
   return (
-    <View style={checkbox.checkboxContainer}>
+    <TouchableOpacity
+      style={checkbox.checkboxContainer}
+      onPress={() => setSelection(!isSelected)}
+      disabled={disabled}
+    >
       <CheckBox
         value={isSelected}
-        onValueChange={setSelection}
         style={checkbox.checkbox}
-        disabled={disabled}
         tintColors={checkbox.tintColors(disabled)}
       />
       <Text style={checkbox.label(disabled)}>{content}</Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 
