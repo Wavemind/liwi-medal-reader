@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   View,
   Switch,
-  ActivityIndicator,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -53,15 +53,19 @@ const IndexExampleContainer = () => {
   const answers = ['Yes', 'No']
 
   return (
-    <View style={[Layout.fill, Layout.colCenter, Gutters.largeHPadding]}>
+    <ScrollView style={[Layout.fill, Layout.column, Gutters.largeHPadding]}>
       {/* SectionHeader */}
       <SectionHeader label="Questions" />
 
       {/* BooleanButtons */}
       <BooleanButtons answers={answers} label="Am I the man ?" />
+      <BooleanButtons answers={answers} label="Am I the warning man ?" warning />
+      <BooleanButtons answers={answers} label="Am I the disabled man ?" disabled />
 
       {/* Select */}
       <Select items={items} />
+      <Select items={items} warning />
+      <Select items={items} disabled />
 
       {/* Square buttons */}
       <SquareButton content="Hello there" filled />
@@ -112,7 +116,7 @@ const IndexExampleContainer = () => {
       <View style={{ paddingTop: 20, paddingBottom: 40 }}>
         <Info />
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

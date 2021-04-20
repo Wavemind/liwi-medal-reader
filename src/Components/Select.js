@@ -12,7 +12,7 @@ import { useTheme } from '@/Theme'
 
 const Select = props => {
   // Props deconstruction
-  const { items } = props
+  const { items, warning, disabled } = props
 
   // Theme and style elements deconstruction
   const {
@@ -23,8 +23,8 @@ const Select = props => {
   const [awesome, setAwesome] = useState('')
 
   return (
-    <View style={select.wrapper}>
-      <Text style={select.label}>Select how awesome I am</Text>
+    <View style={select.wrapper(warning)}>
+      <Text style={select.label(warning)}>Select how awesome I am</Text>
       <DropDownPicker
         items={items}
         defaultValue={awesome}
@@ -33,6 +33,7 @@ const Select = props => {
         itemStyle={select.pickerItem}
         dropDownStyle={select.pickerDropDown}
         onChangeItem={item => setAwesome(item.value)}
+        disabled={disabled}
       />
     </View>
   )

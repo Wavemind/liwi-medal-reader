@@ -4,17 +4,21 @@ export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
-    wrapper: {
-      ...Gutters.largeVMargin,
+    wrapper: warning => ({
+      ...Gutters.regularVPadding,
       ...Layout.row,
       ...Layout.justifyContentBetween,
       ...Layout.fullWidth,
       ...Layout.alignItemsCenter,
-    },
-    label: {
+      position: 'relative',
+      borderBottomWidth: 1,
+      borderBottomColor: 'lightgrey',
+      backgroundColor: warning ? '#FDE7E8' : 'transparent',
+    }),
+    label: warning => ({
       ...Fonts.textRegular,
-      color: Colors.text,
-    },
+      color: warning ? Colors.primary : Colors.text,
+    }),
     pickerContainer: {
       height: 40,
       width: 200,
