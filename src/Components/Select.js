@@ -24,30 +24,28 @@ const Select = props => {
   const [awesome, setAwesome] = useState('')
 
   return (
-    <View style={{ position: 'relative' }}>
-      <View style={select.wrapper(warning)}>
-        <Text style={select.label(warning)}>Select how awesome I am</Text>
-        <View style={select.pickerContainer(disabled)}>
-          <Picker
-            style={select.picker}
-            mode="dropdown"
-            selectedValue={awesome}
-            onValueChange={(itemValue, itemIndex) => setAwesome(itemValue)}
-            dropdownIconColor={Colors.black}
-            enabled={!disabled}
-          >
-            <Picker.Item key="select-placeholder" label="Select..." value="" />
-            {items.map(item => {
-              return (
-                <Picker.Item
-                  key={`select-${item.value}`}
-                  label={item.label}
-                  value={item.value}
-                />
-              )
-            })}
-          </Picker>
-        </View>
+    <View style={select.wrapper(warning)}>
+      <Text style={select.label(warning)}>Select how awesome I am</Text>
+      <View style={select.pickerContainer(disabled)}>
+        <Picker
+          style={select.picker}
+          mode="dropdown"
+          selectedValue={awesome}
+          onValueChange={(itemValue, itemIndex) => setAwesome(itemValue)}
+          dropdownIconColor={Colors.black}
+          enabled={!disabled}
+        >
+          <Picker.Item key="select-placeholder" label="Select..." value="" />
+          {items.map(item => {
+            return (
+              <Picker.Item
+                key={`select-${item.value}`}
+                label={item.label}
+                value={item.value}
+              />
+            )
+          })}
+        </Picker>
       </View>
     </View>
   )
