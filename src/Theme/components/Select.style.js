@@ -19,22 +19,16 @@ export default function (props) {
       ...Fonts.textRegular,
       color: warning ? Colors.primary : Colors.text,
     }),
-    pickerContainer: {
+    pickerContainer: disabled => ({
+      backgroundColor: 'white',
       height: 40,
+      borderRadius: 20,
+      opacity: disabled ? 0.5 : 1,
+      justifyContent: 'center',
+    }),
+    picker: {
       width: 200,
-    },
-    pickerDropDown: {
-      backgroundColor: Colors.white,
-    },
-    pickerItem: {
-      ...Layout.justifyContentStart,
-    },
-    pickerWrapperStyle: {
-      backgroundColor: Colors.white,
-      borderBottomRightRadius: 20,
-      borderBottomLeftRadius: 20,
-      borderTopRightRadius: 20,
-      borderTopLeftRadius: 20,
+      color: Colors.black,
     },
   })
 }
