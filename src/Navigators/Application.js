@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { IndexStartupContainer, IndexModalContainer } from '@/Containers'
+import { IndexStartupContainer } from '@/Containers'
 import { useSelector } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
 import { navigationRef } from '@/Navigators/Root'
@@ -9,7 +9,8 @@ import { useTheme } from '@/Theme'
 
 const Stack = createStackNavigator()
 
-let MainNavigator
+// let MainNavigator
+let AuthNavigator
 
 // @refresh reset
 const ApplicationNavigator = () => {
@@ -19,8 +20,9 @@ const ApplicationNavigator = () => {
   const applicationIsLoading = useSelector(state => state.startup.loading)
 
   useEffect(() => {
-    if (MainNavigator == null && !applicationIsLoading) {
-      MainNavigator = require('@/Navigators/Main').default
+    if (AuthNavigator == null && !applicationIsLoading) {
+      // MainNavigator = require('@/Navigators/Main').default
+      AuthNavigator = require('@/Navigators/Auth').default
       setIsApplicationLoaded(true)
     }
   }, [applicationIsLoading])
@@ -29,7 +31,7 @@ const ApplicationNavigator = () => {
   useEffect(
     () => () => {
       setIsApplicationLoaded(false)
-      MainNavigator = null
+      AuthNavigator = null
     },
     [],
   )
@@ -40,15 +42,12 @@ const ApplicationNavigator = () => {
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator headerMode={'none'} mode="modal">
           <Stack.Screen name="Startup" component={IndexStartupContainer} />
-          {isApplicationLoaded && MainNavigator != null && (
-            <>
-              <Stack.Screen
-                name="Main"
-                component={MainNavigator}
-                options={{ animationEnabled: false }}
-              />
-              <Stack.Screen name="InfoModal" component={IndexModalContainer} />
-            </>
+          {isApplicationLoaded && AuthNavigator != null && (
+            <Stack.Screen
+              name="Main"
+              component={AuthNavigator}
+              options={{ animationEnabled: false }}
+            />
           )}
         </Stack.Navigator>
       </NavigationContainer>
