@@ -132,7 +132,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.myapp"
+        applicationId "com.liwi_native"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

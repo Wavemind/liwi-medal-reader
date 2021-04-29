@@ -1,4 +1,4 @@
-package com.myapp;
+package com.liwi_native;
 
 import com.facebook.react.ReactActivity;
 import android.content.Intent;
@@ -12,7 +12,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "MyApp";
+    return "medAl-reader";
   }
 
   // for react-native-appearance
