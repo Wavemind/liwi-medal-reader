@@ -4,17 +4,19 @@ import {
   Text,
   Animated,
   TextInput,
-  TouchableOpacity,
   ActivityIndicator,
+  Switch,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 import NewSession from '@/Store/Auth/NewSession'
 import { useTheme } from '@/Theme'
+import { SquareButton } from '@/Components'
+import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 const IndexAuthContainer = props => {
   // Theme and style elements deconstruction
-  const { Gutters, Layout, Fonts } = useTheme()
+  const { Layout, Fonts, Colors } = useTheme()
   const dispatch = useDispatch()
 
   // Local state definition
@@ -22,6 +24,9 @@ const IndexAuthContainer = props => {
   const [password, setPassword] = useState(__DEV__ ? '123456' : '')
   const newSessionLoading = useSelector(state => state.auth.newSession.loading)
   const newSessionError = useSelector(state => state.auth.newSession.error)
+  const [isEnabled, setIsEnabled] = useState(false)
+
+  const state = useSelector(state => state)
 
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -37,48 +42,58 @@ const IndexAuthContainer = props => {
     dispatch(NewSession.action(email, password))
   }
 
+  const changeTheme = ({ theme, darkMode }) => {
+    dispatch(ChangeTheme.action({ theme, darkMode }))
+    setIsEnabled(!isEnabled)
+  }
+
   return (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
       <Text style={[Fonts.textColorText, Fonts.titleSmall]}>
         Authentication
       </Text>
-      <View style={[Layout.colVCenter, Layout.alignItemsStart]}>
+      <View style={[Layout.colVCenter, { width: 300 }]}>
         <TextInput
-          style={{ height: 40, width: 300, margin: 12, borderWidth: 1 }}
+          style={{ backgroundColor: 'white', height: 40, width: 300, marginTop: 12, borderWidth: 1, color: 'black', paddingHorizontal: 10 }}
           onChangeText={setEmail}
           value={email}
           autoCompleteType="email"
           placeholder="email"
         />
         <TextInput
-          style={{ height: 40, width: 300, margin: 12, borderWidth: 1 }}
+          style={{ backgroundColor: 'white', height: 40, width: 300, marginVertical: 12, borderWidth: 1, color: 'black', paddingHorizontal: 10 }}
           onChangeText={setPassword}
           value={password}
           secureTextEntry
           autoCompleteType="password"
           placeholder="password"
         />
-        <TouchableOpacity
-          onPress={() => handleLogin()}
-          style={[
-            {
-              height: 40,
-              width: 300,
-              alignItems: 'center',
-              backgroundColor: '#DDDDDD',
-              padding: 10,
-              margin: 12,
-            },
-          ]}
-        >
-          <Text>Login</Text>
-        </TouchableOpacity>
+        <SquareButton content="Login" filled handlePress={handleLogin} />
         {newSessionLoading && (
           <ActivityIndicator size="large" color="#0000ff" />
         )}
         {newSessionError && (
           <Text style={Fonts.textRegular}>{newSessionError.message}</Text>
         )}
+
+        <View
+          style={{
+            marginTop: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ color: Colors.text }}>Dark mode</Text>
+          <Switch
+            trackColor={{ false: '#767577', true: '#f4f3f4' }}
+            thumbColor={isEnabled ? Colors.primary : '#f4f3f4'}
+            onValueChange={() =>
+              changeTheme({ theme: 'default', darkMode: !state.theme.darkMode })
+            }
+            value={isEnabled}
+          />
+        </View>
       </View>
     </Animated.View>
   )
