@@ -18,7 +18,9 @@ const IndexAuthContainer = props => {
   const dispatch = useDispatch()
 
   // Local state definition
-  const [email, setEmail] = useState(__DEV__ ? 'quentin.girard@wavemind.ch' : '')
+  const [email, setEmail] = useState(
+    __DEV__ ? 'quentin.girard@wavemind.ch' : '',
+  )
   const [password, setPassword] = useState(__DEV__ ? '123456' : '')
   const newSessionLoading = useSelector(state => state.auth.newSession.loading)
   const newSessionError = useSelector(state => state.auth.newSession.error)
@@ -33,8 +35,9 @@ const IndexAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
-  const handleLogin = () => {
-    dispatch(NewSession.action(email, password))
+  const handleLogin = async () => {
+    const test = await dispatch(NewSession.action({email, password}))
+    console.log(test)
   }
 
   return (
