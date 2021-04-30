@@ -1,3 +1,3 @@
 export const Config = {
-  API_URL: 'https://liwi.wavelab.top/v1/',
+  API_URL: 'https://liwi.wavelab.top/api/v1/',
 }

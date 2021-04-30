@@ -1,15 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, Animated, TextInput, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  Animated,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 
+import NewSession from '@/Store/Auth/NewSession'
 import { useTheme } from '@/Theme'
 
 const IndexAuthContainer = props => {
   // Theme and style elements deconstruction
   const { Gutters, Layout, Fonts } = useTheme()
+  const dispatch = useDispatch()
 
   // Local state definition
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(__DEV__ ? 'quentin.girard@wavemind.ch' : '')
+  const [password, setPassword] = useState(__DEV__ ? '123456' : '')
+  const newSessionLoading = useSelector(state => state.auth.newSession.loading)
+  const newSessionError = useSelector(state => state.auth.newSession.error)
 
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -20,6 +32,10 @@ const IndexAuthContainer = props => {
       useNativeDriver: true,
     }).start()
   }, [fadeAnim])
+
+  const handleLogin = () => {
+    dispatch(NewSession.action(email, password))
+  }
 
   return (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
@@ -43,6 +59,7 @@ const IndexAuthContainer = props => {
           placeholder="password"
         />
         <TouchableOpacity
+          onPress={() => handleLogin()}
           style={[
             {
               height: 40,
@@ -56,6 +73,12 @@ const IndexAuthContainer = props => {
         >
           <Text>Login</Text>
         </TouchableOpacity>
+        {newSessionLoading && (
+          <ActivityIndicator size="large" color="#0000ff" />
+        )}
+        {newSessionError && (
+          <Text style={Fonts.textRegular}>{newSessionError.message}</Text>
+        )}
       </View>
     </Animated.View>
   )

@@ -1,4 +1,3 @@
-
 import axios from 'axios'
 import { Config } from '@/Config'
 import * as Keychain from 'react-native-keychain'
@@ -92,13 +91,12 @@ instance.interceptors.response.use(
         navigate('Auth', { screen: 'IndexAuth' })
       }
 
+      // Default response
       let errorMessage = 'Response status code <> 200 (' + error.message + ')'
-      if (
-        error.response.data.errors &&
-        error.response.data.errors[0] &&
-        error.response.data.errors[0].title
-      ) {
-        errorMessage = error.response.data.errors[0].title
+
+      // Response given by the application
+      if (error.response.data.errors) {
+        errorMessage = error.response.data.errors[0]
       }
 
       // The request was made and the server responded with a status code
@@ -114,7 +112,8 @@ instance.interceptors.response.use(
       // http.ClientRequest in node.js
 
       showMessage({
-        message: i18n.t('errors.offline'),
+        message: i18n.t('errors.offline.title'),
+        description: i18n.t('errors.offline.description'),
         type: 'danger',
         duration: 5000,
       })
@@ -126,7 +125,8 @@ instance.interceptors.response.use(
       // Something happened in setting up the request that triggered an Error
 
       showMessage({
-        message: i18n.t('errors.unknown'),
+        message: i18n.t('errors.unknown.title'),
+        description: i18n.t('errors.unknown.description'),
         type: 'danger',
         duration: 5000,
       })

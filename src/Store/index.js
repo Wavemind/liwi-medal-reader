@@ -14,11 +14,13 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import startup from './Startup'
 import user from './User'
+import auth from './Auth'
 import theme from './Theme'
 
 const reducers = combineReducers({
   startup,
   user,
+  auth,
   theme,
 })
 
@@ -32,7 +34,7 @@ const persistedReducer = persistReducer(persistConfig, reducers)
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => {
+  middleware: getDefaultMiddleware => {
     const middlewares = getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],

@@ -17,8 +17,8 @@ const App = () => (
      * @see https://github.com/rt2zz/redux-persist/blob/master/docs/PersistGate.md
      */}
     <PersistGate loading={null} persistor={persistor}>
-      <FlashMessage position="top" floating={true} icon="auto" />
       <ApplicationNavigator />
+      <FlashMessage position="bottom" floating={true} icon="auto" />
     </PersistGate>
   </Provider>
 )
