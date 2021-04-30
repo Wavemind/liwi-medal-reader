@@ -18,7 +18,6 @@ import {
   Info,
 } from '@/Components'
 import { useTheme } from '@/Theme'
-import FetchOne from '@/Store/User/FetchOne'
 import { useTranslation } from 'react-i18next'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
@@ -28,16 +27,8 @@ const IndexExampleContainer = () => {
   const dispatch = useDispatch()
 
   const state = useSelector(state => state)
-  const fetchOneUserLoading = useSelector(state => state.user.fetchOne.loading)
-  const fetchOneUserError = useSelector(state => state.user.fetchOne.error)
 
-  const [userId, setUserId] = useState('1')
   const [isEnabled, setIsEnabled] = useState(false)
-
-  const fetch = id => {
-    setUserId(id)
-    dispatch(FetchOne.action(id))
-  }
 
   const changeTheme = ({ theme, darkMode }) => {
     dispatch(ChangeTheme.action({ theme, darkMode }))

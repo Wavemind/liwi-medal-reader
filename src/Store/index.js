@@ -13,13 +13,11 @@ import {
 import { configureStore } from '@reduxjs/toolkit'
 
 import startup from './Startup'
-import user from './User'
 import auth from './Auth'
 import theme from './Theme'
 
 const reducers = combineReducers({
   startup,
-  user,
   auth,
   theme,
 })
