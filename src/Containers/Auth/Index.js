@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import NewSession from '@/Store/Auth/NewSession'
 import { useTheme } from '@/Theme'
-import { SquareButton } from '@/Components'
+import { SquareButton, SquareSelect } from '@/Components'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 const IndexAuthContainer = props => {
@@ -49,6 +49,12 @@ const IndexAuthContainer = props => {
     setIsEnabled(!isEnabled)
   }
 
+  const environments = [
+    { label: 'Test', value: 'test' },
+    { label: 'Staging', value: 'staging' },
+    { label: 'Production', value: 'production' },
+  ]
+
   return (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
       <Text style={[Fonts.textColorText, Fonts.titleSmall]}>
@@ -56,14 +62,30 @@ const IndexAuthContainer = props => {
       </Text>
       <View style={[Layout.colVCenter, { width: 300 }]}>
         <TextInput
-          style={{ backgroundColor: 'white', height: 40, width: 300, marginTop: 12, borderWidth: 1, color: 'black', paddingHorizontal: 10 }}
+          style={{
+            backgroundColor: 'white',
+            height: 40,
+            width: 300,
+            marginTop: 12,
+            borderWidth: 1,
+            color: 'black',
+            paddingHorizontal: 10,
+          }}
           onChangeText={setEmail}
           value={email}
           autoCompleteType="email"
           placeholder="email"
         />
         <TextInput
-          style={{ backgroundColor: 'white', height: 40, width: 300, marginVertical: 12, borderWidth: 1, color: 'black', paddingHorizontal: 10 }}
+          style={{
+            backgroundColor: 'white',
+            height: 40,
+            width: 300,
+            marginVertical: 12,
+            borderWidth: 1,
+            color: 'black',
+            paddingHorizontal: 10,
+          }}
           onChangeText={setPassword}
           value={password}
           secureTextEntry
@@ -96,6 +118,8 @@ const IndexAuthContainer = props => {
             value={isEnabled}
           />
         </View>
+
+        <SquareSelect label="Environment" items={environments} />
       </View>
     </Animated.View>
   )
