@@ -12,7 +12,7 @@ import { useTheme } from '@/Theme'
 
 const Select = props => {
   // Props deconstruction
-  const { label, items } = props
+  const { label, items, handleOnSelect } = props
 
   // Theme and style elements deconstruction
   const {
@@ -21,7 +21,12 @@ const Select = props => {
   } = useTheme()
 
   // Local state definition
-  const [awesome, setAwesome] = useState('')
+  const [selectValue, setSelectValue] = useState('')
+
+  const handleValueChange = (itemValue) => {
+    setSelectValue(itemValue)
+    handleOnSelect(itemValue)
+  }
 
   return (
     <View style={squareSelect.wrapper}>
@@ -30,8 +35,8 @@ const Select = props => {
         <Picker
           style={squareSelect.picker}
           mode="dropdown"
-          selectedValue={awesome}
-          onValueChange={(itemValue, itemIndex) => setAwesome(itemValue)}
+          selectedValue={selectValue}
+          onValueChange={(itemValue, itemIndex) => handleValueChange(itemValue)}
           dropdownIconColor={Colors.black}
         >
           <Picker.Item key="select-placeholder" label="Select..." value="" />

@@ -49,6 +49,10 @@ const IndexAuthContainer = props => {
     setIsEnabled(!isEnabled)
   }
 
+  const updateEnvironmentStore = (newEnvironment) => {
+
+  }
+
   const environments = [
     { label: 'Test', value: 'test' },
     { label: 'Staging', value: 'staging' },
@@ -119,7 +123,7 @@ const IndexAuthContainer = props => {
           />
         </View>
 
-        <SquareSelect label="Environment" items={environments} />
+        <SquareSelect label="Environment" items={environments} handleOnSelect={updateEnvironmentStore}/>
       </View>
     </Animated.View>
   )
