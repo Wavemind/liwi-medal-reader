@@ -18,19 +18,18 @@ export const handleError = ({ message, data, status }) => {
   return Promise.reject({ message, data, status })
 }
 
-// TODO: Check if usefull
-// instance.interceptors.response.use(
-//   (response) => response,
-//   ({ message, response: { data, status } }) => {
-//     return handleError({ message, data, status })
-//   },
-// )
-
 instance.interceptors.request.use(
   async function (config) {
     // Do something before request is sent
     const accessToken = await Keychain.getInternetCredentials('access_token')
-    config.headers.common.Authorization = `Bearer ${accessToken.password}`
+    const client = await Keychain.getInternetCredentials('client')
+    const expiry = await Keychain.getInternetCredentials('expiry')
+    const uid = await Keychain.getInternetCredentials('uid')
+
+    config.headers.common['access-token'] = accessToken.password
+    config.headers.common.client = client.password
+    config.headers.common.expiry = expiry.password
+    config.headers.common.uid = uid.password
     return config
   },
   function (error) {

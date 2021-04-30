@@ -24,6 +24,7 @@
     "react": "17.0.1",
     "react-i18next": "^11.8.10",
     "react-native": "0.64.0",
+    "react-native-device-info": "^8.1.2",
     "react-native-flash-message": "^0.1.23",
     "react-native-flipper": "^0.75.1",
     "react-native-gesture-handler": "^1.10.3",

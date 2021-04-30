@@ -5,4 +5,4 @@ const sliceInitialState = {
   item: {},
 }
 
-export default buildSlice('auth', [NewSession], sliceInitialState).reducer
+export default buildSlice('user', [NewSession], sliceInitialState).reducer
