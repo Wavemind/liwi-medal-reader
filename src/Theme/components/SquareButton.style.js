@@ -23,7 +23,7 @@ export default function (props) {
     },
     filled: disabled => ({
       ...base(disabled),
-      backgroundColor: Colors.buttonGrey,
+      backgroundColor: Colors.primary,
     }),
     filledText: {
       ...baseText,

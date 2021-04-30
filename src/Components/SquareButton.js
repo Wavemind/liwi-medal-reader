@@ -11,7 +11,7 @@ import { useTheme } from '@/Theme'
 
 const SquareButton = props => {
   // Props deconstruction
-  const { content, filled, disabled } = props
+  const { content, filled, disabled, handlePress } = props
 
   // Theme and style elements deconstruction
   const {
@@ -20,13 +20,6 @@ const SquareButton = props => {
 
   // Constants definition
   const type = filled ? 'filled' : 'outlined'
-
-  /**
-   * Handles the press action on the TouchableOpacity
-   */
-  const handlePress = () => {
-    console.log('button pressed')
-  }
 
   return (
     <View style={squareButton.wrapper}>
