@@ -35,9 +35,8 @@ const IndexAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
-  const handleLogin = async () => {
-    const test = await dispatch(NewSession.action({email, password}))
-    console.log(test)
+  const handleLogin = () => {
+    dispatch(NewSession.action({ email, password }))
   }
 
   return (
