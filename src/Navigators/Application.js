@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { IndexStartupContainer } from '@/Containers'
-import { useSelector } from 'react-redux'
-import { NavigationContainer } from '@react-navigation/native'
-import { navigationRef } from '@/Navigators/Root'
 import { SafeAreaView, StatusBar } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+
+import { IndexPermissionsRequiredContainer, IndexStartupContainer } from '@/Containers'
+import { useSelector } from 'react-redux'
+import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 
 const Stack = createStackNavigator()
@@ -42,9 +43,10 @@ const ApplicationNavigator = () => {
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator headerMode={'none'} mode="modal">
           <Stack.Screen name="Startup" component={IndexStartupContainer} />
+          <Stack.Screen name="PermissionsRequired" component={IndexPermissionsRequiredContainer} />
           {isApplicationLoaded && AuthNavigator != null && (
             <Stack.Screen
-              name="Main"
+              name="Auth"
               component={AuthNavigator}
               options={{ animationEnabled: false }}
             />

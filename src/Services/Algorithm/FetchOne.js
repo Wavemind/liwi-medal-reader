@@ -3,14 +3,12 @@ import { getMacAddress } from 'react-native-device-info'
 
 export default async ({ json_version }) => {
   const macAddress = await getMacAddress()
-
+  console.log('json_version', json_version)
   // TODO: Add geoloc !
   const response = await api.post('versions/retrieve_algorithm_version', {
     json_version,
     mac_address: macAddress,
   })
-
-  console.log('response', response)
 
   return response.data
 }

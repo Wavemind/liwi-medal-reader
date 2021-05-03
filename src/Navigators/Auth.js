@@ -2,6 +2,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { IndexAuthContainer } from '@/Containers'
 import { SynchronizationAuthContainer } from '@/Containers'
+import { PinAuthContainer } from '@/Containers'
 
 const Stack = createStackNavigator()
 
@@ -13,6 +14,7 @@ const Auth = () => {
         name="Synchronization"
         component={SynchronizationAuthContainer}
       />
+      <Stack.Screen name="Pin" component={PinAuthContainer} />
     </Stack.Navigator>
   )
 }
