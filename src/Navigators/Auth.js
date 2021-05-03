@@ -1,6 +1,6 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { IndexAuthContainer } from '@/Containers'
+import { IndexAuthContainer, IndexAccessDeniedContainer } from '@/Containers'
 
 const Stack = createStackNavigator()
 
