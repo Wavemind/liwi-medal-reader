@@ -20,13 +20,17 @@ export const handleError = ({ message, data, status }) => {
 
 instance.interceptors.request.use(
   async function (config) {
-    // Do something before request is sent
     const accessToken = await Keychain.getInternetCredentials('access_token')
     const client = await Keychain.getInternetCredentials('client')
     const expiry = await Keychain.getInternetCredentials('expiry')
     const uid = await Keychain.getInternetCredentials('uid')
+    const healthFacilityToken = await Keychain.getInternetCredentials(
+      'health_facility_token',
+    )
 
     config.headers.common['access-token'] = accessToken.password
+    config.headers.common['health-facility-token'] =
+      healthFacilityToken.password
     config.headers.common.client = client.password
     config.headers.common.expiry = expiry.password
     config.headers.common.uid = uid.password
@@ -95,7 +99,11 @@ instance.interceptors.response.use(
 
       // Response given by the application
       if (error.response.data.errors) {
-        errorMessage = error.response.data.errors[0]
+        if (Array.isArray(error.response.data.errors)) {
+          errorMessage = error.response.data.errors[0]
+        } else {
+          errorMessage = error.response.data.errors
+        }
       }
 
       // The request was made and the server responded with a status code

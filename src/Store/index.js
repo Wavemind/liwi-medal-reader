@@ -12,14 +12,20 @@ import {
 } from 'redux-persist'
 import { configureStore } from '@reduxjs/toolkit'
 
+import algorithm from './Algorithm'
+import device from './Device'
+import healthFacility from './HealthFacility'
 import startup from './Startup'
+import system from './System'
 import theme from './Theme'
 import user from './User'
-import device from './Device'
 
 const reducers = combineReducers({
+  algorithm,
   device,
+  healthFacility,
   startup,
+  system,
   theme,
   user,
 })

@@ -9,11 +9,11 @@ import {
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import NewSession from '@/Store/User/NewSession'
+import Auth from '@/Store/System/Auth'
+import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
-import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 const IndexAuthContainer = props => {
   // Theme and style elements deconstruction
@@ -27,26 +27,23 @@ const IndexAuthContainer = props => {
   const [password, setPassword] = useState(__DEV__ ? '123456' : '')
   const [isEnabled, setIsEnabled] = useState(false)
 
-  const newSessionLoading = useSelector(state => state.user.newSession.loading)
+  const authLoading = useSelector(state => state.system.auth.loading)
   const newSessionError = useSelector(state => state.user.newSession.error)
   const registerError = useSelector(state => state.device.register.error)
   const theme = useSelector(state => state.theme)
-  const state = useSelector(state => state)
-
-  console.log(state)
 
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 2000,
+      duration: 1500,
       useNativeDriver: true,
     }).start()
   }, [fadeAnim])
 
-  const handleLogin = async () => {
-    await dispatch(NewSession.action({ email, password }))
+  const handleLogin = () => {
+    dispatch(Auth.action({ email, password }))
   }
 
   const changeTheme = ({ newTheme, darkMode }) => {
@@ -95,11 +92,9 @@ const IndexAuthContainer = props => {
           content="Login"
           filled
           handlePress={handleLogin}
-          disabled={newSessionLoading}
+          disabled={authLoading}
         />
-        {newSessionLoading && (
-          <ActivityIndicator size="large" color="#0000ff" />
-        )}
+        {authLoading && <ActivityIndicator size="large" color="#0000ff" />}
         {newSessionError && (
           <Text style={Fonts.textRegular}>{newSessionError.message}</Text>
         )}
