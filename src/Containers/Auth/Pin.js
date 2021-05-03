@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, Animated, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { isFulfilled } from '@reduxjs/toolkit'
 import PINCode from '@haskkor/react-native-pincode'
 
+import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 
 const PinAuthContainer = props => {
@@ -13,13 +16,14 @@ const PinAuthContainer = props => {
   // Local state definition
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
-  const algorithmLoading = useSelector(
+  const algorithm = useSelector(state => state.algorithm.item)
+  const algorithmFetchOneLoading = useSelector(
     state => state.algorithm.fetchOne.loading,
   )
-
+  const algorithmFetchOneError = useSelector(
+    state => state.algorithm.fetchOne.error,
+  )
   const [status, setStatus] = useState('initial')
-
-  console.log('Dans le pin', healthFacility)
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -29,8 +33,14 @@ const PinAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
-  const handlePin = pinCode => {
+  const handlePin = async pinCode => {
     if (pinCode === healthFacility.pin_code) {
+      const result = await dispatch(
+        FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
+      )
+      if (isFulfilled(result)) {
+        navigateAndSimpleReset('Synchronization')
+      }
     } else {
       setStatus('failure')
     }
@@ -39,6 +49,9 @@ const PinAuthContainer = props => {
   return (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
       <Text style={[Fonts.textColorText, Fonts.titleSmall]}>Pin</Text>
+      {algorithmFetchOneError && (
+        <Text style={Fonts.textRegular}>{algorithmFetchOneError.message}</Text>
+      )}
       <View style={[Layout.fill, Layout.center]}>
         <PINCode
           passwordLength={healthFacility.pin_code.length}
@@ -52,7 +65,7 @@ const PinAuthContainer = props => {
             </Text>
           )}
           subtitleComponent={() =>
-            algorithmLoading && (
+            algorithmFetchOneLoading && (
               <ActivityIndicator size="large" color="#0000ff" />
             )
           }
