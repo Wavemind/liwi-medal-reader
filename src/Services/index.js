@@ -4,9 +4,9 @@ import * as Keychain from 'react-native-keychain'
 import { navigate } from '@/Navigators/Root'
 import { showMessage } from 'react-native-flash-message'
 import i18n from '@/Translations/index'
+import { store } from '@/Store'
 
 const instance = axios.create({
-  baseURL: Config.API_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -14,12 +14,40 @@ const instance = axios.create({
   timeout: 3000,
 })
 
+/**
+ * Defines the baseURL based on the selected environment
+ * @param env
+ * @returns {string}
+ */
+const defineBaseUrl = env => {
+  switch (env) {
+    case 'test':
+      return Config.TEST_API_URL
+    case 'staging':
+      return Config.STAGING_API_URL
+    case 'production':
+      return Config.PRODUCTION_API_URL
+    default:
+      return Config.TEST_API_URL
+  }
+}
+
+/**
+ * Handles the error returned from the api
+ * @param message
+ * @param data
+ * @param status
+ * @returns {Promise<unknown>}
+ */
 export const handleError = ({ message, data, status }) => {
   return Promise.reject({ message, data, status })
 }
 
 instance.interceptors.request.use(
   async function (config) {
+    const state = store.getState()
+    const env = state.system.environment
+
     const accessToken = await Keychain.getInternetCredentials('access_token')
     const client = await Keychain.getInternetCredentials('client')
     const expiry = await Keychain.getInternetCredentials('expiry')
@@ -27,7 +55,7 @@ instance.interceptors.request.use(
     const healthFacilityToken = await Keychain.getInternetCredentials(
       'health_facility_token',
     )
-
+    config.baseURL = defineBaseUrl(env)
     config.headers.common['access-token'] = accessToken.password
     config.headers.common['health-facility-token'] =
       healthFacilityToken.password

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { Text, View } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 
@@ -12,21 +12,13 @@ import { useTheme } from '@/Theme'
 
 const Select = props => {
   // Props deconstruction
-  const { label, items, handleOnSelect } = props
+  const { label, items, handleOnSelect, value } = props
 
   // Theme and style elements deconstruction
   const {
     Components: { squareSelect },
     Colors,
   } = useTheme()
-
-  // Local state definition
-  const [selectValue, setSelectValue] = useState('')
-
-  const handleValueChange = (itemValue) => {
-    setSelectValue(itemValue)
-    handleOnSelect(itemValue)
-  }
 
   return (
     <View style={squareSelect.wrapper}>
@@ -35,8 +27,8 @@ const Select = props => {
         <Picker
           style={squareSelect.picker}
           mode="dropdown"
-          selectedValue={selectValue}
-          onValueChange={(itemValue, itemIndex) => handleValueChange(itemValue)}
+          selectedValue={value}
+          onValueChange={(itemValue, itemIndex) => handleOnSelect(itemValue)}
           dropdownIconColor={Colors.black}
         >
           <Picker.Item key="select-placeholder" label="Select..." value="" />

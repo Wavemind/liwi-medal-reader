@@ -11,16 +11,17 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Auth from '@/Store/System/Auth'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
+import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 
 import { useTheme } from '@/Theme'
 import { SquareButton, SquareSelect } from '@/Components'
-import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 const IndexAuthContainer = () => {
   // Theme and style elements deconstruction
   const {
     Layout,
     Colors,
+    Fonts,
     Containers: { authIndex },
   } = useTheme()
   const dispatch = useDispatch()
@@ -36,6 +37,7 @@ const IndexAuthContainer = () => {
   const newSessionError = useSelector(state => state.user.newSession.error)
   const registerError = useSelector(state => state.device.register.error)
   const theme = useSelector(state => state.theme)
+  const environment = useSelector(state => state.system.environment)
 
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -64,7 +66,13 @@ const IndexAuthContainer = () => {
     setIsEnabled(!isEnabled)
   }
 
-  const updateEnvironmentStore = newEnvironment => {}
+  /**
+   * Dispatches new environment to store
+   * @param newEnvironment
+   */
+  const updateEnvironment = newEnvironment => {
+    dispatch(ChangeEnvironment.action({ newEnvironment }))
+  }
 
   const environments = [
     { label: 'Test', value: 'test' },
@@ -119,7 +127,8 @@ const IndexAuthContainer = () => {
         <SquareSelect
           label="Environment"
           items={environments}
-          handleOnSelect={updateEnvironmentStore}
+          handleOnSelect={updateEnvironment}
+          value={environment}
         />
       </View>
     </Animated.View>
