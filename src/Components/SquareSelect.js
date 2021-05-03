@@ -12,28 +12,32 @@ import { useTheme } from '@/Theme'
 
 const Select = props => {
   // Props deconstruction
-  const { label, items, warning, disabled } = props
+  const { label, items, handleOnSelect } = props
 
   // Theme and style elements deconstruction
   const {
-    Components: { select },
+    Components: { squareSelect },
     Colors,
   } = useTheme()
 
   // Local state definition
-  const [awesome, setAwesome] = useState('')
+  const [selectValue, setSelectValue] = useState('')
+
+  const handleValueChange = (itemValue) => {
+    setSelectValue(itemValue)
+    handleOnSelect(itemValue)
+  }
 
   return (
-    <View style={select.wrapper(warning)}>
-      <Text style={select.label(warning)}>{label}</Text>
-      <View style={select.pickerContainer(disabled)}>
+    <View style={squareSelect.wrapper}>
+      <Text style={squareSelect.label}>{label}</Text>
+      <View style={squareSelect.pickerContainer}>
         <Picker
-          style={select.picker}
+          style={squareSelect.picker}
           mode="dropdown"
-          selectedValue={awesome}
-          onValueChange={(itemValue, itemIndex) => setAwesome(itemValue)}
+          selectedValue={selectValue}
+          onValueChange={(itemValue, itemIndex) => handleValueChange(itemValue)}
           dropdownIconColor={Colors.black}
-          enabled={!disabled}
         >
           <Picker.Item key="select-placeholder" label="Select..." value="" />
           {items.map(item => {

@@ -13,11 +13,16 @@ import Auth from '@/Store/System/Auth'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 import { useTheme } from '@/Theme'
-import { SquareButton } from '@/Components'
+import { SquareButton, SquareSelect } from '@/Components'
+import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
-const IndexAuthContainer = props => {
+const IndexAuthContainer = () => {
   // Theme and style elements deconstruction
-  const { Layout, Fonts, Colors } = useTheme()
+  const {
+    Layout,
+    Colors,
+    Containers: { authIndex },
+  } = useTheme()
   const dispatch = useDispatch()
 
   // Local state definition
@@ -42,75 +47,65 @@ const IndexAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
+  /**
+   * Dispatches the login credentials to check validity
+   */
   const handleLogin = () => {
     dispatch(Auth.action({ email, password }))
   }
 
+  /**
+   * Dispatches the theme change action to the store and toggles the local enabled state
+   * @param theme
+   * @param darkMode
+   */
   const changeTheme = ({ newTheme, darkMode }) => {
     dispatch(ChangeTheme.action({ theme: newTheme, darkMode }))
     setIsEnabled(!isEnabled)
   }
 
+  const updateEnvironmentStore = newEnvironment => {}
+
+  const environments = [
+    { label: 'Test', value: 'test' },
+    { label: 'Staging', value: 'staging' },
+    { label: 'Production', value: 'production' },
+  ]
+
   return (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
-      <Text style={[Fonts.textColorText, Fonts.titleSmall]}>
-        Authentication
-      </Text>
-      <View style={[Layout.colVCenter, { width: 300 }]}>
+      <Text style={authIndex.header}>Authentication</Text>
+      <View style={authIndex.formWrapper}>
         <TextInput
-          style={{
-            backgroundColor: 'white',
-            height: 40,
-            width: 300,
-            marginTop: 12,
-            borderWidth: 1,
-            color: 'black',
-            paddingHorizontal: 10,
-          }}
+          style={authIndex.input}
           onChangeText={setEmail}
           value={email}
           autoCompleteType="email"
           placeholder="email"
         />
         <TextInput
-          style={{
-            backgroundColor: 'white',
-            height: 40,
-            width: 300,
-            marginVertical: 12,
-            borderWidth: 1,
-            color: 'black',
-            paddingHorizontal: 10,
-          }}
+          style={authIndex.input}
           onChangeText={setPassword}
           value={password}
           secureTextEntry
           autoCompleteType="password"
           placeholder="password"
         />
-        <SquareButton
-          content="Login"
-          filled
-          handlePress={handleLogin}
-          disabled={authLoading}
-        />
-        {authLoading && <ActivityIndicator size="large" color="#0000ff" />}
+        <View style={authIndex.buttonWrapper}>
+          <SquareButton content="Login" filled handlePress={handleLogin} disabled={authLoading}/>
+        </View>
+        {authLoading && (
+          <ActivityIndicator size="large" color="#0000ff" />
+        )}
         {newSessionError && (
-          <Text style={Fonts.textRegular}>{newSessionError.message}</Text>
+          <Text style={authIndex.errorMessage}>{newSessionError.message}</Text>
         )}
         {registerError && (
           <Text style={Fonts.textRegular}>{registerError.message}</Text>
         )}
 
-        <View
-          style={{
-            marginTop: 20,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ color: Colors.text }}>Dark mode</Text>
+        <View style={authIndex.switchWrapper}>
+          <Text style={authIndex.switchLabel}>Dark mode</Text>
           <Switch
             trackColor={{ false: '#767577', true: '#f4f3f4' }}
             thumbColor={isEnabled ? Colors.primary : '#f4f3f4'}
@@ -120,6 +115,12 @@ const IndexAuthContainer = props => {
             value={isEnabled}
           />
         </View>
+
+        <SquareSelect
+          label="Environment"
+          items={environments}
+          handleOnSelect={updateEnvironmentStore}
+        />
       </View>
     </Animated.View>
   )

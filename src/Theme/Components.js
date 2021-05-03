@@ -8,6 +8,7 @@ import roundedButtonStyles from './components/RoundedButton.style'
 import checkboxStyles from './components/Checkbox.style'
 import booleanButtonStyles from './components/BooleanButtons.style'
 import selectStyles from './components/Select.style'
+import squareSelectStyles from './components/SquareSelect.style'
 import sectionHeaderStyles from './components/SectionHeader.style'
 import infoStyles from './components/Info.style'
 /**
@@ -24,5 +25,6 @@ export default function (props) {
     select: selectStyles(props),
     sectionHeader: sectionHeaderStyles(props),
     info: infoStyles(props),
+    squareSelect: squareSelectStyles(props),
   }
 }
