@@ -10,7 +10,5 @@ export default async ({ json_version }) => {
     mac_address: macAddress,
   })
 
-  console.log('response', response)
-
   return response.data
 }

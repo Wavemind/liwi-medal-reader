@@ -672,6 +672,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.2.0":
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
+  integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.0.0", "@babel/template@^7.12.13", "@babel/template@^7.3.3":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.12.13.tgz#530265be8a2589dbb37523844c5bcb55947fb327"
@@ -750,6 +757,20 @@
   integrity sha512-tFJlT47db0kMqVm3H4nQYgn6Pwg10GTZHb1pwmSiv1K4ks6drQOtfEF5ZnPjkvC+y4/bUPHK+bc87QvLcL+WMw==
   dependencies:
     "@hapi/hoek" "^9.0.0"
+
+"@haskkor/react-native-pincode@^1.22.6":
+  version "1.22.6"
+  resolved "https://registry.yarnpkg.com/@haskkor/react-native-pincode/-/react-native-pincode-1.22.6.tgz#45d4687e49f32271eb074537a67bf580265b3cad"
+  integrity sha512-gfTl+MLyd4yvoDxyMlQdS31EU7kw89CYnsixK0sDvYthhH+5Cw1zePwxDLGQefOouOvI3FzgiI7s4AiS3iU2Zg==
+  dependencies:
+    "@react-native-community/async-storage" "^1.7.1"
+    d3-ease "^1.0.3"
+    lodash "^4.17.5"
+    react-move "^2.7.0"
+    react-native-easy-grid "^0.2.2"
+    react-native-keychain "^6.1.1"
+    react-native-touch-id "^4.4.1"
+    react-native-vector-icons "^7.0.0"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -949,6 +970,13 @@
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.14.1.tgz#3c2ff2b1a312df3b1c809a60fa88665e50a095b8"
   integrity sha512-UkLUox2q5DKNYB6IMUzsuwrTJeXGLySvtQlnrqd3fd+96JErCT4X3xD+W1cvQjes0nm0LbaELbwObKc+Tea7wA==
+  dependencies:
+    deep-assign "^3.0.0"
+
+"@react-native-community/async-storage@^1.7.1":
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
+  integrity sha512-70WGaH3PKYASi4BThuEEKMkyAgE9k7VytBqmgPRx3MzJx9/MkspwqJGmn3QLCgHLIFUgF1pit2mWICbRJ3T3lg==
   dependencies:
     deep-assign "^3.0.0"
 
@@ -2382,6 +2410,28 @@ cycle@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/cycle/-/cycle-1.0.3.tgz#21e80b2be8580f98b468f379430662b046c34ad2"
   integrity sha1-IegLK+hYD5i0aPN5QwZisEbDStI=
+
+d3-color@1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.4.1.tgz#c52002bf8846ada4424d55d97982fef26eb3bc8a"
+  integrity sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q==
+
+d3-ease@^1.0.3:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.7.tgz#9a834890ef8b8ae8c558b2fe55bd57f5993b85e2"
+  integrity sha512-lx14ZPYkhNx0s/2HX5sLFUI3mbasHjSSpwO/KaaNACweVwxUruKyWVcb293wMv1RqTPZyZ8kSZ2NogUZNcLOFQ==
+
+d3-interpolate@^1.3.2:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.4.0.tgz#526e79e2d80daa383f9e0c1c1c7dcc0f0583e987"
+  integrity sha512-V9znK0zc3jOPV4VD2zZn0sDhZU3WAE2bmlxdIwwQPPzPjvyLkd8B3JUVdS1IDUFDkWZ72c9qnv1GK2ZagTZ8EA==
+  dependencies:
+    d3-color "1"
+
+d3-timer@^1.0.9:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-1.0.10.tgz#dfe76b8a91748831b13b6d9c793ffbd508dd9de5"
+  integrity sha512-B1JDm0XDaQC+uvo4DT79H0XmBskgS3l6Ve+1SBCfxgmtIb1AVrPIoqd+nPSv+loMX8szQ0sVUhGngL7D5QPiXw==
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -4652,7 +4702,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.yarnpkg.com/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.7.0:
+lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.17.5, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -5684,7 +5734,7 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2:
+prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5757,6 +5807,22 @@ react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-lifecycles-compat@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-move@^2.7.0:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/react-move/-/react-move-2.9.1.tgz#966a1e7312795b03aa6b4834f9392a3bfbbe2ca0"
+  integrity sha512-5qKYsJrKKpSypEaaYyR2HBbBgX65htRqKDa8o5OGDkq2VfklmTCbLawtYFpdmcJRqbz4jCYpzo2Rrsazq9HA8Q==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    d3-interpolate "^1.3.2"
+    d3-timer "^1.0.9"
+    prop-types "^15.6.2"
+    react-lifecycles-compat "^3.0.4"
+
 react-native-codegen@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.6.tgz#b3173faa879cf71bfade8d030f9c4698388f6909"
@@ -5770,6 +5836,13 @@ react-native-device-info@^8.1.2:
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.1.2.tgz#142f2f05e27689858d5aa73dae36f0c37c965031"
   integrity sha512-5jaQBL42H3g8+KXkFlIy2lMyKyPPETI8eUYgEg7JylW7rltkMPngn/wDnupgP4NhDYI+fBdMRGdRjEeetFr0IQ==
+
+react-native-easy-grid@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.2.2.tgz#f0be33620be1ebe2d2295918eb58b0a27e8272ab"
+  integrity sha512-MlYrNIldnEMKn6TVatQN1P64GoVlwGIuz+8ncdfJ0Wq/xtzUkQwlil8Uksyp7MhKfENE09MQnGNcba6Mx3oSAA==
+  dependencies:
+    lodash "^4.17.15"
 
 react-native-flash-message@^0.1.23:
   version "0.1.23"
@@ -5800,6 +5873,11 @@ react-native-iphone-x-helper@^1.3.0:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
 
+react-native-keychain@^6.1.1:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-6.2.0.tgz#8f4cff503aad367141db5aea0189ead9240c28ff"
+  integrity sha512-U6fnOQRJPq+c0Abl+FoYy9v0H3kQU587tMamU/o+MoBSUScFLE3DQpkyT1PW4NF5IObgiGuqQdmjC2KgtBpjGA==
+
 react-native-keychain@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-7.0.0.tgz#11fd559fe86ae89f934b8c75ae228247deed5494"
@@ -5824,6 +5902,25 @@ react-native-screens@^2.18.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.18.1.tgz#47b9991c6f762d00d0ed3233e5283d523e859885"
   integrity sha512-r5WZLpmx2hHjC1RgMdPq5YpSU9tEhBpUaZ5M1SUtNIONyiLqQVxabhRCINdebIk4depJiIl7yw2Q85zJyeX6fw==
+
+react-native-touch-id@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-touch-id/-/react-native-touch-id-4.4.1.tgz#8b1bb2d04c30bac36bb9696d2d723e719c4a8b08"
+  integrity sha512-1jTl8fC+0fxvqegy/XXTyo6vMvPhjzkoDdaqoYZx0OH8AT250NuXnNPyKktvigIcys3+2acciqOeaCall7lrvg==
+
+react-native-vector-icons@^7.0.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-7.1.0.tgz#145487d617b2a81d395d2cf64e6e065fcab3a454"
+  integrity sha512-V2a1zJ4i+kS8O4j183gIwX14St9AxxXabxwYpFBgRhvr2NDXyFcjHDEAgrOYYlt2W57e20aN1tBDU/I+wn9WtQ==
+  dependencies:
+    lodash.frompairs "^4.0.1"
+    lodash.isequal "^4.5.0"
+    lodash.isstring "^4.0.1"
+    lodash.omit "^4.5.0"
+    lodash.pick "^4.4.0"
+    lodash.template "^4.5.0"
+    prop-types "^15.7.2"
+    yargs "^15.0.2"
 
 react-native-vector-icons@^8.1.0:
   version "8.1.0"
@@ -7426,7 +7523,7 @@ yargs-parser@^20.2.2:
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.7.tgz#61df85c113edfb5a7a4e36eb8aa60ef423cbc90a"
   integrity sha512-FiNkvbeHzB/syOjIUxFDCnhSfzAL8R5vs40MgLFBorXACCOAEaWu0gRZl14vG8MR9AOJIZbmkjhusqBYZ3HTHw==
 
-yargs@^15.1.0, yargs@^15.3.1, yargs@^15.4.1:
+yargs@^15.0.2, yargs@^15.1.0, yargs@^15.3.1, yargs@^15.4.1:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.4.1.tgz#0d87a16de01aee9d8bec2bfbf74f67851730f4f8"
   integrity sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==
