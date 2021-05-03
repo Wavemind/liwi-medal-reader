@@ -13,7 +13,7 @@ import Auth from '@/Store/System/Auth'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 import { useTheme } from '@/Theme'
-import { SquareButton } from '@/Components'
+import { SquareButton, SquareSelect } from '@/Components'
 
 const IndexAuthContainer = props => {
   // Theme and style elements deconstruction
@@ -50,6 +50,16 @@ const IndexAuthContainer = props => {
     dispatch(ChangeTheme.action({ theme: newTheme, darkMode }))
     setIsEnabled(!isEnabled)
   }
+
+  const updateEnvironmentStore = (newEnvironment) => {
+
+  }
+
+  const environments = [
+    { label: 'Test', value: 'test' },
+    { label: 'Staging', value: 'staging' },
+    { label: 'Production', value: 'production' },
+  ]
 
   return (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
@@ -120,6 +130,8 @@ const IndexAuthContainer = props => {
             value={isEnabled}
           />
         </View>
+
+        <SquareSelect label="Environment" items={environments} handleOnSelect={updateEnvironmentStore}/>
       </View>
     </Animated.View>
   )

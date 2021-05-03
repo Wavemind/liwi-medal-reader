@@ -1,10 +1,11 @@
+import { PermissionsAndroid } from 'react-native'
 import {
   buildAsyncState,
   buildAsyncActions,
   buildAsyncReducers,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import { navigateAndSimpleReset } from '@/Navigators/Root'
+import { navigateAndSimpleReset, navigate } from '@/Navigators/Root'
 import DefaultTheme from '@/Store/Theme/DefaultTheme'
 
 export default {
@@ -17,8 +18,26 @@ export default {
     // Set default theme
     await dispatch(DefaultTheme.action({ theme: 'default', darkMode: null }))
 
-    // Navigate and reset to the main navigator
-    navigateAndSimpleReset('Main')
+    // Check whether the right permissions have been granted
+    // If so, navigate to the main navigator and reset
+    // If not, redirect to the access denied page
+    try {
+      PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      ]).then(res => {
+        if (Object.values(res).every(result => result === 'granted')) {
+          navigateAndSimpleReset('Auth')
+        } else if (Object.values(res).some(result => result === 'never_ask_again')) {
+          navigate('PermissionsRequired')
+        }
+      })
+    } catch (err) {
+      console.warn(err)
+    }
   }),
   reducers: buildAsyncReducers({ itemKey: null }), // We do not want to modify some item by default
 }
