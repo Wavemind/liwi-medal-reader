@@ -23,9 +23,8 @@ export default {
       if (isFulfilled(fetchOneHealthFacility)) {
         // Register device in medAl-creator
         const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
-
         if (isFulfilled(fetchOneAlgorithm)) {
-          // Navigate and reset to the main navigator
+          // Navigate and reset to Pin container
           navigateAndSimpleReset('Pin')
         }
       }

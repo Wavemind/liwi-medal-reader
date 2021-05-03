@@ -21,7 +21,7 @@ export default {
       const deviceRegister = await dispatch(DeviceRegister.action({}))
 
       if (isFulfilled(deviceRegister)) {
-        // Navigate and reset to the main navigator
+        // Navigate and reset to Synchronization container
         navigateAndSimpleReset('Synchronization')
       }
     }
