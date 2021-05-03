@@ -7,6 +7,7 @@ import Images from '@/Theme/Images'
 import Layout from '@/Theme/Layout'
 import Common from '@/Theme/Common'
 import Components from '@/Theme/Components'
+import Containers from '@/Theme/Containers'
 import * as DefaultVariables from '@/Theme/Variables'
 import themes from '@/Theme/themes'
 
@@ -39,6 +40,12 @@ export default function () {
     Images: Images(themeVariables),
     Layout: Layout(themeVariables),
     Components: Components({
+      ...themeVariables,
+      Layout: Layout(themeVariables),
+      Gutters: Gutters(themeVariables),
+      Fonts: Fonts(themeVariables),
+    }),
+    Containers: Containers({
       ...themeVariables,
       Layout: Layout(themeVariables),
       Gutters: Gutters(themeVariables),
