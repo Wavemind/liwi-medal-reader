@@ -15,6 +15,7 @@ import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 
 import { useTheme } from '@/Theme'
 import { SquareButton, SquareSelect } from '@/Components'
+import Loader from '@/Components/Loader'
 
 const IndexAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -80,7 +81,9 @@ const IndexAuthContainer = () => {
     { label: 'Production', value: 'production' },
   ]
 
-  return (
+  return authLoading ? (
+    <Loader />
+  ) : (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
       <Text style={authIndex.header}>Authentication</Text>
       <View style={authIndex.formWrapper}>
