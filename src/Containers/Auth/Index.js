@@ -15,6 +15,7 @@ import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 
 import { useTheme } from '@/Theme'
 import { SquareButton, SquareSelect } from '@/Components'
+import Loader from '@/Components/Loader'
 
 const IndexAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -80,7 +81,9 @@ const IndexAuthContainer = () => {
     { label: 'Production', value: 'production' },
   ]
 
-  return (
+  return authLoading ? (
+    <Loader />
+  ) : (
     <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
       <Text style={authIndex.header}>Authentication</Text>
       <View style={authIndex.formWrapper}>
@@ -100,11 +103,14 @@ const IndexAuthContainer = () => {
           placeholder="password"
         />
         <View style={authIndex.buttonWrapper}>
-          <SquareButton content="Login" filled handlePress={handleLogin} disabled={authLoading}/>
+          <SquareButton
+            content="Login"
+            filled
+            handlePress={handleLogin}
+            disabled={authLoading}
+          />
         </View>
-        {authLoading && (
-          <ActivityIndicator size="large" color="#0000ff" />
-        )}
+        {authLoading && <ActivityIndicator size="large" color="#0000ff" />}
         {newSessionError && (
           <Text style={authIndex.errorMessage}>{newSessionError.message}</Text>
         )}
