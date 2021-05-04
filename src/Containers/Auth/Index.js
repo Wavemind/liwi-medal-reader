@@ -4,7 +4,6 @@ import {
   Text,
   Animated,
   TextInput,
-  ActivityIndicator,
   Switch,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'

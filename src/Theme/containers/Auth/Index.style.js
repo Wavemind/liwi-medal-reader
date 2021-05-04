@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, Layout, Gutters, Fonts } = props
+  const { Colors, Layout, Fonts } = props
 
   const loginWidth = 400
 
