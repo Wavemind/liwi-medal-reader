@@ -7,7 +7,7 @@ import { ClinicianSelectionAuthContainer } from '@/Containers'
 
 const Stack = createStackNavigator()
 
-const Auth = () => {
+const AuthNavigator = () => {
   return (
     <Stack.Navigator headerMode="none" mode="modal">
       <Stack.Screen name="Auth" component={IndexAuthContainer} />
@@ -24,4 +24,4 @@ const Auth = () => {
   )
 }
 
-export default Auth
+export default AuthNavigator

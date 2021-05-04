@@ -5,8 +5,13 @@ import {
   buildAsyncReducers,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
-import { navigateAndSimpleReset, navigate } from '@/Navigators/Root'
+import {
+  navigateAndSimpleReset,
+  navigate,
+  navigateAndReset,
+} from '@/Navigators/Root'
 import DefaultTheme from '@/Store/Theme/DefaultTheme'
+import { store } from '@/Store'
 
 export default {
   initialState: buildAsyncState(),
@@ -17,6 +22,17 @@ export default {
 
     // Set default theme
     await dispatch(DefaultTheme.action({ theme: 'default', darkMode: null }))
+
+    // Check auth status
+    const state = store.getState()
+    const isAuthenticated = state.user.item.hasOwnProperty('id')
+    const deviceRegistered = state.device.item.hasOwnProperty('id')
+    const healthFacilityAssociated = state.healthFacility.item.hasOwnProperty(
+      'id',
+    )
+    const clinicianChoosed = state.healthFacility.clinician.hasOwnProperty('id')
+    console.log(state)
+    let route = {}
 
     // Check whether the right permissions have been granted
     // If so, navigate to the main navigator and reset
@@ -30,9 +46,21 @@ export default {
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       ]).then(res => {
         if (Object.values(res).every(result => result === 'granted')) {
-          navigateAndSimpleReset('Auth')
-        } else if (Object.values(res).some(result => result === 'never_ask_again')) {
-          navigate('PermissionsRequired')
+          if (!isAuthenticated || !deviceRegistered) {
+            route = 'Auth'
+          } else if (!healthFacilityAssociated) {
+            route = 'Synchronization'
+          } else if (!clinicianChoosed) {
+            route = 'ClinicianSelection'
+          } else {
+            route = 'Pin'
+          }
+
+          navigateAndReset([{ name: 'Auth', params: { screen: route } }])
+        } else if (
+          Object.values(res).some(result => result === 'never_ask_again')
+        ) {
+          navigateAndSimpleReset('PermissionsRequired')
         }
       })
     } catch (err) {

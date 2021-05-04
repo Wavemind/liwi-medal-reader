@@ -17,6 +17,8 @@ const PinAuthContainer = props => {
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
+  const state = useSelector(state => state)
+  console.log('algorithm', state)
   const algorithmFetchOneLoading = useSelector(
     state => state.algorithm.fetchOne.loading,
   )
@@ -39,7 +41,7 @@ const PinAuthContainer = props => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
-        navigateAndSimpleReset('ClinicianSelection')
+        navigateAndSimpleReset('Home')
       }
     } else {
       setStatus('failure')

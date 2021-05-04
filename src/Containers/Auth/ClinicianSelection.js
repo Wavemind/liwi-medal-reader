@@ -3,6 +3,7 @@ import { View, Text, Animated, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 
 const ClinicianSelectionAuthContainer = props => {
@@ -22,8 +23,9 @@ const ClinicianSelectionAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
-  const handleClinician = clinician => {
-    dispatch(ChangeClinician.action({ clinician }))
+  const handleClinician = async clinician => {
+    await dispatch(ChangeClinician.action({ clinician }))
+    navigateAndSimpleReset('Pin')
   }
 
   return (
