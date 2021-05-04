@@ -81,12 +81,17 @@ const IndexAuthContainer = () => {
     { label: 'Production', value: 'production' },
   ]
 
-  return authLoading ? (
-    <Loader />
-  ) : (
-    <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
-      <Text style={authIndex.header}>Authentication</Text>
+  return (
+    <Animated.View
+      style={[
+        Layout.fill,
+        Layout.center,
+        Layout.justifyContentBetween,
+        { opacity: fadeAnim },
+      ]}
+    >
       <View style={authIndex.formWrapper}>
+        <Text style={authIndex.header}>Authentication</Text>
         <TextInput
           style={authIndex.input}
           onChangeText={setEmail}
@@ -102,6 +107,12 @@ const IndexAuthContainer = () => {
           autoCompleteType="password"
           placeholder="password"
         />
+        <SquareSelect
+          label="Environment"
+          items={environments}
+          handleOnSelect={updateEnvironment}
+          value={environment}
+        />
         <View style={authIndex.buttonWrapper}>
           <SquareButton
             content="Login"
@@ -110,16 +121,19 @@ const IndexAuthContainer = () => {
             disabled={authLoading}
           />
         </View>
-        {authLoading && <ActivityIndicator size="large" color="#0000ff" />}
         {newSessionError && (
           <Text style={authIndex.errorMessage}>{newSessionError.message}</Text>
         )}
         {registerError && (
           <Text style={Fonts.textRegular}>{registerError.message}</Text>
         )}
+      </View>
 
-        <View style={authIndex.switchWrapper}>
-          <Text style={authIndex.switchLabel}>Dark mode</Text>
+      {authLoading ? <Loader height={200} /> : null}
+
+      <View style={authIndex.switchOuterWrapper}>
+        <Text style={authIndex.switchLabel}>Dark mode</Text>
+        <View style={authIndex.switchInnerWrapper}>
           <Switch
             trackColor={{ false: '#767577', true: '#f4f3f4' }}
             thumbColor={isEnabled ? Colors.primary : '#f4f3f4'}
@@ -129,13 +143,6 @@ const IndexAuthContainer = () => {
             value={isEnabled}
           />
         </View>
-
-        <SquareSelect
-          label="Environment"
-          items={environments}
-          handleOnSelect={updateEnvironment}
-          value={environment}
-        />
       </View>
     </Animated.View>
   )

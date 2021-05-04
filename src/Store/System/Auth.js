@@ -22,7 +22,7 @@ export default {
 
       if (isFulfilled(deviceRegister)) {
         // Navigate and reset to Synchronization container
-        navigateAndSimpleReset('Synchronization')
+        // navigateAndSimpleReset('Synchronization')
       }
     }
   }),

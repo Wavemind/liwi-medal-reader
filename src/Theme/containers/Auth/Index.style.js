@@ -3,16 +3,18 @@ import { StyleSheet } from 'react-native'
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
 
-  const loginWidth = 300
+  const loginWidth = 400
 
   return StyleSheet.create({
     header: {
       ...Fonts.textColorText,
       ...Fonts.titleSmall,
+      marginBottom: 130,
     },
     formWrapper: {
       ...Layout.colVCenter,
       width: loginWidth,
+      marginTop: 100,
     },
     input: {
       backgroundColor: Colors.white,
@@ -24,18 +26,22 @@ export default function (props) {
       paddingHorizontal: 10,
     },
     buttonWrapper: {
-      marginTop: 12,
+      marginTop: 30,
     },
     errorMessage: {
       ...Fonts.textRegular,
     },
-    switchWrapper: {
-      marginTop: 20,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
+    switchOuterWrapper: {
+      ...Layout.rowHCenter,
+      ...Layout.justifyContentCenter,
+      marginBottom: 100,
+    },
+    switchInnerWrapper: {
+      ...Layout.alignItemsCenter,
     },
     switchLabel: {
+      ...Fonts.textSmall,
+      marginRight: 30,
       color: Colors.text,
     },
   })
