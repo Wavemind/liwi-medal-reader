@@ -3,7 +3,10 @@
  *
  * Use it to define generic component styles (e.g. the default text styles, default button styles...).
  */
-import authIndexStyles from './containers/Auth/Index.style'
+import authStyles from './containers/Auth/Auth.style'
+import authLoginStyles from './containers/Auth/Login.style'
+import authSynchronizationStyles from './containers/Auth/Synchronization.style'
+import authPinStyles from './containers/Auth/Pin.style'
 
 /**
  *
@@ -12,6 +15,9 @@ import authIndexStyles from './containers/Auth/Index.style'
  */
 export default function (props) {
   return {
-    authIndex: authIndexStyles(props),
+    auth: authStyles(props),
+    authLogin: authLoginStyles(props),
+    authSynchronization: authSynchronizationStyles(props),
+    authPin: authPinStyles(props),
   }
 }

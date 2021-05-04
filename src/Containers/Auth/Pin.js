@@ -1,29 +1,36 @@
+/**
+ * The external imports
+ */
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, Animated, ActivityIndicator } from 'react-native'
+import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 import PINCode from '@haskkor/react-native-pincode'
 
+/**
+ * The internal imports
+ */
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
+import ToggleSwitch from '@/Components/ToggleSwitch'
 
-const PinAuthContainer = props => {
+const PinAuthContainer = () => {
   // Theme and style elements deconstruction
-  const { Layout, Fonts } = useTheme()
-  const dispatch = useDispatch()
+  const {
+    Containers: { auth, authPin },
+  } = useTheme()
 
   // Local state definition
+  const [status, setStatus] = useState('initial')
+
+  // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
-  const algorithmFetchOneLoading = useSelector(
-    state => state.algorithm.fetchOne.loading,
-  )
-  const algorithmFetchOneError = useSelector(
-    state => state.algorithm.fetchOne.error,
-  )
-  const [status, setStatus] = useState('initial')
+  const algorithmFetchOneError = useSelector(state => state.algorithm.fetchOne.error)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -33,6 +40,11 @@ const PinAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
+  /**
+   * Manages the pin entry and navigation if pin is correct
+   * @param pinCode
+   * @returns {Promise<void>}
+   */
   const handlePin = async pinCode => {
     if (pinCode === healthFacility.pin_code) {
       const result = await dispatch(
@@ -47,50 +59,47 @@ const PinAuthContainer = props => {
   }
 
   return (
-    <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
-      <Text style={[Fonts.textColorText, Fonts.titleSmall]}>Pin</Text>
-      {algorithmFetchOneError && (
-        <Text style={Fonts.textRegular}>{algorithmFetchOneError.message}</Text>
-      )}
-      <View style={[Layout.fill, Layout.center]}>
-        <PINCode
-          passwordLength={healthFacility.pin_code.length}
-          endProcessFunction={handlePin}
-          disableLockScreen
-          status="enter"
-          pinStatus={status}
-          titleComponent={() => (
-            <Text size-auto style={[Fonts.textColorText, Fonts.textRegular]}>
-              Unlock
-            </Text>
-          )}
-          subtitleComponent={() =>
-            algorithmFetchOneLoading && (
-              <ActivityIndicator size="large" color="#0000ff" />
-            )
-          }
-          storedPin={healthFacility.pin_code}
-          colorCircleButtons="#757575"
-          colorPassword="#db473e"
-          stylePinCodeButtonNumber="#FFF"
-          numbersButtonOverlayColor="#db473e"
-          stylePinCodeDeleteButtonColorShowUnderlay="#db473e"
-          stylePinCodeDeleteButtonColorHideUnderlay="#757575"
-          stylePinCodeColorTitle="#db473e"
-          stylePinCodeDeleteButtonSize={30}
-          stylePinCodeDeleteButtonText={[Fonts.textSmall]}
-          stylePinCodeRowButtons={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 150,
-          }}
-          stylePinCodeColumnButtons={{}}
-          stylePinCodeMainContainer={{}}
-          stylePinCodeColumnDeleteButton={{}}
-          stylePinCodeButtonCircle={{}}
-        />
-      </View>
-    </Animated.View>
+    <View style={auth.wrapper}>
+      <Animated.View style={auth.animation(fadeAnim)}>
+        <Text style={auth.header}>Pin</Text>
+        {algorithmFetchOneError && (
+          <Text style={auth.errorMessage}>
+            {algorithmFetchOneError.message}
+          </Text>
+        )}
+        <View style={authPin.wrapper}>
+          <PINCode
+            passwordLength={healthFacility.pin_code.length}
+            endProcessFunction={handlePin}
+            disableLockScreen
+            status="enter"
+            pinStatus={status}
+            titleComponent={() => (
+              <Text size-auto style={authPin.title}>
+                Unlock
+              </Text>
+            )}
+            storedPin={healthFacility.pin_code}
+            colorCircleButtons="#757575"
+            colorPassword="#db473e"
+            stylePinCodeButtonNumber="#FFF"
+            numbersButtonOverlayColor="#db473e"
+            stylePinCodeDeleteButtonColorShowUnderlay="#db473e"
+            stylePinCodeDeleteButtonColorHideUnderlay="#757575"
+            stylePinCodeColorTitle="#db473e"
+            stylePinCodeDeleteButtonSize={30}
+            stylePinCodeDeleteButtonText={authPin.delete}
+            stylePinCodeRowButtons={authPin.codeButtons}
+            stylePinCodeColumnButtons={{}}
+            stylePinCodeMainContainer={{}}
+            stylePinCodeColumnDeleteButton={{}}
+            stylePinCodeButtonCircle={{}}
+          />
+        </View>
+
+        <ToggleSwitch label="Dark mode" />
+      </Animated.View>
+    </View>
   )
 }
 

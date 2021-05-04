@@ -1,5 +1,5 @@
 // Auth
-export { default as IndexAuthContainer } from './Auth/Index'
+export { default as LoginAuthContainer } from './Auth/Login'
 export { default as SynchronizationAuthContainer } from './Auth/Synchronization'
 export { default as PinAuthContainer } from './Auth/Pin'
 

@@ -1,29 +1,34 @@
+/**
+ * The external imports
+ */
 import React, { useEffect, useRef } from 'react'
-import { View, Text, Animated, ActivityIndicator } from 'react-native'
+import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
+/**
+ * The internal imports
+ */
 import InitializeVersion from '@/Store/System/InitializeVersion'
-
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
+import Loader from '@/Components/Loader'
+import ToggleSwitch from '@/Components/ToggleSwitch'
 
-const SynchronizationAuthContainer = props => {
+const SynchronizationAuthContainer = () => {
   // Theme and style elements deconstruction
-  const { Layout, Fonts } = useTheme()
-  const dispatch = useDispatch()
+  const {
+    Containers: { authSynchronization, auth },
+  } = useTheme()
 
-  // Local state definition
-  const initializeVersionLoading = useSelector(
-    state => state.system.initializeVersion.loading,
-  )
-  const healthFacilityFetchOneError = useSelector(
-    state => state.healthFacility.fetchOne.error,
-  )
-  const algorithmFetchOneError = useSelector(
-    state => state.algorithm.fetchOne.error,
-  )
+  // Get values from the store
+  const initializeVersionLoading = useSelector(state => state.system.initializeVersion.loading)
+  const healthFacilityFetchOneError = useSelector(state => state.healthFacility.fetchOne.error)
+  const algorithmFetchOneError = useSelector(state => state.algorithm.fetchOne.error)
 
+  // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -33,37 +38,45 @@ const SynchronizationAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
+  /**
+   * Manages the synchronization action
+   */
   const handleSynchronization = () => {
     dispatch(InitializeVersion.action({ json_version: null }))
   }
 
   return (
-    <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
-      <Text style={[Fonts.textColorText, Fonts.titleSmall]}>
-        Synchronization
-      </Text>
-      <View style={[Layout.colVCenter, { width: 300 }]}>
-        <SquareButton
-          content="Synchronize"
-          filled
-          handlePress={handleSynchronization}
-          disabled={initializeVersionLoading}
-        />
-        {initializeVersionLoading && (
-          <ActivityIndicator size="large" color="#0000ff" />
-        )}
-        {healthFacilityFetchOneError && (
-          <Text style={Fonts.textRegular}>
-            {healthFacilityFetchOneError.message}
-          </Text>
-        )}
-        {algorithmFetchOneError && (
-          <Text style={Fonts.textRegular}>
-            {algorithmFetchOneError.message}
-          </Text>
-        )}
-      </View>
-    </Animated.View>
+    <View style={auth.wrapper}>
+      <Animated.View style={auth.animation(fadeAnim)}>
+        <Text style={auth.header}>Synchronization</Text>
+
+        <View style={authSynchronization.buttonWrapper}>
+          {initializeVersionLoading ? (
+            <Loader height={200} />
+          ) : (
+            <SquareButton
+              content="Synchronize"
+              filled
+              handlePress={handleSynchronization}
+              disabled={initializeVersionLoading}
+            />
+          )}
+
+          {healthFacilityFetchOneError && (
+            <Text style={auth.errorMessage}>
+              {healthFacilityFetchOneError.message}
+            </Text>
+          )}
+          {algorithmFetchOneError && (
+            <Text style={auth.errorMessage}>
+              {algorithmFetchOneError.message}
+            </Text>
+          )}
+        </View>
+
+        <ToggleSwitch label="Dark mode" />
+      </Animated.View>
+    </View>
   )
 }
 
