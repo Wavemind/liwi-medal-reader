@@ -100,11 +100,14 @@ const IndexAuthContainer = () => {
           placeholder="password"
         />
         <View style={authIndex.buttonWrapper}>
-          <SquareButton content="Login" filled handlePress={handleLogin} disabled={authLoading}/>
+          <SquareButton
+            content="Login"
+            filled
+            handlePress={handleLogin}
+            disabled={authLoading}
+          />
         </View>
-        {authLoading && (
-          <ActivityIndicator size="large" color="#0000ff" />
-        )}
+        {authLoading && <ActivityIndicator size="large" color="#0000ff" />}
         {newSessionError && (
           <Text style={authIndex.errorMessage}>{newSessionError.message}</Text>
         )}

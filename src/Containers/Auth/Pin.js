@@ -39,7 +39,7 @@ const PinAuthContainer = props => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
-        navigateAndSimpleReset('Synchronization')
+        navigateAndSimpleReset('ClinicianSelection')
       }
     } else {
       setStatus('failure')
