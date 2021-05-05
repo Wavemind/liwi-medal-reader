@@ -10,14 +10,18 @@ export default function (props) {
     },
     title: {
       ...Fonts.textColorText,
-      ...Fonts.textRegular,
+      ...Fonts.textSmall,
     },
     delete: {
       ...Fonts.textSmall,
     },
     codeButtons: {
       ...Layout.center,
-      height: 150,
+      height: 80,
+    },
+    secondTitle: {
+      ...Fonts.textSmall,
+      fontWeight: 'normal',
     },
   })
 }

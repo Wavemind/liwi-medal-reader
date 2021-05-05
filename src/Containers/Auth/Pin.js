@@ -2,10 +2,11 @@
  * The external imports
  */
 import React, { useEffect, useState, useRef } from 'react'
+import PINCode from '@haskkor/react-native-pincode'
 import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
-import PINCode from '@haskkor/react-native-pincode'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -14,9 +15,11 @@ import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import ToggleSwitch from '@/Components/ToggleSwitch'
+import Loader from '@/Components/Loader'
 
 const PinAuthContainer = () => {
   // Theme and style elements deconstruction
+  const { t } = useTranslation()
   const {
     Containers: { auth, authPin },
   } = useTheme()
@@ -27,8 +30,14 @@ const PinAuthContainer = () => {
   // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
+  const currentClinician = useSelector(state => state.healthFacility.clinician)
   const algorithm = useSelector(state => state.algorithm.item)
-  const algorithmFetchOneError = useSelector(state => state.algorithm.fetchOne.error)
+  const algorithmFetchOneLoading = useSelector(
+    state => state.algorithm.fetchOne.loading,
+  )
+  const algorithmFetchOneError = useSelector(
+    state => state.algorithm.fetchOne.error,
+  )
 
   const dispatch = useDispatch()
 
@@ -61,7 +70,13 @@ const PinAuthContainer = () => {
   return (
     <View style={auth.wrapper}>
       <Animated.View style={auth.animation(fadeAnim)}>
-        <Text style={auth.header}>Pin</Text>
+        <Text style={auth.header}>
+          {currentClinician.first_name} {currentClinician.last_name}
+          {'\n'}
+          <Text style={authPin.secondTitle}>
+            {t(`health_facility.roles.${currentClinician.role}`)}
+          </Text>
+        </Text>
         {algorithmFetchOneError && (
           <Text style={auth.errorMessage}>
             {algorithmFetchOneError.message}
@@ -74,11 +89,15 @@ const PinAuthContainer = () => {
             disableLockScreen
             status="enter"
             pinStatus={status}
-            titleComponent={() => (
-              <Text size-auto style={authPin.title}>
-                Unlock
-              </Text>
-            )}
+            titleComponent={() =>
+              algorithmFetchOneLoading ? (
+                <Loader height={100} />
+              ) : (
+                <Text style={authPin.title}>
+                  {t('containers.auth.pin.unlock')}
+                </Text>
+              )
+            }
             storedPin={healthFacility.pin_code}
             colorCircleButtons="#757575"
             colorPassword="#db473e"
@@ -87,7 +106,7 @@ const PinAuthContainer = () => {
             stylePinCodeDeleteButtonColorShowUnderlay="#db473e"
             stylePinCodeDeleteButtonColorHideUnderlay="#757575"
             stylePinCodeColorTitle="#db473e"
-            stylePinCodeDeleteButtonSize={30}
+            stylePinCodeDeleteButtonSize={35}
             stylePinCodeDeleteButtonText={authPin.delete}
             stylePinCodeRowButtons={authPin.codeButtons}
             stylePinCodeColumnButtons={{}}
@@ -97,7 +116,9 @@ const PinAuthContainer = () => {
           />
         </View>
 
-        <ToggleSwitch label="Dark mode" />
+        <View style={auth.themeToggleWrapper}>
+          <ToggleSwitch label={t('application.theme.dark_mode')} />
+        </View>
       </Animated.View>
     </View>
   )

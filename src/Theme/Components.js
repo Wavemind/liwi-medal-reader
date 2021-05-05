@@ -11,6 +11,7 @@ import selectStyles from './components/Select.style'
 import squareSelectStyles from './components/SquareSelect.style'
 import sectionHeaderStyles from './components/SectionHeader.style'
 import infoStyles from './components/Info.style'
+import clinicianStyles from './components/Clinician.style'
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -26,5 +27,6 @@ export default function (props) {
     sectionHeader: sectionHeaderStyles(props),
     info: infoStyles(props),
     squareSelect: squareSelectStyles(props),
+    clinician: clinicianStyles(props),
   }
 }

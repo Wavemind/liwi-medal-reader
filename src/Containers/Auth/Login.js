@@ -4,6 +4,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, Animated, TextInput } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -11,12 +12,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import Auth from '@/Store/System/Auth'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 import { useTheme } from '@/Theme'
+import { Config } from '@/Config'
 import { SquareButton, SquareSelect } from '@/Components'
 import Loader from '@/Components/Loader'
 import ToggleSwitch from '@/Components/ToggleSwitch'
 
 const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
+  const { t } = useTranslation()
   const {
     Containers: { auth, authLogin },
   } = useTheme()
@@ -61,16 +64,10 @@ const LoginAuthContainer = () => {
     dispatch(ChangeEnvironment.action({ newEnvironment }))
   }
 
-  const environments = [
-    { label: 'Test', value: 'test' },
-    { label: 'Staging', value: 'staging' },
-    { label: 'Production', value: 'production' },
-  ]
-
   return (
     <View style={auth.wrapper}>
       <Animated.View style={auth.animation(fadeAnim)}>
-        <Text style={auth.header}>Authentication</Text>
+        <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
         <View style={authLogin.errorMessageWrapper}>
           {newSessionError && (
             <Text style={auth.errorMessage}>{newSessionError.message}</Text>
@@ -86,7 +83,7 @@ const LoginAuthContainer = () => {
             onChangeText={setEmail}
             value={email}
             autoCompleteType="email"
-            placeholder="email"
+            placeholder={t('containers.auth.login.email')}
           />
           <TextInput
             style={authLogin.input}
@@ -94,17 +91,17 @@ const LoginAuthContainer = () => {
             value={password}
             secureTextEntry
             autoCompleteType="password"
-            placeholder="password"
+            placeholder={t('containers.auth.login.password')}
           />
           <SquareSelect
-            label="Environment"
-            items={environments}
+            label={t('containers.auth.login.environment')}
+            items={Config.ENVIRONNEMENTS}
             handleOnSelect={updateEnvironment}
             value={environment}
           />
           <View style={authLogin.buttonWrapper}>
             <SquareButton
-              content="Login"
+              content={t('actions.login')}
               filled
               handlePress={handleLogin}
               disabled={authLoading}
@@ -117,7 +114,7 @@ const LoginAuthContainer = () => {
         </View>
 
         <View style={auth.themeToggleWrapper}>
-          <ToggleSwitch label="Dark mode" />
+          <ToggleSwitch label={t('application.theme.dark_mode')} />
         </View>
       </Animated.View>
     </View>

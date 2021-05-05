@@ -12,7 +12,7 @@ export default function (props) {
       ...Layout.center,
     },
     errorMessageWrapper: {
-      height: 50,
+      height: 200,
       ...Gutters.largeTMargin,
       ...Layout.center,
     },

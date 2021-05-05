@@ -6,12 +6,11 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
-      ...Layout.colCenter,
-      ...Gutters.hugeVMargin,
+      ...Gutters.hugeTPadding,
+      ...Gutters.largeHPadding,
     },
     animation: fadeAnim => ({
       ...Layout.fill,
-      width: 400,
       opacity: fadeAnim,
     }),
     header: {
@@ -38,7 +37,11 @@ export default function (props) {
     },
     themeToggleWrapper: {
       position: 'absolute',
+      ...Layout.alignItemsCenter,
+      ...Layout.justifyContentCenter,
       bottom: 0,
+      left: 0,
+      right: 0,
     },
   })
 }
