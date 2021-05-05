@@ -1,20 +1,22 @@
+/**
+ * The external imports
+ */
 import React, { useEffect, useRef } from 'react'
-import { View, Text, Animated, TouchableOpacity } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { View, Text, Animated } from 'react-native'
+import { useSelector } from 'react-redux'
 
-import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
+/**
+ * The internal imports
+ */
 import { useTheme } from '@/Theme'
+import Clinician from '@/Components/Clinician'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
   const {
     Layout,
-    Fonts,
-    Gutters,
-    Containers: { authClinicianSelection, auth },
+    Containers: { auth },
   } = useTheme()
-  const dispatch = useDispatch()
 
   // Local state definition
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -28,35 +30,14 @@ const ClinicianSelectionAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
-  const handleClinician = async clinician => {
-    await dispatch(ChangeClinician.action({ clinician }))
-    navigateAndSimpleReset('Pin')
-  }
-
   return (
     <View style={auth.wrapper}>
       <Animated.View style={auth.animation(fadeAnim)}>
-        <Text style={auth.header}>Select clinician</Text>
+        <Text style={auth.header}>{healthFacility.name}</Text>
         <View style={[Layout.fill, Layout.left]}>
-          {healthFacility.medical_staffs.map(clinician => {
-            return (
-              <TouchableOpacity
-                key={clinician.id}
-                style={[
-                  Gutters.tinyVMargin,
-                  Gutters.regularVPadding,
-                  Gutters.regularHPadding,
-                  { elevation: 1 },
-                ]}
-                onPress={() => handleClinician(clinician)}
-              >
-                <Text style={[Fonts.textColorText, Fonts.textSmall]}>
-                  {clinician.first_name} {clinician.last_name}
-                </Text>
-                <Text style={[Fonts.textColorText]}>{clinician.role}</Text>
-              </TouchableOpacity>
-            )
-          })}
+          {healthFacility.medical_staffs.map(clinician => (
+            <Clinician key={clinician.id} currentClinician={clinician} />
+          ))}
         </View>
       </Animated.View>
     </View>
