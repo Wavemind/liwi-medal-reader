@@ -117,7 +117,7 @@ const LoginAuthContainer = () => {
           {authLoading && <Loader height={100} />}
         </View>
 
-        <View style={{ position: 'absolute', bottom: 0 }}>
+        <View style={auth.themeToggleWrapper}>
           <ToggleSwitch label="Dark mode" />
         </View>
       </Animated.View>
