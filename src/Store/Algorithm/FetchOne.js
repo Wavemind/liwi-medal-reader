@@ -21,6 +21,7 @@ export default {
       const algorithm = await fetchOneAlgorithmService(args)
 
       navigate('InfoModal', { type: 'algorithm', algorithm })
+      return algorithm
     },
   ),
   reducers: buildAsyncReducers({

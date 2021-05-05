@@ -2,8 +2,8 @@
  * The external imports
  */
 import React from 'react'
-import { View, Text, Button } from 'react-native'
-import { WebView } from 'react-native-webview';
+import { View } from 'react-native'
+import { WebView } from 'react-native-webview'
 
 /**
  * The internal imports
@@ -15,11 +15,16 @@ const AlgorithmInfo = props => {
   const { algorithm } = props
 
   // Theme and style elements deconstruction
-  const { Containers: { modalAlgorithm} } = useTheme()
+  const {
+    Containers: { modalAlgorithm },
+  } = useTheme()
 
   return (
     <View style={modalAlgorithm.wrapper}>
-      <WebView source={{ html: algorithm.study.description }} scalesPageToFit={false} />
+      <WebView
+        source={{ html: algorithm?.study.description }}
+        scalesPageToFit={false}
+      />
     </View>
   )
 }

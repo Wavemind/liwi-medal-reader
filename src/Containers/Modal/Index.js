@@ -13,9 +13,12 @@ import QuestionInfo from './Components/QuestionInfo'
 
 const IndexModalContainer = props => {
   // Props deconstruction
-  const { navigation, route } = props
-
-  const { type, algorithm } = route.params
+  const {
+    navigation,
+    route: {
+      params: { type, algorithm },
+    },
+  } = props
 
   const defineContent = () => {
     switch (type) {
@@ -36,13 +39,14 @@ const IndexModalContainer = props => {
   return (
     <View style={modalIndex.wrapper}>
       <View style={modalIndex.closeButtonWrapper}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={modalIndex.closeButton} >
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={modalIndex.closeButton}
+        >
           <Text style={modalIndex.closeButtonText}>X</Text>
         </TouchableOpacity>
       </View>
-      <View>
-        {defineContent()}
-      </View>
+      <View>{defineContent()}</View>
     </View>
   )
 }
