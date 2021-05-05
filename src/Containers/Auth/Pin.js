@@ -97,7 +97,9 @@ const PinAuthContainer = () => {
           />
         </View>
 
-        <ToggleSwitch label="Dark mode" />
+        <View style={auth.themeToggleWrapper}>
+          <ToggleSwitch label="Dark mode" />
+        </View>
       </Animated.View>
     </View>
   )

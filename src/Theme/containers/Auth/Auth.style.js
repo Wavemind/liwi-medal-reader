@@ -7,7 +7,8 @@ export default function (props) {
     wrapper: {
       ...Layout.fill,
       ...Layout.colCenter,
-      ...Gutters.hugeVMargin,
+      ...Gutters.hugeTMargin,
+      ...Gutters.regularBMargin,
     },
     animation: fadeAnim => ({
       ...Layout.fill,
@@ -38,7 +39,11 @@ export default function (props) {
     },
     themeToggleWrapper: {
       position: 'absolute',
+      ...Layout.alignItemsCenter,
+      ...Layout.justifyContentCenter,
       bottom: 0,
+      left: 0,
+      right: 0,
     },
   })
 }

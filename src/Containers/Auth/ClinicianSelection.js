@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import Clinician from '@/Components/Clinician'
+import ToggleSwitch from '@/Components/ToggleSwitch'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
@@ -38,6 +39,10 @@ const ClinicianSelectionAuthContainer = props => {
           {healthFacility.medical_staffs.map(clinician => (
             <Clinician key={clinician.id} currentClinician={clinician} />
           ))}
+        </View>
+
+        <View style={auth.themeToggleWrapper}>
+          <ToggleSwitch label="Dark mode" />
         </View>
       </Animated.View>
     </View>
