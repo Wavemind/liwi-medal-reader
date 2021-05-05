@@ -2,7 +2,13 @@
  * The external imports
  */
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, Animated, TextInput } from 'react-native'
+import {
+  View,
+  Text,
+  Animated,
+  TextInput,
+  KeyboardAvoidingView,
+} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -65,7 +71,7 @@ const LoginAuthContainer = () => {
   }
 
   return (
-    <View style={auth.wrapper}>
+    <KeyboardAvoidingView behavior="height" style={auth.wrapper}>
       <Animated.View style={auth.animation(fadeAnim)}>
         <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
         <View style={authLogin.errorMessageWrapper}>
@@ -117,7 +123,7 @@ const LoginAuthContainer = () => {
           <ToggleSwitch label={t('application.theme.dark_mode')} />
         </View>
       </Animated.View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 

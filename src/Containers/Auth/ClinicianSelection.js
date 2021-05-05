@@ -2,7 +2,13 @@
  * The external imports
  */
 import React, { useEffect, useRef } from 'react'
-import { View, Text, Animated } from 'react-native'
+import {
+  View,
+  Text,
+  Animated,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -33,21 +39,24 @@ const ClinicianSelectionAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
+  // TODO FIX Toggle
   return (
-    <View style={auth.wrapper}>
-      <Animated.ScrollView style={auth.animation(fadeAnim)}>
-        <Text style={auth.header}>{healthFacility.name}</Text>
-        <View style={[Layout.fill, Layout.left]}>
-          {healthFacility.medical_staffs.map(clinician => (
-            <Clinician key={clinician.id} currentClinician={clinician} />
-          ))}
-        </View>
+    <KeyboardAvoidingView behavior="height" style={[auth.wrapper]}>
+      <ScrollView contentContainerStyle={[Layout.grow]}>
+        <Animated.View style={[Layout.fill]}>
+          <Text style={auth.header}>{healthFacility.name}</Text>
+          <View style={[Layout.fill, Layout.left]}>
+            {healthFacility.medical_staffs.map(clinician => (
+              <Clinician key={clinician.id} currentClinician={clinician} />
+            ))}
+          </View>
 
-        {/* <View style={auth.themeToggleWrapper}>
-          <ToggleSwitch label={t('application.theme.dark_mode')} />
-        </View> */}
-      </Animated.ScrollView>
-    </View>
+          <View style={auth.themeToggleWrapper}>
+            <ToggleSwitch label={t('application.theme.dark_mode')} />
+          </View>
+        </Animated.View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 

@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useState, useRef } from 'react'
 import PINCode from '@haskkor/react-native-pincode'
-import { View, Text, Animated } from 'react-native'
+import { View, Text, Animated, KeyboardAvoidingView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 import { useTranslation } from 'react-i18next'
@@ -68,7 +68,7 @@ const PinAuthContainer = () => {
   }
 
   return (
-    <View style={auth.wrapper}>
+    <KeyboardAvoidingView behavior="height" style={auth.wrapper}>
       <Animated.View style={auth.animation(fadeAnim)}>
         <Text style={auth.header}>
           {currentClinician.first_name} {currentClinician.last_name}
@@ -120,7 +120,7 @@ const PinAuthContainer = () => {
           <ToggleSwitch label={t('application.theme.dark_mode')} />
         </View>
       </Animated.View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
