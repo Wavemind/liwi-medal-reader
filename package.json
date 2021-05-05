@@ -34,11 +34,13 @@
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^2.18.1",
     "react-native-touch-id": "^4.4.1",
+    "react-native-v8": ">=0.64.0-patch.0",
     "react-native-vector-icons": "^8.1.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-flipper": "^1.4.2",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "v8-android-jit": "^9.88.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
