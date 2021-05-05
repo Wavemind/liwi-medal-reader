@@ -4,6 +4,7 @@
 import React, { useEffect, useRef } from 'react'
 import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -16,9 +17,13 @@ import ToggleSwitch from '@/Components/ToggleSwitch'
 
 const SynchronizationAuthContainer = () => {
   // Theme and style elements deconstruction
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
   const {
     Containers: { authSynchronization, auth },
     Fonts,
+    Layout,
+    Gutters,
   } = useTheme()
 
   // Get values from the store
@@ -35,8 +40,6 @@ const SynchronizationAuthContainer = () => {
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
-
-  const dispatch = useDispatch()
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -56,20 +59,43 @@ const SynchronizationAuthContainer = () => {
   return (
     <View style={auth.wrapper}>
       <Animated.View style={auth.animation(fadeAnim)}>
-        <Text style={auth.header}>Synchronization</Text>
+        <Text style={auth.header}>
+          {t('containers.auth.synchronization.title')}
+        </Text>
 
         <View style={authSynchronization.descriptionWrapper}>
           <Text style={[Fonts.textRegular]}>
-            Associate device to a health facility
+            {t('containers.auth.synchronization.description')}
           </Text>
-          <Text style={[Fonts.textRegular, Fonts.textBold]}>
-            {device.mac_address}
-          </Text>
+        </View>
+
+        <View style={[Gutters.largeVMargin]}>
+          <View style={[Layout.row]}>
+            <View style={[Layout.fill]}>
+              <Text style={[Fonts.textSmall]}>{t('device.name')}</Text>
+            </View>
+            <View style={[Layout.fill]}>
+              <Text style={[Fonts.textSmall, Fonts.textBold]}>
+                {device.name}
+              </Text>
+            </View>
+          </View>
+
+          <View style={[Layout.row, Gutters.smallTMargin]}>
+            <View style={[Layout.fill]}>
+              <Text style={[Fonts.textSmall]}>{t('device.mac_address')}</Text>
+            </View>
+            <View style={[Layout.fill]}>
+              <Text style={[Fonts.textSmall, Fonts.textBold]}>
+                {device.mac_address}
+              </Text>
+            </View>
+          </View>
         </View>
 
         <View style={authSynchronization.buttonWrapper}>
           <SquareButton
-            content="Synchronize"
+            content={t('actions.synchronize')}
             filled
             handlePress={handleSynchronization}
             disabled={initializeVersionLoading}
@@ -87,14 +113,11 @@ const SynchronizationAuthContainer = () => {
               {algorithmFetchOneError.message}
             </Text>
           )}
-        </View>
-
-        <View style={authSynchronization.loaderContainer}>
           {initializeVersionLoading && <Loader height={200} />}
         </View>
 
         <View style={auth.themeToggleWrapper}>
-          <ToggleSwitch label="Dark mode" />
+          <ToggleSwitch label={t('application.theme.dark_mode')} />
         </View>
       </Animated.View>
     </View>

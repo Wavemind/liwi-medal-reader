@@ -4,6 +4,7 @@
 import React, { useEffect, useRef } from 'react'
 import { View, Text, Animated } from 'react-native'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -14,6 +15,7 @@ import ToggleSwitch from '@/Components/ToggleSwitch'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
+  const { t } = useTranslation()
   const {
     Layout,
     Containers: { auth },
@@ -33,7 +35,7 @@ const ClinicianSelectionAuthContainer = props => {
 
   return (
     <View style={auth.wrapper}>
-      <Animated.View style={auth.animation(fadeAnim)}>
+      <Animated.ScrollView style={auth.animation(fadeAnim)}>
         <Text style={auth.header}>{healthFacility.name}</Text>
         <View style={[Layout.fill, Layout.left]}>
           {healthFacility.medical_staffs.map(clinician => (
@@ -41,10 +43,10 @@ const ClinicianSelectionAuthContainer = props => {
           ))}
         </View>
 
-        <View style={auth.themeToggleWrapper}>
-          <ToggleSwitch label="Dark mode" />
-        </View>
-      </Animated.View>
+        {/* <View style={auth.themeToggleWrapper}>
+          <ToggleSwitch label={t('application.theme.dark_mode')} />
+        </View> */}
+      </Animated.ScrollView>
     </View>
   )
 }

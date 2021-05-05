@@ -2,9 +2,10 @@
  * The external imports
  */
 import React from 'react'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useDispatch } from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -16,6 +17,8 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 const Clinician = props => {
   // Props deconstruction
   const { currentClinician } = props
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   // Theme and style elements deconstruction
   const {
@@ -24,7 +27,6 @@ const Clinician = props => {
     Colors,
     Components: { clinician },
   } = useTheme()
-  const dispatch = useDispatch()
 
   /**
    * Set clinician and redirect user to Pin container
@@ -42,10 +44,14 @@ const Clinician = props => {
     >
       <View style={[Layout.row]}>
         <View style={[Layout.fill, Layout.alignItemStart]}>
-          <Text style={[Fonts.textColorText, Fonts.textBold]}>
+          <Text
+            style={[Fonts.textRegular, Fonts.textColorText, Fonts.textBold]}
+          >
             {currentClinician.first_name} {currentClinician.last_name}
           </Text>
-          <Text style={[Fonts.textColorText]}>{currentClinician.role}</Text>
+          <Text style={[Fonts.textColorText]}>
+            {t(`health_facility.roles.${currentClinician.role}`)}
+          </Text>
         </View>
         <View style={[Layout.selfCenter]}>
           <Icon name="chevron-right" color={Colors.primary} />

@@ -6,13 +6,11 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
-      ...Layout.colCenter,
-      ...Gutters.hugeTMargin,
-      ...Gutters.regularBMargin,
+      ...Gutters.hugeTPadding,
+      ...Gutters.largeHPadding,
     },
     animation: fadeAnim => ({
       ...Layout.fill,
-      width: 400,
       opacity: fadeAnim,
     }),
     header: {
