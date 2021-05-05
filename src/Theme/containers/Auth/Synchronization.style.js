@@ -8,14 +8,12 @@ export default function (props) {
       ...Layout.colVCenter,
     },
     loaderContainer: {
-      height: 200,
-      ...Gutters.hugeVMargin,
+      ...Gutters.hugeBMargin,
       ...Layout.center,
     },
     errorMessageWrapper: {
       height: 50,
-      ...Gutters.hugeTMargin,
-      ...Gutters.regularBMargin,
+      ...Gutters.largeTMargin,
       ...Layout.center,
     },
     descriptionWrapper: {
