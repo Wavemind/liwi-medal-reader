@@ -1,6 +1,12 @@
+/**
+ * The external imports
+ */
 import { getMacAddress } from 'react-native-device-info'
 import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
 
+/**
+ * The internal imports
+ */
 import api from '@/Services'
 import { store } from '@/Store'
 

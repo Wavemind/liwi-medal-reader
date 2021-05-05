@@ -27,7 +27,6 @@ export default {
       'id',
     )
     const clinicianChoosed = state.healthFacility.clinician.hasOwnProperty('id')
-    console.log(state)
     let route = {}
 
     // Check whether the right permissions have been granted
