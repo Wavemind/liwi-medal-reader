@@ -71,6 +71,15 @@ const LoginAuthContainer = () => {
     <View style={auth.wrapper}>
       <Animated.View style={auth.animation(fadeAnim)}>
         <Text style={auth.header}>Authentication</Text>
+        <View style={authLogin.errorMessageWrapper}>
+          {newSessionError && (
+            <Text style={auth.errorMessage}>{newSessionError.message}</Text>
+          )}
+          {registerError && (
+            <Text style={auth.errorMessage}>{registerError.message}</Text>
+          )}
+        </View>
+
         <View style={authLogin.formWrapper}>
           <TextInput
             style={authLogin.input}
@@ -101,17 +110,15 @@ const LoginAuthContainer = () => {
               disabled={authLoading}
             />
           </View>
-          {newSessionError && (
-            <Text style={auth.errorMessage}>{newSessionError.message}</Text>
-          )}
-          {registerError && (
-            <Text style={auth.errorMessage}>{registerError.message}</Text>
-          )}
         </View>
 
-        {authLoading && <Loader height={100} />}
+        <View style={authLogin.loaderContainer}>
+          {authLoading && <Loader height={100} />}
+        </View>
 
-        <ToggleSwitch label="Dark mode" />
+        <View style={auth.themeToggleWrapper}>
+          <ToggleSwitch label="Dark mode" />
+        </View>
       </Animated.View>
     </View>
   )

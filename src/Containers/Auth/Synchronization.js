@@ -21,9 +21,15 @@ const SynchronizationAuthContainer = () => {
   } = useTheme()
 
   // Get values from the store
-  const initializeVersionLoading = useSelector(state => state.system.initializeVersion.loading)
-  const healthFacilityFetchOneError = useSelector(state => state.healthFacility.fetchOne.error)
-  const algorithmFetchOneError = useSelector(state => state.algorithm.fetchOne.error)
+  const initializeVersionLoading = useSelector(
+    state => state.system.initializeVersion.loading,
+  )
+  const healthFacilityFetchOneError = useSelector(
+    state => state.healthFacility.fetchOne.error,
+  )
+  const algorithmFetchOneError = useSelector(
+    state => state.algorithm.fetchOne.error,
+  )
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -50,18 +56,20 @@ const SynchronizationAuthContainer = () => {
       <Animated.View style={auth.animation(fadeAnim)}>
         <Text style={auth.header}>Synchronization</Text>
 
-        <View style={authSynchronization.buttonWrapper}>
-          {initializeVersionLoading ? (
-            <Loader height={200} />
-          ) : (
-            <SquareButton
-              content="Synchronize"
-              filled
-              handlePress={handleSynchronization}
-              disabled={initializeVersionLoading}
-            />
-          )}
+        <View style={authSynchronization.descriptionWrapper}>
+          <Text>Text missing</Text>
+        </View>
 
+        <View style={authSynchronization.buttonWrapper}>
+          <SquareButton
+            content="Synchronize"
+            filled
+            handlePress={handleSynchronization}
+            disabled={initializeVersionLoading}
+          />
+        </View>
+
+        <View style={authSynchronization.errorMessageWrapper}>
           {healthFacilityFetchOneError && (
             <Text style={auth.errorMessage}>
               {healthFacilityFetchOneError.message}
@@ -74,7 +82,13 @@ const SynchronizationAuthContainer = () => {
           )}
         </View>
 
-        <ToggleSwitch label="Dark mode" />
+        <View style={authSynchronization.loaderContainer}>
+          {initializeVersionLoading && <Loader height={200} />}
+        </View>
+
+        <View style={auth.themeToggleWrapper}>
+          <ToggleSwitch label="Dark mode" />
+        </View>
       </Animated.View>
     </View>
   )

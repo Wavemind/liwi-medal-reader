@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, Layout, Fonts } = props
+  const { Colors, Layout, Gutters } = props
 
   return StyleSheet.create({
     formWrapper: {
-      ...Layout.colVCenter,
       width: '100%',
+      ...Layout.center,
+      ...Gutters.largeBMargin,
     },
     input: {
       backgroundColor: Colors.white,
@@ -18,7 +19,18 @@ export default function (props) {
       paddingHorizontal: 10,
     },
     buttonWrapper: {
-      marginTop: 30,
+      ...Gutters.largeTMargin,
+    },
+    errorMessageWrapper: {
+      height: 50,
+      ...Gutters.hugeTMargin,
+      ...Gutters.regularBMargin,
+      ...Layout.center,
+    },
+    loaderContainer: {
+      height: 100,
+      ...Gutters.hugeBMargin,
+      ...Layout.center,
     },
   })
 }
