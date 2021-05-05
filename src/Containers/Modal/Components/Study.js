@@ -4,20 +4,22 @@
 import React from 'react'
 import { View } from 'react-native'
 import { WebView } from 'react-native-webview'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 
-const AlgorithmInfo = props => {
+const Study = () => {
   // Props deconstruction
-  const { algorithm } = props
 
   // Theme and style elements deconstruction
   const {
     Containers: { modalAlgorithm },
   } = useTheme()
+
+  const algorithm = useSelector(state => state.algorithm.item)
 
   return (
     <View style={modalAlgorithm.wrapper}>
@@ -29,4 +31,4 @@ const AlgorithmInfo = props => {
   )
 }
 
-export default AlgorithmInfo
+export default Study

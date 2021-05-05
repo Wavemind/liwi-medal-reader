@@ -8,7 +8,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import AlgorithmInfo from './Components/AlgorithmInfo'
+import Study from './Components/Study'
 import QuestionInfo from './Components/QuestionInfo'
 
 const IndexModalContainer = props => {
@@ -16,14 +16,18 @@ const IndexModalContainer = props => {
   const {
     navigation,
     route: {
-      params: { type, algorithm },
+      params: { type },
     },
   } = props
 
+  /**
+   * Returns the correct modal content depending on the modal type
+   * @returns {JSX.Element|null}
+   */
   const defineContent = () => {
     switch (type) {
-      case 'algorithm':
-        return <AlgorithmInfo algorithm={algorithm} />
+      case 'study':
+        return <Study />
       case 'question':
         return <QuestionInfo />
       default:
@@ -46,7 +50,7 @@ const IndexModalContainer = props => {
           <Text style={modalIndex.closeButtonText}>X</Text>
         </TouchableOpacity>
       </View>
-      <View>{defineContent()}</View>
+      {defineContent()}
     </View>
   )
 }

@@ -14,6 +14,7 @@ import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 import Loader from '@/Components/Loader'
 import ToggleSwitch from '@/Components/ToggleSwitch'
+import { navigate } from '@/Navigators/Root'
 
 const SynchronizationAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -52,8 +53,9 @@ const SynchronizationAuthContainer = () => {
   /**
    * Manages the synchronization action
    */
-  const handleSynchronization = () => {
-    dispatch(InitializeVersion.action({ json_version: null }))
+  const handleSynchronization = async () => {
+    await dispatch(InitializeVersion.action({ json_version: null }))
+    navigate('InfoModal', { type: 'study' })
   }
 
   return (
