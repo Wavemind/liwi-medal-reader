@@ -50,7 +50,6 @@ const LoginAuthContainer = () => {
    * Dispatches the login credentials to check validity
    */
   const handleLogin = () => {
-    // dispatch(Auth.action({}))
     dispatch(Auth.action({ email, password }))
   }
 

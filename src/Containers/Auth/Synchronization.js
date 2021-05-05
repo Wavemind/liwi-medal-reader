@@ -56,18 +56,20 @@ const SynchronizationAuthContainer = () => {
       <Animated.View style={auth.animation(fadeAnim)}>
         <Text style={auth.header}>Synchronization</Text>
 
-        <View style={authSynchronization.buttonWrapper}>
-          {initializeVersionLoading ? (
-            <Loader height={200} />
-          ) : (
-            <SquareButton
-              content="Synchronize"
-              filled
-              handlePress={handleSynchronization}
-              disabled={initializeVersionLoading}
-            />
-          )}
+        <View style={authSynchronization.descriptionWrapper}>
+          <Text>Text missing</Text>
+        </View>
 
+        <View style={authSynchronization.buttonWrapper}>
+          <SquareButton
+            content="Synchronize"
+            filled
+            handlePress={handleSynchronization}
+            disabled={initializeVersionLoading}
+          />
+        </View>
+
+        <View style={authSynchronization.errorMessageWrapper}>
           {healthFacilityFetchOneError && (
             <Text style={auth.errorMessage}>
               {healthFacilityFetchOneError.message}
@@ -78,6 +80,10 @@ const SynchronizationAuthContainer = () => {
               {algorithmFetchOneError.message}
             </Text>
           )}
+        </View>
+
+        <View style={authSynchronization.loaderContainer}>
+          {initializeVersionLoading && <Loader height={200} />}
         </View>
 
         <View style={auth.themeToggleWrapper}>
