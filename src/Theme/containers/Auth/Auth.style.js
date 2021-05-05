@@ -1,28 +1,28 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout, Fonts, Colors } = props
+  const { Layout, Fonts, Colors, Gutters } = props
 
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
       ...Layout.colCenter,
-      marginBottom: 100,
-      marginTop: 100,
+      ...Gutters.hugeVMargin,
     },
     animation: fadeAnim => ({
       ...Layout.fill,
-      ...Layout.center,
-      ...Layout.justifyContentBetween,
       width: 400,
       opacity: fadeAnim,
     }),
     header: {
       ...Fonts.textColorText,
       ...Fonts.titleSmall,
+      ...Fonts.textCenter,
+      ...Gutters.largeBMargin,
     },
     errorMessage: {
       ...Fonts.textRegular,
+      color: Colors.primary,
     },
     switchOuterWrapper: {
       ...Layout.rowHCenter,
@@ -33,8 +33,12 @@ export default function (props) {
     },
     switchLabel: {
       ...Fonts.textSmall,
-      marginRight: 30,
+      ...Gutters.regularLMargin,
       color: Colors.text,
+    },
+    themeToggleWrapper: {
+      position: 'absolute',
+      bottom: 0,
     },
   })
 }
