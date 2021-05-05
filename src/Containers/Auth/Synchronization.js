@@ -18,6 +18,7 @@ const SynchronizationAuthContainer = () => {
   // Theme and style elements deconstruction
   const {
     Containers: { authSynchronization, auth },
+    Fonts,
   } = useTheme()
 
   // Get values from the store
@@ -30,6 +31,7 @@ const SynchronizationAuthContainer = () => {
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
+  const device = useSelector(state => state.device.item)
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -57,7 +59,12 @@ const SynchronizationAuthContainer = () => {
         <Text style={auth.header}>Synchronization</Text>
 
         <View style={authSynchronization.descriptionWrapper}>
-          <Text>Text missing</Text>
+          <Text style={[Fonts.textRegular]}>
+            Associate device to a health facility
+          </Text>
+          <Text style={[Fonts.textRegular, Fonts.textBold]}>
+            {device.mac_address}
+          </Text>
         </View>
 
         <View style={authSynchronization.buttonWrapper}>

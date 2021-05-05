@@ -37,6 +37,9 @@ export default function ({ FontSize, Colors }) {
       fontSize: FontSize.large * 2,
       fontWeight: 'bold',
     },
+    textBold: {
+      fontWeight: 'bold',
+    },
     textCenter: {
       textAlign: 'center',
     },
