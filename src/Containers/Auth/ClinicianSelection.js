@@ -8,7 +8,12 @@ import { useTheme } from '@/Theme'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
-  const { Layout, Fonts, Gutters, Common } = useTheme()
+  const {
+    Layout,
+    Fonts,
+    Gutters,
+    Containers: { authClinicianSelection, auth },
+  } = useTheme()
   const dispatch = useDispatch()
 
   // Local state definition
@@ -29,33 +34,32 @@ const ClinicianSelectionAuthContainer = props => {
   }
 
   return (
-    <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
-      <Text style={[Fonts.textColorText, Fonts.titleSmall]}>
-        User selection
-      </Text>
-      <View style={[Layout.fill, Layout.left]}>
-        {healthFacility.medical_staffs.map(clinician => {
-          return (
-            <TouchableOpacity
-              key={clinician.id}
-              style={[
-                Layout.row,
-                Layout.rowHCenter,
-                Gutters.smallHPadding,
-                Gutters.largeVMargin,
-                Common.backgroundPrimary,
-              ]}
-              onPress={() => handleClinician(clinician)}
-            >
-              <Text style={[Fonts.textColorText, Fonts.textSmall]}>
-                {clinician.first_name} {clinician.last_name}
-              </Text>
-              <Text style={[Fonts.textColorText]}>{clinician.role}</Text>
-            </TouchableOpacity>
-          )
-        })}
-      </View>
-    </Animated.View>
+    <View style={auth.wrapper}>
+      <Animated.View style={auth.animation(fadeAnim)}>
+        <Text style={auth.header}>Select clinician</Text>
+        <View style={[Layout.fill, Layout.left]}>
+          {healthFacility.medical_staffs.map(clinician => {
+            return (
+              <TouchableOpacity
+                key={clinician.id}
+                style={[
+                  Gutters.tinyVMargin,
+                  Gutters.regularVPadding,
+                  Gutters.regularHPadding,
+                  { elevation: 1 },
+                ]}
+                onPress={() => handleClinician(clinician)}
+              >
+                <Text style={[Fonts.textColorText, Fonts.textSmall]}>
+                  {clinician.first_name} {clinician.last_name}
+                </Text>
+                <Text style={[Fonts.textColorText]}>{clinician.role}</Text>
+              </TouchableOpacity>
+            )
+          })}
+        </View>
+      </Animated.View>
+    </View>
   )
 }
 

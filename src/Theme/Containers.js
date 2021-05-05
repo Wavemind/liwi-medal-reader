@@ -7,6 +7,8 @@ import authStyles from './containers/Auth/Auth.style'
 import authLoginStyles from './containers/Auth/Login.style'
 import authSynchronizationStyles from './containers/Auth/Synchronization.style'
 import authPinStyles from './containers/Auth/Pin.style'
+import authClinicianSelectionStyles from './containers/Auth/ClinicianSelection.style.js'
+
 import startupIndexStyles from './containers/Startup/Index.style'
 
 /**
@@ -20,6 +22,7 @@ export default function (props) {
     authLogin: authLoginStyles(props),
     authSynchronization: authSynchronizationStyles(props),
     authPin: authPinStyles(props),
+    authClinicianSelection: authClinicianSelectionStyles(props),
     startupIndex: startupIndexStyles(props),
   }
 }
