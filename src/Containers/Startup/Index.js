@@ -16,7 +16,7 @@ const IndexStartupContainer = () => {
   useEffect(() => {
     dispatch(InitStartup.action())
   }, [dispatch])
-  console.log(`V8 version is ${global._v8runtime().version}`);
+
   return (
     <View style={[Layout.fill, Layout.colCenter]}>
       <Brand />
