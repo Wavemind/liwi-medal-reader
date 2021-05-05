@@ -1,28 +1,37 @@
-import React, { useEffect } from 'react'
-import { ActivityIndicator, View, Text } from 'react-native'
-import { useTheme } from '@/Theme'
+import React, { useEffect, useRef } from 'react'
+import { View, Text, Animated } from 'react-native'
 import { useDispatch } from 'react-redux'
+
+import { useTheme } from '@/Theme'
 import InitStartup from '@/Store/Startup/Init'
-import { useTranslation } from 'react-i18next'
-import { Brand } from '@/Components'
+import Loader from '@/Components/Loader'
 
 const IndexStartupContainer = () => {
-  const { Layout, Gutters, Fonts } = useTheme()
-
-  const { t } = useTranslation()
+  const {
+    Containers: { startupIndex },
+  } = useTheme()
 
   const dispatch = useDispatch()
+
+  // Define references
+  const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     dispatch(InitStartup.action())
   }, [dispatch])
 
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start()
+  }, [fadeAnim])
+
   return (
-    <View style={[Layout.fill, Layout.colCenter]}>
-      <Brand />
-      <ActivityIndicator size={'large'} style={[Gutters.largeVMargin]} />
-      <Text style={Fonts.textCenter}>{t('welcome')}</Text>
-    </View>
+    <Animated.View style={startupIndex.animation(fadeAnim)}>
+      <Loader />
+    </Animated.View>
   )
 }
 

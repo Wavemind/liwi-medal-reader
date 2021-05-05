@@ -22,7 +22,9 @@ const LoginAuthContainer = () => {
   } = useTheme()
 
   // Local state definition
-  const [email, setEmail] = useState(__DEV__ ? 'quentin.girard@wavemind.ch' : '')
+  const [email, setEmail] = useState(
+    __DEV__ ? 'quentin.girard@wavemind.ch' : '',
+  )
   const [password, setPassword] = useState(__DEV__ ? '123456' : '')
 
   // Get values from the store
@@ -107,7 +109,7 @@ const LoginAuthContainer = () => {
           )}
         </View>
 
-        {authLoading ? <Loader height={100} /> : null}
+        {authLoading && <Loader height={100} />}
 
         <ToggleSwitch label="Dark mode" />
       </Animated.View>
