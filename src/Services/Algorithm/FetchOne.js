@@ -32,7 +32,7 @@ export default async ({ json_version }) => {
     ...response.data.health_cares,
   }
 
-  // Remove unless key
+  // Remove useless key
   delete response.data.emergency_content
   delete response.data.nodes
   delete response.data.final_diagnostics
