@@ -31,8 +31,15 @@ const BooleanButtons = props => {
           const active = answer === ans
 
           return (
-            <View key={`booleanButton-${side}`} style={booleanButton.buttonWrapper(side, active, disabled)}>
-              <TouchableOpacity style={[Layout.center]} onPress={() => setAnswer(ans)} disabled={disabled}>
+            <View
+              key={`booleanButton-${side}`}
+              style={booleanButton.buttonWrapper(side, active, disabled)}
+            >
+              <TouchableOpacity
+                style={[Layout.center]}
+                onPress={() => setAnswer(ans)}
+                disabled={disabled}
+              >
                 <Text style={booleanButton.buttonText(active)}>{ans}</Text>
               </TouchableOpacity>
             </View>

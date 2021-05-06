@@ -145,7 +145,6 @@ instance.interceptors.response.use(
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-
       showMessage({
         message: i18n.t('errors.offline.title'),
         description: i18n.t('errors.offline.description'),

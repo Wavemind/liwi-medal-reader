@@ -3,6 +3,8 @@
  */
 import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, Animated } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { isFulfilled } from '@reduxjs/toolkit'
