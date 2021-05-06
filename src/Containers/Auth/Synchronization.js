@@ -11,9 +11,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SquareButton } from '@/Components'
-import Loader from '@/Components/Loader'
-import ToggleSwitch from '@/Components/ToggleSwitch'
+import { SquareButton, Loader, ToggleSwitchDarkMode } from '@/Components'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
@@ -67,6 +65,7 @@ const SynchronizationAuthContainer = () => {
       const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
       if (isFulfilled(fetchOneAlgorithm)) {
         // Navigate and reset to Pin container
+        setLoading(false)
         navigateAndSimpleReset('ClinicianSelection')
       } else {
         setLoading(false)
@@ -137,7 +136,7 @@ const SynchronizationAuthContainer = () => {
         </View>
 
         <View style={auth.themeToggleWrapper}>
-          <ToggleSwitch label={t('application.theme.dark_mode')} />
+          <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
         </View>
       </Animated.View>
     </View>

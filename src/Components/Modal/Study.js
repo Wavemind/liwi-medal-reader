@@ -5,6 +5,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -12,21 +13,25 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 
 const Study = () => {
-  // Props deconstruction
-
   // Theme and style elements deconstruction
+  const { t } = useTranslation()
+
   const {
     Containers: { modalAlgorithm },
   } = useTheme()
 
-  const algorithm = useSelector(state => state.algorithm.item)
+  const studyDescription = useSelector(
+    state => state.algorithm.item.study.description,
+  )
+
+  const htmlContent =
+    typeof studyDescription === 'string'
+      ? studyDescription
+      : t('components.modal.study.no_content')
 
   return (
     <View style={modalAlgorithm.wrapper}>
-      <WebView
-        source={{ html: algorithm.study.description }}
-        scalesPageToFit={false}
-      />
+      <WebView source={{ html: htmlContent }} scalesPageToFit={false} />
     </View>
   )
 }

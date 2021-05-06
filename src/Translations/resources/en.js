@@ -23,6 +23,14 @@ export default {
       },
     },
   },
+  components: {
+    modal: {
+      study: {
+        no_content:
+          'No content is available. Please fill the study description in medAl-creator',
+      },
+    },
+  },
   device: {
     name: 'Name',
     mac_address: 'Mac address',

@@ -3,15 +3,17 @@
  */
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import Study from './Components/Study'
-import QuestionInfo from './Components/QuestionInfo'
+import { Study, QuestionInfo } from '@/Components'
 
 const IndexModalContainer = props => {
+  const { t } = useTranslation()
+
   // Props deconstruction
   const {
     navigation,
@@ -42,8 +44,11 @@ const IndexModalContainer = props => {
 
   return (
     <View style={modalIndex.wrapper}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={modalIndex.closeButton}>
-        <Text style={modalIndex.closeButtonText}>Continue</Text>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={modalIndex.closeButton}
+      >
+        <Text style={modalIndex.closeButtonText}>{t('actions.continue')}</Text>
       </TouchableOpacity>
       <View style={modalIndex.contentWrapper}>{defineContent()}</View>
     </View>

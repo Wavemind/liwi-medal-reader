@@ -2,7 +2,6 @@
  * The external imports
  */
 import React from 'react'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -11,8 +10,9 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
+import { Icon } from '@/Components'
+import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 
 const Clinician = props => {
   // Props deconstruction
@@ -24,7 +24,6 @@ const Clinician = props => {
   const {
     Layout,
     Fonts,
-    Colors,
     Components: { clinician },
   } = useTheme()
 
@@ -54,7 +53,7 @@ const Clinician = props => {
           </Text>
         </View>
         <View style={[Layout.selfCenter]}>
-          <Icon name="chevron-right" color={Colors.primary} />
+          <Icon name="right-arrow" />
         </View>
       </View>
     </TouchableOpacity>

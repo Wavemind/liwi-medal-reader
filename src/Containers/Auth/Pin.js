@@ -14,8 +14,7 @@ import { useTranslation } from 'react-i18next'
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
-import ToggleSwitch from '@/Components/ToggleSwitch'
-import Loader from '@/Components/Loader'
+import { ToggleSwitchDarkMode, Loader } from '@/Components'
 
 const PinAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -117,7 +116,7 @@ const PinAuthContainer = () => {
         </View>
 
         <View style={auth.themeToggleWrapper}>
-          <ToggleSwitch label={t('application.theme.dark_mode')} />
+          <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
         </View>
       </Animated.View>
     </KeyboardAvoidingView>

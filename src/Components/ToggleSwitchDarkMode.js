@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
-const ToggleSwitch = props => {
+const ToggleSwitchDarkMode = props => {
   const { label } = props
 
   // Theme and style elements deconstruction
@@ -52,4 +52,4 @@ const ToggleSwitch = props => {
   )
 }
 
-export default ToggleSwitch
+export default ToggleSwitchDarkMode

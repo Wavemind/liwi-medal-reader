@@ -9,7 +9,6 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { isFulfilled } from '@reduxjs/toolkit'
@@ -17,14 +16,21 @@ import { isFulfilled } from '@reduxjs/toolkit'
 /**
  * The internal imports
  */
+
+import {
+  SquareButton,
+  SquareSelect,
+  ToggleSwitchDarkMode,
+  Loader,
+} from '@/Components'
+
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
-import { useTheme } from '@/Theme'
-import { Config } from '@/Config'
-import { SquareButton, SquareSelect } from '@/Components'
-import Loader from '@/Components/Loader'
-import ToggleSwitch from '@/Components/ToggleSwitch'
 import NewSessionUser from '@/Store/User/NewSession'
 import DeviceRegister from '@/Store/Device/Register'
+
+import { useTheme } from '@/Theme'
+import { Config } from '@/Config'
+
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 const LoginAuthContainer = () => {
@@ -76,6 +82,7 @@ const LoginAuthContainer = () => {
 
       if (isFulfilled(deviceRegister)) {
         // Navigate and reset to Synchronization container
+        setLoading(false)
         navigateAndSimpleReset('Synchronization')
       } else {
         setLoading(false)
@@ -143,7 +150,7 @@ const LoginAuthContainer = () => {
         </View>
 
         <View style={auth.themeToggleWrapper}>
-          <ToggleSwitch label={t('application.theme.dark_mode')} />
+          <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
         </View>
       </Animated.View>
     </KeyboardAvoidingView>

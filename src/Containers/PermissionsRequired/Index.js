@@ -1,9 +1,15 @@
+/**
+ * The external imports
+ */
 import React, { useEffect } from 'react'
 import { View, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
-
-import { useTheme } from '@/Theme'
 import { useDispatch } from 'react-redux'
+
+/**
+ * The internal imports
+ */
+import { useTheme } from '@/Theme'
 import InitStartup from '@/Store/Startup/Init'
 
 const IndexPermissionsRequiredContainer = () => {

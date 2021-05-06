@@ -1,10 +1,16 @@
+/**
+ * The external imports
+ */
 import React, { useEffect, useRef } from 'react'
 import { Animated } from 'react-native'
 import { useDispatch } from 'react-redux'
 
+/**
+ * The internal imports
+ */
 import { useTheme } from '@/Theme'
+import { Loader } from '@/Components'
 import InitStartup from '@/Store/Startup/Init'
-import Loader from '@/Components/Loader'
 
 const IndexStartupContainer = () => {
   const {
