@@ -6,7 +6,7 @@ const Loader = props => {
 
   return (
     <LottieView
-      source={require('../Assets/ripple.json')}
+      source={require('../Assets/Animations/ripple.json')}
       autoPlay
       style={{ height }}
     />

@@ -1,20 +1,22 @@
 /**
  * The external imports
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
  */
-import InitializeVersion from '@/Store/System/InitializeVersion'
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 import Loader from '@/Components/Loader'
 import ToggleSwitch from '@/Components/ToggleSwitch'
-import { navigate } from '@/Navigators/Root'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
+import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
+import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 
 const SynchronizationAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -27,10 +29,10 @@ const SynchronizationAuthContainer = () => {
     Gutters,
   } = useTheme()
 
+  // Local state definition
+  const [loading, setLoading] = useState(false)
+
   // Get values from the store
-  const initializeVersionLoading = useSelector(
-    state => state.system.initializeVersion.loading,
-  )
   const healthFacilityFetchOneError = useSelector(
     state => state.healthFacility.fetchOne.error,
   )
@@ -51,11 +53,27 @@ const SynchronizationAuthContainer = () => {
   }, [fadeAnim])
 
   /**
-   * Manages the synchronization action
+   * Dispatches the request for the Health Facility and then the request for the Algorithm
    */
   const handleSynchronization = async () => {
-    await dispatch(InitializeVersion.action({ json_version: null }))
-    navigate('InfoModal', { type: 'study' })
+    setLoading(true)
+    // Get health facility info
+    const fetchOneHealthFacility = await dispatch(
+      FetchOneHealthFacility.action({}),
+    )
+
+    if (isFulfilled(fetchOneHealthFacility)) {
+      // Register device in medAl-creator
+      const fetchOneAlgorithm = await dispatch(FetchOneAlgorithm.action({}))
+      if (isFulfilled(fetchOneAlgorithm)) {
+        // Navigate and reset to Pin container
+        navigateAndSimpleReset('ClinicianSelection')
+      } else {
+        setLoading(false)
+      }
+    } else {
+      setLoading(false)
+    }
   }
 
   return (
@@ -100,7 +118,7 @@ const SynchronizationAuthContainer = () => {
             content={t('actions.synchronize')}
             filled
             handlePress={handleSynchronization}
-            disabled={initializeVersionLoading}
+            disabled={loading}
           />
         </View>
 
@@ -115,7 +133,7 @@ const SynchronizationAuthContainer = () => {
               {algorithmFetchOneError.message}
             </Text>
           )}
-          {initializeVersionLoading && <Loader height={200} />}
+          {loading && <Loader height={200} />}
         </View>
 
         <View style={auth.themeToggleWrapper}>

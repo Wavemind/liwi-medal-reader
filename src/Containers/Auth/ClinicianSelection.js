@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import Clinician from '@/Components/Clinician'
 import ToggleSwitch from '@/Components/ToggleSwitch'
+import { navigate } from '@/Navigators/Root'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
@@ -32,6 +33,10 @@ const ClinicianSelectionAuthContainer = props => {
       useNativeDriver: true,
     }).start()
   }, [fadeAnim])
+
+  useEffect(() => {
+    navigate('InfoModal', { type: 'study' })
+  })
 
   return (
     <View style={auth.wrapper}>
