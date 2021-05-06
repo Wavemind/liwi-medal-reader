@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useRef } from 'react'
-import { View, Text, Animated, ScrollView } from 'react-native'
+import { View, Text, Animated, ScrollView, Button } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -43,9 +43,7 @@ const ClinicianSelectionAuthContainer = props => {
 
   return (
     <ScrollView contentContainerStyle={[Layout.grow]}>
-      <Animated.View
-        style={[Layout.fill, auth.animation(fadeAnim), auth.wrapper]}
-      >
+      <Animated.View style={[Layout.fill, auth.animation(fadeAnim), auth.wrapper]}>
         <Text style={auth.header}>{healthFacility.name}</Text>
         <View style={[Layout.fill, Layout.left]}>
           {healthFacility.medical_staffs.map(clinician => (

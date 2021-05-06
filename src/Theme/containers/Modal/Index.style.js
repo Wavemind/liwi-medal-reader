@@ -1,34 +1,34 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout, Fonts, Colors, Gutters } = props
-
-  const buttonDimensions = 50
+  const { Layout, Fonts, Colors, Gutters, Common } = props
 
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
       ...Layout.col,
-    },
-    closeButtonWrapper: {
-      position: 'absolute',
-      top: 10,
-      right: 10,
-      zIndex: 10,
+      ...Common.backgroundWhite,
     },
     closeButton: {
-      backgroundColor: Colors.primary,
-      height: buttonDimensions,
-      width: buttonDimensions,
-      borderRadius: buttonDimensions / 2,
+      ...Layout.fullWidth,
+      ...Common.backgroundPrimary,
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      height: '7%',
+      zIndex: 2,
     },
     closeButtonText: {
       ...Layout.fill,
-      ...Layout.fullHeight,
       ...Fonts.textCenter,
+      ...Fonts.textSectionHeader,
       color: Colors.white,
       textAlignVertical: 'center',
-      fontSize: 25,
+    },
+    contentWrapper: {
+      ...Gutters.smallHPadding,
+      ...Gutters.smallTPadding,
+      height: '93%',
     },
   })
 }

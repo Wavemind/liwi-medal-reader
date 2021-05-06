@@ -42,15 +42,10 @@ const IndexModalContainer = props => {
 
   return (
     <View style={modalIndex.wrapper}>
-      <View style={modalIndex.closeButtonWrapper}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={modalIndex.closeButton}
-        >
-          <Text style={modalIndex.closeButtonText}>X</Text>
-        </TouchableOpacity>
-      </View>
-      {defineContent()}
+      <TouchableOpacity onPress={() => navigation.goBack()} style={modalIndex.closeButton}>
+        <Text style={modalIndex.closeButtonText}>Continue</Text>
+      </TouchableOpacity>
+      <View style={modalIndex.contentWrapper}>{defineContent()}</View>
     </View>
   )
 }
