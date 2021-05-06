@@ -1,6 +1,4 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
-import Auth from './Auth'
-import InitializeVersion from './InitializeVersion'
 import ChangeEnvironment from './ChangeEnvironment'
 
 const sliceInitialState = {
@@ -8,8 +6,4 @@ const sliceInitialState = {
   environment: __DEV__ ? 'staging' : 'production',
 }
 
-export default buildSlice(
-  'system',
-  [Auth, InitializeVersion, ChangeEnvironment],
-  sliceInitialState,
-).reducer
+export default buildSlice('system', [ChangeEnvironment], sliceInitialState).reducer

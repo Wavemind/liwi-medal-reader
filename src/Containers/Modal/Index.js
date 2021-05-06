@@ -1,21 +1,51 @@
+/**
+ * The external imports
+ */
 import React from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 
+/**
+ * The internal imports
+ */
 import { useTheme } from '@/Theme'
+import Study from './Components/Study'
+import QuestionInfo from './Components/QuestionInfo'
 
 const IndexModalContainer = props => {
   // Props deconstruction
-  const { navigation } = props
+  const {
+    navigation,
+    route: {
+      params: { type },
+    },
+  } = props
+
+  /**
+   * Returns the correct modal content depending on the modal type
+   * @returns {JSX.Element|null}
+   */
+  const defineContent = () => {
+    switch (type) {
+      case 'study':
+        return <Study />
+      case 'question':
+        return <QuestionInfo />
+      default:
+        return null
+    }
+  }
 
   // Theme and style elements deconstruction
-  const { Gutters, Layout, Fonts } = useTheme()
+  const {
+    Containers: { modalIndex },
+  } = useTheme()
 
   return (
-    <View style={[Layout.fill, Layout.colCenter, Gutters.largeHPadding]}>
-      <Text style={[Fonts.textColorText]}>
-        This is a full screen info modal
-      </Text>
-      <Button onPress={() => navigation.goBack()} title="Dismiss" />
+    <View style={modalIndex.wrapper}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={modalIndex.closeButton}>
+        <Text style={modalIndex.closeButtonText}>Continue</Text>
+      </TouchableOpacity>
+      <View style={modalIndex.contentWrapper}>{defineContent()}</View>
     </View>
   )
 }

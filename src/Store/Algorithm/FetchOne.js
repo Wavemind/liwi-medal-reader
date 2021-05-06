@@ -1,9 +1,15 @@
+/**
+ * The external imports
+ */
 import {
   buildAsyncState,
   buildAsyncReducers,
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
 
+/**
+ * The internal imports
+ */
 import fetchOneAlgorithmService from '@/Services/Algorithm/FetchOne'
 
 export default {

@@ -4,6 +4,7 @@ import { SafeAreaView, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 
 import {
+  IndexModalContainer,
   IndexPermissionsRequiredContainer,
   IndexStartupContainer,
 } from '@/Containers'
@@ -48,10 +49,8 @@ const ApplicationNavigator = () => {
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator headerMode="none" mode="modal">
           <Stack.Screen name="Startup" component={IndexStartupContainer} />
-          <Stack.Screen
-            name="PermissionsRequired"
-            component={IndexPermissionsRequiredContainer}
-          />
+          <Stack.Screen name="PermissionsRequired" component={IndexPermissionsRequiredContainer} />
+          <Stack.Screen name="InfoModal" component={IndexModalContainer} />
           {isApplicationLoaded && AuthNavigator != null && (
             <Stack.Screen
               name="Auth"

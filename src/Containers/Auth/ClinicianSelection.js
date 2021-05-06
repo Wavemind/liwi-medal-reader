@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useRef } from 'react'
-import { View, Text, Animated, ScrollView } from 'react-native'
+import { View, Text, Animated, ScrollView, Button } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import Clinician from '@/Components/Clinician'
 import ToggleSwitch from '@/Components/ToggleSwitch'
+import { navigate } from '@/Navigators/Root'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
@@ -24,6 +25,7 @@ const ClinicianSelectionAuthContainer = props => {
   // Local state definition
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
+  const algorithmUpdated = useSelector(state => state.algorithm.item.updated)
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -33,11 +35,15 @@ const ClinicianSelectionAuthContainer = props => {
     }).start()
   }, [fadeAnim])
 
+  useEffect(() => {
+    if (algorithmUpdated) {
+      navigate('InfoModal', { type: 'study' })
+    }
+  })
+
   return (
     <ScrollView contentContainerStyle={[Layout.grow]}>
-      <Animated.View
-        style={[Layout.fill, auth.animation(fadeAnim), auth.wrapper]}
-      >
+      <Animated.View style={[Layout.fill, auth.animation(fadeAnim), auth.wrapper]}>
         <Text style={auth.header}>{healthFacility.name}</Text>
         <View style={[Layout.fill, Layout.left]}>
           {healthFacility.medical_staffs.map(clinician => (

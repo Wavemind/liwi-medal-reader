@@ -1,6 +1,12 @@
+/**
+ * The external imports
+ */
 import { getMacAddress } from 'react-native-device-info'
 import { DocumentDirectoryPath, writeFile } from 'react-native-fs'
 
+/**
+ * The internal imports
+ */
 import api from '@/Services'
 import { store } from '@/Store'
 
@@ -18,7 +24,7 @@ export default async ({ json_version }) => {
     const state = store.getState()
     const oldAlgorithm = state.algorithm.item
 
-    return oldAlgorithm
+    return { ...oldAlgorithm, updated: false }
   }
 
   // Store emergency content in file
@@ -41,5 +47,6 @@ export default async ({ json_version }) => {
   return {
     ...response.data,
     nodes: { ...nodes },
+    updated: true,
   }
 }

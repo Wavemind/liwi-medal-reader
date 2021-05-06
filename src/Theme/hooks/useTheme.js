@@ -35,6 +35,7 @@ export default function () {
 
   // Build the default theme
   const baseTheme = {
+    Common: Common(themeVariables),
     Fonts: Fonts(themeVariables),
     Gutters: Gutters(themeVariables),
     Images: Images(themeVariables),
@@ -44,18 +45,14 @@ export default function () {
       Layout: Layout(themeVariables),
       Gutters: Gutters(themeVariables),
       Fonts: Fonts(themeVariables),
+      Common: Common(themeVariables),
     }),
     Containers: Containers({
       ...themeVariables,
       Layout: Layout(themeVariables),
       Gutters: Gutters(themeVariables),
       Fonts: Fonts(themeVariables),
-    }),
-    Common: Common({
-      ...themeVariables,
-      Layout: Layout(themeVariables),
-      Gutters: Gutters(themeVariables),
-      Fonts: Fonts(themeVariables),
+      Common: Common(themeVariables),
     }),
     ...themeVariables,
   }
