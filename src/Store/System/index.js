@@ -8,4 +8,8 @@ const sliceInitialState = {
   environment: __DEV__ ? 'staging' : 'production',
 }
 
-export default buildSlice('system', [Auth, InitializeVersion, ChangeEnvironment], sliceInitialState).reducer
+export default buildSlice(
+  'system',
+  [Auth, InitializeVersion, ChangeEnvironment],
+  sliceInitialState,
+).reducer
