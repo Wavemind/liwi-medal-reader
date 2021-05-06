@@ -64,6 +64,7 @@ const LoginAuthContainer = () => {
   const handleLogin = async () => {
     setLoading(true)
 
+    // Dispatches the user information to open a new session
     const newSessionUser = await dispatch(
       NewSessionUser.action({ email, password }),
     )

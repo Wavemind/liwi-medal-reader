@@ -24,7 +24,7 @@ const Study = () => {
   return (
     <View style={modalAlgorithm.wrapper}>
       <WebView
-        source={{ html: algorithm?.study.description }}
+        source={{ html: algorithm.study.description }}
         scalesPageToFit={false}
       />
     </View>

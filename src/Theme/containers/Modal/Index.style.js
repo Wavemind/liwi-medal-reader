@@ -9,8 +9,6 @@ export default function (props) {
     wrapper: {
       ...Layout.fill,
       ...Layout.col,
-      ...Gutters.smallHPadding,
-      ...Gutters.smallVPadding,
     },
     closeButtonWrapper: {
       position: 'absolute',

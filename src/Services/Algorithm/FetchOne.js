@@ -24,7 +24,7 @@ export default async ({ json_version }) => {
     const state = store.getState()
     const oldAlgorithm = state.algorithm.item
 
-    return oldAlgorithm
+    return { ...oldAlgorithm, updated: false }
   }
 
   // Store emergency content in file
@@ -47,5 +47,6 @@ export default async ({ json_version }) => {
   return {
     ...response.data,
     nodes: { ...nodes },
+    updated: true,
   }
 }

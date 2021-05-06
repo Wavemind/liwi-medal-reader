@@ -25,6 +25,7 @@ const ClinicianSelectionAuthContainer = props => {
   // Local state definition
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
+  const algorithmUpdated = useSelector(state => state.algorithm.item.updated)
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -35,7 +36,9 @@ const ClinicianSelectionAuthContainer = props => {
   }, [fadeAnim])
 
   useEffect(() => {
-    navigate('InfoModal', { type: 'study' })
+    if (algorithmUpdated) {
+      navigate('InfoModal', { type: 'study' })
+    }
   })
 
   return (
