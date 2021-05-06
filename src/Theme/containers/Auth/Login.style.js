@@ -11,12 +11,12 @@ export default function (props) {
     },
     input: {
       backgroundColor: Colors.white,
-      height: 40,
-      marginTop: 12,
+      height: 60,
+      ...Gutters.regularTMargin,
+      ...Gutters.regularVPadding,
+      ...Gutters.regularHPadding,
       width: '100%',
-      borderWidth: 1,
-      color: Colors.black,
-      paddingHorizontal: 10,
+      borderRadius: 20,
     },
     buttonWrapper: {
       ...Gutters.largeTMargin,

@@ -39,7 +39,7 @@ export default function (props) {
       position: 'absolute',
       ...Layout.alignItemsCenter,
       ...Layout.justifyContentCenter,
-      bottom: 50,
+      bottom: 0,
       left: 0,
       right: 0,
     },

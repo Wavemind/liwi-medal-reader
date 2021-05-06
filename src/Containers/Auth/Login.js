@@ -8,6 +8,8 @@ import {
   Animated,
   TextInput,
   KeyboardAvoidingView,
+  Keyboard,
+  SafeAreaView,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -69,6 +71,7 @@ const LoginAuthContainer = () => {
    * Dispatches the login credentials to check validity and register the device
    */
   const handleLogin = async () => {
+    Keyboard.dismiss()
     setLoading(true)
 
     // Dispatches the user information to open a new session
@@ -101,7 +104,11 @@ const LoginAuthContainer = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" style={auth.wrapper}>
+    <KeyboardAvoidingView
+      behavior="height"
+      keyboardVerticalOffset={50}
+      style={auth.wrapper}
+    >
       <Animated.View style={auth.animation(fadeAnim)}>
         <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
         <View style={authLogin.errorMessageWrapper}>
@@ -149,9 +156,11 @@ const LoginAuthContainer = () => {
           {loading && <Loader height={100} />}
         </View>
 
-        <View style={auth.themeToggleWrapper}>
-          <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
-        </View>
+        <SafeAreaView>
+          <View style={auth.themeToggleWrapper}>
+            <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
+          </View>
+        </SafeAreaView>
       </Animated.View>
     </KeyboardAvoidingView>
   )
