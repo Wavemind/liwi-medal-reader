@@ -2,13 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useRef } from 'react'
-import {
-  View,
-  Text,
-  Animated,
-  KeyboardAvoidingView,
-  ScrollView,
-} from 'react-native'
+import { View, Text, Animated, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { View, Text, Animated } from 'react-native'
+import { Animated } from 'react-native'
 import { useDispatch } from 'react-redux'
 
 import { useTheme } from '@/Theme'
