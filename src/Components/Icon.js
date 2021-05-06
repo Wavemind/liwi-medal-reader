@@ -17,13 +17,13 @@ const CustomIcon = createIconSetFromIcoMoon(
 )
 
 const Icon = props => {
-  const { name, style } = props
   const { Colors, Fonts } = useTheme()
+  const { name, color = Colors.primary, style } = props
 
   return (
     <CustomIcon
       name={name}
-      style={[Fonts.textLarge, { color: Colors.primary }, { ...style }]}
+      style={[Fonts.textLarge, { color: color }, { ...style }]}
     />
   )
 }

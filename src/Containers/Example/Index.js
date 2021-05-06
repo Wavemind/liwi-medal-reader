@@ -1,13 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  View,
-  Switch,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native'
+import { View, Switch, ScrollView, Text } from 'react-native'
 import {
   BooleanButtons,
   SectionHeader,
@@ -50,8 +43,16 @@ const IndexExampleContainer = () => {
 
       {/* BooleanButtons */}
       <BooleanButtons answers={answers} label="Am I the man ?" />
-      <BooleanButtons answers={answers} label="Am I the warning man ?" warning />
-      <BooleanButtons answers={answers} label="Am I the disabled man ?" disabled />
+      <BooleanButtons
+        answers={answers}
+        label="Am I the warning man ?"
+        warning
+      />
+      <BooleanButtons
+        answers={answers}
+        label="Am I the disabled man ?"
+        disabled
+      />
 
       {/* Select */}
       <Select items={items} />
@@ -98,7 +99,9 @@ const IndexExampleContainer = () => {
         <Switch
           trackColor={{ false: '#767577', true: '#81b0ff' }}
           thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-          onValueChange={() => changeTheme({ theme: 'default', darkMode: !state.theme.darkMode })}
+          onValueChange={() =>
+            changeTheme({ theme: 'default', darkMode: !state.theme.darkMode })
+          }
           value={isEnabled}
         />
       </View>
