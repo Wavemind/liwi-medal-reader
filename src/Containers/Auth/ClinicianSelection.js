@@ -35,7 +35,7 @@ const ClinicianSelectionAuthContainer = props => {
     if (algorithmUpdated) {
       navigate('InfoModal', { type: 'study' })
     }
-  })
+  }, [algorithmUpdated])
 
   return (
     <ScrollView contentContainerStyle={[Layout.grow]}>
