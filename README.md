@@ -72,9 +72,9 @@ We also set a list of custom icons. We split it in 2 components
 | logout        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/logout_color.png?raw=true "logout")             |
 | patient-list  | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/patient-list_color.png?raw=true "patient-list") |
 | qr-scan       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/qr-scan_color.png?raw=true "qr-scan")           |
-| settings      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/settings.png_color?raw=true "settings")         |
-| summary       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/summary.png_color?raw=true "summary")           |
-| synchronize   | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/synchronize.png_color?raw=true "synchronize")   |
+| settings      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/settings_color.png?raw=true "settings")         |
+| summary       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/summary_color.png?raw=true "summary")           |
+| synchronize   | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/synchronize_color.png?raw=true "synchronize")   |
 
 ### Icon
 ```javascript
