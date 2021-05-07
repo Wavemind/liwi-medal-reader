@@ -8,13 +8,13 @@ export default {
   containers: {
     auth: {
       login: {
-        title: 'Connect to medAl-creator',
+        title: 'Connect to medAL-creator',
         email: 'Email',
         password: 'Password',
         environment: 'Environment',
       },
       synchronization: {
-        title: 'Synchronize with medAl-creator',
+        title: 'Synchronize with medAL-creator',
         description:
           'An administrator will assign this device to your health facility',
       },
@@ -27,7 +27,7 @@ export default {
     modal: {
       study: {
         no_content:
-          'No content is available. Please fill the study description in medAl-creator',
+          'No content is available. Please fill the study description in medAL-creator',
       },
     },
   },
