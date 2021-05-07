@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
 import { Loader } from '@/Components'
 import InitStartup from '@/Store/Startup/Init'
 
@@ -27,11 +28,7 @@ const IndexStartupContainer = () => {
   }, [dispatch])
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start()
+    fadeIn(fadeAnim)
   }, [fadeAnim])
 
   return (

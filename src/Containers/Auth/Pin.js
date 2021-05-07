@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
 import { ToggleSwitchDarkMode, Loader } from '@/Components'
 
 const PinAuthContainer = () => {
@@ -41,11 +42,7 @@ const PinAuthContainer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start()
+    fadeIn(fadeAnim)
   }, [fadeAnim])
 
   /**

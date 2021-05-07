@@ -25,15 +25,13 @@ import {
   ToggleSwitchDarkMode,
   Loader,
 } from '@/Components'
-
+import { fadeIn } from '@/Theme/Animation'
+import { useTheme } from '@/Theme'
+import { Config } from '@/Config'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 import NewSessionUser from '@/Store/User/NewSession'
 import DeviceRegister from '@/Store/Device/Register'
-
-import { useTheme } from '@/Theme'
-import { Config } from '@/Config'
-
-import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
@@ -60,11 +58,7 @@ const LoginAuthContainer = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start()
+    fadeIn(fadeAnim)
   }, [fadeAnim])
 
   /**

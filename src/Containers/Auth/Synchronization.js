@@ -11,6 +11,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
 import { SquareButton, Loader, ToggleSwitchDarkMode } from '@/Components'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
@@ -43,11 +44,7 @@ const SynchronizationAuthContainer = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start()
+    fadeIn(fadeAnim)
   }, [fadeAnim])
 
   /**

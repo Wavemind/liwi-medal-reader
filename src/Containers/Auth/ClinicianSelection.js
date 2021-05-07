@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
 import { Clinician, ToggleSwitchDarkMode } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 
@@ -27,11 +28,7 @@ const ClinicianSelectionAuthContainer = props => {
   const algorithmUpdated = useSelector(state => state.algorithm.item.updated)
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start()
+    fadeIn(fadeAnim)
   }, [fadeAnim])
 
   useEffect(() => {
