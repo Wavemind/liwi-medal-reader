@@ -7,4 +7,11 @@ export const Config = {
     { label: 'Staging', value: 'staging' },
     { label: 'Production', value: 'production' },
   ],
+  LANGUAGES: [
+    { label: 'English', value: 'en' },
+    { label: 'Swahili', value: 'sw' },
+    { label: 'Zulu', value: 'zu' },
+  ],
+  DEVICE_INFO: ['mac_address', 'name', 'model', 'brand', 'os', 'os_version'],
+  HEALTH_FACILITY_INFO: ['architecture', 'area', 'country', 'name'],
 }

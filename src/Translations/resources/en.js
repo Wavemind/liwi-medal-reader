@@ -22,6 +22,31 @@ export default {
         unlock: 'Enter the PIN to unlock the tablet',
       },
     },
+    settings: {
+      title: 'Settings',
+      device: {
+        title: 'Device',
+        mac_address: 'MAC Address',
+        name: 'Name',
+        model: 'Model',
+        brand: 'Brand',
+        os: 'OS',
+        os_version: 'OS Version',
+      },
+      health_facility: {
+        title: 'Health Facility',
+        name: 'Name',
+        architecture: 'Architecture',
+        country: 'Country',
+        area: 'Area',
+      },
+      options: {
+        title: 'Options',
+        environment: 'Environment',
+        app_languages: 'App Languages',
+        algorithm_languages: 'Algorithm Languages',
+      }
+    },
   },
   components: {
     modal: {

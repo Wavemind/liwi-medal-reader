@@ -14,6 +14,8 @@ import startupIndexStyles from './containers/Startup/Index.style'
 import ModalIndexStyles from './containers/Modal/Index.style'
 import ModalAlgorithmStyles from './containers/Modal/AlgorithmInfo.style'
 
+import SettingsIndexStyles from './containers/Settings/Index.style'
+
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -29,5 +31,6 @@ export default function (props) {
     startupIndex: startupIndexStyles(props),
     modalIndex: ModalIndexStyles(props),
     modalAlgorithm: ModalAlgorithmStyles(props),
+    settingsStyles: SettingsIndexStyles(props),
   }
 }
