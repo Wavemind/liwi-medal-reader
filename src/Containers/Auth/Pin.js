@@ -1,21 +1,36 @@
+/**
+ * The external imports
+ */
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, Animated, ActivityIndicator } from 'react-native'
+import PINCode from '@haskkor/react-native-pincode'
+import { View, Text, Animated, KeyboardAvoidingView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
-import PINCode from '@haskkor/react-native-pincode'
+import { useTranslation } from 'react-i18next'
 
+/**
+ * The internal imports
+ */
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
+import { ToggleSwitchDarkMode, Loader } from '@/Components'
 
-const PinAuthContainer = props => {
+const PinAuthContainer = () => {
   // Theme and style elements deconstruction
-  const { Layout, Fonts } = useTheme()
-  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const {
+    Containers: { auth, authPin },
+  } = useTheme()
 
   // Local state definition
+  const [status, setStatus] = useState('initial')
+
+  // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
+  const currentClinician = useSelector(state => state.healthFacility.clinician)
   const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneLoading = useSelector(
     state => state.algorithm.fetchOne.loading,
@@ -23,23 +38,25 @@ const PinAuthContainer = props => {
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
-  const [status, setStatus] = useState('initial')
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1500,
-      useNativeDriver: true,
-    }).start()
+    fadeIn(fadeAnim)
   }, [fadeAnim])
 
+  /**
+   * Manages the pin entry and navigation if pin is correct
+   * @param pinCode
+   * @returns {Promise<void>}
+   */
   const handlePin = async pinCode => {
     if (pinCode === healthFacility.pin_code) {
       const result = await dispatch(
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
-        navigateAndSimpleReset('Synchronization')
+        navigateAndSimpleReset('Home')
       }
     } else {
       setStatus('failure')
@@ -47,50 +64,59 @@ const PinAuthContainer = props => {
   }
 
   return (
-    <Animated.View style={[Layout.fill, Layout.center, { opacity: fadeAnim }]}>
-      <Text style={[Fonts.textColorText, Fonts.titleSmall]}>Pin</Text>
-      {algorithmFetchOneError && (
-        <Text style={Fonts.textRegular}>{algorithmFetchOneError.message}</Text>
-      )}
-      <View style={[Layout.fill, Layout.center]}>
-        <PINCode
-          passwordLength={healthFacility.pin_code.length}
-          endProcessFunction={handlePin}
-          disableLockScreen
-          status="enter"
-          pinStatus={status}
-          titleComponent={() => (
-            <Text size-auto style={[Fonts.textColorText, Fonts.textRegular]}>
-              Unlock
-            </Text>
-          )}
-          subtitleComponent={() =>
-            algorithmFetchOneLoading && (
-              <ActivityIndicator size="large" color="#0000ff" />
-            )
-          }
-          storedPin={healthFacility.pin_code}
-          colorCircleButtons="#757575"
-          colorPassword="#db473e"
-          stylePinCodeButtonNumber="#FFF"
-          numbersButtonOverlayColor="#db473e"
-          stylePinCodeDeleteButtonColorShowUnderlay="#db473e"
-          stylePinCodeDeleteButtonColorHideUnderlay="#757575"
-          stylePinCodeColorTitle="#db473e"
-          stylePinCodeDeleteButtonSize={30}
-          stylePinCodeDeleteButtonText={[Fonts.textSmall]}
-          stylePinCodeRowButtons={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 150,
-          }}
-          stylePinCodeColumnButtons={{}}
-          stylePinCodeMainContainer={{}}
-          stylePinCodeColumnDeleteButton={{}}
-          stylePinCodeButtonCircle={{}}
-        />
-      </View>
-    </Animated.View>
+    <KeyboardAvoidingView behavior="height" style={auth.wrapper}>
+      <Animated.View style={auth.animation(fadeAnim)}>
+        <Text style={auth.header}>
+          {currentClinician.first_name} {currentClinician.last_name}
+          {'\n'}
+          <Text style={authPin.secondTitle}>
+            {t(`health_facility.roles.${currentClinician.role}`)}
+          </Text>
+        </Text>
+        {algorithmFetchOneError && (
+          <Text style={auth.errorMessage}>
+            {algorithmFetchOneError.message}
+          </Text>
+        )}
+        <View style={authPin.wrapper}>
+          <PINCode
+            passwordLength={healthFacility.pin_code.length}
+            endProcessFunction={handlePin}
+            disableLockScreen
+            status="enter"
+            pinStatus={status}
+            titleComponent={() =>
+              algorithmFetchOneLoading ? (
+                <Loader height={100} />
+              ) : (
+                <Text style={authPin.title}>
+                  {t('containers.auth.pin.unlock')}
+                </Text>
+              )
+            }
+            storedPin={healthFacility.pin_code}
+            colorCircleButtons="#757575"
+            colorPassword="#db473e"
+            stylePinCodeButtonNumber="#FFF"
+            numbersButtonOverlayColor="#db473e"
+            stylePinCodeDeleteButtonColorShowUnderlay="#db473e"
+            stylePinCodeDeleteButtonColorHideUnderlay="#757575"
+            stylePinCodeColorTitle="#db473e"
+            stylePinCodeDeleteButtonSize={35}
+            stylePinCodeDeleteButtonText={authPin.delete}
+            stylePinCodeRowButtons={authPin.codeButtons}
+            stylePinCodeColumnButtons={{}}
+            stylePinCodeMainContainer={{}}
+            stylePinCodeColumnDeleteButton={{}}
+            stylePinCodeButtonCircle={{}}
+          />
+        </View>
+
+        <View style={auth.themeToggleWrapper}>
+          <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
+        </View>
+      </Animated.View>
+    </KeyboardAvoidingView>
   )
 }
 

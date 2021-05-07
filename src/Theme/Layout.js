@@ -58,6 +58,9 @@ export default function () {
     alignItemsStart: {
       alignItems: 'flex-start',
     },
+    alignItemsEnd: {
+      alignItems: 'flex-end',
+    },
     alignItemsStretch: {
       alignItems: 'stretch',
     },

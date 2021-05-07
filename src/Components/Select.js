@@ -3,6 +3,7 @@
  */
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import { Picker } from '@react-native-picker/picker'
 
 /**
@@ -15,6 +16,7 @@ const Select = props => {
   const { label, items, warning, disabled } = props
 
   // Theme and style elements deconstruction
+  const { t } = useTranslation()
   const {
     Components: { select },
     Colors,
@@ -35,7 +37,11 @@ const Select = props => {
           dropdownIconColor={Colors.black}
           enabled={!disabled}
         >
-          <Picker.Item key="select-placeholder" label="Select..." value="" />
+          <Picker.Item
+            key="select-placeholder"
+            label={t('actions.select')}
+            value=""
+          />
           {items.map(item => {
             return (
               <Picker.Item

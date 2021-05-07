@@ -12,7 +12,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "medAl-reader";
+    return "medAL-reader";
   }
 
   // for react-native-appearance

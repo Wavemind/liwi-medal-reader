@@ -21,6 +21,7 @@ export default function (props) {
       height: 40,
       opacity: 1,
       justifyContent: 'center',
+      borderRadius: 10,
     },
     picker: {
       width: 170,
