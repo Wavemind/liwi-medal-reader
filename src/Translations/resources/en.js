@@ -34,6 +34,7 @@ export default {
   device: {
     name: 'Name',
     mac_address: 'Mac address',
+    name_not_available: 'no name available',
   },
   health_facility: {
     roles: {

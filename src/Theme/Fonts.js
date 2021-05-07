@@ -40,6 +40,9 @@ export default function ({ FontSize, Colors }) {
     textBold: {
       fontWeight: 'bold',
     },
+    textItalic: {
+      fontStyle: 'italic',
+    },
     textCenter: {
       textAlign: 'center',
     },

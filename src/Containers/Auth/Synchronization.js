@@ -92,7 +92,9 @@ const SynchronizationAuthContainer = () => {
             </View>
             <View style={[Layout.fill]}>
               <Text style={[Fonts.textSmall, Fonts.textBold]}>
-                {device.name}
+                {device.name === ''
+                  ? device.name
+                  : t('device.name_not_available')}
               </Text>
             </View>
           </View>
