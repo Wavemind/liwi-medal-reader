@@ -11,8 +11,9 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { translate } from '@/Translations/algorithm'
 
-const Study = () => {
+function Study() {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
 
@@ -25,8 +26,8 @@ const Study = () => {
   )
 
   const htmlContent =
-    typeof studyDescription === 'string'
-      ? studyDescription
+    translate(studyDescription) !== ''
+      ? translate(studyDescription)
       : t('components.modal.study.no_content')
 
   return (
