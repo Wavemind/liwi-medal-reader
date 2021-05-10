@@ -1,4 +1,11 @@
+/**
+ * The external imports
+ */
 import React from 'react'
+
+/**
+ * The internal imports
+ */
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginAuthContainer } from '@/Containers'
 import { SynchronizationAuthContainer } from '@/Containers'

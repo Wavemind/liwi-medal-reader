@@ -12,6 +12,14 @@ export const Config = {
     { label: 'Swahili', value: 'sw' },
     { label: 'Zulu', value: 'zu' },
   ],
-  DEVICE_INFO: ['mac_address', 'name', 'model', 'brand', 'os', 'os_version'],
-  HEALTH_FACILITY_INFO: ['architecture', 'area', 'country', 'name'],
+  DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
+  HEALTH_FACILITY_INFO: [
+    'architecture',
+    'area',
+    'country',
+    'name',
+    'main_data_ip',
+    'local_data_ip',
+  ],
+  ALGORITHM_INFO: ['version_name', 'version_id', 'updated_at'],
 }

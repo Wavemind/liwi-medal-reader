@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, Animated, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Animated } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -10,29 +10,32 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 
-import { SquareSelect, ToggleSwitchDarkMode, SectionHeader } from '@/Components'
+import { SquareSelect, ToggleSwitch } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
+import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
-    Containers: { auth, settingsStyles },
+    Containers: { global, settings },
+    Gutters,
+    Fonts,
   } = useTheme()
 
   // Local state definition
   const [algorithmLanguage, setAlgorithmLanguage] = useState('en')
   const [appLanguage, setAppLanguage] = useState('en')
-  // TODO Voir si tu veux mettre un loading pendant qu'on update le store ou le backend or whatever ?
-  const [loading, setLoading] = useState(false)
 
   // Get values from the store
   const environment = useSelector(state => state.system.environment)
-  const deviceInfo = useSelector(state => state.device.item)
-  const healthFacilityInfo = useSelector(state => state.healthFacility.item)
+  const device = useSelector(state => state.device.item)
+  const healthFacility = useSelector(state => state.healthFacility.item)
+  const algorithm = useSelector(state => state.algorithm.item)
+  const darkMode = useSelector(state => state.theme.darkMode)
 
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -65,66 +68,130 @@ const LoginAuthContainer = () => {
     setAlgorithmLanguage(newAlgorithmLanguage)
   }
 
+  /**
+   * Dispatches the theme change action to the store and toggles the local enabled state
+   * @param theme
+   * @param darkMode
+   */
+  const changeTheme = () => {
+    dispatch(ChangeTheme.action({ darkMode: !darkMode }))
+  }
+
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
   return (
-    <KeyboardAvoidingView
-      behavior="height"
-      keyboardVerticalOffset={50}
-      style={auth.wrapper}
-    >
-      <Animated.View style={auth.animation(fadeAnim)}>
-        <Text style={auth.header}>{t('containers.settings.title')}</Text>
-        <SectionHeader label={t('containers.settings.device.title')} />
-        {Object.keys(deviceInfo).map((info) => {
-          // TODO Je pense qu'on s'en fout du id et du created_at et tout le reste, du coup j'ai faut un filtre dans Config
-          if (Config.DEVICE_INFO.includes(info)) {
-            return (
-              <View style={settingsStyles.itemStyle}>
-                <Text style={settingsStyles.textStyle}>{t(`containers.settings.device.${info}`)}</Text>
-                <Text style={settingsStyles.textStyle}>{deviceInfo[info]}</Text>
-              </View>
-            )
-          }
-        })}
-
-        <SectionHeader label={t('containers.settings.health_facility.title')} />
-        {Object.keys(healthFacilityInfo).map((info) => {
-          // TODO Je pense qu'on s'en fout du id et du created_at et tout le reste, du coup j'ai faut un filtre dans Config
-          if (Config.HEALTH_FACILITY_INFO.includes(info)) {
-            return (
-              <View style={settingsStyles.itemStyle}>
-                <Text style={settingsStyles.textStyle}>{t(`containers.settings.health_facility.${info}`)}</Text>
-                <Text style={settingsStyles.textStyle}>{healthFacilityInfo[info]}</Text>
-              </View>
-            )
-          }
-        })}
-        <SectionHeader label={t('containers.settings.options.title')} />
+    <Animated.ScrollView style={[global.animation(fadeAnim)]}>
+      <Text
+        style={[
+          Gutters.regularLMargin,
+          Gutters.regularVMargin,
+          Fonts.textSectionHeader,
+        ]}
+      >
+        {t('containers.settings.general.title')}
+      </Text>
+      <View style={settings.itemGeneralStyle}>
         <SquareSelect
-          label={t('containers.settings.options.environment')}
+          label={t('containers.settings.general.environment')}
           items={Config.ENVIRONNEMENTS}
           handleOnSelect={updateEnvironment}
           value={environment}
         />
+      </View>
+      <View style={settings.itemGeneralStyle}>
         <SquareSelect
-          label={t('containers.settings.options.app_languages')}
+          label={t('containers.settings.general.app_languages')}
           items={Config.LANGUAGES}
           handleOnSelect={updateAppLanguage}
           value={appLanguage}
         />
+      </View>
+      <View style={settings.itemGeneralStyle}>
         <SquareSelect
-          label={t('containers.settings.options.algorithm_languages')}
+          label={t('containers.settings.general.algorithm_languages')}
           items={Config.LANGUAGES}
           handleOnSelect={updateAlgorithmLanguage}
           value={algorithmLanguage}
         />
+      </View>
+      <View style={settings.itemGeneralStyle}>
+        <ToggleSwitch
+          label={t('application.theme.dark_mode')}
+          handleToggle={changeTheme}
+          value={darkMode}
+        />
+      </View>
 
-        <ToggleSwitchDarkMode label={t('application.theme.dark_mode')} />
-      </Animated.View>
-    </KeyboardAvoidingView>
+      <Text
+        style={[
+          Gutters.regularLMargin,
+          Gutters.regularVMargin,
+          Fonts.textSectionHeader,
+        ]}
+      >
+        {t('containers.settings.algorithm.title')}
+      </Text>
+      {Object.keys(algorithm).map(info => {
+        if (Config.ALGORITHM_INFO.includes(info)) {
+          return (
+            <View style={settings.itemStyle}>
+              <Text style={settings.textStyle}>{t(`algorithm.${info}`)}</Text>
+              <Text style={[settings.textStyle, Fonts.textBold]}>
+                {algorithm[info]}
+              </Text>
+            </View>
+          )
+        }
+      })}
+
+      <Text
+        style={[
+          Gutters.regularLMargin,
+          Gutters.regularVMargin,
+          Fonts.textSectionHeader,
+        ]}
+      >
+        {t('containers.settings.health_facility.title')}
+      </Text>
+      {Object.keys(healthFacility).map(info => {
+        if (Config.HEALTH_FACILITY_INFO.includes(info)) {
+          return (
+            <View style={settings.itemStyle}>
+              <Text style={settings.textStyle}>
+                {t(`health_facility.${info}`)}
+              </Text>
+              <Text style={[settings.textStyle, Fonts.textBold]}>
+                {healthFacility[info]}
+              </Text>
+            </View>
+          )
+        }
+      })}
+
+      <Text
+        style={[
+          Gutters.regularLMargin,
+          Gutters.regularVMargin,
+          Fonts.textSectionHeader,
+        ]}
+      >
+        {t('containers.settings.device.title')}
+      </Text>
+      {Object.keys(device).map(info => {
+        if (Config.DEVICE_INFO.includes(info)) {
+          return (
+            <View style={settings.itemStyle}>
+              <Text style={settings.textStyle}>{t(`device.${info}`)}</Text>
+              <Text style={[settings.textStyle, Fonts.textBold]}>
+                {device[info]}
+              </Text>
+            </View>
+          )
+        }
+      })}
+    </Animated.ScrollView>
   )
 }
 

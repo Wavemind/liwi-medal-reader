@@ -3,6 +3,8 @@
  *
  * Use it to define generic component styles (e.g. the default text styles, default button styles...).
  */
+import globalStyles from './containers/Global/Index.style'
+
 import authStyles from './containers/Auth/Auth.style'
 import authLoginStyles from './containers/Auth/Login.style'
 import authSynchronizationStyles from './containers/Auth/Synchronization.style'
@@ -23,6 +25,7 @@ import SettingsIndexStyles from './containers/Settings/Index.style'
  */
 export default function (props) {
   return {
+    global: globalStyles(props),
     auth: authStyles(props),
     authLogin: authLoginStyles(props),
     authSynchronization: authSynchronizationStyles(props),
@@ -31,6 +34,6 @@ export default function (props) {
     startupIndex: startupIndexStyles(props),
     modalIndex: ModalIndexStyles(props),
     modalAlgorithm: ModalAlgorithmStyles(props),
-    settingsStyles: SettingsIndexStyles(props),
+    settings: SettingsIndexStyles(props),
   }
 }
