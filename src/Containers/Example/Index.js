@@ -14,8 +14,7 @@ import { useTheme } from '@/Theme'
 import { useTranslation } from 'react-i18next'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
-const IndexExampleContainer = (props) => {
-
+const IndexExampleContainer = props => {
   const { navigation } = props
 
   const { t } = useTranslation()
@@ -23,6 +22,8 @@ const IndexExampleContainer = (props) => {
   const dispatch = useDispatch()
 
   const state = useSelector(state => state)
+
+  console.log(state)
 
   const [isEnabled, setIsEnabled] = useState(false)
 
@@ -44,7 +45,14 @@ const IndexExampleContainer = (props) => {
   }
 
   return (
-    <ScrollView style={[Layout.fill, Layout.column, Gutters.largeHPadding, Gutters.largeVPadding]}>
+    <ScrollView
+      style={[
+        Layout.fill,
+        Layout.column,
+        Gutters.largeHPadding,
+        Gutters.largeVPadding,
+      ]}
+    >
       {/* SectionHeader */}
       {/*<SectionHeader label="Questions" />*/}
 
@@ -67,7 +75,11 @@ const IndexExampleContainer = (props) => {
       {/*<Select items={items} disabled />*/}
 
       {/*/!* Square buttons *!/*/}
-      <SquareButton content="Settings" handlePress={navigateToSettings} filled />
+      <SquareButton
+        content="Settings"
+        handlePress={navigateToSettings}
+        filled
+      />
       {/*<View style={{ paddingTop: 10 }}>*/}
       {/*  <SquareButton content="Hello there" filled disabled />*/}
       {/*</View>*/}

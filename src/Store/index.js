@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import { combineReducers } from 'redux'
 import {
   persistReducer,
@@ -11,8 +10,9 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
-import { configureStore } from '@reduxjs/toolkit'
+import { reducer as network } from 'react-native-offline'
 
+import { configureStore } from '@reduxjs/toolkit'
 import algorithm from './Algorithm'
 import device from './Device'
 import healthFacility from './HealthFacility'
@@ -25,6 +25,7 @@ const reducers = combineReducers({
   algorithm,
   device,
   healthFacility,
+  network,
   startup,
   system,
   theme,
