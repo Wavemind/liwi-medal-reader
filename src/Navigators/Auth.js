@@ -1,9 +1,18 @@
+/**
+ * The external imports
+ */
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { LoginAuthContainer } from '@/Containers'
-import { SynchronizationAuthContainer } from '@/Containers'
-import { PinAuthContainer } from '@/Containers'
-import { ClinicianSelectionAuthContainer } from '@/Containers'
+
+/**
+ * The internal imports
+ */
+import {
+  LoginAuthContainer,
+  SynchronizationAuthContainer,
+  PinAuthContainer,
+  ClinicianSelectionAuthContainer,
+} from '@/Containers'
 
 const Stack = createStackNavigator()
 

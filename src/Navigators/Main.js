@@ -3,18 +3,30 @@
  */
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import { IndexExampleContainer } from '@/Containers'
+import { IndexExampleContainer, IndexSettingsContainer } from '@/Containers'
 
 const Stack = createStackNavigator()
 
 const MainNavigator = () => {
+  const { t } = useTranslation()
+
   return (
-    <Stack.Navigator headerMode="none" mode="modal">
-      <Stack.Screen name="Home" component={IndexExampleContainer} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={IndexExampleContainer}
+        options={{ title: t('navigation.home') }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={IndexSettingsContainer}
+        options={{ title: t('navigation.settings') }}
+      />
     </Stack.Navigator>
   )
 }

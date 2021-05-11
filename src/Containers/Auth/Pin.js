@@ -21,7 +21,7 @@ const PinAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
-    Containers: { auth, authPin },
+    Containers: { auth, authPin, global },
   } = useTheme()
 
   // Local state definition
@@ -43,6 +43,10 @@ const PinAuthContainer = () => {
 
   useEffect(() => {
     fadeIn(fadeAnim)
+
+    if (__DEV__) {
+      handlePin('1234')
+    }
   }, [fadeAnim])
 
   /**
@@ -64,8 +68,8 @@ const PinAuthContainer = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" style={auth.wrapper}>
-      <Animated.View style={auth.animation(fadeAnim)}>
+    <KeyboardAvoidingView behavior="height" style={global.wrapper}>
+      <Animated.View style={global.animation(fadeAnim)}>
         <Text style={auth.header}>
           {currentClinician.first_name} {currentClinician.last_name}
           {'\n'}

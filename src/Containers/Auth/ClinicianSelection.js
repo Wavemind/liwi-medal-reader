@@ -19,7 +19,7 @@ const ClinicianSelectionAuthContainer = props => {
   const { t } = useTranslation()
   const {
     Layout,
-    Containers: { auth },
+    Containers: { auth, global },
   } = useTheme()
 
   // Local state definition
@@ -40,7 +40,7 @@ const ClinicianSelectionAuthContainer = props => {
   return (
     <ScrollView contentContainerStyle={[Layout.grow]}>
       <Animated.View
-        style={[Layout.fill, auth.animation(fadeAnim), auth.wrapper]}
+        style={[Layout.fill, global.animation(fadeAnim), global.wrapper]}
       >
         <Text style={auth.header}>{healthFacility.name}</Text>
         <View style={[Layout.fill, Layout.left]}>

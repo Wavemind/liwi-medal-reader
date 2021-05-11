@@ -18,7 +18,6 @@ import { isFulfilled } from '@reduxjs/toolkit'
 /**
  * The internal imports
  */
-
 import {
   SquareButton,
   SquareSelect,
@@ -37,7 +36,7 @@ const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
-    Containers: { auth, authLogin },
+    Containers: { auth, authLogin, global },
   } = useTheme()
 
   // Local state definition
@@ -101,9 +100,9 @@ const LoginAuthContainer = () => {
     <KeyboardAvoidingView
       behavior="height"
       keyboardVerticalOffset={50}
-      style={auth.wrapper}
+      style={global.wrapper}
     >
-      <Animated.View style={auth.animation(fadeAnim)}>
+      <Animated.View style={global.animation(fadeAnim)}>
         <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
         <View style={authLogin.errorMessageWrapper}>
           {newSessionError && (

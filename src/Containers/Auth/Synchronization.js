@@ -22,7 +22,7 @@ const SynchronizationAuthContainer = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    Containers: { authSynchronization, auth },
+    Containers: { authSynchronization, auth, global },
     Fonts,
     Layout,
     Gutters,
@@ -73,8 +73,8 @@ const SynchronizationAuthContainer = () => {
   }
 
   return (
-    <View style={auth.wrapper}>
-      <Animated.View style={auth.animation(fadeAnim)}>
+    <View style={global.wrapper}>
+      <Animated.View style={global.animation(fadeAnim)}>
         <Text style={auth.header}>
           {t('containers.auth.synchronization.title')}
         </Text>
@@ -92,9 +92,20 @@ const SynchronizationAuthContainer = () => {
             </View>
             <View style={[Layout.fill]}>
               <Text style={[Fonts.textSmall, Fonts.textBold]}>
-                {device.name !== ''
+                {device.name !== null
                   ? device.name
                   : t('device.name_not_available')}
+              </Text>
+            </View>
+          </View>
+
+          <View style={[Layout.row, Gutters.smallTMargin]}>
+            <View style={[Layout.fill]}>
+              <Text style={[Fonts.textSmall]}>{t('device.model')}</Text>
+            </View>
+            <View style={[Layout.fill]}>
+              <Text style={[Fonts.textSmall, Fonts.textBold]}>
+                {device.model}
               </Text>
             </View>
           </View>

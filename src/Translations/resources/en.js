@@ -1,4 +1,15 @@
 export default {
+  actions: {
+    select: 'Select',
+    continue: 'Continue',
+    login: 'Login',
+    synchronize: 'Synchronize',
+  },
+  algorithm: {
+    version_id: 'Version id',
+    version_name: 'Version name',
+    updated_at: 'Last update',
+  },
   application: {
     theme: {
       dark_mode: 'Dark mode',
@@ -22,6 +33,23 @@ export default {
         unlock: 'Enter the PIN to unlock the tablet',
       },
     },
+    settings: {
+      general: {
+        title: 'General',
+        environment: 'Environment',
+        app_languages: 'App languages',
+        algorithm_languages: 'Algorithm languages',
+      },
+      algorithm: {
+        title: 'Algorithm',
+      },
+      health_facility: {
+        title: 'Health facility',
+      },
+      device: {
+        title: 'Device',
+      },
+    },
   },
   components: {
     modal: {
@@ -33,10 +61,21 @@ export default {
   },
   device: {
     name: 'Name',
-    mac_address: 'Mac address',
+    mac_address: 'MAC address',
+    model: 'Model',
+    brand: 'Brand',
+    os: 'OS',
+    os_version: 'OS Version',
     name_not_available: 'no name available',
   },
   health_facility: {
+    id: 'ID',
+    name: 'Name',
+    architecture: 'Architecture',
+    country: 'Country',
+    area: 'Area',
+    local_data_ip: 'MedAL-hub address',
+    main_data_ip: 'MedAL-data address',
     roles: {
       medical_doctor: 'Medical Doctor (MD)',
       assistant_medical_officer: 'Assistant Medical Officer (AMO)',
@@ -47,15 +86,13 @@ export default {
       registration_assistant: 'Registration assistant',
     },
   },
+  navigation: {
+    home: 'Home',
+    settings: 'Settings',
+  },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',
     instructions:
       'Please go to Permissions in the tablet Settings and grant all required permissions',
-  },
-  actions: {
-    select: 'Select',
-    continue: 'Continue',
-    login: 'Login',
-    synchronize: 'Synchronize',
   },
 }

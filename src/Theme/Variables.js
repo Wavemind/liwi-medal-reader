@@ -15,7 +15,7 @@ export const Colors = {
   white: '#ffffff',
   black: '#000000',
   buttonGrey: '#303030',
-  grey: '#808080',
+  grey: '#BFC1C4',
   text: '#212529',
   primary: '#E14032',
   success: '#28a745',

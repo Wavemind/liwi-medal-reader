@@ -4,15 +4,6 @@ export default function (props) {
   const { Layout, Fonts, Colors, Gutters } = props
 
   return StyleSheet.create({
-    wrapper: {
-      ...Layout.fill,
-      ...Gutters.hugeTPadding,
-      ...Gutters.largeHPadding,
-    },
-    animation: fadeAnim => ({
-      ...Layout.fill,
-      opacity: fadeAnim,
-    }),
     header: {
       ...Fonts.textColorText,
       ...Fonts.titleSmall,
