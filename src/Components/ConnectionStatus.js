@@ -3,6 +3,7 @@
  */
 import React, { useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -15,6 +16,12 @@ const ConnectionStatus = props => {
   const { navigation, label } = props
 
   // Theme and style elements deconstruction
+
+  // Get values from the store
+  const network = useSelector(state => state.network)
+
+  //  TODO: FAIRE UNE ACTION LORS DU CHANGEMENT DE STATUS
+
   const {
     Components: { template },
     Layout,
@@ -22,7 +29,11 @@ const ConnectionStatus = props => {
 
   // Local state definition
 
-  return <Icon name="wifi-on" />
+  return network.isConnected ? (
+    <Icon name="wifi-on" />
+  ) : (
+    <Icon name="wifi-off" />
+  )
 }
 
 export default ConnectionStatus

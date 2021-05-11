@@ -23,8 +23,6 @@ const IndexExampleContainer = props => {
 
   const state = useSelector(state => state)
 
-  console.log(state)
-
   const [isEnabled, setIsEnabled] = useState(false)
 
   const changeTheme = ({ theme, darkMode }) => {
