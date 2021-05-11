@@ -8,8 +8,7 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import { IndexExampleContainer } from '@/Containers'
-import { IndexSettingsContainer } from '@/Containers'
+import { IndexExampleContainer, IndexSettingsContainer } from '@/Containers'
 
 const Stack = createStackNavigator()
 
