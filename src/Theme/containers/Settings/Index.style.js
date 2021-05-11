@@ -4,7 +4,12 @@ export default function (props) {
   const { Layout, Fonts, Gutters, Colors } = props
 
   return StyleSheet.create({
-    itemStyle: {
+    title: {
+      ...Gutters.regularLMargin,
+      ...Gutters.regularVMargin,
+      ...Fonts.textSectionHeader,
+    },
+    item: {
       ...Layout.row,
       ...Layout.justifyContentBetween,
       ...Gutters.regularVPadding,
@@ -13,7 +18,7 @@ export default function (props) {
       borderTopWidth: 1,
       borderTopColor: Colors.grey,
     },
-    itemGeneralStyle: {
+    itemGeneral: {
       ...Layout.row,
       ...Layout.justifyContentBetween,
       ...Gutters.regularHPadding,

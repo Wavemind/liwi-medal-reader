@@ -4,6 +4,7 @@ import {
   buildAsyncActions,
   buildAsyncReducers,
 } from '@thecodingmachine/redux-toolkit-wrapper'
+import i18n from '@/Translations'
 
 import { navigateAndSimpleReset, navigateAndReset } from '@/Navigators/Root'
 import DefaultTheme from '@/Store/Theme/DefaultTheme'
@@ -15,12 +16,16 @@ export default {
     // Timeout to fake waiting some process
     // Remove it, or keep it if you want display a beautiful splash screen ;)
     await new Promise(resolve => setTimeout(resolve, 1500))
+    const state = store.getState()
+
+    // Set default language
+    const appLanguage = state.system.language
+    i18n.changeLanguage(appLanguage)
 
     // Set default theme
     await dispatch(DefaultTheme.action({ theme: 'default', darkMode: null }))
 
     // Check auth status
-    const state = store.getState()
     const isAuthenticated = state.user.item.hasOwnProperty('id')
     const deviceRegistered = state.device.item.hasOwnProperty('id')
     const healthFacilityAssociated = state.healthFacility.item.hasOwnProperty(

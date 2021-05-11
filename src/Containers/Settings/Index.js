@@ -15,20 +15,25 @@ import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
+import ChangeAppLanguage from '@/Store/System/ChangeLanguage'
+import ChangeAlgoLanguage from '@/Store/Algorithm/ChangeLanguage'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
 const LoginAuthContainer = () => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const {
     Containers: { global, settings },
-    Gutters,
     Fonts,
   } = useTheme()
 
   // Local state definition
-  const [algorithmLanguage, setAlgorithmLanguage] = useState('en')
-  const [appLanguage, setAppLanguage] = useState('en')
+  const [algorithmLanguage, setAlgorithmLanguage] = useState(
+    useSelector(state => state.system.language),
+  )
+  const [appLanguage, setAppLanguage] = useState(
+    useSelector(state => state.algorithm.language),
+  )
 
   // Get values from the store
   const environment = useSelector(state => state.system.environment)
@@ -46,30 +51,33 @@ const LoginAuthContainer = () => {
    * Dispatches new environment to store
    * @param newEnvironment
    */
-  const updateEnvironment = newEnvironment => {
+  const updateEnvironment = async newEnvironment => {
     dispatch(ChangeEnvironment.action({ newEnvironment }))
   }
 
   /**
-   * TODO
+   * Update app language and update store
    * @param newAppLanguage
    */
-  const updateAppLanguage = newAppLanguage => {
-    // TODO Pour l'instant je met un state local mais a voir ou tu veux stocker l'info definitivement
+  const changeAppLanguage = async newAppLanguage => {
+    i18n.changeLanguage(newAppLanguage)
     setAppLanguage(newAppLanguage)
+    await dispatch(ChangeAppLanguage.action({ newLanguage: newAppLanguage }))
   }
 
   /**
-   * TODO
+   * Update algorithm language in store
    * @param newAlgorithmLanguage
    */
-  const updateAlgorithmLanguage = newAlgorithmLanguage => {
-    // TODO Pour l'instant je met un state local mais a voir ou tu veux stocker l'info definitivement
+  const changeAlgorithmLanguage = async newAlgorithmLanguage => {
+    await dispatch(
+      ChangeAlgoLanguage.action({ newLanguage: newAlgorithmLanguage }),
+    )
     setAlgorithmLanguage(newAlgorithmLanguage)
   }
 
   /**
-   * Dispatches the theme change action to the store and toggles the local enabled state
+   * Update theme mode in store
    * @param theme
    * @param darkMode
    */
@@ -83,16 +91,10 @@ const LoginAuthContainer = () => {
 
   return (
     <Animated.ScrollView style={[global.animation(fadeAnim)]}>
-      <Text
-        style={[
-          Gutters.regularLMargin,
-          Gutters.regularVMargin,
-          Fonts.textSectionHeader,
-        ]}
-      >
+      <Text style={[settings.title]}>
         {t('containers.settings.general.title')}
       </Text>
-      <View style={settings.itemGeneralStyle}>
+      <View style={settings.itemGeneral}>
         <SquareSelect
           label={t('containers.settings.general.environment')}
           items={Config.ENVIRONNEMENTS}
@@ -100,23 +102,23 @@ const LoginAuthContainer = () => {
           value={environment}
         />
       </View>
-      <View style={settings.itemGeneralStyle}>
+      <View style={settings.itemGeneral}>
         <SquareSelect
           label={t('containers.settings.general.app_languages')}
           items={Config.LANGUAGES}
-          handleOnSelect={updateAppLanguage}
+          handleOnSelect={changeAppLanguage}
           value={appLanguage}
         />
       </View>
-      <View style={settings.itemGeneralStyle}>
+      <View style={settings.itemGeneral}>
         <SquareSelect
           label={t('containers.settings.general.algorithm_languages')}
           items={Config.LANGUAGES}
-          handleOnSelect={updateAlgorithmLanguage}
+          handleOnSelect={changeAlgorithmLanguage}
           value={algorithmLanguage}
         />
       </View>
-      <View style={settings.itemGeneralStyle}>
+      <View style={settings.itemGeneral}>
         <ToggleSwitch
           label={t('application.theme.dark_mode')}
           handleToggle={changeTheme}
@@ -124,21 +126,15 @@ const LoginAuthContainer = () => {
         />
       </View>
 
-      <Text
-        style={[
-          Gutters.regularLMargin,
-          Gutters.regularVMargin,
-          Fonts.textSectionHeader,
-        ]}
-      >
+      <Text style={[settings.title]}>
         {t('containers.settings.algorithm.title')}
       </Text>
       {Object.keys(algorithm).map(info => {
         if (Config.ALGORITHM_INFO.includes(info)) {
           return (
-            <View style={settings.itemStyle}>
-              <Text style={settings.textStyle}>{t(`algorithm.${info}`)}</Text>
-              <Text style={[settings.textStyle, Fonts.textBold]}>
+            <View style={settings.item}>
+              <Text style={settings.text}>{t(`algorithm.${info}`)}</Text>
+              <Text style={[settings.text, Fonts.textBold]}>
                 {algorithm[info]}
               </Text>
             </View>
@@ -146,23 +142,15 @@ const LoginAuthContainer = () => {
         }
       })}
 
-      <Text
-        style={[
-          Gutters.regularLMargin,
-          Gutters.regularVMargin,
-          Fonts.textSectionHeader,
-        ]}
-      >
+      <Text style={[settings.title]}>
         {t('containers.settings.health_facility.title')}
       </Text>
       {Object.keys(healthFacility).map(info => {
         if (Config.HEALTH_FACILITY_INFO.includes(info)) {
           return (
-            <View style={settings.itemStyle}>
-              <Text style={settings.textStyle}>
-                {t(`health_facility.${info}`)}
-              </Text>
-              <Text style={[settings.textStyle, Fonts.textBold]}>
+            <View style={settings.item}>
+              <Text style={settings.text}>{t(`health_facility.${info}`)}</Text>
+              <Text style={[settings.text, Fonts.textBold]}>
                 {healthFacility[info]}
               </Text>
             </View>
@@ -170,21 +158,15 @@ const LoginAuthContainer = () => {
         }
       })}
 
-      <Text
-        style={[
-          Gutters.regularLMargin,
-          Gutters.regularVMargin,
-          Fonts.textSectionHeader,
-        ]}
-      >
+      <Text style={[settings.title]}>
         {t('containers.settings.device.title')}
       </Text>
       {Object.keys(device).map(info => {
         if (Config.DEVICE_INFO.includes(info)) {
           return (
-            <View style={settings.itemStyle}>
-              <Text style={settings.textStyle}>{t(`device.${info}`)}</Text>
-              <Text style={[settings.textStyle, Fonts.textBold]}>
+            <View style={settings.item}>
+              <Text style={settings.text}>{t(`device.${info}`)}</Text>
+              <Text style={[settings.text, Fonts.textBold]}>
                 {device[info]}
               </Text>
             </View>

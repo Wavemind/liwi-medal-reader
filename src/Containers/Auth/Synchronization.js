@@ -39,7 +39,7 @@ const SynchronizationAuthContainer = () => {
     state => state.algorithm.fetchOne.error,
   )
   const device = useSelector(state => state.device.item)
-
+  
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -92,7 +92,7 @@ const SynchronizationAuthContainer = () => {
             </View>
             <View style={[Layout.fill]}>
               <Text style={[Fonts.textSmall, Fonts.textBold]}>
-                {device.name !== ''
+                {device.name !== null
                   ? device.name
                   : t('device.name_not_available')}
               </Text>

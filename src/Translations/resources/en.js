@@ -37,14 +37,14 @@ export default {
       general: {
         title: 'General',
         environment: 'Environment',
-        app_languages: 'App Languages',
-        algorithm_languages: 'Algorithm Languages',
+        app_languages: 'App languages',
+        algorithm_languages: 'Algorithm languages',
       },
       algorithm: {
         title: 'Algorithm',
       },
       health_facility: {
-        title: 'Health Facility',
+        title: 'Health facility',
       },
       device: {
         title: 'Device',
@@ -69,12 +69,13 @@ export default {
     name_not_available: 'no name available',
   },
   health_facility: {
+    id: 'ID',
     name: 'Name',
     architecture: 'Architecture',
     country: 'Country',
     area: 'Area',
-    local_data_ip: 'medAL-hub address',
-    main_data_ip: 'medAL-data address',
+    local_data_ip: 'MedAL-hub address',
+    main_data_ip: 'MedAL-data address',
     roles: {
       medical_doctor: 'Medical Doctor (MD)',
       assistant_medical_officer: 'Assistant Medical Officer (AMO)',

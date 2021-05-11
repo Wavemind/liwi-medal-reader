@@ -10,10 +10,11 @@ export const Config = {
   LANGUAGES: [
     { label: 'English', value: 'en' },
     { label: 'Swahili', value: 'sw' },
-    { label: 'Zulu', value: 'zu' },
+    { label: 'Français', value: 'fr' },
   ],
   DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
   HEALTH_FACILITY_INFO: [
+    'id',
     'architecture',
     'area',
     'country',
