@@ -9,17 +9,21 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-
 import { SquareSelect, ToggleSwitch } from '@/Components'
 import { fadeIn } from '@/Theme/Animation'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 import ChangeEnvironment from '@/Store/System/ChangeEnvironment'
 import ChangeAppLanguage from '@/Store/System/ChangeLanguage'
 import ChangeAlgoLanguage from '@/Store/Algorithm/ChangeLanguage'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
+import DestroyAlgorithm from '@/Store/Algorithm/Destroy'
+import DestroyDevice from '@/Store/Device/Destroy'
+import DestroyHealthFacility from '@/Store/HealthFacility/Destroy'
+import DestroySession from '@/Store/User/DestroySession'
 
-const LoginAuthContainer = () => {
+const IndexSettingsContainer = () => {
   // Theme and style elements deconstruction
   const { t, i18n } = useTranslation()
   const {
@@ -48,11 +52,17 @@ const LoginAuthContainer = () => {
   const dispatch = useDispatch()
 
   /**
-   * Dispatches new environment to store
+   * Dispatche new environment to store.
+   * Clear device, health facility and algorithm store
    * @param newEnvironment
    */
-  const updateEnvironment = async newEnvironment => {
-    dispatch(ChangeEnvironment.action({ newEnvironment }))
+  const changeEnvironment = async newEnvironment => {
+    await dispatch(ChangeEnvironment.action({ newEnvironment }))
+    await dispatch(DestroyAlgorithm.action({}))
+    await dispatch(DestroyDevice.action({}))
+    await dispatch(DestroyHealthFacility.action({}))
+    await dispatch(DestroySession.action({}))
+    navigateAndSimpleReset('Auth')
   }
 
   /**
@@ -98,7 +108,7 @@ const LoginAuthContainer = () => {
         <SquareSelect
           label={t('containers.settings.general.environment')}
           items={Config.ENVIRONNEMENTS}
-          handleOnSelect={updateEnvironment}
+          handleOnSelect={changeEnvironment}
           value={environment}
         />
       </View>
@@ -177,4 +187,4 @@ const LoginAuthContainer = () => {
   )
 }
 
-export default LoginAuthContainer
+export default IndexSettingsContainer
