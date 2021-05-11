@@ -39,7 +39,7 @@ const SynchronizationAuthContainer = () => {
     state => state.algorithm.fetchOne.error,
   )
   const device = useSelector(state => state.device.item)
-  
+
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
