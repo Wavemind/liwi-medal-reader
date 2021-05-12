@@ -21,7 +21,6 @@ const ConnectionStatus = props => {
   const network = useSelector(state => state.network)
 
   //  TODO: FAIRE UNE ACTION LORS DU CHANGEMENT DE STATUS
-
   const {
     Components: { template },
     Layout,

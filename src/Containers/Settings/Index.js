@@ -52,7 +52,7 @@ const IndexSettingsContainer = () => {
   const dispatch = useDispatch()
 
   /**
-   * Dispatche new environment to store.
+   * Dispatch new environment to store.
    * Clear device, health facility and algorithm store
    * @param newEnvironment
    */
@@ -107,7 +107,7 @@ const IndexSettingsContainer = () => {
       <View style={settings.itemGeneral}>
         <SquareSelect
           label={t('containers.settings.general.environment')}
-          items={Config.ENVIRONNEMENTS}
+          items={Config.ENVIRONMENTS}
           handleOnSelect={changeEnvironment}
           value={environment}
         />
@@ -142,7 +142,7 @@ const IndexSettingsContainer = () => {
       {Object.keys(algorithm).map(info => {
         if (Config.ALGORITHM_INFO.includes(info)) {
           return (
-            <View style={settings.item}>
+            <View style={settings.item} key={info}>
               <Text style={settings.text}>{t(`algorithm.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
                 {algorithm[info]}
@@ -158,7 +158,7 @@ const IndexSettingsContainer = () => {
       {Object.keys(healthFacility).map(info => {
         if (Config.HEALTH_FACILITY_INFO.includes(info)) {
           return (
-            <View style={settings.item}>
+            <View style={settings.item} key={info}>
               <Text style={settings.text}>{t(`health_facility.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
                 {healthFacility[info]}
@@ -174,7 +174,7 @@ const IndexSettingsContainer = () => {
       {Object.keys(device).map(info => {
         if (Config.DEVICE_INFO.includes(info)) {
           return (
-            <View style={settings.item}>
+            <View style={settings.item} key={info}>
               <Text style={settings.text}>{t(`device.${info}`)}</Text>
               <Text style={[settings.text, Fonts.textBold]}>
                 {device[info]}
