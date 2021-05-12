@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, Switch, ScrollView, Text } from 'react-native'
+import { View, Switch, ScrollView, Text, TouchableOpacity } from 'react-native'
+
 import {
   BooleanButtons,
   SectionHeader,
@@ -9,6 +10,7 @@ import {
   RoundedButton,
   Checkbox,
   Info,
+  SearchBar,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { useTranslation } from 'react-i18next'
@@ -51,6 +53,7 @@ const IndexExampleContainer = props => {
         Gutters.largeVPadding,
       ]}
     >
+      <SearchBar onPressIn={() => navigation.push('Search')} />
       {/* SectionHeader */}
       {/*<SectionHeader label="Questions" />*/}
 

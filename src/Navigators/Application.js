@@ -14,6 +14,7 @@ import {
   IndexModalContainer,
   IndexPermissionsRequiredContainer,
   IndexStartupContainer,
+  IndexSearchContainer,
 } from '@/Containers'
 import { useSelector } from 'react-redux'
 import { navigationRef } from '@/Navigators/Root'
@@ -73,19 +74,12 @@ const ApplicationNavigator = () => {
               component={IndexPermissionsRequiredContainer}
             />
             <Stack.Screen name="InfoModal" component={IndexModalContainer} />
+            <Stack.Screen name="Search" component={IndexSearchContainer} />
             {isApplicationLoaded && AuthNavigator != null && (
-              <Stack.Screen
-                name="Auth"
-                component={AuthNavigator}
-                options={{ animationEnabled: false }}
-              />
+              <Stack.Screen name="Auth" component={AuthNavigator} />
             )}
             {isApplicationLoaded && MainNavigator != null && (
-              <Stack.Screen
-                name="Home"
-                component={MainNavigator}
-                options={{ animationEnabled: false }}
-              />
+              <Stack.Screen name="Home" component={MainNavigator} />
             )}
           </Stack.Navigator>
         </NavigationContainer>

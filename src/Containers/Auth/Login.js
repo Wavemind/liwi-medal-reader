@@ -131,7 +131,7 @@ const LoginAuthContainer = () => {
           />
           <SquareSelect
             label={t('containers.auth.login.environment')}
-            items={Config.ENVIRONNEMENTS}
+            items={Config.ENVIRONMENTS}
             handleOnSelect={updateEnvironment}
             value={environment}
           />
