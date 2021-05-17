@@ -3,6 +3,7 @@
  */
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 import { Database, Q } from '@nozbe/watermelondb'
+import { useSelector } from 'react-redux'
 import uuid from 'react-native-uuid'
 import * as _ from 'lodash'
 import moment from 'moment'
@@ -10,9 +11,7 @@ import moment from 'moment'
 /**
  * The internal imports
  */
-import { categories, getEnvironment } from 'frontend_service/constants'
-import { elementPerPage } from '../../../utils/constants' // TODO !
-import { getItem } from '../LocalStorage'
+import Config from '@/Config'
 import schema from './Schema'
 
 import {
@@ -24,7 +23,7 @@ import {
 
 const adapter = new SQLiteAdapter({
   schema,
-  synchronous: true, // synchronous mode only works on iOS. improves performance and reduces glitches in most cases, but also has some downsides - test with and without it
+  jsi: true, // synchronous mode only works on iOS. improves performance and reduces glitches in most cases, but also has some downsides - test with and without it
 })
 
 const database = new Database({
@@ -38,12 +37,16 @@ const database = new Database({
   actionsEnabled: true,
 })
 
-export default class {
+export default function () {
+  const healthFacility = useSelector(state => state.healthFacility.item)
+  const algorithm = useSelector(state => state.algorithm.item)
+  const architecture = healthFacility.architecture
+
   /**
    * Clear all table
    * @returns {Promise<void>}
    */
-  clearDatabase = async () => {
+  const clearDatabase = async () => {
     const patientsToDelete = await this.getAll('Patient', null, null, true)
     await this.delete(patientsToDelete)
     const medicalCasesToDelete = await this.getAll(
@@ -71,7 +74,7 @@ export default class {
    * @param { string } field - The field we wanna search for
    * @returns { Collection } - The wanted object
    */
-  findBy = async (model, value, field = 'id') => {
+  const findBy = async (model, value, field = 'id') => {
     const collection = database.get(this._mapModelToTable(model))
     const object = await collection.query(Q.where(field, value))
     return object[0] === undefined ? null : this._initClasses(object[0], model)
@@ -81,15 +84,15 @@ export default class {
    * Deletes a specific object from the DB
    * @param { object } object - the object to delete
    */
-  delete = async object => {
-    await database.action(async () => {
-      if (object instanceof Array) {
-        object.forEach(o => o.destroyPermanently())
-      } else {
-        object.destroyPermanently()
-      }
-    })
-  }
+  // const delete = async object => {
+  //   await database.action(async () => {
+  //     if (object instanceof Array) {
+  //       object.forEach(o => o.destroyPermanently())
+  //     } else {
+  //       object.destroyPermanently()
+  //     }
+  //   })
+  // }
 
   /**
    * Returns all the entry on a specific model
@@ -98,7 +101,7 @@ export default class {
    * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  getAll = async (model, page = null, params, rawData = false) => {
+  const getAll = async (model, page = null, params, rawData = false) => {
     const collection = database.get(this._mapModelToTable(model))
     let result = await collection.query().fetch()
     const queries = []
@@ -123,8 +126,8 @@ export default class {
     // if (filters !== '') result = await result.filtered(filters);
 
     queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    queries.push(Q.experimentalSkip((page - 1) * elementPerPage))
-    queries.push(Q.experimentalTake(elementPerPage * page))
+    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
+    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
 
     result = await collection.query(...queries)
     result = await this._initClasses(result, model)
@@ -137,7 +140,7 @@ export default class {
    * @param { array } columns - Columns to fetch values
    * @returns {Promise<*>}
    */
-  getConsentsFile = async (page, columns) => {
+  const getConsentsFile = async (page, columns) => {
     const queries = []
     const collection = database.get('patients')
     let result = await collection.query().fetch()
@@ -147,8 +150,8 @@ export default class {
     }
 
     queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    queries.push(Q.experimentalSkip((page - 1) * elementPerPage))
-    queries.push(Q.experimentalTake(elementPerPage * page))
+    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
+    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
 
     result = await collection.query(...queries)
     result = await this._initClasses(result, 'Patient')
@@ -161,12 +164,11 @@ export default class {
    * @param { string } model - The model name of the data we want to retrieve
    * @param { object } object - The value of the object
    */
-  insert = async (model, object) => {
-    const session = await getItem('session')
+  const insert = async (model, object) => {
     const collection = database.get(this._mapModelToTable(model))
     let patient = null
 
-    if (session.facility.architecture === 'client_server') {
+    if (architecture === 'client_server') {
       object = { ...object, fail_safe: true }
     }
 
@@ -209,7 +211,7 @@ export default class {
   /**
    * Blank method used in httpInterface
    */
-  lockMedicalCase = () => {}
+  const lockMedicalCase = () => {}
 
   /**
    * Push an object in a existing object based on model name and id
@@ -219,11 +221,10 @@ export default class {
    * @param { any } value - value to update
    * @returns { Collection } - Updated object
    */
-  push = async (model, id, field, value) => {
-    const session = await getItem('session')
+  const push = async (model, id, field, value) => {
     const object = await this.findBy(model, id)
 
-    if (session.facility.architecture === 'client_server') {
+    if (architecture === 'client_server') {
       value = { ...value, fail_safe: true }
     }
 
@@ -253,7 +254,7 @@ export default class {
   /**
    * Blank method used in httpInterface
    */
-  unlockMedicalCase = () => {}
+  const unlockMedicalCase = () => {}
 
   /**
    * Update or insert value in a existing row
@@ -263,11 +264,10 @@ export default class {
    * @param { boolean } updatePatientValue - Flag that tells us if we need to update the patient values
    * @returns { Collection } - Updated object
    */
-  update = async (model, id, fields, updatePatientValue) => {
-    const session = await getItem('session')
+  const update = async (model, id, fields, updatePatientValue) => {
     const collection = database.get(this._mapModelToTable(model))
 
-    if (session.facility.architecture === 'client_server') {
+    if (architecture === 'client_server') {
       fields = { ...fields, fail_safe: true }
     }
 
@@ -310,13 +310,13 @@ export default class {
    * @param { string } field - The field we wanna search for
    * @returns { Collection } - A collection of wanted values
    */
-  where = async (model, value, field) => {}
+  const where = async (model, value, field) => {}
 
   /**
    * Get all closed and not synchronized case
    * @returns {Promise<Realm.Results<Realm.Object>>}
    */
-  closedAndNotSynchronized = async () => {
+  const closedAndNotSynchronized = async () => {
     const collection = database.get('medical_cases')
 
     return collection
@@ -330,7 +330,7 @@ export default class {
    * @param { integer } medicalCaseId
    * @private
    */
-  _generateActivities = async (activities, medicalCaseId) => {
+  const _generateActivities = async (activities, medicalCaseId) => {
     await database.action(async () => {
       activities.map(async activity => {
         await database.batch(
@@ -355,8 +355,7 @@ export default class {
    * @returns {Promise<*>}
    * @private
    */
-  _generateConsentList = async (data, columns) => {
-    const algorithm = await getItem('algorithm')
+  const _generateConsentList = async (data, columns) => {
     return Promise.all(
       data.map(async entry => {
         const values = await Promise.all(
@@ -377,7 +376,7 @@ export default class {
    * @returns {string}
    * @private
    */
-  _generateFilteredQuery = (model, filters) => {
+  const _generateFilteredQuery = (model, filters) => {
     let query = ''
 
     if (!_.isEmpty(filters)) {
@@ -408,8 +407,7 @@ export default class {
    * @returns { Array[Object] } : The array used to display values in the list
    * @private
    */
-  _generateList = async (data, model, columns) => {
-    const algorithm = await getItem('algorithm')
+  const _generateList = async (data, model, columns) => {
     return Promise.all(
       data.map(async entry => {
         if (model === 'Patient') {
@@ -444,7 +442,7 @@ export default class {
    * @returns { MedicalCaseModel } returns the medical case
    * @private
    */
-  _getMedicalCaseFromModel = async (model, object) => {
+  const _getMedicalCaseFromModel = async (model, object) => {
     switch (model) {
       case 'MedicalCase':
         return object
@@ -466,9 +464,9 @@ export default class {
    * @returns {Promise<[]|PatientModel|MedicalCaseModel>}
    * @private
    */
-  _initClasses = async (data, model) => {
+  const _initClasses = async (data, model) => {
     let object = []
-    const environment = await getEnvironment()
+    const environment = useSelector(state => state.system.environment)
     if (model === 'Patient') {
       if (data instanceof Array) {
         object = Promise.all(
@@ -515,7 +513,7 @@ export default class {
    * @returns { string } - watermelon table name
    * @private
    */
-  _mapModelToTable = model => {
+  const _mapModelToTable = model => {
     switch (model) {
       case 'Patient':
         return 'patients'
@@ -536,7 +534,7 @@ export default class {
    * @param { object } object - The value of the object
    * @private
    */
-  _savePatientValue = async (model, object) => {
+  const _savePatientValue = async (model, object) => {
     const medicalCase = await this._getMedicalCaseFromModel(model, object)
     // Will update the patient values based on activities so we only take the edits
     const activities = await medicalCase.activities
@@ -547,9 +545,10 @@ export default class {
         database.batch(
           ...nodeActivities.map(node => {
             if (
-              [categories.demographic, categories.basicDemographic].includes(
-                medicalCase.nodes[node.id].category,
-              )
+              [
+                Config.CATEGORIES.demographic,
+                Config.CATEGORIES.basicDemographic,
+              ].includes(medicalCase.nodes[node.id].category)
             ) {
               const patientValuesCollection = database.get('patient_values')
 
@@ -566,5 +565,19 @@ export default class {
         )
       }, 'create patient values')
     }
+  }
+
+  return {
+    clearDatabase,
+    findBy,
+    getAll,
+    getConsentsFile,
+    insert,
+    lockMedicalCase,
+    push,
+    unlockMedicalCase,
+    update,
+    where,
+    closedAndNotSynchronized,
   }
 }

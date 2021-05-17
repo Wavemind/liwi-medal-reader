@@ -4,7 +4,7 @@
 import { Model } from '@nozbe/watermelondb'
 import { date, field, children } from '@nozbe/watermelondb/decorators'
 
-export class Patient extends Model {
+export default class Patient extends Model {
   static table = 'patients'
 
   static associations = {

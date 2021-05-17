@@ -8,14 +8,31 @@ import { useSelector } from 'react-redux'
  */
 import Config from '@/Config'
 
-import RemoteInterface from './Remote'
-import LocalInterface from './Local'
+// import RemoteInterface from './Remote'
+import useLocalInterface from './Local/useLocalInterface'
 
 export default function () {
   const healthFacility = useSelector(state => state.healthFacility.item)
   const architecture = healthFacility.architecture
+
+  /**
+   * Define interface by connection and group architecture
+   * @returns {string} interface to use
+   * @private
+   */
+  const _checkInterface = async () => {
+    let dbInterface
+    const network = useSelector(state => state.network)
+    if (architecture === 'standalone' || !network.isConnected) {
+      dbInterface = Config.DATABASE_INTERFACE.local
+    } else {
+      dbInterface = Config.DATABASE_INTERFACE.remote
+    }
+    return dbInterface
+  }
+
   const dataInterface =
-    _checkInterface === 'local' ? new LocalInterface() : new RemoteInterface()
+    _checkInterface() === 'local' ? useLocalInterface() : useLocalInterface()
 
   /**
    * Fetch single entry
@@ -36,6 +53,7 @@ export default function () {
    * @returns { Collection } - A collection of all the data
    */
   const getAll = async (model, page, params = { query: '', filters: [] }) => {
+    console.log(dataInterface)
     return dataInterface.getAll(model, page, params)
   }
 
@@ -107,23 +125,6 @@ export default function () {
    */
   const where = async (model, value, field) => {
     return dataInterface.where(model, value, field)
-  }
-
-  /**
-   * Define interface by connection and group architecture
-   * @returns {string} interface to use
-   * @private
-   */
-  const _checkInterface = async () => {
-    let dbInterface
-    useSelector(state => state.healthFacility.item)
-    const isConnected = await getItem('isConnected')
-    if (architecture === 'standalone' || !isConnected) {
-      dbInterface = Config.DATABASE_INTERFACE.local
-    } else {
-      dbInterface = Config.DATABASE_INTERFACE.remote
-    }
-    return dbInterface
   }
 
   return {

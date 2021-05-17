@@ -2,32 +2,47 @@
  * The external imports
  */
 import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
 import { IndexExampleContainer, IndexSettingsContainer } from '@/Containers'
+import { Header } from '@/Components'
 
-const Stack = createStackNavigator()
+const Drawer = createDrawerNavigator()
 
 const MainNavigator = () => {
+  // Theme and style elements deconstruction
   const { t } = useTranslation()
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen
+    <Drawer.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: true,
+        header: ({ scene }) => {
+          return <Header {...scene} />
+        },
+      }}
+    >
+      <Drawer.Screen
         name="Home"
         component={IndexExampleContainer}
-        options={{ title: t('navigation.home') }}
+        options={{
+          title: t('navigation.home'),
+        }}
       />
-      <Stack.Screen
+      <Drawer.Screen
         name="Settings"
         component={IndexSettingsContainer}
-        options={{ title: t('navigation.settings') }}
+        options={{
+          title: t('navigation.settings'),
+          headerShown: true,
+        }}
       />
-    </Stack.Navigator>
+    </Drawer.Navigator>
   )
 }
 

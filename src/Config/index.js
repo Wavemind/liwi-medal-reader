@@ -1,5 +1,31 @@
 export const Config = {
   ALGORITHM_INFO: ['version_name', 'version_id', 'updated_at'],
+  CATEGORIES: {
+    assessment: 'assessment_test',
+    chronicCondition: 'chronic_condition',
+    basicMeasurement: 'basic_measurement',
+    basicDemographic: 'basic_demographic',
+    exposure: 'exposure',
+    physicalExam: 'physical_exam',
+    symptom: 'symptom',
+    demographic: 'demographic',
+    comorbidity: 'comorbidity',
+    complaintCategory: 'complaint_category',
+    predefinedSyndrome: 'predefined_syndrome',
+    triage: 'triage',
+    vaccine: 'vaccine',
+    scored: 'scored',
+    drug: 'drug',
+    management: 'management',
+    treatmentQuestion: 'treatment_question',
+    backgroundCalculation: 'background_calculation',
+    vitalSignAnthropometric: 'vital_sign_anthropometric',
+    observedPhysicalSign: 'observed_physical_sign',
+    consultationRelated: 'consultation_related',
+    uniqueTriagePhysicalSign: 'unique_triage_physical_sign',
+    uniqueTriageQuestion: 'unique_triage_question',
+    referral: 'referral',
+  },
   DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
   DATABASE_INTERFACE: {
     local: 'local',
@@ -15,7 +41,8 @@ export const Config = {
     autocomplete: 'Autocomplete',
     date: 'Date',
   },
-  ENVIRONNEMENTS: [
+  ELEMENT_PER_PAGE: 15,
+  ENVIRONMENTS: [
     { label: 'Test', value: 'test' },
     { label: 'Staging', value: 'staging' },
     { label: 'Production', value: 'production' },
@@ -36,17 +63,13 @@ export const Config = {
   ],
   MEDICAL_CASE_STATUS: {
     inCreation: { label: 'in_creation' },
-    waitingTriage: { label: 'waiting_triage' }, // TODO maybe to kick out
     triage: { label: 'triage' },
-    waitingConsultation: { label: 'waiting_consultation' }, // TODO maybe to kick out
     consultation: { label: 'consultation' },
-    waitingTests: { label: 'waiting_tests' }, // TODO maybe to kick out
     tests: { label: 'tests' },
-    waitingDiagnostic: { label: 'waiting_diagnostic' }, // TODO maybe to kick out
     finalDiagnostic: { label: 'final_diagnostic' },
     close: { label: 'close' },
   },
-
+  PING_INTERVAL: 5000,
   URL_PRODUCTION_API: 'https://medalc.unisante.ch//api/v1',
   URL_STAGING_API: 'https://liwi.wavelab.top/api/v1/',
   URL_TEST_API: 'https://liwi-test.wavelab.top/api/v1/',

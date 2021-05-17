@@ -19,7 +19,7 @@ import I18n from '@/Translations/index'
 
 const sanitizeJson = val => val
 
-export class MedicalCase extends Model {
+export default class MedicalCase extends Model {
   static table = 'medical_cases'
 
   static associations = {
