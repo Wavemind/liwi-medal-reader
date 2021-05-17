@@ -11,8 +11,8 @@ import {
   REGISTER,
 } from 'redux-persist'
 import { reducer as network } from 'react-native-offline'
-
 import { configureStore } from '@reduxjs/toolkit'
+
 import algorithm from './Algorithm'
 import device from './Device'
 import healthFacility from './HealthFacility'

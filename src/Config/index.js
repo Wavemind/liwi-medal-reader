@@ -23,5 +23,5 @@ export const Config = {
     'main_data_ip',
     'local_data_ip',
   ],
-  ALGORITHM_INFO: ['version_name', 'version_id', 'updated_at'],
+  ALGORITHM_INFO: ['version_name', 'json_version', 'version_id', 'updated_at'],
 }

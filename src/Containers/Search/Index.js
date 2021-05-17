@@ -1,18 +1,46 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { ScrollView, View, TextInput } from 'react-native'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SearchBar } from '@/Components'
 
 const IndexSearchContainer = () => {
-  const { Layout } = useTheme()
+  // Theme and style elements deconstruction
+  const { Colors, Gutters, Layout } = useTheme()
 
-  return <SearchBar autoFocus={true} />
+  // Local state definition
+  const [term, setTerm] = useState('')
+
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
+
+  return (
+    <ScrollView>
+      <View style={[Layout.fill]}>
+        <TextInput
+          ref={inputRef}
+          style={{
+            backgroundColor: Colors.white,
+            height: 60,
+            ...Gutters.regularVPadding,
+            ...Gutters.regularHPadding,
+            width: '100%',
+          }}
+          onChangeText={setTerm}
+          value={term}
+          placeholder={'Search'}
+        />
+      </View>
+    </ScrollView>
+  )
 }
 
 export default IndexSearchContainer

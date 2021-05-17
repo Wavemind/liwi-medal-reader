@@ -8,8 +8,7 @@ import { View, TouchableOpacity, Text } from 'react-native'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Icon } from '@/Components'
-import { ConnectionStatus } from '@/Components'
+import { Icon, ConnectionStatus } from '@/Components'
 
 const Header = props => {
   // Props deconstruction

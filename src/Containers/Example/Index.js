@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, Switch, ScrollView, Text, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Switch,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  TextInput,
+} from 'react-native'
 
 import {
   BooleanButtons,
@@ -11,6 +18,7 @@ import {
   Checkbox,
   Info,
   SearchBar,
+  Icon,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { useTranslation } from 'react-i18next'
@@ -45,15 +53,8 @@ const IndexExampleContainer = props => {
   }
 
   return (
-    <ScrollView
-      style={[
-        Layout.fill,
-        Layout.column,
-        Gutters.largeHPadding,
-        Gutters.largeVPadding,
-      ]}
-    >
-      <SearchBar onPressIn={() => navigation.push('Search')} />
+    <ScrollView style={[Layout.fill, Layout.column]}>
+      <SearchBar />
       {/* SectionHeader */}
       {/*<SectionHeader label="Questions" />*/}
 
