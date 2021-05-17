@@ -59,9 +59,14 @@ const ApplicationNavigator = () => {
   )
 
   return (
+    // <ReduxNetworkProvider
+    //   shouldPing={healthFacility?.architecture === 'client-server'}
+    //   pingServerUrl={healthFacility?.local_data_ip}
+    //   pingInterval={Config.PING_INTERVAL}
+    // >
     <ReduxNetworkProvider
-      shouldPing={healthFacility?.architecture === 'client-server'}
-      pingServerUrl={healthFacility?.local_data_ip}
+      shouldPing={true}
+      pingServerUrl={'https://057d2cec6c6e.ngrok.io'}
       pingInterval={Config.PING_INTERVAL}
     >
       <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
