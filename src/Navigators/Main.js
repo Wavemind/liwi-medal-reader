@@ -3,12 +3,13 @@
  */
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import { IndexExampleContainer, IndexSettingsContainer } from '@/Containers'
+import { IndexHomeContainer, IndexSettingsContainer } from '@/Containers'
 import { Header } from '@/Components'
 
 const Drawer = createDrawerNavigator()
@@ -16,6 +17,7 @@ const Drawer = createDrawerNavigator()
 const MainNavigator = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
+  const clinician = useSelector(state => state.healthFacility.clinician)
 
   return (
     <Drawer.Navigator
@@ -29,9 +31,11 @@ const MainNavigator = () => {
     >
       <Drawer.Screen
         name="Home"
-        component={IndexExampleContainer}
+        component={IndexHomeContainer}
         options={{
-          title: t('navigation.home'),
+          title: t('navigation.home', {
+            clinician: `${clinician.first_name} ${clinician.last_name}`,
+          }),
         }}
       />
       <Drawer.Screen

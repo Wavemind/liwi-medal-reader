@@ -20,6 +20,7 @@ export default function (props) {
     title: {
       ...Fonts.textColorText,
       ...Fonts.textSmall,
+      ...Fonts.textBold,
     },
     connectionStatusWrapper: {
       ...Layout.fill,

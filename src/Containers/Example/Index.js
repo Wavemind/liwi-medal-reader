@@ -48,13 +48,9 @@ const IndexExampleContainer = props => {
 
   const answers = ['Yes', 'No']
 
-  const navigateToSettings = () => {
-    navigation.navigate('Settings')
-  }
-
   return (
     <ScrollView style={[Layout.fill, Layout.column]}>
-      <SearchBar />
+      <SearchBar navigation={navigation} />
       {/* SectionHeader */}
       {/*<SectionHeader label="Questions" />*/}
 
@@ -77,11 +73,6 @@ const IndexExampleContainer = props => {
       {/*<Select items={items} disabled />*/}
 
       {/*/!* Square buttons *!/*/}
-      <SquareButton
-        content="Settings"
-        handlePress={navigateToSettings}
-        filled
-      />
       {/*<View style={{ paddingTop: 10 }}>*/}
       {/*  <SquareButton content="Hello there" filled disabled />*/}
       {/*</View>*/}

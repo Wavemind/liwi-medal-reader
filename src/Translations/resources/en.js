@@ -1,8 +1,9 @@
 export default {
   actions: {
-    select: 'Select',
     continue: 'Continue',
     login: 'Login',
+    search: 'Search',
+    select: 'Select',
     synchronize: 'Synchronize',
   },
   algorithm: {
@@ -88,7 +89,7 @@ export default {
     },
   },
   navigation: {
-    home: 'Home',
+    home: 'Welcome {{ clinician }}',
     settings: 'Settings',
   },
   permissions: {
