@@ -6,7 +6,7 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  touchableOpacity,
+  TouchableOpacity,
 } from 'react-native'
 
 /**
@@ -27,7 +27,7 @@ const SearchBar = props => {
   return (
     <View style={[Layout.fill]}>
       <TouchableWithoutFeedback onPress={() => navigation.push('Search')}>
-        <View>
+        <View style={[Layout.row]}>
           <View
             style={[
               {
@@ -41,6 +41,7 @@ const SearchBar = props => {
                 borderRadius: 10,
               },
               Layout.row,
+              Layout.fill,
             ]}
             placeholder={'Search'}
           >
@@ -51,12 +52,18 @@ const SearchBar = props => {
               <Text>Search</Text>
             </View>
           </View>
-          {/* <touchableOpacity
-            style={[{ backgroundColor: 'red' }]}
+          <TouchableOpacity
+            style={[
+              Gutters.smallVMargin,
+              Gutters.regularVPadding,
+              Gutters.regularHPadding,
+              Gutters.regularRMargin,
+              { borderRadius: 10, backgroundColor: 'red' },
+            ]}
             onPress={() => console.log('Boom')}
           >
-            <Icon name={'filtre'} />
-          </touchableOpacity> */}
+            <Icon name={'filtre'} color={'white'} />
+          </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
     </View>
