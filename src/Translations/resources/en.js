@@ -35,6 +35,9 @@ export default {
         unlock: 'Enter the PIN to unlock the tablet',
       },
     },
+    home: {
+      title: 'Latest consultations',
+    },
     settings: {
       general: {
         title: 'General',
