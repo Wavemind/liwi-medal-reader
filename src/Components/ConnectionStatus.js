@@ -1,32 +1,28 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { View, TouchableOpacity, Text } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
-import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
 const ConnectionStatus = props => {
-  // Props deconstruction
-  const { navigation, label } = props
-
-  // Theme and style elements deconstruction
-
   // Get values from the store
   const network = useSelector(state => state.network)
+  const healthFacility = useSelector(state => state.healthFacility.item)
 
-  //  TODO: FAIRE UNE ACTION LORS DU CHANGEMENT DE STATUS
-  const {
-    Components: { template },
-    Layout,
-  } = useTheme()
-
-  // Local state definition
+  useEffect(() => {
+    if (
+      network.isConnected &&
+      healthFacility.architecture === 'client-server'
+    ) {
+      // TODO: resend case did in fail safe mode
+      console.log('TODO: fail safe action')
+    }
+  }, [network])
 
   return network.isConnected ? (
     <Icon name="wifi-on" />
