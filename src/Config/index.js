@@ -2,7 +2,8 @@ export const Config = {
   TEST_API_URL: 'https://liwi-test.wavelab.top/api/v1/',
   STAGING_API_URL: 'https://liwi.wavelab.top/api/v1/',
   PRODUCTION_API_URL: 'https://medalc.unisante.ch//api/v1',
-  ENVIRONNEMENTS: [
+  PING_INTERVAL: 5000,
+  ENVIRONMENTS: [
     { label: 'Test', value: 'test' },
     { label: 'Staging', value: 'staging' },
     { label: 'Production', value: 'production' },
@@ -22,5 +23,5 @@ export const Config = {
     'main_data_ip',
     'local_data_ip',
   ],
-  ALGORITHM_INFO: ['version_name', 'version_id', 'updated_at'],
+  ALGORITHM_INFO: ['version_name', 'json_version', 'version_id', 'updated_at'],
 }

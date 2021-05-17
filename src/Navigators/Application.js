@@ -1,16 +1,25 @@
+/**
+ * The external imports
+ */
 import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { SafeAreaView, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
+import { ReduxNetworkProvider } from 'react-native-offline'
 
+/**
+ * The internal imports
+ */
 import {
   IndexModalContainer,
   IndexPermissionsRequiredContainer,
   IndexStartupContainer,
+  IndexSearchContainer,
 } from '@/Containers'
 import { useSelector } from 'react-redux'
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
+import { Config } from '@/Config'
 
 const Stack = createStackNavigator()
 
@@ -20,10 +29,16 @@ let MainNavigator
 
 // @refresh reset
 const ApplicationNavigator = () => {
+  // Theme and style elements deconstruction
   const { Layout, darkMode, NavigationTheme } = useTheme()
   const { colors } = NavigationTheme
+
+  // Local state definition
   const [isApplicationLoaded, setIsApplicationLoaded] = useState(false)
+
+  // Get values from the store
   const applicationIsLoading = useSelector(state => state.startup.loading)
+  const healthFacility = useSelector(state => state.healthFacility.item)
 
   useEffect(() => {
     if (AuthNavigator == null && !applicationIsLoading) {
@@ -44,30 +59,32 @@ const ApplicationNavigator = () => {
   )
 
   return (
-    <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
-      <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
-        <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
-        <Stack.Navigator headerMode="none" mode="modal">
-          <Stack.Screen name="Startup" component={IndexStartupContainer} />
-          <Stack.Screen name="PermissionsRequired" component={IndexPermissionsRequiredContainer} />
-          <Stack.Screen name="InfoModal" component={IndexModalContainer} />
-          {isApplicationLoaded && AuthNavigator != null && (
+    <ReduxNetworkProvider
+      shouldPing={healthFacility?.architecture === 'client-server'}
+      pingServerUrl={healthFacility?.local_data_ip}
+      pingInterval={Config.PING_INTERVAL}
+    >
+      <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
+        <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
+          <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
+          <Stack.Navigator headerMode="none" mode="modal">
+            <Stack.Screen name="Startup" component={IndexStartupContainer} />
             <Stack.Screen
-              name="Auth"
-              component={AuthNavigator}
-              options={{ animationEnabled: false }}
+              name="PermissionsRequired"
+              component={IndexPermissionsRequiredContainer}
             />
-          )}
-          {isApplicationLoaded && MainNavigator != null && (
-            <Stack.Screen
-              name="Home"
-              component={MainNavigator}
-              options={{ animationEnabled: false }}
-            />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+            <Stack.Screen name="InfoModal" component={IndexModalContainer} />
+            <Stack.Screen name="Search" component={IndexSearchContainer} />
+            {isApplicationLoaded && AuthNavigator != null && (
+              <Stack.Screen name="Auth" component={AuthNavigator} />
+            )}
+            {isApplicationLoaded && MainNavigator != null && (
+              <Stack.Screen name="Home" component={MainNavigator} />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </ReduxNetworkProvider>
   )
 }
 

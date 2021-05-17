@@ -59,7 +59,7 @@ We also set a list of custom icons. We split it in 2 components
 ### ColoredIcon
 
 ```javascript
- import ColoredIcon from '@Components/ColoredIcon'
+ import { ColoredIcon } from '@/Components'
  
  <ColoredIcon name="about"/>
 ```
@@ -78,7 +78,7 @@ We also set a list of custom icons. We split it in 2 components
 
 ### Icon
 ```javascript
- import Icon from '@Components/Icon'
+ import { Icon } from '@/Components'
  
  <Icon name="about"/>
 ```

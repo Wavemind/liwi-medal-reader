@@ -8,6 +8,7 @@ export default {
   algorithm: {
     version_id: 'ID de la version',
     version_name: 'Nom de la version',
+    json_version: 'Numéro de version',
     updated_at: 'Date de dernière modification',
   },
   application: {

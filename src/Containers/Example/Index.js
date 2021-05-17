@@ -1,6 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, Switch, ScrollView, Text } from 'react-native'
+import {
+  View,
+  Switch,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  TextInput,
+} from 'react-native'
+
 import {
   BooleanButtons,
   SectionHeader,
@@ -9,13 +17,14 @@ import {
   RoundedButton,
   Checkbox,
   Info,
+  SearchBar,
+  Icon,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { useTranslation } from 'react-i18next'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
-const IndexExampleContainer = (props) => {
-
+const IndexExampleContainer = props => {
   const { navigation } = props
 
   const { t } = useTranslation()
@@ -44,7 +53,8 @@ const IndexExampleContainer = (props) => {
   }
 
   return (
-    <ScrollView style={[Layout.fill, Layout.column, Gutters.largeHPadding, Gutters.largeVPadding]}>
+    <ScrollView style={[Layout.fill, Layout.column]}>
+      <SearchBar />
       {/* SectionHeader */}
       {/*<SectionHeader label="Questions" />*/}
 
@@ -67,7 +77,11 @@ const IndexExampleContainer = (props) => {
       {/*<Select items={items} disabled />*/}
 
       {/*/!* Square buttons *!/*/}
-      <SquareButton content="Settings" handlePress={navigateToSettings} filled />
+      <SquareButton
+        content="Settings"
+        handlePress={navigateToSettings}
+        filled
+      />
       {/*<View style={{ paddingTop: 10 }}>*/}
       {/*  <SquareButton content="Hello there" filled disabled />*/}
       {/*</View>*/}
