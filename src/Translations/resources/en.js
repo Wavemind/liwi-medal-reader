@@ -33,6 +33,7 @@ export default {
       },
       pin: {
         unlock: 'Enter the PIN to unlock the tablet',
+        delete: 'Delete',
       },
     },
     home: {
