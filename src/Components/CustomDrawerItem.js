@@ -13,7 +13,7 @@ import { Icon } from '@/Components'
 
 const CustomDrawerItem = props => {
   // Props deconstruction
-  const { label, routeName, iconName, navigation } = props
+  const { label, routeName, routeParams = {}, iconName, navigation } = props
 
   const { index, routes } = navigation.dangerouslyGetState()
 
@@ -37,7 +37,7 @@ const CustomDrawerItem = props => {
       activeBackgroundColor={'#CBCDD1'}
       focused={routes[index].name === routeName}
       icon={() => <Icon name={iconName} />}
-      onPress={() => navigation.navigate(routeName)}
+      onPress={() => navigation.navigate(routeName, routeParams)}
     />
   )
 }
