@@ -22,13 +22,13 @@ const instance = axios.create({
 const defineBaseUrl = env => {
   switch (env) {
     case 'test':
-      return Config.TEST_API_URL
+      return Config.URL_TEST_API
     case 'staging':
-      return Config.STAGING_API_URL
+      return Config.URL_STAGING_API
     case 'production':
-      return Config.PRODUCTION_API_URL
+      return Config.URL_PRODUCTION_API
     default:
-      return Config.TEST_API_URL
+      return Config.URL_TEST_API
   }
 }
 

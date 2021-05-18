@@ -1,5 +1,5 @@
 const presets = ['module:metro-react-native-babel-preset']
-const plugins = []
+const plugins = [['@babel/plugin-proposal-decorators', { legacy: true }]]
 
 plugins.push([
   'module-resolver',
@@ -8,6 +8,7 @@ plugins.push([
     extensions: ['.js', '.json'],
     alias: {
       '@': './src',
+      frontend: './frontend_service',
     },
   },
 ])
