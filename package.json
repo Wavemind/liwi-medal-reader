@@ -6,8 +6,11 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --verbose --coverage",
+    "test:update": "jest --verbose --coverage --updateSnapshot",
+    "test:watch": "jest --verbose --watch",
+    "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "dependencies": {
     "@haskkor/react-native-pincode": "^1.22.6",
@@ -76,7 +79,7 @@
       ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
     },
     "setupFiles": [
-      "./jest.setup.js"
+      "./__mocks__/jestenv.js"
     ],
     "timers": "fake",
     "testEnvironment": "jsdom",

@@ -25,7 +25,7 @@ const reducers = combineReducers({
   algorithm,
   device,
   healthFacility,
-  network,
+  //network,
   startup,
   system,
   theme,
