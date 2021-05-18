@@ -17,6 +17,7 @@ import ModalIndexStyles from './containers/Modal/Index.style'
 import ModalAlgorithmStyles from './containers/Modal/AlgorithmInfo.style'
 
 import SettingsIndexStyles from './containers/Settings/Index.style'
+import SearchIndexStyles from './containers/Search/Index.style'
 
 /**
  *
@@ -35,5 +36,6 @@ export default function (props) {
     modalIndex: ModalIndexStyles(props),
     modalAlgorithm: ModalAlgorithmStyles(props),
     settings: SettingsIndexStyles(props),
+    search: SearchIndexStyles(props),
   }
 }
