@@ -11,12 +11,6 @@ export default function () {
   const healthFacility = useSelector(state => state.healthFacility.item)
   const macAddress = useSelector(state => state.device.item.mac_addresss)
   const localDataIp = healthFacility.local_data_ip
-  const clinician = _setClinician()
-
-  const _setClinician = () => {
-    const user = useSelector(state => state.healthFacility.clinician)
-    return user ? `${user.first_name} ${user.last_name}` : null
-  }
 
   /**
    * Creates an entry of a specific model in the database
