@@ -33,7 +33,7 @@ const MainNavigator = () => {
         name="Home"
         component={IndexHomeContainer}
         options={{
-          title: t('navigation.home', {
+          title: t('navigation.welcome', {
             clinician: `${clinician.first_name} ${clinician.last_name}`,
           }),
         }}
