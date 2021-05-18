@@ -30,7 +30,7 @@ export default function () {
    * @returns { collection } - Object fetch
    */
   const findBy = async (model, value, field = 'id') => {
-    return dataInterface.findBy(model, value, field)
+    // return dataInterface.findBy(model, value, field)
   }
 
   /**
@@ -41,7 +41,7 @@ export default function () {
    * @returns { Collection } - A collection of all the data
    */
   const getAll = async (model, page, params = { query: '', filters: [] }) => {
-    return dataInterface.getAll(model, page, params)
+    // return dataInterface.getAll(model, page, params)
   }
 
   /**
@@ -49,7 +49,7 @@ export default function () {
    * @returns {Promise<string|Array>}
    */
   const getConsentsFile = async (page, columns) => {
-    return dataInterface.getConsentsFile(page, columns)
+    // return dataInterface.getConsentsFile(page, columns)
   }
 
   /**
@@ -58,7 +58,7 @@ export default function () {
    * @param { object } object - The value of the object
    */
   const insert = async (model, object) => {
-    return dataInterface.insert(model, object)
+    // return dataInterface.insert(model, object)
   }
 
   /**
@@ -67,7 +67,7 @@ export default function () {
    * @returns {string}
    */
   const lockMedicalCase = async id => {
-    return dataInterface.lockMedicalCase(id)
+    // return dataInterface.lockMedicalCase(id)
   }
 
   /**
@@ -79,7 +79,7 @@ export default function () {
    * @return { object } object - The value of the object
    */
   const push = async (model, id, field, value) => {
-    return dataInterface.push(model, id, field, value)
+    // return dataInterface.push(model, id, field, value)
   }
 
   /**
@@ -88,7 +88,7 @@ export default function () {
    * @returns {string}
    */
   const unlockMedicalCase = async id => {
-    return dataInterface.unlockMedicalCase(id)
+    // return dataInterface.unlockMedicalCase(id)
   }
 
   /**
@@ -100,7 +100,7 @@ export default function () {
    * @return { object } object - The value of the object
    */
   const update = async (model, id, fields, updatePatientValue = false) => {
-    return dataInterface.update(model, id, fields, updatePatientValue)
+    // return dataInterface.update(model, id, fields, updatePatientValue)
   }
 
   /**
@@ -111,7 +111,7 @@ export default function () {
    * @returns { Collection } - A collection of wanted values
    */
   const where = async (model, value, field) => {
-    return dataInterface.where(model, value, field)
+    // return dataInterface.where(model, value, field)
   }
 
   return {

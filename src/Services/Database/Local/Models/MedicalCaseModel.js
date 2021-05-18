@@ -32,14 +32,14 @@ export default class MedicalCase extends Model {
    * @returns {boolean}
    */
   canBeSynchronized = algorithm => {
-    const json = JSON.parse(this.json)
-    return (
-      this.status === Config.MEDICAL_CASE_STATUS.close.label &&
-      this.synchronized_at === null &&
-      json.isEligible &&
-      json.isOldEnough &&
-      (json.consent || !algorithm.config.consent_management)
-    )
+    // const json = JSON.parse(this.json)
+    // return (
+    //   this.status === Config.MEDICAL_CASE_STATUS.close.label &&
+    //   this.synchronized_at === null &&
+    //   json.isEligible &&
+    //   json.isOldEnough &&
+    //   (json.consent || !algorithm.config.consent_management)
+    // )
   }
 
   /**
@@ -47,7 +47,7 @@ export default class MedicalCase extends Model {
    * @returns {boolean}
    */
   isOlderThan1Week = () => {
-    return moment().diff(this.created_at, 'days') > 7
+    // return moment().diff(this.created_at, 'days') > 7
   }
 
   /**
@@ -57,25 +57,24 @@ export default class MedicalCase extends Model {
    * @returns {string}
    */
   getLabelFromNode = (nodeId, algorithm) => {
-    let displayedValue = ''
-    const currentNode = algorithm.nodes[nodeId]
-    const { nodes } = JSON.parse(this.json)
-    const mcNode = nodes[nodeId]
-
-    if (currentNode !== undefined) {
-      if (currentNode.display_format === Config.DISPLAY_FORMAT.date) {
-        // Date display
-        displayedValue = moment(mcNode.value).format(
-          I18n.t('application:date_format'),
-        )
-      } else if (mcNode.value === null) {
-        // Answer display
-        displayedValue = mcNode.answer
-      } else {
-        displayedValue = mcNode.value
-      }
-    }
-    return displayedValue
+    // let displayedValue = ''
+    // const currentNode = algorithm.nodes[nodeId]
+    // const { nodes } = JSON.parse(this.json)
+    // const mcNode = nodes[nodeId]
+    // if (currentNode !== undefined) {
+    //   if (currentNode.display_format === Config.DISPLAY_FORMAT.date) {
+    //     // Date display
+    //     displayedValue = moment(mcNode.value).format(
+    //       I18n.t('application:date_format'),
+    //     )
+    //   } else if (mcNode.value === null) {
+    //     // Answer display
+    //     displayedValue = mcNode.answer
+    //   } else {
+    //     displayedValue = mcNode.value
+    //   }
+    // }
+    // return displayedValue
   }
 
   @children('activities') activities
