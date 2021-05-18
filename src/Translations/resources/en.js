@@ -92,8 +92,17 @@ export default {
     },
   },
   navigation: {
-    home: 'Welcome {{ clinician }}',
+    scan_qr_code: 'Scan QR code',
+    consultation: 'Consultation',
+    patients: 'Patients',
+    consent_files: 'Consent files',
+    current_consultation: 'Current consultation',
+    home: 'Home',
+    welcome: 'Welcome {{ clinician }}',
     settings: 'Settings',
+    about: 'About',
+    synchronize: 'Synchronize',
+    logout: 'Logout',
   },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',

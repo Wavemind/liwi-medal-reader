@@ -30,3 +30,12 @@ export function navigateAndSimpleReset(name, index = 0) {
     }),
   )
 }
+
+export function navigateNestedAndSimpleReset(name, nestedName, index = 0) {
+  navigationRef.current?.dispatch(
+    CommonActions.reset({
+      index,
+      routes: [{ name: name, state: { routes: [{ name: nestedName }] } }],
+    }),
+  )
+}

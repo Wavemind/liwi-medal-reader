@@ -10,10 +10,9 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { IndexHomeContainer, IndexSettingsContainer } from '@/Containers'
-import { Header } from '@/Components'
+import { Header, CustomDrawerContent } from '@/Components'
 
 const Drawer = createDrawerNavigator()
-
 const MainNavigator = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
@@ -22,6 +21,7 @@ const MainNavigator = () => {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
+      drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: true,
         header: ({ scene }) => {
@@ -33,7 +33,7 @@ const MainNavigator = () => {
         name="Home"
         component={IndexHomeContainer}
         options={{
-          title: t('navigation.home', {
+          title: t('navigation.welcome', {
             clinician: `${clinician.first_name} ${clinician.last_name}`,
           }),
         }}
@@ -43,7 +43,6 @@ const MainNavigator = () => {
         component={IndexSettingsContainer}
         options={{
           title: t('navigation.settings'),
-          headerShown: true,
         }}
       />
     </Drawer.Navigator>

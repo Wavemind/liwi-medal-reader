@@ -13,6 +13,8 @@ import sectionHeaderStyles from './components/SectionHeader.style'
 import infoStyles from './components/Info.style'
 import clinicianStyles from './components/Clinician.style'
 import headerStyles from './components/Header.style'
+import customDrawerContentStyles from './components/CustomDrawerContent.style'
+import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
 /**
  *
@@ -31,6 +33,8 @@ export default function (props) {
     squareSelect: squareSelectStyles(props),
     clinician: clinicianStyles(props),
     header: headerStyles(props),
+    customDrawerContent: customDrawerContentStyles(props),
+    customDrawerItem: customDrawerItemStyles(props),
     searchBar: searchBarStyles(props),
   }
 }
