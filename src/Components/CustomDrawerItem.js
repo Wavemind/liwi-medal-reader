@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import { Text } from 'react-native'
-
 import { DrawerItem } from '@react-navigation/drawer'
 
 /**
