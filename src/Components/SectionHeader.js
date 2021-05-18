@@ -20,7 +20,6 @@ const SectionHeader = props => {
 
   return (
     <View style={sectionHeader.wrapper}>
-      <View style={sectionHeader.before} />
       <Text style={sectionHeader.label}>{label}</Text>
       <View style={sectionHeader.after} />
     </View>

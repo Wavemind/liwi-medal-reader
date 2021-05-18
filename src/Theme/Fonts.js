@@ -21,6 +21,7 @@ export default function ({ FontSize, Colors }) {
     },
     textSectionHeader: {
       fontSize: FontSize.sectionHeader,
+      textTransform: 'uppercase',
     },
     textLarge: {
       fontSize: FontSize.large,

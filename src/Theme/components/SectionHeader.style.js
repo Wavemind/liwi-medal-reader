@@ -6,6 +6,7 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Layout.row,
+      ...Gutters.regularVMargin,
     },
     before: {
       ...Layout.selfCenter,
@@ -15,8 +16,7 @@ export default function (props) {
     },
     label: {
       ...Fonts.textSectionHeader,
-      ...Layout.selfCenter,
-      ...Gutters.largeHPadding,
+      ...Gutters.largeRPadding,
       color: Colors.text,
     },
     after: {
