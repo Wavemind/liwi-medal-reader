@@ -1,7 +1,8 @@
 /**
  * The external imports
  */
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   View,
   Text,
@@ -17,53 +18,36 @@ import { Icon } from '@/Components'
 
 const SearchBar = props => {
   // Props deconstruction
-  const { navigation } = props
+  const { navigation, filters = false } = props
 
   // Theme and style elements deconstruction
-  const { Colors, Gutters, Layout } = useTheme()
-
-  // Local state definition
+  const { t } = useTranslation()
+  const {
+    Layout,
+    Colors,
+    Components: { searchBar },
+  } = useTheme()
 
   return (
     <View style={[Layout.fill]}>
       <TouchableWithoutFeedback onPress={() => navigation.push('Search')}>
         <View style={[Layout.row]}>
-          <View
-            style={[
-              {
-                backgroundColor: Colors.white,
-                borderWidth: 1,
-                borderColor: 'grey',
-                height: 70,
-                ...Gutters.smallVMargin,
-                ...Gutters.regularVPadding,
-                ...Gutters.regularHMargin,
-                borderRadius: 10,
-              },
-              Layout.row,
-              Layout.fill,
-            ]}
-            placeholder={'Search'}
-          >
+          <View style={[searchBar.inputWrapper]}>
             <View style={[Layout.colCenter]}>
-              <Icon name={'search'} />
+              <Icon name={'search'} color={Colors.grey} />
             </View>
-            <View style={[Layout.colCenter, Gutters.regularLMargin]}>
-              <Text>Search</Text>
+            <View style={[searchBar.inputTextWrapper]}>
+              <Text style={[searchBar.inputText]}>{t('actions.search')}</Text>
             </View>
           </View>
-          <TouchableOpacity
-            style={[
-              Gutters.smallVMargin,
-              Gutters.regularVPadding,
-              Gutters.regularHPadding,
-              Gutters.regularRMargin,
-              { borderRadius: 10, backgroundColor: 'red' },
-            ]}
-            onPress={() => console.log('Boom')}
-          >
-            <Icon name={'filtre'} color={'white'} />
-          </TouchableOpacity>
+          {filters && (
+            <TouchableOpacity
+              style={[searchBar.filterButton]}
+              onPress={() => navigation.push('Filter')}
+            >
+              <Icon name={'filtre'} color={Colors.white} />
+            </TouchableOpacity>
+          )}
         </View>
       </TouchableWithoutFeedback>
     </View>

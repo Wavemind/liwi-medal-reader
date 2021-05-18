@@ -1,8 +1,9 @@
 export default {
   actions: {
-    select: 'Select',
     continue: 'Continue',
     login: 'Login',
+    search: 'Search',
+    select: 'Select',
     synchronize: 'Synchronize',
   },
   algorithm: {
@@ -33,6 +34,9 @@ export default {
       pin: {
         unlock: 'Enter the PIN to unlock the tablet',
       },
+    },
+    home: {
+      title: 'Latest consultations',
     },
     settings: {
       general: {
@@ -88,12 +92,12 @@ export default {
     },
   },
   navigation: {
-    home: 'Home',
     scan_qr_code: 'Scan QR code',
     consultation: 'Consultation',
     patients: 'Patients',
     consent_files: 'Consent files',
     current_consultation: 'Current consultation',
+    home: 'Welcome {{ clinician }}',
     settings: 'Settings',
     about: 'About',
     synchronize: 'Synchronize',
