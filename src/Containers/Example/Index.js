@@ -52,8 +52,6 @@ const IndexExampleContainer = props => {
   const navigateToSettings = () => {
     navigation.navigate('Settings')
   }
-  const { getAll } = useDatabase()
-  console.log(getAll('Patient', 0))
 
   return (
     <ScrollView style={[Layout.fill, Layout.column]}>

@@ -11,7 +11,7 @@ import moment from 'moment'
 /**
  * The internal imports
  */
-import Config from '@/Config'
+import { Config } from '@/Config'
 import schema from './Schema'
 
 import {
@@ -41,288 +41,6 @@ export default function () {
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
   const architecture = healthFacility.architecture
-
-  /**
-   * Clear all table
-   * @returns {Promise<void>}
-   */
-  const clearDatabase = async () => {
-    const patientsToDelete = await this.getAll('Patient', null, null, true)
-    await this.delete(patientsToDelete)
-    const medicalCasesToDelete = await this.getAll(
-      'MedicalCase',
-      null,
-      null,
-      true,
-    )
-    await this.delete(medicalCasesToDelete)
-    const patientValuesToDelete = await this.getAll(
-      'PatientValue',
-      null,
-      null,
-      true,
-    )
-    await this.delete(patientValuesToDelete)
-    const activitiesToDelete = await this.getAll('Activity', null, null, true)
-    await this.delete(activitiesToDelete)
-  }
-
-  /**
-   * Finds a object based on a field and a value
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } value - The id of the object we want
-   * @param { string } field - The field we wanna search for
-   * @returns { Collection } - The wanted object
-   */
-  const findBy = async (model, value, field = 'id') => {
-    const collection = database.get(this._mapModelToTable(model))
-    const object = await collection.query(Q.where(field, value))
-    return object[0] === undefined ? null : this._initClasses(object[0], model)
-  }
-
-  /**
-   * Deletes a specific object from the DB
-   * @param { object } object - the object to delete
-   */
-  // const delete = async object => {
-  //   await database.action(async () => {
-  //     if (object instanceof Array) {
-  //       object.forEach(o => o.destroyPermanently())
-  //     } else {
-  //       object.destroyPermanently()
-  //     }
-  //   })
-  // }
-
-  /**
-   * Returns all the entry on a specific model
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } page - Used for pagination,tells what page to show
-   * @param { object } params - options for the request the search query and the filter is in there
-   * @returns { Collection } - A collection of all the data
-   */
-  const getAll = async (model, page = null, params, rawData = false) => {
-    const collection = database.get(this._mapModelToTable(model))
-    let result = await collection.query().fetch()
-    const queries = []
-
-    if (page === null) {
-      if (!rawData) {
-        result = await this._initClasses(result, model)
-      }
-      return result
-    }
-    const filters = this._generateFilteredQuery(model, params.filters)
-
-    if (params.query !== '' && model === 'Patient') {
-      queries.push(
-        Q.on(
-          'patient_values',
-          'value',
-          Q.like(`%${Q.sanitizeLikeString(params.query)}%`),
-        ),
-      )
-    }
-    // if (filters !== '') result = await result.filtered(filters);
-
-    queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
-
-    result = await collection.query(...queries)
-    result = await this._initClasses(result, model)
-    return this._generateList(result, model, params.columns)
-  }
-
-  /**
-   * Fetch patient with consent file
-   * @param { integer } page
-   * @param { array } columns - Columns to fetch values
-   * @returns {Promise<*>}
-   */
-  const getConsentsFile = async (page, columns) => {
-    const queries = []
-    const collection = database.get('patients')
-    let result = await collection.query().fetch()
-
-    if (page === null) {
-      return result
-    }
-
-    queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
-
-    result = await collection.query(...queries)
-    result = await this._initClasses(result, 'Patient')
-
-    return this._generateConsentList(result, columns)
-  }
-
-  /**
-   * Creates an entry of a specific model in the database
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { object } object - The value of the object
-   */
-  const insert = async (model, object) => {
-    const collection = database.get(this._mapModelToTable(model))
-    let patient = null
-
-    if (architecture === 'client_server') {
-      object = { ...object, fail_safe: true }
-    }
-
-    await database.action(async () => {
-      patient = await collection.create(record => {
-        record._raw.id = object.id
-        record.uid = object.uid
-        record.study_id = object.study_id
-        record.group_id = object.group_id
-        record.other_uid = object.other_uid
-        record.other_study_id = object.other_study_id
-        record.other_group_id = object.other_group_id
-        record.reason = object.reason
-        record.consent = object.medicalCases[0].consent
-        record.consent_file = object.consent_file
-        record.fail_safe = object.fail_safe
-      })
-    }, 'create patient')
-
-    const nestedCollection = database.get('medical_cases')
-
-    // MedicalCase
-    await database.action(async () => {
-      object.medicalCases.map(async medicalCase => {
-        await nestedCollection.create(nestedRecord => {
-          nestedRecord._raw.id = medicalCase.id
-          nestedRecord.json = medicalCase.json
-          nestedRecord.synchronized_at = medicalCase.synchronized_at
-          nestedRecord.status = medicalCase.status
-          nestedRecord.fail_safe = object.fail_safe
-          nestedRecord.patient.set(patient)
-        })
-
-        await this._generateActivities(medicalCase.activities, medicalCase.id)
-      })
-    }, 'create medicalCases')
-    await Promise.all([this._savePatientValue(model, object)])
-  }
-
-  /**
-   * Blank method used in httpInterface
-   */
-  const lockMedicalCase = () => {}
-
-  /**
-   * Push an object in a existing object based on model name and id
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } field - The field to update
-   * @param { any } value - value to update
-   * @returns { Collection } - Updated object
-   */
-  const push = async (model, id, field, value) => {
-    const object = await this.findBy(model, id)
-
-    if (architecture === 'client_server') {
-      value = { ...value, fail_safe: true }
-    }
-
-    if (field === 'medicalCases') {
-      const collection = database.get('medical_cases')
-
-      // MedicalCase
-      await database.action(async action => {
-        await collection.create(record => {
-          record._raw.id = value.id
-          record.json = value.json
-          record.synchronized_at = value.synchronized_at
-          record.status = value.status
-          record.fail_safe = value.fail_safe
-          record.patient_id = id
-        })
-
-        await action.subAction(() =>
-          this._generateActivities(value.activities, value.id),
-        )
-      }, 'push medicalCase')
-
-      await Promise.all([this._savePatientValue(model, object)])
-    }
-  }
-
-  /**
-   * Blank method used in httpInterface
-   */
-  const unlockMedicalCase = () => {}
-
-  /**
-   * Update or insert value in a existing row
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } id - The row to update
-   * @param { string } fields - The field to update
-   * @param { boolean } updatePatientValue - Flag that tells us if we need to update the patient values
-   * @returns { Collection } - Updated object
-   */
-  const update = async (model, id, fields, updatePatientValue) => {
-    const collection = database.get(this._mapModelToTable(model))
-
-    if (architecture === 'client_server') {
-      fields = { ...fields, fail_safe: true }
-    }
-
-    const object = await collection.find(id)
-
-    await database.action(async () => {
-      Object.keys(fields).map(async field => {
-        await database.batch(
-          object.prepareUpdate(record => {
-            if (field !== 'patient' && field !== 'activities') {
-              record[field] = fields[field]
-            }
-          }),
-        )
-      })
-    })
-
-    // Update patient updated_at value
-    if (model === 'MedicalCase') {
-      await database.action(async () => {
-        const patientCollection = database.get('patients')
-        const patient = await patientCollection.find(object.patient_id)
-        await patient.update(record => (record.updated_at = moment().toDate()))
-      })
-    }
-
-    if (
-      updatePatientValue &&
-      !Object.keys(fields).includes('patientValues') &&
-      ['Patient', 'MedicalCase'].includes(model)
-    ) {
-      this._savePatientValue(model, object)
-    }
-  }
-
-  /**
-   * Finds a collection of objects based on a field and a value
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { integer } value - The id of the object we want
-   * @param { string } field - The field we wanna search for
-   * @returns { Collection } - A collection of wanted values
-   */
-  const where = async (model, value, field) => {}
-
-  /**
-   * Get all closed and not synchronized case
-   * @returns {Promise<Realm.Results<Realm.Object>>}
-   */
-  const closedAndNotSynchronized = async () => {
-    const collection = database.get('medical_cases')
-
-    return collection
-      .query(Q.where('status', 'close'), Q.where('synchronized_at', null))
-      .fetch()
-  }
 
   /**
    * Create activities for a releated medical case
@@ -448,7 +166,7 @@ export default function () {
         return object
       case 'Patient':
         const medicalCases = await object.medicalCases
-        return this._initClasses(
+        return _initClasses(
           medicalCases[medicalCases.length - 1],
           'MedicalCase',
         )
@@ -535,7 +253,7 @@ export default function () {
    * @private
    */
   const _savePatientValue = async (model, object) => {
-    const medicalCase = await this._getMedicalCaseFromModel(model, object)
+    const medicalCase = await _getMedicalCaseFromModel(model, object)
     // Will update the patient values based on activities so we only take the edits
     const activities = await medicalCase.activities
     const nodeActivities = JSON.parse(activities[activities.length - 1].nodes)
@@ -565,6 +283,279 @@ export default function () {
         )
       }, 'create patient values')
     }
+  }
+
+  /**
+   * Clear all table
+   * @returns {Promise<void>}
+   */
+  const clearDatabase = async () => {
+    const patientsToDelete = await getAll('Patient', null, null, true)
+    // await delete patientsToDelete
+    const medicalCasesToDelete = await getAll('MedicalCase', null, null, true)
+    // await delete medicalCasesToDelete
+    const patientValuesToDelete = await getAll('PatientValue', null, null, true)
+    // await delete patientValuesToDelete
+    const activitiesToDelete = await getAll('Activity', null, null, true)
+    // await delete activitiesToDelete
+  }
+
+  /**
+   * Finds a object based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - The wanted object
+   */
+  const findBy = async (model, value, field = 'id') => {
+    const collection = database.get(_mapModelToTable(model))
+    const object = await collection.query(Q.where(field, value))
+    return object[0] === undefined ? null : _initClasses(object[0], model)
+  }
+
+  /**
+   * Deletes a specific object from the DB
+   * @param { object } object - the object to delete
+   */
+  // const delete = async object => {
+  //   await database.action(async () => {
+  //     if (object instanceof Array) {
+  //       object.forEach(o => o.destroyPermanently())
+  //     } else {
+  //       object.destroyPermanently()
+  //     }
+  //   })
+  // }
+
+  /**
+   * Returns all the entry on a specific model
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } page - Used for pagination,tells what page to show
+   * @param { object } params - options for the request the search query and the filter is in there
+   * @returns { Collection } - A collection of all the data
+   */
+  const getAll = async (model, page = null, params, rawData = false) => {
+    const collection = database.get(_mapModelToTable(model))
+    let result = await collection.query().fetch()
+    const queries = []
+
+    if (page === null) {
+      if (!rawData) {
+        result = await _initClasses(result, model)
+      }
+      return result
+    }
+    // const filters = _generateFilteredQuery(model, params.filters)
+
+    if (params.query !== '' && model === 'Patient') {
+      queries.push(
+        Q.on(
+          'patient_values',
+          'value',
+          Q.like(`%${Q.sanitizeLikeString(params.query)}%`),
+        ),
+      )
+    }
+    // if (filters !== '') result = await result.filtered(filters);
+
+    queries.push(Q.experimentalSortBy('updated_at', Q.asc))
+    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
+    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
+
+    console.log(page, result, queries)
+    result = await collection.query(...queries)
+    result = await _initClasses(result, model)
+    return _generateList(result, model, params.columns)
+  }
+
+  /**
+   * Fetch patient with consent file
+   * @param { integer } page
+   * @param { array } columns - Columns to fetch values
+   * @returns {Promise<*>}
+   */
+  const getConsentsFile = async (page, columns) => {
+    const queries = []
+    const collection = database.get('patients')
+    let result = await collection.query().fetch()
+
+    if (page === null) {
+      return result
+    }
+
+    queries.push(Q.experimentalSortBy('updated_at', Q.asc))
+    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
+    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
+
+    result = await collection.query(...queries)
+    result = await _initClasses(result, 'Patient')
+
+    return _generateConsentList(result, columns)
+  }
+
+  /**
+   * Creates an entry of a specific model in the database
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { object } object - The value of the object
+   */
+  const insert = async (model, object) => {
+    const collection = database.get(_mapModelToTable(model))
+    let patient = null
+
+    if (architecture === 'client_server') {
+      object = { ...object, fail_safe: true }
+    }
+
+    await database.action(async () => {
+      patient = await collection.create(record => {
+        record._raw.id = object.id
+        record.uid = object.uid
+        record.study_id = object.study_id
+        record.group_id = object.group_id
+        record.other_uid = object.other_uid
+        record.other_study_id = object.other_study_id
+        record.other_group_id = object.other_group_id
+        record.reason = object.reason
+        record.consent = object.medicalCases[0].consent
+        record.consent_file = object.consent_file
+        record.fail_safe = object.fail_safe
+      })
+    }, 'create patient')
+
+    const nestedCollection = database.get('medical_cases')
+
+    // MedicalCase
+    await database.action(async () => {
+      object.medicalCases.map(async medicalCase => {
+        await nestedCollection.create(nestedRecord => {
+          nestedRecord._raw.id = medicalCase.id
+          nestedRecord.json = medicalCase.json
+          nestedRecord.synchronized_at = medicalCase.synchronized_at
+          nestedRecord.status = medicalCase.status
+          nestedRecord.fail_safe = object.fail_safe
+          nestedRecord.patient.set(patient)
+        })
+
+        await _generateActivities(medicalCase.activities, medicalCase.id)
+      })
+    }, 'create medicalCases')
+    await Promise.all([_savePatientValue(model, object)])
+  }
+
+  /**
+   * Blank method used in httpInterface
+   */
+  const lockMedicalCase = () => {}
+
+  /**
+   * Push an object in a existing object based on model name and id
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } field - The field to update
+   * @param { any } value - value to update
+   * @returns { Collection } - Updated object
+   */
+  const push = async (model, id, field, value) => {
+    const object = await findBy(model, id)
+
+    if (architecture === 'client_server') {
+      value = { ...value, fail_safe: true }
+    }
+
+    if (field === 'medicalCases') {
+      const collection = database.get('medical_cases')
+
+      // MedicalCase
+      await database.action(async action => {
+        await collection.create(record => {
+          record._raw.id = value.id
+          record.json = value.json
+          record.synchronized_at = value.synchronized_at
+          record.status = value.status
+          record.fail_safe = value.fail_safe
+          record.patient_id = id
+        })
+
+        await action.subAction(() =>
+          _generateActivities(value.activities, value.id),
+        )
+      }, 'push medicalCase')
+
+      await Promise.all([_savePatientValue(model, object)])
+    }
+  }
+
+  /**
+   * Blank method used in httpInterface
+   */
+  const unlockMedicalCase = () => {}
+
+  /**
+   * Update or insert value in a existing row
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } id - The row to update
+   * @param { string } fields - The field to update
+   * @param { boolean } updatePatientValue - Flag that tells us if we need to update the patient values
+   * @returns { Collection } - Updated object
+   */
+  const update = async (model, id, fields, updatePatientValue) => {
+    const collection = database.get(_mapModelToTable(model))
+
+    if (architecture === 'client_server') {
+      fields = { ...fields, fail_safe: true }
+    }
+
+    const object = await collection.find(id)
+
+    await database.action(async () => {
+      Object.keys(fields).map(async field => {
+        await database.batch(
+          object.prepareUpdate(record => {
+            if (field !== 'patient' && field !== 'activities') {
+              record[field] = fields[field]
+            }
+          }),
+        )
+      })
+    })
+
+    // Update patient updated_at value
+    if (model === 'MedicalCase') {
+      await database.action(async () => {
+        const patientCollection = database.get('patients')
+        const patient = await patientCollection.find(object.patient_id)
+        await patient.update(record => (record.updated_at = moment().toDate()))
+      })
+    }
+
+    if (
+      updatePatientValue &&
+      !Object.keys(fields).includes('patientValues') &&
+      ['Patient', 'MedicalCase'].includes(model)
+    ) {
+      _savePatientValue(model, object)
+    }
+  }
+
+  /**
+   * Finds a collection of objects based on a field and a value
+   * @param { string } model - The model name of the data we want to retrieve
+   * @param { integer } value - The id of the object we want
+   * @param { string } field - The field we wanna search for
+   * @returns { Collection } - A collection of wanted values
+   */
+  const where = async (model, value, field) => {}
+
+  /**
+   * Get all closed and not synchronized case
+   * @returns {Promise<Realm.Results<Realm.Object>>}
+   */
+  const closedAndNotSynchronized = async () => {
+    const collection = database.get('medical_cases')
+
+    return collection
+      .query(Q.where('status', 'close'), Q.where('synchronized_at', null))
+      .fetch()
   }
 
   return {

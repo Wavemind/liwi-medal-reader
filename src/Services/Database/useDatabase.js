@@ -6,33 +6,21 @@ import { useSelector } from 'react-redux'
 /**
  * The internal imports
  */
-import Config from '@/Config'
 
-// import RemoteInterface from './Remote'
+import useRemoteInterface from './Remote/useRemoteInterface'
 import useLocalInterface from './Local/useLocalInterface'
 
 export default function () {
   const healthFacility = useSelector(state => state.healthFacility.item)
   const architecture = healthFacility.architecture
+  const network = useSelector(state => state.network)
+  let dataInterface
 
-  /**
-   * Define interface by connection and group architecture
-   * @returns {string} interface to use
-   * @private
-   */
-  const _checkInterface = async () => {
-    let dbInterface
-    const network = useSelector(state => state.network)
-    if (architecture === 'standalone' || !network.isConnected) {
-      dbInterface = Config.DATABASE_INTERFACE.local
-    } else {
-      dbInterface = Config.DATABASE_INTERFACE.remote
-    }
-    return dbInterface
+  if (architecture === 'standalone' || !network.isConnected) {
+    dataInterface = useLocalInterface()
+  } else {
+    dataInterface = useRemoteInterface()
   }
-
-  const dataInterface =
-    _checkInterface() === 'local' ? useLocalInterface() : useLocalInterface()
 
   /**
    * Fetch single entry
@@ -53,7 +41,6 @@ export default function () {
    * @returns { Collection } - A collection of all the data
    */
   const getAll = async (model, page, params = { query: '', filters: [] }) => {
-    console.log(dataInterface)
     return dataInterface.getAll(model, page, params)
   }
 
