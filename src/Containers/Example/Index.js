@@ -23,6 +23,7 @@ import {
 import { useTheme } from '@/Theme'
 import { useTranslation } from 'react-i18next'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
+import useDatabase from '@/Services/Database/useDatabase'
 
 const IndexExampleContainer = props => {
   const { navigation } = props
