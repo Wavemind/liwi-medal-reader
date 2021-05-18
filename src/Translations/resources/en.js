@@ -89,7 +89,15 @@ export default {
   },
   navigation: {
     home: 'Home',
+    scan_qr_code: 'Scan QR code',
+    consultation: 'Consultation',
+    patients: 'Patients',
+    consent_files: 'Consent files',
+    current_consultation: 'Current consultation',
     settings: 'Settings',
+    about: 'About',
+    synchronize: 'Synchronize',
+    logout: 'Logout',
   },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',
