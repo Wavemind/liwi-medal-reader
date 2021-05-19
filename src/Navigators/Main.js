@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { IndexHomeContainer, IndexSettingsContainer } from '@/Containers'
 import { Header, CustomDrawerContent } from '@/Components'
+import { IndexConsultationContainer } from '@/Containers/index'
 
 const Drawer = createDrawerNavigator()
 const MainNavigator = () => {
@@ -43,6 +44,13 @@ const MainNavigator = () => {
         component={IndexSettingsContainer}
         options={{
           title: t('navigation.settings'),
+        }}
+      />
+      <Drawer.Screen
+        name="Consultation"
+        component={IndexConsultationContainer}
+        options={{
+          title: t('navigation.consultation'),
         }}
       />
     </Drawer.Navigator>

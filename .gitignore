@@ -30,6 +30,8 @@ build/
 local.properties
 *.iml
 
+# Jest
+coverage/
 # node.js
 #
 node_modules/

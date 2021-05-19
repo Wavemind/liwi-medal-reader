@@ -33,7 +33,8 @@ export const FontSize = {
   small: 16,
   regular: 20,
   sectionHeader: 24,
-  large: 40,
+  large: 45,
+  huge: 60,
 }
 
 /**

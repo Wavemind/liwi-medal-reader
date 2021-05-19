@@ -1,9 +1,9 @@
 import React from 'react'
 import { ScrollView, View } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 import { SearchBar, LoaderList, SectionHeader } from '@/Components'
 import { useTheme } from '@/Theme'
-import { useTranslation } from 'react-i18next'
 
 const IndexHomeContainer = props => {
   const { navigation } = props
