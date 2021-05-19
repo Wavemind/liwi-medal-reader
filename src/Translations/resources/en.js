@@ -39,6 +39,14 @@ export default {
     home: {
       title: 'Latest consultations',
     },
+    scan: {
+      scan: 'Scan the QR code',
+      new: 'You need to generate a new sticker',
+      new_sticker_notification:
+        'You need to give another sticker to the patient',
+      new_sticker_wrong_facility:
+        'The new sticker does not belong to your facility',
+    },
     settings: {
       general: {
         title: 'General',

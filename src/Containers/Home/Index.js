@@ -26,7 +26,7 @@ const IndexHomeContainer = props => {
         <SquareButton
           label={t('navigation.scan_qr_code')}
           icon="qr-scan"
-          onPress={() => navigation.navigate('TODO')}
+          onPress={() => navigation.navigate('Scan')}
           filled
         />
         <View style={home.buttonListWrapper}>
