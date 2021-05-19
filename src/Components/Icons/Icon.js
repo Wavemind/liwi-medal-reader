@@ -8,7 +8,7 @@ import { useTheme } from '@/Theme'
 /**
  * The internal imports
  */
-import icoMoonConfig from '../Assets/Fonts/selection.json'
+import icoMoonConfig from '../../Assets/Fonts/selection.json'
 
 const CustomIcon = createIconSetFromIcoMoon(
   icoMoonConfig,
