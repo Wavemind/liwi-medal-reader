@@ -50,7 +50,7 @@ const MainNavigator = () => {
         name="Consultation"
         component={IndexConsultationContainer}
         options={{
-          title: t('navigation.consultation'),
+          title: t('navigation.consultations'),
         }}
       />
     </Drawer.Navigator>

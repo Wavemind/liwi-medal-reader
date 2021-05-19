@@ -18,6 +18,7 @@ import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
 import tabItemStyles from './components/TabItem.style'
+import sideBarStyles from './components/SideBar.style'
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -40,5 +41,6 @@ export default function (props) {
     customDrawerItem: customDrawerItemStyles(props),
     searchBar: searchBarStyles(props),
     tabItem: tabItemStyles(props),
+    sideBar: sideBarStyles(props),
   }
 }
