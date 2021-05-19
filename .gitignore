@@ -38,6 +38,10 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# JEST
+coverage/*
+coverage
+
 # BUCK
 buck-out/
 \.buckd/

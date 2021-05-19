@@ -99,6 +99,7 @@ const PinAuthContainer = () => {
               )
             }
             storedPin={healthFacility.pin_code}
+            buttonDeleteText={t('containers.auth.pin.delete')}
             colorCircleButtons="#757575"
             colorPassword="#db473e"
             stylePinCodeButtonNumber="#FFF"

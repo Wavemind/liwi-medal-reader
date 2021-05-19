@@ -17,7 +17,8 @@ export const Colors = {
   buttonGrey: '#303030',
   grey: '#CBCDD1',
   text: '#212529',
-  primary: '#E14032',
+  primary: '#000000',
+  secondary: '#ffffff',
   success: '#28a745',
   error: '#dc3545',
 }
@@ -33,7 +34,7 @@ export const FontSize = {
   small: 16,
   regular: 20,
   sectionHeader: 24,
-  large: 45,
+  large: 40,
   huge: 60,
 }
 

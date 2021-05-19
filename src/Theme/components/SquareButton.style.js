@@ -21,6 +21,9 @@ export default function (props) {
       ...Layout.row,
       ...Layout.fullWidth,
     },
+    textWrapper: {
+      ...Layout.row, ...Layout.center, ...Gutters.tinyVPadding
+    },
     filled: disabled => ({
       ...base(disabled),
       backgroundColor: Colors.primary,

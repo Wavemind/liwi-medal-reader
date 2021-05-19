@@ -5,7 +5,7 @@ export default function (props) {
 
   return StyleSheet.create({
     wrapper: {
-      ...Gutters.regularVPadding,
+      ...Gutters.smallVPadding,
       ...Gutters.smallHPadding,
       ...Layout.row,
       backgroundColor: '#FFF',

@@ -124,9 +124,9 @@ const SynchronizationAuthContainer = () => {
 
         <View style={authSynchronization.buttonWrapper}>
           <SquareButton
-            content={t('actions.synchronize')}
+            label={t('actions.synchronize')}
             filled
-            handlePress={handleSynchronization}
+            onPress={() => handleSynchronization()}
             disabled={loading}
           />
         </View>

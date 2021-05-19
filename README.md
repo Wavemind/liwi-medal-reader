@@ -66,15 +66,15 @@ We also set a list of custom icons. We split it in 2 components
 
 | Name          |                                                                                                                                           |
 | ------------- |:-----------------------------------------------------------------------------------------------------------------------------------------:|
-| about         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/about_color.png?raw=true "alert")               |
-| consult       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/consult_color.png?raw=true "consult")           |
-| home          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/home_color.png?raw=true "home")                 |
-| logout        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/logout_color.png?raw=true "logout")             |
-| patient-list  | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/patient-list_color.png?raw=true "patient-list") |
-| qr-scan       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/qr-scan_color.png?raw=true "qr-scan")           |
-| settings      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/settings_color.png?raw=true "settings")         |
-| summary       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/summary_color.png?raw=true "summary")           |
-| synchronize   | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/colored/synchronize_color.png?raw=true "synchronize")   |
+| about         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/about_color.png?raw=true "alert")               |
+| consult       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/consult_color.png?raw=true "consult")           |
+| home          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/home_color.png?raw=true "home")                 |
+| logout        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/logout_color.png?raw=true "logout")             |
+| patient-list  | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/patient-list_color.png?raw=true "patient-list") |
+| qr-scan       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/qr-scan_color.png?raw=true "qr-scan")           |
+| settings      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/settings_color.png?raw=true "settings")         |
+| summary       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/summary_color.png?raw=true "summary")           |
+| synchronize   | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/colored/synchronize_color.png?raw=true "synchronize")   |
 
 ### Icon
 ```javascript
@@ -82,44 +82,45 @@ We also set a list of custom icons. We split it in 2 components
  
  <Icon name="about"/>
 ```
+
 | Name              |                                                                                                                                         |
 | ------------------|:---------------------------------------------------------------------------------------------------------------------------------------:|
-| about             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/about_light.png?raw=true "about") |
-| account-outline   | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/account-outline_light.png?raw=true "account-outline") |
-| add               | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/add_light.png?raw=true "add") |
-| alert             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/alert_light.png?raw=true "alert") |
-| assessment        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/assessment_light.png?raw=true "assessment") |
-| close             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/close_light.png?raw=true "close") |
-| consent-file      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/consent-file_light.png?raw=true "consent-file") |
-| consult           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/consult_light.png?raw=true "consult") |
-| delete            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/delete_light.png?raw=true "delete") |
-| diagnosis         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/diagnosis_light.png?raw=true "diagnosis") |
-| edit              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/edit_light.png?raw=true "edit") |
-| emergency         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/emergency_light.png?raw=true "emergency") |
-| emergency-outline | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/emergency-outline_light.png?raw=true "emergency-outline") |
-| filtre            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/filtre_light.png?raw=true "filtre") |
-| home              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/home_light.png?raw=true "home") |
-| info              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/info_light.png?raw=true "info") |
-| left-arrow        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/left-arrow_light.png?raw=true "left-arrow") |
-| logout            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/logout_light.png?raw=true "logout") |
-| logout_1          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/logout_light_1.png?raw=true "logout_1") |
-| menu              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/menu_light.png?raw=true "menu") |
-| new-patient       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/new-patient_light.png?raw=true "new-patient") |
-| patient-list      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/patient-list_light.png?raw=true "patient-list") |
-| qr-scan           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/qr-scan_light.png?raw=true "qr-scan") |
-| refresh           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/refresh_light.png?raw=true "refresh") |
-| registration      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/registration_light.png?raw=true "registration") |
-| right-arrow       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/right-arrow_light.png?raw=true "right-arrow") |
-| save-quit         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/save-quit_light.png?raw=true "save-quit") |
-| search            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/search_light.png?raw=true "search") |
-| settings          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/settings_light.png?raw=true "settings") |
-| summary           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/summary_light.png?raw=true "summary") |
-| synchronize       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/synchronize_light.png?raw=true "synchronize") |
-| tests             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/validate_light.png?raw=true "tests") |
-| validate          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/warning_light.png?raw=true "validate") |
-| warning           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/warning_light.png?raw=true "warning") |
-| wifi-off          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/wifi-off_light.png?raw=true "wifi-off") |
-| wifi-on           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/feature/login/documentations/images/wifi-on_light.png?raw=true "wifi-on") |
+| about             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/about_light.png?raw=true "about") |
+| account-outline   | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/account-outline_light.png?raw=true "account-outline") |
+| add               | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/add_light.png?raw=true "add") |
+| alert             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/alert_light.png?raw=true "alert") |
+| assessment        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/assessment_light.png?raw=true "assessment") |
+| close             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/close_light.png?raw=true "close") |
+| consent-file      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/consent-file_light.png?raw=true "consent-file") |
+| consult           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/consult_light.png?raw=true "consult") |
+| delete            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/delete_light.png?raw=true "delete") |
+| diagnosis         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/diagnosis_light.png?raw=true "diagnosis") |
+| edit              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/edit_light.png?raw=true "edit") |
+| emergency         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/emergency_light.png?raw=true "emergency") |
+| emergency-outline | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/emergency-outline_light.png?raw=true "emergency-outline") |
+| filtre            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/filtre_light.png?raw=true "filtre") |
+| home              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/home_light.png?raw=true "home") |
+| info              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/info_light.png?raw=true "info") |
+| left-arrow        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/left-arrow_light.png?raw=true "left-arrow") |
+| logout            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/logout_light.png?raw=true "logout") |
+| logout_1          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/logout_light_1.png?raw=true "logout_1") |
+| menu              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/menu_light.png?raw=true "menu") |
+| new-patient       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/new-patient_light.png?raw=true "new-patient") |
+| patient-list      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/patient-list_light.png?raw=true "patient-list") |
+| qr-scan           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/qr-scan_light.png?raw=true "qr-scan") |
+| refresh           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/refresh_light.png?raw=true "refresh") |
+| registration      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/registration_light.png?raw=true "registration") |
+| right-arrow       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/right-arrow_light.png?raw=true "right-arrow") |
+| save-quit         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/save-quit_light.png?raw=true "save-quit") |
+| search            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/search_light.png?raw=true "search") |
+| settings          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/settings_light.png?raw=true "settings") |
+| summary           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/summary_light.png?raw=true "summary") |
+| synchronize       | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/synchronize_light.png?raw=true "synchronize") |
+| tests             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/validate_light.png?raw=true "tests") |
+| validate          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/warning_light.png?raw=true "validate") |
+| warning           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/warning_light.png?raw=true "warning") |
+| wifi-off          | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/wifi-off_light.png?raw=true "wifi-off") |
+| wifi-on           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/wifi-on_light.png?raw=true "wifi-on") |
 
 ## Writing and Running Tests
 

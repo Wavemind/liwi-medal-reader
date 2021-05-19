@@ -23,6 +23,7 @@ import {
 import { useTheme } from '@/Theme'
 import { useTranslation } from 'react-i18next'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
+import useDatabase from '@/Services/Database/useDatabase'
 
 const IndexExampleContainer = props => {
   const { navigation } = props
@@ -73,17 +74,17 @@ const IndexExampleContainer = props => {
       {/*<Select items={items} disabled />*/}
 
       {/*/!* Square buttons *!/*/}
-      {/*<View style={{ paddingTop: 10 }}>*/}
-      {/*  <SquareButton content="Hello there" filled disabled />*/}
-      {/*</View>*/}
+      <View style={{ paddingTop: 10 }}>
+      <SquareButton content="Hello there" filled disabled />
+      </View>
       {/*<View style={{ paddingTop: 10 }}>*/}
       {/*  <SquareButton content="General Kenobi" />*/}
       {/*</View>*/}
       {/*<View style={{ paddingTop: 10 }}>*/}
       {/*  <SquareButton content="General Kenobi" disabled />*/}
-      {/*</View>*/}
+      {/*</View>
 
-      {/*/!* Rounded buttons *!/*/}
+      /!* Rounded buttons *!/
       {/*<View style={{ flexDirection: 'row' }}>*/}
       {/*  <View style={{ paddingTop: 20 }}>*/}
       {/*    <RoundedButton content="Add" icon="add" />*/}

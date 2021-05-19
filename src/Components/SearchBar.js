@@ -25,32 +25,31 @@ const SearchBar = props => {
   const {
     Layout,
     Colors,
+    FontSize,
     Components: { searchBar },
   } = useTheme()
 
   return (
-    <View style={[Layout.fill]}>
-      <TouchableWithoutFeedback onPress={() => navigation.push('Search')}>
-        <View style={[Layout.row]}>
-          <View style={[searchBar.inputWrapper]}>
-            <View style={[Layout.colCenter]}>
-              <Icon name={'search'} color={Colors.grey} />
-            </View>
-            <View style={[searchBar.inputTextWrapper]}>
-              <Text style={[searchBar.inputText]}>{t('actions.search')}</Text>
-            </View>
+    <TouchableWithoutFeedback onPress={() => navigation.push('Search')}>
+      <View style={[Layout.row]}>
+        <View style={[searchBar.inputWrapper]}>
+          <View style={[Layout.colCenter]}>
+            <Icon name={'search'} color={Colors.grey} size={FontSize.regular} />
           </View>
-          {filters && (
-            <TouchableOpacity
-              style={[searchBar.filterButton]}
-              onPress={() => navigation.push('Filter')}
-            >
-              <Icon name={'filtre'} color={Colors.white} />
-            </TouchableOpacity>
-          )}
+          <View style={[searchBar.inputTextWrapper]}>
+            <Text style={[searchBar.inputText]}>{t('actions.search')}</Text>
+          </View>
         </View>
-      </TouchableWithoutFeedback>
-    </View>
+        {filters && (
+          <TouchableOpacity
+            style={[searchBar.filterButton]}
+            onPress={() => navigation.push('Filter')}
+          >
+            <Icon name={'filtre'} color={Colors.white} />
+          </TouchableOpacity>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
