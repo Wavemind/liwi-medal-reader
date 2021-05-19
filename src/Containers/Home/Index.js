@@ -6,6 +6,7 @@ import {
   LoaderList,
   SectionHeader,
   SquareButton,
+  Patient,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { useTranslation } from 'react-i18next'
@@ -51,6 +52,14 @@ const IndexHomeContainer = props => {
       <View style={[Gutters.regularHMargin]}>
         <SectionHeader label={t('containers.home.title')} />
         <ScrollView>
+          <Patient />
+          <Patient />
+          <Patient />
+          <Patient />
+          <Patient />
+          <Patient />
+          <Patient />
+          <Patient />
           <LoaderList />
         </ScrollView>
       </View>

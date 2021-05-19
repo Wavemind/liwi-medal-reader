@@ -16,11 +16,15 @@ export default function ({ FontSize, Colors }) {
     textSmall: {
       fontSize: FontSize.small,
     },
+    textMedium: {
+      fontSize: FontSize.medium,
+    },
     textRegular: {
       fontSize: FontSize.regular,
     },
     textSectionHeader: {
       fontSize: FontSize.sectionHeader,
+      fontWeight: 'bold',
       textTransform: 'uppercase',
     },
     textLarge: {

@@ -16,6 +16,7 @@ import headerStyles from './components/Header.style'
 import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
+import patientStyles from './components/Patient.style'
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -36,5 +37,6 @@ export default function (props) {
     customDrawerContent: customDrawerContentStyles(props),
     customDrawerItem: customDrawerItemStyles(props),
     searchBar: searchBarStyles(props),
+    patient: patientStyles(props),
   }
 }
