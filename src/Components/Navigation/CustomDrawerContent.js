@@ -57,13 +57,13 @@ const CustomDrawerContent = props => {
           {...props}
         />
         <CustomDrawerItem
-          label={t('navigation.consultation')}
+          label={t('navigation.consultations')}
           routeName={'TODO'}
           iconName={'consult'}
           {...props}
         />
         <CustomDrawerItem
-          label={t('navigation.patients')}
+          label={t('navigation.patient_list')}
           routeName={'TODO'}
           iconName={'patient-list'}
           {...props}

@@ -1,8 +1,14 @@
+/**
+ * The external imports
+ */
 import React from 'react'
+import ContentLoader, { Rect } from 'react-content-loader/native'
 import { View } from 'react-native'
 
+/**
+ * The internal imports
+ */
 import { useTheme } from '@/Theme'
-import ContentLoader, { Rect } from 'react-content-loader/native'
 
 const LoaderList = props => {
   const { Layout } = useTheme()

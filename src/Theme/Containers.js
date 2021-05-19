@@ -18,6 +18,7 @@ import ModalAlgorithmStyles from './containers/Modal/AlgorithmInfo.style'
 
 import SettingsIndexStyles from './containers/Settings/Index.style'
 import SearchIndexStyles from './containers/Search/Index.style'
+import HomeIndexStyles from './containers/Home/Index.style'
 
 /**
  *
@@ -37,5 +38,6 @@ export default function (props) {
     modalAlgorithm: ModalAlgorithmStyles(props),
     settings: SettingsIndexStyles(props),
     search: SearchIndexStyles(props),
+    home: HomeIndexStyles(props),
   }
 }

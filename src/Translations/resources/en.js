@@ -94,8 +94,8 @@ export default {
   },
   navigation: {
     scan_qr_code: 'Scan QR code',
-    consultation: 'Consultation',
-    patients: 'Patients',
+    consultations: 'Consultations',
+    patient_list: 'Patient list',
     consent_files: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
