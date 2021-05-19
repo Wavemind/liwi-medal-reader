@@ -15,7 +15,7 @@ const IndexHomeContainer = props => {
 
   const { t } = useTranslation()
   const {
-    Components: { home },
+    Containers: { home },
     Layout,
     Gutters,
   } = useTheme()
@@ -30,14 +30,14 @@ const IndexHomeContainer = props => {
           filled
         />
         <View style={home.buttonListWrapper}>
-          <View style={home.buttonList}>
+          <View style={home.patientListButton}>
             <SquareButton
               label={t('navigation.patient_list')}
               icon="patient-list"
               onPress={() => navigation.navigate('TODO')}
             />
           </View>
-          <View style={home.buttonList}>
+          <View style={home.consultationsButton}>
             <SquareButton
               label={t('navigation.consultations')}
               icon="consult"

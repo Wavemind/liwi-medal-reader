@@ -20,7 +20,9 @@ const CustomDrawerItem = props => {
   // Theme and style elements deconstruction
   const {
     Components: { customDrawerItem },
+    Colors,
   } = useTheme()
+
   return (
     <DrawerItem
       label={({ focused }) => (
@@ -34,9 +36,15 @@ const CustomDrawerItem = props => {
           {label}
         </Text>
       )}
-      activeBackgroundColor={'#CBCDD1'}
+      style={customDrawerItem.wrapper}
+      activeBackgroundColor={Colors.primary}
       focused={routes[index].name === routeName}
-      icon={() => <Icon name={iconName} />}
+      icon={({ focused }) => (
+        <Icon
+          name={iconName}
+          color={focused ? Colors.secondary : Colors.primary}
+        />
+      )}
       onPress={() => navigation.navigate(routeName, routeParams)}
     />
   )

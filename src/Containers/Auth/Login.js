@@ -137,9 +137,9 @@ const LoginAuthContainer = () => {
           />
           <View style={authLogin.buttonWrapper}>
             <SquareButton
-              content={t('actions.login')}
+              label={t('actions.login')}
               filled
-              handlePress={handleLogin}
+              onPress={() => handleLogin()}
               disabled={loading}
             />
           </View>
