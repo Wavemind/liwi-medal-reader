@@ -5,13 +5,17 @@ import mockNetInfo from '@react-native-community/netinfo/jest/netinfo-mock.js'
 jest.mock('@react-native-community/netinfo', () => mockNetInfo)
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage)
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage)
-jest.mock('react-native-offline', () => {})
 jest.mock('@react-native-picker/picker', () => {})
 jest.mock('@react-native-community/checkbox', () => {})
 jest.mock('lottie-react-native', () => {})
 jest.mock('react-content-loader/native', () => {})
 jest.mock('react-native-webview', () => {})
 jest.mock('@haskkor/react-native-pincode', () => {})
+jest.mock('react-native-offline', () => {
+  return {
+    reducer: {},
+  }
+})
 jest.mock('react-native-flash-message', () => {
   return jest.fn()
 })
