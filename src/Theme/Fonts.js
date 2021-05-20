@@ -13,6 +13,12 @@ export default function ({ FontSize, Colors }) {
     textColorText: {
       color: Colors.text,
     },
+    textColorPrimary: {
+      color: Colors.primary,
+    },
+    textColorSecondary: {
+      color: Colors.secondary,
+    },
     textSmall: {
       fontSize: FontSize.small,
     },

@@ -35,7 +35,7 @@ const IndexHomeContainer = props => {
             <SquareButton
               label={t('navigation.patient_list')}
               icon="patient-list"
-              onPress={() => navigation.navigate('TODO')}
+              onPress={() => navigation.navigate('PatientList')}
             />
           </View>
           <View style={home.consultationsButton}>
@@ -52,14 +52,6 @@ const IndexHomeContainer = props => {
       <View style={[Gutters.regularHMargin]}>
         <SectionHeader label={t('containers.home.title')} />
         <ScrollView>
-          <Patient />
-          <Patient />
-          <Patient />
-          <Patient />
-          <Patient />
-          <Patient />
-          <Patient />
-          <Patient />
           <LoaderList />
         </ScrollView>
       </View>
