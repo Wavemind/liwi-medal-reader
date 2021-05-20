@@ -39,7 +39,7 @@ const FilterBar = props => {
           </Text>
         </View>
       </TouchableOpacity>
-      <ScrollView horizontal>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <Badge filterBy="Gender" value="Female" />
         <Badge filterBy="Gender" value="Female" />
         <Badge filterBy="Gender" value="Female" />
