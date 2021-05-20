@@ -17,7 +17,7 @@ import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
 import filterBarStyles from './components/FilterBar.style'
-import patientStyles from './components/Patient.style'
+import patientListItemStyles from './components/PatientListItem.style'
 import badgeStyles from './components/Badge.style'
 /**
  *
@@ -40,7 +40,7 @@ export default function (props) {
     customDrawerItem: customDrawerItemStyles(props),
     searchBar: searchBarStyles(props),
     filterBar: filterBarStyles(props),
-    patient: patientStyles(props),
+    patientListItem: patientListItemStyles(props),
     badge: badgeStyles(props),
   }
 }

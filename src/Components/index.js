@@ -20,6 +20,8 @@ export { default as CustomDrawerItem } from './Navigation/CustomDrawerItem'
 export { default as QuestionInfo } from './Modal/QuestionInfo'
 export { default as Study } from './Modal/Study'
 
+export { default as PatientListItem } from './Patient/ListItem'
+
 export { default as ConnectionStatus } from './ConnectionStatus'
 export { default as SearchBar } from './SearchBar'
 export { default as FilterBar } from './FilterBar'
@@ -28,4 +30,3 @@ export { default as Info } from './Info'
 export { default as Clinician } from './Clinician'
 export { default as SectionHeader } from './SectionHeader'
 export { default as ToggleSwitchDarkMode } from './ToggleSwitchDarkMode'
-export { default as Patient } from './Patient'

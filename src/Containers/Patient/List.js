@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import { SearchBar, Patient, FilterBar, LoaderList } from '@/Components'
+import { SearchBar, PatientListItem, FilterBar, LoaderList } from '@/Components'
 import { useTheme } from '@/Theme'
 
 const ListPatientContainer = props => {
@@ -73,7 +73,7 @@ const ListPatientContainer = props => {
 
       <FlatList
         data={data}
-        renderItem={({ item }) => <Patient item={item} />}
+        renderItem={({ item }) => <PatientListItem item={item} />}
         keyExtractor={item => item.id}
         ListEmptyComponent={<LoaderList />}
         onRefresh={() => handleRefresh()}
