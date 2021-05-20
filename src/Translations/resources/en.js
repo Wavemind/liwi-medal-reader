@@ -47,11 +47,19 @@ export default {
         'You need to give another sticker to the patient',
       new_sticker_wrong_facility:
         'The new sticker does not belong to your facility',
+    },
     patient: {
       list: {
         title: 'Patient list',
         name: 'Name',
         last_visit: 'Last visit',
+        status: 'Status',
+      },
+    },
+    medicalCase: {
+      list: {
+        title: 'Consultations',
+        name: 'Name',
         status: 'Status',
       },
     },

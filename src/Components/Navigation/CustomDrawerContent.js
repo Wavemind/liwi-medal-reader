@@ -58,7 +58,7 @@ const CustomDrawerContent = props => {
         />
         <CustomDrawerItem
           label={t('navigation.consultations')}
-          routeName={'TODO'}
+          routeName={'Consultations'}
           iconName={'consult'}
           {...props}
         />

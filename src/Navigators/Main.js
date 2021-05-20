@@ -13,6 +13,7 @@ import {
   IndexHomeContainer,
   IndexSettingsContainer,
   ListPatientContainer,
+  ListMedicalCaseContainer,
 } from '@/Containers'
 import { Header, CustomDrawerContent } from '@/Components'
 
@@ -47,6 +48,13 @@ const MainNavigator = () => {
         component={ListPatientContainer}
         options={{
           title: t('navigation.patient_list'),
+        }}
+      />
+      <Drawer.Screen
+        name="Consultations"
+        component={ListMedicalCaseContainer}
+        options={{
+          title: t('navigation.consultations'),
         }}
       />
       <Drawer.Screen
