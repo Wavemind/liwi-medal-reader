@@ -26,7 +26,7 @@ const MainNavigator = () => {
   return (
     <>
       <Drawer.Navigator
-        initialRouteName="StageWrapper"
+        initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
         screenOptions={{
           headerShown: true,
@@ -44,7 +44,6 @@ const MainNavigator = () => {
             }),
           }}
         />
-
         <Drawer.Screen
           name="StageWrapper"
           component={StageWrapper}
