@@ -3,7 +3,7 @@
  */
 import React, { useState, useEffect } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { useNavigationState, useNavigation } from '@react-navigation/native'
+import { useNavigationState } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -21,6 +21,9 @@ const SideBarItem = ({ stage, index }) => {
     Components: { sideBar },
   } = useTheme()
 
+  /**
+   * Will navigate to a specific step if we are allowed to
+   */
   const handleNavigate = () => {
     if (status === 'done') {
       navigateToStage(index, 0)

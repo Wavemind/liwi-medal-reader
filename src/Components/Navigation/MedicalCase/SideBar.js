@@ -19,7 +19,7 @@ const SideBar = props => {
   return (
     <View style={sideBar.wrapper}>
       <ScrollView
-        contentContainerStyle={{ display: 'flex', alignItems: 'center' }}
+        contentContainerStyle={sideBar.container}
         showsVerticalScrollIndicator={false}
       >
         {Config.NAVIGATION.INTERVENTION_STAGES.map((stage, index) => (

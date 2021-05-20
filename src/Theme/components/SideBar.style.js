@@ -47,6 +47,7 @@ export default function (props) {
       paddingBottom: 12,
       marginBottom: 7,
     },
+    container: { display: 'flex', alignItems: 'center' },
     wrapper: {
       ...Layout.fullWidth,
       flexBasis: 60,

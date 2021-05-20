@@ -11,33 +11,35 @@ import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { useTheme } from '@/Theme'
 
 const Round = ({ parentStatus, step, stepIndex }) => {
+  const navigation = useNavigation()
+  const [active, setActive] = useState(false)
   const {
     Components: { sideBar },
   } = useTheme()
-
-  const navigation = useNavigation()
-  const state = useNavigationState(
+  const currentStep = useNavigationState(
     state => state.routes[state.index].state?.index,
   )
-
-  const [active, setActive] = useState(false)
 
   useEffect(() => {
     if (parentStatus === 'done') {
       setActive(true)
     } else if (parentStatus === 'notDone') {
       setActive(false)
-    } else if (stepIndex <= state || stepIndex === 0) {
+    } else if (stepIndex <= currentStep || stepIndex === 0) {
       setActive(true)
     } else {
       setActive(false)
     }
-  }, [parentStatus, state, stepIndex])
+  }, [parentStatus, currentStep, stepIndex])
 
-  console.log(step)
+  /**
+   * Will navigate to the related step
+   * TODO handle When we move to another stage
+   */
   const handlePress = () => {
     navigation.navigate(step.label)
   }
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <View

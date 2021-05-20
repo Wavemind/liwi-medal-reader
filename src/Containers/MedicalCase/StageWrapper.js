@@ -35,7 +35,10 @@ const IndexConsultationContainer = props => {
           tabBar={tabProps => <TabItem {...tabProps} />}
         >
           {stage.steps.map(step => (
-            <Tab.Screen name={step.label} component={step.component} />
+            <Tab.Screen
+              name={t(`medical_case.steps.${step.label}`)}
+              component={step.component}
+            />
           ))}
         </Tab.Navigator>
       </View>

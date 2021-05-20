@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors } = props
+  const { Colors, FontSize } = props
 
   return StyleSheet.create({
     container: {
@@ -17,12 +17,9 @@ export default function (props) {
       display: 'flex',
       borderRightColor: Colors.grey,
     },
-    emergencyContainertwo: {
-      padding: 10,
-      flex: 7,
-      width: 80,
-      borderRightWidth: 1,
-      borderRightColor: Colors.grey,
+    emergency: {
+      fontSize: FontSize.huge,
+      alignSelf: 'center',
     },
   })
 }
