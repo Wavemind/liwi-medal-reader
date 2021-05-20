@@ -5,6 +5,7 @@ export default {
     search: 'Search',
     select: 'Select',
     synchronize: 'Synchronize',
+    clear_filters: 'Clear all filters',
   },
   algorithm: {
     version_id: 'Version id',
@@ -46,6 +47,13 @@ export default {
         'You need to give another sticker to the patient',
       new_sticker_wrong_facility:
         'The new sticker does not belong to your facility',
+    patient: {
+      list: {
+        title: 'Patient list',
+        name: 'Name',
+        last_visit: 'Last visit',
+        status: 'Status',
+      },
     },
     settings: {
       general: {

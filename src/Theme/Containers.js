@@ -21,6 +21,8 @@ import SearchIndexStyles from './containers/Search/Index.style'
 import HomeIndexStyles from './containers/Home/Index.style'
 import ScanIndexStyles from './containers/Scan/Index.style'
 
+import patientListStyles from './containers/Patient/List.style'
+
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -41,5 +43,6 @@ export default function (props) {
     search: SearchIndexStyles(props),
     home: HomeIndexStyles(props),
     scan: ScanIndexStyles(props),
+    patientList: patientListStyles(props),
   }
 }
