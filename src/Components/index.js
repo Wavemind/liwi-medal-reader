@@ -22,6 +22,8 @@ export { default as Study } from './Modal/Study'
 
 export { default as PatientListItem } from './Patient/ListItem'
 
+export { default as MedicalCaseListItem } from './MedicalCase/ListItem'
+
 export { default as ConnectionStatus } from './ConnectionStatus'
 export { default as SearchBar } from './SearchBar'
 export { default as FilterBar } from './FilterBar'

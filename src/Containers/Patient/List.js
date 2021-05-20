@@ -38,7 +38,7 @@ const ListPatientContainer = props => {
   }, [])
 
   /**
-   * Reset filters and search terms. Fetch 15 first user
+   * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
     setRefreshing(true)
@@ -47,7 +47,7 @@ const ListPatientContainer = props => {
   }
 
   /**
-   * Load 15 more patients
+   * Load more patients
    */
   const loadMore = () => {
     console.log('TODO: load more')

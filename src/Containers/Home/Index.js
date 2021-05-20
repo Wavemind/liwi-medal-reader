@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React, { useEffect, useRef } from 'react'
-import { ScrollView, View, Animated } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { FlatList, View, Animated } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -13,6 +13,7 @@ import {
   LoaderList,
   SectionHeader,
   SquareButton,
+  MedicalCaseListItem,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
@@ -30,9 +31,41 @@ const IndexHomeContainer = props => {
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
+  // Local state definition
+  const [data, setData] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
+
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
+
+  useEffect(() => {
+    let timer = setTimeout(
+      () => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      2 * 1000,
+    )
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
+
+  /**
+   * Fetch 15 latest medical cases
+   */
+  const handleRefresh = () => {
+    setRefreshing(true)
+    console.log('TODO: handle refresh')
+    setTimeout(() => setRefreshing(false), 2 * 1000)
+  }
+
+  /**
+   * Load more medical case
+   */
+  const loadMore = () => {
+    console.log('TODO: load more')
+    setData(data.concat([11, 12, 13, 14, 15]))
+  }
 
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
@@ -60,14 +93,23 @@ const IndexHomeContainer = props => {
           </View>
         </View>
       </View>
+
       <SearchBar navigation={navigation} />
 
       <View style={[Gutters.regularHMargin]}>
         <SectionHeader label={t('containers.home.title')} />
-        <ScrollView>
-          <LoaderList />
-        </ScrollView>
       </View>
+
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <MedicalCaseListItem item={item} />}
+        keyExtractor={item => item.id}
+        ListEmptyComponent={<LoaderList />}
+        onRefresh={() => handleRefresh()}
+        refreshing={refreshing}
+        onEndReached={() => loadMore()}
+        onEndReachedThreshold={0.1}
+      />
     </Animated.View>
   )
 }
