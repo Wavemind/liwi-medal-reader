@@ -52,7 +52,7 @@ const CustomDrawerContent = props => {
         />
         <CustomDrawerItem
           label={t('navigation.scan_qr_code')}
-          routeName={'TODO'}
+          routeName={'Scan'}
           iconName={'qr-scan'}
           {...props}
         />
