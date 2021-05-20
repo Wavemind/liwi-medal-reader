@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Gutters, Layout, Fonts } = props
+  const { Gutters, Layout, Fonts, Colors } = props
 
   return StyleSheet.create({
     container: {
@@ -10,7 +10,7 @@ export default function (props) {
       ...Gutters.regularLMargin,
     },
     clearFiltersButton: {
-      ...Gutters.regularRMargin,
+      ...Gutters.regularRPadding,
       ...Layout.row,
     },
     clearFiltersButtonWrapper: {

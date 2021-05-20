@@ -43,6 +43,9 @@ export default {
     patient: {
       list: {
         title: 'Patient list',
+        name: 'Name',
+        last_visit: 'Last visit',
+        status: 'Status',
       },
     },
     settings: {

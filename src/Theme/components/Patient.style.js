@@ -7,6 +7,7 @@ export default function (props) {
     wrapper: {
       ...Layout.fill,
       ...Gutters.smallTPadding,
+      ...Gutters.regularHMargin,
       borderBottomWidth: 1,
       borderColor: Colors.grey,
     },
@@ -23,6 +24,9 @@ export default function (props) {
       ...Fonts.textMedium,
       ...Gutters.tinyBPadding,
     },
+    dateWrapper: {
+      flex: 0.5,
+    },
     statusWrapper: {
       ...Layout.center,
       ...Layout.column,
@@ -34,7 +38,7 @@ export default function (props) {
     },
     icon: active => ({
       backgroundColor: active && Colors.primary,
-      color: active && Colors.secondary,
+      color: active ? Colors.secondary : Colors.grey,
       padding: 5,
     }),
     picker: {

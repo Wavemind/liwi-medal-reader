@@ -16,6 +16,7 @@ const Patient = props => {
     Components: { patient },
     Layout,
     Gutters,
+    Fonts,
   } = useTheme()
 
   return (
@@ -27,6 +28,9 @@ const Patient = props => {
         <View style={patient.titleWrapper}>
           <Text style={patient.title}>Quentin Girard</Text>
           <Text>02.03.1994</Text>
+        </View>
+        <View style={patient.dateWrapper}>
+          <Text style={Fonts.textCenter}>10.02.2021</Text>
         </View>
         <View style={patient.statusWrapper}>
           <Text style={patient.statusTitle}>1st assessement</Text>

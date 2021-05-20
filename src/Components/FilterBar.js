@@ -3,13 +3,7 @@
  */
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions,
-} from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 
 /**
  * The internal imports
