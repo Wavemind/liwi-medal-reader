@@ -9,7 +9,11 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import { IndexHomeContainer, IndexSettingsContainer } from '@/Containers'
+import {
+  IndexHomeContainer,
+  IndexSettingsContainer,
+  ListPatientContainer,
+} from '@/Containers'
 import { Header, CustomDrawerContent } from '@/Components'
 
 const Drawer = createDrawerNavigator()
@@ -36,6 +40,13 @@ const MainNavigator = () => {
           title: t('navigation.welcome', {
             clinician: `${clinician.first_name} ${clinician.last_name}`,
           }),
+        }}
+      />
+      <Drawer.Screen
+        name="PatientList"
+        component={ListPatientContainer}
+        options={{
+          title: t('navigation.patient_list'),
         }}
       />
       <Drawer.Screen

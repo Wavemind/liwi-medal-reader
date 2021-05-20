@@ -8,7 +8,7 @@ export default function (props) {
       backgroundColor: Colors.white,
       borderWidth: 1,
       borderColor: Colors.grey,
-      height: 50,
+      height: 55,
       borderRadius: 10,
       ...Gutters.smallVMargin,
       ...Gutters.smallVPadding,
@@ -24,7 +24,7 @@ export default function (props) {
     inputText: { color: Colors.grey },
     filterButton: {
       ...Gutters.smallVMargin,
-      ...Gutters.regularVPadding,
+      ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       ...Gutters.regularRMargin,
       borderRadius: 10,

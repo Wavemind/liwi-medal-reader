@@ -5,6 +5,7 @@ export default {
     search: 'Search',
     select: 'Select',
     synchronize: 'Synchronize',
+    clear_filters: 'Clear all filters',
   },
   algorithm: {
     version_id: 'Version id',
@@ -38,6 +39,14 @@ export default {
     },
     home: {
       title: 'Latest consultations',
+    },
+    patient: {
+      list: {
+        title: 'Patient list',
+        name: 'Name',
+        last_visit: 'Last visit',
+        status: 'Status',
+      },
     },
     settings: {
       general: {

@@ -22,7 +22,9 @@ export default function (props) {
       ...Layout.fullWidth,
     },
     textWrapper: {
-      ...Layout.row, ...Layout.center, ...Gutters.tinyVPadding
+      ...Layout.row,
+      ...Layout.center,
+      ...Gutters.tinyVPadding,
     },
     filled: disabled => ({
       ...base(disabled),
