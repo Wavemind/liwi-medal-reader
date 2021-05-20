@@ -3,13 +3,13 @@
  */
 import React from 'react'
 import { View, ScrollView } from 'react-native'
-import RotatedText from './RotatedText'
-import Round from './Round'
+import SideBarItem from './SideBarItem'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { Config } from '@/Config'
 
 const SideBar = props => {
   const {
@@ -22,13 +22,9 @@ const SideBar = props => {
         contentContainerStyle={{ display: 'flex', alignItems: 'center' }}
         showsVerticalScrollIndicator={false}
       >
-        <RotatedText label="Registration" />
-        <Round active />
-        <Round />
-        <Round />
-        <RotatedText label="1st assessment" />
-        <RotatedText label="1st assessment" />
-        <RotatedText label="1st assessment" />
+        {Config.NAVIGATION.INTERVENTION_STAGES.map((stage, index) => (
+          <SideBarItem stage={stage} index={index} />
+        ))}
       </ScrollView>
     </View>
   )

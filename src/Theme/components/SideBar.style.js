@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { Color } from '../../../../../.cache/typescript/4.2/node_modules/chalk/index'
 
 export default function (props) {
   const { Colors, Layout, FontSize } = props
@@ -12,6 +13,7 @@ export default function (props) {
       borderWidth: 3,
       marginBottom: 10,
     },
+    circleNotDone: { borderColor: Colors.grey },
     circleInner: {
       width: 23,
       height: 23,
@@ -19,6 +21,13 @@ export default function (props) {
       backgroundColor: Colors.black,
       marginTop: 3,
       marginLeft: 3,
+    },
+    barItemCurrent: {
+      backgroundColor: Colors.black,
+      color: Colors.white,
+      display: 'flex',
+      alignItems: 'center',
+      width: 60,
     },
     text: {
       textTransform: 'uppercase',
@@ -31,6 +40,8 @@ export default function (props) {
       marginTop: -10,
       transform: [{ rotateZ: '90deg' }],
     },
+    textCurent: { color: Colors.white },
+    textNotDone: { color: Colors.grey },
     rotatedTextWrapper: {
       paddingTop: 17,
       paddingBottom: 12,

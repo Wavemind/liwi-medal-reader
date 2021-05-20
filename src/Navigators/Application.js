@@ -21,7 +21,6 @@ import { useSelector } from 'react-redux'
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
-import { BottomNavbar } from '@/Components'
 
 const Stack = createStackNavigator()
 
@@ -84,7 +83,6 @@ const ApplicationNavigator = () => {
               <Stack.Screen name="Home" component={MainNavigator} />
             )}
           </Stack.Navigator>
-          <BottomNavbar />
         </NavigationContainer>
       </SafeAreaView>
     </ReduxNetworkProvider>

@@ -14,4 +14,4 @@ export { default as IndexFilterContainer } from './Filter/Index'
 export { default as IndexPermissionsRequiredContainer } from './PermissionsRequired/Index'
 export { default as IndexSettingsContainer } from './Settings/Index'
 
-export { default as IndexConsultationContainer } from './Consultation/Index'
+export { default as IndexConsultationContainer } from './ConsultationWrapper/Index'

@@ -13,12 +13,14 @@ import authClinicianSelectionStyles from './containers/Auth/ClinicianSelection.s
 
 import startupIndexStyles from './containers/Startup/Index.style'
 
-import ModalIndexStyles from './containers/Modal/Index.style'
-import ModalAlgorithmStyles from './containers/Modal/AlgorithmInfo.style'
+import modalIndexStyles from './containers/Modal/Index.style'
+import modalAlgorithmStyles from './containers/Modal/AlgorithmInfo.style'
 
-import SettingsIndexStyles from './containers/Settings/Index.style'
-import SearchIndexStyles from './containers/Search/Index.style'
-import HomeIndexStyles from './containers/Home/Index.style'
+import settingsIndexStyles from './containers/Settings/Index.style'
+import searchIndexStyles from './containers/Search/Index.style'
+import homeIndexStyles from './containers/Home/Index.style'
+
+import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
 
 /**
  *
@@ -34,10 +36,11 @@ export default function (props) {
     authPin: authPinStyles(props),
     authClinicianSelection: authClinicianSelectionStyles(props),
     startupIndex: startupIndexStyles(props),
-    modalIndex: ModalIndexStyles(props),
-    modalAlgorithm: ModalAlgorithmStyles(props),
-    settings: SettingsIndexStyles(props),
-    search: SearchIndexStyles(props),
-    home: HomeIndexStyles(props),
+    modalIndex: modalIndexStyles(props),
+    modalAlgorithm: modalAlgorithmStyles(props),
+    settings: settingsIndexStyles(props),
+    search: searchIndexStyles(props),
+    home: homeIndexStyles(props),
+    medicalCase: medicalCaseIndexStyles(props),
   }
 }

@@ -48,8 +48,6 @@ function SettingsFourScreen() {
   )
 }
 const IndexConsultationContainer = props => {
-  const { navigation } = props
-
   const { t } = useTranslation()
   const { Common, Fonts, Gutters, Layout, Colors } = useTheme()
   const dispatch = useDispatch()
@@ -91,9 +89,9 @@ const IndexConsultationContainer = props => {
           tabBarOptions={{ scrollEnabled: true, tabStyle: { width: 340 } }}
           tabBar={props => <TabItem {...props} />}
         >
-          <Tab.Screen name="MyHome" component={HomeScreen} />
-          <Tab.Screen name="MySettings" component={SettingsThreeScreen} />
-          <Tab.Screen name="MySettingsTwo" component={SettingsTwoScreen} />
+          <Tab.Screen name="MedicalHistory" component={HomeScreen} />
+          <Tab.Screen name="PhysicalExams" component={SettingsThreeScreen} />
+          <Tab.Screen name="Comment" component={SettingsTwoScreen} />
           <Tab.Screen name="MySettingsThree" component={SettingsTwoScreen} />
           <Tab.Screen name="MySettingsFour" component={SettingsFourScreen} />
         </Tab.Navigator>

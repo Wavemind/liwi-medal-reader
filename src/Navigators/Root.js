@@ -31,6 +31,15 @@ export function navigateAndSimpleReset(name, index = 0) {
   )
 }
 
+export function navigateToStage(stageIndex, stepIndex = 0) {
+  navigationRef.current?.dispatch(
+    CommonActions.reset({
+      index: stepIndex,
+      routes: [{ name: 'StageWrapper', params: { stageIndex } }],
+    }),
+  )
+}
+
 export function navigateNestedAndSimpleReset(name, nestedName, index = 0) {
   navigationRef.current?.dispatch(
     CommonActions.reset({

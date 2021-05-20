@@ -9,7 +9,7 @@ import { View, Text } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-const RotatedText = ({ label }) => {
+const RotatedText = ({ label, status }) => {
   const {
     Components: { sideBar },
   } = useTheme()
@@ -19,7 +19,17 @@ const RotatedText = ({ label }) => {
   return (
     <View style={sideBar.rotatedTextWrapper}>
       {array.map(char => {
-        return <Text style={sideBar.text}>{char}</Text>
+        return (
+          <Text
+            style={[
+              sideBar.text,
+              status === 'current' && sideBar.textCurent,
+              status === 'notDone' && sideBar.textNotDone,
+            ]}
+          >
+            {char}
+          </Text>
+        )
       })}
     </View>
   )
