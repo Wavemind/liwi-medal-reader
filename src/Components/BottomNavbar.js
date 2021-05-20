@@ -21,6 +21,7 @@ const BottomNavbar = props => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
+    Layout,
   } = useTheme()
 
   const RenderActions = () => {
@@ -37,18 +38,24 @@ const BottomNavbar = props => {
     switch (name) {
       case 'StageWrapper':
         return (
-          <>
-            <SquareButton
-              label={'Back'}
-              filled
-              onPress={() => navigateToStage(stageIndex - 1, 0)}
-            />
-            <SquareButton
-              label={'Next'}
-              filled
-              onPress={() => navigateToStage(stageIndex + 1, 0)}
-            />
-          </>
+          <View style={[Layout.fill, Layout.row]}>
+            {stageIndex > 0 ? (
+              <View style={Layout.fill}>
+                <SquareButton
+                  label={'Back'}
+                  filled
+                  onPress={() => navigateToStage(stageIndex - 1, 0)}
+                />
+              </View>
+            ) : null}
+            <View style={Layout.fill}>
+              <SquareButton
+                label={'Next'}
+                filled
+                onPress={() => navigateToStage(stageIndex + 1, 0)}
+              />
+            </View>
+          </View>
         )
 
       default:

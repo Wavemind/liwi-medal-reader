@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { useNavigationState } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -16,6 +17,7 @@ import Round from './Round'
 const SideBarItem = ({ stage, index }) => {
   const navigationState = useNavigationState(state => state.routes[state.index])
   const [status, setStatus] = useState('notDone')
+  const { t } = useTranslation()
 
   const {
     Components: { sideBar },
@@ -48,7 +50,10 @@ const SideBarItem = ({ stage, index }) => {
           status === 'current' && sideBar.barItemCurrent,
         ]}
       >
-        <RotatedText status={status} label={stage.label} />
+        <RotatedText
+          status={status}
+          label={t(`containers.medical_case.stages.${stage.label}`)}
+        />
         {stage.steps.map((step, stepIndex) => (
           <Round step={step} parentStatus={status} stepIndex={stepIndex} />
         ))}

@@ -1,17 +1,19 @@
+/**
+ * The external imports
+ */
 import React from 'react'
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native'
-import { TabBar } from 'react-native-tab-view'
+import { useTranslation } from 'react-i18next'
+import Animated from 'react-native-reanimated'
 
+/**
+ * The internal imports
+ */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated'
 
 function TabItem({ state, descriptors, navigation, position }) {
+  const { t } = useTranslation()
   const {
     Components: { tabItem },
     FontSize,
@@ -91,7 +93,7 @@ function TabItem({ state, descriptors, navigation, position }) {
                       isToDo && tabItem.textToDo,
                     ]}
                   >
-                    {label}
+                    {t(`containers.medical_case.steps.${label}`)}
                   </Text>
                   {isDone && <Icon size={FontSize.small} name="alert" />}
                 </TouchableOpacity>
