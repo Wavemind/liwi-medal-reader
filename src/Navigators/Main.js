@@ -5,14 +5,17 @@ import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Text } from 'react-native'
 
 /**
  * The internal imports
  */
-import { IndexHomeContainer, IndexSettingsContainer } from '@/Containers'
 import { Header, CustomDrawerContent, BottomNavbar } from '@/Components'
 import StageWrapper from '@/Containers/MedicalCase/StageWrapper'
+import {
+  IndexHomeContainer,
+  IndexSettingsContainer,
+  ListPatientContainer,
+} from '@/Containers'
 
 const Drawer = createDrawerNavigator()
 const MainNavigator = () => {
@@ -41,18 +44,26 @@ const MainNavigator = () => {
             }),
           }}
         />
-        <Drawer.Screen
-          name="Settings"
-          component={IndexSettingsContainer}
-          options={{
-            title: t('navigation.settings'),
-          }}
-        />
+
         <Drawer.Screen
           name="StageWrapper"
           component={StageWrapper}
           options={{
             title: t('navigation.consultations'),
+          }}
+        />
+        <Drawer.Screen
+          name="PatientList"
+          component={ListPatientContainer}
+          options={{
+            title: t('navigation.patient_list'),
+          }}
+        />
+        <Drawer.Screen
+          name="Settings"
+          component={IndexSettingsContainer}
+          options={{
+            title: t('navigation.settings'),
           }}
         />
       </Drawer.Navigator>

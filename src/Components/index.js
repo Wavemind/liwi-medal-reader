@@ -31,9 +31,13 @@ export { default as Study } from './Modal/Study'
 export { default as BottomNavbar } from './BottomNavbar'
 export { default as TabItem } from './TabItem'
 
-// OTHERS
+// OTHER
+export { default as PatientListItem } from './Patient/ListItem'
+export { default as MedicalCaseListItem } from './MedicalCase/ListItem'
 export { default as ConnectionStatus } from './ConnectionStatus'
 export { default as SearchBar } from './SearchBar'
+export { default as FilterBar } from './FilterBar'
+export { default as Badge } from './Badge'
 export { default as Info } from './Info'
 export { default as Clinician } from './Clinician'
 export { default as SectionHeader } from './SectionHeader'

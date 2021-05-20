@@ -19,6 +19,9 @@ import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
 import tabItemStyles from './components/TabItem.style'
 import sideBarStyles from './components/SideBar.style'
+import filterBarStyles from './components/FilterBar.style'
+import patientListItemStyles from './components/PatientListItem.style'
+import badgeStyles from './components/Badge.style'
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -42,5 +45,8 @@ export default function (props) {
     searchBar: searchBarStyles(props),
     tabItem: tabItemStyles(props),
     sideBar: sideBarStyles(props),
+    filterBar: filterBarStyles(props),
+    patientListItem: patientListItemStyles(props),
+    badge: badgeStyles(props),
   }
 }

@@ -21,6 +21,9 @@ import searchIndexStyles from './containers/Search/Index.style'
 import homeIndexStyles from './containers/Home/Index.style'
 
 import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
+import scanIndexStyles from './containers/Scan/Index.style'
+
+import patientListStyles from './containers/Patient/List.style'
 
 /**
  *
@@ -42,5 +45,7 @@ export default function (props) {
     search: searchIndexStyles(props),
     home: homeIndexStyles(props),
     medicalCase: medicalCaseIndexStyles(props),
+    scan: scanIndexStyles(props),
+    patientList: patientListStyles(props),
   }
 }

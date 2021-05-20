@@ -5,6 +5,7 @@ export default {
     search: 'Search',
     select: 'Select',
     synchronize: 'Synchronize',
+    clear_filters: 'Clear all filters',
   },
   algorithm: {
     version_id: 'Version id',
@@ -38,6 +39,22 @@ export default {
     },
     home: {
       title: 'Latest consultations',
+    },
+    scan: {
+      scan: 'Scan the QR code',
+      new: 'You need to generate a new sticker',
+      new_sticker_notification:
+        'You need to give another sticker to the patient',
+      new_sticker_wrong_facility:
+        'The new sticker does not belong to your facility',
+    },
+    patient: {
+      list: {
+        title: 'Patient list',
+        name: 'Name',
+        last_visit: 'Last visit',
+        status: 'Status',
+      },
     },
     settings: {
       general: {
