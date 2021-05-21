@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -10,8 +11,9 @@ import { View, TouchableOpacity, Text } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const ListItem = props => {
+const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
+  const navigation = useNavigation()
   const {
     Components: { patientListItem },
     Layout,
@@ -22,7 +24,12 @@ const ListItem = props => {
   return (
     <TouchableOpacity
       style={patientListItem.wrapper}
-      onPress={() => console.log('TODO')}
+      onPress={() =>
+        navigation.navigate('PatientProfile', {
+          id: item.id,
+          title: `${item.first_name} ${item.last_name} ${item.birth_date}`,
+        })
+      }
     >
       <View style={patientListItem.container}>
         <View style={patientListItem.titleWrapper}>

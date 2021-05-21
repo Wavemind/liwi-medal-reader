@@ -21,6 +21,8 @@ export { default as QuestionInfo } from './Modal/QuestionInfo'
 export { default as Study } from './Modal/Study'
 
 export { default as PatientListItem } from './Patient/ListItem'
+export { default as PatientTabBar } from './Patient/TabBar'
+export { default as PatientTabItem } from './Patient/TabItem'
 
 export { default as MedicalCaseListItem } from './MedicalCase/ListItem'
 

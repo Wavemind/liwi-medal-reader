@@ -22,6 +22,7 @@ import HomeIndexStyles from './containers/Home/Index.style'
 import ScanIndexStyles from './containers/Scan/Index.style'
 
 import patientListStyles from './containers/Patient/List.style'
+import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
 
 /**
  *
@@ -44,5 +45,6 @@ export default function (props) {
     home: HomeIndexStyles(props),
     scan: ScanIndexStyles(props),
     patientList: patientListStyles(props),
+    patientPersonalInfo: patientPersonalInfoStyles(props),
   }
 }

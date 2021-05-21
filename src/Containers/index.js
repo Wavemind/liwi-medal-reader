@@ -5,6 +5,9 @@ export { default as PinAuthContainer } from './Auth/Pin'
 export { default as ClinicianSelectionAuthContainer } from './Auth/ClinicianSelection'
 
 export { default as ListPatientContainer } from './Patient/List'
+export { default as ProfileWrapperPatientContainer } from './Patient/ProfileWrapper'
+export { default as PersonalInfoPatientContainer } from './Patient/PersonalInfo'
+export { default as ConsultationsPatientContainer } from './Patient/Consultations'
 
 export { default as IndexExampleContainer } from './Example/Index'
 export { default as IndexHomeContainer } from './Home/Index'

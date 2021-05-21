@@ -13,6 +13,7 @@ import {
   IndexHomeContainer,
   IndexSettingsContainer,
   ListPatientContainer,
+  ProfileWrapperPatientContainer,
 } from '@/Containers'
 import { Header, CustomDrawerContent } from '@/Components'
 
@@ -48,6 +49,11 @@ const MainNavigator = () => {
         options={{
           title: t('navigation.patient_list'),
         }}
+      />
+      <Drawer.Screen
+        name="PatientProfile"
+        component={ProfileWrapperPatientContainer}
+        options={({ route }) => ({ title: route.params?.title })}
       />
       <Drawer.Screen
         name="Settings"
