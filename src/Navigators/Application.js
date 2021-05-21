@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { SafeAreaView, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { ReduxNetworkProvider } from 'react-native-offline'
-
+import { useSelector } from 'react-redux'
 /**
  * The internal imports
  */
@@ -15,10 +15,9 @@ import {
   IndexPermissionsRequiredContainer,
   IndexStartupContainer,
   IndexSearchContainer,
-  IndexFilterContainer,
+  IndexFiltersContainer,
   IndexScanContainer,
 } from '@/Containers'
-import { useSelector } from 'react-redux'
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
@@ -78,7 +77,7 @@ const ApplicationNavigator = () => {
             <Stack.Screen name="InfoModal" component={IndexModalContainer} />
             <Stack.Screen name="Search" component={IndexSearchContainer} />
             <Stack.Screen name="Scan" component={IndexScanContainer} />
-            <Stack.Screen name="Filter" component={IndexFilterContainer} />
+            <Stack.Screen name="Filters" component={IndexFiltersContainer} />
             {isApplicationLoaded && AuthNavigator != null && (
               <Stack.Screen name="Auth" component={AuthNavigator} />
             )}
