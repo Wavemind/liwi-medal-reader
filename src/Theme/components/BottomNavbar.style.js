@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, FontSize } = props
+  const { Colors, FontSize, Gutters, Layout } = props
 
   return StyleSheet.create({
     container: {
@@ -20,6 +20,16 @@ export default function (props) {
     emergency: {
       fontSize: FontSize.huge,
       alignSelf: 'center',
+    },
+    actions: {
+      ...Layout.fill,
+      ...Gutters.regularHPadding,
+      ...Gutters.regularVPadding,
+      ...Layout.rowCenter,
+    },
+    actionButton: {
+      ...Layout.fill,
+      ...Gutters.regularHMargin,
     },
   })
 }

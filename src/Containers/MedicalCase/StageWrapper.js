@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { TabItem, SideBar } from '@/Components'
+import { TabBar, SideBar } from '@/Components'
 import { Config } from '@/Config'
 
 const IndexConsultationContainer = props => {
@@ -40,7 +40,7 @@ const IndexConsultationContainer = props => {
         </View>
         <Tab.Navigator
           tabBarOptions={{ scrollEnabled: true, tabStyle: medicalCase.tabBar }}
-          tabBar={tabProps => <TabItem {...tabProps} />}
+          tabBar={tabProps => <TabBar {...tabProps} />}
         >
           {stage.steps.map(step => (
             <Tab.Screen name={step.label} component={step.component} />

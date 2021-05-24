@@ -34,13 +34,12 @@ const BottomNavbar = props => {
     const { name, params } = route
 
     const stageIndex = params?.stageIndex || 0
-
     switch (name) {
       case 'StageWrapper':
         return (
           <View style={[Layout.fill, Layout.row]}>
             {stageIndex > 0 ? (
-              <View style={Layout.fill}>
+              <View style={bottomNavbar.actionButton}>
                 <SquareButton
                   label={'Back'}
                   filled
@@ -48,7 +47,7 @@ const BottomNavbar = props => {
                 />
               </View>
             ) : null}
-            <View style={Layout.fill}>
+            <View style={bottomNavbar.actionButton}>
               <SquareButton
                 label={'Next'}
                 filled
@@ -68,7 +67,9 @@ const BottomNavbar = props => {
       <TouchableOpacity style={bottomNavbar.emergencyContainer}>
         <Icon name={'emergency'} style={bottomNavbar.emergency} />
       </TouchableOpacity>
-      <RenderActions navigationState={navigationState} />
+      <View style={bottomNavbar.actions}>
+        <RenderActions navigationState={navigationState} />
+      </View>
     </View>
   )
 }

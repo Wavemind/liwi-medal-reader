@@ -17,7 +17,7 @@ import headerStyles from './components/Header.style'
 import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
-import tabItemStyles from './components/TabItem.style'
+import tabBarStyles from './components/TabBar.style'
 import sideBarStyles from './components/SideBar.style'
 import filterBarStyles from './components/FilterBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
@@ -43,7 +43,7 @@ export default function (props) {
     customDrawerContent: customDrawerContentStyles(props),
     customDrawerItem: customDrawerItemStyles(props),
     searchBar: searchBarStyles(props),
-    tabItem: tabItemStyles(props),
+    tabBar: tabBarStyles(props),
     sideBar: sideBarStyles(props),
     filterBar: filterBarStyles(props),
     patientListItem: patientListItemStyles(props),

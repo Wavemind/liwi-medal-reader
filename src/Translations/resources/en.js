@@ -50,7 +50,7 @@ export default {
       },
       steps: {
         registration: 'Registration',
-        unique_triage_questions: 'Uniqe triage questions',
+        unique_triage_questions: 'Unique triage questions',
         complaint_categories: 'Complaint categories',
         basic_measurements: 'Basic measurements',
         medical_history: 'Medical history',
