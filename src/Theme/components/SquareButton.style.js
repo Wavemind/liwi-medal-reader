@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native'
 export default function (props) {
   const { Colors, Gutters, Layout, Fonts } = props
 
-  const base = disabled => ({
+  const base = (disabled, big) => ({
     ...Layout.grow,
-    ...Gutters.smallVPadding,
+    ...(big ? Gutters.regularVPadding : Gutters.tinyVPadding),
     borderRadius: 5,
     opacity: disabled ? 0.3 : 1,
   })
@@ -14,6 +14,7 @@ export default function (props) {
     ...Fonts.textSmall,
     ...Fonts.textCenter,
     ...Fonts.textUppercase,
+    ...Fonts.textBold,
   }
 
   return StyleSheet.create({
@@ -24,25 +25,34 @@ export default function (props) {
     textWrapper: {
       ...Layout.row,
       ...Layout.center,
-      ...Gutters.tinyVPadding,
+      ...Gutters.smallVPadding,
     },
-    filled: disabled => ({
-      ...base(disabled),
-      backgroundColor: Colors.primary,
+    filled: (disabled, color, align, big) => ({
+      ...base(disabled, big),
+      backgroundColor: color !== null ? color : Colors.primary,
+      ...Layout.row,
+      ...(align !== null ? align : Layout.center),
     }),
-    filledText: {
+    filledText: color => ({
       ...baseText,
-      color: Colors.white,
-    },
-    outlined: disabled => ({
-      ...base(disabled),
-      backgroundColor: 'transparent',
+      color: color !== null ? color : Colors.secondary,
+    }),
+    outlined: (disabled, color, align, big) => ({
+      ...base(disabled, big),
+      backgroundColor: color !== null ? color : 'transparent',
       borderWidth: 1,
       borderColor: Colors.buttonGrey,
+      ...(align !== null ? align : Layout.center),
     }),
-    outlinedText: {
+    outlinedText: color => ({
       ...baseText,
-      color: Colors.buttonGrey,
-    },
+      color: color !== null ? color : Colors.buttonGrey,
+    }),
+    iconLeft: big => ({
+      ...(big ? Gutters.smallRMargin : null),
+    }),
+    iconRight: big => ({
+      ...(big ? Gutters.smallLMargin : null),
+    }),
   })
 }

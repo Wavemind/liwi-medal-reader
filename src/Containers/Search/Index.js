@@ -34,7 +34,7 @@ const IndexSearchContainer = () => {
         <TextInput
           ref={inputRef}
           style={{
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.secondary,
             height: 60,
             ...Gutters.regularVPadding,
             ...Gutters.regularHPadding,

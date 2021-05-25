@@ -25,7 +25,7 @@ export default function (props) {
     },
     buttonWrapper: (side, active, disabled) => ({
       ...Layout.fill,
-      backgroundColor: active ? Colors.primary : Colors.white,
+      backgroundColor: active ? Colors.primary : Colors.secondary,
       opacity: disabled ? 0.5 : 1,
       borderBottomLeftRadius: side === 'left' ? 20 : 0,
       borderTopLeftRadius: side === 'left' ? 20 : 0,
@@ -36,7 +36,7 @@ export default function (props) {
     }),
     buttonText: active => ({
       ...Gutters.smallVPadding,
-      color: active ? Colors.white : Colors.black,
+      color: active ? Colors.secondary : Colors.primary,
     }),
   })
 }

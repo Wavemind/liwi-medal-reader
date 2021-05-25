@@ -22,7 +22,7 @@ export default function (props) {
       ...Layout.fill,
       ...Fonts.textCenter,
       ...Fonts.textSectionHeader,
-      color: Colors.white,
+      color: Colors.secondary,
       textAlignVertical: 'center',
     },
     contentWrapper: {

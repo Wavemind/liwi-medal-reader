@@ -58,7 +58,6 @@ const ApplicationNavigator = () => {
     },
     [],
   )
-
   return (
     <ReduxNetworkProvider
       shouldPing={healthFacility?.architecture === 'client-server'}
