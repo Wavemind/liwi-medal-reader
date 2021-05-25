@@ -11,9 +11,10 @@ import Animated from 'react-native-reanimated'
 import { useTheme } from '@/Theme'
 import TabBarItem from './TabBarItem'
 
-function TabBar({ state, descriptors, navigation, position }) {
+function TabBar({ state, navigation }) {
   const {
     Components: { tabBar },
+    Layout,
   } = useTheme()
 
   const itemStatus = index => {
@@ -27,18 +28,8 @@ function TabBar({ state, descriptors, navigation, position }) {
   }
 
   return (
-    <Animated.View
-      style={{
-        elevation: 4,
-        shadowColor: 'black',
-        shadowOpacity: 0.1,
-        shadowOffset: {
-          width: 0,
-        },
-        zIndex: 1,
-      }}
-    >
-      <View style={{ overflow: 'scroll', display: 'flex' }}>
+    <Animated.View>
+      <View style={Layout.row}>
         <Animated.ScrollView
           alwaysBounceHorizontal={false}
           horizontal
@@ -48,6 +39,7 @@ function TabBar({ state, descriptors, navigation, position }) {
         >
           {state.routes.map((route, index) => (
             <TabBarItem
+              key={`tabBar_${index}`}
               index={index}
               status={itemStatus(index)}
               route={route}

@@ -18,18 +18,18 @@ export default function (props) {
       borderRightColor: Colors.grey,
     },
     emergency: {
-      fontSize: FontSize.huge,
+      fontSize: FontSize.large,
       alignSelf: 'center',
     },
     actions: {
       ...Layout.fill,
-      ...Gutters.regularHPadding,
-      ...Gutters.regularVPadding,
+      ...Gutters.smallHPadding,
+      ...Gutters.smallVPadding,
       ...Layout.rowCenter,
     },
     actionButton: {
       ...Layout.fill,
-      ...Gutters.regularHMargin,
+      ...Gutters.smallHMargin,
     },
   })
 }

@@ -24,7 +24,7 @@ function TabBarItem({ status, route, index, navigation }) {
     <View style={Layout.fill}>
       <View style={Layout.row}>
         <TouchableOpacity
-          onPress={navigation.navigate(route.name)}
+          onPress={() => navigation.navigate(route.name)}
           style={[Layout.fill, tabBar.tab]}
         >
           {!(index === 0) && (

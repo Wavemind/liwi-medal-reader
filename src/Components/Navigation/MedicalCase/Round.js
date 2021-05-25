@@ -9,8 +9,9 @@ import { useNavigation, useNavigationState } from '@react-navigation/native'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { navigateToStage } from '@/Navigators/Root'
 
-const Round = ({ parentStatus, step, stepIndex }) => {
+const Round = ({ parentStatus, step, stepIndex, stageIndex }) => {
   const navigation = useNavigation()
   const [active, setActive] = useState(false)
   const {
@@ -18,6 +19,9 @@ const Round = ({ parentStatus, step, stepIndex }) => {
   } = useTheme()
   const currentStep = useNavigationState(
     state => state.routes[state.index].state?.index,
+  )
+  const currentStage = useNavigationState(
+    state => state.routes[state.index].params?.stageIndex,
   )
 
   useEffect(() => {
@@ -37,18 +41,17 @@ const Round = ({ parentStatus, step, stepIndex }) => {
    * TODO handle When we move to another stage
    */
   const handlePress = () => {
-    navigation.navigate(step.label)
+    if (stageIndex === currentStage) {
+      navigation.navigate(step.label)
+    } else {
+      navigateToStage(stageIndex, 0)
+    }
   }
 
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <View
-        style={[
-          sideBar.circle,
-          parentStatus === 'notDone' && sideBar.circleNotDone,
-        ]}
-      >
-        {active && <View style={sideBar.circleInner} />}
+    <TouchableOpacity disabled={!active} onPress={handlePress}>
+      <View style={[sideBar.circle(parentStatus)]}>
+        {active && <View style={sideBar.circleInner(parentStatus)} />}
       </View>
     </TouchableOpacity>
   )

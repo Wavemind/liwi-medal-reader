@@ -15,7 +15,9 @@ import RotatedText from './RotatedText'
 import Round from './Round'
 
 const SideBarItem = ({ stage, index }) => {
-  const navigationState = useNavigationState(state => state.routes[state.index])
+  const navigationState = useNavigationState(state => state)
+  const stageIndex =
+    navigationState.routes[navigationState.index].params?.stageIndex || 0
   const [status, setStatus] = useState('notDone')
   const { t } = useTranslation()
 
@@ -33,14 +35,14 @@ const SideBarItem = ({ stage, index }) => {
   }
 
   useEffect(() => {
-    if (navigationState.params?.stageIndex === index) {
+    if (stageIndex === index) {
       setStatus('current')
-    } else if (navigationState.params?.stageIndex > index) {
+    } else if (stageIndex > index) {
       setStatus('done')
     } else {
       setStatus('notDone')
     }
-  }, [navigationState.params?.stageIndex, index])
+  }, [stageIndex, index])
 
   return (
     <TouchableOpacity disabled={status !== 'done'} onPress={handleNavigate}>
@@ -55,7 +57,13 @@ const SideBarItem = ({ stage, index }) => {
           label={t(`containers.medical_case.stages.${stage.label}`)}
         />
         {stage.steps.map((step, stepIndex) => (
-          <Round step={step} parentStatus={status} stepIndex={stepIndex} />
+          <Round
+            key={`${step.label}_${stepIndex}`}
+            step={step}
+            stageIndex={index}
+            parentStatus={status}
+            stepIndex={stepIndex}
+          />
         ))}
       </View>
     </TouchableOpacity>

@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { TabBar, SideBar } from '@/Components'
 import { Config } from '@/Config'
 
-const IndexConsultationContainer = props => {
+const StageWrapper = props => {
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
   const { route } = props
@@ -22,13 +22,8 @@ const IndexConsultationContainer = props => {
     Containers: { medicalCase },
   } = useTheme()
 
-  let stage
-
-  if (route.params?.stageIndex !== undefined) {
-    stage = Config.NAVIGATION.INTERVENTION_STAGES[route.params?.stageIndex]
-  } else {
-    stage = stage = Config.NAVIGATION.INTERVENTION_STAGES[0]
-  }
+  let stage =
+    Config.NAVIGATION.INTERVENTION_STAGES[route.params?.stageIndex || 0]
   return (
     <View style={medicalCase.wrapper}>
       <SideBar />
@@ -43,7 +38,11 @@ const IndexConsultationContainer = props => {
           tabBar={tabProps => <TabBar {...tabProps} />}
         >
           {stage.steps.map(step => (
-            <Tab.Screen name={step.label} component={step.component} />
+            <Tab.Screen
+              key={step.label}
+              name={step.label}
+              component={step.component}
+            />
           ))}
         </Tab.Navigator>
       </View>
@@ -51,4 +50,4 @@ const IndexConsultationContainer = props => {
   )
 }
 
-export default IndexConsultationContainer
+export default StageWrapper

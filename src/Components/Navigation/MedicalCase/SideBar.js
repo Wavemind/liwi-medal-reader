@@ -23,7 +23,7 @@ const SideBar = props => {
         showsVerticalScrollIndicator={false}
       >
         {Config.NAVIGATION.INTERVENTION_STAGES.map((stage, index) => (
-          <SideBarItem stage={stage} index={index} />
+          <SideBarItem key={`sidebar_${index}`} stage={stage} index={index} />
         ))}
       </ScrollView>
     </View>

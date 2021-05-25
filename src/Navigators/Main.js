@@ -10,11 +10,11 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { Header, CustomDrawerContent, BottomNavbar } from '@/Components'
-import StageWrapper from '@/Containers/MedicalCase/StageWrapper'
 import {
   IndexHomeContainer,
   IndexSettingsContainer,
   ListPatientContainer,
+  StageWrapperContainer,
 } from '@/Containers'
 
 const Drawer = createDrawerNavigator()
@@ -46,7 +46,7 @@ const MainNavigator = () => {
         />
         <Drawer.Screen
           name="StageWrapper"
-          component={StageWrapper}
+          component={StageWrapperContainer}
           options={{
             title: t('navigation.consultations'),
           }}

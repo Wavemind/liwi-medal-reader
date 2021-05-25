@@ -96,7 +96,7 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'registration',
-        component: Registration,
+        component: Comment,
       },
     ],
   },

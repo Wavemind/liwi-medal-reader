@@ -16,7 +16,7 @@ export default function (props) {
       marginLeft: 10,
       padding: 7,
       fontSize: FontSize.small,
-      fontWeight: status === 'current' ? 'bold' : 'regular',
+      fontWeight: status === 'current' ? 'bold' : 'normal',
       borderBottomColor: status === 'current' ? Colors.black : Colors.white,
       borderBottomWidth: 5,
     }),
