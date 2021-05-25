@@ -5,6 +5,7 @@
  */
 import squareButtonStyles from './components/SquareButton.style'
 import roundedButtonStyles from './components/RoundedButton.style'
+import bottomNavbarStyles from './components/BottomNavbar.style'
 import checkboxStyles from './components/Checkbox.style'
 import booleanButtonStyles from './components/BooleanButtons.style'
 import selectStyles from './components/Select.style'
@@ -16,6 +17,8 @@ import headerStyles from './components/Header.style'
 import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
+import tabBarStyles from './components/TabBar.style'
+import sideBarStyles from './components/SideBar.style'
 import filterBarStyles from './components/FilterBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
 import badgeStyles from './components/Badge.style'
@@ -34,11 +37,14 @@ export default function (props) {
     sectionHeader: sectionHeaderStyles(props),
     info: infoStyles(props),
     squareSelect: squareSelectStyles(props),
+    bottomNavbar: bottomNavbarStyles(props),
     clinician: clinicianStyles(props),
     header: headerStyles(props),
     customDrawerContent: customDrawerContentStyles(props),
     customDrawerItem: customDrawerItemStyles(props),
     searchBar: searchBarStyles(props),
+    tabBar: tabBarStyles(props),
+    sideBar: sideBarStyles(props),
     filterBar: filterBarStyles(props),
     patientListItem: patientListItemStyles(props),
     badge: badgeStyles(props),

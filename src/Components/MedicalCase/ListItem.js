@@ -47,7 +47,7 @@ const ListItem = props => {
               size={30}
               style={patientListItem.icon(false)}
             />
-            <Icon name="test" size={30} style={patientListItem.icon(false)} />
+            <Icon name="tests" size={30} style={patientListItem.icon(false)} />
             <Icon
               name="diagnosis"
               size={30}

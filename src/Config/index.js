@@ -1,3 +1,4 @@
+import Navigation from './Navigation'
 export const Config = {
   ALGORITHM_INFO: ['version_name', 'version_id', 'updated_at'],
   CATEGORIES: {
@@ -73,4 +74,5 @@ export const Config = {
   URL_PRODUCTION_API: 'https://medalc.unisante.ch//api/v1',
   URL_STAGING_API: 'https://liwi.wavelab.top/api/v1/',
   URL_TEST_API: 'https://liwi-test.wavelab.top/api/v1/',
+  NAVIGATION: Navigation,
 }

@@ -29,7 +29,10 @@ build/
 .gradle
 local.properties
 *.iml
+android/java_*.hprof
 
+# Jest
+coverage/
 # node.js
 #
 node_modules/

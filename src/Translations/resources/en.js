@@ -40,6 +40,35 @@ export default {
     home: {
       title: 'Latest consultations',
     },
+    medical_case: {
+      navigation: {
+        back: 'Prev',
+        next: 'Next',
+        quit: 'Quit',
+      },
+      stages: {
+        registration: 'Registration',
+        first_assessments: '1st assessments',
+        consultation: 'Consultation',
+        assessments: 'Assessments',
+        diagnoses: 'Diagnoses',
+      },
+      steps: {
+        registration: 'Registration',
+        unique_triage_questions: 'Unique triage questions',
+        complaint_categories: 'Complaint categories',
+        basic_measurements: 'Basic measurements',
+        medical_history: 'Medical history',
+        physical_exams: 'Physical exams',
+        comment: 'Comment',
+        assessments: 'Assessments',
+        final_diagnoses: 'Final diagnoses',
+        healthcare_questions: 'Healthcare questions',
+        medicines: 'Medicines',
+        formulations: 'Formulations',
+        summary: 'Summary',
+      },
+    },
     scan: {
       scan: 'Scan the QR code',
       new: 'You need to generate a new sticker',

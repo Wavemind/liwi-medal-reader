@@ -38,7 +38,7 @@ const RoundedButton = props => {
         <View style={roundedButton.content}>
           {icon && (
             <View style={Gutters.regularRMargin}>
-              <Icon name={icon} color={Colors.white} />
+              <Icon name={icon} color={Colors.secondary} />
             </View>
           )}
           <Text style={roundedButton.baseText}>{content}</Text>
