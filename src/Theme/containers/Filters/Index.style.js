@@ -14,7 +14,7 @@ export default function (props) {
       ...Fonts.textUppercase,
       ...Fonts.textRegular,
       ...Fonts.textBold,
-      color: 'red',
+      color: 'grey',
     },
     button: {
       backgroundColor: 'red',
