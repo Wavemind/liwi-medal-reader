@@ -18,10 +18,11 @@ const SquareButton = props => {
     disabled,
     onPress,
     icon,
+    big,
     iconAfter = false,
     bgColor = null,
     color = null,
-    iconSize = null,
+    iconSize = FontSize.huge,
     align = null,
   } = props
 
@@ -42,15 +43,16 @@ const SquareButton = props => {
     <View style={squareButton.wrapper}>
       <TouchableOpacity
         onPress={() => onPress()}
-        style={[squareButton[type](disabled, bgColor, align)]}
+        style={squareButton[type](disabled, bgColor, align, big)}
         disabled={disabled}
       >
-        <View style={[Layout.rowCenter]}>
+        <View style={Layout.rowCenter}>
           {!iconAfter && icon && (
             <Icon
               name={icon}
               color={iconColor}
-              size={iconSize !== null ? iconSize : FontSize.regular}
+              style={squareButton.iconLeft(big)}
+              size={iconSize}
             />
           )}
           <View style={squareButton.textWrapper}>
@@ -60,7 +62,8 @@ const SquareButton = props => {
             <Icon
               name={icon}
               color={iconColor}
-              size={iconSize !== null ? iconSize : FontSize.regular}
+              style={squareButton.iconRight(big)}
+              size={iconSize}
             />
           )}
         </View>

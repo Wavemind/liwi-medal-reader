@@ -42,7 +42,7 @@ export default {
     },
     medical_case: {
       navigation: {
-        back: 'Back',
+        back: 'Prev',
         next: 'Next',
         quit: 'Quit',
       },

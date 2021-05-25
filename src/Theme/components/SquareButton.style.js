@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native'
 export default function (props) {
   const { Colors, Gutters, Layout, Fonts } = props
 
-  const base = disabled => ({
+  const base = (disabled, big) => ({
     ...Layout.grow,
-    ...Gutters.tinyVPadding,
+    ...(big ? Gutters.regularVPadding : Gutters.tinyVPadding),
     borderRadius: 5,
     opacity: disabled ? 0.3 : 1,
   })
@@ -27,8 +27,8 @@ export default function (props) {
       ...Layout.center,
       ...Gutters.smallVPadding,
     },
-    filled: (disabled, color, align) => ({
-      ...base(disabled),
+    filled: (disabled, color, align, big) => ({
+      ...base(disabled, big),
       backgroundColor: color !== null ? color : Colors.primary,
       ...Layout.row,
       ...(align !== null ? align : Layout.center),
@@ -37,9 +37,9 @@ export default function (props) {
       ...baseText,
       color: color !== null ? color : Colors.white,
     }),
-    outlined: (disabled, color, align) => ({
-      ...base(disabled),
-      backgroundColor: 'transparent',
+    outlined: (disabled, color, align, big) => ({
+      ...base(disabled, big),
+      backgroundColor: color !== null ? color : 'transparent',
       borderWidth: 1,
       borderColor: Colors.buttonGrey,
       ...(align !== null ? align : Layout.center),
@@ -47,6 +47,12 @@ export default function (props) {
     outlinedText: color => ({
       ...baseText,
       color: color !== null ? color : Colors.buttonGrey,
+    }),
+    iconLeft: big => ({
+      ...(big ? Gutters.smallRMargin : null),
+    }),
+    iconRight: big => ({
+      ...(big ? Gutters.smallLMargin : null),
     }),
   })
 }

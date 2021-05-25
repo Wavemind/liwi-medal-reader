@@ -60,6 +60,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             color={Colors.black}
             icon="left-arrow"
             align={Layout.alignItemsStart}
+            iconSize={FontSize.regular}
             onPress={() => handleNavigation(-1)}
           />
         ) : null}
@@ -82,6 +83,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             filled
             icon="right-arrow"
             iconAfter
+            iconSize={FontSize.regular}
             onPress={() => handleNavigation(1)}
           />
         </View>

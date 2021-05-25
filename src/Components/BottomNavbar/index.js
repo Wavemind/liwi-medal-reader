@@ -22,6 +22,10 @@ const BottomNavbar = props => {
     Components: { bottomNavbar },
   } = useTheme()
 
+  /**
+   * Renders the content of the bottom nav bar based on the current navigation route
+   * @returns
+   */
   const RenderActions = () => {
     const route = navigationState?.routes[navigationState.index]
 
@@ -45,7 +49,7 @@ const BottomNavbar = props => {
     <View style={bottomNavbar.container}>
       <View style={bottomNavbar.emergencyContainer}>
         <TouchableOpacity style={bottomNavbar.emergencyWrapper}>
-          <Icon name={'emergency'} style={bottomNavbar.emergency} />
+          <Icon name="emergency" style={bottomNavbar.emergency} />
         </TouchableOpacity>
       </View>
       <View style={bottomNavbar.actions}>

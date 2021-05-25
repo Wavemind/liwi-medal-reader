@@ -26,6 +26,7 @@ const IndexHomeContainer = props => {
     Containers: { home, global },
     Layout,
     Gutters,
+    Colors,
   } = useTheme()
 
   // Define references
@@ -73,6 +74,7 @@ const IndexHomeContainer = props => {
         <SquareButton
           label={t('navigation.scan_qr_code')}
           icon="qr-scan"
+          big
           onPress={() => navigation.navigate('Scan')}
           filled
         />
@@ -81,6 +83,8 @@ const IndexHomeContainer = props => {
             <SquareButton
               label={t('navigation.patient_list')}
               icon="patient-list"
+              big
+              bgColor={Colors.white}
               onPress={() => navigation.navigate('PatientList')}
             />
           </View>
@@ -88,6 +92,8 @@ const IndexHomeContainer = props => {
             <SquareButton
               label={t('navigation.consultations')}
               icon="consult"
+              big
+              bgColor={Colors.white}
               onPress={() => navigation.navigate('TODO')}
             />
           </View>

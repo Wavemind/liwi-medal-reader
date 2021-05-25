@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import { navigateToStage } from '@/Navigators/Root'
 import RotatedText from './RotatedText'
-import Round from './Round'
+import Dot from './Dot'
 
 const SideBarItem = ({ stage, index }) => {
   const navigationState = useNavigationState(state => state)
@@ -46,7 +46,7 @@ const SideBarItem = ({ stage, index }) => {
           label={t(`containers.medical_case.stages.${stage.label}`)}
         />
         {stage.steps.map((step, stepIndex) => (
-          <Round
+          <Dot
             key={`${step.label}_${stepIndex}`}
             step={step}
             stageIndex={index}

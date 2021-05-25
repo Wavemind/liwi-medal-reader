@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, FontSize, Layout, Fonts } = props
+  const { Colors, FontSize, Layout, Fonts, Gutters } = props
 
   return StyleSheet.create({
     focused: {
@@ -12,8 +12,8 @@ export default function (props) {
     text: status => ({
       color: status === 'toDo' ? Colors.grey : Colors.black,
       marginHorizontal: 10,
-      padding: 7,
-      fontSize: FontSize.small,
+      ...Gutters.smallVPadding,
+      fontSize: FontSize.tiny,
       fontWeight: status === 'current' ? 'bold' : 'normal',
       borderBottomColor: status === 'current' ? Colors.black : Colors.white,
       borderBottomWidth: 5,

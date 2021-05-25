@@ -11,12 +11,14 @@ import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { useTheme } from '@/Theme'
 import { navigateToStage } from '@/Navigators/Root'
 
-const Round = ({ parentStatus, step, stepIndex, stageIndex }) => {
+const Dot = ({ parentStatus, step, stepIndex, stageIndex }) => {
   const navigation = useNavigation()
   const [active, setActive] = useState(false)
+
   const {
     Components: { sideBar },
   } = useTheme()
+
   const currentStep = useNavigationState(
     state => state.routes[state.index].state?.index,
   )
@@ -55,11 +57,11 @@ const Round = ({ parentStatus, step, stepIndex, stageIndex }) => {
         onPress={handlePress}
         style={sideBar.circleHitBox}
       >
-        <View style={[sideBar.circle(parentStatus)]}>
+        <View style={sideBar.circle(parentStatus)}>
           {active && <View style={sideBar.circleInner(parentStatus)} />}
         </View>
       </TouchableOpacity>
     </>
   )
 }
-export default Round
+export default Dot
