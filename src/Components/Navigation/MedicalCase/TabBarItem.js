@@ -17,7 +17,6 @@ function TabBarItem({ status, route, index, navigation }) {
     Components: { tabBar },
     FontSize,
     Layout,
-    Fonts,
   } = useTheme()
 
   return (
@@ -25,6 +24,7 @@ function TabBarItem({ status, route, index, navigation }) {
       <View style={Layout.row}>
         <TouchableOpacity
           onPress={() => navigation.navigate(route.name)}
+          disabled={status !== 'done'}
           style={[Layout.fill, tabBar.tab]}
         >
           {!(index === 0) && (
@@ -34,7 +34,7 @@ function TabBarItem({ status, route, index, navigation }) {
               name="right-arrow"
             />
           )}
-          <Text style={[tabBar.text(status), Layout.fill, Fonts.textCenter]}>
+          <Text style={[tabBar.text(status)]}>
             {t(`containers.medical_case.steps.${route.name}`)}
           </Text>
           {status === 'done' && <Icon size={FontSize.small} name="alert" />}

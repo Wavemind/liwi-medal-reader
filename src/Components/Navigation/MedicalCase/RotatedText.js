@@ -14,6 +14,7 @@ const RotatedText = ({ label, status }) => {
     Components: { sideBar },
   } = useTheme()
 
+  // Array with all the characters to show
   const array = label.split('')
 
   return (

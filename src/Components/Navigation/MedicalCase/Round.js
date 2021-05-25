@@ -38,7 +38,6 @@ const Round = ({ parentStatus, step, stepIndex, stageIndex }) => {
 
   /**
    * Will navigate to the related step
-   * TODO handle When we move to another stage
    */
   const handlePress = () => {
     if (stageIndex === currentStage) {
@@ -49,11 +48,18 @@ const Round = ({ parentStatus, step, stepIndex, stageIndex }) => {
   }
 
   return (
-    <TouchableOpacity disabled={!active} onPress={handlePress}>
-      <View style={[sideBar.circle(parentStatus)]}>
-        {active && <View style={sideBar.circleInner(parentStatus)} />}
-      </View>
-    </TouchableOpacity>
+    <>
+      {stepIndex !== 0 && <View style={sideBar.separator(parentStatus)} />}
+      <TouchableOpacity
+        disabled={!active}
+        onPress={handlePress}
+        style={sideBar.circleHitBox}
+      >
+        <View style={[sideBar.circle(parentStatus)]}>
+          {active && <View style={sideBar.circleInner(parentStatus)} />}
+        </View>
+      </TouchableOpacity>
+    </>
   )
 }
 export default Round

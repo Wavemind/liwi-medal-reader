@@ -21,12 +21,12 @@ const StageWrapper = props => {
   const {
     Containers: { medicalCase },
   } = useTheme()
+  const stageIndex = route.params?.stageIndex || 0
 
-  let stage =
-    Config.NAVIGATION.INTERVENTION_STAGES[route.params?.stageIndex || 0]
+  let stage = Config.NAVIGATION.INTERVENTION_STAGES[stageIndex]
   return (
     <View style={medicalCase.wrapper}>
-      <SideBar />
+      <SideBar stageIndex={stageIndex} />
       <View style={medicalCase.medicalCaseWrapper}>
         <View style={medicalCase.title}>
           <Text style={medicalCase.titleText}>

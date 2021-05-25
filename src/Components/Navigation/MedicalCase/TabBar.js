@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { View } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { View, ScrollView } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 /**
@@ -11,11 +11,22 @@ import Animated from 'react-native-reanimated'
 import { useTheme } from '@/Theme'
 import TabBarItem from './TabBarItem'
 
-function TabBar({ state, navigation }) {
+function TabBar(props) {
+  const { state, navigation, navigationState } = props
   const {
     Components: { tabBar },
     Layout,
   } = useTheme()
+
+  const scrollRef = useRef()
+
+  // Will Scroll to the right tab when moving between steps
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      x: navigationState.index * 190,
+      animated: true,
+    })
+  }, [navigationState.index])
 
   const itemStatus = index => {
     if (state.index === index) {
@@ -30,9 +41,10 @@ function TabBar({ state, navigation }) {
   return (
     <Animated.View>
       <View style={Layout.row}>
-        <Animated.ScrollView
+        <ScrollView
           alwaysBounceHorizontal={false}
           horizontal
+          ref={scrollRef}
           scrollEnabled
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={tabBar.wrapper}
@@ -46,7 +58,7 @@ function TabBar({ state, navigation }) {
               navigation={navigation}
             />
           ))}
-        </Animated.ScrollView>
+        </ScrollView>
       </View>
     </Animated.View>
   )

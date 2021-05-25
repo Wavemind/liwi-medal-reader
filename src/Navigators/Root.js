@@ -32,6 +32,7 @@ export function navigateAndSimpleReset(name, index = 0) {
 }
 
 export function navigateToStage(stageIndex, stepIndex = 0) {
+  // TODO Faire la navigation dans le step
   navigationRef.current?.dispatch(
     CommonActions.reset({
       index: stepIndex,

@@ -24,14 +24,14 @@ export { default as CustomDrawerItem } from './Navigation/CustomDrawerItem'
 
 // MEDICAL CASE NAVIGATION
 export { default as SideBar } from './Navigation/MedicalCase/SideBar'
+export { default as TabBar } from './Navigation/MedicalCase/TabBar'
 
 // MODALS
 export { default as QuestionInfo } from './Modal/QuestionInfo'
 export { default as Study } from './Modal/Study'
-export { default as BottomNavbar } from './BottomNavbar'
-export { default as TabBar } from './Navigation/MedicalCase/TabBar'
 
 // OTHER
+export { default as BottomNavbar } from './BottomNavbar'
 export { default as PatientListItem } from './Patient/ListItem'
 export { default as MedicalCaseListItem } from './MedicalCase/ListItem'
 export { default as ConnectionStatus } from './ConnectionStatus'

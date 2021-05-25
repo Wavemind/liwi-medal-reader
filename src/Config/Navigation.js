@@ -2,84 +2,40 @@ import React from 'react'
 import { View, Text } from 'react-native'
 
 //
-// We splited the stages because some algorithme don't have referral so we are building the Stages with diffrent pieces
+// We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //
 
-function UniqueTriageQuestions() {
+function ToDo() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  )
-}
-
-function ComplaintCategories() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
-
-function BasicMeasurements() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
-function Registration() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
-function MedicalHistory() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
-function PhysicalExams() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
-function Comment() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
+      <Text>ToDo!</Text>
     </View>
   )
 }
 
 const diagnosesStage = {
   label: 'diagnoses',
-  component: 'DiagnosisesWrapper',
+  component: 'DiagnosesWrapper',
   steps: [
     {
       label: 'final_diagnoses',
-      component: 'FinalDiagnoses',
+      component: ToDo,
     },
     {
       label: 'healthcare_questions',
-      component: 'HealthcareQuestions',
+      component: ToDo,
     },
     {
       label: 'medicines',
-      component: 'Medicines',
+      component: ToDo,
     },
     {
       label: 'formulations',
-      component: 'Formulations',
+      component: ToDo,
     },
     {
       label: 'summary',
-      component: 'Summary',
+      component: ToDo,
     },
   ],
 }
@@ -96,25 +52,25 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'registration',
-        component: Comment,
+        component: ToDo,
       },
     ],
   },
   {
     label: 'first_assessments',
-    component: 'FirstAssesmentsWrapper',
+    component: 'FirstAssessmentsWrapper',
     steps: [
       {
         label: 'unique_triage_questions',
-        component: UniqueTriageQuestions,
+        component: ToDo,
       },
       {
         label: 'complaint_categories',
-        component: ComplaintCategories,
+        component: ToDo,
       },
       {
         label: 'basic_measurements',
-        component: BasicMeasurements,
+        component: ToDo,
       },
     ],
   },
@@ -124,15 +80,15 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'medical_history',
-        component: UniqueTriageQuestions,
+        component: ToDo,
       },
       {
         label: 'physical_exams',
-        component: ComplaintCategories,
+        component: ToDo,
       },
       {
         label: 'comment',
-        component: BasicMeasurements,
+        component: ToDo,
       },
     ],
   },
@@ -142,7 +98,7 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'assessments',
-        component: BasicMeasurements,
+        component: ToDo,
       },
     ],
   },
@@ -150,7 +106,7 @@ const baseInterventionStages = [
 
 const INTERVENTION_STAGES = [...baseInterventionStages, diagnosesStage]
 
-const REFERAL_INTERVENTION_STAGES = [
+const REFERRAL_INTERVENTION_STAGES = [
   ...baseInterventionStages,
   { ...diagnosesStage, steps: [...diagnosesStage.steps, referralStep] },
 ]
@@ -159,6 +115,6 @@ const ARM_CONTROL_STAGES = INTERVENTION_STAGES
 
 export default {
   INTERVENTION_STAGES,
-  REFERAL_INTERVENTION_STAGES,
+  REFERRAL_INTERVENTION_STAGES,
   ARM_CONTROL_STAGES,
 }

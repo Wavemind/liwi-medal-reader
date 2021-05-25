@@ -25,15 +25,6 @@ const SideBarItem = ({ stage, index }) => {
     Components: { sideBar },
   } = useTheme()
 
-  /**
-   * Will navigate to a specific step if we are allowed to
-   */
-  const handleNavigate = () => {
-    if (status === 'done') {
-      navigateToStage(index, 0)
-    }
-  }
-
   useEffect(() => {
     if (stageIndex === index) {
       setStatus('current')
@@ -45,13 +36,11 @@ const SideBarItem = ({ stage, index }) => {
   }, [stageIndex, index])
 
   return (
-    <TouchableOpacity disabled={status !== 'done'} onPress={handleNavigate}>
-      <View
-        style={[
-          sideBar.barItem,
-          status === 'current' && sideBar.barItemCurrent,
-        ]}
-      >
+    <TouchableOpacity
+      disabled={status !== 'done'}
+      onPress={() => navigateToStage(index, 0)}
+    >
+      <View style={[sideBar.barItem(status)]}>
         <RotatedText
           status={status}
           label={t(`containers.medical_case.stages.${stage.label}`)}
