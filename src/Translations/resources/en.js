@@ -41,6 +41,11 @@ export default {
       title: 'Latest consultations',
     },
     medical_case: {
+      navigation: {
+        back: 'Back',
+        next: 'Next',
+        quit: 'Quit',
+      },
       stages: {
         registration: 'Registration',
         first_assessments: '1st assessments',
@@ -57,6 +62,11 @@ export default {
         physical_exams: 'Physical exams',
         comment: 'Comment',
         assessments: 'Assessments',
+        final_diagnoses: 'Final diagnoses',
+        healthcare_questions: 'Healthcare questions',
+        medicines: 'Medicines',
+        formulations: 'Formulations',
+        summary: 'Summary',
       },
     },
     scan: {
