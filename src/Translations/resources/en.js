@@ -56,6 +56,13 @@ export default {
         status: 'Status',
       },
     },
+    medicalCase: {
+      list: {
+        title: 'Consultations',
+        name: 'Name',
+        status: 'Status',
+      },
+    },
     settings: {
       general: {
         title: 'General',
