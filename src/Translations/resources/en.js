@@ -38,6 +38,7 @@ export default {
       },
     },
     filters: {
+      title: 'Filters',
       patient_info: 'Patient information',
       others: 'Others',
     },

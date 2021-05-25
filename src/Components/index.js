@@ -24,6 +24,9 @@ export { default as PatientListItem } from './Patient/ListItem'
 
 export { default as MedicalCaseListItem } from './MedicalCase/ListItem'
 
+export { default as Accordion } from './Accordion/Accordion'
+export { default as AccordionItem } from './Accordion/Item'
+
 export { default as ConnectionStatus } from './ConnectionStatus'
 export { default as SearchBar } from './SearchBar'
 export { default as FilterBar } from './FilterBar'

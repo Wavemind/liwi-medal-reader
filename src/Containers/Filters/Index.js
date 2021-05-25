@@ -9,42 +9,74 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SectionHeader, Icon } from '@/Components'
+import { SectionHeader, Icon, Accordion } from '@/Components'
 
 const IndexFiltersContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
-  const { Colors, Gutters, Layout, Fonts } = useTheme()
+  const {
+    Colors,
+    Gutters,
+    Containers: { filters },
+  } = useTheme()
+
+  const data = [
+    {
+      label: 'Gender',
+      items: [
+        {
+          label: 'Female',
+          value: 'female',
+        },
+        {
+          label: 'Male',
+          value: 'male',
+        },
+      ],
+    },
+    {
+      label: 'Other',
+      items: [
+        {
+          label: 'One',
+          value: 'one',
+        },
+        {
+          label: 'Two',
+          value: 'two',
+        },
+        {
+          label: 'Three',
+          value: 'three',
+        },
+        {
+          label: 'Four',
+          value: 'four',
+        },
+        {
+          label: 'Five',
+          value: 'five',
+        },
+      ],
+    },
+  ]
 
   return (
-    <ScrollView contentContainerStyle={[Gutters.regularHMargin]}>
-      <View style={[Layout.row, Layout.center, Gutters.regularTMargin]}>
-        <Text
-          style={[
-            Layout.fill,
-            Fonts.textUppercase,
-            Fonts.textRegular,
-            Fonts.textBold,
-            { color: 'red' },
-          ]}
-        >
-          Filters
-        </Text>
+    <ScrollView contentContainerStyle={Gutters.regularHMargin}>
+      <View style={filters.wrapper}>
+        <Text style={filters.title}>{t('containers.filters.title')}</Text>
         <TouchableOpacity
-          style={[
-            { backgroundColor: 'red', borderRadius: 10 },
-            Gutters.smallVPadding,
-            Gutters.regularHPadding,
-          ]}
+          style={filters.button}
+          onPress={() => navigation.goBack()}
         >
-          <Icon name={'close'} color={Colors.secondary} />
+          <Icon name="close" color={Colors.secondary} />
         </TouchableOpacity>
       </View>
 
       <SectionHeader label={t('containers.filters.patient_info')} />
-      <View>
-        
-      </View>
+      {data.map(item => (
+        <Accordion key={item.label} list={item} />
+      ))}
       <SectionHeader label={t('containers.filters.others')} />
     </ScrollView>
   )
