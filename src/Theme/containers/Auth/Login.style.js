@@ -10,7 +10,7 @@ export default function (props) {
       ...Gutters.largeBMargin,
     },
     input: {
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
       height: 60,
       ...Gutters.regularTMargin,
       ...Gutters.regularVPadding,

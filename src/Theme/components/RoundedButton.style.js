@@ -23,7 +23,7 @@ export default function (props) {
       ...Fonts.textSmall,
       ...Fonts.textCenter,
       ...Fonts.textUppercase,
-      color: Colors.white,
+      color: Colors.secondary,
     },
   })
 }

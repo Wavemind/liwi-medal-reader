@@ -37,7 +37,7 @@ function TabBarItem({ status, route, index, navigation }) {
           <Text style={[tabBar.text(status)]}>
             {t(`containers.medical_case.steps.${route.name}`)}
           </Text>
-          {status === 'done' && <Icon size={FontSize.small} name="alert" />}
+          {status === 'done' && <Icon size={FontSize.small} name="checked" />}
         </TouchableOpacity>
       </View>
     </View>

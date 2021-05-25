@@ -11,6 +11,14 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
 const SquareButton = props => {
+  // Theme and style elements deconstruction
+  const {
+    Components: { squareButton },
+    Colors,
+    FontSize,
+    Layout,
+  } = useTheme()
+
   // Props deconstruction
   const {
     label,
@@ -25,14 +33,6 @@ const SquareButton = props => {
     iconSize = FontSize.huge,
     align = null,
   } = props
-
-  // Theme and style elements deconstruction
-  const {
-    Components: { squareButton },
-    Colors,
-    FontSize,
-    Layout,
-  } = useTheme()
 
   // Constants definition
   const type = filled ? 'filled' : 'outlined'

@@ -56,7 +56,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
           <SquareButton
             label={t('containers.medical_case.navigation.back')}
             filled
-            bgColor={Colors.white}
+            bgColor={Colors.secondary}
             color={Colors.black}
             icon="left-arrow"
             align={Layout.alignItemsStart}

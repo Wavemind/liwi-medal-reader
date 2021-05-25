@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, Layout, FontSize, Gutters } = props
+  const { Colors, Layout, FontSize, Gutters, Fonts } = props
 
   const roundSize = 30
   return StyleSheet.create({
@@ -9,23 +9,23 @@ export default function (props) {
       width: roundSize,
       height: roundSize,
       borderRadius: roundSize / 2,
-      backgroundColor: status === 'current' ? Colors.black : Colors.white,
+      backgroundColor: status === 'current' ? Colors.primary : Colors.secondary,
       borderColor:
         status === 'notDone'
           ? Colors.grey
           : status === 'current'
-          ? Colors.white
-          : Colors.black,
+          ? Colors.secondary
+          : Colors.primary,
       borderWidth: 3,
-      marginBottom: 10,
+      ...Gutters.smallBMargin,
     }),
     separator: status => ({
       backgroundColor:
         status === 'current'
-          ? Colors.white
+          ? Colors.secondary
           : status === 'notDone'
           ? Colors.grey
-          : Colors.black,
+          : Colors.primary,
       width: 4,
       height: 10,
       ...Gutters.tinyVMargin,
@@ -37,44 +37,44 @@ export default function (props) {
       width: roundSize - 12,
       height: roundSize - 12,
       borderRadius: (roundSize - 12) / 2,
-      backgroundColor: status === 'current' ? Colors.white : Colors.black,
+      backgroundColor: status === 'current' ? Colors.secondary : Colors.primary,
       marginTop: 3,
       marginLeft: 3,
     }),
     barItem: status => ({
-      backgroundColor: status === 'current' ? Colors.black : Colors.white,
+      backgroundColor: status === 'current' ? Colors.primary : Colors.secondary,
       display: 'flex',
-      alignItems: 'center',
       width: 55,
       ...Gutters.smallVPadding,
+      ...Layout.center,
     }),
     text: status => ({
-      textTransform: 'uppercase',
       overflow: 'visible',
       fontSize: FontSize.regular,
-      fontWeight: 'bold',
       color:
         status === 'current'
-          ? Colors.white
+          ? Colors.secondary
           : status === 'notDone'
           ? Colors.grey
-          : Colors.black,
-      textAlign: 'center',
+          : Colors.primary,
       padding: 0,
       marginTop: -10,
       transform: [{ rotateZ: '90deg' }],
+      ...Fonts.textBold,
+      ...Fonts.textUppercase,
+      ...Fonts.textCenter,
     }),
     rotatedTextWrapper: {
-      paddingTop: 17,
-      paddingBottom: 12,
-      marginBottom: 7,
+      ...Gutters.regularTPadding,
+      ...Gutters.tinyBPadding,
+      ...Gutters.smallBMargin,
     },
     container: { display: 'flex', alignItems: 'center' },
     wrapper: {
-      ...Layout.fullWidth,
       flexBasis: 55,
-      backgroundColor: Colors.white,
-      flexDirection: 'row',
+      backgroundColor: Colors.secondary,
+      ...Layout.fullWidth,
+      ...Layout.center,
     },
   })
 }

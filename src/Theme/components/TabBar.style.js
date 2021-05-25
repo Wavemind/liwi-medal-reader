@@ -7,32 +7,31 @@ export default function (props) {
     focused: {
       borderBottomColor: Colors.black,
       borderBottomWidth: 5,
-      marginHorizontal: 10,
+      ...Gutters.smallHMargin,
     },
     text: status => ({
       color: status === 'toDo' ? Colors.grey : Colors.black,
       marginHorizontal: 10,
-      ...Gutters.smallVPadding,
       fontSize: FontSize.tiny,
       fontWeight: status === 'current' ? 'bold' : 'normal',
-      borderBottomColor: status === 'current' ? Colors.black : Colors.white,
+      borderBottomColor:
+        status === 'current' ? Colors.primary : Colors.secondary,
       borderBottomWidth: 5,
-      flex: 1,
       ...Layout.fill,
       ...Fonts.textCenter,
+      ...Gutters.smallHMargin,
+      ...Gutters.smallVPadding,
     }),
     tab: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      ...Layout.row,
+      ...Layout.center,
+      ...Layout.scrollSpaceBetween,
     },
     wrapper: {
       minWidth: '100%',
-      alignContent: 'center',
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
+      ...Layout.row,
+      ...Layout.center,
     },
   })
 }

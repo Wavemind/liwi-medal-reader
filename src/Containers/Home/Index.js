@@ -84,7 +84,7 @@ const IndexHomeContainer = props => {
               label={t('navigation.patient_list')}
               icon="patient-list"
               big
-              bgColor={Colors.white}
+              bgColor={Colors.secondary}
               onPress={() => navigation.navigate('PatientList')}
             />
           </View>
@@ -92,13 +92,9 @@ const IndexHomeContainer = props => {
             <SquareButton
               label={t('navigation.consultations')}
               icon="consult"
-<<<<<<< HEAD
               big
-              bgColor={Colors.white}
-              onPress={() => navigation.navigate('TODO')}
-=======
+              bgColor={Colors.secondary}
               onPress={() => navigation.navigate('Consultations')}
->>>>>>> develop
             />
           </View>
         </View>

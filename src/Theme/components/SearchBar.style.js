@@ -5,7 +5,7 @@ export default function (props) {
 
   return StyleSheet.create({
     inputWrapper: {
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
       borderWidth: 1,
       borderColor: Colors.grey,
       height: 55,

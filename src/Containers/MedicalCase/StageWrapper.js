@@ -13,17 +13,17 @@ import { useTheme } from '@/Theme'
 import { TabBar, SideBar } from '@/Components'
 import { Config } from '@/Config'
 
-const StageWrapper = props => {
+const StageWrapper = ({ route }) => {
   const { t } = useTranslation()
   const Tab = createMaterialTopTabNavigator()
-  const { route } = props
 
   const {
     Containers: { medicalCase },
   } = useTheme()
   const stageIndex = route.params?.stageIndex || 0
 
-  let stage = Config.NAVIGATION.INTERVENTION_STAGES[stageIndex]
+  const stage = Config.NAVIGATION.INTERVENTION_STAGES[stageIndex]
+
   return (
     <View style={medicalCase.wrapper}>
       <SideBar stageIndex={stageIndex} />

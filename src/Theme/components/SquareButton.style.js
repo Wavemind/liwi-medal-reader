@@ -35,7 +35,7 @@ export default function (props) {
     }),
     filledText: color => ({
       ...baseText,
-      color: color !== null ? color : Colors.white,
+      color: color !== null ? color : Colors.secondary,
     }),
     outlined: (disabled, color, align, big) => ({
       ...base(disabled, big),
