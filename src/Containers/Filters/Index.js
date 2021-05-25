@@ -62,7 +62,7 @@ const IndexFiltersContainer = ({ navigation }) => {
   ]
 
   return (
-    <ScrollView contentContainerStyle={Gutters.regularHMargin}>
+    <View style={Gutters.regularHMargin}>
       <View style={filters.wrapper}>
         <Text style={filters.title}>{t('containers.filters.title')}</Text>
         <TouchableOpacity
@@ -72,13 +72,16 @@ const IndexFiltersContainer = ({ navigation }) => {
           <Icon name="close" color={Colors.secondary} />
         </TouchableOpacity>
       </View>
+      <ScrollView contentContainerStyle={Gutters.regularHMargin}>
+        <SectionHeader label={t('containers.filters.patient_info')} />
 
-      <SectionHeader label={t('containers.filters.patient_info')} />
-      {data.map(item => (
-        <Accordion key={item.label} list={item} />
-      ))}
-      <SectionHeader label={t('containers.filters.others')} />
-    </ScrollView>
+        {data.map(item => (
+          <Accordion key={item.label} list={item} />
+        ))}
+
+        <SectionHeader label={t('containers.filters.others')} />
+      </ScrollView>
+    </View>
   )
 }
 
