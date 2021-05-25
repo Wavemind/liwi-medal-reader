@@ -5,6 +5,7 @@ import { View, Text } from 'react-native'
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //
 
+// REMOVE THIS SHIT WHEN VIEWS ARE DONE
 function ToDo() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
