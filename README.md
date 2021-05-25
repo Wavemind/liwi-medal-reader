@@ -92,13 +92,13 @@ We also set a list of custom icons. We split it in 2 components
 | assessment        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/assessment_light.png?raw=true "assessment") |
 | close             | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/close_light.png?raw=true "close") |
 | consent-file      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/consent-file_light.png?raw=true "consent-file") |
-| consult           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/consult_light.png?raw=true "consult") |
+| consultation      | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/consult_light.png?raw=true "consultation") |
 | delete            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/delete_light.png?raw=true "delete") |
 | diagnosis         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/diagnosis_light.png?raw=true "diagnosis") |
 | edit              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/edit_light.png?raw=true "edit") |
 | emergency         | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/emergency_light.png?raw=true "emergency") |
 | emergency-outline | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/emergency-outline_light.png?raw=true "emergency-outline") |
-| filtre            | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/filtre_light.png?raw=true "filtre") |
+| filters           | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/filtre_light.png?raw=true "filters") |
 | home              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/home_light.png?raw=true "home") |
 | info              | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/info_light.png?raw=true "info") |
 | left-arrow        | ![alt text](https://github.com/Wavemind/liwi-medal-reader/blob/develop/documentations/images/left-arrow_light.png?raw=true "left-arrow") |

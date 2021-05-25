@@ -16,16 +16,15 @@ import startupIndexStyles from './containers/Startup/Index.style'
 import modalIndexStyles from './containers/Modal/Index.style'
 import modalAlgorithmStyles from './containers/Modal/AlgorithmInfo.style'
 
+import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
+import medicalCaseListStyles from './containers/MedicalCase/List.style'
+
+import scanIndexStyles from './containers/Scan/Index.style'
+import filtersIndexStyles from './containers/Filters/Index.style'
+import patientListStyles from './containers/Patient/List.style'
 import settingsIndexStyles from './containers/Settings/Index.style'
 import searchIndexStyles from './containers/Search/Index.style'
 import homeIndexStyles from './containers/Home/Index.style'
-
-import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
-import scanIndexStyles from './containers/Scan/Index.style'
-
-import patientListStyles from './containers/Patient/List.style'
-
-import medicalCaseListStyles from './containers/MedicalCase/List.style'
 
 /**
  *
@@ -49,6 +48,7 @@ export default function (props) {
     medicalCase: medicalCaseIndexStyles(props),
     scan: scanIndexStyles(props),
     patientList: patientListStyles(props),
+    filters: filtersIndexStyles(props),
     medicalCaseList: medicalCaseListStyles(props),
   }
 }

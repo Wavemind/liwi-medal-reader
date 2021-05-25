@@ -30,6 +30,10 @@ export { default as TabBar } from './Navigation/MedicalCase/TabBar'
 export { default as QuestionInfo } from './Modal/QuestionInfo'
 export { default as Study } from './Modal/Study'
 
+// Accordion
+export { default as Accordion } from './Accordion/Accordion'
+export { default as AccordionItem } from './Accordion/Item'
+
 // OTHER
 export { default as BottomNavbar } from './BottomNavbar'
 export { default as PatientListItem } from './Patient/ListItem'

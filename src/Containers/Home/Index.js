@@ -91,7 +91,7 @@ const IndexHomeContainer = props => {
           <View style={home.consultationsButton}>
             <SquareButton
               label={t('navigation.consultations')}
-              icon="consult"
+              icon="consultation"
               big
               bgColor={Colors.secondary}
               onPress={() => navigation.navigate('Consultations')}

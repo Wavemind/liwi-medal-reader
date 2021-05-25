@@ -22,6 +22,9 @@ import sideBarStyles from './components/SideBar.style'
 import filterBarStyles from './components/FilterBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
 import badgeStyles from './components/Badge.style'
+import accordionStyles from './components/Accordion.style'
+import accordionItemStyles from './components/AccordionItem.style'
+
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -48,5 +51,7 @@ export default function (props) {
     filterBar: filterBarStyles(props),
     patientListItem: patientListItemStyles(props),
     badge: badgeStyles(props),
+    accordion: accordionStyles(props),
+    accordionItem: accordionItemStyles(props),
   }
 }

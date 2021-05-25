@@ -12,7 +12,7 @@ import { useTheme } from '@/Theme'
 
 const Checkbox = props => {
   // Props deconstruction
-  const { content, disabled } = props
+  const { label, disabled } = props
 
   // Theme and style elements deconstruction
   const {
@@ -33,7 +33,7 @@ const Checkbox = props => {
         style={checkbox.checkbox}
         tintColors={checkbox.tintColors(disabled)}
       />
-      <Text style={checkbox.label(disabled)}>{content}</Text>
+      <Text style={checkbox.label(disabled)}>{label}</Text>
     </TouchableOpacity>
   )
 }

@@ -37,6 +37,11 @@ export default {
         delete: 'Delete',
       },
     },
+    filters: {
+      title: 'Filters',
+      patient_info: 'Patient information',
+      others: 'Others',
+    },
     home: {
       title: 'Latest consultations',
     },

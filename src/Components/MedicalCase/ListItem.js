@@ -43,7 +43,7 @@ const ListItem = props => {
               style={patientListItem.icon(true)}
             />
             <Icon
-              name="consult"
+              name="consultation"
               size={30}
               style={patientListItem.icon(false)}
             />
