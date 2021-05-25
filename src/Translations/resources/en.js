@@ -97,6 +97,9 @@ export default {
         status: 'Status',
       },
     },
+    synchronization: {
+      title: 'Medical case Synchronization',
+    },
     settings: {
       general: {
         title: 'General',
@@ -157,6 +160,7 @@ export default {
     consent_files: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
+    synchronization: 'Synchronization',
     welcome: 'Welcome {{ clinician }}',
     settings: 'Settings',
     about: 'About',

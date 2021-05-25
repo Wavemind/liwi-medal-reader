@@ -18,3 +18,4 @@ export { default as IndexPermissionsRequiredContainer } from './PermissionsRequi
 export { default as IndexSettingsContainer } from './Settings/Index'
 export { default as IndexScanContainer } from './Scan/Index'
 export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
+export { default as IndexSynchronizationContainer } from './Synchronization/Index'

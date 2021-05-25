@@ -16,6 +16,7 @@ import {
   ListPatientContainer,
   StageWrapperContainer,
   ListMedicalCaseContainer,
+  IndexSynchronizationContainer,
 } from '@/Containers'
 
 const Drawer = createDrawerNavigator()
@@ -27,7 +28,7 @@ const MainNavigator = () => {
   return (
     <>
       <Drawer.Navigator
-        initialRouteName="Home"
+        initialRouteName="Synchronization"
         drawerContent={props => <CustomDrawerContent {...props} />}
         screenOptions={{
           headerShown: true,
@@ -50,6 +51,13 @@ const MainNavigator = () => {
           component={ListMedicalCaseContainer}
           options={{
             title: t('navigation.consultations'),
+          }}
+        />
+        <Drawer.Screen
+          name="Synchronization"
+          component={IndexSynchronizationContainer}
+          options={{
+            title: t('navigation.synchronization'),
           }}
         />
         <Drawer.Screen
