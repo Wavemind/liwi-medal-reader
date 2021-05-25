@@ -15,6 +15,7 @@ import {
   IndexSettingsContainer,
   ListPatientContainer,
   StageWrapperContainer,
+  ListMedicalCaseContainer,
 } from '@/Containers'
 
 const Drawer = createDrawerNavigator()
@@ -42,6 +43,13 @@ const MainNavigator = () => {
             title: t('navigation.welcome', {
               clinician: `${clinician.first_name} ${clinician.last_name}`,
             }),
+          }}
+        />
+        <Drawer.Screen
+          name="Consultations"
+          component={ListMedicalCaseContainer}
+          options={{
+            title: t('navigation.consultations'),
           }}
         />
         <Drawer.Screen

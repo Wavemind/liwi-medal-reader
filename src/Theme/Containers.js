@@ -25,6 +25,8 @@ import scanIndexStyles from './containers/Scan/Index.style'
 
 import patientListStyles from './containers/Patient/List.style'
 
+import medicalCaseListStyles from './containers/MedicalCase/List.style'
+
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -47,5 +49,6 @@ export default function (props) {
     medicalCase: medicalCaseIndexStyles(props),
     scan: scanIndexStyles(props),
     patientList: patientListStyles(props),
+    medicalCaseList: medicalCaseListStyles(props),
   }
 }
