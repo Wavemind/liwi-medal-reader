@@ -12,36 +12,57 @@ import { Icon } from '@/Components'
 
 const SquareButton = props => {
   // Props deconstruction
-  const { label, filled, disabled, onPress, icon } = props
+  const {
+    label,
+    filled,
+    disabled,
+    onPress,
+    icon,
+    iconAfter = false,
+    bgColor = null,
+    color = null,
+    iconSize = null,
+    align = null,
+  } = props
 
   // Theme and style elements deconstruction
   const {
     Components: { squareButton },
     Colors,
-    Gutters,
     FontSize,
+    Layout,
   } = useTheme()
 
   // Constants definition
   const type = filled ? 'filled' : 'outlined'
+  const iconColor =
+    color !== null ? color : filled ? Colors.secondary : Colors.primary
 
   return (
     <View style={squareButton.wrapper}>
       <TouchableOpacity
         onPress={() => onPress()}
-        style={squareButton[type](disabled)}
+        style={[squareButton[type](disabled, bgColor, align)]}
         disabled={disabled}
       >
-        <View style={squareButton.textWrapper}>
-          {icon && (
+        <View style={[Layout.rowCenter]}>
+          {!iconAfter && icon && (
             <Icon
               name={icon}
-              color={filled ? Colors.secondary : Colors.primary}
-              size={FontSize.huge}
-              style={{ ...Gutters.regularRMargin }}
+              color={iconColor}
+              size={iconSize !== null ? iconSize : FontSize.regular}
             />
           )}
-          <Text style={squareButton[`${type}Text`]}>{label}</Text>
+          <View style={squareButton.textWrapper}>
+            <Text style={squareButton[`${type}Text`](color)}>{label}</Text>
+          </View>
+          {iconAfter && icon && (
+            <Icon
+              name={icon}
+              color={iconColor}
+              size={iconSize !== null ? iconSize : FontSize.regular}
+            />
+          )}
         </View>
       </TouchableOpacity>
     </View>

@@ -10,8 +10,7 @@ import { useNavigationState } from '@react-navigation/native'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import { SquareButton } from '@/Components'
-import { navigateToStage } from '@/Navigators/Root'
+import StageWrapperNavbar from './StageWrapperNavbar'
 
 const BottomNavbar = props => {
   const navigationState = useNavigationState(
@@ -21,7 +20,6 @@ const BottomNavbar = props => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
-    Layout,
   } = useTheme()
 
   const RenderActions = () => {
@@ -36,26 +34,7 @@ const BottomNavbar = props => {
     const stageIndex = params?.stageIndex || 0
     switch (name) {
       case 'StageWrapper':
-        return (
-          <View style={[Layout.fill, Layout.row]}>
-            {stageIndex > 0 ? (
-              <View style={bottomNavbar.actionButton}>
-                <SquareButton
-                  label={'Back'}
-                  filled
-                  onPress={() => navigateToStage(stageIndex - 1, 0)}
-                />
-              </View>
-            ) : null}
-            <View style={bottomNavbar.actionButton}>
-              <SquareButton
-                label={'Next'}
-                filled
-                onPress={() => navigateToStage(stageIndex + 1, 0)}
-              />
-            </View>
-          </View>
-        )
+        return <StageWrapperNavbar stageIndex={stageIndex} />
 
       default:
         return null
@@ -64,9 +43,11 @@ const BottomNavbar = props => {
 
   return (
     <View style={bottomNavbar.container}>
-      <TouchableOpacity style={bottomNavbar.emergencyContainer}>
-        <Icon name={'emergency'} style={bottomNavbar.emergency} />
-      </TouchableOpacity>
+      <View style={bottomNavbar.emergencyContainer}>
+        <TouchableOpacity style={bottomNavbar.emergencyWrapper}>
+          <Icon name={'emergency'} style={bottomNavbar.emergency} />
+        </TouchableOpacity>
+      </View>
       <View style={bottomNavbar.actions}>
         <RenderActions navigationState={navigationState} />
       </View>

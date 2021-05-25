@@ -5,7 +5,7 @@ export default function (props) {
 
   const base = disabled => ({
     ...Layout.grow,
-    ...Gutters.smallVPadding,
+    ...Gutters.tinyVPadding,
     borderRadius: 5,
     opacity: disabled ? 0.3 : 1,
   })
@@ -14,6 +14,7 @@ export default function (props) {
     ...Fonts.textSmall,
     ...Fonts.textCenter,
     ...Fonts.textUppercase,
+    ...Fonts.textBold,
   }
 
   return StyleSheet.create({
@@ -24,25 +25,28 @@ export default function (props) {
     textWrapper: {
       ...Layout.row,
       ...Layout.center,
-      ...Gutters.tinyVPadding,
+      ...Gutters.smallVPadding,
     },
-    filled: disabled => ({
+    filled: (disabled, color, align) => ({
       ...base(disabled),
-      backgroundColor: Colors.primary,
+      backgroundColor: color !== null ? color : Colors.primary,
+      ...Layout.row,
+      ...(align !== null ? align : Layout.center),
     }),
-    filledText: {
+    filledText: color => ({
       ...baseText,
-      color: Colors.white,
-    },
-    outlined: disabled => ({
+      color: color !== null ? color : Colors.white,
+    }),
+    outlined: (disabled, color, align) => ({
       ...base(disabled),
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderColor: Colors.buttonGrey,
+      ...(align !== null ? align : Layout.center),
     }),
-    outlinedText: {
+    outlinedText: color => ({
       ...baseText,
-      color: Colors.buttonGrey,
-    },
+      color: color !== null ? color : Colors.buttonGrey,
+    }),
   })
 }
