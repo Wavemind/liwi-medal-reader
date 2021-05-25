@@ -3,7 +3,6 @@
  */
 import React, { useEffect, useRef } from 'react'
 import { View, ScrollView } from 'react-native'
-import Animated from 'react-native-reanimated'
 
 /**
  * The internal imports
@@ -39,7 +38,7 @@ function TabBar(props) {
   }
 
   return (
-    <Animated.View>
+    <View>
       <View style={Layout.row}>
         <ScrollView
           alwaysBounceHorizontal={false}
@@ -60,7 +59,7 @@ function TabBar(props) {
           ))}
         </ScrollView>
       </View>
-    </Animated.View>
+    </View>
   )
 }
 export default TabBar

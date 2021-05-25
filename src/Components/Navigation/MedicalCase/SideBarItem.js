@@ -15,11 +15,11 @@ import RotatedText from './RotatedText'
 import Dot from './Dot'
 
 const SideBarItem = ({ stage, index }) => {
+  const { t } = useTranslation()
+  const [status, setStatus] = useState('notDone')
   const navigationState = useNavigationState(state => state)
   const stageIndex =
     navigationState.routes[navigationState.index].params?.stageIndex || 0
-  const [status, setStatus] = useState('notDone')
-  const { t } = useTranslation()
 
   const {
     Components: { sideBar },
@@ -40,7 +40,7 @@ const SideBarItem = ({ stage, index }) => {
       disabled={status !== 'done'}
       onPress={() => navigateToStage(index, 0)}
     >
-      <View style={[sideBar.barItem(status)]}>
+      <View style={sideBar.barItem(status)}>
         <RotatedText
           status={status}
           label={t(`containers.medical_case.stages.${stage.label}`)}
