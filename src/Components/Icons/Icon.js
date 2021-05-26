@@ -3,11 +3,11 @@
  */
 import React from 'react'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
-import { useTheme } from '@/Theme'
 
 /**
  * The internal imports
  */
+import { useTheme } from '@/Theme'
 import icoMoonConfig from '../../Assets/Fonts/selection.json'
 
 const CustomIcon = createIconSetFromIcoMoon(

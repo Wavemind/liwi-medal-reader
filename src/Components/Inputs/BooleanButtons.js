@@ -9,10 +9,7 @@ import { View, TouchableOpacity, Text } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-const BooleanButtons = props => {
-  // Props deconstruction
-  const { answers, label, warning, disabled } = props
-
+const BooleanButtons = ({ answers, label, warning, disabled }) => {
   // Theme and style elements deconstruction
   const {
     Components: { booleanButton },
@@ -36,7 +33,7 @@ const BooleanButtons = props => {
               style={booleanButton.buttonWrapper(side, active, disabled)}
             >
               <TouchableOpacity
-                style={[Layout.center]}
+                style={Layout.center}
                 onPress={() => setAnswer(ans)}
                 disabled={disabled}
               >

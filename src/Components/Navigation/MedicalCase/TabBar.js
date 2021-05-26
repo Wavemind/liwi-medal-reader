@@ -3,6 +3,7 @@
  */
 import React, { useEffect, useRef } from 'react'
 import { View, ScrollView } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 /**
  * The internal imports
@@ -10,8 +11,7 @@ import { View, ScrollView } from 'react-native'
 import { useTheme } from '@/Theme'
 import TabBarItem from './TabBarItem'
 
-function TabBar(props) {
-  const { state, navigation, navigationState } = props
+const TabBar = ({ state, navigation, navigationState }) => {
   const {
     Components: { tabBar },
     Layout,
@@ -22,7 +22,7 @@ function TabBar(props) {
   // Will Scroll to the right tab when moving between steps
   useEffect(() => {
     scrollRef.current?.scrollTo({
-      x: navigationState.index * 190,
+      x: navigationState.index * Math.round(heightPercentageToDP(21)),
       animated: true,
     })
   }, [navigationState.index])

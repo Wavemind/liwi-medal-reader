@@ -10,10 +10,7 @@ import CheckBox from '@react-native-community/checkbox'
  */
 import { useTheme } from '@/Theme'
 
-const Checkbox = props => {
-  // Props deconstruction
-  const { label, disabled } = props
-
+const Checkbox = ({ label, disabled }) => {
   // Theme and style elements deconstruction
   const {
     Components: { checkbox },

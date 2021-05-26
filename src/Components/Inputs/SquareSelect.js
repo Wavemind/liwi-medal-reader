@@ -11,10 +11,8 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const Select = props => {
-  // Props deconstruction
+const Select = ({ label, items, handleOnSelect, value }) => {
   const { t } = useTranslation()
-  const { label, items, handleOnSelect, value } = props
 
   // Theme and style elements deconstruction
   const {
