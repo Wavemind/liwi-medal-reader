@@ -57,7 +57,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             label={t('containers.medical_case.navigation.back')}
             filled
             bgColor={Colors.secondary}
-            color={Colors.black}
+            color={Colors.primary}
             icon="left-arrow"
             align={Layout.alignItemsStart}
             iconSize={FontSize.regular}

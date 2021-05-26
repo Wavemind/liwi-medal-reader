@@ -28,7 +28,7 @@ export default function (props) {
     }),
     picker: {
       width: 200,
-      color: Colors.black,
+      color: Colors.primary,
     },
   })
 }

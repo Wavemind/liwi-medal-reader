@@ -31,7 +31,7 @@ const Select = props => {
           mode="dropdown"
           selectedValue={value}
           onValueChange={(itemValue, itemIndex) => handleOnSelect(itemValue)}
-          dropdownIconColor={Colors.black}
+          dropdownIconColor={Colors.primary}
         >
           <Picker.Item
             key="select-placeholder"

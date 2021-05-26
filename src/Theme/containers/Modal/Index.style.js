@@ -1,17 +1,17 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout, Fonts, Colors, Gutters, Common } = props
+  const { Layout, Fonts, Colors, Gutters } = props
 
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
       ...Layout.col,
-      ...Common.backgroundWhite,
+      backgroundColor: Colors.secondary,
     },
     closeButton: {
       ...Layout.fullWidth,
-      ...Common.backgroundPrimary,
+      backgroundColor: Colors.red,
       position: 'absolute',
       bottom: 0,
       left: 0,

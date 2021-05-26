@@ -12,7 +12,7 @@ export default function (props) {
     medicalCaseWrapper: { flex: 1, display: 'flex' },
     title: {
       height: 40,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.primary,
       flexDirection: 'row',
       alignItems: 'center',
       paddingLeft: 20,

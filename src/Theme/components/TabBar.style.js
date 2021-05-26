@@ -5,12 +5,12 @@ export default function (props) {
 
   return StyleSheet.create({
     focused: {
-      borderBottomColor: Colors.black,
+      borderBottomColor: Colors.primary,
       borderBottomWidth: 5,
       ...Gutters.smallHMargin,
     },
     text: status => ({
-      color: status === 'toDo' ? Colors.grey : Colors.black,
+      color: status === 'toDo' ? Colors.grey : Colors.primary,
       marginHorizontal: 10,
       fontSize: FontSize.tiny,
       fontWeight: status === 'current' ? 'bold' : 'normal',

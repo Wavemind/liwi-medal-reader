@@ -9,19 +9,13 @@
  * Colors
  */
 export const Colors = {
-  // Example colors:
-  transparent: 'rgba(0,0,0,0)',
-  inputBackground: '#FFFFFF',
-  white: '#ffffff',
-  black: '#000000',
-  red: '#d20730',
-  buttonGrey: '#303030',
-  grey: '#6f6f6f',
-  text: '#212529',
-  primary: '#000000',
+  backgroundColor: '#f2f1ee',
+  primary: '#1f1f1f',
   secondary: '#ffffff',
-  success: '#28a745',
-  error: '#dc3545',
+  red: '#d20730',
+  grey: '#6f6f6f',
+  transparent: 'rgba(0,0,0,0)',
+  text: '#121212',
 }
 
 export const NavigationColors = {

@@ -41,12 +41,12 @@ export default function (props) {
       ...base(disabled, big),
       backgroundColor: color !== null ? color : 'transparent',
       borderWidth: 1,
-      borderColor: Colors.buttonGrey,
+      borderColor: Colors.grey,
       ...(align !== null ? align : Layout.center),
     }),
     outlinedText: color => ({
       ...baseText,
-      color: color !== null ? color : Colors.buttonGrey,
+      color: color !== null ? color : Colors.grey,
     }),
     iconLeft: big => ({
       ...(big ? Gutters.smallRMargin : null),
