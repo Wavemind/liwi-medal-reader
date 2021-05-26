@@ -21,7 +21,7 @@ export default function (props) {
       color: Colors.text,
     },
     pickerContainer: {
-      backgroundColor: 'white',
+      backgroundColor: Colors.secondary,
       height: Math.round(heightPercentageToDP(4.4)),
       opacity: 1,
       justifyContent: 'center',

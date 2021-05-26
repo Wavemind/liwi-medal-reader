@@ -19,6 +19,7 @@ export default function (props) {
       backgroundColor: Colors.primary,
       flexDirection: 'row',
       alignItems: 'center',
+      ...Fonts.textSmall,
       ...Gutters.regularLPadding,
     },
     titleText: {

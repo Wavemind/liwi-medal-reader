@@ -24,7 +24,7 @@ export default function (props) {
       color: warning ? Colors.primary : Colors.text,
     }),
     pickerContainer: disabled => ({
-      backgroundColor: 'white',
+      backgroundColor: Colors.secondary,
       height: Math.round(heightPercentageToDP(4.4)),
       borderRadius: 20,
       opacity: disabled ? 0.5 : 1,

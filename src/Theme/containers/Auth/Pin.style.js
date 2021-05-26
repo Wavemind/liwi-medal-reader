@@ -22,7 +22,7 @@ export default function (props) {
     },
     secondTitle: {
       ...Fonts.textSmall,
-      fontWeight: 'normal',
+      fontFamily: 'ZeitungPro',
     },
   })
 }

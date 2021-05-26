@@ -5,8 +5,8 @@ export default function (props) {
 
   return StyleSheet.create({
     header: {
-      ...Fonts.textColorText,
-      ...Fonts.titleSmall,
+      ...Fonts.textUppercase,
+      ...Fonts.titleLarge,
       ...Fonts.textCenter,
       ...Gutters.largeBMargin,
     },

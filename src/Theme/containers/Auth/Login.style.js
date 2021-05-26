@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
-  const { Colors, Layout, Gutters } = props
+  const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
     formWrapper: {
@@ -15,6 +15,7 @@ export default function (props) {
       ...Gutters.regularTMargin,
       ...Gutters.regularVPadding,
       ...Gutters.regularHPadding,
+      ...Fonts.textSmall,
       width: '100%',
       borderRadius: 10,
       backgroundColor: Colors.secondary,

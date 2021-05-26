@@ -10,13 +10,12 @@ import { heightPercentageToDP } from 'react-native-responsive-screen'
  * Colors
  */
 export const Colors = {
-  backgroundColor: '#f2f1ee',
   primary: '#1f1f1f',
   secondary: '#ffffff',
   red: '#d20730',
   grey: '#6f6f6f',
   warning: '#e27900',
-  lightGrey: 'rgba(111,111,111,0.4)', // grey (#6f6f6f) with opacity
+  lightGrey: '#f2f1ee',
   transparent: 'rgba(0,0,0,0)',
   text: '#121212',
 }
@@ -29,11 +28,12 @@ export const NavigationColors = {
  * FontSize
  */
 export const FontSize = {
+  tiny: Math.round(heightPercentageToDP(1.5)),
   small: Math.round(heightPercentageToDP(1.7)),
-  medium: Math.round(heightPercentageToDP(1.7)),
+  medium: Math.round(heightPercentageToDP(1.8)),
   regular: Math.round(heightPercentageToDP(2.2)),
   sectionHeader: Math.round(heightPercentageToDP(2.6)),
-  large: Math.round(heightPercentageToDP(4.4)),
+  large: Math.round(heightPercentageToDP(3.5)),
   huge: Math.round(heightPercentageToDP(6.6)),
 }
 

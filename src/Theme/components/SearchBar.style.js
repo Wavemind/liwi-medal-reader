@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
-  const { Gutters, Colors, Layout } = props
+  const { Gutters, Colors, Layout, Fonts } = props
 
   return StyleSheet.create({
     inputWrapper: {
@@ -22,7 +22,7 @@ export default function (props) {
       ...Layout.colCenter,
       ...Gutters.regularLMargin,
     },
-    inputText: { color: Colors.grey },
+    inputText: { ...Fonts.textSmall, color: Colors.grey },
     filterButton: {
       ...Gutters.smallVMargin,
       ...Gutters.smallVPadding,

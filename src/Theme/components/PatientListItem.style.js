@@ -21,8 +21,8 @@ export default function (props) {
       ...Layout.colum,
     },
     title: {
-      ...Fonts.textBold,
       ...Fonts.textMedium,
+      ...Fonts.textBold,
       ...Gutters.tinyBPadding,
     },
     dateWrapper: {

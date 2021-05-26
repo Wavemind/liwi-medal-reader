@@ -10,7 +10,7 @@ export default function (props) {
     },
     separator: {
       height: 1,
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.lightGrey,
     },
   })
 }

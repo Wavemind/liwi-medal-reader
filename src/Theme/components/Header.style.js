@@ -18,9 +18,7 @@ export default function (props) {
       ...Gutters.largeLMargin,
     },
     title: {
-      ...Fonts.textColorText,
-      ...Fonts.textSmall,
-      ...Fonts.textBold,
+      ...Fonts.titleSmall,
     },
     connectionStatusWrapper: {
       ...Layout.fill,

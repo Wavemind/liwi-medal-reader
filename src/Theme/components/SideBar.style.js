@@ -64,9 +64,9 @@ export default function (props) {
       padding: 0,
       marginTop: -10,
       transform: [{ rotateZ: '90deg' }],
-      ...Fonts.textBold,
       ...Fonts.textUppercase,
       ...Fonts.textCenter,
+      ...Fonts.textBold,
     }),
     rotatedTextWrapper: {
       ...Gutters.regularTPadding,

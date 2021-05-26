@@ -18,8 +18,8 @@ export default function (props) {
     }),
     buttonText: open => ({
       color: open ? Colors.secondary : Colors.primary,
-      ...Fonts.textBold,
       ...Fonts.textMedium,
+      ...Fonts.textBold,
     }),
     contentWrapper: {
       backgroundColor: Colors.secondary,

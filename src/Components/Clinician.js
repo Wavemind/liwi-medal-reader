@@ -42,12 +42,10 @@ const Clinician = ({ currentClinician }) => {
     >
       <View style={Layout.row}>
         <View style={[Layout.fill, Layout.alignItemStart]}>
-          <Text
-            style={[Fonts.textRegular, Fonts.textColorText, Fonts.textBold]}
-          >
+          <Text style={[Fonts.textColorText, Fonts.titleRegular]}>
             {currentClinician.first_name} {currentClinician.last_name}
           </Text>
-          <Text style={Fonts.textColorText}>
+          <Text style={[Fonts.textColorText, Fonts.textTiny]}>
             {t(`health_facility.roles.${currentClinician.role}`)}
           </Text>
         </View>

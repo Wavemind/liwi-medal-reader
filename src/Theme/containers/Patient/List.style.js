@@ -12,9 +12,9 @@ export default function (props) {
     },
     headerText: {
       ...Layout.fill,
-      ...Fonts.textBold,
       ...Fonts.textUppercase,
       ...Fonts.textColorSecondary,
+      ...Fonts.textBold,
     },
   })
 }

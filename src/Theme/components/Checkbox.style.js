@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, Layout, Gutters } = props
+  const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
     checkboxContainer: {
@@ -14,6 +14,7 @@ export default function (props) {
     label: disabled => ({
       ...Gutters.smallHMargin,
       ...Gutters.smallVMargin,
+      ...Fonts.textSmall,
       color: disabled ? Colors.text : Colors.primary,
       opacity: disabled ? 0.3 : 1,
     }),
