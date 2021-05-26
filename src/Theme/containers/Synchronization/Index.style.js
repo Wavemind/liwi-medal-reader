@@ -7,7 +7,7 @@ export default function (props) {
     counter: {
       fontSize: 140,
     },
-    not_synchronized: {
+    notSynchronized: {
       ...Fonts.textRegular,
       ...Fonts.textUppercase,
     },
