@@ -46,7 +46,7 @@ export default function (props) {
     }),
     outlinedText: color => ({
       ...baseText,
-      color: color !== null ? color : Colors.grey,
+      color: color !== null ? color : Colors.primary,
     }),
     iconLeft: big => ({
       ...(big ? Gutters.smallRMargin : null),
