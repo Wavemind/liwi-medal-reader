@@ -11,6 +11,7 @@ import { useNavigationState } from '@react-navigation/native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import StageWrapperNavbar from './StageWrapperNavbar'
+import SynchronizationNavbar from './SynchronizationNavbar'
 
 const BottomNavbar = props => {
   const navigationState = useNavigationState(
@@ -39,6 +40,8 @@ const BottomNavbar = props => {
     switch (name) {
       case 'StageWrapper':
         return <StageWrapperNavbar stageIndex={stageIndex} />
+      case 'Synchronization':
+        return <SynchronizationNavbar />
 
       default:
         return null
