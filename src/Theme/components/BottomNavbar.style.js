@@ -7,15 +7,11 @@ export default function (props) {
   return StyleSheet.create({
     container: {
       display: 'flex',
-      borderTopWidth: 1,
       backgroundColor: Colors.secondary,
-      borderTopColor: Colors.grey,
       ...Layout.row,
     },
     emergencyContainer: {
       flexBasis: 70,
-      borderRightWidth: 1,
-      borderRightColor: Colors.grey,
       ...Layout.center,
     },
     emergencyWrapper: {

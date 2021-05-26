@@ -8,6 +8,7 @@ export default function (props) {
       ...Gutters.smallVPadding,
       ...Gutters.smallHPadding,
       ...Layout.row,
+      elevation: 5,
       backgroundColor: Colors.secondary,
     },
     menu: {
