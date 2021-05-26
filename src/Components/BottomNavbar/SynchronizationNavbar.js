@@ -21,10 +21,10 @@ const SynchronizationNavbar = props => {
   const { t } = useTranslation()
 
   /**
-   * Will navigate to the next step / Stage base on the current navigation state synchronization
-   * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
+   *
+   * @param {integer} direction :
    */
-  const handleSynchronization = direction => {
+  const handleSynchronization = () => {
     console.log('TODO SYNCHRO')
   }
 
