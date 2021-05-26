@@ -16,19 +16,19 @@ export default function (props) {
           : status === 'current'
           ? Colors.secondary
           : Colors.primary,
-      borderWidth: 3,
+      borderWidth: 2,
       ...Gutters.smallBMargin,
     }),
-    separator: status => ({
+    separator: (status, thinLines) => ({
       backgroundColor:
         status === 'current'
           ? Colors.secondary
           : status === 'notDone'
           ? Colors.grey
           : Colors.primary,
-      width: 4,
-      height: 10,
-      ...Gutters.tinyVMargin,
+      width: thinLines ? 2 : 4,
+      height: thinLines ? 20 : 1,
+      ...(thinLines ? null : Gutters.tinyVMargin),
     }),
     circleHitBox: {
       height: roundSize,
@@ -38,8 +38,8 @@ export default function (props) {
       height: roundSize - 12,
       borderRadius: (roundSize - 12) / 2,
       backgroundColor: status === 'current' ? Colors.secondary : Colors.primary,
-      marginTop: 3,
-      marginLeft: 3,
+      marginTop: 4,
+      marginLeft: 4,
     }),
     barItem: status => ({
       backgroundColor: status === 'current' ? Colors.primary : Colors.secondary,

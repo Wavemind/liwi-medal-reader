@@ -24,6 +24,7 @@ import patientListItemStyles from './components/PatientListItem.style'
 import badgeStyles from './components/Badge.style'
 import accordionStyles from './components/Accordion.style'
 import accordionItemStyles from './components/AccordionItem.style'
+import medicalCaseDrawerStyles from './components/MedicalCaseDrawer.style'
 
 /**
  *
@@ -53,5 +54,6 @@ export default function (props) {
     badge: badgeStyles(props),
     accordion: accordionStyles(props),
     accordionItem: accordionItemStyles(props),
+    medicalCaseDrawer: medicalCaseDrawerStyles(props),
   }
 }

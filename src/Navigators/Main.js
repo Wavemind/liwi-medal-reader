@@ -30,6 +30,7 @@ const MainNavigator = () => {
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
+        drawerStyle={{ width: '50%' }}
         screenOptions={{
           headerShown: true,
           header: ({ scene }) => {

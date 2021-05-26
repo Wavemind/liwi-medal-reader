@@ -67,7 +67,6 @@ const IndexHomeContainer = props => {
     console.log('TODO: load more')
     setData(data.concat([11, 12, 13, 14, 15]))
   }
-
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <View style={home.buttonsWrapper}>

@@ -17,6 +17,7 @@ export const Colors = {
   red: '#d20730',
   buttonGrey: '#303030',
   grey: '#6f6f6f',
+  lightGrey: '#f2f1ee',
   text: '#212529',
   primary: '#000000',
   secondary: '#ffffff',

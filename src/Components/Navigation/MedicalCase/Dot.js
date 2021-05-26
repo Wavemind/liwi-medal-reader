@@ -11,7 +11,7 @@ import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { useTheme } from '@/Theme'
 import { navigateToStage } from '@/Navigators/Root'
 
-const Dot = ({ parentStatus, step, stepIndex, stageIndex }) => {
+const Dot = ({ parentStatus, step, stepIndex, stageIndex, thinLines }) => {
   const navigation = useNavigation()
   const [active, setActive] = useState(false)
 
@@ -51,7 +51,9 @@ const Dot = ({ parentStatus, step, stepIndex, stageIndex }) => {
 
   return (
     <>
-      {stepIndex !== 0 && <View style={sideBar.separator(parentStatus)} />}
+      {(stepIndex !== 0 || thinLines) && (
+        <View style={sideBar.separator(parentStatus, thinLines)} />
+      )}
       <TouchableOpacity
         disabled={!active}
         onPress={handlePress}
