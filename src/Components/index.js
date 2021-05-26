@@ -29,6 +29,7 @@ export { default as TabBar } from './Navigation/MedicalCase/TabBar'
 // MODALS
 export { default as QuestionInfo } from './Modal/QuestionInfo'
 export { default as Study } from './Modal/Study'
+export { default as Emergency } from './Modal/Emergency'
 
 // Accordion
 export { default as Accordion } from './Accordion/Accordion'

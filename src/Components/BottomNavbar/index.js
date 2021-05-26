@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { useNavigationState } from '@react-navigation/native'
+import { useNavigationState, useNavigation } from '@react-navigation/native'
 
 /**
  * The internal imports
@@ -14,6 +14,7 @@ import StageWrapperNavbar from './StageWrapperNavbar'
 import SynchronizationNavbar from './SynchronizationNavbar'
 
 const BottomNavbar = props => {
+  const navigation = useNavigation()
   const navigationState = useNavigationState(
     state => state.routes[state.index].state,
   )
@@ -42,7 +43,6 @@ const BottomNavbar = props => {
         return <StageWrapperNavbar stageIndex={stageIndex} />
       case 'Synchronization':
         return <SynchronizationNavbar />
-
       default:
         return null
     }
@@ -51,7 +51,12 @@ const BottomNavbar = props => {
   return (
     <View style={bottomNavbar.container}>
       <View style={bottomNavbar.emergencyContainer}>
-        <TouchableOpacity style={bottomNavbar.emergencyWrapper}>
+        <TouchableOpacity
+          style={bottomNavbar.emergencyWrapper}
+          onPress={() =>
+            navigation.navigate('InfoModal', { type: 'emergency' })
+          }
+        >
           <Icon name="emergency" style={bottomNavbar.emergency} />
         </TouchableOpacity>
       </View>

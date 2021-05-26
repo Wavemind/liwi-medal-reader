@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Study, QuestionInfo } from '@/Components'
+import { Study, QuestionInfo, Emergency } from '@/Components'
 
 const IndexModalContainer = ({ navigation, route }) => {
   const { t } = useTranslation()
@@ -29,6 +29,8 @@ const IndexModalContainer = ({ navigation, route }) => {
         return <Study />
       case 'question':
         return <QuestionInfo />
+      case 'emergency':
+        return <Emergency />
       default:
         return null
     }
