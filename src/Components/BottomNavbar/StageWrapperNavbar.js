@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
-import { FontSize } from '@/Theme/Variables'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -19,6 +18,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     Components: { bottomNavbar },
     Layout,
     Colors,
+    FontSize,
   } = useTheme()
 
   const { t } = useTranslation()

@@ -102,7 +102,7 @@ const CustomDrawerContent = props => {
         <View style={[customDrawerContent.separator]} />
         <CustomDrawerItem
           label={t('navigation.synchronize')}
-          routeName={'TODO'}
+          routeName={'Synchronization'}
           iconName={'synchronize'}
           {...props}
         />
