@@ -99,6 +99,8 @@ export default {
     },
     synchronization: {
       title: 'Medical case Synchronization',
+      synchronize: 'Synchronize',
+      not_synchronized: 'Medical cases not synchronized yet',
     },
     settings: {
       general: {

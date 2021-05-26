@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import { SectionHeader } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 
@@ -16,7 +15,7 @@ const IndexSynchronizationContainer = props => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
-    Containers: { global },
+    Containers: { global, synchronization },
     Layout,
     Gutters,
   } = useTheme()
@@ -108,10 +107,11 @@ const IndexSynchronizationContainer = props => {
     <Animated.View
       style={[Layout.fill, global.animation(fadeAnim), Gutters.regularHMargin]}
     >
-      <SectionHeader label={t('containers.synchronization.title')} />
       <View style={[Layout.center, Layout.fill]}>
-        <Text>Medical cases not being synchronized yet </Text>
-        <Text style={{ fontSize: 140 }}>0</Text>
+        <Text style={synchronization.not_synchronized}>
+          {t('containers.synchronization.not_synchronized')}
+        </Text>
+        <Text style={synchronization.counter}>0</Text>
       </View>
     </Animated.View>
   )

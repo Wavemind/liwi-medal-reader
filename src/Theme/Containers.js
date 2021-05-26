@@ -25,6 +25,7 @@ import patientListStyles from './containers/Patient/List.style'
 import settingsIndexStyles from './containers/Settings/Index.style'
 import searchIndexStyles from './containers/Search/Index.style'
 import homeIndexStyles from './containers/Home/Index.style'
+import synchronizationIndexStyles from './containers/Synchronization/Index.style'
 
 /**
  *
@@ -50,5 +51,6 @@ export default function (props) {
     patientList: patientListStyles(props),
     filters: filtersIndexStyles(props),
     medicalCaseList: medicalCaseListStyles(props),
+    synchronization: synchronizationIndexStyles(props),
   }
 }
