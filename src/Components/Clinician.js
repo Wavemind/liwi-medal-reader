@@ -14,9 +14,8 @@ import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { Icon } from '@/Components'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 
-const Clinician = props => {
+const Clinician = ({ currentClinician }) => {
   // Props deconstruction
-  const { currentClinician } = props
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
@@ -41,18 +40,18 @@ const Clinician = props => {
       style={clinician.buttonWrapper}
       onPress={() => handleClinician()}
     >
-      <View style={[Layout.row]}>
+      <View style={Layout.row}>
         <View style={[Layout.fill, Layout.alignItemStart]}>
           <Text
             style={[Fonts.textRegular, Fonts.textColorText, Fonts.textBold]}
           >
             {currentClinician.first_name} {currentClinician.last_name}
           </Text>
-          <Text style={[Fonts.textColorText]}>
+          <Text style={Fonts.textColorText}>
             {t(`health_facility.roles.${currentClinician.role}`)}
           </Text>
         </View>
-        <View style={[Layout.selfCenter]}>
+        <View style={Layout.selfCenter}>
           <Icon name="right-arrow" />
         </View>
       </View>

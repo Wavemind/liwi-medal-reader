@@ -78,19 +78,18 @@ const SynchronizationAuthContainer = () => {
         <Text style={auth.header}>
           {t('containers.auth.synchronization.title')}
         </Text>
-
         <View style={authSynchronization.descriptionWrapper}>
-          <Text style={[Fonts.textRegular]}>
+          <Text style={Fonts.textRegular}>
             {t('containers.auth.synchronization.description')}
           </Text>
         </View>
 
-        <View style={[Gutters.largeVMargin]}>
-          <View style={[Layout.row]}>
-            <View style={[Layout.fill]}>
-              <Text style={[Fonts.textSmall]}>{t('device.name')}</Text>
+        <View style={Gutters.largeVMargin}>
+          <View style={Layout.row}>
+            <View style={Layout.fill}>
+              <Text style={Fonts.textSmall}>{t('device.name')}</Text>
             </View>
-            <View style={[Layout.fill]}>
+            <View style={Layout.fill}>
               <Text style={[Fonts.textSmall, Fonts.textBold]}>
                 {device.name !== null
                   ? device.name
@@ -100,10 +99,10 @@ const SynchronizationAuthContainer = () => {
           </View>
 
           <View style={[Layout.row, Gutters.smallTMargin]}>
-            <View style={[Layout.fill]}>
-              <Text style={[Fonts.textSmall]}>{t('device.model')}</Text>
+            <View style={Layout.fill}>
+              <Text style={Fonts.textSmall}>{t('device.model')}</Text>
             </View>
-            <View style={[Layout.fill]}>
+            <View style={Layout.fill}>
               <Text style={[Fonts.textSmall, Fonts.textBold]}>
                 {device.model}
               </Text>
@@ -111,10 +110,10 @@ const SynchronizationAuthContainer = () => {
           </View>
 
           <View style={[Layout.row, Gutters.smallTMargin]}>
-            <View style={[Layout.fill]}>
-              <Text style={[Fonts.textSmall]}>{t('device.mac_address')}</Text>
+            <View style={Layout.fill}>
+              <Text style={Fonts.textSmall}>{t('device.mac_address')}</Text>
             </View>
-            <View style={[Layout.fill]}>
+            <View style={Layout.fill}>
               <Text style={[Fonts.textSmall, Fonts.textBold]}>
                 {device.mac_address}
               </Text>
@@ -142,7 +141,7 @@ const SynchronizationAuthContainer = () => {
               {algorithmFetchOneError.message}
             </Text>
           )}
-          {loading && <Loader height={200} />}
+          {loading && <Loader />}
         </View>
 
         <View style={auth.themeToggleWrapper}>

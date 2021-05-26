@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -39,10 +40,11 @@ export default function (props) {
     icon: active => ({
       backgroundColor: active && Colors.primary,
       color: active ? Colors.secondary : Colors.grey,
-      padding: 5,
+      ...Gutters.tinyVPadding,
+      ...Gutters.tinyHPadding,
     }),
     picker: {
-      width: 200,
+      width: Math.round(heightPercentageToDP(22)),
       color: Colors.primary,
     },
   })

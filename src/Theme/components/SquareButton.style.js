@@ -39,7 +39,7 @@ export default function (props) {
     }),
     outlined: (disabled, color, align, big) => ({
       ...base(disabled, big),
-      backgroundColor: color !== null ? color : 'transparent',
+      backgroundColor: color !== null ? color : Colors.transparent,
       borderWidth: 1,
       borderColor: Colors.grey,
       ...(align !== null ? align : Layout.center),

@@ -1,3 +1,4 @@
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 /**
  * This file contains the application's variables.
  *
@@ -14,6 +15,8 @@ export const Colors = {
   secondary: '#ffffff',
   red: '#d20730',
   grey: '#6f6f6f',
+  warning: '#e27900',
+  lightGrey: 'rgba(111,111,111,0.4)', // grey (#6f6f6f) with opacity
   transparent: 'rgba(0,0,0,0)',
   text: '#121212',
 }
@@ -26,22 +29,22 @@ export const NavigationColors = {
  * FontSize
  */
 export const FontSize = {
-  small: 16,
-  medium: 17,
-  regular: 20,
-  sectionHeader: 24,
-  large: 40,
-  huge: 60,
+  small: Math.round(heightPercentageToDP(1.7)),
+  medium: Math.round(heightPercentageToDP(1.7)),
+  regular: Math.round(heightPercentageToDP(2.2)),
+  sectionHeader: Math.round(heightPercentageToDP(2.6)),
+  large: Math.round(heightPercentageToDP(4.4)),
+  huge: Math.round(heightPercentageToDP(6.6)),
 }
 
 /**
  * Metrics Sizes
  */
-const tiny = 5 // 10
-const small = tiny * 2 // 10
-const regular = tiny * 3 // 15
-const large = regular * 3 // 45
-const huge = large * 2 // 90
+const tiny = Math.round(heightPercentageToDP(0.6))
+const small = tiny * 2
+const regular = tiny * 3
+const large = regular * 3
+const huge = large * 2
 export const MetricsSizes = {
   tiny,
   small,

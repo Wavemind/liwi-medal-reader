@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
   const { Colors, FontSize, Gutters, Layout } = props
@@ -19,11 +20,12 @@ export default function (props) {
     },
     emergencyWrapper: {
       ...Gutters.tinyVMargin,
-      padding: 5,
+      ...Gutters.tinyVPadding,
+      ...Gutters.tinyHPadding,
       display: 'flex',
-      borderRadius: 50,
-      height: 50,
-      width: 50,
+      borderRadius: Math.round(heightPercentageToDP(5.5)),
+      height: Math.round(heightPercentageToDP(5.5)),
+      width: Math.round(heightPercentageToDP(5.5)),
       backgroundColor: Colors.red,
       ...Layout.row,
     },

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
   const { Gutters, Colors, Layout } = props
@@ -8,7 +9,7 @@ export default function (props) {
       backgroundColor: Colors.secondary,
       borderWidth: 1,
       borderColor: Colors.grey,
-      height: 55,
+      height: Math.round(heightPercentageToDP(6)),
       borderRadius: 10,
       ...Gutters.smallVMargin,
       ...Gutters.smallVPadding,

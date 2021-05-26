@@ -12,7 +12,7 @@ export default function (props) {
     },
     errorMessage: {
       ...Fonts.textRegular,
-      color: Colors.primary,
+      color: Colors.red,
     },
     switchOuterWrapper: {
       ...Layout.rowHCenter,
@@ -24,7 +24,7 @@ export default function (props) {
     switchLabel: {
       ...Fonts.textSmall,
       ...Gutters.regularLMargin,
-      color: Colors.text,
+      ...Fonts.textColorText,
     },
     themeToggleWrapper: {
       position: 'absolute',

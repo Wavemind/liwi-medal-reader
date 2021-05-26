@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout, Gutters, Fonts } = props
+  const { Layout, Gutters, Fonts, Colors } = props
 
   return StyleSheet.create({
     wrapper: {
       ...Gutters.smallVPadding,
       ...Gutters.smallHPadding,
       ...Layout.row,
-      backgroundColor: '#FFF',
+      backgroundColor: Colors.secondary,
     },
     menu: {
       ...Layout.colCenter,

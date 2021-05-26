@@ -11,7 +11,6 @@ export default function (props) {
     },
     text: status => ({
       color: status === 'toDo' ? Colors.grey : Colors.primary,
-      marginHorizontal: 10,
       fontSize: FontSize.tiny,
       fontWeight: status === 'current' ? 'bold' : 'normal',
       borderBottomColor:
