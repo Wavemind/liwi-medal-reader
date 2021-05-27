@@ -11,19 +11,20 @@ export default function (props) {
       flexDirection: 'row',
     },
     medicalCaseWrapper: { flex: 1, display: 'flex' },
-    title: {
-      height: hp(4.4),
+    titleWrapper: {
+      height: hp(6),
+      elevation: 5,
       backgroundColor: Colors.primary,
       flexDirection: 'row',
       alignItems: 'center',
       ...Fonts.textSmall,
       ...Gutters.regularLPadding,
     },
-    titleText: {
+    title: {
       color: Colors.secondary,
       ...Fonts.textUppercase,
-      ...Fonts.textBold,
       ...Fonts.textRegular,
+      ...Fonts.textBold,
     },
     tabBar: { width: wp(56.6) },
   })

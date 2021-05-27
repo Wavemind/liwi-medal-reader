@@ -32,5 +32,8 @@ export default function (props) {
       ...Layout.row,
       ...Layout.center,
     },
+    itemWrapper: {
+      ...Layout.fill,
+    },
   })
 }

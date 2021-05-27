@@ -24,12 +24,12 @@ export default function (props) {
     },
     inputText: { ...Fonts.textSmall, color: Colors.grey },
     filterButton: {
+      ...Layout.center,
       ...Gutters.smallVMargin,
-      ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       ...Gutters.regularRMargin,
       borderRadius: 10,
-      backgroundColor: Colors.primary,
+      backgroundColor: Colors.red,
     },
   })
 }

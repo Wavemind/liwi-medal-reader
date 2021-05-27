@@ -49,6 +49,7 @@ export default function (props) {
       display: 'flex',
       width: wp(9.1),
       ...Gutters.smallVPadding,
+      ...Gutters.regularBPadding,
       ...Layout.center,
     }),
     text: status => ({

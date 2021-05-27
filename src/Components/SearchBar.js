@@ -42,7 +42,7 @@ const SearchBar = ({ navigation, filters = false }) => {
             style={searchBar.filterButton}
             onPress={() => navigation.push('Filters')}
           >
-            <Icon name="filters" color={Colors.secondary} />
+            <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
           </TouchableOpacity>
         )}
       </View>

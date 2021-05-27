@@ -26,7 +26,6 @@ const CustomDrawerContent = props => {
   const {
     Components: { customDrawerContent },
     Layout,
-    Fonts,
   } = useTheme()
 
   const algorithm = useSelector(state => state.algorithm.item)
@@ -116,7 +115,7 @@ const CustomDrawerContent = props => {
 
           <DrawerItem
             label={() => (
-              <Text style={[Fonts.textRegular, Fonts.textUppercase]}>
+              <Text style={customDrawerContent.logout}>
                 {t('navigation.logout')}
               </Text>
             )}

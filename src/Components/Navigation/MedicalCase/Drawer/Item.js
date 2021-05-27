@@ -33,7 +33,7 @@ const Item = ({ stage, index, status }) => {
         <Icon
           style={medicalCaseDrawer.mainIcon(status)}
           name={stage.icon}
-          size={FontSize.huge}
+          size={FontSize.big}
         />
         <Text style={medicalCaseDrawer.stageText(status)}>
           {t(`containers.medical_case.stages.${stage.label}`)}
@@ -45,7 +45,7 @@ const Item = ({ stage, index, status }) => {
         />
       </TouchableOpacity>
       {open && (
-        <View style={[medicalCaseDrawer.stepsWrapper]}>
+        <View style={medicalCaseDrawer.stepsWrapper}>
           {stage.steps.map((step, stepIndex) => (
             <View style={Layout.rowCenter}>
               <View style={medicalCaseDrawer.dotWrapper}>

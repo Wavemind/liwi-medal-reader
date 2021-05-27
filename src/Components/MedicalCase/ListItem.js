@@ -16,6 +16,8 @@ const ListItem = props => {
     Components: { patientListItem },
     Layout,
     Gutters,
+    Colors,
+    FontSize,
   } = useTheme()
 
   return (
@@ -24,39 +26,45 @@ const ListItem = props => {
       onPress={() => console.log('TODO')}
     >
       <View style={patientListItem.container}>
+        <View style={[Layout.column, Gutters.regularRMargin]}>
+          <Icon name="lock" size={FontSize.large} color={Colors.red} />
+        </View>
         <View style={patientListItem.titleWrapper}>
           <Text style={patientListItem.title}>Quentin Girard</Text>
           <Text>02.03.1994</Text>
         </View>
-
         <View style={patientListItem.statusWrapper}>
           <Text style={patientListItem.statusTitle}>1st assessement</Text>
           <View style={Layout.row}>
             <Icon
               name="registration"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
             <Icon
               name="assessment"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(true)}
             />
             <Icon
               name="consultation"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
-            <Icon name="tests" size={30} style={patientListItem.icon(false)} />
+            <Icon
+              name="tests"
+              size={FontSize.large}
+              style={patientListItem.icon(false)}
+            />
             <Icon
               name="diagnosis"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
           </View>
         </View>
         <View style={[Gutters.regularLMargin, Layout.column]}>
-          <Icon name="right-arrow" size={25} />
+          <Icon name="right-arrow" size={FontSize.large} />
         </View>
       </View>
     </TouchableOpacity>
