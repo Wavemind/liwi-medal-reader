@@ -14,7 +14,7 @@ export default function (props) {
     },
     wrapper: {
       ...Layout.fill,
-      borderColor: Colors.black,
+      borderColor: Colors.primary,
       borderRightWidth: 1,
     },
   })

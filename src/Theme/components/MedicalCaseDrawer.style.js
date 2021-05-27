@@ -5,6 +5,10 @@ export default function (props) {
   const { Fonts, Gutters, Layout, Colors } = props
 
   return StyleSheet.create({
+    wrapper: {
+      ...Layout.fill,
+      backgroundColor: Colors.lightGrey,
+    },
     header: {
       backgroundColor: Colors.grey,
       flexBasis: hp(13),

@@ -18,6 +18,7 @@ import {
   ListMedicalCaseContainer,
   IndexSynchronizationContainer,
 } from '@/Containers'
+import { useTheme } from '@/Theme'
 
 const Drawer = createDrawerNavigator()
 const MainNavigator = () => {
@@ -25,12 +26,14 @@ const MainNavigator = () => {
   const { t } = useTranslation()
   const clinician = useSelector(state => state.healthFacility.clinician)
 
+  const { Layout } = useTheme()
+
   return (
     <>
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
-        drawerStyle={{ width: '100%' }}
+        drawerStyle={Layout.fullWidth}
         screenOptions={{
           headerShown: true,
           header: ({ scene }) => {

@@ -112,7 +112,9 @@ const CustomDrawerContent = props => {
 
           <DrawerItem
             label={() => (
-              <Text style={Fonts.textUppercase}>{t('navigation.logout')}</Text>
+              <Text style={[Fonts.textRegular, Fonts.textUppercase]}>
+                {t('navigation.logout')}
+              </Text>
             )}
             icon={() => <Icon name="logout" />}
             onPress={() => handleLogout()}

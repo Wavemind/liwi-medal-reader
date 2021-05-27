@@ -22,7 +22,7 @@ const DrawerItem = () => {
   } = useTheme()
 
   return (
-    <View style={[Layout.fill, { backgroundColor: Colors.lightGrey }]}>
+    <View style={medicalCaseDrawer.wrapper}>
       <View style={medicalCaseDrawer.header}>
         <Text style={medicalCaseDrawer.textHeader}>
           {t('components.medical_case_drawer.current_medical_case')}
@@ -38,7 +38,7 @@ const DrawerItem = () => {
             stage={stage}
             index={index}
             // TODO Set real medical case status
-            status={index === 2 ? 'current' : index > 2 ? 'notDone' : 'done'}
+            status={index === 4 ? 'current' : index > 4 ? 'notDone' : 'done'}
           />
         ))}
       </ScrollView>
