@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
-  const { Colors, Layout, Gutters } = props
+  const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
     formWrapper: {
@@ -10,25 +11,28 @@ export default function (props) {
       ...Gutters.largeBMargin,
     },
     input: {
-      backgroundColor: Colors.secondary,
-      height: 60,
+      height: Math.round(heightPercentageToDP(7)),
       ...Gutters.regularTMargin,
       ...Gutters.regularVPadding,
       ...Gutters.regularHPadding,
+      ...Fonts.textSmall,
       width: '100%',
-      borderRadius: 20,
+      borderRadius: 10,
+      backgroundColor: Colors.secondary,
+      borderWidth: 1,
+      borderColor: Colors.grey,
     },
     buttonWrapper: {
       ...Gutters.largeTMargin,
     },
     errorMessageWrapper: {
-      height: 50,
+      height: Math.round(heightPercentageToDP(4)),
       ...Gutters.hugeTMargin,
       ...Gutters.regularBMargin,
       ...Layout.center,
     },
     loaderContainer: {
-      height: 100,
+      height: Math.round(heightPercentageToDP(11)),
       ...Gutters.hugeBMargin,
       ...Layout.center,
     },

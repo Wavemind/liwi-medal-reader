@@ -12,44 +12,55 @@ export default function ({ FontSize, Colors }) {
   return StyleSheet.create({
     textColorText: {
       color: Colors.text,
+      fontFamily: 'ZeitungPro',
     },
     textColorPrimary: {
       color: Colors.primary,
+      fontFamily: 'ZeitungPro',
     },
     textColorSecondary: {
       color: Colors.secondary,
+      fontFamily: 'ZeitungPro',
+    },
+    textTiny: {
+      fontSize: FontSize.tiny,
+      fontFamily: 'ZeitungPro',
     },
     textSmall: {
       fontSize: FontSize.small,
+      fontFamily: 'ZeitungPro',
     },
     textMedium: {
       fontSize: FontSize.medium,
+      fontFamily: 'ZeitungPro',
     },
     textRegular: {
       fontSize: FontSize.regular,
+      fontFamily: 'ZeitungPro',
     },
     textSectionHeader: {
       fontSize: FontSize.sectionHeader,
-      fontWeight: 'bold',
+      fontFamily: 'ZeitungPro-Bold',
       textTransform: 'uppercase',
     },
     textLarge: {
       fontSize: FontSize.large,
+      fontFamily: 'ZeitungPro',
     },
     titleSmall: {
-      fontSize: FontSize.small * 2,
-      fontWeight: 'bold',
+      fontSize: FontSize.small,
+      fontFamily: 'ZeitungPro-Bold',
     },
     titleRegular: {
-      fontSize: FontSize.regular * 2,
-      fontWeight: 'bold',
+      fontSize: FontSize.regular,
+      fontFamily: 'ZeitungPro-Bold',
     },
     titleLarge: {
-      fontSize: FontSize.large * 2,
-      fontWeight: 'bold',
+      fontSize: FontSize.large,
+      fontFamily: 'ZeitungPro-Bold',
     },
     textBold: {
-      fontWeight: 'bold',
+      fontFamily: 'ZeitungPro-Bold',
     },
     textItalic: {
       fontStyle: 'italic',

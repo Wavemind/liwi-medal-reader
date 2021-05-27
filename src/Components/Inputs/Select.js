@@ -11,10 +11,7 @@ import { Picker } from '@react-native-picker/picker'
  */
 import { useTheme } from '@/Theme'
 
-const Select = props => {
-  // Props deconstruction
-  const { label, items, warning, disabled } = props
-
+const Select = ({ label, items, warning, disabled }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
@@ -34,7 +31,7 @@ const Select = props => {
           mode="dropdown"
           selectedValue={awesome}
           onValueChange={(itemValue, itemIndex) => setAwesome(itemValue)}
-          dropdownIconColor={Colors.black}
+          dropdownIconColor={Colors.primary}
           enabled={!disabled}
         >
           <Picker.Item

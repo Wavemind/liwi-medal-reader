@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
   const { Layout, Fonts } = props
@@ -17,11 +18,11 @@ export default function (props) {
     },
     codeButtons: {
       ...Layout.center,
-      height: 80,
+      height: Math.round(heightPercentageToDP(8.8)),
     },
     secondTitle: {
       ...Fonts.textSmall,
-      fontWeight: 'normal',
+      fontFamily: 'ZeitungPro',
     },
   })
 }

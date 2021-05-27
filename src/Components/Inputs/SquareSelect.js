@@ -11,10 +11,8 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const Select = props => {
-  // Props deconstruction
+const Select = ({ label, items, handleOnSelect, value }) => {
   const { t } = useTranslation()
-  const { label, items, handleOnSelect, value } = props
 
   // Theme and style elements deconstruction
   const {
@@ -31,7 +29,7 @@ const Select = props => {
           mode="dropdown"
           selectedValue={value}
           onValueChange={(itemValue, itemIndex) => handleOnSelect(itemValue)}
-          dropdownIconColor={Colors.black}
+          dropdownIconColor={Colors.primary}
         >
           <Picker.Item
             key="select-placeholder"

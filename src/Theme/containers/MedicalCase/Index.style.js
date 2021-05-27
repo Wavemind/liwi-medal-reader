@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native'
+import {
+  widthPercentageToDP,
+  heightPercentageToDP,
+} from 'react-native-responsive-screen'
 
 export default function (props) {
-  const { FontSize, Colors } = props
+  const { Colors, Fonts, Gutters } = props
 
   return StyleSheet.create({
     wrapper: {
@@ -11,18 +15,19 @@ export default function (props) {
     },
     medicalCaseWrapper: { flex: 1, display: 'flex' },
     title: {
-      height: 40,
-      backgroundColor: Colors.black,
+      height: Math.round(heightPercentageToDP(4.4)),
+      backgroundColor: Colors.primary,
       flexDirection: 'row',
       alignItems: 'center',
-      paddingLeft: 20,
+      ...Fonts.textSmall,
+      ...Gutters.regularLPadding,
     },
     titleText: {
-      color: '#fff',
-      textTransform: 'uppercase',
-      fontWeight: 'bold',
-      fontSize: FontSize.regular,
+      color: Colors.secondary,
+      ...Fonts.textUppercase,
+      ...Fonts.textBold,
+      ...Fonts.textRegular,
     },
-    tabBar: { width: 340 },
+    tabBar: { width: Math.round(widthPercentageToDP(56.6)) },
   })
 }

@@ -15,6 +15,7 @@ import {
 
 import algorithm from './Algorithm'
 import device from './Device'
+import emergency from './Emergency'
 import healthFacility from './HealthFacility'
 import startup from './Startup'
 import system from './System'
@@ -24,6 +25,7 @@ import user from './User'
 const reducers = combineReducers({
   algorithm,
   device,
+  emergency,
   healthFacility,
   network,
   startup,

@@ -21,7 +21,7 @@ export default function (props) {
     clearFiltersButtonText: {
       ...Fonts.textTiny,
       ...Fonts.textCenter,
-      color: 'red',
+      color: Colors.red,
     },
   })
 }

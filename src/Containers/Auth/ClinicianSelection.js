@@ -3,8 +3,9 @@
  */
 import React, { useEffect, useRef } from 'react'
 import { View, Text, Animated, ScrollView } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { DocumentDirectoryPath, readFile } from 'react-native-fs'
 
 /**
  * The internal imports
@@ -13,6 +14,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { Clinician, ToggleSwitchDarkMode } from '@/Components'
 import { navigate } from '@/Navigators/Root'
+import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
@@ -21,11 +23,22 @@ const ClinicianSelectionAuthContainer = props => {
     Layout,
     Containers: { auth, global },
   } = useTheme()
+  const dispatch = useDispatch()
 
   // Local state definition
   const fadeAnim = useRef(new Animated.Value(0)).current
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithmUpdated = useSelector(state => state.algorithm.item.updated)
+
+  const newEmergencyContent = async () => {
+    const targetPath = `${DocumentDirectoryPath}/emergency_content.html`
+    const emergencyContent = await readFile(targetPath)
+    dispatch(
+      ChangeEmergencyContent.action({
+        newContent: emergencyContent,
+      }),
+    )
+  }
 
   useEffect(() => {
     fadeIn(fadeAnim)
@@ -33,6 +46,7 @@ const ClinicianSelectionAuthContainer = props => {
 
   useEffect(() => {
     if (algorithmUpdated) {
+      newEmergencyContent()
       navigate('InfoModal', { type: 'study' })
     }
   }, [algorithmUpdated])

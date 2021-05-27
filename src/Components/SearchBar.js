@@ -16,10 +16,7 @@ import {
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const SearchBar = props => {
-  // Props deconstruction
-  const { navigation, filters = false } = props
-
+const SearchBar = ({ navigation, filters = false }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
@@ -31,21 +28,21 @@ const SearchBar = props => {
 
   return (
     <TouchableWithoutFeedback onPress={() => navigation.push('Search')}>
-      <View style={[Layout.row]}>
-        <View style={[searchBar.inputWrapper]}>
-          <View style={[Layout.colCenter]}>
-            <Icon name={'search'} color={Colors.grey} size={FontSize.regular} />
+      <View style={Layout.row}>
+        <View style={searchBar.inputWrapper}>
+          <View style={Layout.colCenter}>
+            <Icon name="search" color={Colors.grey} size={FontSize.regular} />
           </View>
-          <View style={[searchBar.inputTextWrapper]}>
-            <Text style={[searchBar.inputText]}>{t('actions.search')}</Text>
+          <View style={searchBar.inputTextWrapper}>
+            <Text style={searchBar.inputText}>{t('actions.search')}</Text>
           </View>
         </View>
         {filters && (
           <TouchableOpacity
-            style={[searchBar.filterButton]}
+            style={searchBar.filterButton}
             onPress={() => navigation.push('Filters')}
           >
-            <Icon name={'filtre'} color={Colors.secondary} />
+            <Icon name="filters" color={Colors.secondary} />
           </TouchableOpacity>
         )}
       </View>

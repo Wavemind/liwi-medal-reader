@@ -20,8 +20,8 @@ const LoaderList = props => {
         width={600}
         height={300}
         viewBox="0 0 600 300"
-        backgroundColor={'#CBCDD1'}
-        foregroundColor={'#BFC1C4'}
+        backgroundColor="#CBCDD1"
+        foregroundColor="#BFC1C4"
         {...props}
       >
         <Rect x="3" y="16" rx="0" ry="0" width="286" height="16" />

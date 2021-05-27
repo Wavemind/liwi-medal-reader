@@ -14,12 +14,12 @@ export default function (props) {
       backgroundColor: open ? Colors.primary : Colors.secondary,
       borderRadius: 10,
       borderWidth: open ? 0 : 1,
-      borderColor: 'grey',
+      borderColor: Colors.grey,
     }),
     buttonText: open => ({
       color: open ? Colors.secondary : Colors.primary,
-      ...Fonts.textBold,
       ...Fonts.textMedium,
+      ...Fonts.textBold,
     }),
     contentWrapper: {
       backgroundColor: Colors.secondary,

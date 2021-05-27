@@ -1,16 +1,17 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Fonts, Colors } = props
+  const { Fonts, Colors, Gutters } = props
 
   return StyleSheet.create({
     wrapper: {
       borderRadius: 0,
       marginLeft: 0,
       marginRight: 0,
+      ...Gutters.tinyVPadding,
     },
     textInactive: {
-      color: Colors.primary,
+      ...Fonts.textColorText,
       ...Fonts.textUppercase,
     },
     textFocused: {

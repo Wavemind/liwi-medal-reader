@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 export default function (props) {
   const { Colors, Layout, Fonts } = props
 
-  const circleRadius = 16
+  const circleRadius = Math.round(heightPercentageToDP(1.7))
 
   return StyleSheet.create({
     outerCircle: {
@@ -17,7 +18,7 @@ export default function (props) {
     innerText: {
       ...Fonts.textSmall,
       color: Colors.primary,
-      fontWeight: 'bold',
+      ...Fonts.textBold,
     },
   })
 }

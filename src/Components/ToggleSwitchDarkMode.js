@@ -11,9 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import ChangeTheme from '@/Store/Theme/ChangeTheme'
 
-const ToggleSwitchDarkMode = props => {
-  const { label } = props
-
+const ToggleSwitchDarkMode = ({ label }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -40,8 +38,8 @@ const ToggleSwitchDarkMode = props => {
       <Text style={auth.switchLabel}>{label}</Text>
       <View style={auth.switchInnerWrapper}>
         <Switch
-          trackColor={{ false: '#767577', true: '#f4f3f4' }}
-          thumbColor={isEnabled ? Colors.primary : '#f4f3f4'}
+          trackColor={{ false: Colors.grey, true: Colors.secondary }}
+          thumbColor={isEnabled ? Colors.primary : Colors.secondary}
           onValueChange={() =>
             changeTheme({ theme: 'default', darkMode: !theme.darkMode })
           }

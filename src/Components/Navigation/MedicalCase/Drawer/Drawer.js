@@ -12,7 +12,7 @@ import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
 import Item from './Item'
 
-const DrawerItem = ({}) => {
+const DrawerItem = () => {
   const { t } = useTranslation()
 
   const {
@@ -28,8 +28,8 @@ const DrawerItem = ({}) => {
           {t('components.medical_case_drawer.current_medical_case')}
         </Text>
         <View style={[Layout.rowCenter]}>
-          <Text style={medicalCaseDrawer.textPatient}>Alain Fresco</Text>
-          <Text style={medicalCaseDrawer.textMonth}>36 mois</Text>
+          <Text style={medicalCaseDrawer.textPatient}>Alain TODO</Text>
+          <Text style={medicalCaseDrawer.textMonth}>X mois</Text>
         </View>
       </View>
       <ScrollView>

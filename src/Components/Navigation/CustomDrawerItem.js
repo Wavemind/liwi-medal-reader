@@ -11,10 +11,13 @@ import { DrawerItem } from '@react-navigation/drawer'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const CustomDrawerItem = props => {
-  // Props deconstruction
-  const { label, routeName, routeParams = {}, iconName, navigation } = props
-
+const CustomDrawerItem = ({
+  label,
+  routeName,
+  routeParams = {},
+  iconName,
+  navigation,
+}) => {
   const { index, routes } = navigation.dangerouslyGetState()
 
   // Theme and style elements deconstruction
