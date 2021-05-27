@@ -46,7 +46,7 @@ const CustomDrawerItem = ({
       icon={({ focused }) => (
         <Icon
           name={iconName}
-          size={FontSize.drawerIcon}
+          size={FontSize.big}
           color={focused ? Colors.secondary : Colors.primary}
         />
       )}

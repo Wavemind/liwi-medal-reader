@@ -12,20 +12,25 @@ export default function (props) {
       ...Layout.alignItemsCenter,
       ...Layout.row,
       backgroundColor: open ? Colors.primary : Colors.secondary,
-      borderRadius: 10,
       borderWidth: open ? 0 : 1,
-      borderColor: Colors.grey,
+      borderBottomLeftRadius: open ? 0 : 10,
+      borderBottomRightRadius: open ? 0 : 10,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderColor: open ? Colors.primary : Colors.grey,
     }),
     buttonText: open => ({
       color: open ? Colors.secondary : Colors.primary,
       ...Fonts.textMedium,
       ...Fonts.textBold,
     }),
-    contentWrapper: {
+    contentWrapper: open => ({
       backgroundColor: Colors.secondary,
+      borderColor: Colors.primary,
+      borderWidth: open ? 1 : 0,
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10,
       overflow: 'hidden',
-    },
+    }),
   })
 }

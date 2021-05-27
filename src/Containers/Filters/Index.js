@@ -72,7 +72,7 @@ const IndexFiltersContainer = ({ navigation }) => {
           <Icon name="close" color={Colors.secondary} />
         </TouchableOpacity>
       </View>
-      <ScrollView contentContainerStyle={Gutters.regularHMargin}>
+      <ScrollView>
         <SectionHeader label={t('containers.filters.patient_info')} />
 
         {data.map(item => (

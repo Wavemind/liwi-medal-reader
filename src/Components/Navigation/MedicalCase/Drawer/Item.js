@@ -33,7 +33,7 @@ const Item = ({ stage, index, status }) => {
         <Icon
           style={medicalCaseDrawer.mainIcon(status)}
           name={stage.icon}
-          size={FontSize.drawerIcon}
+          size={FontSize.big}
         />
         <Text style={medicalCaseDrawer.stageText(status)}>
           {t(`containers.medical_case.stages.${stage.label}`)}
