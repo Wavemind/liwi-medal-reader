@@ -9,15 +9,16 @@ export default function (props) {
 
   const roundSize = Math.round(heightPercentageToDP(3.3))
   return StyleSheet.create({
-    circle: status => ({
+    circle: (status, thinLines) => ({
       width: roundSize,
       height: roundSize,
       borderRadius: roundSize / 2,
-      backgroundColor: status === 'current' ? Colors.primary : Colors.secondary,
+      backgroundColor:
+        status === 'current' && !thinLines ? Colors.primary : Colors.secondary,
       borderColor:
         status === 'notDone'
           ? Colors.grey
-          : status === 'current'
+          : status === 'current' && !thinLines
           ? Colors.secondary
           : Colors.primary,
       borderWidth: 2,
@@ -26,12 +27,12 @@ export default function (props) {
     separator: (status, thinLines) => ({
       backgroundColor:
         status === 'current'
-          ? Colors.secondary
+          ? Colors.primary
           : status === 'notDone'
           ? Colors.grey
           : Colors.primary,
       height: thinLines
-        ? Math.round(heightPercentageToDP(11))
+        ? Math.round(heightPercentageToDP(2.2))
         : Math.round(heightPercentageToDP(1.1)),
       ...(thinLines ? null : Gutters.tinyVMargin),
       width: thinLines
@@ -41,11 +42,12 @@ export default function (props) {
     circleHitBox: {
       height: roundSize,
     },
-    circleInner: status => ({
+    circleInner: (status, thinLines) => ({
       width: roundSize - 12,
       height: roundSize - 12,
       borderRadius: (roundSize - 12) / 2,
-      backgroundColor: status === 'current' ? Colors.secondary : Colors.primary,
+      backgroundColor:
+        status === 'current' && !thinLines ? Colors.secondary : Colors.primary,
       marginTop: 4,
       marginLeft: 4,
     }),

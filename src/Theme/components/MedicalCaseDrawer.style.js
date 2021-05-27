@@ -65,14 +65,18 @@ export default function (props) {
           : Colors.primary,
     }),
     checkedIcon: status => ({
-      color: status === 'done' ? Colors.primary : 'transparent',
+      color: status === 'done' ? Colors.primary : Colors.transparent,
     }),
     stepsWrapper: {
-      ...Gutters.regularHPadding,
+      ...Gutters.smallHPadding,
     },
     dotWrapper: {
       ...Gutters.smallHMargin,
       ...Layout.center,
     },
+    stepText: status => ({
+      ...Fonts.textRegular,
+      color: status === 'notDone' ? Colors.grey : Colors.primary,
+    }),
   })
 }

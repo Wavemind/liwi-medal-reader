@@ -50,7 +50,7 @@ const SideBarItem = ({ stage, index }) => {
             key={`${step.label}_${stepIndex}`}
             step={step}
             stageIndex={index}
-            parentStatus={status}
+            status={status}
             stepIndex={stepIndex}
           />
         ))}

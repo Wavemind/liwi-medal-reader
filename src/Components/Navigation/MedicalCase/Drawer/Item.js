@@ -19,7 +19,6 @@ const Item = ({ stage, index, status }) => {
     Components: { medicalCaseDrawer },
     Layout,
     FontSize,
-    Fonts,
     Gutters,
   } = useTheme()
 
@@ -46,14 +45,14 @@ const Item = ({ stage, index, status }) => {
         />
       </TouchableOpacity>
       {open && (
-        <View style={medicalCaseDrawer.stepsWrapper}>
+        <View style={[medicalCaseDrawer.stepsWrapper]}>
           {stage.steps.map((step, stepIndex) => (
             <View style={Layout.rowCenter}>
               <View style={medicalCaseDrawer.dotWrapper}>
-                <Dot thinLines stepIndex={stepIndex} />
+                <Dot thinLines status={status} stepIndex={stepIndex} />
               </View>
               <View style={[Layout.fill, Gutters.regularTPadding]}>
-                <Text style={Fonts.textRegular}>
+                <Text style={medicalCaseDrawer.stepText(status)}>
                   {t(`containers.medical_case.steps.${step.label}`)}
                 </Text>
               </View>

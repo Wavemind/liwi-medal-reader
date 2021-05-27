@@ -118,8 +118,8 @@ const CustomDrawerContent = props => {
             onPress={() => handleLogout()}
           />
         </View>
-        <MedicalCaseDrawer />
       </View>
+      <MedicalCaseDrawer />
     </View>
   )
 }
