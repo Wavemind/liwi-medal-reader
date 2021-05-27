@@ -12,5 +12,10 @@ export default function (props) {
       height: 1,
       backgroundColor: Colors.lightGrey,
     },
+    wrapper: {
+      ...Layout.fill,
+      borderColor: Colors.primary,
+      borderRightWidth: 1,
+    },
   })
 }

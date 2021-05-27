@@ -16,6 +16,7 @@ function ToDo() {
 
 const diagnosesStage = {
   label: 'diagnoses',
+  icon: 'diagnosis',
   component: 'DiagnosesWrapper',
   steps: [
     {
@@ -49,6 +50,7 @@ const referralStep = {
 const baseInterventionStages = [
   {
     label: 'registration',
+    icon: 'registration',
     component: 'RegistrationWrapper',
     steps: [
       {
@@ -59,6 +61,7 @@ const baseInterventionStages = [
   },
   {
     label: 'first_assessments',
+    icon: 'assessment',
     component: 'FirstAssessmentsWrapper',
     steps: [
       {
@@ -77,6 +80,7 @@ const baseInterventionStages = [
   },
   {
     label: 'consultation',
+    icon: 'consultation',
     component: 'ConsultationWrapper',
     steps: [
       {
@@ -95,6 +99,7 @@ const baseInterventionStages = [
   },
   {
     label: 'assessments',
+    icon: 'tests',
     component: 'AssessmentsWrapper',
     steps: [
       {

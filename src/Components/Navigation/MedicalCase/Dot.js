@@ -11,7 +11,7 @@ import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { useTheme } from '@/Theme'
 import { navigateToStage } from '@/Navigators/Root'
 
-const Dot = ({ parentStatus, step, stepIndex, stageIndex }) => {
+const Dot = ({ status, step, stepIndex, stageIndex, thinLines }) => {
   const navigation = useNavigation()
   const [active, setActive] = useState(false)
 
@@ -27,16 +27,16 @@ const Dot = ({ parentStatus, step, stepIndex, stageIndex }) => {
   )
 
   useEffect(() => {
-    if (parentStatus === 'done') {
+    if (status === 'done') {
       setActive(true)
-    } else if (parentStatus === 'notDone') {
+    } else if (status === 'notDone') {
       setActive(false)
     } else if (stepIndex <= currentStep || stepIndex === 0) {
       setActive(true)
     } else {
       setActive(false)
     }
-  }, [parentStatus, currentStep, stepIndex])
+  }, [status, currentStep, stepIndex])
 
   /**
    * Will navigate to the related step
@@ -51,14 +51,16 @@ const Dot = ({ parentStatus, step, stepIndex, stageIndex }) => {
 
   return (
     <>
-      {stepIndex !== 0 && <View style={sideBar.separator(parentStatus)} />}
+      {(stepIndex !== 0 || thinLines) && (
+        <View style={sideBar.separator(status, thinLines)} />
+      )}
       <TouchableOpacity
         disabled={!active}
         onPress={handlePress}
         style={sideBar.circleHitBox}
       >
-        <View style={sideBar.circle(parentStatus)}>
-          {active && <View style={sideBar.circleInner(parentStatus)} />}
+        <View style={sideBar.circle(status, thinLines)}>
+          {active && <View style={sideBar.circleInner(status, thinLines)} />}
         </View>
       </TouchableOpacity>
     </>

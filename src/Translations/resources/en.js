@@ -120,6 +120,9 @@ export default {
     },
   },
   components: {
+    medical_case_drawer: {
+      current_medical_case: 'Current consultation',
+    },
     modal: {
       study: {
         no_content:
