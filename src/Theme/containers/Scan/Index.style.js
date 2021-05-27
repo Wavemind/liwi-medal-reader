@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Layout, Fonts, Gutters, Colors } = props
@@ -13,8 +13,8 @@ export default function (props) {
     titleWrapper: {
       ...Layout.fill,
       ...Layout.center,
-      height: widthPercentageToDP(100),
-      width: widthPercentageToDP(100),
+      height: wp(100),
+      width: wp(100),
       backgroundColor: 'rgba(0,0,0,0.5)',
     },
     title: {
@@ -23,27 +23,27 @@ export default function (props) {
       color: 'white',
     },
     leftScan: {
-      height: widthPercentageToDP(65),
-      width: widthPercentageToDP(100),
+      height: wp(65),
+      width: v(100),
       backgroundColor: 'rgba(0,0,0,0.5)',
     },
     centerScan: {
       ...Layout.center,
-      height: widthPercentageToDP(65),
-      width: widthPercentageToDP(65),
+      height: wp(65),
+      width: wp(65),
       backgroundColor: Colors.transparent,
     },
     rightScan: {
-      height: widthPercentageToDP(65),
-      width: widthPercentageToDP(100),
+      height: wp(65),
+      width: wp(100),
       backgroundColor: 'rgba(0,0,0,0.5)',
     },
     bottomWrapper: {
       ...Layout.fill,
-      height: widthPercentageToDP(100),
-      width: widthPercentageToDP(100),
+      height: wp(100),
+      width: wp(100),
       backgroundColor: 'rgba(0,0,0,0.5)',
-      paddingBottom: widthPercentageToDP(25),
+      paddingBottom: wp(25),
     },
     errorWrapper: {
       ...Layout.fill,

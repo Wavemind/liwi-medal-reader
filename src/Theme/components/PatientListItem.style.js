@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP } from 'react-native-responsive-screen'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -44,7 +44,7 @@ export default function (props) {
       ...Gutters.tinyHPadding,
     }),
     picker: {
-      width: Math.round(heightPercentageToDP(22)),
+      width: hp(22),
       color: Colors.primary,
     },
   })

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP } from 'react-native-responsive-screen'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Gutters, Colors, Layout, Fonts } = props
@@ -9,7 +9,7 @@ export default function (props) {
       backgroundColor: Colors.secondary,
       borderWidth: 1,
       borderColor: Colors.grey,
-      height: Math.round(heightPercentageToDP(6)),
+      height: hp(6),
       borderRadius: 10,
       ...Gutters.smallVMargin,
       ...Gutters.smallVPadding,

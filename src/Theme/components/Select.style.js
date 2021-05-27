@@ -1,8 +1,5 @@
 import { StyleSheet } from 'react-native'
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from 'react-native-responsive-screen'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -25,13 +22,13 @@ export default function (props) {
     }),
     pickerContainer: disabled => ({
       backgroundColor: Colors.secondary,
-      height: Math.round(heightPercentageToDP(4.4)),
+      height: hp(4.4),
       borderRadius: 20,
       opacity: disabled ? 0.5 : 1,
       justifyContent: 'center',
     }),
     picker: {
-      width: Math.round(widthPercentageToDP(33.3)),
+      width: wp(33.3),
       color: Colors.primary,
     },
   })

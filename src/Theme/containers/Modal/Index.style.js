@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP } from 'react-native-responsive-screen'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Layout, Fonts, Colors, Gutters } = props
@@ -16,7 +16,7 @@ export default function (props) {
       position: 'absolute',
       bottom: 0,
       left: 0,
-      height: Math.round(heightPercentageToDP(7)),
+      height: hp(7),
       zIndex: 2,
     },
     closeButtonText: {
@@ -29,7 +29,7 @@ export default function (props) {
     contentWrapper: {
       ...Gutters.smallHPadding,
       ...Gutters.smallTPadding,
-      height: Math.round(heightPercentageToDP(93)),
+      height: hp(93),
     },
   })
 }
