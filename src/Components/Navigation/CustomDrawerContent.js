@@ -71,8 +71,8 @@ const CustomDrawerContent = props => {
             {...props}
           />
           <CustomDrawerItem
-            label={t('navigation.consent_files')}
-            routeName="TODO"
+            label={t('navigation.consent_list')}
+            routeName="ConsentList"
             iconName="consent-file"
             {...props}
           />

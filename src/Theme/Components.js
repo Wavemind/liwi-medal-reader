@@ -21,6 +21,7 @@ import tabBarStyles from './components/TabBar.style'
 import sideBarStyles from './components/SideBar.style'
 import filterBarStyles from './components/FilterBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
+import consentListItemStyles from './components/ConsentListItem.style'
 import badgeStyles from './components/Badge.style'
 import accordionStyles from './components/Accordion.style'
 import accordionItemStyles from './components/AccordionItem.style'
@@ -51,6 +52,7 @@ export default function (props) {
     sideBar: sideBarStyles(props),
     filterBar: filterBarStyles(props),
     patientListItem: patientListItemStyles(props),
+    consentListItem: consentListItemStyles(props),
     badge: badgeStyles(props),
     accordion: accordionStyles(props),
     accordionItem: accordionItemStyles(props),

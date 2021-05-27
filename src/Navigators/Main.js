@@ -14,6 +14,7 @@ import {
   IndexHomeContainer,
   IndexSettingsContainer,
   ListPatientContainer,
+  ListConsentContainer,
   StageWrapperContainer,
   ListMedicalCaseContainer,
   IndexSynchronizationContainer,
@@ -76,6 +77,13 @@ const MainNavigator = () => {
           component={ListPatientContainer}
           options={{
             title: t('navigation.patient_list'),
+          }}
+        />
+        <Drawer.Screen
+          name="ConsentList"
+          component={ListConsentContainer}
+          options={{
+            title: t('navigation.consent_list'),
           }}
         />
         <Drawer.Screen

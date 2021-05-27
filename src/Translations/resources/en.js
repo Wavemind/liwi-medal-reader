@@ -90,6 +90,11 @@ export default {
         status: 'Status',
       },
     },
+    consent: {
+      list: {
+        title: 'Consent files',
+      },
+    },
     medicalCase: {
       list: {
         title: 'Consultations',
@@ -161,7 +166,7 @@ export default {
     scan_qr_code: 'Scan QR code',
     consultations: 'Consultations',
     patient_list: 'Patient list',
-    consent_files: 'Consent files',
+    consent_list: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
     synchronization: 'Synchronization',
