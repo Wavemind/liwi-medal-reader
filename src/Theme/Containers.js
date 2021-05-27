@@ -24,6 +24,7 @@ import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
 
 import scanIndexStyles from './containers/Scan/Index.style'
 import filtersIndexStyles from './containers/Filters/Index.style'
+import consentListStyles from './containers/Consent/List.style'
 import settingsIndexStyles from './containers/Settings/Index.style'
 import searchIndexStyles from './containers/Search/Index.style'
 import homeIndexStyles from './containers/Home/Index.style'
@@ -52,6 +53,7 @@ export default function (props) {
     scan: scanIndexStyles(props),
     patientList: patientListStyles(props),
     patientPersonalInfo: patientPersonalInfoStyles(props),
+    consentList: consentListStyles(props),
     filters: filtersIndexStyles(props),
     medicalCaseList: medicalCaseListStyles(props),
     synchronization: synchronizationIndexStyles(props),

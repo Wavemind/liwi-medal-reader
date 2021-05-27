@@ -99,6 +99,11 @@ export default {
         consultations_info: 'Consultations information',
       },
     },
+    consent: {
+      list: {
+        title: 'Consent files',
+      },
+    },
     medicalCase: {
       list: {
         title: 'Consultations',
@@ -171,7 +176,7 @@ export default {
     consultations: 'Consultations',
     patient_list: 'Patient list',
     personal_info: 'Personal information',
-    consent_files: 'Consent files',
+    consent_list: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
     synchronization: 'Synchronization',

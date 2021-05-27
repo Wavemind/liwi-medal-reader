@@ -9,6 +9,7 @@ import { Text, TouchableWithoutFeedback, View } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 import { Icon, AccordionItem } from '@/Components'
+import { hp } from '@/Theme/Responsive'
 
 const Accordion = ({ list }) => {
   const [open, setOpen] = useState(false)
@@ -30,7 +31,7 @@ const Accordion = ({ list }) => {
     setOpen(prev => !prev)
 
     if (!open) {
-      newHeight = list.items.length * 70
+      newHeight = list.items.length * hp(6.1)
     }
 
     setHeight(newHeight)
@@ -49,7 +50,7 @@ const Accordion = ({ list }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <View style={[accordion.contentWrapper, { height }]}>
+      <View style={[accordion.contentWrapper(open), { height }]}>
         {list.items.map((item, key) => (
           <AccordionItem {...{ item, key }} />
         ))}

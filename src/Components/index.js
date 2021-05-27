@@ -42,6 +42,7 @@ export { default as AccordionItem } from './Accordion/Item'
 
 // OTHER
 export { default as BottomNavbar } from './BottomNavbar'
+export { default as ConsentListItem } from './ConsentListItem'
 export { default as MedicalCaseListItem } from './MedicalCase/ListItem'
 export { default as ConnectionStatus } from './ConnectionStatus'
 export { default as SearchBar } from './SearchBar'

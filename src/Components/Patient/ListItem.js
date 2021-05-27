@@ -19,6 +19,7 @@ const ListItem = ({ item }) => {
     Layout,
     Gutters,
     Fonts,
+    FontSize,
   } = useTheme()
 
   return (
@@ -41,26 +42,30 @@ const ListItem = ({ item }) => {
         </View>
         <View style={patientListItem.statusWrapper}>
           <Text style={patientListItem.statusTitle}>1st assessement</Text>
-          <View style={[Layout.row]}>
+          <View style={Layout.row}>
             <Icon
               name="registration"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
             <Icon
               name="assessment"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(true)}
             />
             <Icon
               name="consultation"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
-            <Icon name="tests" size={30} style={patientListItem.icon(false)} />
+            <Icon
+              name="tests"
+              size={FontSize.large}
+              style={patientListItem.icon(false)}
+            />
             <Icon
               name="diagnosis"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
           </View>

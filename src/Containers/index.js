@@ -11,7 +11,8 @@ export { default as ConsultationsPatientContainer } from './Patient/Consultation
 
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
 
-export { default as IndexExampleContainer } from './Example/Index'
+export { default as ListConsentContainer } from './Consent/List'
+
 export { default as IndexHomeContainer } from './Home/Index'
 export { default as IndexStartupContainer } from './Startup/Index'
 export { default as IndexModalContainer } from './Modal/Index'

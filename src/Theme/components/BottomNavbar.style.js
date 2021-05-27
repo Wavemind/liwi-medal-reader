@@ -8,6 +8,8 @@ export default function (props) {
     container: {
       display: 'flex',
       backgroundColor: Colors.secondary,
+      borderColor: Colors.grey,
+      borderTopWidth: 1,
       ...Layout.row,
     },
     emergencyContainer: {
@@ -16,14 +18,13 @@ export default function (props) {
     },
     emergencyWrapper: {
       ...Gutters.tinyVMargin,
-      ...Gutters.tinyVPadding,
-      ...Gutters.tinyHPadding,
       display: 'flex',
-      borderRadius: hp(4.8),
-      height: hp(4.8),
-      width: hp(4.8),
+      borderRadius: hp(5.5),
+      height: hp(5.5),
+      width: hp(5.5),
       backgroundColor: Colors.red,
       ...Layout.row,
+      ...Layout.center,
     },
     emergency: {
       fontSize: FontSize.large,

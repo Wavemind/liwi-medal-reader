@@ -5,7 +5,7 @@ import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -26,8 +26,9 @@ const CustomDrawerContent = props => {
   const {
     Components: { customDrawerContent },
     Layout,
-    Fonts,
   } = useTheme()
+
+  const algorithm = useSelector(state => state.algorithm.item)
 
   /**
    * Clear clinician and redirect user to clinician list
@@ -70,12 +71,14 @@ const CustomDrawerContent = props => {
             iconName="patient-list"
             {...props}
           />
-          <CustomDrawerItem
-            label={t('navigation.consent_files')}
-            routeName="TODO"
-            iconName="consent-file"
-            {...props}
-          />
+          {algorithm.config.consent_management && (
+            <CustomDrawerItem
+              label={t('navigation.consent_list')}
+              routeName="ConsentList"
+              iconName="consent-file"
+              {...props}
+            />
+          )}
           <CustomDrawerItem
             label={t('navigation.current_consultation')}
             routeName="StageWrapper"
@@ -112,7 +115,7 @@ const CustomDrawerContent = props => {
 
           <DrawerItem
             label={() => (
-              <Text style={[Fonts.textRegular, Fonts.textUppercase]}>
+              <Text style={customDrawerContent.logout}>
                 {t('navigation.logout')}
               </Text>
             )}
