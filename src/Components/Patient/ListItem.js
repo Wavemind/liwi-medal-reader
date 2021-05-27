@@ -53,11 +53,11 @@ const ListItem = ({ item }) => {
               style={patientListItem.icon(true)}
             />
             <Icon
-              name="consult"
+              name="consultation"
               size={30}
               style={patientListItem.icon(false)}
             />
-            <Icon name="test" size={30} style={patientListItem.icon(false)} />
+            <Icon name="tests" size={30} style={patientListItem.icon(false)} />
             <Icon
               name="diagnosis"
               size={30}

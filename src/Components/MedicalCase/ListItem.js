@@ -31,7 +31,7 @@ const ListItem = props => {
 
         <View style={patientListItem.statusWrapper}>
           <Text style={patientListItem.statusTitle}>1st assessement</Text>
-          <View style={[Layout.row]}>
+          <View style={Layout.row}>
             <Icon
               name="registration"
               size={30}
@@ -43,11 +43,11 @@ const ListItem = props => {
               style={patientListItem.icon(true)}
             />
             <Icon
-              name="consult"
+              name="consultation"
               size={30}
               style={patientListItem.icon(false)}
             />
-            <Icon name="test" size={30} style={patientListItem.icon(false)} />
+            <Icon name="tests" size={30} style={patientListItem.icon(false)} />
             <Icon
               name="diagnosis"
               size={30}

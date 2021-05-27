@@ -5,6 +5,7 @@
  */
 import squareButtonStyles from './components/SquareButton.style'
 import roundedButtonStyles from './components/RoundedButton.style'
+import bottomNavbarStyles from './components/BottomNavbar.style'
 import checkboxStyles from './components/Checkbox.style'
 import booleanButtonStyles from './components/BooleanButtons.style'
 import selectStyles from './components/Select.style'
@@ -16,10 +17,16 @@ import headerStyles from './components/Header.style'
 import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
+import tabBarStyles from './components/TabBar.style'
+import sideBarStyles from './components/SideBar.style'
 import filterBarStyles from './components/FilterBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
 import patientTabItemStyles from './components/PatientTabItem.style'
 import badgeStyles from './components/Badge.style'
+import accordionStyles from './components/Accordion.style'
+import accordionItemStyles from './components/AccordionItem.style'
+import medicalCaseDrawerStyles from './components/MedicalCaseDrawer.style'
+
 /**
  *
  * @props Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
@@ -35,14 +42,20 @@ export default function (props) {
     sectionHeader: sectionHeaderStyles(props),
     info: infoStyles(props),
     squareSelect: squareSelectStyles(props),
+    bottomNavbar: bottomNavbarStyles(props),
     clinician: clinicianStyles(props),
     header: headerStyles(props),
     customDrawerContent: customDrawerContentStyles(props),
     customDrawerItem: customDrawerItemStyles(props),
     searchBar: searchBarStyles(props),
+    tabBar: tabBarStyles(props),
+    sideBar: sideBarStyles(props),
     filterBar: filterBarStyles(props),
     patientListItem: patientListItemStyles(props),
     patientTabItem: patientTabItemStyles(props),
     badge: badgeStyles(props),
+    accordion: accordionStyles(props),
+    accordionItem: accordionItemStyles(props),
+    medicalCaseDrawer: medicalCaseDrawerStyles(props),
   }
 }

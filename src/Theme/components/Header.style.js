@@ -1,16 +1,18 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout, Gutters, Fonts } = props
+  const { Layout, Gutters, Fonts, Colors } = props
 
   return StyleSheet.create({
     wrapper: {
-      ...Gutters.smallVPadding,
+      ...Gutters.regularVPadding,
       ...Gutters.smallHPadding,
       ...Layout.row,
-      backgroundColor: '#FFF',
+      elevation: 5,
+      backgroundColor: Colors.secondary,
     },
     menu: {
+      height: 35,
       ...Layout.colCenter,
     },
     titleWrapper: {
@@ -18,12 +20,11 @@ export default function (props) {
       ...Gutters.largeLMargin,
     },
     title: {
-      ...Fonts.textColorText,
-      ...Fonts.textSmall,
-      ...Fonts.textBold,
+      ...Fonts.titleSmall,
     },
     connectionStatusWrapper: {
       ...Layout.fill,
+      ...Layout.colCenter,
       ...Layout.alignItemsEnd,
     },
   })

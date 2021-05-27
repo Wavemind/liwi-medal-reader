@@ -9,13 +9,17 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
+import { Header, CustomDrawerContent, BottomNavbar } from '@/Components'
 import {
   IndexHomeContainer,
   IndexSettingsContainer,
   ListPatientContainer,
+  StageWrapperContainer,
+  ListMedicalCaseContainer,
+  IndexSynchronizationContainer,
   ProfileWrapperPatientContainer,
 } from '@/Containers'
-import { Header, CustomDrawerContent } from '@/Components'
+import { useTheme } from '@/Theme'
 
 const Drawer = createDrawerNavigator()
 const MainNavigator = () => {
@@ -23,46 +27,73 @@ const MainNavigator = () => {
   const { t } = useTranslation()
   const clinician = useSelector(state => state.healthFacility.clinician)
 
+  const { Layout } = useTheme()
+
   return (
-    <Drawer.Navigator
-      initialRouteName="Home"
-      drawerContent={props => <CustomDrawerContent {...props} />}
-      screenOptions={{
-        headerShown: true,
-        header: ({ scene }) => {
-          return <Header {...scene} />
-        },
-      }}
-    >
-      <Drawer.Screen
-        name="Home"
-        component={IndexHomeContainer}
-        options={{
-          title: t('navigation.welcome', {
-            clinician: `${clinician.first_name} ${clinician.last_name}`,
-          }),
+    <>
+      <Drawer.Navigator
+        initialRouteName="Home"
+        drawerContent={props => <CustomDrawerContent {...props} />}
+        drawerStyle={Layout.fullWidth}
+        screenOptions={{
+          headerShown: true,
+          header: ({ scene }) => {
+            return <Header {...scene} />
+          },
         }}
-      />
-      <Drawer.Screen
-        name="PatientList"
-        component={ListPatientContainer}
-        options={{
-          title: t('navigation.patient_list'),
-        }}
-      />
-      <Drawer.Screen
-        name="PatientProfile"
-        component={ProfileWrapperPatientContainer}
-        options={({ route }) => ({ title: route.params?.title })}
-      />
-      <Drawer.Screen
-        name="Settings"
-        component={IndexSettingsContainer}
-        options={{
-          title: t('navigation.settings'),
-        }}
-      />
-    </Drawer.Navigator>
+      >
+        <Drawer.Screen
+          name="Home"
+          component={IndexHomeContainer}
+          options={{
+            title: t('navigation.welcome', {
+              clinician: `${clinician.first_name} ${clinician.last_name}`,
+            }),
+          }}
+        />
+        <Drawer.Screen
+          name="Consultations"
+          component={ListMedicalCaseContainer}
+          options={{
+            title: t('navigation.consultations'),
+          }}
+        />
+        <Drawer.Screen
+          name="Synchronization"
+          component={IndexSynchronizationContainer}
+          options={{
+            title: t('navigation.synchronization'),
+          }}
+        />
+        <Drawer.Screen
+          name="StageWrapper"
+          component={StageWrapperContainer}
+          options={{
+            title: t('navigation.consultations'),
+          }}
+        />
+        <Drawer.Screen
+          name="PatientList"
+          component={ListPatientContainer}
+          options={{
+            title: t('navigation.patient_list'),
+          }}
+        />
+        <Drawer.Screen
+          name="PatientProfile"
+          component={ProfileWrapperPatientContainer}
+          options={({ route }) => ({ title: route.params?.title })}
+        />
+        <Drawer.Screen
+          name="Settings"
+          component={IndexSettingsContainer}
+          options={{
+            title: t('navigation.settings'),
+          }}
+        />
+      </Drawer.Navigator>
+      <BottomNavbar />
+    </>
   )
 }
 

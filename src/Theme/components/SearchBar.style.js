@@ -1,14 +1,15 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Gutters, Colors, Layout } = props
+  const { Gutters, Colors, Layout, Fonts } = props
 
   return StyleSheet.create({
     inputWrapper: {
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.secondary,
       borderWidth: 1,
       borderColor: Colors.grey,
-      height: 55,
+      height: hp(6),
       borderRadius: 10,
       ...Gutters.smallVMargin,
       ...Gutters.smallVPadding,
@@ -21,7 +22,7 @@ export default function (props) {
       ...Layout.colCenter,
       ...Gutters.regularLMargin,
     },
-    inputText: { color: Colors.grey },
+    inputText: { ...Fonts.textSmall, color: Colors.grey },
     filterButton: {
       ...Gutters.smallVMargin,
       ...Gutters.smallVPadding,

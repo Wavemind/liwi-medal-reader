@@ -9,18 +9,15 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Study, QuestionInfo } from '@/Components'
+import { Study, QuestionInfo, Emergency } from '@/Components'
 
-const IndexModalContainer = props => {
+const IndexModalContainer = ({ navigation, route }) => {
   const { t } = useTranslation()
 
   // Props deconstruction
   const {
-    navigation,
-    route: {
-      params: { type },
-    },
-  } = props
+    params: { type },
+  } = route
 
   /**
    * Returns the correct modal content depending on the modal type
@@ -32,6 +29,8 @@ const IndexModalContainer = props => {
         return <Study />
       case 'question':
         return <QuestionInfo />
+      case 'emergency':
+        return <Emergency />
       default:
         return null
     }

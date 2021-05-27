@@ -10,10 +10,7 @@ import CheckBox from '@react-native-community/checkbox'
  */
 import { useTheme } from '@/Theme'
 
-const Checkbox = props => {
-  // Props deconstruction
-  const { content, disabled } = props
-
+const Checkbox = ({ label, disabled }) => {
   // Theme and style elements deconstruction
   const {
     Components: { checkbox },
@@ -33,7 +30,7 @@ const Checkbox = props => {
         style={checkbox.checkbox}
         tintColors={checkbox.tintColors(disabled)}
       />
-      <Text style={checkbox.label(disabled)}>{content}</Text>
+      <Text style={checkbox.label(disabled)}>{label}</Text>
     </TouchableOpacity>
   )
 }

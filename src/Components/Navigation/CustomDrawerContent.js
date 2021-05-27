@@ -14,6 +14,7 @@ import { useTheme } from '@/Theme'
 import { Icon, CustomDrawerItem } from '@/Components'
 import { navigateNestedAndSimpleReset } from '@/Navigators/Root'
 import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
+import MedicalCaseDrawer from './MedicalCase/Drawer/Drawer'
 
 const CustomDrawerContent = props => {
   // Props deconstruction
@@ -37,84 +38,90 @@ const CustomDrawerContent = props => {
   }
 
   return (
-    <View style={[Layout.fill]}>
-      <DrawerContentScrollView>
-        <View style={[customDrawerContent.closeWrapper]}>
-          <TouchableOpacity onPress={() => navigation.closeDrawer()}>
-            <Icon name={'close'} />
-          </TouchableOpacity>
+    <View style={[Layout.fill, Layout.row]}>
+      <View style={customDrawerContent.wrapper}>
+        <DrawerContentScrollView contentContainerStyle={Layout.fill}>
+          <View style={customDrawerContent.closeWrapper}>
+            <TouchableOpacity onPress={() => navigation.closeDrawer()}>
+              <Icon name="close" />
+            </TouchableOpacity>
+          </View>
+          <CustomDrawerItem
+            label={t('navigation.home')}
+            routeName="Home"
+            iconName="home"
+            {...props}
+          />
+          <CustomDrawerItem
+            label={t('navigation.scan_qr_code')}
+            routeName="Scan"
+            iconName="qr-scan"
+            {...props}
+          />
+          <CustomDrawerItem
+            label={t('navigation.consultations')}
+            routeName="Consultations"
+            iconName="consultation"
+            {...props}
+          />
+          <CustomDrawerItem
+            label={t('navigation.patient_list')}
+            routeName="PatientList"
+            iconName="patient-list"
+            {...props}
+          />
+          <CustomDrawerItem
+            label={t('navigation.consent_files')}
+            routeName="TODO"
+            iconName="consent-file"
+            {...props}
+          />
+          <CustomDrawerItem
+            label={t('navigation.current_consultation')}
+            routeName="StageWrapper"
+            routeParams={{ stageIndex: 0 }}
+            iconName="summary"
+            {...props}
+          />
+        </DrawerContentScrollView>
+
+        <View>
+          <View style={customDrawerContent.separator} />
+          <CustomDrawerItem
+            label={t('navigation.settings')}
+            routeName="Settings"
+            iconName="settings"
+            {...props}
+          />
+          <View style={customDrawerContent.separator} />
+          <CustomDrawerItem
+            label={t('navigation.about')}
+            routeName="InfoModal"
+            routeParams={{ type: 'study' }}
+            iconName="about"
+            {...props}
+          />
+          <View style={customDrawerContent.separator} />
+          <CustomDrawerItem
+            label={t('navigation.synchronize')}
+            routeName="Synchronization"
+            iconName="synchronize"
+            {...props}
+          />
+          <View style={customDrawerContent.separator} />
+
+          <DrawerItem
+            label={() => (
+              <Text style={[Fonts.textRegular, Fonts.textUppercase]}>
+                {t('navigation.logout')}
+              </Text>
+            )}
+            icon={() => <Icon name="logout" />}
+            onPress={() => handleLogout()}
+          />
         </View>
-        <CustomDrawerItem
-          label={t('navigation.home')}
-          routeName={'Home'}
-          iconName={'home'}
-          {...props}
-        />
-        <CustomDrawerItem
-          label={t('navigation.scan_qr_code')}
-          routeName={'Scan'}
-          iconName={'qr-scan'}
-          {...props}
-        />
-        <CustomDrawerItem
-          label={t('navigation.consultations')}
-          routeName={'TODO'}
-          iconName={'consult'}
-          {...props}
-        />
-        <CustomDrawerItem
-          label={t('navigation.patient_list')}
-          routeName={'PatientList'}
-          iconName={'patient-list'}
-          {...props}
-        />
-        <CustomDrawerItem
-          label={t('navigation.consent_files')}
-          routeName={'TODO'}
-          iconName={'consent-file'}
-          {...props}
-        />
-        <CustomDrawerItem
-          label={t('navigation.current_consultation')}
-          routeName={'TODO'}
-          iconName={'summary'}
-          {...props}
-        />
-      </DrawerContentScrollView>
-
-      <View>
-        <View style={[customDrawerContent.separator]} />
-        <CustomDrawerItem
-          label={t('navigation.settings')}
-          routeName={'Settings'}
-          iconName={'settings'}
-          {...props}
-        />
-        <View style={[customDrawerContent.separator]} />
-        <CustomDrawerItem
-          label={t('navigation.about')}
-          routeName={'InfoModal'}
-          routeParams={{ type: 'study' }}
-          iconName={'about'}
-          {...props}
-        />
-        <View style={[customDrawerContent.separator]} />
-        <CustomDrawerItem
-          label={t('navigation.synchronize')}
-          routeName={'TODO'}
-          iconName={'synchronize'}
-          {...props}
-        />
-        <View style={[customDrawerContent.separator]} />
-
-        <DrawerItem
-          label={() => (
-            <Text style={[Fonts.textUppercase]}>{t('navigation.logout')}</Text>
-          )}
-          icon={() => <Icon name={'logout'} />}
-          onPress={() => handleLogout()}
-        />
       </View>
+      <MedicalCaseDrawer />
     </View>
   )
 }

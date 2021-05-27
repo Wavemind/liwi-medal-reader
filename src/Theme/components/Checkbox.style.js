@@ -1,18 +1,20 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors } = props
+  const { Colors, Layout, Gutters, Fonts } = props
 
   return StyleSheet.create({
     checkboxContainer: {
-      flexDirection: 'row',
-      marginBottom: 20,
+      ...Layout.row,
+      ...Gutters.regularBMargin,
     },
     checkbox: {
       alignSelf: 'center',
     },
     label: disabled => ({
-      margin: 8,
+      ...Gutters.smallHMargin,
+      ...Gutters.smallVMargin,
+      ...Fonts.textSmall,
       color: disabled ? Colors.text : Colors.primary,
       opacity: disabled ? 0.3 : 1,
     }),

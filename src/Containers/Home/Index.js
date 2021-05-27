@@ -26,6 +26,7 @@ const IndexHomeContainer = props => {
     Containers: { home, global },
     Layout,
     Gutters,
+    Colors,
   } = useTheme()
 
   // Define references
@@ -66,13 +67,13 @@ const IndexHomeContainer = props => {
     console.log('TODO: load more')
     setData(data.concat([11, 12, 13, 14, 15]))
   }
-
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <View style={home.buttonsWrapper}>
         <SquareButton
           label={t('navigation.scan_qr_code')}
           icon="qr-scan"
+          big
           onPress={() => navigation.navigate('Scan')}
           filled
         />
@@ -81,14 +82,18 @@ const IndexHomeContainer = props => {
             <SquareButton
               label={t('navigation.patient_list')}
               icon="patient-list"
+              big
+              bgColor={Colors.secondary}
               onPress={() => navigation.navigate('PatientList')}
             />
           </View>
           <View style={home.consultationsButton}>
             <SquareButton
               label={t('navigation.consultations')}
-              icon="consult"
-              onPress={() => navigation.navigate('TODO')}
+              icon="consultation"
+              big
+              bgColor={Colors.secondary}
+              onPress={() => navigation.navigate('Consultations')}
             />
           </View>
         </View>

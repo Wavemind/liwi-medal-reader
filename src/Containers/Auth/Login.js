@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { isFulfilled } from '@reduxjs/toolkit'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 /**
  * The internal imports
@@ -99,7 +100,7 @@ const LoginAuthContainer = () => {
   return (
     <KeyboardAvoidingView
       behavior="height"
-      keyboardVerticalOffset={50}
+      keyboardVerticalOffset={Math.round(heightPercentageToDP(40))}
       style={global.wrapper}
     >
       <Animated.View style={global.animation(fadeAnim)}>
@@ -112,7 +113,6 @@ const LoginAuthContainer = () => {
             <Text style={auth.errorMessage}>{registerError.message}</Text>
           )}
         </View>
-
         <View style={authLogin.formWrapper}>
           <TextInput
             style={authLogin.input}
@@ -145,9 +145,7 @@ const LoginAuthContainer = () => {
           </View>
         </View>
 
-        <View style={authLogin.loaderContainer}>
-          {loading && <Loader height={100} />}
-        </View>
+        <View style={authLogin.loaderContainer}>{loading && <Loader />}</View>
 
         <SafeAreaView>
           <View style={auth.themeToggleWrapper}>
