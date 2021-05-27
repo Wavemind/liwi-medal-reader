@@ -24,6 +24,7 @@ const CustomDrawerItem = ({
   const {
     Components: { customDrawerItem },
     Colors,
+    FontSize,
   } = useTheme()
 
   return (
@@ -45,6 +46,7 @@ const CustomDrawerItem = ({
       icon={({ focused }) => (
         <Icon
           name={iconName}
+          size={FontSize.drawerIcon}
           color={focused ? Colors.secondary : Colors.primary}
         />
       )}

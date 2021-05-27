@@ -10,7 +10,7 @@ import { hp } from '@/Theme/Responsive'
  * Colors
  */
 export const Colors = {
-  primary: '#1f1f1f',
+  primary: '#000',
   secondary: '#ffffff',
   red: '#d20730',
   grey: '#6f6f6f',
@@ -28,12 +28,14 @@ export const NavigationColors = {
  * FontSize
  */
 export const FontSize = {
+  drawer: hp(1.4),
   tiny: hp(1.5),
   small: hp(1.7),
   medium: hp(1.8),
   regular: hp(2.2),
   sectionHeader: hp(2.6),
   large: hp(3.5),
+  drawerIcon: hp(4.6),
   huge: hp(6.6),
 }
 

@@ -18,7 +18,6 @@ const DrawerItem = () => {
   const {
     Components: { medicalCaseDrawer },
     Layout,
-    Colors,
   } = useTheme()
 
   return (
@@ -27,7 +26,7 @@ const DrawerItem = () => {
         <Text style={medicalCaseDrawer.textHeader}>
           {t('components.medical_case_drawer.current_medical_case')}
         </Text>
-        <View style={[Layout.rowCenter]}>
+        <View style={Layout.rowCenter}>
           <Text style={medicalCaseDrawer.textPatient}>Alain TODO</Text>
           <Text style={medicalCaseDrawer.textMonth}>X mois</Text>
         </View>

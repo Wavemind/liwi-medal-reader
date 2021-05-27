@@ -22,6 +22,11 @@ export default function ({ FontSize, Colors }) {
       color: Colors.secondary,
       fontFamily: 'ZeitungPro',
     },
+    textDrawer: {
+      fontSize: FontSize.drawer,
+      fontFamily: 'ZeitungPro',
+      textTransform: 'uppercase',
+    },
     textTiny: {
       fontSize: FontSize.tiny,
       fontFamily: 'ZeitungPro',

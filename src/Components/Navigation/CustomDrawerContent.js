@@ -112,7 +112,13 @@ const CustomDrawerContent = props => {
 
           <DrawerItem
             label={() => (
-              <Text style={[Fonts.textRegular, Fonts.textUppercase]}>
+              <Text
+                style={[
+                  Fonts.textColorText,
+                  Fonts.textUppercase,
+                  { marginLeft: 0, marginRight: 0 },
+                ]}
+              >
                 {t('navigation.logout')}
               </Text>
             )}

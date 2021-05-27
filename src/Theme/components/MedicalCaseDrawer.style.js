@@ -51,6 +51,7 @@ export default function (props) {
       borderBottomWidth: open ? 1 : 0,
     }),
     stageText: status => ({
+      ...Gutters.smallLMargin,
       ...Fonts.textUppercase,
       ...Fonts.textLeft,
       ...Layout.fill,
@@ -81,7 +82,8 @@ export default function (props) {
       ...Layout.center,
     },
     stepText: status => ({
-      ...Fonts.textSmall,
+      ...Fonts.textTiny,
+      ...Gutters.smallLMargin,
       color: status === 'notDone' ? Colors.grey : Colors.primary,
     }),
   })

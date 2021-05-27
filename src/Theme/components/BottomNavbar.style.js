@@ -8,6 +8,8 @@ export default function (props) {
     container: {
       display: 'flex',
       backgroundColor: Colors.secondary,
+      borderColor: Colors.grey,
+      borderTopWidth: 1,
       ...Layout.row,
     },
     emergencyContainer: {
