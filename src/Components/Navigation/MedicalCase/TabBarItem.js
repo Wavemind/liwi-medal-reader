@@ -20,7 +20,7 @@ const TabBarItem = ({ status, route, index, navigation }) => {
   } = useTheme()
 
   return (
-    <View style={Layout.fill}>
+    <View style={tabBar.itemWrapper}>
       <View style={Layout.row}>
         <TouchableOpacity
           onPress={() => navigation.navigate(route.name)}
@@ -34,7 +34,7 @@ const TabBarItem = ({ status, route, index, navigation }) => {
               name="right-arrow"
             />
           )}
-          <Text style={[tabBar.text(status)]}>
+          <Text style={tabBar.text(status)}>
             {t(`containers.medical_case.steps.${route.name}`)}
           </Text>
           {status === 'done' && <Icon size={FontSize.small} name="checked" />}

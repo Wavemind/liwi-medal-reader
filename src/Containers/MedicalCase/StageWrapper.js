@@ -28,8 +28,8 @@ const StageWrapper = ({ route }) => {
     <View style={medicalCase.wrapper}>
       <SideBar stageIndex={stageIndex} />
       <View style={medicalCase.medicalCaseWrapper}>
-        <View style={medicalCase.title}>
-          <Text style={medicalCase.titleText}>
+        <View style={medicalCase.titleWrapper}>
+          <Text style={medicalCase.title}>
             {t(`containers.medical_case.stages.${stage.label}`)}
           </Text>
         </View>

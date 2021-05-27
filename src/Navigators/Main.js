@@ -31,7 +31,7 @@ const MainNavigator = () => {
   return (
     <>
       <Drawer.Navigator
-        initialRouteName="Home"
+        initialRouteName="StageWrapper"
         drawerContent={props => <CustomDrawerContent {...props} />}
         drawerStyle={Layout.fullWidth}
         screenOptions={{
