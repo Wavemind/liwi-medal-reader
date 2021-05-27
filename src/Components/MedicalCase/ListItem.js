@@ -16,6 +16,7 @@ const ListItem = props => {
     Components: { patientListItem },
     Layout,
     Gutters,
+    Colors,
   } = useTheme()
 
   return (
@@ -24,11 +25,13 @@ const ListItem = props => {
       onPress={() => console.log('TODO')}
     >
       <View style={patientListItem.container}>
+        <View style={[Layout.column, Gutters.regularRMargin]}>
+          <Icon name="lock" size={30} color={Colors.red} />
+        </View>
         <View style={patientListItem.titleWrapper}>
           <Text style={patientListItem.title}>Quentin Girard</Text>
           <Text>02.03.1994</Text>
         </View>
-
         <View style={patientListItem.statusWrapper}>
           <Text style={patientListItem.statusTitle}>1st assessement</Text>
           <View style={Layout.row}>

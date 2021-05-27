@@ -45,7 +45,7 @@ const Item = ({ stage, index, status }) => {
         />
       </TouchableOpacity>
       {open && (
-        <View style={[medicalCaseDrawer.stepsWrapper]}>
+        <View style={medicalCaseDrawer.stepsWrapper}>
           {stage.steps.map((step, stepIndex) => (
             <View style={Layout.rowCenter}>
               <View style={medicalCaseDrawer.dotWrapper}>

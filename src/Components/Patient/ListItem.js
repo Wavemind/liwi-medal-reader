@@ -34,7 +34,7 @@ const ListItem = props => {
         </View>
         <View style={patientListItem.statusWrapper}>
           <Text style={patientListItem.statusTitle}>1st assessement</Text>
-          <View style={[Layout.row]}>
+          <View style={Layout.row}>
             <Icon
               name="registration"
               size={30}
