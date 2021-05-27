@@ -24,7 +24,7 @@ export default function (props) {
     },
     leftScan: {
       height: wp(65),
-      width: v(100),
+      width: wp(100),
       backgroundColor: 'rgba(0,0,0,0.5)',
     },
     centerScan: {

@@ -21,7 +21,7 @@ const ClinicianSelectionAuthContainer = props => {
   const { t } = useTranslation()
   const {
     Layout,
-    Containers: { auth, global },
+    Containers: { auth, global, authClinicianSelection },
   } = useTheme()
   const dispatch = useDispatch()
 
@@ -30,6 +30,9 @@ const ClinicianSelectionAuthContainer = props => {
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithmUpdated = useSelector(state => state.algorithm.item.updated)
 
+  /**
+   * Store new emergency content
+   */
   const newEmergencyContent = async () => {
     const targetPath = `${DocumentDirectoryPath}/emergency_content.html`
     const emergencyContent = await readFile(targetPath)
@@ -52,12 +55,12 @@ const ClinicianSelectionAuthContainer = props => {
   }, [algorithmUpdated])
 
   return (
-    <ScrollView contentContainerStyle={[Layout.grow]}>
+    <ScrollView contentContainerStyle={Layout.grow}>
       <Animated.View
         style={[Layout.fill, global.animation(fadeAnim), global.wrapper]}
       >
         <Text style={auth.header}>{healthFacility.name}</Text>
-        <View style={[Layout.fill, Layout.left]}>
+        <View style={authClinicianSelection.wrapper}>
           {healthFacility.medical_staffs.map(clinician => (
             <Clinician key={clinician.id} currentClinician={clinician} />
           ))}

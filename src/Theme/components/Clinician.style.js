@@ -5,7 +5,7 @@ export default function (props) {
 
   return StyleSheet.create({
     buttonWrapper: {
-      ...Gutters.regularVMargin,
+      ...Gutters.smallVMargin,
       ...Gutters.regularVPadding,
       ...Gutters.regularHPadding,
       backgroundColor: Colors.secondary,
