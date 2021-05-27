@@ -17,6 +17,7 @@ const ListItem = props => {
     Layout,
     Gutters,
     Colors,
+    FontSize,
   } = useTheme()
 
   return (
@@ -26,7 +27,7 @@ const ListItem = props => {
     >
       <View style={patientListItem.container}>
         <View style={[Layout.column, Gutters.regularRMargin]}>
-          <Icon name="lock" size={30} color={Colors.red} />
+          <Icon name="lock" size={FontSize.large} color={Colors.red} />
         </View>
         <View style={patientListItem.titleWrapper}>
           <Text style={patientListItem.title}>Quentin Girard</Text>
@@ -37,29 +38,33 @@ const ListItem = props => {
           <View style={Layout.row}>
             <Icon
               name="registration"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
             <Icon
               name="assessment"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(true)}
             />
             <Icon
               name="consultation"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
-            <Icon name="tests" size={30} style={patientListItem.icon(false)} />
+            <Icon
+              name="tests"
+              size={FontSize.large}
+              style={patientListItem.icon(false)}
+            />
             <Icon
               name="diagnosis"
-              size={30}
+              size={FontSize.large}
               style={patientListItem.icon(false)}
             />
           </View>
         </View>
         <View style={[Gutters.regularLMargin, Layout.column]}>
-          <Icon name="right-arrow" size={25} />
+          <Icon name="right-arrow" size={FontSize.large} />
         </View>
       </View>
     </TouchableOpacity>

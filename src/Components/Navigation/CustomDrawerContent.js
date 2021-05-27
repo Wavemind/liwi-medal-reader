@@ -26,7 +26,6 @@ const CustomDrawerContent = props => {
   const {
     Components: { customDrawerContent },
     Layout,
-    Fonts,
   } = useTheme()
 
   const algorithm = useSelector(state => state.algorithm.item)
@@ -116,13 +115,7 @@ const CustomDrawerContent = props => {
 
           <DrawerItem
             label={() => (
-              <Text
-                style={[
-                  Fonts.textColorText,
-                  Fonts.textUppercase,
-                  { marginLeft: 0, marginRight: 0 },
-                ]}
-              >
+              <Text style={customDrawerContent.logout}>
                 {t('navigation.logout')}
               </Text>
             )}

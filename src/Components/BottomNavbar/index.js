@@ -22,7 +22,6 @@ const BottomNavbar = props => {
   // Theme and style elements deconstruction
   const {
     Components: { bottomNavbar },
-    Layout,
   } = useTheme()
 
   /**
@@ -53,7 +52,7 @@ const BottomNavbar = props => {
     <View style={bottomNavbar.container}>
       <View style={bottomNavbar.emergencyContainer}>
         <TouchableOpacity
-          style={[bottomNavbar.emergencyWrapper, Layout.center]}
+          style={bottomNavbar.emergencyWrapper}
           onPress={() =>
             navigation.navigate('InfoModal', { type: 'emergency' })
           }

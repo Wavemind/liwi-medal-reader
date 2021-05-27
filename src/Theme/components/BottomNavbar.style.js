@@ -24,6 +24,7 @@ export default function (props) {
       width: hp(5.5),
       backgroundColor: Colors.red,
       ...Layout.row,
+      ...Layout.center,
     },
     emergency: {
       fontSize: FontSize.large,
