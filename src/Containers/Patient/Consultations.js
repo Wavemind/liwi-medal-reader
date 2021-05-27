@@ -20,7 +20,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
   const { t } = useTranslation()
 
   const {
-    Containers: { patientConsultation },
+    Containers: {},
     Gutters,
   } = useTheme()
 

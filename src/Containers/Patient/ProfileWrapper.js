@@ -23,7 +23,7 @@ const ProfileWrapperPatientContainer = props => {
   const { Layout } = useTheme()
 
   return (
-    <View style={[Layout.fill]}>
+    <View style={Layout.fill}>
       <Tab.Navigator
         tabBarOptions={{ scrollEnabled: true }}
         tabBar={tabProps => <PatientTabBar {...tabProps} />}
