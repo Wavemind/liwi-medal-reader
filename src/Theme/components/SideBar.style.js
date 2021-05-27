@@ -1,13 +1,10 @@
 import { StyleSheet } from 'react-native'
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-} from 'react-native-responsive-screen'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, FontSize, Gutters, Fonts } = props
 
-  const roundSize = Math.round(heightPercentageToDP(3.3))
+  const roundSize = hp(3.3)
   return StyleSheet.create({
     circle: (status, thinLines) => ({
       width: roundSize,
@@ -31,13 +28,9 @@ export default function (props) {
           : status === 'notDone'
           ? Colors.grey
           : Colors.primary,
-      height: thinLines
-        ? Math.round(heightPercentageToDP(2.2))
-        : Math.round(heightPercentageToDP(1.1)),
+      height: thinLines ? hp(2.2) : hp(1.1),
+      width: thinLines ? wp(0.3) : wp(0.6),
       ...(thinLines ? null : Gutters.tinyVMargin),
-      width: thinLines
-        ? Math.round(widthPercentageToDP(0.3))
-        : Math.round(widthPercentageToDP(0.6)),
     }),
     circleHitBox: {
       height: roundSize,
@@ -54,7 +47,7 @@ export default function (props) {
     barItem: status => ({
       backgroundColor: status === 'current' ? Colors.primary : Colors.secondary,
       display: 'flex',
-      width: Math.round(widthPercentageToDP(9.1)),
+      width: wp(9.1),
       ...Gutters.smallVPadding,
       ...Layout.center,
     }),

@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP } from 'react-native-responsive-screen'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Fonts } = props
 
-  const circleRadius = Math.round(heightPercentageToDP(1.7))
+  const circleRadius = hp(1.7)
 
   return StyleSheet.create({
     outerCircle: {

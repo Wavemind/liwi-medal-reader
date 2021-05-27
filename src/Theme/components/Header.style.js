@@ -5,13 +5,14 @@ export default function (props) {
 
   return StyleSheet.create({
     wrapper: {
-      ...Gutters.smallVPadding,
+      ...Gutters.regularVPadding,
       ...Gutters.smallHPadding,
       ...Layout.row,
       elevation: 5,
       backgroundColor: Colors.secondary,
     },
     menu: {
+      height: 35,
       ...Layout.colCenter,
     },
     titleWrapper: {
@@ -23,6 +24,7 @@ export default function (props) {
     },
     connectionStatusWrapper: {
       ...Layout.fill,
+      ...Layout.colCenter,
       ...Layout.alignItemsEnd,
     },
   })

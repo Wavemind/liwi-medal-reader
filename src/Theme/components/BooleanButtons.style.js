@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Gutters, Layout, Fonts } = props
@@ -22,7 +22,7 @@ export default function (props) {
     buttonsWrapper: {
       ...Layout.justifyContentAround,
       ...Layout.row,
-      width: Math.round(widthPercentageToDP(33.3)),
+      width: wp(33.3),
     },
     buttonWrapper: (side, active, disabled) => ({
       ...Layout.fill,

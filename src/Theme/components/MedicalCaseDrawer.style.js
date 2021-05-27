@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Fonts, Gutters, Layout, Colors } = props
@@ -6,7 +7,7 @@ export default function (props) {
   return StyleSheet.create({
     header: {
       backgroundColor: Colors.grey,
-      ...Layout.fill,
+      flexBasis: hp(13),
       ...Layout.center,
     },
     textHeader: {
@@ -34,21 +35,22 @@ export default function (props) {
       ...Layout.rowHCenter,
       ...Layout.justifyContentBetween,
       ...Gutters.smallHPadding,
-      ...Gutters.regularVPadding,
+      ...Gutters.smallVPadding,
       backgroundColor:
         status === 'current'
           ? Colors.primary
           : status === 'notDone'
           ? Colors.lightGrey
           : Colors.secondary,
-      borderColor: Colors.black,
+      borderColor: Colors.grey,
       borderTopWidth: 1,
       borderBottomWidth: open ? 1 : 0,
     }),
     stageText: status => ({
-      ...Fonts.textRegular,
-      ...Fonts.textBold,
       ...Fonts.textUppercase,
+      ...Fonts.textLeft,
+      ...Layout.fill,
+      ...Fonts.textBold,
       color:
         status === 'current'
           ? Colors.secondary
@@ -75,7 +77,7 @@ export default function (props) {
       ...Layout.center,
     },
     stepText: status => ({
-      ...Fonts.textRegular,
+      ...Fonts.textSmall,
       color: status === 'notDone' ? Colors.grey : Colors.primary,
     }),
   })

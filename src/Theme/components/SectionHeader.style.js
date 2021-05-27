@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -13,7 +13,7 @@ export default function (props) {
       ...Layout.selfCenter,
       backgroundColor: Colors.text,
       height: 2,
-      width: Math.round(widthPercentageToDP(8.2)),
+      width: wp(8.2),
     },
     label: {
       ...Fonts.textSectionHeader,

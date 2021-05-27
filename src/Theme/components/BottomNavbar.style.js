@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP } from 'react-native-responsive-screen'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, FontSize, Gutters, Layout } = props
@@ -19,9 +19,9 @@ export default function (props) {
       ...Gutters.tinyVPadding,
       ...Gutters.tinyHPadding,
       display: 'flex',
-      borderRadius: Math.round(heightPercentageToDP(4.8)),
-      height: Math.round(heightPercentageToDP(4.8)),
-      width: Math.round(heightPercentageToDP(4.8)),
+      borderRadius: hp(4.8),
+      height: hp(4.8),
+      width: hp(4.8),
       backgroundColor: Colors.red,
       ...Layout.row,
     },

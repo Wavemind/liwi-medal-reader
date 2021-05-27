@@ -8,7 +8,6 @@ export default function (props) {
       ...Fonts.textUppercase,
       ...Fonts.titleLarge,
       ...Fonts.textCenter,
-      ...Gutters.largeBMargin,
     },
     errorMessage: {
       ...Fonts.textRegular,

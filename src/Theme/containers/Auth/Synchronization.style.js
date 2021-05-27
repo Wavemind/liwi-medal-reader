@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP } from 'react-native-responsive-screen'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Layout, Gutters } = props
@@ -13,12 +13,12 @@ export default function (props) {
       ...Layout.center,
     },
     errorMessageWrapper: {
-      height: Math.round(heightPercentageToDP(22)),
+      height: hp(22),
       ...Gutters.largeTMargin,
       ...Layout.center,
     },
     descriptionWrapper: {
-      height: Math.round(heightPercentageToDP(11)),
+      height: hp(11),
       ...Gutters.largeTMargin,
       ...Gutters.regularBMargin,
       ...Layout.center,
