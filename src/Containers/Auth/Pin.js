@@ -7,6 +7,7 @@ import { View, Text, Animated, KeyboardAvoidingView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 import { useTranslation } from 'react-i18next'
+import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 /**
  * The internal imports
@@ -17,10 +18,11 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { ToggleSwitchDarkMode, Loader } from '@/Components'
 
-const PinAuthContainer = () => {
+const PinAuthContainer = props => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
+    Colors,
     Containers: { auth, authPin, global },
   } = useTheme()
 
@@ -91,7 +93,7 @@ const PinAuthContainer = () => {
             pinStatus={status}
             titleComponent={() =>
               algorithmFetchOneLoading ? (
-                <Loader height={100} />
+                <Loader height={Math.round(heightPercentageToDP(11))} />
               ) : (
                 <Text style={authPin.title}>
                   {t('containers.auth.pin.unlock')}
@@ -100,20 +102,16 @@ const PinAuthContainer = () => {
             }
             storedPin={healthFacility.pin_code}
             buttonDeleteText={t('containers.auth.pin.delete')}
-            colorCircleButtons="#757575"
-            colorPassword="#db473e"
-            stylePinCodeButtonNumber="#FFF"
-            numbersButtonOverlayColor="#db473e"
-            stylePinCodeDeleteButtonColorShowUnderlay="#db473e"
-            stylePinCodeDeleteButtonColorHideUnderlay="#757575"
-            stylePinCodeColorTitle="#db473e"
-            stylePinCodeDeleteButtonSize={35}
+            colorCircleButtons={Colors.grey}
+            colorPassword={Colors.red}
+            stylePinCodeButtonNumber={Colors.secondary}
+            numbersButtonOverlayColor={Colors.red}
+            stylePinCodeDeleteButtonColorShowUnderlay={Colors.red}
+            stylePinCodeDeleteButtonColorHideUnderlay={Colors.grey}
+            stylePinCodeColorTitle={Colors.red}
+            stylePinCodeDeleteButtonSize={Math.round(heightPercentageToDP(3.8))}
             stylePinCodeDeleteButtonText={authPin.delete}
             stylePinCodeRowButtons={authPin.codeButtons}
-            stylePinCodeColumnButtons={{}}
-            stylePinCodeMainContainer={{}}
-            stylePinCodeColumnDeleteButton={{}}
-            stylePinCodeButtonCircle={{}}
           />
         </View>
 

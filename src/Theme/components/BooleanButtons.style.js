@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Gutters, Layout, Fonts } = props
@@ -11,8 +12,8 @@ export default function (props) {
       ...Layout.fullWidth,
       ...Layout.alignItemsCenter,
       borderBottomWidth: 1,
-      borderBottomColor: 'lightgrey',
-      backgroundColor: warning ? '#FDE7E8' : 'transparent',
+      borderBottomColor: Colors.grey,
+      backgroundColor: warning ? Colors.secondary : Colors.transparent,
     }),
     label: warning => ({
       ...Fonts.textRegular,
@@ -21,7 +22,7 @@ export default function (props) {
     buttonsWrapper: {
       ...Layout.justifyContentAround,
       ...Layout.row,
-      width: 200,
+      width: wp(33.3),
     },
     buttonWrapper: (side, active, disabled) => ({
       ...Layout.fill,
@@ -32,7 +33,7 @@ export default function (props) {
       borderBottomRightRadius: side === 'right' ? 20 : 0,
       borderTopRightRadius: side === 'right' ? 20 : 0,
       borderRightWidth: side === 'left' ? 1 : 0,
-      borderRightColor: side === 'left' ? 'lightgrey' : 'transparent',
+      borderRightColor: side === 'left' ? Colors.grey : Colors.transparent,
     }),
     buttonText: active => ({
       ...Gutters.smallVPadding,

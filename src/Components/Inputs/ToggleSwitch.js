@@ -9,10 +9,7 @@ import { Text, View, Switch } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 
-const ToggleSwitch = props => {
-  // Props deconstruction
-  const { label, handleToggle, value } = props
-
+const ToggleSwitch = ({ label, handleToggle, value }) => {
   // Theme and style elements deconstruction
   const {
     Components: { squareSelect },
@@ -24,8 +21,8 @@ const ToggleSwitch = props => {
       <Text style={squareSelect.label}>{label}</Text>
       <View style={squareSelect.pickerContainer}>
         <Switch
-          trackColor={{ false: '#767577', true: '#f4f3f4' }}
-          thumbColor={value ? Colors.primary : '#f4f3f4'}
+          trackColor={{ false: Colors.grey, true: Colors.secondary }}
+          thumbColor={value ? Colors.primary : Colors.secondary}
           onValueChange={handleToggle}
           value={value}
         />

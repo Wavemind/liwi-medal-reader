@@ -39,14 +39,14 @@ export default function (props) {
     }),
     outlined: (disabled, color, align, big) => ({
       ...base(disabled, big),
-      backgroundColor: color !== null ? color : 'transparent',
+      backgroundColor: color !== null ? color : Colors.transparent,
       borderWidth: 1,
-      borderColor: Colors.buttonGrey,
+      borderColor: Colors.grey,
       ...(align !== null ? align : Layout.center),
     }),
     outlinedText: color => ({
       ...baseText,
-      color: color !== null ? color : Colors.buttonGrey,
+      color: color !== null ? color : Colors.primary,
     }),
     iconLeft: big => ({
       ...(big ? Gutters.smallRMargin : null),

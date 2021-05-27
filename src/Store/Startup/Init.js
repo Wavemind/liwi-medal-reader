@@ -4,18 +4,17 @@ import {
   buildAsyncActions,
   buildAsyncReducers,
 } from '@thecodingmachine/redux-toolkit-wrapper'
+import { DocumentDirectoryPath, exists, readFile } from 'react-native-fs'
 import i18n from '@/Translations'
 
 import { navigateAndSimpleReset, navigateAndReset } from '@/Navigators/Root'
 import DefaultTheme from '@/Store/Theme/DefaultTheme'
+import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
 import { store } from '@/Store'
 
 export default {
   initialState: buildAsyncState(),
   action: buildAsyncActions('startup/init', async (args, { dispatch }) => {
-    // Timeout to fake waiting some process
-    // Remove it, or keep it if you want display a beautiful splash screen ;)
-    await new Promise(resolve => setTimeout(resolve, 1500))
     const state = store.getState()
 
     // Set default language
@@ -25,13 +24,25 @@ export default {
     // Set default theme
     await dispatch(DefaultTheme.action({ theme: 'default', darkMode: null }))
 
+    // Set emergency content
+    const targetPath = `${DocumentDirectoryPath}/emergency_content.html`
+    const fileExist = await exists(targetPath)
+    if (fileExist) {
+      const emergencyContent = await readFile(targetPath)
+      await dispatch(
+        ChangeEmergencyContent.action({
+          newContent: emergencyContent,
+        }),
+      )
+    }
+
     // Check auth status
     const isAuthenticated = state.user.item.hasOwnProperty('id')
     const deviceRegistered = state.device.item.hasOwnProperty('id')
-    const healthFacilityAssociated = state.healthFacility.item.hasOwnProperty(
-      'id',
-    )
-    const clinicianChoosed = state.healthFacility.clinician.hasOwnProperty('id')
+    const healthFacilityAssociated =
+      state.healthFacility.item.hasOwnProperty('id')
+    const clinicianSelected =
+      state.healthFacility.clinician.hasOwnProperty('id')
     let route = {}
 
     // Check whether the right permissions have been granted
@@ -50,7 +61,7 @@ export default {
             route = 'Auth'
           } else if (!healthFacilityAssociated) {
             route = 'Synchronization'
-          } else if (!clinicianChoosed) {
+          } else if (!clinicianSelected) {
             route = 'ClinicianSelection'
           } else {
             route = 'Pin'

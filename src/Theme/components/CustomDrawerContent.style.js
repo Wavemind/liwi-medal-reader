@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout } = props
+  const { Layout, Colors } = props
 
   return StyleSheet.create({
     closeWrapper: {
@@ -10,7 +10,7 @@ export default function (props) {
     },
     separator: {
       height: 1,
-      backgroundColor: '#CBCDD1',
+      backgroundColor: Colors.lightGrey,
     },
   })
 }

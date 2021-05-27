@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-function TabBarItem({ status, route, index, navigation }) {
+const TabBarItem = ({ status, route, index, navigation }) => {
   const { t } = useTranslation()
   const {
     Components: { tabBar },

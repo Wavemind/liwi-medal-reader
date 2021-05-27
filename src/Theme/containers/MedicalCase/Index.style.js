@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { FontSize, Colors } = props
+  const { Colors, Fonts, Gutters } = props
 
   return StyleSheet.create({
     wrapper: {
@@ -11,18 +12,19 @@ export default function (props) {
     },
     medicalCaseWrapper: { flex: 1, display: 'flex' },
     title: {
-      height: 40,
-      backgroundColor: Colors.black,
+      height: hp(4.4),
+      backgroundColor: Colors.primary,
       flexDirection: 'row',
       alignItems: 'center',
-      paddingLeft: 20,
+      ...Fonts.textSmall,
+      ...Gutters.regularLPadding,
     },
     titleText: {
-      color: '#fff',
-      textTransform: 'uppercase',
-      fontWeight: 'bold',
-      fontSize: FontSize.regular,
+      color: Colors.secondary,
+      ...Fonts.textUppercase,
+      ...Fonts.textBold,
+      ...Fonts.textRegular,
     },
-    tabBar: { width: 340 },
+    tabBar: { width: wp(56.6) },
   })
 }

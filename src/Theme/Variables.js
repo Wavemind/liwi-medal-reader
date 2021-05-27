@@ -1,3 +1,4 @@
+import { hp } from '@/Theme/Responsive'
 /**
  * This file contains the application's variables.
  *
@@ -9,19 +10,14 @@
  * Colors
  */
 export const Colors = {
-  // Example colors:
-  transparent: 'rgba(0,0,0,0)',
-  inputBackground: '#FFFFFF',
-  white: '#ffffff',
-  black: '#000000',
-  red: '#d20730',
-  buttonGrey: '#303030',
-  grey: '#6f6f6f',
-  text: '#212529',
-  primary: '#000000',
+  primary: '#1f1f1f',
   secondary: '#ffffff',
-  success: '#28a745',
-  error: '#dc3545',
+  red: '#d20730',
+  grey: '#6f6f6f',
+  warning: '#e27900',
+  lightGrey: '#f2f1ee',
+  transparent: 'rgba(0,0,0,0)',
+  text: '#121212',
 }
 
 export const NavigationColors = {
@@ -32,22 +28,23 @@ export const NavigationColors = {
  * FontSize
  */
 export const FontSize = {
-  small: 16,
-  medium: 17,
-  regular: 20,
-  sectionHeader: 24,
-  large: 40,
-  huge: 60,
+  tiny: hp(1.5),
+  small: hp(1.7),
+  medium: hp(1.8),
+  regular: hp(2.2),
+  sectionHeader: hp(2.6),
+  large: hp(3.5),
+  huge: hp(6.6),
 }
 
 /**
  * Metrics Sizes
  */
-const tiny = 5 // 10
-const small = tiny * 2 // 10
-const regular = tiny * 3 // 15
-const large = regular * 3 // 45
-const huge = large * 2 // 90
+const tiny = hp(0.6)
+const small = tiny * 2
+const regular = tiny * 3
+const large = regular * 3
+const huge = large * 2
 export const MetricsSizes = {
   tiny,
   small,

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Gutters, Fonts } = props
@@ -12,7 +13,7 @@ export default function (props) {
       ...Layout.selfCenter,
       backgroundColor: Colors.text,
       height: 2,
-      width: 50,
+      width: wp(8.2),
     },
     label: {
       ...Fonts.textSectionHeader,

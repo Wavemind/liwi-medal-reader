@@ -1,19 +1,18 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, FontSize, Layout, Fonts, Gutters } = props
+  const { Colors, Layout, Fonts, Gutters } = props
 
   return StyleSheet.create({
     focused: {
-      borderBottomColor: Colors.black,
+      borderBottomColor: Colors.primary,
       borderBottomWidth: 5,
       ...Gutters.smallHMargin,
     },
     text: status => ({
-      color: status === 'toDo' ? Colors.grey : Colors.black,
-      marginHorizontal: 10,
-      fontSize: FontSize.tiny,
-      fontWeight: status === 'current' ? 'bold' : 'normal',
+      color: status === 'toDo' ? Colors.grey : Colors.primary,
+      ...Fonts.textTiny,
+      fontFamily: status === 'current' ? 'ZeitungPro-Bold' : 'ZeitungPro',
       borderBottomColor:
         status === 'current' ? Colors.primary : Colors.secondary,
       borderBottomWidth: 5,

@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Layout, Fonts } = props
 
-  const circleRadius = 16
+  const circleRadius = hp(1.7)
 
   return StyleSheet.create({
     outerCircle: {
@@ -17,7 +18,7 @@ export default function (props) {
     innerText: {
       ...Fonts.textSmall,
       color: Colors.primary,
-      fontWeight: 'bold',
+      ...Fonts.textBold,
     },
   })
 }

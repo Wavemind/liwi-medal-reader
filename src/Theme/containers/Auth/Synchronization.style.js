@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Layout, Gutters } = props
@@ -12,12 +13,12 @@ export default function (props) {
       ...Layout.center,
     },
     errorMessageWrapper: {
-      height: 200,
+      height: hp(22),
       ...Gutters.largeTMargin,
       ...Layout.center,
     },
     descriptionWrapper: {
-      height: 100,
+      height: hp(11),
       ...Gutters.largeTMargin,
       ...Gutters.regularBMargin,
       ...Layout.center,

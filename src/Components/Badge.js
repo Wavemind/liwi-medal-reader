@@ -10,9 +10,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const Badge = props => {
-  // Theme and style elements deconstruction
-  const { filterBy, value } = props
+const Badge = ({ filterBy, value }) => {
   const {
     Layout,
     FontSize,

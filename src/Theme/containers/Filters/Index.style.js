@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Layout, Fonts, Gutters } = props
+  const { Layout, Fonts, Gutters, Colors } = props
 
   return StyleSheet.create({
     wrapper: {
@@ -14,10 +14,10 @@ export default function (props) {
       ...Fonts.textUppercase,
       ...Fonts.textRegular,
       ...Fonts.textBold,
-      color: 'grey',
+      color: Colors.grey,
     },
     button: {
-      backgroundColor: 'red',
+      backgroundColor: Colors.red,
       borderRadius: 10,
       ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,

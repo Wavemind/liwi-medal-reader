@@ -1,21 +1,22 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Layout, Fonts, Colors, Gutters, Common } = props
+  const { Layout, Fonts, Colors, Gutters } = props
 
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
       ...Layout.col,
-      ...Common.backgroundWhite,
+      backgroundColor: Colors.secondary,
     },
     closeButton: {
       ...Layout.fullWidth,
-      ...Common.backgroundPrimary,
+      backgroundColor: Colors.primary,
       position: 'absolute',
       bottom: 0,
       left: 0,
-      height: '7%',
+      height: hp(7),
       zIndex: 2,
     },
     closeButtonText: {
@@ -28,7 +29,7 @@ export default function (props) {
     contentWrapper: {
       ...Gutters.smallHPadding,
       ...Gutters.smallTPadding,
-      height: '93%',
+      height: hp(93),
     },
   })
 }

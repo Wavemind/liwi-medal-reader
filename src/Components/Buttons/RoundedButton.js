@@ -3,12 +3,12 @@
  */
 import React from 'react'
 import { TouchableOpacity, Text, View } from 'react-native'
-import { Icon } from '@/Components'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { Icon } from '@/Components'
 
 const RoundedButton = props => {
   // Props deconstruction
