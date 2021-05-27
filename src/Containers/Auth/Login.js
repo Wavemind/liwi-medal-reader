@@ -98,11 +98,7 @@ const LoginAuthContainer = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior="height"
-      keyboardVerticalOffset={Math.round(heightPercentageToDP(40))}
-      style={global.wrapper}
-    >
+    <KeyboardAvoidingView behavior="height" style={global.wrapper}>
       <Animated.View style={global.animation(fadeAnim)}>
         <Text style={auth.header}>{t('containers.auth.login.title')}</Text>
         <View style={authLogin.errorMessageWrapper}>
