@@ -2,6 +2,7 @@ export default {
   actions: {
     continue: 'Continue',
     login: 'Login',
+    new_patient: 'New patient',
     search: 'Search',
     select: 'Select',
     synchronize: 'Synchronize',

@@ -1,6 +1,13 @@
+/**
+ * The external imports
+ */
 import React from 'react'
 import { View, Text } from 'react-native'
 
+/**
+ * The internal imports
+ */
+import { RegistrationMedicalCaseContainer } from '@/Containers'
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //
@@ -55,7 +62,7 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'registration',
-        component: ToDo,
+        component: RegistrationMedicalCaseContainer,
       },
     ],
   },

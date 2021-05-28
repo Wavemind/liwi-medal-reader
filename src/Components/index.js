@@ -1,5 +1,5 @@
 // INPUTS
-export { default as BooleanButtons } from './Inputs/BooleanButtons'
+export { default as Boolean } from './Inputs/Boolean'
 export { default as Select } from './Inputs/Select'
 export { default as SquareSelect } from './Inputs/SquareSelect'
 export { default as Checkbox } from './Inputs/Checkbox'

@@ -15,13 +15,15 @@ export default function (props) {
       borderBottomColor: Colors.grey,
       backgroundColor: warning ? Colors.secondary : Colors.transparent,
     }),
-    label: warning => ({
-      ...Fonts.textRegular,
+    text: warning => ({
+      ...Layout.fill,
+      ...Fonts.textSmall,
       color: warning ? Colors.primary : Colors.text,
     }),
     buttonsWrapper: {
       ...Layout.justifyContentAround,
       ...Layout.row,
+      ...Gutters.regularLMargin,
       width: wp(33.3),
     },
     buttonWrapper: (side, active, disabled) => ({

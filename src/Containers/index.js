@@ -7,6 +7,8 @@ export { default as ClinicianSelectionAuthContainer } from './Auth/ClinicianSele
 export { default as ListPatientContainer } from './Patient/List'
 
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
+export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
+export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Registration'
 
 export { default as ListConsentContainer } from './Consent/List'
 
@@ -18,5 +20,4 @@ export { default as IndexFiltersContainer } from './Filters/Index'
 export { default as IndexPermissionsRequiredContainer } from './PermissionsRequired/Index'
 export { default as IndexSettingsContainer } from './Settings/Index'
 export { default as IndexScanContainer } from './Scan/Index'
-export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
 export { default as IndexSynchronizationContainer } from './Synchronization/Index'

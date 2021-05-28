@@ -25,14 +25,14 @@ const Drawer = createDrawerNavigator()
 const MainNavigator = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
-  const clinician = useSelector(state => state.healthFacility.clinician)
-
   const { Layout } = useTheme()
+
+  const clinician = useSelector(state => state.healthFacility.clinician)
 
   return (
     <>
       <Drawer.Navigator
-        initialRouteName="Home"
+        initialRouteName="StageWrapper"
         drawerContent={props => <CustomDrawerContent {...props} />}
         drawerStyle={Layout.fullWidth}
         screenOptions={{
