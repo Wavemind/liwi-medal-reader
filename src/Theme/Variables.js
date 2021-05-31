@@ -10,7 +10,7 @@ import { hp } from '@/Theme/Responsive'
  * Colors
  */
 export const Colors = {
-  primary: '#000',
+  primary: '#000000',
   secondary: '#ffffff',
   red: '#d20730',
   grey: '#6f6f6f',
