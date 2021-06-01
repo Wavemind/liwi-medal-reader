@@ -135,6 +135,9 @@ export default {
           'No content is available. Please fill the study description in medAL-creator',
       },
     },
+    media: {
+      file_not_supported: 'File not supported',
+    },
   },
   device: {
     name: 'Name',

@@ -31,12 +31,19 @@ export { default as QuestionInfo } from './Modal/QuestionInfo'
 export { default as Study } from './Modal/Study'
 export { default as Emergency } from './Modal/Emergency'
 
+// Media
+export { default as Media } from './Media/Media'
+// export { default as Movie } from './Media/Movie'
+// export { default as Picture } from './Media/Picture'
+// export { default as Audio } from './Media/Audio'
+
 // Accordion
 export { default as Accordion } from './Accordion/Accordion'
 export { default as AccordionItem } from './Accordion/Item'
 
 // OTHER
 export { default as BottomNavbar } from './BottomNavbar'
+export { default as Question } from './Question'
 export { default as PatientListItem } from './Patient/ListItem'
 export { default as ConsentListItem } from './ConsentListItem'
 export { default as MedicalCaseListItem } from './MedicalCase/ListItem'

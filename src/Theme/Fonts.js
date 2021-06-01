@@ -67,6 +67,9 @@ export default function ({ FontSize, Colors }) {
     textBold: {
       fontFamily: 'ZeitungPro-Bold',
     },
+    textSemiBold: {
+      fontFamily: 'ZeitungPro-Semibold',
+    },
     textItalic: {
       fontStyle: 'italic',
     },

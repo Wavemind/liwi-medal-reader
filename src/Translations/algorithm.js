@@ -21,5 +21,5 @@ export const translate = (translation, language) => {
     return translation.en
   }
 
-  return
+  return ''
 }

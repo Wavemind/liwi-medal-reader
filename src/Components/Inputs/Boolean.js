@@ -11,7 +11,7 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 
-const Boolean = ({ question, warning = false, disabled = false }) => {
+const Boolean = ({ question, emergency, disabled = false }) => {
   // Theme and style elements deconstruction
   const {
     Components: { booleanButton },
@@ -24,52 +24,56 @@ const Boolean = ({ question, warning = false, disabled = false }) => {
   const yesAnswer = getYesAnswer(question)
   const noAnswer = getNoAnswer(question)
 
-  console.log(question)
+  /**
+   * Set node answer and handle emergency action
+   * @param {integer} answerId
+   */
+  const setAnswer = answerId => {
+    if (emergency && yesAnswer.id === answerId) {
+      console.log('TODO open emergency !')
+    }
+    setValue(answerId)
+  }
 
   return (
-    <View style={booleanButton.wrapper(warning)}>
-      <Text style={booleanButton.text(warning)}>
-        {translate(question.label)} {question.is_mandatory && '*'}
-      </Text>
-      <View style={booleanButton.buttonsWrapper}>
-        <View
-          key="booleanButton-left"
-          style={booleanButton.buttonWrapper(
-            'left',
-            value === yesAnswer.id,
-            disabled,
-          )}
+    <>
+      <View
+        key="booleanButton-left"
+        style={booleanButton.buttonWrapper(
+          'left',
+          value === yesAnswer.id,
+          disabled,
+        )}
+      >
+        <TouchableOpacity
+          style={Layout.center}
+          onPress={() => setAnswer(yesAnswer.id)}
+          disabled={disabled}
         >
-          <TouchableOpacity
-            style={Layout.center}
-            onPress={() => setValue(yesAnswer.id)}
-            disabled={disabled}
-          >
-            <Text style={booleanButton.buttonText(value === yesAnswer.id)}>
-              {translate(yesAnswer.label)}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          key="booleanButton-right"
-          style={booleanButton.buttonWrapper(
-            'right',
-            value === noAnswer.id,
-            disabled,
-          )}
-        >
-          <TouchableOpacity
-            style={Layout.center}
-            onPress={() => setValue(noAnswer.id)}
-            disabled={disabled}
-          >
-            <Text style={booleanButton.buttonText(value === noAnswer.id)}>
-              {translate(noAnswer.label)}
-            </Text>
-          </TouchableOpacity>
-        </View>
+          <Text style={booleanButton.buttonText(value === yesAnswer.id)}>
+            {translate(yesAnswer.label)}
+          </Text>
+        </TouchableOpacity>
       </View>
-    </View>
+      <View
+        key="booleanButton-right"
+        style={booleanButton.buttonWrapper(
+          'right',
+          value === noAnswer.id,
+          disabled,
+        )}
+      >
+        <TouchableOpacity
+          style={Layout.center}
+          onPress={() => setAnswer(noAnswer.id)}
+          disabled={disabled}
+        >
+          <Text style={booleanButton.buttonText(value === noAnswer.id)}>
+            {translate(noAnswer.label)}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </>
   )
 }
 

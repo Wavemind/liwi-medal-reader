@@ -1,31 +1,9 @@
 import { StyleSheet } from 'react-native'
-import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Colors, Gutters, Layout, Fonts } = props
+  const { Colors, Gutters, Layout } = props
 
   return StyleSheet.create({
-    wrapper: warning => ({
-      ...Gutters.regularVPadding,
-      ...Layout.row,
-      ...Layout.justifyContentBetween,
-      ...Layout.fullWidth,
-      ...Layout.alignItemsCenter,
-      borderBottomWidth: 1,
-      borderBottomColor: Colors.grey,
-      backgroundColor: warning ? Colors.secondary : Colors.transparent,
-    }),
-    text: warning => ({
-      ...Layout.fill,
-      ...Fonts.textSmall,
-      color: warning ? Colors.primary : Colors.text,
-    }),
-    buttonsWrapper: {
-      ...Layout.justifyContentAround,
-      ...Layout.row,
-      ...Gutters.regularLMargin,
-      width: wp(33.3),
-    },
     buttonWrapper: (side, active, disabled) => ({
       ...Layout.fill,
       backgroundColor: active ? Colors.primary : Colors.secondary,
