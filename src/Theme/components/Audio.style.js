@@ -1,11 +1,39 @@
 import { StyleSheet } from 'react-native'
-import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
+  const { Colors, Gutters, Layout } = props
+
   return StyleSheet.create({
-    wrapper: {
-      height: hp(100),
-      width: wp(100),
+    time: {
+      ...Layout.selfCenter,
+    },
+
+    pauseButton: {
+      ...Gutters.smallBMargin,
+    },
+
+    audioInnerContainer: {
+      ...Layout.row,
+      ...Layout.rowHCenter,
+      ...Gutters.regularVMargin,
+      ...Gutters.regularHMargin,
+      position: 'relative',
+    },
+
+    audioContainer: {
+      ...Layout.fill,
+      ...Layout.justifyContentCenter,
+      ...Gutters.regularLMargin,
+      ...Gutters.smallRMargin,
+      ...Gutters.alignItemsStretch,
+    },
+
+    thumb: {
+      backgroundColor: Colors.red,
+    },
+
+    track: {
+      backgroundColor: Colors.grey,
     },
   })
 }

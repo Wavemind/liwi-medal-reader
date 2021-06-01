@@ -53,6 +53,7 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.2.0",
+    "react-native-sound-player": "^0.10.8",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.0.1",
     "react-native-touch-id": "^4.4.1",

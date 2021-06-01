@@ -24,11 +24,9 @@ const Media = ({ media }) => {
 
   // TODO: FINISH THIS
   if (Config.MOVIES_EXTENSION.includes(media.extension)) {
-    console.log('movie')
     return <Movie url={url} />
   }
   if (Config.AUDIOS_EXTENSION.includes(media.extension)) {
-    console.log('audio')
     return <Audio url={url} />
   }
   if (Config.PICTURES_EXTENSION.includes(media.extension)) {

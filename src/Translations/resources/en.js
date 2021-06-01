@@ -7,6 +7,7 @@ export default {
     select: 'Select',
     synchronize: 'Synchronize',
     clear_filters: 'Clear all filters',
+    loading: 'Loading...',
   },
   algorithm: {
     version_id: 'Version id',
