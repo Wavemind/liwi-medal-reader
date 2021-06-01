@@ -22,8 +22,10 @@ const Select = ({ question, disabled }) => {
 
   // Local state definition
   const [value, setValue] = useState(question.answer)
-  console.log(value)
 
+  /**
+   * Set answer in medical case
+   */
   const setAnswer = answerId => {
     setValue(answerId)
   }
@@ -32,8 +34,8 @@ const Select = ({ question, disabled }) => {
     <View style={select.pickerContainer(disabled)}>
       <Picker
         style={select.picker}
-        mode="dropdown"
         selectedValue={value}
+        prompt={translate(question.label)}
         onValueChange={(answerId, itemIndex) => setAnswer(answerId)}
         dropdownIconColor={Colors.primary}
         enabled={!disabled}
@@ -47,7 +49,7 @@ const Select = ({ question, disabled }) => {
           <Picker.Item
             key={`select-${answerId}`}
             label={translate(question.answers[answerId].label)}
-            value={String(answerId)}
+            value={answerId}
           />
         ))}
       </Picker>
