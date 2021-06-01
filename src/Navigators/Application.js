@@ -21,6 +21,7 @@ import {
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { Config } from '@/Config'
+import { Popin } from '@/Components'
 
 const Stack = createStackNavigator()
 
@@ -85,6 +86,7 @@ const ApplicationNavigator = () => {
             )}
           </Stack.Navigator>
         </NavigationContainer>
+        <Popin />
       </SafeAreaView>
     </ReduxNetworkProvider>
   )
