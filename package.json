@@ -20,7 +20,7 @@
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^6.0.0",
     "@react-native-community/slider": "^3.0.3",
-    "@react-native-picker/picker": "^1.15.0",
+    "@react-native-picker/picker": "^1.16.1",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/material-top-tabs": "^5.3.15",

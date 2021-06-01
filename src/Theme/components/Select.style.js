@@ -16,10 +16,6 @@ export default function (props) {
       borderBottomColor: Colors.grey,
       backgroundColor: warning ? Colors.secondary : Colors.transparent,
     }),
-    label: warning => ({
-      ...Fonts.textRegular,
-      color: warning ? Colors.primary : Colors.text,
-    }),
     pickerContainer: disabled => ({
       backgroundColor: Colors.secondary,
       height: hp(4.4),
@@ -28,8 +24,8 @@ export default function (props) {
       justifyContent: 'center',
     }),
     picker: {
-      width: wp(33.3),
-      color: Colors.primary,
+      width: 300,
+      // color: Colors.primary,
     },
   })
 }

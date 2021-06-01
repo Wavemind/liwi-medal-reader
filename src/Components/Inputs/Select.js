@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Picker } from '@react-native-picker/picker'
 
@@ -10,8 +10,9 @@ import { Picker } from '@react-native-picker/picker'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { translate } from '@/Translations/algorithm'
 
-const Select = ({ label, items, warning, disabled }) => {
+const Select = ({ question, disabled }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
@@ -20,37 +21,34 @@ const Select = ({ label, items, warning, disabled }) => {
   } = useTheme()
 
   // Local state definition
-  const [awesome, setAwesome] = useState('')
+  const [value, setValue] = useState('')
+  console.log(value)
+  const setAnswer = answerId => {
+    setValue(answerId)
+  }
 
   return (
-    <View style={select.wrapper(warning)}>
-      <Text style={select.label(warning)}>{label}</Text>
-      <View style={select.pickerContainer(disabled)}>
-        <Picker
-          style={select.picker}
-          mode="dropdown"
-          selectedValue={awesome}
-          onValueChange={(itemValue, itemIndex) => setAwesome(itemValue)}
-          dropdownIconColor={Colors.primary}
-          enabled={!disabled}
-        >
-          <Picker.Item
-            key="select-placeholder"
-            label={t('actions.select')}
-            value=""
-          />
-          {items.map(item => {
-            return (
-              <Picker.Item
-                key={`select-${item.value}`}
-                label={item.label}
-                value={item.value}
-              />
-            )
-          })}
-        </Picker>
-      </View>
-    </View>
+    <Picker
+      style={select.picker}
+      mode="dropdown"
+      selectedValue={value}
+      onValueChange={(answerId, itemIndex) => setAnswer(answerId)}
+      dropdownIconColor={Colors.primary}
+      enabled={!disabled}
+    >
+      <Picker.Item
+        key="select-placeholder"
+        label={t('actions.select')}
+        value={null}
+      />
+      {Object.keys(question.answers).map(answerId => (
+        <Picker.Item
+          key={`select-${answerId}`}
+          label={translate(question.answers[answerId].label)}
+          value={String(answerId)}
+        />
+      ))}
+    </Picker>
   )
 }
 

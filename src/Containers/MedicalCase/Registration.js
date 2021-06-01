@@ -18,7 +18,11 @@ const RegistrationMedicalCaseContainer = props => {
 
   const algorithm = useSelector(state => state.algorithm.item)
 
-  const questions = _.filter(algorithm.nodes, { category: 'physical_exam' })
+  // const questions = _.filter(algorithm.nodes, { category: 'physical_exam' })
+  let questions = []
+  questions.push(algorithm.nodes[18])
+  questions.push(algorithm.nodes[168])
+  questions.push(algorithm.nodes[326])
 
   return (
     <View style={Gutters.regularTPadding}>

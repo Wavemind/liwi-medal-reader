@@ -20,18 +20,17 @@ const QuestionInfo = ({ nodeId }) => {
 
   return (
     <ScrollView>
+      {__DEV__ && (
+        <Text style={[Fonts.textRegular, { color: Colors.red }]}>
+          Node id: {node.id}
+        </Text>
+      )}
       <SectionHeader label={translate(node.label)} />
       <Text style={[Fonts.textSmall]}>{translate(node.description)}</Text>
 
       {node.medias.map(media => {
         return <Media key={media.url} media={media} />
       })}
-
-      {__DEV__ && (
-        <Text style={[Fonts.textRegular, { color: Colors.red }]}>
-          Node id: {node.id}
-        </Text>
-      )}
     </ScrollView>
   )
 }
