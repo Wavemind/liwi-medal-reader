@@ -24,8 +24,8 @@ export default function (props) {
       justifyContent: 'center',
     }),
     picker: {
-      width: 300,
-      // color: Colors.primary,
+      width: wp(33.3),
+      color: Colors.primary,
     },
   })
 }
