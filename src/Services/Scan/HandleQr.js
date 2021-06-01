@@ -1,3 +1,5 @@
+import i18n from '@/Translations/index'
+
 /**
  * Parse TIMCI QR code data because they didn't want to use the existing format just to piss us off
  * @param QRData : String value coming from QRCODE
@@ -22,7 +24,7 @@ const parseHeleneQR = QRData => {
  */
 const qrCodeNotValid = () => {
   return Promise.reject({
-    message: 'wrong_format',
+    message: i18n.t('containers.scan.wrong_format'),
     status: 'error',
   })
 }
@@ -95,14 +97,14 @@ export default async ({
       }
     } else if (generateNewQR) {
       return Promise.reject({
-        message: 'new_sticker_wrong_facility',
+        message: i18n.t('containers.scan.new_sticker_wrong_facility'),
         status: 'error',
       })
     }
     // Another medical center
     else {
       return Promise.reject({
-        message: 'new_sticker_notification',
+        message: i18n.t('containers.scan.new_sticker_notification'),
         data: { QRData, generateNewQr: true },
         status: 'error',
       })
