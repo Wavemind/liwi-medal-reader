@@ -48,11 +48,11 @@ const IndexScanContainer = props => {
 
   const openMedicalCase = async item => {
     if (item.navigate) {
-      // await dispatch(
-      //   createMedicalCase.action({
-      //     algorithm,
-      //   }),
-      // )
+      await dispatch(
+        createMedicalCase.action({
+          algorithm,
+        }),
+      )
       navigation.navigate('TODO', item.navigationParams)
     }
   }

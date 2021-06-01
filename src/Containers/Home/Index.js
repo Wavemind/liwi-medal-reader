@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View, Animated } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -35,7 +36,8 @@ const IndexHomeContainer = props => {
   // Local state definition
   const [data, setData] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-
+  const state = useSelector(state => state)
+  console.log(state)
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])

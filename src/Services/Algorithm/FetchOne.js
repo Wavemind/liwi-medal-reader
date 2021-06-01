@@ -31,10 +31,6 @@ export default async ({ json_version }) => {
   const emergencyContentTargetPath = `${DocumentDirectoryPath}/emergency_content.html`
   await writeFile(emergencyContentTargetPath, response.data.emergency_content)
 
-  // Store algorithm
-  const algorithmTargetPath = `${DocumentDirectoryPath}/emergency_content.html`
-  await writeFile(emergencyContentTargetPath, response.data.emergency_content)
-
   // Regroup nodes, final diagnostics and health cares into nodes key
   const nodes = {
     ...response.data.nodes,
@@ -48,9 +44,14 @@ export default async ({ json_version }) => {
   delete response.data.final_diagnostics
   delete response.data.health_cares
 
-  return {
+  // Store algorithm
+  const algorithm = {
     ...response.data,
     nodes: { ...nodes },
-    updated: true,
   }
+  const algorithmTargetPath = `${DocumentDirectoryPath}/version_${algorithm.version_id}.json`
+  console.log(algorithm)
+  await writeFile(algorithmTargetPath, JSON.stringify(algorithm))
+
+  return algorithm
 }

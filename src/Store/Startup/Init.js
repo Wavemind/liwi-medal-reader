@@ -10,6 +10,7 @@ import i18n from '@/Translations'
 import { navigateAndSimpleReset, navigateAndReset } from '@/Navigators/Root'
 import DefaultTheme from '@/Store/Theme/DefaultTheme'
 import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
+import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 
 export default {
@@ -32,6 +33,18 @@ export default {
       await dispatch(
         ChangeEmergencyContent.action({
           newContent: emergencyContent,
+        }),
+      )
+    }
+
+    // Set Medical case
+    const algorithmTargetPath = `${DocumentDirectoryPath}/version_${state.system.versionId}.json`
+    const algorithmFileExist = await exists(algorithmTargetPath)
+    if (algorithmFileExist) {
+      const algorithm = await readFile(algorithmTargetPath)
+      await dispatch(
+        LoadAlgorithm.action({
+          newAlgorithm: JSON.parse(algorithm),
         }),
       )
     }

@@ -42,10 +42,9 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: [
-    'algorithm',
     'device',
-    'healthFacility',
     'medicalCase',
+    'healthFacility',
     'system',
     'theme',
     'user',
