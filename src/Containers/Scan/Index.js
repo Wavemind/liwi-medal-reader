@@ -1,115 +1,85 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, Text, Dimensions } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
+import * as _ from 'lodash'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import HandleQr from '@/Store/Scan/HandleQr'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
 
 const IndexScanContainer = props => {
-  // Theme and style elements deconstruction
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigation = useNavigation()
+
+  // Theme and style elements deconstruction
   const {
     Layout,
     Containers: { scan },
   } = useTheme()
-  const { navigation } = props
 
+  // Get values from the store
   const healthFacility = useSelector(state => state.healthFacility.item)
+  const {
+    item,
+    handleQr: { error },
+  } = useSelector(state => state.scan)
 
   // Local state definition
   const [generateNewQR, setGenerateNewQR] = useState(false)
-  const [otherQR, setOtherQR] = useState(null)
+  const [otherQR, setOtherQR] = useState({})
+  const [lastScan, setLastScan] = useState({})
 
   /**
-   * Parse TIMCI QR code data because they didn't want to use the existing format just to piss us off
-   * @param QRData : String value coming from QRCODE
-   * @returns {{uid: number, group_id: number, study_id}} : Formated data
+   * Handles navigation after Scan successful
    */
-  const parseHeleneQR = QRData => {
-    const regexStudy = /^[IKMST]/
-    const regexGroup = /\d{4}/g
-
-    const study_id = QRData.match(regexStudy)[0]
-    const digits = [...QRData.matchAll(regexGroup)].flat()
-
-    return {
-      study_id,
-      group_id: parseInt(digits[0]),
-      uid: parseInt(digits[1]),
+  useEffect(() => {
+    if (item.navigate) {
+      navigation.navigate('TODO', item.navigationParams)
     }
-  }
+  }, [item])
+
+  /**
+   * Retrieves needed data in cas of error. and sets them in local state
+   */
+  useEffect(() => {
+    if (error?.data) {
+      setOtherQR(error?.data.QRData)
+      setGenerateNewQR(error?.data.generateNewQr)
+    }
+  }, [error?.data])
 
   /**
    * Handle scan process
-   * TODO: TO FINISH !
    */
   const handleScan = async e => {
-    let QRData = null
-
-    // Data example : T-F0049-P0002
-    const regexHelene = /^[IKMST](-F)\d{4}(-P)\d{4}$/
-
-    if (e.data.match(regexHelene)) {
-      QRData = parseHeleneQR(e.data)
-    } else {
-      try {
-        QRData = await JSON.parse(e.data)
-      } catch (e) {
-        // TODO NOTIFICATION: WRONG FACILITY
-      }
-    }
-
-    if (_.isEqual(otherQR, QRData)) {
+    // If the QR code is the same as the one that has been scanned before
+    if (_.isEqual(lastScan, e.data)) {
       return
     }
+    setLastScan(e.data)
 
-    // QR code valid ?
-    if ('uid' in QRData && 'study_id' in QRData && 'group_id' in QRData) {
-      const sameFacility = healthFacility.id === parseInt(QRData.group_id)
-
-      const patient = sameFacility
-        ? await database.findBy('Patient', QRData.uid, 'uid')
-        : await database.findBy('Patient', QRData.uid, 'other_uid')
-
-      if (patient !== null) {
-        navigation.navigate('PatientProfile', {
-          id: patient.id,
-        })
-      }
-      // Correct facility but patient does not exist
-      else if (sameFacility) {
-        navigation.navigate('PatientUpsert', {
-          idPatient: null,
-          newMedicalCase: true,
-          facility: {
-            ...QRData,
-          },
-          otherFacility: otherQR,
-        })
-      } else if (generateNewQR) {
-        // TODO NOTIFICATION: new sticker but wrong facility
-      }
-      // Another medical center
-      else {
-        // We give him another QR sticker
-        setGenerateNewQR(true)
-        setOtherQR(QRData)
-        // TODO NOTIFICATION: new sticker
-      }
-    }
+    await dispatch(
+      HandleQr.action({
+        QrRawData: e.data,
+        healthFacilityId: healthFacility.id,
+        generateNewQR,
+        otherQR,
+      }),
+    )
   }
-
   return (
     <QRCodeScanner
       showMarker
@@ -120,24 +90,26 @@ const IndexScanContainer = props => {
       cameraStyle={{ height: HEIGHT }}
       customMarker={
         <View style={scan.wrapper}>
-          <View style={scan.titleWrapper}>
+          <View style={scan.titleWrapper(error)}>
             <Text style={scan.title}>{t('containers.scan.scan')}</Text>
           </View>
 
           <View style={Layout.row}>
-            <View style={scan.leftScan} />
+            <View style={scan.leftScan(error)} />
 
             <View style={scan.centerScan}>
               <Icon name="qr-scan" size={WIDTH * 0.5} />
             </View>
 
-            <View style={scan.rightScan} />
+            <View style={scan.rightScan(error)} />
           </View>
 
-          <View style={scan.bottomWrapper}>
-            {generateNewQR && (
+          <View style={scan.bottomWrapper(error)}>
+            {error && (
               <View style={scan.errorWrapper}>
-                <Text style={scan.errorTitle}>{t('containers.scan.new')}</Text>
+                <Text style={scan.errorTitle}>
+                  {t(`containers.scan.${error.message}`)}
+                </Text>
               </View>
             )}
           </View>

@@ -20,6 +20,7 @@ import healthFacility from './HealthFacility'
 import startup from './Startup'
 import system from './System'
 import theme from './Theme'
+import scan from './Scan'
 import user from './User'
 
 const reducers = combineReducers({
@@ -31,6 +32,7 @@ const reducers = combineReducers({
   startup,
   system,
   theme,
+  scan,
   user,
 })
 

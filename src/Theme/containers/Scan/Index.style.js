@@ -10,46 +10,61 @@ export default function (props) {
       ...Layout.center,
       backgroundColor: Colors.transparent,
     },
-    titleWrapper: {
+    titleWrapper: error => ({
       ...Layout.fill,
       ...Layout.center,
       height: wp(100),
       width: wp(100),
-      backgroundColor: 'rgba(0,0,0,0.5)',
-    },
+      backgroundColor:
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
+    }),
     title: {
       ...Fonts.textUppercase,
       ...Fonts.titleSmall,
       color: 'white',
     },
-    leftScan: {
+    leftScan: error => ({
       height: wp(65),
       width: wp(100),
-      backgroundColor: 'rgba(0,0,0,0.5)',
-    },
+      backgroundColor:
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
+    }),
     centerScan: {
       ...Layout.center,
       height: wp(65),
       width: wp(65),
       backgroundColor: Colors.transparent,
     },
-    rightScan: {
+    rightScan: error => ({
       height: wp(65),
       width: wp(100),
-      backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    bottomWrapper: {
+      backgroundColor:
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
+    }),
+    bottomWrapper: error => ({
       ...Layout.fill,
       height: wp(100),
       width: wp(100),
-      backgroundColor: 'rgba(0,0,0,0.5)',
+      backgroundColor:
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
+
       paddingBottom: wp(25),
-    },
+    }),
     errorWrapper: {
       ...Layout.fill,
       ...Layout.center,
       ...Gutters.hugeTMargin,
       ...Gutters.hugeHMargin,
+      ...Gutters.smallHPadding,
+      ...Gutters.smallVPadding,
       backgroundColor: Colors.red,
       borderRadius: 20,
     },
