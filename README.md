@@ -47,6 +47,14 @@ Generate release version of app
 
 Generate release version of app
 
+#### `yarn test` 
+
+Runs the all the tests
+
+#### `yarn test:watch` 
+
+Watches your code and runs the tests everytime your code is edited
+
 ## Customizing App Display Name and Icon
 
 Please refer to [TheCodingMachine React Native boilerplate](https://github.com/thecodingmachine/react-native-boilerplate) instruction.
