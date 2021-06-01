@@ -14,6 +14,7 @@ import * as _ from 'lodash'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import createMedicalCase from '@/Store/MedicalCase/create'
 import HandleQr from '@/Store/Scan/HandleQr'
 
 const HEIGHT = Dimensions.get('window').height
@@ -32,6 +33,9 @@ const IndexScanContainer = props => {
 
   // Get values from the store
   const healthFacility = useSelector(state => state.healthFacility.item)
+  const algorithm = useSelector(state => state.algorithm.item)
+  const medicalCase = useSelector(state => state.medicalCase)
+  console.log('medicalCase', medicalCase)
   const {
     item,
     handleQr: { error },
@@ -42,13 +46,22 @@ const IndexScanContainer = props => {
   const [otherQR, setOtherQR] = useState({})
   const [lastScan, setLastScan] = useState({})
 
+  const openMedicalCase = async item => {
+    if (item.navigate) {
+      // await dispatch(
+      //   createMedicalCase.action({
+      //     algorithm,
+      //   }),
+      // )
+      navigation.navigate('TODO', item.navigationParams)
+    }
+  }
+
   /**
    * Handles navigation after Scan successful
    */
   useEffect(() => {
-    if (item.navigate) {
-      navigation.navigate('TODO', item.navigationParams)
-    }
+    openMedicalCase(item)
   }, [item])
 
   /**
@@ -107,9 +120,7 @@ const IndexScanContainer = props => {
           <View style={scan.bottomWrapper(error)}>
             {error && (
               <View style={scan.errorWrapper}>
-                <Text style={scan.errorTitle}>
-                  {t(`containers.scan.${error.message}`)}
-                </Text>
+                <Text style={scan.errorTitle}>{error.message}</Text>
               </View>
             )}
           </View>

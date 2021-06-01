@@ -28,8 +28,12 @@ export default async ({ json_version }) => {
   }
 
   // Store emergency content in file
-  const targetPath = `${DocumentDirectoryPath}/emergency_content.html`
-  await writeFile(targetPath, response.data.emergency_content)
+  const emergencyContentTargetPath = `${DocumentDirectoryPath}/emergency_content.html`
+  await writeFile(emergencyContentTargetPath, response.data.emergency_content)
+
+  // Store algorithm
+  const algorithmTargetPath = `${DocumentDirectoryPath}/emergency_content.html`
+  await writeFile(emergencyContentTargetPath, response.data.emergency_content)
 
   // Regroup nodes, final diagnostics and health cares into nodes key
   const nodes = {

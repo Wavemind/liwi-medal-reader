@@ -1,24 +1,23 @@
-import moment from 'moment'
-
-export default async ({ version }) => {
+import { generateNodes } from '@/Services/Node'
+export default async ({ algorithm }) => {
   return {
     activities: [],
     comment: '',
-    consent: !!version.config.consent_management,
-    created_at: moment().toDate(),
+    consent: !!algorithm.config.consent_management,
+    created_at: 'MM/DD/YYYY HH:mm:ss',
     diagnosis: {
-      proposed: [], // Retained by algo
-      excluded: [], // Add by the input
-      diagnoses: [], // Add even though it's false
+      proposed: [],
+      excluded: [],
+      diagnoses: [],
       additional: [],
       agreed: {},
       custom: [],
     },
     id: 0,
-    nodes: {},
+    nodes: generateNodes({ nodes: algorithm.nodes }),
     status: '',
     synchronized_at: null,
-    updated_at: moment().toDate(),
-    version_id: version.id,
+    updated_at: 'MM/DD/YYYY HH:mm:ss',
+    version_id: algorithm.id,
   }
 }
