@@ -19,11 +19,11 @@ Below you'll find information about performing common tasks.
     - [`yarn build` only for Linux and MacOS](#yarn-build-only-for-linux-and-macos)
     - [`yarn w-build` only for Windows](#yarn-w-build-only-for-windows)
   - [Customizing App Display Name and Icon](#customizing-app-display-name-and-icon)
+    - [Data Structure](#data-structure)
+    - [Medical case](#medical-case)
   - [Icons available](#icons-available)
     - [ColoredIcon](#coloredicon)
     - [Icon](#icon)
-  - [Data Structure](#data-structure)
-    - [Medical case](#medical-case)
   - [Writing and Running Tests](#writing-and-running-tests)
   - [Publishing](#publishing)
 
@@ -47,11 +47,11 @@ Generate release version of app
 
 Generate release version of app
 
-#### `yarn test` 
+#### `yarn test`
 
 Runs the all the tests
 
-#### `yarn test:watch` 
+#### `yarn test:watch`
 
 Watches your code and runs the tests everytime your code is edited
 
@@ -59,22 +59,35 @@ Watches your code and runs the tests everytime your code is edited
 
 Please refer to [TheCodingMachine React Native boilerplate](https://github.com/thecodingmachine/react-native-boilerplate) instruction.
 
+## Data Structure
+
+### Medical Case
+
+| Field           | type                         | Description                                                                  |
+| --------------- | ---------------------------- | ---------------------------------------------------------------------------- |
+| activities      | Array<[Activity](#activity)> | Array of all activities related                                              |
+| comment         | `text`                       | Clinician's comment set during the consultation stage                        |
+| consent         | `boolean`                    | Tells if the patient consented to share his data for the clinical research   |
+| created_at      | `datetime`                   | Date & Time when the patient was created                                     |
+| diagnosis       | [Diagnosis](#diagnosis)      | Contains all the date related to the diagnoses                               |
+| id              | `string (UUID)`              | Unique identification string for a medical case                              |
+| nodes           | Array<[Node](#node)>         | Array of nodes                                                               |
+| status          | `string`                     | Tells what is the status of the medical case (closed / 1st assessments /...) |
+| synchronized_at | `datetime`                   | Date & Time when the patient was sent to Medal-Data or Medal-hub             |
+| updated_at      | `string (UUID)`              | Date & Time when the patient was updated for the last time                   |
+| version_id      | `integer`                    | Medal-Creator's id of the version used                                       |
+
 ## Icons available
 
 A list of icons is available with [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons).
 
 We also set a list of custom icons. We split it in 2 components
 
-## Data Structure
-
-### Medical Case
-
 ### ColoredIcon
 
 ```javascript
 import { ColoredIcon } from '@/Components'
-
-<ColoredIcon name="about" />
+return <ColoredIcon name="about" />
 ```
 
 | Name         |                                                                                                                                                      |
@@ -93,8 +106,7 @@ import { ColoredIcon } from '@/Components'
 
 ```javascript
 import { Icon } from '@/Components'
-
-<Icon name="about" />
+return <Icon name="about" />
 ```
 
 | Name              |                                                                                                                                                        |

@@ -2,16 +2,10 @@ import moment from 'moment'
 
 export default async ({ version }) => {
   return {
-    id: 0,
-    nodes: {},
     activities: [],
-    version_id: version.id,
-    status: '',
     comment: '',
-    created_at: moment().toDate(),
-    updated_at: moment().toDate(),
-    synchronized_at: null,
     consent: !!version.config.consent_management,
+    created_at: moment().toDate(),
     diagnosis: {
       proposed: [], // Retained by algo
       excluded: [], // Add by the input
@@ -20,5 +14,11 @@ export default async ({ version }) => {
       agreed: {},
       custom: [],
     },
+    id: 0,
+    nodes: {},
+    status: '',
+    synchronized_at: null,
+    updated_at: moment().toDate(),
+    version_id: version.id,
   }
 }
