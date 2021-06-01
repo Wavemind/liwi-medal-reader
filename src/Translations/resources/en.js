@@ -6,6 +6,7 @@ export default {
     select: 'Select',
     synchronize: 'Synchronize',
     clear_filters: 'Clear all filters',
+    new_medical_case: 'New case',
   },
   algorithm: {
     version_id: 'Version id',
@@ -89,6 +90,14 @@ export default {
         last_visit: 'Last visit',
         status: 'Status',
       },
+      consultations: {
+        current_consultation: 'Current consultation',
+        last_consultations: 'Last consultations',
+      },
+      personal_info: {
+        patient_info: 'Patient information',
+        consultations_info: 'Consultations information',
+      },
     },
     consent: {
       list: {
@@ -166,6 +175,7 @@ export default {
     scan_qr_code: 'Scan QR code',
     consultations: 'Consultations',
     patient_list: 'Patient list',
+    personal_info: 'Personal information',
     consent_list: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
