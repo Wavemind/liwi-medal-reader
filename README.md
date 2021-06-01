@@ -74,7 +74,7 @@ We also set a list of custom icons. We split it in 2 components
 ```javascript
 import { ColoredIcon } from '@/Components'
 
-;<ColoredIcon name="about" />
+<ColoredIcon name="about" />
 ```
 
 | Name         |                                                                                                                                                      |
@@ -94,7 +94,7 @@ import { ColoredIcon } from '@/Components'
 ```javascript
 import { Icon } from '@/Components'
 
-;<Icon name="about" />
+<Icon name="about" />
 ```
 
 | Name              |                                                                                                                                                        |
