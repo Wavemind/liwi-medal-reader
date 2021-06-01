@@ -26,19 +26,8 @@ const Audio = props => {
   const exampleConstant = 2
 
   return (
-    <View style={template.wrapper}>
-      <Text style={template.label}>{label}</Text>
-      <View style={template.buttonsWrapper}>
-        <View>
-          <TouchableOpacity
-            style={[Layout.center]}
-            onPress={() => navigation.navigate('Home')}
-          >
-            <Text>This is a template</Text>
-            <Text>{exampleConstant}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+    <View>
+      <Text>Audio</Text>
     </View>
   )
 }

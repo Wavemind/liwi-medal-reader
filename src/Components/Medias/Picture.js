@@ -2,44 +2,31 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { View, TouchableOpacity, Text } from 'react-native'
+import { View, TouchableOpacity, Dimensions, Image } from 'react-native'
+import Lightbox from 'react-native-lightbox-v2'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 
-const Picture = props => {
-  // Props deconstruction
-  const { navigation, label } = props
-
+const Picture = ({ url }) => {
   // Theme and style elements deconstruction
   const {
-    Components: { template },
-    Layout,
+    Components: { picture },
+    Gutters,
   } = useTheme()
 
-  // Local state definition
-  const [exampleState, setExampleState] = useState('')
-
-  // Constants definition
-  const exampleConstant = 2
-
   return (
-    <View style={template.wrapper}>
-      <Text style={template.label}>{label}</Text>
-      <View style={template.buttonsWrapper}>
-        <View>
-          <TouchableOpacity
-            style={[Layout.center]}
-            onPress={() => navigation.navigate('Home')}
-          >
-            <Text>This is a template</Text>
-            <Text>{exampleConstant}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
+    <Lightbox style={Gutters.regularTMargin}>
+      <Image
+        style={picture.wrapper}
+        resizeMode="center"
+        source={{
+          uri: url,
+        }}
+      />
+    </Lightbox>
   )
 }
 

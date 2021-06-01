@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import { SectionHeader } from '@/Components'
+import { SectionHeader, Media } from '@/Components'
 
 const QuestionInfo = ({ nodeId }) => {
   const { Fonts, Colors } = useTheme()
@@ -22,7 +22,7 @@ const QuestionInfo = ({ nodeId }) => {
     <ScrollView>
       <SectionHeader label={translate(node.label)} />
       <Text style={[Fonts.textSmall]}>{translate(node.description)}</Text>
-      
+
       {node.medias.map(media => {
         return <Media key={media.url} media={media} />
       })}

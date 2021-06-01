@@ -27,6 +27,9 @@ import accordionStyles from './components/Accordion.style'
 import accordionItemStyles from './components/AccordionItem.style'
 import medicalCaseDrawerStyles from './components/MedicalCaseDrawer.style'
 import questionStyles from './components/Question.style'
+import movieStyles from './components/Movie.style'
+import pictureStyles from './components/Picture.style'
+import audioStyles from './components/Audio.style'
 
 /**
  *
@@ -59,5 +62,8 @@ export default function (props) {
     accordionItem: accordionItemStyles(props),
     medicalCaseDrawer: medicalCaseDrawerStyles(props),
     question: questionStyles(props),
+    movieController: movieStyles(props),
+    picture: pictureStyles(props),
+    audio: audioStyles(props),
   }
 }

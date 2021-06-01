@@ -32,10 +32,10 @@ export { default as Study } from './Modal/Study'
 export { default as Emergency } from './Modal/Emergency'
 
 // Media
-export { default as Media } from './Media/Media'
-// export { default as Movie } from './Media/Movie'
-// export { default as Picture } from './Media/Picture'
-// export { default as Audio } from './Media/Audio'
+export { default as Media } from './Medias/Media'
+export { default as Movie } from './Medias/Movie/Movie'
+export { default as Picture } from './Medias/Picture'
+export { default as Audio } from './Medias/Audio'
 
 // Accordion
 export { default as Accordion } from './Accordion/Accordion'
