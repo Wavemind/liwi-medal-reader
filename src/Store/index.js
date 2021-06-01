@@ -17,6 +17,7 @@ import algorithm from './Algorithm'
 import device from './Device'
 import emergency from './Emergency'
 import healthFacility from './HealthFacility'
+import medicalCase from './MedicalCase'
 import startup from './Startup'
 import system from './System'
 import theme from './Theme'
@@ -28,6 +29,7 @@ const reducers = combineReducers({
   device,
   emergency,
   healthFacility,
+  medicalCase,
   network,
   startup,
   system,
@@ -43,6 +45,7 @@ const persistConfig = {
     'algorithm',
     'device',
     'healthFacility',
+    'medicalCase',
     'system',
     'theme',
     'user',
