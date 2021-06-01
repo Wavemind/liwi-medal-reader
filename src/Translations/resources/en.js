@@ -82,6 +82,7 @@ export default {
         'You need to give another sticker to the patient',
       new_sticker_wrong_facility:
         'The new sticker does not belong to your facility',
+      wrong_format: 'The QR code does not have the correct format',
     },
     patient: {
       list: {

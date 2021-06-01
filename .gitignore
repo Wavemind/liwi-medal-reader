@@ -33,6 +33,7 @@ android/java_*.hprof
 
 # Jest
 coverage/
+Screenshot*
 # node.js
 #
 node_modules/
