@@ -16,7 +16,9 @@ export default function (props) {
       height: wp(100),
       width: wp(100),
       backgroundColor:
-        error?.status === 'error' ? `${Colors.red}55` : `${Colors.primary}AA`,
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
     }),
     title: {
       ...Fonts.textUppercase,
@@ -27,7 +29,9 @@ export default function (props) {
       height: wp(65),
       width: wp(100),
       backgroundColor:
-        error?.status === 'error' ? `${Colors.red}55` : `${Colors.primary}AA`,
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
     }),
     centerScan: {
       ...Layout.center,
@@ -39,14 +43,18 @@ export default function (props) {
       height: wp(65),
       width: wp(100),
       backgroundColor:
-        error?.status === 'error' ? `${Colors.red}55` : `${Colors.primary}AA`,
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
     }),
     bottomWrapper: error => ({
       ...Layout.fill,
       height: wp(100),
       width: wp(100),
       backgroundColor:
-        error?.status === 'error' ? `${Colors.red}55` : `${Colors.primary}AA`,
+        error?.status === 'error'
+          ? Colors.redLowOpacity
+          : Colors.primaryLowOpacity,
 
       paddingBottom: wp(25),
     }),

@@ -3,7 +3,7 @@
  * @param QRData : String value coming from QRCODE
  * @returns {{uid: number, group_id: number, study_id}} : Formated data
  */
-const _parseHeleneQR = QRData => {
+const parseHeleneQR = QRData => {
   const regexStudy = /^[IKMST]/
   const regexGroup = /\d{4}/g
 
@@ -19,7 +19,6 @@ const _parseHeleneQR = QRData => {
 
 /**
  * Returns an error in case the QR code structure is unknown
- *
  */
 const qrCodeNotValid = () => {
   return Promise.reject({
@@ -40,7 +39,7 @@ const getQrData = async data => {
   const regexHelene = /^[IKMST](-F)\d{4}(-P)\d{4}$/
 
   if (data.match(regexHelene)) {
-    QRData = _parseHeleneQR(data)
+    QRData = parseHeleneQR(data)
   } else {
     try {
       QRData = await JSON.parse(data)
