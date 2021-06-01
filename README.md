@@ -54,8 +54,6 @@ Runs the all the tests
 
 Watches your code and runs the tests everytime your code is edited
 
-Generate release version of app
-
 ## Customizing App Display Name and Icon
 
 Please refer to [TheCodingMachine React Native boilerplate](https://github.com/thecodingmachine/react-native-boilerplate) instruction.
