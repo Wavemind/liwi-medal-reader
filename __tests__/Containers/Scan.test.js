@@ -1,0 +1,131 @@
+/**
+ * @format
+ */
+import 'react-native'
+import handleQR from '@/Services/Scan/HandleQr'
+
+// Define global testing variables
+const healthFacilityId = 7
+const QrRawData =
+  '{"study_id":"Dynamic Tanzania","group_id":"7","uid":"e1a56e66-613c-49f7-9905-31e1e8943af0"}'
+
+const otherHealthFacilityId = 10
+const otherQrRawData =
+  '{"study_id":"Dynamic Tanzania","group_id":"10","uid":"e1a56e66-613c-49f7-9905-31e1e8943af0"}'
+
+describe('Scan QR code properly ', () => {
+  it('should handle a QR code from Dynamic TZ properly', async () => {
+    const result = await handleQR({
+      QrRawData: otherQrRawData,
+      healthFacilityId: otherHealthFacilityId,
+      generateNewQR: false,
+      otherQR: {},
+    })
+    expect(result).toStrictEqual({
+      navigate: true,
+      navigationParams: {
+        facility: {
+          group_id: '10',
+          study_id: 'Dynamic Tanzania',
+          uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
+        },
+        idPatient: null,
+        newMedicalCase: true,
+        otherFacility: {},
+      },
+    })
+  })
+
+  it('should handle a QR code that has not the correct format', async () => {
+    const notAQrCode = 'I am not a QR CODE'
+    try {
+      await handleQR({
+        QrRawData: notAQrCode,
+        healthFacilityId: otherHealthFacilityId,
+        generateNewQR: false,
+        otherQR: {},
+      })
+    } catch (e) {
+      expect(e).toEqual({
+        message: 'wrong_format',
+        status: 'error',
+      })
+    }
+  })
+
+  it('should handle a QR code that is from another facility', async () => {
+    try {
+      await handleQR({
+        QrRawData: otherQrRawData,
+        healthFacilityId,
+        generateNewQR: false,
+        otherQR: {},
+      })
+    } catch (e) {
+      expect(e).toEqual({
+        data: {
+          QRData: {
+            group_id: '10',
+            study_id: 'Dynamic Tanzania',
+            uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
+          },
+          generateNewQr: true,
+        },
+        status: 'error',
+        message: 'new_sticker_notification',
+      })
+    }
+  })
+
+  it('should handle a QR code that is given to a patient that comes from another Health facility', async () => {
+    const result = await handleQR({
+      QrRawData,
+      healthFacilityId,
+      generateNewQR: true,
+      otherQR: {
+        group_id: '10',
+        study_id: 'Dynamic Tanzania',
+        uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
+      },
+    })
+    expect(result).toStrictEqual({
+      navigate: true,
+      navigationParams: {
+        facility: {
+          group_id: '7',
+          study_id: 'Dynamic Tanzania',
+          uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
+        },
+        idPatient: null,
+        newMedicalCase: true,
+        otherFacility: {
+          group_id: '10',
+          study_id: 'Dynamic Tanzania',
+          uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
+        },
+      },
+    })
+  })
+
+  it('should handle a wring QR code that is given to a patient that comes from another Health facility', async () => {
+    const unknownQrRawData =
+      '{"study_id":"Dynamic Tanzania","group_id":"8","uid":"e1a56e66-613c-49f7-9905-31e1e8943af0"}'
+    try {
+      await handleQR({
+        QrRawData: unknownQrRawData,
+        healthFacilityId,
+        generateNewQR: true,
+        otherQR: {
+          group_id: '10',
+          study_id: 'Dynamic Tanzania',
+          uid: 'e1a56e66-613c-49f7-9905-31e1e8943af0',
+        },
+      })
+    } catch (e) {
+      expect(e).toEqual({
+        status: 'error',
+        message: 'new_sticker_wrong_facility',
+      })
+    }
+  })
+})

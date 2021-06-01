@@ -29,7 +29,7 @@ const qrCodeNotValid = () => {
 
 /**
  * Reads data from the QRScanner and returns an object with the needed information
- * TODO UNIT TEST waiting for alan's testing data
+ * TODO UNIT TEST waiting for alan's testing data with Helene's bullshit
  * @param {*} e
  */
 const getQrData = async data => {
@@ -44,7 +44,7 @@ const getQrData = async data => {
     try {
       QRData = await JSON.parse(data)
     } catch {
-      qrCodeNotValid()
+      return qrCodeNotValid()
     }
   }
   return QRData
@@ -69,7 +69,6 @@ export default async ({
   otherQR,
 }) => {
   const QRData = await getQrData(QrRawData)
-
   // QR code valid ?
   if ('uid' in QRData && 'study_id' in QRData && 'group_id' in QRData) {
     const sameFacility = healthFacilityId === parseInt(QRData.group_id)
