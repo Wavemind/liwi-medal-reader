@@ -6,6 +6,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner'
 import { View, Text, Dimensions } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { isFulfilled } from '@reduxjs/toolkit'
 import { useNavigation } from '@react-navigation/native'
 import * as _ from 'lodash'
 
@@ -34,26 +35,21 @@ const IndexScanContainer = props => {
   // Get values from the store
   const healthFacility = useSelector(state => state.healthFacility.item)
   const algorithm = useSelector(state => state.algorithm.item)
-  const medicalCase = useSelector(state => state.medicalCase)
-  console.log('medicalCase', medicalCase)
-  const {
-    item,
-    handleQr: { error },
-  } = useSelector(state => state.scan)
+  const handleQrError = useSelector(state => state.scan.handleQr.error)
+  const medicalCaseError = useSelector(state => state.medicalCase.create.error)
+  const scanData = useSelector(state => state.scan.item)
 
   // Local state definition
   const [generateNewQR, setGenerateNewQR] = useState(false)
   const [otherQR, setOtherQR] = useState({})
   const [lastScan, setLastScan] = useState({})
 
-  const openMedicalCase = async item => {
-    if (item.navigate) {
-      await dispatch(
-        createMedicalCase.action({
-          algorithm,
-        }),
-      )
-      navigation.navigate('TODO', item.navigationParams)
+  const openMedicalCase = async () => {
+    if (scanData.navigate) {
+      const result = await dispatch(createMedicalCase.action({ algorithm }))
+      if (isFulfilled(result)) {
+        navigation.navigate('StageWrapper', scanData.navigationParams)
+      }
     }
   }
 
@@ -61,18 +57,18 @@ const IndexScanContainer = props => {
    * Handles navigation after Scan successful
    */
   useEffect(() => {
-    openMedicalCase(item)
-  }, [item])
+    openMedicalCase(scanData)
+  }, [scanData])
 
   /**
    * Retrieves needed data in cas of error. and sets them in local state
    */
   useEffect(() => {
-    if (error?.data) {
-      setOtherQR(error?.data.QRData)
-      setGenerateNewQR(error?.data.generateNewQr)
+    if (handleQrError?.data) {
+      setOtherQR(handleQrError?.data.QRData)
+      setGenerateNewQR(handleQrError?.data.generateNewQr)
     }
-  }, [error?.data])
+  }, [handleQrError?.data])
 
   /**
    * Handle scan process
@@ -83,6 +79,7 @@ const IndexScanContainer = props => {
       return
     }
     setLastScan(e.data)
+    console.log('COUCOU', e.data)
 
     await dispatch(
       HandleQr.action({
@@ -103,24 +100,31 @@ const IndexScanContainer = props => {
       cameraStyle={{ height: HEIGHT }}
       customMarker={
         <View style={scan.wrapper}>
-          <View style={scan.titleWrapper(error)}>
+          <View style={scan.titleWrapper(handleQrError)}>
             <Text style={scan.title}>{t('containers.scan.scan')}</Text>
           </View>
 
           <View style={Layout.row}>
-            <View style={scan.leftScan(error)} />
+            <View style={scan.leftScan(handleQrError)} />
 
             <View style={scan.centerScan}>
               <Icon name="qr-scan" size={WIDTH * 0.5} />
             </View>
 
-            <View style={scan.rightScan(error)} />
+            <View style={scan.rightScan(handleQrError)} />
           </View>
 
-          <View style={scan.bottomWrapper(error)}>
-            {error && (
+          <View style={scan.bottomWrapper(handleQrError)}>
+            {(handleQrError || medicalCaseError) && (
               <View style={scan.errorWrapper}>
-                <Text style={scan.errorTitle}>{error.message}</Text>
+                {handleQrError && (
+                  <Text style={scan.errorTitle}>{handleQrError.message}</Text>
+                )}
+                {medicalCaseError && (
+                  <Text style={scan.errorTitle}>
+                    {medicalCaseError.message}
+                  </Text>
+                )}
               </View>
             )}
           </View>

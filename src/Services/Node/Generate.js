@@ -2,7 +2,7 @@ import { Config } from '@/Config'
 /**
  * Generate new question hash used in medical case
  * @param node
- * @returns {{dd: [], df: [], qs: [], system: *, answer: null, validationMessage: null, validationType: null, id: *, counter: number, type: *, category: *, value: string}}
+ * @returns {*}
  */
 export const generateQuestion = node => {
   const {
@@ -44,23 +44,28 @@ export const generateQuestion = node => {
 /**
  * Generate new question sequences and question sequences scored hash used in medical case
  * @param node
- * @returns {{dd: [], df: [], qs: [], answer: null, id: *, type: *, category: *}}
+ * @returns {*}
  */
 export const generateQuestionsSequence = node => {
-  const { answer = null, dd = [], qs = [], df = [] } = node
+  const {
+    answer = null,
+    // dd = [],
+    // qs = [],
+    // df = []
+  } = node
   return {
     ..._generateCommon(node),
     answer,
-    dd,
-    df,
-    qs,
+    // dd,
+    // df,
+    //  qs,
   }
 }
 
 /**
  * Generate new management hash used in medical case
  * @param node
- * @returns {{id: *, type: *, category: *, healthCareObject: string}}
+ * @returns {*}
  */
 export const generateManagement = node => {
   return {
@@ -71,7 +76,7 @@ export const generateManagement = node => {
 /**
  * Generate new drug hash used in medical case
  * @param node
- * @returns {{id: *, type: *, category: *, healthCareObject: string}}
+ * @returns {*}
  */
 export const generateDrug = node => {
   const { formulationSelected = null } = node
@@ -86,7 +91,7 @@ export const generateDrug = node => {
 /**
  * Generate new final diagnostic hash used in medical case
  * @param node
- * @returns {{id: *, type: *, category: *, healthCareObject: string}}
+ * @returns {*}
  */
 export const generateFinalDiagnostic = node => {
   return {
@@ -97,7 +102,7 @@ export const generateFinalDiagnostic = node => {
 /**
  * Generate common values available in all medical case node's
  * @param node
- * @returns {{id: *, type: *, category: *}}
+ * @returns {*}
  * @private
  */
 const _generateCommon = node => {

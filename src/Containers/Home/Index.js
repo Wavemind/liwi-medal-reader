@@ -36,8 +36,7 @@ const IndexHomeContainer = props => {
   // Local state definition
   const [data, setData] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  const state = useSelector(state => state)
-  console.log(state)
+
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
