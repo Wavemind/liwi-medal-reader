@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import SquareButton from '../../Buttons/SquareButton'
+import SquareButton from '@/Components/Buttons/SquareButton'
 import { useTheme } from '@/Theme'
 
 const Lock = () => {

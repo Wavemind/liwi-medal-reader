@@ -50,7 +50,6 @@ const ClinicianSelectionAuthContainer = props => {
   useEffect(() => {
     if (algorithmUpdated) {
       newEmergencyContent()
-      // navigate('InfoModal', { type: 'study' })
     }
   }, [algorithmUpdated])
 

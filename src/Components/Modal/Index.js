@@ -12,8 +12,8 @@ import Modal from 'react-native-modal'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
-import Emergency from './Content/Emergency'
-import Lock from './Content/Lock'
+import Emergency from '@/Components/Modal/Content/Emergency'
+import Lock from '@/Components/Modal/Content/Lock'
 
 const CustomModal = () => {
   // Theme and style elements deconstruction

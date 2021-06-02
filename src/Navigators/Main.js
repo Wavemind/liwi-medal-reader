@@ -19,7 +19,6 @@ import {
   ListMedicalCaseContainer,
   IndexSynchronizationContainer,
   ProfileWrapperPatientContainer,
-  IndexQuestionInfoContainer,
 } from '@/Containers'
 import { useTheme } from '@/Theme'
 
@@ -99,10 +98,6 @@ const MainNavigator = () => {
           options={{
             title: t('navigation.settings'),
           }}
-        />
-        <Drawer.Screen
-          name="QuestionInfo"
-          component={IndexQuestionInfoContainer}
         />
       </Drawer.Navigator>
       <BottomNavbar />

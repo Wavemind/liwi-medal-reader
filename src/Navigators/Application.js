@@ -18,6 +18,7 @@ import {
   IndexScanContainer,
   IndexEmergencyContainer,
   IndexStudyContainer,
+  IndexQuestionInfoContainer,
 } from '@/Containers'
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
@@ -80,6 +81,7 @@ const ApplicationNavigator = () => {
             <Stack.Screen name="Search" component={IndexSearchContainer} />
             <Stack.Screen name="Scan" component={IndexScanContainer} />
             <Stack.Screen name="Filters" component={IndexFiltersContainer} />
+            <Stack.Screen name="QuestionInfo" component={IndexQuestionInfoContainer} />
             {isApplicationLoaded && AuthNavigator != null && (
               <Stack.Screen name="Auth" component={AuthNavigator} />
             )}

@@ -3,16 +3,16 @@
  */
 import React from 'react'
 import { View, Text } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import SquareButton from '../../Buttons/SquareButton'
+import SquareButton from '@/Components/Buttons/SquareButton'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
 import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
-import { useDispatch } from 'react-redux'
-import { useTranslation } from 'react-i18next'
 
 const Emergency = () => {
   // Theme and style elements deconstruction
