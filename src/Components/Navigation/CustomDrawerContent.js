@@ -31,7 +31,6 @@ const CustomDrawerContent = props => {
 
   const algorithm = useSelector(state => state.algorithm.item)
   const medicalCase = useSelector(state => state.medicalCase.item)
-  console.log(medicalCase)
 
   useEffect(() => {
     setMedicalCaseExists('id' in medicalCase)
