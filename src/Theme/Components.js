@@ -27,7 +27,7 @@ import badgeStyles from './components/Badge.style'
 import accordionStyles from './components/Accordion.style'
 import accordionItemStyles from './components/AccordionItem.style'
 import medicalCaseDrawerStyles from './components/MedicalCaseDrawer.style'
-import popinStyles from './components/Popin.style'
+import modalStyles from './components/Modal.style'
 
 /**
  *
@@ -60,6 +60,6 @@ export default function (props) {
     accordion: accordionStyles(props),
     accordionItem: accordionItemStyles(props),
     medicalCaseDrawer: medicalCaseDrawerStyles(props),
-    popin: popinStyles(props),
+    modal: modalStyles(props),
   }
 }

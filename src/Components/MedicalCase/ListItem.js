@@ -29,8 +29,8 @@ const ListItem = props => {
    * @returns {Promise<void>}
    */
   const toggleModal = async () => {
+    await dispatch(DefineType.action({ type: 'lock' }))
     await dispatch(ToggleVisbility.action({}))
-    await dispatch(DefineType.action({ type: 'emergency' }))
   }
 
   return (

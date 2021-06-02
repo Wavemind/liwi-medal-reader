@@ -32,7 +32,7 @@ export { default as PatientTabBar } from './Patient/TabBar'
 export { default as PatientTabItem } from './Patient/TabItem'
 
 // MODALS
-export { default as Popin } from './Popin/Popin'
+export { default as CustomModal } from './Modal/Index'
 
 // Accordion
 export { default as Accordion } from './Accordion/Accordion'

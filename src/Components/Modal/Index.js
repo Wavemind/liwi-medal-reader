@@ -12,13 +12,13 @@ import Modal from 'react-native-modal'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
-import EmergencyPopin from './Content/EmergencyPopin'
-import ListItemPopin from './Content/ListItemPopin'
+import Emergency from './Content/Emergency'
+import Lock from './Content/Lock'
 
-const Popin = () => {
+const CustomModal = () => {
   // Theme and style elements deconstruction
   const {
-    Components: { popin },
+    Components: { modal },
   } = useTheme()
 
   const dispatch = useDispatch()
@@ -39,9 +39,9 @@ const Popin = () => {
   const renderModalBody = () => {
     switch (type) {
       case 'emergency':
-        return <EmergencyPopin />
-      case 'other':
-        return <ListItemPopin />
+        return <Emergency />
+      case 'lock':
+        return <Lock />
       default:
         return null
     }
@@ -53,8 +53,8 @@ const Popin = () => {
       onBackdropPress={closeModal}
       hideModalContentWhileAnimating
     >
-      <View style={popin.wrapper}>
-        <TouchableOpacity onPress={closeModal} style={popin.closeButton}>
+      <View style={modal.wrapper}>
+        <TouchableOpacity onPress={closeModal} style={modal.closeButton}>
           <Icon name="close" />
         </TouchableOpacity>
         {renderModalBody()}
@@ -63,4 +63,4 @@ const Popin = () => {
   )
 }
 
-export default Popin
+export default CustomModal
