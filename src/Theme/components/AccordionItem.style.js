@@ -6,6 +6,7 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Gutters.regularHMargin,
+      ...Gutters.regularBMargin,
     },
   })
 }

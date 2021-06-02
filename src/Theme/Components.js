@@ -28,6 +28,11 @@ import accordionStyles from './components/Accordion.style'
 import accordionItemStyles from './components/AccordionItem.style'
 import medicalCaseDrawerStyles from './components/MedicalCaseDrawer.style'
 import modalStyles from './components/Modal.style'
+import questionStyles from './components/Question.style'
+import movieStyles from './components/Movie.style'
+import pictureStyles from './components/Picture.style'
+import audioStyles from './components/Audio.style'
+import numericStyles from './components/Numeric.style'
 
 /**
  *
@@ -61,5 +66,10 @@ export default function (props) {
     accordionItem: accordionItemStyles(props),
     medicalCaseDrawer: medicalCaseDrawerStyles(props),
     modal: modalStyles(props),
+    question: questionStyles(props),
+    movieController: movieStyles(props),
+    picture: pictureStyles(props),
+    audio: audioStyles(props),
+    numeric: numericStyles(props),
   }
 }

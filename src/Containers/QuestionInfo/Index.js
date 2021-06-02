@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 
 const IndexQuestionInfoContainer = props => {
-  const { navigation } = props
+  const { navigation, nodeId } = props
 
   const { t } = useTranslation()
 
@@ -19,6 +19,9 @@ const IndexQuestionInfoContainer = props => {
   const {
     Containers: { questionInfo },
   } = useTheme()
+
+  const algorithm = useSelector(state => state.algorithm.item)
+  const node = algorithm.nodes[nodeId]
 
   return (
     <View style={questionInfo.wrapper}>
@@ -29,9 +32,19 @@ const IndexQuestionInfoContainer = props => {
         <Text style={questionInfo.closeButtonText}>{t('actions.continue')}</Text>
       </TouchableOpacity>
       <View style={questionInfo.contentWrapper}>
-        <View>
-          <Text>This is the question view</Text>
-        </View>
+        <ScrollView>
+          {__DEV__ && (
+            <Text style={[Fonts.textRegular, { color: Colors.red }]}>
+              Node id: {node.id}
+            </Text>
+          )}
+          <SectionHeader label={translate(node.label)} />
+          <Text style={[Fonts.textSmall]}>{translate(node.description)}</Text>
+
+          {node.medias.map(media => {
+            return <Media key={media.url} media={media} />
+          })}
+        </ScrollView>
       </View>
     </View>
   )
