@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View, Animated } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -17,11 +18,13 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
+import createMedicalCase from '@/Store/MedicalCase/Create'
 
 const IndexHomeContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const {
     Containers: { home, global },
     Layout,
@@ -35,6 +38,7 @@ const IndexHomeContainer = props => {
   // Local state definition
   const [data, setData] = useState([])
   const [refreshing, setRefreshing] = useState(false)
+  const algorithm = useSelector(state => state.algorithm.item)
 
   useEffect(() => {
     fadeIn(fadeAnim)
@@ -87,7 +91,10 @@ const IndexHomeContainer = props => {
                 label={t('actions.new_patient')}
                 icon="add"
                 big
-                onPress={() => navigation.navigate('StageWrapper')}
+                onPress={async () => {
+                  await dispatch(createMedicalCase.action({ algorithm }))
+                  navigation.navigate('StageWrapper')
+                }}
                 filled
               />
             </View>
