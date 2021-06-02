@@ -41,7 +41,6 @@ const PinAuthContainer = props => {
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const PinAuthContainer = props => {
   /**
    * Manages the pin entry and navigation if pin is correct
    * @param pinCode
-   * @returns {Promise<void>}
+   * @returns {}
    */
   const handlePin = async pinCode => {
     if (pinCode === healthFacility.pin_code) {
@@ -63,14 +62,12 @@ const PinAuthContainer = props => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
-        const changeResult = await dispatch(
+        await dispatch(
           ChangeVersion.action({
             newVersionId: result.payload.version_id,
           }),
         )
-        if (isFulfilled(changeResult)) {
-          navigateAndSimpleReset('Home')
-        }
+        navigateAndSimpleReset('Home')
       }
     } else {
       setStatus('failure')
