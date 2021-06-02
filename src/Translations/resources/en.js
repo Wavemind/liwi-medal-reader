@@ -2,10 +2,12 @@ export default {
   actions: {
     continue: 'Continue',
     login: 'Login',
+    new_patient: 'New patient',
     search: 'Search',
     select: 'Select',
     synchronize: 'Synchronize',
     clear_filters: 'Clear all filters',
+    loading: 'Loading...',
     new_medical_case: 'New case',
   },
   algorithm: {
@@ -15,6 +17,7 @@ export default {
     updated_at: 'Last update',
   },
   application: {
+    algorithm_translation_missing: 'Algorithm translation is missing',
     theme: {
       dark_mode: 'Dark mode',
       light_mode: 'Light mode',
@@ -142,6 +145,15 @@ export default {
       study: {
         no_content:
           'No content is available. Please fill the study description in medAL-creator',
+      },
+    },
+    media: {
+      file_not_supported: 'File not supported',
+    },
+    inputs: {
+      numeric: {
+        measured: 'Measured',
+        estimated: 'Estimated',
       },
     },
   },

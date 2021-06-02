@@ -14,7 +14,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { isFulfilled } from '@reduxjs/toolkit'
-import { heightPercentageToDP } from 'react-native-responsive-screen'
 
 /**
  * The internal imports

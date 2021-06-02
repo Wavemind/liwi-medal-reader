@@ -28,7 +28,7 @@ const IndexModalContainer = ({ navigation, route }) => {
       case 'study':
         return <Study />
       case 'question':
-        return <QuestionInfo />
+        return <QuestionInfo {...route.params} />
       case 'emergency':
         return <Emergency />
       default:

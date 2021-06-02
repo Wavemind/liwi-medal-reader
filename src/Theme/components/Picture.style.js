@@ -1,12 +1,10 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Gutters } = props
-
   return StyleSheet.create({
     wrapper: {
-      ...Gutters.regularHMargin,
-      ...Gutters.regularBMargin,
+      height: hp(40),
     },
   })
 }
