@@ -31,12 +31,11 @@ const Lock = () => {
     console.log('summary')
   }
 
+  // TODO translations
   return (
     <View>
       <Text style={modal.header}>Consultation not available</Text>
-      <Text style={modal.body}>
-        Case is locked by Jean Neige
-      </Text>
+      <Text style={modal.body}>Case is locked by Jean Neige</Text>
 
       <View style={modal.buttonWrapper}>
         <SquareButton
