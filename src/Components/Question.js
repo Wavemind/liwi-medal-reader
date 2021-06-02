@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import { Boolean, Select, Numeric, Icon } from '@/Components'
+import { Boolean, Select, Numeric, String, Icon } from '@/Components'
 
 import { Config } from '@/Config'
 
@@ -52,8 +52,8 @@ const Question = ({ node, disabled = false }) => {
         return <Boolean question={node} emergency={emergency} />
       case Config.DISPLAY_FORMAT.input:
         return <Numeric question={node} />
-      // case Config.DISPLAY_FORMAT.string:
-      //   return <String question={node} />
+      case Config.DISPLAY_FORMAT.string:
+        return <String question={node} />
       // case Config.DISPLAY_FORMAT.date:
       //   return <Date question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:

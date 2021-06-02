@@ -1,6 +1,7 @@
 // INPUTS
 export { default as Boolean } from './Inputs/Boolean'
 export { default as Numeric } from './Inputs/Numeric'
+export { default as String } from './Inputs/String'
 export { default as Select } from './Inputs/Select'
 export { default as SquareSelect } from './Inputs/SquareSelect'
 export { default as Checkbox } from './Inputs/Checkbox'

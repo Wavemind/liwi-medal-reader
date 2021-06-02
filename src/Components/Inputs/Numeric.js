@@ -2,7 +2,13 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { View, TextInput, TouchableOpacity, Text } from 'react-native'
+import {
+  KeyboardAvoidingView,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+} from 'react-native'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -10,7 +16,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const Numeric = ({ question, disabled }) => {
+const Numeric = ({ question, disabled = false }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
@@ -88,7 +94,7 @@ const Numeric = ({ question, disabled }) => {
   }
 
   return (
-    <View>
+    <KeyboardAvoidingView behavior="position">
       <TextInput
         style={numeric.input}
         onEndEditing={onEndEditing}
@@ -139,7 +145,7 @@ const Numeric = ({ question, disabled }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 

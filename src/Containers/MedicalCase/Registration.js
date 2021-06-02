@@ -18,16 +18,19 @@ const RegistrationMedicalCaseContainer = props => {
 
   const algorithm = useSelector(state => state.algorithm.item)
 
-  // const questions = _.filter(algorithm.nodes, { category: 'physical_exam' })
+  // const questions = _.filter(algorithm.nodes, { category: 'basic_demographic' })
+
   let questions = []
   questions.push(algorithm.nodes[18])
   questions.push(algorithm.nodes[168])
   questions.push(algorithm.nodes[326])
   questions.push(algorithm.nodes[204])
+  questions.push(algorithm.nodes[1774])
 
   return (
     <View style={Gutters.regularTPadding}>
       <FlatList
+        removeClippedSubviews={false}
         data={questions}
         renderItem={({ item }) => <Question node={item} />}
         keyExtractor={item => item.id}
