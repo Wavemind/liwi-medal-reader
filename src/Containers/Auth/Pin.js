@@ -13,6 +13,7 @@ import { heightPercentageToDP } from 'react-native-responsive-screen'
  * The internal imports
  */
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
+import ChangeVersion from '@/Store/System/ChangeVersion'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
@@ -40,7 +41,6 @@ const PinAuthContainer = props => {
   const algorithmFetchOneError = useSelector(
     state => state.algorithm.fetchOne.error,
   )
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const PinAuthContainer = props => {
   /**
    * Manages the pin entry and navigation if pin is correct
    * @param pinCode
-   * @returns {Promise<void>}
+   * @returns {}
    */
   const handlePin = async pinCode => {
     if (pinCode === healthFacility.pin_code) {
@@ -62,6 +62,11 @@ const PinAuthContainer = props => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
+        await dispatch(
+          ChangeVersion.action({
+            newVersionId: result.payload.version_id,
+          }),
+        )
         navigateAndSimpleReset('Home')
       }
     } else {
