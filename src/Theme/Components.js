@@ -32,6 +32,7 @@ import movieStyles from './components/Movie.style'
 import pictureStyles from './components/Picture.style'
 import audioStyles from './components/Audio.style'
 import numericStyles from './components/Numeric.style'
+import consentStyles from './components/Consent.style'
 
 /**
  *
@@ -69,5 +70,6 @@ export default function (props) {
     picture: pictureStyles(props),
     audio: audioStyles(props),
     numeric: numericStyles(props),
+    consent: consentStyles(props),
   }
 }

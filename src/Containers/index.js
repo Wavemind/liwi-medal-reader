@@ -14,6 +14,7 @@ export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
 export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Registration'
 
 export { default as ListConsentContainer } from './Consent/List'
+export { default as CameraConsentContainer } from './Consent/Camera'
 
 export { default as IndexHomeContainer } from './Home/Index'
 export { default as IndexStartupContainer } from './Startup/Index'

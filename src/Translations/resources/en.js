@@ -9,6 +9,8 @@ export default {
     clear_filters: 'Clear all filters',
     loading: 'Loading...',
     new_medical_case: 'New case',
+    show_consent: 'Show consent',
+    scan_consent: 'Scan new consent',
   },
   algorithm: {
     version_id: 'Version id',
@@ -22,6 +24,12 @@ export default {
       dark_mode: 'Dark mode',
       light_mode: 'Light mode',
     },
+  },
+  answers: {
+    yes: 'Yes',
+    no: 'No',
+    measured: 'Measured',
+    estimated: 'Estimated',
   },
   containers: {
     auth: {
@@ -138,6 +146,10 @@ export default {
     },
   },
   components: {
+    consent: {
+      title: 'Consent',
+      question: 'Consent to data processing for this visit. No if revoked',
+    },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
     },
@@ -149,12 +161,6 @@ export default {
     },
     media: {
       file_not_supported: 'File not supported',
-    },
-    inputs: {
-      numeric: {
-        measured: 'Measured',
-        estimated: 'Estimated',
-      },
     },
   },
   device: {
