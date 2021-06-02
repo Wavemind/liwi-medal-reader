@@ -74,7 +74,6 @@ const Audio = ({ url }) => {
 
   /**
    * Start playing sound or create a new one if it's the first time
-   * @param {String} url - file url
    * @returns {Promise<void>}
    */
   const play = () => {
@@ -83,8 +82,7 @@ const Audio = ({ url }) => {
   }
 
   /**
-   * Start playing sound or create a new one if it's the first time
-   * @param {String} url - file url
+   * Pause sound
    * @returns {Promise<void>}
    */
   const pause = () => {

@@ -45,11 +45,11 @@ const Select = ({ question, disabled }) => {
           label={t('actions.select')}
           value={null}
         />
-        {Object.keys(question.answers).map(answerId => (
+        {Object.values(question.answers).map(answer => (
           <Picker.Item
-            key={`select-${answerId}`}
-            label={translate(question.answers[answerId].label)}
-            value={answerId}
+            key={`select-${answer.id}`}
+            label={translate(answer.label)}
+            value={answer.id}
           />
         ))}
       </Picker>
