@@ -13,7 +13,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { SquareButton, Loader, ToggleSwitchDarkMode } from '@/Components'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
+import {navigate, navigateAndSimpleReset} from '@/Navigators/Root'
 import FetchOneHealthFacility from '@/Store/HealthFacility/FetchOne'
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
 
@@ -63,7 +63,7 @@ const SynchronizationAuthContainer = () => {
       if (isFulfilled(fetchOneAlgorithm)) {
         // Navigate and reset to Pin container
         setLoading(false)
-        navigateAndSimpleReset('ClinicianSelection')
+        navigateAndSimpleReset('Study', { source: 'auth' })
       } else {
         setLoading(false)
       }

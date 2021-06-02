@@ -32,9 +32,6 @@ export { default as PatientTabBar } from './Patient/TabBar'
 export { default as PatientTabItem } from './Patient/TabItem'
 
 // MODALS
-export { default as QuestionInfo } from './Modal/QuestionInfo'
-export { default as Study } from './Modal/Study'
-export { default as Emergency } from './Modal/Emergency'
 export { default as Popin } from './Popin/Popin'
 
 // Accordion
