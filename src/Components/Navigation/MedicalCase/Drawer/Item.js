@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
@@ -23,6 +23,10 @@ const Item = ({ stage, index, status }) => {
   } = useTheme()
 
   const [open, setOpen] = useState(status === 'current')
+
+  useEffect(() => {
+    setOpen(status === 'current')
+  }, [status])
 
   return (
     <View style={medicalCaseDrawer.itemWrapper(open, status)}>

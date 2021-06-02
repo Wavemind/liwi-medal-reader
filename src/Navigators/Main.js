@@ -27,6 +27,7 @@ const MainNavigator = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const clinician = useSelector(state => state.healthFacility.clinician)
+  const medicalCase = useSelector(state => state.medicalCase.item)
 
   const { Layout } = useTheme()
 
@@ -35,7 +36,7 @@ const MainNavigator = () => {
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
-        drawerStyle={Layout.fullWidth}
+        drawerStyle={'id' in medicalCase ? Layout.fullWidth : Layout.halfWidth}
         screenOptions={{
           headerShown: true,
           header: ({ scene }) => {
