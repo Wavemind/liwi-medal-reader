@@ -79,8 +79,7 @@ const Question = ({ node, disabled = false }) => {
           {descriptionAvailable && (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('InfoModal', {
-                  type: 'question',
+                navigation.navigate('QuestionInfo', {
                   nodeId: node.id,
                 })
               }

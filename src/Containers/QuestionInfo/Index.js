@@ -14,7 +14,12 @@ import { translate } from '@/Translations/algorithm'
 import { SectionHeader, Media } from '@/Components'
 
 const IndexQuestionInfoContainer = props => {
-  const { navigation, nodeId } = props
+  const {
+    navigation,
+    route: {
+      params: { nodeId },
+    },
+  } = props
 
   const { t } = useTranslation()
 
@@ -34,13 +39,15 @@ const IndexQuestionInfoContainer = props => {
         onPress={() => navigation.goBack()}
         style={questionInfo.closeButton}
       >
-        <Text style={questionInfo.closeButtonText}>{t('actions.continue')}</Text>
+        <Text style={questionInfo.closeButtonText}>
+          {t('actions.continue')}
+        </Text>
       </TouchableOpacity>
       <View style={questionInfo.contentWrapper}>
         <ScrollView>
           {__DEV__ && (
             <Text style={[Fonts.textRegular, { color: Colors.red }]}>
-              Node id: {node.id}
+              Node id: {nodeId}
             </Text>
           )}
           <SectionHeader label={translate(node.label)} />
