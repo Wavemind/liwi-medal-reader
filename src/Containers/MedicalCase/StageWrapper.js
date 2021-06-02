@@ -35,7 +35,7 @@ const StageWrapper = ({ route }) => {
         </View>
         <Tab.Navigator
           tabBarOptions={{ scrollEnabled: true, tabStyle: medicalCase.tabBar }}
-          tabBar={tabProps => <TabBar {...tabProps} />}
+          tabBar={tabProps => <TabBar {...{ ...tabProps, stageIndex }} />}
         >
           {stage.steps.map(step => (
             <Tab.Screen
