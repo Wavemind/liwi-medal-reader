@@ -2,13 +2,7 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import {
-  KeyboardAvoidingView,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-} from 'react-native'
+import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -16,15 +10,13 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const Numeric = ({ question, disabled = false }) => {
+const Numeric = ({ question, editable = true }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
     Components: { numeric, booleanButton },
     Layout,
-    Colors,
     Gutters,
-    Fonts,
   } = useTheme()
 
   // Local state definition
@@ -94,14 +86,14 @@ const Numeric = ({ question, disabled = false }) => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="position">
+    <View>
       <TextInput
-        style={numeric.input}
+        style={numeric.input(editable)}
         onEndEditing={onEndEditing}
         keyboardType="decimal-pad"
         onChangeText={onChange}
         value={String(value)}
-        disabled={disabled}
+        editable={editable}
       />
       <View style={[Layout.row, Gutters.smallTMargin]}>
         <View
@@ -109,13 +101,13 @@ const Numeric = ({ question, disabled = false }) => {
           style={booleanButton.buttonWrapper(
             'left',
             estimableValue === 'measured',
-            disabled,
+            !editable,
           )}
         >
           <TouchableOpacity
             style={Layout.center}
             onPress={() => handleEstimable('measured')}
-            disabled={disabled}
+            editable={editable}
           >
             <Text
               style={booleanButton.buttonText(estimableValue === 'measured')}
@@ -129,13 +121,13 @@ const Numeric = ({ question, disabled = false }) => {
           style={booleanButton.buttonWrapper(
             'right',
             estimableValue === 'estimated',
-            disabled,
+            !editable,
           )}
         >
           <TouchableOpacity
             style={Layout.center}
             onPress={() => handleEstimable('estimated')}
-            disabled={disabled}
+            editable={editable}
           >
             <Text
               style={booleanButton.buttonText(estimableValue === 'estimated')}
@@ -145,7 +137,7 @@ const Numeric = ({ question, disabled = false }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 

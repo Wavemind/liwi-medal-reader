@@ -54,13 +54,15 @@ const Question = ({ node, disabled = false }) => {
         return <Numeric question={node} />
       case Config.DISPLAY_FORMAT.string:
         return <String question={node} />
-      // case Config.DISPLAY_FORMAT.date:
-      //   return <Date question={node} />
+      case Config.DISPLAY_FORMAT.autocomplete:
+      // return <Autocomplete question={node} />
+      case Config.DISPLAY_FORMAT.date:
+      // return <Date question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:
         return <Select question={node} />
-      // case Config.DISPLAY_FORMAT.reference:
-      // case Config.DISPLAY_FORMAT.formula:
-      //   return <Formula question={node} />
+      case Config.DISPLAY_FORMAT.reference:
+      case Config.DISPLAY_FORMAT.formula:
+        return <String question={node} editable={false} />
       default:
         return <Text>{translate(node.label)}</Text>
     }

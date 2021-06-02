@@ -2,14 +2,14 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { KeyboardAvoidingView, TextInput } from 'react-native'
+import { TextInput } from 'react-native'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 
-const String = ({ question, disabled = false }) => {
+const String = ({ question, editable = true }) => {
   // Theme and style elements deconstruction
 
   const {
@@ -30,16 +30,14 @@ const String = ({ question, disabled = false }) => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="position">
-      <TextInput
-        style={string.input}
-        onEndEditing={onEndEditing}
-        onChangeText={setValue}
-        value={value}
-        keyboardType="default"
-        disabled={disabled}
-      />
-    </KeyboardAvoidingView>
+    <TextInput
+      style={string.input(editable)}
+      onEndEditing={onEndEditing}
+      onChangeText={setValue}
+      value={value}
+      keyboardType="default"
+      editable={editable}
+    />
   )
 }
 
