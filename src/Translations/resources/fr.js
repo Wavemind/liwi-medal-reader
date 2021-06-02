@@ -97,4 +97,18 @@ export default {
     instructions:
       'Veuillez vous rendre dans la section "Permissions" des paramètres de la tablette et accorder toutes les autorisations requises.',
   },
+  modals: {
+    lock: {
+      title: 'Consultation non disponible',
+      content: 'Le cas est verouillé par {{ name }}',
+      unlockButton: 'DEVEROUILLER',
+      summaryButton: 'RESUME',
+    },
+    emergency: {
+      title: "Assistance d'urgence",
+      content:
+        "Le patient présente des symptomes sévères. Cliquez sur le bouton ci-dessous si l'enfant a besoin d'aide urgente.",
+      emergencyButton: 'URGENCE',
+    },
+  },
 }

@@ -32,6 +32,7 @@ const SquareButton = props => {
     color = null,
     iconSize = FontSize.huge,
     align = null,
+    fullWidth = true,
   } = props
 
   // Constants definition
@@ -40,7 +41,7 @@ const SquareButton = props => {
     color !== null ? color : filled ? Colors.secondary : Colors.primary
 
   return (
-    <View style={squareButton.wrapper}>
+    <View style={squareButton.wrapper(fullWidth)}>
       <TouchableOpacity
         onPress={() => onPress()}
         style={squareButton[type](disabled, bgColor, align, big)}
