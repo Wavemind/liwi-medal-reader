@@ -28,6 +28,7 @@ const Question = ({ node, disabled = false }) => {
   const [emergency, setEmergency] = useState(false)
 
   /**
+   * For display proposed
    * Available
    * - empty string
    * - error

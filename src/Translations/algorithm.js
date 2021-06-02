@@ -1,3 +1,5 @@
+import i18n from '@/Translations/index'
+
 /**
  * Translate algorithm value
  * @param translation
@@ -21,5 +23,5 @@ export const translate = (translation, language) => {
     return translation.en
   }
 
-  return ''
+  return i18n.t('application.algorithm_translation_missing')
 }
