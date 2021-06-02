@@ -4,14 +4,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon, SelectionBadge } from '@/Components'
+import ChangeAdditionalDiagnosis from '@/Store/MedicalCase/ChangeAdditionalDiagnosis'
 
-const FilterBar = () => {
+const SelectionBar = ({ handleRemovePress }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
 
@@ -21,10 +23,27 @@ const FilterBar = () => {
     Gutters,
   } = useTheme()
 
+  const additionalDiagnosis = useSelector(
+    state => state.medicalCase.item.diagnosis.additional,
+  )
+
+  const dispatch = useDispatch()
+
+  /**
+   * Clears all filters by dispatching an empty array to the additional diagnosis store
+   */
+  const clearAll = () => {
+    dispatch(
+      ChangeAdditionalDiagnosis.action({
+        newAdditionalDiagnosis: [],
+      }),
+    )
+  }
+
   return (
     <View style={filterBar.container}>
       <TouchableOpacity
-        onPress={() => console.log('TODO RESET')}
+        onPress={() => clearAll()}
         style={filterBar.clearFiltersButton}
       >
         <View style={filterBar.clearFiltersButtonWrapper}>
@@ -40,13 +59,18 @@ const FilterBar = () => {
         </View>
       </TouchableOpacity>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <SelectionBadge value="Acute diarrhea" />
-        <SelectionBadge value="Long ass selecter diagnostic" />
-        <SelectionBadge value="Acute diarrhea" />
-        <SelectionBadge value="Acute diarrhea" />
+        {additionalDiagnosis.map(diagnosisId => {
+          return (
+            <SelectionBadge
+              key={diagnosisId}
+              handleRemovePress={handleRemovePress}
+              diagnosisId={diagnosisId}
+            />
+          )
+        })}
       </ScrollView>
     </View>
   )
 }
 
-export default FilterBar
+export default SelectionBar

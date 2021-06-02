@@ -9,8 +9,10 @@ import { View, Text, TouchableOpacity } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { useSelector } from 'react-redux'
+import { translate } from '@/Translations/algorithm'
 
-const Badge = ({ value }) => {
+const SelectionBadge = ({ value, handleRemovePress, diagnosisId }) => {
   const {
     Layout,
     FontSize,
@@ -19,17 +21,21 @@ const Badge = ({ value }) => {
     Components: { badge },
   } = useTheme()
 
+  const algorithm = useSelector(state => state.algorithm.item)
+
   return (
     <View style={badge.wrapper}>
       <View style={Layout.row}>
         <Text style={Fonts.textColorSecondary}>
-          <Text style={Fonts.textTiny}>{value}</Text>
+          <Text style={Fonts.textTiny}>
+            {translate(algorithm.nodes[diagnosisId].label)}
+          </Text>
         </Text>
       </View>
       <View style={badge.separator} />
       <TouchableOpacity
         style={Layout.column}
-        onPress={() => console.log('TODO')}
+        onPress={() => handleRemovePress(false, diagnosisId)}
       >
         <Icon name="close" color={Colors.secondary} size={FontSize.regular} />
       </TouchableOpacity>
@@ -37,4 +43,4 @@ const Badge = ({ value }) => {
   )
 }
 
-export default Badge
+export default SelectionBadge

@@ -14,6 +14,7 @@ const Checkbox = ({
   label,
   onPress = () => console.log('Add action !'),
   defaultValue = false,
+  nodeId = null,
   disabled,
 }) => {
   // Theme and style elements deconstruction
@@ -29,7 +30,7 @@ const Checkbox = ({
    */
   const handleOnPress = () => {
     setSelection(!isSelected)
-    onPress(!isSelected)
+    onPress(!isSelected, nodeId)
   }
 
   return (

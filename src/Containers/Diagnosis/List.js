@@ -4,7 +4,8 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import * as _ from 'lodash'
 
 /**
  * The internal imports
@@ -18,6 +19,7 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
+import ChangeAdditionalDiagnosis from "@/Store/MedicalCase/ChangeAdditionalDiagnosis";
 
 const ListPatientContainer = props => {
   // Theme and style elements deconstruction
@@ -33,21 +35,22 @@ const ListPatientContainer = props => {
     Containers: { patientList },
   } = useTheme()
 
+  const dispatch = useDispatch()
+
   // Local state definition
   const [data, setData] = useState([])
   const [refreshing, setRefreshing] = useState(false)
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const additionalDiagnosis = useSelector(state => state.medicalCase.item)
-
-  console.log(algorithm)
-  console.log(additionalDiagnosis)
+  const additionalDiagnosis = useSelector(
+    state => state.medicalCase.item.diagnosis.additional,
+  )
 
   useEffect(() => {
-    let timer = setTimeout(
-      () => setData(Object.values(algorithm.diagnostics)),
-      2 * 1000,
-    )
+    const finalDiagnosticsList = _.filter(algorithm.nodes, {
+      type: 'FinalDiagnostic',
+    })
+    let timer = setTimeout(() => setData(finalDiagnosticsList), 2 * 1000)
 
     return () => {
       clearTimeout(timer)
@@ -69,6 +72,26 @@ const ListPatientContainer = props => {
   const loadMore = () => {
     console.log('TODO: load more')
     setData(data.concat([11, 12, 13, 14, 15]))
+  }
+
+  /**
+   * Toggles the additional diagnostic selection in the store
+   * @param checkboxValue
+   * @param nodeId
+   */
+  const toggleAdditionalDiagnosis = (checkboxValue, nodeId) => {
+    const tempAdditionalDiagnosis = [...additionalDiagnosis]
+    if (tempAdditionalDiagnosis.includes(nodeId)) {
+      const index = tempAdditionalDiagnosis.indexOf(nodeId)
+      tempAdditionalDiagnosis.splice(index, 1)
+    } else {
+      tempAdditionalDiagnosis.push(nodeId)
+    }
+    dispatch(
+      ChangeAdditionalDiagnosis.action({
+        newAdditionalDiagnosis: tempAdditionalDiagnosis,
+      }),
+    )
   }
 
   return (
@@ -100,13 +123,13 @@ const ListPatientContainer = props => {
         </TouchableOpacity>
       </View>
       <SearchBar navigation={navigation} />
-      <SelectionBar />
+      <SelectionBar handleRemovePress={toggleAdditionalDiagnosis}/>
 
       <SectionHeader label="Diagnosis" />
 
       <FlatList
         data={data}
-        renderItem={({ item }) => <DiagnosisItem item={item} />}
+        renderItem={({ item }) => <DiagnosisItem item={item} handlePress={toggleAdditionalDiagnosis}/>}
         keyExtractor={item => item.id}
         ListEmptyComponent={<LoaderList />}
         onRefresh={() => handleRefresh()}

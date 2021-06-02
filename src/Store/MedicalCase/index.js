@@ -1,6 +1,7 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import Create from './Create'
 import ChangeAdvancement from './ChangeAdvancement'
+import ChangeAdditionalDiagnosis from './ChangeAdditionalDiagnosis'
 
 const sliceInitialState = {
   item: {},
@@ -8,6 +9,6 @@ const sliceInitialState = {
 
 export default buildSlice(
   'scan',
-  [Create, ChangeAdvancement],
+  [Create, ChangeAdvancement, ChangeAdditionalDiagnosis],
   sliceInitialState,
 ).reducer
