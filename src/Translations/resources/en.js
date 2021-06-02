@@ -8,6 +8,7 @@ export default {
     synchronize: 'Synchronize',
     clear_filters: 'Clear all filters',
     loading: 'Loading...',
+    new_medical_case: 'New case',
   },
   algorithm: {
     version_id: 'Version id',
@@ -83,6 +84,7 @@ export default {
         'You need to give another sticker to the patient',
       new_sticker_wrong_facility:
         'The new sticker does not belong to your facility',
+      wrong_format: 'The QR code does not have the correct format',
     },
     patient: {
       list: {
@@ -90,6 +92,14 @@ export default {
         name: 'Name',
         last_visit: 'Last visit',
         status: 'Status',
+      },
+      consultations: {
+        current_consultation: 'Current consultation',
+        last_consultations: 'Last consultations',
+      },
+      personal_info: {
+        patient_info: 'Patient information',
+        consultations_info: 'Consultations information',
       },
     },
     consent: {
@@ -177,6 +187,7 @@ export default {
     scan_qr_code: 'Scan QR code',
     consultations: 'Consultations',
     patient_list: 'Patient list',
+    personal_info: 'Personal information',
     consent_list: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',

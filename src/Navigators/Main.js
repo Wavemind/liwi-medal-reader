@@ -18,6 +18,7 @@ import {
   StageWrapperContainer,
   ListMedicalCaseContainer,
   IndexSynchronizationContainer,
+  ProfileWrapperPatientContainer,
 } from '@/Containers'
 import { useTheme } from '@/Theme'
 
@@ -78,6 +79,11 @@ const MainNavigator = () => {
           options={{
             title: t('navigation.patient_list'),
           }}
+        />
+        <Drawer.Screen
+          name="PatientProfile"
+          component={ProfileWrapperPatientContainer}
+          options={({ route }) => ({ title: route.params?.title })}
         />
         <Drawer.Screen
           name="ConsentList"
