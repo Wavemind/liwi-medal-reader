@@ -4,11 +4,14 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { translate } from '@/Translations/algorithm'
+import { SectionHeader, Media } from '@/Components'
 
 const IndexQuestionInfoContainer = props => {
   const { navigation, nodeId } = props
@@ -17,6 +20,8 @@ const IndexQuestionInfoContainer = props => {
 
   // Theme and style elements deconstruction
   const {
+    Fonts,
+    Colors,
     Containers: { questionInfo },
   } = useTheme()
 
