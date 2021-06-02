@@ -13,6 +13,7 @@ import { heightPercentageToDP } from 'react-native-responsive-screen'
  * The internal imports
  */
 import FetchOneAlgorithm from '@/Store/Algorithm/FetchOne'
+import ChangeVersion from '@/Store/System/ChangeVersion'
 import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
@@ -62,7 +63,14 @@ const PinAuthContainer = props => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
-        navigateAndSimpleReset('Home')
+        const changeResult = await dispatch(
+          ChangeVersion.action({
+            newVersionId: result.payload.version_id,
+          }),
+        )
+        if (isFulfilled(changeResult)) {
+          navigateAndSimpleReset('Home')
+        }
       }
     } else {
       setStatus('failure')

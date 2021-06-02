@@ -3,7 +3,7 @@ import i18n from '@/Translations/index'
 /**
  * Parse TIMCI QR code data because they didn't want to use the existing format just to piss us off
  * @param QRData : String value coming from QRCODE
- * @returns {{uid: number, group_id: number, study_id}} : Formated data
+ * @returns {{uid: number, group_id: number, study_id}} : Formatted data
  */
 const parseHeleneQR = QRData => {
   const regexStudy = /^[IKMST]/

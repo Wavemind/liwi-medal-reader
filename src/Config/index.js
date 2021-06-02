@@ -70,6 +70,13 @@ export const Config = {
     finalDiagnostic: { label: 'final_diagnostic' },
     close: { label: 'close' },
   },
+  NODE_TYPES: {
+    diagnosis: 'Diagnosis',
+    finalDiagnostic: 'FinalDiagnostic',
+    healthCare: 'HealthCare',
+    question: 'Question',
+    questionsSequence: 'QuestionsSequence',
+  },
   PING_INTERVAL: 5000,
   URL_PRODUCTION_API: 'https://medalc.unisante.ch//api/v1',
   URL_STAGING_API: 'https://liwi.wavelab.top/api/v1/',
