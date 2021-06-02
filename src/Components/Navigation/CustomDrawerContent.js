@@ -34,7 +34,7 @@ const CustomDrawerContent = props => {
 
   useEffect(() => {
     setMedicalCaseExists('id' in medicalCase)
-  }, [medicalCase])
+  }, [medicalCase.id])
 
   /**
    * Clear clinician and redirect user to clinician list

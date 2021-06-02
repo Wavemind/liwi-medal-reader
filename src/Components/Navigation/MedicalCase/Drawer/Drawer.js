@@ -40,7 +40,6 @@ const DrawerItem = () => {
           <Item
             stage={stage}
             index={index}
-            // TODO Set real medical case status
             status={
               index === stageIndex
                 ? 'current'
