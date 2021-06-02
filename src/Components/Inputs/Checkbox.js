@@ -42,6 +42,7 @@ const Checkbox = ({
         value={isSelected}
         style={checkbox.checkbox}
         tintColors={checkbox.tintColors(disabled)}
+        onChange={handleOnPress}
       />
       <Text style={checkbox.label(disabled)}>{label}</Text>
     </TouchableOpacity>
