@@ -1,6 +1,5 @@
 import { generateNodes } from '@/Services/Node'
 export default async ({ algorithm }) => {
-  dasdas
   return {
     activities: [],
     comment: '',

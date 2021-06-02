@@ -79,7 +79,6 @@ const IndexScanContainer = props => {
       return
     }
     setLastScan(e.data)
-    console.log('COUCOU', e.data)
 
     await dispatch(
       HandleQr.action({
