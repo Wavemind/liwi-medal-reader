@@ -5,5 +5,8 @@ export default {
   action: createAction('modal/toggleVisibility'),
   reducers(state, {}) {
     state.visible = !state.visible
+    if (!state.visible) {
+      state.type = null
+    }
   },
 }

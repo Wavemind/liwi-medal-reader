@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Colors, Layout, Fonts } = props
+  const { Colors, Layout, Fonts, Gutters } = props
 
   return StyleSheet.create({
     wrapper: {
+      ...Gutters.regularHPadding,
+      ...Gutters.regularVPadding,
       backgroundColor: Colors.secondary,
       borderRadius: 8,
-      padding: 20,
     },
     closeButton: {
       ...Layout.alignItemsEnd,
@@ -16,16 +17,15 @@ export default function (props) {
       ...Fonts.textRegular,
       ...Fonts.textBold,
       ...Fonts.textCenter,
+      ...Gutters.regularVMargin,
+      ...Fonts.textUppercase,
       color: Colors.red,
-      marginTop: 20,
-      marginBottom: 20,
-      textTransform: 'uppercase',
     },
     body: {
       ...Fonts.textSmall,
       ...Fonts.textCenter,
-      marginBottom: 50,
-      paddingHorizontal: 20,
+      ...Gutters.largeBMargin,
+      ...Gutters.regularHPadding,
     },
     buttonWrapper: {
       ...Layout.row,

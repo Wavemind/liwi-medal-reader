@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { View, Text } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -16,6 +17,8 @@ const Lock = () => {
     Colors,
     Components: { modal },
   } = useTheme()
+
+  const { t } = useTranslation()
 
   /**
    * TODO
@@ -31,22 +34,21 @@ const Lock = () => {
     console.log('summary')
   }
 
-  // TODO translations
   return (
     <View>
-      <Text style={modal.header}>Consultation not available</Text>
-      <Text style={modal.body}>Case is locked by Jean Neige</Text>
+      <Text style={modal.header}>{t('modals.lock.title')}</Text>
+      <Text style={modal.body}>{t('modals.lock.content', { name: 'Jean Neige' })}</Text>
 
       <View style={modal.buttonWrapper}>
         <SquareButton
-          label="FORCE UNLOCK"
+          label={t('modals.lock.unlockButton')}
           filled
           onPress={handleForceUnlock}
           bgColor={Colors.red}
           fullWidth={false}
         />
         <SquareButton
-          label="SUMMARY"
+          label={t('modals.lock.summaryButton')}
           filled
           onPress={handleSummary}
           bgColor={Colors.grey}

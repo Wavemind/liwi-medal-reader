@@ -192,4 +192,18 @@ export default {
     instructions:
       'Please go to Permissions in the tablet Settings and grant all required permissions',
   },
+  modals: {
+    lock: {
+      title: 'Consultation not available',
+      content: 'Case is locked by {{ name }}',
+      unlockButton: 'FORCE UNLOCK',
+      summaryButton: 'SUMMARY',
+    },
+    emergency: {
+      title: 'Emergency Assistance',
+      content:
+        'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergency care now.',
+      emergencyButton: 'GO TO EMERGENCY',
+    },
+  },
 }
