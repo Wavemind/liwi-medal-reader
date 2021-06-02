@@ -37,7 +37,7 @@ export default {
       )
     }
 
-    // Set Medical case
+    // Set algorithm
     const algorithmTargetPath = `${DocumentDirectoryPath}/version_${state.system.versionId}.json`
     const algorithmFileExist = await exists(algorithmTargetPath)
     if (algorithmFileExist) {

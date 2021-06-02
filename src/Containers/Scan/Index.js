@@ -44,6 +44,9 @@ const IndexScanContainer = props => {
   const [otherQR, setOtherQR] = useState({})
   const [lastScan, setLastScan] = useState({})
 
+  /**
+   * Will navigate to the medical case with the appropriate params
+   */
   const openMedicalCase = async () => {
     if (scanData.navigate) {
       const result = await dispatch(createMedicalCase.action({ algorithm }))

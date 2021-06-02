@@ -63,12 +63,14 @@ const PinAuthContainer = props => {
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
       if (isFulfilled(result)) {
-        await dispatch(
+        const changeResult = await dispatch(
           ChangeVersion.action({
             newVersionId: result.payload.version_id,
           }),
-        ),
+        )
+        if (isFulfilled(changeResult)) {
           navigateAndSimpleReset('Home')
+        }
       }
     } else {
       setStatus('failure')

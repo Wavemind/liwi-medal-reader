@@ -50,6 +50,7 @@ export default async ({ json_version }) => {
     nodes: { ...nodes },
   }
 
+  // Write the algorithm in a file
   const algorithmTargetPath = `${DocumentDirectoryPath}/version_${algorithm.version_id}.json`
   await writeFile(algorithmTargetPath, JSON.stringify(algorithm))
 
