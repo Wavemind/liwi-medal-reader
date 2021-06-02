@@ -9,7 +9,7 @@ import * as _ from 'lodash'
 /**
  * The internal imports
  */
-import { Question } from '@/Components'
+import { Question, SquareButton } from '@/Components'
 import { useTheme } from '@/Theme'
 
 const RegistrationMedicalCaseContainer = props => {
@@ -31,6 +31,11 @@ const RegistrationMedicalCaseContainer = props => {
         data={questions}
         renderItem={({ item }) => <Question node={item} />}
         keyExtractor={item => item.id}
+      />
+      <SquareButton
+        label="Diagnoses"
+        fullWidth={false}
+        onPress={() => props.navigation.navigate('Diagnoses')}
       />
     </View>
   )
