@@ -38,6 +38,7 @@ const DrawerItem = () => {
       <ScrollView>
         {Config.NAVIGATION.INTERVENTION_STAGES.map((stage, index) => (
           <Item
+            key={index}
             stage={stage}
             index={index}
             status={

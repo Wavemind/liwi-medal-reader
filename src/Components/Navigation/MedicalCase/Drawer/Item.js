@@ -51,7 +51,7 @@ const Item = ({ stage, index, status }) => {
       {open && (
         <View style={medicalCaseDrawer.stepsWrapper}>
           {stage.steps.map((step, stepIndex) => (
-            <View style={Layout.rowCenter}>
+            <View style={Layout.rowCenter} key={step.label}>
               <View style={medicalCaseDrawer.dotWrapper}>
                 <Dot thinLines status={status} stepIndex={stepIndex} />
               </View>

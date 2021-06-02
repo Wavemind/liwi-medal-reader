@@ -22,11 +22,11 @@ export function navigateAndReset(routes = [], index = 0) {
   )
 }
 
-export function navigateAndSimpleReset(name, index = 0) {
+export function navigateAndSimpleReset(name, params = {}, index = 0) {
   navigationRef.current?.dispatch(
     CommonActions.reset({
       index,
-      routes: [{ name }],
+      routes: [{ name, params: { ...params } }],
     }),
   )
 }

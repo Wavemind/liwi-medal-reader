@@ -76,6 +76,9 @@ export default function () {
     justifyContentStart: {
       justifyContent: 'flex-start',
     },
+    justifyContentEvenly: {
+      justifyContent: 'space-evenly',
+    },
     scrollSpaceAround: {
       flexGrow: 1,
       justifyContent: 'space-around',

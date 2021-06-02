@@ -1,11 +1,10 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Layout } = props
-
   return StyleSheet.create({
     wrapper: {
-      ...Layout.fullHeight,
+      height: hp(40),
     },
   })
 }

@@ -12,6 +12,10 @@ export default function (props) {
       ...Layout.row,
       ...Gutters.regularTMargin,
     },
+    scanButton: {
+      ...Layout.fill,
+      ...Layout.column,
+    },
     patientListButton: {
       ...Layout.fill,
       ...Layout.column,

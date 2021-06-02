@@ -67,16 +67,32 @@ const IndexHomeContainer = props => {
     console.log('TODO: load more')
     setData(data.concat([11, 12, 13, 14, 15]))
   }
+
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <View style={home.buttonsWrapper}>
-        <SquareButton
-          label={t('navigation.scan_qr_code')}
-          icon="qr-scan"
-          big
-          onPress={() => navigation.navigate('Scan')}
-          filled
-        />
+        <View style={home.buttonListWrapper}>
+          <View style={home.scanButton}>
+            <SquareButton
+              label={t('navigation.scan_qr_code')}
+              icon="qr-scan"
+              big
+              onPress={() => navigation.navigate('Scan')}
+              filled
+            />
+          </View>
+          {__DEV__ && (
+            <View style={home.consultationsButton}>
+              <SquareButton
+                label={t('actions.new_patient')}
+                icon="add"
+                big
+                onPress={() => navigation.navigate('StageWrapper')}
+                filled
+              />
+            </View>
+          )}
+        </View>
         <View style={home.buttonListWrapper}>
           <View style={home.patientListButton}>
             <SquareButton

@@ -107,8 +107,7 @@ const CustomDrawerContent = props => {
           <View style={customDrawerContent.separator} />
           <CustomDrawerItem
             label={t('navigation.about')}
-            routeName="InfoModal"
-            routeParams={{ type: 'study' }}
+            routeName="Study"
             iconName="about"
             {...props}
           />

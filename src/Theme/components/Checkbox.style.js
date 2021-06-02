@@ -6,7 +6,6 @@ export default function (props) {
   return StyleSheet.create({
     checkboxContainer: {
       ...Layout.row,
-      ...Gutters.regularBMargin,
     },
     checkbox: {
       alignSelf: 'center',
