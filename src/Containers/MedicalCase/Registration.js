@@ -23,6 +23,7 @@ const RegistrationMedicalCaseContainer = props => {
   questions.push(algorithm.nodes[18])
   questions.push(algorithm.nodes[168])
   questions.push(algorithm.nodes[326])
+  questions.push(algorithm.nodes[204])
 
   return (
     <View style={Gutters.regularTPadding}>

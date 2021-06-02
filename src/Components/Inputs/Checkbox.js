@@ -10,19 +10,32 @@ import CheckBox from '@react-native-community/checkbox'
  */
 import { useTheme } from '@/Theme'
 
-const Checkbox = ({ label, disabled }) => {
+const Checkbox = ({
+  label,
+  onPress = () => console.log('Add action !'),
+  defaultValue = false,
+  disabled,
+}) => {
   // Theme and style elements deconstruction
   const {
     Components: { checkbox },
   } = useTheme()
 
   // Local state definition
-  const [isSelected, setSelection] = useState(false)
+  const [isSelected, setSelection] = useState(defaultValue)
+
+  /**
+   * OnPress action
+   */
+  const handleOnPress = () => {
+    setSelection(!isSelected)
+    onPress(!isSelected)
+  }
 
   return (
     <TouchableOpacity
       style={checkbox.checkboxContainer}
-      onPress={() => setSelection(!isSelected)}
+      onPress={handleOnPress}
       disabled={disabled}
     >
       <CheckBox

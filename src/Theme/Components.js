@@ -30,6 +30,7 @@ import questionStyles from './components/Question.style'
 import movieStyles from './components/Movie.style'
 import pictureStyles from './components/Picture.style'
 import audioStyles from './components/Audio.style'
+import numericStyles from './components/Numeric.style'
 
 /**
  *
@@ -65,5 +66,6 @@ export default function (props) {
     movieController: movieStyles(props),
     picture: pictureStyles(props),
     audio: audioStyles(props),
+    numeric: numericStyles(props),
   }
 }

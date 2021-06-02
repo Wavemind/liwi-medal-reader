@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import { Boolean, Select, Icon } from '@/Components'
+import { Boolean, Select, Numeric, Icon } from '@/Components'
 
 import { Config } from '@/Config'
 
@@ -49,8 +49,8 @@ const Question = ({ node, disabled = false }) => {
     switch (node.display_format) {
       case Config.DISPLAY_FORMAT.radioButton:
         return <Boolean question={node} emergency={emergency} />
-      // case Config.DISPLAY_FORMAT.input:
-      //   return <Numeric question={node} />
+      case Config.DISPLAY_FORMAT.input:
+        return <Numeric question={node} />
       // case Config.DISPLAY_FORMAT.string:
       //   return <String question={node} />
       // case Config.DISPLAY_FORMAT.date:
@@ -91,7 +91,7 @@ const Question = ({ node, disabled = false }) => {
           <View style={question.inputWrapper}>{inputFactory()}</View>
         </View>
         {(status === 'error' || status === 'warning') && (
-          <View style={question.messageWrapper('status')}>
+          <View style={question.messageWrapper(status)}>
             <Icon
               size={FontSize.regular}
               color={Colors.secondary}

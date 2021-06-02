@@ -139,6 +139,12 @@ export default {
     media: {
       file_not_supported: 'File not supported',
     },
+    inputs: {
+      numeric: {
+        measured: 'Measured',
+        estimated: 'Estimated',
+      },
+    },
   },
   device: {
     name: 'Name',

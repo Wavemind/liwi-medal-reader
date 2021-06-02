@@ -64,7 +64,7 @@ export default function (props) {
       width: wp(33.3),
     },
     messageWrapper: errorType => ({
-      backgroundColor: errorType === 'warning' ? Colors.warning : Colors.error,
+      backgroundColor: errorType === 'warning' ? Colors.warning : Colors.red,
       borderRadius: 10,
       ...Layout.row,
       ...Layout.alignItemsCenter,
