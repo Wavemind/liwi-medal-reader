@@ -4,6 +4,10 @@ export default function (props) {
   const { Layout, Gutters, Colors, Fonts } = props
 
   return StyleSheet.create({
+    container: {
+      ...Layout.fill,
+      ...Layout.row,
+    },
     closeWrapper: {
       ...Layout.flex,
       ...Layout.alignItemsEnd,

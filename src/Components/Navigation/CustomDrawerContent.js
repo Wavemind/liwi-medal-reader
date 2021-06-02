@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +21,7 @@ const CustomDrawerContent = props => {
   const { navigation } = props
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const [medicalCaseExists, setMedicalCaseExists] = useState(false)
 
   // Theme and style elements deconstruction
   const {
@@ -29,6 +30,11 @@ const CustomDrawerContent = props => {
   } = useTheme()
 
   const algorithm = useSelector(state => state.algorithm.item)
+  const medicalCase = useSelector(state => state.medicalCase.item)
+
+  useEffect(() => {
+    setMedicalCaseExists('id' in medicalCase)
+  }, [medicalCase.id])
 
   /**
    * Clear clinician and redirect user to clinician list
@@ -39,7 +45,7 @@ const CustomDrawerContent = props => {
   }
 
   return (
-    <View style={[Layout.fill, Layout.row]}>
+    <View style={customDrawerContent.container}>
       <View style={customDrawerContent.wrapper}>
         <DrawerContentScrollView contentContainerStyle={Layout.fill}>
           <View style={customDrawerContent.closeWrapper}>
@@ -79,13 +85,15 @@ const CustomDrawerContent = props => {
               {...props}
             />
           )}
-          <CustomDrawerItem
-            label={t('navigation.current_consultation')}
-            routeName="StageWrapper"
-            routeParams={{ stageIndex: 0 }}
-            iconName="summary"
-            {...props}
-          />
+          {medicalCaseExists && (
+            <CustomDrawerItem
+              label={t('navigation.current_consultation')}
+              routeName="StageWrapper"
+              routeParams={{ stageIndex: 0 }}
+              iconName="summary"
+              {...props}
+            />
+          )}
         </DrawerContentScrollView>
 
         <View>
@@ -123,7 +131,7 @@ const CustomDrawerContent = props => {
           />
         </View>
       </View>
-      <MedicalCaseDrawer />
+      {medicalCaseExists && <MedicalCaseDrawer />}
     </View>
   )
 }

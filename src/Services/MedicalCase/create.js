@@ -15,7 +15,10 @@ export default async ({ algorithm }) => {
     },
     id: 0,
     nodes: generateNodes({ nodes: algorithm.nodes }),
-    status: '',
+    advancement: {
+      stage: 0,
+      step: 0,
+    },
     synchronized_at: null,
     updated_at: 'MM/DD/YYYY HH:mm:ss',
     version_id: algorithm.id,

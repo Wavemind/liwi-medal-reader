@@ -15,7 +15,7 @@ import * as _ from 'lodash'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import createMedicalCase from '@/Store/MedicalCase/create'
+import createMedicalCase from '@/Store/MedicalCase/Create'
 import HandleQr from '@/Store/Scan/HandleQr'
 
 const HEIGHT = Dimensions.get('window').height
