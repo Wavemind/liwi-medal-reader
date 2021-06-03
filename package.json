@@ -43,6 +43,8 @@
     "react-native-flipper": "^0.91.2",
     "react-native-fs": "^2.17.0",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-image-pan-zoom": "^2.1.12",
+    "react-native-image-resizer": "^1.4.4",
     "react-native-keychain": "^7.0.0",
     "react-native-modal": "^11.10.0",
     "react-native-lightbox-v2": "^0.8.7",
