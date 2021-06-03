@@ -33,6 +33,7 @@ import pictureStyles from './components/Picture.style'
 import audioStyles from './components/Audio.style'
 import numericStyles from './components/Numeric.style'
 import stringStyles from './components/String.style'
+import dateStyles from './components/Date.style'
 
 /**
  *
@@ -71,5 +72,6 @@ export default function (props) {
     audio: audioStyles(props),
     numeric: numericStyles(props),
     string: stringStyles(props),
+    date: dateStyles(props),
   }
 }
