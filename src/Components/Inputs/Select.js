@@ -12,7 +12,7 @@ import { Picker } from '@react-native-picker/picker'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 
-const Select = ({ question, disabled }) => {
+const Select = ({ question, disabled = false }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
