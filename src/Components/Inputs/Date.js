@@ -69,7 +69,7 @@ const Test = ({ question, disabled = false }) => {
       <Picker
         style={select.picker}
         selectedValue={yearValue}
-        prompt={translate(question.label)}
+        prompt={'Year'}
         onValueChange={(answerId, itemIndex) => setYearValue(answerId)}
         dropdownIconColor={Colors.primary}
         enabled={!disabled}
