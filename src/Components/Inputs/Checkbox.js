@@ -14,7 +14,7 @@ const Checkbox = ({
   label,
   onPress = () => console.log('Add action !'),
   defaultValue = false,
-  disabled,
+  disabled = false,
 }) => {
   // Theme and style elements deconstruction
   const {

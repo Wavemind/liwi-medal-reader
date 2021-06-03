@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const Select = ({ label, items, handleOnSelect, value }) => {
+const SquareSelect = ({ label, prompt, items, handleOnSelect, value }) => {
   const { t } = useTranslation()
 
   // Theme and style elements deconstruction
@@ -26,7 +26,7 @@ const Select = ({ label, items, handleOnSelect, value }) => {
       <View style={squareSelect.pickerContainer}>
         <Picker
           style={squareSelect.picker}
-          mode="dropdown"
+          prompt={prompt}
           selectedValue={value}
           onValueChange={(itemValue, itemIndex) => handleOnSelect(itemValue)}
           dropdownIconColor={Colors.primary}
@@ -51,4 +51,4 @@ const Select = ({ label, items, handleOnSelect, value }) => {
   )
 }
 
-export default Select
+export default SquareSelect

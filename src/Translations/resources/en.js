@@ -28,6 +28,9 @@ export default {
   answers: {
     yes: 'Yes',
     no: 'No',
+    year: 'Year',
+    month: 'Month',
+    day: 'Day',
     measured: 'Measured',
     estimated: 'Estimated',
   },

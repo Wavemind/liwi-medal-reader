@@ -10,15 +10,13 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const Numeric = ({ question, disabled }) => {
+const Numeric = ({ question, editable = true }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
     Components: { numeric, booleanButton },
     Layout,
-    Colors,
     Gutters,
-    Fonts,
   } = useTheme()
 
   // Local state definition
@@ -90,12 +88,12 @@ const Numeric = ({ question, disabled }) => {
   return (
     <View>
       <TextInput
-        style={numeric.input}
+        style={numeric.input(editable)}
         onEndEditing={onEndEditing}
         keyboardType="decimal-pad"
         onChangeText={onChange}
         value={String(value)}
-        disabled={disabled}
+        editable={editable}
       />
       <View style={[Layout.row, Gutters.smallTMargin]}>
         <View
@@ -103,13 +101,13 @@ const Numeric = ({ question, disabled }) => {
           style={booleanButton.buttonWrapper(
             'left',
             estimableValue === 'measured',
-            disabled,
+            !editable,
           )}
         >
           <TouchableOpacity
             style={Layout.center}
             onPress={() => handleEstimable('measured')}
-            disabled={disabled}
+            editable={editable}
           >
             <Text
               style={booleanButton.buttonText(estimableValue === 'measured')}
@@ -123,13 +121,13 @@ const Numeric = ({ question, disabled }) => {
           style={booleanButton.buttonWrapper(
             'right',
             estimableValue === 'estimated',
-            disabled,
+            !editable,
           )}
         >
           <TouchableOpacity
             style={Layout.center}
             onPress={() => handleEstimable('estimated')}
-            disabled={disabled}
+            editable={editable}
           >
             <Text
               style={booleanButton.buttonText(estimableValue === 'estimated')}
