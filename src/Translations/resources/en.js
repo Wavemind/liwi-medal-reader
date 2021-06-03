@@ -155,6 +155,11 @@ export default {
         measured: 'Measured',
         estimated: 'Estimated',
       },
+      date: {
+        year: 'Year',
+        month: 'Month',
+        day: 'Day',
+      },
     },
   },
   device: {
