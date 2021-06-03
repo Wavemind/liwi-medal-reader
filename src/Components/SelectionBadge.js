@@ -3,13 +3,13 @@
  */
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import { useSelector } from 'react-redux'
 import { translate } from '@/Translations/algorithm'
 
 const SelectionBadge = ({ handleRemovePress, diagnosisId }) => {

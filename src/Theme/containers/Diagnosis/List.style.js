@@ -6,6 +6,7 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Gutters.regularHMargin,
+      ...Layout.fullHeight,
     },
     headerWrapper: {
       ...Layout.row,
@@ -18,6 +19,9 @@ export default function (props) {
       ...Fonts.textRegular,
       ...Fonts.textBold,
       color: Colors.grey,
+    },
+    flatList: {
+      ...Layout.grow,
     },
     closeButton: {
       ...Gutters.smallVPadding,

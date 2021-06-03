@@ -1,15 +1,9 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native'
+import { View, TouchableOpacity, TextInput } from 'react-native'
 
 /**
  * The internal imports
@@ -17,7 +11,7 @@ import {
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const SearchBar = ({ searchTerm, setSearchTerm }) => {
+const SearchBar = ({ searchTerm, setSearchTerm, handleReset }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
@@ -26,10 +20,6 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => {
     FontSize,
     Components: { autosuggest },
   } = useTheme()
-
-  const handleChange = val => {
-    setSearchTerm(val)
-  }
 
   return (
     <View style={Layout.row}>
@@ -41,14 +31,17 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => {
           <TextInput
             style={autosuggest.inputText}
             keyboardType="default"
-            onChangeText={value => handleChange(value)}
+            onChangeText={value => setSearchTerm(value)}
             value={searchTerm}
-            placeholder='Search'
+            placeholder="Search"
             disabled={false}
           />
         </View>
         {searchTerm.length > 0 ? (
-          <TouchableOpacity onPress={() => setSearchTerm('')} style={autosuggest.clearButton}>
+          <TouchableOpacity
+            onPress={() => handleReset()}
+            style={autosuggest.clearButton}
+          >
             <Icon name="close" />
           </TouchableOpacity>
         ) : null}

@@ -21,18 +21,11 @@ const SelectionBar = ({ handleRemovePress, selected, setSelected }) => {
     Gutters,
   } = useTheme()
 
-  /**
-   * Clears all filters by dispatching an empty array to the additional diagnosis store
-   */
-  const clearAll = () => {
-    setSelected([])
-  }
-
   return (
     <View style={filterBar.container}>
       {selected.length > 0 && (
         <TouchableOpacity
-          onPress={() => clearAll()}
+          onPress={() => setSelected([])}
           style={filterBar.clearFiltersButton}
         >
           <View style={filterBar.clearFiltersButtonWrapper}>
