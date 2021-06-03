@@ -23,6 +23,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
   const { t } = useTranslation()
   const navigation = useNavigation()
+  console.log()
   const navigationState = useNavigationState(
     state =>
       state.routes[state.index].state.routes[
