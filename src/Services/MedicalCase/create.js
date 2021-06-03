@@ -13,7 +13,7 @@ export default async ({ algorithm }) => {
       agreed: {},
       custom: [],
     },
-    id: 0,
+    id: null,
     nodes: generateNodes({ nodes: algorithm.nodes }),
     status: '',
     synchronized_at: null,

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { useNavigationState, useNavigation } from '@react-navigation/native'
 
@@ -15,9 +15,7 @@ import SynchronizationNavbar from './SynchronizationNavbar'
 
 const BottomNavbar = props => {
   const navigation = useNavigation()
-  const navigationState = useNavigationState(
-    state => state.routes[state.index].state,
-  )
+  const navigationState = useNavigationState(state => state)
 
   // Theme and style elements deconstruction
   const {
@@ -29,7 +27,9 @@ const BottomNavbar = props => {
    * @returns
    */
   const RenderActions = () => {
-    const route = navigationState?.routes[navigationState.index]
+    const homeNavigation = navigationState.routes[navigationState.index].state
+
+    const route = homeNavigation?.routes[navigationState.index]
 
     // Early return if navigation is not loaded
     if (route === undefined) {
