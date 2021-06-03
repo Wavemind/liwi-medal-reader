@@ -34,6 +34,7 @@ import audioStyles from './components/Audio.style'
 import numericStyles from './components/Numeric.style'
 import stringStyles from './components/String.style'
 import dateStyles from './components/Date.style'
+import toggleStyles from './components/Toggle.style'
 
 /**
  *
@@ -73,5 +74,6 @@ export default function (props) {
     numeric: numericStyles(props),
     string: stringStyles(props),
     date: dateStyles(props),
+    toggleComplaintCategory: toggleStyles(props),
   }
 }

@@ -149,17 +149,17 @@ const DateInput = ({ question, disabled = false }) => {
               />
               <Picker.Item
                 key="select-year"
-                label={t('components.inputs.date.year')}
+                label={t('answers.year')}
                 value="year"
               />
               <Picker.Item
                 key="select-month"
-                label={t('components.inputs.date.month')}
+                label={t('answers.month')}
                 value="month"
               />
               <Picker.Item
                 key="select-day"
-                label={t('components.inputs.date.day')}
+                label={t('answers.day')}
                 value="day"
               />
             </Picker>
@@ -187,7 +187,7 @@ const DateInput = ({ question, disabled = false }) => {
             >
               <Picker.Item
                 key="select-year-placeholder"
-                label={t('components.inputs.date.year')}
+                label={t('answers.year')}
                 value={null}
               />
               {yearsRange.map(year => (
@@ -212,7 +212,7 @@ const DateInput = ({ question, disabled = false }) => {
             >
               <Picker.Item
                 key="select-month-placeholder"
-                label={t('components.inputs.date.month')}
+                label={t('answers.month')}
                 value={null}
               />
               {monthsRange.map(month => (
@@ -241,7 +241,7 @@ const DateInput = ({ question, disabled = false }) => {
             >
               <Picker.Item
                 key="select-day-placeholder"
-                label={t('components.inputs.date.day')}
+                label={t('answers.day')}
                 value={null}
               />
               {daysRange.map(day => (
@@ -256,7 +256,7 @@ const DateInput = ({ question, disabled = false }) => {
         </View>
       )}
       <Checkbox
-        label={t('components.inputs.numeric.estimated')}
+        label={t('answers.estimated')}
         defaultValue={isEstimated}
         onPress={setIsEstimated}
       />

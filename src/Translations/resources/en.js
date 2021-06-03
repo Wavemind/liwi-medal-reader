@@ -23,6 +23,13 @@ export default {
       light_mode: 'Light mode',
     },
   },
+  answers: {
+    yes: 'Yes',
+    no: 'No',
+    year: 'Year',
+    month: 'Month',
+    day: 'Day',
+  },
   containers: {
     auth: {
       login: {
@@ -154,11 +161,6 @@ export default {
       numeric: {
         measured: 'Measured',
         estimated: 'Estimated',
-      },
-      date: {
-        year: 'Year',
-        month: 'Month',
-        day: 'Day',
       },
     },
   },
