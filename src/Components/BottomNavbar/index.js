@@ -34,7 +34,7 @@ const BottomNavbar = props => {
     if (route === undefined) {
       return null
     }
-    cl
+
     const { name, params } = route
 
     const stageIndex = params?.stageIndex || 0
