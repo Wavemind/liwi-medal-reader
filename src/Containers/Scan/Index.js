@@ -15,12 +15,8 @@ import isEqual from 'lodash/isEqual'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-<<<<<<< HEAD
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-=======
-import createMedicalCase from '@/Store/MedicalCase/Create'
->>>>>>> develop
 import HandleQr from '@/Store/Scan/HandleQr'
 
 const HEIGHT = Dimensions.get('window').height
