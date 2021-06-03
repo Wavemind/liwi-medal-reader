@@ -33,10 +33,10 @@ const DateInput = ({ question, disabled = false }) => {
 
   // Local state definition
   const [dateLanguage, setDateLanguage] = useState(enGB)
-  const [isEstimated, setIsEstimated] = useState(true)
+  const [isEstimated, setIsEstimated] = useState(false)
 
-  const [dateType, setDateType] = useState(null)
-  const [dateTypeValue, setDateTypeValue] = useState('')
+  const [estimatedDateType, setEstimatedDateType] = useState(null)
+  const [estimatedValue, setEstimatedValue] = useState('')
 
   const [dayValue, setDayValue] = useState(null)
   const [monthValue, setMonthValue] = useState(null)
@@ -98,163 +98,164 @@ const DateInput = ({ question, disabled = false }) => {
    */
   useEffect(() => {
     // TODO save in store new date
-    if (dateTypeValue !== '' && dateType !== null) {
+    if (estimatedValue !== '' && estimatedDateType !== null) {
       let birthDate = ''
-      if (dateType === 'day') {
-        birthDate = subDays(new Date(), dateTypeValue)
-      } else if (dateType === 'month') {
-        birthDate = subMonths(new Date(), dateTypeValue)
+      if (estimatedDateType === 'day') {
+        birthDate = subDays(new Date(), estimatedValue)
+      } else if (estimatedDateType === 'month') {
+        birthDate = subMonths(new Date(), estimatedValue)
       } else {
-        birthDate = subYears(new Date(), dateTypeValue)
+        birthDate = subYears(new Date(), estimatedValue)
       }
-      console.log('TODO: save birth date !', dateTypeValue, dateType, birthDate)
+      console.log(
+        'TODO: save birth date !',
+        estimatedValue,
+        estimatedDateType,
+        birthDate,
+      )
     }
-  }, [dateTypeValue, dateType])
+  }, [estimatedValue, estimatedDateType])
 
   /**
    * Check if there is no unpermitted char
    * @param {Event} e
    */
   const onChange = value => {
-    const regWithComma = /^[0-9]+$/
-
-    // Replace comma with dot
-    if (regWithComma.test(value)) {
-      value = value.replace(',', '.')
-    }
-
-    // Remove char that are not number or dot
     value = value.replace(/[^0-9]/g, '')
 
-    setDateTypeValue(value)
+    setEstimatedValue(value)
+  }
+
+  const RenderEstimated = () => {
+    return (
+      <View style={Layout.column}>
+        <View style={[select.pickerContainer(disabled)]}>
+          <Picker
+            style={select.picker}
+            selectedValue={estimatedDateType}
+            mode="dropdown"
+            onValueChange={(value, itemIndex) => setEstimatedDateType(value)}
+            dropdownIconColor={Colors.primary}
+            enabled={!disabled}
+          >
+            <Picker.Item
+              key="select-date-type-placeholder"
+              label={t('actions.select')}
+              value={null}
+            />
+            <Picker.Item
+              key="select-year"
+              label={t('answers.year')}
+              value="year"
+            />
+            <Picker.Item
+              key="select-month"
+              label={t('answers.month')}
+              value="month"
+            />
+            <Picker.Item
+              key="select-day"
+              label={t('answers.day')}
+              value="day"
+            />
+          </Picker>
+        </View>
+        <View>
+          <TextInput
+            style={[numeric.input(!disabled), Gutters.smallTMargin]}
+            keyboardType="decimal-pad"
+            onChangeText={onChange}
+            value={String(estimatedValue)}
+            editable={!disabled}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  const RenderStandard = () => {
+    return (
+      <View style={Layout.column}>
+        <View style={select.pickerContainer(disabled)}>
+          <Picker
+            style={select.picker}
+            selectedValue={yearValue}
+            mode="dropdown"
+            onValueChange={(year, itemIndex) => setYearValue(year)}
+            dropdownIconColor={Colors.primary}
+            enabled={!disabled}
+          >
+            <Picker.Item
+              key="select-year-placeholder"
+              label={t('answers.year')}
+              value={null}
+            />
+            {yearsRange.map(year => (
+              <Picker.Item
+                key={`select-year-${year}`}
+                label={String(year)}
+                value={year}
+              />
+            ))}
+          </Picker>
+        </View>
+        <View style={[select.pickerContainer(disabled), Gutters.smallTMargin]}>
+          <Picker
+            style={select.picker}
+            selectedValue={monthValue}
+            mode="dropdown"
+            onValueChange={(month, itemIndex) => setMonthValue(month)}
+            dropdownIconColor={Colors.primary}
+            enabled={!disabled}
+          >
+            <Picker.Item
+              key="select-month-placeholder"
+              label={t('answers.month')}
+              value={null}
+            />
+            {monthsRange.map(month => (
+              <Picker.Item
+                key={`select-month-${month}`}
+                label={format(
+                  parse(`01-${month}-1970`, 'dd-MM-yyyy', new Date()),
+                  'MMMM',
+                  { locale: dateLanguage },
+                )}
+                value={month}
+              />
+            ))}
+          </Picker>
+        </View>
+        <View style={[select.pickerContainer(disabled), Gutters.smallTMargin]}>
+          <Picker
+            style={select.picker}
+            selectedValue={dayValue}
+            mode="dropdown"
+            onValueChange={(day, itemIndex) => setDayValue(day)}
+            dropdownIconColor={Colors.primary}
+            enabled={!disabled}
+          >
+            <Picker.Item
+              key="select-day-placeholder"
+              label={t('answers.day')}
+              value={null}
+            />
+            {daysRange.map(day => (
+              <Picker.Item
+                key={`select-day-${day}`}
+                label={String(day)}
+                value={day}
+              />
+            ))}
+          </Picker>
+        </View>
+      </View>
+    )
   }
 
   return (
     <View>
-      {isEstimated ? (
-        <View style={Layout.column}>
-          <View style={[select.pickerContainer(disabled)]}>
-            <Picker
-              style={select.picker}
-              selectedValue={dateType}
-              mode="dropdown"
-              onValueChange={(value, itemIndex) => setDateType(value)}
-              dropdownIconColor={Colors.primary}
-              enabled={!disabled}
-            >
-              <Picker.Item
-                key="select-date-type-placeholder"
-                label={t('actions.select')}
-                value={null}
-              />
-              <Picker.Item
-                key="select-year"
-                label={t('answers.year')}
-                value="year"
-              />
-              <Picker.Item
-                key="select-month"
-                label={t('answers.month')}
-                value="month"
-              />
-              <Picker.Item
-                key="select-day"
-                label={t('answers.day')}
-                value="day"
-              />
-            </Picker>
-          </View>
-          <View>
-            <TextInput
-              style={[numeric.input(!disabled), Gutters.smallTMargin]}
-              keyboardType="decimal-pad"
-              onChangeText={onChange}
-              value={String(dateTypeValue)}
-              editable={!disabled}
-            />
-          </View>
-        </View>
-      ) : (
-        <View style={Layout.column}>
-          <View style={select.pickerContainer(disabled)}>
-            <Picker
-              style={select.picker}
-              selectedValue={yearValue}
-              mode="dropdown"
-              onValueChange={(year, itemIndex) => setYearValue(year)}
-              dropdownIconColor={Colors.primary}
-              enabled={!disabled}
-            >
-              <Picker.Item
-                key="select-year-placeholder"
-                label={t('answers.year')}
-                value={null}
-              />
-              {yearsRange.map(year => (
-                <Picker.Item
-                  key={`select-year-${year}`}
-                  label={String(year)}
-                  value={year}
-                />
-              ))}
-            </Picker>
-          </View>
-          <View
-            style={[select.pickerContainer(disabled), Gutters.smallTMargin]}
-          >
-            <Picker
-              style={select.picker}
-              selectedValue={monthValue}
-              mode="dropdown"
-              onValueChange={(month, itemIndex) => setMonthValue(month)}
-              dropdownIconColor={Colors.primary}
-              enabled={!disabled}
-            >
-              <Picker.Item
-                key="select-month-placeholder"
-                label={t('answers.month')}
-                value={null}
-              />
-              {monthsRange.map(month => (
-                <Picker.Item
-                  key={`select-month-${month}`}
-                  label={format(
-                    parse(`01-${month}-1970`, 'dd-MM-yyyy', new Date()),
-                    'MMMM',
-                    { locale: dateLanguage },
-                  )}
-                  value={month}
-                />
-              ))}
-            </Picker>
-          </View>
-          <View
-            style={[select.pickerContainer(disabled), Gutters.smallTMargin]}
-          >
-            <Picker
-              style={select.picker}
-              selectedValue={dayValue}
-              mode="dropdown"
-              onValueChange={(day, itemIndex) => setDayValue(day)}
-              dropdownIconColor={Colors.primary}
-              enabled={!disabled}
-            >
-              <Picker.Item
-                key="select-day-placeholder"
-                label={t('answers.day')}
-                value={null}
-              />
-              {daysRange.map(day => (
-                <Picker.Item
-                  key={`select-day-${day}`}
-                  label={String(day)}
-                  value={day}
-                />
-              ))}
-            </Picker>
-          </View>
-        </View>
-      )}
+      {isEstimated ? <RenderEstimated /> : <RenderStandard />}
       <Checkbox
         label={t('answers.estimated')}
         defaultValue={isEstimated}

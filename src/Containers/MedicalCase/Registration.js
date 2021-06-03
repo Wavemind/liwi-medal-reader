@@ -18,20 +18,20 @@ const RegistrationMedicalCaseContainer = props => {
 
   const algorithm = useSelector(state => state.algorithm.item)
 
-  const questions = _.filter(algorithm.nodes, {
-    category: 'complaint_category',
-  })
+  // const questions = filter(algorithm.nodes, {
+  // category: 'complaint_category',
+  // })
 
-  // let questions = []
-  // questions.push(algorithm.nodes[1])
-  // questions.push(algorithm.nodes[18])
-  // questions.push(algorithm.nodes[168])
-  // questions.push(algorithm.nodes[326])
-  // questions.push(algorithm.nodes[204])
-  // questions.push(algorithm.nodes[1774])
-  // questions.push(algorithm.nodes[3436])
-  // questions.push(algorithm.nodes[6])
-  // questions.push(algorithm.nodes[7])
+  let questions = []
+  questions.push(algorithm.nodes[1])
+  questions.push(algorithm.nodes[18])
+  questions.push(algorithm.nodes[168])
+  questions.push(algorithm.nodes[326])
+  questions.push(algorithm.nodes[204])
+  questions.push(algorithm.nodes[1774])
+  questions.push(algorithm.nodes[3436])
+  questions.push(algorithm.nodes[6])
+  questions.push(algorithm.nodes[7])
 
   return (
     <View style={Gutters.regularTPadding}>
