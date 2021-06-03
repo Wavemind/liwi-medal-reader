@@ -9,6 +9,8 @@ export default {
     clear_filters: 'Clear all filters',
     loading: 'Loading...',
     new_medical_case: 'New case',
+    show_consent: 'Show consent',
+    scan_consent: 'Scan new consent',
   },
   algorithm: {
     version_id: 'Version id',
@@ -29,6 +31,8 @@ export default {
     year: 'Year',
     month: 'Month',
     day: 'Day',
+    measured: 'Measured',
+    estimated: 'Estimated',
   },
   containers: {
     auth: {
@@ -145,6 +149,10 @@ export default {
     },
   },
   components: {
+    consent: {
+      title: 'Consent',
+      question: 'Consent to data processing for this visit. No if revoked',
+    },
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
     },
@@ -156,12 +164,6 @@ export default {
     },
     media: {
       file_not_supported: 'File not supported',
-    },
-    inputs: {
-      numeric: {
-        measured: 'Measured',
-        estimated: 'Estimated',
-      },
     },
   },
   device: {
@@ -210,5 +212,19 @@ export default {
     message: 'You must grant the relevant permissions for the app to function.',
     instructions:
       'Please go to Permissions in the tablet Settings and grant all required permissions',
+  },
+  modals: {
+    lock: {
+      title: 'Consultation not available',
+      content: 'Case is locked by {{ name }}',
+      unlockButton: 'FORCE UNLOCK',
+      summaryButton: 'SUMMARY',
+    },
+    emergency: {
+      title: 'Emergency Assistance',
+      content:
+        'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergency care now.',
+      emergencyButton: 'GO TO EMERGENCY',
+    },
   },
 }

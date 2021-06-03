@@ -3,7 +3,8 @@
  */
 import React, { useState, useEffect } from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { useNavigation, useNavigationState } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -19,30 +20,25 @@ const Dot = ({ status, step, stepIndex, stageIndex, thinLines }) => {
     Components: { sideBar },
   } = useTheme()
 
-  const currentStep = useNavigationState(
-    state => state.routes[state.index].state?.index,
-  )
-  const currentStage = useNavigationState(
-    state => state.routes[state.index].params?.stageIndex,
-  )
+  const advancement = useSelector(state => state.medicalCase.item.advancement)
 
   useEffect(() => {
     if (status === 'done') {
       setActive(true)
     } else if (status === 'notDone') {
       setActive(false)
-    } else if (stepIndex <= currentStep || stepIndex === 0) {
+    } else if (stepIndex <= advancement.step || stepIndex === 0) {
       setActive(true)
     } else {
       setActive(false)
     }
-  }, [status, currentStep, stepIndex])
+  }, [status, advancement, stepIndex])
 
   /**
    * Will navigate to the related step
    */
   const handlePress = () => {
-    if (stageIndex === currentStage) {
+    if (stageIndex === advancement.stage) {
       navigation.navigate(step.label)
     } else {
       navigateToStage(stageIndex, 0)

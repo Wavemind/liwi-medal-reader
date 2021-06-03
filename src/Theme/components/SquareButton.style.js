@@ -18,14 +18,15 @@ export default function (props) {
   }
 
   return StyleSheet.create({
-    wrapper: {
+    wrapper: fullWidth => ({
       ...Layout.row,
-      ...Layout.fullWidth,
-    },
+      width: fullWidth ? '100%' : null,
+    }),
     textWrapper: {
       ...Layout.row,
       ...Layout.center,
       ...Gutters.smallVPadding,
+      ...Gutters.regularHPadding,
     },
     filled: (disabled, color, align, big) => ({
       ...base(disabled, big),

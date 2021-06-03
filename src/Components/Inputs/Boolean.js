@@ -3,6 +3,7 @@
  */
 import React, { useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { useDispatch } from 'react-redux'
 
 /**
  * The internal imports
@@ -10,6 +11,8 @@ import { View, TouchableOpacity, Text } from 'react-native'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
+import DefineType from '@/Store/Modal/DefineType'
+import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
 
 const Boolean = ({ question, emergency, disabled = false }) => {
   // Theme and style elements deconstruction
@@ -17,6 +20,7 @@ const Boolean = ({ question, emergency, disabled = false }) => {
     Components: { booleanButton },
     Layout,
   } = useTheme()
+  const dispatch = useDispatch()
 
   // Local state definition
   const [value, setValue] = useState(question.answer)
@@ -28,9 +32,10 @@ const Boolean = ({ question, emergency, disabled = false }) => {
    * Set node answer and handle emergency action
    * @param {integer} answerId
    */
-  const setAnswer = answerId => {
+  const setAnswer = async answerId => {
     if (emergency && yesAnswer.id === answerId) {
-      console.log('TODO open emergency !')
+      await dispatch(DefineType.action({ type: 'emergency' }))
+      await dispatch(ToggleVisbility.action({}))
     }
     setValue(answerId)
   }

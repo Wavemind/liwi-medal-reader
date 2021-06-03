@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import Fonts from '@/Theme/Fonts'
 
 const Audio = ({ url }) => {
   // Theme and style elements deconstruction

@@ -1,7 +1,6 @@
 /**
  * The external imports
  */
-import moment from 'moment'
 import { Model } from '@nozbe/watermelondb'
 import {
   date,
@@ -14,9 +13,6 @@ import {
 /**
  * The internal imports
  */
-import { Config } from '@/Config'
-import I18n from '@/Translations/index'
-
 const sanitizeJson = val => val
 
 export default class MedicalCase extends Model {

@@ -19,10 +19,12 @@ import emergency from './Emergency'
 import healthFacility from './HealthFacility'
 import medicalCase from './MedicalCase'
 import startup from './Startup'
+import patient from './Patient'
 import system from './System'
 import theme from './Theme'
 import scan from './Scan'
 import user from './User'
+import modal from './Modal'
 
 const reducers = combineReducers({
   algorithm,
@@ -32,10 +34,12 @@ const reducers = combineReducers({
   medicalCase,
   network,
   startup,
+  patient,
   system,
   theme,
   scan,
   user,
+  modal,
 })
 
 const persistConfig = {
@@ -43,7 +47,7 @@ const persistConfig = {
   storage: AsyncStorage,
   whitelist: [
     'device',
-    'medicalCase',
+    //'medicalCase',
     'healthFacility',
     'system',
     'theme',
