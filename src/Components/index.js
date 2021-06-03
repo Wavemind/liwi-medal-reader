@@ -5,6 +5,7 @@ export { default as Select } from './Inputs/Select'
 export { default as SquareSelect } from './Inputs/SquareSelect'
 export { default as Checkbox } from './Inputs/Checkbox'
 export { default as ToggleSwitch } from './Inputs/ToggleSwitch'
+export { default as Autosuggest } from './Inputs/Autosuggest'
 
 // BUTTONS
 export { default as SquareButton } from './Buttons/SquareButton'

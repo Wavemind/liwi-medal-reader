@@ -34,6 +34,7 @@ import pictureStyles from './components/Picture.style'
 import audioStyles from './components/Audio.style'
 import numericStyles from './components/Numeric.style'
 import diagnosisItemStyles from './components/DiagnosisItem.style'
+import AutosuggestStyles from './components/Autosuggest.style'
 
 /**
  *
@@ -73,5 +74,6 @@ export default function (props) {
     audio: audioStyles(props),
     numeric: numericStyles(props),
     diagnosisItem: diagnosisItemStyles(props),
+    autosuggest: AutosuggestStyles(props),
   }
 }

@@ -7,6 +7,7 @@ export default {
     select: 'Select',
     synchronize: 'Synchronize',
     clear_filters: 'Clear all filters',
+    clear_selection: 'Clear selection',
     loading: 'Loading...',
     new_medical_case: 'New case',
   },
@@ -40,6 +41,9 @@ export default {
         unlock: 'Enter the PIN to unlock the tablet',
         delete: 'Delete',
       },
+    },
+    diagnosis: {
+      title: 'Select your diagnosis',
     },
     filters: {
       title: 'Filters',

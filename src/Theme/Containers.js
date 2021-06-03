@@ -23,6 +23,8 @@ import medicalCaseListStyles from './containers/MedicalCase/List.style'
 import patientListStyles from './containers/Patient/List.style'
 import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
 
+import diagnosisListStyles from './containers/Diagnosis/List.style'
+
 import scanIndexStyles from './containers/Scan/Index.style'
 import filtersIndexStyles from './containers/Filters/Index.style'
 import consentListStyles from './containers/Consent/List.style'
@@ -59,5 +61,6 @@ export default function (props) {
     study: studyIndexStyles(props),
     emergency: emergencyIndexStyles(props),
     questionInfo: questionInfoIndexStyles(props),
+    diagnosisList: diagnosisListStyles(props),
   }
 }

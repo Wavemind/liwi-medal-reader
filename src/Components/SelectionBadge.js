@@ -12,7 +12,7 @@ import { Icon } from '@/Components'
 import { useSelector } from 'react-redux'
 import { translate } from '@/Translations/algorithm'
 
-const SelectionBadge = ({ value, handleRemovePress, diagnosisId }) => {
+const SelectionBadge = ({ handleRemovePress, diagnosisId }) => {
   const {
     Layout,
     FontSize,

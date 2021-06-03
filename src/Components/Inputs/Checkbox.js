@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 
@@ -24,6 +24,10 @@ const Checkbox = ({
 
   // Local state definition
   const [isSelected, setSelection] = useState(defaultValue)
+
+  useEffect(() => {
+    setSelection(defaultValue)
+  }, [defaultValue])
 
   /**
    * OnPress action
