@@ -21,7 +21,6 @@ import {
 } from '@/Components'
 
 import { Config } from '@/Config'
-import { wp } from '@/Theme/Responsive'
 
 const Question = ({ node, disabled = false }) => {
   // Theme and style elements deconstruction
