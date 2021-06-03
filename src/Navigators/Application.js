@@ -18,6 +18,7 @@ import {
   IndexFiltersContainer,
   IndexScanContainer,
   CameraConsentContainer,
+  PreviewConsentContainer,
 } from '@/Containers'
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
@@ -79,6 +80,7 @@ const ApplicationNavigator = () => {
             <Stack.Screen name="Scan" component={IndexScanContainer} />
             <Stack.Screen name="Filters" component={IndexFiltersContainer} />
             <Stack.Screen name="Camera" component={CameraConsentContainer} />
+            <Stack.Screen name="Preview" component={PreviewConsentContainer} />
             {isApplicationLoaded && AuthNavigator != null && (
               <Stack.Screen name="Auth" component={AuthNavigator} />
             )}
