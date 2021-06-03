@@ -4,6 +4,7 @@
 import React from 'react'
 import { View, ScrollView, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -14,6 +15,9 @@ import Item from './Item'
 
 const DrawerItem = () => {
   const { t } = useTranslation()
+  const stageIndex = useSelector(
+    state => state.medicalCase.item.advancement.stage,
+  )
 
   const {
     Components: { medicalCaseDrawer },
@@ -37,8 +41,13 @@ const DrawerItem = () => {
             key={index}
             stage={stage}
             index={index}
-            // TODO Set real medical case status
-            status={index === 4 ? 'current' : index > 4 ? 'notDone' : 'done'}
+            status={
+              index === stageIndex
+                ? 'current'
+                : index > stageIndex
+                ? 'notDone'
+                : 'done'
+            }
           />
         ))}
       </ScrollView>

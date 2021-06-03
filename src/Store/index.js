@@ -24,6 +24,7 @@ import system from './System'
 import theme from './Theme'
 import scan from './Scan'
 import user from './User'
+import modal from './Modal'
 
 const reducers = combineReducers({
   algorithm,
@@ -38,6 +39,7 @@ const reducers = combineReducers({
   theme,
   scan,
   user,
+  modal,
 })
 
 const persistConfig = {
@@ -45,7 +47,7 @@ const persistConfig = {
   storage: AsyncStorage,
   whitelist: [
     'device',
-    'medicalCase',
+    //'medicalCase',
     'healthFacility',
     'system',
     'theme',

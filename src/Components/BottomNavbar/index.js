@@ -53,9 +53,7 @@ const BottomNavbar = props => {
       <View style={bottomNavbar.emergencyContainer}>
         <TouchableOpacity
           style={bottomNavbar.emergencyWrapper}
-          onPress={() =>
-            navigation.navigate('InfoModal', { type: 'emergency' })
-          }
+          onPress={() => navigation.navigate('Emergency')}
         >
           <Icon name="emergency" style={bottomNavbar.emergency} />
         </TouchableOpacity>

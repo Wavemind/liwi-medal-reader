@@ -33,9 +33,7 @@ export { default as PatientTabBar } from './Patient/TabBar'
 export { default as PatientTabItem } from './Patient/TabItem'
 
 // MODALS
-export { default as QuestionInfo } from './Modal/QuestionInfo'
-export { default as Study } from './Modal/Study'
-export { default as Emergency } from './Modal/Emergency'
+export { default as CustomModal } from './Modal/Index'
 
 // Media
 export { default as Media } from './Medias/Media'

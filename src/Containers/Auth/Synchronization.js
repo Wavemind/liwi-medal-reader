@@ -63,7 +63,7 @@ const SynchronizationAuthContainer = () => {
       if (isFulfilled(fetchOneAlgorithm)) {
         // Navigate and reset to Pin container
         setLoading(false)
-        navigateAndSimpleReset('ClinicianSelection')
+        navigateAndSimpleReset('Study', { source: 'auth' })
       } else {
         setLoading(false)
       }

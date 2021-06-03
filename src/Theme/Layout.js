@@ -107,6 +107,9 @@ export default function () {
     fullWidth: {
       width: '100%',
     },
+    halfWidth: {
+      width: '50%',
+    },
     fullHeight: {
       height: '100%',
     },

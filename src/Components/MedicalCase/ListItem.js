@@ -3,12 +3,15 @@
  */
 import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
+import { useDispatch } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
+import DefineType from '@/Store/Modal/DefineType'
 
 const ListItem = props => {
   // Theme and style elements deconstruction
@@ -19,11 +22,21 @@ const ListItem = props => {
     Colors,
     FontSize,
   } = useTheme()
+  const dispatch = useDispatch()
+
+  /**
+   * Toggles the modal and sets the modal type in the store
+   * @returns {Promise<void>}
+   */
+  const toggleModal = async () => {
+    await dispatch(DefineType.action({ type: 'lock' }))
+    await dispatch(ToggleVisbility.action({}))
+  }
 
   return (
     <TouchableOpacity
       style={patientListItem.wrapper}
-      onPress={() => console.log('TODO')}
+      onPress={() => toggleModal()}
     >
       <View style={patientListItem.container}>
         <View style={[Layout.column, Gutters.regularRMargin]}>
