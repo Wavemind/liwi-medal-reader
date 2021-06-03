@@ -12,7 +12,6 @@ export { default as ConsultationsPatientContainer } from './Patient/Consultation
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
 export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
 export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Registration'
-export { default as FirstLookAssessmentsMedicalCaseContainer } from './MedicalCase/FirstLookAssessments'
 
 export { default as ListConsentContainer } from './Consent/List'
 export { default as CameraConsentContainer } from './Consent/Camera'
