@@ -33,8 +33,6 @@ const Consent = props => {
     await dispatch(ChangeConsent.action({ value }))
   }
 
-  // Local state definition
-
   const patient = useSelector(state => state.patient.item)
 
   return (

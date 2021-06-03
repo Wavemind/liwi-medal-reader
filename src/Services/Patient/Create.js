@@ -1,6 +1,7 @@
 /**
  * The external imports
  */
+import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
@@ -14,10 +15,10 @@ export default async props => {
   return {
     consent: false,
     consent_file: null,
-    created_at: 'TODO',
+    created_at: new Date(),
     fail_safe: false,
     group_id,
-    id: null,
+    id: uuid.v4(),
     medical_cases: [],
     other_group_id: other_group_id || null,
     other_study_id: other_study_id || null,
@@ -26,6 +27,6 @@ export default async props => {
     reason: null,
     study_id,
     uid,
-    updated_at: 'TODO',
+    updated_at: new Date(),
   }
 }

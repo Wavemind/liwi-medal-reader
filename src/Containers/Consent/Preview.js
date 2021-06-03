@@ -56,13 +56,10 @@ const PreviewConsentContainer = ({
       {retake ? (
         <View style={consentPreview.buttonsWrapper}>
           <View style={consentPreview.button}>
-            <SquareButton
-              onPress={() => navigation.goBack()}
-              icon={'refresh'}
-            />
+            <SquareButton onPress={() => navigation.goBack()} icon="refresh" />
           </View>
           <View style={consentPreview.button}>
-            <SquareButton onPress={validatePicture} icon={'validate'} filled />
+            <SquareButton onPress={validatePicture} icon="validate" filled />
           </View>
         </View>
       ) : (
@@ -70,7 +67,7 @@ const PreviewConsentContainer = ({
           <View style={consentPreview.button}>
             <SquareButton
               onPress={() => navigation.goBack()}
-              icon={'left-arrow'}
+              icon="left-arrow"
               filled
             />
           </View>

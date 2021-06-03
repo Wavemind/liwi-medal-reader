@@ -1,10 +1,10 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { View, FlatList, TouchableOpacity, Text } from 'react-native'
+import React from 'react'
+import { View, FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
-import * as _ from 'lodash'
+import filter from 'lodash/filter'
 
 /**
  * The internal imports
@@ -18,7 +18,7 @@ const RegistrationMedicalCaseContainer = props => {
 
   const algorithm = useSelector(state => state.algorithm.item)
 
-  const questions = _.filter(algorithm.nodes, { category: 'basic_demographic' })
+  const questions = filter(algorithm.nodes, { category: 'basic_demographic' })
   // let questions = []
   // questions.push(algorithm.nodes[18])
   // questions.push(algorithm.nodes[168])

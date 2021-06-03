@@ -28,11 +28,12 @@ export default class CameraConsentContainer extends React.Component {
     if (this.camera) {
       this.setState({ loading: true })
       const data = await this.camera.takePictureAsync()
+      const { navigation } = this.props
       ImageResizer.createResizedImage(data.uri, 720, 960, 'JPEG', 93)
         .then(response => {
           RNFS.readFile(response.uri.substring(7), 'base64').then(newFile => {
             this.setState({ loading: false })
-            this.props.navigation.navigate('Preview', {
+            navigation.navigate('Preview', {
               consent: newFile,
               retake: true,
             })

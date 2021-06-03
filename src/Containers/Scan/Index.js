@@ -15,7 +15,7 @@ import isEqual from 'lodash/isEqual'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import CreateMedicalCase from '@/Store/MedicalCase/create'
+import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import HandleQr from '@/Store/Scan/HandleQr'
 
