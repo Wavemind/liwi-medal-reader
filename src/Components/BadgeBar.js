@@ -9,45 +9,51 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Icon, SelectionBadge } from '@/Components'
+import { Badge, Icon } from '@/Components'
 
-const SelectionBar = ({ handleRemovePress, selected, setSelected }) => {
+const BadgeBar = ({
+  removeBadge,
+  selected,
+  clearBadges,
+  badgeComponentLabel,
+}) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
 
   const {
-    Components: { filterBar },
+    Components: { badgeBar },
     FontSize,
     Gutters,
   } = useTheme()
 
   return (
-    <View style={filterBar.container}>
+    <View style={badgeBar.container}>
       {selected.length > 0 && (
         <TouchableOpacity
-          onPress={() => setSelected([])}
-          style={filterBar.clearFiltersButton}
+          onPress={() => clearBadges()}
+          style={badgeBar.clearFiltersButton}
         >
-          <View style={filterBar.clearFiltersButtonWrapper}>
+          <View style={badgeBar.clearFiltersButtonWrapper}>
             <Icon
               name="refresh"
               color="red"
               size={FontSize.regular}
               style={Gutters.regularRMargin}
             />
-            <Text style={filterBar.clearFiltersButtonText}>
+            <Text style={badgeBar.clearFiltersButtonText}>
               {t('actions.clear_selection')}
             </Text>
           </View>
         </TouchableOpacity>
       )}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {selected.map(diagnosisId => {
+        {selected.map(selectedItem => {
           return (
-            <SelectionBadge
-              key={diagnosisId}
-              handleRemovePress={handleRemovePress}
-              diagnosisId={diagnosisId}
+            <Badge
+              key={selectedItem}
+              removeBadge={removeBadge}
+              selectedItem={selectedItem}
+              label={() => badgeComponentLabel(selectedItem)}
             />
           )
         })}
@@ -56,4 +62,4 @@ const SelectionBar = ({ handleRemovePress, selected, setSelected }) => {
   )
 }
 
-export default SelectionBar
+export default BadgeBar

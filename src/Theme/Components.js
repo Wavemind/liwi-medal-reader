@@ -19,7 +19,7 @@ import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
 import tabBarStyles from './components/TabBar.style'
 import sideBarStyles from './components/SideBar.style'
-import filterBarStyles from './components/FilterBar.style'
+import badgeBarStyles from './components/BadgeBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
 import patientTabItemStyles from './components/PatientTabItem.style'
 import consentListItemStyles from './components/ConsentListItem.style'
@@ -59,7 +59,7 @@ export default function (props) {
     searchBar: searchBarStyles(props),
     tabBar: tabBarStyles(props),
     sideBar: sideBarStyles(props),
-    filterBar: filterBarStyles(props),
+    badgeBar: badgeBarStyles(props),
     patientListItem: patientListItemStyles(props),
     patientTabItem: patientTabItemStyles(props),
     consentListItem: consentListItemStyles(props),

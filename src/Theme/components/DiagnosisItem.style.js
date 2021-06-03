@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native'
 
 export default function (props) {
-  const { Gutters } = props
+  const { Gutters, Colors } = props
 
   return StyleSheet.create({
     wrapper: {
       ...Gutters.tinyVPadding,
-      borderBottomColor: 'rgba(0,0,0,0.2)',
+      borderBottomColor: Colors.grey,
       borderBottomWidth: 1,
     },
   })

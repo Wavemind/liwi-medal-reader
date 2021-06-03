@@ -11,8 +11,8 @@ import { useTranslation } from 'react-i18next'
 import {
   SearchBar,
   MedicalCaseListItem,
-  FilterBar,
   LoaderList,
+  BadgeBar,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 
@@ -62,7 +62,15 @@ const ListMedicalCaseContainer = props => {
   return (
     <View style={Layout.fill}>
       <SearchBar navigation={navigation} filters />
-      <FilterBar />
+      <BadgeBar
+        removeBadge={() => console.log('TODO Remove selected badge')}
+        selected={[
+          { filterBy: 'Gender', value: 'Female' },
+          { filterBy: 'Age', value: '12' },
+        ]}
+        clearBadges={() => console.log('TODO Clear selected badges')}
+        badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
+      />
 
       <View style={medicalCaseList.headerTable}>
         <Text style={medicalCaseList.headerText}>

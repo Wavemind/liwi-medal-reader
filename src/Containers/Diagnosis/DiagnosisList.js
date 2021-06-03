@@ -11,11 +11,11 @@ import filter from 'lodash/filter'
  * The internal imports
  */
 import {
-  SelectionBar,
-  LoaderList,
+  SelectionBadge,
   Icon,
   SectionHeader,
   Autosuggest,
+  BadgeBar,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
@@ -26,6 +26,8 @@ const ListPatientContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
+    Layout,
+    Fonts,
     Containers: { diagnosisList },
   } = useTheme()
 
@@ -46,7 +48,7 @@ const ListPatientContainer = ({ navigation }) => {
   const numToAdd = 20
 
   // Local state definition
-  const [data, setData] = useState([])
+  const [diagnoses, setDiagnoses] = useState([])
   const [selected, setSelected] = useState(additionalDiagnosis)
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
@@ -56,9 +58,9 @@ const ListPatientContainer = ({ navigation }) => {
       displayDiagnoses()
     } else {
       const filteredDiagnosisList = filter(finalDiagnosticsList, diagnosis =>
-        translate(diagnosis.label).includes(searchTerm),
+        translate(diagnosis.label).match(new RegExp(searchTerm, 'i')),
       )
-      setData(filteredDiagnosisList)
+      setDiagnoses(filteredDiagnosisList)
     }
   }, [searchTerm])
 
@@ -69,7 +71,7 @@ const ListPatientContainer = ({ navigation }) => {
     if (searchTerm.length === 0) {
       const dataToRender = finalDiagnosticsList.slice(0, numToDisplay)
       setNumToDisplay(numToDisplay + numToAdd)
-      setData(dataToRender)
+      setDiagnoses(dataToRender)
     }
   }
 
@@ -109,6 +111,25 @@ const ListPatientContainer = ({ navigation }) => {
     setNumToDisplay(numToAdd)
   }
 
+  /**
+   * Renders the empty list text
+   * @returns {JSX.Element}
+   */
+  const renderEmptyList = () => {
+    return (
+      <View style={Layout.alignItemsCenter}>
+        <Text style={Fonts.textMedium}>{t('application.no_results')}</Text>
+      </View>
+    )
+  }
+
+  /**
+   * Clears all of the selected options
+   */
+  const clearSelected = () => {
+    setSelected([])
+  }
+
   return (
     <View style={diagnosisList.wrapper}>
       <View style={diagnosisList.headerWrapper}>
@@ -127,16 +148,17 @@ const ListPatientContainer = ({ navigation }) => {
         setSearchTerm={setSearchTerm}
         handleReset={handleSearchReset}
       />
-      <SelectionBar
-        handleRemovePress={toggleAdditionalDiagnosis}
+      <BadgeBar
+        removeBadge={toggleAdditionalDiagnosis}
         selected={selected}
-        setSelected={setSelected}
+        clearBadges={clearSelected}
+        badgeComponentLabel={itemId => translate(algorithm.nodes[itemId].label)}
       />
 
       <SectionHeader label="Diagnosis" />
 
       <FlatList
-        data={data}
+        data={diagnoses}
         style={diagnosisList.flatList}
         renderItem={({ item }) => (
           <DiagnosisItem
@@ -146,7 +168,7 @@ const ListPatientContainer = ({ navigation }) => {
           />
         )}
         keyExtractor={item => item.id}
-        ListEmptyComponent={<LoaderList />}
+        ListEmptyComponent={renderEmptyList}
         onEndReached={() => displayDiagnoses()}
         onEndReachedThreshold={0.1}
       />
