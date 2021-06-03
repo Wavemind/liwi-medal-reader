@@ -21,6 +21,7 @@ Below you'll find information about performing common tasks.
   - [Customizing App Display Name and Icon](#customizing-app-display-name-and-icon)
     - [Data Structure](#data-structure)
     - [Medical case](#medical-case)
+  - [Date](#date)
   - [Icons available](#icons-available)
     - [ColoredIcon](#coloredicon)
     - [Icon](#icon)
@@ -46,10 +47,6 @@ Generate release version of app
 #### `yarn w-build` only for Windows
 
 Generate release version of app
-
-#### `yarn test`
-
-Runs the all the tests
 
 #### `yarn test:watch`
 
@@ -82,6 +79,11 @@ Please refer to [TheCodingMachine React Native boilerplate](https://github.com/t
 A list of icons is available with [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons).
 
 We also set a list of custom icons. We split it in 2 components
+
+## Date
+
+We're using [date-fns](https://github.com/date-fns/date-fns) to handle date format. Good documentation can be found [here](https://github.com/you-dont-need/You-Dont-Need-Momentjs)
+
 
 ### ColoredIcon
 

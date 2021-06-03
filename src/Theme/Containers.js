@@ -25,9 +25,12 @@ import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
 
 import diagnosisListStyles from './containers/Diagnosis/List.style'
 
+import consentListStyles from './containers/Consent/List.style'
+import consentPreviewStyles from './containers/Consent/Preview.style'
+import consentCameraStyles from './containers/Consent/Camera.style'
+
 import scanIndexStyles from './containers/Scan/Index.style'
 import filtersIndexStyles from './containers/Filters/Index.style'
-import consentListStyles from './containers/Consent/List.style'
 import settingsIndexStyles from './containers/Settings/Index.style'
 import searchIndexStyles from './containers/Search/Index.style'
 import homeIndexStyles from './containers/Home/Index.style'
@@ -58,6 +61,8 @@ export default function (props) {
     filters: filtersIndexStyles(props),
     medicalCaseList: medicalCaseListStyles(props),
     synchronization: synchronizationIndexStyles(props),
+    consentPreview: consentPreviewStyles(props),
+    consentCamera: consentCameraStyles(props),
     study: studyIndexStyles(props),
     emergency: emergencyIndexStyles(props),
     questionInfo: questionInfoIndexStyles(props),

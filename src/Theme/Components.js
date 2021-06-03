@@ -33,6 +33,7 @@ import movieStyles from './components/Movie.style'
 import pictureStyles from './components/Picture.style'
 import audioStyles from './components/Audio.style'
 import numericStyles from './components/Numeric.style'
+import consentStyles from './components/Consent.style'
 import diagnosisItemStyles from './components/DiagnosisItem.style'
 import AutosuggestStyles from './components/Autosuggest.style'
 
@@ -73,6 +74,7 @@ export default function (props) {
     picture: pictureStyles(props),
     audio: audioStyles(props),
     numeric: numericStyles(props),
+    consent: consentStyles(props),
     diagnosisItem: diagnosisItemStyles(props),
     autosuggest: AutosuggestStyles(props),
   }

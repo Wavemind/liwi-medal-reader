@@ -8,14 +8,15 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { isFulfilled } from '@reduxjs/toolkit'
 import { useNavigation } from '@react-navigation/native'
-import * as _ from 'lodash'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import createMedicalCase from '@/Store/MedicalCase/Create'
+import CreateMedicalCase from '@/Store/MedicalCase/Create'
+import CreatePatient from '@/Store/Patient/Create'
 import HandleQr from '@/Store/Scan/HandleQr'
 
 const HEIGHT = Dimensions.get('window').height
@@ -49,9 +50,16 @@ const IndexScanContainer = props => {
    */
   const openMedicalCase = async () => {
     if (scanData.navigate) {
-      const result = await dispatch(createMedicalCase.action({ algorithm }))
-      if (isFulfilled(result)) {
-        navigation.navigate('StageWrapper', scanData.navigationParams)
+      const medicalCaseResult = await dispatch(
+        CreateMedicalCase.action({ algorithm }),
+      )
+      if (isFulfilled(medicalCaseResult)) {
+        const patientResult = await dispatch(
+          CreatePatient.action({ ...scanData.navigationParams }),
+        )
+        if (isFulfilled(patientResult)) {
+          navigation.navigate('StageWrapper', scanData.navigationParams)
+        }
       }
     }
   }
@@ -78,7 +86,7 @@ const IndexScanContainer = props => {
    */
   const handleScan = async e => {
     // If the QR code is the same as the one that has been scanned before
-    if (_.isEqual(lastScan, e.data)) {
+    if (isEqual(lastScan, e.data)) {
       return
     }
     setLastScan(e.data)

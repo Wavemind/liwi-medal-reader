@@ -16,6 +16,8 @@ import {
   IndexSearchContainer,
   IndexFiltersContainer,
   IndexScanContainer,
+  CameraConsentContainer,
+  PreviewConsentContainer,
   IndexEmergencyContainer,
   IndexStudyContainer,
   IndexQuestionInfoContainer,
@@ -77,13 +79,21 @@ const ApplicationNavigator = () => {
               name="PermissionsRequired"
               component={IndexPermissionsRequiredContainer}
             />
-            <Stack.Screen name="Emergency" component={IndexEmergencyContainer} />
+            <Stack.Screen
+              name="Emergency"
+              component={IndexEmergencyContainer}
+            />
             <Stack.Screen name="Study" component={IndexStudyContainer} />
             <Stack.Screen name="Search" component={IndexSearchContainer} />
             <Stack.Screen name="Scan" component={IndexScanContainer} />
             <Stack.Screen name="Filters" component={IndexFiltersContainer} />
-            <Stack.Screen name="QuestionInfo" component={IndexQuestionInfoContainer} />
             <Stack.Screen name="Diagnoses" component={DiagnosesListContainer} />
+            <Stack.Screen name="Camera" component={CameraConsentContainer} />
+            <Stack.Screen name="Preview" component={PreviewConsentContainer} />
+            <Stack.Screen
+              name="QuestionInfo"
+              component={IndexQuestionInfoContainer}
+            />
             {isApplicationLoaded && AuthNavigator != null && (
               <Stack.Screen name="Auth" component={AuthNavigator} />
             )}

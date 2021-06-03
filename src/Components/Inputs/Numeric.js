@@ -114,7 +114,7 @@ const Numeric = ({ question, disabled }) => {
             <Text
               style={booleanButton.buttonText(estimableValue === 'measured')}
             >
-              {t('components.inputs.numeric.measured')}
+              {t('answers.measured')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -134,7 +134,7 @@ const Numeric = ({ question, disabled }) => {
             <Text
               style={booleanButton.buttonText(estimableValue === 'estimated')}
             >
-              {t('components.inputs.numeric.estimated')}
+              {t('answers.estimated')}
             </Text>
           </TouchableOpacity>
         </View>
