@@ -129,7 +129,7 @@ const DateInput = ({ question, disabled = false }) => {
   const RenderEstimated = () => {
     return (
       <View style={Layout.column}>
-        <View style={[select.pickerContainer(disabled)]}>
+        <View style={select.pickerContainer(disabled)}>
           <Picker
             style={select.picker}
             selectedValue={estimatedDateType}

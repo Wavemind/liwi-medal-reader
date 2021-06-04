@@ -19,7 +19,7 @@ import {
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import createMedicalCase from '@/Store/MedicalCase/Create'
-import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
+
 
 const IndexHomeContainer = props => {
   // Theme and style elements deconstruction
@@ -72,8 +72,6 @@ const IndexHomeContainer = props => {
     console.log('TODO: load more')
     setData(data.concat([11, 12, 13, 14, 15]))
   }
-
-  validationMedicalCaseService(algorithm.nodes[204], 42)
 
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>

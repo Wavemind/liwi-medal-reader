@@ -22,7 +22,7 @@ const Numeric = ({ question, editable = true }) => {
     Layout,
     Gutters,
   } = useTheme()
-
+console.log(question)
   // Local state definition
   const [value, setValue] = useState('') // TODO: Load answer from medicalCase !
   const [estimableValue, setEstimableValue] = useState(question.estimableValue) // TODO: Load estimable from medicalCase ! (estimableValue)

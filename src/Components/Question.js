@@ -3,6 +3,7 @@
  */
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 
 /**
@@ -31,9 +32,14 @@ const Question = ({ node, disabled = false }) => {
     FontSize,
   } = useTheme()
 
+  // Get node from algorithm
+  const algorithm = useSelector(state => state.algorithm.item)
+  const currentNode = algorithm.nodes[node.id]
+
   // Local state definition
   const [descriptionAvailable, setDescriptionAvailable] = useState(false)
-  const emergency = node.is_danger_sign || node.emergency_status === 'referral'
+  const emergency =
+    currentNode.is_danger_sign || currentNode.emergency_status === 'referral'
 
   /**
    * For display proposed
@@ -46,17 +52,20 @@ const Question = ({ node, disabled = false }) => {
   const [status, setStatus] = useState('')
 
   useEffect(() => {
-    setDescriptionAvailable(translate(node.description) !== '')
+    setDescriptionAvailable(translate(currentNode.description) !== '')
 
-    if (node.is_danger_sign || node.emergency_status === 'referral') {
+    if (
+      currentNode.is_danger_sign ||
+      currentNode.emergency_status === 'referral'
+    ) {
       setStatus('emergency')
     }
   }, [])
 
   const inputFactory = () => {
-    switch (node.display_format) {
+    switch (currentNode.display_format) {
       case Config.DISPLAY_FORMAT.radioButton:
-        if (node.category === Config.CATEGORIES.complaintCategory) {
+        if (currentNode.category === Config.CATEGORIES.complaintCategory) {
           return <Toggle question={node} />
         } else {
           return <Boolean question={node} emergency={emergency} />
@@ -75,7 +84,7 @@ const Question = ({ node, disabled = false }) => {
       case Config.DISPLAY_FORMAT.formula:
         return <String question={node} editable={false} />
       default:
-        return <Text>{translate(node.label)}</Text>
+        return <Text>{translate(currentNode.label)}</Text>
     }
   }
 
@@ -86,7 +95,7 @@ const Question = ({ node, disabled = false }) => {
           {emergency && <Icon name="alert" color={Colors.red} />}
 
           <Text style={question.text(status)}>
-            {translate(node.label)} {node.is_mandatory && '*'}
+            {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
           </Text>
 
           {descriptionAvailable && (

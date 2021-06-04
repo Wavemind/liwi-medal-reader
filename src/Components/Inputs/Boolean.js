@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -23,11 +23,15 @@ const Boolean = ({ question, emergency, disabled = false }) => {
   } = useTheme()
   const dispatch = useDispatch()
 
+  // Get node from algorithm
+  const algorithm = useSelector(state => state.algorithm.item)
+  const currentNode = algorithm.nodes[question.id]
+
   // Local state definition
   const [value, setValue] = useState(question.answer)
 
-  const yesAnswer = getYesAnswer(question)
-  const noAnswer = getNoAnswer(question)
+  const yesAnswer = getYesAnswer(currentNode)
+  const noAnswer = getNoAnswer(currentNode)
 
   /**
    * Set node answer and handle emergency action

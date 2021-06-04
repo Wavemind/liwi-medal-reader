@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { useSelector } from 'react-redux'
 import { translate } from '@/Translations/algorithm'
 
 const Select = ({ question, disabled = false }) => {
@@ -22,6 +23,10 @@ const Select = ({ question, disabled = false }) => {
     Components: { select },
     Colors,
   } = useTheme()
+
+  // Get node from algorithm
+  const algorithm = useSelector(state => state.algorithm.item)
+  const currentNode = algorithm.nodes[question.id]
 
   // Local state definition
   const [value, setValue] = useState(question.answer)
@@ -47,7 +52,7 @@ const Select = ({ question, disabled = false }) => {
       <Picker
         style={select.picker}
         selectedValue={value}
-        prompt={translate(question.label)}
+        prompt={translate(currentNode.label)}
         onValueChange={(answerId, itemIndex) => setAnswer(answerId)}
         dropdownIconColor={Colors.primary}
         enabled={!disabled}
@@ -57,7 +62,7 @@ const Select = ({ question, disabled = false }) => {
           label={t('actions.select')}
           value={null}
         />
-        {Object.values(question.answers).map(answer => (
+        {Object.values(currentNode.answers).map(answer => (
           <Picker.Item
             key={`select-${answer.id}`}
             label={translate(answer.label)}
