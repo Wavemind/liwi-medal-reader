@@ -11,6 +11,7 @@ import {
   RegistrationMedicalCaseContainer,
   UniqueTriageQuestionsMedicalCaseContainer,
   ComplaintCategoryMedicalCaseContainer,
+  MedicalCaseDiagnosesIndexContainer,
 } from '@/Containers'
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
@@ -32,7 +33,7 @@ const diagnosesStage = {
   steps: [
     {
       label: 'final_diagnoses',
-      component: ToDo,
+      component: MedicalCaseDiagnosesIndexContainer,
     },
     {
       label: 'healthcare_questions',
