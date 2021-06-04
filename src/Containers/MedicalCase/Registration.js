@@ -10,6 +10,11 @@ import filter from 'lodash/filter'
  * The internal imports
  */
 import { Question, Consent, BirthDate } from '@/Components'
+
+/**
+ * Returns the static questions for the medical case
+ * @returns List of inputs to show
+ */
 const Header = () => (
   <>
     <Consent />

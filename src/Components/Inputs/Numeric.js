@@ -84,7 +84,6 @@ const Numeric = ({ question, editable = true }) => {
 
   /**
    * Set state and update medicalCase store
-   * TODO: Make it work !
    * @param {'measured' | 'estimated'} value
    */
   const handleEstimable = newEstimableValue => {
