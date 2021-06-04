@@ -12,7 +12,7 @@ export default async ({ algorithm }) => {
     activities: [],
     comment: '',
     consent: !!algorithm.config.consent_management,
-    created_at: new Date(),
+    created_at: null, //new Date(),
     diagnosis: {
       proposed: [],
       excluded: [],
@@ -28,7 +28,7 @@ export default async ({ algorithm }) => {
       step: 0,
     },
     synchronized_at: null,
-    updated_at: new Date(),
+    updated_at: null, //new Date(),
     version_id: algorithm.id,
   }
 }

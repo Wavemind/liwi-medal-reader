@@ -23,12 +23,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
   const { t } = useTranslation()
   const navigation = useNavigation()
-  console.log()
   const navigationState = useNavigationState(
-    state =>
-      state.routes[state.index].state.routes[
-        state.routes[state.index].state.index
-      ].state,
+    state => state.routes[state.index].state,
   )
 
   /**
@@ -36,13 +32,15 @@ const StageWrapperNavbar = ({ stageIndex }) => {
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
   const handleNavigation = direction => {
-    const nextStep = navigationState?.index + direction
+    const medicalCaseState = navigationState.routes[navigationState.index].state
+
+    const nextStep = medicalCaseState?.index + direction
     if (
-      navigationState !== undefined &&
-      nextStep < navigationState.routes.length &&
+      medicalCaseState !== undefined &&
+      nextStep < medicalCaseState.routes.length &&
       nextStep >= 0
     ) {
-      navigation.navigate(navigationState.routes[nextStep].name)
+      navigation.navigate(medicalCaseState.routes[nextStep].name)
     } else {
       navigation.navigate('StageWrapper', {
         stageIndex: stageIndex + direction,

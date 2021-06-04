@@ -33,7 +33,9 @@ const Question = ({ node, disabled = false }) => {
 
   // Local state definition
   const [descriptionAvailable, setDescriptionAvailable] = useState(false)
-  const [emergency, setEmergency] = useState(false)
+  const [emergency, setEmergency] = useState(
+    node.is_danger_sign || node.emergency_status === 'referral',
+  )
 
   /**
    * For display proposed
