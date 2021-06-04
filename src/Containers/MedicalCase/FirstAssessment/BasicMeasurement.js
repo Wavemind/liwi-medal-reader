@@ -10,12 +10,12 @@ import { useSelector } from 'react-redux'
  */
 import { Question } from '@/Components'
 
-const UniqueTriageQuestionsMedicalCaseContainer = props => {
+const BasicMeasurementMedicalCaseContainer = props => {
   const algorithm = useSelector(state => state.algorithm.item)
 
   const questions =
-    algorithm.mobile_config.questions_orders.first_look_assessment.map(
-      questionId => algorithm.nodes[questionId],
+    algorithm.mobile_config.questions_orders.basic_measurements.map(
+      nodeId => algorithm.nodes[nodeId],
     )
 
   return (
@@ -29,4 +29,4 @@ const UniqueTriageQuestionsMedicalCaseContainer = props => {
   )
 }
 
-export default UniqueTriageQuestionsMedicalCaseContainer
+export default BasicMeasurementMedicalCaseContainer
