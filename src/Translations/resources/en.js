@@ -19,7 +19,6 @@ export default {
     updated_at: 'Last update',
   },
   application: {
-    algorithm_translation_missing: 'Algorithm translation is missing',
     theme: {
       dark_mode: 'Dark mode',
       light_mode: 'Light mode',

@@ -33,9 +33,7 @@ const Question = ({ node, disabled = false }) => {
 
   // Local state definition
   const [descriptionAvailable, setDescriptionAvailable] = useState(false)
-  const [emergency, setEmergency] = useState(
-    node.is_danger_sign || node.emergency_status === 'referral',
-  )
+  const emergency = node.is_danger_sign || node.emergency_status === 'referral'
 
   /**
    * For display proposed
@@ -51,10 +49,9 @@ const Question = ({ node, disabled = false }) => {
     setDescriptionAvailable(translate(node.description) !== '')
 
     if (node.is_danger_sign || node.emergency_status === 'referral') {
-      setEmergency(true)
       setStatus('emergency')
     }
-  }, [node.description, node.emergency_status, node.is_danger_sign])
+  }, [])
 
   const inputFactory = () => {
     switch (node.display_format) {
