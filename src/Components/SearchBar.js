@@ -27,26 +27,24 @@ const SearchBar = ({ navigation, filters = false }) => {
   } = useTheme()
 
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.push('Search')}>
-      <View style={Layout.row}>
-        <View style={searchBar.inputWrapper}>
-          <View style={Layout.colCenter}>
-            <Icon name="search" color={Colors.grey} size={FontSize.regular} />
-          </View>
-          <View style={searchBar.inputTextWrapper}>
-            <Text style={searchBar.inputText}>{t('actions.search')}</Text>
-          </View>
+    <View style={Layout.row}>
+      <View style={searchBar.inputWrapper}>
+        <View style={Layout.colCenter}>
+          <Icon name="search" color={Colors.grey} size={FontSize.regular} />
         </View>
-        {filters && (
-          <TouchableOpacity
-            style={searchBar.filterButton}
-            onPress={() => navigation.push('Filters')}
-          >
-            <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
-          </TouchableOpacity>
-        )}
+        <View style={searchBar.inputTextWrapper}>
+          <Text style={searchBar.inputText}>{t('actions.search')}</Text>
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+      {filters && (
+        <TouchableOpacity
+          style={searchBar.filterButton}
+          onPress={() => navigation.push('Filters')}
+        >
+          <Icon name="filters" size={FontSize.big} color={Colors.secondary} />
+        </TouchableOpacity>
+      )}
+    </View>
   )
 }
 
