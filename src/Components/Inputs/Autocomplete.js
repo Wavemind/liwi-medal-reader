@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput, Text } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 /**
  * The internal imports
@@ -12,10 +12,13 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import filter from 'lodash/filter'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const Autocomplete = () => {
+const Autocomplete = ({ node }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const {
     Colors,
     FontSize,
@@ -51,7 +54,7 @@ const Autocomplete = () => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
-    // TODO save the selected option somewhere
+    dispatch(SetAnswer.action({ nodeId: node.id, option }))
   }
 
   /**

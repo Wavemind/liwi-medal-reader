@@ -67,7 +67,7 @@ const Question = ({ node, disabled = false }) => {
       case Config.DISPLAY_FORMAT.string:
         return <String question={node} />
       case Config.DISPLAY_FORMAT.autocomplete:
-        return <Autocomplete />
+        return <Autocomplete question={node} />
       case Config.DISPLAY_FORMAT.date:
         return <Date question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:
