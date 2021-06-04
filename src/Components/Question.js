@@ -33,6 +33,7 @@ const Question = ({ node, disabled = false }) => {
 
   // Local state definition
   const [descriptionAvailable, setDescriptionAvailable] = useState(false)
+  const [isFullLength] = useState(node.display_format === Config.DISPLAY_FORMAT.autocomplete)
   const emergency = node.is_danger_sign || node.emergency_status === 'referral'
 
   /**
@@ -76,9 +77,6 @@ const Question = ({ node, disabled = false }) => {
         return <Text>{translate(node.label)}</Text>
     }
   }
-
-  const isFullLength =
-    node.display_format === Config.DISPLAY_FORMAT.autocomplete
 
   return (
     <View style={question.wrapper(emergency)}>

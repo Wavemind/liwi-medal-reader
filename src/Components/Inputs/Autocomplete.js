@@ -59,11 +59,32 @@ const Autocomplete = ({ question }) => {
 
   /**
    * Updates the search term
-   * @param val
+   * @param text
    */
-  const handleChangeText = val => {
+  const handleChangeText = text => {
     setOptionSelected(false)
-    setSearchTerm(val)
+    setSearchTerm(text)
+  }
+
+  /**
+   * Renders each result line for searchResults
+   * @param result
+   * @param index
+   * @returns {JSX.Element}
+   */
+  const renderResult = (result, index) => {
+    const resultString = Object.values(result)[0]
+
+    return (
+      <View style={autocomplete.dropdownItemWrapper(index === searchResults.length - 1)}>
+        <TouchableOpacity
+          style={[Gutters.regularVPadding, Gutters.smallHPadding]}
+          onPress={() => handleOptionSelect(resultString)}
+        >
+          <Text style={autocomplete.dropdownItemText}>{resultString}</Text>
+        </TouchableOpacity>
+      </View>
+    )
   }
 
   return (
@@ -76,7 +97,6 @@ const Autocomplete = ({ question }) => {
             onChangeText={value => handleChangeText(value)}
             value={searchTerm}
             placeholder={t('application.search')}
-            disabled={false}
           />
         </View>
         <View style={autocomplete.searchIcon}>
@@ -85,27 +105,7 @@ const Autocomplete = ({ question }) => {
       </View>
       {searchResults.length > 0 && (
         <View style={autocomplete.resultsDropdown}>
-          {searchResults.map(result => {
-            const lastResult = Object.values(searchResults.slice(-1)[0])[0]
-            const resultString = Object.values(result)[0]
-
-            return (
-              <View
-                style={autocomplete.dropdownItemWrapper(
-                  resultString === lastResult,
-                )}
-              >
-                <TouchableOpacity
-                  style={[Gutters.regularVPadding, Gutters.smallHPadding]}
-                  onPress={() => handleOptionSelect(resultString)}
-                >
-                  <Text style={autocomplete.dropdownItemText}>
-                    {resultString}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )
-          })}
+          {searchResults.map((result, i) => renderResult(result, i))}
         </View>
       )}
     </View>
