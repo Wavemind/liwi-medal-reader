@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { TextInput } from 'react-native'
 import { useDispatch } from 'react-redux'
 
@@ -24,19 +24,14 @@ const String = ({ question, editable = true }) => {
 
   /**
    * Save value in store
-   * TODO: Make it work !
    * @param {Event} e
    */
   const onEndEditing = e => {
     const value = e.nativeEvent.text
-    console.log('onEndEditing', value)
-  }
-
-  useEffect(() => {
     if (question.value !== value) {
       dispatch(SetAnswer.action({ nodeId: question.id, value }))
     }
-  }, [value])
+  }
 
   return (
     <TextInput

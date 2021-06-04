@@ -113,9 +113,9 @@ const DateInput = () => {
    * Store estimated birth date
    */
   useEffect(() => {
-    // TODO save in store new date
     if (estimatedValue !== '' && estimatedDateType !== null) {
       let birthDate = ''
+
       if (estimatedDateType === 'day') {
         birthDate = subDays(new Date(), estimatedValue)
       } else if (estimatedDateType === 'month') {
@@ -123,6 +123,7 @@ const DateInput = () => {
       } else {
         birthDate = subYears(new Date(), estimatedValue)
       }
+
       dispatch(
         UpdateField.action({
           field: 'birth_date',
@@ -144,7 +145,7 @@ const DateInput = () => {
   const RenderEstimated = () => {
     return (
       <View style={Layout.column}>
-        <View style={[select.pickerContainer(false)]}>
+        <View style={select.pickerContainer(false)}>
           <Picker
             style={select.picker}
             selectedValue={estimatedDateType}

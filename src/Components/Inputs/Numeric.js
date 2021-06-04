@@ -29,7 +29,6 @@ const Numeric = ({ question, editable = true }) => {
 
   /**
    * Save value in store
-   * TODO: Make it work !
    * @param {Event} e
    */
   const onEndEditing = async e => {
