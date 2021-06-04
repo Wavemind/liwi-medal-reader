@@ -34,7 +34,7 @@ const RegistrationMedicalCaseContainer = props => {
   questions.push(algorithm.nodes[7])
 
   return (
-    <View style={Gutters.regularTPadding}>
+    <View>
       <FlatList
         removeClippedSubviews={false}
         ListHeaderComponent={<Consent />}

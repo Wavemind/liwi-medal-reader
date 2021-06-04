@@ -15,7 +15,7 @@ export default async props => {
   return {
     consent: false,
     consent_file: null,
-    created_at: new Date(),
+    created_at: null, //new Date(),
     fail_safe: false,
     group_id,
     id: uuid.v4(),
@@ -27,6 +27,6 @@ export default async props => {
     reason: null,
     study_id,
     uid,
-    updated_at: new Date(),
+    updated_at: null, //new Date(),
   }
 }
