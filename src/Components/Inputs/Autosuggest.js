@@ -11,7 +11,7 @@ import { View, TouchableOpacity, TextInput } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const SearchBar = ({ searchTerm, setSearchTerm, handleReset }) => {
+const Autosuggest = ({ searchTerm, setSearchTerm, handleReset }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
@@ -33,8 +33,7 @@ const SearchBar = ({ searchTerm, setSearchTerm, handleReset }) => {
             keyboardType="default"
             onChangeText={value => setSearchTerm(value)}
             value={searchTerm}
-            placeholder="Search"
-            disabled={false}
+            placeholder={t('application.search')}
           />
         </View>
         {searchTerm.length > 0 ? (
@@ -50,4 +49,4 @@ const SearchBar = ({ searchTerm, setSearchTerm, handleReset }) => {
   )
 }
 
-export default SearchBar
+export default Autosuggest
