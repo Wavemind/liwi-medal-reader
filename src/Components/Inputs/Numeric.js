@@ -4,15 +4,19 @@
 import React, { useState } from 'react'
 import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 
 const Numeric = ({ question, editable = true }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const {
     Components: { numeric, booleanButton },
     Layout,
@@ -21,68 +25,56 @@ const Numeric = ({ question, editable = true }) => {
 
   // Local state definition
   const [value, setValue] = useState('') // TODO: Load answer from medicalCase !
-  const [estimableValue, setEstimableValue] = useState('measured') // TODO: Load estimable from medicalCase ! (estimableValue)
+  const [estimableValue, setEstimableValue] = useState(question.estimableValue) // TODO: Load estimable from medicalCase ! (estimableValue)
 
   /**
    * Save value in store
-   * TODO: Make it work !
    * @param {Event} e
    */
-  const onEndEditing = e => {
-    const value = e.nativeEvent.text
-    // const {
-    //   app: { algorithm, set },
-    //   setAnswer,
-    //   setPatientValue,
-    //   question,
-    //   patientValueEdit,
-    // } = this.props;
+  const onEndEditing = async e => {
+    const newValue = e.nativeEvent.text
 
-    // if (patientValueEdit) {
-    //   if (value !== question.value && value !== '') {
-    //     setPatientValue(question.id, value);
-    //   } else if (question.value !== null && value === '') {
-    //     setPatientValue(question.id, null);
-    //   }
-    // } else if (value !== question.value && value !== '') {
-    //   setAnswer(algorithm, question.id, value);
-    // } else if (question.value !== null && value === '') {
-    //   setAnswer(algorithm, question.id, null);
-    // }
-
-    // set('answeredQuestionId', question.id);
+    if (question.value !== newValue) {
+      dispatch(SetAnswer.action({ nodeId: question.id, newValue }))
+    }
   }
 
   /**
-   * Check if there is no unpermitted char
+   * Check if there is no not permitted char
    * @param {Event} e
    */
-  const onChange = value => {
+  const onChange = newValue => {
     const regWithComma = /^[0-9,]+$/
 
     // Replace comma with dot
-    if (regWithComma.test(value)) {
-      value = value.replace(',', '.')
+    if (regWithComma.test(newValue)) {
+      newValue = newValue.replace(',', '.')
     }
 
     // Remove char that are not number or dot
-    value = value.replace(/[^0-9.]/g, '')
+    newValue = newValue.replace(/[^0-9.]/g, '')
 
     // Parse to float if value is not empty and last char is not dot
-    if (value !== '' && value.charAt(value.length - 1) !== '.') {
-      value = parseFloat(value)
+    if (newValue !== '' && newValue.charAt(newValue.length - 1) !== '.') {
+      newValue = parseFloat(newValue)
     }
 
-    setValue(value)
+    setValue(newValue)
   }
 
   /**
    * Set state and update medicalCase store
-   * TODO: Make it work !
    * @param {'measured' | 'estimated'} value
    */
-  const handleEstimable = value => {
-    setEstimableValue(value)
+  const handleEstimable = newEstimableValue => {
+    setEstimableValue(newEstimableValue)
+    dispatch(
+      UpdateNodeField.action({
+        nodeId: question.id,
+        field: 'estimableValue',
+        value: newEstimableValue,
+      }),
+    )
   }
 
   return (
