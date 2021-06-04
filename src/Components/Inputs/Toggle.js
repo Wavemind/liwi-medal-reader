@@ -27,12 +27,9 @@ const ToggleComplaintCategory = ({ question, disabled = false }) => {
   const [toggleValue, setToggleValue] = useState(false)
 
   useEffect(() => {
-    const updateAnswer = async () => {
-      if (question.value !== toggleValue) {
-        await dispatch(SetAnswer.action({ nodeId: question.id, toggleValue }))
-      }
+    if (question.value !== toggleValue) {
+      dispatch(SetAnswer.action({ nodeId: question.id, toggleValue }))
     }
-    updateAnswer()
   }, [toggleValue])
 
   return (

@@ -22,7 +22,7 @@ import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
 
-const DateInput = ({ question, disabled = false }) => {
+const DateInput = ({ disabled = false }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -51,9 +51,14 @@ const DateInput = ({ question, disabled = false }) => {
   // Get values from the store
   const algorithm = useSelector(state => state.algorithm.item)
   const systemLanguage = useSelector(state => state.system.language)
+  const patient = useSelector(state => state.patient.item)
 
   useEffect(() => {
-    if (question.value !== null) {
+    if (patient.birth_date !== null) {
+      const date = new Date(patient.birth_date)
+      setDayValue(date.getDate())
+      setMonthValue(date.getMonth() + 1)
+      setYearValue(date.getFullYear())
     }
 
     const today = new Date()

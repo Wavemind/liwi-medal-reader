@@ -33,7 +33,7 @@ const Numeric = ({ question, editable = true }) => {
    * @param {Event} e
    */
   const onEndEditing = async e => {
-    const value = e.nativeEvent.text
+    const newValue = e.nativeEvent.text
     // const {
     //   app: { algorithm, set },
     //   setAnswer,
@@ -54,8 +54,8 @@ const Numeric = ({ question, editable = true }) => {
     //   setAnswer(algorithm, question.id, null);
     // }
 
-    if (question.value !== value) {
-      await dispatch(SetAnswer.action({ nodeId: question.id, value }))
+    if (question.value !== newValue) {
+      dispatch(SetAnswer.action({ nodeId: question.id, newValue }))
     }
   }
 
