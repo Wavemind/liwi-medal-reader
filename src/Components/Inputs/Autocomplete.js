@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const Autocomplete = ({ node }) => {
+const Autocomplete = ({ question }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -54,7 +54,7 @@ const Autocomplete = ({ node }) => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
-    dispatch(SetAnswer.action({ nodeId: node.id, option }))
+    dispatch(SetAnswer.action({ nodeId: question.id, option }))
   }
 
   /**
