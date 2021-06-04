@@ -10,12 +10,8 @@ import filter from 'lodash/filter'
  * The internal imports
  */
 import { Question } from '@/Components'
-import { useTheme } from '@/Theme'
 
 const ComplaintCategoryMedicalCaseContainer = props => {
-  // Theme and style elements deconstruction
-  const { Gutters } = useTheme()
-
   const algorithm = useSelector(state => state.algorithm.item)
 
   const questions = filter(algorithm.nodes, {
@@ -23,7 +19,7 @@ const ComplaintCategoryMedicalCaseContainer = props => {
   })
 
   return (
-    <View style={Gutters.regularTPadding}>
+    <View>
       <FlatList
         removeClippedSubviews={false}
         data={questions}
