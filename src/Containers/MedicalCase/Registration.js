@@ -14,7 +14,10 @@ const RegistrationMedicalCaseContainer = props => {
   const medicalCase = useSelector(state => state.medicalCase.item)
 
   let questions = []
-  questions.push(medicalCase.nodes[1])
+  // questions.push(medicalCase.nodes[1])
+  questions.push(medicalCase.nodes[3])
+  questions.push(medicalCase.nodes[50])
+  questions.push(medicalCase.nodes[104])
   questions.push(medicalCase.nodes[18])
   questions.push(medicalCase.nodes[168])
   questions.push(medicalCase.nodes[326])

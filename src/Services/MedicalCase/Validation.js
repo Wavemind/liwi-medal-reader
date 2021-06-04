@@ -1,96 +1,94 @@
 /**
  * The external imports
  */
-import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { Config } from '@/Config'
 import { translate } from '@/Translations/algorithm'
+import { store } from '@/Store'
 
-export default async (mcNode, value) => {
-  // Get value from store
-  const algorithm = useSelector(state => state.algorithm.item)
-  const currentNode = algorithm.nodes[mcNode.id]
+export default async (mcNode, node, value) => {
+  const { algorithm } = store.getState()
 
-  console.log(mcNode, currentNode)
+  const formattedValue = parseFloat(value)
 
   // Default validations value
-  let message = ''
-  let type = ''
+  let validationMessage = null
+  let validationType = null
 
   // Skip validation algorithm is in arm control except in registration
   if (
     algorithm.is_arm_control &&
     !algorithm.mobile_config.questions_order.registration.includes(mcNode.id)
   ) {
-    return { message, type }
+    return { validationMessage, validationType }
   }
 
   // Skip validation if answer is set as unavailable
-  if (!mcNode.unavailableValue) {
-    return { message, type }
+  if (mcNode.unavailableValue) {
+    return { validationMessage, validationType }
   }
 
   // Validate only integer and float questions
   if (
-    currentNode.value_format === Config.VALUE_FORMATS.int ||
-    currentNode.value_format === Config.VALUE_FORMATS.float
+    node.value_format === Config.VALUE_FORMATS.int ||
+    node.value_format === Config.VALUE_FORMATS.float
   ) {
+    console.log('premier if')
     if (
       value !== null &&
-      (value < currentNode.min_value_warning ||
-        value > currentNode.max_value_warning)
+      (formattedValue < node.min_value_warning ||
+        formattedValue > node.max_value_warning)
     ) {
+      console.log('je rentre')
       // Warning
       if (
-        value < currentNode.min_value_warning &&
-        currentNode.min_value_warning !== null
+        formattedValue < node.min_value_warning &&
+        node.min_value_warning !== null
       ) {
-        message = currentNode.min_message_warning
+        validationMessage = node.min_message_warning
       }
 
       if (
-        value > currentNode.max_value_warning &&
-        currentNode.max_value_warning !== null
+        formattedValue > node.max_value_warning &&
+        node.max_value_warning !== null
       ) {
-        message = currentNode.max_message_warning
+        validationMessage = node.max_message_warning
       }
 
-      type = 'warning'
+      validationType = 'warning'
 
       // Error
-      if (
-        currentNode.min_value_error !== null ||
-        currentNode.max_value_error !== null
-      ) {
+      if (node.min_value_error !== null || node.max_value_error !== null) {
         if (
-          value < currentNode.min_value_error ||
-          value > currentNode.max_value_error
+          formattedValue < node.min_value_error ||
+          formattedValue > node.max_value_error
         ) {
           if (
-            value < currentNode.min_value_error &&
-            currentNode.min_value_error !== null
+            formattedValue < node.min_value_error &&
+            node.min_value_error !== null
           ) {
-            message = currentNode.min_message_error
+            validationMessage = node.min_message_error
           }
 
           if (
-            value > currentNode.max_value_error &&
-            currentNode.max_value_error !== null
+            formattedValue > node.max_value_error &&
+            node.max_value_error !== null
           ) {
-            message = currentNode.max_message_error
+            validationMessage = node.max_message_error
           }
-          type = 'error'
+          validationType = 'error'
         }
       }
+      console.log('ici ?', validationMessage, validationType)
       return {
-        message: translate(message),
-        type,
+        validationMessage: translate(validationMessage),
+        validationType,
       }
     }
   }
 
-  return { message, type }
+  return { validationMessage, validationType }
 }

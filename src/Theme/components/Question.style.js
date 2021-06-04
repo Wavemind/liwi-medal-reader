@@ -32,16 +32,15 @@ export default function (props) {
       ...Layout.fullWidth,
       ...Layout.alignItemsCenter,
     },
+    emergencyText: {
+      color: Colors.red,
+      ...Fonts.textSemiBold,
+      ...Layout.fill,
+      ...Fonts.textMedium,
+    },
     text: status => {
       let customStyle = {
         color: Colors.text,
-      }
-
-      if (status === 'emergency') {
-        customStyle = {
-          color: Colors.red,
-          ...Fonts.textSemiBold,
-        }
       }
 
       if (status === 'error') {
@@ -59,7 +58,6 @@ export default function (props) {
     },
     inputWrapper: {
       ...Layout.justifyContentAround,
-      ...Layout.row,
       ...Gutters.regularLMargin,
       width: wp(33.3),
     },
@@ -72,6 +70,7 @@ export default function (props) {
       ...Gutters.smallVPadding,
     }),
     message: {
+      ...Layout.fill,
       ...Fonts.textTiny,
       ...Fonts.textSemiBold,
       color: Colors.secondary,

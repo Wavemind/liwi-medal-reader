@@ -116,6 +116,8 @@ const setNodeValue = (mcNode, node, value) => {
 
 export default async props => {
   const { nodeId, value } = props
+  let newValues = {}
+
   const {
     algorithm: {
       item: {
@@ -131,16 +133,18 @@ export default async props => {
   } = store.getState()
 
   // Validation
-  const result = await validationMedicalCaseService(node, 42)
-  console.log('result', result)
+  const validation = await validationMedicalCaseService(mcNode, node, value)
 
-  // Validation
-  const newValues = setNodeValue(mcNode, node, value)
+  // Save value only if validation pass
+  if (validation.validationType !== 'error') {
+    newValues = setNodeValue(mcNode, node, value)
+  }
+
   return {
     ...medicalCase,
     nodes: {
       ...medicalCase.nodes,
-      [nodeId]: { ...mcNode, /*...validation, */ ...newValues },
+      [nodeId]: { ...mcNode, ...validation, ...newValues },
     },
   }
 }

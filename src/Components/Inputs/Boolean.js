@@ -55,7 +55,7 @@ const Boolean = ({ question, emergency, disabled = false }) => {
   }, [value])
 
   return (
-    <>
+    <View style={Layout.row}>
       <View
         key="booleanButton-left"
         style={booleanButton.buttonWrapper(
@@ -92,7 +92,7 @@ const Boolean = ({ question, emergency, disabled = false }) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   )
 }
 
