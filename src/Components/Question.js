@@ -10,15 +10,7 @@ import { useNavigation } from '@react-navigation/native'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import {
-  Boolean,
-  Select,
-  Numeric,
-  String,
-  Date,
-  Toggle,
-  Icon,
-} from '@/Components'
+import { Boolean, Select, Numeric, String, Toggle, Icon } from '@/Components'
 
 import { Config } from '@/Config'
 
@@ -67,8 +59,6 @@ const Question = ({ node, disabled = false }) => {
         return <String question={node} />
       case Config.DISPLAY_FORMAT.autocomplete:
       // return <Autocomplete question={node} />
-      case Config.DISPLAY_FORMAT.date:
-        return <Date question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:
         return <Select question={node} />
       case Config.DISPLAY_FORMAT.reference:
