@@ -47,7 +47,7 @@ describe('Scan QR code properly ', () => {
       })
     } catch (e) {
       expect(e).toEqual({
-        message: 'wrong_format',
+        message: 'The QR code does not have the correct format',
         status: 'error',
       })
     }
@@ -72,7 +72,7 @@ describe('Scan QR code properly ', () => {
           generateNewQr: true,
         },
         status: 'error',
-        message: 'new_sticker_notification',
+        message: 'You need to give another sticker to the patient',
       })
     }
   })
@@ -124,7 +124,7 @@ describe('Scan QR code properly ', () => {
     } catch (e) {
       expect(e).toEqual({
         status: 'error',
-        message: 'new_sticker_wrong_facility',
+        message: 'The new sticker does not belong to your facility',
       })
     }
   })

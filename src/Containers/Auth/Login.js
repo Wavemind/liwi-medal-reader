@@ -127,6 +127,7 @@ const LoginAuthContainer = () => {
           <SquareSelect
             label={t('containers.auth.login.environment')}
             items={Config.ENVIRONMENTS}
+            prompt={t('containers.auth.login.environment')}
             handleOnSelect={updateEnvironment}
             value={environment}
           />

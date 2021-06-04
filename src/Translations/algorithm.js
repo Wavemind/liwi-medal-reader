@@ -23,5 +23,5 @@ export const translate = (translation, language) => {
     return translation.en
   }
 
-  return i18n.t('application.algorithm_translation_missing')
+  return ''
 }

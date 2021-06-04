@@ -17,6 +17,7 @@ export const Colors = {
   softRed: '#fbdedb',
   redLowOpacity: '#d2073044',
   grey: '#6f6f6f',
+  disabled: '#d3d1cf',
   warning: '#e27900',
   lightGrey: '#f2f1ee',
   transparent: 'rgba(0,0,0,0)',

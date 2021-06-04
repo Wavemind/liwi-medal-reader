@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { useNavigationState, useNavigation } from '@react-navigation/native'
 
@@ -29,12 +29,12 @@ const BottomNavbar = props => {
   const RenderActions = () => {
     const homeNavigation = navigationState.routes[navigationState.index].state
 
-    const route = homeNavigation?.routes[navigationState.index]
-
+    const route = homeNavigation?.routes[homeNavigation.index]
     // Early return if navigation is not loaded
     if (route === undefined) {
       return null
     }
+
     const { name, params } = route
 
     const stageIndex = params?.stageIndex || 0
