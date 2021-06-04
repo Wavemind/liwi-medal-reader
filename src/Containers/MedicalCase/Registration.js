@@ -10,11 +10,10 @@ import filter from 'lodash/filter'
  * The internal imports
  */
 import { Question, Consent, BirthDate } from '@/Components'
-import { useTheme } from '@/Theme'
 const Header = () => (
   <>
     <Consent />
-    {/* <BirthDate /> */}
+    <BirthDate />
   </>
 )
 
