@@ -41,6 +41,7 @@ const Checkbox = ({
       <CheckBox
         value={isSelected}
         style={checkbox.checkbox}
+        onChange={handleOnPress}
         tintColors={checkbox.tintColors(disabled)}
       />
       <Text style={checkbox.label(disabled)}>{label}</Text>

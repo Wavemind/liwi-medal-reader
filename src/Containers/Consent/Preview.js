@@ -33,7 +33,7 @@ const PreviewConsentContainer = ({
    */
   const validatePicture = async () => {
     await dispatch(
-      UpdateField.action({ field: 'consent_file', consentFile: consent }),
+      UpdateField.action({ field: 'consent_file', value: consent }),
     )
     navigation.navigate('Home')
   }
