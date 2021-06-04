@@ -93,6 +93,9 @@ export default {
         formulations: 'Formulations',
         summary: 'Summary',
       },
+      registration: {
+        questions: 'Questions',
+      },
     },
     scan: {
       scan: 'Scan the QR code',
