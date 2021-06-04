@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
 
@@ -13,6 +13,7 @@ import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import DefineType from '@/Store/Modal/DefineType'
 import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const Boolean = ({ question, emergency, disabled = false }) => {
   // Theme and style elements deconstruction
@@ -39,6 +40,15 @@ const Boolean = ({ question, emergency, disabled = false }) => {
     }
     setValue(answerId)
   }
+
+  useEffect(() => {
+    const updateAnswer = async () => {
+      if (question.value !== value) {
+        await dispatch(SetAnswer.action({ questionId: question.id, value }))
+      }
+    }
+    updateAnswer()
+  }, [value])
 
   return (
     <>
