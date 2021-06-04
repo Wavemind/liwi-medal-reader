@@ -1,14 +1,10 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import Create from './Create'
-import ChangeConsentFile from './ChangeConsentFile'
-import ChangeConsent from './ChangeConsent'
+import UpdateField from './UpdateField'
 
 const sliceInitialState = {
   item: {},
 }
 
-export default buildSlice(
-  'patient',
-  [Create, ChangeConsentFile, ChangeConsent],
-  sliceInitialState,
-).reducer
+export default buildSlice('patient', [Create, UpdateField], sliceInitialState)
+  .reducer
