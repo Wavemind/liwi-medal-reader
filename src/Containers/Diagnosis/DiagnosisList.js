@@ -53,6 +53,9 @@ const ListPatientContainer = ({ navigation }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
 
+  /**
+   * Displays the diagnoses corresponding to the searchTerm, or displays all diagnoses if the searchTerm is empty
+   */
   useEffect(() => {
     if (searchTerm.length === 0) {
       displayDiagnoses()
@@ -123,13 +126,6 @@ const ListPatientContainer = ({ navigation }) => {
     )
   }
 
-  /**
-   * Clears all of the selected options
-   */
-  const clearSelected = () => {
-    setSelected([])
-  }
-
   return (
     <View style={diagnosisList.wrapper}>
       <View style={diagnosisList.headerWrapper}>
@@ -151,7 +147,7 @@ const ListPatientContainer = ({ navigation }) => {
       <BadgeBar
         removeBadge={toggleAdditionalDiagnosis}
         selected={selected}
-        clearBadges={clearSelected}
+        clearBadges={() => setSelected([])}
         badgeComponentLabel={itemId => translate(algorithm.nodes[itemId].label)}
       />
 
