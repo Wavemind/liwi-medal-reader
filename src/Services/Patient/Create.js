@@ -13,6 +13,8 @@ export default async props => {
   const { other_study_id, other_uid, other_group_id } = otherFacility
 
   return {
+    birth_date: null,
+    birth_date_estimated: false,
     consent: false,
     consent_file: null,
     created_at: null, //new Date(),

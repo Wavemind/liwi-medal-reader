@@ -1,16 +1,19 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextInput } from 'react-native'
+import { useDispatch } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const String = ({ question, editable = true }) => {
   // Theme and style elements deconstruction
+  const dispatch = useDispatch()
 
   const {
     Components: { string },
@@ -28,6 +31,12 @@ const String = ({ question, editable = true }) => {
     const value = e.nativeEvent.text
     console.log('onEndEditing', value)
   }
+
+  useEffect(() => {
+    if (question.value !== value) {
+      dispatch(SetAnswer.action({ nodeId: question.id, value }))
+    }
+  }, [value])
 
   return (
     <TextInput

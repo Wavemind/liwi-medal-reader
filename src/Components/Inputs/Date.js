@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { View, TextInput } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Picker } from '@react-native-picker/picker'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import range from 'lodash/range'
 import parse from 'date-fns/parse'
 import format from 'date-fns/format'
@@ -20,10 +20,12 @@ import subYears from 'date-fns/subYears'
  */
 import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
+import UpdateField from '@/Store/Patient/UpdateField'
 
-const DateInput = ({ question, disabled = false }) => {
+const DateInput = ({ disabled = false }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const {
     Components: { select, numeric },
     Colors,
@@ -49,14 +51,14 @@ const DateInput = ({ question, disabled = false }) => {
   // Get values from the store
   const algorithm = useSelector(state => state.algorithm.item)
   const systemLanguage = useSelector(state => state.system.language)
+  const patient = useSelector(state => state.patient.item)
 
   useEffect(() => {
-    if (question.value !== null) {
-      // TODO: Must be replace by question.value
-      // const date = new Date(null)
-      // setDayValue(date.getDate())
-      // setMonthValue(date.getMonth() + 1)
-      // setYearValue(date.getFullYear())
+    if (patient.birth_date !== null) {
+      const date = new Date(patient.birth_date)
+      setDayValue(date.getDate())
+      setMonthValue(date.getMonth() + 1)
+      setYearValue(date.getFullYear())
     }
 
     const today = new Date()
@@ -78,17 +80,31 @@ const DateInput = ({ question, disabled = false }) => {
   }, [])
 
   /**
+   * Reset the value of the field when we check
+   */
+  useEffect(() => {
+    setEstimatedValue('')
+    setEstimatedDateType(null)
+    setDayValue(null)
+    setMonthValue(null)
+    setYearValue(null)
+  }, [isEstimated])
+
+  /**
    * Store birth date
    */
   useEffect(() => {
     if (dayValue !== null && monthValue !== null && yearValue !== null) {
-      console.log(
-        'TODO: save birth date',
-        parse(
-          `${dayValue}-${monthValue}-${yearValue}`,
-          'dd-MM-yyyy',
-          new Date(),
-        ),
+      const date = parse(
+        `${dayValue}-${monthValue}-${yearValue}`,
+        'dd-MM-yyyy',
+        new Date(),
+      )
+      dispatch(
+        UpdateField.action({
+          field: 'birth_date',
+          value: date.getTime(),
+        }),
       )
     }
   }, [dayValue, monthValue, yearValue])
@@ -107,11 +123,11 @@ const DateInput = ({ question, disabled = false }) => {
       } else {
         birthDate = subYears(new Date(), estimatedValue)
       }
-      console.log(
-        'TODO: save birth date !',
-        estimatedValue,
-        estimatedDateType,
-        birthDate,
+      dispatch(
+        UpdateField.action({
+          field: 'birth_date',
+          value: birthDate.getTime(),
+        }),
       )
     }
   }, [estimatedValue, estimatedDateType])
@@ -122,7 +138,6 @@ const DateInput = ({ question, disabled = false }) => {
    */
   const onChange = value => {
     value = value.replace(/[^0-9]/g, '')
-
     setEstimatedValue(value)
   }
 

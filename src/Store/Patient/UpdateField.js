@@ -2,8 +2,9 @@ import { createAction } from '@reduxjs/toolkit'
 
 export default {
   initialState: {},
-  action: createAction('patient/changeConsent'),
+  action: createAction('patient/updateField'),
   reducers(state, { payload }) {
-    state.item.consent = payload.value
+    const { field, value } = payload
+    state.item[field] = value
   },
 }

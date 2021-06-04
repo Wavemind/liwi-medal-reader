@@ -15,7 +15,6 @@ import {
   Select,
   Numeric,
   String,
-  Date,
   Toggle,
   Icon,
   Autocomplete,
@@ -68,8 +67,6 @@ const Question = ({ node, disabled = false }) => {
         return <String question={node} />
       case Config.DISPLAY_FORMAT.autocomplete:
         return <Autocomplete question={node} />
-      case Config.DISPLAY_FORMAT.date:
-        return <Date question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:
         return <Select question={node} />
       case Config.DISPLAY_FORMAT.reference:
