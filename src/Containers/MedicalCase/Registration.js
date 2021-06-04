@@ -10,6 +10,7 @@ import filter from 'lodash/filter'
  * The internal imports
  */
 import { Question, Consent, BirthDate } from '@/Components'
+import { StaticString } from '@/Components/index'
 
 /**
  * Returns the static questions for the medical case
@@ -18,6 +19,8 @@ import { Question, Consent, BirthDate } from '@/Components'
 const Header = () => (
   <>
     <Consent />
+    <StaticString field="first_name" />
+    <StaticString field="last_name" />
     <BirthDate />
   </>
 )

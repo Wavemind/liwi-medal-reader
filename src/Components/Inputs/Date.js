@@ -176,7 +176,7 @@ const DateInput = () => {
         </View>
         <View>
           <TextInput
-            style={[numeric.input(false), Gutters.smallTMargin]}
+            style={[numeric.input(true), Gutters.smallTMargin]}
             keyboardType="decimal-pad"
             onChangeText={onChange}
             value={String(estimatedValue)}
