@@ -20,6 +20,7 @@ import subYears from 'date-fns/subYears'
  */
 import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
+import UpdateField from '@/Store/Patient/UpdateField'
 
 const DateInput = ({ question, disabled = false }) => {
   // Theme and style elements deconstruction
@@ -52,11 +53,6 @@ const DateInput = ({ question, disabled = false }) => {
 
   useEffect(() => {
     if (question.value !== null) {
-      // TODO: Must be replace by question.value
-      // const date = new Date(null)
-      // setDayValue(date.getDate())
-      // setMonthValue(date.getMonth() + 1)
-      // setYearValue(date.getFullYear())
     }
 
     const today = new Date()
@@ -82,6 +78,9 @@ const DateInput = ({ question, disabled = false }) => {
    */
   useEffect(() => {
     if (dayValue !== null && monthValue !== null && yearValue !== null) {
+      dispatch(
+        UpdateField.action({ field: 'consent_file', consentFile: consent }),
+      )
       console.log(
         'TODO: save birth date',
         parse(

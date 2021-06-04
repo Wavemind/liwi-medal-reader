@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { hp, wp } from '@/Theme/Responsive'
 import { SquareButton } from '@/Components'
-import ChangeConsentFile from '@/Store/Patient/ChangeConsentFile'
+import UpdateField from '@/Store/Patient/UpdateField'
 
 const PreviewConsentContainer = ({
   route: {
@@ -32,7 +32,9 @@ const PreviewConsentContainer = ({
    * Will store the consent file in the patient store
    */
   const validatePicture = async () => {
-    await dispatch(ChangeConsentFile.action({ consentFile: consent }))
+    await dispatch(
+      UpdateField.action({ field: 'consent_file', consentFile: consent }),
+    )
     navigation.navigate('Home')
   }
 
