@@ -12,21 +12,19 @@ import filter from 'lodash/filter'
 import { Question, Consent, BirthDate } from '@/Components'
 import { StaticString } from '@/Components/index'
 
-/**
- * Returns the static questions for the medical case
- * @returns List of inputs to show
- */
-const Header = () => (
-  <>
-    <Consent />
-    <StaticString field="first_name" />
-    <StaticString field="last_name" />
-    <BirthDate />
-  </>
-)
-
 const RegistrationMedicalCaseContainer = props => {
-  // Theme and style elements deconstruction
+  /**
+   * Returns the static questions for the medical case
+   * @returns List of inputs to show
+   */
+  const Header = () => (
+    <>
+      <Consent />
+      <StaticString field="first_name" />
+      <StaticString field="last_name" />
+      <BirthDate />
+    </>
+  )
 
   const algorithm = useSelector(state => state.algorithm.item)
 
