@@ -1,10 +1,11 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text } from 'react-native'
-import { useTranslation } from 'react-i18next'
 import Toggle from 'react-native-toggle-element'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 
 /**
  * The internal imports
@@ -12,6 +13,7 @@ import Toggle from 'react-native-toggle-element'
 import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
 import { Icon } from '@/Components'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const ToggleComplaintCategory = ({ question, disabled = false }) => {
   // Theme and style elements deconstruction
@@ -20,8 +22,18 @@ const ToggleComplaintCategory = ({ question, disabled = false }) => {
     Colors,
   } = useTheme()
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const [toggleValue, setToggleValue] = useState(false)
+
+  useEffect(() => {
+    const updateAnswer = async () => {
+      if (question.value !== toggleValue) {
+        await dispatch(SetAnswer.action({ nodeId: question.id, toggleValue }))
+      }
+    }
+    updateAnswer()
+  }, [toggleValue])
 
   return (
     <Toggle

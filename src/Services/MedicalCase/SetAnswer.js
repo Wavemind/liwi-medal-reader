@@ -114,27 +114,28 @@ const setNodeValue = (mcNode, node, value) => {
 }
 
 export default async props => {
-  const { questionId, value } = props
+  const { nodeId, value } = props
   const {
     algorithm: {
       item: {
-        nodes: { [questionId]: node },
+        nodes: { [nodeId]: node },
       },
     },
     medicalCase: {
       item: {
-        nodes: { [questionId]: mcNode },
+        nodes: { [nodeId]: mcNode },
       },
     },
     medicalCase: { item: medicalCase },
   } = store.getState()
+
   // Validation
   const newValues = setNodeValue(mcNode, node, value)
   return {
     ...medicalCase,
     nodes: {
       ...medicalCase.nodes,
-      [questionId]: { ...mcNode, /*...validation, */ ...newValues },
+      [nodeId]: { ...mcNode, /*...validation, */ ...newValues },
     },
   }
 }

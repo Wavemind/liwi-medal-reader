@@ -2,6 +2,7 @@ import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
 import Create from './Create'
 import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
+import UpdateNodeField from './UpdateNodeField'
 
 const sliceInitialState = {
   item: {},
@@ -9,6 +10,6 @@ const sliceInitialState = {
 
 export default buildSlice(
   'scan',
-  [Create, ChangeAdvancement, SetAnswer],
+  [Create, ChangeAdvancement, SetAnswer, UpdateNodeField],
   sliceInitialState,
 ).reducer

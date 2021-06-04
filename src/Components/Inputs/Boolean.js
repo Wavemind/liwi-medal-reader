@@ -44,7 +44,7 @@ const Boolean = ({ question, emergency, disabled = false }) => {
   useEffect(() => {
     const updateAnswer = async () => {
       if (question.value !== value) {
-        await dispatch(SetAnswer.action({ questionId: question.id, value }))
+        await dispatch(SetAnswer.action({ nodeId: question.id, value }))
       }
     }
     updateAnswer()
