@@ -22,7 +22,7 @@ import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
 
-const DateInput = ({ disabled = false }) => {
+const DateInput = () => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -113,9 +113,9 @@ const DateInput = ({ disabled = false }) => {
    * Store estimated birth date
    */
   useEffect(() => {
-    // TODO save in store new date
     if (estimatedValue !== '' && estimatedDateType !== null) {
       let birthDate = ''
+
       if (estimatedDateType === 'day') {
         birthDate = subDays(new Date(), estimatedValue)
       } else if (estimatedDateType === 'month') {
@@ -123,6 +123,7 @@ const DateInput = ({ disabled = false }) => {
       } else {
         birthDate = subYears(new Date(), estimatedValue)
       }
+
       dispatch(
         UpdateField.action({
           field: 'birth_date',
@@ -144,14 +145,13 @@ const DateInput = ({ disabled = false }) => {
   const RenderEstimated = () => {
     return (
       <View style={Layout.column}>
-        <View style={[select.pickerContainer(disabled)]}>
+        <View style={select.pickerContainer(false)}>
           <Picker
             style={select.picker}
             selectedValue={estimatedDateType}
             mode="dropdown"
             onValueChange={(value, itemIndex) => setEstimatedDateType(value)}
             dropdownIconColor={Colors.primary}
-            enabled={!disabled}
           >
             <Picker.Item
               key="select-date-type-placeholder"
@@ -177,11 +177,10 @@ const DateInput = ({ disabled = false }) => {
         </View>
         <View>
           <TextInput
-            style={[numeric.input(!disabled), Gutters.smallTMargin]}
+            style={[numeric.input(true), Gutters.smallTMargin]}
             keyboardType="decimal-pad"
             onChangeText={onChange}
             value={String(estimatedValue)}
-            editable={!disabled}
           />
         </View>
       </View>
@@ -191,14 +190,13 @@ const DateInput = ({ disabled = false }) => {
   const RenderStandard = () => {
     return (
       <View style={Layout.column}>
-        <View style={select.pickerContainer(disabled)}>
+        <View style={select.pickerContainer(false)}>
           <Picker
             style={select.picker}
             selectedValue={yearValue}
             mode="dropdown"
             onValueChange={(year, itemIndex) => setYearValue(year)}
             dropdownIconColor={Colors.primary}
-            enabled={!disabled}
           >
             <Picker.Item
               key="select-year-placeholder"
@@ -214,14 +212,13 @@ const DateInput = ({ disabled = false }) => {
             ))}
           </Picker>
         </View>
-        <View style={[select.pickerContainer(disabled), Gutters.smallTMargin]}>
+        <View style={[select.pickerContainer(false), Gutters.smallTMargin]}>
           <Picker
             style={select.picker}
             selectedValue={monthValue}
             mode="dropdown"
             onValueChange={(month, itemIndex) => setMonthValue(month)}
             dropdownIconColor={Colors.primary}
-            enabled={!disabled}
           >
             <Picker.Item
               key="select-month-placeholder"
@@ -241,14 +238,13 @@ const DateInput = ({ disabled = false }) => {
             ))}
           </Picker>
         </View>
-        <View style={[select.pickerContainer(disabled), Gutters.smallTMargin]}>
+        <View style={[select.pickerContainer(false), Gutters.smallTMargin]}>
           <Picker
             style={select.picker}
             selectedValue={dayValue}
             mode="dropdown"
             onValueChange={(day, itemIndex) => setDayValue(day)}
             dropdownIconColor={Colors.primary}
-            enabled={!disabled}
           >
             <Picker.Item
               key="select-day-placeholder"

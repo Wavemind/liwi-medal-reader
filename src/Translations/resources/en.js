@@ -222,6 +222,11 @@ export default {
     synchronize: 'Synchronize',
     logout: 'Logout',
   },
+  patient: {
+    first_name: 'First name',
+    last_name: 'Last name',
+    birth_date: 'Birth date',
+  },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',
     instructions:
