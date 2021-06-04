@@ -11,7 +11,7 @@ import filter from 'lodash/filter'
  * The internal imports
  */
 import { Question, Consent, BirthDate, SectionHeader } from '@/Components'
-import { StaticString } from '@/Components/index'
+import { PatientString } from '@/Components/index'
 import { useTheme } from '@/Theme'
 
 const RegistrationMedicalCaseContainer = props => {
@@ -31,8 +31,8 @@ const RegistrationMedicalCaseContainer = props => {
         />
       </View>
 
-      <StaticString field="first_name" />
-      <StaticString field="last_name" />
+      <PatientString field="first_name" />
+      <PatientString field="last_name" />
       <BirthDate />
     </>
   )
