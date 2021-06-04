@@ -5,13 +5,13 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
+import filter from 'lodash/filter'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import filter from 'lodash/filter'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const Autocomplete = ({ node }) => {
