@@ -39,6 +39,7 @@ import toggleStyles from './components/Toggle.style'
 import consentStyles from './components/Consent.style'
 import diagnosisItemStyles from './components/DiagnosisItem.style'
 import AutosuggestStyles from './components/Autosuggest.style'
+import AutocompleteStyles from './components/Autocomplete.style'
 
 /**
  *
@@ -83,5 +84,6 @@ export default function (props) {
     consent: consentStyles(props),
     diagnosisItem: diagnosisItemStyles(props),
     autosuggest: AutosuggestStyles(props),
+    autocomplete: AutocompleteStyles(props),
   }
 }

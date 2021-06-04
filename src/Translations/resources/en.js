@@ -22,6 +22,7 @@ export default {
   application: {
     algorithm_translation_missing: 'Algorithm translation is missing',
     no_results: 'No results found',
+    search: 'Search',
     theme: {
       dark_mode: 'Dark mode',
       light_mode: 'Light mode',

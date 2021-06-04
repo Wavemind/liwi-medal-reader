@@ -18,6 +18,7 @@ import {
   Date,
   Toggle,
   Icon,
+  Autocomplete,
 } from '@/Components'
 
 import { Config } from '@/Config'
@@ -66,7 +67,7 @@ const Question = ({ node, disabled = false }) => {
       case Config.DISPLAY_FORMAT.string:
         return <String question={node} />
       case Config.DISPLAY_FORMAT.autocomplete:
-      // return <Autocomplete question={node} />
+        return <Autocomplete />
       case Config.DISPLAY_FORMAT.date:
         return <Date question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:
@@ -79,10 +80,13 @@ const Question = ({ node, disabled = false }) => {
     }
   }
 
+  const isFullLength =
+    node.display_format === Config.DISPLAY_FORMAT.autocomplete
+
   return (
     <View style={question.wrapper(emergency)}>
       <View style={question.container}>
-        <View style={question.questionWrapper}>
+        <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
 
           <Text style={question.text(status)}>
@@ -101,7 +105,15 @@ const Question = ({ node, disabled = false }) => {
             </TouchableOpacity>
           )}
 
-          <View style={question.inputWrapper}>{inputFactory()}</View>
+          <View
+            style={
+              isFullLength
+                ? question.fullLengthInputWrapper
+                : question.inputWrapper
+            }
+          >
+            {inputFactory()}
+          </View>
         </View>
         {(status === 'error' || status === 'warning') && (
           <View style={question.messageWrapper(status)}>

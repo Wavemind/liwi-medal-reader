@@ -10,19 +10,13 @@ import filter from 'lodash/filter'
 /**
  * The internal imports
  */
-import {
-  SelectionBadge,
-  Icon,
-  SectionHeader,
-  Autosuggest,
-  BadgeBar,
-} from '@/Components'
+import { Icon, SectionHeader, Autosuggest, BadgeBar } from '@/Components'
 import { useTheme } from '@/Theme'
 import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
 import ChangeAdditionalDiagnosis from '@/Store/MedicalCase/ChangeAdditionalDiagnosis'
 import { translate } from '@/Translations/algorithm'
 
-const ListPatientContainer = ({ navigation }) => {
+const ListDiagnosisContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -172,4 +166,4 @@ const ListPatientContainer = ({ navigation }) => {
   )
 }
 
-export default ListPatientContainer
+export default ListDiagnosisContainer
