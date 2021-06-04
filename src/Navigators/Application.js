@@ -21,6 +21,7 @@ import {
   IndexEmergencyContainer,
   IndexStudyContainer,
   IndexQuestionInfoContainer,
+  DiagnosesListContainer,
 } from '@/Containers'
 import { navigationRef } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
@@ -86,6 +87,7 @@ const ApplicationNavigator = () => {
             <Stack.Screen name="Search" component={IndexSearchContainer} />
             <Stack.Screen name="Scan" component={IndexScanContainer} />
             <Stack.Screen name="Filters" component={IndexFiltersContainer} />
+            <Stack.Screen name="Diagnoses" component={DiagnosesListContainer} />
             <Stack.Screen name="Camera" component={CameraConsentContainer} />
             <Stack.Screen name="Preview" component={PreviewConsentContainer} />
             <Stack.Screen

@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 /**
  * The internal imports
  */
-import { SearchBar, PatientListItem, FilterBar, LoaderList } from '@/Components'
+import { SearchBar, PatientListItem, BadgeBar, LoaderList } from '@/Components'
 import { useTheme } from '@/Theme'
 
 const ListPatientContainer = props => {
@@ -57,7 +57,15 @@ const ListPatientContainer = props => {
   return (
     <View style={Layout.fill}>
       <SearchBar navigation={navigation} filters />
-      <FilterBar />
+      <BadgeBar
+        removeBadge={() => console.log('TODO Remove selected badge')}
+        selected={[
+          { filterBy: 'Gender', value: 'Female' },
+          { filterBy: 'Age', value: '12' },
+        ]}
+        clearBadges={() => console.log('TODO Clear selected badges')}
+        badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
+      />
 
       <View style={patientList.headerTable}>
         <Text style={patientList.headerText}>
