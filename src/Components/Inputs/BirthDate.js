@@ -21,7 +21,7 @@ const BirthDate = () => {
   return (
     <View style={question.wrapper(false)}>
       <View style={question.container}>
-        <View style={question.questionWrapper}>
+        <View style={question.questionWrapper(false)}>
           <Text style={question.text('')}>{t('patient.birth_date')}</Text>
           <View style={question.inputWrapper}>
             <Date />

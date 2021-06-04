@@ -38,7 +38,7 @@ const Consent = props => {
   return (
     <View style={[Gutters.regularHPadding, Gutters.regularBMargin]}>
       <SectionHeader label={t('components.consent.title')} />
-      <View style={question.questionWrapper}>
+      <View style={question.questionWrapper(false)}>
         <Text style={consent.question}>{t('components.consent.question')}</Text>
         <View style={question.inputWrapper}>
           <View
