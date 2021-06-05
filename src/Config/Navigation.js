@@ -9,8 +9,10 @@ import { View, Text } from 'react-native'
  */
 import {
   RegistrationMedicalCaseContainer,
+  // First Assessments
   UniqueTriageQuestionsMedicalCaseContainer,
   ComplaintCategoryMedicalCaseContainer,
+  BasicMeasurementMedicalCaseContainer,
 } from '@/Containers'
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
@@ -85,7 +87,7 @@ const baseInterventionStages = [
       },
       {
         label: 'basic_measurements',
-        component: ToDo,
+        component: BasicMeasurementMedicalCaseContainer,
       },
     ],
   },

@@ -11,12 +11,11 @@ import { useSelector } from 'react-redux'
 import { Question } from '@/Components'
 
 const UniqueTriageQuestionsMedicalCaseContainer = props => {
-  const algorithm = useSelector(state => state.algorithm.item)
-
-  const questions =
-    algorithm.mobile_config.questions_orders.first_look_assessment.map(
-      questionId => algorithm.nodes[questionId],
-    )
+  // TODO: MUST BE CHANGE WITH ORDER GIVEN BY MANU !
+  const questions = useSelector(
+    state =>
+      state.algorithm.item.mobile_config.questions_orders.first_look_assessment,
+  )
 
   return (
     <View>

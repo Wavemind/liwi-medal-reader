@@ -13,8 +13,8 @@ import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
 
 /**
  * Round number
- * @param {integer} value
- * @param {integer} step
+ * @param {integer} value : value to round
+ * @param {integer} step :round precision
  * @returns
  */
 export const round = (value, step) => {
@@ -24,25 +24,28 @@ export const round = (value, step) => {
 }
 
 /**
- *
- * @param {*} mcNode
- * @param {*} node
- * @param {*} value
- * @returns
+ * Handles a new value for a numeric node will return the new values to set in the node
+ * @param {MedicalCaseNode} mcNode : Current state of the node to update
+ * @param {Node} node : Node definition in the algorithm
+ * @param {any} value : New value of the node
+ * @returns {
+ *              {integer} answer : new id of the answer
+ *              {string}  value : new value
+ *              {integer} roundedValue? : Rounded value if the node requires a rounded value
+ *   }
  */
 const handleNumeric = (mcNode, node, value) => {
-  let answer = null
-  let roundedValue = null
+  const response = { answer: null, value: value }
 
   if (value === null) {
-    answer = null
+    response.answer = null
   } else if (mcNode.unavailableValue) {
     // Unavailable question
-    answer = Number(value)
-    value = node.answers[answer].value
+    response.answer = Number(value)
+    response.value = node.answers[response.answer].value
   } else {
     // Normal process
-    answer = findKey(node.answers, condition => {
+    response.answer = findKey(node.answers, condition => {
       switch (condition.operator) {
         case 'more_or_equal':
           return value >= Number(condition.value)
@@ -55,24 +58,28 @@ const handleNumeric = (mcNode, node, value) => {
           )
       }
     })
-    if (answer !== undefined) {
-      answer = Number(answer)
+    if (response.answer !== undefined) {
+      response.answer = Number(response.answer)
     } else {
-      answer = null
+      response.answer = null
     }
 
     if (node?.round !== null) {
-      roundedValue = round(value, node?.round)
+      response.roundedValue = round(value, node?.round)
     }
-    return { answer, value, roundedValue }
+    return response
   }
 }
 
 /**
- *
- * @param {*} node
- * @param {*} value
- * @returns
+ * Handles a new value for a answerId based node will return the new values to set in the node
+ * @param {MedicalCaseNode} mcNode : Current state of the node to update
+ * @param {Node} node : Node definition in the algorithm
+ * @param {any} value : New value of the node
+ * @returns {
+ *              {integer} answer : new id of the answer
+ *              {string}  value : new value
+ *   }
  */
 const handleAnswerId = (node, value) => {
   let answer = null
@@ -93,11 +100,11 @@ const handleAnswerId = (node, value) => {
 }
 
 /**
- *
- * @param {*} mcNode
- * @param {*} node
- * @param {*} value
- * @returns
+ * Based on the node value format it will return the new values to set in the store
+ * @param {MedicalCaseNode} mcNode : Current state of the node to update
+ * @param {Node} node : Node definition in the algorithm
+ * @param {any} value : New value of the node
+ * @returns See return of handleNumeric or handleAnswerId
  */
 const setNodeValue = (mcNode, node, value) => {
   const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
@@ -124,13 +131,10 @@ export default async props => {
         nodes: { [nodeId]: node },
       },
     },
-    medicalCase: {
-      item: {
-        nodes: { [nodeId]: mcNode },
-      },
-    },
     medicalCase: { item: medicalCase },
   } = store.getState()
+
+  const mcNode = medicalCase.nodes[nodeId]
 
   // Validation
   const validation = await validationMedicalCaseService(mcNode, node, value)

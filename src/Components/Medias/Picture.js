@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { View, TouchableOpacity, Dimensions, Image } from 'react-native'
+import React from 'react'
+import { Image } from 'react-native'
 import Lightbox from 'react-native-lightbox-v2'
 
 /**

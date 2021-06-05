@@ -1,4 +1,3 @@
-gi
 /**
  * The external imports
  */

@@ -19,7 +19,7 @@ import customDrawerItemStyles from './components/CustomDrawerItem.style'
 import searchBarStyles from './components/SearchBar.style'
 import tabBarStyles from './components/TabBar.style'
 import sideBarStyles from './components/SideBar.style'
-import filterBarStyles from './components/FilterBar.style'
+import badgeBarStyles from './components/BadgeBar.style'
 import patientListItemStyles from './components/PatientListItem.style'
 import patientTabItemStyles from './components/PatientTabItem.style'
 import consentListItemStyles from './components/ConsentListItem.style'
@@ -37,6 +37,9 @@ import stringStyles from './components/String.style'
 import dateStyles from './components/Date.style'
 import toggleStyles from './components/Toggle.style'
 import consentStyles from './components/Consent.style'
+import diagnosisItemStyles from './components/DiagnosisItem.style'
+import autosuggestStyles from './components/Autosuggest.style'
+import autocompleteStyles from './components/Autocomplete.style'
 
 /**
  *
@@ -61,7 +64,7 @@ export default function (props) {
     searchBar: searchBarStyles(props),
     tabBar: tabBarStyles(props),
     sideBar: sideBarStyles(props),
-    filterBar: filterBarStyles(props),
+    badgeBar: badgeBarStyles(props),
     patientListItem: patientListItemStyles(props),
     patientTabItem: patientTabItemStyles(props),
     consentListItem: consentListItemStyles(props),
@@ -79,5 +82,8 @@ export default function (props) {
     date: dateStyles(props),
     toggleComplaintCategory: toggleStyles(props),
     consent: consentStyles(props),
+    diagnosisItem: diagnosisItemStyles(props),
+    autosuggest: autosuggestStyles(props),
+    autocomplete: autocompleteStyles(props),
   }
 }

@@ -6,8 +6,7 @@ export default function (props) {
   return StyleSheet.create({
     container: {
       ...Layout.row,
-      ...Gutters.regularVPadding,
-      ...Gutters.regularLMargin,
+      ...Gutters.regularTPadding,
     },
     clearFiltersButton: {
       ...Gutters.regularRPadding,

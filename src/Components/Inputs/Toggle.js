@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { Text } from 'react-native'
 import Toggle from 'react-native-toggle-element'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -13,9 +13,10 @@ import { useDispatch } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
 import { Icon } from '@/Components'
+import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const ToggleComplaintCategory = ({ question, disabled = false }) => {
+const ToggleComplaintCategory = ({ questionId }) => {
   // Theme and style elements deconstruction
   const {
     Components: { toggleComplaintCategory },
@@ -24,15 +25,29 @@ const ToggleComplaintCategory = ({ question, disabled = false }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const [toggleValue, setToggleValue] = useState(false)
+  const question = useSelector(
+    state => state.medicalCase.item.nodes[questionId],
+  )
+  const currentNode = useSelector(
+    state => state.algorithm.item.nodes[question.id],
+  )
 
+  const yesAnswer = getYesAnswer(currentNode)
+  const noAnswer = getNoAnswer(currentNode)
+
+  // TODO: Need to set by default answer to false
+  const [toggleValue, setToggleValue] = useState(
+    question.answer === yesAnswer.id,
+  )
+
+  /**
+   * Update value in store when value changes
+   */
   useEffect(() => {
-    const updateAnswer = async () => {
-      if (question.value !== toggleValue) {
-        await dispatch(SetAnswer.action({ nodeId: question.id, toggleValue }))
-      }
+    if (question.answer !== toggleValue) {
+      const answerId = toggleValue ? yesAnswer.id : noAnswer.id
+      dispatch(SetAnswer.action({ nodeId: question.id, value: answerId }))
     }
-    updateAnswer()
   }, [toggleValue])
 
   return (
