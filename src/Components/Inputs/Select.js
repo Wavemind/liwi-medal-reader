@@ -45,7 +45,7 @@ const Select = ({ questionId, disabled = false }) => {
    * Update value in store when value changes
    */
   useEffect(() => {
-    if (question.value !== value) {
+    if (question.answer !== value) {
       dispatch(SetAnswer.action({ nodeId: question.id, value }))
     }
   }, [value])

@@ -13,9 +13,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { wp } from '@/Theme/Responsive'
 import { Icon } from '@/Components'
+import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const ToggleComplaintCategory = ({ questionId, disabled = false }) => {
+const ToggleComplaintCategory = ({ questionId }) => {
   // Theme and style elements deconstruction
   const {
     Components: { toggleComplaintCategory },
@@ -27,15 +28,25 @@ const ToggleComplaintCategory = ({ questionId, disabled = false }) => {
   const question = useSelector(
     state => state.medicalCase.item.nodes[questionId],
   )
+  const currentNode = useSelector(
+    state => state.algorithm.item.nodes[question.id],
+  )
 
-  const [toggleValue, setToggleValue] = useState(false) // TODO get value from state
+  const yesAnswer = getYesAnswer(currentNode)
+  const noAnswer = getNoAnswer(currentNode)
+
+  // TODO: Need to set by default answer to false
+  const [toggleValue, setToggleValue] = useState(
+    question.answer === yesAnswer.id,
+  )
 
   /**
    * Update value in store when value changes
    */
   useEffect(() => {
-    if (question.value !== toggleValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, toggleValue }))
+    if (question.answer !== toggleValue) {
+      const answerId = toggleValue ? yesAnswer.id : noAnswer.id
+      dispatch(SetAnswer.action({ nodeId: question.id, value: answerId }))
     }
   }, [toggleValue])
 

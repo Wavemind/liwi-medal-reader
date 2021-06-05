@@ -85,8 +85,6 @@ const Numeric = ({ questionId, editable = true }) => {
     )
   }
 
-  console.log('numeric', question.id)
-
   return (
     <View>
       <TextInput

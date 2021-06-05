@@ -125,6 +125,8 @@ export default async props => {
   const { nodeId, value } = props
   let newValues = {}
 
+  console.log('SetAnswer', nodeId, value)
+
   const {
     algorithm: {
       item: {
@@ -133,6 +135,7 @@ export default async props => {
     },
     medicalCase: { item: medicalCase },
   } = store.getState()
+
   const mcNode = medicalCase.nodes[nodeId]
 
   // Validation

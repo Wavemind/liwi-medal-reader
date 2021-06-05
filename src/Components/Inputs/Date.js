@@ -139,8 +139,6 @@ const DateInput = () => {
     setEstimatedValue(value)
   }
 
-  console.log('Date')
-
   return (
     <View>
       {isEstimated ? (
