@@ -12,21 +12,12 @@ import find from 'lodash/find'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import {
-  Checkbox,
-  Boolean,
-  Select,
-  Numeric,
-  String,
-  Toggle,
-  Icon,
-  Autocomplete,
-} from '@/Components'
+import { Checkbox, Select, Icon, InputFactory } from '@/Components'
 import { Config } from '@/Config'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const Question = ({ node, disabled = false }) => {
+const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -34,12 +25,13 @@ const Question = ({ node, disabled = false }) => {
     Components: { question },
     Colors,
     FontSize,
-    Layout,
   } = useTheme()
 
   // Get node from algorithm
-  const algorithm = useSelector(state => state.algorithm.item)
-  const currentNode = algorithm.nodes[node.id]
+  const mcNode = useSelector(state => state.medicalCase.item.nodes[questionId])
+  const currentNode = useSelector(
+    state => state.algorithm.item.nodes[questionId],
+  )
 
   // Local state definition
   const [isFullLength] = useState(
@@ -49,7 +41,7 @@ const Question = ({ node, disabled = false }) => {
   const [descriptionAvailable] = useState(
     translate(currentNode.description) !== '',
   )
-  const [isUnavailable, setIsUnavailable] = useState(node.unavailableValue)
+  const [isUnavailable, setIsUnavailable] = useState(mcNode.unavailableValue)
 
   // Node can have an unavailable answer
   const [additionalUnavailableAnswer] = useState(
@@ -62,40 +54,13 @@ const Question = ({ node, disabled = false }) => {
   )
 
   /**
-   * Display correct input based on display format given by algorithm
-   */
-  const inputFactory = () => {
-    switch (currentNode.display_format) {
-      case Config.DISPLAY_FORMAT.radioButton:
-        if (currentNode.category === Config.CATEGORIES.complaintCategory) {
-          return <Toggle question={node} />
-        } else {
-          return <Boolean question={node} emergency={emergency} />
-        }
-      case Config.DISPLAY_FORMAT.input:
-        return <Numeric question={node} />
-      case Config.DISPLAY_FORMAT.string:
-        return <String question={node} />
-      case Config.DISPLAY_FORMAT.autocomplete:
-        return <Autocomplete question={node} />
-      case Config.DISPLAY_FORMAT.dropDownList:
-        return <Select question={node} />
-      case Config.DISPLAY_FORMAT.reference:
-      case Config.DISPLAY_FORMAT.formula:
-        return <String question={node} editable={false} />
-      default:
-        return <Text>{translate(currentNode.label)}</Text>
-    }
-  }
-
-  /**
    * Used only when normal answer can't be set by clinician. A list of predefined answer are displayed
    */
   const handleUnavailable = () => {
     setIsUnavailable(!isUnavailable)
     dispatch(
       UpdateNodeField.action({
-        nodeId: node.id,
+        nodeId: questionId,
         field: 'unavailableValue',
         value: !isUnavailable,
       }),
@@ -107,8 +72,10 @@ const Question = ({ node, disabled = false }) => {
    */
   const handleUnavailableAnswer = value => {
     const answer = value ? additionalUnavailableAnswer.id : null
-    dispatch(SetAnswer.action({ nodeId: node.id, value: answer }))
+    dispatch(SetAnswer.action({ nodeId: questionId, value: answer }))
   }
+
+  console.log('question', questionId)
 
   return (
     <View style={question.wrapper(emergency)}>
@@ -120,7 +87,7 @@ const Question = ({ node, disabled = false }) => {
             style={
               emergency
                 ? question.emergencyText
-                : question.text(node.validationType)
+                : question.text(question.validationType)
             }
           >
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
@@ -130,7 +97,7 @@ const Question = ({ node, disabled = false }) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('QuestionInfo', {
-                  nodeId: node.id,
+                  nodeId: questionId,
                 })
               }
             >
@@ -147,18 +114,21 @@ const Question = ({ node, disabled = false }) => {
           >
             {additionalUnavailableAnswer ? (
               <>
-                {node.answer !== additionalUnavailableAnswer.id &&
-                  inputFactory()}
+                {mcNode.answer !== additionalUnavailableAnswer.id && (
+                  <InputFactory questionId={questionId} emergency={emergency} />
+                )}
                 <Checkbox
                   label={translate(additionalUnavailableAnswer.label)}
-                  defaultValue={node.answer === additionalUnavailableAnswer.id}
+                  defaultValue={
+                    mcNode.answer === additionalUnavailableAnswer.id
+                  }
                   onPress={handleUnavailableAnswer}
                 />
               </>
             ) : isUnavailable ? (
-              <Select question={node} />
+              <Select questionId={questionId} />
             ) : (
-              inputFactory()
+              <InputFactory questionId={questionId} emergency={emergency} />
             )}
             {currentNode.unavailable && !additionalUnavailableAnswer && (
               <Checkbox
@@ -170,15 +140,15 @@ const Question = ({ node, disabled = false }) => {
           </View>
         </View>
 
-        {(node.validationType === 'error' ||
-          node.validationType === 'warning') && (
-          <View style={[question.messageWrapper(node.validationType)]}>
+        {(mcNode.validationType === 'error' ||
+          mcNode.validationType === 'warning') && (
+          <View style={[question.messageWrapper(question.validationType)]}>
             <Icon
               size={FontSize.regular}
               color={Colors.secondary}
               name="warning"
             />
-            <Text style={question.message}>{node.validationMessage}</Text>
+            <Text style={question.message}>{mcNode.validationMessage}</Text>
           </View>
         )}
       </View>

@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 
-const Numeric = ({ question, editable = true }) => {
+const Numeric = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -24,8 +24,12 @@ const Numeric = ({ question, editable = true }) => {
   } = useTheme()
 
   // Get node from algorithm
-  const algorithm = useSelector(state => state.algorithm.item)
-  const currentNode = algorithm.nodes[question.id]
+  const question = useSelector(
+    state => state.medicalCase.item.nodes[questionId],
+  )
+  const currentNode = useSelector(
+    state => state.algorithm.item.nodes[questionId],
+  )
 
   // Local state definition
   const [value, setValue] = useState(question.value)
@@ -39,7 +43,7 @@ const Numeric = ({ question, editable = true }) => {
     const newValue = e.nativeEvent.text
 
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, newValue }))
+      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }
   }
 
@@ -80,6 +84,8 @@ const Numeric = ({ question, editable = true }) => {
       }),
     )
   }
+
+  console.log('numeric', question.id)
 
   return (
     <View>

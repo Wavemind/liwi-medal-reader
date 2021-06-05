@@ -3,7 +3,7 @@
  */
 import React, { useState } from 'react'
 import { TextInput } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux'
 import { useTheme } from '@/Theme'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const String = ({ question, editable = true }) => {
+const String = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
   const dispatch = useDispatch()
 
@@ -19,8 +19,12 @@ const String = ({ question, editable = true }) => {
     Components: { string },
   } = useTheme()
 
+  const question = useSelector(
+    state => state.medicalCase.item.nodes[questionId],
+  )
+
   // Local state definition
-  const [value, setValue] = useState('') // TODO: Load answer from medicalCase !
+  const [value, setValue] = useState(question.value)
 
   /**
    * Save value in store

@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const Autocomplete = ({ question }) => {
+const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -31,6 +31,9 @@ const Autocomplete = ({ question }) => {
   const [searchResults, setSearchResults] = useState([])
   const [optionSelected, setOptionSelected] = useState(false)
 
+  const question = useSelector(
+    state => state.medicalCase.item.nodes[questionId],
+  )
   const villageList = useSelector(state => state.algorithm.item.village_json)
 
   /**
@@ -77,6 +80,7 @@ const Autocomplete = ({ question }) => {
 
     return (
       <View
+        key={`village-${resultString}`}
         style={autocomplete.dropdownItemWrapper(
           index === searchResults.length - 1,
         )}

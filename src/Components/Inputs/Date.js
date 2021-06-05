@@ -49,7 +49,7 @@ const DateInput = () => {
   const [yearsRange, setYearsRange] = useState([])
 
   // Get values from the store
-  const algorithm = useSelector(state => state.algorithm.item)
+  const ageLimit = useSelector(state => state.algorithm.item.config.age_limit)
   const systemLanguage = useSelector(state => state.system.language)
   const patient = useSelector(state => state.patient.item)
 
@@ -64,10 +64,7 @@ const DateInput = () => {
     const today = new Date()
     const days = range(1, 32)
     const months = range(1, 13)
-    const years = range(
-      today.getFullYear(),
-      today.getFullYear() - algorithm.config.age_limit - 1,
-    )
+    const years = range(today.getFullYear(), today.getFullYear() - ageLimit - 1)
 
     setDaysRange(days)
     setMonthsRange(months)
@@ -141,6 +138,8 @@ const DateInput = () => {
     value = value.replace(/[^0-9]/g, '')
     setEstimatedValue(value)
   }
+
+  console.log('Date')
 
   return (
     <View>

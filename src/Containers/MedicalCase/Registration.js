@@ -36,19 +36,7 @@ const RegistrationMedicalCaseContainer = props => {
     </>
   )
 
-  const medicalCase = useSelector(state => state.medicalCase.item)
-
-  let questions = []
-  questions.push(medicalCase.nodes[18])
-  questions.push(medicalCase.nodes[50])
-  questions.push(medicalCase.nodes[104])
-  questions.push(medicalCase.nodes[168])
-  questions.push(medicalCase.nodes[326])
-  questions.push(medicalCase.nodes[204])
-  questions.push(medicalCase.nodes[1774])
-  questions.push(medicalCase.nodes[3436])
-  questions.push(medicalCase.nodes[6])
-  questions.push(medicalCase.nodes[7])
+  let questions = [18, 50, 104, 168, 326, 204, 1774, 3436, 6, 7]
 
   return (
     <View>
@@ -56,7 +44,7 @@ const RegistrationMedicalCaseContainer = props => {
         removeClippedSubviews={false}
         ListHeaderComponent={<Header />}
         data={questions}
-        renderItem={({ item }) => <Question node={item} />}
+        renderItem={({ item }) => <Question questionId={item} />}
         keyExtractor={item => item.id}
       />
     </View>

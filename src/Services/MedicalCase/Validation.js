@@ -36,13 +36,11 @@ export default async (mcNode, node, value) => {
     node.value_format === Config.VALUE_FORMATS.int ||
     node.value_format === Config.VALUE_FORMATS.float
   ) {
-    console.log('premier if')
     if (
       value !== null &&
       (formattedValue < node.min_value_warning ||
         formattedValue > node.max_value_warning)
     ) {
-      console.log('je rentre')
       // Warning
       if (
         formattedValue < node.min_value_warning &&
@@ -82,7 +80,6 @@ export default async (mcNode, node, value) => {
           validationType = 'error'
         }
       }
-      console.log('ici ?', validationMessage, validationType)
       return {
         validationMessage: translate(validationMessage),
         validationType,

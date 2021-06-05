@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { Text } from 'react-native'
 import Toggle from 'react-native-toggle-element'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -15,7 +15,7 @@ import { wp } from '@/Theme/Responsive'
 import { Icon } from '@/Components'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const ToggleComplaintCategory = ({ question, disabled = false }) => {
+const ToggleComplaintCategory = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
   const {
     Components: { toggleComplaintCategory },
@@ -23,6 +23,10 @@ const ToggleComplaintCategory = ({ question, disabled = false }) => {
   } = useTheme()
   const { t } = useTranslation()
   const dispatch = useDispatch()
+
+  const question = useSelector(
+    state => state.medicalCase.item.nodes[questionId],
+  )
 
   const [toggleValue, setToggleValue] = useState(false) // TODO get value from state
 
