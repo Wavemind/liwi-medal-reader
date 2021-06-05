@@ -4,7 +4,7 @@
 import React, { useState } from 'react'
 import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 
-const Numeric = ({ question, editable = true }) => {
+const Numeric = ({ questionId, editable = true }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -23,9 +23,17 @@ const Numeric = ({ question, editable = true }) => {
     Gutters,
   } = useTheme()
 
+  // Get node from algorithm
+  const question = useSelector(
+    state => state.medicalCase.item.nodes[questionId],
+  )
+  const currentNode = useSelector(
+    state => state.algorithm.item.nodes[questionId],
+  )
+
   // Local state definition
-  const [value, setValue] = useState('') // TODO: Load answer from medicalCase !
-  const [estimableValue, setEstimableValue] = useState(question.estimableValue) // TODO: Load estimable from medicalCase ! (estimableValue)
+  const [value, setValue] = useState(question.value)
+  const [estimableValue, setEstimableValue] = useState(question.estimableValue)
 
   /**
    * Save value in store
@@ -35,7 +43,7 @@ const Numeric = ({ question, editable = true }) => {
     const newValue = e.nativeEvent.text
 
     if (question.value !== newValue) {
-      dispatch(SetAnswer.action({ nodeId: question.id, newValue }))
+      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }
   }
 
@@ -87,48 +95,50 @@ const Numeric = ({ question, editable = true }) => {
         value={String(value)}
         editable={editable}
       />
-      <View style={[Layout.row, Gutters.smallTMargin]}>
-        <View
-          key="booleanButton-left"
-          style={booleanButton.buttonWrapper(
-            'left',
-            estimableValue === 'measured',
-            !editable,
-          )}
-        >
-          <TouchableOpacity
-            style={Layout.center}
-            onPress={() => handleEstimable('measured')}
-            editable={editable}
+      {currentNode.estimable && (
+        <View style={[Layout.row, Gutters.smallTMargin]}>
+          <View
+            key="booleanButton-left"
+            style={booleanButton.buttonWrapper(
+              'left',
+              estimableValue === 'measured',
+              !editable,
+            )}
           >
-            <Text
-              style={booleanButton.buttonText(estimableValue === 'measured')}
+            <TouchableOpacity
+              style={Layout.center}
+              onPress={() => handleEstimable('measured')}
+              editable={editable}
             >
-              {t('answers.measured')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          key="booleanButton-right"
-          style={booleanButton.buttonWrapper(
-            'right',
-            estimableValue === 'estimated',
-            !editable,
-          )}
-        >
-          <TouchableOpacity
-            style={Layout.center}
-            onPress={() => handleEstimable('estimated')}
-            editable={editable}
+              <Text
+                style={booleanButton.buttonText(estimableValue === 'measured')}
+              >
+                {t('answers.measured')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            key="booleanButton-right"
+            style={booleanButton.buttonWrapper(
+              'right',
+              estimableValue === 'estimated',
+              !editable,
+            )}
           >
-            <Text
-              style={booleanButton.buttonText(estimableValue === 'estimated')}
+            <TouchableOpacity
+              style={Layout.center}
+              onPress={() => handleEstimable('estimated')}
+              editable={editable}
             >
-              {t('answers.estimated')}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={booleanButton.buttonText(estimableValue === 'estimated')}
+              >
+                {t('answers.estimated')}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   )
 }

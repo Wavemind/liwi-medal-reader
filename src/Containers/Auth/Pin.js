@@ -32,7 +32,7 @@ const PinAuthContainer = props => {
 
   // Get values from the store
   const fadeAnim = useRef(new Animated.Value(0)).current
-  const healthFacility = useSelector(state => state.healthFacility.item)
+  const pinCode = useSelector(state => state.healthFacility.item.pin_code)
   const currentClinician = useSelector(state => state.healthFacility.clinician)
   const algorithm = useSelector(state => state.algorithm.item)
   const algorithmFetchOneLoading = useSelector(
@@ -56,8 +56,8 @@ const PinAuthContainer = props => {
    * @param pinCode
    * @returns {}
    */
-  const handlePin = async pinCode => {
-    if (pinCode === healthFacility.pin_code) {
+  const handlePin = async value => {
+    if (value === pinCode) {
       const result = await dispatch(
         FetchOneAlgorithm.action({ json_version: algorithm.json_version }),
       )
@@ -91,7 +91,7 @@ const PinAuthContainer = props => {
         )}
         <View style={authPin.wrapper}>
           <PINCode
-            passwordLength={healthFacility.pin_code.length}
+            passwordLength={pinCode.length}
             endProcessFunction={handlePin}
             disableLockScreen
             status="enter"
@@ -105,7 +105,7 @@ const PinAuthContainer = props => {
                 </Text>
               )
             }
-            storedPin={healthFacility.pin_code}
+            storedPin={pinCode}
             buttonDeleteText={t('containers.auth.pin.delete')}
             colorCircleButtons={Colors.grey}
             colorPassword={Colors.red}

@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import SquareButton from '@/Components/Buttons/SquareButton'
 import { useTheme } from '@/Theme'
 import { navigate } from '@/Navigators/Root'
-import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 
 const Emergency = () => {
   // Theme and style elements deconstruction
@@ -30,7 +30,7 @@ const Emergency = () => {
    * @returns {Promise<void>}
    */
   const handleOnPress = async () => {
-    await dispatch(ToggleVisbility.action({}))
+    await dispatch(ToggleVisibility.action({}))
     navigate('Emergency')
   }
 

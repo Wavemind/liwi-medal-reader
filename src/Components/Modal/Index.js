@@ -11,7 +11,7 @@ import Modal from 'react-native-modal'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import Emergency from '@/Components/Modal/Content/Emergency'
 import Lock from '@/Components/Modal/Content/Lock'
 
@@ -29,7 +29,7 @@ const CustomModal = () => {
    * @returns {Promise<void>}
    */
   const closeModal = async () => {
-    await dispatch(ToggleVisbility.action({}))
+    await dispatch(ToggleVisibility.action({}))
   }
 
   /**

@@ -2,10 +2,9 @@
  * The external imports
  */
 import React from 'react'
-import { View, FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { View, VirtualizedList } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import filter from 'lodash/filter'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -17,6 +16,11 @@ import { useTheme } from '@/Theme'
 const RegistrationMedicalCaseContainer = props => {
   const { t } = useTranslation()
   const { Gutters } = useTheme()
+
+  const questions = useSelector(
+    state =>
+      state.algorithm.item.mobile_config.questions_orders.registration_step,
+  )
 
   /**
    * Returns the static questions for the medical case
@@ -37,32 +41,25 @@ const RegistrationMedicalCaseContainer = props => {
     </>
   )
 
-  const algorithm = useSelector(state => state.algorithm.item)
-
-  // const questions = filter(algorithm.nodes, {
-  // category: 'complaint_category',
-  // })
-
-  let questions = []
-  questions.push(algorithm.nodes[18])
-  questions.push(algorithm.nodes[168])
-  questions.push(algorithm.nodes[326])
-  questions.push(algorithm.nodes[204])
-  questions.push(algorithm.nodes[1774])
-  questions.push(algorithm.nodes[3436])
-  questions.push(algorithm.nodes[6])
-  questions.push(algorithm.nodes[7])
+  /**
+   * Convert data into readable value
+   * @param {list of questions} data
+   * @param {*} index
+   * @returns
+   */
+  const getItem = (data, index) => ({
+    id: data[index],
+  })
 
   return (
-    <View>
-      <FlatList
-        removeClippedSubviews={false}
-        ListHeaderComponent={<Header />}
-        data={questions}
-        renderItem={({ item }) => <Question node={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
+    <VirtualizedList
+      data={questions}
+      ListHeaderComponent={<Header />}
+      renderItem={({ item }) => <Question questionId={item.id} />}
+      keyExtractor={item => item.key}
+      getItemCount={() => Object.values(questions).length}
+      getItem={getItem}
+    />
   )
 }
 

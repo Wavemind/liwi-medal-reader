@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,6 @@ const CustomDrawerContent = props => {
   const { navigation } = props
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const [medicalCaseExists, setMedicalCaseExists] = useState(false)
 
   // Theme and style elements deconstruction
   const {
@@ -29,12 +28,10 @@ const CustomDrawerContent = props => {
     Layout,
   } = useTheme()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-  const medicalCase = useSelector(state => state.medicalCase.item)
-
-  useEffect(() => {
-    setMedicalCaseExists('id' in medicalCase)
-  }, [medicalCase.id])
+  const consentManagement = useSelector(
+    state => state.algorithm.item.config.consent_management,
+  )
+  const medicalCaseId = useSelector(state => state.medicalCase.item.id)
 
   /**
    * Clear clinician and redirect user to clinician list
@@ -77,7 +74,7 @@ const CustomDrawerContent = props => {
             iconName="patient-list"
             {...props}
           />
-          {algorithm.config.consent_management && (
+          {consentManagement && (
             <CustomDrawerItem
               label={t('navigation.consent_list')}
               routeName="ConsentList"
@@ -85,7 +82,7 @@ const CustomDrawerContent = props => {
               {...props}
             />
           )}
-          {medicalCaseExists && (
+          {medicalCaseId && (
             <CustomDrawerItem
               label={t('navigation.current_consultation')}
               routeName="StageWrapper"
@@ -131,7 +128,7 @@ const CustomDrawerContent = props => {
           />
         </View>
       </View>
-      {medicalCaseExists && <MedicalCaseDrawer />}
+      {medicalCaseId && <MedicalCaseDrawer />}
     </View>
   )
 }

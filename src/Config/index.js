@@ -27,16 +27,6 @@ export const Config = {
     uniqueTriageQuestion: 'unique_triage_question',
     referral: 'referral',
   },
-  VALUE_FORMATS: {
-    array: 'Array',
-    int: 'Integer',
-    float: 'Float',
-    bool: 'Boolean',
-    string: 'String',
-    date: 'Date',
-    present: 'Present',
-    positive: 'Positive',
-  },
   DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
   DATABASE_INTERFACE: {
     local: 'local',
@@ -95,4 +85,14 @@ export const Config = {
   MOVIES_EXTENSION: ['mp4', 'mov', 'avi'],
   AUDIOS_EXTENSION: ['mp3', 'ogg'],
   PICTURES_EXTENSION: ['jpg', 'jpeg', 'gif', 'png', 'tiff'],
+  VALUE_FORMATS: {
+    array: 'Array',
+    int: 'Integer',
+    float: 'Float',
+    bool: 'Boolean',
+    string: 'String',
+    date: 'Date',
+    present: 'Present',
+    positive: 'Positive',
+  },
 }

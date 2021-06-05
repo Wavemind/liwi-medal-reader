@@ -19,17 +19,16 @@ const ToggleSwitchDarkMode = ({ label }) => {
   } = useTheme()
   const dispatch = useDispatch()
 
-  const theme = useSelector(state => state.theme)
+  const darkMode = useSelector(state => state.theme.darkMode)
 
-  const [isEnabled, setIsEnabled] = useState(theme.darkMode)
+  const [isEnabled, setIsEnabled] = useState(darkMode)
 
   /**
    * Dispatches the theme change action to the store and toggles the local enabled state
    * @param theme
-   * @param darkMode
    */
-  const changeTheme = ({ newTheme, darkMode }) => {
-    dispatch(ChangeTheme.action({ theme: newTheme, darkMode }))
+  const changeTheme = ({ newTheme }) => {
+    dispatch(ChangeTheme.action({ theme: newTheme, darkMode: !darkMode }))
     setIsEnabled(!isEnabled)
   }
 
@@ -40,9 +39,7 @@ const ToggleSwitchDarkMode = ({ label }) => {
         <Switch
           trackColor={{ false: Colors.grey, true: Colors.secondary }}
           thumbColor={isEnabled ? Colors.primary : Colors.secondary}
-          onValueChange={() =>
-            changeTheme({ theme: 'default', darkMode: !theme.darkMode })
-          }
+          onValueChange={() => changeTheme({ theme: 'default' })}
           value={isEnabled}
         />
       </View>
