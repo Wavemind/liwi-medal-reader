@@ -47,7 +47,7 @@ const persistConfig = {
   storage: AsyncStorage,
   whitelist: [
     'device',
-    //'medicalCase',
+    'medicalCase',
     'healthFacility',
     'system',
     'theme',

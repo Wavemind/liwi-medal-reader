@@ -18,9 +18,9 @@ import {
   Select,
   Numeric,
   String,
-  Date,
   Toggle,
   Icon,
+  Autocomplete,
 } from '@/Components'
 import { Config } from '@/Config'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
@@ -34,6 +34,7 @@ const Question = ({ node, disabled = false }) => {
     Components: { question },
     Colors,
     FontSize,
+    Layout,
   } = useTheme()
 
   // Get node from algorithm
@@ -41,6 +42,10 @@ const Question = ({ node, disabled = false }) => {
   const currentNode = algorithm.nodes[node.id]
 
   // Local state definition
+  const [isFullLength] = useState(
+    currentNode.display_format === Config.DISPLAY_FORMAT.autocomplete,
+  )
+
   const [descriptionAvailable] = useState(
     translate(currentNode.description) !== '',
   )
@@ -72,9 +77,7 @@ const Question = ({ node, disabled = false }) => {
       case Config.DISPLAY_FORMAT.string:
         return <String question={node} />
       case Config.DISPLAY_FORMAT.autocomplete:
-      // return <Autocomplete question={node} />
-      case Config.DISPLAY_FORMAT.date:
-        return <Date question={node} />
+        return <Autocomplete question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:
         return <Select question={node} />
       case Config.DISPLAY_FORMAT.reference:
@@ -110,7 +113,7 @@ const Question = ({ node, disabled = false }) => {
   return (
     <View style={question.wrapper(emergency)}>
       <View style={question.container}>
-        <View style={question.questionWrapper}>
+        <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
 
           <Text
@@ -135,7 +138,13 @@ const Question = ({ node, disabled = false }) => {
             </TouchableOpacity>
           )}
 
-          <View style={question.inputWrapper}>
+          <View
+            style={
+              isFullLength
+                ? question.fullLengthInputWrapper
+                : question.inputWrapper
+            }
+          >
             {additionalUnavailableAnswer ? (
               <>
                 {node.answer !== additionalUnavailableAnswer.id &&

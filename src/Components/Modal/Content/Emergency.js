@@ -36,12 +36,12 @@ const Emergency = () => {
 
   return (
     <View>
-      <Text style={modal.header}>{t('modals.emergency.title')}</Text>
-      <Text style={modal.body}>{t('modals.emergency.content')}</Text>
+      <Text style={modal.header}>{t('components.modals.emergency.title')}</Text>
+      <Text style={modal.body}>{t('components.modals.emergency.content')}</Text>
 
       <View style={modal.buttonWrapper}>
         <SquareButton
-          label={t('modals.emergency.emergencyButton')}
+          label={t('components.modals.emergency.emergencyButton')}
           filled
           onPress={handleOnPress}
           bgColor={Colors.red}

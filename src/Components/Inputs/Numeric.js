@@ -33,38 +33,18 @@ const Numeric = ({ question, editable = true }) => {
 
   /**
    * Save value in store
-   * TODO: Make it work !
    * @param {Event} e
    */
   const onEndEditing = async e => {
-    const value = e.nativeEvent.text
-    // const {
-    //   app: { algorithm, set },
-    //   setAnswer,
-    //   setPatientValue,
-    //   question,
-    //   patientValueEdit,
-    // } = this.props;
+    const newValue = e.nativeEvent.text
 
-    // if (patientValueEdit) {
-    //   if (value !== question.value && value !== '') {
-    //     setPatientValue(question.id, value);
-    //   } else if (question.value !== null && value === '') {
-    //     setPatientValue(question.id, null);
-    //   }
-    // } else if (value !== question.value && value !== '') {
-    //   setAnswer(algorithm, question.id, value);
-    // } else if (question.value !== null && value === '') {
-    //   setAnswer(algorithm, question.id, null);
-    // }
-
-    if (question.value !== value) {
-      await dispatch(SetAnswer.action({ nodeId: question.id, value }))
+    if (question.value !== newValue) {
+      dispatch(SetAnswer.action({ nodeId: question.id, newValue }))
     }
   }
 
   /**
-   * Check if there is no unpermitted char
+   * Check if there is no not permitted char
    * @param {Event} e
    */
   const onChange = newValue => {

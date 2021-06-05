@@ -26,12 +26,12 @@ export default function (props) {
       borderBottomColor: Colors.grey,
       ...Gutters.regularVPadding,
     },
-    questionWrapper: {
-      ...Layout.row,
+    questionWrapper: isFullLength => ({
       ...Layout.justifyContentBetween,
       ...Layout.fullWidth,
-      ...Layout.alignItemsCenter,
-    },
+      alignItems: isFullLength ? 'flex-start' : 'center',
+      flexDirection: isFullLength ? 'column' : 'row',
+    }),
     emergencyText: {
       color: Colors.red,
       ...Fonts.textSemiBold,
@@ -60,6 +60,11 @@ export default function (props) {
       ...Layout.justifyContentAround,
       ...Gutters.regularLMargin,
       width: wp(33.3),
+    },
+    fullLengthInputWrapper: {
+      ...Layout.justifyContentAround,
+      ...Layout.row,
+      ...Layout.grow,
     },
     messageWrapper: errorType => ({
       backgroundColor: errorType === 'warning' ? Colors.warning : Colors.red,

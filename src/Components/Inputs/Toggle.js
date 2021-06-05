@@ -24,15 +24,15 @@ const ToggleComplaintCategory = ({ question, disabled = false }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const [toggleValue, setToggleValue] = useState(false)
+  const [toggleValue, setToggleValue] = useState(false) // TODO get value from state
 
+  /**
+   * Update value in store when value changes
+   */
   useEffect(() => {
-    const updateAnswer = async () => {
-      if (question.value !== toggleValue) {
-        await dispatch(SetAnswer.action({ nodeId: question.id, toggleValue }))
-      }
+    if (question.value !== toggleValue) {
+      dispatch(SetAnswer.action({ nodeId: question.id, toggleValue }))
     }
-    updateAnswer()
   }, [toggleValue])
 
   return (
