@@ -20,7 +20,6 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import createMedicalCase from '@/Store/MedicalCase/Create'
 
-
 const IndexHomeContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props

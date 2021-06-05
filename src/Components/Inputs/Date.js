@@ -148,7 +148,7 @@ const DateInput = () => {
               style={select.picker}
               selectedValue={estimatedDateType}
               mode="dropdown"
-              onValueChange={(value, itemIndex) => setEstimatedDateType(value)}
+              onValueChange={setEstimatedDateType}
               dropdownIconColor={Colors.primary}
             >
               <Picker.Item
@@ -189,7 +189,7 @@ const DateInput = () => {
               style={select.picker}
               selectedValue={yearValue}
               mode="dropdown"
-              onValueChange={(year, itemIndex) => setYearValue(year)}
+              onValueChange={setYearValue}
               dropdownIconColor={Colors.primary}
             >
               <Picker.Item
@@ -211,7 +211,7 @@ const DateInput = () => {
               style={select.picker}
               selectedValue={monthValue}
               mode="dropdown"
-              onValueChange={(month, itemIndex) => setMonthValue(month)}
+              onValueChange={setMonthValue}
               dropdownIconColor={Colors.primary}
             >
               <Picker.Item
@@ -237,7 +237,7 @@ const DateInput = () => {
               style={select.picker}
               selectedValue={dayValue}
               mode="dropdown"
-              onValueChange={(day, itemIndex) => setDayValue(day)}
+              onValueChange={setDayValue}
               dropdownIconColor={Colors.primary}
             >
               <Picker.Item

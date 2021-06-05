@@ -39,7 +39,9 @@ export default async (mcNode, node, value) => {
     if (
       value !== null &&
       (formattedValue < node.min_value_warning ||
-        formattedValue > node.max_value_warning)
+        formattedValue > node.max_value_warning ||
+        formattedValue < node.min_value_error ||
+        formattedValue > node.max_value_error)
     ) {
       // Warning
       if (

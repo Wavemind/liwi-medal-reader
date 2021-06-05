@@ -102,7 +102,7 @@ const Autocomplete = ({ questionId }) => {
           <TextInput
             style={autocomplete.inputText}
             keyboardType="default"
-            onChangeText={value => handleChangeText(value)}
+            onChangeText={handleChangeText}
             value={searchTerm}
             placeholder={t('application.search')}
           />

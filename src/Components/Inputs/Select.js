@@ -56,7 +56,7 @@ const Select = ({ questionId, disabled = false }) => {
         style={select.picker}
         selectedValue={value}
         prompt={translate(currentNode.label)}
-        onValueChange={(answerId, itemIndex) => setAnswer(answerId)}
+        onValueChange={setAnswer}
         dropdownIconColor={Colors.primary}
         enabled={!disabled}
       >

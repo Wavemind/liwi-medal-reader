@@ -12,7 +12,7 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
 import DefineType from '@/Store/Modal/DefineType'
-import ToggleVisbility from '@/Store/Modal/ToggleVisibility'
+import ToggleVisibility from '@/Store/Modal/ToggleVisibility'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const Boolean = ({ questionId, emergency, disabled = false }) => {
@@ -44,7 +44,7 @@ const Boolean = ({ questionId, emergency, disabled = false }) => {
   const setAnswer = async answerId => {
     if (emergency && yesAnswer.id === answerId) {
       await dispatch(DefineType.action({ type: 'emergency' }))
-      await dispatch(ToggleVisbility.action({}))
+      await dispatch(ToggleVisibility.action({}))
     }
     setValue(answerId)
   }

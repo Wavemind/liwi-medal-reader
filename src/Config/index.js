@@ -27,16 +27,6 @@ export const Config = {
     uniqueTriageQuestion: 'unique_triage_question',
     referral: 'referral',
   },
-  VALUE_FORMATS: {
-    array: 'Array',
-    int: 'Integer',
-    float: 'Float',
-    bool: 'Boolean',
-    string: 'String',
-    date: 'Date',
-    present: 'Present',
-    positive: 'Positive',
-  },
   DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
   DATABASE_INTERFACE: {
     local: 'local',
