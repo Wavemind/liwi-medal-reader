@@ -29,30 +29,10 @@ const Numeric = ({ question, editable = true }) => {
 
   /**
    * Save value in store
-   * TODO: Make it work !
    * @param {Event} e
    */
   const onEndEditing = async e => {
     const newValue = e.nativeEvent.text
-    // const {
-    //   app: { algorithm, set },
-    //   setAnswer,
-    //   setPatientValue,
-    //   question,
-    //   patientValueEdit,
-    // } = this.props;
-
-    // if (patientValueEdit) {
-    //   if (value !== question.value && value !== '') {
-    //     setPatientValue(question.id, value);
-    //   } else if (question.value !== null && value === '') {
-    //     setPatientValue(question.id, null);
-    //   }
-    // } else if (value !== question.value && value !== '') {
-    //   setAnswer(algorithm, question.id, value);
-    // } else if (question.value !== null && value === '') {
-    //   setAnswer(algorithm, question.id, null);
-    // }
 
     if (question.value !== newValue) {
       dispatch(SetAnswer.action({ nodeId: question.id, newValue }))
@@ -60,7 +40,7 @@ const Numeric = ({ question, editable = true }) => {
   }
 
   /**
-   * Check if there is no unpermitted char
+   * Check if there is no not permitted char
    * @param {Event} e
    */
   const onChange = newValue => {
@@ -84,7 +64,6 @@ const Numeric = ({ question, editable = true }) => {
 
   /**
    * Set state and update medicalCase store
-   * TODO: Make it work !
    * @param {'measured' | 'estimated'} value
    */
   const handleEstimable = newEstimableValue => {

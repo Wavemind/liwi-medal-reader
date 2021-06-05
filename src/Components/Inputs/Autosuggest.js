@@ -34,7 +34,6 @@ const Autosuggest = ({ searchTerm, setSearchTerm, handleReset }) => {
             onChangeText={value => setSearchTerm(value)}
             value={searchTerm}
             placeholder={t('application.search')}
-            disabled={false}
           />
         </View>
         {searchTerm.length > 0 ? (

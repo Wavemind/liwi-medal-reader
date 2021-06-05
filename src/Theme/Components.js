@@ -38,8 +38,8 @@ import dateStyles from './components/Date.style'
 import toggleStyles from './components/Toggle.style'
 import consentStyles from './components/Consent.style'
 import diagnosisItemStyles from './components/DiagnosisItem.style'
-import AutosuggestStyles from './components/Autosuggest.style'
-import AutocompleteStyles from './components/Autocomplete.style'
+import autosuggestStyles from './components/Autosuggest.style'
+import autocompleteStyles from './components/Autocomplete.style'
 
 /**
  *
@@ -83,7 +83,7 @@ export default function (props) {
     toggleComplaintCategory: toggleStyles(props),
     consent: consentStyles(props),
     diagnosisItem: diagnosisItemStyles(props),
-    autosuggest: AutosuggestStyles(props),
-    autocomplete: AutocompleteStyles(props),
+    autosuggest: autosuggestStyles(props),
+    autocomplete: autocompleteStyles(props),
   }
 }

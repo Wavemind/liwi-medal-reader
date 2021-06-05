@@ -15,6 +15,9 @@ export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Regis
 export { default as UniqueTriageQuestionsMedicalCaseContainer } from './MedicalCase/UniqueTriageQuestions'
 export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/ComplaintCategory'
 export { default as MedicalCaseDiagnosesIndexContainer } from './MedicalCase/Diagnoses/DiagnosesIndex'
+export { default as UniqueTriageQuestionsMedicalCaseContainer } from './MedicalCase/FirstAssessment/UniqueTriageQuestions'
+export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/FirstAssessment/ComplaintCategory'
+export { default as BasicMeasurementMedicalCaseContainer } from './MedicalCase/FirstAssessment/BasicMeasurement'
 
 export { default as ListConsentContainer } from './Consent/List'
 export { default as CameraConsentContainer } from './Consent/Camera'

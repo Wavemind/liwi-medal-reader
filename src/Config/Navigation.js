@@ -9,8 +9,10 @@ import { View, Text } from 'react-native'
  */
 import {
   RegistrationMedicalCaseContainer,
+  // First Assessments
   UniqueTriageQuestionsMedicalCaseContainer,
   ComplaintCategoryMedicalCaseContainer,
+  BasicMeasurementMedicalCaseContainer,
   MedicalCaseDiagnosesIndexContainer,
 } from '@/Containers'
 //
@@ -86,7 +88,7 @@ const baseInterventionStages = [
       },
       {
         label: 'basic_measurements',
-        component: ToDo,
+        component: BasicMeasurementMedicalCaseContainer,
       },
     ],
   },

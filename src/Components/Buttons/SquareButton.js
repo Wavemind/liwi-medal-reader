@@ -21,7 +21,7 @@ const SquareButton = props => {
 
   // Props deconstruction
   const {
-    label,
+    label = null,
     filled,
     disabled,
     onPress,
@@ -56,9 +56,11 @@ const SquareButton = props => {
               size={iconSize}
             />
           )}
-          <View style={squareButton.textWrapper}>
-            <Text style={squareButton[`${type}Text`](color)}>{label}</Text>
-          </View>
+          {label !== null && (
+            <View style={squareButton.textWrapper}>
+              <Text style={squareButton[`${type}Text`](color)}>{label}</Text>
+            </View>
+          )}
           {iconAfter && icon && (
             <Icon
               name={icon}

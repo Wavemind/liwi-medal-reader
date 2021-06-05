@@ -34,7 +34,7 @@ export const round = (value, step) => {
  *   }
  */
 const handleNumeric = (mcNode, node, value) => {
-  let response = { answer: null, value: value }
+  const response = { answer: null, value: value }
 
   if (value === null) {
     response.answer = null
@@ -128,13 +128,9 @@ export default async props => {
         nodes: { [nodeId]: node },
       },
     },
-    medicalCase: {
-      item: {
-        nodes: { [nodeId]: mcNode },
-      },
-    },
     medicalCase: { item: medicalCase },
   } = store.getState()
+  const mcNode = medicalCase.nodes[nodeId]
 
   // Validation
   const newValues = setNodeValue(mcNode, node, value)

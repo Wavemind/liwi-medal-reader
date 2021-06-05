@@ -94,6 +94,9 @@ export default {
         formulations: 'Formulations',
         summary: 'Summary',
       },
+      registration: {
+        questions: 'Questions',
+      },
     },
     scan: {
       scan: 'Scan the QR code',
@@ -221,6 +224,11 @@ export default {
     about: 'About',
     synchronize: 'Synchronize',
     logout: 'Logout',
+  },
+  patient: {
+    first_name: 'First name',
+    last_name: 'Last name',
+    birth_date: 'Birth date',
   },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',
