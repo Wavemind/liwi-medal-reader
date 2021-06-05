@@ -4,6 +4,7 @@ import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
 import ChangeAdditionalDiagnosis from './ChangeAdditionalDiagnosis'
+import ChangeCustomDiagnosis from './ChangeCustomDiagnosis'
 
 const sliceInitialState = {
   item: {},
@@ -15,6 +16,7 @@ export default buildSlice(
     Create,
     ChangeAdvancement,
     ChangeAdditionalDiagnosis,
+    ChangeCustomDiagnosis,
     SetAnswer,
     UpdateNodeField,
   ],

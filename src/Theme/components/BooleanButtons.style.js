@@ -4,7 +4,7 @@ export default function (props) {
   const { Colors, Gutters, Layout } = props
 
   return StyleSheet.create({
-    buttonWrapper: (side, active, disabled) => ({
+    buttonWrapper: (side, active, disabled = false) => ({
       ...Layout.fill,
       backgroundColor: active ? Colors.primary : Colors.secondary,
       opacity: disabled ? 0.5 : 1,

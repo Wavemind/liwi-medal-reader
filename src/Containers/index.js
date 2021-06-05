@@ -12,8 +12,6 @@ export { default as ConsultationsPatientContainer } from './Patient/Consultation
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
 export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
 export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Registration'
-export { default as UniqueTriageQuestionsMedicalCaseContainer } from './MedicalCase/UniqueTriageQuestions'
-export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/ComplaintCategory'
 export { default as MedicalCaseDiagnosesIndexContainer } from './MedicalCase/Diagnoses/DiagnosesIndex'
 export { default as UniqueTriageQuestionsMedicalCaseContainer } from './MedicalCase/FirstAssessment/UniqueTriageQuestions'
 export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/FirstAssessment/ComplaintCategory'
