@@ -10,7 +10,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const Badge = ({ filterBy, value }) => {
+const Badge = ({ removeBadge, selectedItem, label }) => {
   const {
     Layout,
     FontSize,
@@ -23,13 +23,13 @@ const Badge = ({ filterBy, value }) => {
     <View style={badge.wrapper}>
       <View style={Layout.row}>
         <Text style={Fonts.textColorSecondary}>
-          {filterBy} : <Text style={Fonts.textBold}>{value}</Text>
+          <Text style={Fonts.textTiny}>{label(selectedItem)}</Text>
         </Text>
       </View>
       <View style={badge.separator} />
       <TouchableOpacity
         style={Layout.column}
-        onPress={() => console.log('TODO')}
+        onPress={() => removeBadge(false, selectedItem)}
       >
         <Icon name="close" color={Colors.secondary} size={FontSize.regular} />
       </TouchableOpacity>

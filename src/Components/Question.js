@@ -15,9 +15,9 @@ import {
   Select,
   Numeric,
   String,
-  Date,
   Toggle,
   Icon,
+  Autocomplete,
 } from '@/Components'
 
 import { Config } from '@/Config'
@@ -33,7 +33,8 @@ const Question = ({ node, disabled = false }) => {
 
   // Local state definition
   const [descriptionAvailable, setDescriptionAvailable] = useState(false)
-  const [emergency, setEmergency] = useState(false)
+  const [isFullLength] = useState(node.display_format === Config.DISPLAY_FORMAT.autocomplete)
+  const emergency = node.is_danger_sign || node.emergency_status === 'referral'
 
   /**
    * For display proposed
@@ -49,10 +50,9 @@ const Question = ({ node, disabled = false }) => {
     setDescriptionAvailable(translate(node.description) !== '')
 
     if (node.is_danger_sign || node.emergency_status === 'referral') {
-      setEmergency(true)
       setStatus('emergency')
     }
-  }, [node.description, node.emergency_status, node.is_danger_sign])
+  }, [])
 
   const inputFactory = () => {
     switch (node.display_format) {
@@ -67,9 +67,7 @@ const Question = ({ node, disabled = false }) => {
       case Config.DISPLAY_FORMAT.string:
         return <String question={node} />
       case Config.DISPLAY_FORMAT.autocomplete:
-      // return <Autocomplete question={node} />
-      case Config.DISPLAY_FORMAT.date:
-        return <Date question={node} />
+        return <Autocomplete question={node} />
       case Config.DISPLAY_FORMAT.dropDownList:
         return <Select question={node} />
       case Config.DISPLAY_FORMAT.reference:
@@ -83,7 +81,7 @@ const Question = ({ node, disabled = false }) => {
   return (
     <View style={question.wrapper(emergency)}>
       <View style={question.container}>
-        <View style={question.questionWrapper}>
+        <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
 
           <Text style={question.text(status)}>
@@ -102,7 +100,15 @@ const Question = ({ node, disabled = false }) => {
             </TouchableOpacity>
           )}
 
-          <View style={question.inputWrapper}>{inputFactory()}</View>
+          <View
+            style={
+              isFullLength
+                ? question.fullLengthInputWrapper
+                : question.inputWrapper
+            }
+          >
+            {inputFactory()}
+          </View>
         </View>
         {(status === 'error' || status === 'warning') && (
           <View style={question.messageWrapper(status)}>

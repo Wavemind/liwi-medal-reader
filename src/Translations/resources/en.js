@@ -7,6 +7,7 @@ export default {
     select: 'Select',
     synchronize: 'Synchronize',
     clear_filters: 'Clear all filters',
+    clear_selection: 'Clear selection',
     loading: 'Loading...',
     new_medical_case: 'New case',
     show_consent: 'Show consent',
@@ -20,6 +21,8 @@ export default {
   },
   application: {
     algorithm_translation_missing: 'Algorithm translation is missing',
+    no_results: 'No results found',
+    search: 'Search',
     theme: {
       dark_mode: 'Dark mode',
       light_mode: 'Light mode',
@@ -51,6 +54,9 @@ export default {
         unlock: 'Enter the PIN to unlock the tablet',
         delete: 'Delete',
       },
+    },
+    diagnosis: {
+      title: 'Select your diagnosis',
     },
     filters: {
       title: 'Filters',
@@ -87,6 +93,9 @@ export default {
         medicines: 'Medicines',
         formulations: 'Formulations',
         summary: 'Summary',
+      },
+      registration: {
+        questions: 'Questions',
       },
     },
     scan: {
@@ -156,10 +165,18 @@ export default {
     medical_case_drawer: {
       current_medical_case: 'Current consultation',
     },
-    modal: {
-      study: {
-        no_content:
-          'No content is available. Please fill the study description in medAL-creator',
+    modals: {
+      lock: {
+        title: 'Consultation not available',
+        content: 'Case is locked by {{ name }}',
+        unlockButton: 'FORCE UNLOCK',
+        summaryButton: 'SUMMARY',
+      },
+      emergency: {
+        title: 'Emergency Assistance',
+        content:
+          'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergency care now.',
+        emergencyButton: 'GO TO EMERGENCY',
       },
     },
     media: {
@@ -208,23 +225,14 @@ export default {
     synchronize: 'Synchronize',
     logout: 'Logout',
   },
+  patient: {
+    first_name: 'First name',
+    last_name: 'Last name',
+    birth_date: 'Birth date',
+  },
   permissions: {
     message: 'You must grant the relevant permissions for the app to function.',
     instructions:
       'Please go to Permissions in the tablet Settings and grant all required permissions',
-  },
-  modals: {
-    lock: {
-      title: 'Consultation not available',
-      content: 'Case is locked by {{ name }}',
-      unlockButton: 'FORCE UNLOCK',
-      summaryButton: 'SUMMARY',
-    },
-    emergency: {
-      title: 'Emergency Assistance',
-      content:
-        'The patient is presenting a severe/emergency symptom or sign. Click on the emergency button if the child needs emergency care now.',
-      emergencyButton: 'GO TO EMERGENCY',
-    },
   },
 }
