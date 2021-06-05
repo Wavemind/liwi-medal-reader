@@ -31,7 +31,7 @@ const Autosuggest = ({ searchTerm, setSearchTerm, handleReset }) => {
           <TextInput
             style={autosuggest.inputText}
             keyboardType="default"
-            onChangeText={value => setSearchTerm(value)}
+            onChangeText={setSearchTerm}
             value={searchTerm}
             placeholder={t('application.search')}
           />

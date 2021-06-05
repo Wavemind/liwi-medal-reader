@@ -14,7 +14,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
-const Autocomplete = ({ question }) => {
+const Autocomplete = ({ questionId }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -31,6 +31,9 @@ const Autocomplete = ({ question }) => {
   const [searchResults, setSearchResults] = useState([])
   const [optionSelected, setOptionSelected] = useState(false)
 
+  const question = useSelector(
+    state => state.medicalCase.item.nodes[questionId],
+  )
   const villageList = useSelector(state => state.algorithm.item.village_json)
 
   /**
@@ -76,7 +79,12 @@ const Autocomplete = ({ question }) => {
     const resultString = Object.values(result)[0]
 
     return (
-      <View style={autocomplete.dropdownItemWrapper(index === searchResults.length - 1)}>
+      <View
+        key={`village-${resultString}`}
+        style={autocomplete.dropdownItemWrapper(
+          index === searchResults.length - 1,
+        )}
+      >
         <TouchableOpacity
           style={[Gutters.regularVPadding, Gutters.smallHPadding]}
           onPress={() => handleOptionSelect(resultString)}
@@ -94,7 +102,7 @@ const Autocomplete = ({ question }) => {
           <TextInput
             style={autocomplete.inputText}
             keyboardType="default"
-            onChangeText={value => handleChangeText(value)}
+            onChangeText={handleChangeText}
             value={searchTerm}
             placeholder={t('application.search')}
           />

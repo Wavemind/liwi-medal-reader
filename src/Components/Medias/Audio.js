@@ -48,7 +48,6 @@ const Audio = ({ url }) => {
     const durationInterval = setInterval(async () => {
       if (playState === 'playing') {
         const soundInfo = await SoundPlayer.getInfo()
-        console.log(soundInfo.currentTime)
         setPlaySeconds(soundInfo.currentTime)
       }
     }, 500)

@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { View, FlatList } from 'react-native'
+import { VirtualizedList } from 'react-native'
 import { useSelector } from 'react-redux'
 
 /**
@@ -11,21 +11,29 @@ import { useSelector } from 'react-redux'
 import { Question } from '@/Components'
 
 const BasicMeasurementMedicalCaseContainer = props => {
-  const algorithm = useSelector(state => state.algorithm.item)
+  const questions = useSelector(
+    state =>
+      state.algorithm.item.mobile_config.questions_orders.basic_measurements,
+  )
 
-  const questions =
-    algorithm.mobile_config.questions_orders.basic_measurements.map(
-      nodeId => algorithm.nodes[nodeId],
-    )
+  /**
+   * Convert data into readable value
+   * @param {list of questions} data
+   * @param {*} index
+   * @returns
+   */
+  const getItem = (data, index) => ({
+    id: data[index],
+  })
 
   return (
-    <View>
-      <FlatList
-        data={questions}
-        renderItem={({ item }) => <Question node={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
+    <VirtualizedList
+      data={questions}
+      renderItem={({ item }) => <Question questionId={item.id} />}
+      keyExtractor={item => item.key}
+      getItemCount={() => Object.values(questions).length}
+      getItem={getItem}
+    />
   )
 }
 

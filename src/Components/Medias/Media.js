@@ -22,7 +22,6 @@ const Media = ({ media }) => {
 
   const url = media.url.match(/^.*[?]/)[0]
 
-  // TODO: FINISH THIS
   if (Config.MOVIES_EXTENSION.includes(media.extension)) {
     return <Movie url={url} />
   }

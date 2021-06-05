@@ -9,6 +9,7 @@ import findKey from 'lodash/findKey'
  */
 import { store } from '@/Store'
 import { Config } from '@/Config'
+import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
 
 /**
  * Round number
@@ -122,6 +123,8 @@ const setNodeValue = (mcNode, node, value) => {
 
 export default async props => {
   const { nodeId, value } = props
+  let newValues = {}
+
   const {
     algorithm: {
       item: {
@@ -130,15 +133,22 @@ export default async props => {
     },
     medicalCase: { item: medicalCase },
   } = store.getState()
+
   const mcNode = medicalCase.nodes[nodeId]
 
   // Validation
-  const newValues = setNodeValue(mcNode, node, value)
+  const validation = await validationMedicalCaseService(mcNode, node, value)
+
+  // Save value only if validation pass
+  if (validation.validationType !== 'error') {
+    newValues = setNodeValue(mcNode, node, value)
+  }
+
   return {
     ...medicalCase,
     nodes: {
       ...medicalCase.nodes,
-      [nodeId]: { ...mcNode, /*...validation, */ ...newValues },
+      [nodeId]: { ...mcNode, ...validation, ...newValues },
     },
   }
 }

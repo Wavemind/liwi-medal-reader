@@ -1,5 +1,6 @@
 // INPUTS
 export { default as Boolean } from './Inputs/Boolean'
+export { default as InputFactory } from './Inputs/Factory'
 export { default as Toggle } from './Inputs/Toggle'
 export { default as Numeric } from './Inputs/Numeric'
 export { default as String } from './Inputs/String'

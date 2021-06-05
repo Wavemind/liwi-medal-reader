@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useState, useEffect, useRef } from 'react'
-import { ScrollView, View, TextInput, Text } from 'react-native'
+import { ScrollView, View, TextInput } from 'react-native'
 
 /**
  * The internal imports
@@ -12,12 +12,7 @@ import { LoaderList } from '@/Components'
 
 const IndexSearchContainer = () => {
   // Theme and style elements deconstruction
-  const {
-    Colors,
-    Gutters,
-    Layout,
-    Containers: { search },
-  } = useTheme()
+  const { Colors, Gutters, Layout } = useTheme()
 
   // Local state definition
   const [term, setTerm] = useState('')
