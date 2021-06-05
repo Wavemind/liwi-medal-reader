@@ -2,9 +2,9 @@
  * The external imports
  */
 import React from 'react'
-import { View, FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { View, VirtualizedList } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -16,6 +16,11 @@ import { useTheme } from '@/Theme'
 const RegistrationMedicalCaseContainer = props => {
   const { t } = useTranslation()
   const { Gutters } = useTheme()
+
+  const questions = useSelector(
+    state =>
+      state.algorithm.item.mobile_config.questions_orders.registration_step,
+  )
 
   /**
    * Returns the static questions for the medical case
@@ -36,18 +41,25 @@ const RegistrationMedicalCaseContainer = props => {
     </>
   )
 
-  let questions = [18, 50, 104, 168, 326, 204, 1774, 3436, 6, 7]
+  /**
+   * Convert data into readable value
+   * @param {list of questions} data
+   * @param {*} index
+   * @returns
+   */
+  const getItem = (data, index) => ({
+    id: data[index],
+  })
 
   return (
-    <View>
-      <FlatList
-        removeClippedSubviews={false}
-        ListHeaderComponent={<Header />}
-        data={questions}
-        renderItem={({ item }) => <Question questionId={item} />}
-        keyExtractor={item => item.id}
-      />
-    </View>
+    <VirtualizedList
+      data={questions}
+      ListHeaderComponent={<Header />}
+      renderItem={({ item }) => <Question questionId={item.id} />}
+      keyExtractor={item => item.key}
+      getItemCount={() => Object.values(questions).length}
+      getItem={getItem}
+    />
   )
 }
 

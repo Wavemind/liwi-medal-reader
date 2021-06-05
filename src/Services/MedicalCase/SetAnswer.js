@@ -125,8 +125,6 @@ export default async props => {
   const { nodeId, value } = props
   let newValues = {}
 
-  console.log('SetAnswer', nodeId, value)
-
   const {
     algorithm: {
       item: {

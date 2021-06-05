@@ -30,8 +30,7 @@ const IndexQuestionInfoContainer = props => {
     Containers: { questionInfo },
   } = useTheme()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-  const node = algorithm.nodes[nodeId]
+  const node = useSelector(state => state.algorithm.item.nodes[nodeId])
 
   return (
     <View style={questionInfo.wrapper}>
