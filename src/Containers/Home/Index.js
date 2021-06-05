@@ -19,6 +19,7 @@ import {
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import createMedicalCase from '@/Store/MedicalCase/Create'
+import CreatePatient from '@/Store/Patient/Create'
 
 const IndexHomeContainer = props => {
   // Theme and style elements deconstruction
@@ -93,6 +94,18 @@ const IndexHomeContainer = props => {
                 big
                 onPress={async () => {
                   await dispatch(createMedicalCase.action({ algorithm }))
+                  await dispatch(
+                    CreatePatient.action({
+                      idPatient: null,
+                      newMedicalCase: true,
+                      facility: {
+                        study_id: 'Dynamic Tanzania',
+                        group_id: '7',
+                        uid: 'a2a31304-7045-4228-82cd-dc20efbb7db7',
+                      },
+                      otherFacility: {},
+                    }),
+                  )
                   navigation.navigate('StageWrapper')
                 }}
                 filled

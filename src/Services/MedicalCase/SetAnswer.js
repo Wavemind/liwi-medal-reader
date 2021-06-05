@@ -134,6 +134,7 @@ export default async props => {
 
   // Validation
   const newValues = setNodeValue(mcNode, node, value)
+
   return {
     ...medicalCase,
     nodes: {
