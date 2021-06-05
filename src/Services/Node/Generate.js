@@ -1,4 +1,13 @@
+/**
+ * The external imports
+ */
+
+/**
+ * The internal imports
+ */
 import { Config } from '@/Config'
+import { getNoAnswer } from '@/Utils/Answers'
+
 /**
  * Generate new question hash used in medical case
  * @param node
@@ -30,6 +39,11 @@ export const generateQuestion = node => {
     validationMessage,
     validationType,
     unavailableValue,
+  }
+
+  // Set complain category to false by default
+  if (node.category === Config.CATEGORIES.complaintCategory) {
+    hash.answer = getNoAnswer(node)
   }
 
   // Add attribute for basic measurement question ex (weight, MUAC, height) to know if it's measured or estimated value answered
