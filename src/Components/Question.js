@@ -75,8 +75,6 @@ const Question = ({ questionId, disabled = false }) => {
     dispatch(SetAnswer.action({ nodeId: questionId, value: answer }))
   }
 
-  console.log('question', questionId)
-
   return (
     <View style={question.wrapper(emergency)}>
       <View style={question.container}>
