@@ -88,6 +88,7 @@ const ProposedMedicines = () => {
       )
 
       // From Agree to Disagree
+      // TODO correct this one
       if (isInAgreed) {
         dispatch(
           RemoveAgreedDrugs.action({
@@ -151,6 +152,7 @@ const ProposedMedicines = () => {
     )
   }
 
+  // TODO clean all inline styles
   return Object.values(agreedDiagnoses).map(agreedDiagnosis => (
     <View
       style={{
