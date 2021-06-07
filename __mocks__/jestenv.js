@@ -33,7 +33,9 @@ jest.mock('react-native-responsive-screen', () => {
   }
 })
 jest.mock('react-native-flash-message', () => {
-  return jest.fn()
+  return {
+    showMessage: jest.fn(),
+  }
 })
 jest.mock('react-native-vector-icons', () => {
   return {
@@ -49,6 +51,7 @@ jest.mock('react-native-keychain', () => {
 })
 jest.mock('react-native-device-info', () => {
   return {
+    getMacAddress: jest.fn(),
     getModel: jest.fn(),
     isTablet: jest.fn(),
     getDeviceLocale: jest.fn(),

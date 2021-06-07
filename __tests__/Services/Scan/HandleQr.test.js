@@ -1,7 +1,11 @@
 /**
- * @format
+ * The external imports
  */
 import 'react-native'
+
+/**
+ * The internal imports
+ */
 import handleQR from '@/Services/Scan/HandleQr'
 
 // Define global testing variables
