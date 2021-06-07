@@ -19,7 +19,7 @@ const CustomDiagnoses = () => {
   const {
     FontSize,
     Fonts,
-    Containers: { medicalCaseDiagnoses },
+    Containers: { medicalCaseFinalDiagnoses },
   } = useTheme()
 
   const dispatch = useDispatch()
@@ -66,7 +66,7 @@ const CustomDiagnoses = () => {
       {custom.map((customDiagnosis, i) => (
         <View
           key={`custom-${customDiagnosis.id}`}
-          style={medicalCaseDiagnoses.newItemWrapper(i === custom.length - 1)}
+          style={medicalCaseFinalDiagnoses.newItemWrapper(i === custom.length - 1)}
         >
           <Text style={Fonts.textSmall}>{customDiagnosis.name}</Text>
           <TouchableOpacity
@@ -76,9 +76,9 @@ const CustomDiagnoses = () => {
           </TouchableOpacity>
         </View>
       ))}
-      <View style={medicalCaseDiagnoses.addCustomWrapper}>
+      <View style={medicalCaseFinalDiagnoses.addCustomWrapper}>
         <TextInput
-          style={medicalCaseDiagnoses.addCustomInputText}
+          style={medicalCaseFinalDiagnoses.addCustomInputText}
           onChangeText={setValue}
           value={value}
           keyboardType="default"

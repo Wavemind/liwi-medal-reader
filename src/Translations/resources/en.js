@@ -98,14 +98,21 @@ export default {
       registration: {
         questions: 'Questions',
       },
-      diagnoses: {
-        proposed_title: 'Diagnoses proposed by {{ version_name }}',
+      common: {
         agree: 'Agree',
         disagree: 'Disagree',
+      },
+      diagnoses: {
+        proposed_title: 'Diagnoses proposed by {{ version_name }}',
         additional_title: 'Additional selected',
         additional_placeholder: 'Select your diagnoses',
         custom_title: 'Your proposition',
         custom_placeholder: 'Add your diagnosis',
+      },
+      drugs: {
+        drugs: 'Drugs',
+        proposed: 'Proposed',
+        custom: 'Custom',
       },
     },
     scan: {

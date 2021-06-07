@@ -37,7 +37,7 @@ const FinalDiagnoses = () => {
         />
         <AdditionalDiagnoses />
       </View>
-      <View style={Gutters.largeTMargin}>
+      <View style={[Gutters.largeTMargin, Gutters.largeBPadding]}>
         <SectionHeader
           label={t('containers.medical_case.diagnoses.custom_title')}
         />

@@ -15,7 +15,7 @@ import {
   BasicMeasurementMedicalCaseContainer,
   // Diagnoses
   MedicalCaseDiagnosesFinalDiagnosesContainer,
-  MedicalCaseDiagnosesMedicinesContainer,
+  MedicalCaseDiagnosesDrugsContainer,
 } from '@/Containers'
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
@@ -45,7 +45,7 @@ const diagnosesStage = {
     },
     {
       label: 'medicines',
-      component: MedicalCaseDiagnosesMedicinesContainer,
+      component: MedicalCaseDiagnosesDrugsContainer,
     },
     {
       label: 'formulations',

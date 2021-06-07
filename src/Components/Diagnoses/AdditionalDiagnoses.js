@@ -21,7 +21,7 @@ const AdditionalDiagnoses = () => {
     Gutters,
     FontSize,
     Fonts,
-    Containers: { medicalCaseDiagnoses },
+    Containers: { medicalCaseFinalDiagnoses },
   } = useTheme()
 
   const dispatch = useDispatch()
@@ -56,7 +56,7 @@ const AdditionalDiagnoses = () => {
       {additional.map((additionalDiagnosisId, i) => (
         <View
           key={`additional-${additionalDiagnosisId}`}
-          style={medicalCaseDiagnoses.newItemWrapper(
+          style={medicalCaseFinalDiagnoses.newItemWrapper(
             i === additional.length - 1,
           )}
         >
@@ -69,14 +69,14 @@ const AdditionalDiagnoses = () => {
         </View>
       ))}
       <TouchableOpacity
-        style={medicalCaseDiagnoses.addAdditionalButton}
+        style={medicalCaseFinalDiagnoses.addAdditionalButton}
         onPress={() => navigate('Diagnoses')}
       >
-        <Text style={medicalCaseDiagnoses.addAdditionalButtonText}>
+        <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder')}
         </Text>
-        <View style={medicalCaseDiagnoses.addAdditionalButtonCountWrapper}>
-          <Text style={medicalCaseDiagnoses.addAdditionalButtonCountText}>
+        <View style={medicalCaseFinalDiagnoses.addAdditionalButtonCountWrapper}>
+          <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonCountText}>
             {additional.length}
           </Text>
         </View>

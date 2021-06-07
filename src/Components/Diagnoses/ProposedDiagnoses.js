@@ -19,7 +19,7 @@ const ProposedDiagnoses = () => {
   const {
     Layout,
     Fonts,
-    Containers: { medicalCaseDiagnoses },
+    Containers: { medicalCaseFinalDiagnoses },
     Components: { booleanButton },
   } = useTheme()
 
@@ -132,17 +132,17 @@ const ProposedDiagnoses = () => {
       {
         side: 'left',
         value: true,
-        text: t('containers.medical_case.diagnoses.agree'),
+        text: t('containers.medical_case.common.agree'),
       },
       {
         side: 'right',
         value: false,
-        text: t('containers.medical_case.diagnoses.disagree'),
+        text: t('containers.medical_case.common.disagree'),
       },
     ]
 
     return (
-      <View style={medicalCaseDiagnoses.booleanButtonWrapper}>
+      <View style={medicalCaseFinalDiagnoses.booleanButtonWrapper}>
         {buttons.map(button => {
           const selected = diagnosis.value === button.value
           return (
@@ -170,7 +170,7 @@ const ProposedDiagnoses = () => {
   return formattedProposed.map((proposedDiagnosis, i) => (
     <View
       key={`proposed-${proposedDiagnosis.id}`}
-      style={medicalCaseDiagnoses.newItemWrapper(i === tempProposed.length - 1)}
+      style={medicalCaseFinalDiagnoses.newItemWrapper(i === tempProposed.length - 1)}
     >
       <Text style={Fonts.textSmall}>
         {translate(algorithm.nodes[proposedDiagnosis.id].label)}

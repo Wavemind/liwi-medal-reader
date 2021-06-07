@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -16,14 +16,14 @@ import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 
-const ProposedMedicines = () => {
+const ProposedDrugs = () => {
   // Theme and style elements deconstruction
   const {
     Layout,
     Fonts,
     Colors,
     Gutters,
-    Containers: { medicalCaseDiagnoses },
+    Containers: { medicalCaseDrugs },
     Components: { booleanButton },
   } = useTheme()
 
@@ -88,7 +88,6 @@ const ProposedMedicines = () => {
       )
 
       // From Agree to Disagree
-      // TODO correct this one
       if (isInAgreed) {
         dispatch(
           RemoveAgreedDrugs.action({
@@ -113,7 +112,7 @@ const ProposedMedicines = () => {
     const isDisagree = diagnosis.drugs.refused.includes(drugId)
 
     return (
-      <View style={medicalCaseDiagnoses.booleanButtonWrapper}>
+      <View style={medicalCaseDrugs.booleanButtonWrapper}>
         <View
           key="booleanButton-left"
           style={booleanButton.buttonWrapper(
@@ -128,7 +127,9 @@ const ProposedMedicines = () => {
             style={Layout.center}
             onPress={() => updateProposedDrugs(diagnosis.id, drugId, true)}
           >
-            <Text style={booleanButton.buttonText(isAgree)}>Agree</Text>
+            <Text style={booleanButton.buttonText(isAgree)}>
+              {t('containers.medical_case.common.agree')}
+            </Text>
           </TouchableOpacity>
         </View>
         <View
@@ -145,88 +146,40 @@ const ProposedMedicines = () => {
             style={Layout.center}
             onPress={() => updateProposedDrugs(diagnosis.id, drugId, false)}
           >
-            <Text style={booleanButton.buttonText(isDisagree)}>Disagree</Text>
+            <Text style={booleanButton.buttonText(isDisagree)}>
+              {t('containers.medical_case.common.disagree')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
     )
   }
 
-  // TODO clean all inline styles
   return Object.values(agreedDiagnoses).map(agreedDiagnosis => (
-    <View
-      style={{
-        ...Gutters.regularHMargin,
-        backgroundColor: Colors.secondary,
-        ...Gutters.regularTMargin,
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: Colors.primary,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          ...Gutters.regularHPadding,
-          ...Gutters.smallVPadding,
-        }}
-      >
-        <Text
-          style={{
-            ...Fonts.textRegular,
-            color: Colors.secondary,
-            ...Fonts.textUppercase,
-            ...Fonts.textBold,
-          }}
-        >
+    <View style={medicalCaseDrugs.wrapper}>
+      <View style={medicalCaseDrugs.diagnosisHeaderWrapper}>
+        <Text style={medicalCaseDrugs.diagnosisHeader}>
           {translate(algorithm.nodes[agreedDiagnosis.id].label)}
         </Text>
-        <Text
-          style={{
-            ...Fonts.textTiny,
-            color: Colors.lightGrey,
-            ...Fonts.textUppercase,
-            ...Gutters.smallRMargin,
-          }}
-        >
-          Proposed
-        </Text>
+        <Text style={medicalCaseDrugs.diagnosisType}>{t('containers.medical_case.drugs.proposed')}</Text>
       </View>
-      <View style={{ ...Gutters.regularHPadding }}>
-        <Text
-          style={{
-            color: Colors.grey,
-            ...Fonts.textUppercase,
-            ...Fonts.textSmall,
-            ...Fonts.textBold,
-            ...Gutters.regularTMargin,
-          }}
-        >
-          Drugs
+      <View style={Gutters.regularHPadding}>
+        <Text style={medicalCaseDrugs.drugsHeader}>
+          {t('containers.medical_case.drugs.drugs')}
         </Text>
         {agreedDiagnosis.drugs.proposed.map((proposedDrugId, i) => (
           <View
-            style={{
-              borderBottomColor: Colors.grey,
-              borderBottomWidth:
-                i === agreedDiagnosis.drugs.proposed.length - 1 ? 0 : 1,
-              ...Gutters.regularVPadding,
-            }}
+            style={medicalCaseDrugs.drugWrapper(
+              i === agreedDiagnosis.drugs.proposed.length - 1,
+            )}
           >
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                ...Gutters.smallBMargin,
-              }}
-            >
-              <Text style={{ ...Fonts.textSmall, ...Fonts.textBold }}>
+            <View style={medicalCaseDrugs.drugTitleWrapper}>
+              <Text style={medicalCaseDrugs.drugTitle}>
                 {translate(algorithm.nodes[proposedDrugId].label)}
               </Text>
               {renderBooleanButton(agreedDiagnosis, proposedDrugId)}
             </View>
-            <Text style={{ ...Fonts.textSmall }}>
+            <Text style={Fonts.textSmall}>
               {translate(algorithm.nodes[proposedDrugId].description)}
             </Text>
           </View>
@@ -236,4 +189,4 @@ const ProposedMedicines = () => {
   ))
 }
 
-export default ProposedMedicines
+export default ProposedDrugs
