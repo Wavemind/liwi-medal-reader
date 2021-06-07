@@ -11,37 +11,65 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
 const RoundedButton = props => {
-  // Props deconstruction
-  const { content, disabled, icon } = props
-
   // Theme and style elements deconstruction
   const {
     Components: { roundedButton },
     Colors,
     Gutters,
+    Layout,
+    FontSize,
   } = useTheme()
 
-  /**
-   * Handles the press action on the TouchableOpacity
-   */
-  const handlePress = () => {
-    console.log('button pressed')
-  }
+  // Props deconstruction
+  const {
+    label = null,
+    filled,
+    disabled,
+    onPress,
+    icon,
+    big = false,
+    iconAfter = false,
+    bgColor = null,
+    color = null,
+    iconSize = FontSize.huge,
+    align = null,
+    fullWidth = true,
+  } = props
+
+  // Constants definition
+  const type = filled ? 'filled' : 'outlined'
+  const iconColor =
+    color !== null ? color : filled ? Colors.secondary : Colors.primary
 
   return (
-    <View style={roundedButton.wrapper}>
+    <View style={roundedButton.wrapper(fullWidth)}>
       <TouchableOpacity
-        onPress={() => handlePress()}
-        style={roundedButton.base(disabled)}
+        onPress={() => onPress()}
+        style={roundedButton[type](disabled, bgColor, align, big)}
         disabled={disabled}
       >
-        <View style={roundedButton.content}>
-          {icon && (
-            <View style={Gutters.regularRMargin}>
-              <Icon name={icon} color={Colors.secondary} />
+        <View style={Layout.rowCenter}>
+          {!iconAfter && icon && (
+            <Icon
+              name={icon}
+              color={iconColor}
+              style={roundedButton.iconLeft(big)}
+              size={iconSize}
+            />
+          )}
+          {label !== null && (
+            <View style={roundedButton.textWrapper}>
+              <Text style={roundedButton[`${type}Text`](color)}>{label}</Text>
             </View>
           )}
-          <Text style={roundedButton.baseText}>{content}</Text>
+          {iconAfter && icon && (
+            <Icon
+              name={icon}
+              color={iconColor}
+              style={roundedButton.iconRight(big)}
+              size={iconSize}
+            />
+          )}
         </View>
       </TouchableOpacity>
     </View>

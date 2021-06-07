@@ -19,6 +19,7 @@ export default async ({ algorithm }) => {
       diagnoses: [],
       additional: [],
       agreed: {},
+      refused: [],
       custom: [],
     },
     id: uuid.v4(),

@@ -13,7 +13,7 @@ import filter from 'lodash/filter'
 import { Icon, SectionHeader, Autosuggest, BadgeBar } from '@/Components'
 import { useTheme } from '@/Theme'
 import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
-import ChangeAdditionalDiagnosis from '@/Store/MedicalCase/ChangeAdditionalDiagnosis'
+import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
 import { translate } from '@/Translations/algorithm'
 
 const ListDiagnosisContainer = ({ navigation }) => {
@@ -93,8 +93,8 @@ const ListDiagnosisContainer = ({ navigation }) => {
    */
   const handleClose = () => {
     dispatch(
-      ChangeAdditionalDiagnosis.action({
-        newAdditionalDiagnosis: selected,
+      ChangeAdditionalDiagnoses.action({
+        newAdditionalDiagnoses: selected,
       }),
     )
     navigation.goBack()
