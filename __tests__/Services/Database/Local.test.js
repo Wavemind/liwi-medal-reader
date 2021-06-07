@@ -2,60 +2,81 @@
  * @format
  */
 //import useLocalInterface from '@/Services/Database/Local/useLocalInterface'
-import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
-import { Database, Q } from '@nozbe/watermelondb'
+import uuid from 'uuid'
 
 /**
  * The internal imports
  */
-import schema from '@/Services/Database/Local/Schema'
+import createPatientService from '@/Services/Patient/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
-import createMedicalCaseService from '@/Services/MedicalCase/Create'
+import createMedicalCase from '@/Store/MedicalCase/Create'
 
-console.log('schemaschema')
-console.log(schema)
-const adapter = new SQLiteAdapter({
-  schema,
-})
-
-import {
-  ActivityModel,
-  PatientModel,
-  PatientValueModel,
-  MedicalCaseModel,
-} from '@/Services/Database/Local/Models'
 import { store } from '@/Store/index'
+import useDatabase from '@/Services/Database/useDatabase'
 
-const database = new Database({
-  adapter,
-  modelClasses: [
-    ActivityModel,
-    MedicalCaseModel,
-    PatientModel,
-    PatientValueModel,
-  ],
-  actionsEnabled: true,
-})
-
-beforeEach(async () => {})
-beforeEach(async () => {
+beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
+
   await store.dispatch(
     LoadAlgorithm.action({
       newAlgorithm: algorithmFile,
     }),
   )
   const algorithm = store.getState().algorithm.item
-  await createMedicalCaseService({ algorithm })
-  console.log('Coucou')
+  await store.dispatch(createMedicalCase.action({ algorithm }))
 })
 
-describe('findBy should return a patient', () => {
-  it('', async () => {})
-})
+describe('findBy should return a patient', () => {})
 
 describe('getAll should return all elements of a specific object', () => {
-  it('', async () => {})
+  it('should return an empty array ', async () => {
+    const { getAll } = useDatabase()
+    const allPatients = await getAll('Patient')
+    expect(allPatients).toStrictEqual([])
+  })
+
+  it('should return an array with 1 patient from the database', async () => {
+    const { insert, getAll } = useDatabase()
+    const uid = uuid.v4()
+    const patient = await createPatientService({
+      facility: {
+        uid,
+        study_id: 'Test Study',
+        group_id: 7,
+      },
+      otherFacility: {},
+    })
+    await insert('Patient', patient)
+
+    const allPatients = await getAll('Patient')
+    expect(allPatients.length).toStrictEqual(1)
+    expect(allPatients[0].uid).toStrictEqual(uid)
+  })
+
+  it('should return an array with the 2 patients from the database', async () => {
+    const { createPatient, getAll } = useDatabase()
+    const uid = uuid.v4()
+    const medicalCase = store.getState().medicalCase.item
+    const patient = await createPatientService({
+      facility: {
+        uid,
+        study_id: 'Test Study',
+        group_id: 7,
+      },
+      otherFacility: {},
+    })
+    await createPatient(patient, medicalCase)
+
+    const allPatients = await getAll('Patient')
+    expect(allPatients.length).toStrictEqual(2)
+    expect(allPatients[1].uid).toStrictEqual(uid)
+  })
+
+  it('should return an empty array of medical case', async () => {
+    const { getAll } = useDatabase()
+    const allMedicalCases = await getAll('MedicalCase')
+    expect(allMedicalCases).toStrictEqual([])
+  })
 })
 
 describe('getConsentsFile should return all consent Files', () => {

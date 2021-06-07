@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { View } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
@@ -11,6 +12,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
+import createPatient from '@/Store/Database/CreatePatient'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -21,20 +23,26 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     FontSize,
   } = useTheme()
 
+  const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigation = useNavigation()
   const navigationState = useNavigationState(
     state => state.routes[state.index].state,
   )
 
+  const advancement = useSelector(state => state.medicalCase.item.advancement)
+
   /**
    * Will navigate to the next step / Stage base on the current navigation State
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
-  const handleNavigation = direction => {
+  const handleNavigation = async direction => {
+    if (advancement.stage === 0) {
+      await dispatch(createPatient.action())
+    }
     const medicalCaseState = navigationState.routes[navigationState.index].state
 
-    const nextStep = medicalCaseState?.index + direction
+    const nextStep = advancement.step + direction
     if (
       medicalCaseState !== undefined &&
       nextStep < medicalCaseState.routes.length &&
@@ -47,7 +55,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
       })
     }
   }
-
   return (
     <View style={[Layout.fill, Layout.row]}>
       <View style={[Layout.fill, Layout.row]}>
@@ -65,16 +72,18 @@ const StageWrapperNavbar = ({ stageIndex }) => {
         ) : null}
       </View>
       <View style={[Layout.fill, Layout.row]}>
-        <View style={bottomNavbar.actionButton}>
-          <SquareButton
-            label={t('containers.medical_case.navigation.quit')}
-            filled
-            bgColor={Colors.grey}
-            icon="save-quit"
-            iconSize={FontSize.large}
-            onPress={() => console.log('TODO')}
-          />
-        </View>
+        {advancement.stage > 0 && (
+          <View style={bottomNavbar.actionButton}>
+            <SquareButton
+              label={t('containers.medical_case.navigation.quit')}
+              filled
+              bgColor={Colors.grey}
+              icon="save-quit"
+              iconSize={FontSize.large}
+              onPress={() => console.log('TODO')}
+            />
+          </View>
+        )}
 
         <View style={bottomNavbar.actionButton}>
           <SquareButton

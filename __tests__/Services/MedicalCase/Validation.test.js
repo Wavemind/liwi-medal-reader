@@ -7,7 +7,7 @@ import 'react-native'
  * The internal imports
  */
 import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
-import createMedicalCaseService from '@/Services/MedicalCase/Create'
+import createMedicalCase from '@/Store/MedicalCase/Create'
 import { translate } from '@/Translations/algorithm'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
@@ -20,9 +20,8 @@ beforeAll(async () => {
       newAlgorithm: algorithmFile,
     }),
   )
-
   const algorithm = store.getState().algorithm.item
-  await createMedicalCaseService({ algorithm })
+  await store.dispatch(createMedicalCase.action({ algorithm }))
 })
 
 describe('Handle error message', () => {

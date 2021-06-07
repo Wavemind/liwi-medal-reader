@@ -2,8 +2,9 @@
  * The external imports
  */
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
+import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
+
 import { Database, Q } from '@nozbe/watermelondb'
-import { useSelector } from 'react-redux'
 /**
  * The internal imports
  */
@@ -16,8 +17,10 @@ import {
   MedicalCaseModel,
 } from './Models'
 
-const adapter = new SQLiteAdapter({
+const adapter = new LokiJSAdapter({
   schema,
+  useWebWorker: false,
+  useIncrementalIndexedDB: true,
 })
 
 const database = new Database({
@@ -32,10 +35,6 @@ const database = new Database({
 })
 
 export default function () {
-  const healthFacility = useSelector(state => state.healthFacility.item)
-  const algorithm = useSelector(state => state.algorithm.item)
-  const architecture = healthFacility.architecture
-
   /**
    * Create activities for a releated medical case
    * @param { array } activities - List of activities to create
@@ -224,18 +223,18 @@ export default function () {
    * @private
    */
   const _mapModelToTable = model => {
-    // switch (model) {
-    //   case 'Patient':
-    //     return 'patients'
-    //   case 'MedicalCase':
-    //     return 'medical_cases'
-    //   case 'PatientValue':
-    //     return 'patient_values'
-    //   case 'Activity':
-    //     return 'activities'
-    //   default:
-    //     console.log("Watermelon table doesn't exist", model)
-    // }
+    switch (model) {
+      case 'Patient':
+        return 'patients'
+      case 'MedicalCase':
+        return 'medical_cases'
+      case 'PatientValue':
+        return 'patient_values'
+      case 'Activity':
+        return 'activities'
+      default:
+        console.log("Watermelon table doesn't exist", model)
+    }
   }
 
   /**
@@ -325,9 +324,10 @@ export default function () {
    * @returns { Collection } - A collection of all the data
    */
   const getAll = async (model, page = null, params, rawData = false) => {
-    // const collection = database.get(_mapModelToTable(model))
-    // let result = await collection.query().fetch()
-    // const queries = []
+    const collection = database.get(_mapModelToTable(model))
+    let result = await collection.query().fetch()
+    return result
+    //const queries = []
     // if (page === null) {
     //   if (!rawData) {
     //     result = await _initClasses(result, model)
@@ -381,42 +381,87 @@ export default function () {
    * @param { object } object - The value of the object
    */
   const insert = async (model, object) => {
-    // const collection = database.get(_mapModelToTable(model))
-    // let patient = null
+    const collection = database.get(_mapModelToTable(model))
+    let patient = null
     // if (architecture === 'client_server') {
     //   object = { ...object, fail_safe: true }
     // }
-    // await database.action(async () => {
-    //   patient = await collection.create(record => {
-    //     record._raw.id = object.id
-    //     record.uid = object.uid
-    //     record.study_id = object.study_id
-    //     record.group_id = object.group_id
-    //     record.other_uid = object.other_uid
-    //     record.other_study_id = object.other_study_id
-    //     record.other_group_id = object.other_group_id
-    //     record.reason = object.reason
-    //     record.consent = object.medicalCases[0].consent
-    //     record.consent_file = object.consent_file
-    //     record.fail_safe = object.fail_safe
-    //   })
-    // }, 'create patient')
-    // const nestedCollection = database.get('medical_cases')
-    // // MedicalCase
-    // await database.action(async () => {
-    //   object.medicalCases.map(async medicalCase => {
-    //     await nestedCollection.create(nestedRecord => {
-    //       nestedRecord._raw.id = medicalCase.id
-    //       nestedRecord.json = medicalCase.json
-    //       nestedRecord.synchronized_at = medicalCase.synchronized_at
-    //       nestedRecord.status = medicalCase.status
-    //       nestedRecord.fail_safe = object.fail_safe
-    //       nestedRecord.patient.set(patient)
-    //     })
-    //     await _generateActivities(medicalCase.activities, medicalCase.id)
-    //   })
-    // }, 'create medicalCases')
-    // await Promise.all([_savePatientValue(model, object)])
+    await database.action(async () => {
+      patient = await collection.create(record => {
+        record._raw.id = object.id
+        record.uid = object.uid
+        record.first_name = object.first_name
+        record.last_name = object.last_name
+        record.birth_date = object.birth_date
+        record.study_id = object.study_id
+        record.group_id = object.group_id
+        record.other_uid = object.other_uid
+        record.other_study_id = object.other_study_id
+        record.other_group_id = object.other_group_id
+        record.reason = object.reason
+        record.consent = object.consent
+        record.consent_file = object.consent_file
+        record.fail_safe = object.fail_safe
+      })
+    }, 'create patient')
+    const nestedCollection = database.get('medical_cases')
+    // MedicalCase
+    await database.action(async () => {
+      object.medicalCases.map(async medicalCase => {
+        await nestedCollection.create(nestedRecord => {
+          nestedRecord._raw.id = medicalCase.id
+          nestedRecord.json = {}
+          nestedRecord.synchronized_at = medicalCase.synchronized_at
+          //nestedRecord.status = medicalCase.status
+          nestedRecord.fail_safe = object.fail_safe
+          nestedRecord.patient.set(patient)
+        })
+        await _generateActivities(medicalCase.activities, medicalCase.id)
+      })
+    }, 'create medicalCases')
+    await Promise.all([_savePatientValue(model, object)])
+  }
+
+  const createPatient = async (patientData, medicalCaseData) => {
+    const collection = database.get('patients')
+    console.log(patientData, medicalCaseData)
+
+    let patient = null
+    // if (architecture === 'client_server') {
+    //   object = { ...object, fail_safe: true }
+    // }
+    await database.action(async () => {
+      patient = await collection.create(record => {
+        record._raw.id = patientData.id
+        record.first_name = patientData.first_name
+        record.last_name = patientData.last_name
+        record.birth_date = patientData.birth_date
+        record.uid = patientData.uid
+        record.study_id = patientData.study_id
+        record.group_id = patientData.group_id
+        record.other_uid = patientData.other_uid
+        record.other_study_id = patientData.other_study_id
+        record.other_group_id = patientData.other_group_id
+        record.reason = patientData.reason
+        record.consent = patientData.consent
+        record.consent_file = patientData.consent_file
+        record.fail_safe = patientData.fail_safe
+      })
+      console.log(patient)
+      const nestedCollection = database.get('medical_cases')
+
+      await nestedCollection.create(nestedRecord => {
+        nestedRecord._raw.id = medicalCaseData.id
+        nestedRecord.json = {}
+        nestedRecord.synchronized_at = medicalCaseData.synchronized_at
+        nestedRecord.fail_safe = false
+        nestedRecord.patient.set(patient)
+      })
+    }, 'create patient')
+
+    // MedicalCase
+    //await _generateActivities(medicalCaseData.activities, medicalCaseData.id)
+    //await Promise.all([_savePatientValue('patients', patientData)])
   }
 
   /**
@@ -530,6 +575,7 @@ export default function () {
     getAll,
     getConsentsFile,
     insert,
+    createPatient,
     lockMedicalCase,
     push,
     unlockMedicalCase,

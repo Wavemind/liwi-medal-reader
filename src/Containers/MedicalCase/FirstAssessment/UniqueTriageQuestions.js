@@ -16,12 +16,13 @@ const UniqueTriageQuestionsMedicalCaseContainer = props => {
     state =>
       state.algorithm.item.mobile_config.questions_orders.first_look_assessment,
   )
+  console.log(questions)
 
   return (
     <View>
       <FlatList
         data={questions}
-        renderItem={({ item }) => <Question node={item} />}
+        renderItem={({ item }) => <Question questionId={item} />}
         keyExtractor={item => item.id}
       />
     </View>

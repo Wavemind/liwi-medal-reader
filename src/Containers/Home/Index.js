@@ -21,7 +21,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import createMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-
+import useDatabase from '@/Services/Database/Database'
 const IndexHomeContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props
@@ -34,6 +34,7 @@ const IndexHomeContainer = props => {
     Colors,
   } = useTheme()
 
+  const { getAll } = useDatabase()
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -47,10 +48,7 @@ const IndexHomeContainer = props => {
   }, [fadeAnim])
 
   useEffect(() => {
-    let timer = setTimeout(
-      () => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      2 * 1000,
-    )
+    let timer = setTimeout(() => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), 500)
 
     return () => {
       clearTimeout(timer)
@@ -60,7 +58,7 @@ const IndexHomeContainer = props => {
   /**
    * Fetch 15 latest medical cases
    */
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setRefreshing(true)
     console.log('TODO: handle refresh')
     setTimeout(() => setRefreshing(false), 2 * 1000)
@@ -115,7 +113,6 @@ const IndexHomeContainer = props => {
           )}
         </View>
         <View style={home.buttonListWrapper}>
-          {' '}
           <View style={home.patientListButton}>
             <SquareButton
               label={t('navigation.patient_list')}

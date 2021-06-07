@@ -1,4 +1,4 @@
-const presets = ['module:metro-react-native-babel-preset', '@babel/preset-env']
+const presets = ['module:metro-react-native-babel-preset']
 const plugins = [['@babel/plugin-proposal-decorators', { legacy: true }]]
 
 plugins.push([

@@ -10,11 +10,13 @@ import { useTranslation } from 'react-i18next'
  */
 import { SearchBar, PatientListItem, BadgeBar, LoaderList } from '@/Components'
 import { useTheme } from '@/Theme'
+import Database from '@/Services/Database/Database'
 
 const ListPatientContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props
 
+  const { getAll } = Database()
   const { t } = useTranslation()
   const {
     Layout,
@@ -25,16 +27,14 @@ const ListPatientContainer = props => {
   // Local state definition
   const [data, setData] = useState([])
   const [refreshing, setRefreshing] = useState(false)
+  const getPatients = async () => {
+    const patients = await getAll('Patient')
+    console.log(patients)
+    setData(patients)
+  }
 
   useEffect(() => {
-    let timer = setTimeout(
-      () => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      2 * 1000,
-    )
-
-    return () => {
-      clearTimeout(timer)
-    }
+    getPatients()
   }, [])
 
   /**
@@ -51,7 +51,7 @@ const ListPatientContainer = props => {
    */
   const loadMore = () => {
     console.log('TODO: load more')
-    setData(data.concat([11, 12, 13, 14, 15]))
+    //setData(data.concat([11, 12, 13, 14, 15]))
   }
 
   return (

@@ -80,7 +80,7 @@ export default class MedicalCase extends Model {
   @json('json', sanitizeJson) json
   @field('synchronized_at') synchronized_at
   @field('patient_id') patient_id
-  @field('status') status
+  // /@field('status') status
   @field('fail_safe') fail_safe
   @date('created_at') createdAt
   @date('updated_at') updatedAt
