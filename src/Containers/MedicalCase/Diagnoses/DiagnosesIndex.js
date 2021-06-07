@@ -19,10 +19,12 @@ import { SectionHeader, RoundedButton } from '@/Components'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { translate } from '@/Translations/algorithm'
-import ChangeAdditionalDiagnosis from '@/Store/MedicalCase/ChangeAdditionalDiagnosis'
-import ChangeCustomDiagnosis from '@/Store/MedicalCase/ChangeCustomDiagnosis'
+import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
+import ChangeCustomDiagnoses from '@/Store/MedicalCase/ChangeCustomDiagnoses'
+import ChangeAgreedDiagnoses from '@/Store/MedicalCase/ChangeAgreedDiagnoses'
+import ChangeRefusedDiagnoses from '@/Store/MedicalCase/ChangeRefusedDiagnoses'
 
-const RegistrationMedicalCaseContainer = props => {
+const RegistrationMedicalCaseContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -35,7 +37,7 @@ const RegistrationMedicalCaseContainer = props => {
   const dispatch = useDispatch()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const { proposed, custom, additional } = useSelector(
+  const { proposed, custom, additional, agreed, refused } = useSelector(
     state => state.medicalCase.item.diagnosis,
   )
 
@@ -46,7 +48,15 @@ const RegistrationMedicalCaseContainer = props => {
 
   const [value, setValue] = useState('')
   const [formattedProposed, setFormattedProposed] = useState(
-    tempProposed.map(item => ({ id: item, answer: null })),
+    tempProposed.map(item => {
+      let answer = null
+      if (Object.keys(agreed).includes(item.toString())) {
+        answer = true
+      } else if (refused.includes(item)) {
+        answer = false
+      }
+      return { id: item, answer: answer }
+    }),
   )
 
   /**
@@ -99,65 +109,102 @@ const RegistrationMedicalCaseContainer = props => {
     }
 
     dispatch(
-      ChangeAdditionalDiagnosis.action({
-        newAdditionalDiagnosis: tempAdditionalDiagnoses,
+      ChangeAdditionalDiagnoses.action({
+        newAdditionalDiagnoses: tempAdditionalDiagnoses,
       }),
     )
   }
 
   /**
-   * Removes a single element from the custom diagnosis list
+   * Handles whether to add or remove a custom diagnosis from the store
+   * @param action
    * @param customDiagnosisId
    */
-  const removeCustomDiagnosis = customDiagnosisId => {
-    // TODO see if we can merge the remove and add methods
+  const changeCustomDiagnosis = (action = 'add', customDiagnosisId = null) => {
     const tempCustomDiagnoses = [...custom]
 
-    const index = tempCustomDiagnoses
-      .map(customDiagnosis => customDiagnosis.id)
-      .indexOf(customDiagnosisId)
-    if (index > -1) {
-      tempCustomDiagnoses.splice(index, 1)
-    }
-
-    dispatch(
-      ChangeCustomDiagnosis.action({
-        newCustomDiagnosis: tempCustomDiagnoses,
-      }),
-    )
-  }
-
-  /**
-   * Adds a new element to the custom diagnosis list
-   */
-  const addCustomDiagnosis = () => {
-    if (value.length > 0) {
-      const tempCustomDiagnoses = [...custom]
+    if (action === 'remove') {
+      const index = tempCustomDiagnoses
+        .map(customDiagnosis => customDiagnosis.id)
+        .indexOf(customDiagnosisId)
+      if (index > -1) {
+        tempCustomDiagnoses.splice(index, 1)
+      }
+    } else {
       const newCustomDiagnosis = {
         id: uuid.v4(),
         name: value,
         drugs: [],
       }
       tempCustomDiagnoses.push(newCustomDiagnosis)
-
-      dispatch(
-        ChangeCustomDiagnosis.action({
-          newCustomDiagnosis: tempCustomDiagnoses,
-        }),
-      )
-
       setValue('')
     }
+
+    dispatch(
+      ChangeCustomDiagnoses.action({
+        newCustomDiagnoses: tempCustomDiagnoses,
+      }),
+    )
   }
 
+  /**
+   * Updates the proposed diagnoses by sorting them into agreed or refused
+   * @param proposedDiagnosisId
+   * @param val
+   */
   const updateProposedDiagnosis = (proposedDiagnosisId, val) => {
     setFormattedProposed(
       formattedProposed.map(el =>
         el.id === proposedDiagnosisId ? { ...el, answer: val } : el,
       ),
     )
-    // TODO save the agreed proposed in the right format in the store
-    // TODO save the refused proposed in the right format in the store
+    const tempAgreedDiagnoses = { ...agreed }
+    const tempRefusedDiagnoses = [...refused]
+    const isInAgreed = Object.keys(tempAgreedDiagnoses).includes(
+      proposedDiagnosisId.toString(),
+    )
+    const isInRefused = tempRefusedDiagnoses.includes(proposedDiagnosisId)
+
+    if (val && !isInAgreed) {
+      tempAgreedDiagnoses[proposedDiagnosisId] = {
+        id: proposedDiagnosisId.toString(),
+        drugs: {},
+      }
+      dispatch(
+        ChangeAgreedDiagnoses.action({
+          newAgreedDiagnoses: tempAgreedDiagnoses,
+        }),
+      )
+
+      if (isInRefused) {
+        tempRefusedDiagnoses.splice(
+          tempRefusedDiagnoses.indexOf(proposedDiagnosisId),
+          1,
+        )
+        dispatch(
+          ChangeRefusedDiagnoses.action({
+            newRefusedDiagnoses: tempRefusedDiagnoses,
+          }),
+        )
+      }
+    }
+
+    if (!val && !isInRefused) {
+      tempRefusedDiagnoses.push(proposedDiagnosisId)
+      dispatch(
+        ChangeRefusedDiagnoses.action({
+          newRefusedDiagnoses: tempRefusedDiagnoses,
+        }),
+      )
+      if (isInAgreed) {
+        delete tempAgreedDiagnoses[proposedDiagnosisId.toString()]
+        dispatch(
+          ChangeAgreedDiagnoses.action({
+            newAgreedDiagnoses: tempAgreedDiagnoses,
+          }),
+        )
+      }
+    }
   }
 
   return (
@@ -201,7 +248,7 @@ const RegistrationMedicalCaseContainer = props => {
         })}
         <TouchableOpacity
           style={medicalCaseDiagnoses.addAdditionalButton}
-          onPress={() => props.navigation.navigate('Diagnoses')}
+          onPress={() => navigation.navigate('Diagnoses')}
         >
           <Text style={medicalCaseDiagnoses.addAdditionalButtonText}>
             Select your diagnosis
@@ -229,7 +276,9 @@ const RegistrationMedicalCaseContainer = props => {
             >
               <Text>{customDiagnosis.name}</Text>
               <TouchableOpacity
-                onPress={() => removeCustomDiagnosis(customDiagnosis.id)}
+                onPress={() =>
+                  changeCustomDiagnosis('remove', customDiagnosis.id)
+                }
               >
                 <Icon style={{}} name="delete" size={FontSize.regular} />
               </TouchableOpacity>
@@ -250,7 +299,8 @@ const RegistrationMedicalCaseContainer = props => {
             filled
             fullWidth={false}
             iconSize={FontSize.large}
-            onPress={() => addCustomDiagnosis()}
+            onPress={() => changeCustomDiagnosis()}
+            disabled={value === ''}
           />
         </View>
       </View>

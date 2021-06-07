@@ -3,8 +3,10 @@ import Create from './Create'
 import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
-import ChangeAdditionalDiagnosis from './ChangeAdditionalDiagnosis'
-import ChangeCustomDiagnosis from './ChangeCustomDiagnosis'
+import ChangeAdditionalDiagnoses from './ChangeAdditionalDiagnoses'
+import ChangeCustomDiagnoses from './ChangeCustomDiagnoses'
+import ChangeAgreedDiagnoses from './ChangeAgreedDiagnoses'
+import ChangeRefusedDiagnoses from './ChangeRefusedDiagnoses'
 
 const sliceInitialState = {
   item: {},
@@ -15,8 +17,10 @@ export default buildSlice(
   [
     Create,
     ChangeAdvancement,
-    ChangeAdditionalDiagnosis,
-    ChangeCustomDiagnosis,
+    ChangeAdditionalDiagnoses,
+    ChangeCustomDiagnoses,
+    ChangeAgreedDiagnoses,
+    ChangeRefusedDiagnoses,
     SetAnswer,
     UpdateNodeField,
   ],
