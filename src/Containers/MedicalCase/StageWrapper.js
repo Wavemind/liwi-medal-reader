@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { TabBar, SideBar } from '@/Components'
-import { Config } from '@/Config'
+import Navigation from '@/Config/Navigation'
 
 const StageWrapper = ({ route }) => {
   const { t } = useTranslation()
@@ -22,7 +22,7 @@ const StageWrapper = ({ route }) => {
   } = useTheme()
   const stageIndex = route.params?.stageIndex || 0
 
-  const stage = Config.NAVIGATION.INTERVENTION_STAGES[stageIndex]
+  const stage = Navigation.INTERVENTION_STAGES[stageIndex]
 
   return (
     <View style={medicalCase.wrapper}>

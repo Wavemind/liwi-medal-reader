@@ -10,7 +10,7 @@ import { widthPercentageToDP } from 'react-native-responsive-screen'
  */
 import SideBarItem from './SideBarItem'
 import { useTheme } from '@/Theme'
-import { Config } from '@/Config'
+import Navigation from '@/Config/Navigation'
 
 const SideBar = ({ stageIndex }) => {
   const {
@@ -34,7 +34,7 @@ const SideBar = ({ stageIndex }) => {
         contentContainerStyle={sideBar.container}
         showsVerticalScrollIndicator={false}
       >
-        {Config.NAVIGATION.INTERVENTION_STAGES.map((stage, index) => (
+        {Navigation.INTERVENTION_STAGES.map((stage, index) => (
           <SideBarItem key={`sidebar_${index}`} stage={stage} index={index} />
         ))}
       </ScrollView>
