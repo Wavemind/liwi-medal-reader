@@ -115,6 +115,7 @@ const IndexHomeContainer = props => {
           )}
         </View>
         <View style={home.buttonListWrapper}>
+          {' '}
           <View style={home.patientListButton}>
             <SquareButton
               label={t('navigation.patient_list')}

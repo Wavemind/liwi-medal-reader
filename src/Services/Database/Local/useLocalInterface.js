@@ -4,14 +4,9 @@
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 import { Database, Q } from '@nozbe/watermelondb'
 import { useSelector } from 'react-redux'
-import uuid from 'react-native-uuid'
-import * as _ from 'lodash'
-import moment from 'moment'
-
 /**
  * The internal imports
  */
-import { Config } from '@/Config'
 import schema from './Schema'
 
 import {
