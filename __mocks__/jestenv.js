@@ -11,9 +11,25 @@ jest.mock('lottie-react-native', () => {})
 jest.mock('react-content-loader/native', () => {})
 jest.mock('react-native-webview', () => {})
 jest.mock('@haskkor/react-native-pincode', () => {})
+jest.mock('react-native-toggle-element', () => {})
+jest.mock('@react-native-community/slider', () => {})
+jest.mock('react-native-modal', () => {})
+jest.mock('react-native-video', () => {})
+jest.mock('@react-navigation/material-top-tabs', () => {})
+jest.mock('react-native-camera', () => {})
+jest.mock('react-native-qrcode-scanner', () => {})
+jest.mock('react-native-sound-player', () => {})
+jest.mock('react-native-orientation-locker', () => {})
+jest.mock('react-native-vector-icons/Feather', () => {})
 jest.mock('react-native-offline', () => {
   return {
     reducer: {},
+  }
+})
+jest.mock('react-native-responsive-screen', () => {
+  return {
+    heightPercentageToDP: jest.fn(),
+    widthPercentageToDP: jest.fn(),
   }
 })
 jest.mock('react-native-flash-message', () => {
