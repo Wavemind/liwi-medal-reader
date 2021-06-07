@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import {wp} from "@/Theme/Responsive";
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Fonts, Gutters, Layout } = props
@@ -17,7 +17,7 @@ export default function (props) {
       width: wp(33.3),
       flexDirection: 'row',
     },
-    addAdditionalButton:{
+    addAdditionalButton: {
       ...Gutters.smallTMargin,
       ...Gutters.tinyVPadding,
       ...Gutters.regularHPadding,
@@ -25,7 +25,7 @@ export default function (props) {
       backgroundColor: Colors.secondary,
       borderColor: Colors.grey,
       borderWidth: 1,
-      borderRadius: 20,
+      borderRadius: hp(2),
     },
     addAdditionalButtonText: {
       ...Layout.grow,
@@ -34,9 +34,9 @@ export default function (props) {
     addAdditionalButtonCountWrapper: {
       ...Layout.rowVCenter,
       backgroundColor: Colors.primary,
-      borderRadius: 14,
-      width: 28,
-      height: 28,
+      borderRadius: hp(1.5),
+      width: hp(3),
+      height: hp(3),
     },
     addAdditionalButtonCountText: {
       ...Fonts.textSmall,
@@ -53,8 +53,8 @@ export default function (props) {
       borderWidth: 1,
       borderColor: Colors.grey,
       backgroundColor: Colors.secondary,
-      borderRadius: 20,
-      height: 40,
+      borderRadius: hp(2),
+      height: hp(4),
     },
   })
 }

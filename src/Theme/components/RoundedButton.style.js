@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { hp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Gutters, Layout, Fonts } = props
@@ -7,8 +8,8 @@ export default function (props) {
     ...Layout.grow,
     ...(big ? Gutters.regularVPadding : Gutters.tinyVPadding),
     ...Gutters.regularHPadding,
-    height: 40,
-    borderRadius: 20,
+    height: hp(4),
+    borderRadius: hp(2),
     opacity: disabled ? 0.3 : 1,
   })
 

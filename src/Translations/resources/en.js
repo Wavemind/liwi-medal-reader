@@ -12,6 +12,7 @@ export default {
     new_medical_case: 'New case',
     show_consent: 'Show consent',
     scan_consent: 'Scan new consent',
+    add: 'Add',
   },
   algorithm: {
     version_id: 'Version id',
