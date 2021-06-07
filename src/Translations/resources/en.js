@@ -97,6 +97,15 @@ export default {
       registration: {
         questions: 'Questions',
       },
+      diagnoses: {
+        proposed_title: 'Diagnoses proposed by {{ version_name }}',
+        agree: 'Agree',
+        disagree: 'Disagree',
+        additional_title: 'Additional selected',
+        additional_placeholder: 'Select your diagnoses',
+        custom_title: 'Your proposition',
+        custom_placeholder: 'Add your diagnosis',
+      },
     },
     scan: {
       scan: 'Scan the QR code',

@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import uuid from 'react-native-uuid'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
@@ -35,6 +36,7 @@ const RegistrationMedicalCaseContainer = ({ navigation }) => {
   } = useTheme()
 
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const algorithm = useSelector(state => state.algorithm.item)
   const { proposed, custom, additional, agreed, refused } = useSelector(
@@ -66,8 +68,16 @@ const RegistrationMedicalCaseContainer = ({ navigation }) => {
    */
   const renderBooleanButton = diagnosis => {
     const buttons = [
-      { side: 'left', answer: true, text: 'Agree' },
-      { side: 'right', answer: false, text: 'Disagree' },
+      {
+        side: 'left',
+        answer: true,
+        text: t('containers.medical_case.diagnoses.agree'),
+      },
+      {
+        side: 'right',
+        answer: false,
+        text: t('containers.medical_case.diagnoses.disagree'),
+      },
     ]
 
     return (
@@ -210,11 +220,14 @@ const RegistrationMedicalCaseContainer = ({ navigation }) => {
   return (
     <ScrollView style={Gutters.regularHPadding}>
       <SectionHeader
-        label={`Diagnoses proposed by ${algorithm.version_name}`}
+        label={t('containers.medical_case.diagnoses.proposed_title', {
+          version_name: algorithm.version_name,
+        })}
       />
       {formattedProposed.map((proposedDiagnosis, i) => {
         return (
           <View
+            key={`proposed-${proposedDiagnosis.id}`}
             style={medicalCaseDiagnoses.newItemWrapper(
               i === tempProposed.length - 1,
             )}
@@ -227,10 +240,13 @@ const RegistrationMedicalCaseContainer = ({ navigation }) => {
         )
       })}
       <View style={Gutters.largeTMargin}>
-        <SectionHeader label="Additional Selected" />
+        <SectionHeader
+          label={t('containers.medical_case.diagnoses.additional_title')}
+        />
         {additional.map((additionalDiagnosisId, i) => {
           return (
             <View
+              key={`additional-${additionalDiagnosisId}`}
               style={medicalCaseDiagnoses.newItemWrapper(
                 i === additional.length - 1,
               )}
@@ -251,7 +267,7 @@ const RegistrationMedicalCaseContainer = ({ navigation }) => {
           onPress={() => navigation.navigate('Diagnoses')}
         >
           <Text style={medicalCaseDiagnoses.addAdditionalButtonText}>
-            Select your diagnosis
+            {t('containers.medical_case.diagnoses.additional_placeholder')}
           </Text>
           <View style={medicalCaseDiagnoses.addAdditionalButtonCountWrapper}>
             <Text style={medicalCaseDiagnoses.addAdditionalButtonCountText}>
@@ -266,10 +282,13 @@ const RegistrationMedicalCaseContainer = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={Gutters.largeTMargin}>
-        <SectionHeader label="Your proposition" />
+        <SectionHeader
+          label={t('containers.medical_case.diagnoses.custom_title')}
+        />
         {custom.map((customDiagnosis, i) => {
           return (
             <View
+              key={`custom-${customDiagnosis.id}`}
               style={medicalCaseDiagnoses.newItemWrapper(
                 i === custom.length - 1,
               )}
@@ -291,7 +310,9 @@ const RegistrationMedicalCaseContainer = ({ navigation }) => {
             onChangeText={setValue}
             value={value}
             keyboardType="default"
-            placeholder="Add you diagnosis"
+            placeholder={t(
+              'containers.medical_case.diagnoses.custom_placeholder',
+            )}
           />
           <RoundedButton
             label="Add"

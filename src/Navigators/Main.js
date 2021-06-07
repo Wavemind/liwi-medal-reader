@@ -34,7 +34,6 @@ const MainNavigator = () => {
   return (
     <>
       <Drawer.Navigator
-        // TODO set this to Home once finished
         initialRouteName="Home"
         drawerContent={props => <CustomDrawerContent {...props} />}
         drawerStyle={'id' in medicalCase ? Layout.fullWidth : Layout.halfWidth}
