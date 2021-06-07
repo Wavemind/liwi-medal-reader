@@ -17,7 +17,7 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 
-const RegistrationMedicalCaseContainer = () => {
+const FinalDiagnoses = () => {
   // Theme and style elements deconstruction
   const { Gutters } = useTheme()
 
@@ -47,4 +47,4 @@ const RegistrationMedicalCaseContainer = () => {
   )
 }
 
-export default RegistrationMedicalCaseContainer
+export default FinalDiagnoses

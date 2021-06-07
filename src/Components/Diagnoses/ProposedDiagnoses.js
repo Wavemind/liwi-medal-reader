@@ -50,8 +50,6 @@ const ProposedDiagnoses = () => {
     }),
   )
 
-  console.log(formattedProposed)
-
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
    * @param proposedDiagnosisId
@@ -73,10 +71,15 @@ const ProposedDiagnoses = () => {
     const isInRefused = tempRefusedDiagnoses.includes(proposedDiagnosisId)
 
     // From null to Agree
-    if (val && !isInAgreed) {
+    if (value && !isInAgreed) {
       tempAgreedDiagnoses[proposedDiagnosisId] = {
-        id: proposedDiagnosisId.toString(),
-        drugs: {},
+        id: proposedDiagnosisId,
+        drugs: {
+          proposed: Object.values(algorithm.nodes[proposedDiagnosisId].drugs).map(drug => drug.id),
+          agreed: {},
+          refused: [],
+          additional: {},
+        },
       }
       dispatch(
         ChangeAgreedDiagnoses.action({
@@ -99,7 +102,7 @@ const ProposedDiagnoses = () => {
     }
 
     // From null to Disagree
-    if (!val && !isInRefused) {
+    if (!value && !isInRefused) {
       tempRefusedDiagnoses.push(proposedDiagnosisId)
       dispatch(
         ChangeRefusedDiagnoses.action({
@@ -169,7 +172,9 @@ const ProposedDiagnoses = () => {
       key={`proposed-${proposedDiagnosis.id}`}
       style={medicalCaseDiagnoses.newItemWrapper(i === tempProposed.length - 1)}
     >
-      <Text style={Fonts.textSmall}>{translate(algorithm.nodes[proposedDiagnosis.id].label)}</Text>
+      <Text style={Fonts.textSmall}>
+        {translate(algorithm.nodes[proposedDiagnosis.id].label)}
+      </Text>
       {renderBooleanButton(proposedDiagnosis)}
     </View>
   ))
