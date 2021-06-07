@@ -19,6 +19,7 @@ import questionInfoIndexStyles from './containers/QuestionInfo/Index.style'
 
 import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
 import medicalCaseListStyles from './containers/MedicalCase/List.style'
+import medicalCaseDiagnosesIndexStyles from './containers/MedicalCase/Diagnoses/DiagnosesIndex.style'
 
 import patientListStyles from './containers/Patient/List.style'
 import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
@@ -54,6 +55,7 @@ export default function (props) {
     search: searchIndexStyles(props),
     home: homeIndexStyles(props),
     medicalCase: medicalCaseIndexStyles(props),
+    medicalCaseDiagnoses: medicalCaseDiagnosesIndexStyles(props),
     scan: scanIndexStyles(props),
     patientList: patientListStyles(props),
     patientPersonalInfo: patientPersonalInfoStyles(props),

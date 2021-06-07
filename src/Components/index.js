@@ -66,3 +66,8 @@ export { default as Clinician } from './Clinician'
 export { default as SectionHeader } from './SectionHeader'
 export { default as ToggleSwitchDarkMode } from './ToggleSwitchDarkMode'
 export { default as Consent } from './Consent'
+
+// MEDICAL CASE
+export { default as ProposedDiagnoses } from './Diagnoses/ProposedDiagnoses'
+export { default as AdditionalDiagnoses } from './Diagnoses/AdditionalDiagnoses'
+export { default as CustomDiagnoses } from './Diagnoses/CustomDiagnoses'
