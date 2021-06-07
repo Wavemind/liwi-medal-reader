@@ -3,8 +3,9 @@
  */
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View, Animated } from 'react-native'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
@@ -101,7 +102,7 @@ const IndexHomeContainer = props => {
                       facility: {
                         study_id: 'Dynamic Tanzania',
                         group_id: '7',
-                        uid: 'a2a31304-7045-4228-82cd-dc20efbb7db7',
+                        uid: uuid.v4(),
                       },
                       otherFacility: {},
                     }),
