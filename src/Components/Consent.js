@@ -40,7 +40,7 @@ const Consent = props => {
       <SectionHeader label={t('components.consent.title')} />
       <View style={question.questionWrapper(false)}>
         <Text style={consent.question}>{t('components.consent.question')}</Text>
-        <View style={question.inputWrapper}>
+        <View style={[question.inputWrapper, Layout.row]}>
           <View
             key="booleanButton-left"
             style={booleanButton.buttonWrapper('left', patient.consent)}
