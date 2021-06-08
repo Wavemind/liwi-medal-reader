@@ -10,7 +10,13 @@ import filter from 'lodash/filter'
 /**
  * The internal imports
  */
-import { Icon, SectionHeader, Autosuggest, BadgeBar } from '@/Components'
+import {
+  Icon,
+  SectionHeader,
+  Autosuggest,
+  BadgeBar,
+  SquareButton,
+} from '@/Components'
 import { useTheme } from '@/Theme'
 import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
 import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
@@ -22,6 +28,8 @@ const ListDiagnosisContainer = ({ navigation }) => {
     Colors,
     Layout,
     Fonts,
+    Gutters,
+    FontSize,
     Containers: { diagnosisList },
   } = useTheme()
 
@@ -78,12 +86,24 @@ const ListDiagnosisContainer = ({ navigation }) => {
    * @param nodeId
    */
   const toggleAdditionalDiagnosis = (checkboxValue, nodeId) => {
-    const tempAdditionalDiagnosis = [...selected]
-    const index = tempAdditionalDiagnosis.indexOf(nodeId)
+    const tempAdditionalDiagnosis = { ...selected }
+    const index = Object.keys(tempAdditionalDiagnosis).indexOf(
+      nodeId.toString(),
+    )
     if (index > -1) {
-      tempAdditionalDiagnosis.splice(index, 1)
+      delete tempAdditionalDiagnosis[nodeId.toString()]
     } else {
-      tempAdditionalDiagnosis.push(nodeId)
+      tempAdditionalDiagnosis[nodeId] = {
+        id: nodeId,
+        drugs: {
+          proposed: Object.values(algorithm.nodes[nodeId].drugs).map(
+            drug => drug.id,
+          ),
+          agreed: {},
+          refused: [],
+          additional: {},
+        },
+      }
     }
     setSelected(tempAdditionalDiagnosis)
   }
@@ -91,7 +111,7 @@ const ListDiagnosisContainer = ({ navigation }) => {
   /**
    * Updates the global store when the user is done selecting elements
    */
-  const handleClose = () => {
+  const handleApply = () => {
     dispatch(
       ChangeAdditionalDiagnoses.action({
         newAdditionalDiagnoses: selected,
@@ -121,47 +141,77 @@ const ListDiagnosisContainer = ({ navigation }) => {
   }
 
   return (
-    <View style={diagnosisList.wrapper}>
-      <View style={diagnosisList.headerWrapper}>
-        <Text style={diagnosisList.header}>
-          {t('containers.diagnosis.title')}
-        </Text>
-        <TouchableOpacity
-          style={diagnosisList.closeButton}
-          onPress={handleClose}
-        >
-          <Icon name="close" color={Colors.secondary} />
-        </TouchableOpacity>
+    <View style={{ ...Layout.fullHeight }}>
+      <View style={diagnosisList.wrapper}>
+        <View style={diagnosisList.headerWrapper}>
+          <Text style={diagnosisList.header}>
+            {t('containers.diagnosis.title')}
+          </Text>
+          <TouchableOpacity
+            style={diagnosisList.closeButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="close" color={Colors.secondary} />
+          </TouchableOpacity>
+        </View>
+        <Autosuggest
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleReset={handleSearchReset}
+        />
+        <BadgeBar
+          removeBadge={toggleAdditionalDiagnosis}
+          selected={selected}
+          clearBadges={() => setSelected([])}
+          badgeComponentLabel={itemId =>
+            translate(algorithm.nodes[itemId].label)
+          }
+        />
+
+        <SectionHeader label="Diagnosis" />
+
+        <FlatList
+          data={diagnoses}
+          renderItem={({ item }) => (
+            <DiagnosisItem
+              selected={selected}
+              item={item}
+              handlePress={toggleAdditionalDiagnosis}
+            />
+          )}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={renderEmptyList}
+          onEndReached={() => displayDiagnoses()}
+          onEndReachedThreshold={0.1}
+        />
       </View>
-      <Autosuggest
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        handleReset={handleSearchReset}
-      />
-      <BadgeBar
-        removeBadge={toggleAdditionalDiagnosis}
-        selected={selected}
-        clearBadges={() => setSelected([])}
-        badgeComponentLabel={itemId => translate(algorithm.nodes[itemId].label)}
-      />
-
-      <SectionHeader label="Diagnosis" />
-
-      <FlatList
-        data={diagnoses}
-        style={diagnosisList.flatList}
-        renderItem={({ item }) => (
-          <DiagnosisItem
-            selected={selected}
-            item={item}
-            handlePress={toggleAdditionalDiagnosis}
-          />
+      <View style={diagnosisList.footerWrapper}>
+        {Object.keys(selected).length > 0 && (
+          <TouchableOpacity
+            onPress={() => setSelected([])}
+            style={diagnosisList.clearFiltersButton}
+          >
+            <View style={diagnosisList.clearFiltersButtonWrapper}>
+              <Icon
+                name="refresh"
+                color="red"
+                size={FontSize.regular}
+                style={Gutters.regularRMargin}
+              />
+              <Text style={diagnosisList.clearFiltersButtonText}>
+                {t('actions.clear_selection')}
+              </Text>
+            </View>
+          </TouchableOpacity>
         )}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={renderEmptyList}
-        onEndReached={() => displayDiagnoses()}
-        onEndReachedThreshold={0.1}
-      />
+        <SquareButton
+          label="Apply Selection"
+          bgColor={Colors.primary}
+          color={Colors.secondary}
+          fullWidth={false}
+          onPress={handleApply}
+        />
+      </View>
     </View>
   )
 }

@@ -21,7 +21,7 @@ const Badge = ({ removeBadge, selectedItem, label }) => {
 
   return (
     <View style={badge.wrapper}>
-      <View style={Layout.row}>
+      <View style={badge.innerWrapper}>
         <Text style={Fonts.textColorSecondary}>
           <Text style={Fonts.textTiny}>{label(selectedItem)}</Text>
         </Text>

@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
@@ -10,11 +10,10 @@ import uuid from 'react-native-uuid'
 /**
  * The internal imports
  */
-import { Icon, RoundedButton } from '@/Components'
+import { Icon } from '@/Components'
 import { useTheme } from '@/Theme'
 import ChangeCustomDiagnoses from '@/Store/MedicalCase/ChangeCustomDiagnoses'
 import { navigate } from '@/Navigators/Root'
-import { translate } from '@/Translations/algorithm'
 
 const CustomDiagnoses = () => {
   // Theme and style elements deconstruction
@@ -95,14 +94,23 @@ const CustomDiagnoses = () => {
           </View>
         ))}
         <TouchableOpacity
-          style={[Gutters.regularBMargin, medicalCaseFinalDiagnoses.addAdditionalButton]}
+          style={[
+            Gutters.regularBMargin,
+            medicalCaseFinalDiagnoses.addAdditionalButton,
+          ]}
           onPress={() => navigate('Drugs')}
         >
           <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonText}>
-            {t('containers.medical_case.diagnoses.additional_placeholder')}
+            {t('containers.medical_case.diagnoses.additional_placeholder', {
+              item: 'drugs',
+            })}
           </Text>
-          <View style={medicalCaseFinalDiagnoses.addAdditionalButtonCountWrapper}>
-            <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonCountText}>
+          <View
+            style={medicalCaseFinalDiagnoses.addAdditionalButtonCountWrapper}
+          >
+            <Text
+              style={medicalCaseFinalDiagnoses.addAdditionalButtonCountText}
+            >
               {customDiagnosis.drugs.length}
             </Text>
           </View>

@@ -19,6 +19,7 @@ export default function (props) {
     },
     addAdditionalButton: {
       ...Gutters.smallTMargin,
+      ...Gutters.regularBMargin,
       ...Gutters.tinyVPadding,
       ...Gutters.regularHPadding,
       ...Layout.row,

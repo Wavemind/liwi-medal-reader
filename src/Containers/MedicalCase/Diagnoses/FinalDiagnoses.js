@@ -13,7 +13,7 @@ import {
   SectionHeader,
   ProposedDiagnoses,
   AdditionalDiagnoses,
-  CustomDiagnoses,
+  CustomDiagnoses, AdditionalSelect,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 

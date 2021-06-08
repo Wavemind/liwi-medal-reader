@@ -11,19 +11,22 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
+import { navigate } from '@/Navigators/Root'
+import { Icon, AdditionalSelect } from '@/Components'
 import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
 import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 
-const ProposedDrugs = () => {
+const ProposedDrugs = ({ type }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
     Fonts,
     Colors,
     Gutters,
-    Containers: { medicalCaseDrugs },
+    FontSize,
+    Containers: { medicalCaseFinalDiagnoses, medicalCaseDrugs },
     Components: { booleanButton },
   } = useTheme()
 
@@ -31,36 +34,33 @@ const ProposedDrugs = () => {
   const { t } = useTranslation()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const agreedDiagnoses = useSelector(
-    state => state.medicalCase.item.diagnosis.agreed,
-  )
+  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis[type])
+
+  console.log(diagnoses)
 
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
-   * @param proposedDiagnosisId
+   * @param diagnosisId
    * @param drugId
    * @param value
    */
-  const updateProposedDrugs = (proposedDiagnosisId, drugId, value) => {
-    const tempAgreedDrugs = {
-      ...agreedDiagnoses[proposedDiagnosisId].drugs.agreed,
-    }
-    const tempRefusedDrugs = [
-      ...agreedDiagnoses[proposedDiagnosisId].drugs.refused,
-    ]
+  const updateDrugs = (diagnosisId, drugId, value) => {
+    const tempAgreedDrugs = { ...diagnoses[diagnosisId].drugs.agreed }
+    const tempRefusedDrugs = [...diagnoses[diagnosisId].drugs.refused]
     const isInAgreed = Object.keys(tempAgreedDrugs).includes(drugId.toString())
     const isInRefused = tempRefusedDrugs.includes(drugId)
 
     // From null to Agree
     if (value && !isInAgreed) {
-      tempAgreedDrugs[proposedDiagnosisId] = {
-        id: proposedDiagnosisId.toString(),
+      tempAgreedDrugs[diagnosisId] = {
+        id: diagnosisId.toString(),
         drugs: {},
       }
       dispatch(
         AddAgreedDrugs.action({
-          diagnosisId: proposedDiagnosisId,
-          drugId: drugId,
+          type,
+          drugId,
+          diagnosisId: diagnosisId,
           drugContent: { id: drugId },
         }),
       )
@@ -70,7 +70,8 @@ const ProposedDrugs = () => {
         tempRefusedDrugs.splice(tempRefusedDrugs.indexOf(drugId), 1)
         dispatch(
           RemoveRefusedDrugs.action({
-            diagnosisId: proposedDiagnosisId,
+            type,
+            diagnosisId: diagnosisId,
             newRefusedDrugs: tempRefusedDrugs,
           }),
         )
@@ -82,7 +83,8 @@ const ProposedDrugs = () => {
       tempRefusedDrugs.push(drugId)
       dispatch(
         AddRefusedDrugs.action({
-          diagnosisId: proposedDiagnosisId,
+          type,
+          diagnosisId: diagnosisId,
           newRefusedDrugs: tempRefusedDrugs,
         }),
       )
@@ -91,8 +93,9 @@ const ProposedDrugs = () => {
       if (isInAgreed) {
         dispatch(
           RemoveAgreedDrugs.action({
-            diagnosisId: proposedDiagnosisId,
+            type,
             drugId,
+            diagnosisId: diagnosisId,
           }),
         )
       }
@@ -125,7 +128,7 @@ const ProposedDrugs = () => {
         >
           <TouchableOpacity
             style={Layout.center}
-            onPress={() => updateProposedDrugs(diagnosis.id, drugId, true)}
+            onPress={() => updateDrugs(diagnosis.id, drugId, true)}
           >
             <Text style={booleanButton.buttonText(isAgree)}>
               {t('containers.medical_case.common.agree')}
@@ -144,7 +147,7 @@ const ProposedDrugs = () => {
         >
           <TouchableOpacity
             style={Layout.center}
-            onPress={() => updateProposedDrugs(diagnosis.id, drugId, false)}
+            onPress={() => updateDrugs(diagnosis.id, drugId, false)}
           >
             <Text style={booleanButton.buttonText(isDisagree)}>
               {t('containers.medical_case.common.disagree')}
@@ -155,35 +158,49 @@ const ProposedDrugs = () => {
     )
   }
 
-  return Object.values(agreedDiagnoses).map(agreedDiagnosis => (
+  return Object.values(diagnoses).map(diagnosis => (
     <View style={medicalCaseDrugs.wrapper}>
       <View style={medicalCaseDrugs.diagnosisHeaderWrapper}>
         <Text style={medicalCaseDrugs.diagnosisHeader}>
-          {translate(algorithm.nodes[agreedDiagnosis.id].label)}
+          {translate(algorithm.nodes[diagnosis.id].label)}
         </Text>
-        <Text style={medicalCaseDrugs.diagnosisType}>{t('containers.medical_case.drugs.proposed')}</Text>
+        <Text style={medicalCaseDrugs.diagnosisType}>
+          {t(
+            `containers.medical_case.drugs.${
+              type === 'agreed' ? 'proposed' : 'additional'
+            }`,
+          )}
+        </Text>
       </View>
       <View style={Gutters.regularHPadding}>
         <Text style={medicalCaseDrugs.drugsHeader}>
           {t('containers.medical_case.drugs.drugs')}
         </Text>
-        {agreedDiagnosis.drugs.proposed.map((proposedDrugId, i) => (
+        {diagnosis.drugs.proposed.map((drugId, i) => (
           <View
             style={medicalCaseDrugs.drugWrapper(
-              i === agreedDiagnosis.drugs.proposed.length - 1,
+              i === diagnosis.drugs.proposed.length - 1,
             )}
           >
             <View style={medicalCaseDrugs.drugTitleWrapper}>
               <Text style={medicalCaseDrugs.drugTitle}>
-                {translate(algorithm.nodes[proposedDrugId].label)}
+                {translate(algorithm.nodes[drugId].label)}
               </Text>
-              {renderBooleanButton(agreedDiagnosis, proposedDrugId)}
+              {renderBooleanButton(diagnosis, drugId)}
             </View>
             <Text style={Fonts.textSmall}>
-              {translate(algorithm.nodes[proposedDrugId].description)}
+              {translate(algorithm.nodes[drugId].description)}
             </Text>
           </View>
         ))}
+      </View>
+      <View style={Gutters.regularHPadding}>
+        <AdditionalSelect
+          list={Object.values(diagnosis.drugs.additional)}
+          listItemType="drugs"
+          navigateTo="Drugs"
+          handleRemove={() => console.log('remove')}
+        />
       </View>
     </View>
   ))

@@ -23,7 +23,7 @@ const DiagnosisItem = ({ item, handlePress, selected }) => {
         nodeId={item.id}
         label={translate(item.label)}
         onPress={handlePress}
-        defaultValue={selected.includes(item.id)}
+        defaultValue={Object.keys(selected).includes(item.id.toString())}
       />
     </View>
   )

@@ -16,7 +16,7 @@ import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
 import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
 import { translate } from '@/Translations/algorithm'
 
-const ListDiagnosisContainer = ({ navigation }) => {
+const ListDrugsContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -40,8 +40,6 @@ const ListDiagnosisContainer = ({ navigation }) => {
     category: 'drug',
   })
   const numToAdd = 20
-
-  console.log(drugsList)
 
   // Local state definition
   const [drugs, setDrugs] = useState([])
@@ -168,4 +166,4 @@ const ListDiagnosisContainer = ({ navigation }) => {
   )
 }
 
-export default ListDiagnosisContainer
+export default ListDrugsContainer

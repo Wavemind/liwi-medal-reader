@@ -12,6 +12,10 @@ export default function (props) {
       backgroundColor: Colors.primary,
       borderRadius: 5,
     },
+    innerWrapper: {
+      ...Gutters.tinyVPadding,
+      ...Layout.row,
+    },
     separator: {
       ...Gutters.tinyHMargin,
       width: 1,

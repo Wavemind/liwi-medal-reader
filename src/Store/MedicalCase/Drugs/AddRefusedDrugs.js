@@ -4,7 +4,7 @@ export default {
   initialState: {},
   action: createAction('medicalCase/addRefusedDrugs'),
   reducers(state, { payload }) {
-    state.item.diagnosis.agreed[payload.diagnosisId].drugs.refused =
+    state.item.diagnosis[payload.type][payload.diagnosisId].drugs.refused =
       payload.newRefusedDrugs
   },
 }

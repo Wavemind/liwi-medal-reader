@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Layout, Gutters, Fonts, Colors } = props
@@ -6,7 +7,8 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Gutters.regularHMargin,
-      ...Layout.fullHeight,
+      ...Layout.grow,
+      height: hp(89),
     },
     headerWrapper: {
       ...Layout.row,
@@ -20,14 +22,36 @@ export default function (props) {
       ...Fonts.textBold,
       color: Colors.grey,
     },
-    flatList: {
-      ...Layout.grow,
-    },
     closeButton: {
       ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       backgroundColor: Colors.red,
       borderRadius: 10,
+    },
+    footerWrapper: {
+      ...Gutters.tinyVPadding,
+      ...Gutters.regularHPadding,
+      width: wp(100),
+      backgroundColor: Colors.secondary,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      borderTopWidth: 1,
+      borderTopColor: Colors.grey,
+    },
+    clearFiltersButton: {
+      ...Gutters.regularRPadding,
+      ...Layout.row,
+    },
+    clearFiltersButtonWrapper: {
+      ...Layout.row,
+      ...Layout.center,
+      ...Gutters.tinyVPadding,
+    },
+    clearFiltersButtonText: {
+      ...Fonts.textTiny,
+      ...Fonts.textCenter,
+      ...Fonts.textBold,
+      color: Colors.red,
     },
   })
 }

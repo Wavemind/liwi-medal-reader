@@ -68,6 +68,7 @@ export { default as ToggleSwitchDarkMode } from './ToggleSwitchDarkMode'
 export { default as Consent } from './Consent'
 
 // MEDICAL CASE
+export { default as AdditionalSelect } from './Diagnoses/AdditionalSelect'
 export { default as ProposedDiagnoses } from './Diagnoses/ProposedDiagnoses'
 export { default as AdditionalDiagnoses } from './Diagnoses/AdditionalDiagnoses'
 export { default as CustomDiagnoses } from './Diagnoses/CustomDiagnoses'

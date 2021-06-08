@@ -17,7 +17,7 @@ export default async ({ algorithm }) => {
       proposed: [],
       excluded: [],
       diagnoses: [],
-      additional: [],
+      additional: {},
       agreed: {},
       refused: [],
       custom: [],

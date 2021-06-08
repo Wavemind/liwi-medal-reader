@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -38,44 +38,27 @@ const ProposedDiagnoses = () => {
   tempProposed.push(60)
   tempProposed.push(76)
 
-  const [formattedProposed, setFormattedProposed] = useState(
-    tempProposed.map(item => {
-      let value = null
-      if (Object.keys(agreed).includes(item.toString())) {
-        value = true
-      } else if (refused.includes(item)) {
-        value = false
-      }
-      return { id: item, value }
-    }),
-  )
-
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
    * @param proposedDiagnosisId
    * @param value
    */
   const updateProposedDiagnosis = (proposedDiagnosisId, value) => {
-    setFormattedProposed(
-      formattedProposed.map(diagnosis =>
-        diagnosis.id === proposedDiagnosisId
-          ? { ...diagnosis, value: value }
-          : diagnosis,
-      ),
-    )
     const tempAgreedDiagnoses = { ...agreed }
     const tempRefusedDiagnoses = [...refused]
-    const isInAgreed = Object.keys(tempAgreedDiagnoses).includes(
+    const isInAgreed = Object.keys(agreed).includes(
       proposedDiagnosisId.toString(),
     )
-    const isInRefused = tempRefusedDiagnoses.includes(proposedDiagnosisId)
+    const isInRefused = refused.includes(proposedDiagnosisId)
 
     // From null to Agree
     if (value && !isInAgreed) {
       tempAgreedDiagnoses[proposedDiagnosisId] = {
         id: proposedDiagnosisId,
         drugs: {
-          proposed: Object.values(algorithm.nodes[proposedDiagnosisId].drugs).map(drug => drug.id),
+          proposed: Object.values(
+            algorithm.nodes[proposedDiagnosisId].drugs,
+          ).map(drug => drug.id),
           agreed: {},
           refused: [],
           additional: {},
@@ -124,58 +107,56 @@ const ProposedDiagnoses = () => {
 
   /**
    * Renders the boolean buttons to agree/disagree with the proposed diagnoses
-   * @param diagnosis
+   * @param diagnosisId
    * @returns {JSX.Element}
    */
-  const renderBooleanButton = diagnosis => {
-    const buttons = [
-      {
-        side: 'left',
-        value: true,
-        text: t('containers.medical_case.common.agree'),
-      },
-      {
-        side: 'right',
-        value: false,
-        text: t('containers.medical_case.common.disagree'),
-      },
-    ]
+  const renderBooleanButton = diagnosisId => {
+    const isAgreed = Object.keys(agreed).includes(diagnosisId.toString())
+    const isRefused = refused.includes(diagnosisId)
 
     return (
       <View style={medicalCaseFinalDiagnoses.booleanButtonWrapper}>
-        {buttons.map(button => {
-          const selected = diagnosis.value === button.value
-          return (
-            <View
-              key={`booleanButton-${button.side}`}
-              style={booleanButton.buttonWrapper(button.side, selected)}
-            >
-              <TouchableOpacity
-                style={Layout.center}
-                onPress={() =>
-                  updateProposedDiagnosis(diagnosis.id, button.value)
-                }
-              >
-                <Text style={booleanButton.buttonText(selected)}>
-                  {button.text}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )
-        })}
+        <View
+          key="booleanButton-left"
+          style={booleanButton.buttonWrapper('left', isAgreed)}
+        >
+          <TouchableOpacity
+            style={Layout.center}
+            onPress={() => updateProposedDiagnosis(diagnosisId, true)}
+          >
+            <Text style={booleanButton.buttonText(isAgreed)}>
+              {t('containers.medical_case.common.agree')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          key="booleanButton-right"
+          style={booleanButton.buttonWrapper('right', isRefused)}
+        >
+          <TouchableOpacity
+            style={Layout.center}
+            onPress={() => updateProposedDiagnosis(diagnosisId, false)}
+          >
+            <Text style={booleanButton.buttonText(isRefused)}>
+              {t('containers.medical_case.common.disagree')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
 
-  return formattedProposed.map((proposedDiagnosis, i) => (
+  return tempProposed.map((proposedDiagnosisId, i) => (
     <View
-      key={`proposed-${proposedDiagnosis.id}`}
-      style={medicalCaseFinalDiagnoses.newItemWrapper(i === tempProposed.length - 1)}
+      key={`proposed-${proposedDiagnosisId}`}
+      style={medicalCaseFinalDiagnoses.newItemWrapper(
+        i === tempProposed.length - 1,
+      )}
     >
       <Text style={Fonts.textSmall}>
-        {translate(algorithm.nodes[proposedDiagnosis.id].label)}
+        {translate(algorithm.nodes[proposedDiagnosisId].label)}
       </Text>
-      {renderBooleanButton(proposedDiagnosis)}
+      {renderBooleanButton(proposedDiagnosisId)}
     </View>
   ))
 }

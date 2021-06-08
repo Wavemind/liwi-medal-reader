@@ -105,13 +105,14 @@ export default {
       diagnoses: {
         proposed_title: 'Diagnoses proposed by {{ version_name }}',
         additional_title: 'Additional selected',
-        additional_placeholder: 'Select your diagnoses',
+        additional_placeholder: 'Select additional {{ item }}',
         custom_title: 'Your proposition',
         custom_placeholder: 'Add your diagnosis',
       },
       drugs: {
         drugs: 'Drugs',
         proposed: 'Proposed',
+        additional: 'Additional',
         custom: 'Custom',
       },
     },
