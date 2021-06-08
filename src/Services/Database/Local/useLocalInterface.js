@@ -420,9 +420,11 @@ export default function () {
 
   const _buildPatient = async patient => {
     const medicalCases = await patient.medicalCases.fetch()
-    console.log(medicalCases)
+    const newPatient = patient._raw
+    delete newPatient._changed
+    delete newPatient._status
     return {
-      ...patient._raw,
+      ...newPatient,
       medicalCases,
     }
   }

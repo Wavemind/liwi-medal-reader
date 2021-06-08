@@ -30,15 +30,12 @@ beforeEach(async () => {
   await store.dispatch(CreateMedicalCase.action({ algorithm }))
 })
 
-describe('findBy should return a patient', () => {})
-
 describe('getAll should return all elements of a specific object', () => {
   it('should return an empty array ', async () => {
     const { getAll } = useDatabase()
     const allPatients = await getAll('Patient')
     expect(allPatients).toStrictEqual([])
   })
-
   it('should return an array with 1 patient from the database', async () => {
     const { getAll } = useDatabase()
     const uid = uuid.v4()
@@ -53,12 +50,10 @@ describe('getAll should return all elements of a specific object', () => {
       }),
     )
     await store.dispatch(InsertPatient.action())
-
     const allPatients = await getAll('Patient')
     expect(allPatients.length).toStrictEqual(1)
     expect(allPatients[0].uid).toStrictEqual(uid)
   })
-
   it('should return an array with the 2 patients from the database', async () => {
     const { getAll } = useDatabase()
     const uid = uuid.v4()
@@ -77,7 +72,6 @@ describe('getAll should return all elements of a specific object', () => {
     expect(allPatients.length).toStrictEqual(2)
     expect(allPatients[1].uid).toStrictEqual(uid)
   })
-
   it('should return an empty array of medical case', async () => {
     const { getAll } = useDatabase()
     const allMedicalCases = await getAll('MedicalCase')
