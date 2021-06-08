@@ -54,6 +54,7 @@ export default class MedicalCase extends Model {
   @field('synchronized_at') synchronized_at
   @field('patient_id') patient_id
   @field('fail_safe') fail_safe
+  @date('closed_at') closedAt
   @date('created_at') createdAt
   @date('updated_at') updatedAt
 }

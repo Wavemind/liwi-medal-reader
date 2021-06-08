@@ -177,31 +177,25 @@ export default function () {
     let object = []
     if (model === 'Patient') {
       if (data instanceof Array) {
-        // object = Promise.all(
-        //   data.map(async item => {
-        //     let patientValues = await item.patientValues
-        //     patientValues = patientValues?.map(
-        //       patientValue => new PatientValueModel(patientValue),
-        //     )
-        //     item = {
-        //       ...item._raw,
-        //       id: item.id,
-        //       patientValues,
-        //       medicalCases: item.medicalCases,
-        //     }
-        //     return new PatientModel(item, environment)
-        //   }),
-        // )
+        object = await Promise.all(
+          data.map(async item => {
+            return _buildPatient(item)
+          }),
+        )
+        console.log(object)
       } else {
         return _buildPatient(data)
       }
     } else if (data instanceof Array) {
-      data.forEach(item => {
-        object.push(new MedicalCaseModel(item))
-      })
+      object = await Promise.all(
+        data.map(async item => {
+          return _buildMedicalCaseLight(item)
+        }),
+      )
     } else {
       return _buildMedicalCase(data)
     }
+    console.log(object)
     return object
   }
 
@@ -315,7 +309,7 @@ export default function () {
   const getAll = async (model, page = null, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
     let result = await collection.query().fetch()
-    return result
+    return await _initClasses(result, model)
     //const queries = []
     // if (page === null) {
     //   if (!rawData) {
@@ -399,6 +393,7 @@ export default function () {
         }
         nestedRecord.synchronized_at = medicalCaseData.synchronized_at
         nestedRecord.advancement = medicalCaseData.advancement
+        nestedRecord.closedAt = null
         nestedRecord.fail_safe = false
         nestedRecord.patient.set(patient)
       })
@@ -409,23 +404,22 @@ export default function () {
     //await Promise.all([_savePatientValue('patients', patientData)])
   }
 
-  const medicalCaseList = async () => {
-    const medicalCases = await getAll('MedicalCase')
-    return Promise.all(
-      medicalCases.map(
-        async medicalCase => await _buildMedicalCaseLight(medicalCase),
-      ),
-    )
-  }
-
   const _buildPatient = async patient => {
     const medicalCases = await patient.medicalCases.fetch()
     const newPatient = patient._raw
+
+    const response = {
+      createdAt: newPatient.created_at,
+      updatedAt: newPatient.updated_at,
+      medicalCases,
+    }
     delete newPatient._changed
     delete newPatient._status
+    delete newPatient.created_at
+    delete newPatient.updated_at
     return {
       ...newPatient,
-      medicalCases,
+      ...response,
     }
   }
 
@@ -436,6 +430,9 @@ export default function () {
       synchronized_at: medicalCase.synchronized_at,
       advancement: medicalCase.advancement,
       fail_safe: medicalCase.fail_safe,
+      createdAt: medicalCase.createdAt,
+      updatedAt: medicalCase.updatedAt,
+      closedAt: medicalCase.closedAt,
       patient: {
         id: patient.id,
         first_name: patient.first_name,
@@ -458,6 +455,9 @@ export default function () {
       synchronized_at: medicalCase.synchronized_at,
       advancement: medicalCase.advancement,
       fail_safe: medicalCase.fail_safe,
+      createdAt: medicalCase.created_at,
+      updatedAt: medicalCase.updated_at,
+      closedAt: medicalCase.closed_at,
       patient,
     }
   }
@@ -573,7 +573,6 @@ export default function () {
     getAll,
     getConsentsFile,
     insertPatient,
-    medicalCaseList,
     lockMedicalCase,
     push,
     unlockMedicalCase,

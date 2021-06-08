@@ -1,10 +1,11 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import format from 'date-fns/format'
+import Navigation from '@/Config/Navigation'
 
 /**
  * The internal imports
@@ -22,7 +23,16 @@ const ListItem = ({ item }) => {
     Fonts,
     FontSize,
   } = useTheme()
+  const [activeMedicalCase, setActiveMedicalCase] = useState(null)
 
+  useEffect(() => {
+    const medicalCase = item.medicalCases.find(mc => {
+      return mc.advancement.closedAt !== null
+    })
+    setActiveMedicalCase(medicalCase)
+  }, [])
+
+  console.log(item)
   return (
     <TouchableOpacity
       style={patientListItem.wrapper}
@@ -48,36 +58,23 @@ const ListItem = ({ item }) => {
             {format(item.updatedAt, 'dd.MM.yyyy')}
           </Text>
         </View>
-        <View style={patientListItem.statusWrapper}>
-          <Text style={patientListItem.statusTitle}>1st assessment</Text>
-          <View style={Layout.row}>
-            <Icon
-              name="registration"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
-            <Icon
-              name="assessment"
-              size={FontSize.large}
-              style={patientListItem.icon(true)}
-            />
-            <Icon
-              name="consultation"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
-            <Icon
-              name="tests"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
-            <Icon
-              name="diagnosis"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
+        {activeMedicalCase && (
+          <View style={patientListItem.statusWrapper}>
+            <Text style={patientListItem.statusTitle}>1st assessment</Text>
+            <View style={Layout.row}>
+              {Navigation.INTERVENTION_STAGES.map((stage, index) => (
+                <Icon
+                  key={`${item.id}-${stage.icon}`}
+                  name={stage.icon}
+                  size={FontSize.large}
+                  style={patientListItem.icon(
+                    index === activeMedicalCase.advancement.stage,
+                  )}
+                />
+              ))}
+            </View>
           </View>
-        </View>
+        )}
         <View style={[Gutters.regularLMargin, Layout.column]}>
           <Icon name="right-arrow" size={25} />
         </View>

@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 7,
+  version: 6,
   tables: [
     tableSchema({
       name: 'medical_cases',
@@ -11,6 +11,7 @@ export default appSchema({
         { name: 'synchronized_at', type: 'number', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
+        { name: 'closed_at', type: 'number' },
         { name: 'patient_id', type: 'string' },
         { name: 'fail_safe', type: 'boolean' },
       ],

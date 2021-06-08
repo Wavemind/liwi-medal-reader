@@ -81,7 +81,7 @@ const ListPatientContainer = props => {
       <FlatList
         data={data}
         renderItem={({ item }) => <PatientListItem item={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => `patient-${item.id}`}
         ListEmptyComponent={<LoaderList />}
         onRefresh={() => handleRefresh()}
         refreshing={refreshing}

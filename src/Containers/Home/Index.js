@@ -34,7 +34,7 @@ const IndexHomeContainer = props => {
     Colors,
   } = useTheme()
 
-  const { medicalCaseList } = useDatabase()
+  const { getAll } = useDatabase()
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -44,7 +44,7 @@ const IndexHomeContainer = props => {
   const algorithm = useSelector(state => state.algorithm.item)
 
   const getMedicalCases = async () => {
-    const medicalCases = await medicalCaseList()
+    const medicalCases = await getAll('MedicalCase')
     setData(medicalCases)
   }
 

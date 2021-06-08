@@ -44,8 +44,8 @@ describe('findBy should find an object based on a query', () => {
       'reason',
       'consent',
       'consent_file',
-      'created_at',
-      'updated_at',
+      'createdAt',
+      'updatedAt',
       'fail_safe',
       'medicalCases',
     ]
@@ -83,6 +83,9 @@ describe('findBy should find an object based on a query', () => {
       'advancement',
       'fail_safe',
       'patient',
+      'closedAt',
+      'createdAt',
+      'updatedAt',
     ]
 
     const id = store.getState().medicalCase.item.id

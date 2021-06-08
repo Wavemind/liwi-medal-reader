@@ -1,8 +1,4 @@
 /**
- * The external imports
- */
-
-/**
  * The internal imports
  */
 import useDatabase from '../Database/useDatabase'

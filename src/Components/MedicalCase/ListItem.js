@@ -32,10 +32,10 @@ const ListItem = ({ item }) => {
   const navigation = useNavigation()
 
   /**
-   * Toggles the modal and sets the modal type in the store
+   * Will load the Medical case in the store then navigate to the Medical Case
    * @returns {Promise<void>}
    */
-  const toggleModal = async () => {
+  const handlePress = async () => {
     await dispatch(LoadMedicalCase.action({ medicalCaseId: item.id }))
     await dispatch(LoadPatient.action({ patientId: item.patient.id }))
     navigation.navigate('StageWrapper')
@@ -44,7 +44,7 @@ const ListItem = ({ item }) => {
   return (
     <TouchableOpacity
       style={patientListItem.wrapper}
-      onPress={() => toggleModal()}
+      onPress={() => handlePress()}
     >
       <View style={patientListItem.container}>
         <View style={[Layout.column, Gutters.regularRMargin]}>
@@ -66,31 +66,13 @@ const ListItem = ({ item }) => {
             )}
           </Text>
           <View style={Layout.row}>
-            <Icon
-              name="registration"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
-            <Icon
-              name="assessment"
-              size={FontSize.large}
-              style={patientListItem.icon(true)}
-            />
-            <Icon
-              name="consultation"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
-            <Icon
-              name="tests"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
-            <Icon
-              name="diagnosis"
-              size={FontSize.large}
-              style={patientListItem.icon(false)}
-            />
+            {Navigation.INTERVENTION_STAGES.map((stage, index) => (
+              <Icon
+                name={stage.icon}
+                size={FontSize.large}
+                style={patientListItem.icon(index === item.advancement.stage)}
+              />
+            ))}
           </View>
         </View>
         <View style={[Gutters.regularLMargin, Layout.column]}>
