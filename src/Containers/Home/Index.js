@@ -21,7 +21,7 @@ import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import createMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-import useDatabase from '@/Services/Database/Database'
+import useDatabase from '@/Services/Database/useDatabase'
 const IndexHomeContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props
@@ -34,7 +34,7 @@ const IndexHomeContainer = props => {
     Colors,
   } = useTheme()
 
-  const { getAll } = useDatabase()
+  const { medicalCaseList } = useDatabase()
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -43,16 +43,17 @@ const IndexHomeContainer = props => {
   const [refreshing, setRefreshing] = useState(false)
   const algorithm = useSelector(state => state.algorithm.item)
 
+  const getMedicalCases = async () => {
+    const medicalCases = await medicalCaseList()
+    setData(medicalCases)
+  }
+
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
   useEffect(() => {
-    let timer = setTimeout(() => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), 500)
-
-    return () => {
-      clearTimeout(timer)
-    }
+    getMedicalCases()
   }, [])
 
   /**
@@ -69,7 +70,6 @@ const IndexHomeContainer = props => {
    */
   const loadMore = () => {
     console.log('TODO: load more')
-    setData(data.concat([11, 12, 13, 14, 15]))
   }
 
   return (

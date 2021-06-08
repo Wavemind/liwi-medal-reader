@@ -10,13 +10,13 @@ import { useTranslation } from 'react-i18next'
  */
 import { SearchBar, PatientListItem, BadgeBar, LoaderList } from '@/Components'
 import { useTheme } from '@/Theme'
-import Database from '@/Services/Database/Database'
+import useDatabase from '@/Services/Database/useDatabase'
 
 const ListPatientContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props
 
-  const { getAll } = Database()
+  const { getAll } = useDatabase()
   const { t } = useTranslation()
   const {
     Layout,
@@ -29,7 +29,6 @@ const ListPatientContainer = props => {
   const [refreshing, setRefreshing] = useState(false)
   const getPatients = async () => {
     const patients = await getAll('Patient')
-    console.log(patients)
     setData(patients)
   }
 

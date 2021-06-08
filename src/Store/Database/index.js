@@ -1,4 +1,4 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
-import CreatePatient from './CreatePatient'
+import InsertPatient from './InsertPatient'
 
-export default buildSlice('database', [CreatePatient]).reducer
+export default buildSlice('database', [InsertPatient]).reducer

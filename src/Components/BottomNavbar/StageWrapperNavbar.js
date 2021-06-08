@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
-import createPatient from '@/Store/Database/CreatePatient'
+import InsertPatient from '@/Store/Database/InsertPatient'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -38,7 +38,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
    */
   const handleNavigation = async direction => {
     if (advancement.stage === 0) {
-      await dispatch(createPatient.action())
+      await dispatch(InsertPatient.action())
     }
     const medicalCaseState = navigationState.routes[navigationState.index].state
 
