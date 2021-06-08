@@ -20,18 +20,16 @@ const AdditionalDiagnoses = () => {
 
   /**
    * Removes a single element from the additional diagnosis list
-   * @param additionalDiagnosisId
+   * @param diagnosisId
    */
-  const removeAdditionalDiagnosis = additionalDiagnosisId => {
+  const removeAdditionalDiagnosis = diagnosisId => {
     const tempAdditionalDiagnoses = { ...additional }
-
     const index = Object.keys(tempAdditionalDiagnoses).indexOf(
-      additionalDiagnosisId.toString(),
+      diagnosisId.toString(),
     )
     if (index > -1) {
-      delete tempAdditionalDiagnoses[additionalDiagnosisId.toString()]
+      delete tempAdditionalDiagnoses[diagnosisId.toString()]
     }
-
     dispatch(
       ChangeAdditionalDiagnoses.action({
         newAdditionalDiagnoses: tempAdditionalDiagnoses,
@@ -44,7 +42,6 @@ const AdditionalDiagnoses = () => {
       <AdditionalSelect
         list={Object.values(additional)}
         listItemType="diagnoses"
-        navigateTo="Diagnoses"
         handleRemove={removeAdditionalDiagnosis}
       />
     </View>

@@ -13,6 +13,7 @@ export default {
     show_consent: 'Show consent',
     scan_consent: 'Scan new consent',
     add: 'Add',
+    apply: 'Apply Selection',
   },
   algorithm: {
     version_id: 'Version id',
@@ -56,8 +57,8 @@ export default {
         delete: 'Delete',
       },
     },
-    diagnosis: {
-      title: 'Select your diagnosis',
+    additional_list: {
+      title: 'Select your {{ items }}',
     },
     filters: {
       title: 'Filters',

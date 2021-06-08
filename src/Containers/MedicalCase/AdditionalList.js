@@ -18,11 +18,12 @@ import {
   SquareButton,
 } from '@/Components'
 import { useTheme } from '@/Theme'
-import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
-import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
+import ListItem from '@/Containers/MedicalCase/AdditionalListItem'
 import { translate } from '@/Translations/algorithm'
+import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
+import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
 
-const ListDrugsContainer = ({ navigation, route }) => {
+const AdditionalListContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -37,32 +38,29 @@ const ListDrugsContainer = ({ navigation, route }) => {
     params: { diagnosisType, diagnosisId },
   } = route
 
-  console.log(diagnosisType)
-  console.log(diagnosisId)
-
   // Define store and translation hooks
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
   // Get data from the store
   const algorithm = useSelector(state => state.algorithm.item)
-  const additionalDrugs = useSelector(
-    state =>
-      state.medicalCase.item.diagnosis[diagnosisType][diagnosisId].drugs
-        .additional,
-  )
-
-  console.log(additionalDrugs)
-
-  // Define component constants
-  const drugsList = filter(algorithm.nodes, {
-    category: 'drug',
+  const additionalItems = useSelector(state => {
+    if (diagnosisType) {
+      return state.medicalCase.item.diagnosis[diagnosisType][diagnosisId].drugs.additional
+    } else {
+      return state.medicalCase.item.diagnosis.additional
+    }
   })
+
+  const itemList = diagnosisType
+    ? filter(algorithm.nodes, { category: 'drug' })
+    : filter(algorithm.nodes, { type: 'FinalDiagnostic' })
+
   const numToAdd = 20
 
   // Local state definition
-  const [drugs, setDrugs] = useState([])
-  const [selected, setSelected] = useState(additionalDrugs)
+  const [items, setItems] = useState([])
+  const [selected, setSelected] = useState(additionalItems)
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
 
@@ -71,23 +69,23 @@ const ListDrugsContainer = ({ navigation, route }) => {
    */
   useEffect(() => {
     if (searchTerm.length === 0) {
-      displayDrugs()
+      displayItems()
     } else {
-      const filteredDiagnosisList = filter(drugsList, diagnosis =>
-        translate(diagnosis.label).match(new RegExp(searchTerm, 'i')),
+      const filteredItemList = filter(itemList, item =>
+        translate(item.label).match(new RegExp(searchTerm, 'i')),
       )
-      setDrugs(filteredDiagnosisList)
+      setItems(filteredItemList)
     }
   }, [searchTerm])
 
   /**
    * Defines the array of diagnoses to be displayed
    */
-  const displayDrugs = () => {
+  const displayItems = () => {
     if (searchTerm.length === 0) {
-      const dataToRender = drugsList.slice(0, numToDisplay)
+      const dataToRender = itemList.slice(0, numToDisplay)
       setNumToDisplay(numToDisplay + numToAdd)
-      setDrugs(dataToRender)
+      setItems(dataToRender)
     }
   }
 
@@ -96,26 +94,50 @@ const ListDrugsContainer = ({ navigation, route }) => {
    * @param checkboxValue
    * @param nodeId
    */
-  const toggleAdditionalDiagnosis = (checkboxValue, nodeId) => {
-    const tempAdditionalDiagnosis = [...selected]
-    const index = tempAdditionalDiagnosis.indexOf(nodeId)
+  const toggleAdditionalItems = (checkboxValue, nodeId) => {
+    const tempAdditionalItems = { ...selected }
+    const index = Object.keys(tempAdditionalItems).indexOf(nodeId.toString())
     if (index > -1) {
-      tempAdditionalDiagnosis.splice(index, 1)
+      delete tempAdditionalItems[nodeId.toString()]
     } else {
-      tempAdditionalDiagnosis.push(nodeId)
+      if (diagnosisType) {
+        tempAdditionalItems[nodeId] = { id: nodeId }
+      } else {
+        tempAdditionalItems[nodeId] = {
+          id: nodeId,
+          drugs: {
+            proposed: Object.values(algorithm.nodes[nodeId].drugs).map(
+              drug => drug.id,
+            ),
+            agreed: {},
+            refused: [],
+            additional: {},
+          },
+        }
+      }
     }
-    setSelected(tempAdditionalDiagnosis)
+    setSelected(tempAdditionalItems)
   }
 
   /**
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
-    // dispatch(
-    //   ChangeAdditionalDiagnoses.action({
-    //     newAdditionalDiagnoses: selected,
-    //   }),
-    // )
+    if (diagnosisType) {
+      dispatch(
+        ChangeAdditionalDrugs.action({
+          diagnosisType,
+          diagnosisId,
+          newAdditionalDrugs: selected,
+        }),
+      )
+    } else {
+      dispatch(
+        ChangeAdditionalDiagnoses.action({
+          newAdditionalDiagnoses: selected,
+        }),
+      )
+    }
     navigation.goBack()
   }
 
@@ -144,7 +166,9 @@ const ListDrugsContainer = ({ navigation, route }) => {
       <View style={diagnosisList.wrapper}>
         <View style={diagnosisList.headerWrapper}>
           <Text style={diagnosisList.header}>
-            {t('containers.diagnosis.title')}
+            {t('containers.additional_list.title', {
+              items: diagnosisType ? 'Drugs' : 'Diagnoses',
+            })}
           </Text>
           <TouchableOpacity
             style={diagnosisList.closeButton}
@@ -159,7 +183,7 @@ const ListDrugsContainer = ({ navigation, route }) => {
           handleReset={handleSearchReset}
         />
         <BadgeBar
-          removeBadge={toggleAdditionalDiagnosis}
+          removeBadge={toggleAdditionalItems}
           selected={selected}
           clearBadges={() => setSelected([])}
           badgeComponentLabel={itemId =>
@@ -167,20 +191,20 @@ const ListDrugsContainer = ({ navigation, route }) => {
           }
         />
 
-        <SectionHeader label="Diagnosis" />
+        <SectionHeader label={diagnosisType ? 'Drugs' : 'Diagnoses'} />
 
         <FlatList
-          data={drugs}
+          data={items}
           renderItem={({ item }) => (
-            <DiagnosisItem
+            <ListItem
               selected={selected}
               item={item}
-              handlePress={toggleAdditionalDiagnosis}
+              handlePress={toggleAdditionalItems}
             />
           )}
           keyExtractor={item => item.id}
           ListEmptyComponent={renderEmptyList}
-          onEndReached={() => displayDrugs()}
+          onEndReached={() => displayItems()}
           onEndReachedThreshold={0.1}
         />
       </View>
@@ -204,7 +228,7 @@ const ListDrugsContainer = ({ navigation, route }) => {
           </TouchableOpacity>
         )}
         <SquareButton
-          label="Apply Selection"
+          label={t('actions.apply')}
           bgColor={Colors.primary}
           color={Colors.secondary}
           fullWidth={false}
@@ -215,4 +239,4 @@ const ListDrugsContainer = ({ navigation, route }) => {
   )
 }
 
-export default ListDrugsContainer
+export default AdditionalListContainer

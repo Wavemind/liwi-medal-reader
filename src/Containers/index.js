@@ -34,5 +34,4 @@ export { default as IndexEmergencyContainer } from './Emergency/Index'
 export { default as IndexStudyContainer } from './Study/Index'
 export { default as IndexQuestionInfoContainer } from './QuestionInfo/Index'
 
-export { default as DiagnosesListContainer } from './Diagnosis/DiagnosisList'
-export { default as DrugsListContainer } from './Drugs/DrugsList'
+export { default as AdditionalListContainer } from './MedicalCase/AdditionalList'

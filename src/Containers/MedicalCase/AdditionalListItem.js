@@ -11,7 +11,7 @@ import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 
-const DrugItem = ({ item, handlePress, selected }) => {
+const ListItem = ({ item, handlePress, selected }) => {
   // Theme and style elements deconstruction
   const {
     Components: { diagnosisItem },
@@ -23,10 +23,10 @@ const DrugItem = ({ item, handlePress, selected }) => {
         nodeId={item.id}
         label={translate(item.label)}
         onPress={handlePress}
-        defaultValue={selected.includes(item.id)}
+        defaultValue={Object.keys(selected).includes(item.id.toString())}
       />
     </View>
   )
 }
 
-export default DrugItem
+export default ListItem

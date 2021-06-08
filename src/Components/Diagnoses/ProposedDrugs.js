@@ -11,13 +11,12 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import { navigate } from '@/Navigators/Root'
-import { Icon, AdditionalSelect } from '@/Components'
+import { AdditionalSelect } from '@/Components'
 import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
 import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
-import ChangeAdditionalDiagnoses from "@/Store/MedicalCase/ChangeAdditionalDiagnoses";
+import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
 
 const ProposedDrugs = ({ diagnosisType }) => {
   // Theme and style elements deconstruction
@@ -26,8 +25,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
     Fonts,
     Colors,
     Gutters,
-    FontSize,
-    Containers: { medicalCaseFinalDiagnoses, medicalCaseDrugs },
+    Containers: { medicalCaseDrugs },
     Components: { booleanButton },
   } = useTheme()
 
@@ -35,7 +33,9 @@ const ProposedDrugs = ({ diagnosisType }) => {
   const { t } = useTranslation()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis[diagnosisType])
+  const diagnoses = useSelector(
+    state => state.medicalCase.item.diagnosis[diagnosisType],
+  )
 
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
@@ -104,20 +104,21 @@ const ProposedDrugs = ({ diagnosisType }) => {
   /**
    * Removes a single element from the additional diagnosis list
    * @param diagnosisId
+   * @param drugId
    */
   const removeAdditionalDrug = (diagnosisId, drugId) => {
     const tempAdditionalDrugs = { ...diagnoses[diagnosisId].drugs.additional }
 
-    const index = Object.keys(tempAdditionalDrugs).indexOf(
-      diagnosisId.toString(),
-    )
+    const index = Object.keys(tempAdditionalDrugs).indexOf(drugId.toString())
     if (index > -1) {
-      delete tempAdditionalDrugs[diagnosisId.toString()]
+      delete tempAdditionalDrugs[drugId.toString()]
     }
 
     dispatch(
-      ChangeAdditionalDiagnoses.action({
-        newAdditionalDiagnoses: tempAdditionalDrugs,
+      ChangeAdditionalDrugs.action({
+        diagnosisType,
+        diagnosisId,
+        newAdditionalDrugs: tempAdditionalDrugs,
       }),
     )
   }
@@ -129,10 +130,10 @@ const ProposedDrugs = ({ diagnosisType }) => {
    * @returns {JSX.Element}
    */
   const renderBooleanButton = (diagnosis, drugId) => {
-    const isAgree = Object.keys(diagnosis.drugs.agreed).includes(
+    const isAgreed = Object.keys(diagnosis.drugs.agreed).includes(
       drugId.toString(),
     )
-    const isDisagree = diagnosis.drugs.refused.includes(drugId)
+    const isRefused = diagnosis.drugs.refused.includes(drugId)
 
     return (
       <View style={medicalCaseDrugs.booleanButtonWrapper}>
@@ -140,7 +141,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
           key="booleanButton-left"
           style={booleanButton.buttonWrapper(
             'left',
-            isAgree,
+            isAgreed,
             false,
             true,
             Colors.lightGrey,
@@ -150,7 +151,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
             style={Layout.center}
             onPress={() => updateDrugs(diagnosis.id, drugId, true)}
           >
-            <Text style={booleanButton.buttonText(isAgree)}>
+            <Text style={booleanButton.buttonText(isAgreed)}>
               {t('containers.medical_case.common.agree')}
             </Text>
           </TouchableOpacity>
@@ -159,7 +160,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
           key="booleanButton-right"
           style={booleanButton.buttonWrapper(
             'right',
-            isDisagree,
+            isRefused,
             false,
             true,
             Colors.lightGrey,
@@ -169,7 +170,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
             style={Layout.center}
             onPress={() => updateDrugs(diagnosis.id, drugId, false)}
           >
-            <Text style={booleanButton.buttonText(isDisagree)}>
+            <Text style={booleanButton.buttonText(isRefused)}>
               {t('containers.medical_case.common.disagree')}
             </Text>
           </TouchableOpacity>
@@ -219,7 +220,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
           list={Object.values(diagnosis.drugs.additional)}
           listItemType="drugs"
           navigateTo="Drugs"
-          handleRemove={() => console.log('remove')}
+          handleRemove={removeAdditionalDrug}
           diagnosisId={diagnosis.id}
           diagnosisType={diagnosisType}
         />

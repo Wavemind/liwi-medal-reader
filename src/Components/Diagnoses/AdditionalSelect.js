@@ -11,10 +11,9 @@ import { translate } from '@/Translations/algorithm'
 const AdditionalSelect = ({
   list,
   listItemType,
-  navigateTo,
   handleRemove,
   diagnosisId = null,
-  diagnosisType = 'agreed',
+  diagnosisType = null,
 }) => {
   // Theme and style elements deconstruction
   const {
@@ -28,11 +27,23 @@ const AdditionalSelect = ({
 
   const algorithm = useSelector(state => state.algorithm.item)
 
+  /**
+   * Defines the correct handler for the remove item action
+   * @param idToRemove
+   */
+  const removeItem = idToRemove => {
+    if (diagnosisId) {
+      handleRemove(diagnosisId, idToRemove)
+    } else {
+      handleRemove(idToRemove)
+    }
+  }
+
   return (
     <>
       {list.map((listItem, i) => (
         <View
-          key={`additional-${listItem}`}
+          key={`additional-${listItem.id}`}
           style={medicalCaseFinalDiagnoses.newItemWrapper(
             i === list.length - 1,
           )}
@@ -40,14 +51,14 @@ const AdditionalSelect = ({
           <Text style={Fonts.textSmall}>
             {translate(algorithm.nodes[listItem.id].label)}
           </Text>
-          <TouchableOpacity onPress={() => handleRemove(listItem.id)}>
+          <TouchableOpacity onPress={() => removeItem(listItem.id)}>
             <Icon style={{}} name="delete" size={FontSize.regular} />
           </TouchableOpacity>
         </View>
       ))}
       <TouchableOpacity
         style={medicalCaseFinalDiagnoses.addAdditionalButton}
-        onPress={() => navigate(navigateTo, { diagnosisType, diagnosisId })}
+        onPress={() => navigate('Additional', { diagnosisType, diagnosisId })}
       >
         <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder', {

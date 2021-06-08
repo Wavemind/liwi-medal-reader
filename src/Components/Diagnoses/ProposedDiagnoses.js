@@ -43,7 +43,7 @@ const ProposedDiagnoses = () => {
    * @param proposedDiagnosisId
    * @param value
    */
-  const updateProposedDiagnosis = (proposedDiagnosisId, value) => {
+  const updateDiagnosis = (proposedDiagnosisId, value) => {
     const tempAgreedDiagnoses = { ...agreed }
     const tempRefusedDiagnoses = [...refused]
     const isInAgreed = Object.keys(agreed).includes(
@@ -122,7 +122,7 @@ const ProposedDiagnoses = () => {
         >
           <TouchableOpacity
             style={Layout.center}
-            onPress={() => updateProposedDiagnosis(diagnosisId, true)}
+            onPress={() => updateDiagnosis(diagnosisId, true)}
           >
             <Text style={booleanButton.buttonText(isAgreed)}>
               {t('containers.medical_case.common.agree')}
@@ -135,7 +135,7 @@ const ProposedDiagnoses = () => {
         >
           <TouchableOpacity
             style={Layout.center}
-            onPress={() => updateProposedDiagnosis(diagnosisId, false)}
+            onPress={() => updateDiagnosis(diagnosisId, false)}
           >
             <Text style={booleanButton.buttonText(isRefused)}>
               {t('containers.medical_case.common.disagree')}
