@@ -2,37 +2,43 @@
  * The external imports
  */
 import React from 'react'
-import { VirtualizedList } from 'react-native'
+import { FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import differenceInDays from 'date-fns/differenceInDays'
 
 /**
  * The internal imports
  */
-import { Question } from '@/Components'
+import { Question, EmptyList } from '@/Components'
 
 const ComplaintCategoryMedicalCaseContainer = props => {
-  // (state.medicalCase.item.created_at - state.patient.item.birth_date) / Config.MS_IN_DAY,
-  const questions = useSelector(
-    state =>
-      state.algorithm.item.mobile_config.questions_orders.complaint_categories,
+  const { t } = useTranslation()
+
+  const birthDate = useSelector(state => state.patient.item.birth_date)
+  const test = useSelector(
+    state => state.algorithm.item.config.full_order.complaint_categories_step,
   )
-  /**
-   * Convert data into readable value
-   * @param {list of questions} data
-   * @param {*} index
-   * @returns
-   */
-  const getItem = (data, index) => ({
-    id: data[index],
+  const days = differenceInDays(new Date(), new Date(birthDate))
+
+  const questions = useSelector(state => {
+    if (days <= 60) {
+      return state.algorithm.item.config.full_order.complaint_categories_step[1]
+        .neonat_children
+    }
+    return state.algorithm.item.config.full_order.complaint_categories_step[0]
+      .older_children
   })
 
+  console.log(questions)
   return (
-    <VirtualizedList
+    <FlatList
       data={questions}
-      renderItem={({ item }) => <Question questionId={item.id} />}
-      keyExtractor={item => item.key}
-      getItemCount={() => Object.values(questions).length}
-      getItem={getItem}
+      renderItem={({ item }) => <Question questionId={item} />}
+      ListEmptyComponent={
+        <EmptyList text={t('containers.medical_case.no_questions')} />
+      }
+      keyExtractor={item => item}
     />
   )
 }

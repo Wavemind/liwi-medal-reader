@@ -13,6 +13,14 @@ import {
   UniqueTriageQuestionsMedicalCaseContainer,
   ComplaintCategoryMedicalCaseContainer,
   BasicMeasurementMedicalCaseContainer,
+  // Consultation
+  MedicalHistoryMedicalCaseContainer,
+  PhysicalExamMedicalCaseContainer,
+  // Test
+  TestMedicalCaseContainer,
+  // Diagnosis
+  TreatmentConditionsMedicalCaseContainer,
+  ReferralMedicalCaseContainer,
   MedicalCaseDiagnosesIndexContainer,
 } from '@/Containers'
 //
@@ -39,7 +47,7 @@ const diagnosesStage = {
     },
     {
       label: 'healthcare_questions',
-      component: ToDo,
+      component: TreatmentConditionsMedicalCaseContainer,
     },
     {
       label: 'medicines',
@@ -58,7 +66,7 @@ const diagnosesStage = {
 
 const referralStep = {
   label: 'referral',
-  component: 'Referral',
+  component: ReferralMedicalCaseContainer,
 }
 
 const baseInterventionStages = [
@@ -99,15 +107,11 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'medical_history',
-        component: ToDo,
+        component: MedicalHistoryMedicalCaseContainer,
       },
       {
         label: 'physical_exams',
-        component: ToDo,
-      },
-      {
-        label: 'comment',
-        component: ToDo,
+        component: PhysicalExamMedicalCaseContainer,
       },
     ],
   },
@@ -118,7 +122,7 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'assessments',
-        component: ToDo,
+        component: TestMedicalCaseContainer,
       },
     ],
   },
