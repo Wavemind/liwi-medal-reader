@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { Config } from '@/Config'
+import Navigation from '@/Config/Navigation'
 import Item from './Item'
 
 const DrawerItem = () => {
@@ -36,7 +36,7 @@ const DrawerItem = () => {
         </View>
       </View>
       <ScrollView>
-        {Config.NAVIGATION.INTERVENTION_STAGES.map((stage, index) => (
+        {Navigation.INTERVENTION_STAGES.map((stage, index) => (
           <Item
             key={index}
             stage={stage}

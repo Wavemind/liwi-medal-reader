@@ -7,14 +7,10 @@ import { View, Text } from 'react-native'
 /**
  * The internal imports
  */
-import {
-  RegistrationMedicalCaseContainer,
-  // First Assessments
-  UniqueTriageQuestionsMedicalCaseContainer,
-  ComplaintCategoryMedicalCaseContainer,
-  BasicMeasurementMedicalCaseContainer,
-  MedicalCaseDiagnosesIndexContainer,
-} from '@/Containers'
+import BasicMeasurementMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/BasicMeasurement'
+import ComplaintCategoryMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/ComplaintCategory'
+import UniqueTriageQuestionsMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/UniqueTriageQuestions'
+import RegistrationMedicalCaseContainer from '@/Containers/MedicalCase/Registration'
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //
