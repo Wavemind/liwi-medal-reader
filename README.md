@@ -1,4 +1,4 @@
-# MedAl-reader
+# MedAl-reader [![CI](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml/badge.svg?branch=develop)](https://github.com/Wavemind/liwi-medal-reader/actions/workflows/node.js.yml)
 
 React native application used by clinician and feed by MedAl-creator
 
@@ -23,9 +23,9 @@ Below you'll find information about performing common tasks.
   - [Data Structure](#data-structure)
     - [Medical Case](#medical-case)
   - [Icons available](#icons-available)
-  - [Date](#date)
     - [ColoredIcon](#coloredicon)
     - [Icon](#icon)
+  - [Date](#date)
   - [Writing and Running Tests](#writing-and-running-tests)
   - [Publishing](#publishing)
 
