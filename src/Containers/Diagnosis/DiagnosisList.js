@@ -10,7 +10,13 @@ import filter from 'lodash/filter'
 /**
  * The internal imports
  */
-import { Icon, SectionHeader, Autosuggest, BadgeBar } from '@/Components'
+import {
+  Icon,
+  SectionHeader,
+  Autosuggest,
+  BadgeBar,
+  EmptyList,
+} from '@/Components'
 import { useTheme } from '@/Theme'
 import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
 import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
@@ -20,8 +26,6 @@ const ListDiagnosisContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
-    Layout,
-    Fonts,
     Containers: { diagnosisList },
   } = useTheme()
 
@@ -108,18 +112,6 @@ const ListDiagnosisContainer = ({ navigation }) => {
     setNumToDisplay(numToAdd)
   }
 
-  /**
-   * Renders the empty list text
-   * @returns {JSX.Element}
-   */
-  const renderEmptyList = () => {
-    return (
-      <View style={Layout.alignItemsCenter}>
-        <Text style={Fonts.textMedium}>{t('application.no_results')}</Text>
-      </View>
-    )
-  }
-
   return (
     <View style={diagnosisList.wrapper}>
       <View style={diagnosisList.headerWrapper}>
@@ -158,7 +150,7 @@ const ListDiagnosisContainer = ({ navigation }) => {
           />
         )}
         keyExtractor={item => item.id}
-        ListEmptyComponent={renderEmptyList}
+        ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
         onEndReached={() => displayDiagnoses()}
         onEndReachedThreshold={0.1}
       />

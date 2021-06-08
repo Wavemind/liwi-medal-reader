@@ -11,11 +11,11 @@ import { useTranslation } from 'react-i18next'
  */
 import { Question, EmptyList } from '@/Components'
 
-const BasicMeasurementMedicalCaseContainer = props => {
+const ReferralMedicalCaseContainer = props => {
   const { t } = useTranslation()
 
   const questions = useSelector(
-    state => state.algorithm.item.config.full_order.basic_measurements_step,
+    state => state.algorithm.item.config.full_order.referral_step,
   )
 
   return (
@@ -30,4 +30,4 @@ const BasicMeasurementMedicalCaseContainer = props => {
   )
 }
 
-export default BasicMeasurementMedicalCaseContainer
+export default ReferralMedicalCaseContainer

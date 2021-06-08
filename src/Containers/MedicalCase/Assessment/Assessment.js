@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { FlatList } from 'react-native'
+import { View, FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -11,11 +11,11 @@ import { useTranslation } from 'react-i18next'
  */
 import { Question, EmptyList } from '@/Components'
 
-const UniqueTriageQuestionsMedicalCaseContainer = props => {
+const AssessmentMedicalCaseContainer = props => {
   const { t } = useTranslation()
 
   const questions = useSelector(
-    state => state.algorithm.item.config.full_order.first_look_assessment_step,
+    state => state.algorithm.item.config.full_order.test_step,
   )
 
   return (
@@ -23,10 +23,13 @@ const UniqueTriageQuestionsMedicalCaseContainer = props => {
       <FlatList
         data={questions}
         renderItem={({ item }) => <Question questionId={item} />}
+        ListEmptyComponent={
+          <EmptyList text={t('containers.medical_case.no_questions')} />
+        }
         keyExtractor={item => item.id}
       />
     </View>
   )
 }
 
-export default UniqueTriageQuestionsMedicalCaseContainer
+export default AssessmentMedicalCaseContainer

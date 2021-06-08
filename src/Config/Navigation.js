@@ -7,11 +7,22 @@ import { View, Text } from 'react-native'
 /**
  * The internal imports
  */
-import BasicMeasurementMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/BasicMeasurement'
-import ComplaintCategoryMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/ComplaintCategory'
-import UniqueTriageQuestionsMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/UniqueTriageQuestions'
+// Registration
 import RegistrationMedicalCaseContainer from '@/Containers/MedicalCase/Registration'
+// First Assessments
+import UniqueTriageQuestionsMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/UniqueTriageQuestions'
+import ComplaintCategoryMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/ComplaintCategory'
+import BasicMeasurementMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/BasicMeasurement'
+// Consultation
+import PhysicalExamMedicalCaseContainer from '@/Containers/MedicalCase/Consultation/PhysicalExam'
+import MedicalHistoryMedicalCaseContainer from '@/Containers/MedicalCase/Consultation/MedicalHistory'
+// Assessment
+import AssessmentMedicalCaseContainer from '@/Containers/MedicalCase/Assessment/Assessment'
+// Diagnosis
 import MedicalCaseDiagnosesIndexContainer from '@/Containers/MedicalCase/Diagnoses/DiagnosesIndex'
+import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
+import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'
+
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //
@@ -36,7 +47,7 @@ const diagnosesStage = {
     },
     {
       label: 'healthcare_questions',
-      component: ToDo,
+      component: TreatmentConditionsMedicalCaseContainer,
     },
     {
       label: 'medicines',
@@ -55,7 +66,7 @@ const diagnosesStage = {
 
 const referralStep = {
   label: 'referral',
-  component: 'Referral',
+  component: ReferralMedicalCaseContainer,
 }
 
 const baseInterventionStages = [
@@ -96,15 +107,11 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'medical_history',
-        component: ToDo,
+        component: MedicalHistoryMedicalCaseContainer,
       },
       {
         label: 'physical_exams',
-        component: ToDo,
-      },
-      {
-        label: 'comment',
-        component: ToDo,
+        component: PhysicalExamMedicalCaseContainer,
       },
     ],
   },
@@ -115,7 +122,7 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'assessments',
-        component: ToDo,
+        component: AssessmentMedicalCaseContainer,
       },
     ],
   },

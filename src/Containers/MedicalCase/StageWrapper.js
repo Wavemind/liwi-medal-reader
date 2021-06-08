@@ -34,6 +34,7 @@ const StageWrapper = ({ route }) => {
           </Text>
         </View>
         <Tab.Navigator
+          lazy={true}
           tabBarOptions={{ scrollEnabled: true, tabStyle: medicalCase.tabBar }}
           tabBar={tabProps => <TabBar {...{ ...tabProps, stageIndex }} />}
           lazy={true}

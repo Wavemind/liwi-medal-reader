@@ -50,8 +50,6 @@ const ProposedDiagnoses = () => {
     }),
   )
 
-  console.log(formattedProposed)
-
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
    * @param proposedDiagnosisId
