@@ -7,22 +7,22 @@ import { View, Text } from 'react-native'
 /**
  * The internal imports
  */
-import {
-  RegistrationMedicalCaseContainer,
-  // First Assessments
-  UniqueTriageQuestionsMedicalCaseContainer,
-  ComplaintCategoryMedicalCaseContainer,
-  BasicMeasurementMedicalCaseContainer,
-  // Consultation
-  MedicalHistoryMedicalCaseContainer,
-  PhysicalExamMedicalCaseContainer,
-  // Assessment
-  AssessmentMedicalCaseContainer,
-  // Diagnosis
-  TreatmentConditionsMedicalCaseContainer,
-  ReferralMedicalCaseContainer,
-  MedicalCaseDiagnosesIndexContainer,
-} from '@/Containers'
+// Registration
+import RegistrationMedicalCaseContainer from '@/Containers/MedicalCase/Registration'
+// First Assessments
+import UniqueTriageQuestionsMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/UniqueTriageQuestions'
+import ComplaintCategoryMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/ComplaintCategory'
+import BasicMeasurementMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/BasicMeasurement'
+// Consultation
+import PhysicalExamMedicalCaseContainer from '@/Containers/MedicalCase/Consultation/PhysicalExam'
+import MedicalHistoryMedicalCaseContainer from '@/Containers/MedicalCase/Consultation/MedicalHistory'
+// Assessment
+import AssessmentMedicalCaseContainer from '@/Containers/MedicalCase/Assessment/Assessment'
+// Diagnosis
+import MedicalCaseDiagnosesIndexContainer from '@/Containers/MedicalCase/Diagnoses/DiagnosesIndex'
+import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
+import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'
+
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //

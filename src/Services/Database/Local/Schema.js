@@ -1,16 +1,17 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 7,
+  version: 6,
   tables: [
     tableSchema({
       name: 'medical_cases',
       columns: [
         { name: 'json', type: 'string', isOptional: true, isIndexed: true },
+        { name: 'advancement', type: 'string' },
         { name: 'synchronized_at', type: 'number', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
-        { name: 'status', type: 'string' },
+        { name: 'closed_at', type: 'number' },
         { name: 'patient_id', type: 'string' },
         { name: 'fail_safe', type: 'boolean' },
       ],
@@ -18,6 +19,9 @@ export default appSchema({
     tableSchema({
       name: 'patients',
       columns: [
+        { name: 'first_name', type: 'string', isIndexed: true },
+        { name: 'last_name', type: 'string', isIndexed: true },
+        { name: 'birth_date', type: 'number', isIndexed: true },
         { name: 'uid', type: 'string', isIndexed: true },
         { name: 'study_id', type: 'string' },
         { name: 'group_id', type: 'string' },

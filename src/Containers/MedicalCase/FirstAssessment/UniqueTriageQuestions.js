@@ -19,14 +19,13 @@ const UniqueTriageQuestionsMedicalCaseContainer = props => {
   )
 
   return (
-    <FlatList
-      data={questions}
-      renderItem={({ item }) => <Question questionId={item} />}
-      ListEmptyComponent={
-        <EmptyList text={t('containers.medical_case.no_questions')} />
-      }
-      keyExtractor={item => item}
-    />
+    <View>
+      <FlatList
+        data={questions}
+        renderItem={({ item }) => <Question questionId={item} />}
+        keyExtractor={item => item.id}
+      />
+    </View>
   )
 }
 

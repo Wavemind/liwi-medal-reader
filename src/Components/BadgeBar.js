@@ -50,7 +50,7 @@ const BadgeBar = ({
         {selected.map(selectedItem => {
           return (
             <Badge
-              key={selectedItem}
+              key={`badge-${selectedItem.filterBy}-${selectedItem.value}`}
               removeBadge={removeBadge}
               selectedItem={selectedItem}
               label={() => badgeComponentLabel(selectedItem)}

@@ -2,16 +2,12 @@
  * The external imports
  */
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
-import { Database, Q } from '@nozbe/watermelondb'
-import { useSelector } from 'react-redux'
-import uuid from 'react-native-uuid'
-import * as _ from 'lodash'
-import moment from 'moment'
+import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
 
+import { Database, Q } from '@nozbe/watermelondb'
 /**
  * The internal imports
  */
-import { Config } from '@/Config'
 import schema from './Schema'
 
 import {
@@ -21,8 +17,10 @@ import {
   MedicalCaseModel,
 } from './Models'
 
-const adapter = new SQLiteAdapter({
+const adapter = new LokiJSAdapter({
   schema,
+  useWebWorker: false,
+  useIncrementalIndexedDB: true,
 })
 
 const database = new Database({
@@ -37,10 +35,6 @@ const database = new Database({
 })
 
 export default function () {
-  const healthFacility = useSelector(state => state.healthFacility.item)
-  const algorithm = useSelector(state => state.algorithm.item)
-  const architecture = healthFacility.architecture
-
   /**
    * Create activities for a releated medical case
    * @param { array } activities - List of activities to create
@@ -180,46 +174,29 @@ export default function () {
    * @private
    */
   const _initClasses = async (data, model) => {
-    // let object = []
-    // const environment = useSelector(state => state.system.environment)
-    // if (model === 'Patient') {
-    //   if (data instanceof Array) {
-    //     object = Promise.all(
-    //       data.map(async item => {
-    //         let patientValues = await item.patientValues
-    //         patientValues = patientValues?.map(
-    //           patientValue => new PatientValueModel(patientValue),
-    //         )
-    //         item = {
-    //           ...item._raw,
-    //           id: item.id,
-    //           patientValues,
-    //           medicalCases: item.medicalCases,
-    //         }
-    //         return new PatientModel(item, environment)
-    //       }),
-    //     )
-    //   } else {
-    //     let patientValues = await data.patientValues
-    //     patientValues = patientValues?.map(
-    //       patientValue => new PatientValueModel(patientValue),
-    //     )
-    //     data = {
-    //       ...data._raw,
-    //       id: data.id,
-    //       patientValues,
-    //       medicalCases: data.medicalCases,
-    //     }
-    //     return new PatientModel(data, environment)
-    //   }
-    // } else if (data instanceof Array) {
-    //   data.forEach(item => {
-    //     object.push(new MedicalCaseModel(item))
-    //   })
-    // } else {
-    //   return new MedicalCaseModel(data)
-    // }
-    // return object
+    let object = []
+    if (model === 'Patient') {
+      if (data instanceof Array) {
+        object = await Promise.all(
+          data.map(async item => {
+            return _buildPatient(item)
+          }),
+        )
+        console.log(object)
+      } else {
+        return _buildPatient(data)
+      }
+    } else if (data instanceof Array) {
+      object = await Promise.all(
+        data.map(async item => {
+          return _buildMedicalCaseLight(item)
+        }),
+      )
+    } else {
+      return _buildMedicalCase(data)
+    }
+    console.log(object)
+    return object
   }
 
   /**
@@ -229,18 +206,18 @@ export default function () {
    * @private
    */
   const _mapModelToTable = model => {
-    // switch (model) {
-    //   case 'Patient':
-    //     return 'patients'
-    //   case 'MedicalCase':
-    //     return 'medical_cases'
-    //   case 'PatientValue':
-    //     return 'patient_values'
-    //   case 'Activity':
-    //     return 'activities'
-    //   default:
-    //     console.log("Watermelon table doesn't exist", model)
-    // }
+    switch (model) {
+      case 'Patient':
+        return 'patients'
+      case 'MedicalCase':
+        return 'medical_cases'
+      case 'PatientValue':
+        return 'patient_values'
+      case 'Activity':
+        return 'activities'
+      default:
+        console.log("Watermelon table doesn't exist", model)
+    }
   }
 
   /**
@@ -303,9 +280,9 @@ export default function () {
    * @returns { Collection } - The wanted object
    */
   const findBy = async (model, value, field = 'id') => {
-    // const collection = database.get(_mapModelToTable(model))
-    // const object = await collection.query(Q.where(field, value))
-    // return object[0] === undefined ? null : _initClasses(object[0], model)
+    const collection = database.get(_mapModelToTable(model))
+    const object = await collection.query(Q.where(field, value))
+    return object[0] === undefined ? null : _initClasses(object[0], model)
   }
 
   /**
@@ -330,9 +307,10 @@ export default function () {
    * @returns { Collection } - A collection of all the data
    */
   const getAll = async (model, page = null, params, rawData = false) => {
-    // const collection = database.get(_mapModelToTable(model))
-    // let result = await collection.query().fetch()
-    // const queries = []
+    const collection = database.get(_mapModelToTable(model))
+    let result = await collection.query().fetch()
+    return await _initClasses(result, model)
+    //const queries = []
     // if (page === null) {
     //   if (!rawData) {
     //     result = await _initClasses(result, model)
@@ -380,48 +358,108 @@ export default function () {
     // return _generateConsentList(result, columns)
   }
 
-  /**
-   * Creates an entry of a specific model in the database
-   * @param { string } model - The model name of the data we want to retrieve
-   * @param { object } object - The value of the object
-   */
-  const insert = async (model, object) => {
-    // const collection = database.get(_mapModelToTable(model))
-    // let patient = null
+  const insertPatient = async (patientData, medicalCaseData) => {
+    const collection = database.get('patients')
+
+    let patient = null
     // if (architecture === 'client_server') {
     //   object = { ...object, fail_safe: true }
     // }
-    // await database.action(async () => {
-    //   patient = await collection.create(record => {
-    //     record._raw.id = object.id
-    //     record.uid = object.uid
-    //     record.study_id = object.study_id
-    //     record.group_id = object.group_id
-    //     record.other_uid = object.other_uid
-    //     record.other_study_id = object.other_study_id
-    //     record.other_group_id = object.other_group_id
-    //     record.reason = object.reason
-    //     record.consent = object.medicalCases[0].consent
-    //     record.consent_file = object.consent_file
-    //     record.fail_safe = object.fail_safe
-    //   })
-    // }, 'create patient')
-    // const nestedCollection = database.get('medical_cases')
-    // // MedicalCase
-    // await database.action(async () => {
-    //   object.medicalCases.map(async medicalCase => {
-    //     await nestedCollection.create(nestedRecord => {
-    //       nestedRecord._raw.id = medicalCase.id
-    //       nestedRecord.json = medicalCase.json
-    //       nestedRecord.synchronized_at = medicalCase.synchronized_at
-    //       nestedRecord.status = medicalCase.status
-    //       nestedRecord.fail_safe = object.fail_safe
-    //       nestedRecord.patient.set(patient)
-    //     })
-    //     await _generateActivities(medicalCase.activities, medicalCase.id)
-    //   })
-    // }, 'create medicalCases')
-    // await Promise.all([_savePatientValue(model, object)])
+    await database.action(async () => {
+      patient = await collection.create(record => {
+        record._raw.id = patientData.id
+        record.first_name = patientData.first_name
+        record.last_name = patientData.last_name
+        record.birth_date = patientData.birth_date
+        record.uid = patientData.uid
+        record.study_id = patientData.study_id
+        record.group_id = patientData.group_id
+        record.other_uid = patientData.other_uid
+        record.other_study_id = patientData.other_study_id
+        record.other_group_id = patientData.other_group_id
+        record.reason = patientData.reason
+        record.consent = patientData.consent
+        record.consent_file = patientData.consent_file
+        record.fail_safe = patientData.fail_safe
+      })
+      const nestedCollection = database.get('medical_cases')
+      await nestedCollection.create(nestedRecord => {
+        nestedRecord._raw.id = medicalCaseData.id
+        nestedRecord.json = {
+          comment: medicalCaseData.comment,
+          consent: medicalCaseData.consent,
+          diagnosis: medicalCaseData.diagnosis,
+          nodes: medicalCaseData.nodes,
+        }
+        nestedRecord.synchronized_at = medicalCaseData.synchronized_at
+        nestedRecord.advancement = medicalCaseData.advancement
+        nestedRecord.closedAt = null
+        nestedRecord.fail_safe = false
+        nestedRecord.patient.set(patient)
+      })
+    }, 'create patient')
+
+    // MedicalCase
+    //await _generateActivities(medicalCaseData.activities, medicalCaseData.id)
+    //await Promise.all([_savePatientValue('patients', patientData)])
+  }
+
+  const _buildPatient = async patient => {
+    const medicalCases = await patient.medicalCases.fetch()
+    const newPatient = patient._raw
+
+    const response = {
+      createdAt: newPatient.created_at,
+      updatedAt: newPatient.updated_at,
+      medicalCases,
+    }
+    delete newPatient._changed
+    delete newPatient._status
+    delete newPatient.created_at
+    delete newPatient.updated_at
+    return {
+      ...newPatient,
+      ...response,
+    }
+  }
+
+  const _buildMedicalCaseLight = async medicalCase => {
+    const patient = await medicalCase.patient.fetch()
+    return {
+      id: medicalCase.id,
+      synchronized_at: medicalCase.synchronized_at,
+      advancement: medicalCase.advancement,
+      fail_safe: medicalCase.fail_safe,
+      createdAt: medicalCase.createdAt,
+      updatedAt: medicalCase.updatedAt,
+      closedAt: medicalCase.closedAt,
+      patient: {
+        id: patient.id,
+        first_name: patient.first_name,
+        last_name: patient.last_name,
+        birth_date: patient.birth_date,
+      },
+    }
+  }
+
+  const _buildMedicalCase = async medicalCase => {
+    const patient = await medicalCase.patient.fetch()
+    return {
+      id: medicalCase.id,
+      activities: [],
+      comment: medicalCase.json.comment,
+      consent: medicalCase.json.consent,
+      diagnosis: medicalCase.json.diagnosis,
+      nodes: medicalCase.json.nodes,
+      json: '',
+      synchronized_at: medicalCase.synchronized_at,
+      advancement: medicalCase.advancement,
+      fail_safe: medicalCase.fail_safe,
+      createdAt: medicalCase.created_at,
+      updatedAt: medicalCase.updated_at,
+      closedAt: medicalCase.closed_at,
+      patient,
+    }
   }
 
   /**
@@ -534,7 +572,7 @@ export default function () {
     findBy,
     getAll,
     getConsentsFile,
-    insert,
+    insertPatient,
     lockMedicalCase,
     push,
     unlockMedicalCase,

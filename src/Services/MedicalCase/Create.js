@@ -24,6 +24,7 @@ export default async ({ algorithm }) => {
     },
     id: uuid.v4(),
     nodes: generateNodes({ nodes: algorithm.nodes }),
+    json: '',
     advancement: {
       stage: 0,
       step: 0,
