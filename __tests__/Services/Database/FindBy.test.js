@@ -1,8 +1,7 @@
 /**
- * @format
+ * The external imports
  */
-//import useLocalInterface from '@/Services/Database/Local/useLocalInterface'
-import uuid from 'uuid'
+import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
