@@ -12,6 +12,7 @@ export default {
     new_medical_case: 'New case',
     show_consent: 'Show consent',
     scan_consent: 'Scan new consent',
+    add: 'Add',
   },
   algorithm: {
     version_id: 'Version id',
@@ -96,6 +97,15 @@ export default {
       },
       registration: {
         questions: 'Questions',
+      },
+      diagnoses: {
+        proposed_title: 'Diagnoses proposed by {{ version_name }}',
+        agree: 'Agree',
+        disagree: 'Disagree',
+        additional_title: 'Additional selected',
+        additional_placeholder: 'Select your diagnoses',
+        custom_title: 'Your proposition',
+        custom_placeholder: 'Add your diagnosis',
       },
     },
     scan: {

@@ -102,7 +102,3 @@ describe('unlockMedicalCase should unlock a medical case', () => {
 describe('update should update an object ', () => {
   it('', async () => {})
 })
-
-describe('findBy should find an object based on a query', () => {
-  it('', async () => {})
-})

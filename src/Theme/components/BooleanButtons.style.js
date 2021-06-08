@@ -1,10 +1,11 @@
-import { StyleSheet } from 'react-native'
+import {StyleSheet, Text} from 'react-native'
+import React from "react";
 
 export default function (props) {
-  const { Colors, Gutters, Layout } = props
+  const { Colors, Gutters, Layout, Fonts } = props
 
   return StyleSheet.create({
-    buttonWrapper: (side, active, disabled) => ({
+    buttonWrapper: (side, active, disabled = false) => ({
       ...Layout.fill,
       backgroundColor: active ? Colors.primary : Colors.secondary,
       opacity: disabled ? 0.5 : 1,
@@ -17,6 +18,7 @@ export default function (props) {
     }),
     buttonText: active => ({
       ...Gutters.smallVPadding,
+      ...Fonts.textSmall,
       color: active ? Colors.secondary : Colors.primary,
     }),
   })
