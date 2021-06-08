@@ -16,8 +16,8 @@ import {
   // Consultation
   MedicalHistoryMedicalCaseContainer,
   PhysicalExamMedicalCaseContainer,
-  // Test
-  TestMedicalCaseContainer,
+  // Assessment
+  AssessmentMedicalCaseContainer,
   // Diagnosis
   TreatmentConditionsMedicalCaseContainer,
   ReferralMedicalCaseContainer,
@@ -122,7 +122,7 @@ const baseInterventionStages = [
     steps: [
       {
         label: 'assessments',
-        component: TestMedicalCaseContainer,
+        component: AssessmentMedicalCaseContainer,
       },
     ],
   },

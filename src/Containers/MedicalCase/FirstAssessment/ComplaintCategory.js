@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -16,21 +16,33 @@ const ComplaintCategoryMedicalCaseContainer = props => {
   const { t } = useTranslation()
 
   const birthDate = useSelector(state => state.patient.item.birth_date)
-  const test = useSelector(
-    state => state.algorithm.item.config.full_order.complaint_categories_step,
+  const olderCC = useSelector(
+    state =>
+      state.algorithm.item.config.full_order.complaint_categories_step.older,
   )
-  const days = differenceInDays(new Date(), new Date(birthDate))
+  const neonatCC = useSelector(
+    state =>
+      state.algorithm.item.config.full_order.complaint_categories_step.neonat,
+  )
+  const olderGeneralId = useSelector(
+    state => state.algorithm.item.config.basic_questions.general_cc_id,
+  )
+  const neonatGeneralId = useSelector(
+    state => state.algorithm.item.config.basic_questions.yi_general_cc_id,
+  )
+  const [questions, setQuestions] = useState([])
 
-  const questions = useSelector(state => {
+  // Remove general CC
+  useEffect(() => {
+    const days = differenceInDays(new Date(), new Date(birthDate))
+
     if (days <= 60) {
-      return state.algorithm.item.config.full_order.complaint_categories_step[1]
-        .neonat_children
+      setQuestions(neonatCC.filter(item => item !== neonatGeneralId))
+    } else {
+      setQuestions(olderCC.filter(item => item !== olderGeneralId))
     }
-    return state.algorithm.item.config.full_order.complaint_categories_step[0]
-      .older_children
-  })
+  }, [])
 
-  console.log(questions)
   return (
     <FlatList
       data={questions}

@@ -27,9 +27,6 @@ const RegistrationMedicalCaseContainer = props => {
     state => state.algorithm.item.config.full_order.registration_step,
   )
 
-  const algorith = useSelector(state => state.algorithm.item.config.full_order)
-  console.log(algorith)
-
   /**
    * Returns the static questions for the medical case
    * @returns List of inputs to show

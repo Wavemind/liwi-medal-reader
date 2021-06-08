@@ -95,6 +95,7 @@ export default {
         medicines: 'Medicines',
         formulations: 'Formulations',
         summary: 'Summary',
+        referral: 'Referral',
       },
       registration: {
         questions: 'Questions',

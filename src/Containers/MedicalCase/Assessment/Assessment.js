@@ -15,7 +15,7 @@ const AssessmentMedicalCaseContainer = props => {
   const { t } = useTranslation()
 
   const questions = useSelector(
-    state => state.algorithm.item.mobile_config.full_order.test_step,
+    state => state.algorithm.item.config.full_order.test_step,
   )
 
   return (
