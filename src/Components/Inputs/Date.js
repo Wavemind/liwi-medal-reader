@@ -77,7 +77,7 @@ const DateInput = () => {
   }, [])
 
   /**
-   * Reset the value of the field when we check
+   * Reset the value of the field when we check and store the value in the patient store
    */
   useEffect(() => {
     setEstimatedValue('')
@@ -85,6 +85,12 @@ const DateInput = () => {
     setDayValue(null)
     setMonthValue(null)
     setYearValue(null)
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated',
+        value: isEstimated,
+      }),
+    )
   }, [isEstimated])
 
   /**

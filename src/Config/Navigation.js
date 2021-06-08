@@ -31,7 +31,7 @@ const diagnosesStage = {
   steps: [
     {
       label: 'final_diagnoses',
-      component: ToDo,
+      component: MedicalCaseDiagnosesIndexContainer,
     },
     {
       label: 'healthcare_questions',
