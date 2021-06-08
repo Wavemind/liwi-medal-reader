@@ -17,8 +17,9 @@ import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
 import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
+import ChangeAdditionalDiagnoses from "@/Store/MedicalCase/ChangeAdditionalDiagnoses";
 
-const ProposedDrugs = ({ type }) => {
+const ProposedDrugs = ({ diagnosisType }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -34,9 +35,7 @@ const ProposedDrugs = ({ type }) => {
   const { t } = useTranslation()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis[type])
-
-  console.log(diagnoses)
+  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis[diagnosisType])
 
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
@@ -58,7 +57,7 @@ const ProposedDrugs = ({ type }) => {
       }
       dispatch(
         AddAgreedDrugs.action({
-          type,
+          diagnosisType,
           drugId,
           diagnosisId: diagnosisId,
           drugContent: { id: drugId },
@@ -70,7 +69,7 @@ const ProposedDrugs = ({ type }) => {
         tempRefusedDrugs.splice(tempRefusedDrugs.indexOf(drugId), 1)
         dispatch(
           RemoveRefusedDrugs.action({
-            type,
+            diagnosisType,
             diagnosisId: diagnosisId,
             newRefusedDrugs: tempRefusedDrugs,
           }),
@@ -83,7 +82,7 @@ const ProposedDrugs = ({ type }) => {
       tempRefusedDrugs.push(drugId)
       dispatch(
         AddRefusedDrugs.action({
-          type,
+          diagnosisType,
           diagnosisId: diagnosisId,
           newRefusedDrugs: tempRefusedDrugs,
         }),
@@ -93,13 +92,34 @@ const ProposedDrugs = ({ type }) => {
       if (isInAgreed) {
         dispatch(
           RemoveAgreedDrugs.action({
-            type,
+            diagnosisType,
             drugId,
             diagnosisId: diagnosisId,
           }),
         )
       }
     }
+  }
+
+  /**
+   * Removes a single element from the additional diagnosis list
+   * @param diagnosisId
+   */
+  const removeAdditionalDrug = (diagnosisId, drugId) => {
+    const tempAdditionalDrugs = { ...diagnoses[diagnosisId].drugs.additional }
+
+    const index = Object.keys(tempAdditionalDrugs).indexOf(
+      diagnosisId.toString(),
+    )
+    if (index > -1) {
+      delete tempAdditionalDrugs[diagnosisId.toString()]
+    }
+
+    dispatch(
+      ChangeAdditionalDiagnoses.action({
+        newAdditionalDiagnoses: tempAdditionalDrugs,
+      }),
+    )
   }
 
   /**
@@ -167,7 +187,7 @@ const ProposedDrugs = ({ type }) => {
         <Text style={medicalCaseDrugs.diagnosisType}>
           {t(
             `containers.medical_case.drugs.${
-              type === 'agreed' ? 'proposed' : 'additional'
+              diagnosisType === 'agreed' ? 'proposed' : 'additional'
             }`,
           )}
         </Text>
@@ -200,6 +220,8 @@ const ProposedDrugs = ({ type }) => {
           listItemType="drugs"
           navigateTo="Drugs"
           handleRemove={() => console.log('remove')}
+          diagnosisId={diagnosis.id}
+          diagnosisType={diagnosisType}
         />
       </View>
     </View>

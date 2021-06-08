@@ -17,8 +17,8 @@ const Drugs = () => {
 
   return (
     <ScrollView>
-      <ProposedDrugs type="agreed" />
-      <ProposedDrugs type="additional" />
+      <ProposedDrugs diagnosisType="agreed" />
+      <ProposedDrugs diagnosisType="additional" />
       <CustomDrugs />
     </ScrollView>
   )

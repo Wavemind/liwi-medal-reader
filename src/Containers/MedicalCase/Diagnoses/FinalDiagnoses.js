@@ -13,7 +13,7 @@ import {
   SectionHeader,
   ProposedDiagnoses,
   AdditionalDiagnoses,
-  CustomDiagnoses, AdditionalSelect,
+  CustomDiagnoses,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 
@@ -28,7 +28,9 @@ const FinalDiagnoses = () => {
   return (
     <ScrollView style={Gutters.regularHPadding}>
       <SectionHeader
-        label={t('containers.medical_case.diagnoses.proposed_title', { version_name: versionName })}
+        label={t('containers.medical_case.diagnoses.proposed_title', {
+          version_name: versionName,
+        })}
       />
       <ProposedDiagnoses />
       <View style={Gutters.largeTMargin}>

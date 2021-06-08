@@ -8,7 +8,14 @@ import { navigate } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 
-const AdditionalSelect = ({ list, listItemType, navigateTo, handleRemove }) => {
+const AdditionalSelect = ({
+  list,
+  listItemType,
+  navigateTo,
+  handleRemove,
+  diagnosisId = null,
+  diagnosisType = 'agreed',
+}) => {
   // Theme and style elements deconstruction
   const {
     Fonts,
@@ -40,7 +47,7 @@ const AdditionalSelect = ({ list, listItemType, navigateTo, handleRemove }) => {
       ))}
       <TouchableOpacity
         style={medicalCaseFinalDiagnoses.addAdditionalButton}
-        onPress={() => navigate(navigateTo)}
+        onPress={() => navigate(navigateTo, { diagnosisType, diagnosisId })}
       >
         <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder', {

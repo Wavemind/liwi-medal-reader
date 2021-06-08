@@ -10,20 +10,35 @@ import filter from 'lodash/filter'
 /**
  * The internal imports
  */
-import { Icon, SectionHeader, Autosuggest, BadgeBar } from '@/Components'
+import {
+  Icon,
+  SectionHeader,
+  Autosuggest,
+  BadgeBar,
+  SquareButton,
+} from '@/Components'
 import { useTheme } from '@/Theme'
 import DiagnosisItem from '@/Containers/Diagnosis/DiagnosisItem'
 import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
 import { translate } from '@/Translations/algorithm'
 
-const ListDrugsContainer = ({ navigation }) => {
+const ListDrugsContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
     Layout,
     Fonts,
+    Gutters,
+    FontSize,
     Containers: { diagnosisList },
   } = useTheme()
+
+  const {
+    params: { diagnosisType, diagnosisId },
+  } = route
+
+  console.log(diagnosisType)
+  console.log(diagnosisId)
 
   // Define store and translation hooks
   const { t } = useTranslation()
@@ -31,9 +46,13 @@ const ListDrugsContainer = ({ navigation }) => {
 
   // Get data from the store
   const algorithm = useSelector(state => state.algorithm.item)
-  const additionalDiagnosis = useSelector(
-    state => state.medicalCase.item.diagnosis.additional,
+  const additionalDrugs = useSelector(
+    state =>
+      state.medicalCase.item.diagnosis[diagnosisType][diagnosisId].drugs
+        .additional,
   )
+
+  console.log(additionalDrugs)
 
   // Define component constants
   const drugsList = filter(algorithm.nodes, {
@@ -43,7 +62,7 @@ const ListDrugsContainer = ({ navigation }) => {
 
   // Local state definition
   const [drugs, setDrugs] = useState([])
-  const [selected, setSelected] = useState(additionalDiagnosis)
+  const [selected, setSelected] = useState(additionalDrugs)
   const [searchTerm, setSearchTerm] = useState('')
   const [numToDisplay, setNumToDisplay] = useState(numToAdd)
 
@@ -52,7 +71,7 @@ const ListDrugsContainer = ({ navigation }) => {
    */
   useEffect(() => {
     if (searchTerm.length === 0) {
-      displayDiagnoses()
+      displayDrugs()
     } else {
       const filteredDiagnosisList = filter(drugsList, diagnosis =>
         translate(diagnosis.label).match(new RegExp(searchTerm, 'i')),
@@ -64,7 +83,7 @@ const ListDrugsContainer = ({ navigation }) => {
   /**
    * Defines the array of diagnoses to be displayed
    */
-  const displayDiagnoses = () => {
+  const displayDrugs = () => {
     if (searchTerm.length === 0) {
       const dataToRender = drugsList.slice(0, numToDisplay)
       setNumToDisplay(numToDisplay + numToAdd)
@@ -91,7 +110,7 @@ const ListDrugsContainer = ({ navigation }) => {
   /**
    * Updates the global store when the user is done selecting elements
    */
-  const handleClose = () => {
+  const handleApply = () => {
     // dispatch(
     //   ChangeAdditionalDiagnoses.action({
     //     newAdditionalDiagnoses: selected,
@@ -121,47 +140,77 @@ const ListDrugsContainer = ({ navigation }) => {
   }
 
   return (
-    <View style={diagnosisList.wrapper}>
-      <View style={diagnosisList.headerWrapper}>
-        <Text style={diagnosisList.header}>
-          {t('containers.diagnosis.title')}
-        </Text>
-        <TouchableOpacity
-          style={diagnosisList.closeButton}
-          onPress={handleClose}
-        >
-          <Icon name="close" color={Colors.secondary} />
-        </TouchableOpacity>
+    <View style={{ ...Layout.fullHeight }}>
+      <View style={diagnosisList.wrapper}>
+        <View style={diagnosisList.headerWrapper}>
+          <Text style={diagnosisList.header}>
+            {t('containers.diagnosis.title')}
+          </Text>
+          <TouchableOpacity
+            style={diagnosisList.closeButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="close" color={Colors.secondary} />
+          </TouchableOpacity>
+        </View>
+        <Autosuggest
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleReset={handleSearchReset}
+        />
+        <BadgeBar
+          removeBadge={toggleAdditionalDiagnosis}
+          selected={selected}
+          clearBadges={() => setSelected([])}
+          badgeComponentLabel={itemId =>
+            translate(algorithm.nodes[itemId].label)
+          }
+        />
+
+        <SectionHeader label="Diagnosis" />
+
+        <FlatList
+          data={drugs}
+          renderItem={({ item }) => (
+            <DiagnosisItem
+              selected={selected}
+              item={item}
+              handlePress={toggleAdditionalDiagnosis}
+            />
+          )}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={renderEmptyList}
+          onEndReached={() => displayDrugs()}
+          onEndReachedThreshold={0.1}
+        />
       </View>
-      <Autosuggest
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        handleReset={handleSearchReset}
-      />
-      <BadgeBar
-        removeBadge={toggleAdditionalDiagnosis}
-        selected={selected}
-        clearBadges={() => setSelected([])}
-        badgeComponentLabel={itemId => translate(algorithm.nodes[itemId].label)}
-      />
-
-      <SectionHeader label="Diagnosis" />
-
-      <FlatList
-        data={drugs}
-        style={diagnosisList.flatList}
-        renderItem={({ item }) => (
-          <DiagnosisItem
-            selected={selected}
-            item={item}
-            handlePress={toggleAdditionalDiagnosis}
-          />
+      <View style={diagnosisList.footerWrapper}>
+        {Object.keys(selected).length > 0 && (
+          <TouchableOpacity
+            onPress={() => setSelected([])}
+            style={diagnosisList.clearFiltersButton}
+          >
+            <View style={diagnosisList.clearFiltersButtonWrapper}>
+              <Icon
+                name="refresh"
+                color="red"
+                size={FontSize.regular}
+                style={Gutters.regularRMargin}
+              />
+              <Text style={diagnosisList.clearFiltersButtonText}>
+                {t('actions.clear_selection')}
+              </Text>
+            </View>
+          </TouchableOpacity>
         )}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={renderEmptyList}
-        onEndReached={() => displayDiagnoses()}
-        onEndReachedThreshold={0.1}
-      />
+        <SquareButton
+          label="Apply Selection"
+          bgColor={Colors.primary}
+          color={Colors.secondary}
+          fullWidth={false}
+          onPress={handleApply}
+        />
+      </View>
     </View>
   )
 }
