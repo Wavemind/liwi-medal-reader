@@ -44,8 +44,8 @@ const ToggleComplaintCategory = ({ questionId }) => {
    * Update value in store when value changes
    */
   useEffect(() => {
-    if (question.answer !== toggleValue) {
-      const answerId = toggleValue ? yesAnswer.id : noAnswer.id
+    const answerId = toggleValue ? yesAnswer.id : noAnswer.id
+    if (question.answer !== answerId) {
       dispatch(SetAnswer.action({ nodeId: question.id, value: answerId }))
     }
   }, [toggleValue])

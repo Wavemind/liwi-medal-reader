@@ -6,11 +6,11 @@ import 'react-native'
 /**
  * The internal imports
  */
- import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
- import createMedicalCase from '@/Store/MedicalCase/Create'
- import { translate } from '@/Translations/algorithm'
- import LoadAlgorithm from '@/Store/Algorithm/Load'
- import { store } from '@/Store'
+import ValidationMedicalCaseService from '@/Services/MedicalCase/Validation'
+import CreateMedicalCase from '@/Store/MedicalCase/Create'
+import { translate } from '@/Translations/algorithm'
+import LoadAlgorithm from '@/Store/Algorithm/Load'
+import { store } from '@/Store'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
@@ -20,7 +20,7 @@ beforeAll(async () => {
     }),
   )
   const algorithm = store.getState().algorithm.item
-  await store.dispatch(createMedicalCase.action({ algorithm }))
+  await store.dispatch(CreateMedicalCase.action({ algorithm }))
 })
 
 describe('Handle validations message', () => {
@@ -33,7 +33,7 @@ describe('Handle validations message', () => {
     const mcNode = medicalCase.nodes[50]
 
     // Value to 37.7°
-    const result = await validationMedicalCaseService(mcNode, node, '37.7')
+    const result = await ValidationMedicalCaseService(mcNode, node, '37.7')
     expect(result).toStrictEqual({
       validationMessage: null,
       validationType: null,
@@ -49,7 +49,7 @@ describe('Handle validations message', () => {
     const mcNode = medicalCase.nodes[50]
 
     // Value to 63°
-    const result = await validationMedicalCaseService(mcNode, node, '63')
+    const result = await ValidationMedicalCaseService(mcNode, node, '63')
     expect(result).toStrictEqual({
       validationMessage: translate(node.max_message_error),
       validationType: 'error',
@@ -66,7 +66,7 @@ describe('Handle validations message', () => {
     mcNode.unavailableValue = true
 
     // Child feels hot = 38°
-    const result = await validationMedicalCaseService(
+    const result = await ValidationMedicalCaseService(
       mcNode,
       node,
       Object.values(node.answers)[0].value,

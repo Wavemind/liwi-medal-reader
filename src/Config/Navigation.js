@@ -11,6 +11,7 @@ import BasicMeasurementMedicalCaseContainer from '@/Containers/MedicalCase/First
 import ComplaintCategoryMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/ComplaintCategory'
 import UniqueTriageQuestionsMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/UniqueTriageQuestions'
 import RegistrationMedicalCaseContainer from '@/Containers/MedicalCase/Registration'
+import MedicalCaseDiagnosesIndexContainer from '@/Containers/MedicalCase/Diagnoses/DiagnosesIndex'
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //

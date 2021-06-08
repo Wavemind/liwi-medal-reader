@@ -12,7 +12,7 @@ export default async ({ algorithm }) => {
     activities: [],
     comment: '',
     consent: !!algorithm.config.consent_management,
-    created_at: null, //new Date(),
+    created_at: new Date().getTime(),
     diagnosis: {
       proposed: [],
       excluded: [],
@@ -24,12 +24,13 @@ export default async ({ algorithm }) => {
     },
     id: uuid.v4(),
     nodes: generateNodes({ nodes: algorithm.nodes }),
+    json: '',
     advancement: {
       stage: 0,
       step: 0,
     },
     synchronized_at: null,
-    updated_at: null, //new Date(),
+    updated_at: new Date().getTime(),
     version_id: algorithm.id,
   }
 }
