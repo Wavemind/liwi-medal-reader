@@ -28,7 +28,6 @@ export const Config = {
     referral: 'referral',
   },
   DEVICE_INFO: ['mac_address', 'name', 'model', 'brand'],
-  MS_IN_DAY: 60 * 60 * 24 * 1000,
   DATABASE_INTERFACE: {
     local: 'local',
     remote: 'remote',
