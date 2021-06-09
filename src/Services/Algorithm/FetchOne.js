@@ -47,6 +47,7 @@ export default async ({ json_version }) => {
   // Store algorithm
   const algorithm = {
     ...response.data,
+    updated: true,
     nodes: { ...nodes },
   }
 
