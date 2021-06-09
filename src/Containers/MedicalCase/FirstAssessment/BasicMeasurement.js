@@ -3,21 +3,19 @@
  */
 import React from 'react'
 import { FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
+import { BasicMeasurementQuestions } from '@/Services/Steps'
 
 const BasicMeasurementMedicalCaseContainer = props => {
   const { t } = useTranslation()
 
-  const questions = useSelector(
-    state => state.algorithm.item.config.full_order.basic_measurements_step,
-  )
-
+  const questions = BasicMeasurementQuestions()
+  console.log(questions)
   return (
     <FlatList
       data={questions}

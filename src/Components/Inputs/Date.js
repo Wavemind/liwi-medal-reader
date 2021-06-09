@@ -21,6 +21,7 @@ import subYears from 'date-fns/subYears'
 import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
+import HandleComplaintCategory from '@/Store/MedicalCase/HandleComplaintCategory'
 
 const DateInput = () => {
   // Theme and style elements deconstruction
@@ -49,7 +50,11 @@ const DateInput = () => {
   const [yearsRange, setYearsRange] = useState([])
 
   // Get values from the store
+  const algorithm = useSelector(state => state.algorithm.item)
   const ageLimit = useSelector(state => state.algorithm.item.config.age_limit)
+  const relatedFormulas = useSelector(
+    state => state.algorithm.item.config.birth_date_formulas,
+  )
   const systemLanguage = useSelector(state => state.system.language)
   const birth_date = useSelector(state => state.patient.item.birth_date)
 
@@ -93,12 +98,21 @@ const DateInput = () => {
     }
   }, [])
 
+  const setComplaintCategories = birthDate => {
+    dispatch(
+      HandleComplaintCategory.action({
+        birthDate,
+        algorithm,
+      }),
+    )
+  }
+
   /**
    * Store birth date
    */
   useEffect(() => {
     if (dayValue !== null && monthValue !== null && yearValue !== null) {
-      const date = parse(
+      const birthDate = parse(
         `${dayValue}-${monthValue}-${yearValue}`,
         'dd-MM-yyyy',
         new Date(),
@@ -106,9 +120,10 @@ const DateInput = () => {
       dispatch(
         UpdateField.action({
           field: 'birth_date',
-          value: date.getTime(),
+          value: birthDate.getTime(),
         }),
       )
+      setComplaintCategories(birthDate)
     }
   }, [dayValue, monthValue, yearValue])
 
@@ -133,6 +148,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
+      setComplaintCategories(birthDate)
     }
   }, [estimatedValue, estimatedDateType])
 

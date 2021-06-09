@@ -8,6 +8,7 @@ import ChangeAdditionalDiagnoses from './ChangeAdditionalDiagnoses'
 import ChangeCustomDiagnoses from './ChangeCustomDiagnoses'
 import ChangeAgreedDiagnoses from './ChangeAgreedDiagnoses'
 import ChangeRefusedDiagnoses from './ChangeRefusedDiagnoses'
+import HandleComplaintCategory from './HandleComplaintCategory'
 
 const sliceInitialState = {
   item: {},
@@ -22,6 +23,7 @@ export default buildSlice(
     ChangeCustomDiagnoses,
     ChangeAgreedDiagnoses,
     ChangeRefusedDiagnoses,
+    HandleComplaintCategory,
     SetAnswer,
     UpdateNodeField,
     Load,

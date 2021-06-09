@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import differenceInDays from 'date-fns/differenceInDays'
 
@@ -11,6 +11,8 @@ import differenceInDays from 'date-fns/differenceInDays'
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
+import { getYesAnswer } from '@/Utils/Answers'
+import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const ComplaintCategoryMedicalCaseContainer = props => {
   const { t } = useTranslation()
@@ -34,6 +36,7 @@ const ComplaintCategoryMedicalCaseContainer = props => {
 
   // Remove general CC
   useEffect(() => {
+    // TODO CREATED AT
     const days = differenceInDays(new Date(), new Date(birthDate))
 
     if (days <= 60) {
@@ -41,7 +44,7 @@ const ComplaintCategoryMedicalCaseContainer = props => {
     } else {
       setQuestions(olderCC.filter(item => item !== olderGeneralId))
     }
-  }, [])
+  }, [birthDate])
 
   return (
     <FlatList
