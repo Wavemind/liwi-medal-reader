@@ -3,17 +3,15 @@
  */
 import React from 'react'
 import { FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
 import { Question } from '@/Components'
+import { UniqueTriageQuestions } from '@/Services/Steps'
 
 const UniqueTriageQuestionsMedicalCaseContainer = props => {
-  const questions = useSelector(
-    state => state.algorithm.item.config.full_order.first_look_assessment_step,
-  )
+  const questions = UniqueTriageQuestions()
 
   return (
     <FlatList

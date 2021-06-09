@@ -3,48 +3,29 @@
  */
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import differenceInDays from 'date-fns/differenceInDays'
+import { useIsFocused } from '@react-navigation/native'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
+import { ComplaintCategoryQuestions } from '@/Services/Steps'
 
 const ComplaintCategoryMedicalCaseContainer = props => {
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
 
-  const [questions, setQuestions] = useState([])
+  const [questions, setQuestions] = useState(ComplaintCategoryQuestions())
 
-  // Get CC order (older and neot) and general cc id for neonat and general
-  const birthDate = useSelector(state => state.patient.item.birth_date)
-  const createdAt = useSelector(state => state.medicalCase.item.createdAt)
-  const olderCC = useSelector(
-    state =>
-      state.algorithm.item.config.full_order.complaint_categories_step.older,
-  )
-  const neonatCC = useSelector(
-    state =>
-      state.algorithm.item.config.full_order.complaint_categories_step.neonat,
-  )
-  const olderGeneralId = useSelector(
-    state => state.algorithm.item.config.basic_questions.general_cc_id,
-  )
-  const neonatGeneralId = useSelector(
-    state => state.algorithm.item.config.basic_questions.yi_general_cc_id,
-  )
-
-  // Remove general CC
+  // Update questions list only if question array change
   useEffect(() => {
-    const days = differenceInDays(new Date(createdAt), new Date(birthDate))
-
-    if (days <= 60) {
-      setQuestions(neonatCC.filter(item => item !== neonatGeneralId))
-    } else {
-      setQuestions(olderCC.filter(item => item !== olderGeneralId))
+    const complaintCategoryQuestion = ComplaintCategoryQuestions()
+    if (!isEqual(complaintCategoryQuestion.sort(), questions.sort())) {
+      setQuestions(complaintCategoryQuestion)
     }
-  }, [birthDate])
+  }, [isFocused])
 
   return (
     <FlatList
