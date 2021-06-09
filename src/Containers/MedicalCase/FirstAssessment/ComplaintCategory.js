@@ -1,38 +1,56 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { VirtualizedList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import differenceInDays from 'date-fns/differenceInDays'
 
 /**
  * The internal imports
  */
-import { Question } from '@/Components'
+import { Question, EmptyList } from '@/Components'
 
 const ComplaintCategoryMedicalCaseContainer = props => {
-  const questions = useSelector(
-    state =>
-      state.algorithm.item.mobile_config.questions_orders.complaint_categories,
-  )
+  const { t } = useTranslation()
 
-  /**
-   * Convert data into readable value
-   * @param {list of questions} data
-   * @param {*} index
-   * @returns
-   */
-  const getItem = (data, index) => ({
-    id: data[index],
-  })
+  const birthDate = useSelector(state => state.patient.item.birth_date)
+  const olderCC = useSelector(
+    state =>
+      state.algorithm.item.config.full_order.complaint_categories_step.older,
+  )
+  const neonatCC = useSelector(
+    state =>
+      state.algorithm.item.config.full_order.complaint_categories_step.neonat,
+  )
+  const olderGeneralId = useSelector(
+    state => state.algorithm.item.config.basic_questions.general_cc_id,
+  )
+  const neonatGeneralId = useSelector(
+    state => state.algorithm.item.config.basic_questions.yi_general_cc_id,
+  )
+  const [questions, setQuestions] = useState([])
+
+  // Remove general CC
+  useEffect(() => {
+    const days = differenceInDays(new Date(), new Date(birthDate))
+
+    if (days <= 60) {
+      setQuestions(neonatCC.filter(item => item !== neonatGeneralId))
+    } else {
+      setQuestions(olderCC.filter(item => item !== olderGeneralId))
+    }
+  }, [])
 
   return (
-    <VirtualizedList
+    <FlatList
       data={questions}
-      renderItem={({ item }) => <Question questionId={item.id} />}
-      keyExtractor={item => item.key}
-      getItemCount={() => Object.values(questions).length}
-      getItem={getItem}
+      renderItem={({ item }) => <Question questionId={item} />}
+      ListEmptyComponent={
+        <EmptyList text={t('containers.medical_case.no_questions')} />
+      }
+      keyExtractor={item => item}
     />
   )
 }

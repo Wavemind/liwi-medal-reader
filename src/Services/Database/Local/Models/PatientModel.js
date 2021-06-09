@@ -16,6 +16,9 @@ export default class Patient extends Model {
   @children('patient_values') patientValues
 
   @field('id') id
+  @field('first_name') first_name
+  @field('last_name') last_name
+  @date('birth_date') birth_date
   @field('uid') uid
   @field('study_id') study_id
   @field('group_id') group_id

@@ -51,11 +51,28 @@ const DateInput = () => {
   // Get values from the store
   const ageLimit = useSelector(state => state.algorithm.item.config.age_limit)
   const systemLanguage = useSelector(state => state.system.language)
-  const patient = useSelector(state => state.patient.item)
+  const birth_date = useSelector(state => state.patient.item.birth_date)
+
+  /**
+   * Reset the value of the field when we check and store the value in the patient store
+   */
+  useEffect(() => {
+    setEstimatedValue('')
+    setEstimatedDateType(null)
+    setDayValue(null)
+    setMonthValue(null)
+    setYearValue(null)
+    dispatch(
+      UpdateField.action({
+        field: 'birth_date_estimated',
+        value: isEstimated,
+      }),
+    )
+  }, [isEstimated])
 
   useEffect(() => {
-    if (patient.birth_date !== null) {
-      const date = new Date(patient.birth_date)
+    if (birth_date !== null) {
+      const date = new Date(birth_date)
       setDayValue(date.getDate())
       setMonthValue(date.getMonth() + 1)
       setYearValue(date.getFullYear())
@@ -75,23 +92,6 @@ const DateInput = () => {
       setDateLanguage(fr)
     }
   }, [])
-
-  /**
-   * Reset the value of the field when we check and store the value in the patient store
-   */
-  useEffect(() => {
-    setEstimatedValue('')
-    setEstimatedDateType(null)
-    setDayValue(null)
-    setMonthValue(null)
-    setYearValue(null)
-    dispatch(
-      UpdateField.action({
-        field: 'birth_date_estimated',
-        value: isEstimated,
-      }),
-    )
-  }, [isEstimated])
 
   /**
    * Store birth date

@@ -69,6 +69,7 @@ export default {
       title: 'Latest consultations',
     },
     medical_case: {
+      no_questions: 'No questions proposed',
       navigation: {
         back: 'Prev',
         next: 'Next',
@@ -95,6 +96,7 @@ export default {
         medicines: 'Medicines',
         formulations: 'Formulations',
         summary: 'Summary',
+        referral: 'Referral',
       },
       registration: {
         questions: 'Questions',

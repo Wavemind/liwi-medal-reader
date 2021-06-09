@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react'
 import { View, Text, Animated, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { DocumentDirectoryPath, readFile } from 'react-native-fs'
+import { DocumentDirectoryPath, readFile, exists } from 'react-native-fs'
 
 /**
  * The internal imports
@@ -13,17 +13,16 @@ import { DocumentDirectoryPath, readFile } from 'react-native-fs'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
 import { Clinician, ToggleSwitchDarkMode } from '@/Components'
-import { navigate } from '@/Navigators/Root'
 import ChangeEmergencyContent from '@/Store/Emergency/ChangeEmergencyContent'
 
 const ClinicianSelectionAuthContainer = props => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const {
     Layout,
     Containers: { auth, global, authClinicianSelection },
   } = useTheme()
-  const dispatch = useDispatch()
 
   // Local state definition
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -35,18 +34,23 @@ const ClinicianSelectionAuthContainer = props => {
    */
   const newEmergencyContent = async () => {
     const targetPath = `${DocumentDirectoryPath}/emergency_content.html`
-    const emergencyContent = await readFile(targetPath)
-    dispatch(
-      ChangeEmergencyContent.action({
-        newContent: emergencyContent,
-      }),
-    )
+    const fileExist = await exists(targetPath)
+
+    if (fileExist) {
+      const emergencyContent = await readFile(targetPath)
+      dispatch(
+        ChangeEmergencyContent.action({
+          newContent: emergencyContent,
+        }),
+      )
+    }
   }
 
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
+  // Load to store new emergency content
   useEffect(() => {
     if (algorithmUpdated) {
       newEmergencyContent()

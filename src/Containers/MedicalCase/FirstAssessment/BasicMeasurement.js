@@ -2,37 +2,30 @@
  * The external imports
  */
 import React from 'react'
-import { VirtualizedList } from 'react-native'
+import { FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import { Question } from '@/Components'
+import { Question, EmptyList } from '@/Components'
 
 const BasicMeasurementMedicalCaseContainer = props => {
+  const { t } = useTranslation()
+
   const questions = useSelector(
-    state =>
-      state.algorithm.item.mobile_config.questions_orders.basic_measurements,
+    state => state.algorithm.item.config.full_order.basic_measurements_step,
   )
 
-  /**
-   * Convert data into readable value
-   * @param {list of questions} data
-   * @param {*} index
-   * @returns
-   */
-  const getItem = (data, index) => ({
-    id: data[index],
-  })
-
   return (
-    <VirtualizedList
+    <FlatList
       data={questions}
-      renderItem={({ item }) => <Question questionId={item.id} />}
-      keyExtractor={item => item.key}
-      getItemCount={() => Object.values(questions).length}
-      getItem={getItem}
+      renderItem={({ item }) => <Question questionId={item} />}
+      ListEmptyComponent={
+        <EmptyList text={t('containers.medical_case.no_questions')} />
+      }
+      keyExtractor={item => item}
     />
   )
 }

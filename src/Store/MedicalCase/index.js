@@ -3,6 +3,7 @@ import Create from './Create'
 import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
+import Load from './Load'
 import ChangeAdditionalDiagnoses from './ChangeAdditionalDiagnoses'
 import ChangeCustomDiagnoses from './ChangeCustomDiagnoses'
 import ChangeAgreedDiagnoses from './ChangeAgreedDiagnoses'
@@ -22,7 +23,7 @@ const sliceInitialState = {
 }
 
 export default buildSlice(
-  'scan',
+  'medicalCase',
   [
     Create,
     ChangeAdvancement,
@@ -40,6 +41,7 @@ export default buildSlice(
     ChangeCustomDrugDuration,
     SetAnswer,
     UpdateNodeField,
+    Load,
   ],
   sliceInitialState,
 ).reducer
