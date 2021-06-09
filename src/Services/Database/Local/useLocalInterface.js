@@ -182,7 +182,6 @@ export default function () {
             return _buildPatient(item)
           }),
         )
-        console.log(object)
       } else {
         return _buildPatient(data)
       }

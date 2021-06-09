@@ -8,7 +8,7 @@ import { View, Text } from 'react-native'
  * The internal imports
  */
 // Registration
-import RegistrationMedicalCaseContainer from '@/Containers/MedicalCase/Registration'
+import RegistrationMedicalCaseContainer from '@/Containers/MedicalCase/Registration/Registration'
 // First Assessments
 import UniqueTriageQuestionsMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/UniqueTriageQuestions'
 import ComplaintCategoryMedicalCaseContainer from '@/Containers/MedicalCase/FirstAssessment/ComplaintCategory'
