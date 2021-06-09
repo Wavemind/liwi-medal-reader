@@ -38,7 +38,7 @@ const ClinicianSelectionAuthContainer = props => {
 
     if (fileExist) {
       const emergencyContent = await readFile(targetPath)
-      await dispatch(
+      dispatch(
         ChangeEmergencyContent.action({
           newContent: emergencyContent,
         }),
