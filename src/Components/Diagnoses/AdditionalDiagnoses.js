@@ -40,7 +40,7 @@ const AdditionalDiagnoses = () => {
   return (
     <View>
       <AdditionalSelect
-        list={Object.values(additional)}
+        listObject={additional}
         listItemType="diagnoses"
         handleRemove={removeAdditionalDiagnosis}
       />

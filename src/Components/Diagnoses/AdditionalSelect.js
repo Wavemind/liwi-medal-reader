@@ -1,31 +1,41 @@
+/**
+ * The external imports
+ */
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View, TextInput } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
+/**
+ * The internal imports
+ */
 import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 
 const AdditionalSelect = ({
-  list,
+  listObject,
   listItemType,
   handleRemove,
   diagnosisId = null,
   diagnosisType = null,
+  durationRequired = false,
+  onUpdateDuration,
 }) => {
   // Theme and style elements deconstruction
   const {
-    Fonts,
     Gutters,
     FontSize,
     Containers: { medicalCaseFinalDiagnoses },
+    Components: { additionalSelect },
   } = useTheme()
 
   const { t } = useTranslation()
 
   const algorithm = useSelector(state => state.algorithm.item)
+
+  const listValues = Object.values(listObject)
 
   /**
    * Defines the correct handler for the remove item action
@@ -39,35 +49,68 @@ const AdditionalSelect = ({
     }
   }
 
+  /**
+   * Renders the duration header
+   * @returns {JSX.Element}
+   */
+  const renderHeader = () => {
+    return (
+      <View style={additionalSelect.headerWrapper}>
+        <View style={additionalSelect.headerSpacer} />
+        <Text style={additionalSelect.durationLabel}>duration in days</Text>
+      </View>
+    )
+  }
+
+  /**
+   * Renders the duration textInput
+   * @returns {JSX.Element}
+   */
+  const renderDuration = itemId => {
+    return (
+      <View>
+        <TextInput
+          style={additionalSelect.durationInput}
+          onChangeText={duration => onUpdateDuration(diagnosisId, itemId, duration)}
+          value={listObject[itemId].duration}
+          textAlign="center"
+          keyboardType="default"
+        />
+      </View>
+    )
+  }
+
   return (
     <>
-      {list.map((listItem, i) => (
+      {durationRequired && listValues.length > 0 && renderHeader()}
+      {listValues.map((listItem, i) => (
         <View
           key={`additional-${listItem.id}`}
           style={medicalCaseFinalDiagnoses.newItemWrapper(
-            i === list.length - 1,
+            i === listValues.length - 1,
           )}
         >
-          <Text style={Fonts.textSmall}>
+          <Text style={additionalSelect.itemLabel}>
             {translate(algorithm.nodes[listItem.id].label)}
           </Text>
+          {durationRequired && renderDuration(listItem.id)}
           <TouchableOpacity onPress={() => removeItem(listItem.id)}>
             <Icon style={{}} name="delete" size={FontSize.regular} />
           </TouchableOpacity>
         </View>
       ))}
       <TouchableOpacity
-        style={medicalCaseFinalDiagnoses.addAdditionalButton}
+        style={additionalSelect.addAdditionalButton}
         onPress={() => navigate('Additional', { diagnosisType, diagnosisId })}
       >
-        <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonText}>
+        <Text style={additionalSelect.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder', {
             item: listItemType,
           })}
         </Text>
-        <View style={medicalCaseFinalDiagnoses.addAdditionalButtonCountWrapper}>
-          <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonCountText}>
-            {Object.values(list).length}
+        <View style={additionalSelect.addAdditionalButtonCountWrapper}>
+          <Text style={additionalSelect.addAdditionalButtonCountText}>
+            {listValues.length}
           </Text>
         </View>
         <Icon

@@ -17,6 +17,7 @@ import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
+import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 
 const ProposedDrugs = ({ diagnosisType }) => {
   // Theme and style elements deconstruction
@@ -124,6 +125,28 @@ const ProposedDrugs = ({ diagnosisType }) => {
   }
 
   /**
+   * Updates the selected additional drug duration
+   * @param diagnosisId
+   * @param drugId
+   * @param duration
+   */
+  const updateAdditionalDrugDuration = (diagnosisId, drugId, duration) => {
+    const tempAdditionalDrug = {
+      ...diagnoses[diagnosisId].drugs.additional[drugId],
+    }
+    tempAdditionalDrug.duration = duration
+
+    dispatch(
+      ChangeAdditionalDrugDuration.action({
+        diagnosisType,
+        diagnosisId,
+        drugId,
+        newAdditionalDrug: tempAdditionalDrug,
+      }),
+    )
+  }
+
+  /**
    * Renders the boolean buttons to agree/disagree with the proposed diagnoses
    * @param diagnosis
    * @param drugId
@@ -217,12 +240,13 @@ const ProposedDrugs = ({ diagnosisType }) => {
       </View>
       <View style={Gutters.regularHPadding}>
         <AdditionalSelect
-          list={Object.values(diagnosis.drugs.additional)}
+          listObject={diagnosis.drugs.additional}
           listItemType="drugs"
-          navigateTo="Drugs"
           handleRemove={removeAdditionalDrug}
           diagnosisId={diagnosis.id}
           diagnosisType={diagnosisType}
+          durationRequired
+          onUpdateDuration={updateAdditionalDrugDuration}
         />
       </View>
     </View>

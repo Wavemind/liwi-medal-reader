@@ -101,7 +101,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
       delete tempAdditionalItems[nodeId.toString()]
     } else {
       if (diagnosisType) {
-        tempAdditionalItems[nodeId] = { id: nodeId }
+        tempAdditionalItems[nodeId] = { id: nodeId, duration: '' }
       } else {
         tempAdditionalItems[nodeId] = {
           id: nodeId,
