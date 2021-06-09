@@ -20,7 +20,7 @@ const StageWrapper = ({ route }) => {
   const {
     Containers: { medicalCase },
   } = useTheme()
-  const stageIndex = route.params?.stageIndex || 0
+  const stageIndex = route.params?.stageIndex || 4
 
   const stage = Navigation.INTERVENTION_STAGES[stageIndex]
 
@@ -37,7 +37,6 @@ const StageWrapper = ({ route }) => {
           lazy={true}
           tabBarOptions={{ scrollEnabled: true, tabStyle: medicalCase.tabBar }}
           tabBar={tabProps => <TabBar {...{ ...tabProps, stageIndex }} />}
-          lazy={true}
         >
           {stage.steps.map(step => (
             <Tab.Screen

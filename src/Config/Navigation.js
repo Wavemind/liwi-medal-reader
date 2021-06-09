@@ -19,7 +19,7 @@ import MedicalHistoryMedicalCaseContainer from '@/Containers/MedicalCase/Consult
 // Assessment
 import AssessmentMedicalCaseContainer from '@/Containers/MedicalCase/Assessment/Assessment'
 // Diagnosis
-import MedicalCaseDiagnosesFinalDiagnosesContainer from '@/Containers/MedicalCase/Diagnoses/DiagnosesIndex'
+import MedicalCaseDiagnosesFinalDiagnosesContainer from '@/Containers/MedicalCase/Diagnoses/FinalDiagnoses'
 import MedicalCaseDiagnosesDrugsContainer from '@/Containers/MedicalCase/Diagnoses/Drugs'
 import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
 import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'

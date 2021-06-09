@@ -22,7 +22,6 @@ export { default as PhysicalExamMedicalCaseContainer } from './MedicalCase/Consu
 export { default as AssessmentMedicalCaseContainer } from './MedicalCase/Assessment/Assessment'
 export { default as TreatmentConditionsMedicalCaseContainer } from './MedicalCase/Diagnoses/TreatmentConditions'
 export { default as ReferralMedicalCaseContainer } from './MedicalCase/Diagnoses/Referral'
-export { default as MedicalCaseDiagnosesIndexContainer } from './MedicalCase/Diagnoses/DiagnosesIndex'
 
 export { default as ListConsentContainer } from './Consent/List'
 export { default as CameraConsentContainer } from './Consent/Camera'
