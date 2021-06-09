@@ -21,7 +21,7 @@ import subYears from 'date-fns/subYears'
 import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
-import HandleComplaintCategory from '@/Store/MedicalCase/HandleComplaintCategory'
+import HandleComplaintCategories from '@/Store/MedicalCase/HandleComplaintCategories'
 
 const DateInput = () => {
   // Theme and style elements deconstruction
@@ -100,8 +100,8 @@ const DateInput = () => {
 
   const setComplaintCategories = birthDate => {
     dispatch(
-      HandleComplaintCategory.action({
-        birthDate,
+      HandleComplaintCategories.action({
+        birthDate: birthDate.getTime(),
         algorithm,
       }),
     )

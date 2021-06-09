@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import differenceInDays from 'date-fns/differenceInDays'
 
@@ -11,13 +11,15 @@ import differenceInDays from 'date-fns/differenceInDays'
  * The internal imports
  */
 import { Question, EmptyList } from '@/Components'
-import { getYesAnswer } from '@/Utils/Answers'
-import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const ComplaintCategoryMedicalCaseContainer = props => {
   const { t } = useTranslation()
 
+  const [questions, setQuestions] = useState([])
+
+  // Get CC order (older and neot) and general cc id for neonat and general
   const birthDate = useSelector(state => state.patient.item.birth_date)
+  const createdAt = useSelector(state => state.medicalCase.item.createdAt)
   const olderCC = useSelector(
     state =>
       state.algorithm.item.config.full_order.complaint_categories_step.older,
@@ -32,12 +34,10 @@ const ComplaintCategoryMedicalCaseContainer = props => {
   const neonatGeneralId = useSelector(
     state => state.algorithm.item.config.basic_questions.yi_general_cc_id,
   )
-  const [questions, setQuestions] = useState([])
 
   // Remove general CC
   useEffect(() => {
-    // TODO CREATED AT
-    const days = differenceInDays(new Date(), new Date(birthDate))
+    const days = differenceInDays(new Date(createdAt), new Date(birthDate))
 
     if (days <= 60) {
       setQuestions(neonatCC.filter(item => item !== neonatGeneralId))
