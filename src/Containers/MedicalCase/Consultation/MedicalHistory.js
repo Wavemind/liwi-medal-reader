@@ -1,9 +1,11 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SectionList, View } from 'react-native'
 import { useSelector } from 'react-redux'
+import { useIsFocused } from '@react-navigation/native'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
@@ -11,14 +13,23 @@ import { useSelector } from 'react-redux'
 import { useTheme } from '@/Theme'
 import { SectionHeader, Question } from '@/Components'
 import { translate } from '@/Translations/algorithm'
+import { MedicalHistoryQuestions } from '@/Services/Steps'
 
 const MedicalHistoryMedicalCaseContainer = props => {
   const { Gutters } = useTheme()
+  const isFocused = useIsFocused()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const systems = useSelector(
-    state => state.algorithm.item.config.full_order.medical_history_step,
-  )
+
+  const [systems, setSystems] = useState(MedicalHistoryQuestions())
+
+  // Update questions list only if question array change
+  useEffect(() => {
+    const medicalHistoryQuestions = MedicalHistoryQuestions()
+    if (!isEqual(medicalHistoryQuestions, systems)) {
+      setSystems(medicalHistoryQuestions)
+    }
+  }, [isFocused])
 
   return (
     <SectionList
