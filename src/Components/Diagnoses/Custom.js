@@ -1,41 +1,50 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { Text, TextInput, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
  */
-import { Icon } from '@/Components'
-import { navigate } from '@/Navigators/Root'
+import { RoundedButton } from '@/Components'
 import { useTheme } from '@/Theme'
-import { translate } from '@/Translations/algorithm'
 import SelectedItem from '@/Components/Diagnoses/SelectedItem'
 
-const AdditionalSelect = ({
+const Custom = ({
   listObject,
-  listItemType,
+  handleAdd,
   handleRemove,
   diagnosisId = null,
-  diagnosisType = null,
   withDuration = false,
-  onUpdateDuration,
+  onUpdateDuration = null,
 }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
     FontSize,
     Components: { additionalSelect },
+    Containers: { medicalCaseFinalDiagnoses },
   } = useTheme()
 
   const { t } = useTranslation()
 
-  const algorithm = useSelector(state => state.algorithm.item)
+  const [value, setValue] = useState('')
 
   const listValues = Object.values(listObject)
+
+  /**
+   * Calls the handleAdd method from the props before resetting the input value
+   */
+  const addItem = () => {
+    if (diagnosisId) {
+      handleAdd(diagnosisId, value)
+    } else {
+      handleAdd(value)
+    }
+    setValue('')
+  }
 
   /**
    * Defines the correct handler for the remove item action
@@ -75,31 +84,36 @@ const AdditionalSelect = ({
           withDuration={withDuration}
           onRemovePress={removeItem}
           onUpdateDuration={onUpdateDuration}
-          labelMethod={() => translate(algorithm.nodes[listItem.id].label)}
+          labelMethod={() => listItem.name}
         />
       ))}
-      <TouchableOpacity
-        style={additionalSelect.addAdditionalButton}
-        onPress={() => navigate('Additional', { diagnosisType, diagnosisId })}
+      <View
+        style={[
+          Gutters.regularVMargin,
+          medicalCaseFinalDiagnoses.addCustomWrapper,
+        ]}
       >
-        <Text style={additionalSelect.addAdditionalButtonText}>
-          {t('containers.medical_case.diagnoses.additional_placeholder', {
-            item: listItemType,
-          })}
-        </Text>
-        <View style={additionalSelect.addAdditionalButtonCountWrapper}>
-          <Text style={additionalSelect.addAdditionalButtonCountText}>
-            {listValues.length}
-          </Text>
-        </View>
-        <Icon
-          style={Gutters.regularLMargin}
-          name="right-arrow"
-          size={FontSize.large}
+        <TextInput
+          style={medicalCaseFinalDiagnoses.addCustomInputText}
+          onChangeText={setValue}
+          value={value}
+          keyboardType="default"
+          placeholder={t(
+            `containers.medical_case.${diagnosisId ? 'drugs' : 'diagnoses'}.custom_placeholder`,
+          )}
         />
-      </TouchableOpacity>
+        <RoundedButton
+          label={t('actions.add')}
+          icon="add"
+          filled
+          fullWidth={false}
+          iconSize={FontSize.large}
+          onPress={() => addItem()}
+          disabled={value === ''}
+        />
+      </View>
     </>
   )
 }
 
-export default AdditionalSelect
+export default Custom

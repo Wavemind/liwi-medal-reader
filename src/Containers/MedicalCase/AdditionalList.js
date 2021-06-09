@@ -46,7 +46,8 @@ const AdditionalListContainer = ({ navigation, route }) => {
   const algorithm = useSelector(state => state.algorithm.item)
   const additionalItems = useSelector(state => {
     if (diagnosisType) {
-      return state.medicalCase.item.diagnosis[diagnosisType][diagnosisId].drugs.additional
+      return state.medicalCase.item.diagnosis[diagnosisType][diagnosisId].drugs
+        .additional
     } else {
       return state.medicalCase.item.diagnosis.additional
     }
@@ -161,13 +162,17 @@ const AdditionalListContainer = ({ navigation, route }) => {
     )
   }
 
+  const itemsTitle = diagnosisType
+    ? t('containers.medical_case.drugs.drugs')
+    : t('containers.medical_case.diagnoses.diagnoses')
+
   return (
-    <View style={{ ...Layout.fullHeight }}>
+    <View style={Layout.fullHeight}>
       <View style={diagnosisList.wrapper}>
         <View style={diagnosisList.headerWrapper}>
           <Text style={diagnosisList.header}>
             {t('containers.additional_list.title', {
-              items: diagnosisType ? 'Drugs' : 'Diagnoses',
+              items: itemsTitle,
             })}
           </Text>
           <TouchableOpacity
@@ -191,7 +196,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
           }
         />
 
-        <SectionHeader label={diagnosisType ? 'Drugs' : 'Diagnoses'} />
+        <SectionHeader label={itemsTitle} />
 
         <FlatList
           data={items}

@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
@@ -10,68 +10,89 @@ import uuid from 'react-native-uuid'
 /**
  * The internal imports
  */
-import { Icon } from '@/Components'
+import { Custom } from '@/Components'
 import { useTheme } from '@/Theme'
-import ChangeCustomDiagnoses from '@/Store/MedicalCase/ChangeCustomDiagnoses'
-import { navigate } from '@/Navigators/Root'
+import ChangeCustomDrugs from '@/Store/MedicalCase/Drugs/ChangeCustomDrugs'
+import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 
-const CustomDiagnoses = () => {
+const CustomDrugs = () => {
   // Theme and style elements deconstruction
   const {
-    FontSize,
     Gutters,
-    Fonts,
-    Containers: { medicalCaseFinalDiagnoses, medicalCaseDrugs },
+    Containers: { medicalCaseDrugs },
   } = useTheme()
 
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-  const customDiagnoses = useSelector(
+  const diagnoses = useSelector(
     state => state.medicalCase.item.diagnosis.custom,
   )
 
-  const [value, setValue] = useState('')
-
   /**
-   * Handles whether to add or remove a custom diagnosis from the store
-   * @param action
-   * @param customDiagnosisId
+   * Handles the addition of a new custom drug
+   * @param diagnosisId
+   * @param value
    */
-  const changeCustomDiagnosis = (action = 'add', customDiagnosisId = null) => {
-    const tempCustomDiagnoses = [...customDiagnoses]
-
-    if (action === 'remove') {
-      const index = tempCustomDiagnoses
-        .map(customDiagnosis => customDiagnosis.id)
-        .indexOf(customDiagnosisId)
-      if (index > -1) {
-        tempCustomDiagnoses.splice(index, 1)
-      }
-    } else {
-      const newCustomDiagnosis = {
-        id: uuid.v4(),
-        name: value,
-        drugs: [],
-      }
-      tempCustomDiagnoses.push(newCustomDiagnosis)
-      setValue('')
+  const addCustomDrug = (diagnosisId, value) => {
+    const tempCustomDrugs = { ...diagnoses[diagnosisId].drugs }
+    const newDrugId = uuid.v4()
+    tempCustomDrugs[newDrugId] = {
+      id: newDrugId,
+      name: value,
+      duration: '',
     }
 
     dispatch(
-      ChangeCustomDiagnoses.action({
-        newCustomDiagnoses: tempCustomDiagnoses,
+      ChangeCustomDrugs.action({
+        diagnosisId,
+        newCustomDrugs: tempCustomDrugs,
       }),
     )
   }
 
-  return customDiagnoses.map(customDiagnosis => (
-    <View style={medicalCaseDrugs.wrapper}>
+  /**
+   * Handles the removal of a custom diagnosis
+   * @param diagnosisId
+   * @param drugId
+   */
+  const removeCustomDrug = (diagnosisId, drugId) => {
+    const tempCustomDrugs = { ...diagnoses[diagnosisId].drugs }
+    delete tempCustomDrugs[drugId]
+
+    dispatch(
+      ChangeCustomDrugs.action({
+        diagnosisId,
+        newCustomDrugs: tempCustomDrugs,
+      }),
+    )
+  }
+
+  /**
+   * Updates the selected additional drug duration
+   * @param diagnosisId
+   * @param drugId
+   * @param duration
+   */
+  const updateCustomDrugDuration = (diagnosisId, drugId, duration) => {
+    const tempCustomDrug = {
+      ...diagnoses[diagnosisId].drugs[drugId],
+    }
+    tempCustomDrug.duration = duration
+
+    dispatch(
+      ChangeCustomDrugDuration.action({
+        diagnosisId,
+        drugId,
+        newCustomDrug: tempCustomDrug,
+      }),
+    )
+  }
+
+  return Object.values(diagnoses).map(diagnosis => (
+    <View style={[medicalCaseDrugs.wrapper, { ...Gutters.regularBMargin }]}>
       <View style={medicalCaseDrugs.diagnosisHeaderWrapper}>
-        <Text style={medicalCaseDrugs.diagnosisHeader}>
-          {customDiagnosis.name}
-        </Text>
+        <Text style={medicalCaseDrugs.diagnosisHeader}>{diagnosis.name}</Text>
         <Text style={medicalCaseDrugs.diagnosisType}>
           {t('containers.medical_case.drugs.custom')}
         </Text>
@@ -80,49 +101,17 @@ const CustomDiagnoses = () => {
         <Text style={medicalCaseDrugs.drugsHeader}>
           {t('containers.medical_case.drugs.drugs')}
         </Text>
-        {customDiagnosis.drugs.map(customDrug => (
-          <View
-            key={`additional-${customDiagnosis.name}`}
-            style={medicalCaseFinalDiagnoses.newItemWrapper(
-              i === customDiagnosis.drugs.length - 1,
-            )}
-          >
-            <Text style={Fonts.textSmall}>Drug 1</Text>
-            <TouchableOpacity onPress={() => console.log('remove drug')}>
-              <Icon style={{}} name="delete" size={FontSize.regular} />
-            </TouchableOpacity>
-          </View>
-        ))}
-        <TouchableOpacity
-          style={[
-            Gutters.regularBMargin,
-            medicalCaseFinalDiagnoses.addAdditionalButton,
-          ]}
-          onPress={() => navigate('Drugs')}
-        >
-          <Text style={medicalCaseFinalDiagnoses.addAdditionalButtonText}>
-            {t('containers.medical_case.diagnoses.additional_placeholder', {
-              item: 'drugs',
-            })}
-          </Text>
-          <View
-            style={medicalCaseFinalDiagnoses.addAdditionalButtonCountWrapper}
-          >
-            <Text
-              style={medicalCaseFinalDiagnoses.addAdditionalButtonCountText}
-            >
-              {customDiagnosis.drugs.length}
-            </Text>
-          </View>
-          <Icon
-            style={Gutters.regularLMargin}
-            name="right-arrow"
-            size={FontSize.large}
-          />
-        </TouchableOpacity>
+        <Custom
+          listObject={diagnosis.drugs}
+          handleAdd={addCustomDrug}
+          handleRemove={removeCustomDrug}
+          diagnosisId={diagnosis.id}
+          withDuration
+          onUpdateDuration={updateCustomDrugDuration}
+        />
       </View>
     </View>
   ))
 }
 
-export default CustomDiagnoses
+export default CustomDrugs

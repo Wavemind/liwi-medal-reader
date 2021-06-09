@@ -1,20 +1,15 @@
+/**
+ * The external imports
+ */
 import React from 'react'
-import { ScrollView, Text } from 'react-native'
+import { ScrollView } from 'react-native'
 
+/**
+ * The internal imports
+ */
 import { ProposedDrugs, CustomDrugs } from '@/Components'
-import { useTheme } from '@/Theme'
 
 const Drugs = () => {
-  // Theme and style elements deconstruction
-  const {
-    Layout,
-    Fonts,
-    Colors,
-    Gutters,
-    Containers: { medicalCaseDrugs },
-    Components: { booleanButton },
-  } = useTheme()
-
   return (
     <ScrollView>
       <ProposedDrugs diagnosisType="agreed" />

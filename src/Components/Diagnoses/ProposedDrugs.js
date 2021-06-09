@@ -45,14 +45,14 @@ const ProposedDrugs = ({ diagnosisType }) => {
    * @param value
    */
   const updateDrugs = (diagnosisId, drugId, value) => {
-    const tempAgreedDrugs = { ...diagnoses[diagnosisId].drugs.agreed }
-    const tempRefusedDrugs = [...diagnoses[diagnosisId].drugs.refused]
-    const isInAgreed = Object.keys(tempAgreedDrugs).includes(drugId.toString())
-    const isInRefused = tempRefusedDrugs.includes(drugId)
+    const agreedDrugs = { ...diagnoses[diagnosisId].drugs.agreed }
+    const refusedDrugs = [...diagnoses[diagnosisId].drugs.refused]
+    const isInAgreed = Object.keys(agreedDrugs).includes(drugId.toString())
+    const isInRefused = refusedDrugs.includes(drugId)
 
     // From null to Agree
     if (value && !isInAgreed) {
-      tempAgreedDrugs[diagnosisId] = {
+      agreedDrugs[diagnosisId] = {
         id: diagnosisId.toString(),
         drugs: {},
       }
@@ -67,12 +67,12 @@ const ProposedDrugs = ({ diagnosisType }) => {
 
       // From Disagree to Agree
       if (isInRefused) {
-        tempRefusedDrugs.splice(tempRefusedDrugs.indexOf(drugId), 1)
+        refusedDrugs.splice(refusedDrugs.indexOf(drugId), 1)
         dispatch(
           RemoveRefusedDrugs.action({
             diagnosisType,
             diagnosisId: diagnosisId,
-            newRefusedDrugs: tempRefusedDrugs,
+            newRefusedDrugs: refusedDrugs,
           }),
         )
       }
@@ -80,12 +80,12 @@ const ProposedDrugs = ({ diagnosisType }) => {
 
     // From null to Disagree
     if (!value && !isInRefused) {
-      tempRefusedDrugs.push(drugId)
+      refusedDrugs.push(drugId)
       dispatch(
         AddRefusedDrugs.action({
           diagnosisType,
           diagnosisId: diagnosisId,
-          newRefusedDrugs: tempRefusedDrugs,
+          newRefusedDrugs: refusedDrugs,
         }),
       )
 
@@ -245,7 +245,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
           handleRemove={removeAdditionalDrug}
           diagnosisId={diagnosis.id}
           diagnosisType={diagnosisType}
-          durationRequired
+          withDuration
           onUpdateDuration={updateAdditionalDrugDuration}
         />
       </View>

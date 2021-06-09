@@ -104,6 +104,7 @@ export default {
         disagree: 'Disagree',
       },
       diagnoses: {
+        diagnoses: 'Diagnoses',
         proposed_title: 'Diagnoses proposed by {{ version_name }}',
         additional_title: 'Additional selected',
         additional_placeholder: 'Select additional {{ item }}',
@@ -115,6 +116,7 @@ export default {
         proposed: 'Proposed',
         additional: 'Additional',
         custom: 'Custom',
+        custom_placeholder: 'Add your drugs',
       },
     },
     scan: {

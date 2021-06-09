@@ -20,7 +20,7 @@ export default async ({ algorithm }) => {
       additional: {},
       agreed: {},
       refused: [],
-      custom: [],
+      custom: {},
     },
     id: uuid.v4(),
     nodes: generateNodes({ nodes: algorithm.nodes }),

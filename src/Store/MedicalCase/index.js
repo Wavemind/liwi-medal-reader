@@ -14,6 +14,8 @@ import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
+import ChangeCustomDrugs from '@/Store/MedicalCase/Drugs/ChangeCustomDrugs'
+import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 
 const sliceInitialState = {
   item: {},
@@ -34,6 +36,8 @@ export default buildSlice(
     RemoveRefusedDrugs,
     ChangeAdditionalDrugs,
     ChangeAdditionalDrugDuration,
+    ChangeCustomDrugs,
+    ChangeCustomDrugDuration,
     SetAnswer,
     UpdateNodeField,
   ],

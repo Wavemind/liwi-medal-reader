@@ -40,25 +40,23 @@ const ProposedDiagnoses = () => {
 
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
-   * @param proposedDiagnosisId
+   * @param diagnosisId
    * @param value
    */
-  const updateDiagnosis = (proposedDiagnosisId, value) => {
-    const tempAgreedDiagnoses = { ...agreed }
-    const tempRefusedDiagnoses = [...refused]
-    const isInAgreed = Object.keys(agreed).includes(
-      proposedDiagnosisId.toString(),
-    )
-    const isInRefused = refused.includes(proposedDiagnosisId)
+  const updateDiagnosis = (diagnosisId, value) => {
+    const agreedDiagnoses = { ...agreed }
+    const refusedDiagnoses = [...refused]
+    const isInAgreed = Object.keys(agreed).includes(diagnosisId.toString())
+    const isInRefused = refused.includes(diagnosisId)
 
     // From null to Agree
     if (value && !isInAgreed) {
-      tempAgreedDiagnoses[proposedDiagnosisId] = {
-        id: proposedDiagnosisId,
+      agreedDiagnoses[diagnosisId] = {
+        id: diagnosisId,
         drugs: {
-          proposed: Object.values(
-            algorithm.nodes[proposedDiagnosisId].drugs,
-          ).map(drug => drug.id),
+          proposed: Object.values(algorithm.nodes[diagnosisId].drugs).map(
+            drug => drug.id,
+          ),
           agreed: {},
           refused: [],
           additional: {},
@@ -66,19 +64,16 @@ const ProposedDiagnoses = () => {
       }
       dispatch(
         ChangeAgreedDiagnoses.action({
-          newAgreedDiagnoses: tempAgreedDiagnoses,
+          newAgreedDiagnoses: agreedDiagnoses,
         }),
       )
 
       // From Disagree to Agree
       if (isInRefused) {
-        tempRefusedDiagnoses.splice(
-          tempRefusedDiagnoses.indexOf(proposedDiagnosisId),
-          1,
-        )
+        refusedDiagnoses.splice(refusedDiagnoses.indexOf(diagnosisId), 1)
         dispatch(
           ChangeRefusedDiagnoses.action({
-            newRefusedDiagnoses: tempRefusedDiagnoses,
+            newRefusedDiagnoses: refusedDiagnoses,
           }),
         )
       }
@@ -86,19 +81,19 @@ const ProposedDiagnoses = () => {
 
     // From null to Disagree
     if (!value && !isInRefused) {
-      tempRefusedDiagnoses.push(proposedDiagnosisId)
+      refusedDiagnoses.push(diagnosisId)
       dispatch(
         ChangeRefusedDiagnoses.action({
-          newRefusedDiagnoses: tempRefusedDiagnoses,
+          newRefusedDiagnoses: refusedDiagnoses,
         }),
       )
 
       // From Agree to Disagree
       if (isInAgreed) {
-        delete tempAgreedDiagnoses[proposedDiagnosisId.toString()]
+        delete agreedDiagnoses[diagnosisId.toString()]
         dispatch(
           ChangeAgreedDiagnoses.action({
-            newAgreedDiagnoses: tempAgreedDiagnoses,
+            newAgreedDiagnoses: agreedDiagnoses,
           }),
         )
       }
