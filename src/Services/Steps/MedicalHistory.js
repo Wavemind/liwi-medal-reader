@@ -54,17 +54,17 @@ export default () => {
     }
   }
 
-  const handleChildren = (children, questionPerSystems) => {
+  const handleChildren = (children, questionPerSystems, nodes) => {
     children.forEach(instance => {
       if (medicalHistoryCategories.includes(nodes[instance.id].category)) {
         if (
-          instance.conditions.length === 0 ||
-          instance.conditions === true || // Il faut faire une fonction pour tester la condition
-          nodes[instance.id].category ===
-            Config.CATEGORIES.backgroundCalculation // C'est pour faire semblance que les BC sont répondues
+          instance.conditions.length === 0 //||
+          // instance.conditions === true || // Il faut faire une fonction pour tester la condition
+          // nodes[instance.id].category ===
+          // Config.CATEGORIES.backgroundCalculation // C'est pour faire semblance que les BC sont répondues
         ) {
           addQuestionToSystem(instance.id, questionPerSystems)
-          handleChildren(instance.children, questionPerSystems)
+          // handleChildren(instance.children, questionPerSystems, nodes)
         }
       }
     })
@@ -94,7 +94,7 @@ export default () => {
   validDiagnostics.forEach(diagnostic => {
     const topConditions = getTopConditions(diagnostic.instances)
 
-    handleChildren(topConditions)
+    handleChildren(topConditions, questionPerSystems, nodes)
   })
   console.log('systems', questionPerSystems)
   console.log('medicalHistoryStep', medicalHistoryStep)
