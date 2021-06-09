@@ -194,7 +194,6 @@ export default function () {
     } else {
       return _buildMedicalCase(data)
     }
-    console.log(object)
     return object
   }
 
