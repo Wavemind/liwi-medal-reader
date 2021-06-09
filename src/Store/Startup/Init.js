@@ -82,7 +82,9 @@ export default {
 
           navigateAndReset([{ name: 'Auth', params: { screen: route } }])
         } else if (
-          Object.values(res).some(result => result === 'never_ask_again')
+          Object.values(res).some(
+            result => result === 'never_ask_again' || result === 'denied',
+          )
         ) {
           navigateAndSimpleReset('PermissionsRequired')
         }
