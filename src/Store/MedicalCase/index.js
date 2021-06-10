@@ -9,6 +9,7 @@ import ChangeCustomDiagnoses from './ChangeCustomDiagnoses'
 import ChangeAgreedDiagnoses from './ChangeAgreedDiagnoses'
 import ChangeRefusedDiagnoses from './ChangeRefusedDiagnoses'
 import HandleComplaintCategories from './HandleComplaintCategories'
+import HandleDateFormulas from './HandleDateFormulas'
 
 const sliceInitialState = {
   item: {},
@@ -24,6 +25,7 @@ export default buildSlice(
     ChangeAgreedDiagnoses,
     ChangeRefusedDiagnoses,
     HandleComplaintCategories,
+    HandleDateFormulas,
     SetAnswer,
     UpdateNodeField,
     Load,

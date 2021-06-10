@@ -11,7 +11,7 @@ import { getNoAnswer, getYesAnswer } from '@/Utils/Answers'
 
 export default {
   initialState: {},
-  action: createAction('medicalCase/handleComplaintCategory'),
+  action: createAction('medicalCase/handleComplaintCategories'),
   reducers(state, { payload: { birthDate, algorithm } }) {
     const {
       config: { full_order, basic_questions },
