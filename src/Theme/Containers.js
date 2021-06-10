@@ -19,13 +19,12 @@ import questionInfoIndexStyles from './containers/QuestionInfo/Index.style'
 
 import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
 import medicalCaseListStyles from './containers/MedicalCase/List.style'
-import medicalCaseFinalDiagnosesStyles from './containers/MedicalCase/Diagnoses/FinalDiagnoses.style'
-import medicalCaseDrugsStyles from './containers/MedicalCase/Diagnoses/Drugs.style'
+import finalDiagnosesStyles from './containers/MedicalCase/Diagnoses/FinalDiagnoses.style'
+import drugsStyles from './containers/MedicalCase/Diagnoses/Drugs.style'
+import additionalListStyles from './containers/MedicalCase/Diagnoses/AdditionalList.style'
 
 import patientListStyles from './containers/Patient/List.style'
 import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
-
-import diagnosisListStyles from './containers/Diagnosis/List.style'
 
 import consentListStyles from './containers/Consent/List.style'
 import consentPreviewStyles from './containers/Consent/Preview.style'
@@ -70,8 +69,8 @@ export default function (props) {
 
     // MEDICAL CASE
     medicalCase: medicalCaseIndexStyles(props),
-    medicalCaseFinalDiagnoses: medicalCaseFinalDiagnosesStyles(props),
-    diagnosisList: diagnosisListStyles(props),
-    medicalCaseDrugs: medicalCaseDrugsStyles(props),
+    finalDiagnoses: finalDiagnosesStyles(props),
+    additionalList: additionalListStyles(props),
+    drugs: drugsStyles(props),
   }
 }

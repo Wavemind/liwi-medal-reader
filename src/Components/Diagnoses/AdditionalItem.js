@@ -10,7 +10,7 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Icon } from '@/Components'
 import { useTheme } from '@/Theme'
 
-const SelectedItem = ({
+const AdditionalItem = ({
   listItem,
   diagnosisId,
   listObject,
@@ -23,7 +23,7 @@ const SelectedItem = ({
   // Theme and style elements deconstruction
   const {
     FontSize,
-    Containers: { medicalCaseFinalDiagnoses },
+    Containers: { finalDiagnoses },
     Components: { additionalSelect },
   } = useTheme()
 
@@ -48,7 +48,7 @@ const SelectedItem = ({
   }
 
   return (
-    <View style={medicalCaseFinalDiagnoses.newItemWrapper(isLast)}>
+    <View style={finalDiagnoses.newItemWrapper(isLast)}>
       <Text style={additionalSelect.itemLabel}>{labelMethod(listItem.id)}</Text>
       {withDuration && renderDuration(listItem.id)}
       <TouchableOpacity onPress={() => onRemovePress(listItem.id)}>
@@ -58,4 +58,4 @@ const SelectedItem = ({
   )
 }
 
-export default SelectedItem
+export default AdditionalItem

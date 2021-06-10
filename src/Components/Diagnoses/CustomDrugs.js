@@ -10,7 +10,7 @@ import uuid from 'react-native-uuid'
 /**
  * The internal imports
  */
-import { Custom } from '@/Components'
+import { CustomElement } from '@/Components'
 import { useTheme } from '@/Theme'
 import ChangeCustomDrugs from '@/Store/MedicalCase/Drugs/ChangeCustomDrugs'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
@@ -19,7 +19,7 @@ const CustomDrugs = () => {
   // Theme and style elements deconstruction
   const {
     Gutters,
-    Containers: { medicalCaseDrugs },
+    Containers: { drugs },
   } = useTheme()
 
   const dispatch = useDispatch()
@@ -90,18 +90,18 @@ const CustomDrugs = () => {
   }
 
   return Object.values(diagnoses).map(diagnosis => (
-    <View style={[medicalCaseDrugs.wrapper, { ...Gutters.regularBMargin }]}>
-      <View style={medicalCaseDrugs.diagnosisHeaderWrapper}>
-        <Text style={medicalCaseDrugs.diagnosisHeader}>{diagnosis.name}</Text>
-        <Text style={medicalCaseDrugs.diagnosisType}>
+    <View style={[drugs.wrapper, Gutters.regularBMargin]}>
+      <View style={drugs.diagnosisHeaderWrapper}>
+        <Text style={drugs.diagnosisHeader}>{diagnosis.name}</Text>
+        <Text style={drugs.diagnosisType}>
           {t('containers.medical_case.drugs.custom')}
         </Text>
       </View>
       <View style={Gutters.regularHPadding}>
-        <Text style={medicalCaseDrugs.drugsHeader}>
+        <Text style={drugs.drugsHeader}>
           {t('containers.medical_case.drugs.drugs')}
         </Text>
-        <Custom
+        <CustomElement
           listObject={diagnosis.drugs}
           handleAdd={addCustomDrug}
           handleRemove={removeCustomDrug}

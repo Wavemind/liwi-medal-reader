@@ -25,7 +25,7 @@ const BadgeBar = ({ removeBadge, selected, badgeComponentLabel }) => {
               key={`badge-${selectedItem.filterBy}-${selectedItem.value}`}
               removeBadge={removeBadge}
               selectedItem={selectedItem.id}
-              label={() => badgeComponentLabel(selectedItem.id)}
+              label={() => badgeComponentLabel(selectedItem)}
             />
           )
         })}

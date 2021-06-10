@@ -10,9 +10,9 @@ import { useTranslation } from 'react-i18next'
  */
 import { RoundedButton } from '@/Components'
 import { useTheme } from '@/Theme'
-import SelectedItem from '@/Components/Diagnoses/SelectedItem'
+import AdditionalItem from '@/Components/Diagnoses/AdditionalItem'
 
-const Custom = ({
+const CustomElement = ({
   listObject,
   handleAdd,
   handleRemove,
@@ -25,7 +25,7 @@ const Custom = ({
     Gutters,
     FontSize,
     Components: { additionalSelect },
-    Containers: { medicalCaseFinalDiagnoses },
+    Containers: { finalDiagnoses },
   } = useTheme()
 
   const { t } = useTranslation()
@@ -66,7 +66,7 @@ const Custom = ({
     return (
       <View style={additionalSelect.headerWrapper}>
         <View style={additionalSelect.headerSpacer} />
-        <Text style={additionalSelect.durationLabel}>duration in days</Text>
+        <Text style={additionalSelect.durationLabel}>{t('containers.medical_case.duration_title')}</Text>
       </View>
     )
   }
@@ -75,7 +75,7 @@ const Custom = ({
     <>
       {withDuration && listValues.length > 0 && renderHeader()}
       {listValues.map((listItem, i) => (
-        <SelectedItem
+        <AdditionalItem
           key={`additional-${listItem.id}`}
           listItem={listItem}
           diagnosisId={diagnosisId}
@@ -87,19 +87,16 @@ const Custom = ({
           labelMethod={() => listItem.name}
         />
       ))}
-      <View
-        style={[
-          Gutters.regularVMargin,
-          medicalCaseFinalDiagnoses.addCustomWrapper,
-        ]}
-      >
+      <View style={[Gutters.regularVMargin, finalDiagnoses.addCustomWrapper]}>
         <TextInput
-          style={medicalCaseFinalDiagnoses.addCustomInputText}
+          style={finalDiagnoses.addCustomInputText}
           onChangeText={setValue}
           value={value}
           keyboardType="default"
           placeholder={t(
-            `containers.medical_case.${diagnosisId ? 'drugs' : 'diagnoses'}.custom_placeholder`,
+            `containers.medical_case.${
+              diagnosisId ? 'drugs' : 'diagnoses'
+            }.custom_placeholder`,
           )}
         />
         <RoundedButton
@@ -108,7 +105,7 @@ const Custom = ({
           filled
           fullWidth={false}
           iconSize={FontSize.large}
-          onPress={() => addItem()}
+          onPress={addItem}
           disabled={value === ''}
         />
       </View>
@@ -116,4 +113,4 @@ const Custom = ({
   )
 }
 
-export default Custom
+export default CustomElement

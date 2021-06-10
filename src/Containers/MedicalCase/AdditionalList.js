@@ -21,7 +21,7 @@ import { useTheme } from '@/Theme'
 import ListItem from '@/Containers/MedicalCase/AdditionalListItem'
 import { translate } from '@/Translations/algorithm'
 import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
-import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
+import AddAdditionalDiagnoses from '@/Store/MedicalCase/AddAdditionalDiagnoses'
 
 const AdditionalListContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
@@ -31,7 +31,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
     Fonts,
     Gutters,
     FontSize,
-    Containers: { diagnosisList },
+    Containers: { additionalList },
   } = useTheme()
 
   const {
@@ -57,9 +57,8 @@ const AdditionalListContainer = ({ navigation, route }) => {
     ? filter(algorithm.nodes, { category: 'drug' })
     : filter(algorithm.nodes, { type: 'FinalDiagnostic' })
 
-  const numToAdd = 20
-
   // Local state definition
+  const [numToAdd] = useState(20)
   const [items, setItems] = useState([])
   const [selected, setSelected] = useState(additionalItems)
   const [searchTerm, setSearchTerm] = useState('')
@@ -134,7 +133,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
       )
     } else {
       dispatch(
-        ChangeAdditionalDiagnoses.action({
+        AddAdditionalDiagnoses.action({
           newAdditionalDiagnoses: selected,
         }),
       )
@@ -168,15 +167,15 @@ const AdditionalListContainer = ({ navigation, route }) => {
 
   return (
     <View style={Layout.fullHeight}>
-      <View style={diagnosisList.wrapper}>
-        <View style={diagnosisList.headerWrapper}>
-          <Text style={diagnosisList.header}>
+      <View style={additionalList.wrapper}>
+        <View style={additionalList.headerWrapper}>
+          <Text style={additionalList.header}>
             {t('containers.additional_list.title', {
               items: itemsTitle,
             })}
           </Text>
           <TouchableOpacity
-            style={diagnosisList.closeButton}
+            style={additionalList.closeButton}
             onPress={() => navigation.goBack()}
           >
             <Icon name="close" color={Colors.secondary} />
@@ -191,8 +190,8 @@ const AdditionalListContainer = ({ navigation, route }) => {
           removeBadge={toggleAdditionalItems}
           selected={selected}
           clearBadges={() => setSelected([])}
-          badgeComponentLabel={itemId =>
-            translate(algorithm.nodes[itemId].label)
+          badgeComponentLabel={item =>
+            translate(algorithm.nodes[item.id].label)
           }
         />
 
@@ -213,20 +212,20 @@ const AdditionalListContainer = ({ navigation, route }) => {
           onEndReachedThreshold={0.1}
         />
       </View>
-      <View style={diagnosisList.footerWrapper}>
+      <View style={additionalList.footerWrapper}>
         {Object.keys(selected).length > 0 && (
           <TouchableOpacity
             onPress={() => setSelected([])}
-            style={diagnosisList.clearFiltersButton}
+            style={additionalList.clearFiltersButton}
           >
-            <View style={diagnosisList.clearFiltersButtonWrapper}>
+            <View style={additionalList.clearFiltersButtonWrapper}>
               <Icon
                 name="refresh"
                 color="red"
                 size={FontSize.regular}
                 style={Gutters.regularRMargin}
               />
-              <Text style={diagnosisList.clearFiltersButtonText}>
+              <Text style={additionalList.clearFiltersButtonText}>
                 {t('actions.clear_selection')}
               </Text>
             </View>

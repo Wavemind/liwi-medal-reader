@@ -8,7 +8,7 @@ import uuid from 'react-native-uuid'
 /**
  * The internal imports
  */
-import { Custom } from '@/Components'
+import { CustomElement } from '@/Components'
 import ChangeCustomDiagnoses from '@/Store/MedicalCase/ChangeCustomDiagnoses'
 
 const CustomDiagnoses = () => {
@@ -52,7 +52,7 @@ const CustomDiagnoses = () => {
   }
 
   return (
-    <Custom
+    <CustomElement
       listObject={custom}
       handleAdd={addCustomDiagnosis}
       handleRemove={removeCustomDiagnosis}

@@ -53,16 +53,16 @@ const ListPatientContainer = props => {
     //setData(data.concat([11, 12, 13, 14, 15]))
   }
 
+  // TODO Correct badge bar
   return (
     <View style={Layout.fill}>
       <SearchBar navigation={navigation} filters />
       <BadgeBar
         removeBadge={() => console.log('TODO Remove selected badge')}
-        selected={[
-          { filterBy: 'Gender', value: 'Female' },
-          { filterBy: 'Age', value: '12' },
-        ]}
-        clearBadges={() => console.log('TODO Clear selected badges')}
+        selected={{
+          1: { filterBy: 'Gender', value: 'Female' },
+          2: { filterBy: 'Age', value: '12' },
+        }}
         badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
       />
 

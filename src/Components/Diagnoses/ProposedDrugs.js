@@ -26,7 +26,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
     Fonts,
     Colors,
     Gutters,
-    Containers: { medicalCaseDrugs },
+    Containers: { drugs },
     Components: { booleanButton },
   } = useTheme()
 
@@ -159,7 +159,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
     const isRefused = diagnosis.drugs.refused.includes(drugId)
 
     return (
-      <View style={medicalCaseDrugs.booleanButtonWrapper}>
+      <View style={drugs.booleanButtonWrapper}>
         <View
           key="booleanButton-left"
           style={booleanButton.buttonWrapper(
@@ -203,12 +203,12 @@ const ProposedDrugs = ({ diagnosisType }) => {
   }
 
   return Object.values(diagnoses).map(diagnosis => (
-    <View style={medicalCaseDrugs.wrapper}>
-      <View style={medicalCaseDrugs.diagnosisHeaderWrapper}>
-        <Text style={medicalCaseDrugs.diagnosisHeader}>
+    <View style={drugs.wrapper}>
+      <View style={drugs.diagnosisHeaderWrapper}>
+        <Text style={drugs.diagnosisHeader}>
           {translate(algorithm.nodes[diagnosis.id].label)}
         </Text>
-        <Text style={medicalCaseDrugs.diagnosisType}>
+        <Text style={drugs.diagnosisType}>
           {t(
             `containers.medical_case.drugs.${
               diagnosisType === 'agreed' ? 'proposed' : 'additional'
@@ -217,17 +217,17 @@ const ProposedDrugs = ({ diagnosisType }) => {
         </Text>
       </View>
       <View style={Gutters.regularHPadding}>
-        <Text style={medicalCaseDrugs.drugsHeader}>
+        <Text style={drugs.drugsHeader}>
           {t('containers.medical_case.drugs.drugs')}
         </Text>
         {diagnosis.drugs.proposed.map((drugId, i) => (
           <View
-            style={medicalCaseDrugs.drugWrapper(
+            style={drugs.drugWrapper(
               i === diagnosis.drugs.proposed.length - 1,
             )}
           >
-            <View style={medicalCaseDrugs.drugTitleWrapper}>
-              <Text style={medicalCaseDrugs.drugTitle}>
+            <View style={drugs.drugTitleWrapper}>
+              <Text style={drugs.drugTitle}>
                 {translate(algorithm.nodes[drugId].label)}
               </Text>
               {renderBooleanButton(diagnosis, drugId)}

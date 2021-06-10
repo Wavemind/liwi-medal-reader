@@ -70,6 +70,7 @@ export default {
     },
     medical_case: {
       no_questions: 'No questions proposed',
+      duration_title: 'duration in days',
       navigation: {
         back: 'Prev',
         next: 'Next',

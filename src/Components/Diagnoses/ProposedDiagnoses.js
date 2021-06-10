@@ -19,7 +19,7 @@ const ProposedDiagnoses = () => {
   const {
     Layout,
     Fonts,
-    Containers: { medicalCaseFinalDiagnoses },
+    Containers: { finalDiagnoses },
     Components: { booleanButton },
   } = useTheme()
 
@@ -110,7 +110,7 @@ const ProposedDiagnoses = () => {
     const isRefused = refused.includes(diagnosisId)
 
     return (
-      <View style={medicalCaseFinalDiagnoses.booleanButtonWrapper}>
+      <View style={finalDiagnoses.booleanButtonWrapper}>
         <View
           key="booleanButton-left"
           style={booleanButton.buttonWrapper('left', isAgreed)}
@@ -141,17 +141,15 @@ const ProposedDiagnoses = () => {
     )
   }
 
-  return tempProposed.map((proposedDiagnosisId, i) => (
+  return tempProposed.map((diagnosisId, i) => (
     <View
-      key={`proposed-${proposedDiagnosisId}`}
-      style={medicalCaseFinalDiagnoses.newItemWrapper(
-        i === tempProposed.length - 1,
-      )}
+      key={`proposed-${diagnosisId}`}
+      style={finalDiagnoses.newItemWrapper(i === tempProposed.length - 1)}
     >
       <Text style={Fonts.textSmall}>
-        {translate(algorithm.nodes[proposedDiagnosisId].label)}
+        {translate(algorithm.nodes[diagnosisId].label)}
       </Text>
-      {renderBooleanButton(proposedDiagnosisId)}
+      {renderBooleanButton(diagnosisId)}
     </View>
   ))
 }

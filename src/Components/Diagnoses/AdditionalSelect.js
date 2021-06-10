@@ -13,7 +13,7 @@ import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import SelectedItem from '@/Components/Diagnoses/SelectedItem'
+import AdditionalItem from '@/Components/Diagnoses/AdditionalItem'
 
 const AdditionalSelect = ({
   listObject,
@@ -21,6 +21,8 @@ const AdditionalSelect = ({
   handleRemove,
   diagnosisId = null,
   diagnosisType = null,
+  isAdditional = false,
+  isAgreed = false,
   withDuration = false,
   onUpdateDuration,
 }) => {
@@ -33,7 +35,7 @@ const AdditionalSelect = ({
 
   const { t } = useTranslation()
 
-  const algorithm = useSelector(state => state.algorithm.item)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
 
   const listValues = Object.values(listObject)
 
@@ -53,20 +55,22 @@ const AdditionalSelect = ({
    * Renders the duration header
    * @returns {JSX.Element}
    */
-  const renderHeader = () => {
+  const Header = () => {
     return (
       <View style={additionalSelect.headerWrapper}>
         <View style={additionalSelect.headerSpacer} />
-        <Text style={additionalSelect.durationLabel}>duration in days</Text>
+        <Text style={additionalSelect.durationLabel}>
+          {t('containers.medical_case.duration_title')}
+        </Text>
       </View>
     )
   }
 
   return (
     <>
-      {withDuration && listValues.length > 0 && renderHeader()}
+      {withDuration && listValues.length > 0 && <Header />}
       {listValues.map((listItem, i) => (
-        <SelectedItem
+        <AdditionalItem
           key={`additional-${listItem.id}`}
           listItem={listItem}
           diagnosisId={diagnosisId}
@@ -75,7 +79,7 @@ const AdditionalSelect = ({
           withDuration={withDuration}
           onRemovePress={removeItem}
           onUpdateDuration={onUpdateDuration}
-          labelMethod={() => translate(algorithm.nodes[listItem.id].label)}
+          labelMethod={() => translate(nodes[listItem.id].label)}
         />
       ))}
       <TouchableOpacity

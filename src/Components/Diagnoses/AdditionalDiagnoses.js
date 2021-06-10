@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
  * The internal imports
  */
 import { AdditionalSelect } from '@/Components'
-import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
+import RemoveAdditionalDiagnoses from '@/Store/MedicalCase/RemoveAdditionalDiagnoses'
 
 const AdditionalDiagnoses = () => {
   const dispatch = useDispatch()
@@ -23,16 +23,9 @@ const AdditionalDiagnoses = () => {
    * @param diagnosisId
    */
   const removeAdditionalDiagnosis = diagnosisId => {
-    const tempAdditionalDiagnoses = { ...additional }
-    const index = Object.keys(tempAdditionalDiagnoses).indexOf(
-      diagnosisId.toString(),
-    )
-    if (index > -1) {
-      delete tempAdditionalDiagnoses[diagnosisId.toString()]
-    }
     dispatch(
-      ChangeAdditionalDiagnoses.action({
-        newAdditionalDiagnoses: tempAdditionalDiagnoses,
+      RemoveAdditionalDiagnoses.action({
+        diagnosisId,
       }),
     )
   }
