@@ -23,7 +23,7 @@ import { translate } from '@/Translations/algorithm'
 import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
 import AddAdditionalDiagnoses from '@/Store/MedicalCase/AddAdditionalDiagnoses'
 
-const AdditionalListContainer = ({ navigation, route }) => {
+const SearchAdditionalContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -31,11 +31,11 @@ const AdditionalListContainer = ({ navigation, route }) => {
     Fonts,
     Gutters,
     FontSize,
-    Containers: { additionalList },
+    Containers: { searchAdditional },
   } = useTheme()
 
   const {
-    params: { diagnosisType, diagnosisId },
+    params: { diagnosisKey, diagnosisId },
   } = route
 
   // Define store and translation hooks
@@ -44,19 +44,33 @@ const AdditionalListContainer = ({ navigation, route }) => {
 
   // Get data from the store
   const algorithm = useSelector(state => state.algorithm.item)
+  const proposed = useSelector(state => {
+    if (diagnosisKey) {
+      return state.medicalCase.item.diagnosis[diagnosisKey][diagnosisId].drugs
+        .proposed
+    } else {
+      return state.medicalCase.item.diagnosis.proposed
+    }
+  })
   const additionalItems = useSelector(state => {
-    if (diagnosisType) {
-      return state.medicalCase.item.diagnosis[diagnosisType][diagnosisId].drugs
+    if (diagnosisKey) {
+      return state.medicalCase.item.diagnosis[diagnosisKey][diagnosisId].drugs
         .additional
     } else {
       return state.medicalCase.item.diagnosis.additional
     }
   })
 
-  // TODO Filter by proposed diagnoses/drugs
-  const itemList = diagnosisType
-    ? filter(algorithm.nodes, { category: 'drug' })
-    : filter(algorithm.nodes, { type: 'FinalDiagnostic' })
+  // TODO filter diagnoses by neonat or not neonat
+  // https://github.com/Wavemind/liwi-mobile/blob/87a6367088bfe636b5da1a6527beae879ae6174c/src/screens/medicalCasesContainer/diagnosticsStrategyContainer/finalDiagnosticsList/FinalDiagnosticsList.js#L16
+  // TODO order by alphabetic by translation language
+  const itemList = diagnosisKey
+    ? filter(algorithm.nodes, { category: 'drug' }).filter(
+        item => !proposed.includes(item.id),
+      )
+    : filter(algorithm.nodes, { type: 'FinalDiagnostic' }).filter(
+        item => !proposed.includes(item.id),
+      )
 
   // Local state definition
   const [numToAdd] = useState(20)
@@ -98,18 +112,20 @@ const AdditionalListContainer = ({ navigation, route }) => {
   const toggleAdditionalItems = (checkboxValue, nodeId) => {
     const tempAdditionalItems = { ...selected }
     const index = Object.keys(tempAdditionalItems).indexOf(nodeId.toString())
+    const currentNode = algorithm.nodes[nodeId]
     if (index > -1) {
       delete tempAdditionalItems[nodeId.toString()]
     } else {
-      if (diagnosisType) {
+      if (diagnosisKey) {
         tempAdditionalItems[nodeId] = { id: nodeId, duration: '' }
       } else {
         tempAdditionalItems[nodeId] = {
           id: nodeId,
+          managements: Object.values(currentNode.managements).map(
+            management => management.id,
+          ),
           drugs: {
-            proposed: Object.values(algorithm.nodes[nodeId].drugs).map(
-              drug => drug.id,
-            ),
+            proposed: Object.values(currentNode.drugs).map(drug => drug.id),
             agreed: {},
             refused: [],
             additional: {},
@@ -124,10 +140,10 @@ const AdditionalListContainer = ({ navigation, route }) => {
    * Updates the global store when the user is done selecting elements
    */
   const handleApply = () => {
-    if (diagnosisType) {
+    if (diagnosisKey) {
       dispatch(
         ChangeAdditionalDrugs.action({
-          diagnosisType,
+          diagnosisKey,
           diagnosisId,
           newAdditionalDrugs: selected,
         }),
@@ -162,21 +178,21 @@ const AdditionalListContainer = ({ navigation, route }) => {
     )
   }
 
-  const itemsTitle = diagnosisType
+  const itemsTitle = diagnosisKey
     ? t('containers.medical_case.drugs.drugs')
     : t('containers.medical_case.diagnoses.diagnoses')
 
   return (
     <View style={Layout.fullHeight}>
-      <View style={additionalList.wrapper}>
-        <View style={additionalList.headerWrapper}>
-          <Text style={additionalList.header}>
+      <View style={searchAdditional.wrapper}>
+        <View style={searchAdditional.headerWrapper}>
+          <Text style={searchAdditional.header}>
             {t('containers.additional_list.title', {
               items: itemsTitle,
             })}
           </Text>
           <TouchableOpacity
-            style={additionalList.closeButton}
+            style={searchAdditional.closeButton}
             onPress={() => navigation.goBack()}
           >
             <Icon name="close" color={Colors.secondary} />
@@ -207,26 +223,27 @@ const AdditionalListContainer = ({ navigation, route }) => {
               handlePress={toggleAdditionalItems}
             />
           )}
+          initialNumToRender={numToAdd}
           keyExtractor={item => item.id}
           ListEmptyComponent={renderEmptyList}
           onEndReached={loadItems}
           onEndReachedThreshold={0.1}
         />
       </View>
-      <View style={additionalList.footerWrapper}>
+      <View style={searchAdditional.footerWrapper}>
         {Object.keys(selected).length > 0 && (
           <TouchableOpacity
             onPress={() => setSelected([])}
-            style={additionalList.clearFiltersButton}
+            style={searchAdditional.clearFiltersButton}
           >
-            <View style={additionalList.clearFiltersButtonWrapper}>
+            <View style={searchAdditional.clearFiltersButtonWrapper}>
               <Icon
                 name="refresh"
                 color="red"
                 size={FontSize.regular}
                 style={Gutters.regularRMargin}
               />
-              <Text style={additionalList.clearFiltersButtonText}>
+              <Text style={searchAdditional.clearFiltersButtonText}>
                 {t('actions.clear_selection')}
               </Text>
             </View>
@@ -244,4 +261,4 @@ const AdditionalListContainer = ({ navigation, route }) => {
   )
 }
 
-export default AdditionalListContainer
+export default SearchAdditionalContainer

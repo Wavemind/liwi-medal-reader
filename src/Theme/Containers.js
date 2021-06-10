@@ -21,7 +21,7 @@ import medicalCaseIndexStyles from './containers/MedicalCase/Index.style'
 import medicalCaseListStyles from './containers/MedicalCase/List.style'
 import finalDiagnosesStyles from './containers/MedicalCase/Diagnoses/FinalDiagnoses.style'
 import drugsStyles from './containers/MedicalCase/Diagnoses/Drugs.style'
-import additionalListStyles from './containers/MedicalCase/Diagnoses/AdditionalList.style'
+import searchAdditionalStyles from './containers/MedicalCase/Diagnoses/SearchAdditional.style'
 
 import patientListStyles from './containers/Patient/List.style'
 import patientPersonalInfoStyles from './containers/Patient/PersonalInfo.style'
@@ -70,7 +70,7 @@ export default function (props) {
     // MEDICAL CASE
     medicalCase: medicalCaseIndexStyles(props),
     finalDiagnoses: finalDiagnosesStyles(props),
-    additionalList: additionalListStyles(props),
+    searchAdditional: searchAdditionalStyles(props),
     drugs: drugsStyles(props),
   }
 }

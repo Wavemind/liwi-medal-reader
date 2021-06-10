@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import { AdditionalSelect } from '@/Components'
+import { AdditionalSelect, DrugBooleanButton } from '@/Components'
 import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
 import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
@@ -19,15 +19,12 @@ import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
 import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 
-const ProposedDrugs = ({ diagnosisType }) => {
+const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
   const {
-    Layout,
     Fonts,
-    Colors,
     Gutters,
     Containers: { drugs },
-    Components: { booleanButton },
   } = useTheme()
 
   const dispatch = useDispatch()
@@ -35,7 +32,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
 
   const algorithm = useSelector(state => state.algorithm.item)
   const diagnoses = useSelector(
-    state => state.medicalCase.item.diagnosis[diagnosisType],
+    state => state.medicalCase.item.diagnosis[diagnosisKey],
   )
 
   /**
@@ -58,7 +55,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
       }
       dispatch(
         AddAgreedDrugs.action({
-          diagnosisType,
+          diagnosisKey,
           drugId,
           diagnosisId: diagnosisId,
           drugContent: { id: drugId },
@@ -70,7 +67,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
         refusedDrugs.splice(refusedDrugs.indexOf(drugId), 1)
         dispatch(
           RemoveRefusedDrugs.action({
-            diagnosisType,
+            diagnosisKey,
             diagnosisId: diagnosisId,
             newRefusedDrugs: refusedDrugs,
           }),
@@ -83,7 +80,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
       refusedDrugs.push(drugId)
       dispatch(
         AddRefusedDrugs.action({
-          diagnosisType,
+          diagnosisKey,
           diagnosisId: diagnosisId,
           newRefusedDrugs: refusedDrugs,
         }),
@@ -93,7 +90,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
       if (isInAgreed) {
         dispatch(
           RemoveAgreedDrugs.action({
-            diagnosisType,
+            diagnosisKey,
             drugId,
             diagnosisId: diagnosisId,
           }),
@@ -109,15 +106,11 @@ const ProposedDrugs = ({ diagnosisType }) => {
    */
   const removeAdditionalDrug = (diagnosisId, drugId) => {
     const tempAdditionalDrugs = { ...diagnoses[diagnosisId].drugs.additional }
-
-    const index = Object.keys(tempAdditionalDrugs).indexOf(drugId.toString())
-    if (index > -1) {
-      delete tempAdditionalDrugs[drugId.toString()]
-    }
+    delete tempAdditionalDrugs[drugId]
 
     dispatch(
       ChangeAdditionalDrugs.action({
-        diagnosisType,
+        diagnosisKey,
         diagnosisId,
         newAdditionalDrugs: tempAdditionalDrugs,
       }),
@@ -131,74 +124,18 @@ const ProposedDrugs = ({ diagnosisType }) => {
    * @param duration
    */
   const updateAdditionalDrugDuration = (diagnosisId, drugId, duration) => {
-    const tempAdditionalDrug = {
+    const newAdditionalDrug = {
       ...diagnoses[diagnosisId].drugs.additional[drugId],
     }
-    tempAdditionalDrug.duration = duration
+    newAdditionalDrug.duration = duration
 
     dispatch(
       ChangeAdditionalDrugDuration.action({
-        diagnosisType,
+        diagnosisKey,
         diagnosisId,
         drugId,
-        newAdditionalDrug: tempAdditionalDrug,
+        newAdditionalDrug: newAdditionalDrug,
       }),
-    )
-  }
-
-  /**
-   * Renders the boolean buttons to agree/disagree with the proposed diagnoses
-   * @param diagnosis
-   * @param drugId
-   * @returns {JSX.Element}
-   */
-  const renderBooleanButton = (diagnosis, drugId) => {
-    const isAgreed = Object.keys(diagnosis.drugs.agreed).includes(
-      drugId.toString(),
-    )
-    const isRefused = diagnosis.drugs.refused.includes(drugId)
-
-    return (
-      <View style={drugs.booleanButtonWrapper}>
-        <View
-          key="booleanButton-left"
-          style={booleanButton.buttonWrapper(
-            'left',
-            isAgreed,
-            false,
-            true,
-            Colors.lightGrey,
-          )}
-        >
-          <TouchableOpacity
-            style={Layout.center}
-            onPress={() => updateDrugs(diagnosis.id, drugId, true)}
-          >
-            <Text style={booleanButton.buttonText(isAgreed)}>
-              {t('containers.medical_case.common.agree')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          key="booleanButton-right"
-          style={booleanButton.buttonWrapper(
-            'right',
-            isRefused,
-            false,
-            true,
-            Colors.lightGrey,
-          )}
-        >
-          <TouchableOpacity
-            style={Layout.center}
-            onPress={() => updateDrugs(diagnosis.id, drugId, false)}
-          >
-            <Text style={booleanButton.buttonText(isRefused)}>
-              {t('containers.medical_case.common.disagree')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     )
   }
 
@@ -208,10 +145,10 @@ const ProposedDrugs = ({ diagnosisType }) => {
         <Text style={drugs.diagnosisHeader}>
           {translate(algorithm.nodes[diagnosis.id].label)}
         </Text>
-        <Text style={drugs.diagnosisType}>
+        <Text style={drugs.diagnosisKey}>
           {t(
             `containers.medical_case.drugs.${
-              diagnosisType === 'agreed' ? 'proposed' : 'additional'
+              diagnosisKey === 'agreed' ? 'proposed' : 'additional'
             }`,
           )}
         </Text>
@@ -222,15 +159,17 @@ const ProposedDrugs = ({ diagnosisType }) => {
         </Text>
         {diagnosis.drugs.proposed.map((drugId, i) => (
           <View
-            style={drugs.drugWrapper(
-              i === diagnosis.drugs.proposed.length - 1,
-            )}
+            style={drugs.drugWrapper(i === diagnosis.drugs.proposed.length - 1)}
           >
             <View style={drugs.drugTitleWrapper}>
               <Text style={drugs.drugTitle}>
                 {translate(algorithm.nodes[drugId].label)}
               </Text>
-              {renderBooleanButton(diagnosis, drugId)}
+              <DrugBooleanButton
+                diagnosis={diagnosis}
+                drugId={drugId}
+                updateDrugs={updateDrugs}
+              />
             </View>
             <Text style={Fonts.textSmall}>
               {translate(algorithm.nodes[drugId].description)}
@@ -244,7 +183,7 @@ const ProposedDrugs = ({ diagnosisType }) => {
           listItemType="drugs"
           handleRemove={removeAdditionalDrug}
           diagnosisId={diagnosis.id}
-          diagnosisType={diagnosisType}
+          diagnosisKey={diagnosisKey}
           withDuration
           onUpdateDuration={updateAdditionalDrugDuration}
         />
@@ -253,4 +192,4 @@ const ProposedDrugs = ({ diagnosisType }) => {
   ))
 }
 
-export default ProposedDrugs
+export default DiagnosisDrugs

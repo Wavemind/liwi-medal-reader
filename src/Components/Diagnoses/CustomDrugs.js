@@ -25,7 +25,7 @@ const CustomDrugs = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
-  const diagnoses = useSelector(
+  const customDiagnoses = useSelector(
     state => state.medicalCase.item.diagnosis.custom,
   )
 
@@ -35,7 +35,7 @@ const CustomDrugs = () => {
    * @param value
    */
   const addCustomDrug = (diagnosisId, value) => {
-    const tempCustomDrugs = { ...diagnoses[diagnosisId].drugs }
+    const tempCustomDrugs = { ...customDiagnoses[diagnosisId].drugs }
     const newDrugId = uuid.v4()
     tempCustomDrugs[newDrugId] = {
       id: newDrugId,
@@ -57,7 +57,7 @@ const CustomDrugs = () => {
    * @param drugId
    */
   const removeCustomDrug = (diagnosisId, drugId) => {
-    const tempCustomDrugs = { ...diagnoses[diagnosisId].drugs }
+    const tempCustomDrugs = { ...customDiagnoses[diagnosisId].drugs }
     delete tempCustomDrugs[drugId]
 
     dispatch(
@@ -76,7 +76,7 @@ const CustomDrugs = () => {
    */
   const updateCustomDrugDuration = (diagnosisId, drugId, duration) => {
     const tempCustomDrug = {
-      ...diagnoses[diagnosisId].drugs[drugId],
+      ...customDiagnoses[diagnosisId].drugs[drugId],
     }
     tempCustomDrug.duration = duration
 
@@ -89,7 +89,7 @@ const CustomDrugs = () => {
     )
   }
 
-  return Object.values(diagnoses).map(diagnosis => (
+  return Object.values(customDiagnoses).map(diagnosis => (
     <View style={[drugs.wrapper, Gutters.regularBMargin]}>
       <View style={drugs.diagnosisHeaderWrapper}>
         <Text style={drugs.diagnosisHeader}>{diagnosis.name}</Text>

@@ -13,17 +13,14 @@ import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import AdditionalItem from '@/Components/Diagnoses/AdditionalItem'
+import SelectedItem from '@/Components/Diagnoses/SelectedItem'
 
-// TODO Rename diagnosisType to diagnosisKey
 const AdditionalSelect = ({
   listObject,
   listItemType,
   handleRemove,
   diagnosisId = null,
-  diagnosisType = null,
-  isAdditional = false,
-  isAgreed = false,
+  diagnosisKey = null,
   withDuration = false,
   onUpdateDuration,
 }) => {
@@ -32,6 +29,7 @@ const AdditionalSelect = ({
     Gutters,
     FontSize,
     Components: { additionalSelect },
+    Containers: { finalDiagnoses },
   } = useTheme()
 
   const { t } = useTranslation()
@@ -52,26 +50,25 @@ const AdditionalSelect = ({
     }
   }
 
-  /**
-   * Renders the duration header
-   * @returns {JSX.Element}
-   */
-  const Header = () => {
-    return (
-      <View style={additionalSelect.headerWrapper}>
-        <View style={additionalSelect.headerSpacer} />
-        <Text style={additionalSelect.durationLabel}>
-          {t('containers.medical_case.duration_title')}
-        </Text>
-      </View>
-    )
-  }
-
   return (
-    <>
-      {withDuration && listValues.length > 0 && <Header />}
+    <View>
+      {listValues.length === 0 && (
+        <View>
+          <Text style={finalDiagnoses.noItemsText}>
+            {t(`containers.medical_case.${diagnosisId ? 'drugs' : 'diagnoses'}.no_additional`)}
+          </Text>
+        </View>
+      )}
+      {withDuration && listValues.length > 0 && (
+        <View style={additionalSelect.headerWrapper}>
+          <View style={additionalSelect.headerSpacer} />
+          <Text style={additionalSelect.durationLabel}>
+            {t('containers.medical_case.duration_title')}
+          </Text>
+        </View>
+      )}
       {listValues.map((listItem, i) => (
-        <AdditionalItem
+        <SelectedItem
           key={`additional-${listItem.id}`}
           listItem={listItem}
           diagnosisId={diagnosisId}
@@ -85,7 +82,9 @@ const AdditionalSelect = ({
       ))}
       <TouchableOpacity
         style={additionalSelect.addAdditionalButton}
-        onPress={() => navigate('Additional', { diagnosisType, diagnosisId })}
+        onPress={() =>
+          navigate('SearchAdditional', { diagnosisKey, diagnosisId })
+        }
       >
         <Text style={additionalSelect.addAdditionalButtonText}>
           {t('containers.medical_case.diagnoses.additional_placeholder', {
@@ -103,7 +102,7 @@ const AdditionalSelect = ({
           size={FontSize.large}
         />
       </TouchableOpacity>
-    </>
+    </View>
   )
 }
 

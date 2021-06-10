@@ -31,10 +31,10 @@ export default function (props) {
     footerWrapper: {
       ...Gutters.tinyVPadding,
       ...Gutters.regularHPadding,
+      ...Layout.row,
+      ...Layout.justifyContentEnd,
       width: wp(100),
       backgroundColor: Colors.secondary,
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
       borderTopWidth: 1,
       borderTopColor: Colors.grey,
     },

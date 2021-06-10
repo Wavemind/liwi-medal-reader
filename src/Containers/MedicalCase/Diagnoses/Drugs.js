@@ -7,13 +7,13 @@ import { ScrollView } from 'react-native'
 /**
  * The internal imports
  */
-import { ProposedDrugs, CustomDrugs } from '@/Components'
-// TODO Rename DiagnosisDrugs
+import { DiagnosisDrugs, CustomDrugs } from '@/Components'
+
 const Drugs = () => {
   return (
     <ScrollView>
-      <ProposedDrugs diagnosisType="agreed" />
-      <ProposedDrugs diagnosisType="additional" />
+      <DiagnosisDrugs diagnosisKey="agreed" />
+      <DiagnosisDrugs diagnosisKey="additional" />
       <CustomDrugs />
     </ScrollView>
   )

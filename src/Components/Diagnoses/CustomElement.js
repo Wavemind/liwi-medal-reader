@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { RoundedButton } from '@/Components'
 import { useTheme } from '@/Theme'
-import AdditionalItem from '@/Components/Diagnoses/AdditionalItem'
+import SelectedItem from '@/Components/Diagnoses/SelectedItem'
 
 const CustomElement = ({
   listObject,
@@ -24,6 +24,7 @@ const CustomElement = ({
   const {
     Gutters,
     FontSize,
+    Fonts,
     Components: { additionalSelect },
     Containers: { finalDiagnoses },
   } = useTheme()
@@ -58,35 +59,37 @@ const CustomElement = ({
     }
   }
 
-  /**
-   * Renders the duration header
-   * @returns {JSX.Element}
-   */
-  const Header = () => {
-    return (
-      <View style={additionalSelect.headerWrapper}>
-        <View style={additionalSelect.headerSpacer} />
-        <Text style={additionalSelect.durationLabel}>{t('containers.medical_case.duration_title')}</Text>
-      </View>
-    )
-  }
-
   return (
-    <>
-      {withDuration && listValues.length > 0 && <Header />}
-      {listValues.map((listItem, i) => (
-        <AdditionalItem
-          key={`additional-${listItem.id}`}
-          listItem={listItem}
-          diagnosisId={diagnosisId}
-          listObject={listObject}
-          isLast={i === listValues.length - 1}
-          withDuration={withDuration}
-          onRemovePress={removeItem}
-          onUpdateDuration={onUpdateDuration}
-          labelMethod={() => listItem.name}
-        />
-      ))}
+    <View>
+      {withDuration && listValues.length > 0 && (
+        <View style={additionalSelect.headerWrapper}>
+          <View style={additionalSelect.headerSpacer} />
+          <Text style={additionalSelect.durationLabel}>
+            {t('containers.medical_case.duration_title')}
+          </Text>
+        </View>
+      )}
+      {listValues.length === 0 ? (
+        <View>
+          <Text style={finalDiagnoses.noItemsText}>
+            {t(`containers.medical_case.${diagnosisId ? 'drugs' : 'diagnoses'}.no_custom`)}
+          </Text>
+        </View>
+      ) : (
+        listValues.map((listItem, i) => (
+          <SelectedItem
+            key={`additional-${listItem.id}`}
+            listItem={listItem}
+            diagnosisId={diagnosisId}
+            listObject={listObject}
+            isLast={i === listValues.length - 1}
+            withDuration={withDuration}
+            onRemovePress={removeItem}
+            onUpdateDuration={onUpdateDuration}
+            labelMethod={() => listItem.name}
+          />
+        ))
+      )}
       <View style={[Gutters.regularVMargin, finalDiagnoses.addCustomWrapper]}>
         <TextInput
           style={finalDiagnoses.addCustomInputText}
@@ -109,7 +112,7 @@ const CustomElement = ({
           disabled={value === ''}
         />
       </View>
-    </>
+    </View>
   )
 }
 

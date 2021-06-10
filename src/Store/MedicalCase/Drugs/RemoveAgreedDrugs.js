@@ -4,10 +4,6 @@ export default {
   initialState: {},
   action: createAction('medicalCase/removeAgreedDrugs'),
   reducers(state, { payload }) {
-    const prevState = {
-      ...state.item.diagnosis[payload.diagnosisType][payload.diagnosisId].drugs.agreed,
-    }
-    delete prevState[payload.drugId]
-    state.item.diagnosis[payload.diagnosisType][payload.diagnosisId].drugs.agreed = prevState
+    delete state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs.agreed[payload.drugId]
   },
 }

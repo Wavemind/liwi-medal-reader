@@ -34,9 +34,14 @@ export default function (props) {
       borderWidth: 1,
       backgroundColor: Colors.lightGrey,
     },
+    itemLabelWrapper: {
+      ...Layout.row,
+      ...Layout.alignItemsStart,
+      width: labelWidth,
+    },
     itemLabel: {
       ...Fonts.textSmall,
-      width: labelWidth,
+      ...Gutters.smallRMargin,
     },
     addAdditionalButton: {
       ...Gutters.smallTMargin,

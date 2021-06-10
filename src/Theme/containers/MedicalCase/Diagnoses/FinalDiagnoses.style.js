@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Colors, Gutters, Layout } = props
+  const { Colors, Gutters, Layout, Fonts } = props
 
   return StyleSheet.create({
     newItemWrapper: isLastItem => ({
@@ -13,9 +13,14 @@ export default function (props) {
       borderBottomColor: Colors.grey,
       borderBottomWidth: isLastItem ? 0 : 1,
     }),
+    diagnosisLabel: {
+      ...Layout.grow,
+      ...Fonts.textSmall,
+    },
     booleanButtonWrapper: {
+      ...Layout.row,
+      ...Gutters.smallLMargin,
       width: wp(33.3),
-      flexDirection: 'row',
     },
     addCustomWrapper: {
       ...Layout.row,
@@ -30,6 +35,12 @@ export default function (props) {
       backgroundColor: Colors.secondary,
       borderRadius: hp(2),
       height: hp(4),
+    },
+    noItemsText: {
+      ...Gutters.smallVPadding,
+      ...Fonts.textCenter,
+      ...Fonts.textSmall,
+      ...Fonts.textItalic,
     },
   })
 }

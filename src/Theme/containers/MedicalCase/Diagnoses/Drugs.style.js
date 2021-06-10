@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native'
-import { hp, wp } from '@/Theme/Responsive'
+import { wp } from '@/Theme/Responsive'
 
 export default function (props) {
   const { Colors, Fonts, Gutters, Layout } = props
 
   return StyleSheet.create({
     booleanButtonWrapper: {
+      ...Layout.row,
       width: wp(33.3),
-      flexDirection: 'row',
     },
     wrapper: {
       ...Gutters.regularHMargin,

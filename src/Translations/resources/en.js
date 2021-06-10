@@ -113,6 +113,9 @@ export default {
         additional_placeholder: 'Select additional {{ item }}',
         custom_title: 'Your proposition',
         custom_placeholder: 'Add your diagnosis',
+        no_proposed: 'No diagnoses proposed',
+        no_additional: 'No additional diagnoses',
+        no_custom: 'No custom diagnoses',
       },
       drugs: {
         drugs: 'Drugs',
@@ -120,6 +123,9 @@ export default {
         additional: 'Additional',
         custom: 'Custom',
         custom_placeholder: 'Add your drugs',
+        no_proposed: 'No drugs proposed',
+        no_additional: 'No additional drugs',
+        no_custom: 'No custom drugs',
       },
     },
     scan: {
