@@ -20,7 +20,7 @@ const MedicalHistoryMedicalCaseContainer = props => {
   const isFocused = useIsFocused()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const medicalCase = useSelector(state => state.medicalCase.item)
+  const medicalCase = useSelector(state => state.medicalCase.item) // J'ai mis ça pour qu'il refresh la vue quand on répond a une question
 
   const [systems, setSystems] = useState(MedicalHistoryQuestions())
 

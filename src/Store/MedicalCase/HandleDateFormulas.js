@@ -3,11 +3,12 @@
  */
 import { createAction } from '@reduxjs/toolkit'
 import differenceInDays from 'date-fns/differenceInDays'
+import differenceInMonths from 'date-fns/differenceInMonths'
 
 /**
  * The internal imports
  */
-import { getNoAnswer, getYesAnswer } from '@/Utils/Answers'
+import { handleNumeric } from '@/Services/MedicalCase/SetAnswer'
 
 export default {
   initialState: {},
@@ -17,38 +18,20 @@ export default {
       config: { birth_date_formulas },
       nodes,
     } = algorithm
-    console.log(algorithm)
+    const createdAt = state.item.createdAt
+    const mcNodes = state.item.nodes
+
     birth_date_formulas.forEach(nodeId => {
-      console.log(nodeId, nodes[nodeId])
+      if (![2078, 2094, 427, 7321, 6460].includes(nodeId)) {
+        const value =
+          nodes[nodeId].formula.search('ToMonth') > 0
+            ? differenceInMonths(new Date(createdAt), new Date(birthDate))
+            : differenceInDays(new Date(createdAt), new Date(birthDate))
+
+        const newValue = handleNumeric(mcNodes[nodeId], nodes[nodeId], value)
+        state.item.nodes[nodeId] = { ...state.item.nodes[nodeId], ...newValue }
+      }
     })
-
-    // const olderCC = full_order.complaint_categories_step.older
-    // const neonatCC = full_order.complaint_categories_step.neonat
-
-    // const olderGeneralId = basic_questions.general_cc_id
-    // const neonatGeneralId = basic_questions.yi_general_cc_id
-
-    // const days = differenceInDays(
-    //   new Date(state.item.createdAt),
-    //   new Date(birthDate),
-    // )
-
-    // if (days <= 60) {
-    //   olderCC.forEach(ccId => {
-    //     state.item.nodes[ccId].answer = getNoAnswer(nodes[ccId]).id
-    //   })
-    //   state.item.nodes[neonatGeneralId].answer = getYesAnswer(
-    //     nodes[neonatGeneralId],
-    //   ).id
-    // } else {
-    //   neonatCC.forEach(ccId => {
-    //     state.item.nodes[ccId].answer = getNoAnswer(nodes[ccId]).id
-    //   })
-    //   state.item.nodes[olderGeneralId].answer = getYesAnswer(
-    //     nodes[olderGeneralId],
-    //   ).id
-    // }
-
     return state
   },
 }

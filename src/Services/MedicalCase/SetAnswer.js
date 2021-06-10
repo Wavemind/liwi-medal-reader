@@ -34,7 +34,7 @@ export const round = (value, step) => {
  *              {integer} roundedValue? : Rounded value if the node requires a rounded value
  *   }
  */
-const handleNumeric = (mcNode, node, value) => {
+export const handleNumeric = (mcNode, node, value) => {
   const response = { answer: null, value: value }
 
   if (value === null) {
@@ -53,8 +53,8 @@ const handleNumeric = (mcNode, node, value) => {
           return value < Number(condition.value)
         case 'between':
           return (
-            value >= Number(condition.value.split(',').first()) &&
-            value < Number(condition.value.split(',').second())
+            value >= Number(condition.value.split(',')[0]) &&
+            value < Number(condition.value.split(',')[1])
           )
       }
     })
@@ -133,6 +133,8 @@ export default async props => {
     },
     medicalCase: { item: medicalCase },
   } = store.getState()
+
+  console.log(node)
 
   const mcNode = medicalCase.nodes[nodeId]
 
