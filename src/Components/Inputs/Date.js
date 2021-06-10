@@ -22,6 +22,7 @@ import { useTheme } from '@/Theme'
 import { Checkbox } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
 import HandleComplaintCategories from '@/Store/MedicalCase/HandleComplaintCategories'
+import HandleDateFormulas from '@/Store/MedicalCase/HandleDateFormulas'
 
 const DateInput = () => {
   // Theme and style elements deconstruction
@@ -52,9 +53,7 @@ const DateInput = () => {
   // Get values from the store
   const algorithm = useSelector(state => state.algorithm.item)
   const ageLimit = useSelector(state => state.algorithm.item.config.age_limit)
-  const relatedFormulas = useSelector(
-    state => state.algorithm.item.config.birth_date_formulas,
-  )
+
   const systemLanguage = useSelector(state => state.system.language)
   const birth_date = useSelector(state => state.patient.item.birth_date)
 
@@ -98,7 +97,16 @@ const DateInput = () => {
     }
   }, [])
 
-  const setComplaintCategories = birthDate => {
+  const relatedActions = birthDate => {
+    // Trigger formulas related to birth date
+    dispatch(
+      HandleDateFormulas.action({
+        birthDate: birthDate.getTime(),
+        algorithm,
+      }),
+    )
+
+    // Set default value for complain category
     dispatch(
       HandleComplaintCategories.action({
         birthDate: birthDate.getTime(),
@@ -123,7 +131,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      setComplaintCategories(birthDate)
+      relatedActions(birthDate)
     }
   }, [dayValue, monthValue, yearValue])
 
@@ -148,7 +156,7 @@ const DateInput = () => {
           value: birthDate.getTime(),
         }),
       )
-      setComplaintCategories(birthDate)
+      relatedActions(birthDate)
     }
   }, [estimatedValue, estimatedDateType])
 
