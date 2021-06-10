@@ -69,7 +69,7 @@ const CustomDrugs = () => {
   }
 
   /**
-   * Updates the selected additional drug duration
+   * Updates the selected custom drug duration
    * @param diagnosisId
    * @param drugId
    * @param duration

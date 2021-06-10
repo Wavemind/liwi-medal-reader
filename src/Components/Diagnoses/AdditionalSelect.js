@@ -15,6 +15,7 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import AdditionalItem from '@/Components/Diagnoses/AdditionalItem'
 
+// TODO Rename diagnosisType to diagnosisKey
 const AdditionalSelect = ({
   listObject,
   listItemType,

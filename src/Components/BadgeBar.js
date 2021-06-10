@@ -10,6 +10,8 @@ import { View, ScrollView } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Badge } from '@/Components'
 
+// TODO Add clear all again with prop to show or not
+// TODO Correct margin
 const BadgeBar = ({ removeBadge, selected, badgeComponentLabel }) => {
   // Theme and style elements deconstruction
   const {

@@ -62,7 +62,7 @@ const CustomElement = ({
    * Renders the duration header
    * @returns {JSX.Element}
    */
-  const renderHeader = () => {
+  const Header = () => {
     return (
       <View style={additionalSelect.headerWrapper}>
         <View style={additionalSelect.headerSpacer} />
@@ -73,7 +73,7 @@ const CustomElement = ({
 
   return (
     <>
-      {withDuration && listValues.length > 0 && renderHeader()}
+      {withDuration && listValues.length > 0 && <Header />}
       {listValues.map((listItem, i) => (
         <AdditionalItem
           key={`additional-${listItem.id}`}

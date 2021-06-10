@@ -53,6 +53,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
     }
   })
 
+  // TODO Filter by proposed diagnoses/drugs
   const itemList = diagnosisType
     ? filter(algorithm.nodes, { category: 'drug' })
     : filter(algorithm.nodes, { type: 'FinalDiagnostic' })
@@ -69,7 +70,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
    */
   useEffect(() => {
     if (searchTerm.length === 0) {
-      displayItems()
+      loadItems()
     } else {
       const filteredItemList = filter(itemList, item =>
         translate(item.label).match(new RegExp(searchTerm, 'i')),
@@ -81,7 +82,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
   /**
    * Defines the array of diagnoses to be displayed
    */
-  const displayItems = () => {
+  const loadItems = () => {
     if (searchTerm.length === 0) {
       const dataToRender = itemList.slice(0, numToDisplay)
       setNumToDisplay(numToDisplay + numToAdd)
@@ -208,7 +209,7 @@ const AdditionalListContainer = ({ navigation, route }) => {
           )}
           keyExtractor={item => item.id}
           ListEmptyComponent={renderEmptyList}
-          onEndReached={() => displayItems()}
+          onEndReached={loadItems}
           onEndReachedThreshold={0.1}
         />
       </View>

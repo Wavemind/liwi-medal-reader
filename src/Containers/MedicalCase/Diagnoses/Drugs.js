@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native'
  * The internal imports
  */
 import { ProposedDrugs, CustomDrugs } from '@/Components'
-
+// TODO Rename DiagnosisDrugs
 const Drugs = () => {
   return (
     <ScrollView>
