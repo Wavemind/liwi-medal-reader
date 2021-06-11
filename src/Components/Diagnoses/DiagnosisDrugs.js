@@ -24,7 +24,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
   const {
     Fonts,
     Gutters,
-    Containers: { drugs },
+    Containers: { finalDiagnoses, drugs },
   } = useTheme()
 
   const dispatch = useDispatch()
@@ -131,32 +131,46 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
           {translate(algorithm.nodes[diagnosis.id].label)}
         </Text>
         <Text style={drugs.diagnosisKey}>
-          {t(`containers.medical_case.drugs.${diagnosisKey === 'agreed' ? 'proposed' : 'additional'}`)}
+          {t(
+            `containers.medical_case.drugs.${
+              diagnosisKey === 'agreed' ? 'proposed' : 'additional'
+            }`,
+          )}
         </Text>
       </View>
       <View style={Gutters.regularHPadding}>
         <Text style={drugs.drugsHeader}>
           {t('containers.medical_case.drugs.drugs')}
         </Text>
-        {diagnosis.drugs.proposed.map((drugId, i) => (
-          <View
-            style={drugs.drugWrapper(i === diagnosis.drugs.proposed.length - 1)}
-          >
-            <View style={drugs.drugTitleWrapper}>
-              <Text style={drugs.drugTitle}>
-                {translate(algorithm.nodes[drugId].label)}
-              </Text>
-              <DrugBooleanButton
-                diagnosis={diagnosis}
-                drugId={drugId}
-                updateDrugs={updateDrugs}
-              />
-            </View>
-            <Text style={Fonts.textSmall}>
-              {translate(algorithm.nodes[drugId].description)}
+        {diagnosis.drugs.proposed.length === 0 ? (
+          <View>
+            <Text style={finalDiagnoses.noItemsText}>
+              {t('containers.medical_case.drugs.no_proposed')}
             </Text>
           </View>
-        ))}
+        ) : (
+          diagnosis.drugs.proposed.map((drugId, i) => (
+            <View
+              style={drugs.drugWrapper(
+                i === diagnosis.drugs.proposed.length - 1,
+              )}
+            >
+              <View style={drugs.drugTitleWrapper}>
+                <Text style={drugs.drugTitle}>
+                  {translate(algorithm.nodes[drugId].label)}
+                </Text>
+                <DrugBooleanButton
+                  diagnosis={diagnosis}
+                  drugId={drugId}
+                  updateDrugs={updateDrugs}
+                />
+              </View>
+              <Text style={Fonts.textSmall}>
+                {translate(algorithm.nodes[drugId].description)}
+              </Text>
+            </View>
+          ))
+        )}
       </View>
       <View style={Gutters.regularHPadding}>
         <AdditionalSelect

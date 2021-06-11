@@ -20,7 +20,7 @@ const StageWrapper = ({ route }) => {
   const {
     Containers: { medicalCase },
   } = useTheme()
-  const stageIndex = route.params?.stageIndex || 0
+  const stageIndex = route.params?.stageIndex || 4
 
   const stage = Navigation.INTERVENTION_STAGES[stageIndex]
 
