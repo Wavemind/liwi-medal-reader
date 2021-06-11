@@ -134,7 +134,9 @@ const IndexHomeContainer = props => {
         </View>
       </View>
 
-      <SearchBar navigation={navigation} />
+      <View style={Gutters.regularHMargin}>
+        <SearchBar navigation={navigation} />
+      </View>
 
       <View style={[Gutters.regularHMargin]}>
         <SectionHeader label={t('containers.home.title')} />

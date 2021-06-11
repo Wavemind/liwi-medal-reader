@@ -6,6 +6,8 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import filter from 'lodash/filter'
+import differenceInDays from 'date-fns/differenceInDays'
+import startOfToday from 'date-fns/startOfToday'
 
 /**
  * The internal imports
@@ -43,7 +45,8 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
   const dispatch = useDispatch()
 
   // Get data from the store
-  const algorithm = useSelector(state => state.algorithm.item)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const birthDate = useSelector(state => state.patient.item.birth_date)
   const proposed = useSelector(state => {
     if (diagnosisKey) {
       return state.medicalCase.item.diagnosis[diagnosisKey][diagnosisId].drugs
@@ -61,16 +64,32 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
     }
   })
 
-  // TODO filter diagnoses by neonat or not neonat
-  // https://github.com/Wavemind/liwi-mobile/blob/87a6367088bfe636b5da1a6527beae879ae6174c/src/screens/medicalCasesContainer/diagnosticsStrategyContainer/finalDiagnosticsList/FinalDiagnosticsList.js#L16
-  // TODO order by alphabetic by translation language
+  const days = birthDate ? differenceInDays(startOfToday(), birthDate) : 0
   const itemList = diagnosisKey
-    ? filter(algorithm.nodes, { category: 'drug' }).filter(
-        item => !proposed.includes(item.id),
-      )
-    : filter(algorithm.nodes, { type: 'FinalDiagnostic' }).filter(
-        item => !proposed.includes(item.id),
-      )
+    ? filter(nodes, { category: 'drug' })
+        .filter(item => !proposed.includes(item.id))
+        .sort((a, b) => {
+          return translate(a.label) > translate(b.label)
+            ? 1
+            : translate(b.label) > translate(a.label)
+            ? -1
+            : 0
+        })
+    : filter(nodes, { type: 'FinalDiagnostic' })
+        .filter(item => {
+          const isNeoNat = nodes[item.cc].is_neonat
+          return (
+            !proposed.includes(item.id) &&
+            ((days <= 60 && isNeoNat) || (days > 60 && !isNeoNat))
+          )
+        })
+        .sort((a, b) => {
+          return translate(a.label) > translate(b.label)
+            ? 1
+            : translate(b.label) > translate(a.label)
+            ? -1
+            : 0
+        })
 
   // Local state definition
   const [numToAdd] = useState(20)
@@ -112,7 +131,7 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
   const toggleAdditionalItems = (checkboxValue, nodeId) => {
     const tempAdditionalItems = { ...selected }
     const index = Object.keys(tempAdditionalItems).indexOf(nodeId.toString())
-    const currentNode = algorithm.nodes[nodeId]
+    const currentNode = nodes[nodeId]
     if (index > -1) {
       delete tempAdditionalItems[nodeId.toString()]
     } else {
@@ -207,9 +226,7 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
           removeBadge={toggleAdditionalItems}
           selected={selected}
           clearBadges={() => setSelected([])}
-          badgeComponentLabel={item =>
-            translate(algorithm.nodes[item.id].label)
-          }
+          badgeComponentLabel={item => translate(nodes[item.id].label)}
         />
 
         <SectionHeader label={itemsTitle} />

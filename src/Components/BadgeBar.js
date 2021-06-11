@@ -49,10 +49,10 @@ const BadgeBar = ({
         </TouchableOpacity>
       )}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {Object.values(selected).map(selectedItem => {
+        {Object.values(selected).map((selectedItem, i) => {
           return (
             <Badge
-              key={`badge-${selectedItem.filterBy}-${selectedItem.value}`}
+              key={`badge-${i}`}
               removeBadge={removeBadge}
               selectedItem={selectedItem.id}
               label={() => badgeComponentLabel(selectedItem)}

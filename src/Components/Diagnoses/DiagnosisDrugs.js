@@ -131,11 +131,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
           {translate(algorithm.nodes[diagnosis.id].label)}
         </Text>
         <Text style={drugs.diagnosisKey}>
-          {t(
-            `containers.medical_case.drugs.${
-              diagnosisKey === 'agreed' ? 'proposed' : 'additional'
-            }`,
-          )}
+          {t(`containers.medical_case.drugs.${diagnosisKey === 'agreed' ? 'proposed' : 'additional'}`)}
         </Text>
       </View>
       <View style={Gutters.regularHPadding}>

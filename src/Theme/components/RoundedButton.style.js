@@ -8,8 +8,8 @@ export default function (props) {
     ...Layout.grow,
     ...(big ? Gutters.regularVPadding : Gutters.tinyVPadding),
     ...Gutters.regularHPadding,
-    height: hp(4),
-    borderRadius: hp(2),
+    height: hp(5),
+    borderRadius: hp(2.5),
     opacity: disabled ? 0.3 : 1,
   })
 

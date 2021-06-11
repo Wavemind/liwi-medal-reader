@@ -29,7 +29,7 @@ export default function (props) {
       ...Fonts.textCenter,
       ...Layout.fill,
       width: inputWidth,
-      borderRadius: 20,
+      borderRadius: 30,
       borderColor: Colors.primary,
       borderWidth: 1,
       backgroundColor: Colors.lightGrey,

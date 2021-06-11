@@ -26,8 +26,9 @@ export default function (props) {
       ...Fonts.textUppercase,
       ...Fonts.textBold,
       color: Colors.secondary,
+      width: wp(60),
     },
-    diagnosisType: {
+    diagnosisKey: {
       ...Fonts.textTiny,
       ...Fonts.textUppercase,
       ...Gutters.smallRMargin,

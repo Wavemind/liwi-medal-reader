@@ -28,14 +28,13 @@ export default function (props) {
     },
     addCustomInputText: {
       ...Gutters.regularHPadding,
-      ...Gutters.smallVPadding,
       ...Gutters.regularRMargin,
       ...Layout.grow,
       borderWidth: 1,
       borderColor: Colors.grey,
       backgroundColor: Colors.secondary,
-      borderRadius: hp(2),
-      height: hp(4),
+      borderRadius: hp(2.5),
+      height: hp(5),
     },
     noItemsText: {
       ...Gutters.smallVPadding,
