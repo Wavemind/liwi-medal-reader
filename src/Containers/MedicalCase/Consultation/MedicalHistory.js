@@ -27,12 +27,11 @@ const MedicalHistoryMedicalCaseContainer = props => {
   // Update questions list only if question array change
   //useEffect(() => {
   const medicalHistoryQuestions = MedicalHistoryQuestions()
-  console.log('View', medicalHistoryQuestions, systems)
+
   if (!isEqual(medicalHistoryQuestions, systems)) {
     setSystems(medicalHistoryQuestions)
   }
-  // }, [isFocused])
-
+  //}, [isFocused])
   return (
     <SectionList
       sections={systems}

@@ -2,124 +2,20 @@
  * The external imports
  */
 
-import findKey from 'lodash/findKey'
-
 /**
  * The internal imports
  */
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
-
-/**
- * Round number
- * @param {integer} value : value to round
- * @param {integer} step :round precision
- * @returns
- */
-export const round = (value, step) => {
-  step || (step = 1.0)
-  var inv = 1.0 / step
-  return Math.round(value * inv) / inv
-}
-
-/**
- * Handles a new value for a numeric node will return the new values to set in the node
- * @param {MedicalCaseNode} mcNode : Current state of the node to update
- * @param {Node} node : Node definition in the algorithm
- * @param {any} value : New value of the node
- * @returns {
- *              {integer} answer : new id of the answer
- *              {string}  value : new value
- *              {integer} roundedValue? : Rounded value if the node requires a rounded value
- *   }
- */
-export const handleNumeric = (mcNode, node, value) => {
-  const response = { answer: null, value: value }
-
-  if (value === null) {
-    response.answer = null
-  } else if (mcNode.unavailableValue) {
-    // Unavailable question
-    response.answer = Number(value)
-    response.value = node.answers[response.answer].value
-  } else {
-    // Normal process
-    response.answer = findKey(node.answers, condition => {
-      switch (condition.operator) {
-        case 'more_or_equal':
-          return value >= Number(condition.value)
-        case 'less':
-          return value < Number(condition.value)
-        case 'between':
-          return (
-            value >= Number(condition.value.split(',')[0]) &&
-            value < Number(condition.value.split(',')[1])
-          )
-      }
-    })
-    if (response.answer !== undefined) {
-      response.answer = Number(response.answer)
-    } else {
-      response.answer = null
-    }
-
-    if (node?.round !== null) {
-      response.roundedValue = round(value, node?.round)
-    }
-    return response
-  }
-}
-
-/**
- * Handles a new value for a answerId based node will return the new values to set in the node
- * @param {MedicalCaseNode} mcNode : Current state of the node to update
- * @param {Node} node : Node definition in the algorithm
- * @param {any} value : New value of the node
- * @returns {
- *              {integer} answer : new id of the answer
- *              {string}  value : new value
- *   }
- */
-const handleAnswerId = (node, value) => {
-  let answer = null
-
-  // Set Number only if this is a number
-  if (value === null) {
-    // Set the new answer to null for reset
-    answer = null
-  } else if (/^\d+$/.test(value)) {
-    answer = Number(value)
-    value = node.answers[answer].value
-  } else {
-    answer = Object.values(node.answers).find(
-      nodeAnswer => nodeAnswer.value === value,
-    )
-  }
-  return { answer, value }
-}
-
-/**
- * Based on the node value format it will return the new values to set in the store
- * @param {MedicalCaseNode} mcNode : Current state of the node to update
- * @param {Node} node : Node definition in the algorithm
- * @param {any} value : New value of the node
- * @returns See return of handleNumeric or handleAnswerId
- */
-const setNodeValue = (mcNode, node, value) => {
-  const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
-
-  switch (node.value_format) {
-    case int:
-    case float:
-      return handleNumeric(mcNode, node, value)
-    case bool:
-    case array:
-    case present:
-    case positive:
-      return handleAnswerId(node, value)
-  }
-}
+import {
+  getTopConditions,
+  calculateCondition,
+  reduceConditions,
+  uniq,
+  handleAnswerId,
+  setNodeValue,
+} from '@/Utils/MedicalCase'
 
 export default async props => {
   const { nodeId, value } = props
@@ -127,16 +23,72 @@ export default async props => {
 
   const {
     algorithm: {
-      item: {
-        nodes: { [nodeId]: node },
-      },
+      item: { nodes },
     },
-    medicalCase: { item: medicalCase },
+    medicalCase: { item: newMedicalCase },
   } = store.getState()
+  const node = nodes[nodeId]
 
-  console.log(node)
+  /**
+   *
+   * @param {*} children
+   * @returns
+   */
+  const isEndOfQS = children => {
+    return (
+      children.find(
+        childId => nodes[childId].type === Config.NODE_TYPES.questionsSequence,
+      ) !== undefined
+    )
+  }
 
-  const mcNode = medicalCase.nodes[nodeId]
+  const qsNodeValue = (instance, mcNodes, instances) => {
+    const mcNode = mcNodes[instance.id]
+    if (mcNode.answer === null) {
+      return null
+    }
+    const instanceCondition = calculateCondition(instance)
+    if (instanceCondition) {
+      if (isEndOfQS(instance.children)) {
+        return true
+      } else {
+        const childrenInstances = instance.children.map(
+          child => instances[child],
+        )
+        return reduceConditions(
+          // TODO break if QS node  Values is yes for optimization
+          childrenInstances.map(child =>
+            qsNodeValue(child, mcNodes, instances),
+          ),
+        )
+      }
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * Calculate the value of a Question Sequence
+   * @param {*} qsId : Id of the QS we want to calculate
+   * @param {*} mcNodes : the current value of the medical case nodes
+   * @returns
+   * - return true if the QS is valid
+   * - return false if the QS is not possible
+   * - return null if we need to answer more question to define the outcome
+   */
+  const getQsValue = (qsId, mcNodes) => {
+    const topConditions = getTopConditions(nodes[qsId].instances)
+
+    const conditionsValues = topConditions.map(instance =>
+      qsNodeValue(instance, mcNodes, nodes[qsId].instances),
+    )
+
+    return reduceConditions(conditionsValues)
+  }
+
+  const mcNode = newMedicalCase.nodes[nodeId]
+  // TODO find another way
+  let newNodes = JSON.parse(JSON.stringify(newMedicalCase.nodes))
 
   // Validation
   const validation = await validationMedicalCaseService(mcNode, node, value)
@@ -146,11 +98,42 @@ export default async props => {
     newValues = setNodeValue(mcNode, node, value)
   }
 
+  // Sets the value of the node we just answered
+  newNodes[nodeId] = {
+    ...mcNode,
+    ...validation,
+    ...newValues,
+  }
+
+  // List of QS we need to update
+  let qsToUpdate = node.qs
+
+  while (qsToUpdate.length > 0) {
+    const qsId = qsToUpdate[0]
+    const qsBooleanValue = getQsValue(qsId, newNodes)
+
+    // If the QS has a value
+    if (qsBooleanValue !== null) {
+      const qsValue = qsBooleanValue
+        ? nodes[qsId].answers[0]
+        : nodes[qsId].answers[1]
+
+      // Add the related QS to the QS processing list
+      qsToUpdate = qsToUpdate.concat(nodes[qsId].qs)
+      const newQsValues = handleAnswerId(nodes[qsId], qsValue)
+
+      // Set the qs Value in the store
+      newNodes[qsId] = { ...newNodes[qsId], ...newQsValues }
+    }
+
+    // uniq to avoid processing same Qs multiple time
+    // Slice to remove element we just handled
+    qsToUpdate = uniq(qsToUpdate.slice(1))
+  }
   return {
-    ...medicalCase,
+    ...newMedicalCase,
     nodes: {
-      ...medicalCase.nodes,
-      [nodeId]: { ...mcNode, ...validation, ...newValues },
+      ...newNodes,
     },
   }
 }

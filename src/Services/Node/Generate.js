@@ -136,13 +136,13 @@ export default ({ nodes }) => {
         break
       case Config.NODE_TYPES.healthCare:
       case Config.NODE_TYPES.finalDiagnostic:
-        newNodes[node.id] = generateFinalDiagnostic(node)
+        //newNodes[node.id] = generateFinalDiagnostic(node)
         break
       default:
         if (node.category === Config.CATEGORIES.management) {
-          newNodes[node.id] = generateManagement(node)
+          //newNodes[node.id] = generateManagement(node)
         } else if (node.category === Config.CATEGORIES.drug) {
-          newNodes[node.id] = generateDrug(node)
+          //  newNodes[node.id] = generateDrug(node)
         } else {
           newNodes[node.id] = node.id
         }
