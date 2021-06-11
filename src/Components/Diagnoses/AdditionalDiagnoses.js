@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { AdditionalSelect } from '@/Components'
-import RemoveAdditionalDiagnoses from '@/Store/MedicalCase/RemoveAdditionalDiagnoses'
+import RemoveAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAdditionalDiagnoses'
 import { useTheme } from '@/Theme'
 
 const AdditionalDiagnoses = () => {

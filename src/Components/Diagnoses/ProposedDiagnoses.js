@@ -11,10 +11,13 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import ChangeAgreedDiagnoses from '@/Store/MedicalCase/ChangeAgreedDiagnoses'
-import ChangeRefusedDiagnoses from '@/Store/MedicalCase/ChangeRefusedDiagnoses'
 import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
+import ChangeRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
+import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
+import RemoveAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAgreedDiagnoses'
+import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
+import RemoveRefusedDiagnoses from "@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses";
 
 const ProposedDiagnoses = () => {
   // Theme and style elements deconstruction
@@ -40,7 +43,6 @@ const ProposedDiagnoses = () => {
    * @param value
    */
   const updateDiagnosis = (diagnosisId, value) => {
-    const agreedDiagnoses = { ...agreed }
     const refusedDiagnoses = [...refused]
     const isInAgreed = Object.keys(agreed).includes(diagnosisId.toString())
     const isInRefused = refused.includes(diagnosisId)
@@ -48,30 +50,29 @@ const ProposedDiagnoses = () => {
     // From null to Agree
     if (value && !isInAgreed) {
       const currentNode = algorithm.nodes[diagnosisId]
-      agreedDiagnoses[diagnosisId] = {
-        id: diagnosisId,
-        managements: Object.values(currentNode.managements).map(
-          management => management.id,
-        ),
-        drugs: {
-          proposed: Object.values(currentNode.drugs).map(drug => drug.id),
-          agreed: {},
-          refused: [],
-          additional: {},
-        },
-      }
       dispatch(
-        ChangeAgreedDiagnoses.action({
-          newAgreedDiagnoses: agreedDiagnoses,
+        AddAgreedDiagnoses.action({
+          diagnosisId,
+          diagnosisContent: {
+            id: diagnosisId,
+            managements: Object.values(currentNode.managements).map(
+              management => management.id,
+            ),
+            drugs: {
+              proposed: Object.values(currentNode.drugs).map(drug => drug.id),
+              agreed: {},
+              refused: [],
+              additional: {},
+            },
+          },
         }),
       )
 
       // From Disagree to Agree
       if (isInRefused) {
-        refusedDiagnoses.splice(refusedDiagnoses.indexOf(diagnosisId), 1)
         dispatch(
-          ChangeRefusedDiagnoses.action({
-            newRefusedDiagnoses: refusedDiagnoses,
+          RemoveRefusedDiagnoses.action({
+            diagnosisId,
           }),
         )
       }
@@ -79,19 +80,17 @@ const ProposedDiagnoses = () => {
 
     // From null to Disagree
     if (!value && !isInRefused) {
-      refusedDiagnoses.push(diagnosisId)
       dispatch(
-        ChangeRefusedDiagnoses.action({
-          newRefusedDiagnoses: refusedDiagnoses,
+        AddRefusedDiagnoses.action({
+          diagnosisId,
         }),
       )
 
       // From Agree to Disagree
       if (isInAgreed) {
-        delete agreedDiagnoses[diagnosisId.toString()]
         dispatch(
-          ChangeAgreedDiagnoses.action({
-            newAgreedDiagnoses: agreedDiagnoses,
+          RemoveAgreedDiagnoses.action({
+            diagnosisId,
           }),
         )
       }

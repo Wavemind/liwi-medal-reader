@@ -20,8 +20,8 @@ import {
 import { useTheme } from '@/Theme'
 import ListItem from '@/Containers/MedicalCase/AdditionalListItem'
 import { translate } from '@/Translations/algorithm'
-import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
-import AddAdditionalDiagnoses from '@/Store/MedicalCase/AddAdditionalDiagnoses'
+import AddAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAdditionalDiagnoses'
+import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 
 const SearchAdditionalContainer = ({ navigation, route }) => {
   // Theme and style elements deconstruction
@@ -142,7 +142,7 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
   const handleApply = () => {
     if (diagnosisKey) {
       dispatch(
-        ChangeAdditionalDrugs.action({
+        AddAdditionalDrugs.action({
           diagnosisKey,
           diagnosisId,
           newAdditionalDrugs: selected,

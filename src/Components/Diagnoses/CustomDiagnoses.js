@@ -9,7 +9,8 @@ import uuid from 'react-native-uuid'
  * The internal imports
  */
 import { CustomElement } from '@/Components'
-import ChangeCustomDiagnoses from '@/Store/MedicalCase/ChangeCustomDiagnoses'
+import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
+import RemoveCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveCustomDiagnoses'
 
 const CustomDiagnoses = () => {
   const dispatch = useDispatch()
@@ -21,18 +22,16 @@ const CustomDiagnoses = () => {
    * @param value
    */
   const addCustomDiagnosis = value => {
-    const tempCustomDiagnoses = { ...custom }
-
-    const newDiagnosisId = uuid.v4()
-    tempCustomDiagnoses[newDiagnosisId] = {
-      id: newDiagnosisId,
-      name: value,
-      drugs: {},
-    }
+    const diagnosisId = uuid.v4()
 
     dispatch(
-      ChangeCustomDiagnoses.action({
-        newCustomDiagnoses: tempCustomDiagnoses,
+      AddCustomDiagnoses.action({
+        diagnosisId,
+        diagnosisContent: {
+          id: diagnosisId,
+          name: value,
+          drugs: {},
+        },
       }),
     )
   }
@@ -42,11 +41,9 @@ const CustomDiagnoses = () => {
    * @param diagnosisId
    */
   const removeCustomDiagnosis = diagnosisId => {
-    const tempCustomDiagnoses = { ...custom }
-    delete tempCustomDiagnoses[diagnosisId]
     dispatch(
-      ChangeCustomDiagnoses.action({
-        newCustomDiagnoses: tempCustomDiagnoses,
+      RemoveCustomDiagnoses.action({
+        diagnosisId,
       }),
     )
   }

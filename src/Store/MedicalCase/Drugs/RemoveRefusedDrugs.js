@@ -4,7 +4,7 @@ export default {
   initialState: {},
   action: createAction('medicalCase/removeRefusedDrug'),
   reducers(state, { payload }) {
-    state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs.refused =
-      payload.newRefusedDrugs
+    const refusedDrugs = state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs.refused
+    refusedDrugs.splice(refusedDrugs.indexOf(payload.drugId), 1)
   },
 }

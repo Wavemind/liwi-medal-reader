@@ -16,8 +16,8 @@ import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
 import AddRefusedDrugs from '@/Store/MedicalCase/Drugs/AddRefusedDrugs'
 import RemoveAgreedDrugs from '@/Store/MedicalCase/Drugs/RemoveAgreedDrugs'
 import RemoveRefusedDrugs from '@/Store/MedicalCase/Drugs/RemoveRefusedDrugs'
-import ChangeAdditionalDrugs from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
+import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
 
 const DiagnosisDrugs = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
@@ -42,34 +42,28 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
    * @param value
    */
   const updateDrugs = (diagnosisId, drugId, value) => {
-    const agreedDrugs = { ...diagnoses[diagnosisId].drugs.agreed }
-    const refusedDrugs = [...diagnoses[diagnosisId].drugs.refused]
-    const isInAgreed = Object.keys(agreedDrugs).includes(drugId.toString())
-    const isInRefused = refusedDrugs.includes(drugId)
+    const isInAgreed = Object.keys(
+      diagnoses[diagnosisId].drugs.agreed,
+    ).includes(drugId.toString())
+    const isInRefused = diagnoses[diagnosisId].drugs.refused.includes(drugId)
 
     // From null to Agree
     if (value && !isInAgreed) {
-      agreedDrugs[diagnosisId] = {
-        id: diagnosisId.toString(),
-        drugs: {},
-      }
       dispatch(
         AddAgreedDrugs.action({
           diagnosisKey,
+          diagnosisId,
           drugId,
-          diagnosisId: diagnosisId,
-          drugContent: { id: drugId },
         }),
       )
 
       // From Disagree to Agree
       if (isInRefused) {
-        refusedDrugs.splice(refusedDrugs.indexOf(drugId), 1)
         dispatch(
           RemoveRefusedDrugs.action({
             diagnosisKey,
-            diagnosisId: diagnosisId,
-            newRefusedDrugs: refusedDrugs,
+            diagnosisId,
+            drugId,
           }),
         )
       }
@@ -77,12 +71,11 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
 
     // From null to Disagree
     if (!value && !isInRefused) {
-      refusedDrugs.push(drugId)
       dispatch(
         AddRefusedDrugs.action({
           diagnosisKey,
-          diagnosisId: diagnosisId,
-          newRefusedDrugs: refusedDrugs,
+          diagnosisId,
+          drugId,
         }),
       )
 
@@ -91,8 +84,8 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
         dispatch(
           RemoveAgreedDrugs.action({
             diagnosisKey,
+            diagnosisId,
             drugId,
-            diagnosisId: diagnosisId,
           }),
         )
       }
@@ -105,14 +98,11 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
    * @param drugId
    */
   const removeAdditionalDrug = (diagnosisId, drugId) => {
-    const tempAdditionalDrugs = { ...diagnoses[diagnosisId].drugs.additional }
-    delete tempAdditionalDrugs[drugId]
-
     dispatch(
-      ChangeAdditionalDrugs.action({
+      RemoveAdditionalDrugs.action({
         diagnosisKey,
         diagnosisId,
-        newAdditionalDrugs: tempAdditionalDrugs,
+        drugId,
       }),
     )
   }
@@ -124,17 +114,12 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
    * @param duration
    */
   const updateAdditionalDrugDuration = (diagnosisId, drugId, duration) => {
-    const newAdditionalDrug = {
-      ...diagnoses[diagnosisId].drugs.additional[drugId],
-    }
-    newAdditionalDrug.duration = duration
-
     dispatch(
       ChangeAdditionalDrugDuration.action({
         diagnosisKey,
         diagnosisId,
         drugId,
-        newAdditionalDrug: newAdditionalDrug,
+        duration,
       }),
     )
   }

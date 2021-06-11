@@ -12,8 +12,9 @@ import uuid from 'react-native-uuid'
  */
 import { CustomElement } from '@/Components'
 import { useTheme } from '@/Theme'
-import ChangeCustomDrugs from '@/Store/MedicalCase/Drugs/ChangeCustomDrugs'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
+import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
+import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 
 const CustomDrugs = () => {
   // Theme and style elements deconstruction
@@ -35,18 +36,16 @@ const CustomDrugs = () => {
    * @param value
    */
   const addCustomDrug = (diagnosisId, value) => {
-    const tempCustomDrugs = { ...customDiagnoses[diagnosisId].drugs }
-    const newDrugId = uuid.v4()
-    tempCustomDrugs[newDrugId] = {
-      id: newDrugId,
-      name: value,
-      duration: '',
-    }
-
+    const drugId = uuid.v4()
     dispatch(
-      ChangeCustomDrugs.action({
+      AddCustomDrugs.action({
         diagnosisId,
-        newCustomDrugs: tempCustomDrugs,
+        drugId,
+        drugContent: {
+          id: drugId,
+          name: value,
+          duration: '',
+        },
       }),
     )
   }
@@ -57,13 +56,10 @@ const CustomDrugs = () => {
    * @param drugId
    */
   const removeCustomDrug = (diagnosisId, drugId) => {
-    const tempCustomDrugs = { ...customDiagnoses[diagnosisId].drugs }
-    delete tempCustomDrugs[drugId]
-
     dispatch(
-      ChangeCustomDrugs.action({
+      RemoveCustomDrugs.action({
         diagnosisId,
-        newCustomDrugs: tempCustomDrugs,
+        drugId,
       }),
     )
   }
@@ -75,16 +71,11 @@ const CustomDrugs = () => {
    * @param duration
    */
   const updateCustomDrugDuration = (diagnosisId, drugId, duration) => {
-    const tempCustomDrug = {
-      ...customDiagnoses[diagnosisId].drugs[drugId],
-    }
-    tempCustomDrug.duration = duration
-
     dispatch(
       ChangeCustomDrugDuration.action({
         diagnosisId,
         drugId,
-        newCustomDrug: tempCustomDrug,
+        duration,
       }),
     )
   }

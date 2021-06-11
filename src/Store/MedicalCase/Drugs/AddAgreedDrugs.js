@@ -6,7 +6,7 @@ export default {
   reducers(state, { payload }) {
     state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs.agreed = {
       ...state.item.diagnosis[payload.diagnosisKey][payload.diagnosisId].drugs.agreed,
-      [payload.drugId]: payload.drugContent,
+      [payload.drugId]: { id: payload.drugId },
     }
   },
 }
