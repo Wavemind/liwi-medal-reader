@@ -14,6 +14,7 @@ import {
 } from 'redux-persist'
 
 import algorithm from './Algorithm'
+import database from './Database'
 import device from './Device'
 import emergency from './Emergency'
 import healthFacility from './HealthFacility'
@@ -28,6 +29,7 @@ import modal from './Modal'
 
 const reducers = combineReducers({
   algorithm,
+  database,
   device,
   emergency,
   healthFacility,

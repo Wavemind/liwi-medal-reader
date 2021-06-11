@@ -9,6 +9,7 @@ import { Database, Q } from '@nozbe/watermelondb'
  * The internal imports
  */
 import schema from './Schema'
+import { Config } from '@/Config'
 
 import {
   ActivityModel,
@@ -17,7 +18,7 @@ import {
   MedicalCaseModel,
 } from './Models'
 
-const adapter = new LokiJSAdapter({
+const adapter = new SQLiteAdapter({
   schema,
   useWebWorker: false,
   useIncrementalIndexedDB: true,
@@ -194,7 +195,6 @@ export default function () {
     } else {
       return _buildMedicalCase(data)
     }
-    console.log(object)
     return object
   }
 
@@ -308,8 +308,8 @@ export default function () {
   const getAll = async (model, page = null, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
     let result = await collection.query().fetch()
-    return await _initClasses(result, model)
-    //const queries = []
+
+    const queries = []
     // if (page === null) {
     //   if (!rawData) {
     //     result = await _initClasses(result, model)
@@ -327,13 +327,14 @@ export default function () {
     //   )
     // }
     // // if (filters !== '') result = await result.filtered(filters);
-    // queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    // queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    // queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
+    queries.push(Q.experimentalSortBy('updated_at', Q.desc))
+    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
+    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
     // console.log(page, result, queries)
-    // result = await collection.query(...queries)
+    result = await collection.query(...queries)
     // result = await _initClasses(result, model)
     // return _generateList(result, model, params.columns)
+    return _initClasses(result, model)
   }
 
   /**
@@ -426,17 +427,17 @@ export default function () {
     const patient = await medicalCase.patient.fetch()
     return {
       id: medicalCase.id,
-      synchronized_at: medicalCase.synchronized_at,
+      synchronizedAt: medicalCase.synchronizedAt,
       advancement: medicalCase.advancement,
       fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.createdAt,
-      updatedAt: medicalCase.updatedAt,
-      closedAt: medicalCase.closedAt,
+      createdAt: medicalCase.createdAt.getTime(),
+      updatedAt: medicalCase.updatedAt.getTime(),
+      closedAt: medicalCase.closedAt.getTime(),
       patient: {
         id: patient.id,
         first_name: patient.first_name,
         last_name: patient.last_name,
-        birth_date: patient.birth_date,
+        birth_date: patient.birth_date.getTime(),
       },
     }
   }
@@ -451,12 +452,12 @@ export default function () {
       diagnosis: medicalCase.json.diagnosis,
       nodes: medicalCase.json.nodes,
       json: '',
-      synchronized_at: medicalCase.synchronized_at,
+      synchronized_at: medicalCase.synchronizedAt,
       advancement: medicalCase.advancement,
       fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.created_at,
-      updatedAt: medicalCase.updated_at,
-      closedAt: medicalCase.closed_at,
+      createdAt: medicalCase.createdAt.getTime(),
+      updatedAt: medicalCase.updatedAt.getTime(),
+      closedAt: medicalCase.closedAt.getTime(),
       patient,
     }
   }

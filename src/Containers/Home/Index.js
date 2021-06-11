@@ -16,18 +16,21 @@ import {
   SectionHeader,
   SquareButton,
   MedicalCaseListItem,
+  EmptyList,
+  Error,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
-import createMedicalCase from '@/Store/MedicalCase/Create'
+import { Config } from '@/Config'
+import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-import useDatabase from '@/Services/Database/useDatabase'
+import GetAllMedicalCaseDB from '@/Store/Database/MedicalCase/GetAll'
 
-const IndexHomeContainer = props => {
+const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
-  const { navigation } = props
   const { t } = useTranslation()
   const dispatch = useDispatch()
+
   const {
     Containers: { home, global },
     Layout,
@@ -35,44 +38,51 @@ const IndexHomeContainer = props => {
     Colors,
   } = useTheme()
 
-  const { getAll } = useDatabase()
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   // Local state definition
-  const [data, setData] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
-  const algorithm = useSelector(state => state.algorithm.item)
+  const [page, setPage] = useState(1)
 
-  const getMedicalCases = async () => {
-    const medicalCases = await getAll('MedicalCase')
-    setData(medicalCases)
-  }
+  const algorithm = useSelector(state => state.algorithm.item)
+  const data = useSelector(state => state.database.medicalCase.getAll.item.data)
+  const isLastBatch = useSelector(
+    state => state.database.medicalCase.getAll.item.isLastBatch,
+  )
+  const dataLoading = useSelector(
+    state => state.database.medicalCase.getAll.loading,
+  )
+  const dataError = useSelector(
+    state => state.database.medicalCase.getAll.error,
+  )
 
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
   useEffect(() => {
-    getMedicalCases()
+    dispatch(GetAllMedicalCaseDB.action({ page }))
   }, [])
 
   /**
    * Fetch 15 latest medical cases
    */
-  const handleRefresh = async () => {
-    setRefreshing(true)
-    console.log('TODO: handle refresh')
-    setTimeout(() => setRefreshing(false), 2 * 1000)
+  const handleRefresh = () => {
+    dispatch(GetAllMedicalCaseDB.action({ page: 1 }))
   }
 
   /**
    * Load more medical case
    */
   const loadMore = () => {
-    console.log('TODO: load more')
+    // TODO: avoid here on first render
+    if (!isLastBatch) {
+      console.log('je rentre ?')
+      dispatch(GetAllMedicalCaseDB.action({ page: page + 1 }))
+      setPage(page + 1)
+    }
   }
-
+  console.log('je render')
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <View style={home.buttonsWrapper}>
@@ -93,7 +103,7 @@ const IndexHomeContainer = props => {
                 icon="add"
                 big
                 onPress={async () => {
-                  await dispatch(createMedicalCase.action({ algorithm }))
+                  await dispatch(CreateMedicalCase.action({ algorithm }))
                   await dispatch(
                     CreatePatient.action({
                       idPatient: null,
@@ -137,20 +147,25 @@ const IndexHomeContainer = props => {
 
       <SearchBar navigation={navigation} />
 
-      <View style={[Gutters.regularHMargin]}>
+      <View style={Gutters.regularHMargin}>
         <SectionHeader label={t('containers.home.title')} />
+        {dataError && <Error message={dataError.message} />}
       </View>
 
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <MedicalCaseListItem item={item} />}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={<LoaderList />}
-        onRefresh={() => handleRefresh()}
-        refreshing={refreshing}
-        onEndReached={() => loadMore()}
-        onEndReachedThreshold={0.1}
-      />
+      {dataLoading ? (
+        <LoaderList />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <MedicalCaseListItem item={item} />}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={<EmptyList />}
+          onRefresh={handleRefresh}
+          refreshing={dataLoading}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.1}
+        />
+      )}
     </Animated.View>
   )
 }
