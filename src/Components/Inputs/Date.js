@@ -82,6 +82,12 @@ const DateInput = () => {
       setYearValue(date.getFullYear())
     }
 
+    if (__DEV__) {
+      setDayValue(11)
+      setMonthValue(4)
+      setYearValue(2017)
+    }
+
     const today = new Date()
     const days = range(1, 32)
     const months = range(1, 13)
@@ -149,7 +155,6 @@ const DateInput = () => {
       } else {
         birthDate = subYears(new Date(), estimatedValue)
       }
-
       dispatch(
         UpdateField.action({
           field: 'birth_date',
