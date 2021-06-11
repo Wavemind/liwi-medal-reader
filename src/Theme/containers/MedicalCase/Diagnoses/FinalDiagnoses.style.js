@@ -28,6 +28,7 @@ export default function (props) {
     },
     addCustomInputText: {
       ...Gutters.regularHPadding,
+      ...Gutters.smallVPadding,
       ...Gutters.regularRMargin,
       ...Layout.grow,
       borderWidth: 1,

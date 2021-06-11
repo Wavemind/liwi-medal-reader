@@ -12,6 +12,7 @@ export default function (props) {
       inactiveBgColor = Colors.secondary,
     ) => ({
       ...Layout.fill,
+      ...Gutters.tinyVPadding,
       backgroundColor: active ? Colors.primary : inactiveBgColor,
       opacity: disabled ? 0.5 : 1,
       borderBottomLeftRadius: side === 'left' ? 20 : 0,

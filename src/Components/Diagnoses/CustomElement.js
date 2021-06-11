@@ -24,7 +24,6 @@ const CustomElement = ({
   const {
     Gutters,
     FontSize,
-    Fonts,
     Components: { additionalSelect },
     Containers: { finalDiagnoses },
   } = useTheme()

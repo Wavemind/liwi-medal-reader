@@ -23,7 +23,7 @@ export default function (props) {
       width: inputWidth,
     },
     durationInput: {
-      ...Gutters.tinyVPadding,
+      ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       ...Fonts.textSmall,
       ...Fonts.textCenter,
@@ -46,13 +46,13 @@ export default function (props) {
     addAdditionalButton: {
       ...Gutters.smallTMargin,
       ...Gutters.regularBMargin,
-      ...Gutters.tinyVPadding,
+      ...Gutters.smallVPadding,
       ...Gutters.regularHPadding,
       ...Layout.row,
       backgroundColor: Colors.secondary,
       borderColor: Colors.grey,
       borderWidth: 1,
-      borderRadius: hp(2),
+      borderRadius: hp(3),
     },
     addAdditionalButtonText: {
       ...Layout.grow,
