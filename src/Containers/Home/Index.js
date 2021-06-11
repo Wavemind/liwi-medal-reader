@@ -22,6 +22,7 @@ import { fadeIn } from '@/Theme/Animation'
 import createMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import useDatabase from '@/Services/Database/useDatabase'
+
 const IndexHomeContainer = props => {
   // Theme and style elements deconstruction
   const { navigation } = props
