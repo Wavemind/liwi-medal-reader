@@ -13,11 +13,10 @@ import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import { navigate } from '@/Navigators/Root'
-import ChangeRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import RemoveAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAgreedDiagnoses'
 import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
-import RemoveRefusedDiagnoses from "@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses";
+import RemoveRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
 
 const ProposedDiagnoses = () => {
   // Theme and style elements deconstruction
@@ -43,7 +42,6 @@ const ProposedDiagnoses = () => {
    * @param value
    */
   const updateDiagnosis = (diagnosisId, value) => {
-    const refusedDiagnoses = [...refused]
     const isInAgreed = Object.keys(agreed).includes(diagnosisId.toString())
     const isInRefused = refused.includes(diagnosisId)
 
