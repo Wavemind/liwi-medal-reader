@@ -127,6 +127,9 @@ export default {
         no_additional: 'No additional drugs',
         no_custom: 'No custom drugs',
       },
+      formulations: {
+        title: 'Which formulation of medicine is available and appropriate for your patient ?',
+      },
     },
     scan: {
       scan: 'Scan the QR code',
