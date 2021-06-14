@@ -3,8 +3,8 @@
  */
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
-
 import { Database, Q } from '@nozbe/watermelondb'
+
 /**
  * The internal imports
  */
@@ -18,11 +18,21 @@ import {
   MedicalCaseModel,
 } from './Models'
 
-const adapter = new SQLiteAdapter({
-  schema,
-  useWebWorker: false,
-  useIncrementalIndexedDB: true,
-})
+// let adapter = null
+
+// if (process.env.NODE_ENV === 'test') {
+ const adapter = new LokiJSAdapter({
+    schema,
+    useWebWorker: false,
+    useIncrementalIndexedDB: true,
+  })
+// } else {
+//   adapter = new SQLiteAdapter({
+//     schema,
+//     useWebWorker: false,
+//     useIncrementalIndexedDB: true,
+//   })
+// }
 
 const database = new Database({
   adapter,
@@ -327,13 +337,20 @@ export default function () {
     //   )
     // }
     // // if (filters !== '') result = await result.filtered(filters);
-    queries.push(Q.experimentalSortBy('updated_at', Q.desc))
-    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
-    // console.log(page, result, queries)
     result = await collection.query(...queries)
-    // result = await _initClasses(result, model)
     // return _generateList(result, model, params.columns)
+
+    // Order by updatedAt descending
+    result = result.sort(
+      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+    )
+
+    // Pagination
+    result = result.slice(
+      (page - 1) * Config.ELEMENT_PER_PAGE,
+      Config.ELEMENT_PER_PAGE * page,
+    )
+
     return _initClasses(result, model)
   }
 
@@ -409,14 +426,14 @@ export default function () {
     const newPatient = patient._raw
 
     const response = {
-      createdAt: newPatient.created_at,
-      updatedAt: newPatient.updated_at,
+      createdAt: newPatient.createdAt.getTime(),
+      updatedAt: newPatient.updatedAt.getTime(),
       medicalCases,
     }
     delete newPatient._changed
     delete newPatient._status
-    delete newPatient.created_at
-    delete newPatient.updated_at
+    delete newPatient.createdAt
+    delete newPatient.updatedAt
     return {
       ...newPatient,
       ...response,

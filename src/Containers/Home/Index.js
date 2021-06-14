@@ -45,14 +45,16 @@ const IndexHomeContainer = ({ navigation }) => {
   const [firstLoading, setFirstLoading] = useState(true)
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const data = useSelector(state => state.database.medicalCase.getAll.item.data)
+  const medicalCases = useSelector(
+    state => state.database.medicalCase.getAll.item.data,
+  )
   const isLastBatch = useSelector(
     state => state.database.medicalCase.getAll.item.isLastBatch,
   )
-  const dataLoading = useSelector(
+  const medicalCasesLoading = useSelector(
     state => state.database.medicalCase.getAll.loading,
   )
-  const dataError = useSelector(
+  const medicalCasesError = useSelector(
     state => state.database.medicalCase.getAll.error,
   )
 
@@ -69,7 +71,7 @@ const IndexHomeContainer = ({ navigation }) => {
    * Fetch 15 latest medical cases
    */
   const handleRefresh = () => {
-    dispatch(GetAllMedicalCaseDB.action({ page: 1 }))
+    dispatch(GetAllMedicalCaseDB.action({ page: 1, reset: true }))
   }
 
   /**
@@ -80,6 +82,27 @@ const IndexHomeContainer = ({ navigation }) => {
       dispatch(GetAllMedicalCaseDB.action({ page: page + 1 }))
       setPage(page + 1)
     }
+  }
+
+  /**
+   * DEV ONLY
+   * Create patient without scanning QR code
+   */
+  const newPatient = async () => {
+    await dispatch(CreateMedicalCase.action({ algorithm }))
+    await dispatch(
+      CreatePatient.action({
+        idPatient: null,
+        newMedicalCase: true,
+        facility: {
+          study_id: 'Dynamic Tanzania',
+          group_id: '7',
+          uid: uuid.v4(),
+        },
+        otherFacility: {},
+      }),
+    )
+    navigation.navigate('StageWrapper')
   }
 
   return (
@@ -101,22 +124,7 @@ const IndexHomeContainer = ({ navigation }) => {
                 label={t('actions.new_patient')}
                 icon="add"
                 big
-                onPress={async () => {
-                  await dispatch(CreateMedicalCase.action({ algorithm }))
-                  await dispatch(
-                    CreatePatient.action({
-                      idPatient: null,
-                      newMedicalCase: true,
-                      facility: {
-                        study_id: 'Dynamic Tanzania',
-                        group_id: '7',
-                        uid: uuid.v4(),
-                      },
-                      otherFacility: {},
-                    }),
-                  )
-                  navigation.navigate('StageWrapper')
-                }}
+                onPress={newPatient}
                 filled
               />
             </View>
@@ -148,19 +156,19 @@ const IndexHomeContainer = ({ navigation }) => {
 
       <View style={Gutters.regularHMargin}>
         <SectionHeader label={t('containers.home.title')} />
-        {dataError && <Error message={dataError.message} />}
+        {medicalCasesError && <Error message={medicalCasesError.message} />}
       </View>
 
       {firstLoading ? (
         <LoaderList />
       ) : (
         <FlatList
-          data={data}
+          data={medicalCases}
           renderItem={({ item }) => <MedicalCaseListItem item={item} />}
           keyExtractor={item => item.id}
           ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
           onRefresh={handleRefresh}
-          refreshing={dataLoading}
+          refreshing={medicalCasesLoading}
           onEndReached={loadMore}
           onEndReachedThreshold={0.1}
         />

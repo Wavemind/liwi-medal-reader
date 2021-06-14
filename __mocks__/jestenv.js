@@ -23,6 +23,14 @@ jest.mock('react-native-qrcode-scanner', () => {})
 jest.mock('react-native-sound-player', () => {})
 jest.mock('react-native-orientation-locker', () => {})
 jest.mock('react-native-vector-icons/Feather', () => {})
+jest.mock('@thecodingmachine/redux-toolkit-wrapper', () => {
+  return {
+    buildAsyncReducers: jest.fn(),
+    buildAsyncActions: jest.fn(),
+    buildAsyncState: jest.fn(),
+    buildSlice: { default: jest.fn() },
+  }
+})
 jest.mock('react-native-offline', () => {
   return {
     reducer: {},
