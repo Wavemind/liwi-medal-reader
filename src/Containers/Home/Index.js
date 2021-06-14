@@ -21,7 +21,6 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
-import { Config } from '@/Config'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
 import GetAllMedicalCaseDB from '@/Store/Database/MedicalCase/GetAll'
@@ -43,6 +42,7 @@ const IndexHomeContainer = ({ navigation }) => {
 
   // Local state definition
   const [page, setPage] = useState(1)
+  const [firstLoading, setFirstLoading] = useState(true)
 
   const algorithm = useSelector(state => state.algorithm.item)
   const data = useSelector(state => state.database.medicalCase.getAll.item.data)
@@ -62,6 +62,7 @@ const IndexHomeContainer = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(GetAllMedicalCaseDB.action({ page }))
+    setFirstLoading(false)
   }, [])
 
   /**
@@ -75,14 +76,12 @@ const IndexHomeContainer = ({ navigation }) => {
    * Load more medical case
    */
   const loadMore = () => {
-    // TODO: avoid here on first render
     if (!isLastBatch) {
-      console.log('je rentre ?')
       dispatch(GetAllMedicalCaseDB.action({ page: page + 1 }))
       setPage(page + 1)
     }
   }
-  console.log('je render')
+
   return (
     <Animated.View style={[Layout.fill, global.animation(fadeAnim)]}>
       <View style={home.buttonsWrapper}>
@@ -152,14 +151,14 @@ const IndexHomeContainer = ({ navigation }) => {
         {dataError && <Error message={dataError.message} />}
       </View>
 
-      {dataLoading ? (
+      {firstLoading ? (
         <LoaderList />
       ) : (
         <FlatList
           data={data}
           renderItem={({ item }) => <MedicalCaseListItem item={item} />}
           keyExtractor={item => item.id}
-          ListEmptyComponent={<EmptyList />}
+          ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
           onRefresh={handleRefresh}
           refreshing={dataLoading}
           onEndReached={loadMore}
