@@ -20,18 +20,19 @@ const MedicalHistoryMedicalCaseContainer = props => {
   const isFocused = useIsFocused()
 
   const algorithm = useSelector(state => state.algorithm.item)
-  const medicalCase = useSelector(state => state.medicalCase.item) // J'ai mis ça pour qu'il refresh la vue quand on répond a une question
+  const medicalCase = useSelector(state => state.medicalCase.item)
 
   const [systems, setSystems] = useState(MedicalHistoryQuestions())
 
   // Update questions list only if question array change
-  //useEffect(() => {
-  const medicalHistoryQuestions = MedicalHistoryQuestions()
+  useEffect(() => {
+    const medicalHistoryQuestions = MedicalHistoryQuestions()
 
-  if (!isEqual(medicalHistoryQuestions, systems)) {
-    setSystems(medicalHistoryQuestions)
-  }
-  //}, [isFocused])
+    if (!isEqual(medicalHistoryQuestions, systems)) {
+      setSystems(medicalHistoryQuestions)
+    }
+  }, [isFocused, medicalCase])
+
   return (
     <SectionList
       sections={systems}

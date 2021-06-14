@@ -67,7 +67,7 @@ export const handleChildren = (
   diagramId,
   diagramType = Config.NODE_TYPES.diagnosis,
 ) => {
-  console.log(children, instances)
+  // console.log(children, instances)
   children.forEach(instance => {
     if (instance.conditions.length === 0 || calculateCondition(instance)) {
       if (nodes[instance.id].type === Config.NODE_TYPES.questionsSequence) {
@@ -84,7 +84,7 @@ export const handleChildren = (
       } else {
         addQuestionToSystem(instance.id, questionPerSystems, nodes, categories)
       }
-      console.log(instance.children, diagramType, diagramId)
+      // console.log(instance.children, diagramType, diagramId)
       const childrenInstance = instance.children
         .filter(
           childId =>

@@ -35,11 +35,9 @@ export default () => {
 
   const validDiagnoses = getValidDiagnoses(diagnoses, mcNodes, nodes)
 
-  // console.log('validDiagnoses', validDiagnoses)
-  // console.log('nodes', nodes)
-
   validDiagnoses.forEach(diagnosis => {
     const topConditions = getTopConditions(diagnosis.instances)
+
     handleChildren(
       topConditions,
       questionPerSystems,
@@ -52,8 +50,6 @@ export default () => {
   Object.keys(questionPerSystems).map(k => {
     questionPerSystems[k] = uniq(questionPerSystems[k])
   })
-  // console.log('systems', questionPerSystems)
-  // console.log('medicalHistoryStep', medicalHistoryStep)
 
   return orderSystems(medicalHistoryStep, questionPerSystems)
 }
