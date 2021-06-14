@@ -51,4 +51,57 @@ describe('Handle agreed diagnosis addition', () => {
       },
     })
   })
+
+  it('should overwrite the existing diagnosis if a diagnosis with the same id is given', async () => {
+    const algorithm = store.getState().algorithm.item
+    const nodeId = 60
+    const node = algorithm.nodes[nodeId]
+
+    await store.dispatch(
+      AddAgreedDiagnoses.action({
+        diagnosisId: nodeId,
+        diagnosisContent: {
+          id: nodeId,
+          managements: Object.values(node.managements).map(
+            management => management.id,
+          ),
+          drugs: {
+            proposed: Object.values(node.drugs).map(drug => drug.id),
+            agreed: {},
+            refused: [],
+            additional: {},
+          },
+        },
+      }),
+    )
+
+    await store.dispatch(
+      AddAgreedDiagnoses.action({
+        diagnosisId: nodeId,
+        diagnosisContent: {
+          id: nodeId,
+          managements: [],
+          drugs: {
+            proposed: [],
+            agreed: {},
+            refused: [],
+            additional: {},
+          },
+        },
+      }),
+    )
+
+    expect(store.getState().medicalCase.item.diagnosis.agreed).toStrictEqual({
+      60: {
+        id: 60,
+        managements: [],
+        drugs: {
+          proposed: [],
+          agreed: {},
+          refused: [],
+          additional: {},
+        },
+      },
+    })
+  })
 })

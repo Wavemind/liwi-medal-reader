@@ -2,7 +2,7 @@
  * The external imports
  */
 import React from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -19,13 +19,13 @@ const UniqueTriageQuestionsMedicalCaseContainer = props => {
   )
 
   return (
-    <View>
+    <>
       <FlatList
         data={questions}
         renderItem={({ item }) => <Question questionId={item} />}
         keyExtractor={item => item.id}
       />
-    </View>
+    </>
   )
 }
 
