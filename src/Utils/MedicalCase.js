@@ -62,9 +62,10 @@ export const handleChildren = (
   children,
   questionPerSystems,
   nodes,
-  diagnostic,
+  instances,
   categories,
 ) => {
+  console.log(children, nodes, instances)
   children.forEach(instance => {
     if (
       instance.conditions.length === 0 ||
@@ -72,17 +73,33 @@ export const handleChildren = (
       nodes[instance.id].category === Config.CATEGORIES.backgroundCalculation // C'est pour faire semblant que les BC sont répondues
     ) {
       addQuestionToSystem(instance.id, questionPerSystems, nodes, categories)
+      if (
+        nodes[instance.id].category === Config.CATEGORIES.predefinedSyndrome
+      ) {
+        const topConditions = getTopConditions(nodes[instance.id].instances)
+        console.log(instance.id, nodes[instance.id], topConditions)
+        console.log('la')
+        handleChildren(
+          topConditions,
+          questionPerSystems,
+          nodes,
+          nodes[instance.id].instances,
+          categories,
+        )
+      }
+
       const childrenInstance = instance.children
         .filter(
           child => nodes[child].type !== Config.NODE_TYPES.finalDiagnostic,
         )
-        .map(child => diagnostic.instances[child])
+        .map(child => instances[child])
+      console.log('ICI', instance.children, childrenInstance, instances)
       if (childrenInstance.length > 0) {
         handleChildren(
           childrenInstance,
           questionPerSystems,
           nodes,
-          diagnostic,
+          instances,
           categories,
         )
       }
@@ -242,7 +259,7 @@ const handleAnswerId = (node, value) => {
  * @param {any} value : New value of the node
  * @returns See return of handleNumeric or handleAnswerId
  */
-export const setNodeValue = (mcNode, node, value) => {
+const setNodeValue = (mcNode, node, value) => {
   const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
 
   switch (node.value_format) {
@@ -258,19 +275,19 @@ export const setNodeValue = (mcNode, node, value) => {
 }
 
 /**
- * Return value from both booleans
-       | True | False | Null
- ____________________________
- True  | True | True  | True
- ____________________________
- False | True | False | Null
- ____________________________
- Null  | True | Null  | Null
- *
- * @params [Boolean] firstBoolean [Boolean] secondBoolean
- * @return [Boolean]
- *
- */
+  * Return value from both booleans
+        | True | False | Null
+  ____________________________
+  True  | True | True  | True
+  ____________________________
+  False | True | False | Null
+  ____________________________
+  Null  | True | Null  | Null
+  *
+  * @params [Boolean] firstBoolean [Boolean] secondBoolean
+  * @return [Boolean]
+  *
+  */
 export const comparingBooleanOr = (firstBoolean, secondBoolean) => {
   if (firstBoolean === true || secondBoolean === true) {
     return true

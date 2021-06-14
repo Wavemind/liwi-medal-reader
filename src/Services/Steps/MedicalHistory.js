@@ -45,7 +45,7 @@ export default () => {
       topConditions,
       questionPerSystems,
       nodes,
-      diagnostic,
+      diagnostic.instances,
       medicalHistoryCategories,
     )
   })
