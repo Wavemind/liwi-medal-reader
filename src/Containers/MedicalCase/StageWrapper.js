@@ -37,7 +37,6 @@ const StageWrapper = ({ route }) => {
           lazy={true}
           tabBarOptions={{ scrollEnabled: true, tabStyle: medicalCase.tabBar }}
           tabBar={tabProps => <TabBar {...{ ...tabProps, stageIndex }} />}
-          lazy={true}
         >
           {stage.steps.map(step => (
             <Tab.Screen

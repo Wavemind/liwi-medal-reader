@@ -11,16 +11,11 @@ export { default as ConsultationsPatientContainer } from './Patient/Consultation
 
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
 export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
-export { default as RegistrationMedicalCaseContainer } from './MedicalCase/Registration/Registration'
-export { default as UniqueTriageQuestionsMedicalCaseContainer } from './MedicalCase/FirstAssessment/UniqueTriageQuestions'
+export { default as MedicalCaseDiagnosesDrugsContainer } from './MedicalCase/Diagnoses/Drugs'
 export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/FirstAssessment/ComplaintCategory'
 export { default as BasicMeasurementMedicalCaseContainer } from './MedicalCase/FirstAssessment/BasicMeasurement'
 export { default as MedicalHistoryMedicalCaseContainer } from './MedicalCase/Consultation/MedicalHistory'
-export { default as PhysicalExamMedicalCaseContainer } from './MedicalCase/Consultation/PhysicalExam'
-export { default as AssessmentMedicalCaseContainer } from './MedicalCase/Assessment/Assessment'
 export { default as TreatmentConditionsMedicalCaseContainer } from './MedicalCase/Diagnoses/TreatmentConditions'
-export { default as ReferralMedicalCaseContainer } from './MedicalCase/Diagnoses/Referral'
-export { default as MedicalCaseDiagnosesIndexContainer } from './MedicalCase/Diagnoses/DiagnosesIndex'
 
 export { default as ListConsentContainer } from './Consent/List'
 export { default as CameraConsentContainer } from './Consent/Camera'
@@ -38,4 +33,4 @@ export { default as IndexEmergencyContainer } from './Emergency/Index'
 export { default as IndexStudyContainer } from './Study/Index'
 export { default as IndexQuestionInfoContainer } from './QuestionInfo/Index'
 
-export { default as DiagnosesListContainer } from './Diagnosis/DiagnosisList'
+export { default as SearchAdditionalContainer } from './MedicalCase/SearchAdditional'

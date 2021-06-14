@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { hp, wp } from '@/Theme/Responsive'
 
 export default function (props) {
-  const { Colors, Fonts, Gutters, Layout } = props
+  const { Colors, Gutters, Layout, Fonts } = props
 
   return StyleSheet.create({
     newItemWrapper: isLastItem => ({
@@ -13,34 +13,14 @@ export default function (props) {
       borderBottomColor: Colors.grey,
       borderBottomWidth: isLastItem ? 0 : 1,
     }),
-    booleanButtonWrapper: {
-      width: wp(33.3),
-      flexDirection: 'row',
-    },
-    addAdditionalButton: {
-      ...Gutters.smallTMargin,
-      ...Gutters.tinyVPadding,
-      ...Gutters.regularHPadding,
-      ...Layout.row,
-      backgroundColor: Colors.secondary,
-      borderColor: Colors.grey,
-      borderWidth: 1,
-      borderRadius: hp(2),
-    },
-    addAdditionalButtonText: {
+    diagnosisLabel: {
       ...Layout.grow,
       ...Fonts.textSmall,
     },
-    addAdditionalButtonCountWrapper: {
-      ...Layout.rowVCenter,
-      backgroundColor: Colors.primary,
-      borderRadius: hp(1.5),
-      width: hp(3),
-      height: hp(3),
-    },
-    addAdditionalButtonCountText: {
-      ...Fonts.textSmall,
-      color: Colors.secondary,
+    booleanButtonWrapper: {
+      ...Layout.row,
+      ...Gutters.smallLMargin,
+      width: wp(33.3),
     },
     addCustomWrapper: {
       ...Layout.row,
@@ -53,8 +33,14 @@ export default function (props) {
       borderWidth: 1,
       borderColor: Colors.grey,
       backgroundColor: Colors.secondary,
-      borderRadius: hp(2),
-      height: hp(4),
+      borderRadius: hp(2.5),
+      height: hp(5),
+    },
+    noItemsText: {
+      ...Gutters.smallVPadding,
+      ...Fonts.textCenter,
+      ...Fonts.textSmall,
+      ...Fonts.textItalic,
     },
   })
 }

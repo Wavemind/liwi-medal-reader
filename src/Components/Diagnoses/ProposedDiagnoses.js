@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -11,15 +11,18 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import ChangeAgreedDiagnoses from '@/Store/MedicalCase/ChangeAgreedDiagnoses'
-import ChangeRefusedDiagnoses from '@/Store/MedicalCase/ChangeRefusedDiagnoses'
+import { Icon } from '@/Components'
+import { navigate } from '@/Navigators/Root'
+import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
+import RemoveAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAgreedDiagnoses'
+import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
+import RemoveRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveRefusedDiagnoses'
 
 const ProposedDiagnoses = () => {
   // Theme and style elements deconstruction
   const {
     Layout,
-    Fonts,
-    Containers: { medicalCaseDiagnoses },
+    Containers: { finalDiagnoses },
     Components: { booleanButton },
   } = useTheme()
 
@@ -33,144 +36,121 @@ const ProposedDiagnoses = () => {
   const agreed = useSelector(state => state.medicalCase.item.diagnosis.agreed)
   const refused = useSelector(state => state.medicalCase.item.diagnosis.refused)
 
-  // TODO remove this once we have some proposed and changed all tempProposed to proposed
-  const tempProposed = [...proposed]
-  tempProposed.push(60)
-  tempProposed.push(76)
-
-  const [formattedProposed, setFormattedProposed] = useState(
-    tempProposed.map(item => {
-      let value = null
-      if (Object.keys(agreed).includes(item.toString())) {
-        value = true
-      } else if (refused.includes(item)) {
-        value = false
-      }
-      return { id: item, value }
-    }),
-  )
-
   /**
    * Updates the proposed diagnoses by sorting them into agreed or refused
-   * @param proposedDiagnosisId
+   * @param diagnosisId
    * @param value
    */
-  const updateProposedDiagnosis = (proposedDiagnosisId, value) => {
-    setFormattedProposed(
-      formattedProposed.map(diagnosis =>
-        diagnosis.id === proposedDiagnosisId
-          ? { ...diagnosis, value: value }
-          : diagnosis,
-      ),
-    )
-    const tempAgreedDiagnoses = { ...agreed }
-    const tempRefusedDiagnoses = [...refused]
-    const isInAgreed = Object.keys(tempAgreedDiagnoses).includes(
-      proposedDiagnosisId.toString(),
-    )
-    const isInRefused = tempRefusedDiagnoses.includes(proposedDiagnosisId)
+  const updateDiagnosis = (diagnosisId, value) => {
+    const isInAgreed = Object.keys(agreed).includes(diagnosisId.toString())
+    const isInRefused = refused.includes(diagnosisId)
 
     // From null to Agree
-    if (val && !isInAgreed) {
-      tempAgreedDiagnoses[proposedDiagnosisId] = {
-        id: proposedDiagnosisId.toString(),
-        drugs: {},
-      }
+    if (value && !isInAgreed) {
+      const currentNode = algorithm.nodes[diagnosisId]
       dispatch(
-        ChangeAgreedDiagnoses.action({
-          newAgreedDiagnoses: tempAgreedDiagnoses,
+        AddAgreedDiagnoses.action({
+          diagnosisId,
+          diagnosisContent: {
+            id: diagnosisId,
+            managements: Object.values(currentNode.managements).map(
+              management => management.id,
+            ),
+            drugs: {
+              proposed: Object.values(currentNode.drugs).map(drug => drug.id),
+              agreed: {},
+              refused: [],
+              additional: {},
+            },
+          },
         }),
       )
 
       // From Disagree to Agree
       if (isInRefused) {
-        tempRefusedDiagnoses.splice(
-          tempRefusedDiagnoses.indexOf(proposedDiagnosisId),
-          1,
-        )
         dispatch(
-          ChangeRefusedDiagnoses.action({
-            newRefusedDiagnoses: tempRefusedDiagnoses,
+          RemoveRefusedDiagnoses.action({
+            diagnosisId,
           }),
         )
       }
     }
 
     // From null to Disagree
-    if (!val && !isInRefused) {
-      tempRefusedDiagnoses.push(proposedDiagnosisId)
+    if (!value && !isInRefused) {
       dispatch(
-        ChangeRefusedDiagnoses.action({
-          newRefusedDiagnoses: tempRefusedDiagnoses,
+        AddRefusedDiagnoses.action({
+          diagnosisId,
         }),
       )
 
       // From Agree to Disagree
       if (isInAgreed) {
-        delete tempAgreedDiagnoses[proposedDiagnosisId.toString()]
         dispatch(
-          ChangeAgreedDiagnoses.action({
-            newAgreedDiagnoses: tempAgreedDiagnoses,
+          RemoveAgreedDiagnoses.action({
+            diagnosisId,
           }),
         )
       }
     }
   }
 
-  /**
-   * Renders the boolean buttons to agree/disagree with the proposed diagnoses
-   * @param diagnosis
-   * @returns {JSX.Element}
-   */
-  const renderBooleanButton = diagnosis => {
-    const buttons = [
-      {
-        side: 'left',
-        value: true,
-        text: t('containers.medical_case.diagnoses.agree'),
-      },
-      {
-        side: 'right',
-        value: false,
-        text: t('containers.medical_case.diagnoses.disagree'),
-      },
-    ]
+  return Object.keys(proposed).length === 0 ? (
+    <View>
+      <Text style={finalDiagnoses.noItemsText}>
+        {t('containers.medical_case.diagnoses.no_proposed')}
+      </Text>
+    </View>
+  ) : (
+    proposed.map((diagnosisId, i) => {
+      const isAgreed = Object.keys(agreed).includes(diagnosisId.toString())
+      const isRefused = refused.includes(diagnosisId)
 
-    return (
-      <View style={medicalCaseDiagnoses.booleanButtonWrapper}>
-        {buttons.map(button => {
-          const selected = diagnosis.value === button.value
-          return (
-            <View
-              key={`booleanButton-${button.side}`}
-              style={booleanButton.buttonWrapper(button.side, selected)}
+      return (
+        <View
+          key={`proposed-${diagnosisId}`}
+          style={finalDiagnoses.newItemWrapper(i === proposed.length - 1)}
+        >
+          <Text style={finalDiagnoses.diagnosisLabel}>
+            {translate(algorithm.nodes[diagnosisId].label)}
+          </Text>
+          {translate(algorithm.nodes[diagnosisId].description) !== '' && (
+            <TouchableOpacity
+              onPress={() =>
+                navigate('QuestionInfo', {
+                  nodeId: diagnosisId,
+                })
+              }
             >
+              <Icon name="simple-info" />
+            </TouchableOpacity>
+          )}
+          <View style={finalDiagnoses.booleanButtonWrapper}>
+            <View style={booleanButton.buttonWrapper('left', isAgreed)}>
               <TouchableOpacity
                 style={Layout.center}
-                onPress={() =>
-                  updateProposedDiagnosis(diagnosis.id, button.value)
-                }
+                onPress={() => updateDiagnosis(diagnosisId, true)}
               >
-                <Text style={booleanButton.buttonText(selected)}>
-                  {button.text}
+                <Text style={booleanButton.buttonText(isAgreed)}>
+                  {t('containers.medical_case.common.agree')}
                 </Text>
               </TouchableOpacity>
             </View>
-          )
-        })}
-      </View>
-    )
-  }
-
-  return formattedProposed.map((proposedDiagnosis, i) => (
-    <View
-      key={`proposed-${proposedDiagnosis.id}`}
-      style={medicalCaseDiagnoses.newItemWrapper(i === tempProposed.length - 1)}
-    >
-      <Text style={Fonts.textSmall}>{translate(algorithm.nodes[proposedDiagnosis.id].label)}</Text>
-      {renderBooleanButton(proposedDiagnosis)}
-    </View>
-  ))
+            <View style={booleanButton.buttonWrapper('right', isRefused)}>
+              <TouchableOpacity
+                style={Layout.center}
+                onPress={() => updateDiagnosis(diagnosisId, false)}
+              >
+                <Text style={booleanButton.buttonText(isRefused)}>
+                  {t('containers.medical_case.common.disagree')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )
+    })
+  )
 }
 
 export default ProposedDiagnoses

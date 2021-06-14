@@ -14,13 +14,14 @@ export default async ({ algorithm }) => {
     consent: !!algorithm.config.consent_management,
     createdAt: new Date().getTime(),
     diagnosis: {
-      proposed: [],
+      // TODO clear the proposed array when done
+      proposed: [60, 76],
       excluded: [],
       diagnoses: [],
-      additional: [],
+      additional: {},
       agreed: {},
       refused: [],
-      custom: [],
+      custom: {},
     },
     id: uuid.v4(),
     nodes: generateNodes({ nodes: algorithm.nodes }),

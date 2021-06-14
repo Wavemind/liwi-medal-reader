@@ -2,8 +2,8 @@
  * The external imports
  */
 import React from 'react'
+import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 
 /**
  * The internal imports
@@ -14,45 +14,47 @@ import { Badge, Icon } from '@/Components'
 const BadgeBar = ({
   removeBadge,
   selected,
-  clearBadges,
   badgeComponentLabel,
+  showClearAll = false,
+  onClearAll,
 }) => {
   // Theme and style elements deconstruction
-  const { t } = useTranslation()
-
   const {
-    Components: { badgeBar },
     FontSize,
     Gutters,
+    Components: { badgeBar },
+    Containers: { searchAdditional },
   } = useTheme()
+
+  const { t } = useTranslation()
 
   return (
     <View style={badgeBar.container}>
-      {selected.length > 0 && (
+      {showClearAll && Object.values(selected).length > 0 && (
         <TouchableOpacity
-          onPress={() => clearBadges()}
-          style={badgeBar.clearFiltersButton}
+          onPress={onClearAll}
+          style={searchAdditional.clearFiltersButton}
         >
-          <View style={badgeBar.clearFiltersButtonWrapper}>
+          <View style={searchAdditional.clearFiltersButtonWrapper}>
             <Icon
               name="refresh"
               color="red"
               size={FontSize.regular}
               style={Gutters.regularRMargin}
             />
-            <Text style={badgeBar.clearFiltersButtonText}>
+            <Text style={searchAdditional.clearFiltersButtonText}>
               {t('actions.clear_selection')}
             </Text>
           </View>
         </TouchableOpacity>
       )}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {selected.map(selectedItem => {
+        {Object.values(selected).map((selectedItem, i) => {
           return (
             <Badge
-              key={`badge-${selectedItem.filterBy}-${selectedItem.value}`}
+              key={`badge-${i}`}
               removeBadge={removeBadge}
-              selectedItem={selectedItem}
+              selectedItem={selectedItem.id}
               label={() => badgeComponentLabel(selectedItem)}
             />
           )

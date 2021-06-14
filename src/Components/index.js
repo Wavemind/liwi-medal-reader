@@ -70,6 +70,11 @@ export { default as EmptyList } from './EmptyList'
 export { default as Error } from './Error'
 
 // MEDICAL CASE
+export { default as AdditionalSelect } from './Diagnoses/AdditionalSelect'
+export { default as CustomElement } from './Diagnoses/CustomElement'
 export { default as ProposedDiagnoses } from './Diagnoses/ProposedDiagnoses'
 export { default as AdditionalDiagnoses } from './Diagnoses/AdditionalDiagnoses'
 export { default as CustomDiagnoses } from './Diagnoses/CustomDiagnoses'
+export { default as DiagnosisDrugs } from './Diagnoses/DiagnosisDrugs'
+export { default as CustomDrugs } from './Diagnoses/CustomDrugs'
+export { default as DrugBooleanButton } from './Diagnoses/DrugBooleanButton'

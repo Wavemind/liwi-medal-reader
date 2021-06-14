@@ -2,8 +2,8 @@ import { createAction } from '@reduxjs/toolkit'
 
 export default {
   initialState: {},
-  action: createAction('medicalCase/changeCustomDiagnoses'),
+  action: createAction('medicalCase/removeAgreedDiagnoses'),
   reducers(state, { payload }) {
-    state.item.diagnosis.custom = payload.newCustomDiagnoses
+    delete state.item.diagnosis.agreed[payload.diagnosisId]
   },
 }

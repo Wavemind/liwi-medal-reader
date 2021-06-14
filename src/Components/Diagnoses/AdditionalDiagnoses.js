@@ -2,90 +2,43 @@
  * The external imports
  */
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import { translate } from '@/Translations/algorithm'
-import { Icon } from '@/Components'
-import { useTheme } from '@/Theme'
-import ChangeAdditionalDiagnoses from '@/Store/MedicalCase/ChangeAdditionalDiagnoses'
-import { navigate } from '@/Navigators/Root'
+import { AdditionalSelect } from '@/Components'
+import RemoveAdditionalDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAdditionalDiagnoses'
 
 const AdditionalDiagnoses = () => {
-  // Theme and style elements deconstruction
-  const {
-    Gutters,
-    FontSize,
-    Fonts,
-    Containers: { medicalCaseDiagnoses },
-  } = useTheme()
-
   const dispatch = useDispatch()
-  const { t } = useTranslation()
 
-  const algorithm = useSelector(state => state.algorithm.item)
   const additional = useSelector(
     state => state.medicalCase.item.diagnosis.additional,
   )
 
   /**
    * Removes a single element from the additional diagnosis list
-   * @param additionalDiagnosisId
+   * @param diagnosisId
    */
-  const removeAdditionalDiagnosis = additionalDiagnosisId => {
-    const tempAdditionalDiagnoses = [...additional]
-
-    const index = tempAdditionalDiagnoses.indexOf(additionalDiagnosisId)
-    if (index > -1) {
-      tempAdditionalDiagnoses.splice(index, 1)
-    }
-
+  const removeAdditionalDiagnosis = diagnosisId => {
     dispatch(
-      ChangeAdditionalDiagnoses.action({
-        newAdditionalDiagnoses: tempAdditionalDiagnoses,
+      RemoveAdditionalDiagnoses.action({
+        diagnosisId,
       }),
     )
   }
 
   return (
     <View>
-      {additional.map((additionalDiagnosisId, i) => (
-        <View
-          key={`additional-${additionalDiagnosisId}`}
-          style={medicalCaseDiagnoses.newItemWrapper(
-            i === additional.length - 1,
-          )}
-        >
-          <Text style={Fonts.textSmall}>{translate(algorithm.nodes[additionalDiagnosisId].label)}</Text>
-          <TouchableOpacity
-            onPress={() => removeAdditionalDiagnosis(additionalDiagnosisId)}
-          >
-            <Icon style={{}} name="delete" size={FontSize.regular} />
-          </TouchableOpacity>
-        </View>
-      ))}
-      <TouchableOpacity
-        style={medicalCaseDiagnoses.addAdditionalButton}
-        onPress={() => navigate('Diagnoses')}
-      >
-        <Text style={medicalCaseDiagnoses.addAdditionalButtonText}>
-          {t('containers.medical_case.diagnoses.additional_placeholder')}
-        </Text>
-        <View style={medicalCaseDiagnoses.addAdditionalButtonCountWrapper}>
-          <Text style={medicalCaseDiagnoses.addAdditionalButtonCountText}>
-            {additional.length}
-          </Text>
-        </View>
-        <Icon
-          style={Gutters.regularLMargin}
-          name="right-arrow"
-          size={FontSize.large}
+      <View>
+        <AdditionalSelect
+          listObject={additional}
+          listItemType="diagnoses"
+          handleRemove={removeAdditionalDiagnosis}
         />
-      </TouchableOpacity>
+      </View>
     </View>
   )
 }

@@ -13,7 +13,6 @@ export default function (props) {
       borderRadius: 10,
       ...Gutters.smallVMargin,
       ...Gutters.smallVPadding,
-      ...Gutters.regularHMargin,
       ...Layout.row,
       ...Layout.fill,
       ...Gutters.regularLPadding,

@@ -52,7 +52,7 @@ const IndexQuestionInfoContainer = props => {
           <SectionHeader label={translate(node.label)} />
           <Text style={[Fonts.textSmall]}>{translate(node.description)}</Text>
 
-          {node.medias.map(media => {
+          {node.medias?.map(media => {
             return <Media key={media.url} media={media} />
           })}
         </ScrollView>
