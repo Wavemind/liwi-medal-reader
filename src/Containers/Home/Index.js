@@ -16,17 +16,20 @@ import {
   SectionHeader,
   SquareButton,
   MedicalCaseListItem,
+  EmptyList,
+  Error,
 } from '@/Components'
 import { useTheme } from '@/Theme'
 import { fadeIn } from '@/Theme/Animation'
-import createMedicalCase from '@/Store/MedicalCase/Create'
+import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import CreatePatient from '@/Store/Patient/Create'
-import useDatabase from '@/Services/Database/useDatabase'
-const IndexHomeContainer = props => {
+import GetAllMedicalCaseDB from '@/Store/Database/MedicalCase/GetAll'
+
+const IndexHomeContainer = ({ navigation }) => {
   // Theme and style elements deconstruction
-  const { navigation } = props
   const { t } = useTranslation()
   const dispatch = useDispatch()
+
   const {
     Containers: { home, global },
     Layout,
@@ -34,42 +37,72 @@ const IndexHomeContainer = props => {
     Colors,
   } = useTheme()
 
-  const { getAll } = useDatabase()
   // Define references
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   // Local state definition
-  const [data, setData] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
-  const algorithm = useSelector(state => state.algorithm.item)
+  const [page, setPage] = useState(1)
+  const [firstLoading, setFirstLoading] = useState(true)
 
-  const getMedicalCases = async () => {
-    const medicalCases = await getAll('MedicalCase')
-    setData(medicalCases)
-  }
+  const algorithm = useSelector(state => state.algorithm.item)
+  const medicalCases = useSelector(
+    state => state.database.medicalCase.getAll.item.data,
+  )
+  const isLastBatch = useSelector(
+    state => state.database.medicalCase.getAll.item.isLastBatch,
+  )
+  const medicalCasesLoading = useSelector(
+    state => state.database.medicalCase.getAll.loading,
+  )
+  const medicalCasesError = useSelector(
+    state => state.database.medicalCase.getAll.error,
+  )
 
   useEffect(() => {
     fadeIn(fadeAnim)
   }, [fadeAnim])
 
   useEffect(() => {
-    getMedicalCases()
+    dispatch(GetAllMedicalCaseDB.action({ page }))
+    setFirstLoading(false)
   }, [])
 
   /**
    * Fetch 15 latest medical cases
    */
-  const handleRefresh = async () => {
-    setRefreshing(true)
-    console.log('TODO: handle refresh')
-    setTimeout(() => setRefreshing(false), 2 * 1000)
+  const handleRefresh = () => {
+    dispatch(GetAllMedicalCaseDB.action({ page: 1, reset: true }))
   }
 
   /**
    * Load more medical case
    */
   const loadMore = () => {
-    console.log('TODO: load more')
+    if (!isLastBatch) {
+      dispatch(GetAllMedicalCaseDB.action({ page: page + 1 }))
+      setPage(page + 1)
+    }
+  }
+
+  /**
+   * DEV ONLY
+   * Create patient without scanning QR code
+   */
+  const newPatient = async () => {
+    await dispatch(CreateMedicalCase.action({ algorithm }))
+    await dispatch(
+      CreatePatient.action({
+        idPatient: null,
+        newMedicalCase: true,
+        facility: {
+          study_id: 'Dynamic Tanzania',
+          group_id: '7',
+          uid: uuid.v4(),
+        },
+        otherFacility: {},
+      }),
+    )
+    navigation.navigate('StageWrapper')
   }
 
   return (
@@ -91,22 +124,7 @@ const IndexHomeContainer = props => {
                 label={t('actions.new_patient')}
                 icon="add"
                 big
-                onPress={async () => {
-                  await dispatch(createMedicalCase.action({ algorithm }))
-                  await dispatch(
-                    CreatePatient.action({
-                      idPatient: null,
-                      newMedicalCase: true,
-                      facility: {
-                        study_id: 'Dynamic Tanzania',
-                        group_id: '7',
-                        uid: uuid.v4(),
-                      },
-                      otherFacility: {},
-                    }),
-                  )
-                  navigation.navigate('StageWrapper')
-                }}
+                onPress={newPatient}
                 filled
               />
             </View>
@@ -136,20 +154,25 @@ const IndexHomeContainer = props => {
 
       <SearchBar navigation={navigation} />
 
-      <View style={[Gutters.regularHMargin]}>
+      <View style={Gutters.regularHMargin}>
         <SectionHeader label={t('containers.home.title')} />
+        {medicalCasesError && <Error message={medicalCasesError.message} />}
       </View>
 
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <MedicalCaseListItem item={item} />}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={<LoaderList />}
-        onRefresh={() => handleRefresh()}
-        refreshing={refreshing}
-        onEndReached={() => loadMore()}
-        onEndReachedThreshold={0.1}
-      />
+      {firstLoading ? (
+        <LoaderList />
+      ) : (
+        <FlatList
+          data={medicalCases}
+          renderItem={({ item }) => <MedicalCaseListItem item={item} />}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
+          onRefresh={handleRefresh}
+          refreshing={medicalCasesLoading}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.1}
+        />
+      )}
     </Animated.View>
   )
 }
