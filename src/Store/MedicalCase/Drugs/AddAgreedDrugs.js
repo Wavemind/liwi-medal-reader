@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import { store } from '@/Store'
 
 export default {
   initialState: {},

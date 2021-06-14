@@ -1,0 +1,122 @@
+import { store } from '@/Store'
+
+/**
+ * Set the right dose calculation for a drug.
+ * @param formulationIndex
+ * @param drugId
+ * @returns {{doseResult: null}|{doseResult: null, no_possibility: string}|{recurrence: *, doseResult: *, doseResultMg: *, maxDoseMg: *, minDoseMl: number, maxDoseMl: number, minDoseMg: *}|{recurrence: *, doseResult: *, maxDoseCap: number, maxDoseMg: *, minDoseMg: *, minDoseCap: number}}
+ */
+export const drugDoses = (formulationIndex, drugId) => {
+  const algorithm = store.getState().algorithm.item
+  const mcWeight = algorithm.nodes[algorithm.config.basic_questions.weight_question_id];
+
+  let minDoseMg
+  let maxDoseMg
+  let doseResult
+  let doseResultMg
+  let pillSize
+
+  const drug = algorithm.nodes[drugId];
+
+  // Select formulation
+  const formulation = drug.formulations[formulationIndex];
+
+  if (formulation === undefined) {
+    return { doseResult: null };
+  }
+
+  const recurrence = 24 / formulation.doses_per_day;
+
+  // Age and weight must be answered to calculate dosage
+  if (mcWeight !== undefined && mcWeight.value !== null && !formulation.by_age) {
+    switch (formulation.medication_form) {
+      case medicationForms.syrup:
+      case medicationForms.suspension:
+      case medicationForms.powder_for_injection:
+      case medicationForms.solution:
+        minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
+        maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
+
+        // Second calculate min and max dose (cap)
+        const minDoseMl = roundSup((minDoseMg * formulation.dose_form) / formulation.liquid_concentration);
+        const maxDoseMl = roundSup((maxDoseMg * formulation.dose_form) / formulation.liquid_concentration);
+
+        // Round
+        doseResult = roundSup((minDoseMl + maxDoseMl) / 2);
+
+        if (doseResult > maxDoseMl) {
+          doseResult -= 1;
+        }
+
+        doseResultMg = (doseResult * formulation.liquid_concentration) / formulation.dose_form;
+
+        // If we reach the limit / day
+        if (doseResultMg * formulation.doses_per_day > formulation.maximal_dose) {
+          doseResultMg = formulation.maximal_dose / formulation.doses_per_day;
+          doseResult = (doseResultMg * formulation.dose_form) / formulation.liquid_concentration;
+        }
+
+        return {
+          minDoseMg,
+          maxDoseMg,
+          minDoseMl,
+          maxDoseMl,
+          doseResult,
+          doseResultMg,
+          recurrence,
+          ...formulation,
+        };
+
+      case medicationForms.capsule:
+      case medicationForms.dispersible_tablet:
+      case medicationForms.tablet:
+        // First calculate min and max dose (mg/Kg)
+        minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
+        maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
+        pillSize = formulation.dose_form; // dose form
+
+        if (formulation.breakable !== null) {
+          pillSize /= formulation.breakable;
+        }
+
+        // Second calculate min and max dose (cap)
+        const minDoseCap = roundSup((1 / pillSize) * minDoseMg);
+        const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg);
+
+        // Define Dose Result
+        doseResult = (minDoseCap + maxDoseCap) / 2;
+
+        if (maxDoseCap < 1) {
+          return {
+            ...formulation,
+            no_possibility: i18n.t('drug:no_options'),
+            doseResult: null,
+          };
+        }
+        if (Math.ceil(doseResult) <= maxDoseCap) {
+          // Viable Solution
+          doseResult = Math.ceil(doseResult);
+        } else if (Math.floor(doseResult) >= minDoseCap) {
+          // Other viable solution
+          doseResult = Math.floor(doseResult);
+        } else {
+          // Out of possibility
+          // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
+          doseResult = Math.floor(minDoseCap);
+        }
+
+        return {
+          minDoseMg,
+          maxDoseMg,
+          minDoseCap,
+          maxDoseCap,
+          doseResult,
+          recurrence,
+          ...formulation,
+        };
+      default:
+        break;
+    }
+  }
+  return { doseResult: null, recurrence, ...formulation };
+};

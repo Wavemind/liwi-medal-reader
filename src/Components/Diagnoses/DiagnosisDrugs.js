@@ -125,7 +125,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
   }
 
   return Object.values(diagnoses).map(diagnosis => (
-    <View style={drugs.wrapper}>
+    <View key={`diagnosis-${diagnosis.id}`} style={drugs.wrapper}>
       <View style={drugs.diagnosisHeaderWrapper}>
         <Text style={drugs.diagnosisHeader}>
           {translate(algorithm.nodes[diagnosis.id].label)}
@@ -151,6 +151,7 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
         ) : (
           diagnosis.drugs.proposed.map((drugId, i) => (
             <View
+              key={`diagnosis_drugs-${drugId}`}
               style={drugs.drugWrapper(
                 i === diagnosis.drugs.proposed.length - 1,
               )}

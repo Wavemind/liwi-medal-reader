@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 
-const FormulationsPicker = ({ drug, index, updateFormulations }) => {
+const FormulationsPicker = ({ drug, updateFormulations }) => {
   // Theme and style elements deconstruction
   const {
     Colors,
@@ -28,7 +28,7 @@ const FormulationsPicker = ({ drug, index, updateFormulations }) => {
       style={formulations.picker}
       selectedValue={drug.selectedFormulationId}
       prompt="Formulations"
-      onValueChange={value => updateFormulations(index, value)}
+      onValueChange={value => updateFormulations(drug.id, value)}
       dropdownIconColor={Colors.primary}
     >
       <Picker.Item
@@ -36,7 +36,7 @@ const FormulationsPicker = ({ drug, index, updateFormulations }) => {
         label={t('actions.select')}
         value={null}
       />
-      {Object.values(nodes[drug.drugId].formulations).map(formulation => (
+      {Object.values(nodes[drug.id].formulations).map(formulation => (
         <Picker.Item
           key={`select-${formulation.id}`}
           label={translate(formulation.description)}

@@ -3,70 +3,49 @@
  */
 import React, { useEffect, useState } from 'react'
 import { ScrollView, View, Text } from 'react-native'
+import { useTranslation } from 'react-i18next'
+import { useIsFocused } from '@react-navigation/native'
+import isEqual from 'lodash/isEqual'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-import { translate } from '@/Translations/algorithm'
-import FormulationsPicker from '@/Containers/MedicalCase/FormulationsPicker'
+import { FormulationDrugs } from '@/Components'
+import { transformFormulations } from '@/Services/MedicalCase/TransformFormulations'
 
 const Formulations = ({}) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
-    Fonts,
-    Layout,
     Containers: { formulations },
   } = useTheme()
 
   const { t } = useTranslation()
+  const isFocused = useIsFocused()
 
-  const diagnoses = useSelector(state => state.medicalCase.item.diagnosis)
-  const nodes = useSelector(state => state.algorithm.item.nodes)
-
-  const [drugs, setDrugs] = useState([])
+  const [drugs, setDrugs] = useState(transformFormulations())
 
   useEffect(() => {
-    const newDrugs = [...drugs]
-    const keys = ['additional', 'agreed']
-
-    keys.forEach(key => {
-      Object.values(diagnoses[key]).forEach(diagnosis => {
-        keys.forEach(k => {
-          Object.values(diagnosis.drugs[k]).forEach(drug => {
-            if (!newDrugs.some(d => d.drugId === drug.id)) {
-              const drugFormulations = nodes[drug.id].formulations
-              newDrugs.push({
-                drugId: drug.id,
-                relatedDiagnoses: [diagnosis.id],
-                selectedFormulationId:
-                  drugFormulations.length === 1 ? drugFormulations[0].id : null,
-              })
-            } else {
-              newDrugs
-                .find(d => d.drugId === drug.id)
-                .relatedDiagnoses.push(diagnosis.id)
-            }
-          })
-        })
-      })
-    })
-    setDrugs(newDrugs)
-  }, [diagnoses])
+    const newDrugs = transformFormulations()
+    if (!isEqual(newDrugs, drugs)) {
+      console.log('recalculating')
+      setDrugs(transformFormulations())
+    }
+  }, [isFocused])
 
   /**
    * Updates the formulations in the local state
-   * @param index
+   * @param drugId
    * @param value
    */
-  const updateFormulations = (index, value) => {
-    const newDrugs = [...drugs]
-    newDrugs[index].selectedFormulationId = value
+  const updateFormulations = (drugId, value) => {
+    const newDrugs = { ...drugs }
+    newDrugs[drugId].selectedFormulationId = value
     setDrugs(newDrugs)
   }
+
+  console.log('rendering')
 
   return (
     <ScrollView>
@@ -77,42 +56,14 @@ const Formulations = ({}) => {
           </Text>
         </View>
         <View style={[Gutters.regularHMargin, Gutters.regularVMargin]}>
-          {drugs.map((drug, i) => {
-            return (
-              <View style={formulations.drugWrapper(i === drugs.length - 1)}>
-                <View style={[Layout.row, Layout.justifyContentBetween]}>
-                  <View style={formulations.leftColumn}>
-                    <Text style={[Fonts.textSmall, Fonts.textBold]}>
-                      {translate(nodes[drug.drugId].label)}
-                    </Text>
-                    {drug.relatedDiagnoses.map(relatedDiagnosisId => (
-                      <Text style={Fonts.textSmall}>
-                        - {translate(nodes[relatedDiagnosisId].label)}
-                      </Text>
-                    ))}
-                  </View>
-                  <View style={formulations.rightColumn}>
-                    <View style={formulations.pickerWrapper}>
-                      <FormulationsPicker
-                        drug={drug}
-                        index={i}
-                        updateFormulations={updateFormulations}
-                      />
-                    </View>
-                  </View>
-                </View>
-                {drug.selectedFormulationId && (
-                  <Text style={formulations.selectedFormulationText}>
-                    {translate(
-                      nodes[drug.drugId].formulations.find(
-                        f => f.id === drug.selectedFormulationId,
-                      ).description,
-                    )}
-                  </Text>
-                )}
-              </View>
-            )
-          })}
+          {Object.values(drugs).map((drug, i) => (
+            <FormulationDrugs
+              key={`formulation_drug-${drug.id}`}
+              drug={drug}
+              isLast={i === drugs.length - 1}
+              updateFormulations={updateFormulations}
+            />
+          ))}
         </View>
       </View>
     </ScrollView>
