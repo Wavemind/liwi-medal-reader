@@ -1,5 +1,33 @@
 import { store } from '@/Store'
 
+export const medicationForms = {
+  tablet: 'tablet',
+  dispersible_tablet: 'dispersible_tablet',
+  capsule: 'capsule',
+  syrup: 'syrup',
+  suspension: 'suspension',
+  suppository: 'suppository',
+  drops: 'drops',
+  solution: 'solution',
+  powder_for_injection: 'powder_for_injection',
+  patch: 'patch',
+  cream: 'cream',
+  pessary: 'pessary',
+  ointment: 'ointment',
+  gel: 'gel',
+  spray: 'spray',
+  inhaler: 'inhaler',
+}
+
+/**
+ * Round sup of number
+ *
+ * @param n : number to round
+ * @return number
+ * ex : roundSup(1.55555) => 1.6
+ */
+export const roundSup = n => Math.round(n * 10) / 10
+
 /**
  * Set the right dose calculation for a drug.
  * @param formulationIndex
@@ -16,10 +44,10 @@ export const drugDoses = (formulationIndex, drugId) => {
   let doseResultMg
   let pillSize
 
-  const drug = algorithm.nodes[drugId];
+  const drug = algorithm.nodes[drugId]
 
   // Select formulation
-  const formulation = drug.formulations[formulationIndex];
+  const formulation = drug.formulations[formulationIndex]
 
   if (formulation === undefined) {
     return { doseResult: null };
@@ -95,14 +123,14 @@ export const drugDoses = (formulationIndex, drugId) => {
         }
         if (Math.ceil(doseResult) <= maxDoseCap) {
           // Viable Solution
-          doseResult = Math.ceil(doseResult);
+          doseResult = Math.ceil(doseResult)
         } else if (Math.floor(doseResult) >= minDoseCap) {
           // Other viable solution
-          doseResult = Math.floor(doseResult);
+          doseResult = Math.floor(doseResult)
         } else {
           // Out of possibility
           // Request on 09.02.2021 if no option available we give the min dose cap LIWI-1150
-          doseResult = Math.floor(minDoseCap);
+          doseResult = Math.floor(minDoseCap)
         }
 
         return {
