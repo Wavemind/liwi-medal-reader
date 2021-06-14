@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { drugDoses } from '@/Utils/Formulations/DrugDoses'
+import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
 import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 
 const FormulationsPicker = ({ drug, updateFormulations }) => {
@@ -38,11 +38,11 @@ const FormulationsPicker = ({ drug, updateFormulations }) => {
         value={null}
       />
       {Object.values(nodes[drug.id].formulations).map((formulation, index) => {
-        const calculatedFormulation = drugDoses(index, drug.id)
+        const drugDose = drugDoses(index, drug.id)
         return (
           <Picker.Item
             key={`select-${formulation.id}`}
-            label={formulationLabel(calculatedFormulation)}
+            label={formulationLabel(drugDose)}
             value={formulation.id}
           />
         )

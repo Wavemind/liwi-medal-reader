@@ -20,6 +20,7 @@ export default function (props) {
     formulationsHeader: {
       ...Fonts.textSmall,
       ...Fonts.textUppercase,
+      ...Fonts.textBold,
       color: Colors.secondary,
     },
     drugWrapper: isLast => ({
@@ -29,7 +30,7 @@ export default function (props) {
       borderBottomColor: Colors.grey,
     }),
     leftColumn: {
-      width: wp(37),
+      width: wp(48),
     },
     rightColumn: {
       width: wp(30),

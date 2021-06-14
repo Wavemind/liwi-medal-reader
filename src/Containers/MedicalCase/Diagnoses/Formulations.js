@@ -13,6 +13,7 @@ import isEqual from 'lodash/isEqual'
 import { useTheme } from '@/Theme'
 import { FormulationDrugs } from '@/Components'
 import { transformFormulations } from '@/Services/MedicalCase/TransformFormulations'
+import {useSelector} from "react-redux";
 
 const Formulations = ({}) => {
   // Theme and style elements deconstruction
@@ -26,10 +27,15 @@ const Formulations = ({}) => {
 
   const [drugs, setDrugs] = useState(transformFormulations())
 
+  const algo = useSelector(s => s.algorithm.item)
+  console.log(algo)
+
+  /**
+   * Transforms stored diagnoses/drugs into a usable local format
+   */
   useEffect(() => {
     const newDrugs = transformFormulations()
     if (!isEqual(newDrugs, drugs)) {
-      console.log('recalculating')
       setDrugs(transformFormulations())
     }
   }, [isFocused])
@@ -58,7 +64,7 @@ const Formulations = ({}) => {
             <FormulationDrugs
               key={`formulation_drug-${drug.id}`}
               drug={drug}
-              isLast={i === drugs.length - 1}
+              isLast={i === Object.values(drugs).length - 1}
               updateFormulations={updateFormulations}
             />
           ))}

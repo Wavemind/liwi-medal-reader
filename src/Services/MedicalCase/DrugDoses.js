@@ -1,15 +1,7 @@
 import { store } from '@/Store'
 import i18n from '@/Translations'
 import { medicationForms } from '@/Utils/Formulations/MedicationForms'
-
-/**
- * Round sup of number
- *
- * @param n : number to round
- * @return number
- * ex : roundSup(1.55555) => 1.6
- */
-export const roundSup = n => Math.round(n * 10) / 10
+import { roundSup } from '@/Utils/Formulations/RoundSup'
 
 /**
  * Set the right dose calculation for a drug.
@@ -131,7 +123,7 @@ export const drugDoses = (formulationIndex, drugId) => {
         if (maxDoseCap < 1) {
           return {
             ...formulation,
-            no_possibility: i18n.t('drug:no_options'),
+            no_possibility: i18n.t('containers.medical_case.formulations.drug.no_options'),
             doseResult: null,
           }
         }

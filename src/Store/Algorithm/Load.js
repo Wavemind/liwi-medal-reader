@@ -6,14 +6,14 @@ export default {
   reducers(state, { payload }) {
     const nodes = {
       ...payload.newAlgorithm.nodes,
-      ...payload.newAlgorithm.final_diagnostics,
+      ...payload.newAlgorithm.final_diagnoses,
       ...payload.newAlgorithm.health_cares,
     }
 
     // Remove useless key
     delete payload.newAlgorithm.emergency_content
     delete payload.newAlgorithm.nodes
-    delete payload.newAlgorithm.final_diagnostics
+    delete payload.newAlgorithm.final_diagnoses
     delete payload.newAlgorithm.health_cares
 
     // Store algorithm

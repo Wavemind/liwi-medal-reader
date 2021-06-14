@@ -52,7 +52,7 @@ const FormulationDrugs = ({ drug, isLast, updateFormulations }) => {
     <View style={formulations.drugWrapper(isLast)}>
       <View style={[Layout.row, Layout.justifyContentBetween]}>
         <View style={formulations.leftColumn}>
-          <Text style={[Fonts.textSmall, Fonts.textBold]}>
+          <Text style={[Fonts.textRegular, Fonts.textBold]}>
             {translate(nodes[drug.id].label)}
           </Text>
           {drug.relatedDiagnoses.map(relatedDiagnosis => (
