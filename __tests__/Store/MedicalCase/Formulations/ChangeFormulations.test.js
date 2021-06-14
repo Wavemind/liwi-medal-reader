@@ -36,20 +36,8 @@ beforeAll(async () => {
     AddAgreedDiagnoses.action({ diagnosisId, diagnosisContent }),
   )
   await store.dispatch(
-    AddAdditionalDiagnoses.action({
-      newAdditionalDiagnoses: { [diagnosisId]: diagnosisContent },
-    }),
-  )
-  await store.dispatch(
     AddAgreedDrugs.action({
       diagnosisKey: 'agreed',
-      diagnosisId,
-      drugId,
-    }),
-  )
-  await store.dispatch(
-    AddAgreedDrugs.action({
-      diagnosisKey: 'additional',
       diagnosisId,
       drugId,
     }),
@@ -92,6 +80,6 @@ describe('Handle drug formulation modification', () => {
     )
 
     expect(
-      store.getState().medicalCase.item.diagnosis.agreed[diagnosisId].drugs.agreed[drugId].formulation_id).toBe(4)
+      store.getState().medicalCase.item.diagnosis.agreed[diagnosisId].drugs.agreed[drugId].formulation_id).toEqual(4)
   })
 })
