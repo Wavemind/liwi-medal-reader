@@ -15,8 +15,8 @@ export default async ({ algorithm }) => {
     createdAt: new Date().getTime(),
     diagnosis: {
       // TODO clear the proposed array when done
-      // proposed: [3299, 3343],
-      proposed: [],
+      proposed: [3299, 3343],
+      // proposed: [],
       excluded: [],
       diagnoses: [],
       additional: {},

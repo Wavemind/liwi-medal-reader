@@ -17,6 +17,7 @@ export { default as BasicMeasurementMedicalCaseContainer } from './MedicalCase/F
 export { default as MedicalHistoryMedicalCaseContainer } from './MedicalCase/Consultation/MedicalHistory'
 export { default as TreatmentConditionsMedicalCaseContainer } from './MedicalCase/Diagnoses/TreatmentConditions'
 export { default as MedicalCaseDiagnosesFormulationsContainer } from './MedicalCase/Diagnoses/Formulations'
+export { default as MedicalCaseDiagnosesSummaryContainer } from './MedicalCase/Diagnoses/Summary'
 
 export { default as ListConsentContainer } from './Consent/List'
 export { default as CameraConsentContainer } from './Consent/Camera'
