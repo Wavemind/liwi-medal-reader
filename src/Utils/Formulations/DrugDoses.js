@@ -1,23 +1,6 @@
 import { store } from '@/Store'
-
-export const medicationForms = {
-  tablet: 'tablet',
-  dispersible_tablet: 'dispersible_tablet',
-  capsule: 'capsule',
-  syrup: 'syrup',
-  suspension: 'suspension',
-  suppository: 'suppository',
-  drops: 'drops',
-  solution: 'solution',
-  powder_for_injection: 'powder_for_injection',
-  patch: 'patch',
-  cream: 'cream',
-  pessary: 'pessary',
-  ointment: 'ointment',
-  gel: 'gel',
-  spray: 'spray',
-  inhaler: 'inhaler',
-}
+import i18n from '@/Translations'
+import { medicationForms } from '@/Utils/Formulations/MedicationForms'
 
 /**
  * Round sup of number
@@ -36,7 +19,9 @@ export const roundSup = n => Math.round(n * 10) / 10
  */
 export const drugDoses = (formulationIndex, drugId) => {
   const algorithm = store.getState().algorithm.item
-  const mcWeight = algorithm.nodes[algorithm.config.basic_questions.weight_question_id];
+  const medicalCase = store.getState().medicalCase.item
+  const mcWeight =
+    medicalCase.nodes[algorithm.config.basic_questions.weight_question_id]
 
   let minDoseMg
   let maxDoseMg
@@ -50,38 +35,61 @@ export const drugDoses = (formulationIndex, drugId) => {
   const formulation = drug.formulations[formulationIndex]
 
   if (formulation === undefined) {
-    return { doseResult: null };
+    return { doseResult: null }
   }
 
-  const recurrence = 24 / formulation.doses_per_day;
+  const recurrence = 24 / formulation.doses_per_day
 
   // Age and weight must be answered to calculate dosage
-  if (mcWeight !== undefined && mcWeight.value !== null && !formulation.by_age) {
+  if (
+    mcWeight !== undefined &&
+    mcWeight.value !== null &&
+    !formulation.by_age
+  ) {
     switch (formulation.medication_form) {
       case medicationForms.syrup:
       case medicationForms.suspension:
       case medicationForms.powder_for_injection:
       case medicationForms.solution:
-        minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
-        maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
+        minDoseMg = roundSup(
+          (mcWeight.value * formulation.minimal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
+        maxDoseMg = roundSup(
+          (mcWeight.value * formulation.maximal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
 
         // Second calculate min and max dose (cap)
-        const minDoseMl = roundSup((minDoseMg * formulation.dose_form) / formulation.liquid_concentration);
-        const maxDoseMl = roundSup((maxDoseMg * formulation.dose_form) / formulation.liquid_concentration);
+        const minDoseMl = roundSup(
+          (minDoseMg * formulation.dose_form) /
+            formulation.liquid_concentration,
+        )
+        const maxDoseMl = roundSup(
+          (maxDoseMg * formulation.dose_form) /
+            formulation.liquid_concentration,
+        )
 
         // Round
-        doseResult = roundSup((minDoseMl + maxDoseMl) / 2);
+        doseResult = roundSup((minDoseMl + maxDoseMl) / 2)
 
         if (doseResult > maxDoseMl) {
-          doseResult -= 1;
+          doseResult -= 1
         }
 
-        doseResultMg = (doseResult * formulation.liquid_concentration) / formulation.dose_form;
+        doseResultMg =
+          (doseResult * formulation.liquid_concentration) /
+          formulation.dose_form
 
         // If we reach the limit / day
-        if (doseResultMg * formulation.doses_per_day > formulation.maximal_dose) {
-          doseResultMg = formulation.maximal_dose / formulation.doses_per_day;
-          doseResult = (doseResultMg * formulation.dose_form) / formulation.liquid_concentration;
+        if (
+          doseResultMg * formulation.doses_per_day >
+          formulation.maximal_dose
+        ) {
+          doseResultMg = formulation.maximal_dose / formulation.doses_per_day
+          doseResult =
+            (doseResultMg * formulation.dose_form) /
+            formulation.liquid_concentration
         }
 
         return {
@@ -93,33 +101,39 @@ export const drugDoses = (formulationIndex, drugId) => {
           doseResultMg,
           recurrence,
           ...formulation,
-        };
+        }
 
       case medicationForms.capsule:
       case medicationForms.dispersible_tablet:
       case medicationForms.tablet:
         // First calculate min and max dose (mg/Kg)
-        minDoseMg = roundSup((mcWeight.value * formulation.minimal_dose_per_kg) / formulation.doses_per_day);
-        maxDoseMg = roundSup((mcWeight.value * formulation.maximal_dose_per_kg) / formulation.doses_per_day);
-        pillSize = formulation.dose_form; // dose form
+        minDoseMg = roundSup(
+          (mcWeight.value * formulation.minimal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
+        maxDoseMg = roundSup(
+          (mcWeight.value * formulation.maximal_dose_per_kg) /
+            formulation.doses_per_day,
+        )
+        pillSize = formulation.dose_form // dose form
 
         if (formulation.breakable !== null) {
-          pillSize /= formulation.breakable;
+          pillSize /= formulation.breakable
         }
 
         // Second calculate min and max dose (cap)
-        const minDoseCap = roundSup((1 / pillSize) * minDoseMg);
-        const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg);
+        const minDoseCap = roundSup((1 / pillSize) * minDoseMg)
+        const maxDoseCap = roundSup((1 / pillSize) * maxDoseMg)
 
         // Define Dose Result
-        doseResult = (minDoseCap + maxDoseCap) / 2;
+        doseResult = (minDoseCap + maxDoseCap) / 2
 
         if (maxDoseCap < 1) {
           return {
             ...formulation,
             no_possibility: i18n.t('drug:no_options'),
             doseResult: null,
-          };
+          }
         }
         if (Math.ceil(doseResult) <= maxDoseCap) {
           // Viable Solution
@@ -141,10 +155,10 @@ export const drugDoses = (formulationIndex, drugId) => {
           doseResult,
           recurrence,
           ...formulation,
-        };
+        }
       default:
-        break;
+        break
     }
   }
-  return { doseResult: null, recurrence, ...formulation };
-};
+  return { doseResult: null, recurrence, ...formulation }
+}

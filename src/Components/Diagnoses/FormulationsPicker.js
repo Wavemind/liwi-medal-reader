@@ -9,8 +9,9 @@ import { useSelector } from 'react-redux'
 /**
  * The internal imports
  */
-import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
+import { drugDoses } from '@/Utils/Formulations/DrugDoses'
+import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 
 const FormulationsPicker = ({ drug, updateFormulations }) => {
   // Theme and style elements deconstruction
@@ -36,13 +37,16 @@ const FormulationsPicker = ({ drug, updateFormulations }) => {
         label={t('actions.select')}
         value={null}
       />
-      {Object.values(nodes[drug.id].formulations).map(formulation => (
-        <Picker.Item
-          key={`select-${formulation.id}`}
-          label={translate(formulation.description)}
-          value={formulation.id}
-        />
-      ))}
+      {Object.values(nodes[drug.id].formulations).map((formulation, index) => {
+        const calculatedFormulation = drugDoses(index, drug.id)
+        return (
+          <Picker.Item
+            key={`select-${formulation.id}`}
+            label={formulationLabel(calculatedFormulation)}
+            value={formulation.id}
+          />
+        )
+      })}
     </Picker>
   )
 }

@@ -45,8 +45,6 @@ const Formulations = ({}) => {
     setDrugs(newDrugs)
   }
 
-  console.log('rendering')
-
   return (
     <ScrollView>
       <View style={formulations.wrapper}>
