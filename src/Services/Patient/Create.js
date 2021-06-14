@@ -17,7 +17,7 @@ export default async props => {
     birth_date_estimated: false,
     consent: false,
     consent_file: null,
-    created_at: new Date().getTime() / 1000, // Transform ms to s
+    createdAt: new Date().getTime() / 1000, // Transform ms to s
     fail_safe: false,
     group_id,
     id: uuid.v4(),
@@ -29,6 +29,6 @@ export default async props => {
     reason: null,
     study_id,
     uid,
-    updated_at: new Date().getTime() / 1000, // Transform ms to s
+    updatedAt: new Date().getTime() / 1000, // Transform ms to s
   }
 }

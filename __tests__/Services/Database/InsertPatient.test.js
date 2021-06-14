@@ -42,6 +42,7 @@ describe('insertPatient should add a patient in the Database', () => {
     const patientsOld = await getAll('Patient')
     await store.dispatch(InsertPatient.action({}))
     const patientsNew = await getAll('Patient')
+
     expect(patientsNew.length).toEqual(patientsOld.length + 1)
   })
 

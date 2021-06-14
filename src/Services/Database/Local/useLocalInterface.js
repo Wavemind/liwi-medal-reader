@@ -18,21 +18,21 @@ import {
   MedicalCaseModel,
 } from './Models'
 
-// let adapter = null
+let adapter = null
 
-// if (process.env.NODE_ENV === 'test') {
- const adapter = new LokiJSAdapter({
+if (process.env.NODE_ENV === 'test') {
+  adapter = new LokiJSAdapter({
     schema,
     useWebWorker: false,
     useIncrementalIndexedDB: true,
   })
-// } else {
-//   adapter = new SQLiteAdapter({
-//     schema,
-//     useWebWorker: false,
-//     useIncrementalIndexedDB: true,
-//   })
-// }
+} else {
+  adapter = new SQLiteAdapter({
+    schema,
+    useWebWorker: false,
+    useIncrementalIndexedDB: true,
+  })
+}
 
 const database = new Database({
   adapter,
@@ -315,7 +315,7 @@ export default function () {
    * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  const getAll = async (model, page = null, params, rawData = false) => {
+  const getAll = async (model, page = 1, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
     let result = await collection.query().fetch()
 
@@ -426,14 +426,14 @@ export default function () {
     const newPatient = patient._raw
 
     const response = {
-      createdAt: newPatient.createdAt.getTime(),
-      updatedAt: newPatient.updatedAt.getTime(),
+      createdAt: newPatient.created_at,
+      updatedAt: newPatient.updated_at,
       medicalCases,
     }
     delete newPatient._changed
     delete newPatient._status
-    delete newPatient.createdAt
-    delete newPatient.updatedAt
+    delete newPatient.created_at
+    delete newPatient.updated_at
     return {
       ...newPatient,
       ...response,
@@ -444,7 +444,7 @@ export default function () {
     const patient = await medicalCase.patient.fetch()
     return {
       id: medicalCase.id,
-      synchronizedAt: medicalCase.synchronizedAt,
+      synchronizedAt: medicalCase.synchronizedAt?.getTime(),
       advancement: medicalCase.advancement,
       fail_safe: medicalCase.fail_safe,
       createdAt: medicalCase.createdAt.getTime(),

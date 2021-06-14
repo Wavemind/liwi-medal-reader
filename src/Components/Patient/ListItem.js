@@ -32,7 +32,6 @@ const ListItem = ({ item }) => {
     setActiveMedicalCase(medicalCase)
   }, [])
 
-  console.log(item)
   return (
     <TouchableOpacity
       style={patientListItem.wrapper}

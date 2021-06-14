@@ -2,7 +2,6 @@
  * The external imports
  */
 import {
-  buildAsyncState,
   buildAsyncReducers,
   buildAsyncActions,
 } from '@thecodingmachine/redux-toolkit-wrapper'
@@ -13,7 +12,15 @@ import {
 import insertPatientService from '@/Services/Patient/Insert'
 
 export default {
-  initialState: { patient: { ...buildAsyncState('insert') } },
+  initialState: {
+    patient: {
+      insert: {
+        item: {},
+        loading: false,
+        error: null,
+      },
+    },
+  },
   action: buildAsyncActions('database/patient/insert', insertPatientService),
   reducers: buildAsyncReducers({
     itemKey: null,
