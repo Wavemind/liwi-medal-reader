@@ -11,11 +11,11 @@ import { getYesAnswer } from '@/Utils/Answers'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
-export const getValidDiagnostics = (diagnostics, mcNodes, nodes) => {
-  return Object.values(diagnostics).filter(
-    diagnostic =>
-      mcNodes[diagnostic.complaint_category].answer ===
-      getYesAnswer(nodes[diagnostic.complaint_category]).id,
+export const getValidDiagnoses = (diagnoses, mcNodes, nodes) => {
+  return Object.values(diagnoses).filter(
+    diagnosis =>
+      mcNodes[diagnosis.complaint_category].answer ===
+      getYesAnswer(nodes[diagnosis.complaint_category]).id,
     // Handle des cutoffs
   )
 }
@@ -23,7 +23,7 @@ export const getValidDiagnostics = (diagnostics, mcNodes, nodes) => {
 export const getTopConditions = instances => {
   return Object.values(instances).filter(
     instance =>
-      instance.conditions.length === 0 && instance.final_diagnostic_id === null,
+      instance.conditions.length === 0 && instance.final_diagnosis_id === null,
   )
 }
 /**
@@ -55,7 +55,7 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
  * @param {*} children
  * @param {*} questionPerSystems
  * @param {*} nodes
- * @param {*} diagnostic
+ * @param {*} instances
  * @param {*} categories
  */
 export const handleChildren = (
@@ -64,36 +64,36 @@ export const handleChildren = (
   nodes,
   instances,
   categories,
+  diagramId,
+  diagramType = Config.NODE_TYPES.diagnosis,
 ) => {
-  console.log(children, nodes, instances)
+  console.log(children, instances)
   children.forEach(instance => {
-    if (
-      instance.conditions.length === 0 ||
-      calculateCondition(instance) ||
-      nodes[instance.id].category === Config.CATEGORIES.backgroundCalculation // C'est pour faire semblant que les BC sont répondues
-    ) {
-      addQuestionToSystem(instance.id, questionPerSystems, nodes, categories)
-      if (
-        nodes[instance.id].category === Config.CATEGORIES.predefinedSyndrome
-      ) {
+    if (instance.conditions.length === 0 || calculateCondition(instance)) {
+      if (nodes[instance.id].type === Config.NODE_TYPES.questionsSequence) {
         const topConditions = getTopConditions(nodes[instance.id].instances)
-        console.log(instance.id, nodes[instance.id], topConditions)
-        console.log('la')
         handleChildren(
           topConditions,
           questionPerSystems,
           nodes,
           nodes[instance.id].instances,
           categories,
+          instance.id,
+          Config.NODE_TYPES.questionsSequence,
         )
+      } else {
+        addQuestionToSystem(instance.id, questionPerSystems, nodes, categories)
       }
-
+      console.log(instance.children, diagramType, diagramId)
       const childrenInstance = instance.children
         .filter(
-          child => nodes[child].type !== Config.NODE_TYPES.finalDiagnostic,
+          childId =>
+            (nodes[childId].type !== Config.NODE_TYPES.finalDiagnosis &&
+              diagramType === Config.NODE_TYPES.diagnosis) ||
+            (diagramType === Config.NODE_TYPES.questionsSequence &&
+              childId !== diagramId),
         )
-        .map(child => instances[child])
-      console.log('ICI', instance.children, childrenInstance, instances)
+        .map(childId => instances[childId])
       if (childrenInstance.length > 0) {
         handleChildren(
           childrenInstance,
@@ -101,6 +101,8 @@ export const handleChildren = (
           nodes,
           instances,
           categories,
+          diagramId,
+          diagramType,
         )
       }
     }
@@ -234,7 +236,7 @@ export const handleNumeric = (mcNode, node, value) => {
  *              {string}  value : new value
  *   }
  */
-const handleAnswerId = (node, value) => {
+export const handleAnswerId = (node, value) => {
   let answer = null
 
   // Set Number only if this is a number
@@ -259,7 +261,7 @@ const handleAnswerId = (node, value) => {
  * @param {any} value : New value of the node
  * @returns See return of handleNumeric or handleAnswerId
  */
-const setNodeValue = (mcNode, node, value) => {
+export const setNodeValue = (mcNode, node, value) => {
   const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
 
   switch (node.value_format) {

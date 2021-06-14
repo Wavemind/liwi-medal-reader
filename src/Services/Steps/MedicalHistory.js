@@ -8,7 +8,7 @@
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import {
-  getValidDiagnostics,
+  getValidDiagnoses,
   getTopConditions,
   handleChildren,
   orderSystems,
@@ -26,27 +26,27 @@ export default () => {
     Config.CATEGORIES.observedPhysicalSign,
     //Config.CATEGORIES.backgroundCalculation,
   ]
-  const diagnostics = state.algorithm.item.diagnostics
+  const diagnoses = state.algorithm.item.diagnoses
   const nodes = state.algorithm.item.nodes
   const mcNodes = state.medicalCase.item.nodes
   const questionPerSystems = {}
   const medicalHistoryStep =
     state.algorithm.item.config.full_order.medical_history_step
 
-  const validDiagnostics = getValidDiagnostics(diagnostics, mcNodes, nodes)
+  const validDiagnoses = getValidDiagnoses(diagnoses, mcNodes, nodes)
 
-  // console.log('validDiagnostics', validDiagnostics)
+  // console.log('validDiagnoses', validDiagnoses)
   // console.log('nodes', nodes)
 
-  validDiagnostics.forEach(diagnostic => {
-    const topConditions = getTopConditions(diagnostic.instances)
-
+  validDiagnoses.forEach(diagnosis => {
+    const topConditions = getTopConditions(diagnosis.instances)
     handleChildren(
       topConditions,
       questionPerSystems,
       nodes,
-      diagnostic.instances,
+      diagnosis.instances,
       medicalHistoryCategories,
+      diagnosis.id,
     )
   })
   Object.keys(questionPerSystems).map(k => {
