@@ -67,6 +67,7 @@ export { default as SectionHeader } from './SectionHeader'
 export { default as ToggleSwitchDarkMode } from './ToggleSwitchDarkMode'
 export { default as Consent } from './Consent'
 export { default as EmptyList } from './EmptyList'
+export { default as Error } from './Error'
 
 // MEDICAL CASE
 export { default as AdditionalSelect } from './Diagnoses/AdditionalSelect'

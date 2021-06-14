@@ -12,7 +12,7 @@ export default async ({ algorithm }) => {
     activities: [],
     comment: '',
     consent: !!algorithm.config.consent_management,
-    created_at: new Date().getTime(),
+    createdAt: new Date().getTime(),
     diagnosis: {
       // TODO clear the proposed array when done
       proposed: [3299, 3343],
@@ -31,7 +31,7 @@ export default async ({ algorithm }) => {
       step: 0,
     },
     synchronized_at: null,
-    updated_at: new Date().getTime(),
+    updatedAt: new Date().getTime(),
     version_id: algorithm.id,
   }
 }

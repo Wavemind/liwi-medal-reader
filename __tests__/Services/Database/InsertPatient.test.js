@@ -9,7 +9,7 @@ import CreatePatient from '@/Store/Patient/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import useDatabase from '@/Services/Database/useDatabase'
-import InsertPatient from '@/Store/Database/InsertPatient'
+import InsertPatient from '@/Store/Database/Patient/Insert'
 
 import { store } from '@/Store/index'
 
@@ -42,6 +42,7 @@ describe('insertPatient should add a patient in the Database', () => {
     const patientsOld = await getAll('Patient')
     await store.dispatch(InsertPatient.action({}))
     const patientsNew = await getAll('Patient')
+
     expect(patientsNew.length).toEqual(patientsOld.length + 1)
   })
 

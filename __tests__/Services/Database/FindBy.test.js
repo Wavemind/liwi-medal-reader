@@ -8,11 +8,11 @@ import uuid from 'react-native-uuid'
  */
 import CreatePatient from '@/Store/Patient/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
+import useDatabase from '@/Services/Database/useDatabase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
-import InsertPatient from '@/Store/Database/InsertPatient'
+import InsertPatient from '@/Store/Database/Patient/Insert'
 
 import { store } from '@/Store/index'
-import useDatabase from '@/Services/Database/useDatabase'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
@@ -29,7 +29,6 @@ beforeAll(async () => {
 describe('findBy should find an object based on a query', () => {
   it('should return a patient that has the same id as the one we are looking for ', async () => {
     const { findBy } = useDatabase()
-
     const expectedKeys = [
       'id',
       'first_name',
@@ -49,7 +48,6 @@ describe('findBy should find an object based on a query', () => {
       'fail_safe',
       'medicalCases',
     ]
-
     const uid = uuid.v4()
     await store.dispatch(
       CreatePatient.action({
@@ -67,10 +65,8 @@ describe('findBy should find an object based on a query', () => {
     expect(patient.id).toBe(id)
     expect(Object.keys(patient).sort()).toEqual(expectedKeys.sort())
   })
-
   it('should return a medical case that has the same id + same keys as the one we are looking for ', async () => {
     const { findBy } = useDatabase()
-
     const expectedKeys = [
       'id',
       'activities',
@@ -87,16 +83,13 @@ describe('findBy should find an object based on a query', () => {
       'createdAt',
       'updatedAt',
     ]
-
     const id = store.getState().medicalCase.item.id
     const medicalCase = await findBy('MedicalCase', id)
     expect(medicalCase.id).toBe(id)
     expect(Object.keys(medicalCase).sort()).toEqual(expectedKeys.sort())
   })
-
   it("should return a null if if can't find an object ", async () => {
     const { findBy } = useDatabase()
-
     const notId = 'I am not an ID'
     const medicalCase = await findBy('MedicalCase', notId)
     expect(medicalCase).toBe(null)

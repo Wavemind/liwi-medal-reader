@@ -3,12 +3,13 @@
  */
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs'
-
 import { Database, Q } from '@nozbe/watermelondb'
+
 /**
  * The internal imports
  */
 import schema from './Schema'
+import { Config } from '@/Config'
 
 import {
   ActivityModel,
@@ -17,11 +18,21 @@ import {
   MedicalCaseModel,
 } from './Models'
 
-const adapter = new LokiJSAdapter({
-  schema,
-  useWebWorker: false,
-  useIncrementalIndexedDB: true,
-})
+let adapter = null
+
+if (process.env.NODE_ENV === 'test') {
+  adapter = new LokiJSAdapter({
+    schema,
+    useWebWorker: false,
+    useIncrementalIndexedDB: true,
+  })
+} else {
+  adapter = new SQLiteAdapter({
+    schema,
+    useWebWorker: false,
+    useIncrementalIndexedDB: true,
+  })
+}
 
 const database = new Database({
   adapter,
@@ -304,11 +315,11 @@ export default function () {
    * @param { object } params - options for the request the search query and the filter is in there
    * @returns { Collection } - A collection of all the data
    */
-  const getAll = async (model, page = null, params, rawData = false) => {
+  const getAll = async (model, page = 1, params, rawData = false) => {
     const collection = database.get(_mapModelToTable(model))
     let result = await collection.query().fetch()
-    return await _initClasses(result, model)
-    //const queries = []
+
+    const queries = []
     // if (page === null) {
     //   if (!rawData) {
     //     result = await _initClasses(result, model)
@@ -326,13 +337,21 @@ export default function () {
     //   )
     // }
     // // if (filters !== '') result = await result.filtered(filters);
-    // queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    // queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    // queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
-    // console.log(page, result, queries)
-    // result = await collection.query(...queries)
-    // result = await _initClasses(result, model)
+    result = await collection.query(...queries)
     // return _generateList(result, model, params.columns)
+
+    // Order by updatedAt descending
+    result = result.sort(
+      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+    )
+
+    // Pagination
+    result = result.slice(
+      (page - 1) * Config.ELEMENT_PER_PAGE,
+      Config.ELEMENT_PER_PAGE * page,
+    )
+
+    return _initClasses(result, model)
   }
 
   /**
@@ -425,17 +444,17 @@ export default function () {
     const patient = await medicalCase.patient.fetch()
     return {
       id: medicalCase.id,
-      synchronized_at: medicalCase.synchronized_at,
+      synchronizedAt: medicalCase.synchronizedAt?.getTime(),
       advancement: medicalCase.advancement,
       fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.createdAt,
-      updatedAt: medicalCase.updatedAt,
-      closedAt: medicalCase.closedAt,
+      createdAt: medicalCase.createdAt.getTime(),
+      updatedAt: medicalCase.updatedAt.getTime(),
+      closedAt: medicalCase.closedAt.getTime(),
       patient: {
         id: patient.id,
         first_name: patient.first_name,
         last_name: patient.last_name,
-        birth_date: patient.birth_date,
+        birth_date: patient.birth_date.getTime(),
       },
     }
   }
@@ -450,12 +469,12 @@ export default function () {
       diagnosis: medicalCase.json.diagnosis,
       nodes: medicalCase.json.nodes,
       json: '',
-      synchronized_at: medicalCase.synchronized_at,
+      synchronized_at: medicalCase.synchronizedAt,
       advancement: medicalCase.advancement,
       fail_safe: medicalCase.fail_safe,
-      createdAt: medicalCase.created_at,
-      updatedAt: medicalCase.updated_at,
-      closedAt: medicalCase.closed_at,
+      createdAt: medicalCase.createdAt.getTime(),
+      updatedAt: medicalCase.updatedAt.getTime(),
+      closedAt: medicalCase.closedAt.getTime(),
       patient,
     }
   }

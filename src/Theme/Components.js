@@ -41,6 +41,7 @@ import diagnosisItemStyles from './components/DiagnosisItem.style'
 import autosuggestStyles from './components/Autosuggest.style'
 import autocompleteStyles from './components/Autocomplete.style'
 import additionalSelectStyles from './components/AdditionalSelect.style'
+import errorStyles from './components/Error.style'
 
 /**
  *
@@ -87,5 +88,6 @@ export default function (props) {
     autosuggest: autosuggestStyles(props),
     autocomplete: autocompleteStyles(props),
     additionalSelect: additionalSelectStyles(props),
+    error: errorStyles(props),
   }
 }

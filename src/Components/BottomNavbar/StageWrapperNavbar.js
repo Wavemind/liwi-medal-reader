@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
-import InsertPatient from '@/Store/Database/InsertPatient'
+import InsertPatient from '@/Store/Database/Patient/Insert'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
