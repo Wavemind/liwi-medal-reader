@@ -242,7 +242,7 @@ const handleAnswerId = (node, value) => {
  * @param {any} value : New value of the node
  * @returns See return of handleNumeric or handleAnswerId
  */
-const setNodeValue = (mcNode, node, value) => {
+export const setNodeValue = (mcNode, node, value) => {
   const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
 
   switch (node.value_format) {
