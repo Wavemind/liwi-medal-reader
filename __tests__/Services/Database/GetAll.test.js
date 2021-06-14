@@ -8,11 +8,11 @@ import uuid from 'react-native-uuid'
  */
 import CreatePatient from '@/Store/Patient/Create'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
+import useDatabase from '@/Services/Database/useDatabase'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
-import InsertPatient from '@/Store/Database/InsertPatient'
+import InsertPatient from '@/Store/Database/Patient/Insert'
 
 import { store } from '@/Store/index'
-import useDatabase from '@/Services/Database/useDatabase'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
@@ -35,6 +35,7 @@ describe('getAll should return all elements of a specific object', () => {
     const allPatients = await getAll('Patient')
     expect(allPatients).toStrictEqual([])
   })
+
   it('should return an array with 1 patient from the database', async () => {
     const { getAll } = useDatabase()
     const uid = uuid.v4()
@@ -53,6 +54,7 @@ describe('getAll should return all elements of a specific object', () => {
     expect(allPatients.length).toStrictEqual(1)
     expect(allPatients[0].uid).toStrictEqual(uid)
   })
+
   it('should return an array with the 2 patients from the database', async () => {
     const { getAll } = useDatabase()
     const uid = uuid.v4()
@@ -69,8 +71,9 @@ describe('getAll should return all elements of a specific object', () => {
     await store.dispatch(InsertPatient.action())
     const allPatients = await getAll('Patient')
     expect(allPatients.length).toStrictEqual(2)
-    expect(allPatients[1].uid).toStrictEqual(uid)
+    expect(allPatients[0].uid).toStrictEqual(uid)
   })
+
   it('should return an empty array of medical case', async () => {
     const { getAll } = useDatabase()
     const allMedicalCases = await getAll('MedicalCase')

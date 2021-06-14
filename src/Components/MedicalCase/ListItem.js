@@ -68,6 +68,7 @@ const ListItem = ({ item }) => {
           <View style={Layout.row}>
             {Navigation.INTERVENTION_STAGES.map((stage, index) => (
               <Icon
+                key={`${item.id}-icon-${stage.icon}`}
                 name={stage.icon}
                 size={FontSize.large}
                 style={patientListItem.icon(index === item.advancement.stage)}
