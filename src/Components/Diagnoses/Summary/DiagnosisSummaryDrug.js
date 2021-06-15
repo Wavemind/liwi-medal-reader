@@ -18,7 +18,7 @@ import {
   Capsule,
   Default,
 } from '@/Components'
-import { medicationForms } from '@/Utils/Formulations/Constants'
+import { Config } from '@/Config'
 import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
 
 const DiagnosisDrugs = ({ drug, isLast }) => {
@@ -43,15 +43,15 @@ const DiagnosisDrugs = ({ drug, isLast }) => {
 
     if (formulations[formulationIndex] !== undefined) {
       switch (formulations[formulationIndex].medication_form) {
-        case medicationForms.syrup:
-        case medicationForms.suspension:
-        case medicationForms.powder_for_injection:
-        case medicationForms.solution:
+        case Config.MEDICATION_FORMS.syrup:
+        case Config.MEDICATION_FORMS.suspension:
+        case Config.MEDICATION_FORMS.powder_for_injection:
+        case Config.MEDICATION_FORMS.solution:
           return <Liquid drug={drug} drugDose={drugDose} />
-        case medicationForms.tablet:
-        case medicationForms.dispersible_tablet:
+        case Config.MEDICATION_FORMS.tablet:
+        case Config.MEDICATION_FORMS.dispersible_tablet:
           return <Breakable drug={drug} drugDose={drugDose} />
-        case medicationForms.capsule:
+        case Config.MEDICATION_FORMS.capsule:
           return <Capsule drug={drug} drugDose={drugDose} />
         default:
           return <Default drug={drug} drugDose={drugDose} />

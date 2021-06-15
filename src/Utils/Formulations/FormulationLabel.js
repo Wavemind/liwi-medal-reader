@@ -2,7 +2,7 @@ import { translate } from '@/Translations/algorithm'
 import i18n from '@/Translations'
 import { breakableFraction } from '@/Utils/Formulations/BreakableFraction'
 import { roundSup } from '@/Utils/Formulations/RoundSup'
-import { medicationForms } from '@/Utils/Formulations/Constants'
+import { Config } from '@/Config'
 
 /**
  * Formulation display
@@ -11,14 +11,14 @@ import { medicationForms } from '@/Utils/Formulations/Constants'
  */
 export const formulationLabel = drugDose => {
   switch (drugDose.medication_form) {
-    case medicationForms.pessary:
-    case medicationForms.spray:
-    case medicationForms.patch:
-    case medicationForms.inhaler: {
+    case Config.MEDICATION_FORMS.pessary:
+    case Config.MEDICATION_FORMS.spray:
+    case Config.MEDICATION_FORMS.patch:
+    case Config.MEDICATION_FORMS.inhaler: {
       return `${translate(drugDose.description)}: ${roundSup(drugDose.unique_dose)} ${i18n.t(`formulations.medication_form.${drugDose.medication_form}`).toLowerCase()}`
     }
-    case medicationForms.tablet:
-    case medicationForms.dispersible_tablet: {
+    case Config.MEDICATION_FORMS.tablet:
+    case Config.MEDICATION_FORMS.dispersible_tablet: {
       if (drugDose.by_age) {
         return `${translate(drugDose.description)}: ${roundSup(drugDose.unique_dose)} ${i18n.t('formulations.drug.tablets')}`
       }
@@ -27,7 +27,7 @@ export const formulationLabel = drugDose => {
           : i18n.t('formulations.drug.no_options')
       }`
     }
-    case medicationForms.capsule: {
+    case Config.MEDICATION_FORMS.capsule: {
       if (drugDose.by_age) {
         return `${translate(drugDose.description)}: ${roundSup(
           drugDose.unique_dose,
@@ -35,16 +35,16 @@ export const formulationLabel = drugDose => {
       }
       return `${drugDose.doseResult} ${i18n.t('formulations.drug.capsules')}`
     }
-    case medicationForms.cream:
-    case medicationForms.ointment:
-    case medicationForms.gel:
-    case medicationForms.drops: {
+    case Config.MEDICATION_FORMS.cream:
+    case Config.MEDICATION_FORMS.ointment:
+    case Config.MEDICATION_FORMS.gel:
+    case Config.MEDICATION_FORMS.drops: {
       return `${translate(drugDose.description)}`
     }
-    case medicationForms.syrup:
-    case medicationForms.suspension:
-    case medicationForms.powder_for_injection:
-    case medicationForms.solution: {
+    case Config.MEDICATION_FORMS.syrup:
+    case Config.MEDICATION_FORMS.suspension:
+    case Config.MEDICATION_FORMS.powder_for_injection:
+    case Config.MEDICATION_FORMS.solution: {
       if (drugDose.by_age) {
         return `${translate(drugDose.description)}: ${roundSup(
           drugDose.unique_dose,

@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 import { roundSup } from '@/Utils/Formulations/RoundSup'
 import { translate } from '@/Translations/algorithm'
-import { administrationRouteCategories } from '@/Utils/Formulations/Constants'
+import { Config } from '@/Config'
 import { breakableFraction } from '@/Utils/Formulations/BreakableFraction'
 import { useTheme } from '@/Theme'
 
@@ -42,7 +42,7 @@ const Breakable = ({ drug, drugDose }) => {
           </Text>
         </View>
       )}
-      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text style={Fonts.textSmall} key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text> : null}
+      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(drugDose.administration_route_category) ? <Text style={Fonts.textSmall} key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text> : null}
     </View>
   )
 }

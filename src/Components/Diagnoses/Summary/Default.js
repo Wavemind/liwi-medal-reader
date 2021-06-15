@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { formulationLabel } from '@/Utils/Formulations/FormulationLabel'
 import { translate } from '@/Translations/algorithm'
-import { administrationRouteCategories } from '@/Utils/Formulations/Constants'
+import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 
 const Capsule = ({ drug, drugDose }) => {
@@ -40,7 +40,7 @@ const Capsule = ({ drug, drugDose }) => {
       <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
         {translate(drugDose.dispensing_description)}
       </Text>
-      {administrationRouteCategories.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text> : null}
+      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text> : null}
     </View>
   )
 }

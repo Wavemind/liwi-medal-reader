@@ -10,13 +10,13 @@ import { useIsFocused } from '@react-navigation/native'
 /**
  * The internal imports
  */
-import { translate } from '@/Translations/algorithm'
-import { useTheme } from '@/Theme'
 import {
   DiagnosisSummaryDrugs,
   DiagnosisSummaryManagements,
   QuestionInfoButton,
 } from '@/Components'
+import { translate } from '@/Translations/algorithm'
+import { useTheme } from '@/Theme'
 import orderBy from 'lodash/orderBy'
 import isEqual from 'lodash/isEqual'
 
