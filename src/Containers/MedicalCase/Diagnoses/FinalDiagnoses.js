@@ -17,7 +17,7 @@ import {
 } from '@/Components'
 import { useTheme } from '@/Theme'
 
-const RegistrationMedicalCaseContainer = () => {
+const FinalDiagnoses = () => {
   // Theme and style elements deconstruction
   const { Gutters } = useTheme()
 
@@ -28,7 +28,9 @@ const RegistrationMedicalCaseContainer = () => {
   return (
     <ScrollView style={Gutters.regularHPadding}>
       <SectionHeader
-        label={t('containers.medical_case.diagnoses.proposed_title', { version_name: versionName })}
+        label={t('containers.medical_case.diagnoses.proposed_title', {
+          version_name: versionName,
+        })}
       />
       <ProposedDiagnoses />
       <View style={Gutters.largeTMargin}>
@@ -37,7 +39,7 @@ const RegistrationMedicalCaseContainer = () => {
         />
         <AdditionalDiagnoses />
       </View>
-      <View style={Gutters.largeTMargin}>
+      <View style={[Gutters.largeTMargin, Gutters.largeBPadding]}>
         <SectionHeader
           label={t('containers.medical_case.diagnoses.custom_title')}
         />
@@ -47,4 +49,4 @@ const RegistrationMedicalCaseContainer = () => {
   )
 }
 
-export default RegistrationMedicalCaseContainer
+export default FinalDiagnoses

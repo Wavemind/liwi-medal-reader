@@ -1,102 +1,59 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
 
 /**
  * The internal imports
  */
-import { Icon, RoundedButton } from '@/Components'
-import { useTheme } from '@/Theme'
-import ChangeCustomDiagnoses from '@/Store/MedicalCase/ChangeCustomDiagnoses'
+import { CustomElement } from '@/Components'
+import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
+import RemoveCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveCustomDiagnoses'
 
 const CustomDiagnoses = () => {
-  // Theme and style elements deconstruction
-  const {
-    FontSize,
-    Fonts,
-    Containers: { medicalCaseDiagnoses },
-  } = useTheme()
-
   const dispatch = useDispatch()
-  const { t } = useTranslation()
 
   const custom = useSelector(state => state.medicalCase.item.diagnosis.custom)
 
-  const [value, setValue] = useState('')
-
   /**
-   * Handles whether to add or remove a custom diagnosis from the store
-   * @param action
-   * @param customDiagnosisId
+   * Handles the addition of a new custom diagnosis
+   * @param value
    */
-  const changeCustomDiagnosis = (action = 'add', customDiagnosisId = null) => {
-    const tempCustomDiagnoses = [...custom]
-
-    if (action === 'remove') {
-      const index = tempCustomDiagnoses
-        .map(customDiagnosis => customDiagnosis.id)
-        .indexOf(customDiagnosisId)
-      if (index > -1) {
-        tempCustomDiagnoses.splice(index, 1)
-      }
-    } else {
-      const newCustomDiagnosis = {
-        id: uuid.v4(),
-        name: value,
-        drugs: [],
-      }
-      tempCustomDiagnoses.push(newCustomDiagnosis)
-      setValue('')
-    }
+  const addCustomDiagnosis = value => {
+    const diagnosisId = uuid.v4()
 
     dispatch(
-      ChangeCustomDiagnoses.action({
-        newCustomDiagnoses: tempCustomDiagnoses,
+      AddCustomDiagnoses.action({
+        diagnosisId,
+        diagnosisContent: {
+          id: diagnosisId,
+          name: value,
+          drugs: {},
+        },
+      }),
+    )
+  }
+
+  /**
+   * Handles the removal of a custom diagnosis
+   * @param diagnosisId
+   */
+  const removeCustomDiagnosis = diagnosisId => {
+    dispatch(
+      RemoveCustomDiagnoses.action({
+        diagnosisId,
       }),
     )
   }
 
   return (
-    <View>
-      {custom.map((customDiagnosis, i) => (
-        <View
-          key={`custom-${customDiagnosis.id}`}
-          style={medicalCaseDiagnoses.newItemWrapper(i === custom.length - 1)}
-        >
-          <Text style={Fonts.textSmall}>{customDiagnosis.name}</Text>
-          <TouchableOpacity
-            onPress={() => changeCustomDiagnosis('remove', customDiagnosis.id)}
-          >
-            <Icon name="delete" size={FontSize.regular} />
-          </TouchableOpacity>
-        </View>
-      ))}
-      <View style={medicalCaseDiagnoses.addCustomWrapper}>
-        <TextInput
-          style={medicalCaseDiagnoses.addCustomInputText}
-          onChangeText={setValue}
-          value={value}
-          keyboardType="default"
-          placeholder={t(
-            'containers.medical_case.diagnoses.custom_placeholder',
-          )}
-        />
-        <RoundedButton
-          label={t('actions.add')}
-          icon="add"
-          filled
-          fullWidth={false}
-          iconSize={FontSize.large}
-          onPress={() => changeCustomDiagnosis()}
-          disabled={value === ''}
-        />
-      </View>
-    </View>
+    <CustomElement
+      listObject={custom}
+      handleAdd={addCustomDiagnosis}
+      handleRemove={removeCustomDiagnosis}
+    />
   )
 }
 

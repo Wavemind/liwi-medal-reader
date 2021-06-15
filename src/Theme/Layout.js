@@ -76,6 +76,9 @@ export default function () {
     justifyContentStart: {
       justifyContent: 'flex-start',
     },
+    justifyContentEnd: {
+      justifyContent: 'flex-end',
+    },
     justifyContentEvenly: {
       justifyContent: 'space-evenly',
     },

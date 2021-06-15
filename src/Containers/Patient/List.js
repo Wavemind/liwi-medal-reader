@@ -21,6 +21,7 @@ const ListPatientContainer = props => {
   const {
     Layout,
     Fonts,
+    Gutters,
     Containers: { patientList },
   } = useTheme()
 
@@ -55,16 +56,19 @@ const ListPatientContainer = props => {
 
   return (
     <View style={Layout.fill}>
-      <SearchBar navigation={navigation} filters />
-      <BadgeBar
-        removeBadge={() => console.log('TODO Remove selected badge')}
-        selected={[
-          { filterBy: 'Gender', value: 'Female' },
-          { filterBy: 'Age', value: '12' },
-        ]}
-        clearBadges={() => console.log('TODO Clear selected badges')}
-        badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
-      />
+      <View style={Gutters.regularHMargin}>
+        <SearchBar navigation={navigation} filters />
+        <BadgeBar
+          removeBadge={() => console.log('TODO Remove selected badge')}
+          selected={{
+            1: { filterBy: 'Gender', value: 'Female' },
+            2: { filterBy: 'Age', value: '12' },
+          }}
+          badgeComponentLabel={item => `${item.filterBy} : ${item.value}`}
+          showClearAll
+          onClearAll={() => console.log('clear all')}
+        />
+      </View>
 
       <View style={patientList.headerTable}>
         <Text style={patientList.headerText}>

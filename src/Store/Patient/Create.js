@@ -7,10 +7,10 @@ import {
 import CreateService from '@/Services/Patient/Create'
 
 export default {
-  initialState: buildAsyncState('handleQr'),
+  initialState: buildAsyncState('create'),
   action: buildAsyncActions('patient/create', CreateService),
   reducers: buildAsyncReducers({
-    errorKey: 'handleQr.error',
-    loadingKey: 'handleQr.loading',
+    errorKey: 'create.error',
+    loadingKey: 'create.loading',
   }),
 }

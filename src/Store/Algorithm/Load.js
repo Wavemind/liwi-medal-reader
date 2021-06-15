@@ -13,6 +13,7 @@ export default {
     delete payload.newAlgorithm.nodes
     delete payload.newAlgorithm.final_diagnoses
     delete payload.newAlgorithm.health_cares
+
     // Store algorithm
     const algorithm = {
       ...payload.newAlgorithm,

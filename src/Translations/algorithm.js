@@ -6,6 +6,7 @@ import i18n from '@/Translations/index'
  * @param language
  * @returns {*}
  */
+// TODO remove language parameter
 export const translate = (translation, language) => {
   const type = typeof translation
 

@@ -41,7 +41,7 @@ export const Config = {
     autocomplete: 'Autocomplete',
     date: 'Date',
   },
-  ELEMENT_PER_PAGE: 15,
+  ELEMENT_PER_PAGE: 5,
   ENVIRONMENTS: [
     { label: 'Test', value: 'test' },
     { label: 'Staging', value: 'staging' },

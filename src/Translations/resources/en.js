@@ -13,6 +13,7 @@ export default {
     show_consent: 'Show consent',
     scan_consent: 'Scan new consent',
     add: 'Add',
+    apply: 'Apply Selection',
   },
   algorithm: {
     version_id: 'Version id',
@@ -56,8 +57,8 @@ export default {
         delete: 'Delete',
       },
     },
-    diagnosis: {
-      title: 'Select your diagnosis',
+    additional_list: {
+      title: 'Select your {{ items }}',
     },
     filters: {
       title: 'Filters',
@@ -69,6 +70,7 @@ export default {
     },
     medical_case: {
       no_questions: 'No questions proposed',
+      duration_title: 'duration in days',
       navigation: {
         back: 'Prev',
         next: 'Next',
@@ -100,14 +102,59 @@ export default {
       registration: {
         questions: 'Questions',
       },
-      diagnoses: {
-        proposed_title: 'Diagnoses proposed by {{ version_name }}',
+      common: {
         agree: 'Agree',
         disagree: 'Disagree',
+      },
+      diagnoses: {
+        diagnoses: 'Diagnoses',
+        proposed_title: 'Diagnoses proposed by {{ version_name }}',
         additional_title: 'Additional selected',
-        additional_placeholder: 'Select your diagnoses',
+        additional_placeholder: 'Select additional {{ item }}',
         custom_title: 'Your proposition',
         custom_placeholder: 'Add your diagnosis',
+        no_proposed: 'No diagnoses proposed',
+        no_additional: 'No additional diagnoses',
+        no_custom: 'No custom diagnoses',
+      },
+      drugs: {
+        drugs: 'Drugs',
+        proposed: 'Proposed',
+        additional: 'Additional',
+        custom: 'Custom',
+        custom_placeholder: 'Add your drugs',
+        no_proposed: 'No drugs proposed',
+        no_additional: 'No additional drugs',
+        no_custom: 'No custom drugs',
+      },
+      formulations: {
+        title: 'Which formulation of medicine is available and appropriate for your patient ?',
+        drug: {
+          capsules: 'capsule(s)',
+          tablets: 'tablet(s)',
+          no_options: 'No compatible option',
+          medication_form_not_handled: 'Medication form not handled',
+        },
+        medication_form: {
+          tablet: 'Tablet',
+          dispersible_tablet: 'Dispersible tablet',
+          capsul: 'Capsule',
+          syrup: 'Syrup',
+          suspension: 'Suspension',
+          suppository: 'Suppository',
+          drops: 'Drops',
+          solution: 'Solution',
+          powder_for_injection: 'Powder for injection',
+          patch: 'Patch',
+          cream: 'Cream',
+          pessary: 'Pessary',
+          ointment: 'Ointment',
+          gel: 'Gel',
+          spray: 'Spray',
+          inhaler: 'Inhaler',
+          per: 'per',
+          per_administration: 'per administration',
+        },
       },
     },
     scan: {

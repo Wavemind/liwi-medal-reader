@@ -40,7 +40,7 @@ export default async ({ json_version }) => {
   // Remove useless key
   delete response.data.emergency_content
   delete response.data.nodes
-  delete response.data.final_diagnosesr
+  delete response.data.final_diagnoses
   delete response.data.health_cares
 
   // Store algorithm
