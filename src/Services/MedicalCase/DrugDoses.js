@@ -7,7 +7,12 @@ import { roundSup } from '@/Utils/Formulations/RoundSup'
  * Set the right dose calculation for a drug.
  * @param formulationIndex
  * @param drugId
- * @returns {{doseResult: null}|{doseResult: null, no_possibility: string}|{recurrence: *, doseResult: *, doseResultMg: *, maxDoseMg: *, minDoseMl: number, maxDoseMl: number, minDoseMg: *}|{recurrence: *, doseResult: *, maxDoseCap: number, maxDoseMg: *, minDoseMg: *, minDoseCap: number}}
+ * @returns {
+ * { doseResult: null}
+ * | {doseResult: null, no_possibility: string}
+ * | {recurrence: *, doseResult: *, doseResultMg: *, maxDoseMg: *, minDoseMl: number, maxDoseMl: number, minDoseMg: *}
+ * | {recurrence: *, doseResult: *, maxDoseCap: number, maxDoseMg: *, minDoseMg: *, minDoseCap: number}
+ * }
  */
 export const drugDoses = (formulationIndex, drugId) => {
   const algorithm = store.getState().algorithm.item
