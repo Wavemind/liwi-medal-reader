@@ -97,36 +97,40 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
 /**
  * TODO
  * @param {*} children
- * @param {*} questionPerSystems
+ * @param {*} questionsToDisplay
  * @param {*} instances
  * @param {*} categories
  */
 export const handleChildren = (
   children,
-  questionPerSystems,
+  questionsToDisplay,
   instances,
   categories,
   diagramId,
   diagramType = Config.NODE_TYPES.diagnosis,
+  system = true,
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
 
-  // console.log(children, instances)
   children.forEach(instance => {
     if (instance.conditions.length === 0 || calculateCondition(instance)) {
       if (nodes[instance.id].type === Config.NODE_TYPES.questionsSequence) {
         const topConditions = getTopConditions(nodes[instance.id].instances)
         handleChildren(
           topConditions,
-          questionPerSystems,
+          questionsToDisplay,
           nodes[instance.id].instances,
           categories,
           instance.id,
           Config.NODE_TYPES.questionsSequence,
         )
       } else {
-        addQuestionToSystem(instance.id, questionPerSystems, categories)
+        if (system) {
+          addQuestionToSystem(instance.id, questionsToDisplay, categories)
+        } else {
+          addQuestion(instance.id, questionsToDisplay, categories)
+        }
       }
       // console.log(instance.children, diagramType, diagramId)
       const childrenInstance = instance.children
@@ -141,7 +145,7 @@ export const handleChildren = (
       if (childrenInstance.length > 0) {
         handleChildren(
           childrenInstance,
-          questionPerSystems,
+          questionsToDisplay,
           instances,
           categories,
           diagramId,
@@ -155,22 +159,29 @@ export const handleChildren = (
 /**
  * TODO
  * @param {*} questionId
- * @param {*} questionPerSystems
+ * @param {*} questionsToDisplay
  * @param {*} categories
  */
 export const addQuestionToSystem = (
   questionId,
-  questionPerSystems,
+  questionsToDisplay,
   categories,
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   if (categories.includes(nodes[questionId].category)) {
-    if (nodes[questionId].system in questionPerSystems) {
-      questionPerSystems[nodes[questionId].system].push(questionId)
+    if (nodes[questionId].system in questionsToDisplay) {
+      questionsToDisplay[nodes[questionId].system].push(questionId)
     } else {
-      questionPerSystems[nodes[questionId].system] = [questionId]
+      questionsToDisplay[nodes[questionId].system] = [questionId]
     }
+  }
+}
+export const addQuestion = (questionId, questionsToDisplay, categories) => {
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+  if (categories.includes(nodes[questionId].category)) {
+    questionsToDisplay[nodes[questionId].system].push(questionId)
   }
 }
 
