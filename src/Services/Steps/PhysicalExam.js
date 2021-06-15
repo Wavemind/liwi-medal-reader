@@ -1,8 +1,4 @@
 /**
- * The external imports
- */
-
-/**
  * The internal imports
  */
 import { store } from '@/Store'
@@ -16,13 +12,13 @@ import {
 } from '@/Utils/MedicalCase'
 
 export default () => {
+  const questionPerSystems = {}
   const state = store.getState()
   const physicalExamCategories = [
     Config.CATEGORIES.physicalExam,
     Config.CATEGORIES.backgroundCalculation,
     Config.CATEGORIES.vitalSignAnthropometric,
   ]
-  const questionPerSystems = {}
   const physicalExamStep =
     state.algorithm.item.config.full_order.physical_exam_step
 
@@ -39,6 +35,7 @@ export default () => {
       diagnosis.id,
     )
   })
+
   Object.keys(questionPerSystems).map(k => {
     questionPerSystems[k] = uniq(questionPerSystems[k])
   })

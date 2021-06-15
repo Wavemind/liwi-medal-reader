@@ -1,7 +1,4 @@
 /**
- * The external imports
- */
-/**
  * The internal imports
  */
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'

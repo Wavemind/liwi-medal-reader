@@ -1,8 +1,4 @@
 /**
- * The external imports
- */
-
-/**
  * The internal imports
  */
 import { store } from '@/Store'
@@ -34,7 +30,6 @@ export default () => {
       false,
     )
   })
-  console.log(questionsToDisplay)
 
   return assessmentStep.filter(question =>
     questionsToDisplay.includes(question),

@@ -14,7 +14,7 @@ import { Config } from '@/Config'
 export const questionCalculateReference = (nodeId, newNodes) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
-  const gender_question_id =
+  const genderQuestionId =
     state.algorithm.item.config.basic_questions.gender_question_id
 
   let reference = null
