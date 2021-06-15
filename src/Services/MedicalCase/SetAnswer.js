@@ -52,7 +52,6 @@ export default async props => {
   }
 
   newNodes = UpdateQuestionSequence({ nodeId: node.id, nodes, newNodes })
-
   return {
     ...newMedicalCase,
     nodes: {

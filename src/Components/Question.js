@@ -91,7 +91,7 @@ const Question = ({ questionId, disabled = false }) => {
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
           </Text>
 
-          {descriptionAvailable && (
+          {(descriptionAvailable || __DEV__) && (
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('QuestionInfo', {

@@ -26,12 +26,12 @@ export default () => {
     Config.CATEGORIES.observedPhysicalSign,
     //Config.CATEGORIES.backgroundCalculation,
   ]
-  const nodes = state.algorithm.item.nodes
   const questionPerSystems = {}
   const medicalHistoryStep =
     state.algorithm.item.config.full_order.medical_history_step
 
   const validDiagnoses = getValidDiagnoses()
+  console.log(validDiagnoses)
 
   validDiagnoses.forEach(diagnosis => {
     const topConditions = getTopConditions(diagnosis.instances)
@@ -39,7 +39,6 @@ export default () => {
     handleChildren(
       topConditions,
       questionPerSystems,
-      nodes,
       diagnosis.instances,
       medicalHistoryCategories,
       diagnosis.id,

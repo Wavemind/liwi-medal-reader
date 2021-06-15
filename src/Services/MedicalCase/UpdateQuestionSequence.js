@@ -100,7 +100,6 @@ export default ({ nodeId, nodes, newNodes }) => {
     // uniq to avoid processing same Qs multiple time
     // Slice to remove element we just handled
     qsToUpdate = uniq(qsToUpdate.slice(1))
-
-    return newNodes
   }
+  return newNodes
 }

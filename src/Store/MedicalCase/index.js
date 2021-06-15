@@ -4,10 +4,6 @@ import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
 import Load from './Load'
-import ChangeAdditionalDiagnoses from './ChangeAdditionalDiagnoses'
-import ChangeCustomDiagnoses from './ChangeCustomDiagnoses'
-import ChangeAgreedDiagnoses from './ChangeAgreedDiagnoses'
-import ChangeRefusedDiagnoses from './ChangeRefusedDiagnoses'
 import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
 
@@ -42,10 +38,6 @@ export default buildSlice(
   [
     Create,
     ChangeAdvancement,
-    ChangeAdditionalDiagnoses,
-    ChangeCustomDiagnoses,
-    ChangeAgreedDiagnoses,
-    ChangeRefusedDiagnoses,
     HandleComplaintCategories,
     HandleDateFormulas,
     SetAnswer,

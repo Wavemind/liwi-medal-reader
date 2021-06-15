@@ -22,15 +22,13 @@ export default {
     const mcNodes = state.item.nodes
 
     birth_date_formulas.forEach(nodeId => {
-      if (![2078, 2094, 427, 7321, 6460].includes(nodeId)) {
-        const value =
-          nodes[nodeId].formula.search('ToMonth') > 0
-            ? differenceInDays(new Date(createdAt), new Date(birthDate))
-            : differenceInMonths(new Date(createdAt), new Date(birthDate))
+      const value =
+        nodes[nodeId].formula.search('ToMonth') > 0
+          ? differenceInMonths(new Date(createdAt), new Date(birthDate))
+          : differenceInDays(new Date(createdAt), new Date(birthDate))
 
-        const newValue = handleNumeric(mcNodes[nodeId], nodes[nodeId], value)
-        state.item.nodes[nodeId] = { ...state.item.nodes[nodeId], ...newValue }
-      }
+      const newValue = handleNumeric(mcNodes[nodeId], nodes[nodeId], value)
+      state.item.nodes[nodeId] = { ...state.item.nodes[nodeId], ...newValue }
     })
     return state
   },

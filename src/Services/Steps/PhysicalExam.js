@@ -17,12 +17,11 @@ import {
 
 export default () => {
   const state = store.getState()
-  const medicalHistoryCategories = [
+  const physicalExamCategories = [
     Config.CATEGORIES.physicalExam,
     Config.CATEGORIES.backgroundCalculation,
     Config.CATEGORIES.vitalSignAnthropometric,
   ]
-  const nodes = state.algorithm.item.nodes
   const questionPerSystems = {}
   const physicalExamStep =
     state.algorithm.item.config.full_order.physical_exam_step
@@ -35,9 +34,8 @@ export default () => {
     handleChildren(
       topConditions,
       questionPerSystems,
-      nodes,
       diagnosis.instances,
-      medicalHistoryCategories,
+      physicalExamCategories,
       diagnosis.id,
     )
   })

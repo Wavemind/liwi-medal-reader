@@ -11,6 +11,7 @@ import differenceInDays from 'date-fns/differenceInDays'
 import { getYesAnswer } from '@/Utils/Answers'
 import { store } from '@/Store'
 import { Config } from '@/Config'
+import { create } from 'eslint/lib/rules/*'
 
 /**
  * Will go through all the diagnoses of the algorithm and will return those that are still
@@ -21,14 +22,22 @@ export const getValidDiagnoses = () => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   const mcNodes = state.medicalCase.item.nodes
-  const diagnoses = state.diagnoses.item.nodes
+  const diagnoses = state.algorithm.item.diagnoses
 
-  return Object.values(diagnoses).filter(
-    diagnosis =>
+  return Object.values(diagnoses).filter(diagnosis => {
+    console.log(
+      diagnosis.id,
+      diagnosis,
+      mcNodes[diagnosis.complaint_category].answer ===
+        getYesAnswer(nodes[diagnosis.complaint_category]).id,
+      respectsCutOff(diagnosis.cut_off_start, diagnosis.cut_off_end),
+    )
+    return (
       mcNodes[diagnosis.complaint_category].answer ===
         getYesAnswer(nodes[diagnosis.complaint_category]).id &&
-      respectsCutOff(diagnosis.cut_off_start, diagnosis.cut_off_end),
-  )
+      respectsCutOff(diagnosis.cut_off_start, diagnosis.cut_off_end)
+    )
+  })
 }
 
 /**
@@ -39,10 +48,13 @@ export const getValidDiagnoses = () => {
  */
 export const respectsCutOff = (cut_off_start, cut_off_end) => {
   const state = store.getState()
-  const birthDate = state.patient.item.birthDate
-  const test = state.medicalCase.item.createdAt
-  const ageInDays = differenceInDays(new Date(test), new Date(birthDate))
+  const birthDate = state.patient.item.birth_date
+  const createdAt = state.medicalCase.item.createdAt
 
+  const ageInDays = differenceInDays(new Date(createdAt), new Date(birthDate))
+  if (cut_off_start === null && cut_off_end === null) {
+    return true
+  }
   if (cut_off_start === null) {
     return cut_off_end > ageInDays
   }
@@ -115,7 +127,6 @@ export const handleChildren = (
         handleChildren(
           topConditions,
           questionPerSystems,
-          nodes,
           nodes[instance.id].instances,
           categories,
           instance.id,
@@ -138,7 +149,6 @@ export const handleChildren = (
         handleChildren(
           childrenInstance,
           questionPerSystems,
-          nodes,
           instances,
           categories,
           diagramId,
@@ -162,7 +172,6 @@ export const addQuestionToSystem = (
 ) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
-
   if (categories.includes(nodes[questionId].category)) {
     if (nodes[questionId].system in questionPerSystems) {
       questionPerSystems[nodes[questionId].system].push(questionId)
