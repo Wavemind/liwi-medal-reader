@@ -32,7 +32,7 @@ export default function (props) {
     },
     drugsHeader: {
       ...Fonts.textUppercase,
-      ...Fonts.textMedium,
+      ...Fonts.textRegular,
       ...Fonts.textBold,
       color: Colors.grey,
     },

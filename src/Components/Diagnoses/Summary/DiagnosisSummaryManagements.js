@@ -17,6 +17,7 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
   const {
     Fonts,
     Layout,
+    Gutters,
     Containers: { finalDiagnoses, summary },
   } = useTheme()
 
@@ -37,7 +38,7 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
         <Text style={finalDiagnoses.noItemsText}>{t('containers.medical_case.summary.no_managements')}</Text>
       ) : (
         diagnosis.managements.map((managementId, i) => (
-          <View style={summary.drugWrapper(i === managementsCount - 1)}>
+          <View style={Gutters.tinyVPadding}>
             <Text style={Fonts.textSmall}>
               {translate(nodes[diagnosis.id].managements[managementId].description)}
             </Text>
