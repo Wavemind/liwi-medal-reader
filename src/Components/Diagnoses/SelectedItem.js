@@ -8,10 +8,9 @@ import { useSelector } from 'react-redux'
 /**
  * The internal imports
  */
-import { Icon } from '@/Components'
+import { Icon, QuestionInfoButton } from '@/Components'
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import { navigate } from '@/Navigators/Root'
 
 const SelectedItem = ({
   listItem,
@@ -40,15 +39,7 @@ const SelectedItem = ({
         </Text>
         {algorithm.nodes[listItem.id] &&
           translate(algorithm.nodes[listItem.id].description) !== '' && (
-            <TouchableOpacity
-              onPress={() =>
-                navigate('QuestionInfo', {
-                  nodeId: listItem.id,
-                })
-              }
-            >
-              <Icon name="simple-info" />
-            </TouchableOpacity>
+            <QuestionInfoButton nodeId={listItem.id} />
           )}
       </View>
       {withDuration && (

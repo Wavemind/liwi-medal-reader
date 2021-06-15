@@ -1,6 +1,6 @@
 import { store } from '@/Store'
 import i18n from '@/Translations'
-import { medicationForms } from '@/Utils/Formulations/MedicationForms'
+import { medicationForms } from '@/Utils/Formulations/Constants'
 import { roundSup } from '@/Utils/Formulations/RoundSup'
 
 /**
@@ -128,7 +128,7 @@ export const drugDoses = (formulationIndex, drugId) => {
         if (maxDoseCap < 1) {
           return {
             ...formulation,
-            no_possibility: i18n.t('containers.medical_case.formulations.drug.no_options'),
+            no_possibility: i18n.t('formulations.drug.no_options'),
             doseResult: null,
           }
         }

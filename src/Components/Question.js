@@ -2,9 +2,8 @@
  * The external imports
  */
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
 import find from 'lodash/find'
 
 /**
@@ -12,14 +11,19 @@ import find from 'lodash/find'
  */
 import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
-import { Checkbox, Select, Icon, InputFactory } from '@/Components'
+import {
+  Checkbox,
+  Select,
+  Icon,
+  InputFactory,
+  QuestionInfoButton,
+} from '@/Components'
 import { Config } from '@/Config'
 import UpdateNodeField from '@/Store/MedicalCase/UpdateNodeField'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
 
 const Question = ({ questionId, disabled = false }) => {
   // Theme and style elements deconstruction
-  const navigation = useNavigation()
   const dispatch = useDispatch()
   const {
     Components: { question },
@@ -91,17 +95,7 @@ const Question = ({ questionId, disabled = false }) => {
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
           </Text>
 
-          {descriptionAvailable && (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('QuestionInfo', {
-                  nodeId: questionId,
-                })
-              }
-            >
-              <Icon name="simple-info" />
-            </TouchableOpacity>
-          )}
+          {descriptionAvailable && <QuestionInfoButton nodeId={questionId} />}
 
           <View
             style={

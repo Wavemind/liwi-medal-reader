@@ -1,3 +1,9 @@
+export const administrationRouteCategories = [
+  'Enteral',
+  'Parenteral injectable',
+  'Mucocutaneous',
+]
+
 export const medicationForms = {
   tablet: 'tablet',
   dispersible_tablet: 'dispersible_tablet',
@@ -16,3 +22,4 @@ export const medicationForms = {
   spray: 'spray',
   inhaler: 'inhaler',
 }
+
