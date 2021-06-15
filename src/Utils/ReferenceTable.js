@@ -60,8 +60,8 @@ export const questionCalculateReference = (nodeId, newNodes) => {
         : parseFloat(mcQuestionZ.value)
   }
 
-  const mcGenderQuestion = newNodes[gender_question_id]
-  const genderQuestion = nodes[gender_question_id]
+  const mcGenderQuestion = newNodes[genderQuestionId]
+  const genderQuestion = nodes[genderQuestionId]
   const gender =
     mcGenderQuestion.answer !== null
       ? genderQuestion.answers[mcGenderQuestion.answer].value
