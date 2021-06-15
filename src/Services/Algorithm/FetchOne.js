@@ -12,6 +12,7 @@ import { store } from '@/Store'
 
 export default async ({ json_version }) => {
   const macAddress = await getMacAddress()
+
   // TODO: Add geoloc !
 
   const response = await api.post('versions/retrieve_algorithm_version', {

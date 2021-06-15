@@ -103,6 +103,10 @@ const DateInput = () => {
     }
   }, [])
 
+  /**
+   * Triggers the related actions when the birth date is set
+   * @param {Timestamp} birthDate
+   */
   const relatedActions = birthDate => {
     // Trigger formulas related to birth date
     dispatch(

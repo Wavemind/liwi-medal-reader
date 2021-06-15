@@ -26,10 +26,10 @@ const PhysicalExamMedicalCaseContainer = props => {
 
   // Update questions list only if question array change
   useEffect(() => {
-    const medicalHistoryQuestions = PhysicalExamQuestions()
+    const physicalExamQuestions = PhysicalExamQuestions()
 
-    if (!isEqual(medicalHistoryQuestions, systems)) {
-      setSystems(medicalHistoryQuestions)
+    if (!isEqual(physicalExamQuestions, systems)) {
+      setSystems(physicalExamQuestions)
     }
   }, [isFocused, medicalCase])
   return (

@@ -20,9 +20,9 @@ const AssessmentMedicalCaseContainer = props => {
 
   // Update questions list only if question array change
   useEffect(() => {
-    const basicMeasurementQuestions = AssessmentQuestions()
-    if (!isEqual(basicMeasurementQuestions, questions)) {
-      setQuestions(basicMeasurementQuestions)
+    const assessmentQuestions = AssessmentQuestions()
+    if (!isEqual(assessmentQuestions, questions)) {
+      setQuestions(assessmentQuestions)
     }
   }, [isFocused])
 
