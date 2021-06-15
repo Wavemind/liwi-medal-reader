@@ -43,4 +43,20 @@ describe('Drug dose calculation', () => {
     const result = drugDoses(1, 1681)
     expect(result.recurrence).toEqual(12)
   })
+  it('should calculate recurrence of 12 for drugId = 1681, index = 2 and weight = 3', () => {
+    const result = drugDoses(2, 1681)
+    expect(result.recurrence).toEqual(12)
+  })
+  it('should calculate minDoseMg of 37.5 for drugId = 1681, index = 2 and weight = 3', () => {
+    const result = drugDoses(2, 1681)
+    expect(result.minDoseMg).toEqual(37.5)
+  })
+  it('should calculate doseResult of 1 for drugId = 1681, index = 2 and weight = 3', () => {
+    const result = drugDoses(2, 1681)
+    expect(result.doseResult).toEqual(1)
+  })
+  it('should calculate minDoseCap of 0.6 for drugId = 1681, index = 2 and weight = 3', () => {
+    const result = drugDoses(2, 1681)
+    expect(result.recurrence).toEqual(12)
+  })
 })
