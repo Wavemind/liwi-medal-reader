@@ -85,7 +85,7 @@ const DateInput = () => {
     if (__DEV__) {
       setDayValue(11)
       setMonthValue(4)
-      setYearValue(2017)
+      setYearValue(2013)
     }
 
     const today = new Date()

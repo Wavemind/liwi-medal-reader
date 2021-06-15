@@ -16,13 +16,12 @@ import { BasicMeasurementQuestions } from '@/Services/Steps'
 const BasicMeasurementMedicalCaseContainer = props => {
   const { t } = useTranslation()
   const isFocused = useIsFocused()
-
   const [questions, setQuestions] = useState(BasicMeasurementQuestions())
 
   // Update questions list only if question array change
   useEffect(() => {
     const basicMeasurementQuestions = BasicMeasurementQuestions()
-    if (!isEqual(basicMeasurementQuestions.sort(), questions.sort())) {
+    if (!isEqual(basicMeasurementQuestions, questions)) {
       setQuestions(basicMeasurementQuestions)
     }
   }, [isFocused])

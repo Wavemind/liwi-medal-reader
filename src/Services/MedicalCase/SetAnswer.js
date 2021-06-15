@@ -7,10 +7,11 @@
  */
 import { store } from '@/Store'
 import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
-import { setNodeValue } from '@/Utils/MedicalCase'
+import { setNodeValue, debugNode } from '@/Utils/MedicalCase'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
+import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
 
-export default async props => {
+export default props => {
   const { nodeId, value } = props
   let newValues = {}
 
@@ -27,7 +28,7 @@ export default async props => {
   let newNodes = JSON.parse(JSON.stringify(newMedicalCase.nodes))
 
   // Validation
-  const validation = await validationMedicalCaseService(mcNode, node, value)
+  const validation = validationMedicalCaseService(mcNode, node, value)
 
   // Early return if there is an error in the validation
   if (validation.validationType === 'error') {
@@ -51,7 +52,10 @@ export default async props => {
     ...newValues,
   }
 
-  newNodes = UpdateQuestionSequence({ nodeId: node.id, nodes, newNodes })
+  newNodes = UpdateQuestionSequence({ nodeId: node.id, newNodes })
+  newNodes = UpdateRelatedQuestion({ nodeId: node.id, newNodes })
+  debugNode(3350, newNodes)
+  console.log(newNodes)
   return {
     ...newMedicalCase,
     nodes: {

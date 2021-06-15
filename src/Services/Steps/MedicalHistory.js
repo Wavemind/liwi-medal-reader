@@ -31,7 +31,6 @@ export default () => {
     state.algorithm.item.config.full_order.medical_history_step
 
   const validDiagnoses = getValidDiagnoses()
-  console.log(validDiagnoses)
 
   validDiagnoses.forEach(diagnosis => {
     const topConditions = getTopConditions(diagnosis.instances)

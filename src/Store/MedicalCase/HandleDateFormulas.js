@@ -23,7 +23,7 @@ export default {
 
     birth_date_formulas.forEach(nodeId => {
       const value =
-        nodes[nodeId].formula.search('ToMonth') > 0
+        nodes[nodeId].formula.search('Month') > 0
           ? differenceInMonths(new Date(createdAt), new Date(birthDate))
           : differenceInDays(new Date(createdAt), new Date(birthDate))
 

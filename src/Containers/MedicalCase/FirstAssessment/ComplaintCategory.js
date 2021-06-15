@@ -22,7 +22,7 @@ const ComplaintCategoryMedicalCaseContainer = props => {
   // Update questions list only if question array change
   useEffect(() => {
     const complaintCategoryQuestion = ComplaintCategoryQuestions()
-    if (!isEqual(complaintCategoryQuestion.sort(), questions.sort())) {
+    if (!isEqual(complaintCategoryQuestion, questions)) {
       setQuestions(complaintCategoryQuestion)
     }
   }, [isFocused])

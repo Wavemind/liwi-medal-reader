@@ -11,7 +11,7 @@ import differenceInDays from 'date-fns/differenceInDays'
 import { getYesAnswer } from '@/Utils/Answers'
 import { store } from '@/Store'
 import { Config } from '@/Config'
-import { create } from 'eslint/lib/rules/*'
+import { translate } from '@/Translations/algorithm'
 
 /**
  * Will go through all the diagnoses of the algorithm and will return those that are still
@@ -25,13 +25,6 @@ export const getValidDiagnoses = () => {
   const diagnoses = state.algorithm.item.diagnoses
 
   return Object.values(diagnoses).filter(diagnosis => {
-    console.log(
-      diagnosis.id,
-      diagnosis,
-      mcNodes[diagnosis.complaint_category].answer ===
-        getYesAnswer(nodes[diagnosis.complaint_category]).id,
-      respectsCutOff(diagnosis.cut_off_start, diagnosis.cut_off_end),
-    )
     return (
       mcNodes[diagnosis.complaint_category].answer ===
         getYesAnswer(nodes[diagnosis.complaint_category]).id &&
@@ -333,6 +326,59 @@ export const setNodeValue = (mcNode, node, value) => {
     case positive:
       return handleAnswerId(node, value)
   }
+}
+
+export const debugNode = (nodeId, mcNodes) => {
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+  const result = nodes[nodeId].dd.map(diagnosisId => {
+    return {
+      [diagnosisId.id]: debugNodeInDiagnosis(diagnosisId.id, nodeId, mcNodes),
+    }
+  })
+  console.info(nodeId, translate(nodes[nodeId].label), result)
+}
+const debugNodeInDiagnosis = (diagnosisId, nodeId, mcNodes) => {
+  const validDiagnosesIds = getValidDiagnoses().map(diagnosis => diagnosis.id)
+  const state = store.getState()
+  const diagnoses = state.algorithm.item.diagnoses
+
+  if (!validDiagnosesIds.includes(diagnosisId)) {
+    return false
+  }
+  if (excludedByCC(nodeId)) {
+    return false
+  }
+  if (diagnoses[diagnosisId].instances[nodeId].conditions.length === 0) {
+    return true
+  }
+  return debugCalculateCondition(
+    diagnosisId,
+    diagnoses[diagnosisId].instances[nodeId].conditions,
+    mcNodes,
+  )
+}
+const debugCalculateCondition = (diagnosisId, conditions, mcNodes) => {
+  const state = store.getState()
+  const diagnoses = state.algorithm.item.diagnoses
+
+  if (conditions.length === 0) {
+    return true
+  }
+
+  return conditions.some(condition => {
+    const conditionValue =
+      mcNodes[condition.node_id].answer === condition.answer_id
+    if (conditionValue) {
+      return debugCalculateCondition(
+        diagnosisId,
+        diagnoses[diagnosisId].instances[condition.node_id].conditions,
+        mcNodes,
+      )
+    } else {
+      return false
+    }
+  })
 }
 
 /**

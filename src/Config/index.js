@@ -93,4 +93,18 @@ export const Config = {
     present: 'Present',
     positive: 'Positive',
   },
+  REFERENCES: {
+    z_score_male_table: require('../Assets/ReferenceTables/z_score_male_table'),
+    z_score_female_table: require('../Assets/ReferenceTables/z_score_female_table.json'),
+    heart_rate_table: require('../Assets/ReferenceTables/heart_rate_table.json'),
+    respiratory_rate_table: require('../Assets/ReferenceTables/respiratory_rate_table.json'),
+    muac_z_score_female_table: require('../Assets/ReferenceTables/muac_z_score_female.json'),
+    muac_z_score_male_table: require('../Assets/ReferenceTables/muac_z_score_male.json'),
+    bmi_for_age_female_table: require('../Assets/ReferenceTables/bmi_for_age_female.json'),
+    bmi_for_age_male_table: require('../Assets/ReferenceTables/bmi_for_age_male.json'),
+    weight_for_height_female_table: require('../Assets/ReferenceTables/weight_for_height_female.json'),
+    weight_for_height_male_table: require('../Assets/ReferenceTables/weight_for_height_male.json'),
+    weight_for_length_female_table: require('../Assets/ReferenceTables/weight_for_length_female.json'),
+    weight_for_length_male_table: require('../Assets/ReferenceTables/weight_for_length_male.json'),
+  },
 }
