@@ -13,8 +13,6 @@ import { UniqueTriageQuestions } from '@/Services/Steps'
 const UniqueTriageQuestionsMedicalCaseContainer = props => {
   const questions = UniqueTriageQuestions()
 
-  console.log(questions)
-
   return (
     <FlatList
       data={questions}

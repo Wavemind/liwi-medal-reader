@@ -4,7 +4,6 @@
  */
 export const getYesAnswer = node => {
   const { answers } = node
-
   const yesAnswerIndex = Object.keys(answers).findIndex(answerId => {
     const { reference } = answers[answerId]
     return reference === 1

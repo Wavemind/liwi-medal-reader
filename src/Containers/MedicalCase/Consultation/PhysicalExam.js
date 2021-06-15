@@ -15,11 +15,12 @@ import { translate } from '@/Translations/algorithm'
 const PhysicalExamMedicalCaseContainer = props => {
   const { Gutters } = useTheme()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-  const systems = useSelector(
-    state => state.algorithm.item.config.full_order.physical_exam_step,
-  )
+  // const algorithm = useSelector(state => state.algorithm.item)
+  // const systems = useSelector(
+  //   state => state.algorithm.item.config.full_order.physical_exam_step,
+  // )
 
+  return <View />
   return (
     <SectionList
       sections={systems}

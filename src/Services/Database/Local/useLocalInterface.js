@@ -342,18 +342,18 @@ export default function () {
    * @returns {Promise<*>}
    */
   const getConsentsFile = async (page, columns) => {
-    // const queries = []
-    // const collection = database.get('patients')
-    // let result = await collection.query().fetch()
-    // if (page === null) {
-    //   return result
-    // }
-    // queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    // queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    // queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
-    // result = await collection.query(...queries)
-    // result = await _initClasses(result, 'Patient')
-    // return _generateConsentList(result, columns)
+    const queries = []
+    const collection = database.get('patients')
+    let result = await collection.query().fetch()
+    if (page === null) {
+      return result
+    }
+    queries.push(Q.experimentalSortBy('updated_at', Q.asc))
+    queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
+    queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
+    result = await collection.query(...queries)
+    result = await _initClasses(result, 'Patient')
+    return _generateConsentList(result, columns)
   }
 
   const insertPatient = async (patientData, medicalCaseData) => {

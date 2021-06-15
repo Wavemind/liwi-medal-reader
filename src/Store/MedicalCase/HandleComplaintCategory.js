@@ -6,7 +6,6 @@ export default {
   action: createAction('medicalCase/handleComplaintCategory'),
   reducers(state, { payload: { birthDate, algorithm } }) {
     const mcNodes = state.item.nodes
-    console.log(algorithm)
 
     const olderCC = algorithm.config.full_order.complaint_categories_step.older
 
@@ -36,7 +35,6 @@ export default {
         algorithm.nodes[olderGeneralId],
       ).id
     }
-    console.log({ state })
     return state
   },
 }

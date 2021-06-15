@@ -3,6 +3,7 @@
  */
 import reduce from 'lodash/reduce'
 import findKey from 'lodash/findKey'
+import differenceInDays from 'date-fns/differenceInDays'
 
 /**
  * The internal imports
@@ -11,15 +12,52 @@ import { getYesAnswer } from '@/Utils/Answers'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
-export const getValidDiagnoses = (diagnoses, mcNodes, nodes) => {
+/**
+ * Will go through all the diagnoses of the algorithm and will return those that are still
+ * valid based on the selected complain categories and the birth date(cut off)
+ * @returns {Array<Diagnoses>} : List of valid diagnoses
+ */
+export const getValidDiagnoses = () => {
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+  const mcNodes = state.medicalCase.item.nodes
+  const diagnoses = state.diagnoses.item.nodes
+
   return Object.values(diagnoses).filter(
     diagnosis =>
       mcNodes[diagnosis.complaint_category].answer ===
-      getYesAnswer(nodes[diagnosis.complaint_category]).id,
-    // Handle des cutoffs
+        getYesAnswer(nodes[diagnosis.complaint_category]).id &&
+      respectsCutOff(diagnosis.cut_off_start, diagnosis.cut_off_end),
   )
 }
 
+/**
+ * Tells if a cut off is respected based on patients birth date and the medical case creation date
+ * @param { Timestamp | null } cut_off_start : Lower threshold
+ * @param { Timestamp | null } cut_off_end : Higher threshold
+ * @returns { Boolean }
+ */
+export const respectsCutOff = (cut_off_start, cut_off_end) => {
+  const state = store.getState()
+  const birthDate = state.patient.item.birthDate
+  const test = state.medicalCase.item.createdAt
+  const ageInDays = differenceInDays(new Date(test), new Date(birthDate))
+
+  if (cut_off_start === null) {
+    return cut_off_end > ageInDays
+  }
+  if (cut_off_end === null) {
+    return cut_off_start < ageInDays
+  } else {
+    return cut_off_start < ageInDays && cut_off_end > ageInDays
+  }
+}
+
+/**
+ * Returns the nodes without condition of a diagnosis or a question sequence
+ * @param {Array<Instance>} instances : instances from the diagram we are handling
+ * @returns {Array<Instance>} Instances without conditions
+ */
 export const getTopConditions = instances => {
   return Object.values(instances).filter(
     instance =>
@@ -27,9 +65,10 @@ export const getTopConditions = instances => {
   )
 }
 /**
- * TODO
- * @param {*} systemOrder
- * @param {*} questionsPerSystem
+ * Transforms an array of system to an object that is readable by the view and will order it
+ * based on the order defined in the algorithm
+ * @param {} systemOrder : Order of the systems and the question for this specific step
+ * @param {} questionsPerSystem : the systems and the question before ordering
  * @returns
  */
 export const orderSystems = (systemOrder, questionsPerSystem) => {
@@ -54,19 +93,20 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
  * TODO
  * @param {*} children
  * @param {*} questionPerSystems
- * @param {*} nodes
  * @param {*} instances
  * @param {*} categories
  */
 export const handleChildren = (
   children,
   questionPerSystems,
-  nodes,
   instances,
   categories,
   diagramId,
   diagramType = Config.NODE_TYPES.diagnosis,
 ) => {
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+
   // console.log(children, instances)
   children.forEach(instance => {
     if (instance.conditions.length === 0 || calculateCondition(instance)) {
@@ -82,7 +122,7 @@ export const handleChildren = (
           Config.NODE_TYPES.questionsSequence,
         )
       } else {
-        addQuestionToSystem(instance.id, questionPerSystems, nodes, categories)
+        addQuestionToSystem(instance.id, questionPerSystems, categories)
       }
       // console.log(instance.children, diagramType, diagramId)
       const childrenInstance = instance.children
@@ -113,15 +153,16 @@ export const handleChildren = (
  * TODO
  * @param {*} questionId
  * @param {*} questionPerSystems
- * @param {*} nodes
  * @param {*} categories
  */
 export const addQuestionToSystem = (
   questionId,
   questionPerSystems,
-  nodes,
   categories,
 ) => {
+  const state = store.getState()
+  const nodes = state.algorithm.item.nodes
+
   if (categories.includes(nodes[questionId].category)) {
     if (nodes[questionId].system in questionPerSystems) {
       questionPerSystems[nodes[questionId].system].push(questionId)
@@ -129,6 +170,16 @@ export const addQuestionToSystem = (
       questionPerSystems[nodes[questionId].system] = [questionId]
     }
   }
+}
+
+export const excludedByCC = questionId => {
+  const state = store.getState()
+  const mcNodes = state.medicalCase.item.nodes
+  const nodes = state.algorithm.item.nodes
+
+  return nodes[questionId].conditioned_by_cc.some(
+    ccId => mcNodes[ccId].answer === getYesAnswer(nodes[ccId]).id,
+  )
 }
 
 /**
@@ -139,16 +190,15 @@ export const addQuestionToSystem = (
 export const calculateCondition = instance => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
-  const nodes = state.algorithm.item.nodes
+
+  if (excludedByCC(instance.id)) {
+    return false
+  }
   if (instance.conditions.length === 0) {
     return true
   }
   return instance.conditions.some(condition => {
-    return (
-      mcNodes[condition.node_id].answer === condition.answer_id ||
-      nodes[condition.node_id].category ===
-        Config.CATEGORIES.backgroundCalculation
-    )
+    return mcNodes[condition.node_id].answer === condition.answer_id
   })
 }
 

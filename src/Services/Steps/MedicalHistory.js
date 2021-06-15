@@ -26,14 +26,12 @@ export default () => {
     Config.CATEGORIES.observedPhysicalSign,
     //Config.CATEGORIES.backgroundCalculation,
   ]
-  const diagnoses = state.algorithm.item.diagnoses
   const nodes = state.algorithm.item.nodes
-  const mcNodes = state.medicalCase.item.nodes
   const questionPerSystems = {}
   const medicalHistoryStep =
     state.algorithm.item.config.full_order.medical_history_step
 
-  const validDiagnoses = getValidDiagnoses(diagnoses, mcNodes, nodes)
+  const validDiagnoses = getValidDiagnoses()
 
   validDiagnoses.forEach(diagnosis => {
     const topConditions = getTopConditions(diagnosis.instances)
