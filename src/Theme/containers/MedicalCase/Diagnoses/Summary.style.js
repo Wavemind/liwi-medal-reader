@@ -43,13 +43,20 @@ export default function (props) {
     }),
     drugTitleWrapper: {
       ...Layout.rowHCenter,
-      ...Layout.justifyContentStart,
+      ...Layout.justifyContentBetween,
       ...Gutters.smallBMargin,
     },
     drugTitle: {
       ...Fonts.textSmall,
       ...Fonts.textBold,
-      maxWidth: wp(60),
+      maxWidth: wp(70),
     },
+    managementWrapper: isLast => ({
+      ...Gutters.regularVPadding,
+      ...Layout.rowHCenter,
+      ...Layout.justifyContentBetween,
+      borderBottomColor: Colors.grey,
+      borderBottomWidth: isLast ? 0 : 1,
+    }),
   })
 }

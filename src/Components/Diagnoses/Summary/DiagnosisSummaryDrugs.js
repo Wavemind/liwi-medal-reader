@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import { Text, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
@@ -21,8 +20,6 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
 
   const { t } = useTranslation()
 
-  const algorithm = useSelector(state => state.algorithm.item)
-
   const keys = ['agreed', 'additional']
 
   return (
@@ -30,10 +27,6 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
       <View style={[Layout.rowHCenter, Layout.justifyContentBetween]}>
         <Text style={summary.drugsHeader}>
           {t('containers.medical_case.drugs.drugs')}
-        </Text>
-        {/*TODO Remove this once done*/}
-        <Text style={summary.drugsHeader}>
-          {algorithm.nodes[diagnosis.id].level_of_urgency}
         </Text>
       </View>
       {Object.keys(diagnosis.drugs.agreed).length +
