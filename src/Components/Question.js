@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
+import { View, Text, TouchableOpacity, Animated } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import find from 'lodash/find'
@@ -11,6 +11,7 @@ import find from 'lodash/find'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
 import { translate } from '@/Translations/algorithm'
 import { Checkbox, Select, Icon, InputFactory } from '@/Components'
 import { Config } from '@/Config'
@@ -23,9 +24,17 @@ const Question = ({ questionId, disabled = false }) => {
   const dispatch = useDispatch()
   const {
     Components: { question },
+    Containers: { global },
     Colors,
     FontSize,
   } = useTheme()
+
+  // Define references
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    fadeIn(fadeAnim)
+  }, [fadeAnim])
 
   // Get node from algorithm
   const mcNode = useSelector(state => state.medicalCase.item.nodes[questionId])
@@ -76,7 +85,9 @@ const Question = ({ questionId, disabled = false }) => {
   }
 
   return (
-    <View style={question.wrapper(emergency)}>
+    <Animated.View
+      style={[question.wrapper(emergency), global.animation(fadeAnim)]}
+    >
       <View style={question.container}>
         <View style={question.questionWrapper(isFullLength)}>
           {emergency && <Icon name="alert" color={Colors.red} />}
@@ -150,7 +161,7 @@ const Question = ({ questionId, disabled = false }) => {
           </View>
         )}
       </View>
-    </View>
+    </Animated.View>
   )
 }
 
