@@ -32,7 +32,7 @@ const Formulations = ({}) => {
   useEffect(() => {
     const newDrugs = transformFormulations()
     if (!isEqual(newDrugs, drugs)) {
-      setDrugs(transformFormulations())
+      setDrugs(newDrugs)
     }
   }, [isFocused])
 

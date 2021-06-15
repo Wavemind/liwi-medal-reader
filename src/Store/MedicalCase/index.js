@@ -39,7 +39,7 @@ export default buildSlice(
     SetAnswer,
     UpdateNodeField,
     Load,
-
+    // Diagnoses
     AddAdditionalDiagnoses,
     RemoveAdditionalDiagnoses,
     AddAgreedDiagnoses,
@@ -48,7 +48,7 @@ export default buildSlice(
     RemoveRefusedDiagnoses,
     AddCustomDiagnoses,
     RemoveCustomDiagnoses,
-
+    // Drugs
     AddAdditionalDrugs,
     RemoveAdditionalDrugs,
     AddAgreedDrugs,
@@ -59,7 +59,7 @@ export default buildSlice(
     RemoveCustomDrugs,
     ChangeAdditionalDrugDuration,
     ChangeCustomDrugDuration,
-
+    // Formulations
     ChangeFormulations,
   ],
   sliceInitialState,

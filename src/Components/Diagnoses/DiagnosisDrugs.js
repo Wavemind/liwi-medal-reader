@@ -143,11 +143,9 @@ const DiagnosisDrugs = ({ diagnosisKey }) => {
           {t('containers.medical_case.drugs.drugs')}
         </Text>
         {diagnosis.drugs.proposed.length === 0 ? (
-          <View>
-            <Text style={finalDiagnoses.noItemsText}>
-              {t('containers.medical_case.drugs.no_proposed')}
-            </Text>
-          </View>
+          <Text style={finalDiagnoses.noItemsText}>
+            {t('containers.medical_case.drugs.no_proposed')}
+          </Text>
         ) : (
           diagnosis.drugs.proposed.map((drugId, i) => (
             <View
