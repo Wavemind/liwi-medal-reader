@@ -16,7 +16,7 @@ import {
 export default () => {
   const state = store.getState()
   const assessmentCategories = [Config.CATEGORIES.assessment]
-  const assessmentStep = state.algorithm.item.config.full_order.assessments_step
+  const assessmentStep = state.algorithm.item.config.full_order.test_step
 
   const validDiagnoses = getValidDiagnoses()
   const questionsToDisplay = []
@@ -30,11 +30,13 @@ export default () => {
       diagnosis.instances,
       assessmentCategories,
       diagnosis.id,
+      Config.NODE_TYPES.diagnosis,
       false,
     )
   })
+  console.log(questionsToDisplay)
 
-  return assessmentStep.filter(question => {
-    questionsToDisplay.includes(question)
-  })
+  return assessmentStep.filter(question =>
+    questionsToDisplay.includes(question),
+  )
 }

@@ -124,6 +124,7 @@ export const handleChildren = (
           categories,
           instance.id,
           Config.NODE_TYPES.questionsSequence,
+          system,
         )
       } else {
         if (system) {
@@ -150,6 +151,7 @@ export const handleChildren = (
           categories,
           diagramId,
           diagramType,
+          system,
         )
       }
     }
@@ -181,7 +183,7 @@ export const addQuestion = (questionId, questionsToDisplay, categories) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   if (categories.includes(nodes[questionId].category)) {
-    questionsToDisplay[nodes[questionId].system].push(questionId)
+    questionsToDisplay.push(questionId)
   }
 }
 
