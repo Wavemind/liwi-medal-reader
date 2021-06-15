@@ -81,7 +81,7 @@ const CustomDrugs = () => {
   }
 
   return Object.values(customDiagnoses).map(diagnosis => (
-    <View style={[drugs.wrapper, Gutters.regularBMargin]}>
+    <View style={drugs.wrapper}>
       <View style={drugs.diagnosisHeaderWrapper}>
         <Text style={drugs.diagnosisHeader}>{diagnosis.name}</Text>
         <Text style={drugs.diagnosisType}>

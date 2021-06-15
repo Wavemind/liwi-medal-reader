@@ -14,8 +14,7 @@ export default async ({ algorithm }) => {
     consent: !!algorithm.config.consent_management,
     createdAt: new Date().getTime(),
     diagnosis: {
-      // TODO clear the proposed array when done
-      proposed: [60, 76],
+      proposed: [],
       excluded: [],
       diagnoses: [],
       additional: {},

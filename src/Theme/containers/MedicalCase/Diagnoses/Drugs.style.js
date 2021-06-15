@@ -54,6 +54,7 @@ export default function (props) {
     drugTitle: {
       ...Fonts.textSmall,
       ...Fonts.textBold,
+      width: wp(45),
     },
   })
 }

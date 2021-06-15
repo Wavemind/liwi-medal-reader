@@ -25,6 +25,8 @@ import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
 
+import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
+
 const sliceInitialState = {
   item: {},
 }
@@ -37,7 +39,7 @@ export default buildSlice(
     SetAnswer,
     UpdateNodeField,
     Load,
-
+    // Diagnoses
     AddAdditionalDiagnoses,
     RemoveAdditionalDiagnoses,
     AddAgreedDiagnoses,
@@ -46,7 +48,7 @@ export default buildSlice(
     RemoveRefusedDiagnoses,
     AddCustomDiagnoses,
     RemoveCustomDiagnoses,
-
+    // Drugs
     AddAdditionalDrugs,
     RemoveAdditionalDrugs,
     AddAgreedDrugs,
@@ -57,6 +59,8 @@ export default buildSlice(
     RemoveCustomDrugs,
     ChangeAdditionalDrugDuration,
     ChangeCustomDrugDuration,
+    // Formulations
+    ChangeFormulations,
   ],
   sliceInitialState,
 ).reducer

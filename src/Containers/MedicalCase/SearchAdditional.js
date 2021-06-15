@@ -75,7 +75,7 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
             ? -1
             : 0
         })
-    : filter(nodes, { type: 'FinalDiagnostic' })
+    : filter(nodes, { type: 'FinalDiagnosis' })
         .filter(item => {
           const isNeoNat = nodes[item.cc].is_neonat
           return (

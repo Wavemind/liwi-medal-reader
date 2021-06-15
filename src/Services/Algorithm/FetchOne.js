@@ -31,17 +31,17 @@ export default async ({ json_version }) => {
   const emergencyContentTargetPath = `${DocumentDirectoryPath}/emergency_content.html`
   await writeFile(emergencyContentTargetPath, response.data.emergency_content)
 
-  // Regroup nodes, final diagnostics and health cares into nodes key
+  // Regroup nodes, final diagnoses and health cares into nodes key
   const nodes = {
     ...response.data.nodes,
-    ...response.data.final_diagnostics,
+    ...response.data.final_diagnoses,
     ...response.data.health_cares,
   }
 
   // Remove useless key
   delete response.data.emergency_content
   delete response.data.nodes
-  delete response.data.final_diagnostics
+  delete response.data.final_diagnoses
   delete response.data.health_cares
 
   // Store algorithm

@@ -35,7 +35,7 @@ export const FontSize = {
   drawer: hp(1.4),
   tiny: hp(1.5),
   small: hp(1.7),
-  medium: hp(1.8),
+  medium: hp(1.9),
   regular: hp(2.2),
   sectionHeader: hp(2.6),
   large: hp(3.5),
