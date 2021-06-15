@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
@@ -20,7 +20,7 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
 
   const { t } = useTranslation()
 
-  const keys = ['agreed', 'additional']
+  const [keys] = useState(['agreed', 'additional'])
 
   return (
     <View>

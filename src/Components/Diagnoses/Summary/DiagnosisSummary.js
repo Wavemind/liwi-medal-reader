@@ -37,6 +37,10 @@ const DiagnosisSummary = ({ diagnosisKey }) => {
     state => state.medicalCase.item.diagnosis[diagnosisKey],
   )
 
+  /**
+   * Sorts the diagnoses by level_of_urgency
+   * @returns {*}
+   */
   const sortDiagnosesByUrgency = () => {
     return orderBy(
       Object.values(diagnoses),

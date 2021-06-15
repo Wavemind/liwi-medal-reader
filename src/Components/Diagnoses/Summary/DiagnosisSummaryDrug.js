@@ -33,8 +33,6 @@ const DiagnosisDrugs = ({ drug, isLast }) => {
 
   /**
    * Display drug formulation based on medication form selected
-   * @returns {*}
-   * @private
    */
   const renderSwitchFormulation = () => {
     const formulations = currentDrug.formulations

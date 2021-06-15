@@ -39,7 +39,7 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
         </Text>
       ) : (
         diagnosis.managements.map((managementId, i) => (
-          <View style={summary.managementWrapper(i === diagnosis.managements.length - 1)}>
+          <View style={summary.managementWrapper(i === managementsCount - 1)}>
             <Text style={summary.drugTitle}>
               {translate(nodes[managementId].label)}
             </Text>
