@@ -8,6 +8,7 @@ export default function (props) {
       ...Gutters.regularLMargin,
       ...Gutters.regularVMargin,
       ...Fonts.textSectionHeader,
+      color: Colors.text,
     },
     item: {
       ...Layout.row,
@@ -26,7 +27,7 @@ export default function (props) {
       borderTopWidth: 1,
       borderTopColor: Colors.grey,
     },
-    textStyle: {
+    text: {
       ...Fonts.textColorText,
       ...Fonts.textSmall,
     },

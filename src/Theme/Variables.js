@@ -22,6 +22,8 @@ export const Colors = {
   lightGrey: '#f2f1ee',
   transparent: 'rgba(0,0,0,0)',
   text: '#121212',
+  white: '#ffffff',
+  darkGrey: '#323232',
 }
 
 export const NavigationColors = {

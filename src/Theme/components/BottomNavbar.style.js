@@ -28,7 +28,7 @@ export default function (props) {
     },
     emergency: {
       fontSize: FontSize.large,
-      color: Colors.secondary,
+      color: Colors.white,
       ...Layout.selfCenter,
     },
     actions: {

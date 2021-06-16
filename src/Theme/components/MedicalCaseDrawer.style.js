@@ -10,22 +10,22 @@ export default function (props) {
       backgroundColor: Colors.lightGrey,
     },
     header: {
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.darkGrey,
       flexBasis: hp(13),
       ...Layout.center,
     },
     textHeader: {
-      color: Colors.secondary,
+      color: Colors.white,
       ...Fonts.textRegular,
       ...Fonts.textUppercase,
     },
     textPatient: {
-      color: Colors.secondary,
+      color: Colors.white,
       ...Fonts.textRegular,
       ...Fonts.textBold,
     },
     textMonth: {
-      color: Colors.secondary,
+      color: Colors.white,
       ...Layout.smallLPadding,
       ...Fonts.textSmall,
       ...Gutters.regularHPadding,

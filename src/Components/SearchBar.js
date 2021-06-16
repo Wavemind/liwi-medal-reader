@@ -25,7 +25,7 @@ const SearchBar = ({ navigation, filters = false }) => {
     <View style={Layout.row}>
       <View style={searchBar.inputWrapper}>
         <View style={Layout.colCenter}>
-          <Icon name="search" color={Colors.grey} size={FontSize.regular} />
+          <Icon name="search" color={Colors.primary} size={FontSize.large} />
         </View>
         <View style={searchBar.inputTextWrapper}>
           <Text style={searchBar.inputText}>{t('actions.search')}</Text>
