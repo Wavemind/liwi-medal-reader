@@ -6,10 +6,18 @@ import Navigation from '@/Config/Navigation'
  * @returns [Stages]
  */
 export const getStages = () => {
-  const is_arm_control = store.getState().algorithm.item.is_arm_control
+  const isArmControl = store.getState().algorithm.item.is_arm_control
+  const trackReferral = store.getState().algorithm.item.config.track_referral
 
-  if (is_arm_control) {
+  if (isArmControl) {
+    if (trackReferral) {
+      return Navigation.REFERRAL_ARM_CONTROL_STAGES
+    }
     return Navigation.ARM_CONTROL_STAGES
+  }
+
+  if (trackReferral) {
+    return Navigation.REFERRAL_INTERVENTION_STAGES
   }
   return Navigation.INTERVENTION_STAGES
 }

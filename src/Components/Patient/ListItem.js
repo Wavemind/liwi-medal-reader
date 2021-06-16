@@ -25,6 +25,8 @@ const ListItem = ({ item }) => {
   } = useTheme()
   const [activeMedicalCase, setActiveMedicalCase] = useState(null)
 
+  const [stages] = useState(getStages())
+
   useEffect(() => {
     const medicalCase = item.medicalCases.find(mc => {
       return mc.advancement.closedAt !== null
@@ -61,7 +63,7 @@ const ListItem = ({ item }) => {
           <View style={patientListItem.statusWrapper}>
             <Text style={patientListItem.statusTitle}>1st assessment</Text>
             <View style={Layout.row}>
-              {getStages().map((stage, index) => (
+              {stages.map((stage, index) => (
                 <Icon
                   key={`${item.id}-${stage.icon}`}
                   name={stage.icon}

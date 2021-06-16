@@ -119,14 +119,23 @@ const baseInterventionStages = [
   },
 ]
 
-const INTERVENTION_STAGES = [...baseInterventionStages, diagnosesStage]
+const armControlDiagnosesStage = {
+  label: 'diagnoses',
+  icon: 'diagnosis',
+  component: 'DiagnosesWrapper',
+  steps: [
+    {
+      label: 'final_diagnoses',
+      component: ArmFinalDiagnosesMedicalCaseContainer,
+    },
+    {
+      label: 'medicines',
+      component: ArmDrugsMedicalCaseContainer,
+    },
+  ],
+}
 
-const REFERRAL_INTERVENTION_STAGES = [
-  ...baseInterventionStages,
-  { ...diagnosesStage, steps: [...diagnosesStage.steps, referralStep] },
-]
-
-const ARM_CONTROL_STAGES = [
+const baseArmControlStages = [
   {
     label: 'registration',
     icon: 'registration',
@@ -168,20 +177,22 @@ const ARM_CONTROL_STAGES = [
       },
     ],
   },
+]
+
+const INTERVENTION_STAGES = [...baseInterventionStages, diagnosesStage]
+
+const REFERRAL_INTERVENTION_STAGES = [
+  ...baseInterventionStages,
+  { ...diagnosesStage, steps: [...diagnosesStage.steps, referralStep] },
+]
+
+const ARM_CONTROL_STAGES = [...baseArmControlStages, armControlDiagnosesStage]
+
+const REFERRAL_ARM_CONTROL_STAGES = [
+  ...baseArmControlStages,
   {
-    label: 'diagnoses',
-    icon: 'diagnosis',
-    component: 'DiagnosesWrapper',
-    steps: [
-      {
-        label: 'final_diagnoses',
-        component: ArmFinalDiagnosesMedicalCaseContainer,
-      },
-      {
-        label: 'medicines',
-        component: ArmDrugsMedicalCaseContainer,
-      },
-    ],
+    ...armControlDiagnosesStage,
+    steps: [...armControlDiagnosesStage.steps, referralStep],
   },
 ]
 
@@ -189,4 +200,5 @@ export default {
   INTERVENTION_STAGES,
   REFERRAL_INTERVENTION_STAGES,
   ARM_CONTROL_STAGES,
+  REFERRAL_ARM_CONTROL_STAGES,
 }

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { View, ScrollView, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -18,6 +18,8 @@ const DrawerItem = () => {
   const stageIndex = useSelector(
     state => state.medicalCase.item.advancement.stage,
   )
+
+  const [stages] = useState(getStages())
 
   const {
     Components: { medicalCaseDrawer },
@@ -36,7 +38,7 @@ const DrawerItem = () => {
         </View>
       </View>
       <ScrollView>
-        {getStages().map((stage, index) => (
+        {stages.map((stage, index) => (
           <Item
             key={index}
             stage={stage}
