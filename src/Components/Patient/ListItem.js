@@ -11,7 +11,7 @@ import format from 'date-fns/format'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
-import { getStages } from '@/Utils/ArmControl/GetStages'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction

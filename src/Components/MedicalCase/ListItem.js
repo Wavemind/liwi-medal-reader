@@ -15,7 +15,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import LoadPatient from '@/Store/Patient/Load'
-import { getStages } from '@/Utils/ArmControl/GetStages'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction

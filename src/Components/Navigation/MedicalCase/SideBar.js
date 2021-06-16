@@ -10,7 +10,7 @@ import { widthPercentageToDP } from 'react-native-responsive-screen'
  */
 import SideBarItem from './SideBarItem'
 import { useTheme } from '@/Theme'
-import { getStages } from '@/Utils/ArmControl/GetStages'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const SideBar = ({ stageIndex }) => {
   const {

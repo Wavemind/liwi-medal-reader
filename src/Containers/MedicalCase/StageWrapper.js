@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 import { TabBar, SideBar } from '@/Components'
-import { getStages } from '@/Utils/ArmControl/GetStages'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const StageWrapper = ({ route }) => {
   const { t } = useTranslation()

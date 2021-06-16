@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
  */
 import { useTheme } from '@/Theme'
 import Item from './Item'
-import { getStages } from '@/Utils/ArmControl/GetStages'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const DrawerItem = () => {
   const { t } = useTranslation()
