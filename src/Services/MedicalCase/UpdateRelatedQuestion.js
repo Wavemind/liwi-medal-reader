@@ -3,7 +3,8 @@
  */
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
-import { uniq, handleNumeric } from '@/Utils/MedicalCase'
+import { uniq } from '@/Utils/MedicalCase'
+import { handleNumeric } from '@/Utils/Answers'
 import { calculateFormula } from '@/Utils/Formula'
 import { calculateReference } from '@/Utils/ReferenceTable'
 import { store } from '@/Store'

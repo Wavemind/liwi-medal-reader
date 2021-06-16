@@ -7,7 +7,7 @@
  */
 import { store } from '@/Store'
 import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
-import { setNodeValue, debugNode } from '@/Utils/MedicalCase'
+import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
 

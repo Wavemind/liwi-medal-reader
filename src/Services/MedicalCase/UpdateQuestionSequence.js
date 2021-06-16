@@ -1,10 +1,10 @@
 /**
  * The internal imports
  */
-import { handleAnswerId, uniq, excludedByCC } from '@/Utils/MedicalCase'
+import { uniq, excludedByCC } from '@/Utils/MedicalCase'
 import { getQsValue } from '@/Utils/QuestionSequence'
 import { store } from '@/Store'
-import { getYesAnswer, getNoAnswer } from '@/Utils/Answers'
+import { getYesAnswer, getNoAnswer, handleAnswerId } from '@/Utils/Answers'
 
 export default ({ nodeId, newNodes }) => {
   const nodes = store.getState().algorithm.item.nodes

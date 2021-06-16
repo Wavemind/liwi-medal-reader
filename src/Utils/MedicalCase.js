@@ -2,7 +2,6 @@
  * The external imports
  */
 import reduce from 'lodash/reduce'
-import findKey from 'lodash/findKey'
 import differenceInDays from 'date-fns/differenceInDays'
 
 /**
@@ -95,11 +94,14 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
 }
 
 /**
- * TODO
- * @param {*} children
- * @param {*} questionsToDisplay
- * @param {*} instances
- * @param {*} categories
+ * Recursive function that goes through the diagram and add the valid node in questionsToDisplay
+ * @param {Array<Instance>} children : The instance we want to process
+ * @param {object | Array<Integer>} questionsToDisplay : reference to the node we want to show in the view
+ * @param {Array<Instance>} instances : all the instances in the diagram we are processing
+ * @param {Array<String>} categories : The node categories we want to add to questionsToDisplay
+ * @param {Integer} diagramId : The id of the diagram we are processing
+ * @param {String} diagramType : The kind of diagram we are processing Either Question Sequence or Diagnosis
+ * @param {Boolean} system : tells if we need to split into systems
  */
 export const handleChildren = (
   children,
@@ -133,7 +135,6 @@ export const handleChildren = (
           addQuestion(instance.id, questionsToDisplay, categories)
         }
       }
-      // console.log(instance.children, diagramType, diagramId)
       const childrenInstance = instance.children
         .filter(
           childId =>
@@ -159,16 +160,12 @@ export const handleChildren = (
 }
 
 /**
- * TODO
- * @param {*} questionId
- * @param {*} questionsToDisplay
- * @param {*} categories
+ * Adds a node to questionsToDisplay by system if it is in a category defined in categories
+ * @param {Integer} questionId : Question we want to add in questionsToDisplay
+ * @param {object} questionsToDisplay : Object of question id to display filtered by system
+ * @param {Array<String>} categories : The categories we want to add in questionsToDisplay
  */
-export const addQuestionToSystem = (
-  questionId,
-  questionsToDisplay,
-  categories,
-) => {
+const addQuestionToSystem = (questionId, questionsToDisplay, categories) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   if (categories.includes(nodes[questionId].category)) {
@@ -179,7 +176,14 @@ export const addQuestionToSystem = (
     }
   }
 }
-export const addQuestion = (questionId, questionsToDisplay, categories) => {
+
+/**
+ * Adds a node to questionsToDisplay if it is in a category defined in categories
+ * @param {Integer} questionId : Question we want to add in questionsToDisplay
+ * @param {object} questionsToDisplay : Array of question id to display
+ * @param {Array<String>} categories : The categories we want to add in questionsToDisplay
+ */
+const addQuestion = (questionId, questionsToDisplay, categories) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   if (categories.includes(nodes[questionId].category)) {
@@ -187,6 +191,11 @@ export const addQuestion = (questionId, questionsToDisplay, categories) => {
   }
 }
 
+/**
+ * Tells if a node is excluded by a complaint category
+ * @param {Integer} questionId : the id of the node we are testing
+ * @returns {Boolean} Tells if node is excluded
+ */
 export const excludedByCC = questionId => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
@@ -198,9 +207,9 @@ export const excludedByCC = questionId => {
 }
 
 /**
- * TODO
- * @param {*} instance
- * @returns
+ * For an instance we will calculate its conditions
+ * @param {Instance} instance : the instance we wanna calculate
+ * @returns {Boolean} : value of the condition
  */
 export const calculateCondition = instance => {
   const state = store.getState()
@@ -212,15 +221,15 @@ export const calculateCondition = instance => {
   if (instance.conditions.length === 0) {
     return true
   }
-  return instance.conditions.some(condition => {
-    return mcNodes[condition.node_id].answer === condition.answer_id
-  })
+  return instance.conditions.some(
+    condition => mcNodes[condition.node_id].answer === condition.answer_id,
+  )
 }
 
 /**
- * TODO
- * @param {*} conditionsValues
- * @returns
+ * Take an array of boolean and reduces it
+ * @param {Array<Boolean>} conditionsValues : Array of boolean to reduce
+ * @returns {Boolean} the reduced value
  */
 export const reduceConditions = conditionsValues =>
   reduce(
@@ -230,117 +239,11 @@ export const reduceConditions = conditionsValues =>
     },
     false,
   )
-
 /**
- * Round number
- * @param {integer} value : value to round
- * @param {integer} step :round precision
- * @returns
+ * Show in the console where in what diagram a node need to be shown
+ * @param {Integer} nodeId : Node Id we wanna have info on
+ * @param {Array<Node>} mcNodes : Current state of medical case nodes
  */
-const round = (value, step) => {
-  step || (step = 1.0)
-  var inv = 1.0 / step
-  return Math.round(value * inv) / inv
-}
-
-/**
- * Handles a new value for a numeric node will return the new values to set in the node
- * @param {MedicalCaseNode} mcNode : Current state of the node to update
- * @param {Node} node : Node definition in the algorithm
- * @param {any} value : New value of the node
- * @returns {
- *              {integer} answer : new id of the answer
- *              {string}  value : new value
- *              {integer} roundedValue? : Rounded value if the node requires a rounded value
- *   }
- */
-export const handleNumeric = (mcNode, node, value) => {
-  const response = { answer: null, value: value }
-
-  if (value === null) {
-    response.answer = null
-  } else if (mcNode.unavailableValue) {
-    // Unavailable question
-    response.answer = Number(value)
-    response.value = node.answers[response.answer].value
-  } else {
-    // Normal process
-    response.answer = findKey(node.answers, condition => {
-      switch (condition.operator) {
-        case 'more_or_equal':
-          return value >= Number(condition.value)
-        case 'less':
-          return value < Number(condition.value)
-        case 'between':
-          return (
-            value >= Number(condition.value.split(',')[0]) &&
-            value < Number(condition.value.split(',')[1])
-          )
-      }
-    })
-    if (response.answer !== undefined) {
-      response.answer = Number(response.answer)
-    } else {
-      response.answer = null
-    }
-
-    if (node?.round !== null) {
-      response.roundedValue = round(value, node?.round)
-    }
-    return response
-  }
-}
-
-/**
- * Handles a new value for a answerId based node will return the new values to set in the node
- * @param {MedicalCaseNode} mcNode : Current state of the node to update
- * @param {Node} node : Node definition in the algorithm
- * @param {any} value : New value of the node
- * @returns {
- *              {integer} answer : new id of the answer
- *              {string}  value : new value
- *   }
- */
-export const handleAnswerId = (node, value) => {
-  let answer = null
-
-  // Set Number only if this is a number
-  if (value === null) {
-    // Set the new answer to null for reset
-    answer = null
-  } else if (/^\d+$/.test(value)) {
-    answer = Number(value)
-    value = node.answers[answer].value
-  } else {
-    answer = Object.values(node.answers).find(
-      nodeAnswer => nodeAnswer.value === value,
-    )
-  }
-  return { answer, value }
-}
-
-/**
- * Based on the node value format it will return the new values to set in the store
- * @param {MedicalCaseNode} mcNode : Current state of the node to update
- * @param {Node} node : Node definition in the algorithm
- * @param {any} value : New value of the node
- * @returns See return of handleNumeric or handleAnswerId
- */
-export const setNodeValue = (mcNode, node, value) => {
-  const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
-
-  switch (node.value_format) {
-    case int:
-    case float:
-      return handleNumeric(mcNode, node, value)
-    case bool:
-    case array:
-    case present:
-    case positive:
-      return handleAnswerId(node, value)
-  }
-}
-
 export const debugNode = (nodeId, mcNodes) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
@@ -351,6 +254,14 @@ export const debugNode = (nodeId, mcNodes) => {
   })
   console.info(nodeId, translate(nodes[nodeId].label), result)
 }
+
+/**
+ * Calculate the value of a node in a specific diagnosis
+ * @param {Integer} diagnosisId : Id of the diagnosis
+ * @param {Integer} nodeId : id of the node
+ * @param {Array<Node>} mcNodes : Current state of the medical Case nodes
+ * @returns {Boolean}
+ */
 const debugNodeInDiagnosis = (diagnosisId, nodeId, mcNodes) => {
   const validDiagnosesIds = getValidDiagnoses().map(diagnosis => diagnosis.id)
   const state = store.getState()
@@ -371,6 +282,13 @@ const debugNodeInDiagnosis = (diagnosisId, nodeId, mcNodes) => {
     mcNodes,
   )
 }
+/**
+ * Calculate the value for a specific instance in a diagram.
+ * @param {Integer} diagnosisId : Id of the diagnosis
+ * @param {Array<Condition>} conditions : conditions of the current node
+ * @param {Array<Node>} mcNodes : Current state of the medical Case nodes
+ * @returns
+ */
 const debugCalculateCondition = (diagnosisId, conditions, mcNodes) => {
   const state = store.getState()
   const diagnoses = state.algorithm.item.diagnoses
