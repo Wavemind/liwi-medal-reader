@@ -1,7 +1,7 @@
-import React from 'react'
 /**
  * The external imports
  */
+import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 

@@ -4,7 +4,7 @@ import SetAnswer from './SetAnswer'
 import ChangeAdvancement from './ChangeAdvancement'
 import UpdateNodeField from './UpdateNodeField'
 import Load from './Load'
-
+// Final Diagnoses
 import AddAdditionalDiagnoses from './Diagnoses/AddAdditionalDiagnoses'
 import RemoveAdditionalDiagnoses from './Diagnoses/RemoveAdditionalDiagnoses'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
@@ -13,7 +13,7 @@ import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnos
 import RemoveRefusedDiagnoses from './Diagnoses/RemoveRefusedDiagnoses'
 import AddCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/AddCustomDiagnoses'
 import RemoveCustomDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveCustomDiagnoses'
-
+// Drugs
 import AddAdditionalDrugs from '@/Store/MedicalCase/Drugs/AddAdditionalDrugs'
 import RemoveAdditionalDrugs from '@/Store/MedicalCase/Drugs/RemoveAdditionalDrugs'
 import AddAgreedDrugs from '@/Store/MedicalCase/Drugs/AddAgreedDrugs'
@@ -24,8 +24,12 @@ import AddCustomDrugs from '@/Store/MedicalCase/Drugs/AddCustomDrugs'
 import RemoveCustomDrugs from '@/Store/MedicalCase/Drugs/RemoveCustomDrugs'
 import ChangeAdditionalDrugDuration from '@/Store/MedicalCase/Drugs/ChangeAdditionalDrugDuration'
 import ChangeCustomDrugDuration from '@/Store/MedicalCase/Drugs/ChangeCustomDrugDuration'
-
+// Formulations
 import ChangeFormulations from '@/Store/MedicalCase/ChangeFormulations'
+// Arm Control
+import ArmAddCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmAddCustomDrugs'
+import ArmRemoveCustomDrugs from '@/Store/MedicalCase/ArmControl/ArmRemoveCustomDrugs'
+import ArmChangeCustomDrugDuration from '@/Store/MedicalCase/ArmControl/ArmChangeCustomDrugDuration'
 
 const sliceInitialState = {
   item: {},
@@ -61,6 +65,10 @@ export default buildSlice(
     ChangeCustomDrugDuration,
     // Formulations
     ChangeFormulations,
+    // Arm Control
+    ArmAddCustomDrugs,
+    ArmRemoveCustomDrugs,
+    ArmChangeCustomDrugDuration,
   ],
   sliceInitialState,
 ).reducer
