@@ -33,6 +33,7 @@ describe('Handle additional diagnosis addition', () => {
               agreed: {},
               refused: [],
               additional: {},
+              custom: {},
             },
           },
         },
@@ -50,6 +51,7 @@ describe('Handle additional diagnosis addition', () => {
           agreed: {},
           refused: [],
           additional: {},
+          custom: {},
         },
       },
     })
