@@ -93,4 +93,27 @@ export const Config = {
     present: 'Present',
     positive: 'Positive',
   },
+  ADMINISTRATION_ROUTE_CATEGORIES: [
+    'Enteral',
+    'Parenteral injectable',
+    'Mucocutaneous',
+  ],
+  MEDICATION_FORMS: {
+    tablet: 'tablet',
+    dispersible_tablet: 'dispersible_tablet',
+    capsule: 'capsule',
+    syrup: 'syrup',
+    suspension: 'suspension',
+    suppository: 'suppository',
+    drops: 'drops',
+    solution: 'solution',
+    powder_for_injection: 'powder_for_injection',
+    patch: 'patch',
+    cream: 'cream',
+    pessary: 'pessary',
+    ointment: 'ointment',
+    gel: 'gel',
+    spray: 'spray',
+    inhaler: 'inhaler',
+  }
 }

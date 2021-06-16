@@ -24,6 +24,7 @@ import MedicalCaseDiagnosesDrugsContainer from '@/Containers/MedicalCase/Diagnos
 import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
 import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'
 import MedicalCaseDiagnosesFormulationsContainer from '@/Containers/MedicalCase/Diagnoses/Formulations'
+import MedicalCaseDiagnosesSummaryContainer from '@/Containers/MedicalCase/Diagnoses/Summary'
 
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
@@ -61,7 +62,7 @@ const diagnosesStage = {
     },
     {
       label: 'summary',
-      component: ToDo,
+      component: MedicalCaseDiagnosesSummaryContainer,
     },
   ],
 }
