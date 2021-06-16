@@ -95,11 +95,14 @@ export const orderSystems = (systemOrder, questionsPerSystem) => {
 }
 
 /**
- * TODO
- * @param {*} children
- * @param {*} questionsToDisplay
- * @param {*} instances
- * @param {*} categories
+ * Recursive function that goes through the diagram and add the valid node in questionsToDisplay
+ * @param {Array<Instance>} children : The instance we want to process
+ * @param {object | Array<Integer>} questionsToDisplay : reference to the node we want to show in the view
+ * @param {Array<Instance>} instances : all the instances in the diagram we are processing
+ * @param {Array<String>} categories : The node categories we want to add to questionsToDisplay
+ * @param {Integer} diagramId : The id of the diagram we are processing
+ * @param {String} diagramType : The kind of diagram we are processing Either Question Sequence or Diagnosis
+ * @param {Boolean} system : tells if we need to split into systems
  */
 export const handleChildren = (
   children,
@@ -133,7 +136,6 @@ export const handleChildren = (
           addQuestion(instance.id, questionsToDisplay, categories)
         }
       }
-      // console.log(instance.children, diagramType, diagramId)
       const childrenInstance = instance.children
         .filter(
           childId =>
@@ -159,16 +161,12 @@ export const handleChildren = (
 }
 
 /**
- * TODO
- * @param {*} questionId
- * @param {*} questionsToDisplay
- * @param {*} categories
+ * Adds a node to questionsToDisplay by system if it is in a category defined in categories
+ * @param {Integer} questionId : Question we want to add in questionsToDisplay
+ * @param {object} questionsToDisplay : Object of question id to display filtered by system
+ * @param {Array<String>} categories : The categories we want to add in questionsToDisplay
  */
-export const addQuestionToSystem = (
-  questionId,
-  questionsToDisplay,
-  categories,
-) => {
+const addQuestionToSystem = (questionId, questionsToDisplay, categories) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   if (categories.includes(nodes[questionId].category)) {
@@ -179,7 +177,14 @@ export const addQuestionToSystem = (
     }
   }
 }
-export const addQuestion = (questionId, questionsToDisplay, categories) => {
+
+/**
+ * Adds a node to questionsToDisplay if it is in a category defined in categories
+ * @param {Integer} questionId : Question we want to add in questionsToDisplay
+ * @param {object} questionsToDisplay : Array of question id to display
+ * @param {Array<String>} categories : The categories we want to add in questionsToDisplay
+ */
+const addQuestion = (questionId, questionsToDisplay, categories) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   if (categories.includes(nodes[questionId].category)) {
@@ -187,6 +192,11 @@ export const addQuestion = (questionId, questionsToDisplay, categories) => {
   }
 }
 
+/**
+ * Tells if a node is excluded by a complaint category
+ * @param {Integer} questionId : the id of the node we are testing
+ * @returns {Boolean} Tells if node is excluded
+ */
 export const excludedByCC = questionId => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
@@ -198,8 +208,8 @@ export const excludedByCC = questionId => {
 }
 
 /**
- * TODO
- * @param {*} instance
+ * For an instance we will calculate its conditions
+ * @param {Instance} instance :
  * @returns
  */
 export const calculateCondition = instance => {
@@ -218,8 +228,8 @@ export const calculateCondition = instance => {
 }
 
 /**
- * TODO
- * @param {*} conditionsValues
+ * Take an array of boolean and reduces it
+ * @param {Array<Boolean>} conditionsValues : Array of boolean to reduce
  * @returns
  */
 export const reduceConditions = conditionsValues =>
@@ -341,6 +351,11 @@ export const setNodeValue = (mcNode, node, value) => {
   }
 }
 
+/**
+ * Show in the console where in what diagram a node need to be shown
+ * @param {Integer} nodeId : Node Id we wanna have info on
+ * @param {Array<Node>} mcNodes : Current state of medical case nodes
+ */
 export const debugNode = (nodeId, mcNodes) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
@@ -351,6 +366,14 @@ export const debugNode = (nodeId, mcNodes) => {
   })
   console.info(nodeId, translate(nodes[nodeId].label), result)
 }
+
+/**
+ * Calculate the value of a node in a specific diagnosis
+ * @param {Integer} diagnosisId : Id of the diagnosis
+ * @param {Integer} nodeId : id of the node
+ * @param {Array<Node>} mcNodes : Current state of the medical Case nodes
+ * @returns {Boolean}
+ */
 const debugNodeInDiagnosis = (diagnosisId, nodeId, mcNodes) => {
   const validDiagnosesIds = getValidDiagnoses().map(diagnosis => diagnosis.id)
   const state = store.getState()
@@ -371,6 +394,13 @@ const debugNodeInDiagnosis = (diagnosisId, nodeId, mcNodes) => {
     mcNodes,
   )
 }
+/**
+ * Calculate the value for a specific instance in a diagram.
+ * @param {Integer} diagnosisId : Id of the diagnosis
+ * @param {Array<Condition>} conditions : conditions of the current node
+ * @param {Array<Node>} mcNodes : Current state of the medical Case nodes
+ * @returns
+ */
 const debugCalculateCondition = (diagnosisId, conditions, mcNodes) => {
   const state = store.getState()
   const diagnoses = state.algorithm.item.diagnoses
