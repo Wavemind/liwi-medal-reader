@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { View, ScrollView, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -10,14 +10,16 @@ import { useSelector } from 'react-redux'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import Navigation from '@/Config/Navigation'
 import Item from './Item'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const DrawerItem = () => {
   const { t } = useTranslation()
   const stageIndex = useSelector(
     state => state.medicalCase.item.advancement.stage,
   )
+
+  const [stages] = useState(getStages())
 
   const {
     Components: { medicalCaseDrawer },
@@ -36,7 +38,7 @@ const DrawerItem = () => {
         </View>
       </View>
       <ScrollView>
-        {Navigation.INTERVENTION_STAGES.map((stage, index) => (
+        {stages.map((stage, index) => (
           <Item
             key={index}
             stage={stage}

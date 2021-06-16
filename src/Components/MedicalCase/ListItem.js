@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
 import format from 'date-fns/format'
@@ -15,7 +15,7 @@ import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 import LoadMedicalCase from '@/Store/MedicalCase/Load'
 import LoadPatient from '@/Store/Patient/Load'
-import Navigation from '@/Config/Navigation'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -30,6 +30,8 @@ const ListItem = ({ item }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigation = useNavigation()
+
+  const [stages] = useState(getStages())
 
   /**
    * Will load the Medical case in the store then navigate to the Medical Case
@@ -61,12 +63,12 @@ const ListItem = ({ item }) => {
           <Text style={patientListItem.statusTitle}>
             {t(
               `containers.medical_case.stages.${
-                Navigation.INTERVENTION_STAGES[item.advancement.stage].label
+                stages[item.advancement.stage].label
               }`,
             )}
           </Text>
           <View style={Layout.row}>
-            {Navigation.INTERVENTION_STAGES.map((stage, index) => (
+            {stages.map((stage, index) => (
               <Icon
                 key={`${item.id}-icon-${stage.icon}`}
                 name={stage.icon}
