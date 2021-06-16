@@ -23,12 +23,14 @@ beforeAll(async () => {
   await store.dispatch(CreateMedicalCase.action({ algorithm }))
 
   const weightId = algorithm.config.basic_questions.weight_question_id
+  console.log('weightId', weightId)
   await store.dispatch(SetAnswer.action({ nodeId: weightId, value: '3' }))
 })
 
 describe('Drug dose calculation', () => {
-  it('should calculate doseResult of 3 for drugId = 1681, index = 1 and weight = 3', () => {
+  it('should calculate doseResult of 3 for drugId = 1681, index = 1 and weight = 3', async () => {
     const result = drugDoses(1, 1681)
+    console.info(result)
     expect(result.doseResult).toEqual(3)
   })
   it('should calculate minDoseMl of 3 for drugId = 1681, index = 1 and weight = 3', () => {

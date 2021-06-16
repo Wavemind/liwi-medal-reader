@@ -1,4 +1,13 @@
 /**
+ * The external imports
+ */
+import findKey from 'lodash/findKey'
+/**
+ * The internal imports
+ */
+import { Config } from '@/Config'
+
+/**
  * Get yes answer based on reference
  * @param node - (algorithm or medical case node)
  */
@@ -25,4 +34,112 @@ export const getNoAnswer = node => {
   })
 
   return Object.values(answers)[noAnswerIndex]
+}
+/**
+ * Round number
+ * @param {integer} value : value to round
+ * @param {integer} step :round precision
+ * @returns {Float} : Rounded value
+ */
+export const round = (value, step) => {
+  step || (step = 1.0)
+  var inv = 1.0 / step
+  return Math.round(value * inv) / inv
+}
+
+/**
+ * Handles a new value for a numeric node will return the new values to set in the node
+ * @param {MedicalCaseNode} mcNode : Current state of the node to update
+ * @param {Node} node : Node definition in the algorithm
+ * @param {any} value : New value of the node
+ * @returns {
+ *              {integer} answer : new id of the answer
+ *              {string}  value : new value
+ *              {integer} roundedValue? : Rounded value if the node requires a rounded value
+ *   }
+ */
+export const handleNumeric = (mcNode, node, value) => {
+  const response = { answer: null, value: value }
+
+  if (value === null) {
+    response.answer = null
+  } else if (mcNode.unavailableValue) {
+    // Unavailable question
+    response.answer = Number(value)
+    response.value = node.answers[response.answer].value
+  } else {
+    // Normal process
+    response.answer = findKey(node.answers, condition => {
+      switch (condition.operator) {
+        case 'more_or_equal':
+          return value >= Number(condition.value)
+        case 'less':
+          return value < Number(condition.value)
+        case 'between':
+          return (
+            value >= Number(condition.value.split(',')[0]) &&
+            value < Number(condition.value.split(',')[1])
+          )
+      }
+    })
+    if (response.answer !== undefined) {
+      response.answer = Number(response.answer)
+    } else {
+      response.answer = null
+    }
+
+    if (node?.round !== null) {
+      response.roundedValue = round(value, node?.round)
+    }
+    return response
+  }
+}
+
+/**
+ * Handles a new value for a answerId based node will return the new values to set in the node
+ * @param {MedicalCaseNode} mcNode : Current state of the node to update
+ * @param {Node} node : Node definition in the algorithm
+ * @param {any} value : New value of the node
+ * @returns {
+ *              {integer} answer : new id of the answer
+ *              {string}  value : new value
+ *   }
+ */
+export const handleAnswerId = (node, value) => {
+  let answer = null
+
+  // Set Number only if this is a number
+  if (value === null) {
+    // Set the new answer to null for reset
+    answer = null
+  } else if (/^\d+$/.test(value)) {
+    answer = Number(value)
+    value = node.answers[answer].value
+  } else {
+    answer = Object.values(node.answers).find(
+      nodeAnswer => nodeAnswer.value === value,
+    )
+  }
+  return { answer, value }
+}
+
+/**
+ * Based on the node value format it will return the new values to set in the store
+ * @param {MedicalCaseNode} mcNode : Current state of the node to update
+ * @param {Node} node : Node definition in the algorithm
+ * @param {any} value : New value of the node
+ * @returns See return of handleNumeric or handleAnswerId
+ */
+export const setNodeValue = (mcNode, node, value) => {
+  const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
+  switch (node.value_format) {
+    case int:
+    case float:
+      return handleNumeric(mcNode, node, value)
+    case bool:
+    case array:
+    case present:
+    case positive:
+      return handleAnswerId(node, value)
+  }
 }

@@ -128,7 +128,9 @@ export const drugDoses = (formulationIndex, drugId) => {
         if (maxDoseCap < 1) {
           return {
             ...formulation,
-            no_possibility: i18n.t('containers.medical_case.formulations.drug.no_options'),
+            no_possibility: i18n.t(
+              'containers.medical_case.formulations.drug.no_options',
+            ),
             doseResult: null,
           }
         }

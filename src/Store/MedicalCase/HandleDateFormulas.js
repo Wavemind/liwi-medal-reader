@@ -8,7 +8,7 @@ import differenceInMonths from 'date-fns/differenceInMonths'
 /**
  * The internal imports
  */
-import { handleNumeric } from '@/Utils/MedicalCase'
+import { handleNumeric } from '@/Utils/Answers'
 
 export default {
   initialState: {},
