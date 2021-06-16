@@ -1,8 +1,8 @@
 /**
  * The external imports
  */
-import React from 'react'
-import { View } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/Database/Patient/Insert'
+import StepValidation from '@/Services/Validation/Step'
+import { translate } from '@/Translations/algorithm'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -21,8 +23,9 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     Layout,
     Colors,
     FontSize,
+    Fonts,
   } = useTheme()
-
+  const [errors, setErrors] = useState([])
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigation = useNavigation()
@@ -31,30 +34,48 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   )
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
+  const nodes = useSelector(state => state.algorithm.item.nodes)
 
   /**
    * Will navigate to the next step / Stage base on the current navigation State
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
   const handleNavigation = async direction => {
-    if (advancement.stage === 0) {
-      await dispatch(InsertPatient.action())
-    }
-    const medicalCaseState = navigationState.routes[navigationState.index].state
+    console.log('avant')
+    const newErrors = StepValidation()
+    setErrors(newErrors)
+    // // TODO: Need patient id in medicalCase when it's created
+    // if (advancement.stage === 0) {
+    //   await dispatch(InsertPatient.action())
+    // }
+    // const medicalCaseState = navigationState.routes[navigationState.index].state
 
-    const nextStep = advancement.step + direction
-    if (
-      medicalCaseState !== undefined &&
-      nextStep < medicalCaseState.routes.length &&
-      nextStep >= 0
-    ) {
-      navigation.navigate(medicalCaseState.routes[nextStep].name)
-    } else {
-      navigation.navigate('StageWrapper', {
-        stageIndex: stageIndex + direction,
-      })
-    }
+    // const nextStep = advancement.step + direction
+    // if (
+    //   medicalCaseState !== undefined &&
+    //   nextStep < medicalCaseState.routes.length &&
+    //   nextStep >= 0
+    // ) {
+    //   navigation.navigate(medicalCaseState.routes[nextStep].name)
+    // } else {
+    //   navigation.navigate('StageWrapper', {
+    //     stageIndex: stageIndex + direction,
+    //   })
+    // }
   }
+  console.log(errors)
+  if (errors.length > 0) {
+    return (
+      <View style={[Layout.fill, { backgroundColor: 'red' }]}>
+        {errors.map(error => (
+          <Text key={error.id} style={[Fonts.textRegular, { color: 'white' }]}>
+            {translate(nodes[error.id].label)} {error.message}
+          </Text>
+        ))}
+      </View>
+    )
+  }
+
   return (
     <View style={[Layout.fill, Layout.row]}>
       <View style={[Layout.fill, Layout.row]}>

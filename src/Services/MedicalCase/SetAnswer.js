@@ -9,7 +9,7 @@ import findKey from 'lodash/findKey'
  */
 import { store } from '@/Store'
 import { Config } from '@/Config'
-import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
+import QuestionValidationService from '@/Services/Validation/Question'
 
 /**
  * Round number
@@ -137,7 +137,7 @@ export default async props => {
   const mcNode = medicalCase.nodes[nodeId]
 
   // Validation
-  const validation = await validationMedicalCaseService(mcNode, node, value)
+  const validation = await QuestionValidationService(mcNode, node, value)
 
   // Save value only if validation pass
   if (validation.validationType !== 'error') {
