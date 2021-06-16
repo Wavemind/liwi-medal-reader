@@ -148,6 +148,7 @@ const SearchAdditionalContainer = ({ navigation, route }) => {
             agreed: {},
             refused: [],
             additional: {},
+            custom: {},
           },
         }
       }

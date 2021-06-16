@@ -34,7 +34,7 @@ const SideBar = ({ stageIndex }) => {
         contentContainerStyle={sideBar.container}
         showsVerticalScrollIndicator={false}
       >
-        {Navigation.INTERVENTION_STAGES.map((stage, index) => (
+        {Navigation.ARM_CONTROL_STAGES.map((stage, index) => (
           <SideBarItem key={`sidebar_${index}`} stage={stage} index={index} />
         ))}
       </ScrollView>

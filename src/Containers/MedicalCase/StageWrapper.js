@@ -22,7 +22,7 @@ const StageWrapper = ({ route }) => {
   } = useTheme()
   const stageIndex = route.params?.stageIndex || 0
 
-  const stage = Navigation.INTERVENTION_STAGES[stageIndex]
+  const stage = Navigation.ARM_CONTROL_STAGES[stageIndex]
 
   return (
     <View style={medicalCase.wrapper}>

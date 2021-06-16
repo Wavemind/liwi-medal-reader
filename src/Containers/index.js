@@ -11,13 +11,12 @@ export { default as ConsultationsPatientContainer } from './Patient/Consultation
 
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
 export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
-export { default as MedicalCaseDiagnosesDrugsContainer } from './MedicalCase/Diagnoses/Drugs'
+export { default as DrugsMedicalCaseContainer } from './MedicalCase/Diagnoses/Drugs'
 export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/FirstAssessment/ComplaintCategory'
 export { default as BasicMeasurementMedicalCaseContainer } from './MedicalCase/FirstAssessment/BasicMeasurement'
 export { default as MedicalHistoryMedicalCaseContainer } from './MedicalCase/Consultation/MedicalHistory'
 export { default as TreatmentConditionsMedicalCaseContainer } from './MedicalCase/Diagnoses/TreatmentConditions'
-export { default as MedicalCaseDiagnosesFormulationsContainer } from './MedicalCase/Diagnoses/Formulations'
-export { default as MedicalCaseDiagnosesSummaryContainer } from './MedicalCase/Diagnoses/Summary'
+export { default as FormulationsMedicalCaseContainer } from './MedicalCase/Diagnoses/Formulations'
 
 export { default as ListConsentContainer } from './Consent/List'
 export { default as CameraConsentContainer } from './Consent/Camera'
