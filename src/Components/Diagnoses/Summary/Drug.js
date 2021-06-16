@@ -21,7 +21,7 @@ import {
 import { Config } from '@/Config'
 import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
 
-const DiagnosisDrugs = ({ drug, isLast }) => {
+const Drug = ({ drug, isLast }) => {
   // Theme and style elements deconstruction
   const {
     Containers: { finalDiagnoses, summary },
@@ -78,4 +78,4 @@ const DiagnosisDrugs = ({ drug, isLast }) => {
   )
 }
 
-export default DiagnosisDrugs
+export default Drug

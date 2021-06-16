@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const CustomDiagnosisSummary = () => {
+const Custom = () => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -48,7 +48,10 @@ const CustomDiagnosisSummary = () => {
               </Text>
             ) : (
               drugs.map((drug, i) => (
-                <View style={summary.drugWrapper(i === drugs.length - 1)}>
+                <View
+                  key={`custom_drug-${i}`}
+                  style={summary.drugWrapper(i === drugs.length - 1)}
+                >
                   <Text style={summary.drugTitle}>{drug.name}</Text>
                   <Text style={Fonts.textSmall}>
                     {t('formulations.drug.d')} : {drug.duration} {t('formulations.drug.days')}
@@ -63,4 +66,4 @@ const CustomDiagnosisSummary = () => {
   })
 }
 
-export default CustomDiagnosisSummary
+export default Custom

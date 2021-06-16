@@ -9,9 +9,9 @@ import { useTranslation } from 'react-i18next'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { DiagnosisSummaryDrug } from '@/Components'
+import { Drug } from '@/Components'
 
-const DiagnosisSummaryDrugs = ({ diagnosis }) => {
+const Drugs = ({ diagnosis }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -38,7 +38,7 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
       ) : (
         keys.map(key =>
           Object.values(diagnosis.drugs[key]).map((drug, i) => (
-            <DiagnosisSummaryDrug
+            <Drug
               key={`summary_diagnosis_drugs-${drug.id}`}
               drug={drug}
               isLast={i === Object.keys(diagnosis.drugs[key]).length - 1}
@@ -50,4 +50,4 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
   )
 }
 
-export default DiagnosisSummaryDrugs
+export default Drugs

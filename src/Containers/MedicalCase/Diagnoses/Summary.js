@@ -7,7 +7,7 @@ import { ScrollView, View } from 'react-native'
 /**
  * The internal imports
  */
-import { DiagnosisSummary, CustomDiagnosisSummary } from '@/Components'
+import { Diagnosis, Custom } from '@/Components'
 import { useTheme } from '@/Theme'
 
 const Drugs = () => {
@@ -16,9 +16,9 @@ const Drugs = () => {
   return (
     <ScrollView>
       <View style={Gutters.regularBMargin}>
-        <DiagnosisSummary diagnosisKey="agreed" />
-        <DiagnosisSummary diagnosisKey="additional" />
-        <CustomDiagnosisSummary />
+        <Diagnosis diagnosisKey="agreed" />
+        <Diagnosis diagnosisKey="additional" />
+        <Custom />
       </View>
     </ScrollView>
   )

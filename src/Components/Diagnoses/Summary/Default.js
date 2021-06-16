@@ -13,7 +13,7 @@ import { translate } from '@/Translations/algorithm'
 import { Config } from '@/Config'
 import { useTheme } from '@/Theme'
 
-const Capsule = ({ drug, drugDose }) => {
+const Default = ({ drug, drugDose }) => {
   // Theme and style elements deconstruction
   const { Gutters, Fonts } = useTheme()
 
@@ -40,9 +40,9 @@ const Capsule = ({ drug, drugDose }) => {
       <Text style={[Gutters.regularTMargin, Fonts.textSmall]}>
         {translate(drugDose.dispensing_description)}
       </Text>
-      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(drugDose.administration_route_category) ? <Text key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text> : null}
+      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(drugDose.administration_route_category) && <Text key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text>}
     </View>
   )
 }
 
-export default Capsule
+export default Default

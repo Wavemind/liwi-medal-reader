@@ -13,7 +13,7 @@ import { useTheme } from '@/Theme'
 import { translate } from '@/Translations/algorithm'
 import { QuestionInfoButton } from '@/Components'
 
-const DiagnosisSummaryDrugs = ({ diagnosis }) => {
+const Managements = ({ diagnosis }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -39,7 +39,10 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
         </Text>
       ) : (
         diagnosis.managements.map((managementId, i) => (
-          <View style={summary.managementWrapper(i === managementsCount - 1)}>
+          <View
+            key={`management-${managementId}`}
+            style={summary.managementWrapper(i === managementsCount - 1)}
+          >
             <Text style={summary.drugTitle}>
               {translate(nodes[managementId].label)}
             </Text>
@@ -53,4 +56,4 @@ const DiagnosisSummaryDrugs = ({ diagnosis }) => {
   )
 }
 
-export default DiagnosisSummaryDrugs
+export default Managements

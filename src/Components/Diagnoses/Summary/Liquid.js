@@ -44,7 +44,7 @@ const Liquid = ({ drug, drugDose }) => {
           </Text>
         </View>
       )}
-      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(drugDose.administration_route_category) ? <Text style={Fonts.textSmall} key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text> : null}
+      {Config.ADMINISTRATION_ROUTE_CATEGORIES.includes(drugDose.administration_route_category) && <Text style={Fonts.textSmall} key={`text_${drug.id}`}>{translate(drugDose.injection_instructions)}</Text>}
     </View>
   )
 }

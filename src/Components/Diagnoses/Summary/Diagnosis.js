@@ -10,17 +10,13 @@ import { useIsFocused } from '@react-navigation/native'
 /**
  * The internal imports
  */
-import {
-  DiagnosisSummaryDrugs,
-  DiagnosisSummaryManagements,
-  QuestionInfoButton,
-} from '@/Components'
+import { Drugs, Managements, QuestionInfoButton } from '@/Components'
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
 import orderBy from 'lodash/orderBy'
 import isEqual from 'lodash/isEqual'
 
-const DiagnosisSummary = ({ diagnosisKey }) => {
+const Diagnosis = ({ diagnosisKey }) => {
   // Theme and style elements deconstruction
   const {
     Gutters,
@@ -85,12 +81,12 @@ const DiagnosisSummary = ({ diagnosisKey }) => {
           </Text>
         </View>
         <View style={[Gutters.regularHPadding, Gutters.regularVMargin]}>
-          <DiagnosisSummaryDrugs diagnosis={diagnosis} />
-          <DiagnosisSummaryManagements diagnosis={diagnosis} />
+          <Drugs diagnosis={diagnosis} />
+          <Managements diagnosis={diagnosis} />
         </View>
       </View>
     )
   })
 }
 
-export default DiagnosisSummary
+export default Diagnosis
