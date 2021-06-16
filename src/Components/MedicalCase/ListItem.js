@@ -61,12 +61,12 @@ const ListItem = ({ item }) => {
           <Text style={patientListItem.statusTitle}>
             {t(
               `containers.medical_case.stages.${
-                Navigation.ARM_CONTROL_STAGES[item.advancement.stage].label
+                Navigation.INTERVENTION_STAGES[item.advancement.stage].label
               }`,
             )}
           </Text>
           <View style={Layout.row}>
-            {Navigation.ARM_CONTROL_STAGES.map((stage, index) => (
+            {Navigation.INTERVENTION_STAGES.map((stage, index) => (
               <Icon
                 key={`${item.id}-icon-${stage.icon}`}
                 name={stage.icon}

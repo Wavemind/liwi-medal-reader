@@ -36,7 +36,7 @@ const DrawerItem = () => {
         </View>
       </View>
       <ScrollView>
-        {Navigation.ARM_CONTROL_STAGES.map((stage, index) => (
+        {Navigation.INTERVENTION_STAGES.map((stage, index) => (
           <Item
             key={index}
             stage={stage}

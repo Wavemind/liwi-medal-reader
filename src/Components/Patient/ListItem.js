@@ -61,7 +61,7 @@ const ListItem = ({ item }) => {
           <View style={patientListItem.statusWrapper}>
             <Text style={patientListItem.statusTitle}>1st assessment</Text>
             <View style={Layout.row}>
-              {Navigation.ARM_CONTROL_STAGES.map((stage, index) => (
+              {Navigation.INTERVENTION_STAGES.map((stage, index) => (
                 <Icon
                   key={`${item.id}-${stage.icon}`}
                   name={stage.icon}
