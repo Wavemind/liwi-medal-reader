@@ -58,9 +58,7 @@ const Question = ({ questionId, disabled = false }) => {
   )
 
   // Is an emergency question
-  const [emergency] = useState(
-    currentNode.is_danger_sign || currentNode.emergency_status === 'referral',
-  )
+  const emergency = currentNode.emergency_status === 'referral'
 
   /**
    * Used only when normal answer can't be set by clinician. A list of predefined answer are displayed

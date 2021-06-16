@@ -7,6 +7,8 @@ import {
   reduceConditions,
   getTopConditions,
 } from '@/Utils/MedicalCase'
+import { scoredCalculateCondition } from '@/Utils/QuestionSequenceScore'
+import { Config } from '@/Config'
 
 /**
  * Calculate the value of a Question Sequence
@@ -20,12 +22,17 @@ import {
 export const getQsValue = (qsId, newMcNodes) => {
   const nodes = store.getState().algorithm.item.nodes
 
-  const topConditions = getTopConditions(nodes[qsId].instances)
+  if (nodes[qsId].category === Config.CATEGORIES.scored) {
+    return scoredCalculateCondition(qsId, newMcNodes)
+  } else {
+    const topConditions = getTopConditions(nodes[qsId].instances)
 
-  const conditionsValues = topConditions.map(instance =>
-    qsInstanceValue(instance, newMcNodes, nodes[qsId].instances, qsId),
-  )
-  return reduceConditions(conditionsValues)
+    const conditionsValues = topConditions.map(instance =>
+      qsInstanceValue(instance, newMcNodes, nodes[qsId].instances, qsId),
+    )
+    console.log(qsId, conditionsValues)
+    return reduceConditions(conditionsValues)
+  }
 }
 
 /**
@@ -38,21 +45,32 @@ export const getQsValue = (qsId, newMcNodes) => {
  */
 const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
   const nodes = store.getState().algorithm.item.nodes
-
   const mcNode = newMcNodes[instance.id]
-  if (mcNode.answer === null) {
+
+  const instanceCondition = calculateCondition(instance)
+
+  if (instanceCondition && mcNode.answer === null) {
     return null
   }
-  const instanceCondition = calculateCondition(instance)
+
   if (instanceCondition) {
     if (isEndOfQS(instance.children, qsId)) {
       const reducedConditions = nodes[qsId].conditions.map(condition => {
         if (newMcNodes[condition.node_id].answer === null) {
           return null
         } else {
+          if (qsId === 6496) {
+            console.log(
+              qsId,
+              newMcNodes[condition.node_id].answer,
+              condition.answer_id,
+              condition,
+            )
+          }
           return newMcNodes[condition.node_id].answer === condition.answer_id
         }
       })
+      console.log(qsId, reducedConditions)
       return reduceConditions(reducedConditions)
     } else {
       const childrenInstances = instance.children.map(child => instances[child])

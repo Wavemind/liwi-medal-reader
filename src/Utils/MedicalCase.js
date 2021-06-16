@@ -346,7 +346,7 @@ export const debugNode = (nodeId, mcNodes) => {
   const nodes = state.algorithm.item.nodes
   const result = nodes[nodeId].dd.map(diagnosisId => {
     return {
-      [diagnosisId.id]: debugNodeInDiagnosis(diagnosisId.id, nodeId, mcNodes),
+      [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, mcNodes),
     }
   })
   console.info(nodeId, translate(nodes[nodeId].label), result)

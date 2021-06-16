@@ -30,9 +30,6 @@ export default ({ nodeId, newNodes }) => {
     }
 
     // Add the related QS to the QS processing list
-
-    // TODO QSS
-
     const newQsList = nodes[qsId].qs.filter(
       childId => !excludedByCC(childId, nodes, newNodes),
     )
