@@ -103,11 +103,11 @@ export const generateDrug = node => {
 }
 
 /**
- * Generate new final diagnostic hash used in medical case
+ * Generate new final diagnosis hash used in medical case
  * @param node
  * @returns {*}
  */
-export const generateFinalDiagnostic = node => {
+export const generateFinalDiagnosis = node => {
   return {
     ..._generateCommon(node),
   }
@@ -135,14 +135,14 @@ export default ({ nodes }) => {
         newNodes[node.id] = generateQuestion(node)
         break
       case Config.NODE_TYPES.healthCare:
-      case Config.NODE_TYPES.finalDiagnostic:
-        newNodes[node.id] = generateFinalDiagnostic(node)
+      case Config.NODE_TYPES.finalDiagnosis:
+        //newNodes[node.id] = generateFinalDiagnosis(node)
         break
       default:
         if (node.category === Config.CATEGORIES.management) {
-          newNodes[node.id] = generateManagement(node)
+          //newNodes[node.id] = generateManagement(node)
         } else if (node.category === Config.CATEGORIES.drug) {
-          newNodes[node.id] = generateDrug(node)
+          //  newNodes[node.id] = generateDrug(node)
         } else {
           newNodes[node.id] = node.id
         }

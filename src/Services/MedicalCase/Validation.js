@@ -9,7 +9,7 @@ import { Config } from '@/Config'
 import { translate } from '@/Translations/algorithm'
 import { store } from '@/Store'
 
-export default async (mcNode, node, value) => {
+export default (mcNode, node, value) => {
   const { algorithm } = store.getState()
 
   const formattedValue = parseFloat(value)
