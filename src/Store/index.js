@@ -25,6 +25,7 @@ import patient from './Patient'
 import system from './System'
 import theme from './Theme'
 import scan from './Scan'
+import validation from './Validation'
 import user from './User'
 
 const reducers = combineReducers({
@@ -41,6 +42,7 @@ const reducers = combineReducers({
   system,
   theme,
   scan,
+  validation,
   user,
 })
 

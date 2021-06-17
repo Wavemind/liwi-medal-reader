@@ -27,13 +27,17 @@ const RegistrationMedicalCaseContainer = props => {
     state => state.algorithm.item.config.full_order.registration_step,
   )
 
+  const consentManagement = useSelector(
+    state => state.algorithm.item.config.consent_management,
+  )
+
   /**
    * Returns the static questions for the medical case
    * @returns List of inputs to show
    */
   const Header = () => (
     <>
-      <Consent />
+      {consentManagement && <Consent />}
       <View style={[Gutters.regularHMargin]}>
         <SectionHeader
           label={t('containers.medical_case.registration.questions')}
@@ -54,6 +58,7 @@ const RegistrationMedicalCaseContainer = props => {
       ListEmptyComponent={
         <EmptyList text={t('containers.medical_case.no_questions')} />
       }
+      removeClippedSubviews={false}
       keyExtractor={item => item}
     />
   )

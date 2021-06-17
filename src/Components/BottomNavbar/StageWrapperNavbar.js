@@ -1,11 +1,12 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 /**
  * The internal imports
@@ -13,8 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/Database/Patient/Insert'
-import StepValidation from '@/Services/Validation/Step'
-import { translate } from '@/Translations/algorithm'
+import StepValidation from '@/Store/Validation/Step'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -24,8 +24,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     Colors,
     FontSize,
     Fonts,
+    Gutters,
   } = useTheme()
-  const [errors, setErrors] = useState([])
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigation = useNavigation()
@@ -34,50 +34,100 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   )
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
-  const nodes = useSelector(state => state.algorithm.item.nodes)
+  const errors = useSelector(state => state.validation.item)
+  console.log(errors)
 
   /**
    * Will navigate to the next step / Stage base on the current navigation State
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
   const handleNavigation = async direction => {
-    console.log('avant')
-    const newErrors = StepValidation()
-    setErrors(newErrors)
-    // // TODO: Need patient id in medicalCase when it's created
-    // if (advancement.stage === 0) {
-    //   await dispatch(InsertPatient.action())
-    // }
-    // const medicalCaseState = navigationState.routes[navigationState.index].state
+    const validation = await dispatch(StepValidation.action())
+    if (
+      isFulfilled(validation) &&
+      Object.values(validation.payload).length === 0
+    ) {
+      // TODO: Need patient id in medicalCase when it's created
+      if (advancement.stage === 0) {
+        await dispatch(InsertPatient.action())
+      }
+      const medicalCaseState =
+        navigationState.routes[navigationState.index].state
 
-    // const nextStep = advancement.step + direction
-    // if (
-    //   medicalCaseState !== undefined &&
-    //   nextStep < medicalCaseState.routes.length &&
-    //   nextStep >= 0
-    // ) {
-    //   navigation.navigate(medicalCaseState.routes[nextStep].name)
-    // } else {
-    //   navigation.navigate('StageWrapper', {
-    //     stageIndex: stageIndex + direction,
-    //   })
-    // }
+      const nextStep = advancement.step + direction
+      if (
+        medicalCaseState !== undefined &&
+        nextStep < medicalCaseState.routes.length &&
+        nextStep >= 0
+      ) {
+        navigation.navigate(medicalCaseState.routes[nextStep].name)
+      } else {
+        navigation.navigate('StageWrapper', {
+          stageIndex: stageIndex + direction,
+        })
+      }
+    }
   }
-  console.log(errors)
-  if (errors.length > 0) {
+
+  if (Object.keys(errors).length > 0) {
     return (
-      <View style={[Layout.fill, { backgroundColor: 'red' }]}>
-        {errors.map(error => (
-          <Text key={error.id} style={[Fonts.textRegular, { color: 'white' }]}>
-            {translate(nodes[error.id].label)} {error.message}
-          </Text>
-        ))}
+      <View
+        style={[
+          Gutters.smallVPadding,
+          Gutters.smallHPadding,
+          Layout.fill,
+          Layout.row,
+
+          { backgroundColor: Colors.red },
+        ]}
+      >
+        <View style={[Layout.fill, Layout.row]}>
+          <View style={[Layout.fill, Layout.center]}>
+            <Text
+              style={[Fonts.textLeft, Fonts.textRegular, { color: 'white' }]}
+            >
+              {Object.values(errors)[0]}
+            </Text>
+          </View>
+        </View>
+        <View style={[Layout.fill, Layout.row]}>
+          <View style={[Layout.fill, Gutters.regularRMargin]}>
+            <Text
+              style={[
+                Layout.alignItemsCenter,
+                Fonts.textRight,
+                Fonts.textRegular,
+                { color: 'white' },
+              ]}
+            >
+              {Object.values(errors).length}
+            </Text>
+          </View>
+          <View style={[{ width: 50 }]}>
+            <SquareButton
+              filled
+              icon="right-arrow"
+              iconAfter
+              bgColor={Colors.secondary}
+              color={Colors.primary}
+              iconSize={FontSize.large}
+              onPress={() => dispatch(StepValidation.action())}
+            />
+          </View>
+        </View>
       </View>
     )
   }
 
   return (
-    <View style={[Layout.fill, Layout.row]}>
+    <View
+      style={[
+        Gutters.smallVPadding,
+        Gutters.smallHPadding,
+        Layout.fill,
+        Layout.row,
+      ]}
+    >
       <View style={[Layout.fill, Layout.row]}>
         {stageIndex > 0 ? (
           <SquareButton

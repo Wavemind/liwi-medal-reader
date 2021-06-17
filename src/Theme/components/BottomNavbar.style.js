@@ -33,8 +33,6 @@ export default function (props) {
     },
     actions: {
       ...Layout.fill,
-      ...Gutters.regularHPadding,
-      ...Gutters.smallVPadding,
       ...Layout.rowCenter,
     },
     actionButton: {

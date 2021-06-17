@@ -26,6 +26,7 @@ const AssessmentMedicalCaseContainer = props => {
         ListEmptyComponent={
           <EmptyList text={t('containers.medical_case.no_questions')} />
         }
+        removeClippedSubviews={false}
         keyExtractor={item => item.id}
       />
     </View>

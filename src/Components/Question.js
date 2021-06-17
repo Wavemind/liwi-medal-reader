@@ -36,6 +36,7 @@ const Question = ({ questionId, disabled = false }) => {
   const currentNode = useSelector(
     state => state.algorithm.item.nodes[questionId],
   )
+  const fieldError = useSelector(state => state.validation.item[questionId])
 
   // Local state definition
   const [isFullLength] = useState(
@@ -89,7 +90,7 @@ const Question = ({ questionId, disabled = false }) => {
             style={
               emergency
                 ? question.emergencyText
-                : question.text(question.validationType)
+                : question.text(fieldError ? 'error' : question.validationType)
             }
           >
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
@@ -133,14 +134,23 @@ const Question = ({ questionId, disabled = false }) => {
         </View>
 
         {(mcNode.validationType === 'error' ||
-          mcNode.validationType === 'warning') && (
-          <View style={[question.messageWrapper(question.validationType)]}>
+          mcNode.validationType === 'warning' ||
+          fieldError) && (
+          <View
+            style={[
+              question.messageWrapper(
+                fieldError ? 'error' : question.validationType,
+              ),
+            ]}
+          >
             <Icon
               size={FontSize.regular}
               color={Colors.secondary}
               name="warning"
             />
-            <Text style={question.message}>{mcNode.validationMessage}</Text>
+            <Text style={question.message}>
+              {fieldError ? fieldError : mcNode.validationMessage}
+            </Text>
           </View>
         )}
       </View>
