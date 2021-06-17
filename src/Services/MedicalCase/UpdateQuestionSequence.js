@@ -12,6 +12,7 @@ export default ({ nodeId, newNodes }) => {
   // List of QS we need to update
   let qsToUpdate = nodes[nodeId].qs
 
+  console.log(qsToUpdate, nodes[nodeId])
   while (qsToUpdate.length > 0) {
     const qsId = qsToUpdate[0]
     const qsBooleanValue = getQsValue(qsId, newNodes)
