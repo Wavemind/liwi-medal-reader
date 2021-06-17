@@ -35,7 +35,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
   const errors = useSelector(state => state.validation.item)
-  console.log(errors)
 
   /**
    * Will navigate to the next step / Stage base on the current navigation State

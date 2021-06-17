@@ -26,8 +26,6 @@ export default () => {
   const navigation = getStages()
   const step = medicalCase.advancement.step
   const stage = medicalCase.advancement.stage
-  console.log(navigation)
-  console.log(navigation[stage].steps[step])
 
   let errors = {}
 

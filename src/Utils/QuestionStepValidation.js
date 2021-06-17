@@ -14,20 +14,20 @@ export default (questions, errors) => {
     const mcNode = medicalCase.nodes[questionId]
     const result = mcNode.answer !== null || mcNode.value !== ''
 
-    // Mandatory
-    if (node.is_mandatory && !result) {
-      const label = translate(node.label)
-      errors[questionId] = i18n.t('validation.is_required', {
-        field: label,
-      })
-    }
-
     // Integer or float input out of range defined by min/max value error
     if (
       node.value_format === Config.VALUE_FORMATS.int ||
       node.value_format === Config.VALUE_FORMATS.float
     ) {
       const formattedValue = parseFloat(mcNode.value)
+      if (questionId === 2179) {
+        console.log(
+          mcNode.value !== null &&
+            (formattedValue < node.min_value_error ||
+              formattedValue > node.max_value_error),
+        )
+      }
+
       if (
         mcNode.value !== null &&
         (formattedValue < node.min_value_error ||
@@ -55,6 +55,14 @@ export default (questions, errors) => {
           }
         }
       }
+    }
+
+    // Mandatory
+    if (node.is_mandatory && !result) {
+      const label = translate(node.label)
+      errors[questionId] = i18n.t('validation.is_required', {
+        field: label,
+      })
     }
   })
 

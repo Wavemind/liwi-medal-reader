@@ -131,7 +131,8 @@ export const handleAnswerId = (node, value) => {
  * @returns See return of handleNumeric or handleAnswerId
  */
 export const setNodeValue = (mcNode, node, value) => {
-  const { int, float, bool, array, present, positive } = Config.VALUE_FORMATS
+  const { int, float, bool, array, present, positive, string } =
+    Config.VALUE_FORMATS
   switch (node.value_format) {
     case int:
     case float:
@@ -141,5 +142,10 @@ export const setNodeValue = (mcNode, node, value) => {
     case present:
     case positive:
       return handleAnswerId(node, value)
+    case string:
+      return { answer: null, value }
+    default:
+      console.error('FORMAT NOT HANDLED')
+      return { answer: null, value: null }
   }
 }

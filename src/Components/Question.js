@@ -160,7 +160,7 @@ const Question = ({ questionId, disabled = false }) => {
               name="warning"
             />
             <Text style={question.message}>
-              {fieldError ? fieldError : mcNode.validationMessage}
+              {mcNode.validationMessage ? mcNode.validationMessage : fieldError}
             </Text>
           </View>
         )}
