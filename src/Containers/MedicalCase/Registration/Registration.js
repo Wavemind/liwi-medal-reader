@@ -4,7 +4,6 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -18,14 +17,13 @@ import {
 } from '@/Components'
 import { PatientString } from '@/Components/index'
 import { useTheme } from '@/Theme'
+import { RegistrationQuestions } from '@/Services/Steps'
 
 const RegistrationMedicalCaseContainer = props => {
   const { t } = useTranslation()
   const { Gutters } = useTheme()
 
-  const questions = useSelector(
-    state => state.algorithm.item.config.full_order.registration_step,
-  )
+  const questions = RegistrationQuestions()
 
   /**
    * Returns the static questions for the medical case
