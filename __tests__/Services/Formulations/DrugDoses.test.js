@@ -11,7 +11,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
-import { setBirthDate } from '../../../__tests__/Utils/BirthDate'
+import { setBirthDate } from '../../Utils/BirthDate'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
