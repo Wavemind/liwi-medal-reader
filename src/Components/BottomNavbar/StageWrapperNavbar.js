@@ -13,7 +13,7 @@ import { isFulfilled } from '@reduxjs/toolkit'
  */
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
-import InsertPatient from '@/Store/Database/Patient/Insert'
+import InsertPatient from '@/Store/DatabasePatient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
