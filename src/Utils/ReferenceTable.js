@@ -11,7 +11,7 @@ import { Config } from '@/Config'
  * @param mcNode
  * @returns {null}
  */
-export const questionCalculateReference = (nodeId, newNodes) => {
+export const calculateReference = (nodeId, newNodes) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
   const genderQuestionId =
@@ -40,13 +40,13 @@ export const questionCalculateReference = (nodeId, newNodes) => {
   const x =
     currentQuestionX.value_format === Config.VALUE_FORMATS.int
       ? parseInt(mcQuestionX.value)
-      : currentQuestionX.round !== null
+      : currentQuestionX.round !== undefined
       ? mcQuestionX.roundedValue
       : parseFloat(mcQuestionX.value)
   const y =
     currentQuestionY.value_format === Config.VALUE_FORMATS.int
       ? parseInt(mcQuestionY.value)
-      : currentQuestionY.round !== null
+      : currentQuestionY.round !== undefined
       ? mcQuestionY.roundedValue
       : parseFloat(mcQuestionY.value)
   let z
@@ -55,7 +55,7 @@ export const questionCalculateReference = (nodeId, newNodes) => {
     z =
       currentQuestionZ.value_format === Config.VALUE_FORMATS.int
         ? parseInt(mcQuestionZ.value)
-        : currentQuestionZ.round !== null
+        : currentQuestionZ.round !== undefined
         ? mcQuestionZ.roundedValue
         : parseFloat(mcQuestionZ.value)
   }
@@ -72,8 +72,8 @@ export const questionCalculateReference = (nodeId, newNodes) => {
     reference = Config.REFERENCES[currentNode.reference_table_male]
   } else if (gender === 'female') {
     reference = Config.REFERENCES[currentNode.reference_table_female]
+    reference = Config.REFERENCES[currentNode.consreference_table_female]
   }
-
   // If X and Y means question is not answered + check if answer is in the scope of the reference table
   if (reference !== null && x !== null && y !== null && z === undefined) {
     value = processReferenceTable(reference, x, y)
@@ -193,6 +193,5 @@ const findValueInReferenceTable = (referenceTable, reference) => {
 
     previousKey = key
   })
-
   return value
 }

@@ -44,13 +44,13 @@ export default ({ nodeId, newNodes }) => {
         // Set the question value in the store
         newNodes[questionId] = { ...newNodes[questionId], ...newQuestionValues }
       }
-      const newQuestionsToUpdate = questionsToUpdate.concat(node.referenced_in)
+      questionsToUpdate = questionsToUpdate.concat(node.referenced_in)
 
       // uniq to avoid processing same question multiple time
       // Slice to remove element we just handled
-      questionsToUpdate = uniq(newQuestionsToUpdate.slice(1))
       newNodes = UpdateQuestionSequence({ nodeId: questionId, newNodes })
     }
+    questionsToUpdate = uniq(questionsToUpdate.slice(1))
   }
   return newNodes
 }

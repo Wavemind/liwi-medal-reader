@@ -11,6 +11,7 @@ import LoadAlgorithm from '@/Store/Algorithm/Load'
 import { store } from '@/Store'
 import { drugDoses } from '@/Services/MedicalCase/DrugDoses'
 import SetAnswer from '@/Store/MedicalCase/SetAnswer'
+import { setBirthDate } from '../../../__tests__/Utils/BirthDate'
 
 beforeAll(async () => {
   const algorithmFile = require('../../algorithm.json')
@@ -21,16 +22,15 @@ beforeAll(async () => {
   )
   const algorithm = store.getState().algorithm.item
   await store.dispatch(CreateMedicalCase.action({ algorithm }))
+  await setBirthDate(store, new Date('11.04.2017'))
 
   const weightId = algorithm.config.basic_questions.weight_question_id
-  console.log('weightId', weightId)
   await store.dispatch(SetAnswer.action({ nodeId: weightId, value: '3' }))
 })
 
 describe('Drug dose calculation', () => {
   it('should calculate doseResult of 3 for drugId = 1681, index = 1 and weight = 3', async () => {
     const result = drugDoses(1, 1681)
-    console.info(result)
     expect(result.doseResult).toEqual(3)
   })
   it('should calculate minDoseMl of 3 for drugId = 1681, index = 1 and weight = 3', () => {

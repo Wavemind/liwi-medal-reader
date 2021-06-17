@@ -54,7 +54,6 @@ export default props => {
 
   newNodes = UpdateQuestionSequence({ nodeId: node.id, newNodes })
   newNodes = UpdateRelatedQuestion({ nodeId: node.id, newNodes })
-  console.log(newNodes)
   return {
     ...newMedicalCase,
     nodes: {

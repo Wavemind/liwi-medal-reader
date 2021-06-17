@@ -99,6 +99,9 @@
       "json",
       "node"
     ],
+    "modulePathIgnorePatterns": [
+      "/__tests__/Utils/*"
+    ],
     "moduleNameMapper": {
       ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
     },

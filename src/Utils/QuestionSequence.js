@@ -30,7 +30,6 @@ export const getQsValue = (qsId, newMcNodes) => {
     const conditionsValues = topConditions.map(instance =>
       qsInstanceValue(instance, newMcNodes, nodes[qsId].instances, qsId),
     )
-    console.log(qsId, conditionsValues)
     return reduceConditions(conditionsValues)
   }
 }
@@ -55,26 +54,18 @@ const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
 
   if (instanceCondition) {
     if (isEndOfQS(instance.children, qsId)) {
-      const reducedConditions = nodes[qsId].conditions.map(condition => {
-        if (newMcNodes[condition.node_id].answer === null) {
-          return null
-        } else {
-          if (qsId === 6496) {
-            console.log(
-              qsId,
-              newMcNodes[condition.node_id].answer,
-              condition.answer_id,
-              condition,
-            )
+      const reducedConditions = nodes[qsId].conditions
+        .filter(condition => condition.node_id === instance.id)
+        .map(condition => {
+          if (newMcNodes[condition.node_id].answer === null) {
+            return null
+          } else {
+            return newMcNodes[condition.node_id].answer === condition.answer_id
           }
-          return newMcNodes[condition.node_id].answer === condition.answer_id
-        }
-      })
-      console.log(qsId, reducedConditions)
+        })
       return reduceConditions(reducedConditions)
     } else {
       const childrenInstances = instance.children.map(child => instances[child])
-      console.log(qsId, childrenInstances, instance.children, instances)
       return reduceConditions(
         // TODO break if QS node  Values is yes for optimization
         childrenInstances.map(child =>
