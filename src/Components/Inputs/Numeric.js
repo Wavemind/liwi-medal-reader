@@ -35,6 +35,9 @@ const Numeric = ({ questionId, editable = true }) => {
   const [value, setValue] = useState(question.value)
   const [estimableValue, setEstimableValue] = useState(question.estimableValue)
 
+  /**
+   * Clear input if unavailable was set
+   */
   useEffect(() => {
     if (!question.unavailableValue) {
       setValue('')

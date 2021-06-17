@@ -65,7 +65,6 @@ const Autocomplete = ({ questionId }) => {
    */
   const onEndEditing = e => {
     const newValue = e.nativeEvent.text
-    console.log(question.value, newValue)
     if (question.value !== newValue) {
       dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }
