@@ -68,15 +68,18 @@ const Question = ({ questionId, disabled = false }) => {
   /**
    * Used only when normal answer can't be set by clinician. A list of predefined answer are displayed
    */
-  const handleUnavailable = () => {
-    setIsUnavailable(!isUnavailable)
-    dispatch(
+  const handleUnavailable = async () => {
+    await dispatch(
       UpdateNodeField.action({
         nodeId: questionId,
         field: 'unavailableValue',
         value: !isUnavailable,
       }),
     )
+    setIsUnavailable(!isUnavailable)
+    if (isUnavailable) {
+      dispatch(SetAnswer.action({ nodeId: questionId, value: '' }))
+    }
   }
 
   /**
@@ -99,7 +102,7 @@ const Question = ({ questionId, disabled = false }) => {
             style={
               emergency
                 ? question.emergencyText
-                : question.text(fieldError ? 'error' : question.validationType)
+                : question.text(fieldError ? 'error' : mcNode.validationType)
             }
           >
             {translate(currentNode.label)} {currentNode.is_mandatory && '*'}
@@ -150,7 +153,7 @@ const Question = ({ questionId, disabled = false }) => {
           <View
             style={[
               question.messageWrapper(
-                fieldError ? 'error' : question.validationType,
+                fieldError ? 'error' : mcNode.validationType,
               ),
             ]}
           >

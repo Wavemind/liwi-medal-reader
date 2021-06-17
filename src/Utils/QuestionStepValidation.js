@@ -12,57 +12,51 @@ export default (questions, errors) => {
   questions.map(questionId => {
     const node = algorithm.nodes[questionId]
     const mcNode = medicalCase.nodes[questionId]
-    const result = mcNode.answer !== null || mcNode.value !== ''
+    if (!mcNode.unavailableValue) {
+      const result = mcNode.answer !== null || mcNode.value !== ''
 
-    // Integer or float input out of range defined by min/max value error
-    if (
-      node.value_format === Config.VALUE_FORMATS.int ||
-      node.value_format === Config.VALUE_FORMATS.float
-    ) {
-      const formattedValue = parseFloat(mcNode.value)
-      if (questionId === 2179) {
-        console.log(
-          mcNode.value !== null &&
-            (formattedValue < node.min_value_error ||
-              formattedValue > node.max_value_error),
-        )
-      }
-
+      // Integer or float input out of range defined by min/max value error
       if (
-        mcNode.value !== null &&
-        (formattedValue < node.min_value_error ||
-          formattedValue > node.max_value_error)
+        node.value_format === Config.VALUE_FORMATS.int ||
+        node.value_format === Config.VALUE_FORMATS.float
       ) {
-        // Error
-        if (node.min_value_error !== null || node.max_value_error !== null) {
-          if (
-            formattedValue < node.min_value_error ||
-            formattedValue > node.max_value_error
-          ) {
+        const formattedValue = parseFloat(mcNode.value)
+        if (
+          mcNode.value !== null &&
+          (formattedValue < node.min_value_error ||
+            formattedValue > node.max_value_error)
+        ) {
+          // Error
+          if (node.min_value_error !== null || node.max_value_error !== null) {
             if (
-              formattedValue < node.min_value_error &&
-              node.min_value_error !== null
+              formattedValue < node.min_value_error ||
+              formattedValue > node.max_value_error
             ) {
-              errors[questionId] = translate(node.min_message_error)
-            }
+              if (
+                formattedValue < node.min_value_error &&
+                node.min_value_error !== null
+              ) {
+                errors[questionId] = translate(node.min_message_error)
+              }
 
-            if (
-              formattedValue > node.max_value_error &&
-              node.max_value_error !== null
-            ) {
-              errors[questionId] = translate(node.max_message_error)
+              if (
+                formattedValue > node.max_value_error &&
+                node.max_value_error !== null
+              ) {
+                errors[questionId] = translate(node.max_message_error)
+              }
             }
           }
         }
       }
-    }
 
-    // Mandatory
-    if (node.is_mandatory && !result) {
-      const label = translate(node.label)
-      errors[questionId] = i18n.t('validation.is_required', {
-        field: label,
-      })
+      // Mandatory
+      if (node.is_mandatory && !result) {
+        const label = translate(node.label)
+        errors[questionId] = i18n.t('validation.is_required', {
+          field: label,
+        })
+      }
     }
   })
 

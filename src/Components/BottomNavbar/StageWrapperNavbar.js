@@ -40,11 +40,16 @@ const StageWrapperNavbar = ({ stageIndex }) => {
    * Will navigate to the next step / Stage base on the current navigation State
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
-  const handleNavigation = async direction => {
-    const validation = await dispatch(StepValidation.action())
+  const handleNavigation = async (direction, skipValidation = false) => {
+    let validation = null
+    if (!skipValidation) {
+      validation = await dispatch(StepValidation.action())
+    }
+
     if (
-      isFulfilled(validation) &&
-      Object.values(validation.payload).length === 0
+      skipValidation ||
+      (isFulfilled(validation) &&
+        Object.values(validation.payload).length === 0)
     ) {
       // TODO: Need patient id in medicalCase when it's created
       if (advancement.stage === 0) {
@@ -137,7 +142,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             icon="left-arrow"
             align={Layout.alignItemsStart}
             iconSize={FontSize.regular}
-            onPress={() => handleNavigation(-1)}
+            onPress={() => handleNavigation(-1, true)}
           />
         ) : null}
       </View>

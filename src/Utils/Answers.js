@@ -91,8 +91,8 @@ export const handleNumeric = (mcNode, node, value) => {
     if (node?.round !== null) {
       response.roundedValue = round(value, node?.round)
     }
-    return response
   }
+  return response
 }
 
 /**
