@@ -10,6 +10,7 @@ import { DrawerItem } from '@react-navigation/drawer'
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { navigateAndSimpleReset } from '@/Navigators/Root'
 
 const CustomDrawerItem = ({
   label,
@@ -50,7 +51,8 @@ const CustomDrawerItem = ({
           color={focused ? Colors.secondary : Colors.primary}
         />
       )}
-      onPress={() => navigation.navigate(routeName, routeParams)}
+      // TODO Check if we still need to reset the stack when the db shit works
+      onPress={() => navigateAndSimpleReset(routeName, routeParams)}
     />
   )
 }
