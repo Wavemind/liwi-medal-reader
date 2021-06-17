@@ -29,7 +29,7 @@ beforeAll(async () => {
 })
 
 describe('Drug dose calculation', () => {
-  it('should calculate doseResult of 3 for drugId = 1681, index = 1 and weight = 3', async () => {
+  it('should calculate doseResult of 3 for drugId = 1681, index = 1 and weight = 3', () => {
     const result = drugDoses(1, 1681)
     expect(result.doseResult).toEqual(3)
   })
