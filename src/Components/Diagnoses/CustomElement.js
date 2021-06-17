@@ -77,7 +77,7 @@ const CustomElement = ({
       ) : (
         listValues.map((listItem, i) => (
           <SelectedItem
-            key={`additional-${listItem.id}`}
+            key={`custom-${listItem.id}`}
             listItem={listItem}
             diagnosisId={diagnosisId}
             listObject={listObject}

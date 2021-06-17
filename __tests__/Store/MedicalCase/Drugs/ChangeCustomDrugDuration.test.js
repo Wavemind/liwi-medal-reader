@@ -40,7 +40,7 @@ beforeAll(async () => {
   )
 })
 
-describe('Handle custom drugs removal', () => {
+describe('Handle custom drugs duration change', () => {
   const diagnosisId = '60'
   const drugId = '1679'
   const duration = '7'

@@ -1,10 +1,4 @@
 /**
- * The external imports
- */
-import React from 'react'
-import { View, Text } from 'react-native'
-
-/**
  * The internal imports
  */
 // Registration
@@ -19,24 +13,19 @@ import MedicalHistoryMedicalCaseContainer from '@/Containers/MedicalCase/Consult
 // Assessment
 import AssessmentMedicalCaseContainer from '@/Containers/MedicalCase/Assessment/Assessment'
 // Diagnosis
-import MedicalCaseDiagnosesFinalDiagnosesContainer from '@/Containers/MedicalCase/Diagnoses/FinalDiagnoses'
-import MedicalCaseDiagnosesDrugsContainer from '@/Containers/MedicalCase/Diagnoses/Drugs'
+import FinalDiagnosesMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/FinalDiagnoses'
+import DrugsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Drugs'
 import TreatmentConditionsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/TreatmentConditions'
 import ReferralMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Referral'
-import MedicalCaseDiagnosesFormulationsContainer from '@/Containers/MedicalCase/Diagnoses/Formulations'
+import FormulationsMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Formulations'
+import SummaryMedicalCaseContainer from '@/Containers/MedicalCase/Diagnoses/Summary'
+// Arm Control
+import ArmFinalDiagnosesMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/FinalDiagnoses'
+import ArmDrugsMedicalCaseContainer from '@/Containers/ArmControl/Diagnoses/Drugs'
 
 //
 // We splitted the stages because some algorithms don't have referral so we are building the Stages with different pieces
 //
-
-// REMOVE THIS SHIT WHEN VIEWS ARE DONE
-function ToDo() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>ToDo!</Text>
-    </View>
-  )
-}
 
 const diagnosesStage = {
   label: 'diagnoses',
@@ -45,7 +34,7 @@ const diagnosesStage = {
   steps: [
     {
       label: 'final_diagnoses',
-      component: MedicalCaseDiagnosesFinalDiagnosesContainer,
+      component: FinalDiagnosesMedicalCaseContainer,
     },
     {
       label: 'healthcare_questions',
@@ -53,15 +42,15 @@ const diagnosesStage = {
     },
     {
       label: 'medicines',
-      component: MedicalCaseDiagnosesDrugsContainer,
+      component: DrugsMedicalCaseContainer,
     },
     {
       label: 'formulations',
-      component: MedicalCaseDiagnosesFormulationsContainer,
+      component: FormulationsMedicalCaseContainer,
     },
     {
       label: 'summary',
-      component: ToDo,
+      component: SummaryMedicalCaseContainer,
     },
   ],
 }
@@ -130,6 +119,66 @@ const baseInterventionStages = [
   },
 ]
 
+const armControlDiagnosesStage = {
+  label: 'diagnoses',
+  icon: 'diagnosis',
+  component: 'DiagnosesWrapper',
+  steps: [
+    {
+      label: 'final_diagnoses',
+      component: ArmFinalDiagnosesMedicalCaseContainer,
+    },
+    {
+      label: 'medicines',
+      component: ArmDrugsMedicalCaseContainer,
+    },
+  ],
+}
+
+const baseArmControlStages = [
+  {
+    label: 'registration',
+    icon: 'registration',
+    component: 'RegistrationWrapper',
+    steps: [
+      {
+        label: 'registration',
+        component: RegistrationMedicalCaseContainer,
+      },
+    ],
+  },
+  {
+    label: 'first_assessments',
+    icon: 'assessment',
+    component: 'FirstAssessmentsWrapper',
+    steps: [
+      {
+        label: 'unique_triage_questions',
+        component: UniqueTriageQuestionsMedicalCaseContainer,
+      },
+      {
+        label: 'complaint_categories',
+        component: ComplaintCategoryMedicalCaseContainer,
+      },
+      {
+        label: 'basic_measurements',
+        component: BasicMeasurementMedicalCaseContainer,
+      },
+    ],
+  },
+  {
+    label: 'assessments',
+    icon: 'tests',
+    component: 'AssessmentsWrapper',
+    steps: [
+      {
+        label: 'assessments',
+        component: AssessmentMedicalCaseContainer,
+      },
+    ],
+  },
+]
+
 const INTERVENTION_STAGES = [...baseInterventionStages, diagnosesStage]
 
 const REFERRAL_INTERVENTION_STAGES = [
@@ -137,10 +186,19 @@ const REFERRAL_INTERVENTION_STAGES = [
   { ...diagnosesStage, steps: [...diagnosesStage.steps, referralStep] },
 ]
 
-const ARM_CONTROL_STAGES = INTERVENTION_STAGES
+const ARM_CONTROL_STAGES = [...baseArmControlStages, armControlDiagnosesStage]
+
+const REFERRAL_ARM_CONTROL_STAGES = [
+  ...baseArmControlStages,
+  {
+    ...armControlDiagnosesStage,
+    steps: [...armControlDiagnosesStage.steps, referralStep],
+  },
+]
 
 export default {
   INTERVENTION_STAGES,
   REFERRAL_INTERVENTION_STAGES,
   ARM_CONTROL_STAGES,
+  REFERRAL_ARM_CONTROL_STAGES,
 }

@@ -5,13 +5,13 @@ import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import format from 'date-fns/format'
-import Navigation from '@/Config/Navigation'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 const ListItem = ({ item }) => {
   // Theme and style elements deconstruction
@@ -24,6 +24,8 @@ const ListItem = ({ item }) => {
     FontSize,
   } = useTheme()
   const [activeMedicalCase, setActiveMedicalCase] = useState(null)
+
+  const [stages] = useState(getStages())
 
   useEffect(() => {
     const medicalCase = item.medicalCases.find(mc => {
@@ -61,7 +63,7 @@ const ListItem = ({ item }) => {
           <View style={patientListItem.statusWrapper}>
             <Text style={patientListItem.statusTitle}>1st assessment</Text>
             <View style={Layout.row}>
-              {Navigation.INTERVENTION_STAGES.map((stage, index) => (
+              {stages.map((stage, index) => (
                 <Icon
                   key={`${item.id}-${stage.icon}`}
                   name={stage.icon}

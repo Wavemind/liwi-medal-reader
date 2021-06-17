@@ -11,8 +11,7 @@ import { useTranslation } from 'react-i18next'
  */
 import { translate } from '@/Translations/algorithm'
 import { useTheme } from '@/Theme'
-import { Icon } from '@/Components'
-import { navigate } from '@/Navigators/Root'
+import { QuestionInfoButton } from '@/Components'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
 import RemoveAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/RemoveAgreedDiagnoses'
 import AddRefusedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddRefusedDiagnoses'
@@ -115,15 +114,7 @@ const ProposedDiagnoses = () => {
             {translate(algorithm.nodes[diagnosisId].label)}
           </Text>
           {translate(algorithm.nodes[diagnosisId].description) !== '' && (
-            <TouchableOpacity
-              onPress={() =>
-                navigate('QuestionInfo', {
-                  nodeId: diagnosisId,
-                })
-              }
-            >
-              <Icon name="simple-info" />
-            </TouchableOpacity>
+            <QuestionInfoButton nodeId={diagnosisId} />
           )}
           <View style={finalDiagnoses.booleanButtonWrapper}>
             <View style={booleanButton.buttonWrapper('left', isAgreed)}>

@@ -1,6 +1,6 @@
 import { store } from '@/Store'
 import i18n from '@/Translations'
-import { medicationForms } from '@/Utils/Formulations/MedicationForms'
+import { Config } from '@/Config'
 import { roundSup } from '@/Utils/Formulations/RoundSup'
 
 /**
@@ -44,10 +44,10 @@ export const drugDoses = (formulationIndex, drugId) => {
     !formulation.by_age
   ) {
     switch (formulation.medication_form) {
-      case medicationForms.syrup:
-      case medicationForms.suspension:
-      case medicationForms.powder_for_injection:
-      case medicationForms.solution:
+      case Config.MEDICATION_FORMS.syrup:
+      case Config.MEDICATION_FORMS.suspension:
+      case Config.MEDICATION_FORMS.powder_for_injection:
+      case Config.MEDICATION_FORMS.solution:
         minDoseMg = roundSup(
           (mcWeight.value * formulation.minimal_dose_per_kg) /
             formulation.doses_per_day,
@@ -100,9 +100,9 @@ export const drugDoses = (formulationIndex, drugId) => {
           ...formulation,
         }
 
-      case medicationForms.capsule:
-      case medicationForms.dispersible_tablet:
-      case medicationForms.tablet:
+      case Config.MEDICATION_FORMS.capsule:
+      case Config.MEDICATION_FORMS.dispersible_tablet:
+      case Config.MEDICATION_FORMS.tablet:
         // First calculate min and max dose (mg/Kg)
         minDoseMg = roundSup(
           (mcWeight.value * formulation.minimal_dose_per_kg) /
@@ -128,9 +128,7 @@ export const drugDoses = (formulationIndex, drugId) => {
         if (maxDoseCap < 1) {
           return {
             ...formulation,
-            no_possibility: i18n.t(
-              'containers.medical_case.formulations.drug.no_options',
-            ),
+            no_possibility: i18n.t('formulations.drug.no_options'),
             doseResult: null,
           }
         }
