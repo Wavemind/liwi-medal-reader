@@ -23,6 +23,8 @@ const Autosuggest = ({ searchTerm, setSearchTerm, handleReset, autofocus }) => {
 
   const inputRef = createRef()
 
+  // setTimeout waits for the component to load and then focuses the input
+  // Simulates a ComponentDidMount
   useEffect(() => {
     if (autofocus) {
       setTimeout(() => inputRef.current.focus(), 250)

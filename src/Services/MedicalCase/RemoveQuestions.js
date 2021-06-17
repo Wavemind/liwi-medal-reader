@@ -8,7 +8,7 @@ import { store } from '@/Store'
  * Removes neonat questions (if needed) and questions sequences for medicalCase nodes
  * @returns {*}
  */
-export const removeQuestions = () => {
+export default () => {
   const nodes = store.getState().medicalCase.item.nodes
   const algorithm = store.getState().algorithm.item
   const birthDate = store.getState().patient.item.birth_date

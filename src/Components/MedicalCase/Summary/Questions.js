@@ -9,7 +9,7 @@ import { FlatList, View } from 'react-native'
  */
 import { useTheme } from '@/Theme'
 import { QuestionItem } from '@/Components'
-import { removeQuestions } from '@/Services/MedicalCase/RemoveQuestions'
+import removeQuestions from '@/Services/MedicalCase/RemoveQuestions'
 
 const PersonalInfoPatientContainer = () => {
   const {

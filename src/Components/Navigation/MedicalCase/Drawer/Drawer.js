@@ -6,8 +6,7 @@ import { View, ScrollView, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import capitalize from 'lodash/capitalize'
-import differenceInMonths from 'date-fns/differenceInMonths'
-import startOfToday from 'date-fns/startOfToday'
+import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 
 /**
  * The internal imports
@@ -24,6 +23,7 @@ const DrawerItem = () => {
   const { first_name, last_name, birth_date } = useSelector(
     state => state.patient.item,
   )
+  const createdAt = useSelector(state => state.medicalCase.item.createdAt)
 
   const [stages] = useState(getStages())
 
@@ -33,14 +33,11 @@ const DrawerItem = () => {
   } = useTheme()
 
   /**
-   * Returns the string displaying the age of the patient in months
+   * Returns the string displaying the age of the patient
    * @returns {string}
    */
-  const ageInMonths = () => {
-    const months = birth_date
-      ? differenceInMonths(startOfToday(), birth_date)
-      : 0
-    return `${months} months`
+  const age = () => {
+    return birth_date ? formatDistanceStrict(createdAt, birth_date) : ''
   }
 
   return (
@@ -53,7 +50,7 @@ const DrawerItem = () => {
           <Text style={medicalCaseDrawer.textPatient}>
             {`${capitalize(first_name)} ${capitalize(last_name)}`}
           </Text>
-          <Text style={medicalCaseDrawer.textMonth}>{ageInMonths()}</Text>
+          <Text style={medicalCaseDrawer.textMonth}>{age()}</Text>
         </View>
       </View>
       <ScrollView>
