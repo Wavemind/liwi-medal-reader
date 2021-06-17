@@ -18,14 +18,13 @@ import {
 } from '@/Components'
 import { PatientString } from '@/Components/index'
 import { useTheme } from '@/Theme'
+import { RegistrationQuestions } from '@/Services/Steps'
 
 const RegistrationMedicalCaseContainer = props => {
   const { t } = useTranslation()
   const { Gutters } = useTheme()
 
-  const questions = useSelector(
-    state => state.algorithm.item.config.full_order.registration_step,
-  )
+  const questions = RegistrationQuestions()
 
   const consentManagement = useSelector(
     state => state.algorithm.item.config.consent_management,

@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -26,6 +26,10 @@ const String = ({ questionId, editable = true }) => {
   // Local state definition
   const [value, setValue] = useState(question.value)
 
+  useEffect(() => {
+    setValue(question.value.toString())
+  }, [question.value])
+
   /**
    * Save value in store
    * @param {Event} e
@@ -36,7 +40,6 @@ const String = ({ questionId, editable = true }) => {
       dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }
   }
-
   return (
     <TextInput
       style={string.input(editable)}

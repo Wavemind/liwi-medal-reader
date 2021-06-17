@@ -29,8 +29,8 @@ export default async ({ algorithm }) => {
       stage: 0,
       step: 0,
     },
-    synchronized_at: null,
+    synchronizedAt: null,
     updatedAt: new Date().getTime(),
-    version_id: algorithm.id,
+    versionId: algorithm.version_id,
   }
 }

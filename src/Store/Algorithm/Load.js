@@ -1,5 +1,4 @@
 import { createAction } from '@reduxjs/toolkit'
-
 export default {
   initialState: {},
   action: createAction('algorithm/load'),
@@ -9,7 +8,6 @@ export default {
       ...payload.newAlgorithm.final_diagnoses,
       ...payload.newAlgorithm.health_cares,
     }
-
     // Remove useless key
     delete payload.newAlgorithm.emergency_content
     delete payload.newAlgorithm.nodes
