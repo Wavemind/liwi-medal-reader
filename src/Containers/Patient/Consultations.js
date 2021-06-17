@@ -16,6 +16,7 @@ import {
   MedicalCaseListItem,
 } from '@/Components'
 
+// TODO check if this component is used anywhere
 const ConsultationPatientContainer = ({ navigation }) => {
   const { t } = useTranslation()
 
@@ -30,10 +31,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    let timer = setTimeout(
-      () => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      2 * 1000,
-    )
+    let timer = setTimeout(() => setData([]), 2 * 1000)
 
     return () => {
       clearTimeout(timer)
@@ -54,7 +52,7 @@ const ConsultationPatientContainer = ({ navigation }) => {
    */
   const loadMore = () => {
     console.log('TODO: load more')
-    setData(data.concat([11, 12, 13, 14, 15]))
+    setData(data.concat([]))
   }
 
   return (

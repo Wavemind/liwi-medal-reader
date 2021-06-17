@@ -7,7 +7,6 @@ export default function (props) {
     wrapper: {
       ...Layout.fill,
       ...Gutters.regularHMargin,
-      ...Gutters.regularTMargin,
     },
     textWrapper: {
       ...Layout.row,
@@ -15,12 +14,19 @@ export default function (props) {
       borderBottomWidth: 1,
       borderColor: Colors.grey,
     },
-    label: {
+    labelWrapper: {
+      ...Layout.rowHCenter,
       ...Layout.fill,
+      ...Layout.justifyContentStart,
+    },
+    label: {
       ...Fonts.textLeft,
+      ...Fonts.textSmall,
+      ...Gutters.smallHMargin,
     },
     value: {
       ...Fonts.textRight,
+      ...Fonts.textSmall,
       ...Fonts.textBold,
     },
   })

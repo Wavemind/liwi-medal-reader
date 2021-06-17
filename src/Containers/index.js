@@ -10,6 +10,7 @@ export { default as PersonalInfoPatientContainer } from './Patient/PersonalInfo'
 export { default as ConsultationsPatientContainer } from './Patient/Consultations'
 
 export { default as ListMedicalCaseContainer } from './MedicalCase/List'
+export { default as SummaryWrapperMedicalCaseContainer } from './MedicalCase/Summary/SummaryWrapper'
 export { default as StageWrapperContainer } from './MedicalCase/StageWrapper'
 export { default as DrugsMedicalCaseContainer } from './MedicalCase/Diagnoses/Drugs'
 export { default as ComplaintCategoryMedicalCaseContainer } from './MedicalCase/FirstAssessment/ComplaintCategory'

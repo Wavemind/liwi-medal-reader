@@ -22,7 +22,7 @@ const Default = ({ drug, drugDose }) => {
   let every = ''
 
   if (drug.formulationSelected !== null) {
-    every = `${t('formulations.drugs.every')} ${24 / drugDose.doses_per_day} ${t('formulations.drugs.h')} ${drug.duration} ${t('formulations.drugs.days')}`
+    every = `${t('formulations.drug.every')} ${24 / drugDose.doses_per_day} ${t('formulations.drug.h')} ${drug.duration} ${t('formulations.drug.days')}`
   }
 
   return (

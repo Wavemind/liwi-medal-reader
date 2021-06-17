@@ -19,6 +19,7 @@ import {
   ListMedicalCaseContainer,
   IndexSynchronizationContainer,
   ProfileWrapperPatientContainer,
+  SummaryWrapperMedicalCaseContainer,
 } from '@/Containers'
 import { useTheme } from '@/Theme'
 
@@ -85,6 +86,13 @@ const MainNavigator = () => {
           name="PatientProfile"
           component={ProfileWrapperPatientContainer}
           options={({ route }) => ({ title: route.params?.title })}
+        />
+        <Drawer.Screen
+          name="MedicalCaseSummary"
+          component={SummaryWrapperMedicalCaseContainer}
+          options={{
+            title: t('navigation.summary'),
+          }}
         />
         <Drawer.Screen
           name="ConsentList"

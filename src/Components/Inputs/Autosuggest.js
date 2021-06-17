@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React from 'react'
+import React, { createRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, TouchableOpacity, TextInput } from 'react-native'
 
@@ -11,7 +11,7 @@ import { View, TouchableOpacity, TextInput } from 'react-native'
 import { useTheme } from '@/Theme'
 import { Icon } from '@/Components'
 
-const Autosuggest = ({ searchTerm, setSearchTerm, handleReset }) => {
+const Autosuggest = ({ searchTerm, setSearchTerm, handleReset, autofocus }) => {
   // Theme and style elements deconstruction
   const { t } = useTranslation()
   const {
@@ -21,14 +21,25 @@ const Autosuggest = ({ searchTerm, setSearchTerm, handleReset }) => {
     Components: { autosuggest },
   } = useTheme()
 
+  const inputRef = createRef()
+
+  // setTimeout waits for the component to load and then focuses the input
+  // Simulates a ComponentDidMount
+  useEffect(() => {
+    if (autofocus) {
+      setTimeout(() => inputRef.current.focus(), 250)
+    }
+  }, [])
+
   return (
     <View style={Layout.row}>
       <View style={autosuggest.inputWrapper}>
         <View style={Layout.colCenter}>
-          <Icon name="search" color={Colors.grey} size={FontSize.regular} />
+          <Icon name="search" color={Colors.primary} size={FontSize.large} />
         </View>
         <View style={autosuggest.inputTextWrapper}>
           <TextInput
+            ref={inputRef}
             style={autosuggest.inputText}
             keyboardType="default"
             onChangeText={setSearchTerm}
