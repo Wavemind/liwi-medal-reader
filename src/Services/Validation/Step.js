@@ -28,22 +28,30 @@ export default () => {
   const stage = medicalCase.advancement.stage
 
   let errors = {}
+  let questions = []
+  let systems = []
 
   switch (navigation[stage].steps[step].label) {
     case 'registration':
-      // return RegistrationStepService(errors)
-      return {}
+      return RegistrationStepService(errors)
     case 'unique_triage_questions':
-      // return QuestionStepValidation(UniqueTriageQuestions(), errors)
-      return {}
+      return QuestionStepValidation(UniqueTriageQuestions(), errors)
     case 'complaint_categories':
       return {}
     case 'basic_measurements':
       return QuestionStepValidation(BasicMeasurementQuestions(), errors)
     case 'medical_history':
-      return QuestionStepValidation(errors)
+      systems = MedicalHistoryQuestions()
+      systems.forEach(system => {
+        questions = questions.concat(system.data)
+      })
+      return QuestionStepValidation(questions, errors)
     case 'physical_exams':
-      return QuestionStepValidation(errors)
+      systems = PhysicalExamQuestions()
+      systems.forEach(system => {
+        questions = questions.concat(system.data)
+      })
+      return QuestionStepValidation(questions, errors)
     case 'assessments':
       return QuestionStepValidation(AssessmentQuestions(), errors)
     case 'final_diagnoses':
