@@ -130,4 +130,12 @@ export const Config = {
     spray: 'spray',
     inhaler: 'inhaler',
   },
+  STEP_ORDERS: {
+    basicMeasurements: 'basic_measurements',
+    complaintCategories: 'complaint_categories',
+    firstLookAssessment: 'first_look_assessment',
+    physicalExam: 'physical_exam',
+    referral: 'referral_step',
+    registration: 'registration_step',
+  },
 }
