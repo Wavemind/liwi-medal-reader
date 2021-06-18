@@ -13,9 +13,6 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/Database/Patient/Insert'
-import UpdateActivities from '@/Store/MedicalCase/UpdateActivities'
-import { getStages } from '@/Utils/Navigation/GetStages'
-import { store } from '@/Store'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -32,8 +29,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   const navigationState = useNavigationState(
     state => state.routes[state.index].state,
   )
-  const algo = useSelector(state => state.algorithm.item)
-  // console.log(algo)
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
 
@@ -45,18 +40,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     if (advancement.stage === 0) {
       await dispatch(InsertPatient.action())
     }
-    const stages = getStages()
-    const stage = stages[advancement.stage]
-    const step = stage.steps[advancement.step]
-    const stageActivities = {
-      stage: stage.label,
-      step: step.label,
-      questions: [],
-    }
-    await dispatch(UpdateActivities.action({ stageActivities }))
-
-    const medicalCase = store.getState().medicalCase.item
-    console.log(medicalCase)
 
     const medicalCaseState = navigationState.routes[navigationState.index].state
 

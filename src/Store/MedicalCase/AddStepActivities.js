@@ -2,8 +2,8 @@ import { createAction } from '@reduxjs/toolkit'
 
 export default {
   initialState: {},
-  action: createAction('medicalCase/updateActivities'),
+  action: createAction('medicalCase/addStepActivities'),
   reducers(state, { payload }) {
-    state.item.activities.push(payload.stageActivities)
+    state.item.activities.push(payload.stepActivities)
   },
 }

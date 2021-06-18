@@ -12,6 +12,8 @@ import { useDispatch } from 'react-redux'
 import { useTheme } from '@/Theme'
 import TabBarItem from './TabBarItem'
 import ChangeAdvancement from '@/Store/MedicalCase/ChangeAdvancement'
+import { getStages } from '@/Utils/Navigation/GetStages'
+import AddStepActivities from '@/Store/MedicalCase/AddStepActivities'
 
 const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const {
@@ -22,9 +24,25 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
   const dispatch = useDispatch()
 
   /**
+   * Updates the activities array with the new stage and step
+   */
+  const updateMedicalCaseActivities = () => {
+    const stages = getStages()
+    const stage = stages[stageIndex]
+    const step = stage.steps[navigationState.index]
+
+    const stepActivities = {
+      stage: stage.label,
+      step: step.label,
+      questions: [],
+    }
+    dispatch(AddStepActivities.action({ stepActivities }))
+  }
+
+  /**
    * Update the advancement in the store every time the step / stage changes
    */
-  const updateMedicalCaseStatus = async () => {
+  const updateMedicalCaseAdvancement = async () => {
     await dispatch(
       ChangeAdvancement.action({
         newStage: stageIndex,
@@ -43,7 +61,8 @@ const TabBar = ({ state, navigation, navigationState, stageIndex }) => {
 
   // Will update the medical case advancement
   useEffect(() => {
-    updateMedicalCaseStatus()
+    updateMedicalCaseAdvancement()
+    updateMedicalCaseActivities()
   }, [navigationState.index, stageIndex])
 
   const itemStatus = index => {

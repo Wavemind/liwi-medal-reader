@@ -6,7 +6,7 @@ import UpdateNodeField from './UpdateNodeField'
 import Load from './Load'
 import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
-import UpdateActivities from './UpdateActivities'
+import AddStepActivities from './AddStepActivities'
 
 // Final Diagnoses
 import AddAdditionalDiagnoses from './Diagnoses/AddAdditionalDiagnoses'
@@ -49,7 +49,7 @@ export default buildSlice(
     SetAnswer,
     UpdateNodeField,
     Load,
-    UpdateActivities,
+    AddStepActivities,
     // Diagnoses
     AddAdditionalDiagnoses,
     RemoveAdditionalDiagnoses,
