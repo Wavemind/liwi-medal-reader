@@ -6,10 +6,15 @@ import uuid from 'react-native-uuid'
  * The internal imports
  */
 import { generateNodes } from '@/Services/Node'
+import { getStages } from '@/Utils/Navigation/GetStages'
 
 export default async ({ algorithm }) => {
+  const stages = getStages()
+  const stage = stages[0]
+  const step = stage.steps[0]
   return {
-    activities: [],
+    // activities: [{ stage: 'Registration', questions: [{ node: 'nodeId', previousValue: '', newValue: 'Yes'}]}],
+    activities: [{ stage: stage.label, step: step.label, questions: [] }],
     comment: '',
     consent: !!algorithm.config.consent_management,
     createdAt: new Date().getTime(),
