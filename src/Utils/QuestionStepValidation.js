@@ -1,6 +1,7 @@
 import { store } from '@/Store'
 import { Config } from '@/Config'
 import { translate } from '@/Translations/algorithm'
+import { RegistrationQuestions } from '@/Services/Steps'
 import i18n from '@/Translations/index'
 
 export default (questions, errors) => {
@@ -50,12 +51,19 @@ export default (questions, errors) => {
         }
       }
 
-      // Mandatory
-      if (node.is_mandatory && !result) {
-        const label = translate(node.label)
-        errors[questionId] = i18n.t('validation.is_required', {
-          field: label,
-        })
+      // Skip validation if algorithm is in arm control except in registration
+      if (
+        !algorithm.is_arm_control ||
+        (algorithm.is_arm_control &&
+          RegistrationQuestions().includes(questionId))
+      ) {
+        // Mandatory
+        if (node.is_mandatory && !result) {
+          const label = translate(node.label)
+          errors[questionId] = i18n.t('validation.is_required', {
+            field: label,
+          })
+        }
       }
     }
   })

@@ -7,6 +7,7 @@
  */
 import { Config } from '@/Config'
 import { translate } from '@/Translations/algorithm'
+import { RegistrationQuestions } from '@/Services/Steps'
 import { store } from '@/Store'
 
 export default (mcNode, node, value) => {
@@ -21,7 +22,7 @@ export default (mcNode, node, value) => {
   // Skip validation algorithm is in arm control except in registration
   if (
     algorithm.is_arm_control &&
-    !algorithm.mobile_config.questions_order.registration.includes(mcNode.id)
+    !RegistrationQuestions().includes(mcNode.id)
   ) {
     return { validationMessage, validationType }
   }

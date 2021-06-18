@@ -1,8 +1,4 @@
 /**
- * The external imports
- */
-
-/**
  * The internal imports
  */
 import { store } from '@/Store'
@@ -22,6 +18,7 @@ export default () => {
   const state = store.getState()
 
   const medicalCase = state.medicalCase.item
+  const algorithm = state.algorithm.item
 
   const navigation = getStages()
   const step = medicalCase.advancement.step
@@ -31,6 +28,7 @@ export default () => {
   let questions = []
   let systems = []
 
+  // TODO: ARM CONTROL
   switch (navigation[stage].steps[step].label) {
     case 'registration':
       return RegistrationStepService(errors)
@@ -65,7 +63,10 @@ export default () => {
     case 'summary':
       return {}
     case 'referral':
-      return QuestionStepValidation(ReferralQuestions(), errors)
+      if (algorithm.config.track_referral) {
+        return QuestionStepValidation(ReferralQuestions(), errors)
+      }
+      return {}
     default:
       return {}
   }
