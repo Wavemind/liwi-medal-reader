@@ -34,9 +34,8 @@ const CustomClinician = ({ handleClinician }) => {
     role: '',
   })
 
-  // TODO wait for this to be available in HF
   const roles = useSelector(
-    state => state.healthFacility.item.medical_staffs[0].roles,
+    state => state.healthFacility.item.medical_staff_roles,
   )
 
   /**
