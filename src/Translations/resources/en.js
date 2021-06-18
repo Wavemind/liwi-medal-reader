@@ -129,7 +129,8 @@ export default {
         no_medicines: 'No medicines available',
       },
       formulations: {
-        title: 'Which formulation of medicine is available and appropriate for your patient ?',
+        title:
+          'Which formulation of medicine is available and appropriate for your patient ?',
       },
       summary: {
         management_consulting: 'Managements & Counselling',

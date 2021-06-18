@@ -34,6 +34,20 @@ export const getQsValue = (qsId, newMcNodes) => {
   }
 }
 
+export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
+  const nodes = store.getState().algorithm.item.nodes
+
+  return nodes[nodeId].conditions
+    .filter(condition => condition.node_id === instance.id)
+    .map(condition => {
+      if (mcNodes[condition.node_id].answer === null) {
+        return null
+      } else {
+        return mcNodes[condition.node_id].answer === condition.answer_id
+      }
+    })
+}
+
 /**
  * Calculates the value of an instance in a question sequence
  * @param {Instance} instance : The instance we wanna handle
@@ -43,7 +57,6 @@ export const getQsValue = (qsId, newMcNodes) => {
  * @returns {Boolean | null} the value of the instance in the question sequence (returns null if not answered yet)
  */
 const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
-  const nodes = store.getState().algorithm.item.nodes
   const mcNode = newMcNodes[instance.id]
 
   const instanceCondition = calculateCondition(instance)
@@ -54,16 +67,9 @@ const qsInstanceValue = (instance, newMcNodes, instances, qsId) => {
 
   if (instanceCondition) {
     if (isEndOfQS(instance.children, qsId)) {
-      const reducedConditions = nodes[qsId].conditions
-        .filter(condition => condition.node_id === instance.id)
-        .map(condition => {
-          if (newMcNodes[condition.node_id].answer === null) {
-            return null
-          } else {
-            return newMcNodes[condition.node_id].answer === condition.answer_id
-          }
-        })
-      return reduceConditions(reducedConditions)
+      return reduceConditions(
+        diagramConditionsValues(qsId, instance, newMcNodes),
+      )
     } else {
       const childrenInstances = instance.children.map(child => instances[child])
       return reduceConditions(

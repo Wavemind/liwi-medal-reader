@@ -73,25 +73,6 @@ const baseInterventionStages = [
     ],
   },
   {
-    label: 'first_assessments',
-    icon: 'assessment',
-    component: 'FirstAssessmentsWrapper',
-    steps: [
-      {
-        label: 'unique_triage_questions',
-        component: UniqueTriageQuestionsMedicalCaseContainer,
-      },
-      {
-        label: 'complaint_categories',
-        component: ComplaintCategoryMedicalCaseContainer,
-      },
-      {
-        label: 'basic_measurements',
-        component: BasicMeasurementMedicalCaseContainer,
-      },
-    ],
-  },
-  {
     label: 'consultation',
     icon: 'consultation',
     component: 'ConsultationWrapper',
@@ -99,6 +80,10 @@ const baseInterventionStages = [
       {
         label: 'medical_history',
         component: MedicalHistoryMedicalCaseContainer,
+      },
+      {
+        label: 'final_diagnoses',
+        component: FinalDiagnosesMedicalCaseContainer,
       },
       {
         label: 'physical_exams',

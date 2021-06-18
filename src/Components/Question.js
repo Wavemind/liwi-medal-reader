@@ -145,7 +145,7 @@ const Question = ({ questionId, disabled = false }) => {
 
         {(mcNode.validationType === 'error' ||
           mcNode.validationType === 'warning') && (
-          <View style={[question.messageWrapper(question.validationType)]}>
+          <View style={question.messageWrapper(mcNode.validationType)}>
             <Icon
               size={FontSize.regular}
               color={Colors.secondary}

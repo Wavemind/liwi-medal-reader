@@ -8,6 +8,7 @@ import HandleComplaintCategories from './HandleComplaintCategories'
 import HandleDateFormulas from './HandleDateFormulas'
 
 // Final Diagnoses
+import SetDiagnoses from './Diagnoses/SetDiagnoses'
 import AddAdditionalDiagnoses from './Diagnoses/AddAdditionalDiagnoses'
 import RemoveAdditionalDiagnoses from './Diagnoses/RemoveAdditionalDiagnoses'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
@@ -49,6 +50,7 @@ export default buildSlice(
     UpdateNodeField,
     Load,
     // Diagnoses
+    //SetDiagnoses,
     AddAdditionalDiagnoses,
     RemoveAdditionalDiagnoses,
     AddAgreedDiagnoses,
