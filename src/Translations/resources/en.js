@@ -14,6 +14,7 @@ export default {
     scan_consent: 'Scan new consent',
     add: 'Add',
     apply: 'Apply Selection',
+    save: 'Save',
   },
   algorithm: {
     version_id: 'Version id',
@@ -239,6 +240,7 @@ export default {
     local_data_ip: 'MedAL-hub address',
     main_data_ip: 'MedAL-data address',
     roles: {
+      title: 'Roles',
       medical_doctor: 'Medical Doctor (MD)',
       assistant_medical_officer: 'Assistant Medical Officer (AMO)',
       clinical_officer: 'Clinical Officer (CO)',

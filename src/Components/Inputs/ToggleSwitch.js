@@ -12,14 +12,14 @@ import { useTheme } from '@/Theme'
 const ToggleSwitch = ({ label, handleToggle, value }) => {
   // Theme and style elements deconstruction
   const {
-    Components: { squareSelect },
+    Components: { toggleSwitch },
     Colors,
   } = useTheme()
 
   return (
-    <View style={squareSelect.wrapper}>
-      <Text style={squareSelect.label}>{label}</Text>
-      <View style={squareSelect.pickerContainer}>
+    <View style={toggleSwitch.wrapper}>
+      <Text style={toggleSwitch.label}>{label}</Text>
+      <View style={toggleSwitch.switchContainer}>
         <Switch
           trackColor={{ false: Colors.grey, true: Colors.secondary }}
           thumbColor={value ? Colors.primary : Colors.secondary}
