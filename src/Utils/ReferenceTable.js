@@ -73,13 +73,13 @@ export const calculateReference = (nodeId, newNodes) => {
   } else if (gender === 'female') {
     reference = Config.REFERENCES[currentNode.reference_table_female]
   }
+
   // If X and Y means question is not answered + check if answer is in the scope of the reference table
   if (reference !== null && x !== null && y !== null && z === undefined) {
     value = processReferenceTable(reference, x, y)
   } else if (reference !== null && x !== null && y !== null && z !== null) {
     value = processReferenceTable3D(reference, x, y, z)
   }
-
   return value
 }
 
@@ -135,6 +135,8 @@ const processReferenceTable3D = (
  */
 const processReferenceTable = (referenceTable, referenceX, referenceY) => {
   let value = null
+
+  console.log('referenceX', referenceX, referenceY)
 
   // If X exist in reference table
   if (referenceX in referenceTable) {

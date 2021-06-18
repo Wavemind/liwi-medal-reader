@@ -252,7 +252,13 @@ export const debugNode = (nodeId, mcNodes) => {
       [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, mcNodes),
     }
   })
-  console.info('debug', nodeId, result, 'answer' + ' ' + mcNodes[nodeId].answer)
+  console.info(
+    'debug',
+    nodeId,
+    result,
+    'answer' + ' ' + mcNodes[nodeId].answer,
+    'value' + ' ' + mcNodes[nodeId].value,
+  )
 }
 
 /**

@@ -1,8 +1,4 @@
 /**
- * The external imports
- */
-
-/**
  * The internal imports
  */
 import { store } from '@/Store'
@@ -19,6 +15,7 @@ export default () => {
   const diagnoses = state.algorithm.item.diagnoses
   const validDiagnoses = getValidDiagnoses()
   const validDiagnosesId = validDiagnoses.map(diagnosis => diagnosis.id)
+  let excludedDiagnosis = []
 
   mcDiagnosis.excluded = Object.values(diagnoses)
     .filter(diagnosis => !validDiagnosesId.includes(diagnosis.id))
@@ -33,7 +30,18 @@ export default () => {
     .map(diagnosis => findProposedFinalDiagnoses(diagnosis))
     .flat()
 
-  const excludedDiagnosis = validDiagnoses
+  // proposedDiagnoses.forEach(finalDiagnosis => {
+  //   excludedDiagnosis = excludedDiagnosis.concat(
+  //     nodes[finalDiagnosis].excluding_final_diagnoses,
+  //   )
+  // })
+
+  // // Handle Excluding diagnoses
+  // mcDiagnosis.proposed = proposedDiagnoses.filter(finalDiagnosis => {
+  //   return !excludedDiagnosis.includes(finalDiagnosis.id)
+  // })
+
+  excludedDiagnosis = validDiagnoses
     .map(diagnosis =>
       findExcludedFinalDiagnoses(diagnosis).filter(
         finalDiagnosis => finalDiagnosis.value === false,
