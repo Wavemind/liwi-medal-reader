@@ -23,7 +23,6 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     Layout,
     Colors,
     FontSize,
-    Fonts,
     Gutters,
   } = useTheme()
   const dispatch = useDispatch()
@@ -75,39 +74,21 @@ const StageWrapperNavbar = ({ stageIndex }) => {
 
   if (Object.keys(errors).length > 0) {
     return (
-      <View
-        style={[
-          Gutters.smallVPadding,
-          Gutters.smallHPadding,
-          Layout.fill,
-          Layout.row,
-
-          { backgroundColor: Colors.red },
-        ]}
-      >
+      <View style={bottomNavbar.errorContainer}>
         <View style={[Layout.fill, Layout.row]}>
           <View style={[Layout.fill, Layout.center]}>
-            <Text
-              style={[Fonts.textLeft, Fonts.textRegular, { color: 'white' }]}
-            >
+            <Text style={bottomNavbar.errorText}>
               {Object.values(errors)[0]}
             </Text>
           </View>
         </View>
         <View style={[Layout.fill, Layout.row]}>
           <View style={[Layout.fill, Gutters.regularRMargin]}>
-            <Text
-              style={[
-                Layout.alignItemsCenter,
-                Fonts.textRight,
-                Fonts.textRegular,
-                { color: 'white' },
-              ]}
-            >
+            <Text style={bottomNavbar.errorNumber}>
               {Object.values(errors).length}
             </Text>
           </View>
-          <View style={[{ width: 50 }]}>
+          <View style={bottomNavbar.errorNextButton}>
             <SquareButton
               filled
               icon="right-arrow"
@@ -124,14 +105,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   }
 
   return (
-    <View
-      style={[
-        Gutters.smallVPadding,
-        Gutters.smallHPadding,
-        Layout.fill,
-        Layout.row,
-      ]}
-    >
+    <View style={bottomNavbar.stageWrapperContainer}>
       <View style={[Layout.fill, Layout.row]}>
         {stageIndex > 0 ? (
           <SquareButton
