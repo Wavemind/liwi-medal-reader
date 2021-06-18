@@ -26,6 +26,7 @@ const SquareSelect = ({
   // Theme and style elements deconstruction
   const {
     Colors,
+    Fonts,
     Components: { squareSelect },
   } = useTheme()
 
@@ -45,6 +46,8 @@ const SquareSelect = ({
             label={t('actions.select')}
             value=""
             color={Colors.grey}
+            style={Fonts.textSmall}
+            fontFamily="ZeitungPro"
           />
           {items.map(item => {
             return (
@@ -52,6 +55,8 @@ const SquareSelect = ({
                 key={`select-${item.value}`}
                 label={item.label}
                 value={item.value}
+                style={Fonts.textSmall}
+                fontFamily="ZeitungPro"
               />
             )
           })}

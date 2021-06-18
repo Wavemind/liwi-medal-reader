@@ -42,7 +42,7 @@ export default function (props) {
     inputText: {
       ...Fonts.textSmall,
       ...Layout.grow,
-      color: Colors.grey,
+      color: Colors.primary,
       padding: 0,
     },
     selectWrapper: {
