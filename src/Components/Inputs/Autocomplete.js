@@ -57,7 +57,17 @@ const Autocomplete = ({ questionId }) => {
   const handleOptionSelect = option => {
     setOptionSelected(true)
     setSearchTerm(option)
-    dispatch(SetAnswer.action({ nodeId: question.id, option }))
+  }
+
+  /**
+   * Save value in store
+   * @param {Event} e
+   */
+  const onEndEditing = e => {
+    const newValue = e.nativeEvent.text
+    if (question.value !== newValue) {
+      dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
+    }
   }
 
   /**
@@ -103,6 +113,7 @@ const Autocomplete = ({ questionId }) => {
             style={autocomplete.inputText}
             keyboardType="default"
             onChangeText={handleChangeText}
+            onEndEditing={onEndEditing}
             value={searchTerm}
             placeholder={t('application.search')}
           />

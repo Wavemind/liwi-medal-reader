@@ -8,6 +8,7 @@ export default function (props) {
       backgroundColor: Colors.primary,
       ...Gutters.regularHPadding,
       ...Gutters.smallVPadding,
+      ...Gutters.regularVMargin,
       ...Layout.row,
     },
     headerText: {

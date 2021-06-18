@@ -70,7 +70,7 @@ export { default as Consent } from './Consent'
 export { default as EmptyList } from './EmptyList'
 export { default as Error } from './Error'
 
-// MEDICAL CASE
+// MEDICAL CASE DIAGNOSES
 export { default as AdditionalSelect } from './Diagnoses/AdditionalSelect'
 export { default as CustomElement } from './Diagnoses/CustomElement'
 export { default as ProposedDiagnoses } from './Diagnoses/FinalDiagnoses/ProposedDiagnoses'
@@ -90,3 +90,8 @@ export { default as Breakable } from './Diagnoses/Summary/Breakable'
 export { default as Capsule } from './Diagnoses/Summary/Capsule'
 export { default as Default } from './Diagnoses/Summary/Default'
 export { default as Custom } from './Diagnoses/Summary/Custom'
+
+// MEDICAL CASE SUMMARY
+export { default as SummaryFinalDiagnoses } from './MedicalCase/Summary/FinalDiagnoses'
+export { default as SummaryQuestions } from './MedicalCase/Summary/Questions'
+export { default as QuestionItem } from './MedicalCase/Summary/QuestionItem'

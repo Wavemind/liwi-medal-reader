@@ -254,6 +254,9 @@ export default {
     consultations: 'Consultations',
     patient_list: 'Patient list',
     personal_info: 'Personal information',
+    summary: 'Summary',
+    final_diagnoses: 'Final Diagnoses',
+    questions: 'Questions',
     consent_list: 'Consent files',
     current_consultation: 'Current consultation',
     home: 'Home',
@@ -320,5 +323,9 @@ export default {
       per: 'per',
       per_administration: 'per administration',
     },
+  },
+  validation: {
+    is_required: '{{ field }} is required',
+    consent_file_blank: "The data processing consent can't be blank",
   },
 }

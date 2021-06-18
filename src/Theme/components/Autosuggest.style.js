@@ -6,7 +6,7 @@ export default function (props) {
 
   return StyleSheet.create({
     inputWrapper: {
-      ...Gutters.smallVMargin,
+      ...Gutters.smallTMargin,
       ...Gutters.smallVPadding,
       ...Layout.row,
       ...Layout.fill,

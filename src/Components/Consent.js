@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native'
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { SectionHeader, SquareButton } from '@/Components'
+import { SectionHeader, SquareButton, Icon } from '@/Components'
 import UpdateField from '@/Store/Patient/UpdateField'
 
 const Consent = props => {
@@ -23,6 +23,8 @@ const Consent = props => {
     Components: { consent, question, booleanButton },
     Layout,
     Gutters,
+    FontSize,
+    Colors,
   } = useTheme()
 
   /**
@@ -34,12 +36,15 @@ const Consent = props => {
   }
 
   const patient = useSelector(state => state.patient.item)
+  const consentError = useSelector(state => state.validation.item.consent)
 
   return (
     <View style={[Gutters.regularHPadding, Gutters.regularBMargin]}>
       <SectionHeader label={t('components.consent.title')} />
       <View style={question.questionWrapper(false)}>
-        <Text style={consent.question}>{t('components.consent.question')}</Text>
+        <Text style={question.text(consentError ? 'error' : null)}>
+          {t('components.consent.question')}
+        </Text>
         <View style={[question.inputWrapper, Layout.row]}>
           <View
             key="booleanButton-left"
@@ -93,6 +98,16 @@ const Consent = props => {
               />
             </View>
           )}
+        </View>
+      )}
+      {consentError && (
+        <View style={[question.messageWrapper(consentError ? 'error' : null)]}>
+          <Icon
+            size={FontSize.regular}
+            color={Colors.secondary}
+            name="warning"
+          />
+          <Text style={question.message}>{consentError}</Text>
         </View>
       )}
     </View>

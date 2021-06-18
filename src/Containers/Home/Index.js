@@ -2,7 +2,7 @@
  * The external imports
  */
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, View, Animated } from 'react-native'
+import { FlatList, View, Animated, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import uuid from 'react-native-uuid'
@@ -153,7 +153,9 @@ const IndexHomeContainer = ({ navigation }) => {
       </View>
 
       <View style={Gutters.regularHMargin}>
-        <SearchBar navigation={navigation} />
+        <TouchableOpacity onPress={() => navigation.navigate('Consultations')}>
+          <SearchBar navigation={navigation} />
+        </TouchableOpacity>
       </View>
 
       <View style={Gutters.regularHMargin}>
