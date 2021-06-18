@@ -25,6 +25,10 @@ export default function (props) {
       ...Layout.row,
       backgroundColor: Colors.red,
     },
+    errorButtonWrapper: {
+      ...Layout.row,
+      width: wp(12),
+    },
     errorText: {
       ...Fonts.textLeft,
       ...Fonts.textRegular,

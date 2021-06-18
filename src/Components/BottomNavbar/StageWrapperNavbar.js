@@ -121,7 +121,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             </Text>
           </View>
         </View>
-        <View style={[Layout.fill, Layout.row]}>
+        <View style={bottomNavbar.errorButtonWrapper}>
           <View style={[Layout.fill, Gutters.regularRMargin]}>
             <Text style={bottomNavbar.errorNumber}>
               {Object.values(errors).length}
