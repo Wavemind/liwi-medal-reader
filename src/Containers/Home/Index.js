@@ -89,19 +89,21 @@ const IndexHomeContainer = ({ navigation }) => {
    * Create patient without scanning QR code
    */
   const newPatient = async () => {
-    await dispatch(CreateMedicalCase.action({ algorithm }))
+    const patientId = uuid.v4()
     await dispatch(
       CreatePatient.action({
-        idPatient: null,
+        patientId: null,
         newMedicalCase: true,
         facility: {
           study_id: 'Dynamic Tanzania',
           group_id: '7',
-          uid: uuid.v4(),
+          uid: patientId,
         },
         otherFacility: {},
       }),
     )
+    await dispatch(CreateMedicalCase.action({ algorithm, patientId }))
+
     navigation.navigate('StageWrapper')
   }
 

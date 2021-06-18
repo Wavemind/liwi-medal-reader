@@ -8,7 +8,7 @@ import uuid from 'react-native-uuid'
  */
 
 export default async props => {
-  const { facility, otherFacility } = props
+  const { facility, otherFacility, newMedicalCase } = props
   const { study_id, uid, group_id } = facility
   const { other_study_id, other_uid, other_group_id } = otherFacility
 
@@ -29,6 +29,7 @@ export default async props => {
     other_uid: other_uid || null,
     patient_values: [],
     reason: null,
+    savedInDatabase: !newMedicalCase,
     study_id,
     uid,
     updatedAt: new Date().getTime() / 1000, // Transform ms to s

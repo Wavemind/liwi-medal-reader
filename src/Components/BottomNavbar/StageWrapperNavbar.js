@@ -15,6 +15,7 @@ import { useTheme } from '@/Theme'
 import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/Database/Patient/Insert'
 import StepValidation from '@/Store/Validation/Step'
+import UpdateFieldPatient from '@/Store/Patient/UpdateField'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -33,43 +34,81 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   )
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
+  const savedInDatabase = useSelector(
+    state => state.patient.item.savedInDatabase,
+  )
+  const patientInsertError = useSelector(
+    state => state.database.patient.insert.error,
+  )
+  const patientInsertLoading = useSelector(
+    state => state.database.patient.insert.loading,
+  )
+
   const errors = useSelector(state => state.validation.item)
 
   /**
-   * Will navigate to the next step / Stage base on the current navigation State
+   * Pre check of validation and insert in database patient if we're at registration stage
    * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
    */
-  const handleNavigation = async (direction, skipValidation = false) => {
+  const stepVerification = async (direction, skipValidation = false) => {
     let validation = null
     if (!skipValidation) {
       validation = await dispatch(StepValidation.action())
     }
 
+    // Continue only if validation pass and there is no errors
     if (
       skipValidation ||
       (isFulfilled(validation) &&
         Object.values(validation.payload).length === 0)
     ) {
-      // TODO: Need patient id in medicalCase when it's created
-      if (advancement.stage === 0) {
-        await dispatch(InsertPatient.action())
-      }
-      const medicalCaseState =
-        navigationState.routes[navigationState.index].state
+      if (advancement.stage === 0 && !savedInDatabase) {
+        const patientInsert = await dispatch(InsertPatient.action())
 
-      const nextStep = advancement.step + direction
-      if (
-        medicalCaseState !== undefined &&
-        nextStep < medicalCaseState.routes.length &&
-        nextStep >= 0
-      ) {
-        navigation.navigate(medicalCaseState.routes[nextStep].name)
+        if (isFulfilled(patientInsert)) {
+          dispatch(
+            UpdateFieldPatient.action({
+              field: 'savedInDatabase',
+              value: !savedInDatabase,
+            }),
+          )
+          handleNavigation(direction)
+        }
       } else {
-        navigation.navigate('StageWrapper', {
-          stageIndex: stageIndex + direction,
-        })
+        handleNavigation(direction)
       }
     }
+  }
+
+  /**
+   * Will navigate to the next step / Stage base on the current navigation State
+   * @param {integer} direction : tell where we wanna navigate a positive number means we are going forwards and a negative number means we are going back
+   */
+  const handleNavigation = async direction => {
+    const medicalCaseState = navigationState.routes[navigationState.index].state
+
+    const nextStep = advancement.step + direction
+    if (
+      medicalCaseState !== undefined &&
+      nextStep < medicalCaseState.routes.length &&
+      nextStep >= 0
+    ) {
+      navigation.navigate(medicalCaseState.routes[nextStep].name)
+    } else {
+      navigation.navigate('StageWrapper', {
+        stageIndex: stageIndex + direction,
+      })
+    }
+  }
+
+  if (patientInsertError) {
+    return (
+      <View style={bottomNavbar.errorContainer}>
+        <View style={[Layout.fill, Layout.row]}>
+          <Text style={bottomNavbar.errorText}>{patientInsertError}</Text>
+        </View>
+      </View>
+    )
   }
 
   if (Object.keys(errors).length > 0) {
@@ -96,6 +135,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
               bgColor={Colors.secondary}
               color={Colors.primary}
               iconSize={FontSize.large}
+              disabled={patientInsertLoading}
               onPress={() => dispatch(StepValidation.action())}
             />
           </View>
@@ -116,7 +156,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             icon="left-arrow"
             align={Layout.alignItemsStart}
             iconSize={FontSize.regular}
-            onPress={() => handleNavigation(-1, true)}
+            onPress={() => stepVerification(-1, true)}
           />
         ) : null}
       </View>
@@ -141,7 +181,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
             icon="right-arrow"
             iconAfter
             iconSize={FontSize.regular}
-            onPress={() => handleNavigation(1)}
+            onPress={() => stepVerification(1)}
           />
         </View>
       </View>

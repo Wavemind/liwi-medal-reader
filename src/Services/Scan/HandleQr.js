@@ -80,14 +80,14 @@ export default async ({
     if (patient !== null) {
       return {
         navigate: true,
-        navigationParams: { id: patient.id },
+        navigationParams: { patientId: patient.id, newMedicalCase: false },
       }
     } else if (sameFacility) {
       // if it is the correct facility but patient does not exist We create a new patient.
       return {
         navigate: true,
         navigationParams: {
-          idPatient: null,
+          patientId: null,
           newMedicalCase: true,
           facility: {
             ...QRData,
