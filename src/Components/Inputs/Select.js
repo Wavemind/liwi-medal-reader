@@ -34,6 +34,12 @@ const Select = ({ questionId, disabled = false }) => {
   // Local state definition
   const [value, setValue] = useState(question.answer)
 
+  useEffect(() => {
+    if (Object.values(currentNode.answers).length === 1) {
+      setValue(Object.values(currentNode.answers)[0].id)
+    }
+  }, [])
+
   /**
    * Set answer in medical case
    */

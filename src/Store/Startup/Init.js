@@ -40,8 +40,10 @@ export default {
     // Set algorithm
     const algorithmTargetPath = `${DocumentDirectoryPath}/version_${state.system.versionId}.json`
     const algorithmFileExist = await exists(algorithmTargetPath)
+    console.log(algorithmFileExist)
     if (algorithmFileExist) {
       const algorithm = await readFile(algorithmTargetPath)
+      console.log(algorithm)
       await dispatch(
         LoadAlgorithm.action({
           newAlgorithm: JSON.parse(algorithm),

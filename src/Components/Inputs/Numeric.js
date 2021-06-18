@@ -1,7 +1,7 @@
 /**
  * The external imports
  */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, TextInput, TouchableOpacity, Text } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,6 +34,15 @@ const Numeric = ({ questionId, editable = true }) => {
   // Local state definition
   const [value, setValue] = useState(question.value)
   const [estimableValue, setEstimableValue] = useState(question.estimableValue)
+
+  /**
+   * Clear input if unavailable was set
+   */
+  useEffect(() => {
+    if (!question.unavailableValue) {
+      setValue('')
+    }
+  }, [question.unavailableValue])
 
   /**
    * Save value in store

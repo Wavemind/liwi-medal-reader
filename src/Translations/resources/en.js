@@ -129,7 +129,8 @@ export default {
         no_medicines: 'No medicines available',
       },
       formulations: {
-        title: 'Which formulation of medicine is available and appropriate for your patient ?',
+        title:
+          'Which formulation of medicine is available and appropriate for your patient ?',
       },
       summary: {
         management_consulting: 'Managements & Counselling',
@@ -322,5 +323,9 @@ export default {
       per: 'per',
       per_administration: 'per administration',
     },
+  },
+  validation: {
+    is_required: '{{ field }} is required',
+    consent_file_blank: "The data processing consent can't be blank",
   },
 }

@@ -6,7 +6,7 @@
  * The internal imports
  */
 import { store } from '@/Store'
-import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
+import QuestionValidationService from '@/Services/Validation/Question'
 import { setNodeValue } from '@/Utils/Answers'
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
 import UpdateRelatedQuestion from '@/Services/MedicalCase/UpdateRelatedQuestion'
@@ -28,7 +28,7 @@ export default props => {
   let newNodes = JSON.parse(JSON.stringify(newMedicalCase.nodes))
 
   // Validation
-  const validation = validationMedicalCaseService(mcNode, node, value)
+  const validation = QuestionValidationService(mcNode, node, value)
 
   // Early return if there is an error in the validation
   if (validation.validationType === 'error') {
@@ -43,7 +43,6 @@ export default props => {
       },
     }
   }
-
   // Set the new value to the current node
   newValues = setNodeValue(mcNode, node, value)
   newNodes[nodeId] = {

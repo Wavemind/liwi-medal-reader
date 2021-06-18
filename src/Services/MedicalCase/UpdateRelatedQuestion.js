@@ -2,7 +2,7 @@
  * The internal imports
  */
 import UpdateQuestionSequence from '@/Services/MedicalCase/UpdateQuestionSequence'
-import validationMedicalCaseService from '@/Services/MedicalCase/Validation'
+import QuestionValidationService from '@/Services/Validation/Question'
 import { uniq } from '@/Utils/MedicalCase'
 import { handleNumeric } from '@/Utils/Answers'
 import { calculateFormula } from '@/Utils/Formula'
@@ -32,7 +32,7 @@ export default ({ nodeId, newNodes }) => {
     }
 
     if (value !== null) {
-      const validation = validationMedicalCaseService(mcNode, node, value)
+      const validation = QuestionValidationService(mcNode, node, value)
 
       if (validation.validationType === 'error') {
         newNodes[node.id] = {

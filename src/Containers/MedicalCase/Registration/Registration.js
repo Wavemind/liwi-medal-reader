@@ -4,6 +4,7 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 /**
  * The internal imports
@@ -25,13 +26,17 @@ const RegistrationMedicalCaseContainer = props => {
 
   const questions = RegistrationQuestions()
 
+  const consentManagement = useSelector(
+    state => state.algorithm.item.config.consent_management,
+  )
+
   /**
    * Returns the static questions for the medical case
    * @returns List of inputs to show
    */
   const Header = () => (
     <>
-      <Consent />
+      {consentManagement && <Consent />}
       <View style={[Gutters.regularHMargin]}>
         <SectionHeader
           label={t('containers.medical_case.registration.questions')}
@@ -52,6 +57,7 @@ const RegistrationMedicalCaseContainer = props => {
       ListEmptyComponent={
         <EmptyList text={t('containers.medical_case.no_questions')} />
       }
+      removeClippedSubviews={false}
       keyExtractor={item => item}
     />
   )

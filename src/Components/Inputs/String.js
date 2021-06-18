@@ -40,6 +40,7 @@ const String = ({ questionId, editable = true }) => {
       dispatch(SetAnswer.action({ nodeId: question.id, value: newValue }))
     }
   }
+
   return (
     <TextInput
       style={string.input(editable)}
