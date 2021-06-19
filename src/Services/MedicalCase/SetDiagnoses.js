@@ -13,6 +13,7 @@ export default () => {
   let mcDiagnosis = JSON.parse(JSON.stringify(state.medicalCase.item.diagnosis))
   const medicalCase = state.medicalCase.item
   const diagnoses = state.algorithm.item.diagnoses
+  const nodes = state.algorithm.item.nodes
   const validDiagnoses = getValidDiagnoses()
   const validDiagnosesId = validDiagnoses.map(diagnosis => diagnosis.id)
 
@@ -31,6 +32,24 @@ export default () => {
     .map(diagnosis => findProposedFinalDiagnoses(diagnosis))
     .flat()
 
+  mcDiagnosis.proposed = mcDiagnosis.proposed.filter(finalDiagnosisId => {
+    return !nodes[finalDiagnosisId].excluding_final_diagnoses.some(
+      excludingFinalDiagnosisId => {
+        if (
+          Object.values(mcDiagnosis.agreed)
+            .map(a => a.id)
+            .includes(excludingFinalDiagnosisId)
+        ) {
+          mcDiagnosis.excluded = mcDiagnosis.excluded.concat(finalDiagnosisId)
+        }
+        return (
+          mcDiagnosis.proposed.includes(excludingFinalDiagnosisId) &&
+          !mcDiagnosis.refused.includes(excludingFinalDiagnosisId)
+        )
+      },
+    )
+  })
+
   const excludedDiagnosis = validDiagnoses
     .map(diagnosis =>
       findExcludedFinalDiagnoses(diagnosis).filter(
@@ -39,6 +58,7 @@ export default () => {
     )
     .flat()
     .map(finalDiagnosis => finalDiagnosis.id)
+
   mcDiagnosis.excluded = mcDiagnosis.excluded.concat(excludedDiagnosis)
 
   return {
