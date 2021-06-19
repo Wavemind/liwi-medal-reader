@@ -1,7 +1,6 @@
 /**
  * The external imports
  */
-import 'react-native'
 import uuid from 'react-native-uuid'
 
 /**
