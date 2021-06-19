@@ -1,19 +1,20 @@
 /**
- * The external imports
- */
-
-/**
  * The internal imports
  */
 import {
   calculateCondition,
   getTopConditions,
-  reduceConditions,
   uniq,
+  reduceConditions,
 } from '@/Utils/MedicalCase'
 import { store } from '@/Store'
 import { Config } from '@/Config'
 
+/**
+ * Finds all the proposed final diagnoses in the current medical case
+ * @param {Diagnosis} diagnosis : the diagnosis we want to test
+ * @returns {Array<finalDiagnoses>} : Final Diagnoses found for the diagnosis passed in params
+ */
 export const findProposedFinalDiagnoses = diagnosis => {
   const topConditions = getTopConditions(diagnosis.instances)
   return uniq(
@@ -23,23 +24,13 @@ export const findProposedFinalDiagnoses = diagnosis => {
   )
 }
 
-export const findExcludedFinalDiagnoses = diagnosis => {
-  const topConditions = getTopConditions(diagnosis.instances)
-  return Object.values(diagnosis.final_diagnoses).map(finalDiagnosis => {
-    return {
-      id: finalDiagnosis.id,
-      value: reduceConditions(
-        topConditions.map(instance =>
-          searchExcludedFinalDiagnoses(
-            instance,
-            diagnosis.instances,
-            finalDiagnosis,
-          ),
-        ),
-      ),
-    }
-  })
-}
+/**
+ * For one specific instance we will check if it's condition is valid and look further until we find a Final Diagnosis
+ * @param {Instance} instance : The instance we are testing
+ * @param {Array<Instance>} instances : All the instances of the current diagnosis
+ * @param {Array<Integer>} finalDiagnoses : an array of id we populate when we find a final diagnosis
+ * @returns we return finalDiagnoses
+ */
 const searchFinalDiagnoses = (instance, instances, finalDiagnoses = []) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes
@@ -56,6 +47,23 @@ const searchFinalDiagnoses = (instance, instances, finalDiagnoses = []) => {
     })
   }
   return uniq(finalDiagnoses)
+}
+
+// TODO AT SOME POINT WHEN DIAGNOSES ARE MISSING IN EXCLUDED
+export const findExcludedFinalDiagnoses = diagnosis => {
+  const topConditions = getTopConditions(diagnosis.instances)
+  return Object.values(diagnosis.final_diagnoses).map(finalDiagnosis => ({
+    id: finalDiagnosis.id,
+    value: reduceConditions(
+      topConditions.map(instance =>
+        searchExcludedFinalDiagnoses(
+          instance,
+          diagnosis.instances,
+          finalDiagnosis,
+        ),
+      ),
+    ),
+  }))
 }
 
 const searchExcludedFinalDiagnoses = (instance, instances, finalDiagnosis) => {

@@ -50,7 +50,7 @@ export default buildSlice(
     UpdateNodeField,
     Load,
     // Diagnoses
-    //SetDiagnoses,
+    SetDiagnoses,
     AddAdditionalDiagnoses,
     RemoveAdditionalDiagnoses,
     AddAgreedDiagnoses,

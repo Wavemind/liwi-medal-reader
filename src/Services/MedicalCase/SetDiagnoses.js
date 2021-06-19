@@ -4,8 +4,8 @@
 import { store } from '@/Store'
 import { getValidDiagnoses } from '@/Utils/MedicalCase'
 import {
-  findExcludedFinalDiagnoses,
   findProposedFinalDiagnoses,
+  findExcludedFinalDiagnoses,
 } from '@/Utils/FinalDiagnosis'
 
 export default () => {
@@ -15,8 +15,8 @@ export default () => {
   const diagnoses = state.algorithm.item.diagnoses
   const validDiagnoses = getValidDiagnoses()
   const validDiagnosesId = validDiagnoses.map(diagnosis => diagnosis.id)
-  let excludedDiagnosis = []
 
+  // Exclude diagnoses based on cut off and complaint category exclusion
   mcDiagnosis.excluded = Object.values(diagnoses)
     .filter(diagnosis => !validDiagnosesId.includes(diagnosis.id))
     .map(diagnosis =>
@@ -26,22 +26,12 @@ export default () => {
     )
     .flat()
 
+  // Find all the included diagnoses
   mcDiagnosis.proposed = validDiagnoses
     .map(diagnosis => findProposedFinalDiagnoses(diagnosis))
     .flat()
 
-  // proposedDiagnoses.forEach(finalDiagnosis => {
-  //   excludedDiagnosis = excludedDiagnosis.concat(
-  //     nodes[finalDiagnosis].excluding_final_diagnoses,
-  //   )
-  // })
-
-  // // Handle Excluding diagnoses
-  // mcDiagnosis.proposed = proposedDiagnoses.filter(finalDiagnosis => {
-  //   return !excludedDiagnosis.includes(finalDiagnosis.id)
-  // })
-
-  excludedDiagnosis = validDiagnoses
+  const excludedDiagnosis = validDiagnoses
     .map(diagnosis =>
       findExcludedFinalDiagnoses(diagnosis).filter(
         finalDiagnosis => finalDiagnosis.value === false,
@@ -49,7 +39,6 @@ export default () => {
     )
     .flat()
     .map(finalDiagnosis => finalDiagnosis.id)
-
   mcDiagnosis.excluded = mcDiagnosis.excluded.concat(excludedDiagnosis)
 
   return {

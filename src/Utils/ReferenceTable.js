@@ -136,8 +136,6 @@ const processReferenceTable3D = (
 const processReferenceTable = (referenceTable, referenceX, referenceY) => {
   let value = null
 
-  console.log('referenceX', referenceX, referenceY)
-
   // If X exist in reference table
   if (referenceX in referenceTable) {
     value = findValueInReferenceTable(referenceTable[referenceX], referenceY)

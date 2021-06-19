@@ -34,6 +34,13 @@ export const getQsValue = (qsId, newMcNodes) => {
   }
 }
 
+/**
+ * Gest the condition for an element at the bottom of a diagram final diagnosis / Question sequence
+ * @param {Integer} nodeId : the node we want to test
+ * @param {instance} mcNodes: the parent we are calling from
+ * @param {Array<mcNode>} mcNodes: current medical case state
+ * @returns
+ */
 export const diagramConditionsValues = (nodeId, instance, mcNodes) => {
   const nodes = store.getState().algorithm.item.nodes
 
