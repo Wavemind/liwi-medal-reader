@@ -46,10 +46,14 @@ const searchFinalDiagnoses = (instance, instances, finalDiagnoses = []) => {
       }
     })
   }
-  return uniq(finalDiagnoses)
+  return finalDiagnoses
 }
 
-// TODO AT SOME POINT WHEN DIAGNOSES ARE MISSING IN EXCLUDED
+/**
+ * gets the status for the diagnosis passed in params
+ * @param {Diagnosis} diagnosis : the diagnosis we want to test
+ * @returns {Array<{id: Integer, value: Boolean}>} : Final Diagnoses found and their status
+ */
 export const findExcludedFinalDiagnoses = diagnosis => {
   const topConditions = getTopConditions(diagnosis.instances)
   return Object.values(diagnosis.final_diagnoses).map(finalDiagnosis => ({
@@ -66,6 +70,14 @@ export const findExcludedFinalDiagnoses = diagnosis => {
   }))
 }
 
+// TODO AT SOME POINT WHEN DIAGNOSES ARE MISSING IN EXCLUDED
+/**
+ * Looks for a final diagnosis in a diagram and will give its status
+ * @param {Instance} instance : The instance we are testing
+ * @param {Array<Instance>} instances : All the instances of the current diagnosis
+ * @param {FinalDiagnosis} finalDiagnosis : The final diagnosis we are looking for
+ * @returns
+ */
 const searchExcludedFinalDiagnoses = (instance, instances, finalDiagnosis) => {
   const state = store.getState()
   const nodes = state.algorithm.item.nodes

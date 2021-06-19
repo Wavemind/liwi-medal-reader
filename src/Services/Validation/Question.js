@@ -26,6 +26,7 @@ export default (mcNode, node, value) => {
   ) {
     return { validationMessage, validationType }
   }
+
   // Skip validation if answer is set as unavailable
   if (mcNode.unavailableValue) {
     return { validationMessage, validationType }

@@ -16,7 +16,6 @@ export default async ({ algorithm }) => {
     diagnosis: {
       proposed: [],
       excluded: [],
-      diagnoses: [], // TODO DO WE NEED THIS SHIT ?
       additional: {},
       agreed: {},
       refused: [],
