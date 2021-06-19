@@ -107,7 +107,6 @@ export const handleNumeric = (mcNode, node, value) => {
  */
 export const handleAnswerId = (node, value) => {
   let answer = null
-
   // Set Number only if this is a number
   if (value === null) {
     // Set the new answer to null for reset

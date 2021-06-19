@@ -94,7 +94,7 @@ export const Config = {
     positive: 'Positive',
   },
   REFERENCES: {
-    z_score_male_table: require('../Assets/ReferenceTables/z_score_male_table'),
+    z_score_male_table: require('../Assets/ReferenceTables/z_score_male_table.json'),
     z_score_female_table: require('../Assets/ReferenceTables/z_score_female_table.json'),
     heart_rate_table: require('../Assets/ReferenceTables/heart_rate_table.json'),
     respiratory_rate_table: require('../Assets/ReferenceTables/respiratory_rate_table.json'),

@@ -10,7 +10,6 @@ import differenceInDays from 'date-fns/differenceInDays'
 import { getYesAnswer } from '@/Utils/Answers'
 import { store } from '@/Store'
 import { Config } from '@/Config'
-import { translate } from '@/Translations/algorithm'
 
 /**
  * Will go through all the diagnoses of the algorithm and will return those that are still
@@ -200,7 +199,9 @@ export const excludedByCC = questionId => {
   const state = store.getState()
   const mcNodes = state.medicalCase.item.nodes
   const nodes = state.algorithm.item.nodes
-
+  if (nodes[questionId].type === Config.NODE_TYPES.finalDiagnosis) {
+    return false
+  }
   return nodes[questionId].conditioned_by_cc.some(
     ccId => mcNodes[ccId].answer === getYesAnswer(nodes[ccId]).id,
   )
@@ -245,13 +246,19 @@ export const reduceConditions = conditionsValues =>
  * @param {Array<Node>} mcNodes : Current state of medical case nodes
  */
 export const debugNode = (nodeId, mcNodes) => {
-  const state = store.getState()
-  const nodes = state.algorithm.item.nodes
+  const nodes = store.getState().algorithm.item.nodes
   const result = nodes[nodeId].dd.map(diagnosisId => {
     return {
       [diagnosisId]: debugNodeInDiagnosis(diagnosisId, nodeId, mcNodes),
     }
   })
+  console.info(
+    'debug',
+    nodeId,
+    result,
+    'answer' + ' ' + mcNodes[nodeId].answer,
+    'value' + ' ' + mcNodes[nodeId].value,
+  )
 }
 
 /**
@@ -281,6 +288,7 @@ const debugNodeInDiagnosis = (diagnosisId, nodeId, mcNodes) => {
     mcNodes,
   )
 }
+
 /**
  * Calculate the value for a specific instance in a diagram.
  * @param {Integer} diagnosisId : Id of the diagnosis

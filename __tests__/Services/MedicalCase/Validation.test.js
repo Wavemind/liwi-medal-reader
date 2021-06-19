@@ -1,9 +1,4 @@
 /**
- * The external imports
- */
-import 'react-native'
-
-/**
  * The internal imports
  */
 import QuestionValidationService from '@/Services/Validation/Question'
