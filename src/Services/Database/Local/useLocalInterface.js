@@ -418,7 +418,7 @@ export default function () {
 
     // MedicalCase
     //await _generateActivities(medicalCaseData.activities, medicalCaseData.id)
-    //await Promise.all([_savePatientValue('patients', patientData)])
+    // await Promise.all([_savePatientValue('patients', patientData)])
   }
 
   const _buildPatient = async patient => {
