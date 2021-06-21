@@ -82,15 +82,15 @@ const CustomClinician = ({ handleClinician }) => {
     <>
       <TouchableOpacity
         style={customClinician.buttonWrapper(open)}
-        onPress={() => toggleAccordion()}
+        onPress={toggleAccordion}
       >
         <View style={Layout.row}>
           <View style={[Layout.fill, Layout.alignItemStart]}>
             <Text style={[Fonts.textColorSecondary, Fonts.titleRegular]}>
-              Custom Clinician
+              {t('health_facility.custom_clinician')}
             </Text>
             <Text style={[Fonts.textColorSecondary, Fonts.textTiny]}>
-              Create a custom clinician
+              {t('health_facility.custom_clinician_subtitle')}
             </Text>
           </View>
           <View style={Layout.selfCenter}>

@@ -239,6 +239,8 @@ export default {
     area: 'Area',
     local_data_ip: 'MedAL-hub address',
     main_data_ip: 'MedAL-data address',
+    custom_clinician: 'Custom clinician',
+    custom_clinician_subtitle: 'Create a custom clinician',
     roles: {
       title: 'Roles',
       medical_doctor: 'Medical Doctor (MD)',
