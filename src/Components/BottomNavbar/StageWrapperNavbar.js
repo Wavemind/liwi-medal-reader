@@ -16,6 +16,7 @@ import { SquareButton } from '@/Components'
 import InsertPatient from '@/Store/Database/Patient/Insert'
 import StepValidation from '@/Store/Validation/Step'
 import UpdateFieldPatient from '@/Store/Patient/UpdateField'
+import useDatabase from '@/Services/Database/useDatabase'
 
 const StageWrapperNavbar = ({ stageIndex }) => {
   // Theme and style elements deconstruction
@@ -34,6 +35,7 @@ const StageWrapperNavbar = ({ stageIndex }) => {
   )
 
   const advancement = useSelector(state => state.medicalCase.item.advancement)
+  const medicalCaseId = useSelector(state => state.medicalCase.item.it)
   const savedInDatabase = useSelector(
     state => state.patient.item.savedInDatabase,
   )
@@ -86,8 +88,8 @@ const StageWrapperNavbar = ({ stageIndex }) => {
    */
   const handleNavigation = async direction => {
     const medicalCaseState = navigationState.routes[navigationState.index].state
-
     const nextStep = advancement.step + direction
+
     if (
       medicalCaseState !== undefined &&
       nextStep < medicalCaseState.routes.length &&
@@ -95,6 +97,18 @@ const StageWrapperNavbar = ({ stageIndex }) => {
     ) {
       navigation.navigate(medicalCaseState.routes[nextStep].name)
     } else {
+      const { update } = useDatabase()
+
+      // update advancement
+      await update('MedicalCase', medicalCaseId, [
+        { name: 'stage', value: stageIndex + direction },
+      ])
+
+      // TODO activities
+      
+      // TODO: save medicalCase in database
+      // TODO: save and quit
+
       navigation.navigate('StageWrapper', {
         stageIndex: stageIndex + direction,
       })

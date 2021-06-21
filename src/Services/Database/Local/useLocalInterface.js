@@ -409,7 +409,8 @@ export default function () {
           nodes: medicalCaseData.nodes,
         }
         nestedRecord.synchronized_at = medicalCaseData.synchronized_at
-        nestedRecord.advancement = medicalCaseData.advancement
+        nestedRecord.stage = medicalCaseData.advancement.stage
+        nestedRecord.step = medicalCaseData.advancement.step
         nestedRecord.closedAt = null
         nestedRecord.fail_safe = false
         nestedRecord.patient.set(patient)
@@ -445,7 +446,10 @@ export default function () {
     return {
       id: medicalCase.id,
       synchronizedAt: medicalCase.synchronizedAt?.getTime(),
-      advancement: medicalCase.advancement,
+      advancement: {
+        stage: medicalCase.advancement.stage,
+        step: medicalCase.advancement.step,
+      },
       fail_safe: medicalCase.fail_safe,
       createdAt: medicalCase.createdAt.getTime(),
       updatedAt: medicalCase.updatedAt.getTime(),
@@ -470,7 +474,10 @@ export default function () {
       nodes: medicalCase.json.nodes,
       json: '',
       synchronized_at: medicalCase.synchronizedAt,
-      advancement: medicalCase.advancement,
+      advancement: {
+        stage: medicalCase.advancement.stage,
+        step: medicalCase.advancement.step,
+      },
       fail_safe: medicalCase.fail_safe,
       createdAt: medicalCase.createdAt.getTime(),
       updatedAt: medicalCase.updatedAt.getTime(),
@@ -531,22 +538,23 @@ export default function () {
    * @returns { Collection } - Updated object
    */
   const update = async (model, id, fields, updatePatientValue) => {
-    // const collection = database.get(_mapModelToTable(model))
+    const collection = database.get(_mapModelToTable(model))
     // if (architecture === 'client_server') {
     //   fields = { ...fields, fail_safe: true }
     // }
-    // const object = await collection.find(id)
-    // await database.action(async () => {
-    //   Object.keys(fields).map(async field => {
-    //     await database.batch(
-    //       object.prepareUpdate(record => {
-    //         if (field !== 'patient' && field !== 'activities') {
-    //           record[field] = fields[field]
-    //         }
-    //       }),
-    //     )
-    //   })
-    // })
+
+    await database.action(async () => {
+      const object = await collection.find(id)
+      fields.map(async field => {
+        await database.batch(
+          object.prepareUpdate(record => {
+            // if (field.name !== 'patient' && field.name !== 'activities') {
+            record[field.name] = fields[field.value]
+            // }
+          }),
+        )
+      })
+    })
     // // Update patient updated_at value
     // if (model === 'MedicalCase') {
     //   await database.action(async () => {

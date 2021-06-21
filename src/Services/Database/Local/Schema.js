@@ -1,13 +1,14 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export default appSchema({
-  version: 6,
+  version: 7,
   tables: [
     tableSchema({
       name: 'medical_cases',
       columns: [
         { name: 'json', type: 'string', isOptional: true, isIndexed: true },
-        { name: 'advancement', type: 'string' },
+        { name: 'stage', type: 'number' },
+        { name: 'step', type: 'number' },
         { name: 'synchronized_at', type: 'number', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
