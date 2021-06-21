@@ -19,13 +19,14 @@ import device from './Device'
 import emergency from './Emergency'
 import healthFacility from './HealthFacility'
 import medicalCase from './MedicalCase'
+import modal from './Modal'
 import startup from './Startup'
 import patient from './Patient'
 import system from './System'
 import theme from './Theme'
 import scan from './Scan'
+import validation from './Validation'
 import user from './User'
-import modal from './Modal'
 
 const reducers = combineReducers({
   algorithm,
@@ -34,14 +35,15 @@ const reducers = combineReducers({
   emergency,
   healthFacility,
   medicalCase,
+  modal,
   network,
   startup,
   patient,
   system,
   theme,
   scan,
+  validation,
   user,
-  modal,
 })
 
 const persistConfig = {

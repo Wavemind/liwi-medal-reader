@@ -11,19 +11,29 @@ import { useTranslation } from 'react-i18next'
  */
 import { useTheme } from '@/Theme'
 
-const SquareSelect = ({ label, prompt, items, handleOnSelect, value }) => {
+const SquareSelect = ({
+  label,
+  prompt,
+  items,
+  handleOnSelect,
+  value,
+  withBorder = false,
+  fullWidth = true,
+  pickerGrow = false,
+}) => {
   const { t } = useTranslation()
 
   // Theme and style elements deconstruction
   const {
-    Components: { squareSelect },
     Colors,
+    Fonts,
+    Components: { squareSelect },
   } = useTheme()
 
   return (
-    <View style={squareSelect.wrapper}>
-      <Text style={squareSelect.label}>{label}</Text>
-      <View style={squareSelect.pickerContainer}>
+    <View style={squareSelect.wrapper(fullWidth, label)}>
+      {label && <Text style={squareSelect.label}>{label}</Text>}
+      <View style={squareSelect.pickerContainer(withBorder, pickerGrow)}>
         <Picker
           style={squareSelect.picker}
           prompt={prompt}
@@ -35,6 +45,9 @@ const SquareSelect = ({ label, prompt, items, handleOnSelect, value }) => {
             key="select-placeholder"
             label={t('actions.select')}
             value=""
+            color={Colors.grey}
+            style={Fonts.textSmall}
+            fontFamily="ZeitungPro"
           />
           {items.map(item => {
             return (
@@ -42,6 +55,8 @@ const SquareSelect = ({ label, prompt, items, handleOnSelect, value }) => {
                 key={`select-${item.value}`}
                 label={item.label}
                 value={item.value}
+                style={Fonts.textSmall}
+                fontFamily="ZeitungPro"
               />
             )
           })}

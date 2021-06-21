@@ -72,7 +72,6 @@ export const calculateReference = (nodeId, newNodes) => {
     reference = Config.REFERENCES[currentNode.reference_table_male]
   } else if (gender === 'female') {
     reference = Config.REFERENCES[currentNode.reference_table_female]
-    reference = Config.REFERENCES[currentNode.consreference_table_female]
   }
   // If X and Y means question is not answered + check if answer is in the scope of the reference table
   if (reference !== null && x !== null && y !== null && z === undefined) {
@@ -80,7 +79,6 @@ export const calculateReference = (nodeId, newNodes) => {
   } else if (reference !== null && x !== null && y !== null && z !== null) {
     value = processReferenceTable3D(reference, x, y, z)
   }
-
   return value
 }
 
@@ -108,17 +106,16 @@ const processReferenceTable3D = (
       referenceZ,
     )
   } else {
-    const scopedRange = Object.keys(referenceTable).sortByNumber()
-
-    if (scopedRange.first() > referenceX) {
+    const scopedRange = Object.keys(referenceTable).sort((a, b) => a - b)
+    if (scopedRange[0] > referenceX) {
       value = processReferenceTable(
-        referenceTable[scopedRange.first()],
+        referenceTable[scopedRange[0]],
         referenceY,
         referenceZ,
       )
     } else {
       value = processReferenceTable(
-        referenceTable[scopedRange.last()],
+        referenceTable[scopedRange[scopedRange.length - 1]],
         referenceY,
         referenceZ,
       )
@@ -130,7 +127,7 @@ const processReferenceTable3D = (
 /**
  * Find value for a 2D reference table
  * @param referenceTable - Reference table available in frontend_service/api/...
- * @param referenceX - Z value to not exceed
+ * @param referenceX - X value to not exceed
  * @param referenceY - Y value to not exceed
  * @returns {null|*}
  */
@@ -141,16 +138,15 @@ const processReferenceTable = (referenceTable, referenceX, referenceY) => {
   if (referenceX in referenceTable) {
     value = findValueInReferenceTable(referenceTable[referenceX], referenceY)
   } else {
-    const scopedRange = Object.keys(referenceTable).sortByNumber()
-
-    if (scopedRange.first() > referenceX) {
+    const scopedRange = Object.keys(referenceTable).sort((a, b) => a - b)
+    if (scopedRange[0] > referenceX) {
       value = findValueInReferenceTable(
-        referenceTable[scopedRange.first()],
+        referenceTable[scopedRange[0]],
         referenceY,
       )
     } else {
       value = findValueInReferenceTable(
-        referenceTable[scopedRange.last()],
+        referenceTable[scopedRange[scopedRange.length - 1]],
         referenceY,
       )
     }
@@ -168,16 +164,16 @@ const findValueInReferenceTable = (referenceTable, reference) => {
   let previousKey = null
   let value = null
 
-  const scopedRange = Object.keys(referenceTable).sortByNumber()
+  const scopedRange = Object.keys(referenceTable).sort((a, b) => a - b)
 
   // If reference is smaller than the smallest value
-  if (reference < referenceTable[scopedRange.first()]) {
-    return scopedRange.first()
+  if (reference < referenceTable[scopedRange[0]]) {
+    return parseInt(scopedRange[0])
   }
 
   // If reference is bigger than the best value
-  if (reference > referenceTable[scopedRange.last()]) {
-    return scopedRange.last()
+  if (reference > referenceTable[scopedRange[scopedRange.length - 1]]) {
+    return parseInt(scopedRange[scopedRange.length - 1])
   }
 
   scopedRange.some(key => {

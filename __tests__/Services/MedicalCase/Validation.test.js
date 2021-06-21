@@ -1,12 +1,7 @@
 /**
- * The external imports
- */
-import 'react-native'
-
-/**
  * The internal imports
  */
-import ValidationMedicalCaseService from '@/Services/MedicalCase/Validation'
+import QuestionValidationService from '@/Services/Validation/Question'
 import CreateMedicalCase from '@/Store/MedicalCase/Create'
 import { translate } from '@/Translations/algorithm'
 import LoadAlgorithm from '@/Store/Algorithm/Load'
@@ -33,7 +28,7 @@ describe('Handle validations message', () => {
     const mcNode = medicalCase.nodes[50]
 
     // Value to 37.7°
-    const result = await ValidationMedicalCaseService(mcNode, node, '37.7')
+    const result = await QuestionValidationService(mcNode, node, '37.7')
     expect(result).toStrictEqual({
       validationMessage: null,
       validationType: null,
@@ -49,7 +44,7 @@ describe('Handle validations message', () => {
     const mcNode = medicalCase.nodes[50]
 
     // Value to 63°
-    const result = await ValidationMedicalCaseService(mcNode, node, '63')
+    const result = await QuestionValidationService(mcNode, node, '63')
     expect(result).toStrictEqual({
       validationMessage: translate(node.max_message_error),
       validationType: 'error',
@@ -66,7 +61,7 @@ describe('Handle validations message', () => {
     mcNode.unavailableValue = true
 
     // Child feels hot = 38°
-    const result = await ValidationMedicalCaseService(
+    const result = await QuestionValidationService(
       mcNode,
       node,
       Object.values(node.answers)[0].value,

@@ -37,6 +37,7 @@ const MedicalHistoryMedicalCaseContainer = props => {
     <SectionList
       sections={systems}
       keyExtractor={item => item}
+      removeClippedSubviews={false}
       renderItem={({ item }) => <Question questionId={item} />}
       renderSectionHeader={({ section: { title } }) => (
         <View style={Gutters.regularHMargin}>

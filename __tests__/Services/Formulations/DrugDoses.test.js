@@ -22,7 +22,7 @@ beforeAll(async () => {
   )
   const algorithm = store.getState().algorithm.item
   await store.dispatch(CreateMedicalCase.action({ algorithm }))
-  await setBirthDate(store, new Date('11.04.2017'))
+  await setBirthDate(store, 4, 'year')
 
   const weightId = algorithm.config.basic_questions.weight_question_id
   await store.dispatch(SetAnswer.action({ nodeId: weightId, value: '3' }))

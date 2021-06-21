@@ -10,9 +10,11 @@ import checkboxStyles from './components/Checkbox.style'
 import booleanButtonStyles from './components/BooleanButtons.style'
 import selectStyles from './components/Select.style'
 import squareSelectStyles from './components/SquareSelect.style'
+import toggleSwitchStyles from './components/ToggleSwitch.style'
 import sectionHeaderStyles from './components/SectionHeader.style'
 import infoStyles from './components/Info.style'
 import clinicianStyles from './components/Clinician.style'
+import customClinicianStyles from './components/CustomClinician.style'
 import headerStyles from './components/Header.style'
 import customDrawerContentStyles from './components/CustomDrawerContent.style'
 import customDrawerItemStyles from './components/CustomDrawerItem.style'
@@ -58,8 +60,10 @@ export default function (props) {
     sectionHeader: sectionHeaderStyles(props),
     info: infoStyles(props),
     squareSelect: squareSelectStyles(props),
+    toggleSwitch: toggleSwitchStyles(props),
     bottomNavbar: bottomNavbarStyles(props),
     clinician: clinicianStyles(props),
+    customClinician: customClinicianStyles(props),
     header: headerStyles(props),
     customDrawerContent: customDrawerContentStyles(props),
     customDrawerItem: customDrawerItemStyles(props),

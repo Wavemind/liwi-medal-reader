@@ -17,6 +17,7 @@ const UniqueTriageQuestionsMedicalCaseContainer = props => {
     <FlatList
       data={questions}
       renderItem={({ item }) => <Question questionId={item} />}
+      removeClippedSubviews={false}
       keyExtractor={item => item}
     />
   )

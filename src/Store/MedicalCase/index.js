@@ -9,6 +9,7 @@ import HandleDateFormulas from './HandleDateFormulas'
 import AddStepActivities from './AddStepActivities'
 
 // Final Diagnoses
+import SetDiagnoses from './Diagnoses/SetDiagnoses'
 import AddAdditionalDiagnoses from './Diagnoses/AddAdditionalDiagnoses'
 import RemoveAdditionalDiagnoses from './Diagnoses/RemoveAdditionalDiagnoses'
 import AddAgreedDiagnoses from '@/Store/MedicalCase/Diagnoses/AddAgreedDiagnoses'
@@ -51,6 +52,7 @@ export default buildSlice(
     Load,
     AddStepActivities,
     // Diagnoses
+    SetDiagnoses,
     AddAdditionalDiagnoses,
     RemoveAdditionalDiagnoses,
     AddAgreedDiagnoses,

@@ -3,22 +3,15 @@
  */
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
 import { useTheme } from '@/Theme'
-import { navigateAndSimpleReset } from '@/Navigators/Root'
 import { Icon } from '@/Components'
-import ChangeClinician from '@/Store/HealthFacility/ChangeClinician'
 
-const Clinician = ({ currentClinician }) => {
-  // Props deconstruction
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
-
+const Clinician = ({ currentClinician, handleClinician }) => {
   // Theme and style elements deconstruction
   const {
     Layout,
@@ -26,19 +19,13 @@ const Clinician = ({ currentClinician }) => {
     Components: { clinician },
   } = useTheme()
 
-  /**
-   * Set clinician and redirect user to Pin container
-   * @param {hash} newClinician
-   */
-  const handleClinician = async () => {
-    await dispatch(ChangeClinician.action({ clinician: currentClinician }))
-    navigateAndSimpleReset('Pin')
-  }
+  // Props deconstruction
+  const { t } = useTranslation()
 
   return (
     <TouchableOpacity
       style={clinician.buttonWrapper}
-      onPress={() => handleClinician()}
+      onPress={() => handleClinician(currentClinician)}
     >
       <View style={Layout.row}>
         <View style={[Layout.fill, Layout.alignItemStart]}>
