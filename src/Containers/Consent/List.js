@@ -1,58 +1,81 @@
 /**
  * The external imports
  */
-import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { View, Text, FlatList, Animated } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
 /**
  * The internal imports
  */
-import { ConsentListItem, LoaderList } from '@/Components'
+import { ConsentListItem, LoaderList, EmptyList, Error } from '@/Components'
 import { useTheme } from '@/Theme'
+import { fadeIn } from '@/Theme/Animation'
+import GetAllPatientWithConsentDB from '@/Store/DatabasePatient/GetAllWithConsent'
 
 const ListConsentContainer = props => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const {
+    Gutters,
     Layout,
     Fonts,
     Containers: { consentList },
   } = useTheme()
 
+  // Define references
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
   // Local state definition
-  const [data, setData] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
+  const [page, setPage] = useState(1)
+  const [firstLoading, setFirstLoading] = useState(true)
+
+  const patientWithConsent = useSelector(
+    state => state.databasePatient.getAllWithConsent.item.data,
+  )
+  const isLastBatch = useSelector(
+    state => state.databasePatient.getAllWithConsent.item.isLastBatch,
+  )
+  const patientConsentLoading = useSelector(
+    state => state.databasePatient.getAllWithConsent.loading,
+  )
+  const patientConsentError = useSelector(
+    state => state.databasePatient.getAllWithConsent.error,
+  )
 
   useEffect(() => {
-    let timer = setTimeout(
-      () => setData([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      2 * 1000,
-    )
+    fadeIn(fadeAnim)
+  }, [fadeAnim])
 
-    return () => {
-      clearTimeout(timer)
-    }
+  useEffect(() => {
+    dispatch(GetAllPatientWithConsentDB.action({ page, reset: true }))
+    setFirstLoading(false)
   }, [])
 
   /**
    * Reset filters and search terms. Fetch 15 latest patients
    */
   const handleRefresh = () => {
-    setRefreshing(true)
-    console.log('TODO: handle refresh')
-    setTimeout(() => setRefreshing(false), 2 * 1000)
+    dispatch(GetAllPatientWithConsentDB.action({ page: 1, reset: true }))
   }
 
   /**
    * Load more consents
    */
   const loadMore = () => {
-    console.log('TODO: load more')
-    setData(data.concat([11, 12, 13, 14, 15]))
+    if (!isLastBatch) {
+      dispatch(GetAllPatientWithConsentDB.action({ page: page + 1 }))
+      setPage(page + 1)
+    }
   }
 
   return (
     <View style={Layout.fill}>
+      <View style={[Gutters.regularHMargin, Gutters.smallVMargin]}>
+        {patientConsentError && <Error message={patientConsentError.message} />}
+      </View>
       <View style={consentList.headerTable}>
         <Text style={consentList.headerText}>
           {t('containers.patient.list.name')}
@@ -62,16 +85,20 @@ const ListConsentContainer = props => {
         </Text>
       </View>
 
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <ConsentListItem item={item} />}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={<LoaderList />}
-        onRefresh={() => handleRefresh()}
-        refreshing={refreshing}
-        onEndReached={() => loadMore()}
-        onEndReachedThreshold={0.1}
-      />
+      {firstLoading ? (
+        <LoaderList />
+      ) : (
+        <FlatList
+          data={patientWithConsent}
+          renderItem={({ item }) => <ConsentListItem item={item} />}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={<EmptyList text={t('application.no_results')} />}
+          onRefresh={handleRefresh}
+          refreshing={patientConsentLoading}
+          onEndReached={() => loadMore()}
+          onEndReachedThreshold={0.1}
+        />
+      )}
     </View>
   )
 }

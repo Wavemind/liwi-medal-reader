@@ -1,14 +1,12 @@
 import { buildSlice } from '@thecodingmachine/redux-toolkit-wrapper'
-import PatientInsert from './Patient/Insert'
-import MedicalCaseGetAll from './MedicalCase/GetAll'
+import MedicalCaseGetAll from './GetAll'
 
 const sliceInitialState = {
-  patient: {},
   medicalCase: { item: {} },
 }
 
 export default buildSlice(
-  'database',
-  [PatientInsert, MedicalCaseGetAll],
+  'databaseMedicalCase',
+  [MedicalCaseGetAll],
   sliceInitialState,
 ).reducer

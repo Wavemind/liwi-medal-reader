@@ -87,7 +87,10 @@ const ApplicationNavigator = () => {
             <Stack.Screen name="Search" component={IndexSearchContainer} />
             <Stack.Screen name="Scan" component={IndexScanContainer} />
             <Stack.Screen name="Filters" component={IndexFiltersContainer} />
-            <Stack.Screen name="SearchAdditional" component={SearchAdditionalContainer} />
+            <Stack.Screen
+              name="SearchAdditional"
+              component={SearchAdditionalContainer}
+            />
             <Stack.Screen name="Camera" component={CameraConsentContainer} />
             <Stack.Screen name="Preview" component={PreviewConsentContainer} />
             <Stack.Screen

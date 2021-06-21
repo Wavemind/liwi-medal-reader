@@ -7,7 +7,7 @@ export default function (props) {
   return StyleSheet.create({
     wrapper: {
       ...Layout.fill,
-      ...Gutters.smallTPadding,
+      ...Gutters.regularVPadding,
       ...Gutters.regularHMargin,
       borderBottomWidth: 1,
       borderColor: Colors.grey,
@@ -21,7 +21,7 @@ export default function (props) {
       ...Layout.colum,
     },
     title: {
-      ...Fonts.textMedium,
+      ...Fonts.textRegular,
       ...Fonts.textBold,
       ...Gutters.tinyBPadding,
     },

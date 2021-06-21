@@ -357,22 +357,29 @@ export default function () {
   /**
    * Fetch patient with consent file
    * @param { integer } page
-   * @param { array } columns - Columns to fetch values
    * @returns {Promise<*>}
    */
-  const getConsentsFile = async (page, columns) => {
-    // const queries = []
-    // const collection = database.get('patients')
-    // let result = await collection.query().fetch()
-    // if (page === null) {
-    //   return result
-    // }
-    // queries.push(Q.experimentalSortBy('updated_at', Q.asc))
-    // queries.push(Q.experimentalSkip((page - 1) * Config.ELEMENT_PER_PAGE))
-    // queries.push(Q.experimentalTake(Config.ELEMENT_PER_PAGE * page))
-    // result = await collection.query(...queries)
-    // result = await _initClasses(result, 'Patient')
-    // return _generateConsentList(result, columns)
+  const getConsentsFile = async (page = 1) => {
+    const collection = database.get('patients')
+    let result = await collection.query().fetch()
+
+    const queries = []
+
+    result = await collection.query(...queries)
+
+    // Order by updatedAt descending
+    result = result.sort(
+      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+    )
+
+    result = result.filter(patient => !!patient.consent_file)
+
+    // Pagination
+    result = result.slice(
+      (page - 1) * Config.ELEMENT_PER_PAGE,
+      Config.ELEMENT_PER_PAGE * page,
+    )
+    return _initClasses(result, 'Patient')
   }
 
   const insertPatient = async (patientData, medicalCaseData) => {
